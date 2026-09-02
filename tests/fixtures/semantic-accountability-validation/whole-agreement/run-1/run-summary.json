@@ -1,0 +1,443 @@
+{
+  "mode": "whole-agreement",
+  "runNumber": 1,
+  "startedAt": "2026-09-02T05:49:57.240Z",
+  "finishedAt": "2026-09-02T06:45:46.186Z",
+  "productionSha": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+  "productionTreeHash": "199ba3f88e5bc31ae25572f6b59054c7f4733ab99dffad234d7c9a4601e4b5c1",
+  "versions": {
+    "compilerAlgorithm": "semantic-accountability-compiler.v4",
+    "compilerPrompt": "semantic-accountability-compiler-prompt.v4",
+    "toolPolicy": "phase-3b1-tool-policy.v2",
+    "accountabilityAlgorithm": "semantic-accountability.v1",
+    "inventoryPrompt": "semantic-inventory-prompt.v1",
+    "irSchema": "headroom-covenant-ir.v1"
+  },
+  "providers": {
+    "compiler": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5"
+    },
+    "inventory": {
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5"
+    },
+    "verifier": {
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5"
+    }
+  },
+  "totalCostUsd": 5.293140000000001,
+  "budgetCeilingUsd": 10,
+  "regionIds": [
+    "definitions-lsb",
+    "definitions-dsgr",
+    "debt-dsgr",
+    "debt-lsb",
+    "liens-dsgr-a",
+    "liens-dsgr-d",
+    "investments-dsgr",
+    "restricted-payments-dsgr",
+    "asset-sales-dsgr",
+    "financial-covenant-dsgr",
+    "reporting-dsgr",
+    "cross-reference-dsgr"
+  ],
+  "regions": [
+    {
+      "id": "definitions-lsb",
+      "family": "DEFINITIONS",
+      "claimIds": [],
+      "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+      "unitChars": 8065,
+      "unitExtended": null,
+      "expansions": 0,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 81,
+      "inventoryHash": "612941ea81e0082007ed9dd982c9cba9c3de414b89552360fbc0ee86990f6ae4",
+      "compileStatus": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "MISSING_CONTEXT",
+        "OPERATIVE_STATE_UNRESOLVED",
+        "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+      ],
+      "rules": 0,
+      "definitions": 14,
+      "sharedCapacities": 0,
+      "unresolvedDependencies": 0,
+      "accountability": {
+        "semanticallyComplete": false,
+        "counts": {
+          "inventoried": 81,
+          "material": 77,
+          "represented": 39,
+          "intentionallyNonComputational": 0,
+          "unsupported": 40,
+          "ambiguous": 0,
+          "missingFromComposition": 2,
+          "materialMissingFromComposition": 1,
+          "criticalMissingFromComposition": 1,
+          "materialQuantitativeValues": 15,
+          "materialQuantitativeValuesMissing": 2,
+          "uninventoriedValues": 0,
+          "danglingLineageReferences": 1,
+          "canonicalizedLineageReferences": 80
+        }
+      },
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 4,
+      "verifierOperativeSource": "SUPPLIED_WINDOW",
+      "costUsd": {
+        "inventory": 0.646804,
+        "compile": 0.5449280000000001
+      }
+    },
+    {
+      "id": "definitions-dsgr",
+      "family": "DEFINITIONS",
+      "claimIds": [],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "unitChars": 5586,
+      "unitExtended": "DEFINITION_SPAN",
+      "expansions": 4,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 41,
+      "inventoryHash": "101c5ed392de2b4cef1be6912009bd725e5e8d3c0400bc8ee4269fddff8f67b5",
+      "compileStatus": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "MISSING_CONTEXT",
+        "OPERATIVE_STATE_UNRESOLVED",
+        "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+      ],
+      "rules": 0,
+      "definitions": 19,
+      "sharedCapacities": 0,
+      "unresolvedDependencies": 0,
+      "accountability": {
+        "semanticallyComplete": false,
+        "counts": {
+          "inventoried": 41,
+          "material": 40,
+          "represented": 32,
+          "intentionallyNonComputational": 1,
+          "unsupported": 0,
+          "ambiguous": 0,
+          "missingFromComposition": 8,
+          "materialMissingFromComposition": 8,
+          "criticalMissingFromComposition": 5,
+          "materialQuantitativeValues": 10,
+          "materialQuantitativeValuesMissing": 10,
+          "uninventoriedValues": 5,
+          "danglingLineageReferences": 0,
+          "canonicalizedLineageReferences": 41
+        }
+      },
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 13,
+      "verifierOperativeSource": "RESOLVED_UNIT",
+      "costUsd": {
+        "inventory": 0.56454,
+        "compile": 0.86689
+      }
+    },
+    {
+      "id": "debt-dsgr",
+      "family": "DEBT",
+      "claimIds": [],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "unitChars": 8790,
+      "unitExtended": "ANCHOR_NODE",
+      "expansions": 3,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 49,
+      "inventoryHash": "f9107019f4d76f674c39fd7a091c0a73ae228a8b5dbb86c0cfee4151abe2baf4",
+      "compileStatus": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "MISSING_CONTEXT",
+        "OPERATIVE_STATE_UNRESOLVED"
+      ],
+      "rules": 23,
+      "definitions": 2,
+      "sharedCapacities": 1,
+      "unresolvedDependencies": 7,
+      "accountability": {
+        "semanticallyComplete": false,
+        "counts": {
+          "inventoried": 49,
+          "material": 49,
+          "represented": 44,
+          "intentionallyNonComputational": 0,
+          "unsupported": 0,
+          "ambiguous": 5,
+          "missingFromComposition": 0,
+          "materialMissingFromComposition": 0,
+          "criticalMissingFromComposition": 0,
+          "materialQuantitativeValues": 9,
+          "materialQuantitativeValuesMissing": 0,
+          "uninventoriedValues": 8,
+          "danglingLineageReferences": 0,
+          "canonicalizedLineageReferences": 75
+        }
+      },
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 7,
+      "verifierOperativeSource": "RESOLVED_UNIT",
+      "costUsd": {
+        "inventory": 0.46801800000000005,
+        "compile": 0.65422
+      }
+    },
+    {
+      "id": "debt-lsb",
+      "family": "DEBT",
+      "claimIds": [],
+      "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+      "unitChars": 16826,
+      "unitExtended": null,
+      "expansions": 0,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 139,
+      "inventoryHash": "7c15c26fa89991b678988eed0b2db19bcef68c2b00bbcd92b4a78fa710dcb940",
+      "compileStatus": "FAILED",
+      "failureReasons": [
+        "PROVIDER_FAILURE"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sharedCapacities": 0,
+      "unresolvedDependencies": 0,
+      "accountability": null,
+      "verifyStatus": null,
+      "materialFindings": null,
+      "verifierOperativeSource": "SUPPLIED_WINDOW",
+      "costUsd": {
+        "inventory": 0.610812,
+        "compile": 0.153854
+      }
+    },
+    {
+      "id": "liens-dsgr-a",
+      "family": "LIENS",
+      "claimIds": [],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "unitChars": 6481,
+      "unitExtended": "ANCHOR_NODE",
+      "expansions": 2,
+      "inventoryStatus": "INVENTORY_FAILED",
+      "inventoryItems": 0,
+      "inventoryHash": "dbbf59a45ee0cd2e6852bcd13cb10e110db37a73c979cb6e730c87a33ca059f7",
+      "compileStatus": "FAILED",
+      "failureReasons": [
+        "PROVIDER_FAILURE"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sharedCapacities": 0,
+      "unresolvedDependencies": 0,
+      "accountability": null,
+      "verifyStatus": null,
+      "materialFindings": null,
+      "verifierOperativeSource": "SUPPLIED_WINDOW",
+      "costUsd": {
+        "inventory": 0,
+        "compile": 0
+      }
+    },
+    {
+      "id": "liens-dsgr-d",
+      "family": "LIENS",
+      "claimIds": [],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "unitChars": 6783,
+      "unitExtended": "ANCHOR_NODE",
+      "expansions": 3,
+      "inventoryStatus": "INVENTORY_FAILED",
+      "inventoryItems": 0,
+      "inventoryHash": "71f8f338e0674c8a4723739efd8b516e3eacee17bb7ee74b777668e944f03c7f",
+      "compileStatus": "FAILED",
+      "failureReasons": [
+        "PROVIDER_FAILURE"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sharedCapacities": 0,
+      "unresolvedDependencies": 0,
+      "accountability": null,
+      "verifyStatus": null,
+      "materialFindings": null,
+      "verifierOperativeSource": "SUPPLIED_WINDOW",
+      "costUsd": {
+        "inventory": 0,
+        "compile": 0
+      }
+    },
+    {
+      "id": "investments-dsgr",
+      "family": "RESTRICTED_PAYMENTS_INVESTMENTS",
+      "claimIds": [],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "unitChars": 7851,
+      "unitExtended": "ANCHOR_NODE",
+      "expansions": 6,
+      "inventoryStatus": "INVENTORY_FAILED",
+      "inventoryItems": 0,
+      "inventoryHash": "c6109ccb675c5c9cfd98510ef2cf31b23f853a8388fa275376e7709c6b6eb933",
+      "compileStatus": "FAILED",
+      "failureReasons": [
+        "PROVIDER_FAILURE"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sharedCapacities": 0,
+      "unresolvedDependencies": 0,
+      "accountability": null,
+      "verifyStatus": null,
+      "materialFindings": null,
+      "verifierOperativeSource": "SUPPLIED_WINDOW",
+      "costUsd": {
+        "inventory": 0,
+        "compile": 0
+      }
+    },
+    {
+      "id": "restricted-payments-dsgr",
+      "family": "RESTRICTED_PAYMENTS_INVESTMENTS",
+      "claimIds": [],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "unitChars": 4000,
+      "unitExtended": null,
+      "expansions": 3,
+      "inventoryStatus": "INVENTORY_FAILED",
+      "inventoryItems": 0,
+      "inventoryHash": "ced1223a2c4b1e870c7fcea869f93d455fe9c0b4dfc7045ebcf06c4521e71388",
+      "compileStatus": "FAILED",
+      "failureReasons": [
+        "PROVIDER_FAILURE"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sharedCapacities": 0,
+      "unresolvedDependencies": 0,
+      "accountability": null,
+      "verifyStatus": null,
+      "materialFindings": null,
+      "verifierOperativeSource": "SUPPLIED_WINDOW",
+      "costUsd": {
+        "inventory": 0,
+        "compile": 0
+      }
+    },
+    {
+      "id": "asset-sales-dsgr",
+      "family": "ASSET_SALES_PREPAYMENT",
+      "claimIds": [],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "unitChars": 4249,
+      "unitExtended": "ANCHOR_NODE",
+      "expansions": 5,
+      "inventoryStatus": "INVENTORY_FAILED",
+      "inventoryItems": 0,
+      "inventoryHash": "bdf2a8554deb7fe7b81dee1241a2b873b7f4a4b5737dbdd01753a8341d96f114",
+      "compileStatus": "FAILED",
+      "failureReasons": [
+        "PROVIDER_FAILURE"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sharedCapacities": 0,
+      "unresolvedDependencies": 0,
+      "accountability": null,
+      "verifyStatus": null,
+      "materialFindings": null,
+      "verifierOperativeSource": "SUPPLIED_WINDOW",
+      "costUsd": {
+        "inventory": 0,
+        "compile": 0
+      }
+    },
+    {
+      "id": "financial-covenant-dsgr",
+      "family": "FINANCIAL_COVENANT",
+      "claimIds": [],
+      "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+      "unitChars": 3500,
+      "unitExtended": null,
+      "expansions": 0,
+      "inventoryStatus": "INVENTORY_FAILED",
+      "inventoryItems": 0,
+      "inventoryHash": "3a87d24b6b48a6a32c9456efec72f06c251d9a15f0aea303e2d32187a20901b2",
+      "compileStatus": "FAILED",
+      "failureReasons": [
+        "PROVIDER_FAILURE"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sharedCapacities": 0,
+      "unresolvedDependencies": 0,
+      "accountability": null,
+      "verifyStatus": null,
+      "materialFindings": null,
+      "verifierOperativeSource": "SUPPLIED_WINDOW",
+      "costUsd": {
+        "inventory": 0,
+        "compile": 0
+      }
+    },
+    {
+      "id": "reporting-dsgr",
+      "family": "REPORTING_AFFIRMATIVE",
+      "claimIds": [],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "unitChars": 9821,
+      "unitExtended": "ANCHOR_NODE",
+      "expansions": 1,
+      "inventoryStatus": "INVENTORY_FAILED",
+      "inventoryItems": 0,
+      "inventoryHash": "e2c225aecc7d5dcfc65dd6f7d7ce3771438d1e150e7ff862dd5807780b9abe50",
+      "compileStatus": "FAILED",
+      "failureReasons": [
+        "PROVIDER_FAILURE"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sharedCapacities": 0,
+      "unresolvedDependencies": 0,
+      "accountability": null,
+      "verifyStatus": null,
+      "materialFindings": null,
+      "verifierOperativeSource": "SUPPLIED_WINDOW",
+      "costUsd": {
+        "inventory": 0,
+        "compile": 0
+      }
+    },
+    {
+      "id": "cross-reference-dsgr",
+      "family": "CROSS_REFERENCE_SHARED_CAP_CONDITION",
+      "claimIds": [],
+      "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+      "unitChars": 2800,
+      "unitExtended": null,
+      "expansions": 0,
+      "inventoryStatus": "INVENTORY_FAILED",
+      "inventoryItems": 0,
+      "inventoryHash": "0a7c1cf5c3d299ea2843bb8dd7399d264d4c0b48ca9d1986cd5f349673e54838",
+      "compileStatus": "FAILED",
+      "failureReasons": [
+        "PROVIDER_FAILURE"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sharedCapacities": 0,
+      "unresolvedDependencies": 0,
+      "accountability": null,
+      "verifyStatus": null,
+      "materialFindings": null,
+      "verifierOperativeSource": "SUPPLIED_WINDOW",
+      "costUsd": {
+        "inventory": 0,
+        "compile": 0
+      }
+    }
+  ]
+}

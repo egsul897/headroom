@@ -1,0 +1,274 @@
+{
+  "run": {
+    "mode": "whole-agreement",
+    "runNumber": 1,
+    "productionSha": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+    "productionTreeHash": "199ba3f88e5bc31ae25572f6b59054c7f4733ab99dffad234d7c9a4601e4b5c1"
+  },
+  "region": {
+    "id": "financial-covenant-dsgr",
+    "claimIds": [],
+    "family": "FINANCIAL_COVENANT",
+    "documentId": "dsgr-a",
+    "label": "DSGR 2022 A&R Credit Agreement - SECTION 6.12 Financial Covenants",
+    "sourceSectionRef": "6.12",
+    "window": {
+      "charStart": 476724,
+      "charEnd": 480224,
+      "chars": 3500
+    },
+    "anchor": {
+      "nodeId": "structural-node:9d65f46ccd0c4023ca905660",
+      "nodeKey": "dsgr-a::6.12",
+      "sectionRef": "6.12",
+      "charStart": 476724,
+      "charEnd": 478798
+    },
+    "structuralNodeIds": [
+      "structural-node:9d65f46ccd0c4023ca905660"
+    ],
+    "structuralNodeKeys": [
+      "dsgr-a::6.12"
+    ]
+  },
+  "operativeSourceText": "SECTION 6.12. Financial Covenants .\n\n(a) Interest Coverage Ratio . The Company will not permit the Interest Coverage Ratio, for any period of four consecutive fiscal quarters\nof the Company ending on the last day of any fiscal quarter of the Company (commencing with the fiscal quarter ending June 30, 2022), to be less than 3.00 to 1.00.\n\n(b) Total Net Leverage Ratio . The Company will not permit the Total Net Leverage Ratio, on the last day of any fiscal quarter of the\nCompany ending on or after June 30, 2022, to be greater than (i) 4.00 to 1.00 as of the end of each fiscal quarter of the Company ending on or after June 30, 2022 but prior to March 31, 2024, (ii) 3.75 to 1.00 as of the\nend of each fiscal quarter of the Company ending on or after March 31, 2024 but prior to March 31, 2026 and (iii) 3.50 to 1.00 as of the end of each fiscal quarter of the Company ending on or after March 31, 2026; provided\nthat, upon the written request of the Borrower Representative delivered to the Administrative Agent in connection with any Material Acquisition, the maximum Total Net Leverage Ratio permitted under Section 6.12(b)(i), (ii) or (iii), as\napplicable, for each of the four fiscal quarters of the Company ending immediately following the consummation date of such Material Acquisition shall be increased by 0.50 to 1.00 (any such period of four consecutive fiscal quarters being referred to\nas a “ Total Net Leverage Ratio Adjustment ”); provided further, however, that such Total Net Leverage Ratio Adjustment shall occur (i) only twice during the term of this Agreement, and (ii) only to the extent that no\nEvent of Default has then occurred and is continuing. Promptly following receipt of notice from the Borrower Representative of its election to give effect to a Total Net Leverage Ratio Adjustment, the Administrative Agent shall give written notice\nof the Total Net Leverage Ratio Adjustment to the Lenders, and this Agreement shall be automatically amended, without any further action by any party, to reflect such Total Net Leverage Ratio Adjustment.\n\nARTICLE VII\n\nEvents of Default\n\nSECTION 7.01. Events of Default . Any of the following events shall constitute an “Event of Default”:\n\n(a) the Borrowers shall fail to pay any principal of any Loan or any reimbursement obligation in respect of any LC Disbursement when and as the\nsame shall become due and payable, whether at the due date thereof or at a date fixed for prepayment thereof or otherwise;\n\n(b) the\nBorrowers shall fail to pay any interest on any Loan or any fee or any other amount (other than an amount referred to in Section 7.01(a)) payable under this Agreement or any other Loan Document, when and as the same shall become due and\npayable, and such failure shall continue unremedied for a period of three (3) Business Days;\n\n117\n\n(c) any representation or warranty made or deemed made by or on behalf of any Loan Party or\nany Restricted Subsidiary in, or in connection with, this Agreement or any other Loan Document or any amendment or modification hereof or thereof or waiver hereunder or thereunder, or in any report, certificate, financial statement or other document\nfurnished pursuant to or in connection with this Agreement or any other Loan Document or any amendment or modification hereof or thereof or waiver hereunder or thereunder, shall prove to have been incorrect in any material respect when made or\ndeemed made;\n\n(d) any Loan Party shall fail to observe or perform any covenant, condition or ",
+  "contextBundle": {
+    "items": 60,
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "originatingStructuralNodeIds": [
+      "structural-node:9d65f46ccd0c4023ca905660"
+    ],
+    "unresolvedDependencies": 19,
+    "error": null
+  },
+  "compile": {
+    "status": "FAILED",
+    "failureReasons": [
+      "PROVIDER_FAILURE"
+    ],
+    "errorDetail": null,
+    "rules": [],
+    "definitions": [],
+    "sharedCapacities": [],
+    "irExtensionCandidates": [],
+    "unresolvedIssues": [
+      "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}"
+    ],
+    "toolCallLog": [],
+    "inputHasUnresolvedOperativeEvidence": true,
+    "unresolvedEvidenceItemIds": [
+      "context-item:a0a66058dc78ce111bbc6ac714253bc76d9d633362e1bfa6c352d7d609a5a2a0"
+    ],
+    "definitionCompletenessCheck": null,
+    "sourceContext": {
+      "state": "COMPLETE_LOCAL_SOURCE",
+      "regions": [
+        {
+          "regionId": "operative",
+          "kind": "OPERATIVE",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:9d65f46ccd0c4023ca905660",
+          "sectionRef": "6.12",
+          "charStart": 476724,
+          "charEnd": 480224,
+          "text": "SECTION 6.12. Financial Covenants .\n\n(a) Interest Coverage Ratio . The Company will not permit the Interest Coverage Ratio, for any period of four consecutive fiscal quarters\nof the Company ending on the last day of any fiscal quarter of the Company (commencing with the fiscal quarter ending June 30, 2022), to be less than 3.00 to 1.00.\n\n(b) Total Net Leverage Ratio . The Company will not permit the Total Net Leverage Ratio, on the last day of any fiscal quarter of the\nCompany ending on or after June 30, 2022, to be greater than (i) 4.00 to 1.00 as of the end of each fiscal quarter of the Company ending on or after June 30, 2022 but prior to March 31, 2024, (ii) 3.75 to 1.00 as of the\nend of each fiscal quarter of the Company ending on or after March 31, 2024 but prior to March 31, 2026 and (iii) 3.50 to 1.00 as of the end of each fiscal quarter of the Company ending on or after March 31, 2026; provided\nthat, upon the written request of the Borrower Representative delivered to the Administrative Agent in connection with any Material Acquisition, the maximum Total Net Leverage Ratio permitted under Section 6.12(b)(i), (ii) or (iii), as\napplicable, for each of the four fiscal quarters of the Company ending immediately following the consummation date of such Material Acquisition shall be increased by 0.50 to 1.00 (any such period of four consecutive fiscal quarters being referred to\nas a “ Total Net Leverage Ratio Adjustment ”); provided further, however, that such Total Net Leverage Ratio Adjustment shall occur (i) only twice during the term of this Agreement, and (ii) only to the extent that no\nEvent of Default has then occurred and is continuing. Promptly following receipt of notice from the Borrower Representative of its election to give effect to a Total Net Leverage Ratio Adjustment, the Administrative Agent shall give written notice\nof the Total Net Leverage Ratio Adjustment to the Lenders, and this Agreement shall be automatically amended, without any further action by any party, to reflect such Total Net Leverage Ratio Adjustment.\n\nARTICLE VII\n\nEvents of Default\n\nSECTION 7.01. Events of Default . Any of the following events shall constitute an “Event of Default”:\n\n(a) the Borrowers shall fail to pay any principal of any Loan or any reimbursement obligation in respect of any LC Disbursement when and as the\nsame shall become due and payable, whether at the due date thereof or at a date fixed for prepayment thereof or otherwise;\n\n(b) the\nBorrowers shall fail to pay any interest on any Loan or any fee or any other amount (other than an amount referred to in Section 7.01(a)) payable under this Agreement or any other Loan Document, when and as the same shall become due and\npayable, and such failure shall continue unremedied for a period of three (3) Business Days;\n\n117\n\n(c) any representation or warranty made or deemed made by or on behalf of any Loan Party or\nany Restricted Subsidiary in, or in connection with, this Agreement or any other Loan Document or any amendment or modification hereof or thereof or waiver hereunder or thereunder, or in any report, certificate, financial statement or other document\nfurnished pursuant to or in connection with this Agreement or any other Loan Document or any amendment or modification hereof or thereof or waiver hereunder or thereunder, shall prove to have been incorrect in any material respect when made or\ndeemed made;\n\n(d) any Loan Party shall fail to observe or perform any covenant, condition or ",
+          "expandedFor": null,
+          "truncatedAtBudget": false,
+          "unitExtension": null
+        }
+      ],
+      "unresolvedReferences": [],
+      "reasons": [],
+      "totalChars": 3500,
+      "budgetChars": 24000
+    },
+    "frozenInventory": {
+      "candidateRef": "semantic-accountability:whole-agreement:financial-covenant-dsgr",
+      "items": [],
+      "uninventoriedValues": [
+        {
+          "kind": "PERIOD",
+          "rawText": "four consecutive fiscal quarters",
+          "normalizedValue": 4,
+          "unit": "quarter",
+          "charStart": 142,
+          "charEnd": 174,
+          "regionId": "operative"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "June 30, 2022",
+          "normalizedValue": null,
+          "unit": "June 30, 2022",
+          "charStart": 293,
+          "charEnd": 306,
+          "regionId": "operative"
+        },
+        {
+          "kind": "RATIO",
+          "rawText": "3.00 to 1.00",
+          "normalizedValue": 3,
+          "unit": "x",
+          "charStart": 325,
+          "charEnd": 337,
+          "regionId": "operative"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "June 30, 2022",
+          "normalizedValue": null,
+          "unit": "June 30, 2022",
+          "charStart": 501,
+          "charEnd": 514,
+          "regionId": "operative"
+        },
+        {
+          "kind": "RATIO",
+          "rawText": "4.00 to 1.00",
+          "normalizedValue": 4,
+          "unit": "x",
+          "charStart": 539,
+          "charEnd": 551,
+          "regionId": "operative"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "June 30, 2022",
+          "normalizedValue": null,
+          "unit": "June 30, 2022",
+          "charStart": 623,
+          "charEnd": 636,
+          "regionId": "operative"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "March 31, 2024",
+          "normalizedValue": null,
+          "unit": "March 31, 2024",
+          "charStart": 650,
+          "charEnd": 664,
+          "regionId": "operative"
+        },
+        {
+          "kind": "RATIO",
+          "rawText": "3.75 to 1.00",
+          "normalizedValue": 3.75,
+          "unit": "x",
+          "charStart": 671,
+          "charEnd": 683,
+          "regionId": "operative"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "March 31, 2024",
+          "normalizedValue": null,
+          "unit": "March 31, 2024",
+          "charStart": 755,
+          "charEnd": 769,
+          "regionId": "operative"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "March 31, 2026",
+          "normalizedValue": null,
+          "unit": "March 31, 2026",
+          "charStart": 783,
+          "charEnd": 797,
+          "regionId": "operative"
+        },
+        {
+          "kind": "RATIO",
+          "rawText": "3.50 to 1.00",
+          "normalizedValue": 3.5,
+          "unit": "x",
+          "charStart": 808,
+          "charEnd": 820,
+          "regionId": "operative"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "March 31, 2026",
+          "normalizedValue": null,
+          "unit": "March 31, 2026",
+          "charStart": 892,
+          "charEnd": 906,
+          "regionId": "operative"
+        },
+        {
+          "kind": "PERIOD",
+          "rawText": "four fiscal quarters",
+          "normalizedValue": 4,
+          "unit": "quarter",
+          "charStart": 1181,
+          "charEnd": 1201,
+          "regionId": "operative"
+        },
+        {
+          "kind": "RATIO",
+          "rawText": "0.50 to 1.00",
+          "normalizedValue": 0.5,
+          "unit": "x",
+          "charStart": 1319,
+          "charEnd": 1331,
+          "regionId": "operative"
+        },
+        {
+          "kind": "PERIOD",
+          "rawText": "four consecutive fiscal quarters",
+          "normalizedValue": 4,
+          "unit": "quarter",
+          "charStart": 1352,
+          "charEnd": 1384,
+          "regionId": "operative"
+        },
+        {
+          "kind": "DAYS",
+          "rawText": "three (3) Business Days",
+          "normalizedValue": 3,
+          "unit": "business days",
+          "charStart": 2790,
+          "charEnd": 2813,
+          "regionId": "operative"
+        }
+      ],
+      "inventoryStatus": "INVENTORY_FAILED",
+      "inventoryStatusReason": "inventory call failed: 402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}",
+      "rejectedUnverifiableItems": 0,
+      "rejectedDuplicateItems": 0,
+      "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+      "frozenContentHash": "3a87d24b6b48a6a32c9456efec72f06c251d9a15f0aea303e2d32187a20901b2",
+      "frozenAt": "2026-09-02T06:45:45.036Z",
+      "algorithmVersion": "semantic-accountability.v1",
+      "promptVersion": "semantic-inventory-prompt.v1",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "telemetryCostUsd": null
+    },
+    "accountability": null,
+    "rawModelOutput": null,
+    "provider": "vercel-ai-gateway",
+    "model": "anthropic/claude-sonnet-5",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "semantic-accountability-compiler-prompt.v4",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-02T06:45:45.285Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 248,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}"
+    },
+    "cacheKey": "e2a2610a8a05ff2684bf9755dbc161dc0146c69532b2574a7c80d91ba61cf8d3",
+    "compiledAt": "2026-09-02T06:45:45.285Z"
+  },
+  "verify": null,
+  "verifierOperativeSource": "SUPPLIED_WINDOW"
+}

@@ -1,0 +1,343 @@
+{
+  "run": {
+    "mode": "whole-agreement",
+    "runNumber": 1,
+    "productionSha": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+    "productionTreeHash": "199ba3f88e5bc31ae25572f6b59054c7f4733ab99dffad234d7c9a4601e4b5c1"
+  },
+  "region": {
+    "id": "reporting-dsgr",
+    "claimIds": [],
+    "family": "REPORTING_AFFIRMATIVE",
+    "documentId": "dsgr-a",
+    "label": "DSGR 2022 A&R Credit Agreement - SECTION 5.01 Financial Statements and Other Information",
+    "sourceSectionRef": "5.01",
+    "window": {
+      "charStart": 404706,
+      "charEnd": 408206,
+      "chars": 3500
+    },
+    "anchor": {
+      "nodeId": "structural-node:b46e816aaeefcbb6001182e8",
+      "nodeKey": "dsgr-a::5.01",
+      "sectionRef": "5.01",
+      "charStart": 404706,
+      "charEnd": 414527
+    },
+    "structuralNodeIds": [
+      "structural-node:b46e816aaeefcbb6001182e8"
+    ],
+    "structuralNodeKeys": [
+      "dsgr-a::5.01"
+    ]
+  },
+  "operativeSourceText": "SECTION 5.01. Financial Statements and\nOther Information . The Borrowers will furnish to the Administrative Agent and each Lender:\n\n(a) within ninety (90) days after the\nend of each fiscal year of the Company (or, if earlier, by the date that the Annual Report on Form 10-K of the Company for such fiscal year would be required to be filed under the rules and regulations of the\nSEC, giving effect to any automatic extension available thereunder for the filing of such form) (commencing with the fiscal year ending December 31, 2022), its audited consolidated balance sheet and related statements of operations,\nstockholders’ equity and cash flows as of the end of and for such year, setting forth in each case in comparative form the figures for the previous fiscal year, all reported on by independent public accountants of recognized national standing\n(without a “going concern” or like qualification, commentary or exception, and without any qualification or exception as to the scope of such audit) to the effect that such consolidated financial statements present fairly in all material\nrespects the financial condition and results of operations of the Company and its consolidated Subsidiaries on a consolidated basis in accordance with GAAP consistently applied;\n\n(b) within forty-five (45) days after the end of each of the first three fiscal quarters of each fiscal year of the Company (or, if\nearlier, by the date that the Quarterly Report on Form 10 Q of the Company for such fiscal quarter would be required to be filed under the rules and regulations of the SEC, giving effect to any automatic extension available thereunder for the filing\nof such form) (commencing with\n\n99\n\nthe fiscal quarter ending March 31, 2022), its consolidated balance sheet and related statements of operations, stockholders’ equity and cash flows as of the end of and for such fiscal\nquarter and the then elapsed portion of such fiscal year, setting forth in each case in comparative form the figures for the corresponding period or periods of (or, in the case of the balance sheet, as of the end of) the previous fiscal year, all\ncertified by a Financial Officer of the Company as presenting fairly in all material respects the financial condition and results of operations of the Company and its consolidated Subsidiaries on a consolidated basis in accordance with GAAP\nconsistently applied, subject to normal year-end audit adjustments and the absence of footnotes;\n\n(c) concurrently with any delivery of financial statements under clause (a) or (b) above, a Compliance Certificate\n(i) certifying, in the case of the financial statements delivered under clause (b) above, as presenting fairly in all material respects the financial condition and results of operations of the Company and its consolidated Subsidiaries on a\nconsolidated basis in accordance with GAAP consistently applied, subject to normal year-end audit adjustments and the absence of footnotes, (ii) certifying as to whether a Default has occurred and, if a\nDefault has occurred, specifying the details thereof and any action taken or proposed to be taken with respect thereto, (iii) setting forth reasonably detailed calculations demonstrating compliance with Section 6.12 and (iv) to the\nextent there were any Unrestricted Subsidiaries during the applicable reporting period, setting forth a list of each Subsidiary that identifies as a Restricted Subsidiary or an Unrestricted Subsidiary as of the date of delivery of such certificate\n(",
+  "contextBundle": {
+    "items": 60,
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "originatingStructuralNodeIds": [
+      "structural-node:b46e816aaeefcbb6001182e8"
+    ],
+    "unresolvedDependencies": 28,
+    "error": null
+  },
+  "compile": {
+    "status": "FAILED",
+    "failureReasons": [
+      "PROVIDER_FAILURE"
+    ],
+    "errorDetail": null,
+    "rules": [],
+    "definitions": [],
+    "sharedCapacities": [],
+    "irExtensionCandidates": [],
+    "unresolvedIssues": [
+      "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}"
+    ],
+    "toolCallLog": [],
+    "inputHasUnresolvedOperativeEvidence": true,
+    "unresolvedEvidenceItemIds": [
+      "context-item:a0635f27d9ddf06f6e33016c270f09a96dd3122046482ae007cead9db4840fa0",
+      "context-item:3c4603a530028dff876c6e629c43ef1545006fe379b44b375df22bba9c25a2f3",
+      "context-item:a0a66058dc78ce111bbc6ac714253bc76d9d633362e1bfa6c352d7d609a5a2a0"
+    ],
+    "definitionCompletenessCheck": null,
+    "sourceContext": {
+      "state": "DEPENDENCY_EXPANDED_SOURCE",
+      "regions": [
+        {
+          "regionId": "operative",
+          "kind": "OPERATIVE",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:b46e816aaeefcbb6001182e8",
+          "sectionRef": "5.01",
+          "charStart": 404706,
+          "charEnd": 414527,
+          "text": "SECTION 5.01. Financial Statements and\nOther Information . The Borrowers will furnish to the Administrative Agent and each Lender:\n\n(a) within ninety (90) days after the\nend of each fiscal year of the Company (or, if earlier, by the date that the Annual Report on Form 10-K of the Company for such fiscal year would be required to be filed under the rules and regulations of the\nSEC, giving effect to any automatic extension available thereunder for the filing of such form) (commencing with the fiscal year ending December 31, 2022), its audited consolidated balance sheet and related statements of operations,\nstockholders’ equity and cash flows as of the end of and for such year, setting forth in each case in comparative form the figures for the previous fiscal year, all reported on by independent public accountants of recognized national standing\n(without a “going concern” or like qualification, commentary or exception, and without any qualification or exception as to the scope of such audit) to the effect that such consolidated financial statements present fairly in all material\nrespects the financial condition and results of operations of the Company and its consolidated Subsidiaries on a consolidated basis in accordance with GAAP consistently applied;\n\n(b) within forty-five (45) days after the end of each of the first three fiscal quarters of each fiscal year of the Company (or, if\nearlier, by the date that the Quarterly Report on Form 10 Q of the Company for such fiscal quarter would be required to be filed under the rules and regulations of the SEC, giving effect to any automatic extension available thereunder for the filing\nof such form) (commencing with\n\n99\n\nthe fiscal quarter ending March 31, 2022), its consolidated balance sheet and related statements of operations, stockholders’ equity and cash flows as of the end of and for such fiscal\nquarter and the then elapsed portion of such fiscal year, setting forth in each case in comparative form the figures for the corresponding period or periods of (or, in the case of the balance sheet, as of the end of) the previous fiscal year, all\ncertified by a Financial Officer of the Company as presenting fairly in all material respects the financial condition and results of operations of the Company and its consolidated Subsidiaries on a consolidated basis in accordance with GAAP\nconsistently applied, subject to normal year-end audit adjustments and the absence of footnotes;\n\n(c) concurrently with any delivery of financial statements under clause (a) or (b) above, a Compliance Certificate\n(i) certifying, in the case of the financial statements delivered under clause (b) above, as presenting fairly in all material respects the financial condition and results of operations of the Company and its consolidated Subsidiaries on a\nconsolidated basis in accordance with GAAP consistently applied, subject to normal year-end audit adjustments and the absence of footnotes, (ii) certifying as to whether a Default has occurred and, if a\nDefault has occurred, specifying the details thereof and any action taken or proposed to be taken with respect thereto, (iii) setting forth reasonably detailed calculations demonstrating compliance with Section 6.12 and (iv) to the\nextent there were any Unrestricted Subsidiaries during the applicable reporting period, setting forth a list of each Subsidiary that identifies as a Restricted Subsidiary or an Unrestricted Subsidiary as of the date of delivery of such certificate\n(to the extent that there have been any changes in the identity or status as a Restricted Subsidiary or Unrestricted Subsidiary of any such Subsidiaries since the later of the Effective Date and the most recent list provided to the Administrative\nAgent);\n\n(d) as soon as available, but in any event no later than forty-five (45) days following the end of each fiscal year of the\nCompany, a copy of the plan (including a projected consolidated balance sheet, income statement and cash flow statement) of the Borrowers for each fiscal quarter of the upcoming fiscal year (the “ Projections ”) in form reasonably\nsatisfactory to the Administrative Agent;\n\n(e) promptly after the same become publicly available, copies of all periodic and other reports,\nproxy statements and other materials filed by any Loan Party or any Subsidiary with the SEC, or any Governmental Authority succeeding to any or all of the functions of the SEC, or with any national securities exchange, or distributed by the Company\nto its shareholders generally, as the case may be;\n\n(f) promptly after receipt thereof by the Company or any Subsidiary, copies of each\nnotice or other correspondence received from the SEC (or comparable agency in any applicable non-U.S. jurisdiction) concerning any investigation or possible investigation or other inquiry by the SEC or such\nother agency regarding financial or other operational results of the Company or any Subsidiary thereof;\n\n(g) promptly following any request\ntherefor, copies of any detailed audit reports, management letters or recommendations submitted to the board of directors (or the audit committee of the board of directors) of the Company by independent accountants in connection with the accounts or\nbooks of the Company or any Subsidiary, or any audit of any of them as the Administrative Agent or any Lender (through the Administrative Agent) may reasonably request;\n\n(h) promptly following any request therefor, (x) such other information regarding the operations, business affairs and financial condition\nof any Loan Party or any Subsidiary, or compliance with the terms of this Agreement, as the Administrative Agent or any Lender (through the Administrative Agent) may reasonably request and (y) information and documentation reasonably requested\nby the Administrative Agent or any Lender for purposes of compliance with applicable “know your customer” and anti-money laundering rules and regulations, including the USA PATRIOT Act and the Beneficial Ownership Regulation;\n\n100\n\n(i) promptly after any request therefor by the Administrative Agent or any Lender, copies of\n(i) any documents described in Section 101(k)(1) of ERISA that the Borrowers or any ERISA Affiliate may request with respect to any Multiemployer Plan and (ii) any notices described in Section 101(l)(1) of ERISA that the\nBorrowers or any ERISA Affiliate may request with respect to any Multiemployer Plan; provided that if the Borrowers or any ERISA Affiliate has not requested such documents or notices from the administrator or sponsor of the applicable Multiemployer\nPlan, the Borrowers or the applicable ERISA Affiliate shall promptly make a request for such documents and notices from such administrator or sponsor and shall provide copies of such documents and notices promptly after receipt thereof; and\n\n(j) concurrently with any delivery of financial statements under clause (a) or (b) above for any period, to the extent there were any\nUnrestricted Subsidiaries during such period, the Company shall deliver to the Administrative Agent (for distribution to each Lender) a balance sheet and related statements of operations, stockholders’ equity and cash flows as of the end of and\nfor such fiscal year or fiscal quarter (and the then elapsed portion of such fiscal year), as the case may be, setting forth in comparative form the figures for the corresponding period or periods of (or, in the case of the balance sheet, as of the\nend of) the previous fiscal year, in each case, on a consolidating basis for the Company its consolidated Restricted Subsidiaries, all certified by a Financial Officer of the Company as presenting fairly in all material respects the financial\ncondition and results of operations of the Company and its consolidated Restricted Subsidiaries on a consolidating basis in accordance with GAAP consistently applied, subject, in the case of financial statements for any fiscal quarter only, to\nnormal year-end audit adjustments and the absence of footnotes.\n\nDocuments required to be delivered pursuant to\nSection 5.01(a), (b) or (e) (to the extent any such documents are included in materials otherwise filed with the SEC) may be delivered electronically and, if so delivered, shall be deemed to have been delivered on the date (i) on which\nsuch materials are publicly available as posted on the Electronic Data Gathering, Analysis and Retrieval system (EDGAR); or (ii) on which such documents are posted on the Borrowers’ behalf on an Internet or intranet website, if any, to\nwhich each Lender and the Administrative Agent have access (whether a commercial, third-party website or whether made available by the Administrative Agent); provided that: (A) upon written request by the Administrative Agent (or any Lender\nthrough the Administrative Agent) to the Borrower Representative, the Borrower Representative shall deliver paper copies of such documents to the Administrative Agent or such Lender until a written request to cease delivering paper copies is given\nby the Administrative Agent or such Lender and (B) the Borrower Representative shall notify the Administrative Agent and each Lender (by facsimile or through any Electronic System) of the posting of any such documents and provide to the\nAdministrative Agent through any Electronic System electronic versions (i.e., soft copies) of such documents. The Administrative Agent shall have no obligation to request the delivery of or to maintain paper copies of the documents referred to\nabove, and in any event shall have no responsibility to monitor compliance by the Borrowers with any such request by a Lender for delivery, and each Lender shall be solely responsible for timely accessing posted documents or requesting delivery of\npaper copies of such document to it and maintaining its copies of such documents.\n\n",
+          "expandedFor": null,
+          "truncatedAtBudget": false,
+          "unitExtension": {
+            "originalCharStart": 404706,
+            "originalCharEnd": 408206,
+            "unitBoundary": "ANCHOR_NODE",
+            "note": "supplied window [404706, 408206) extended to the anchoring unit 5.01 [404706, 414527) - 6319 non-whitespace chars of the unit's own text were outside the window"
+          }
+        },
+        {
+          "regionId": "xref-1",
+          "kind": "CROSS_REFERENCE_EXPANSION",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:9d65f46ccd0c4023ca905660",
+          "sectionRef": "6.12",
+          "charStart": 476724,
+          "charEnd": 478798,
+          "text": "SECTION 6.12. Financial Covenants .\n\n(a) Interest Coverage Ratio . The Company will not permit the Interest Coverage Ratio, for any period of four consecutive fiscal quarters\nof the Company ending on the last day of any fiscal quarter of the Company (commencing with the fiscal quarter ending June 30, 2022), to be less than 3.00 to 1.00.\n\n(b) Total Net Leverage Ratio . The Company will not permit the Total Net Leverage Ratio, on the last day of any fiscal quarter of the\nCompany ending on or after June 30, 2022, to be greater than (i) 4.00 to 1.00 as of the end of each fiscal quarter of the Company ending on or after June 30, 2022 but prior to March 31, 2024, (ii) 3.75 to 1.00 as of the\nend of each fiscal quarter of the Company ending on or after March 31, 2024 but prior to March 31, 2026 and (iii) 3.50 to 1.00 as of the end of each fiscal quarter of the Company ending on or after March 31, 2026; provided\nthat, upon the written request of the Borrower Representative delivered to the Administrative Agent in connection with any Material Acquisition, the maximum Total Net Leverage Ratio permitted under Section 6.12(b)(i), (ii) or (iii), as\napplicable, for each of the four fiscal quarters of the Company ending immediately following the consummation date of such Material Acquisition shall be increased by 0.50 to 1.00 (any such period of four consecutive fiscal quarters being referred to\nas a “ Total Net Leverage Ratio Adjustment ”); provided further, however, that such Total Net Leverage Ratio Adjustment shall occur (i) only twice during the term of this Agreement, and (ii) only to the extent that no\nEvent of Default has then occurred and is continuing. Promptly following receipt of notice from the Borrower Representative of its election to give effect to a Total Net Leverage Ratio Adjustment, the Administrative Agent shall give written notice\nof the Total Net Leverage Ratio Adjustment to the Lenders, and this Agreement shall be automatically amended, without any further action by any party, to reflect such Total Net Leverage Ratio Adjustment.\n\n",
+          "expandedFor": {
+            "referenceText": "Section 6.12",
+            "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+            "note": "2 occurrences share \"6.12\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken"
+          },
+          "truncatedAtBudget": false,
+          "unitExtension": null
+        }
+      ],
+      "unresolvedReferences": [],
+      "reasons": [],
+      "totalChars": 11895,
+      "budgetChars": 24000
+    },
+    "frozenInventory": {
+      "candidateRef": "semantic-accountability:whole-agreement:reporting-dsgr",
+      "items": [],
+      "uninventoriedValues": [
+        {
+          "kind": "DAYS",
+          "rawText": "ninety (90) days",
+          "normalizedValue": 90,
+          "unit": "days",
+          "charStart": 143,
+          "charEnd": 159,
+          "regionId": "operative"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "December 31, 2022",
+          "normalizedValue": null,
+          "unit": "December 31, 2022",
+          "charStart": 515,
+          "charEnd": 532,
+          "regionId": "operative"
+        },
+        {
+          "kind": "DAYS",
+          "rawText": "forty-five (45) days",
+          "normalizedValue": 45,
+          "unit": "days",
+          "charStart": 1283,
+          "charEnd": 1303,
+          "regionId": "operative"
+        },
+        {
+          "kind": "PERIOD",
+          "rawText": "three fiscal quarters",
+          "normalizedValue": 3,
+          "unit": "quarter",
+          "charStart": 1339,
+          "charEnd": 1360,
+          "regionId": "operative"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "March 31, 2022",
+          "normalizedValue": null,
+          "unit": "March 31, 2022",
+          "charStart": 1716,
+          "charEnd": 1730,
+          "regionId": "operative"
+        },
+        {
+          "kind": "DAYS",
+          "rawText": "forty-five (45) days",
+          "normalizedValue": 45,
+          "unit": "days",
+          "charStart": 3812,
+          "charEnd": 3832,
+          "regionId": "operative"
+        },
+        {
+          "kind": "PERIOD",
+          "rawText": "four consecutive fiscal quarters",
+          "normalizedValue": 4,
+          "unit": "quarter",
+          "charStart": 142,
+          "charEnd": 174,
+          "regionId": "xref-1"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "June 30, 2022",
+          "normalizedValue": null,
+          "unit": "June 30, 2022",
+          "charStart": 293,
+          "charEnd": 306,
+          "regionId": "xref-1"
+        },
+        {
+          "kind": "RATIO",
+          "rawText": "3.00 to 1.00",
+          "normalizedValue": 3,
+          "unit": "x",
+          "charStart": 325,
+          "charEnd": 337,
+          "regionId": "xref-1"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "June 30, 2022",
+          "normalizedValue": null,
+          "unit": "June 30, 2022",
+          "charStart": 501,
+          "charEnd": 514,
+          "regionId": "xref-1"
+        },
+        {
+          "kind": "RATIO",
+          "rawText": "4.00 to 1.00",
+          "normalizedValue": 4,
+          "unit": "x",
+          "charStart": 539,
+          "charEnd": 551,
+          "regionId": "xref-1"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "June 30, 2022",
+          "normalizedValue": null,
+          "unit": "June 30, 2022",
+          "charStart": 623,
+          "charEnd": 636,
+          "regionId": "xref-1"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "March 31, 2024",
+          "normalizedValue": null,
+          "unit": "March 31, 2024",
+          "charStart": 650,
+          "charEnd": 664,
+          "regionId": "xref-1"
+        },
+        {
+          "kind": "RATIO",
+          "rawText": "3.75 to 1.00",
+          "normalizedValue": 3.75,
+          "unit": "x",
+          "charStart": 671,
+          "charEnd": 683,
+          "regionId": "xref-1"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "March 31, 2024",
+          "normalizedValue": null,
+          "unit": "March 31, 2024",
+          "charStart": 755,
+          "charEnd": 769,
+          "regionId": "xref-1"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "March 31, 2026",
+          "normalizedValue": null,
+          "unit": "March 31, 2026",
+          "charStart": 783,
+          "charEnd": 797,
+          "regionId": "xref-1"
+        },
+        {
+          "kind": "RATIO",
+          "rawText": "3.50 to 1.00",
+          "normalizedValue": 3.5,
+          "unit": "x",
+          "charStart": 808,
+          "charEnd": 820,
+          "regionId": "xref-1"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "March 31, 2026",
+          "normalizedValue": null,
+          "unit": "March 31, 2026",
+          "charStart": 892,
+          "charEnd": 906,
+          "regionId": "xref-1"
+        },
+        {
+          "kind": "PERIOD",
+          "rawText": "four fiscal quarters",
+          "normalizedValue": 4,
+          "unit": "quarter",
+          "charStart": 1181,
+          "charEnd": 1201,
+          "regionId": "xref-1"
+        },
+        {
+          "kind": "RATIO",
+          "rawText": "0.50 to 1.00",
+          "normalizedValue": 0.5,
+          "unit": "x",
+          "charStart": 1319,
+          "charEnd": 1331,
+          "regionId": "xref-1"
+        },
+        {
+          "kind": "PERIOD",
+          "rawText": "four consecutive fiscal quarters",
+          "normalizedValue": 4,
+          "unit": "quarter",
+          "charStart": 1352,
+          "charEnd": 1384,
+          "regionId": "xref-1"
+        }
+      ],
+      "inventoryStatus": "INVENTORY_FAILED",
+      "inventoryStatusReason": "inventory call failed: 402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}",
+      "rejectedUnverifiableItems": 0,
+      "rejectedDuplicateItems": 0,
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "frozenContentHash": "e2c225aecc7d5dcfc65dd6f7d7ce3771438d1e150e7ff862dd5807780b9abe50",
+      "frozenAt": "2026-09-02T06:45:45.498Z",
+      "algorithmVersion": "semantic-accountability.v1",
+      "promptVersion": "semantic-inventory-prompt.v1",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "telemetryCostUsd": null
+    },
+    "accountability": null,
+    "rawModelOutput": null,
+    "provider": "vercel-ai-gateway",
+    "model": "anthropic/claude-sonnet-5",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "semantic-accountability-compiler-prompt.v4",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-02T06:45:45.826Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 326,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}"
+    },
+    "cacheKey": "c66ab241dac1766d3c20eb65430b5e6f1c11e1161ae20b875b31e3b47e6bfd6a",
+    "compiledAt": "2026-09-02T06:45:45.826Z"
+  },
+  "verify": null,
+  "verifierOperativeSource": "SUPPLIED_WINDOW"
+}

@@ -1,0 +1,310 @@
+{
+  "run": {
+    "mode": "whole-agreement",
+    "runNumber": 1,
+    "productionSha": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+    "productionTreeHash": "199ba3f88e5bc31ae25572f6b59054c7f4733ab99dffad234d7c9a4601e4b5c1"
+  },
+  "region": {
+    "id": "asset-sales-dsgr",
+    "claimIds": [],
+    "family": "ASSET_SALES_PREPAYMENT",
+    "documentId": "dsgr-a",
+    "label": "DSGR 2022 A&R Credit Agreement - SECTION 6.05 Asset Sales",
+    "sourceSectionRef": "6.05",
+    "window": {
+      "charStart": 463076,
+      "charEnd": 466576,
+      "chars": 3500
+    },
+    "anchor": {
+      "nodeId": "structural-node:dc1d305b46838f7a68ea6adf",
+      "nodeKey": "dsgr-a::6.05",
+      "sectionRef": "6.05",
+      "charStart": 463076,
+      "charEnd": 467325
+    },
+    "structuralNodeIds": [
+      "structural-node:dc1d305b46838f7a68ea6adf"
+    ],
+    "structuralNodeKeys": [
+      "dsgr-a::6.05"
+    ]
+  },
+  "operativeSourceText": "SECTION 6.05. Asset Sales . No Loan Party will, nor will it permit any Restricted Subsidiary to, Dispose of any asset, including\nany Equity Interest owned by it, nor will any Loan Party permit any Restricted Subsidiary to issue any additional Equity Interest in such Restricted Subsidiary (other than to another Loan Party or another Restricted Subsidiary in compliance with\nSection 6.04), except:\n\n(a) Dispositions of (i) inventory, goods or other assets in the ordinary course of business,\n(ii) obsolete, negligible, uneconomical, worn out or surplus property, (iii) assets no longer used or useful in the business of the Company and its Restricted Subsidiaries, and (iv) other property (including any leasehold property\ninterest) that is no longer economically practical in its business;\n\n113\n\n(b) Dispositions of assets to any Loan Party or any Restricted Subsidiary, provided\nthat any such sales, transfers or dispositions (i) involving a Restricted Subsidiary that is not a Loan Party or (ii) from a U.S. Loan Party to a Canadian Loan Party or from a Canadian Loan Party to a U.S. Loan Party, in each case, shall\nbe made in compliance with Section 6.09;\n\n(c) Dispositions of Accounts (excluding sales or dispositions in a factoring arrangement) in\nconnection with the compromise, settlement or collection thereof;\n\n(d) Dispositions of cash, Permitted Investments and other investments\npermitted by clauses (g) and (j) of Section 6.04, Dispositions constituting Liens permitted by Section 6.02, and Dispositions constituting Restricted Payments permitted by Section 6.08;\n\n(e) Sale and Leaseback Transactions permitted by Section 6.06;\n\n(f) Dispositions resulting from any casualty or any taking under power of eminent domain or by condemnation or similar proceeding of, any\nproperty or asset of any Borrower or any Restricted Subsidiary;\n\n(g) foreclosures, condemnation, expropriation or any similar action on\nassets or other Dispositions required by a Governmental Authority or casualty or insured damage to assets;\n\n(h) the disposition or discount\nof inventory, accounts receivable, or notes receivable in the ordinary course of business or the conversion of accounts receivable to notes receivable in the ordinary course of business and consistent with past practice;\n\n(i) other than in respect of any intellectual property, leases, assignments, subleases, licenses, sublicenses, covenants not to sue, releases,\nconsents and other forms of license (and terminations thereof), in each case, in the ordinary course of business and which do not materially interfere with the business of the Company and its Restricted Subsidiaries, taken as a whole;\n\n(j) Dispositions resulting from sales of Accounts under Permitted Supply Chain Financings; and\n\n(k) Dispositions of assets (other than Equity Interests in (i) a Borrower or (ii) a Restricted Subsidiary (other than any Borrower)\nunless all Equity Interests in such Restricted Subsidiary are sold) that are not permitted by any other clause of this Section; provided that the aggregate fair market value of all assets Disposed of in reliance upon this paragraph\n(k) shall not exceed during any fiscal year of the Company an amount equal to the greater of $25,000,000 and 25% of Applicable EBITDA; provided that, other than as set forth on Schedule 6.05, all Dispositions permitted under this\nSection 6.05(k) shall be made for fair value and for at least 75% cash consideration.\n\nNotwithstanding the foregoing, no Loan Party or any Restricted\nSub",
+  "contextBundle": {
+    "items": 60,
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "originatingStructuralNodeIds": [
+      "structural-node:dc1d305b46838f7a68ea6adf"
+    ],
+    "unresolvedDependencies": 26,
+    "error": null
+  },
+  "compile": {
+    "status": "FAILED",
+    "failureReasons": [
+      "PROVIDER_FAILURE"
+    ],
+    "errorDetail": null,
+    "rules": [],
+    "definitions": [],
+    "sharedCapacities": [],
+    "irExtensionCandidates": [],
+    "unresolvedIssues": [
+      "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}"
+    ],
+    "toolCallLog": [],
+    "inputHasUnresolvedOperativeEvidence": true,
+    "unresolvedEvidenceItemIds": [
+      "context-item:a0a66058dc78ce111bbc6ac714253bc76d9d633362e1bfa6c352d7d609a5a2a0"
+    ],
+    "definitionCompletenessCheck": null,
+    "sourceContext": {
+      "state": "DEPENDENCY_EXPANDED_SOURCE",
+      "regions": [
+        {
+          "regionId": "operative",
+          "kind": "OPERATIVE",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:dc1d305b46838f7a68ea6adf",
+          "sectionRef": "6.05",
+          "charStart": 463076,
+          "charEnd": 467325,
+          "text": "SECTION 6.05. Asset Sales . No Loan Party will, nor will it permit any Restricted Subsidiary to, Dispose of any asset, including\nany Equity Interest owned by it, nor will any Loan Party permit any Restricted Subsidiary to issue any additional Equity Interest in such Restricted Subsidiary (other than to another Loan Party or another Restricted Subsidiary in compliance with\nSection 6.04), except:\n\n(a) Dispositions of (i) inventory, goods or other assets in the ordinary course of business,\n(ii) obsolete, negligible, uneconomical, worn out or surplus property, (iii) assets no longer used or useful in the business of the Company and its Restricted Subsidiaries, and (iv) other property (including any leasehold property\ninterest) that is no longer economically practical in its business;\n\n113\n\n(b) Dispositions of assets to any Loan Party or any Restricted Subsidiary, provided\nthat any such sales, transfers or dispositions (i) involving a Restricted Subsidiary that is not a Loan Party or (ii) from a U.S. Loan Party to a Canadian Loan Party or from a Canadian Loan Party to a U.S. Loan Party, in each case, shall\nbe made in compliance with Section 6.09;\n\n(c) Dispositions of Accounts (excluding sales or dispositions in a factoring arrangement) in\nconnection with the compromise, settlement or collection thereof;\n\n(d) Dispositions of cash, Permitted Investments and other investments\npermitted by clauses (g) and (j) of Section 6.04, Dispositions constituting Liens permitted by Section 6.02, and Dispositions constituting Restricted Payments permitted by Section 6.08;\n\n(e) Sale and Leaseback Transactions permitted by Section 6.06;\n\n(f) Dispositions resulting from any casualty or any taking under power of eminent domain or by condemnation or similar proceeding of, any\nproperty or asset of any Borrower or any Restricted Subsidiary;\n\n(g) foreclosures, condemnation, expropriation or any similar action on\nassets or other Dispositions required by a Governmental Authority or casualty or insured damage to assets;\n\n(h) the disposition or discount\nof inventory, accounts receivable, or notes receivable in the ordinary course of business or the conversion of accounts receivable to notes receivable in the ordinary course of business and consistent with past practice;\n\n(i) other than in respect of any intellectual property, leases, assignments, subleases, licenses, sublicenses, covenants not to sue, releases,\nconsents and other forms of license (and terminations thereof), in each case, in the ordinary course of business and which do not materially interfere with the business of the Company and its Restricted Subsidiaries, taken as a whole;\n\n(j) Dispositions resulting from sales of Accounts under Permitted Supply Chain Financings; and\n\n(k) Dispositions of assets (other than Equity Interests in (i) a Borrower or (ii) a Restricted Subsidiary (other than any Borrower)\nunless all Equity Interests in such Restricted Subsidiary are sold) that are not permitted by any other clause of this Section; provided that the aggregate fair market value of all assets Disposed of in reliance upon this paragraph\n(k) shall not exceed during any fiscal year of the Company an amount equal to the greater of $25,000,000 and 25% of Applicable EBITDA; provided that, other than as set forth on Schedule 6.05, all Dispositions permitted under this\nSection 6.05(k) shall be made for fair value and for at least 75% cash consideration.\n\nNotwithstanding the foregoing, no Loan Party or any Restricted\nSubsidiary shall consummate any transaction that results in the Disposition (whether by way of any Restricted Payment, investment, Lien, sale, conveyance, transfer or other Disposition, and whether in a single transaction or a series of\ntransactions) of intellectual property that is material to the business of the Company and its Restricted Subsidiaries to any Unrestricted Subsidiary; provided that the Company and its Restricted Subsidiaries may grant non-exclusive licenses of any intellectual property to any Unrestricted Subsidiary in the ordinary course of business so long as the Company and its Restricted Subsidiaries retain the beneficial ownership and the\nsame rights to use such intellectual property as held prior to such license.\n\n114\n\n",
+          "expandedFor": null,
+          "truncatedAtBudget": false,
+          "unitExtension": {
+            "originalCharStart": 463076,
+            "originalCharEnd": 466576,
+            "unitBoundary": "ANCHOR_NODE",
+            "note": "supplied window [463076, 466576) extended to the anchoring unit 6.05 [463076, 467325) - 747 non-whitespace chars of the unit's own text were outside the window"
+          }
+        },
+        {
+          "regionId": "xref-1",
+          "kind": "CROSS_REFERENCE_EXPANSION",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:9701a9f7b9b2f32310575d9d",
+          "sectionRef": "6.04",
+          "charStart": 455225,
+          "charEnd": 461225,
+          "text": "SECTION 6.04. Investments, Loans, Advances, Guarantees and Acquisitions . No Loan Party will, nor will it permit any Restricted\nSubsidiary to, form any subsidiary after the Effective Date, or purchase, hold or acquire (including pursuant to any merger or amalgamation with any Person that was not a Loan Party and a wholly owned Restricted Subsidiary prior to such merger) any\nEquity Interests, evidences of indebtedness or other securities (including any option, warrant or other right to acquire any of the foregoing) of, make or permit to exist any loans or advances to, Guarantee any obligations of, or make or permit to\nexist any investment or any other interest in, any other Person, or purchase or otherwise acquire (in one transaction or a series of transactions) any assets of any other Person constituting a business unit (whether through purchase of assets,\nmerger or otherwise), except:\n\n111\n\n(a) Permitted Investments;\n\n(b) investments by the Loan Parties in Equity Interests in their respective Restricted Subsidiaries that are Loan Parties; provided\nthat any such Equity Interests held by a Loan Party shall be pledged pursuant to the applicable Security Agreement; provided further that the aggregate outstanding amount of investments by U.S. Loan Parties in Restricted Subsidiaries\nthat are not U.S. Loan Parties made after the Effective Date, together with the aggregate principal amount of all outstanding Indebtedness permitted under Section 6.01(b)(iii) and the aggregate amount of Guarantees permitted under\nSection 6.01(c)(iii), shall not at any time exceed an amount equal to 15% of EBITDA.\n\n(c) loans or advances made by any Loan Party to\nany other Loan Party or Restricted Subsidiary and made by any Restricted Subsidiary that is not a Loan Party to a Loan Party or any other Restricted Subsidiary, provided that (i) any such loans and advances made by a Loan Party shall be\nevidenced by a promissory note pledged pursuant to the applicable Security Agreement, and (ii) loans and advances by U.S. Loan Parties to Restricted Subsidiaries that are not Loan Parties shall be subject to the terms of\nSection 6.01(b)(iii), determined without regard to any write-downs or write-offs.\n\n(d) Guarantees permitted under Section 6.01;\n\n(e) notes payable, or stock or other securities issued by account debtors to a Loan Party pursuant to negotiated agreements with respect\nto settlement of such account debtor’s Accounts in the ordinary course of business, consistent with past practices;\n\n(f) investments\nin the form of Swap Agreements permitted by Section 6.07;\n\n(g) investments constituting deposits described in clauses (c) and\n(d) of the definition of the term “Permitted Encumbrances”;\n\n(h) Permitted Acquisitions;\n\n(i) investments of any Person existing at the time such Person becomes a Restricted Subsidiary (other than in connection with any designation\nof an Unrestricted Subsidiary as a Restricted Subsidiary) of a Loan Party or consolidates or merges with a Loan Party or any of such party’s Restricted Subsidiaries (including in connection with a Permitted Acquisition), so long as such\ninvestments were not made in contemplation of such Person becoming a Restricted Subsidiary or of such merger;\n\n(j) the Closing Date\nAcquisitions;\n\n(k) investments in existence on the date hereof and described in Schedule 6.04 , and investments consisting of any\nmodification, replacement, renewal, refinancing, reinvestment, or extension of any such investment; provided that the amount of any such investment is not increased from the amount of such investment on the Effective Date except pursuant to\nthe terms of such investment (including in respect of any unused commitment), plus any accrued but unpaid interest (including any portion thereof which is payable in kind in accordance with the terms of such modified, extended, renewed, refinanced\nor replaced investment) and premium payable by the terms of such investment thereon and fees and expenses associated therewith, in each case, as in existence on the Effective Date;\n\n(l) (i) loans or advances made by a Loan Party to (or Guarantees provided on behalf of) its employees on an arms-length basis in the\nordinary course of business consistent with past practices for travel and entertainment expenses, relocation costs and similar purposes up to a maximum of $5,000,000 in the aggregate at any one time outstanding and\n(ii) non-cash loans made by a Loan Party or any Restricted Subsidiary to officers, directors, governors, managers and employees of any Loan Party or any Restricted Subsidiary, which are used by such\nPersons to simultaneously purchase Equity Interests (other than Disqualified Stock) of the Company;\n\n112\n\n(m) investments consisting of purchases and acquisitions of inventory, supplies, material,\nequipment, or other similar assets, or of services, in each case, in the ordinary course of business;\n\n(n) the non-exclusive licensing of intellectual property (i) in the ordinary course of business or (ii) which do not materially interfere with the ordinary conduct of the business of the Company or any Restricted\nSubsidiary and do not secure any Indebtedness;\n\n(o) deposits required by any Governmental Authority or public utility, including with\nrespect to Taxes and other similar charges to the extent the applicable obligations would not otherwise constitute an Event of Default;\n\n(p) investments in prepaid expenses, negotiable instruments held for collection and lease, utility and workers compensation, performance and\nsimilar deposits entered into as a result of the operations of the business, in each case, in the ordinary course of business;\n\n(q) other\ninvestments in an amount not to exceed the Available Amount immediately prior to the time of the making of such investment, so long as at the time of making such investment and immediately after giving effect (including giving effect on a pro forma\nbasis) thereto, (i) no Event of Default then exists or would result therefrom and (ii) the T",
+          "expandedFor": {
+            "referenceText": "Section 6.04",
+            "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+            "note": "2 occurrences share \"6.04\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken"
+          },
+          "truncatedAtBudget": true,
+          "unitExtension": null
+        },
+        {
+          "regionId": "xref-2",
+          "kind": "CROSS_REFERENCE_EXPANSION",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:436465cc130723b712555f9f",
+          "sectionRef": "6.09",
+          "charStart": 472699,
+          "charEnd": 474298,
+          "text": "SECTION 6.09.\nTransactions with Affiliates . No Loan Party will, nor will it permit any Restricted Subsidiary to, sell, lease or otherwise transfer any property or assets to, or purchase, lease or otherwise acquire any property or assets from, or otherwise\nengage in any other transactions with, any of its Affiliates, except (a) transactions that (i) are in the ordinary course of business and (ii) are at prices and on terms and conditions not less favorable to such Loan Party or such\nRestricted Subsidiary than could be obtained on an arm’s-length basis from unrelated third parties, (b) transactions (i) between or among the U.S. Loan Parties not involving any other Affiliate\nand (ii) between or among the Canadian Loan Parties not involving any other Affiliate, (c) any investment permitted by Sections 6.04(b), 6.04(c) or 6.04(d), (d) any Indebtedness permitted under Section 6.01(b) or 6.01(c),\n(e) any Restricted Payment permitted by Section 6.08, (f) the payment of reasonable fees to directors of any Loan Party or any Restricted Subsidiary who are not employees of such Loan Party or any Restricted Subsidiary, and\ncompensation and employee benefit arrangements paid to, and indemnities provided for the benefit of, directors, officers or employees of the Loan Parties or their Restricted Subsidiaries in the ordinary course of business, and (g) any issuances\nof securities or other payments, awards or grants in cash, securities or otherwise pursuant to, or the funding of, employment agreements, stock options and stock ownership plans approved by a Loan Party’s board of directors.\n\n",
+          "expandedFor": {
+            "referenceText": "Section 6.09",
+            "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+            "note": "2 occurrences share \"6.09\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken"
+          },
+          "truncatedAtBudget": false,
+          "unitExtension": null
+        },
+        {
+          "regionId": "xref-3",
+          "kind": "CROSS_REFERENCE_EXPANSION",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:7281b00fd8d72fbc83606c4f",
+          "sectionRef": "6.02",
+          "charStart": 444932,
+          "charEnd": 450932,
+          "text": "SECTION 6.02. Liens . No Loan Party will, nor will it permit any\nRestricted Subsidiary to, create, incur, assume or permit to exist any Lien on any property or asset now owned or hereafter acquired by it, or assign or sell any income or revenues (including Accounts) or rights in respect of any thereof, except:\n\n(a) Liens created pursuant to any Loan Document;\n\n(b) Permitted Encumbrances;\n\n(c)\nany Lien on any property or asset of any Borrower or any Restricted Subsidiary existing on the date hereof and set forth in Schedule 6.02 ; provided that (i) such Lien shall not apply to any other property or\nasset of such Borrower or Restricted Subsidiary or any other Borrower or Restricted Subsidiary and (ii) such Lien shall secure only those obligations which it secures on the date hereof and extensions, renewals and replacements thereof that do\nnot increase the outstanding principal amount thereof;\n\n(d) any Lien existing on any property or asset prior to the acquisition thereof by\nany Loan Party or any Restricted Subsidiary or existing on any property or asset of any Person that becomes a Restricted Subsidiary (other than in connection with any designation of an Unrestricted Subsidiary as a Restricted Subsidiary) after the\ndate hereof prior to the time such Person becomes a Restricted Subsidiary; provided that (i) such Lien is not created in contemplation of or in connection with such acquisition or such Person becoming a Restricted Subsidiary, as the case\nmay be, (ii) such Lien shall not apply to any other property or assets of any Loan Party or Restricted Subsidiary and (iii) such Lien shall secure only those obligations which it secures on the date of such acquisition or the date such\nPerson becomes a Restricted Subsidiary, as the case may be, and extensions, renewals and replacements thereof that do not increase the outstanding principal amount thereof;\n\n(e) Liens of a collecting bank arising in the ordinary course of business under Section 4-210 of\nthe UCC (or similar provision of the PPSA) in effect in the relevant jurisdiction covering only the items being collected upon and banker’s Liens and customary contractual rights of setoff arising in the ordinary course of business with respect\nto funds and securities in accounts maintained by the Company or any Restricted Subsidiary with banks or other financial institutions and not given in connection with the incurrence of Indebtedness;\n\n(f) Liens arising out of Sale and Leaseback Transactions permitted by Section 6.06;\n\n(g) Liens granted by a Restricted Subsidiary that is not a Loan Party in favor of a Borrower or another Loan Party in respect of Indebtedness\nowed by such Restricted Subsidiary;\n\n(h) Liens (i) in favor of customs and revenue authorities arising as a matter of law to secure\npayment of customs duties in connection with the importation of goods in the ordinary course of business and (ii) on specific items of inventory or other goods and proceeds thereof of any Person securing such Person’s obligations in\nrespect of bankers’ acceptances or documentary letters of credit issued or created for the account of such Person to facilitate the purchase, shipment or storage of such inventory or such other goods in the ordinary course of business;\n\n109\n\n(i) Liens arising out of conditional sale, title retention, consignment or similar\narrangements for sale of goods entered into by Loan Party or any Restricted Subsidiaries in the ordinary course of business; provided that such Lien shall not apply to any other property or assets of any Loan Party or Restricted Subsidiary;\n\n(j) Liens on fixed or capital assets acquired, constructed or improved by the Company or any Restricted Subsidiary; provided that\n(i) such Liens secure Indebtedness permitted by Section 6.01(p), (ii) such Liens and the Indebtedness secured thereby are incurred prior to or within 180 days after such acquisition or the completion of such construction or improvement,\n(iii) the Indebtedness secured thereby does not exceed the cost of acquiring, constructing or improving such fixed or capital assets and (iv) such Liens shall not apply to any other property or assets of the Company or any Restricted\nSubsidiary;\n\n(k) (i) Liens granted by such Person under workmen’s compensation laws, health, disability or unemployment insurance\nlaws, other employee benefit legislation, unemployment insurance legislation and similar legislation, or good faith deposits in connection with bids, tenders, contracts (other than for the payment of Indebtedness), leases or other obligations of a\nlike nature to which such Person is a party, or Liens granted to secure public or statutory obligations of such Person or deposits of cash or U.S. government bonds to secure surety, stay, customs, performance or appeal bonds to which such Person is\na party, or deposits as security for the payment of rent or deposits made to secure obligations arising from contractual or warranty refunds or requirements, in each case, incurred in the ordinary course of business, and (ii) Liens securing\nletters of credit or bankers acceptances issued, and letters of credit or bank guaranties provided to support payment of the items in the foregoing clause (k)(i);\n\n(l) leases, franchises, grants, subleases, licenses, sublicenses, covenants not to sue, releases, consents and other forms of license (in each\ncase, on a non-exclusive basis to the extent applicable to any intellectual property) granted to others in the ordinary course of business which do not materially interfere with the ordinary conduct of the\nbusiness of the Company or any Restricted Subsidiary and do not secure any Indebtedness;\n\n(m) Liens arising from UCC or any similar\nfinancing statement filings regarding operating leases or consignments entered into by the Company or any Restricted Subsidiary in the ordinary course of business;\n\n(n) purported Liens (other than Liens securing Indebtedness for borrowed money) incurred in the ordinary course of business and evidenced",
+          "expandedFor": {
+            "referenceText": "Section 6.02",
+            "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+            "note": "2 occurrences share \"6.02\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken"
+          },
+          "truncatedAtBudget": true,
+          "unitExtension": null
+        },
+        {
+          "regionId": "xref-4",
+          "kind": "CROSS_REFERENCE_EXPANSION",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:73ad0a7d946bf963ed5992e3",
+          "sectionRef": "6.08",
+          "charStart": 468878,
+          "charEnd": 472699,
+          "text": "SECTION 6.08. Restricted Payments; Certain Payments of Indebtedness .\n\n(a) No Loan Party will, nor will it permit any Restricted Subsidiary to, declare or make, or agree to declare or make, directly or indirectly,\nany Restricted Payment, or incur any obligation (contingent or otherwise) to do so, except (i) each of the Borrowers may declare and pay dividends with respect to its common stock payable solely in additional shares of its common stock, and,\nwith respect to its preferred stock, payable solely in additional shares of such preferred stock (to the extent permitted to be issued hereunder) or in shares of its common stock, (ii) Restricted Subsidiaries may declare and pay dividends\nratably with respect to their Equity Interests, (iii) the Loan Parties may make Restricted Payments, pursuant to and in accordance with stock option plans or other benefit plans for management or employees of the Loan Parties and their\nRestricted Subsidiaries, (iv) other Restricted Payments in an amount not to exceed the Available Amount immediately prior to the time of the making of such Restricted Payment, so long as at the time of making such Restricted Payment and\nimmediately after giving effect (including giving effect on a pro forma basis) thereto, (x) no Event of Default then exists or would result therefrom and (y) the Total Net Leverage Ratio is not greater than the ratio that is 0.5 to 1.00\nlower than the maximum Total Net Leverage Ratio permitted under Section 6.12, and (v) the Company may make distributions and pay dividends to its equityholders, in each case, not otherwise permitted to be made by this Section 6.08 in\nan aggregate amount not to exceed $10,000,000 during any fiscal year of the Company so long as, in each case, all of the following conditions are satisfied: (x) no Default shall exist immediately prior to or immediately after giving effect to\nthe distribution or dividend, and (y) after giving effect to such Restricted Payment and any Indebtedness incurred or assumed in connection therewith, on a pro forma basis, the Company is in compliance with the covenants set forth in\nSection 6.12 (without giving effect to any applicable Total Net Leverage Ratio Adjustment); provided that any Restricted Payment made in reliance on this clause (v) shall not be included in the foregoing dollar limitation if, after\ngiving effect to such Restricted Payment and any Indebtedness incurred or assumed in connection therewith (including on a pro forma basis), the Total Net Leverage Ratio is not greater than the ratio that is 0.5 to 1.00 lower than the maximum Total\nNet Leverage Ratio permitted under Section 6.12.\n\n115\n\n(b) No Loan Party will, nor will it permit any Restricted Subsidiary to, make or agree to\npay or make, directly or indirectly, any payment or other distribution (whether in cash, securities or other property) of or in respect of principal of or interest on any Indebtedness, or any payment or other distribution (whether in cash,\nsecurities or other property), including any sinking fund or similar deposit, on account of the purchase, redemption, retirement, acquisition, cancellation or termination of any Indebtedness, except:\n\n(i) payment of Indebtedness created under the Loan Documents;\n\n(ii) payment of regularly scheduled interest and principal payments as and when due in respect of any Indebtedness permitted\nunder Section 6.01, other than payments in respect of the Subordinated Indebtedness prohibited by the subordination provisions thereof;\n\n(iii) refinancings of Indebtedness to the extent permitted by Section 6.01; and\n\n(iv) payment of secured Indebtedness that becomes due as a result of the voluntary sale or transfer of the property or assets\nsecuring such Indebtedness to the extent such sale or transfer is permitted by the terms of Section 6.05.\n\n",
+          "expandedFor": {
+            "referenceText": "Section 6.08",
+            "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+            "note": "2 occurrences share \"6.08\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken"
+          },
+          "truncatedAtBudget": false,
+          "unitExtension": null
+        },
+        {
+          "regionId": "xref-5",
+          "kind": "CROSS_REFERENCE_EXPANSION",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:06a81d466c00978d0dd33be9",
+          "sectionRef": "6.06",
+          "charStart": 467325,
+          "charEnd": 468205,
+          "text": "SECTION 6.06. Sale and Leaseback Transactions . No Loan Party will, nor will it\npermit any Restricted Subsidiary to, enter into any arrangement, directly or indirectly, whereby it shall sell or transfer any property, real or personal, used or useful in its business, whether now owned or hereafter acquired, and thereafter rent\nor lease such property or other property that it intends to use for substantially the same purpose or purposes as the property sold or transferred (a “Sale and Leaseback Transaction”), except for any such sale of any fixed or capital\nassets by any Borrower or any Restricted Subsidiary that is made for cash consideration in an amount not less than the fair value of such fixed or capital asset and is consummated within 180 days after such Borrower or such Restricted\nSubsidiary acquires or completes the construction of such fixed or capital asset.\n\n",
+          "expandedFor": {
+            "referenceText": "Section 6.06",
+            "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+            "note": "2 occurrences share \"6.06\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken"
+          },
+          "truncatedAtBudget": false,
+          "unitExtension": null
+        }
+      ],
+      "unresolvedReferences": [],
+      "reasons": [],
+      "totalChars": 22549,
+      "budgetChars": 24000
+    },
+    "frozenInventory": {
+      "candidateRef": "semantic-accountability:whole-agreement:asset-sales-dsgr",
+      "items": [],
+      "uninventoriedValues": [
+        {
+          "kind": "MONEY",
+          "rawText": "$25,000,000",
+          "normalizedValue": 25000000,
+          "unit": "USD",
+          "charStart": 3210,
+          "charEnd": 3221,
+          "regionId": "operative"
+        },
+        {
+          "kind": "PERCENT",
+          "rawText": "25%",
+          "normalizedValue": 0.25,
+          "unit": "%",
+          "charStart": 3226,
+          "charEnd": 3229,
+          "regionId": "operative"
+        },
+        {
+          "kind": "PERCENT",
+          "rawText": "75%",
+          "normalizedValue": 0.75,
+          "unit": "%",
+          "charStart": 3409,
+          "charEnd": 3412,
+          "regionId": "operative"
+        },
+        {
+          "kind": "PERCENT",
+          "rawText": "15%",
+          "normalizedValue": 0.15,
+          "unit": "%",
+          "charStart": 1600,
+          "charEnd": 1603,
+          "regionId": "xref-1"
+        },
+        {
+          "kind": "MONEY",
+          "rawText": "$5,000,000",
+          "normalizedValue": 5000000,
+          "unit": "USD",
+          "charStart": 4337,
+          "charEnd": 4347,
+          "regionId": "xref-1"
+        },
+        {
+          "kind": "DAYS",
+          "rawText": "180 days",
+          "normalizedValue": 180,
+          "unit": "days",
+          "charStart": 3864,
+          "charEnd": 3872,
+          "regionId": "xref-3"
+        },
+        {
+          "kind": "RATIO",
+          "rawText": "0.5 to 1.00",
+          "normalizedValue": 0.5,
+          "unit": "x",
+          "charStart": 1393,
+          "charEnd": 1404,
+          "regionId": "xref-4"
+        },
+        {
+          "kind": "MONEY",
+          "rawText": "$10,000,000",
+          "normalizedValue": 10000000,
+          "unit": "USD",
+          "charStart": 1673,
+          "charEnd": 1684,
+          "regionId": "xref-4"
+        },
+        {
+          "kind": "RATIO",
+          "rawText": "0.5 to 1.00",
+          "normalizedValue": 0.5,
+          "unit": "x",
+          "charStart": 2555,
+          "charEnd": 2566,
+          "regionId": "xref-4"
+        },
+        {
+          "kind": "DAYS",
+          "rawText": "180 days",
+          "normalizedValue": 180,
+          "unit": "days",
+          "charStart": 749,
+          "charEnd": 757,
+          "regionId": "xref-5"
+        }
+      ],
+      "inventoryStatus": "INVENTORY_FAILED",
+      "inventoryStatusReason": "inventory call failed: 402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}",
+      "rejectedUnverifiableItems": 0,
+      "rejectedDuplicateItems": 0,
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "frozenContentHash": "bdf2a8554deb7fe7b81dee1241a2b873b7f4a4b5737dbdd01753a8341d96f114",
+      "frozenAt": "2026-09-02T06:45:44.559Z",
+      "algorithmVersion": "semantic-accountability.v1",
+      "promptVersion": "semantic-inventory-prompt.v1",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "telemetryCostUsd": null
+    },
+    "accountability": null,
+    "rawModelOutput": null,
+    "provider": "vercel-ai-gateway",
+    "model": "anthropic/claude-sonnet-5",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "semantic-accountability-compiler-prompt.v4",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-02T06:45:44.867Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 306,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}"
+    },
+    "cacheKey": "b1c44ff4b424cb6725df89760aeebd0c95e5577d623a0f073a9654b7aa27a4b4",
+    "compiledAt": "2026-09-02T06:45:44.867Z"
+  },
+  "verify": null,
+  "verifierOperativeSource": "SUPPLIED_WINDOW"
+}

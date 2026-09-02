@@ -1,0 +1,223 @@
+{
+  "run": {
+    "mode": "whole-agreement",
+    "runNumber": 1,
+    "productionSha": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+    "productionTreeHash": "199ba3f88e5bc31ae25572f6b59054c7f4733ab99dffad234d7c9a4601e4b5c1"
+  },
+  "region": {
+    "id": "liens-dsgr-a",
+    "claimIds": [],
+    "family": "LIENS",
+    "documentId": "dsgr-a",
+    "label": "DSGR 2022 A&R Credit Agreement - SECTION 6.02 Liens",
+    "sourceSectionRef": "6.02",
+    "window": {
+      "charStart": 444932,
+      "charEnd": 448432,
+      "chars": 3500
+    },
+    "anchor": {
+      "nodeId": "structural-node:7281b00fd8d72fbc83606c4f",
+      "nodeKey": "dsgr-a::6.02",
+      "sectionRef": "6.02",
+      "charStart": 444932,
+      "charEnd": 451413
+    },
+    "structuralNodeIds": [
+      "structural-node:7281b00fd8d72fbc83606c4f"
+    ],
+    "structuralNodeKeys": [
+      "dsgr-a::6.02"
+    ]
+  },
+  "operativeSourceText": "SECTION 6.02. Liens . No Loan Party will, nor will it permit any\nRestricted Subsidiary to, create, incur, assume or permit to exist any Lien on any property or asset now owned or hereafter acquired by it, or assign or sell any income or revenues (including Accounts) or rights in respect of any thereof, except:\n\n(a) Liens created pursuant to any Loan Document;\n\n(b) Permitted Encumbrances;\n\n(c)\nany Lien on any property or asset of any Borrower or any Restricted Subsidiary existing on the date hereof and set forth in Schedule 6.02 ; provided that (i) such Lien shall not apply to any other property or\nasset of such Borrower or Restricted Subsidiary or any other Borrower or Restricted Subsidiary and (ii) such Lien shall secure only those obligations which it secures on the date hereof and extensions, renewals and replacements thereof that do\nnot increase the outstanding principal amount thereof;\n\n(d) any Lien existing on any property or asset prior to the acquisition thereof by\nany Loan Party or any Restricted Subsidiary or existing on any property or asset of any Person that becomes a Restricted Subsidiary (other than in connection with any designation of an Unrestricted Subsidiary as a Restricted Subsidiary) after the\ndate hereof prior to the time such Person becomes a Restricted Subsidiary; provided that (i) such Lien is not created in contemplation of or in connection with such acquisition or such Person becoming a Restricted Subsidiary, as the case\nmay be, (ii) such Lien shall not apply to any other property or assets of any Loan Party or Restricted Subsidiary and (iii) such Lien shall secure only those obligations which it secures on the date of such acquisition or the date such\nPerson becomes a Restricted Subsidiary, as the case may be, and extensions, renewals and replacements thereof that do not increase the outstanding principal amount thereof;\n\n(e) Liens of a collecting bank arising in the ordinary course of business under Section 4-210 of\nthe UCC (or similar provision of the PPSA) in effect in the relevant jurisdiction covering only the items being collected upon and banker’s Liens and customary contractual rights of setoff arising in the ordinary course of business with respect\nto funds and securities in accounts maintained by the Company or any Restricted Subsidiary with banks or other financial institutions and not given in connection with the incurrence of Indebtedness;\n\n(f) Liens arising out of Sale and Leaseback Transactions permitted by Section 6.06;\n\n(g) Liens granted by a Restricted Subsidiary that is not a Loan Party in favor of a Borrower or another Loan Party in respect of Indebtedness\nowed by such Restricted Subsidiary;\n\n(h) Liens (i) in favor of customs and revenue authorities arising as a matter of law to secure\npayment of customs duties in connection with the importation of goods in the ordinary course of business and (ii) on specific items of inventory or other goods and proceeds thereof of any Person securing such Person’s obligations in\nrespect of bankers’ acceptances or documentary letters of credit issued or created for the account of such Person to facilitate the purchase, shipment or storage of such inventory or such other goods in the ordinary course of business;\n\n109\n\n(i) Liens arising out of conditional sale, title retention, consignment or similar\narrangements for sale of goods entered into by Loan Party or any Restricted Subsidiaries in the ordinary course of business; provided that such Lien shall not",
+  "contextBundle": {
+    "items": 51,
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "originatingStructuralNodeIds": [
+      "structural-node:7281b00fd8d72fbc83606c4f"
+    ],
+    "unresolvedDependencies": 18,
+    "error": null
+  },
+  "compile": {
+    "status": "FAILED",
+    "failureReasons": [
+      "PROVIDER_FAILURE"
+    ],
+    "errorDetail": null,
+    "rules": [],
+    "definitions": [],
+    "sharedCapacities": [],
+    "irExtensionCandidates": [],
+    "unresolvedIssues": [
+      "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}"
+    ],
+    "toolCallLog": [],
+    "inputHasUnresolvedOperativeEvidence": true,
+    "unresolvedEvidenceItemIds": [
+      "context-item:a0a66058dc78ce111bbc6ac714253bc76d9d633362e1bfa6c352d7d609a5a2a0"
+    ],
+    "definitionCompletenessCheck": null,
+    "sourceContext": {
+      "state": "DEPENDENCY_EXPANDED_SOURCE",
+      "regions": [
+        {
+          "regionId": "operative",
+          "kind": "OPERATIVE",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:7281b00fd8d72fbc83606c4f",
+          "sectionRef": "6.02",
+          "charStart": 444932,
+          "charEnd": 451413,
+          "text": "SECTION 6.02. Liens . No Loan Party will, nor will it permit any\nRestricted Subsidiary to, create, incur, assume or permit to exist any Lien on any property or asset now owned or hereafter acquired by it, or assign or sell any income or revenues (including Accounts) or rights in respect of any thereof, except:\n\n(a) Liens created pursuant to any Loan Document;\n\n(b) Permitted Encumbrances;\n\n(c)\nany Lien on any property or asset of any Borrower or any Restricted Subsidiary existing on the date hereof and set forth in Schedule 6.02 ; provided that (i) such Lien shall not apply to any other property or\nasset of such Borrower or Restricted Subsidiary or any other Borrower or Restricted Subsidiary and (ii) such Lien shall secure only those obligations which it secures on the date hereof and extensions, renewals and replacements thereof that do\nnot increase the outstanding principal amount thereof;\n\n(d) any Lien existing on any property or asset prior to the acquisition thereof by\nany Loan Party or any Restricted Subsidiary or existing on any property or asset of any Person that becomes a Restricted Subsidiary (other than in connection with any designation of an Unrestricted Subsidiary as a Restricted Subsidiary) after the\ndate hereof prior to the time such Person becomes a Restricted Subsidiary; provided that (i) such Lien is not created in contemplation of or in connection with such acquisition or such Person becoming a Restricted Subsidiary, as the case\nmay be, (ii) such Lien shall not apply to any other property or assets of any Loan Party or Restricted Subsidiary and (iii) such Lien shall secure only those obligations which it secures on the date of such acquisition or the date such\nPerson becomes a Restricted Subsidiary, as the case may be, and extensions, renewals and replacements thereof that do not increase the outstanding principal amount thereof;\n\n(e) Liens of a collecting bank arising in the ordinary course of business under Section 4-210 of\nthe UCC (or similar provision of the PPSA) in effect in the relevant jurisdiction covering only the items being collected upon and banker’s Liens and customary contractual rights of setoff arising in the ordinary course of business with respect\nto funds and securities in accounts maintained by the Company or any Restricted Subsidiary with banks or other financial institutions and not given in connection with the incurrence of Indebtedness;\n\n(f) Liens arising out of Sale and Leaseback Transactions permitted by Section 6.06;\n\n(g) Liens granted by a Restricted Subsidiary that is not a Loan Party in favor of a Borrower or another Loan Party in respect of Indebtedness\nowed by such Restricted Subsidiary;\n\n(h) Liens (i) in favor of customs and revenue authorities arising as a matter of law to secure\npayment of customs duties in connection with the importation of goods in the ordinary course of business and (ii) on specific items of inventory or other goods and proceeds thereof of any Person securing such Person’s obligations in\nrespect of bankers’ acceptances or documentary letters of credit issued or created for the account of such Person to facilitate the purchase, shipment or storage of such inventory or such other goods in the ordinary course of business;\n\n109\n\n(i) Liens arising out of conditional sale, title retention, consignment or similar\narrangements for sale of goods entered into by Loan Party or any Restricted Subsidiaries in the ordinary course of business; provided that such Lien shall not apply to any other property or assets of any Loan Party or Restricted Subsidiary;\n\n(j) Liens on fixed or capital assets acquired, constructed or improved by the Company or any Restricted Subsidiary; provided that\n(i) such Liens secure Indebtedness permitted by Section 6.01(p), (ii) such Liens and the Indebtedness secured thereby are incurred prior to or within 180 days after such acquisition or the completion of such construction or improvement,\n(iii) the Indebtedness secured thereby does not exceed the cost of acquiring, constructing or improving such fixed or capital assets and (iv) such Liens shall not apply to any other property or assets of the Company or any Restricted\nSubsidiary;\n\n(k) (i) Liens granted by such Person under workmen’s compensation laws, health, disability or unemployment insurance\nlaws, other employee benefit legislation, unemployment insurance legislation and similar legislation, or good faith deposits in connection with bids, tenders, contracts (other than for the payment of Indebtedness), leases or other obligations of a\nlike nature to which such Person is a party, or Liens granted to secure public or statutory obligations of such Person or deposits of cash or U.S. government bonds to secure surety, stay, customs, performance or appeal bonds to which such Person is\na party, or deposits as security for the payment of rent or deposits made to secure obligations arising from contractual or warranty refunds or requirements, in each case, incurred in the ordinary course of business, and (ii) Liens securing\nletters of credit or bankers acceptances issued, and letters of credit or bank guaranties provided to support payment of the items in the foregoing clause (k)(i);\n\n(l) leases, franchises, grants, subleases, licenses, sublicenses, covenants not to sue, releases, consents and other forms of license (in each\ncase, on a non-exclusive basis to the extent applicable to any intellectual property) granted to others in the ordinary course of business which do not materially interfere with the ordinary conduct of the\nbusiness of the Company or any Restricted Subsidiary and do not secure any Indebtedness;\n\n(m) Liens arising from UCC or any similar\nfinancing statement filings regarding operating leases or consignments entered into by the Company or any Restricted Subsidiary in the ordinary course of business;\n\n(n) purported Liens (other than Liens securing Indebtedness for borrowed money) incurred in the ordinary course of business and evidenced by\nthe filing of precautionary UCC (or equivalent statute) financing statements or similar public filings;\n\n(o) Liens (if any) on Accounts\nsold (or, in the case of any judicial re-characterization of any such sale, granted as collateral to secure financing) pursuant to any Permitted Supply Chain Financings; and\n\n(p) other Liens securing obligations in an aggregate principal amount at any time outstanding not exceeding the greater of $25,000,000 and 25%\nof Applicable EBITDA.\n\n",
+          "expandedFor": null,
+          "truncatedAtBudget": false,
+          "unitExtension": {
+            "originalCharStart": 444932,
+            "originalCharEnd": 448432,
+            "unitBoundary": "ANCHOR_NODE",
+            "note": "supplied window [444932, 448432) extended to the anchoring unit 6.02 [444932, 451413) - 2978 non-whitespace chars of the unit's own text were outside the window"
+          }
+        },
+        {
+          "regionId": "xref-1",
+          "kind": "CROSS_REFERENCE_EXPANSION",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:06a81d466c00978d0dd33be9",
+          "sectionRef": "6.06",
+          "charStart": 467325,
+          "charEnd": 468205,
+          "text": "SECTION 6.06. Sale and Leaseback Transactions . No Loan Party will, nor will it\npermit any Restricted Subsidiary to, enter into any arrangement, directly or indirectly, whereby it shall sell or transfer any property, real or personal, used or useful in its business, whether now owned or hereafter acquired, and thereafter rent\nor lease such property or other property that it intends to use for substantially the same purpose or purposes as the property sold or transferred (a “Sale and Leaseback Transaction”), except for any such sale of any fixed or capital\nassets by any Borrower or any Restricted Subsidiary that is made for cash consideration in an amount not less than the fair value of such fixed or capital asset and is consummated within 180 days after such Borrower or such Restricted\nSubsidiary acquires or completes the construction of such fixed or capital asset.\n\n",
+          "expandedFor": {
+            "referenceText": "Section 6.06",
+            "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+            "note": "2 occurrences share \"6.06\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken"
+          },
+          "truncatedAtBudget": false,
+          "unitExtension": null
+        },
+        {
+          "regionId": "xref-2",
+          "kind": "CROSS_REFERENCE_EXPANSION",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:d9c013db26ebf88aa60835b8",
+          "sectionRef": "6.01(p)",
+          "charStart": 443841,
+          "charEnd": 444780,
+          "text": "(p) Indebtedness of the Company or any Restricted\nSubsidiary incurred to finance the acquisition, construction or improvement of any fixed or capital assets (whether or not constituting purchase money Indebtedness), including Capital Lease Obligations and any Indebtedness assumed in connection with\nthe acquisition of any such assets or secured by a Lien on any such assets prior to the acquisition thereof, and extensions, renewals and replacements of any such Indebtedness in accordance with clause (g) above; provided that\n(i) such Indebtedness is incurred prior to or within 180 days after such acquisition or the completion of such construction or improvement and (ii) the aggregate principal amount of Indebtedness permitted by this clause (p), together with\nany Refinance Indebtedness in respect thereof permitted by clause (g) above, shall not exceed at any time outstanding an amount equal to 15% of Applicable EBITDA; and\n\n108\n\n",
+          "expandedFor": {
+            "referenceText": "Section 6.01(p)",
+            "resolution": "UNIQUE",
+            "note": "resolved by structural reference detection"
+          },
+          "truncatedAtBudget": false,
+          "unitExtension": null
+        }
+      ],
+      "unresolvedReferences": [],
+      "reasons": [],
+      "totalChars": 8300,
+      "budgetChars": 24000
+    },
+    "frozenInventory": {
+      "candidateRef": "semantic-accountability:whole-agreement:liens-dsgr-a",
+      "items": [],
+      "uninventoriedValues": [
+        {
+          "kind": "DAYS",
+          "rawText": "180 days",
+          "normalizedValue": 180,
+          "unit": "days",
+          "charStart": 3864,
+          "charEnd": 3872,
+          "regionId": "operative"
+        },
+        {
+          "kind": "MONEY",
+          "rawText": "$25,000,000",
+          "normalizedValue": 25000000,
+          "unit": "USD",
+          "charStart": 6438,
+          "charEnd": 6449,
+          "regionId": "operative"
+        },
+        {
+          "kind": "PERCENT",
+          "rawText": "25%",
+          "normalizedValue": 0.25,
+          "unit": "%",
+          "charStart": 6454,
+          "charEnd": 6457,
+          "regionId": "operative"
+        },
+        {
+          "kind": "DAYS",
+          "rawText": "180 days",
+          "normalizedValue": 180,
+          "unit": "days",
+          "charStart": 749,
+          "charEnd": 757,
+          "regionId": "xref-1"
+        },
+        {
+          "kind": "DAYS",
+          "rawText": "180 days",
+          "normalizedValue": 180,
+          "unit": "days",
+          "charStart": 580,
+          "charEnd": 588,
+          "regionId": "xref-2"
+        },
+        {
+          "kind": "PERCENT",
+          "rawText": "15%",
+          "normalizedValue": 0.15,
+          "unit": "%",
+          "charStart": 903,
+          "charEnd": 906,
+          "regionId": "xref-2"
+        }
+      ],
+      "inventoryStatus": "INVENTORY_FAILED",
+      "inventoryStatusReason": "inventory call failed: 402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.34, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}",
+      "rejectedUnverifiableItems": 0,
+      "rejectedDuplicateItems": 0,
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "frozenContentHash": "dbbf59a45ee0cd2e6852bcd13cb10e110db37a73c979cb6e730c87a33ca059f7",
+      "frozenAt": "2026-09-02T06:45:42.591Z",
+      "algorithmVersion": "semantic-accountability.v1",
+      "promptVersion": "semantic-inventory-prompt.v1",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "telemetryCostUsd": null
+    },
+    "accountability": null,
+    "rawModelOutput": null,
+    "provider": "vercel-ai-gateway",
+    "model": "anthropic/claude-sonnet-5",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "semantic-accountability-compiler-prompt.v4",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-02T06:45:42.854Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 262,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}"
+    },
+    "cacheKey": "8da5bb863c555a75375d5888fc22d98eaba2ac3376e321f929819a08b36bd765",
+    "compiledAt": "2026-09-02T06:45:42.854Z"
+  },
+  "verify": null,
+  "verifierOperativeSource": "SUPPLIED_WINDOW"
+}
