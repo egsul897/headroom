@@ -1,17 +1,66 @@
 {
   "schemaVersion": 1,
   "artifactId": "20-known-package-regression",
-  "requirement": "Mission §22: run FWRG, LSB, CONMED, DSGR, Riot, Superior through the existing zero-cost regression paths. No GT modification. No new attributable regression.",
+  "requirement": "Mission \u00a722: run FWRG, LSB, CONMED, DSGR, Riot, Superior through the existing zero-cost regression paths. No GT modification. No new attributable regression.",
   "method": "Every package was run through its existing, unmodified deterministic regression script at HEAD (bd3b5be / commit 3) AND at the pre-mission head 55e29d6 in a throwaway git worktree, against the same local Postgres, and the two outputs were compared modulo timestamps. Identity between the two runs isolates this mission's effect from earlier drift. Historical artifacts these scripts rewrite as a side effect (docs/phase-3f1-6-final-foundation-certification/26-known-package-regression.json, docs/pre-unseen-classifier-remediation/07-riot-deterministic-replay-raw.json) were restored with git checkout immediately after capture - no historical evidence was rewritten.",
   "packages": {
-    "FWRG": { "script": "scripts/phase-3f1-6-known-package-regression.ts", "identicalToPreMissionHead": true, "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE", "materialUnitsWithoutClaimReviewItem": 0, "dangerousUnaccountedCount": 439, "note": "every material unit in a non-verified coverage state carries a ClaimReviewItem (safe-failure discipline intact)" },
-    "LSB": { "script": "scripts/phase-3f1-6-known-package-regression.ts", "identicalToPreMissionHead": true, "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE", "materialUnitsWithoutClaimReviewItem": 0, "dangerousUnaccountedCount": 84 },
-    "CONMED": { "script": "scripts/phase-3f1-6-known-package-regression.ts", "identicalToPreMissionHead": true, "dataAvailability": "STRUCTURAL_AND_AMENDMENT_ONLY", "amendmentIndependentVerificationAllPassed": true, "amendmentDangerousUnflaggedCount": 0, "operativeStateStatus": "OPERATIVE_STATE_REVIEW_REQUIRED" },
-    "DSGR": { "script": "scripts/phase-3f1-6-known-package-regression.ts", "identicalToPreMissionHead": true, "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE", "materialUnitsWithoutClaimReviewItem": 215, "note": "215 is the previously certified measurement artifact of duplicate semanticUnitIds across the fixture's 4 documents (tests/contract-model/part-b-recert-crosscutting-known-package-regression.test.ts independently confirms 0 genuinely missing rows via a DB query); unchanged from the pre-mission head" },
-    "Riot": { "script": "scripts/pre-unseen-riot-deterministic-replay.ts (buildPackageGraph -> amendment pipeline -> operative document, zero AI)", "identicalToPreMissionHead": true, "note": "Output differs from the Sep-1 committed baseline (relationship resolution RESOLVED via DETERMINISTIC_TITLE_DATE_MATCH -> UNRESOLVED / DETERMINISTIC_NO_SIGNAL); that drift is attributable to commits db7f32a and e6c85cd (Unit A+B implementation, prior phase) which land between the baseline and the mission start. This mission changed no file under package-graph/, document-classifier.ts or relationship-resolution.ts (git diff 55e29d6..HEAD on those paths is empty), and the pre-mission-head run reproduces HEAD byte-for-byte modulo timestamps." },
-    "Superior": { "script": "scripts/final-phase3-closure-superior-regression.ts (zero LLM)", "identicalToCommittedBaseline": true, "baseline": "docs/post-holdout-semantic-remediation/07a-superior-zero-cost-regression-raw.json", "classifications": ["doc-a CREDIT_AGREEMENT", "doc-b AMENDED_AND_RESTATED_AGREEMENT", "doc-c AMENDMENT"], "relationships": ["doc-b RESTATES doc-a", "doc-c AMENDS doc-b"], "modificationCandidates": 1, "instruments": 3 }
+    "FWRG": {
+      "script": "scripts/phase-3f1-6-known-package-regression.ts",
+      "identicalToPreMissionHead": true,
+      "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE",
+      "materialUnitsWithoutClaimReviewItem": 0,
+      "dangerousUnaccountedCount": 439,
+      "note": "every material unit in a non-verified coverage state carries a ClaimReviewItem (safe-failure discipline intact)"
+    },
+    "LSB": {
+      "script": "scripts/phase-3f1-6-known-package-regression.ts",
+      "identicalToPreMissionHead": true,
+      "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE",
+      "materialUnitsWithoutClaimReviewItem": 0,
+      "dangerousUnaccountedCount": 84
+    },
+    "CONMED": {
+      "script": "scripts/phase-3f1-6-known-package-regression.ts",
+      "identicalToPreMissionHead": true,
+      "dataAvailability": "STRUCTURAL_AND_AMENDMENT_ONLY",
+      "amendmentIndependentVerificationAllPassed": true,
+      "amendmentDangerousUnflaggedCount": 0,
+      "operativeStateStatus": "OPERATIVE_STATE_REVIEW_REQUIRED"
+    },
+    "DSGR": {
+      "script": "scripts/phase-3f1-6-known-package-regression.ts",
+      "identicalToPreMissionHead": true,
+      "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE",
+      "materialUnitsWithoutClaimReviewItem": 215,
+      "note": "215 is the previously certified measurement artifact of duplicate semanticUnitIds across the fixture's 4 documents (tests/contract-model/part-b-recert-crosscutting-known-package-regression.test.ts independently confirms 0 genuinely missing rows via a DB query); unchanged from the pre-mission head"
+    },
+    "Riot": {
+      "script": "scripts/pre-unseen-riot-deterministic-replay.ts (buildPackageGraph -> amendment pipeline -> operative document, zero AI)",
+      "identicalToPreMissionHead": true,
+      "note": "Output differs from the Sep-1 committed baseline (relationship resolution RESOLVED via DETERMINISTIC_TITLE_DATE_MATCH -> UNRESOLVED / DETERMINISTIC_NO_SIGNAL); that drift is attributable to commits db7f32a and e6c85cd (Unit A+B implementation, prior phase) which land between the baseline and the mission start. This mission changed no file under package-graph/, document-classifier.ts or relationship-resolution.ts (git diff 55e29d6..HEAD on those paths is empty), and the pre-mission-head run reproduces HEAD byte-for-byte modulo timestamps."
+    },
+    "Superior": {
+      "script": "scripts/final-phase3-closure-superior-regression.ts (zero LLM)",
+      "identicalToCommittedBaseline": true,
+      "baseline": "docs/post-holdout-semantic-remediation/07a-superior-zero-cost-regression-raw.json",
+      "classifications": [
+        "doc-a CREDIT_AGREEMENT",
+        "doc-b AMENDED_AND_RESTATED_AGREEMENT",
+        "doc-c AMENDMENT"
+      ],
+      "relationships": [
+        "doc-b RESTATES doc-a",
+        "doc-c AMENDS doc-b"
+      ],
+      "modificationCandidates": 1,
+      "instruments": 3
+    }
   },
   "groundTruthModified": false,
   "newAttributableRegression": false,
-  "priorDriftDisclosed": "The committed Aug-30 known-package artifact and the Sep-1 Riot artifact are both stale relative to the pre-mission head (documented earlier as an expected consequence of fixes landing after those artifacts were generated); this mission neither refreshed nor depends on them."
+  "priorDriftDisclosed": "The committed Aug-30 known-package artifact and the Sep-1 Riot artifact are both stale relative to the pre-mission head (documented earlier as an expected consequence of fixes landing after those artifacts were generated); this mission neither refreshed nor depends on them.",
+  "headAfterAuditRemediation": {
+    "sha": "c496751f91cbc91e5b27b87a1cc128e0757f5a11",
+    "note": "commit 8a (audit remediation) again touched only lib/contract-model/compiler/semantic-accountability/{inventory,reconciliation}.ts and semantic/compile.ts, none of which any of the six regression scripts import (verified by git diff 55e29d6..HEAD --stat -- lib and the auditor's transitive-import check in 22 item 11); the pre-mission-head vs HEAD identity therefore carries to c496751 without a third rerun."
+  }
 }

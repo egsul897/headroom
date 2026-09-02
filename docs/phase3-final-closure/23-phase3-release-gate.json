@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "artifactId": "23-phase3-release-gate",
-  "productionSha": "bd3b5bec2c955e8c9c99a379e288e10e056a95e9",
+  "productionSha": "c496751f91cbc91e5b27b87a1cc128e0757f5a11",
   "closureRule": "Mission §26: Phase 3 closes only if ALL of A-R pass.",
   "gates": [
-    { "id": "A", "requirement": "semantic inventory stability >= 95%", "measured": "v1 real holdout: 90.4% lenient / 88.4% adjudicated / 78.4% conservative (02); v2 post-fix: NOT MEASURED (targeted rerun blocked, 11)", "pass": false, "classification": "PASS_A_MODEL_STABILITY_LIMIT on v1 evidence; v2 effect ENVIRONMENT_BLOCKED" },
+    { "id": "A", "requirement": "semantic inventory stability >= 95%", "measured": "v1 real holdout (02, post-audit matcher): 90.4% lenient / 88.0% adjudicated (prose-based, informational) / 77.6% conservative (the gated figure) / 64.8% strict-fold lower bound; exact-id 18.88%; v2 post-fix: NOT MEASURED (targeted rerun blocked, 11)", "pass": false, "classification": "PASS_A_MODEL_STABILITY_LIMIT on v1 evidence; v2 effect ENVIRONMENT_BLOCKED" },
     { "id": "B", "requirement": "CRITICAL variable omissions = 0", "measured": "0 on the v1 holdout pair (14-holdout-stability.json, unchanged); 4 CRITICAL genuine omissions exist in ONE run's inventory (03) but none was captured-in-one-run-and-MISSING_FROM_COMPOSITION-in-the-other, which is what this gate counts", "pass": true, "caveat": "gate definition counts disposition flips, not inventory absences; the 4 CRITICAL inventory absences are reported under A/03" },
     { "id": "C", "requirement": "whole-agreement Validation B completed", "measured": "3/12 regions (run-1), run-2 not started (12, 13)", "pass": false, "classification": "ENVIRONMENT_BLOCKED" },
     { "id": "D", "requirement": "whole-agreement CRITICAL inventory recall = 100%", "measured": null, "pass": false, "classification": "ENVIRONMENT_BLOCKED (15)" },
