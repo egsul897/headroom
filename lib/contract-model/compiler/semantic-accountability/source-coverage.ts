@@ -328,6 +328,44 @@ function applyConnectiveOwnership(regionSpans: SourceCoverageSpan[], text: strin
 
 const emptyCounts = (): Record<CoverageDisposition, number> => Object.fromEntries(COVERAGE_DISPOSITIONS.map((d) => [d, 0])) as Record<CoverageDisposition, number>;
 
+/**
+ * INDEPENDENT STRUCTURAL SEGMENTS (canary #3).
+ *
+ * Boundaries between INDEPENDENT propositions: a clause terminator followed by whitespace, or a line break.
+ * Deliberately narrower than `segmentSourceUnits`, which also splits at commas, dashes and enumerators - those
+ * separate the PARTS of one proposition, not one proposition from the next.
+ */
+function independentSegmentBounds(text: string): number[] {
+  const bounds = new Set<number>([0, text.length]);
+  for (const m of text.matchAll(/[.;:!?]["')\]]?\s+/g)) bounds.add(m.index! + m[0].length);
+  for (const m of text.matchAll(/\n+[ \t]*/g)) bounds.add(m.index! + m[0].length);
+  return [...bounds].sort((a, b) => a - b);
+}
+
+/**
+ * Clips an inventory item's COVERAGE CREDIT to the independent segment its span starts in.
+ *
+ * A span is evidence about the proposition the item represents. It is not evidence about whatever else happens
+ * to sit inside the same character range, and nothing downstream can tell the difference once the mask is
+ * filled - which is how one item with a huge span and a vacuous proposition used to discharge a whole provision.
+ *
+ * A single item may still anchor a continuous clause that internal punctuation splits into several units
+ * ("if the ratio exceeds 4.00 to 1.00, such amount shall not exceed $20,000,000" is one proposition): a comma
+ * is not an independent-segment boundary. What is refused is one item claiming several INDEPENDENT propositions,
+ * because there is no deterministic basis for believing it represents the second and third (mission §6 - false
+ * review beats silent omission). The item keeps its full span for provenance; only the credit is clipped.
+ */
+function clipCreditToStartSegment(charStart: number, charEnd: number, bounds: number[]): { from: number; to: number } {
+  let segEnd = charEnd;
+  for (const b of bounds) {
+    if (b > charStart) {
+      segEnd = b;
+      break;
+    }
+  }
+  return { from: charStart, to: Math.min(charEnd, segEnd) };
+}
+
 const accountsForSource = (materiality: string): boolean => materiality === "CRITICAL" || materiality === "MATERIAL";
 
 /**
@@ -353,9 +391,13 @@ export function computeSourceCoverage(input: SourceCoverageInput): SourceCoverag
     }
 
     const mask = new Uint8Array(text.length);
+    const bounds = independentSegmentBounds(text);
     for (const s of input.spans) {
       if (s.regionId !== region.regionId || !accountsForSource(s.materiality)) continue;
-      mask.fill(1, Math.max(0, s.charStart), Math.min(text.length, s.charEnd));
+      // Span overlap is NOT semantic coverage (canary #3). Credit is clipped to the independent segment the
+      // span starts in, so an overbroad anchor cannot discharge propositions it does not represent.
+      const { from, to } = clipCreditToStartSegment(Math.max(0, s.charStart), Math.min(text.length, s.charEnd), bounds);
+      if (to > from) mask.fill(1, from, to);
     }
 
     const units = segmentSourceUnits(text, regionValues);

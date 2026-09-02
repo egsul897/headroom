@@ -256,7 +256,13 @@ describe("source coverage - definitions and dependency-expanded regions (mission
     expect(cov.unaccounted.some((s) => s.regionId === "encl-0")).toBe(true);
   });
   it("a defined term inventoried inside the expansion region discharges it without any link", () => {
-    const cov = computeSourceCoverage({ regions, spans: [opSpan, { regionId: "xref-0", charStart: 0, charEnd: xrefText.length, materiality: "MATERIAL" }] });
+    // One item per independent proposition - the definition and its proviso. A single span over both would not
+    // discharge both (canary #3): a span claim is not semantic coverage of everything inside it.
+    const defEnd = xrefText.indexOf(";") + 1;
+    const cov = computeSourceCoverage({ regions, spans: [opSpan,
+      { regionId: "xref-0", charStart: 0, charEnd: defEnd, materiality: "MATERIAL" },
+      { regionId: "xref-0", charStart: defEnd + 1, charEnd: xrefText.length, materiality: "MATERIAL" },
+    ] });
     expect(cov.unaccounted).toEqual([]);
   });
 });
@@ -392,6 +398,52 @@ describe("canary #2B - structural connective ownership", () => {
   });
 });
 
+describe("canary #3 - a source-span claim is not semantic coverage by itself", () => {
+  // The red team's RT-8 fixture, verbatim: three independent material propositions, ONE CRITICAL item whose span
+  // is the whole region and whose proposition ("this section contains provisions") represents none of them.
+  const RT8 = "The Borrower shall not incur Indebtedness exceeding $10,000,000. The Borrower shall maintain a Leverage Ratio of not more than 4.00 to 1.00 as of the last day of each fiscal quarter. The cure period is 30 days.";
+
+  it("ATTACK: one overbroad CRITICAL span cannot discharge the independent propositions inside it", async () => {
+    const cov = coverOne(RT8, [RT8]);
+    // Before: the whole region was COVERED_BY_INVENTORY, unaccounted 0, unaccountedValues 0.
+    expect(cov.unaccounted.length).toBeGreaterThan(0);
+    expect(unaccountedText(cov)).toContain("Leverage Ratio");
+    expect(unaccountedText(cov)).toContain("cure period");
+    expect(cov.unaccountedValues.map((v) => v.kind).sort()).toEqual(["DAYS", "RATIO"]);
+
+    // End to end, with the item reconciling REPRESENTED exactly as the audit's IR made it.
+    const sc = { state: "COMPLETE_LOCAL_SOURCE" as const, regions: [region("operative", RT8)], unresolvedReferences: [], reasons: [], totalChars: RT8.length, budgetChars: 10_000 };
+    const blanket: WireInventoryItem = { localRef: "blanket", semanticRole: "OTHER", proposition: "this section contains provisions", excerpt: RT8, regionId: "operative", quantitativeValues: [], referencedTerms: [], referencedSections: [], parentRef: null, relatedRefs: [], materiality: "CRITICAL", ambiguity: "NONE", ambiguityReason: null, operative: "OPERATIVE" };
+    const inv = await runSemanticInventory({ candidateRef: "canary3", documentId: "d", sourceContext: sc, caller: scriptedCaller([blanket]) });
+    expect(inv.inventoryStatus).toBe("INVENTORY_COVERAGE_GAP");
+    const rec = reconcileInventoryWithComposition({
+      inventory: inv,
+      composition: { rules: [{ inventoryItemIds: inv.items.map((i) => i.inventoryItemId), capacityExpression: null, conditions: [], exceptions: [], dependsOn: [], unresolvedDependencies: [] }], definitions: [], sharedCapacities: [] } as never,
+      dispositions: inv.items.map((i) => ({ inventoryItemId: i.inventoryItemId, disposition: "REPRESENTED", note: "matched in IR" })),
+      sourceContextState: sc.state,
+    });
+    expect(rec.semanticallyComplete).toBe(false);
+  });
+
+  it("LEGITIMATE BROAD SPAN: one item anchoring a continuous clause that punctuation splits internally stays covered", () => {
+    // A comma is not an independent-proposition boundary, so a genuine single proposition spanning several
+    // internal units keeps full credit - broad citations are not prohibited, only cross-proposition claims.
+    const text = "If the Total Leverage Ratio exceeds 4.00 to 1.00, such amount shall not exceed $20,000,000.";
+    const cov = coverOne(text, ["If the Total Leverage Ratio exceeds 4.00 to 1.00, such amount shall not exceed $20,000,000"]);
+    expect(cov.unaccounted).toEqual([]);
+    expect(cov.unaccountedValues).toEqual([]);
+  });
+
+  it("SPLIT-CLAUSE CONTROL: an item semantically representing clause A but spanning A and B covers A only", () => {
+    // Wholly generic - no covenant-family semantics anywhere in this fixture.
+    const text = "Clause A states the first obligation. Clause B states the second obligation.";
+    const cov = coverOne(text, [text]);
+    expect(cov.spans.some((s) => s.disposition === "COVERED_BY_INVENTORY" && s.excerpt.includes("Clause A"))).toBe(true);
+    expect(unaccountedText(cov)).toContain("Clause B states the second obligation.");
+    expect(unaccountedText(cov)).not.toContain("Clause A");
+  });
+});
+
 describe("source coverage - segmentation, tables and duplicates", () => {
   it("line-broken rows are separate units, not one block (audit finding 7)", () => {
     const text = "Reporting Requirements\nAnnual statements within 90 days after year end\nQuarterly statements within 45 days after quarter end\nNotice of any Default promptly";
@@ -445,9 +497,12 @@ describe("source coverage - materiality cannot be gamed", () => {
     expect(cov.unaccountedValues.length).toBeGreaterThan(0);
   });
   it("a span reaching beyond the region is clamped, not trusted past the end", () => {
-    const cov = computeSourceCoverage({ regions: [region("operative", text)], spans: [{ regionId: "operative", charStart: 0, charEnd: 10_000, materiality: "CRITICAL" }] });
+    // One proposition, one span that overruns the region end (canary #3 clips credit at proposition boundaries,
+    // so this fixture is a single sentence - the subject here is the region-length clamp).
+    const one = "The Borrower shall not incur Debt.";
+    const cov = computeSourceCoverage({ regions: [region("operative", one)], spans: [{ regionId: "operative", charStart: 0, charEnd: 10_000, materiality: "CRITICAL" }] });
     expect(cov.unaccounted).toEqual([]);
-    expect(cov.spans.every((s) => s.charEnd <= text.length)).toBe(true);
+    expect(cov.spans.every((s) => s.charEnd <= one.length)).toBe(true);
   });
 });
 

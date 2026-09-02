@@ -233,8 +233,10 @@ describe("Pass A v3 - whole-unit source coverage + targeted gap re-inventory", (
     // v2 dropped "(b) other amounts." for being under 40 characters with no connective vocabulary. v3 surfaces it:
     // there is no length floor and no vocabulary gate anywhere in the detection path.
     expect(cov.unaccounted.some((g) => g.excerpt.includes("other amounts"))).toBe(true);
-    // Full coverage -> nothing unaccounted.
-    expect(computeSourceCoverage({ regions, spans: [cover(text)] }).unaccounted).toEqual([]);
+    // Full coverage -> nothing unaccounted. One span per INDEPENDENT proposition: since canary #3 a single span
+    // across several propositions credits only the one it starts in, so a blanket claim no longer discharges all.
+    const parts = text.split(/(?<=;)\s+/).map((p) => p.trim()).filter((p) => p.length > 0);
+    expect(computeSourceCoverage({ regions, spans: parts.map((p) => cover(p)) }).unaccounted).toEqual([]);
   });
 
   it("no uncovered segment -> no gap call is made (attempted=false), status INVENTORY_OK", async () => {
