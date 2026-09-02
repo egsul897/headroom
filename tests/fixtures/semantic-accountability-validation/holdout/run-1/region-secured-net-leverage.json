@@ -1,0 +1,2038 @@
+{
+  "run": {
+    "mode": "holdout",
+    "runNumber": 1,
+    "productionSha": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+    "productionTreeHash": "199ba3f88e5bc31ae25572f6b59054c7f4733ab99dffad234d7c9a4601e4b5c1"
+  },
+  "region": {
+    "id": "secured-net-leverage",
+    "claimIds": [
+      "A5"
+    ],
+    "family": "DEFINITIONS",
+    "documentId": "doc-a",
+    "label": "SECTION 1.01 - Secured Net Leverage Ratio",
+    "sourceSectionRef": "1.01 (Secured Net Leverage Ratio)",
+    "window": {
+      "charStart": 277303,
+      "charEnd": 278403,
+      "chars": 1100
+    },
+    "anchor": {
+      "nodeId": "structural-node:25c27930f425ef6c4d35e91c",
+      "nodeKey": "doc-a::1.01(48)(5)(d)",
+      "sectionRef": "1.01(48)(5)(d)",
+      "charStart": 276962,
+      "charEnd": 277385
+    },
+    "structuralNodeIds": [
+      "structural-node:25c27930f425ef6c4d35e91c"
+    ],
+    "structuralNodeKeys": [
+      "doc-a::1.01(48)(5)(d)"
+    ]
+  },
+  "operativeSourceText": "“Secured Net Leverage Ratio” means, with respect to any Test Period, the ratio of (a) Consolidated\nSecured Debt outstanding as of the last day of such Test Period, minus, the aggregate amount of cash and Cash Equivalents of the Borrower and the Subsidiaries of the Borrower on such date that (x) would not appear as\n“restricted” on a consolidated balance sheet of the Borrower and the Subsidiaries of the Borrower or (y) are restricted in favor of the Facilities (which may also secure other Indebtedness secured by a pari passu or junior Lien\non the Collateral along with the Facilities) to (b) (i) for purposes of determining compliance with the Financial Maintenance Covenant, Consolidated Maintenance EBITDA of the Borrower and its Subsidiaries for such Test Period, or (ii) for\nall other purposes, Consolidated EBITDA of the Borrower and its Subsidiaries for such Test Period, in each case on a pro forma basis with such pro forma adjustments as are appropriate and consistent with Section 1.07.\n\n“Secured Parties” means, collectively, the Administrative Agent, the Collateral Agent, the Lenders",
+  "contextBundle": {
+    "items": 32,
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "originatingStructuralNodeIds": [
+      "structural-node:25c27930f425ef6c4d35e91c"
+    ],
+    "unresolvedDependencies": 122,
+    "error": null
+  },
+  "compile": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "OPERATIVE_STATE_UNRESOLVED"
+    ],
+    "errorDetail": null,
+    "rules": [],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:bda8b2003ecd9bd3ae86abca",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "termName": "Secured Net Leverage Ratio",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "(no evidence captured)",
+          "semanticDescription": "unrecognized or malformed expression (kind=\"DURING_PERIOD\")",
+          "reason": "DURING_PERIOD value type could not be determined",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+          },
+          "attemptedStructure": {
+            "kind": "DURING_PERIOD",
+            "type": "RATIO",
+            "exprId": "ir-expr:ca1f1b5a6d3e85b5ee70fc30",
+            "value": {
+              "kind": "UNSUPPORTED",
+              "type": null,
+              "sourceEvidence": "(no evidence captured)",
+              "semanticDescription": "unrecognized or malformed expression (kind=\"DIVIDE\")",
+              "reason": "DIVIDE operands do not type-check together",
+              "requiredReview": true,
+              "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§1.01",
+                "excerpt": null
+              },
+              "attemptedStructure": {
+                "kind": "DIVIDE",
+                "type": "NUMBER",
+                "exprId": "ir-expr:ea5cc6075b3fd7f107179cb8",
+                "numerator": {
+                  "kind": "SUBTRACT",
+                  "type": "MONEY",
+                  "exprId": "ir-expr:72b0b851c9c2ea16f171a73f",
+                  "left": {
+                    "kind": "METRIC_REFERENCE",
+                    "type": "MONEY",
+                    "metricName": "Consolidated Secured Debt",
+                    "companyId": "final-phase3-closure-holdout-sup",
+                    "instrumentKey": "sup-term-loan-instrument",
+                    "resolvedDefinitionId": null,
+                    "exprId": "ir-expr:6845092b94fa70dc69201fc7",
+                    "inventoryItemIds": [
+                      "inv-item:bce2c6866219cf90eb971dd6"
+                    ]
+                  },
+                  "right": {
+                    "kind": "METRIC_REFERENCE",
+                    "type": "MONEY",
+                    "metricName": "Qualifying Unrestricted or Facility-Restricted Cash and Cash Equivalents",
+                    "companyId": "final-phase3-closure-holdout-sup",
+                    "instrumentKey": "sup-term-loan-instrument",
+                    "resolvedDefinitionId": null,
+                    "exprId": "ir-expr:ff710b48d0e4976ebd7d5c0d",
+                    "inventoryItemIds": [
+                      "inv-item:87aaa0b9203061cab794d914",
+                      "inv-item:0266ef861e536a6683dc3745",
+                      "inv-item:7a1bab43302769d1716003bc",
+                      "inv-item:3903fd745faad5eaf388b07e"
+                    ]
+                  },
+                  "provenance": {
+                    "documentId": "doc-a",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§1.01",
+                    "excerpt": null
+                  }
+                },
+                "denominator": {
+                  "kind": "UNSUPPORTED",
+                  "type": null,
+                  "sourceEvidence": "(no evidence captured)",
+                  "semanticDescription": "unrecognized or malformed expression (kind=\"IF\")",
+                  "reason": "IF condition must be BOOLEAN and both branches must resolve to the same type",
+                  "requiredReview": true,
+                  "provenance": {
+                    "documentId": "doc-a",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§1.01",
+                    "excerpt": null
+                  },
+                  "attemptedStructure": {
+                    "kind": "IF",
+                    "type": "BOOLEAN",
+                    "exprId": "ir-expr:0e1cbad28c7f98e46502d681",
+                    "condition": {
+                      "kind": "TRANSACTION_INPUT_REFERENCE",
+                      "type": "MONEY",
+                      "inputName": "CalculationPurposeIsFinancialMaintenanceCovenantCompliance",
+                      "exprId": "ir-expr:33937277323474ed92c60c7b"
+                    },
+                    "then": {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "Consolidated Maintenance EBITDA",
+                      "companyId": "final-phase3-closure-holdout-sup",
+                      "instrumentKey": "sup-term-loan-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:bd43769339c5ae04fc96871a",
+                      "inventoryItemIds": [
+                        "inv-item:9f483bf2ee1ad68b7d1ab3a9"
+                      ]
+                    },
+                    "else": {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "Consolidated EBITDA",
+                      "companyId": "final-phase3-closure-holdout-sup",
+                      "instrumentKey": "sup-term-loan-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:db4ecde7959f429571a86bdd",
+                      "inventoryItemIds": [
+                        "inv-item:ef247d81f69e28b66d007490"
+                      ]
+                    },
+                    "provenance": {
+                      "documentId": "doc-a",
+                      "sourceNodeKey": null,
+                      "sourceCitation": "§1.01",
+                      "excerpt": null
+                    }
+                  },
+                  "exprId": "ir-expr:d8ad0e110be5a918926e68f0",
+                  "inventoryItemIds": [
+                    "inv-item:ad4dad63614cdd50629fbf05"
+                  ]
+                },
+                "provenance": {
+                  "documentId": "doc-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§1.01",
+                  "excerpt": null
+                }
+              },
+              "exprId": "ir-expr:25687e5edd46995be4a50200"
+            },
+            "periodDescription": "with respect to any Test Period (numerator measured as of the last day of such Test Period)",
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01",
+              "excerpt": null
+            }
+          },
+          "exprId": "ir-expr:9402fb2cf77294e11e9b1def",
+          "inventoryItemIds": [
+            "inv-item:586baebea72d40089dbc9fad"
+          ]
+        },
+        "dependsOnTerms": [
+          "Consolidated Secured Debt",
+          "Cash Equivalents",
+          "Consolidated Maintenance EBITDA",
+          "Consolidated EBITDA",
+          "Test Period"
+        ],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "All numerator/denominator components and both cash-eligibility alternatives (x)/(y) are stated in the source text and represented.",
+          "Denominator's purpose-dependent branch (Financial Maintenance Covenant vs. all other purposes) is represented via a TRANSACTION_INPUT_REFERENCE boolean gate on an IF node, since the IR has no dedicated 'purpose selector' primitive - see irExtensionCandidates.",
+          "The pro forma cross-reference to Section 1.07 was confirmed (via retrieved Section 1.07 text) to apply generally to this ratio's calculation methodology; it is a methodology cross-reference rather than a separate numeric operand, so it is dispositioned rather than embedded in the formula.",
+          "deterministic post-processing: at least one subexpression is UNSUPPORTED or fails to type-check, so COMPLETE was downgraded to PARTIAL (task §27)",
+          "IF condition must be BOOLEAN and both branches must resolve to the same type",
+          "DIVIDE operands do not type-check together",
+          "DURING_PERIOD value type could not be determined"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "“Secured Net Leverage Ratio” means, with respect to any Test Period, the ratio of (a) Consolidated Secured Debt outstanding as of the last day of such Test Period, minus, the aggregate amount of cash and Cash Equivalents ... to (b)(i) ... Consolidated Maintenance EBITDA ... or (ii) ... Consolidated EBITDA ..., in each case on a pro forma basis with such pro forma adjustments as are appropriate and consistent with Section 1.07."
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:e98387bba6a9b46e670e1800",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "termName": "Secured Parties",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Administrative Agent",
+          "Collateral Agent",
+          "Lenders",
+          "Supplemental Administrative Agent"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "The definition is a fixed enumeration of named roles plus a dynamic category (co-agents/sub-agents/collateral trustees appointed pursuant to Section 9.01(2) or 9.07) rather than a computation, and both cross-referenced appointment-mechanism sections were retrieved and confirm the appointment mechanism described (Section 9.01(2): JPMorgan Chase Bank, N.A. as Collateral Agent and scope of collateral-agency authority; Section 9.07: delegation of duties to sub-agents/Agent-Related Persons).",
+          "Section 9.07's own current supersession status is unresolved (UNKNOWN_SUPERSESSION_STATUS) in the amendment-tracking layer, but this does not affect the Secured Parties definition itself, which has no recorded amendment history."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "“Secured Parties” means, collectively, the Administrative Agent, the Collateral Agent, the Lenders, each Supplemental Administrative Agent and each co-agent, sub-agent or collateral trustee appointed by the Administrative Agent or the Collateral Agent from time to time pursuant to Section 9.01(2) or 9.07."
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "inventoryItemIds": [
+          "inv-item:a93cb15b6a1729d79b3f583c",
+          "inv-item:ef0500c6b42b233c426ac094",
+          "inv-item:389766c32f8a81fe1419c8f2",
+          "inv-item:2445a215deb5ce036af39a98",
+          "inv-item:3e03079b12f33350edaab516"
+        ]
+      }
+    ],
+    "sharedCapacities": [],
+    "irExtensionCandidates": [
+      {
+        "sourceEvidence": "§1.01 Secured Net Leverage Ratio definition, clause (b): \"(i) for purposes of determining compliance with the Financial Maintenance Covenant, Consolidated Maintenance EBITDA ... or (ii) for all other purposes, Consolidated EBITDA ...\"",
+        "semanticRequirement": "A recurring pattern where a formula's component (here, the denominator metric) is selected based on WHICH provision/purpose is invoking the calculation (e.g. financial-maintenance-covenant compliance vs. all other uses), rather than based on any comparable data value, date, or event.",
+        "whyExistingPrimitivesFail": "IF requires a boolean `condition` expression, but there is no dedicated primitive for 'the purpose for which this metric is currently being calculated' - COMPARE needs two same-typed comparable values, EVENT_ACTIVE is for time-bounded triggered events, and SCHEDULE is date-keyed, none of which model a purpose/use-case selector. TRANSACTION_INPUT_REFERENCE was repurposed as a boolean flag to make this type-check, but it is not a fully faithful semantic fit.",
+        "candidateGeneralizedPrimitive": "A PURPOSE_SELECTOR or CALCULATION_CONTEXT_SWITCH node (cases keyed by named calculation-purpose/invoking-provision identifiers, analogous to SCHEDULE but keyed by purpose rather than date) would let this kind of purpose-dependent component selection be modeled without overloading TRANSACTION_INPUT_REFERENCE or IF."
+      }
+    ],
+    "unresolvedIssues": [
+      "[definition[d1].DURING_PERIOD.value.DIVIDE.denominator] IF condition must be BOOLEAN and both branches must resolve to the same type",
+      "[definition[d1].DURING_PERIOD.value] DIVIDE operands do not type-check together",
+      "[definition[d1]] DURING_PERIOD value type could not be determined",
+      "This submission compiles two independent defined terms from §1.01: \"Secured Net Leverage Ratio\" (a ratio-of-metrics definition) and \"Secured Parties\" (an entity-enumeration definition). No independently operative WireRule (permission/prohibition/ratio-test) exists in the supplied source; §1.01 supplies definitions only, so the rules array is empty by design.",
+      "Cross-referenced Section 1.07 (pro forma methodology) was retrieved but arrived truncated at budget; the retrieved portion is sufficient to confirm it applies generally to the Secured Net Leverage Ratio, so this does not downgrade the definition's own sufficiency, but no claim is made about Section 1.07's own complete internal mechanics.",
+      "Section 9.01(2) and Section 9.07 (both cross-referenced by the 'Secured Parties' definition) were retrieved in full and confirm the appointment mechanism for co-agents/sub-agents/collateral trustees; Section 9.07's amendment/supersession status is independently unresolved (UNKNOWN_SUPERSESSION_STATUS) but this does not affect the 'Secured Parties' definition itself, which has no recorded amendment history."
+    ],
+    "toolCallLog": [
+      {
+        "toolName": "getReferencedProvision",
+        "input": {
+          "ref": "Section 9.07"
+        },
+        "outputSummary": "resolved reference \"Section 9.07\" -> 9.07 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+        "charsReturned": 1571,
+        "timestamp": "2026-09-02T03:02:00.588Z",
+        "evidenceUnresolved": true,
+        "evidenceTruncated": false
+      }
+    ],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "unresolvedEvidenceItemIds": [],
+    "definitionCompletenessCheck": null,
+    "sourceContext": {
+      "state": "DEPENDENCY_EXPANDED_SOURCE",
+      "regions": [
+        {
+          "regionId": "operative",
+          "kind": "OPERATIVE",
+          "documentId": "doc-a",
+          "sourceNodeId": "structural-node:25c27930f425ef6c4d35e91c",
+          "sectionRef": "1.01(48)(5)(d)",
+          "charStart": 277303,
+          "charEnd": 278612,
+          "text": "“Secured Net Leverage Ratio” means, with respect to any Test Period, the ratio of (a) Consolidated\nSecured Debt outstanding as of the last day of such Test Period, minus, the aggregate amount of cash and Cash Equivalents of the Borrower and the Subsidiaries of the Borrower on such date that (x) would not appear as\n“restricted” on a consolidated balance sheet of the Borrower and the Subsidiaries of the Borrower or (y) are restricted in favor of the Facilities (which may also secure other Indebtedness secured by a pari passu or junior Lien\non the Collateral along with the Facilities) to (b) (i) for purposes of determining compliance with the Financial Maintenance Covenant, Consolidated Maintenance EBITDA of the Borrower and its Subsidiaries for such Test Period, or (ii) for\nall other purposes, Consolidated EBITDA of the Borrower and its Subsidiaries for such Test Period, in each case on a pro forma basis with such pro forma adjustments as are appropriate and consistent with Section 1.07.\n\n“Secured Parties” means, collectively, the Administrative Agent, the Collateral Agent, the Lenders, each Supplemental\nAdministrative Agent and each co-agent, sub-agent or collateral trustee appointed by the Administrative Agent or the Collateral Agent from time to time pursuant to\nSection 9.01(2) or 9.07.\n",
+          "expandedFor": null,
+          "truncatedAtBudget": false,
+          "unitExtension": {
+            "originalCharStart": 277303,
+            "originalCharEnd": 278403,
+            "unitBoundary": "DEFINITION_SPAN",
+            "note": "supplied window [277303, 278403) extended to the definition span of \"Secured Net Leverage Ratio\" through \"Secured Parties\" [277303, 278612) - 208 non-whitespace chars of the unit's own text were outside the window"
+          }
+        },
+        {
+          "regionId": "xref-1",
+          "kind": "CROSS_REFERENCE_EXPANSION",
+          "documentId": "doc-a",
+          "sourceNodeId": "structural-node:a68ea1e759de97291dc5b970",
+          "sectionRef": "5.17",
+          "charStart": 483049,
+          "charEnd": 484714,
+          "text": "SECTION 5.17 USA PATRIOT Act; Anti-Corruption Compliance; Sanctions. To the extent applicable, each of the Borrower and the\nSubsidiaries are in compliance, in all material respects, with (i) the USA PATRIOT Act, (ii) the United States Foreign Corrupt Practices Act of 1977 (the “FCPA”) and (iii) the Trading with the Enemy Act, as amended,\nand each of the foreign assets control regulations of the United States Treasury Department (31 C.F.R. Subtitle B, Chapter V, as amended) and any other applicable enabling legislation or executive order relating thereto. Neither the Borrower nor any\nSubsidiary nor any director or officer, nor, to the knowledge of the Borrower, employee or agent of the Borrower or any of the Subsidiaries, is currently the subject of any sanctions administered by (a) the U.S. government, including those\nadministered by the Office of Foreign Assets Control of the U.S. Treasury Department (“OFAC”) or the U.S. Department of State, or (b) the United Nations Security Council, the European Union, any European Union member state or\nHis Majesty’s Treasury of the United Kingdom (“Sanctions”). No proceeds of the Loans will be used by the Borrower or any Subsidiaries directly or indirectly, in violation of Sanctions, the USA PATRIOT Act or the FCPA or for the\npurpose of financing activities of or with any Sanctioned Person, or in any Sanctioned Country, or in any manner that would result in the violation of any Sanctions applicable to any party hereto. This Section 5.17 shall not apply to or in\nfavor of any Person if and to the extent that it would result in a breach, by or in respect of that Person, of any applicable Blocking Law.\n\n",
+          "expandedFor": {
+            "referenceText": "Section 5.17",
+            "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+            "note": "2 occurrences share \"5.17\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken"
+          },
+          "truncatedAtBudget": false,
+          "unitExtension": null
+        },
+        {
+          "regionId": "xref-2",
+          "kind": "CROSS_REFERENCE_EXPANSION",
+          "documentId": "doc-a",
+          "sourceNodeId": "structural-node:abb12fde4e3a56cc60f3c474",
+          "sectionRef": "1.07",
+          "charStart": 310978,
+          "charEnd": 316978,
+          "text": "SECTION 1.07 Pro Forma and Other Calculations.\n\n(1) Notwithstanding anything to the contrary herein, financial ratios and tests, including the First Lien Net Leverage Ratio, the Secured Net\nLeverage Ratio, the Total Net Leverage Ratio and the Interest Coverage Ratio shall be calculated in the manner prescribed by this Section 1.07; provided that notwithstanding anything to the contrary in clauses (2), (3), (4) or\n(5) of this Section 1.07 when calculating the First Lien Net Leverage Ratio, the Secured Net Leverage Ratio or Total Net Leverage Ratio, as applicable, for purposes of (a) the definition of “Applicable Rate,” (b)\nSection 2.05(2)(a) and (c) the Financial Covenant (other than for the purpose of determining pro forma compliance with the Financial Covenant), the events described in this Section 1.07 that occurred subsequent to the end of\nthe applicable Test Period shall not be given pro forma effect; provided however that voluntary prepayments made pursuant to Section 2.05(1) during any fiscal year (without duplication of any prepayments in such fiscal year\nthat reduced the amount of Excess Cash Flow required to be repaid pursuant to Section 2.05(2)(a) for any prior fiscal year) shall be given pro forma effect after such fiscal year-end and prior to\nthe time any mandatory prepayment pursuant to Section 2.05(2)(a) is due for purposes of calculating the First Lien Net Leverage Ratio for purposes of determining the ECF Percentage for such mandatory prepayment, if any. In addition, whenever a\nfinancial ratio or test is to be calculated on a pro forma basis, the reference to “Test Period” for purposes of calculating such financial ratio or test shall be deemed to be a reference to, and shall be based on, the most recently\nended Test Period for which financial statements of the Borrower have been delivered to the Administrative Agent pursuant to Section 6.01(1) or Section 6.01(2), as applicable (it being understood that for purposes of (x) determining\npro forma compliance with the Financial Covenant, if no Test Period with an applicable level cited in the Financial Covenant has passed, the applicable level shall be the level for the first Test Period cited in the Financial Covenant with an\nindicated level and (y) determining actual compliance (and not pro forma compliance) with the Financial Covenant, the reference to “Test Period” shall be deemed to be a reference to, and shall be based on, the most recently\nended Test Period for which financial statements have been or are required to be delivered pursuant to Section 6.01(1) or (2)).\n(2)\nFor purposes of calculating any financial ratio or test (or Consolidated EBITDA or Total Assets), Specified Transactions (and, subject to clause (4) below, the incurrence or repayment of any Indebtedness in connection therewith) that have been\nmade (a) during the applicable Test Period or (b) subsequent to such Test Period and prior to or simultaneously with the event for which the calculation of any such ratio is made shall be calculated on a pro forma basis assuming\nthat all such Specified Transactions (and any increase or decrease in Consolidated EBITDA and the component financial definitions used therein attributable to any Specified Transaction) had occurred\n\n77\n\non the first day of the applicable Test Period (or, in the case of Total Assets, on the last day of the applicable Test Period). If since the beginning of any applicable Test Period any Person\nthat subsequently became a Subsidiary or was merged, amalgamated or consolidated with or into the Borrower or any Subsidiary since the beginning of such Test Period shall have made any Specified Transaction that would have required adjustment\npursuant to this Section 1.07, then such financial ratio or test (or Consolidated EBITDA or Total Assets) shall be calculated to give pro forma effect thereto in accordance with this Section 1.07.\n\n(3) Whenever pro forma effect is to be given to a Permitted Acquisition, the pro forma calculations shall be made in good faith\nby a Financial Officer of the Borrower and may include, for the avoidance of doubt, the amount of “run-rate” cost savings, operating expense reductions and synergies projected by the Borrower in good\nfaith to result from or relating to any Permitted Acquisition which is being given pro forma effect that have been realized or are expected to be realized and for which the actions necessary to realize such cost savings, operating expense\nreductions and synergies are taken, committed to be taken or with respect to which substantial steps have been taken or are expected to be taken (in the good faith determination of the Borrower) (calculated on a pro forma basis as though such\ncost savings, operating expense reductions and synergies had been realized on the first day of such period and as if such cost savings, operating expense reductions and synergies were realized during the entirety of such period and “run-rate” means the full recurring benefit for a period that is associated with any action taken, committed to be taken or with respect to which substantial steps have been taken or are expected to be\ntaken (including any savings expected to result from the elimination of a public target’s compliance costs with public company requirements), whether prior to or following the Closing Date, net of the amount of actual benefits realized during\nsuch period from such actions, and any such adjustments shall be included in the initial pro forma calculations of such financial ratios or tests and during any subsequent Test Period in which the effects thereof are expected to be realized)\nrelating to such Permitted Acquisition; provided that (a) such amounts are reasonably identifiable and factually supportable in the good faith judgment of the Borrower, (b) such actions are taken, committed to be taken or with\nrespect to which substantial steps have been taken or are expected to be taken no later than twelve (12) months after the date of such Specified Tran",
+          "expandedFor": {
+            "referenceText": "Section 1.07",
+            "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+            "note": "2 occurrences share \"1.07\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken"
+          },
+          "truncatedAtBudget": true,
+          "unitExtension": null
+        },
+        {
+          "regionId": "xref-3",
+          "kind": "CROSS_REFERENCE_EXPANSION",
+          "documentId": "doc-a",
+          "sourceNodeId": "structural-node:5fa32ea3d4d8f3caa5246fec",
+          "sectionRef": "9.01(2)",
+          "charStart": 632150,
+          "charEnd": 634064,
+          "text": "(2) JPMorgan Chase Bank, N.A., shall act as the “collateral agent” under the Loan\nDocuments, and each of the Lenders hereby irrevocably appoints and authorizes JPMorgan Chase Bank, N.A., to act as the agent of (and to hold any security interest created by the Collateral Documents for and on behalf of or in trust for) such Lender\nfor purposes of acquiring, holding and enforcing any and all Liens on Collateral granted by any of the Loan Parties to secure any of the Obligations, together with such powers and discretion as are reasonably incidental thereto (including, for the\navoidance of doubt, entering into any “parallel debt” provisions, where such parallel debt provision is customary for taking security in the relevant jurisdiction). In this connection, the JPMorgan Chase Bank, N.A., as “collateral\nagent” (and any co-agents, sub-agents and attorneys-in-fact appointed by the\nAdministrative Agent pursuant to Section 9.05 for purposes of holding or enforcing any Lien on the Collateral (or any portion thereof) granted under the Collateral Documents, or for exercising any rights and remedies thereunder at the direction\nof the Collateral Agent), shall be entitled to the benefits of all provisions of this Article IX and Article X with respect to the Collateral Agent (including Sections 10.04 and 10.05), as though such\nco-agents, sub-agents and attorneys-in-fact were the “collateral agent” under\nthe Loan Documents. Without limiting the generality of the foregoing, the Lenders hereby expressly authorize the Collateral Agent to execute any and all documents (including releases) with respect to the Collateral and the rights of the Secured\nParties with respect thereto (including any Intercreditor Agreement), as contemplated by and in accordance with the provisions of this Agreement and the Collateral Documents and acknowledge and agree that any such action by any Agent shall bind the\nLenders.\n",
+          "expandedFor": {
+            "referenceText": "Section 9.01(2)",
+            "resolution": "UNIQUE",
+            "note": "unique occurrence of \"9.01(2)\""
+          },
+          "truncatedAtBudget": false,
+          "unitExtension": null
+        }
+      ],
+      "unresolvedReferences": [],
+      "reasons": [],
+      "totalChars": 10888,
+      "budgetChars": 24000
+    },
+    "frozenInventory": {
+      "candidateRef": "semantic-accountability:holdout:secured-net-leverage",
+      "items": [
+        {
+          "inventoryItemId": "inv-item:586baebea72d40089dbc9fad",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-a",
+            "sourceNodeId": "structural-node:25c27930f425ef6c4d35e91c",
+            "sectionRef": "1.01(48)(5)(d)",
+            "charStart": 0,
+            "charEnd": 162,
+            "sourceCitation": "§1.01(48)(5)(d)",
+            "excerpt": "“Secured Net Leverage Ratio” means, with respect to any Test Period, the ratio of (a) Consolidated\nSecured Debt outstanding as of the last day of such Test Period"
+          },
+          "semanticRole": "OTHER",
+          "proposition": "\"Secured Net Leverage Ratio\" is defined, for any Test Period, as the ratio of clause (a) to clause (b).",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Test Period",
+            "Consolidated Secured Debt"
+          ],
+          "referencedSections": [],
+          "parentItemId": null,
+          "relatedItemIds": [],
+          "materiality": "CRITICAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:bce2c6866219cf90eb971dd6",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-a",
+            "sourceNodeId": "structural-node:25c27930f425ef6c4d35e91c",
+            "sectionRef": "1.01(48)(5)(d)",
+            "charStart": 86,
+            "charEnd": 162,
+            "sourceCitation": "§1.01(48)(5)(d)",
+            "excerpt": "Consolidated\nSecured Debt outstanding as of the last day of such Test Period"
+          },
+          "semanticRole": "FORMULA_COMPONENT",
+          "proposition": "The numerator component (a) is Consolidated Secured Debt outstanding as of the last day of the Test Period.",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Consolidated Secured Debt",
+            "Test Period"
+          ],
+          "referencedSections": [],
+          "parentItemId": "inv-item:586baebea72d40089dbc9fad",
+          "relatedItemIds": [],
+          "materiality": "CRITICAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:87aaa0b9203061cab794d914",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-a",
+            "sourceNodeId": "structural-node:25c27930f425ef6c4d35e91c",
+            "sectionRef": "1.01(48)(5)(d)",
+            "charStart": 164,
+            "charEnd": 291,
+            "sourceCitation": "§1.01(48)(5)(d)",
+            "excerpt": "minus, the aggregate amount of cash and Cash Equivalents of the Borrower and the Subsidiaries of the Borrower on such date that"
+          },
+          "semanticRole": "FORMULA_COMPONENT",
+          "proposition": "From Consolidated Secured Debt is subtracted the aggregate amount of cash and Cash Equivalents of the Borrower and its Subsidiaries meeting either of the two qualifying conditions set out in (x) or (y).",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Cash Equivalents"
+          ],
+          "referencedSections": [],
+          "parentItemId": "inv-item:586baebea72d40089dbc9fad",
+          "relatedItemIds": [],
+          "materiality": "CRITICAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:0266ef861e536a6683dc3745",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-a",
+            "sourceNodeId": "structural-node:25c27930f425ef6c4d35e91c",
+            "sectionRef": "1.01(48)(5)(d)",
+            "charStart": 292,
+            "charEnd": 413,
+            "sourceCitation": "§1.01(48)(5)(d)",
+            "excerpt": "(x) would not appear as\n“restricted” on a consolidated balance sheet of the Borrower and the Subsidiaries of the Borrower"
+          },
+          "semanticRole": "ALTERNATIVE",
+          "proposition": "Qualifying condition (x): the cash/Cash Equivalents would not appear as 'restricted' on a consolidated balance sheet of the Borrower and its Subsidiaries.",
+          "quantitativeValues": [],
+          "referencedTerms": [],
+          "referencedSections": [],
+          "parentItemId": "inv-item:87aaa0b9203061cab794d914",
+          "relatedItemIds": [
+            "inv-item:7a1bab43302769d1716003bc"
+          ],
+          "materiality": "CRITICAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:7a1bab43302769d1716003bc",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-a",
+            "sourceNodeId": "structural-node:25c27930f425ef6c4d35e91c",
+            "sectionRef": "1.01(48)(5)(d)",
+            "charStart": 417,
+            "charEnd": 588,
+            "sourceCitation": "§1.01(48)(5)(d)",
+            "excerpt": "(y) are restricted in favor of the Facilities (which may also secure other Indebtedness secured by a pari passu or junior Lien\non the Collateral along with the Facilities)"
+          },
+          "semanticRole": "ALTERNATIVE",
+          "proposition": "Qualifying condition (y): the cash/Cash Equivalents are restricted in favor of the Facilities (which may also secure other pari passu or junior secured Indebtedness on the Collateral along with the Facilities).",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Facilities"
+          ],
+          "referencedSections": [],
+          "parentItemId": "inv-item:87aaa0b9203061cab794d914",
+          "relatedItemIds": [
+            "inv-item:0266ef861e536a6683dc3745"
+          ],
+          "materiality": "CRITICAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:3903fd745faad5eaf388b07e",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-a",
+            "sourceNodeId": "structural-node:25c27930f425ef6c4d35e91c",
+            "sectionRef": "1.01(48)(5)(d)",
+            "charStart": 463,
+            "charEnd": 588,
+            "sourceCitation": "§1.01(48)(5)(d)",
+            "excerpt": "(which may also secure other Indebtedness secured by a pari passu or junior Lien\non the Collateral along with the Facilities)"
+          },
+          "semanticRole": "DEPENDENCY",
+          "proposition": "Clarifying proviso within condition (y): the Facilities securing the restricted cash may also secure other Indebtedness that is itself secured by a pari passu or junior Lien on the Collateral along with the Facilities.",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Facilities",
+            "Collateral",
+            "Lien"
+          ],
+          "referencedSections": [],
+          "parentItemId": "inv-item:7a1bab43302769d1716003bc",
+          "relatedItemIds": [],
+          "materiality": "MATERIAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:ad4dad63614cdd50629fbf05",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-a",
+            "sourceNodeId": "structural-node:25c27930f425ef6c4d35e91c",
+            "sectionRef": "1.01(48)(5)(d)",
+            "charStart": 589,
+            "charEnd": 880,
+            "sourceCitation": "§1.01(48)(5)(d)",
+            "excerpt": "to (b) (i) for purposes of determining compliance with the Financial Maintenance Covenant, Consolidated Maintenance EBITDA of the Borrower and its Subsidiaries for such Test Period, or (ii) for\nall other purposes, Consolidated EBITDA of the Borrower and its Subsidiaries for such Test Period"
+          },
+          "semanticRole": "FORMULA_COMPONENT",
+          "proposition": "The denominator component (b) is selected by purpose: branch (i) applies for determining compliance with the Financial Maintenance Covenant, branch (ii) applies for all other purposes.",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Financial Maintenance Covenant",
+            "Consolidated Maintenance EBITDA",
+            "Consolidated EBITDA"
+          ],
+          "referencedSections": [],
+          "parentItemId": "inv-item:586baebea72d40089dbc9fad",
+          "relatedItemIds": [],
+          "materiality": "CRITICAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:9f483bf2ee1ad68b7d1ab3a9",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-a",
+            "sourceNodeId": "structural-node:25c27930f425ef6c4d35e91c",
+            "sectionRef": "1.01(48)(5)(d)",
+            "charStart": 596,
+            "charEnd": 769,
+            "sourceCitation": "§1.01(48)(5)(d)",
+            "excerpt": "(i) for purposes of determining compliance with the Financial Maintenance Covenant, Consolidated Maintenance EBITDA of the Borrower and its Subsidiaries for such Test Period"
+          },
+          "semanticRole": "ALTERNATIVE",
+          "proposition": "Branch (i): for purposes of determining compliance with the Financial Maintenance Covenant, the denominator is Consolidated Maintenance EBITDA of the Borrower and its Subsidiaries for such Test Period.",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Financial Maintenance Covenant",
+            "Consolidated Maintenance EBITDA"
+          ],
+          "referencedSections": [],
+          "parentItemId": "inv-item:ad4dad63614cdd50629fbf05",
+          "relatedItemIds": [
+            "inv-item:ef247d81f69e28b66d007490"
+          ],
+          "materiality": "CRITICAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:ef247d81f69e28b66d007490",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-a",
+            "sourceNodeId": "structural-node:25c27930f425ef6c4d35e91c",
+            "sectionRef": "1.01(48)(5)(d)",
+            "charStart": 774,
+            "charEnd": 880,
+            "sourceCitation": "§1.01(48)(5)(d)",
+            "excerpt": "(ii) for\nall other purposes, Consolidated EBITDA of the Borrower and its Subsidiaries for such Test Period"
+          },
+          "semanticRole": "ALTERNATIVE",
+          "proposition": "Branch (ii): for all other purposes, the denominator is Consolidated EBITDA of the Borrower and its Subsidiaries for such Test Period.",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Consolidated EBITDA"
+          ],
+          "referencedSections": [],
+          "parentItemId": "inv-item:ad4dad63614cdd50629fbf05",
+          "relatedItemIds": [
+            "inv-item:9f483bf2ee1ad68b7d1ab3a9"
+          ],
+          "materiality": "CRITICAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:283a981919c6ee4b4a120b58",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-a",
+            "sourceNodeId": "structural-node:25c27930f425ef6c4d35e91c",
+            "sectionRef": "1.01(48)(5)(d)",
+            "charStart": 882,
+            "charEnd": 1000,
+            "sourceCitation": "§1.01(48)(5)(d)",
+            "excerpt": "in each case on a pro forma basis with such pro forma adjustments as are appropriate and consistent with Section 1.07."
+          },
+          "semanticRole": "DEPENDENCY",
+          "proposition": "In each case the ratio is calculated on a pro forma basis, with pro forma adjustments that are appropriate and consistent with Section 1.07.",
+          "quantitativeValues": [],
+          "referencedTerms": [],
+          "referencedSections": [
+            "Section 1.07"
+          ],
+          "parentItemId": "inv-item:586baebea72d40089dbc9fad",
+          "relatedItemIds": [],
+          "materiality": "CRITICAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:a93cb15b6a1729d79b3f583c",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-a",
+            "sourceNodeId": "structural-node:25c27930f425ef6c4d35e91c",
+            "sectionRef": "1.01(48)(5)(d)",
+            "charStart": 1002,
+            "charEnd": 1308,
+            "sourceCitation": "§1.01(48)(5)(d)",
+            "excerpt": "“Secured Parties” means, collectively, the Administrative Agent, the Collateral Agent, the Lenders, each Supplemental\nAdministrative Agent and each co-agent, sub-agent or collateral trustee appointed by the Administrative Agent or the Collateral Agent from time to time pursuant to\nSection 9.01(2) or 9.07."
+          },
+          "semanticRole": "OTHER",
+          "proposition": "\"Secured Parties\" is defined, collectively, as the Administrative Agent, the Collateral Agent, the Lenders, each Supplemental Administrative Agent, and each co-agent, sub-agent or collateral trustee appointed by the Administrative Agent or the Collateral Agent from time to time pursuant to Section 9.01(2) or 9.07.",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Administrative Agent",
+            "Collateral Agent",
+            "Lenders",
+            "Supplemental Administrative Agent"
+          ],
+          "referencedSections": [
+            "Section 9.01(2)",
+            "Section 9.07"
+          ],
+          "parentItemId": null,
+          "relatedItemIds": [],
+          "materiality": "MATERIAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:ef0500c6b42b233c426ac094",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-a",
+            "sourceNodeId": "structural-node:25c27930f425ef6c4d35e91c",
+            "sectionRef": "1.01(48)(5)(d)",
+            "charStart": 1041,
+            "charEnd": 1140,
+            "sourceCitation": "§1.01(48)(5)(d)",
+            "excerpt": "the Administrative Agent, the Collateral Agent, the Lenders, each Supplemental\nAdministrative Agent"
+          },
+          "semanticRole": "OTHER",
+          "proposition": "The fixed, named members of Secured Parties are the Administrative Agent, the Collateral Agent, the Lenders, and each Supplemental Administrative Agent.",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Administrative Agent",
+            "Collateral Agent",
+            "Lenders",
+            "Supplemental Administrative Agent"
+          ],
+          "referencedSections": [],
+          "parentItemId": "inv-item:a93cb15b6a1729d79b3f583c",
+          "relatedItemIds": [],
+          "materiality": "MATERIAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:389766c32f8a81fe1419c8f2",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-a",
+            "sourceNodeId": "structural-node:25c27930f425ef6c4d35e91c",
+            "sectionRef": "1.01(48)(5)(d)",
+            "charStart": 1145,
+            "charEnd": 1308,
+            "sourceCitation": "§1.01(48)(5)(d)",
+            "excerpt": "each co-agent, sub-agent or collateral trustee appointed by the Administrative Agent or the Collateral Agent from time to time pursuant to\nSection 9.01(2) or 9.07."
+          },
+          "semanticRole": "DEPENDENCY",
+          "proposition": "Secured Parties additionally includes each co-agent, sub-agent or collateral trustee appointed by the Administrative Agent or the Collateral Agent from time to time pursuant to Section 9.01(2) or 9.07.",
+          "quantitativeValues": [],
+          "referencedTerms": [],
+          "referencedSections": [
+            "Section 9.01(2)",
+            "Section 9.07"
+          ],
+          "parentItemId": "inv-item:a93cb15b6a1729d79b3f583c",
+          "relatedItemIds": [],
+          "materiality": "MATERIAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:2445a215deb5ce036af39a98",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-a",
+            "sourceNodeId": "structural-node:25c27930f425ef6c4d35e91c",
+            "sectionRef": "1.01(48)(5)(d)",
+            "charStart": 1284,
+            "charEnd": 1299,
+            "sourceCitation": "§1.01(48)(5)(d)",
+            "excerpt": "Section 9.01(2)"
+          },
+          "semanticRole": "REFERENCE",
+          "proposition": "The appointment mechanism for co-agents/sub-agents/collateral trustees under the Secured Parties definition depends on Section 9.01(2), which designates JPMorgan Chase Bank, N.A. as Collateral Agent and describes the scope of agency authority over the Collateral.",
+          "quantitativeValues": [],
+          "referencedTerms": [],
+          "referencedSections": [
+            "Section 9.01(2)"
+          ],
+          "parentItemId": "inv-item:389766c32f8a81fe1419c8f2",
+          "relatedItemIds": [
+            "inv-item:3e03079b12f33350edaab516"
+          ],
+          "materiality": "MATERIAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:3e03079b12f33350edaab516",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-a",
+            "sourceNodeId": "structural-node:25c27930f425ef6c4d35e91c",
+            "sectionRef": "1.01(48)(5)(d)",
+            "charStart": 1303,
+            "charEnd": 1307,
+            "sourceCitation": "§1.01(48)(5)(d)",
+            "excerpt": "9.07"
+          },
+          "semanticRole": "REFERENCE",
+          "proposition": "The appointment mechanism for co-agents/sub-agents/collateral trustees under the Secured Parties definition also depends on Section 9.07, the content of which is not included in the provided evidence.",
+          "quantitativeValues": [],
+          "referencedTerms": [],
+          "referencedSections": [
+            "Section 9.07"
+          ],
+          "parentItemId": "inv-item:389766c32f8a81fe1419c8f2",
+          "relatedItemIds": [
+            "inv-item:2445a215deb5ce036af39a98"
+          ],
+          "materiality": "MATERIAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        }
+      ],
+      "uninventoriedValues": [],
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryStatusReason": "15 item(s) accepted, 0 rejected as unverifiable, 0 duplicate(s) dropped",
+      "rejectedUnverifiableItems": 0,
+      "rejectedDuplicateItems": 0,
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "frozenContentHash": "bd6a0e1763538f518925cf482432e8160d017305b04c00c5cb5e5bb481f537d1",
+      "frozenAt": "2026-09-02T03:01:05.741Z",
+      "algorithmVersion": "semantic-accountability.v1",
+      "promptVersion": "semantic-inventory-prompt.v1",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "telemetryCostUsd": 0.212574
+    },
+    "accountability": {
+      "candidateRef": "semantic-accountability:holdout:secured-net-leverage",
+      "inventoryStatus": "INVENTORY_OK",
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "items": [
+        {
+          "inventoryItemId": "inv-item:586baebea72d40089dbc9fad",
+          "semanticRole": "OTHER",
+          "materiality": "CRITICAL",
+          "disposition": "UNSUPPORTED",
+          "lineageIrPaths": [
+            "definitions[0].calculationExpression"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "consumed only into UNSUPPORTED structure (definitions[0].calculationExpression)"
+        },
+        {
+          "inventoryItemId": "inv-item:bce2c6866219cf90eb971dd6",
+          "semanticRole": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "UNSUPPORTED",
+          "lineageIrPaths": [
+            "definitions[0].calculationExpression.attemptedStructure.value.attemptedStructure.numerator.left"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "consumed only into UNSUPPORTED structure (definitions[0].calculationExpression.attemptedStructure.value.attemptedStructure.numerator.left)"
+        },
+        {
+          "inventoryItemId": "inv-item:87aaa0b9203061cab794d914",
+          "semanticRole": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "UNSUPPORTED",
+          "lineageIrPaths": [
+            "definitions[0].calculationExpression.attemptedStructure.value.attemptedStructure.numerator.right"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "consumed only into UNSUPPORTED structure (definitions[0].calculationExpression.attemptedStructure.value.attemptedStructure.numerator.right)"
+        },
+        {
+          "inventoryItemId": "inv-item:0266ef861e536a6683dc3745",
+          "semanticRole": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": "UNSUPPORTED",
+          "lineageIrPaths": [
+            "definitions[0].calculationExpression.attemptedStructure.value.attemptedStructure.numerator.right"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "consumed only into UNSUPPORTED structure (definitions[0].calculationExpression.attemptedStructure.value.attemptedStructure.numerator.right)"
+        },
+        {
+          "inventoryItemId": "inv-item:7a1bab43302769d1716003bc",
+          "semanticRole": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": "UNSUPPORTED",
+          "lineageIrPaths": [
+            "definitions[0].calculationExpression.attemptedStructure.value.attemptedStructure.numerator.right"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "consumed only into UNSUPPORTED structure (definitions[0].calculationExpression.attemptedStructure.value.attemptedStructure.numerator.right)"
+        },
+        {
+          "inventoryItemId": "inv-item:3903fd745faad5eaf388b07e",
+          "semanticRole": "DEPENDENCY",
+          "materiality": "MATERIAL",
+          "disposition": "UNSUPPORTED",
+          "lineageIrPaths": [
+            "definitions[0].calculationExpression.attemptedStructure.value.attemptedStructure.numerator.right"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "consumed only into UNSUPPORTED structure (definitions[0].calculationExpression.attemptedStructure.value.attemptedStructure.numerator.right)"
+        },
+        {
+          "inventoryItemId": "inv-item:ad4dad63614cdd50629fbf05",
+          "semanticRole": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "UNSUPPORTED",
+          "lineageIrPaths": [
+            "definitions[0].calculationExpression.attemptedStructure.value.attemptedStructure.denominator"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "consumed only into UNSUPPORTED structure (definitions[0].calculationExpression.attemptedStructure.value.attemptedStructure.denominator)"
+        },
+        {
+          "inventoryItemId": "inv-item:9f483bf2ee1ad68b7d1ab3a9",
+          "semanticRole": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": "UNSUPPORTED",
+          "lineageIrPaths": [
+            "definitions[0].calculationExpression.attemptedStructure.value.attemptedStructure.denominator.attemptedStructure.then"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "consumed only into UNSUPPORTED structure (definitions[0].calculationExpression.attemptedStructure.value.attemptedStructure.denominator.attemptedStructure.then)"
+        },
+        {
+          "inventoryItemId": "inv-item:ef247d81f69e28b66d007490",
+          "semanticRole": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": "UNSUPPORTED",
+          "lineageIrPaths": [
+            "definitions[0].calculationExpression.attemptedStructure.value.attemptedStructure.denominator.attemptedStructure.else"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "consumed only into UNSUPPORTED structure (definitions[0].calculationExpression.attemptedStructure.value.attemptedStructure.denominator.attemptedStructure.else)"
+        },
+        {
+          "inventoryItemId": "inv-item:283a981919c6ee4b4a120b58",
+          "semanticRole": "DEPENDENCY",
+          "materiality": "CRITICAL",
+          "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+          "lineageIrPaths": [],
+          "modelDisposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+          "quantitative": [],
+          "reason": "composition explicitly dispositioned it INTENTIONALLY_NON_COMPUTATIONAL: Cross-reference stating the ratio is calculated pro forma consistent with Section 1.07; this is a calculation-methodology instruction, not itself a separate numeric operand within the ratio's own numerator/denominator formula. Section 1.07 was retrieved and confirms it applies to the Secured Net Leverage Ratio generally, but its own detailed pro forma mechanics (partially truncated in the retrieved region) are outside the scope of representing this definition's own formula."
+        },
+        {
+          "inventoryItemId": "inv-item:a93cb15b6a1729d79b3f583c",
+          "semanticRole": "OTHER",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[1]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[1]"
+        },
+        {
+          "inventoryItemId": "inv-item:ef0500c6b42b233c426ac094",
+          "semanticRole": "OTHER",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[1]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[1]"
+        },
+        {
+          "inventoryItemId": "inv-item:389766c32f8a81fe1419c8f2",
+          "semanticRole": "DEPENDENCY",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[1]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[1]"
+        },
+        {
+          "inventoryItemId": "inv-item:2445a215deb5ce036af39a98",
+          "semanticRole": "REFERENCE",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[1]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[1]"
+        },
+        {
+          "inventoryItemId": "inv-item:3e03079b12f33350edaab516",
+          "semanticRole": "REFERENCE",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[1]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[1]"
+        }
+      ],
+      "counts": {
+        "inventoried": 15,
+        "material": 15,
+        "represented": 5,
+        "intentionallyNonComputational": 1,
+        "unsupported": 9,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 0,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "semanticallyComplete": true,
+      "reasons": [],
+      "algorithmVersion": "semantic-accountability.v1"
+    },
+    "rawModelOutput": {
+      "definitions": [
+        {
+          "localRef": "d1",
+          "termName": "Secured Net Leverage Ratio",
+          "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+          "calculationExpression": {
+            "kind": "DURING_PERIOD",
+            "periodDescription": "with respect to any Test Period (numerator measured as of the last day of such Test Period)",
+            "citation": "§1.01",
+            "inventoryItemIds": [
+              "inv-item:586baebea72d40089dbc9fad"
+            ],
+            "operand": {
+              "kind": "DIVIDE",
+              "citation": "§1.01",
+              "numerator": {
+                "kind": "SUBTRACT",
+                "citation": "§1.01",
+                "left": {
+                  "kind": "METRIC_REFERENCE",
+                  "metricName": "Consolidated Secured Debt",
+                  "citation": "§1.01",
+                  "excerpt": "Consolidated Secured Debt outstanding as of the last day of such Test Period",
+                  "inventoryItemIds": [
+                    "inv-item:bce2c6866219cf90eb971dd6"
+                  ]
+                },
+                "right": {
+                  "kind": "METRIC_REFERENCE",
+                  "metricName": "Qualifying Unrestricted or Facility-Restricted Cash and Cash Equivalents",
+                  "citation": "§1.01",
+                  "excerpt": "the aggregate amount of cash and Cash Equivalents ... that (x) would not appear as \"restricted\" on a consolidated balance sheet ... or (y) are restricted in favor of the Facilities (which may also secure other Indebtedness secured by a pari passu or junior Lien on the Collateral along with the Facilities)",
+                  "inventoryItemIds": [
+                    "inv-item:87aaa0b9203061cab794d914",
+                    "inv-item:0266ef861e536a6683dc3745",
+                    "inv-item:7a1bab43302769d1716003bc",
+                    "inv-item:3903fd745faad5eaf388b07e"
+                  ]
+                }
+              },
+              "denominator": {
+                "kind": "IF",
+                "citation": "§1.01",
+                "inventoryItemIds": [
+                  "inv-item:ad4dad63614cdd50629fbf05"
+                ],
+                "condition": {
+                  "kind": "TRANSACTION_INPUT_REFERENCE",
+                  "inputName": "CalculationPurposeIsFinancialMaintenanceCovenantCompliance",
+                  "citation": "§1.01",
+                  "excerpt": "for purposes of determining compliance with the Financial Maintenance Covenant"
+                },
+                "then": {
+                  "kind": "METRIC_REFERENCE",
+                  "metricName": "Consolidated Maintenance EBITDA",
+                  "citation": "§1.01",
+                  "inventoryItemIds": [
+                    "inv-item:9f483bf2ee1ad68b7d1ab3a9"
+                  ]
+                },
+                "else": {
+                  "kind": "METRIC_REFERENCE",
+                  "metricName": "Consolidated EBITDA",
+                  "citation": "§1.01",
+                  "inventoryItemIds": [
+                    "inv-item:ef247d81f69e28b66d007490"
+                  ]
+                }
+              }
+            }
+          },
+          "dependsOnTerms": [
+            "Consolidated Secured Debt",
+            "Cash Equivalents",
+            "Consolidated Maintenance EBITDA",
+            "Consolidated EBITDA",
+            "Test Period"
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "All numerator/denominator components and both cash-eligibility alternatives (x)/(y) are stated in the source text and represented.",
+            "Denominator's purpose-dependent branch (Financial Maintenance Covenant vs. all other purposes) is represented via a TRANSACTION_INPUT_REFERENCE boolean gate on an IF node, since the IR has no dedicated 'purpose selector' primitive - see irExtensionCandidates.",
+            "The pro forma cross-reference to Section 1.07 was confirmed (via retrieved Section 1.07 text) to apply generally to this ratio's calculation methodology; it is a methodology cross-reference rather than a separate numeric operand, so it is dispositioned rather than embedded in the formula."
+          ],
+          "citation": "§1.01",
+          "excerpt": "“Secured Net Leverage Ratio” means, with respect to any Test Period, the ratio of (a) Consolidated Secured Debt outstanding as of the last day of such Test Period, minus, the aggregate amount of cash and Cash Equivalents ... to (b)(i) ... Consolidated Maintenance EBITDA ... or (ii) ... Consolidated EBITDA ..., in each case on a pro forma basis with such pro forma adjustments as are appropriate and consistent with Section 1.07."
+        },
+        {
+          "localRef": "d2",
+          "termName": "Secured Parties",
+          "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+          "calculationExpression": null,
+          "dependsOnTerms": [
+            "Administrative Agent",
+            "Collateral Agent",
+            "Lenders",
+            "Supplemental Administrative Agent"
+          ],
+          "inventoryItemIds": [
+            "inv-item:a93cb15b6a1729d79b3f583c",
+            "inv-item:ef0500c6b42b233c426ac094",
+            "inv-item:389766c32f8a81fe1419c8f2",
+            "inv-item:2445a215deb5ce036af39a98",
+            "inv-item:3e03079b12f33350edaab516"
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "The definition is a fixed enumeration of named roles plus a dynamic category (co-agents/sub-agents/collateral trustees appointed pursuant to Section 9.01(2) or 9.07) rather than a computation, and both cross-referenced appointment-mechanism sections were retrieved and confirm the appointment mechanism described (Section 9.01(2): JPMorgan Chase Bank, N.A. as Collateral Agent and scope of collateral-agency authority; Section 9.07: delegation of duties to sub-agents/Agent-Related Persons).",
+            "Section 9.07's own current supersession status is unresolved (UNKNOWN_SUPERSESSION_STATUS) in the amendment-tracking layer, but this does not affect the Secured Parties definition itself, which has no recorded amendment history."
+          ],
+          "citation": "§1.01",
+          "excerpt": "“Secured Parties” means, collectively, the Administrative Agent, the Collateral Agent, the Lenders, each Supplemental Administrative Agent and each co-agent, sub-agent or collateral trustee appointed by the Administrative Agent or the Collateral Agent from time to time pursuant to Section 9.01(2) or 9.07."
+        }
+      ],
+      "rules": [],
+      "sharedCapacities": [],
+      "inventoryDispositions": [
+        {
+          "inventoryItemId": "inv-item:283a981919c6ee4b4a120b58",
+          "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+          "note": "Cross-reference stating the ratio is calculated pro forma consistent with Section 1.07; this is a calculation-methodology instruction, not itself a separate numeric operand within the ratio's own numerator/denominator formula. Section 1.07 was retrieved and confirms it applies to the Secured Net Leverage Ratio generally, but its own detailed pro forma mechanics (partially truncated in the retrieved region) are outside the scope of representing this definition's own formula."
+        }
+      ],
+      "irExtensionCandidates": [
+        {
+          "sourceEvidence": "§1.01 Secured Net Leverage Ratio definition, clause (b): \"(i) for purposes of determining compliance with the Financial Maintenance Covenant, Consolidated Maintenance EBITDA ... or (ii) for all other purposes, Consolidated EBITDA ...\"",
+          "semanticRequirement": "A recurring pattern where a formula's component (here, the denominator metric) is selected based on WHICH provision/purpose is invoking the calculation (e.g. financial-maintenance-covenant compliance vs. all other uses), rather than based on any comparable data value, date, or event.",
+          "whyExistingPrimitivesFail": "IF requires a boolean `condition` expression, but there is no dedicated primitive for 'the purpose for which this metric is currently being calculated' - COMPARE needs two same-typed comparable values, EVENT_ACTIVE is for time-bounded triggered events, and SCHEDULE is date-keyed, none of which model a purpose/use-case selector. TRANSACTION_INPUT_REFERENCE was repurposed as a boolean flag to make this type-check, but it is not a fully faithful semantic fit.",
+          "candidateGeneralizedPrimitive": "A PURPOSE_SELECTOR or CALCULATION_CONTEXT_SWITCH node (cases keyed by named calculation-purpose/invoking-provision identifiers, analogous to SCHEDULE but keyed by purpose rather than date) would let this kind of purpose-dependent component selection be modeled without overloading TRANSACTION_INPUT_REFERENCE or IF."
+        }
+      ],
+      "overallNotes": [
+        "This submission compiles two independent defined terms from §1.01: \"Secured Net Leverage Ratio\" (a ratio-of-metrics definition) and \"Secured Parties\" (an entity-enumeration definition). No independently operative WireRule (permission/prohibition/ratio-test) exists in the supplied source; §1.01 supplies definitions only, so the rules array is empty by design.",
+        "Cross-referenced Section 1.07 (pro forma methodology) was retrieved but arrived truncated at budget; the retrieved portion is sufficient to confirm it applies generally to the Secured Net Leverage Ratio, so this does not downgrade the definition's own sufficiency, but no claim is made about Section 1.07's own complete internal mechanics.",
+        "Section 9.01(2) and Section 9.07 (both cross-referenced by the 'Secured Parties' definition) were retrieved in full and confirm the appointment mechanism for co-agents/sub-agents/collateral trustees; Section 9.07's amendment/supersession status is independently unresolved (UNKNOWN_SUPERSESSION_STATUS) but this does not affect the 'Secured Parties' definition itself, which has no recorded amendment history."
+      ]
+    },
+    "provider": "vercel-ai-gateway",
+    "model": "anthropic/claude-sonnet-5",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "semantic-accountability-compiler-prompt.v4",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-02T03:03:16.661Z",
+      "inputTokens": 103555,
+      "outputTokens": 13087,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 2,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 130917,
+      "calculatedCostUsd": 0.33798
+    },
+    "cacheKey": "a35952eb1c0cf1d36f4da602a1183015077983f2e05c4563660cc0d1e4fd9a5f",
+    "compiledAt": "2026-09-02T03:03:16.661Z"
+  },
+  "verify": {
+    "candidateRef": "semantic-accountability:holdout:secured-net-leverage",
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "2d29d4590b2b6a16fe84d4440599522fe68c622c903866d09c9f4054fb2a95cf",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "semantic-accountability:holdout:secured-net-leverage",
+        "ruleOrDefinitionId": "ir-definition:e98387bba6a9b46e670e1800",
+        "irPath": "definitions[1] (termName='Secured Parties')",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "“Secured Parties” means, collectively, the Administrative Agent, the Collateral Agent, the Lenders, each Supplemental Administrative Agent and each co-agent, sub-agent or collateral trustee appointed by the Administrative Agent or the Collateral Agent from time to time pursuant to Section 9.01(2) or 9.07.",
+        "sourceCitation": "§1.01, definition of \"Secured Parties\"",
+        "proposedIrEvidence": "\"dependsOnTerms\": [\"Administrative Agent\", \"Collateral Agent\", \"Lenders\", \"Supplemental Administrative Agent\"], \"calculationExpression\": null, \"sufficiency\": \"COMPLETE\"",
+        "verifierReasoning": "The source definition of Secured Parties has five independently-operative components: (1) Administrative Agent, (2) Collateral Agent, (3) Lenders, (4) each Supplemental Administrative Agent, and (5) each co-agent, sub-agent or collateral trustee appointed by the Administrative Agent or Collateral Agent pursuant to Section 9.01(2) or 9.07. The proposed IR's dependsOnTerms array captures only the first four and entirely omits the fifth category (appointed co-agents/sub-agents/collateral trustees), yet marks the definition sufficiency as COMPLETE. This is a genuine, independently-operative component of the scope of who qualifies as a 'Secured Party' - a term that likely governs entitlement to collateral, indemnities, releases, and voting/consent rights elsewhere in the Agreement and ancillary security documents. A reviewer relying on the IR could wrongly conclude that a collateral trustee appointed under Section 9.01(2)/9.07 is not a Secured Party, which is a scope error that could change downstream compliance or entitlement conclusions. Because the IR affirmatively claims COMPLETE while silently dropping an entire enumerated category, this deserves heightened scrutiny per the verification standard for COMPLETE claims.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-02T03:04:35.343Z"
+      },
+      {
+        "findingId": "a6d081cc8476059a78cf1de8f2a26be7fc9709568a72d6fbf00b923084d6e240",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "semantic-accountability:holdout:secured-net-leverage",
+        "ruleOrDefinitionId": "ir-definition:bda8b2003ecd9bd3ae86abca",
+        "irPath": "definitions[0].calculationExpression (termName='Secured Net Leverage Ratio')",
+        "findingType": "MISSING_DEPENDENCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "...to (b) (i) for purposes of determining compliance with the Financial Maintenance Covenant, Consolidated Maintenance EBITDA of the Borrower and its Subsidiaries for such Test Period, or (ii) for all other purposes, Consolidated EBITDA of the Borrower and its Subsidiaries for such Test Period, in each case on a pro forma basis with such pro forma adjustments as are appropriate and consistent with Section 1.07.",
+        "sourceCitation": "§1.01, definition of \"Secured Net Leverage Ratio\"",
+        "proposedIrEvidence": "\"periodDescription\": \"with respect to any Test Period (numerator measured as of the last day of such Test Period)\" -- no reference to pro forma adjustment or Section 1.07 appears anywhere in the calculationExpression tree or dependsOnTerms (which lists only [\"Consolidated Secured Debt\", \"Cash Equivalents\", \"Consolidated Maintenance EBITDA\", \"Consolidated EBITDA\", \"Test Period\"]).",
+        "verifierReasoning": "The source text expressly states that the entire ratio - both the Consolidated Secured Debt/cash numerator and the EBITDA-based denominator ('in each case') - is computed 'on a pro forma basis with such pro forma adjustments as are appropriate and consistent with Section 1.07.' This is a substantive, independently-operative computational instruction (pro forma treatment tied to Section 1.07, which in turn incorporates Specified Transaction adjustments, acquisitions, dispositions, etc., per the broader defined-term ecosystem) that can materially change the computed ratio value, especially around acquisitions/dispositions during a Test Period. The proposed IR's calculationExpression and periodDescription never reference this pro forma requirement or Section 1.07 at all - it is not merely deferred as UNSUPPORTED (as the DIVIDE/IF type-check failures are), it is simply absent from the structure. This gap exists independently of, and is not covered by, the PARTIAL sufficiency flag attached to the definition (which the IR attributes to type-check failures in DIVIDE/IF, not to the missing pro forma clause). A reviewer using this IR to compute or gate a transaction against the Secured Net Leverage Ratio without applying Section 1.07 pro forma adjustments could reach a materially different compliance conclusion than the source text requires.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-02T03:04:35.343Z"
+      },
+      {
+        "findingId": "67eb394f65b38e82bf62a73758e9f7d21d4a26d2bb1282609373799bc5c6edfd",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "semantic-accountability:holdout:secured-net-leverage",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 5 apparent independent enumerated unit(s) ((a), (x), (y), (i), (ii)) but only 0 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement) [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 5 apparent independent enumerated unit(s) ((a), (x), (y), (i), (ii)) but only 0 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-02T03:03:16.663Z"
+      },
+      {
+        "findingId": "b07f82eb85f04526bd6745cddaf3cbeca2af6729ba284622e98ff6c5a4837f5c",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "semantic-accountability:holdout:secured-net-leverage",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_CONDITION",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 2 conditional/exception/proviso marker(s) but the compiled IR records zero conditions or exceptions - possible missing condition/exception [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 2 conditional/exception/proviso marker(s) but the compiled IR records zero conditions or exceptions - possible missing condition/exception"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-02T03:03:16.663Z"
+      }
+    ],
+    "sourceInventory": {
+      "candidateRef": "semantic-accountability:holdout:secured-net-leverage",
+      "items": [
+        {
+          "itemId": "1d8e9a5f5266b42a641193c06a5bbf9bf787bf4915b3725348d726a2d23cd9ad",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "pursuant to\nSection 9",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 1272,
+          "charEnd": 1293
+        },
+        {
+          "itemId": "1c5985ac3b1886e18c85b413aabd5d6ae2666f1b7517bf1e1931f77f8ce4865c",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "pro forma basis",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 900,
+          "charEnd": 915
+        },
+        {
+          "itemId": "0564dbc519b5eb37fa0faf9efb7c5876d1c9632930c9b1724127d41646fcf49e",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 228,
+          "charEnd": 236
+        },
+        {
+          "itemId": "5a09f3be0d88d528b16253144d32efd22f252995e744f7e4b7ab27d23062bfa9",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 265,
+          "charEnd": 273
+        },
+        {
+          "itemId": "d931f1fca616f6beeab03bc155067de59ba9d38ce9680b02e4add6429f8ac0b1",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 368,
+          "charEnd": 376
+        },
+        {
+          "itemId": "08c8a3f1ba013d21869365c46b936221dd4cd2f488e2f518d8ca714bb23f007e",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 405,
+          "charEnd": 413
+        },
+        {
+          "itemId": "737d6c95cdd3f75f15c9ab37e442f6aca1523e5402499399c872c7055e799770",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 719,
+          "charEnd": 727
+        },
+        {
+          "itemId": "715217d6f12d859a97e5280f2e21c1c7bd59acdeb4efe38db248de7c062a2d33",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 830,
+          "charEnd": 838
+        },
+        {
+          "itemId": "20a1f842a4b2af9a1dc0e5bce46e11ab4a554f896e68b7c4b64daec6ffbd9fbc",
+          "kind": "METRIC_MENTION",
+          "rawText": "Secured Net Leverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 1,
+          "charEnd": 27
+        },
+        {
+          "itemId": "e5e662c0bf01369c62fb0eb2c39b166c11727f4da58651744450ea8ebab739d0",
+          "kind": "METRIC_MENTION",
+          "rawText": "Test Period",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 56,
+          "charEnd": 67
+        },
+        {
+          "itemId": "aba420fc384e1a2e700dfd13d05af61166b1fed757947dfca9de9a40be3eff72",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated\nSecured Debt",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 86,
+          "charEnd": 111
+        },
+        {
+          "itemId": "f91190c523ae52dc6beeef2ae6fc582dfbfb191212b0adf701e280c092e98dff",
+          "kind": "METRIC_MENTION",
+          "rawText": "Test Period",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 151,
+          "charEnd": 162
+        },
+        {
+          "itemId": "818e4aff410da78a060c8f3868db36750e15b05470046d2b40deda0cc852ceeb",
+          "kind": "METRIC_MENTION",
+          "rawText": "Cash Equivalents",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 204,
+          "charEnd": 220
+        },
+        {
+          "itemId": "6ee8acdfdca0788f2503937cff4c7dfbea5a728e0b3a67005dbcd14ec47f6d19",
+          "kind": "METRIC_MENTION",
+          "rawText": "Financial Maintenance Covenant",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 648,
+          "charEnd": 678
+        },
+        {
+          "itemId": "09885c2142c297b3a1b4bf782b40db6afff65eb3005b1f35a9d99ed3412c9646",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated Maintenance EBITDA",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 680,
+          "charEnd": 711
+        },
+        {
+          "itemId": "39866044de588b500ea156b488583b58ec13c64acd25f4c11e320c27dc0a7d79",
+          "kind": "METRIC_MENTION",
+          "rawText": "Test Period",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 758,
+          "charEnd": 769
+        },
+        {
+          "itemId": "7824ae94eed6086a634cb0269ed5b6bd2bd234801de1f21443370697b5076c1e",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated EBITDA",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 803,
+          "charEnd": 822
+        },
+        {
+          "itemId": "2d4242224a346746be4fbae01db98a1d8f8c03e344e248de961c8c0042728641",
+          "kind": "METRIC_MENTION",
+          "rawText": "Test Period",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 869,
+          "charEnd": 880
+        },
+        {
+          "itemId": "fbd854b90329456891c0bbdbcd5784763d8fd89973cbbebf22121b04f4c6446d",
+          "kind": "METRIC_MENTION",
+          "rawText": "Secured Parties",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 1003,
+          "charEnd": 1018
+        },
+        {
+          "itemId": "71d65f1256eaefd819f9f3f89703971275a08d4f45fd0dbcb4593db33cfe0b7f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Administrative Agent",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 1045,
+          "charEnd": 1065
+        },
+        {
+          "itemId": "efeb45672e4bc23026684448f77a92c1fc0175a9fd33122e2904bf3a3b521efe",
+          "kind": "METRIC_MENTION",
+          "rawText": "Collateral Agent",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 1071,
+          "charEnd": 1087
+        },
+        {
+          "itemId": "5d0e485e38e5d94b52faf250cf4083b252073adc8d2a6a04fd6159e0a28623c3",
+          "kind": "METRIC_MENTION",
+          "rawText": "Supplemental\nAdministrative Agent",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 1107,
+          "charEnd": 1140
+        },
+        {
+          "itemId": "a995d8856cba3be4677f21e0ef89d941c552ad6216b13b467ffe07888ff137b9",
+          "kind": "METRIC_MENTION",
+          "rawText": "Administrative Agent",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 1209,
+          "charEnd": 1229
+        },
+        {
+          "itemId": "03a1070c60505604395154194471960443a0caec19583974944fe182a3668d58",
+          "kind": "METRIC_MENTION",
+          "rawText": "Collateral Agent",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": 1237,
+          "charEnd": 1253
+        },
+        {
+          "itemId": "39664a49b817feb9de9d4ba6310415cd5a500b6b264fedb2d369278851e29694",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(a)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "7e4bb70382b8cef15e7cb3c24778974a6e36ba088192f2973d4dfc024239ba6c",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(x)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "f39a231a9ad1432a407f2ac9995a2078b51f2036cb713b856defb17b89d7daf4",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(y)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "2e326a4043e086907a5c3cc193e5783cdbefd7f25fa6a5bc32f9f1d08990aa69",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(i)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "967099a337eb8fcfefbf01cf164a2058dc52adcc467c485c8446894e566b5ac2",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(ii)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 5,
+      "apparentIndependentUnitEvidence": [
+        "(a)",
+        "(x)",
+        "(y)",
+        "(i)",
+        "(ii)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "semantic-accountability:holdout:secured-net-leverage",
+      "items": [
+        {
+          "itemId": "e758030834c884e8d0de22196cc3e4579098cb071da82ff6e1a71b2601313c9b",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:bda8b2003ecd9bd3ae86abca",
+          "irPath": "definitions[0].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Consolidated Secured Debt",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "0b054e105cc47353b7c783d1b61e1bd0bcbdb9181894015466f183d6464c5417",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:bda8b2003ecd9bd3ae86abca",
+          "irPath": "definitions[0].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Cash Equivalents",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "7b423159ff5c5b5f8757339bd50e10cdb6d753d71f6a7957edc1e81d9cc7c416",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:bda8b2003ecd9bd3ae86abca",
+          "irPath": "definitions[0].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Consolidated Maintenance EBITDA",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "db5b6472c867ddda4d8078cffb94d830ec219db46e087bdbc525df98d540eb6e",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:bda8b2003ecd9bd3ae86abca",
+          "irPath": "definitions[0].dependsOnTerms[3]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Consolidated EBITDA",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "5e36eae4cce1f554180153a6831a1793022b41f3d7d6af075f81d54549f3e65c",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:bda8b2003ecd9bd3ae86abca",
+          "irPath": "definitions[0].dependsOnTerms[4]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Test Period",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "a818ee3eabcf6cf8966e31e0d704ecf02ff6e9e2d25bc7f85435f800dd6b9cfd",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:bda8b2003ecd9bd3ae86abca",
+          "irPath": "definitions[0].calculationExpression",
+          "numericValue": null,
+          "textValue": "unrecognized or malformed expression (kind=\"DURING_PERIOD\")",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§1.01",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "4f4fd176f42ba8f2c8ab3edec94d0550d91ed4a35e71cb405c0fa9cda1a513fa",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e98387bba6a9b46e670e1800",
+          "irPath": "definitions[1].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Administrative Agent",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "c83f1b6e9c6b21b8d50af914f0fa30dd4d085d7430a1b588099943c121478d51",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e98387bba6a9b46e670e1800",
+          "irPath": "definitions[1].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Collateral Agent",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "7800db0f4b4b6f041e6b1637cc9a5b5e6397835f641227d16a23e517dede2201",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e98387bba6a9b46e670e1800",
+          "irPath": "definitions[1].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Lenders",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "cfad7bd3fbfa44883f3a4b413dc38b6c4bd948615f18aeebb9ffd3f8cbe75030",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e98387bba6a9b46e670e1800",
+          "irPath": "definitions[1].dependsOnTerms[3]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Supplemental Administrative Agent",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 0,
+      "definitionCount": 2,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "semantic-accountability:holdout:secured-net-leverage",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "20a1f842a4b2af9a1dc0e5bce46e11ab4a554f896e68b7c4b64daec6ffbd9fbc",
+            "kind": "METRIC_MENTION",
+            "rawText": "Secured Net Leverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+            "structuralNodeKey": null,
+            "charStart": 1,
+            "charEnd": 27
+          },
+          "irItems": [],
+          "reason": "source mention \"Secured Net Leverage Ratio\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e5e662c0bf01369c62fb0eb2c39b166c11727f4da58651744450ea8ebab739d0",
+            "kind": "METRIC_MENTION",
+            "rawText": "Test Period",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+            "structuralNodeKey": null,
+            "charStart": 56,
+            "charEnd": 67
+          },
+          "irItems": [],
+          "reason": "source mention \"Test Period\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "aba420fc384e1a2e700dfd13d05af61166b1fed757947dfca9de9a40be3eff72",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated\nSecured Debt",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+            "structuralNodeKey": null,
+            "charStart": 86,
+            "charEnd": 111
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated\nSecured Debt\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "f91190c523ae52dc6beeef2ae6fc582dfbfb191212b0adf701e280c092e98dff",
+            "kind": "METRIC_MENTION",
+            "rawText": "Test Period",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+            "structuralNodeKey": null,
+            "charStart": 151,
+            "charEnd": 162
+          },
+          "irItems": [],
+          "reason": "source mention \"Test Period\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "818e4aff410da78a060c8f3868db36750e15b05470046d2b40deda0cc852ceeb",
+            "kind": "METRIC_MENTION",
+            "rawText": "Cash Equivalents",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+            "structuralNodeKey": null,
+            "charStart": 204,
+            "charEnd": 220
+          },
+          "irItems": [],
+          "reason": "source mention \"Cash Equivalents\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "6ee8acdfdca0788f2503937cff4c7dfbea5a728e0b3a67005dbcd14ec47f6d19",
+            "kind": "METRIC_MENTION",
+            "rawText": "Financial Maintenance Covenant",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+            "structuralNodeKey": null,
+            "charStart": 648,
+            "charEnd": 678
+          },
+          "irItems": [],
+          "reason": "source mention \"Financial Maintenance Covenant\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "09885c2142c297b3a1b4bf782b40db6afff65eb3005b1f35a9d99ed3412c9646",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated Maintenance EBITDA",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+            "structuralNodeKey": null,
+            "charStart": 680,
+            "charEnd": 711
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated Maintenance EBITDA\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "39866044de588b500ea156b488583b58ec13c64acd25f4c11e320c27dc0a7d79",
+            "kind": "METRIC_MENTION",
+            "rawText": "Test Period",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+            "structuralNodeKey": null,
+            "charStart": 758,
+            "charEnd": 769
+          },
+          "irItems": [],
+          "reason": "source mention \"Test Period\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "7824ae94eed6086a634cb0269ed5b6bd2bd234801de1f21443370697b5076c1e",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated EBITDA",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+            "structuralNodeKey": null,
+            "charStart": 803,
+            "charEnd": 822
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated EBITDA\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "2d4242224a346746be4fbae01db98a1d8f8c03e344e248de961c8c0042728641",
+            "kind": "METRIC_MENTION",
+            "rawText": "Test Period",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+            "structuralNodeKey": null,
+            "charStart": 869,
+            "charEnd": 880
+          },
+          "irItems": [],
+          "reason": "source mention \"Test Period\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "fbd854b90329456891c0bbdbcd5784763d8fd89973cbbebf22121b04f4c6446d",
+            "kind": "METRIC_MENTION",
+            "rawText": "Secured Parties",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+            "structuralNodeKey": null,
+            "charStart": 1003,
+            "charEnd": 1018
+          },
+          "irItems": [],
+          "reason": "source mention \"Secured Parties\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "71d65f1256eaefd819f9f3f89703971275a08d4f45fd0dbcb4593db33cfe0b7f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Administrative Agent",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+            "structuralNodeKey": null,
+            "charStart": 1045,
+            "charEnd": 1065
+          },
+          "irItems": [],
+          "reason": "source mention \"Administrative Agent\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "efeb45672e4bc23026684448f77a92c1fc0175a9fd33122e2904bf3a3b521efe",
+            "kind": "METRIC_MENTION",
+            "rawText": "Collateral Agent",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+            "structuralNodeKey": null,
+            "charStart": 1071,
+            "charEnd": 1087
+          },
+          "irItems": [],
+          "reason": "source mention \"Collateral Agent\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5d0e485e38e5d94b52faf250cf4083b252073adc8d2a6a04fd6159e0a28623c3",
+            "kind": "METRIC_MENTION",
+            "rawText": "Supplemental\nAdministrative Agent",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+            "structuralNodeKey": null,
+            "charStart": 1107,
+            "charEnd": 1140
+          },
+          "irItems": [],
+          "reason": "source mention \"Supplemental\nAdministrative Agent\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "a995d8856cba3be4677f21e0ef89d941c552ad6216b13b467ffe07888ff137b9",
+            "kind": "METRIC_MENTION",
+            "rawText": "Administrative Agent",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+            "structuralNodeKey": null,
+            "charStart": 1209,
+            "charEnd": 1229
+          },
+          "irItems": [],
+          "reason": "source mention \"Administrative Agent\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "03a1070c60505604395154194471960443a0caec19583974944fe182a3668d58",
+            "kind": "METRIC_MENTION",
+            "rawText": "Collateral Agent",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Secured Net Leverage Ratio)",
+            "structuralNodeKey": null,
+            "charStart": 1237,
+            "charEnd": 1253
+          },
+          "irItems": [],
+          "reason": "source mention \"Collateral Agent\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 5 apparent independent enumerated unit(s) ((a), (x), (y), (i), (ii)) but only 0 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 2 conditional/exception/proviso marker(s) but the compiled IR records zero conditions or exceptions - possible missing condition/exception"
+        }
+      ],
+      "materialUnresolvedCount": 2
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-02T03:04:35.343Z"
+  },
+  "verifierOperativeSource": "RESOLVED_UNIT"
+}
