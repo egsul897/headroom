@@ -811,6 +811,35 @@ describe("canary #11 - non-Latin text is not punctuation", () => {
   });
 });
 
+describe("canary #12 - the historical Cyrillic fixture, certified", () => {
+  // The red team's preserved probe, verbatim (/tmp/rt/p1.ts line 18; audit finding 6, "Same for Cyrillic").
+  // VERIFY-FIRST: on the canary #12 starting SHA this already surfaced, because canary #11's fix detects letters
+  // in any script rather than any particular one. No production code was changed for this canary; this single
+  // test pins the certification so it cannot regress unnoticed.
+  it("CERTIFICATION: the exact historical Cyrillic clause is accountable and review-blocking", async () => {
+    const CYR = "Заемщик не вправе создавать залог.";
+    expect(classifyUnaccountedFragment(CYR, []).disposition).toBe("UNACCOUNTED_SOURCE");
+    const text = `The Borrower shall comply with all Applicable Laws.\n${CYR}\nThe Agent may inspect the books of the Borrower.`;
+    const anchored = ["The Borrower shall comply with all Applicable Laws.", "The Agent may inspect the books of the Borrower."];
+    const cov = coverOne(text, anchored);
+    expect(unaccountedText(cov)).toContain(CYR);
+    expect(cov.countsByDisposition.PUNCTUATION_OR_DELIMITER + cov.countsByDisposition.STRUCTURAL_NOISE).toBeLessThan(cov.spans.length);
+    expect(cov.spans.some((s) => s.excerpt.includes(CYR) && s.disposition !== "UNACCOUNTED_SOURCE")).toBe(false);
+
+    const sc = { state: "COMPLETE_LOCAL_SOURCE" as const, regions: [region("operative", text)], unresolvedReferences: [], reasons: [], totalChars: text.length, budgetChars: 10_000 };
+    const wire: WireInventoryItem[] = anchored.map((excerpt, i) => ({ localRef: `i${i}`, semanticRole: "OTHER", proposition: `clause ${i}`, excerpt, regionId: "operative", quantitativeValues: [], referencedTerms: [], referencedSections: [], parentRef: null, relatedRefs: [], materiality: "CRITICAL", ambiguity: "NONE", ambiguityReason: null, operative: "OPERATIVE" }));
+    const inv = await runSemanticInventory({ candidateRef: "canary12", documentId: "d", sourceContext: sc, caller: scriptedCaller(wire) });
+    expect(inv.inventoryStatus).toBe("INVENTORY_COVERAGE_GAP");
+    const rec = reconcileInventoryWithComposition({
+      inventory: inv,
+      composition: { rules: [{ inventoryItemIds: inv.items.map((i) => i.inventoryItemId), capacityExpression: null, conditions: [], exceptions: [], dependsOn: [], unresolvedDependencies: [] }], definitions: [], sharedCapacities: [] } as never,
+      dispositions: inv.items.map((i) => ({ inventoryItemId: i.inventoryItemId, disposition: "REPRESENTED", note: "matched" })),
+      sourceContextState: sc.state,
+    });
+    expect(rec.semanticallyComplete).toBe(false);
+  });
+});
+
 describe("source coverage - segmentation, tables and duplicates", () => {
   it("line-broken rows are separate units, not one block (audit finding 7)", () => {
     const text = "Reporting Requirements\nAnnual statements within 90 days after year end\nQuarterly statements within 45 days after quarter end\nNotice of any Default promptly";
