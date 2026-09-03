@@ -1068,6 +1068,43 @@ describe("RT-7 architectural remediation - child descent is positive-evidence on
   });
 });
 
+describe("numbered-caption remediation - numbering alone must not prove a heading (artifact 36)", () => {
+  // The red team's own scanner probe, verbatim (p3.ts). Before: scanner [] + caption frame "31" + nominal
+  // remainder "March 2030" = HEADING_OR_LABEL, an accounted disposition, on a scanner-blind date.
+  it("A. exact blocker: '31 March 2030' is scanner-blind and is no longer dismissed as a section caption", () => {
+    expect(scanQuantitativeValues("31 March 2030")).toEqual([]);
+    expect(classifyUnaccountedFragment("31 March 2030", []).disposition).toBe("UNACCOUNTED_SOURCE");
+    // in situ: a unit whose only uncovered residue is the date blocks completeness
+    const text = "The Borrower shall repay the Loans in full on or before 31 March 2030";
+    const cov = coverOne(text, ["The Borrower shall repay the Loans in full on or before"]);
+    expect(unaccountedText(cov)).toContain("31 March 2030");
+    expect(cov.countsByDisposition.HEADING_OR_LABEL ?? 0).toBe(0);
+  });
+
+  it("B. the class, not the date: other number-leading substantive forms from preserved evidence stay accountable", () => {
+    // p1/p3/e2e2 originals - none may receive an accounted disposition
+    for (const f of ["25000000", "3/31/2030", "5.02 The maximum aggregate basket amount is 2,500,000", "6.02 The Borrower shall not incur any Indebtedness", "2,500,000 (the \"Cap\")"]) {
+      expect(classifyUnaccountedFragment(f, scanQuantitativeValues(f)).disposition, f).toBe("UNACCOUNTED_SOURCE");
+    }
+    // a structural word does not rescue a remainder that carries a digit (canary #6 principle on the label)
+    expect(classifyUnaccountedFragment("Schedule 31 March 2030", []).disposition).toBe("UNACCOUNTED_SOURCE");
+  });
+
+  it("C. genuine captions with positive legal-numbering grammar are still suppressed; bare-integer captions become review gaps", () => {
+    for (const f of ["SECTION 7.04 Dispositions.", "6.02 Liens.", "7.05 Restricted Payments", "6.02 Limitation on Indebtedness.", "SECTION 1.01 Defined Terms."]) {
+      expect(classifyUnaccountedFragment(f, []).disposition, f).toBe("HEADING_OR_LABEL");
+    }
+    // Accepted review cost: a bare integer is not numbering evidence, so these now surface for review.
+    for (const f of ["1. Definitions.", "7 Restricted Payments"]) {
+      expect(classifyUnaccountedFragment(f, []).disposition, f).toBe("UNACCOUNTED_SOURCE");
+    }
+    // independently safe rules untouched
+    expect(classifyUnaccountedFragment("Section 7.11.", []).disposition).toBe("CITATION_ONLY");
+    expect(classifyUnaccountedFragment("ARTICLE VII", []).disposition).toBe("CITATION_ONLY");
+    expect(classifyUnaccountedFragment("Page 12 of 40", []).disposition).toBe("NON_SEMANTIC_FORMATTING");
+  });
+});
+
 describe("source coverage - segmentation, tables and duplicates", () => {
   it("line-broken rows are separate units, not one block (audit finding 7)", () => {
     const text = "Reporting Requirements\nAnnual statements within 90 days after year end\nQuarterly statements within 45 days after quarter end\nNotice of any Default promptly";

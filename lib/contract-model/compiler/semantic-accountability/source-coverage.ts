@@ -300,7 +300,27 @@ const CITATION_ONLY_RE = /^[\s(]*(?:see\s+)?(?:section|clause|paragraph|subsecti
  * Lien on the Collateral" was a heading, and the line vanished with unaccounted 0, INVENTORY_OK and
  * semanticallyComplete true. The ceiling is gone; length never decides eligibility for scrutiny.
  */
-const NUMBERED_CAPTION_FRAME_RE = /^\s*(?:section|article|annex|exhibit|schedule|appendix)?\s*\d+(?:\.\d+)*\s*[.:)]?\s*([A-Za-z][^\n]*?)\s*[.:]?\s*$/i;
+/**
+ * NUMBERING ALONE IS NOT EVIDENCE OF A HEADING (numbered-caption remediation, artifact 36).
+ *
+ * The frame used to accept ANY leading integer - `\d+(?:\.\d+)*` with an optional section word - so the
+ * independent red team's own scanner probe "31 March 2030" was read as section "31" captioned "March 2030":
+ * the scanner does not see the date, the remainder is capitalised words, and the fragment left the
+ * accounting as HEADING_OR_LABEL. A bare integer in front of words is compatible with a date, a quantity
+ * ("25 Business Days"), a table cell, a schedule entry ("1. Existing Liens") and a heading alike; nothing
+ * about it says which. The frame therefore now requires POSITIVE legal-numbering grammar:
+ *   - an explicit structural word (Section, Article, Annex, Exhibit, Schedule, Appendix) followed by a number; or
+ *   - a dotted multi-level section number ("6.02", "7.04", "12.14") - the conventional section grammar, which no
+ *     date or unit quantity takes in prose (a bare decimal precedes a lowercase unit word, which fails the
+ *     nominal test anyway).
+ * A bare integer, with or without a trailing period, no longer qualifies; such a line is a review gap unless
+ * a stronger rule accounts for it. The remainder is put to isNominalLabel, which now also refuses any digit (a
+ * caption is a name; a digit in it is content the letter-only word test cannot see).
+ *
+ * This is deliberately not a date parser, not a month list and not an RT-7 string blacklist. quantitative.ts
+ * is unchanged and still returns [] for the probe; the classifier simply no longer treats numbering as proof.
+ */
+const NUMBERED_CAPTION_FRAME_RE = /^\s*(?:(?:section|article|annex|exhibit|schedule|appendix)\s*\d+(?:\.\d+)*|\d+(?:\.\d+)+)\s*[.:)]?\s*([A-Za-z][^\n]*?)\s*[.:]?\s*$/i;
 /**
  * ALL-CAPS TYPOGRAPHY NOW GRANTS NOTHING AT ALL (canary #10).
  *
@@ -375,11 +395,19 @@ const QUOTED_LABEL_FRAME_RE = /^\s*[“"]([^”"]+)[”"]\s*(?:means|shall\s+mea
  * Known and accepted false reviews: a lowercase defined term (`"business day"`) and a term carrying internal
  * periods (`"U.S. Government Securities"`) are reported rather than dismissed. Per the trust-boundary
  * architecture, a false review is acceptable and a silently dropped covenant is not.
+ *
+ *   3. No digit anywhere in the candidate (numbered-caption remediation, artifact 36). The word test below is
+ *      letter-only, so "March 2030" used to pass as a name on the strength of "March" alone while the year was
+ *      invisible to it. A digit is content that this test cannot read; a candidate carrying one is not proven
+ *      a name. This is the canary #6 principle applied to labels, and it is the same helper for both frames,
+ *      so a quoted date ("31 March 2030" inside quotation marks) is no longer a defined-term label either.
+ *      Accepted false review: a genuine defined term that carries a digit (`"2029 Notes"`) is reported.
  */
 function isNominalLabel(candidate: string): boolean {
   const text = candidate.trim();
   if (text.length === 0) return false;
   if (/[.;:!?,]/.test(text)) return false;
+  if (/\d/.test(text)) return false;
   const words = text.match(new RegExp(WORD_RE.source, "g")) ?? [];
   if (words.length === 0) return false;
   let carriesAName = false;
@@ -444,7 +472,7 @@ export function classifyUnaccountedFragment(fragment: string, values: Quantitati
     // Neither frame decides. A numbered line is a caption only when what FOLLOWS the number is a label
     // (canary #7); an ALL-CAPS line is a heading only when it is a determinerless nominal (canary #8).
     const numbered = NUMBERED_CAPTION_FRAME_RE.exec(trimmed);
-    if (noInternalTerminator && numbered !== null && isNominalLabel(numbered[1]!)) return { disposition: "HEADING_OR_LABEL", reason: "a section caption - the text after the number is a name, not a proposition" };
+    if (noInternalTerminator && numbered !== null && isNominalLabel(numbered[1]!)) return { disposition: "HEADING_OR_LABEL", reason: "a section caption - legal section numbering (a structural word or a dotted section number) followed by a name, not a proposition" };
     if (carriesOperator) {
       return {
         disposition: "UNACCOUNTED_SOURCE",
