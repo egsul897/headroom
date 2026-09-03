@@ -309,7 +309,6 @@ describe("source coverage - every quantitative kind blocks, in every region (aud
 describe("source coverage - non-semantic classes are suppressed, never the trust boundary", () => {
   const noise: [string, string][] = [
     ["a numbered section caption", "SECTION 7.04 Dispositions."],
-    ["an ALL-CAPS article heading", "ARTICLE VII\nNEGATIVE COVENANTS"],
     ["a bare cross-reference", "See Section 6.02."],
     ["a table-of-contents leader", "Negative Covenants..............72"],
     ["page furniture", "Page 12 of 40"],
@@ -661,27 +660,28 @@ describe("canary #8 - typography does not prove heading-hood", () => {
     expect(rec.semanticallyComplete).toBe(false);
   });
 
-  it("TRUE ALL-CAPS HEADING CONTROL: a determinerless all-caps nominal is still suppressed", () => {
+  it("HEADING CONTROLS ARE NOW REVIEW-BLOCKING: typography alone suppresses nothing (revised by canary #10)", () => {
+    // Canary #8 asserted these stayed HEADING_OR_LABEL on the strength of "all caps + no determiner". Canary
+    // #10's pinned counterexample proved that test is not positive proof, and no independent structural
+    // evidence exists at this layer to replace it, so ALL-CAPS suppression was removed outright. These
+    // controls becoming review gaps is the accepted, disclosed cost - NOT a regression, and deliberately not
+    // papered over with a fresh heuristic.
     for (const f of ["ARTICLE VII\nNEGATIVE COVENANTS", "NEGATIVE COVENANTS", "RESTRICTED PAYMENTS", "EVENTS OF DEFAULT"]) {
       const { disposition } = classifyUnaccountedFragment(f, []);
-      expect(disposition, `${f} -> ${disposition}`).toBe("HEADING_OR_LABEL");
+      expect(disposition, `${f} -> ${disposition}`).toBe("UNACCOUNTED_SOURCE");
     }
+    // A citation frame is casing-independent and still carries its own disposition.
+    expect(classifyUnaccountedFragment("ARTICLE VII", []).disposition).toBe("CITATION_ONLY");
   });
 
   it("GENERIC ALL-CAPS PROPOSITION: no legal vocabulary needed, and no length rule survives", () => {
     expect(classifyUnaccountedFragment("THE COMPANY MUST DELIVER THE REPORT", []).disposition).toBe("UNACCOUNTED_SOURCE");
-    // §6: the old boundary was measured at ~82 characters. A SHORT all-caps proposition must surface too, and
-    // a LONG all-caps nominal must still be suppressed - length establishes nothing either way.
+    // The old boundary was measured at ~82 characters. Length establishes nothing in either direction: a short
+    // all-caps fragment and a long one now receive the same conservative default.
     expect(classifyUnaccountedFragment("THE FEE IS WAIVED", []).disposition).toBe("UNACCOUNTED_SOURCE");
-    expect(classifyUnaccountedFragment("REPRESENTATIONS WARRANTIES COVENANTS EVENTS OF DEFAULT REMEDIES INDEMNIFICATION AND MISCELLANEOUS PROVISIONS", []).disposition).toBe("HEADING_OR_LABEL");
+    expect(classifyUnaccountedFragment("REPRESENTATIONS WARRANTIES COVENANTS EVENTS OF DEFAULT REMEDIES INDEMNIFICATION AND MISCELLANEOUS PROVISIONS", []).disposition).toBe("UNACCOUNTED_SOURCE");
   });
 
-  it("DISCLOSED LIMITATION: a determinerless all-caps predication still passes as a heading", () => {
-    // Recorded, not papered over. The determiner test marks an argument position; it is not a parser, and it
-    // is honestly weaker than the mixed-case test. The alternative - a modal or verb list - is what the
-    // architecture forbids. This assertion exists so the limitation cannot drift unnoticed.
-    expect(classifyUnaccountedFragment("BORROWER SHALL PAY INTEREST", []).disposition).toBe("HEADING_OR_LABEL");
-  });
 });
 
 describe("canary #9 - a modifier is not glue", () => {
@@ -731,6 +731,44 @@ describe("canary #9 - a modifier is not glue", () => {
     // Scope modifiers are caught by the same class, not by a phrase match.
     expect(classifyUnaccountedFragment("solely,", []).disposition).toBe("UNACCOUNTED_SOURCE");
     expect(classifyUnaccountedFragment("respectively,", []).disposition).toBe("UNACCOUNTED_SOURCE");
+  });
+});
+
+describe("canary #10 - the determinerless ALL-CAPS predication hole is closed", () => {
+  // The exact limitation canary #8 pinned rather than papered over. "BORROWER SHALL PAY INTEREST" satisfied
+  // every condition of that rule - all caps, no clause punctuation, no determiner - and is a proposition,
+  // because a predication whose arguments are bare nouns has no determiner to find.
+  const PINNED = "BORROWER SHALL PAY INTEREST";
+
+  it("PINNED ATTACK: a determinerless all-caps predication is accountable", async () => {
+    expect(classifyUnaccountedFragment(PINNED, []).disposition).toBe("UNACCOUNTED_SOURCE");
+    const cov = coverOne(PINNED, []);
+    expect(unaccountedText(cov)).toContain(PINNED);
+    expect(cov.countsByDisposition.HEADING_OR_LABEL).toBe(0);
+
+    const sc = { state: "COMPLETE_LOCAL_SOURCE" as const, regions: [region("operative", PINNED)], unresolvedReferences: [], reasons: [], totalChars: PINNED.length, budgetChars: 10_000 };
+    const inv = await runSemanticInventory({ candidateRef: "canary10", documentId: "d", sourceContext: sc, caller: scriptedCaller([]) });
+    expect(inv.inventoryStatus).not.toBe("INVENTORY_OK");
+    const rec = reconcileInventoryWithComposition({
+      inventory: inv,
+      composition: { rules: [], definitions: [], sharedCapacities: [] } as never,
+      dispositions: [],
+      sourceContextState: sc.state,
+    });
+    expect(rec.semanticallyComplete).toBe(false);
+  });
+
+  it("GENERIC NON-LEGAL CONTROL: the same shape with no legal vocabulary also surfaces", () => {
+    // Neither DELIVERS nor REPORTS appears in any classifier list - the rule is the absence of proof, not a
+    // vocabulary match.
+    expect(classifyUnaccountedFragment("COMPANY DELIVERS REPORTS", []).disposition).toBe("UNACCOUNTED_SOURCE");
+  });
+
+  it("CASING-INDEPENDENT FRAMES ARE UNAFFECTED: suppression now needs a frame that is not typography", () => {
+    expect(classifyUnaccountedFragment("SECTION 7.04 Dispositions.", []).disposition).toBe("HEADING_OR_LABEL");
+    expect(classifyUnaccountedFragment("Section 7.11.", []).disposition).toBe("CITATION_ONLY");
+    expect(classifyUnaccountedFragment("Page 12 of 40", []).disposition).toBe("NON_SEMANTIC_FORMATTING");
+    expect(classifyUnaccountedFragment('"Consolidated EBITDA"', []).disposition).toBe("DEFINED_TERM_LABEL");
   });
 });
 
