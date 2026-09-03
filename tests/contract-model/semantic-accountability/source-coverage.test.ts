@@ -885,6 +885,49 @@ describe("closure remediation V1 - a currency-code cap blocks child descent", ()
   });
 });
 
+describe("closure remediation RT-3 - arithmetic operators are substantive", () => {
+  // The red team's original finding-3 probe (scripts/red-team-original/p1.ts), verbatim. After enumerator
+  // stripping every word sat in FUNCTION_WORDS - 'less' and 'sum' on the arithmetic line, 'clauses' on the
+  // lead-in-noun line - so contentWords was empty and the noise sink took it. Its two sibling probes surfaced
+  // only because 'foregoing' is an adjunct; the operator class itself was never partitioned out.
+  it("A. exact historical fragment: 'less the sum of clauses (a) and (b),' is accountable", () => {
+    const f = "less the sum of clauses (a) and (b),";
+    const r = classifyUnaccountedFragment(f, scanQuantitativeValues(f));
+    expect(r.disposition).toBe("UNACCOUNTED_SOURCE");
+    expect(r.reason).toContain("operator");
+  });
+
+  it("DISCLOSED LIMITATION: inline enumerator references after an operator let child descent re-discharge it", () => {
+    // Recorded, not papered over. In situ, segmentation makes "less the sum of clauses " a PARENT and the bare
+    // "(a) and" / "(b)," references its children. Those children are STRUCTURAL_NOISE - accounted - so the
+    // canary #4 descent rule ("every child accounted, final fragment, no value") discharges the operator
+    // lead-in as COVERED_BY_CHILD_DESCENT even though nothing is inventoried anywhere near it. The classifier
+    // fix in this remediation is correct and complete for its layer; the residual is a descent-semantics
+    // defect (noise-only children granting credit), which is out of scope here and needs its own bounded
+    // prompt. This assertion pins the current behaviour so it cannot drift unnoticed.
+    const text = "Consolidated Net Income, less the sum of clauses (a) and (b), for such period";
+    const cov = coverOne(text, ["Consolidated Net Income,", "for such period"]);
+    expect(cov.spans.some((x) => x.disposition === "COVERED_BY_CHILD_DESCENT" && x.excerpt.includes("less the sum of clauses"))).toBe(true);
+    expect(unaccountedText(cov)).toBe("");
+  });
+
+  it("B. generic operator control: the partition is the word class, not the fixture and not 'foregoing'", () => {
+    // No adjunct, no digits, no enumerators - only an operator plus pure grammar. If this surfaces, the
+    // operator itself is what does it.
+    for (const f of ["plus the difference of", "minus the product of", "the quotient of"]) {
+      expect(classifyUnaccountedFragment(f, []).disposition, f).toBe("UNACCOUNTED_SOURCE");
+    }
+  });
+
+  it("C. pure structural glue is still STRUCTURAL_NOISE - the category was not deleted", () => {
+    for (const f of ["and", "or", "of the", "(a)", "; and"]) {
+      expect(classifyUnaccountedFragment(f, []).disposition, f).toBe("STRUCTURAL_NOISE");
+    }
+    // and an operator inside a quoted defined-term NAME is still a label - the operators stay grammar there
+    expect(classifyUnaccountedFragment('"Consolidated EBITDA less Taxes"', []).disposition).toBe("DEFINED_TERM_LABEL");
+  });
+});
+
 describe("source coverage - segmentation, tables and duplicates", () => {
   it("line-broken rows are separate units, not one block (audit finding 7)", () => {
     const text = "Reporting Requirements\nAnnual statements within 90 days after year end\nQuarterly statements within 45 days after quarter end\nNotice of any Default promptly";

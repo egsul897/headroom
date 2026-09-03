@@ -209,6 +209,31 @@ const ADVERBIAL_ADJUNCTS = new Set([
   "directly", "indirectly", "together", "jointly", "severally", "hereinafter", "aforesaid", "foregoing", "above", "below",
 ]);
 
+/**
+ * ARITHMETIC / COMPOSITIONAL OPERATORS - a partition of the closed class below, not new vocabulary and not a
+ * phrase list. These are exactly the seven words that already sat on the "arithmetic connectives" line of
+ * FUNCTION_WORDS; nothing was invented or added.
+ *
+ * The comment that used to sit on them read: "arithmetic connectives joining formula components an item
+ * already anchors ... A residue carrying an actual amount is never dismissed here - the value guard runs
+ * first." Both halves are true and neither justifies dismissal. The OPERATOR is what says how the anchored
+ * components combine: "less the sum of clauses (a) and (b)" turns two covered components into a subtraction,
+ * and dropping it silently turns a net amount into a gross one. The value guard cannot help, because an
+ * operator fragment carries no amount of its own - the amounts are in the components it joins.
+ *
+ * An independent red team's finding 3 listed this class alongside the adjuncts. The adjunct half was closed
+ * by canary #9; the operator half was not, and the closure audit found the original probe
+ * "less the sum of clauses (a) and (b)," still STRUCTURAL_NOISE while its two sibling probes surfaced ONLY
+ * because "foregoing" happens to be an adjunct. That is incidental cover, not a repair. This partition closes
+ * the operator class itself: addition, subtraction, multiplication, division and aggregation language is
+ * substantive, and the classifier does not need to execute it - only refuse to dismiss it.
+ *
+ * They stay inside FUNCTION_WORDS because the nominal-label tests (canaries #5, #7) legitimately treat them as
+ * grammar inside a NAME ("Consolidated EBITDA less Taxes" is still a defined-term name). What changes is
+ * narrower: they can no longer let a residue disappear as STRUCTURAL_NOISE.
+ */
+const ARITHMETIC_OPERATORS = new Set(["plus", "minus", "less", "sum", "difference", "product", "quotient"]);
+
 const FUNCTION_WORDS = new Set([
   // determiners, pronouns, prepositions, auxiliaries - pure grammar
   "a", "an", "and", "andor", "any", "are", "as", "at", "be", "been", "being", "both", "but", "by", "each", "either", "for", "from", "hereby", "hereof", "hereto", "hereunder", "in", "into", "is", "it", "its", "of", "on", "or", "other", "over", "per", "such", "than", "that", "the", "their", "then", "there", "thereof", "thereto", "thereunder", "these", "this", "those", "to", "under", "was", "were", "which", "who", "whom", "whose", "with", "within", "without",
@@ -225,9 +250,10 @@ const FUNCTION_WORDS = new Set([
   // adverbial adjuncts - see ADVERBIAL_ADJUNCTS below. They remain in this set because the nominal-label tests
   // treat them as grammar, but they can NO LONGER make a residue vanish as structural noise (canary #9).
   ...ADVERBIAL_ADJUNCTS,
-  // arithmetic connectives joining formula components an item already anchors ("... plus, ...", ", the sum of").
-  // A residue carrying an actual amount is never dismissed here - the value guard runs first.
-  "plus", "minus", "less", "sum", "difference", "product", "quotient",
+  // arithmetic / compositional operators - see ARITHMETIC_OPERATORS below. They remain in this set because the
+  // nominal-label tests treat them as grammar, but they can NO LONGER make a residue vanish as structural
+  // noise (closure remediation RT-3).
+  ...ARITHMETIC_OPERATORS,
 ]);
 
 const WORD_RE = /[A-Za-z][A-Za-z'-]*/g;
@@ -379,9 +405,14 @@ export function classifyUnaccountedFragment(fragment: string, values: Quantitati
     // A residue carrying an adverbial adjunct is standalone modifier content, not glue (canary #9). The check
     // is deliberately confined to this branch: contentWords keeps its meaning everywhere else, so the
     // connective-ownership machinery (canary #2B) is untouched.
-    const carriesAdjunct = (trimmed.toLowerCase().match(new RegExp(WORD_RE.source, "g")) ?? []).some((w) => ADVERBIAL_ADJUNCTS.has(w.replace(/[^a-z]/g, "")));
+    const lowerWords = trimmed.toLowerCase().match(new RegExp(WORD_RE.source, "g")) ?? [];
+    const carriesAdjunct = lowerWords.some((w) => ADVERBIAL_ADJUNCTS.has(w.replace(/[^a-z]/g, "")));
+    // A residue carrying an arithmetic / compositional operator is substantive, not glue (closure remediation
+    // RT-3). Confined to this branch exactly as the adjunct guard is: contentWords keeps its meaning everywhere
+    // else, so connective ownership and the nominal-label tests are untouched.
+    const carriesOperator = lowerWords.some((w) => ARITHMETIC_OPERATORS.has(w.replace(/[^a-z]/g, "")));
     const words = contentWords(trimmed);
-    if (words.length === 0 && !carriesUnexplainedDigits && !carriesUnexplainedLetters && !carriesAdjunct) return { disposition: "STRUCTURAL_NOISE", reason: "enumerators, punctuation and closed-class connectives only - the residue of splitting a parent unit" };
+    if (words.length === 0 && !carriesUnexplainedDigits && !carriesUnexplainedLetters && !carriesAdjunct && !carriesOperator) return { disposition: "STRUCTURAL_NOISE", reason: "enumerators, punctuation and closed-class connectives only - the residue of splitting a parent unit" };
     // Headings carry no clause terminator and no verb-bearing body; require BOTH the caption shape and the absence of an internal terminator.
     // A caption has no SENTENCE terminator inside it. A decimal point inside a section number ("7.04") is not one,
     // so the terminator must be followed by whitespace to count.
@@ -390,6 +421,12 @@ export function classifyUnaccountedFragment(fragment: string, values: Quantitati
     // (canary #7); an ALL-CAPS line is a heading only when it is a determinerless nominal (canary #8).
     const numbered = NUMBERED_CAPTION_FRAME_RE.exec(trimmed);
     if (noInternalTerminator && numbered !== null && isNominalLabel(numbered[1]!)) return { disposition: "HEADING_OR_LABEL", reason: "a section caption - the text after the number is a name, not a proposition" };
+    if (carriesOperator) {
+      return {
+        disposition: "UNACCOUNTED_SOURCE",
+        reason: "carries an arithmetic or compositional operator that no inventory item anchors - the operator says how covered components combine, so it is standalone content and not the glue left over from splitting a parent unit",
+      };
+    }
     if (carriesAdjunct) {
       return {
         disposition: "UNACCOUNTED_SOURCE",
