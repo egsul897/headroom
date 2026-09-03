@@ -227,7 +227,52 @@ const CITATION_ONLY_RE = /^[\s(]*(?:see\s+)?(?:section|clause|paragraph|subsecti
  * semanticallyComplete true. The ceiling is gone; length never decides eligibility for scrutiny.
  */
 const NUMBERED_CAPTION_FRAME_RE = /^\s*(?:section|article|annex|exhibit|schedule|appendix)?\s*\d+(?:\.\d+)*\s*[.:)]?\s*([A-Za-z][^\n]*?)\s*[.:]?\s*$/i;
-const ALLCAPS_CAPTION_RE = /^\s*[A-Z][A-Z0-9\s,'&/.-]{2,80}\s*$/;
+/**
+ * The FRAME of a possible ALL-CAPS heading. Typography is not evidence: all caps is the standard drafting
+ * register for jury-trial waivers, warranty disclaimers and liability caps as well as for headings, so the
+ * frame alone grants nothing (canary #8). What it contains is put to isAllCapsNominalHeading below.
+ *
+ * The `{2,80}` bound is gone. An independent red team measured the old boundary exactly - all caps up to 82
+ * characters was a heading, 84 was not - which made LENGTH the trust boundary. A short substantive sentence is
+ * still substantive and a long heading is still a heading; length cannot establish meaning.
+ */
+const ALLCAPS_FRAME_RE = /^\s*[A-Z][A-Z0-9\s,'&/.-]*$/;
+
+/**
+ * Determiners and pronouns - the closed-class marker of an ARGUMENT position. This is a partition of words
+ * already in FUNCTION_WORDS above, not new vocabulary: nothing here is a verb, a modal, or specific to any
+ * subject matter.
+ *
+ * Why this is the test for an ALL-CAPS heading (canary #8): isNominalLabel separates a name from a proposition
+ * by finding a lowercase content word acting as the predicate. UPPERCASING DESTROYS THAT SIGNAL - every word
+ * in all caps satisfies the proper-noun form, so isNominalLabel returns true for "NEGATIVE COVENANTS" and for
+ * "THE COMPANY MUST DELIVER THE REPORT" alike. Verified before this fix was written. Delegating to it here
+ * would declare every all-caps line a name, which is the failure this canary exists to prevent.
+ *
+ * What survives uppercasing is grammatical structure. A heading is a bare nominal - a title - and titles in
+ * drafting are determinerless: "NEGATIVE COVENANTS", "EVENTS OF DEFAULT". A proposition needs arguments, and
+ * an argument is introduced by a determiner or is a pronoun. So a determiner inside an all-caps run is
+ * positive evidence that the run predicates something, and its absence is the only structural evidence of
+ * title-hood that casing leaves intact.
+ */
+const DETERMINERS = new Set(["a", "an", "any", "both", "each", "either", "it", "its", "other", "such", "that", "the", "their", "there", "these", "this", "those", "which", "who", "whom", "whose"]);
+
+/**
+ * Is an ALL-CAPS fragment a heading? Conservative and positive: it must be a determinerless nominal with no
+ * clause punctuation. Anything else keeps UNACCOUNTED_SOURCE.
+ *
+ * DISCLOSED LIMITATION: a determinerless all-caps predication ("BORROWER SHALL PAY INTEREST") still passes.
+ * The determiner test is a necessary marker of an argument position, not a complete parser. It defeats every
+ * fixture in the red team's finding 1, and it is honestly weaker than the mixed-case test; it is recorded here
+ * rather than papered over, because the alternative - a modal or verb list - is what the architecture forbids.
+ */
+function isAllCapsNominalHeading(text: string): boolean {
+  if (!ALLCAPS_FRAME_RE.test(text)) return false;
+  if (/[.;:!?,]/.test(text)) return false;
+  const words = text.match(new RegExp(WORD_RE.source, "g")) ?? [];
+  if (words.length === 0) return false;
+  return !words.some((w) => DETERMINERS.has(w.toLowerCase().replace(/[^a-z]/g, "")));
+}
 /**
  * Page furniture: "Page 12", "Page 12 of 40", "12 of 40", "- 12 -". Pagination must be established by
  * AFFIRMATIVE STRUCTURE - the word "page", the "N of M" folio idiom, or a number enclosed by dashes on both
@@ -320,10 +365,11 @@ export function classifyUnaccountedFragment(fragment: string, values: Quantitati
     // A caption has no SENTENCE terminator inside it. A decimal point inside a section number ("7.04") is not one,
     // so the terminator must be followed by whitespace to count.
     const noInternalTerminator = !/[.;:!?]\s+\S/.test(trimmed);
-    // A numbered line is a caption only when what FOLLOWS the number is itself a label (canary #7). The
-    // ALL-CAPS path is untouched by this canary and remains a known-broken shape heuristic.
+    // Neither frame decides. A numbered line is a caption only when what FOLLOWS the number is a label
+    // (canary #7); an ALL-CAPS line is a heading only when it is a determinerless nominal (canary #8).
     const numbered = NUMBERED_CAPTION_FRAME_RE.exec(trimmed);
-    if (noInternalTerminator && (ALLCAPS_CAPTION_RE.test(trimmed) || (numbered !== null && isNominalLabel(numbered[1]!)))) return { disposition: "HEADING_OR_LABEL", reason: "a section caption or heading line - the text after the number is a name, not a proposition" };
+    if (noInternalTerminator && numbered !== null && isNominalLabel(numbered[1]!)) return { disposition: "HEADING_OR_LABEL", reason: "a section caption - the text after the number is a name, not a proposition" };
+    if (noInternalTerminator && isAllCapsNominalHeading(trimmed)) return { disposition: "HEADING_OR_LABEL", reason: "an all-caps heading line - a determinerless nominal, not a proposition" };
     // Last, once every positive structural rule above has had its chance: an unexplained number is accountable.
     if (carriesUnexplainedDigits) {
       return {

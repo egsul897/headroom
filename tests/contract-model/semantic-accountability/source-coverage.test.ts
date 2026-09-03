@@ -628,6 +628,62 @@ describe("canary #7 - numbering does not make text a caption", () => {
   });
 });
 
+describe("canary #8 - typography does not prove heading-hood", () => {
+  // The red team's finding-1 fixture, verbatim: a jury-trial waiver between two inventoried sentences. Before,
+  // ALLCAPS_CAPTION_RE matched any all-caps line up to 82 characters, so the waiver was HEADING_OR_LABEL and
+  // vanished with unaccounted 0, INVENTORY_OK and semanticallyComplete true.
+  const S2 = "The Borrower shall repay the Loans in accordance with Section 2.05.\nEACH PARTY HEREBY IRREVOCABLY WAIVES ANY RIGHT TO TRIAL BY JURY\nThe Administrative Agent shall give notice of any prepayment.";
+  const WAIVER = "EACH PARTY HEREBY IRREVOCABLY WAIVES ANY RIGHT TO TRIAL BY JURY";
+  const S10 = "IN NO EVENT SHALL THE AGGREGATE LIABILITY EXCEED FIVE MILLION DOLLARS";
+  const ANCHORED = ["The Borrower shall repay the Loans in accordance with Section 2.05.", "The Administrative Agent shall give notice of any prepayment."];
+
+  it("ATTACK: substantive ALL-CAPS text is accountable, not a heading", async () => {
+    // §12: neither fixture carries a value the extractor recognises, so nothing in the value route could have
+    // saved them. The source route is it.
+    expect(scanQuantitativeValues(WAIVER)).toEqual([]);
+    expect(scanQuantitativeValues(S10)).toEqual([]);
+    const cov = coverOne(S2, ANCHORED);
+    expect(unaccountedText(cov)).toContain("WAIVES ANY RIGHT TO TRIAL BY JURY");
+    expect(cov.countsByDisposition.HEADING_OR_LABEL).toBe(0);
+    // the S10 variant named in the same finding
+    expect(classifyUnaccountedFragment(S10, []).disposition).toBe("UNACCOUNTED_SOURCE");
+
+    const sc = { state: "COMPLETE_LOCAL_SOURCE" as const, regions: [region("operative", S2)], unresolvedReferences: [], reasons: [], totalChars: S2.length, budgetChars: 10_000 };
+    const wire: WireInventoryItem[] = ANCHORED.map((excerpt, i) => ({ localRef: `i${i}`, semanticRole: "OTHER", proposition: `clause ${i}`, excerpt, regionId: "operative", quantitativeValues: [], referencedTerms: [], referencedSections: [], parentRef: null, relatedRefs: [], materiality: "CRITICAL", ambiguity: "NONE", ambiguityReason: null, operative: "OPERATIVE" }));
+    const inv = await runSemanticInventory({ candidateRef: "canary8", documentId: "d", sourceContext: sc, caller: scriptedCaller(wire) });
+    expect(inv.inventoryStatus).toBe("INVENTORY_COVERAGE_GAP");
+    const rec = reconcileInventoryWithComposition({
+      inventory: inv,
+      composition: { rules: [{ inventoryItemIds: inv.items.map((i) => i.inventoryItemId), capacityExpression: null, conditions: [], exceptions: [], dependsOn: [], unresolvedDependencies: [] }], definitions: [], sharedCapacities: [] } as never,
+      dispositions: inv.items.map((i) => ({ inventoryItemId: i.inventoryItemId, disposition: "REPRESENTED", note: "matched" })),
+      sourceContextState: sc.state,
+    });
+    expect(rec.semanticallyComplete).toBe(false);
+  });
+
+  it("TRUE ALL-CAPS HEADING CONTROL: a determinerless all-caps nominal is still suppressed", () => {
+    for (const f of ["ARTICLE VII\nNEGATIVE COVENANTS", "NEGATIVE COVENANTS", "RESTRICTED PAYMENTS", "EVENTS OF DEFAULT"]) {
+      const { disposition } = classifyUnaccountedFragment(f, []);
+      expect(disposition, `${f} -> ${disposition}`).toBe("HEADING_OR_LABEL");
+    }
+  });
+
+  it("GENERIC ALL-CAPS PROPOSITION: no legal vocabulary needed, and no length rule survives", () => {
+    expect(classifyUnaccountedFragment("THE COMPANY MUST DELIVER THE REPORT", []).disposition).toBe("UNACCOUNTED_SOURCE");
+    // §6: the old boundary was measured at ~82 characters. A SHORT all-caps proposition must surface too, and
+    // a LONG all-caps nominal must still be suppressed - length establishes nothing either way.
+    expect(classifyUnaccountedFragment("THE FEE IS WAIVED", []).disposition).toBe("UNACCOUNTED_SOURCE");
+    expect(classifyUnaccountedFragment("REPRESENTATIONS WARRANTIES COVENANTS EVENTS OF DEFAULT REMEDIES INDEMNIFICATION AND MISCELLANEOUS PROVISIONS", []).disposition).toBe("HEADING_OR_LABEL");
+  });
+
+  it("DISCLOSED LIMITATION: a determinerless all-caps predication still passes as a heading", () => {
+    // Recorded, not papered over. The determiner test marks an argument position; it is not a parser, and it
+    // is honestly weaker than the mixed-case test. The alternative - a modal or verb list - is what the
+    // architecture forbids. This assertion exists so the limitation cannot drift unnoticed.
+    expect(classifyUnaccountedFragment("BORROWER SHALL PAY INTEREST", []).disposition).toBe("HEADING_OR_LABEL");
+  });
+});
+
 describe("source coverage - segmentation, tables and duplicates", () => {
   it("line-broken rows are separate units, not one block (audit finding 7)", () => {
     const text = "Reporting Requirements\nAnnual statements within 90 days after year end\nQuarterly statements within 45 days after quarter end\nNotice of any Default promptly";
