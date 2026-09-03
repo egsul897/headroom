@@ -76,6 +76,30 @@ const ACCOUNTED: ReadonlySet<CoverageDisposition> = new Set<CoverageDisposition>
 
 export const isAccountedDisposition = (d: CoverageDisposition): boolean => ACCOUNTED.has(d);
 
+/**
+ * SEMANTIC OWNERSHIP is narrower than ACCOUNTED (child-descent ownership remediation).
+ *
+ * "Accounted" answers "does this stretch need review?" - and a heading, a citation, an enumerator or a comma
+ * does not. "Semantically owned" answers a different question: "is the meaning of this stretch REPRESENTED
+ * somewhere?" Only two dispositions say yes: an inventory item anchors it, or a disclosed external unit owns
+ * it. The six non-semantic classes say the opposite - there is no meaning here to represent.
+ *
+ * Child descent is semantic ownership propagation: a lead-in inherits coverage from the clauses it introduces
+ * BECAUSE those clauses carry the meaning. It used to test the broad ACCOUNTED set, so a parent whose
+ * "children" were nothing but enumerator glue - "(a) and" / "(b)," - was discharged on the strength of text
+ * that is, by the detector's own verdict, meaningless. The RT-3 remediation surfaced "less the sum of
+ * clauses " correctly and descent then re-absorbed it. A child being non-semantic proves nothing about a
+ * substantive parent; it only proves the child needs no review.
+ *
+ * COVERED_BY_CHILD_DESCENT and COVERED_BY_CONNECTIVE_OWNERSHIP are deliberately NOT here. Neither can occur on
+ * a child at evaluation time - parents are always non-enumerated units and children always enumerated, so an
+ * enumerated unit is never itself a parent, and connective ownership runs after the descent loop - so listing
+ * them would change nothing today while quietly licensing a self-justifying chain tomorrow. Every descent
+ * therefore terminates, in one step, in an inventory or external anchor.
+ */
+const SEMANTIC_OWNERSHIP: ReadonlySet<CoverageDisposition> = new Set<CoverageDisposition>(["COVERED_BY_INVENTORY", "ACCOUNTED_BY_EXTERNAL_UNIT"]);
+export const isSemanticallyOwned = (d: CoverageDisposition): boolean => SEMANTIC_OWNERSHIP.has(d);
+
 /** One accounted-for stretch of source. Spans tile each region completely: every non-whitespace character belongs to exactly one. */
 export interface SourceCoverageSpan {
   regionId: string;
@@ -692,8 +716,13 @@ export function computeSourceCoverage(input: SourceCoverageInput): SourceCoverag
     for (let i = 0; i < units.length; i++) {
       const children = parentOf.map((p, j) => (p === i ? j : -1)).filter((j) => j >= 0);
       if (children.length === 0) continue;
+      // Two conditions, and they are different questions. Every child must need no review (nothing in it is
+      // UNACCOUNTED_SOURCE) AND every child must carry at least one semantically OWNED span - an inventory or
+      // external anchor. A child made only of enumerator glue, punctuation, a label or a citation is accounted
+      // for but represents nothing, so it cannot lend its parent any semantics to inherit.
       const childrenAccounted = children.every((j) => unitSpans[j]!.every((s) => isAccountedDisposition(s.disposition)));
-      if (!childrenAccounted) continue;
+      const childrenOwned = children.every((j) => unitSpans[j]!.some((s) => isSemanticallyOwned(s.disposition)));
+      if (!childrenAccounted || !childrenOwned) continue;
       // Residue-first (canary #4): the parent residue is split at coordination boundaries and ONLY the final
       // fragment - the one that introduces the children - can be discharged. An earlier conjunct is an
       // independent predicate of the parent's own, so it stays accountable; a fragment carrying a value of any
@@ -712,7 +741,7 @@ export function computeSourceCoverage(input: SourceCoverageInput): SourceCoverag
       // it must actually run up to the children.
       const introducesChildren = lastResidue >= 0 && rebuilt.slice(lastResidue + 1).every((s) => s.excerpt.trim().length === 0 || s.disposition === "PUNCTUATION_OR_DELIMITER");
       if (introducesChildren && rebuilt[lastResidue]!.values.length === 0) {
-        rebuilt[lastResidue] = { ...rebuilt[lastResidue]!, disposition: "COVERED_BY_CHILD_DESCENT", reason: `introduces an enumerated list whose ${children.length} child clause(s) are each accounted for; carries no independent conjunct and no quantitative value of its own` };
+        rebuilt[lastResidue] = { ...rebuilt[lastResidue]!, disposition: "COVERED_BY_CHILD_DESCENT", reason: `introduces an enumerated list whose ${children.length} child clause(s) are each anchored by an inventory item or an external unit and need no review; carries no independent conjunct and no quantitative value of its own` };
       }
       unitSpans[i] = rebuilt;
     }

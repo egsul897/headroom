@@ -897,18 +897,16 @@ describe("closure remediation RT-3 - arithmetic operators are substantive", () =
     expect(r.reason).toContain("operator");
   });
 
-  it("DISCLOSED LIMITATION: inline enumerator references after an operator let child descent re-discharge it", () => {
-    // Recorded, not papered over. In situ, segmentation makes "less the sum of clauses " a PARENT and the bare
-    // "(a) and" / "(b)," references its children. Those children are STRUCTURAL_NOISE - accounted - so the
-    // canary #4 descent rule ("every child accounted, final fragment, no value") discharges the operator
-    // lead-in as COVERED_BY_CHILD_DESCENT even though nothing is inventoried anywhere near it. The classifier
-    // fix in this remediation is correct and complete for its layer; the residual is a descent-semantics
-    // defect (noise-only children granting credit), which is out of scope here and needs its own bounded
-    // prompt. This assertion pins the current behaviour so it cannot drift unnoticed.
+  it("CLOSED (child-descent ownership remediation): noise-only enumerator children no longer discharge the operator lead-in", () => {
+    // This test used to pin the defect. In situ, segmentation makes "less the sum of clauses " a parent and the
+    // bare "(a) and" / "(b)," references its children; they classify STRUCTURAL_NOISE. Descent used to accept
+    // any ACCOUNTED child, so the parent was re-discharged. Descent now requires every child to carry a
+    // semantically OWNED span - an inventory or external anchor - and glue-only children provide none.
     const text = "Consolidated Net Income, less the sum of clauses (a) and (b), for such period";
     const cov = coverOne(text, ["Consolidated Net Income,", "for such period"]);
-    expect(cov.spans.some((x) => x.disposition === "COVERED_BY_CHILD_DESCENT" && x.excerpt.includes("less the sum of clauses"))).toBe(true);
-    expect(unaccountedText(cov)).toBe("");
+    expect(cov.countsByDisposition.COVERED_BY_CHILD_DESCENT).toBe(0);
+    expect(unaccountedText(cov)).toContain("less the sum of clauses");
+    expect(cov.unaccounted.length).toBeGreaterThan(0);
   });
 
   it("B. generic operator control: the partition is the word class, not the fixture and not 'foregoing'", () => {
@@ -925,6 +923,55 @@ describe("closure remediation RT-3 - arithmetic operators are substantive", () =
     }
     // and an operator inside a quoted defined-term NAME is still a label - the operators stay grammar there
     expect(classifyUnaccountedFragment('"Consolidated EBITDA less Taxes"', []).disposition).toBe("DEFINED_TERM_LABEL");
+  });
+});
+
+describe("child-descent ownership - accounted is not owned", () => {
+  it("A. pinned failure: a substantive parent with noise-only enumerator children stays UNACCOUNTED and blocks completeness", async () => {
+    const text = "Consolidated Net Income, less the sum of clauses (a) and (b), for such period";
+    const anchored = ["Consolidated Net Income,", "for such period"];
+    const cov = coverOne(text, anchored);
+    expect(cov.spans.some((x) => x.disposition === "COVERED_BY_CHILD_DESCENT")).toBe(false);
+    expect(unaccountedText(cov)).toContain("less the sum of clauses");
+
+    const sc = { state: "COMPLETE_LOCAL_SOURCE" as const, regions: [region("operative", text)], unresolvedReferences: [], reasons: [], totalChars: text.length, budgetChars: 10_000 };
+    const wire: WireInventoryItem[] = anchored.map((excerpt, i) => ({ localRef: `r${i}`, semanticRole: "OTHER", proposition: "p", excerpt, regionId: "operative", quantitativeValues: [], referencedTerms: [], referencedSections: [], parentRef: null, relatedRefs: [], materiality: "CRITICAL", ambiguity: "NONE", ambiguityReason: null, operative: "OPERATIVE" }));
+    const inv = await runSemanticInventory({ candidateRef: "descent-own", documentId: "d", sourceContext: sc, caller: scriptedCaller(wire) });
+    expect(inv.inventoryStatus).toBe("INVENTORY_COVERAGE_GAP");
+    const acc = reconcileInventoryWithComposition({
+      inventory: inv,
+      composition: { rules: [{ inventoryItemIds: inv.items.map((i) => i.inventoryItemId), capacityExpression: null, conditions: [], exceptions: [], dependsOn: [], unresolvedDependencies: [] }], definitions: [], sharedCapacities: [] } as never,
+      dispositions: [],
+      sourceContextState: sc.state,
+    });
+    expect(acc.semanticallyComplete).toBe(false);
+  });
+
+  it("B. positive control: a genuine chapeau whose children are inventoried still descends", () => {
+    // the canary #4 pure-chapeau control, verbatim - every child carries a COVERED_BY_INVENTORY span
+    const text = "The Borrower may make the following Investments: (a) Investments in Subsidiaries. (b) Investments in Joint Ventures.";
+    const cov = coverOne(text, ["(a) Investments in Subsidiaries.", "(b) Investments in Joint Ventures."]);
+    expect(cov.unaccounted).toEqual([]);
+    expect(cov.countsByDisposition.COVERED_BY_CHILD_DESCENT).toBeGreaterThan(0);
+    // and a mixed list - one inventoried child, one glue-only child - does NOT descend: every child must own
+    const mixed = "The Borrower may make the following Investments: (a) Investments in Subsidiaries. (b)";
+    expect(coverOne(mixed, ["(a) Investments in Subsidiaries."]).countsByDisposition.COVERED_BY_CHILD_DESCENT).toBe(0);
+  });
+
+  it("C. descent does not chain: an enumerated unit is never a parent, so a nested lead-in cannot borrow its grandchildren's anchors", () => {
+    // Structural fact under test: parents are always non-enumerated units and children always enumerated, so
+    // there is no recursion to make safe - a descent always terminates in one step at an inventory/external
+    // anchor. Here the inner lead-in "(a) the following:" is enumerated; its grandchildren (i)/(ii) are
+    // inventoried, but that credit cannot flow up through it.
+    // Because "(a)" is enumerated it is not a parent either: (a), (i) and (ii) are all children of the top
+    // lead-in, and (a) is glue-only (STRUCTURAL_NOISE - accounted but not owned), so descent is denied and the
+    // substantive lead-in stays UNACCOUNTED.
+    const text = "The Borrower shall deliver: (a) the following: (i) annual statements. (ii) quarterly statements.";
+    const cov = coverOne(text, ["(i) annual statements.", "(ii) quarterly statements."]);
+    expect(cov.countsByDisposition.COVERED_BY_CHILD_DESCENT).toBe(0);
+    expect(unaccountedText(cov)).toContain("The Borrower shall deliver:");
+    expect(cov.spans.some((x) => x.disposition === "STRUCTURAL_NOISE" && x.excerpt.includes("the following"))).toBe(true);
+    expect(cov.spans.filter((x) => x.disposition === "COVERED_BY_INVENTORY").length).toBe(2);
   });
 });
 
