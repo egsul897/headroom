@@ -39,6 +39,24 @@
     "PHASE_3_GENERALIZATION": "NOT_EVALUATED",
     "PHASE_4": "NOT_READY_FOR_PHASE_4_CONTRACT_COMPUTATION"
   },
-  "observationsCarriedForward": ["OBS-1", "OBS-2", "OBS-3"],
-  "nextStep": "Operator raises the gateway key budget or supplies a working credential; then re-issue this resume mission unchanged against 09-paid-run-manifest.json."
+  "observationsCarriedForward": [
+    "OBS-1",
+    "OBS-2",
+    "OBS-3"
+  ],
+  "nextStep": "Provide the active gateway key to this environment (AI_GATEWAY_API_KEY env var or .env.local), then re-issue the resume mission unchanged.",
+  "secondProbe": {
+    "at": "2026-09-03T15:33:15Z",
+    "trigger": "operator reported budget restored",
+    "endpoint": "https://ai-gateway.vercel.sh/v1/messages",
+    "model": "anthropic/claude-opus-5",
+    "maxTokens": 1,
+    "httpStatus": 400,
+    "errorType": "invalid_request_error",
+    "errorMessage": "Quota entity \"api_key_id_GRxaR7s0IWUGPnS8DpViDRTPqsmgZ0KPW8iVfwan29Q6at07\" is inactive or archived.",
+    "credentialUsed": ".env.local AI_GATEWAY_API_KEY (vck_5h..., the only credential present; process env unset, .env entry commented out)",
+    "interpretation": "The key present in this environment has been archived at the gateway; a budget increase on a different key does not reach this environment until that key is provided.",
+    "retried": false,
+    "configurationChanged": false
+  }
 }
