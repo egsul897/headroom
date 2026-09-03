@@ -1,0 +1,48 @@
+{
+  "artifact": "06-metrics-and-trust-safety",
+  "recall": {
+    "status": "NOT_EVALUABLE",
+    "reason": "Pass A (x2), Pass B/3B, 3C verifier all ENVIRONMENT_BLOCKED (HTTP 402); no compiler output exists to score against the 46-item reference set.",
+    "referenceItems": 46,
+    "itemsWithCompilerClaim": 0,
+    "itemsRecalled": null,
+    "recallRate": null,
+    "byCategory": {
+      "A": null,
+      "B": null,
+      "C": null,
+      "D": null,
+      "E": null,
+      "F": null
+    }
+  },
+  "substantiveCredit": {
+    "status": "NOT_EVALUABLE",
+    "itemsEvaluated": 0
+  },
+  "passAStability": {
+    "status": "NOT_EVALUABLE",
+    "run1": "NOT_RUN",
+    "run2": "NOT_RUN",
+    "agreement": null
+  },
+  "verifierIndependence": {
+    "status": "NOT_EVALUABLE"
+  },
+  "trustSafetyClassification": {
+    "status": "NOT_EVALUATED",
+    "safeFailures": null,
+    "dangerousSilentFailures": null,
+    "note": "The only outputs produced are deterministic; the 3E Layer A/B audit against an empty compiled set correctly reported PACKAGE_SEMANTICALLY_INCOMPLETE (297 CRITICAL + 1029 MATERIAL unaccounted) - i.e., the stack did NOT silently certify coverage when nothing was compiled. That is a SAFE_FAILURE observation about the audit layer, not evidence about the compiler, and it grants no trust-safety pass."
+  },
+  "deterministicReachSummary": {
+    "items": 46,
+    "structuralNodeCovers": 46,
+    "deterministicCandidateInBodySection": 45,
+    "bodyUnitInSection": 45,
+    "definitionsDetected": 23,
+    "definitionsExpected": 23,
+    "caveat": "Structural reach (node covers item, 2A candidate in section, unit built, definitions detected) is necessary but not sufficient; it is not recall."
+  },
+  "environmentBlockedEvidenceRule": "No PASS may be inferred from absence of evidence."
+}

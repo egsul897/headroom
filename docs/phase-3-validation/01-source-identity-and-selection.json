@@ -1,0 +1,1377 @@
+{
+  "artifact": "01-source-identity-and-selection",
+  "mission": "PHASE 3 SINGLE REAL-WORLD UNSEEN AGREEMENT VALIDATION",
+  "selectionProcedure": {
+    "preRegistered": true,
+    "contentBlind": true,
+    "query": {
+      "_source": {
+        "exclude": [
+          "doc_text"
+        ]
+      },
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match_phrase": {
+                "doc_text": "credit agreement"
+              }
+            },
+            {
+              "match_phrase": {
+                "doc_text": "restricted payments"
+              }
+            },
+            {
+              "match_phrase": {
+                "doc_text": "consolidated ebitda"
+              }
+            }
+          ],
+          "must_not": [],
+          "should": [],
+          "filter": [
+            {
+              "terms": {
+                "root_forms": [
+                  "8-K"
+                ]
+              }
+            },
+            {
+              "range": {
+                "file_date": {
+                  "gte": "2026-05-01",
+                  "lte": "2026-09-01"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "from": 0,
+      "size": 100,
+      "aggregations": {
+        "form_filter": {
+          "terms": {
+            "field": "root_forms",
+            "size": 30
+          }
+        },
+        "entity_filter": {
+          "terms": {
+            "field": "display_names.raw",
+            "size": 30
+          }
+        },
+        "sic_filter": {
+          "terms": {
+            "field": "sics",
+            "size": 30
+          }
+        },
+        "biz_states_filter": {
+          "terms": {
+            "field": "biz_states",
+            "size": 30
+          }
+        }
+      }
+    },
+    "endpoint": "https://efts.sec.gov/LatestSearch/index (full-text search)",
+    "forms": [
+      "8-K"
+    ],
+    "dateRange": [
+      "2026-05-01",
+      "2026-09-01"
+    ],
+    "ordering": "EDGAR relevance order as returned",
+    "rule": "First EX-10 hit whose title block (first ~600 chars) is a standalone CREDIT AGREEMENT (not an amendment/restatement) from a company not on the prior-agreement exclusion list.",
+    "totalHits": 239,
+    "returnedHits": 100,
+    "exclusionList": [
+      "Coherent",
+      "Matthews",
+      "CONMED",
+      "FWRG",
+      "LSB",
+      "GPK",
+      "TEX",
+      "Petco",
+      "TransDigm",
+      "CYH",
+      "CommScope/Vistance",
+      "DSGR (CIK 0000703604)",
+      "Riot Platforms",
+      "Superior Industries",
+      "Google"
+    ],
+    "titleBlockReads": [
+      {
+        "i": 5,
+        "company": "J&J SNACK FOODS CORP  (JJSF)  (CIK 0000785956)",
+        "file_date": "2026-06-10",
+        "url": "https://www.sec.gov/Archives/edgar/data/785956/000143774926020193/ex_975043.htm",
+        "rawBytes": 115733,
+        "textChars": 37003,
+        "titleBlock": "EX-10.1 |  2 |  ex_975043.htm |  EXHIBIT 10.1 |  ex_975043.htm  |  Exhibit 10.1  |  AMENDMENT NO. 2 TO SECOND AMENDED AND RESTATED CREDIT AGREEMENT  |  This AMENDMENT NO. 2 TO SECOND AMENDED AND RESTATED CREDIT AGREEMENT (this \u201c Amendment \u201d) is dated as of June 5, 2026 and entered into by and among J & J SNACK FOODS CORP. , a New Jersey corporation (\u201c J&J \u201d), the other Borrowers identified on the signature pages hereto (jointly and severally with J&J, the \u201c Borrowers \u201d and each a \u201c Borrower \u201d), the lenders party hereto (the \u201c Lenders \u201d) and CITIZENS BANK, N.A. , in its capacity as Administrative Agent (the "
+      },
+      {
+        "i": 7,
+        "company": "V2X, Inc.  (VVX)  (CIK 0001601548)",
+        "file_date": "2026-06-01",
+        "url": "https://www.sec.gov/Archives/edgar/data/1601548/000162828026039479/exhibit101-8xkxv2xxrbcxa.htm",
+        "rawBytes": 918383,
+        "textChars": 874196,
+        "titleBlock": "EX-10.1 |  2 |  exhibit101-8xkxv2xxrbcxa.htm |  EX-10.1 |  exhibit101-8xkxv2xxrbcxa  |  Exhibit 10.1 AMENDMENT NO. 6 TO FIRST LIEN CREDIT AGREEMENT AMENDMENT NO. 6 TO FIRST LIEN CREDIT AGREEMENT, dated as of May 29, 2026 (this \u201cAmendment\u201d), by and among V2X LLC (f/k/a Vertex Aerospace Services LLC), a Delaware limited liability company (the \u201cBorrower\u201d), V2X INTERMEDIATE LLC (f/k/a Vertex Aerospace Intermediate LLC), a Delaware limited liability company (\u201cHoldings\u201d), the other Loan Parties party hereto, the Additional Lender (as defined below) and ROYAL BANK OF CANADA as administrative agent and collater"
+      },
+      {
+        "i": 11,
+        "company": "BrightView Holdings, Inc.  (BV)  (CIK 0001734713)",
+        "file_date": "2026-05-05",
+        "url": "https://www.sec.gov/Archives/edgar/data/1734713/000119312526206439/bv-ex10_1.htm",
+        "rawBytes": 2573540,
+        "textChars": 812863,
+        "titleBlock": "EX-10.1 |  2 |  bv-ex10_1.htm |  EX-10.1 |  EX-10.1  |  Exhibit 10.1  |  AMENDMENT NO. 10 TO CREDIT AGREEMENT  |  AMENDMENT NO. 10 TO CREDIT AGREEMENT, dated as of May 4, 2026 (this \u201c Amendment \u201d), among BRIGHTVIEW HOLDINGS, INC. (f/k/a GARDEN ACQUISITION HOLDINGS, INC.) (\u201c Holdings \u201d), BRIGHTVIEW LANDSCAPES, LLC (f/k/a The Brickman Group Ltd . LLC), a Delaware limited liability company (the \u201c Borrower \u201d), each of the other Credit Parties party hereto, each of the lenders and letter of credit issuers that is a signatory hereto and JPMORGAN CHASE BANK, N.A. (in its individual capacity, \u201c JPMorgan \u201d), as Admi"
+      },
+      {
+        "i": 13,
+        "company": "Chewy, Inc.  (CHWY)  (CIK 0001766502)",
+        "file_date": "2026-06-24",
+        "url": "https://www.sec.gov/Archives/edgar/data/1766502/000119312526281042/d43042dex101.htm",
+        "rawBytes": 1306165,
+        "textChars": 867376,
+        "titleBlock": "EX-10.1 |  2 |  d43042dex101.htm |  EX-10.1 |  EX-10.1  |  Exhibit 10.1  |  EXECUTION VERSION  |  CREDIT AGREEMENT  |  dated as of | June 23, 2026  |  by and among  |  CHEWY, INC.,  |  as the Initial | Borrower,  |  The Lenders Party Hereto,  |  JPMORGAN CHASE BANK, N.A.,  |  as | Administrative Agent and Collateral Agent  |  JPMORGAN CHASE BANK, N.A.,  |  WELLS | FARGO SECURITIES, LLC,  |  CITIGROUP GLOBAL MARKETS INC.,  |  MORGAN STANLEY SENIOR FUNDING, INC.,  |  BOFA SECURITIES, INC.,  |  RBC CAPITAL | MARKETS 1 ,  |  AND  |  BARCLAYS BANK PLC  |  as Lead | Arrangers  |  1  |  RBC Capital Markets is the brand name for the capital markets activities of"
+      },
+      {
+        "i": 14,
+        "company": "Alkermes plc.  (ALKS)  (CIK 0001520262)",
+        "file_date": "2026-08-12",
+        "url": "https://www.sec.gov/Archives/edgar/data/1520262/000119312526345901/alks-ex10_1.htm",
+        "rawBytes": 3065698,
+        "textChars": 768509,
+        "titleBlock": "EX-10.1 |  2 |  alks-ex10_1.htm |  EX-10.1 |  EX-10.1  |  Exhibit 10.1  |  Execution Version  |  AMENDMENT NO. 1 TO CREDIT AGREEMENT  |  This Amendment No. 1 to Credit Agreement, dated as of August 12, 2026 (this \u201c Amendment \u201d), to the Credit Agreement, dated as of February 12, 2026 (as amended, restated, supplemented or otherwise modified from time to time prior to the date hereof, the \u201c Credit Agreement \u201d; the Credit Agreement, as amended by this Amendment is herein referred to as the \u201c Amended Credit Agreement \u201d), among Alkermes plc, a company incorporated under the laws of Ireland (registered number 49828"
+      },
+      {
+        "i": 16,
+        "company": "MARAVAI LIFESCIENCES HOLDINGS, INC.  (MRVI)  (CIK ",
+        "file_date": "2026-06-03",
+        "url": "https://www.sec.gov/Archives/edgar/data/1823239/000182323926000049/newcreditagreement.htm",
+        "rawBytes": 2350038,
+        "textChars": 931355,
+        "titleBlock": "EX-10.1 |  2 |  newcreditagreement.htm |  EX-10.1 |  Document  |  EXECUTION VERSION  |  CREDIT AGREEMENT | dated as of | June 2, 2026 | among | MARAVAI INTERMEDIATE HOLDINGS, LLC, | as the Borrower,  |  MARAVAI TOPCO HOLDINGS, LLC,  | as Holdings,  | the Lenders and Issuing Banks party hereto | and  |  BSP Agency, LLC,  |  as Administrative Agent and Collateral Agent  |  BENEFIT STREET PARTNERS L.L.C.,  |  ARES CAPITAL MANAGEMENT LLC,  |  as Lead Arrangers  |  |  |  TABLE OF CONTENTS  |  Page  |  SECTION 1.01 Defined Terms 1  |  SECTION 1.02 Classification of Loans and Borrowings 83  |  SECTION 1.03 Terms Generally 83  |  SECTION 1.04 Accounting "
+      },
+      {
+        "i": 20,
+        "company": "Westrock Coffee Co  (WEST)  (CIK 0001806347)",
+        "file_date": "2026-06-30",
+        "url": "https://www.sec.gov/Archives/edgar/data/1806347/000110465926079351/tm2618568d1_ex10-1.htm",
+        "rawBytes": 1630491,
+        "textChars": 881437,
+        "titleBlock": "EX-10.1 |  2 |  tm2618568d1_ex10-1.htm |  EXHIBIT 10.1 |  Exhibit 10.1  |  Execution Version  |  AMENDMENT NO. 6 |  AMENDMENT NO. 6 , dated | as of June 30, 2026 (this \u201c Amendment \u201d), among Westrock Beverage Solutions, LLC, a Delaware limited liability | company (the \u201c Borrower \u201d), Westrock Coffee Company, a Delaware corporation (\u201c Holdings \u201d), the other | Guarantors party hereto, the Lenders and Issuing Banks party hereto and Wells Fargo Bank, N.A., as administrative agent (in such capacity, | the \u201c Administrative Agent \u201d), to the Credit Agreement dated as of August 29, 2022 (as amended by that certain | Incremental"
+      },
+      {
+        "i": 21,
+        "company": "Sotera Health Co  (SHC)  (CIK 0001822479)",
+        "file_date": "2026-05-20",
+        "url": "https://www.sec.gov/Archives/edgar/data/1822479/000119312526232585/d107933dex101.htm",
+        "rawBytes": 1371324,
+        "textChars": 915845,
+        "titleBlock": "EX-10.1 |  2 |  d107933dex101.htm |  EX-10.1 |  EX-10.1  |  Exhibit 10.1  |  Execution Version  |  AMENDMENT NO. 7 TO FIRST LIEN CREDIT AGREEMENT, dated as of May 20, 2026 (this \u201c Amendment \u201d), is made and entered into | by and among Sotera Health Company (f/k/a Sotera Health Topco, Inc.), a Delaware corporation (\u201c Holdings \u201d), SOTERA HEALTH HOLDINGS, LLC, a Delaware limited liability company (the \u201c Borrower \u201d), each 2026 | Refinancing Term Lender party hereto, JPMorgan Chase Bank, N.A., as First Lien Administrative Agent (solely in such capacity, the \u201c Administrative Agent \u201d), and, for purposes of Sections 7 a"
+      },
+      {
+        "i": 24,
+        "company": "GoDaddy Inc.  (GDDY)  (CIK 0001609711)",
+        "file_date": "2026-08-04",
+        "url": "https://www.sec.gov/Archives/edgar/data/1609711/000160971126000092/ex101-73126.htm",
+        "rawBytes": 2532965,
+        "textChars": 958510,
+        "titleBlock": "EX-10.1 |  2 |  ex101-73126.htm |  EX-10.1 |  Document  |  JOINDER AND THIRTEENTH AMENDMENT AGREEMENT , dated as of July 31, 2026 (this \u201c Amendment \u201d), to Second Amended and Restated Credit Agreement, dated as of February 15, 2017, as amended by Amendment No. 1, dated as of November 22, 2017, as amended by the Joinder and Amendment Agreement, dated as of June 4, 2019, as amended by Amendment No. 3, dated as of October 3, 2019, as amended by Joinder and Fourth Amendment Agreement, dated as of August 10, 2020, as amended by Fifth Amendment Agreement, dated as of March 8, 2021, as amended by Joinder and Si"
+      },
+      {
+        "i": 25,
+        "company": "SUJA LIFE, INC.  (SUJA)  (CIK 0001934114)",
+        "file_date": "2026-08-20",
+        "url": "https://www.sec.gov/Archives/edgar/data/1934114/000162828026058249/suja-arcreditagreement20.htm",
+        "rawBytes": 928680,
+        "textChars": 833063,
+        "titleBlock": "EX-10.1 |  2 |  suja-arcreditagreement20.htm |  EX-10.1 |  suja-arcreditagreement20  |  AMENDED AND RESTATED CREDIT AGREEMENT Dated as of August 20, 2026 by and among SUJA LIFE INTERMEDIATE II, LLC, as Holdings, SUJA LIFE, LLC, as Borrower, THE LENDERS AND THE ISSUING LENDER PARTY HERETO, and JPMORGAN CHASE BANK, N.A., as Administrative Agent ______________________________________________________________________ JPMORGAN CHASE BANK, N.A., PNC CAPITAL MARKETS, LLC and U.S. BANK, NATIONAL ASSOCIATION, as Joint Lead Arrangers and Joint Bookrunners  |  i TABLE OF CONTENTS Page 1. DEFINITIONS ................."
+      },
+      {
+        "i": 26,
+        "company": "AMERICAN EAGLE OUTFITTERS INC  (AEO)  (CIK 0000919",
+        "file_date": "2026-06-10",
+        "url": "https://www.sec.gov/Archives/edgar/data/919012/000119312526266019/aeo-ex10_1.htm",
+        "rawBytes": 2525462,
+        "textChars": 809794,
+        "titleBlock": "EX-10.1 |  2 |  aeo-ex10_1.htm |  EX-10.1 |  EX-10.1  |  Exhibit 10.1  |  AMENDMENT NO. 2  |  This AMENDMENT NO. 2 (this \u201c Amendment \u201d) is made as of June 4, 2026, by and among:  |  AMERICAN EAGLE OUTFITTERS, INC., a Delaware corporation (the \u201c U.S. Borrower \u201d);  |  AMERICAN EAGLE OUTFITTERS CANADA CORPORATION, an unlimited liability company formed under the laws of Nova Scotia (the \u201c Canadian Borrower \u201d and, together with the U.S. Borrower, the \u201c Borrowers \u201d);  |  each of the other Loan Parties referred to on the signature pages hereof (collectively, with the Borrowers, the \u201c Loan Parties \u201d);  |  PNC BANK, NATIONA"
+      },
+      {
+        "i": 28,
+        "company": "MCKESSON CORP  (MCK)  (CIK 0000927653)",
+        "file_date": "2026-06-12",
+        "url": "https://www.sec.gov/Archives/edgar/data/927653/000092765326000167/mck_ex101termloanagreement.htm",
+        "rawBytes": 2360803,
+        "textChars": 1113384,
+        "titleBlock": "EX-10.1 |  2 |  mck_ex101termloanagreement.htm |  EX-10.1 |  Document  |  Execution Version  |  Exhibit 10.1  |  AMENDMENT NO. 1 TO CREDIT AGREEMENT  |  AMENDMENT NO. 1 TO CREDIT AGREEMENT, dated as of June 9, 2026 (this \u201c Amendment \u201d), among McKesson Medical-Surgical Top Holdings Inc., a Florida corporation (the \u201c Borrower \u201d), the Subsidiary Guarantors party hereto, JPMorgan Chase Bank, N.A., as administrative agent (in such capacity, the \u201c Administrative Agent \u201d) and the undersigned Amendment No. 1 Term B Lenders (as defined below). Capitalized terms used and not otherwise defined herein shall have the mean"
+      }
+    ],
+    "rejections": [
+      {
+        "i": 5,
+        "company": "J&J Snack Foods",
+        "reason": "Amendment No. 2 (not standalone)"
+      },
+      {
+        "i": 7,
+        "company": "V2X",
+        "reason": "Amendment No. 6 (not standalone)"
+      },
+      {
+        "i": 11,
+        "company": "BrightView",
+        "reason": "Amendment No. 10 (not standalone)"
+      }
+    ],
+    "selected": {
+      "i": 13,
+      "company": "Chewy, Inc.  (CHWY)  (CIK 0001766502)",
+      "file_date": "2026-06-24",
+      "url": "https://www.sec.gov/Archives/edgar/data/1766502/000119312526281042/d43042dex101.htm",
+      "titleBlock": "EX-10.1 |  2 |  d43042dex101.htm |  EX-10.1 |  EX-10.1  |  Exhibit 10.1  |  EXECUTION VERSION  |  CREDIT AGREEMENT  |  dated as of | June 23, 2026  |  by and among  |  CHEWY, INC.,  |  as the Initial | Borrower,  |  The Lenders Party Hereto,  |  JPMORGAN CHASE BANK, N.A.,  |  as | Administrative Agent and Collateral Agent  |  JPMORGAN CHASE BANK, N.A.,  |  WELLS | FARGO SECURITIES, LLC,  |  CITIGR"
+    }
+  },
+  "agreement": {
+    "issuer": "Chewy, Inc. (CHWY)",
+    "cik": "0001766502",
+    "title": "CREDIT AGREEMENT dated as of June 23, 2026",
+    "agents": "JPMorgan Chase Bank, N.A. as Administrative Agent and Collateral Agent",
+    "facilities": "Initial Term Loans (Term SOFR + 1.75% / ABR + 0.75%) with revolving/incremental machinery; sibling EX-10.2 (Amendment No. 4 to 2019 ABL Credit Agreement) deliberately NOT used",
+    "form": "8-K",
+    "exhibit": "EX-10.1",
+    "accession": "0001193125-26-281042",
+    "filedDate": "2026-06-24",
+    "exhibitUrl": "https://www.sec.gov/Archives/edgar/data/1766502/000119312526281042/d43042dex101.htm"
+  },
+  "sourceHashes": {
+    "rawHtmlSha256": "5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af",
+    "rawBytes": 1306165,
+    "extractedTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+    "extractedChars": 864362,
+    "approxPages": 288
+  },
+  "whyGenuinelyUnseen": [
+    "Filed 2026-06-24, after every prior HEADROOM corpus acquisition (all prior fixtures acquired on or before 2026-08-24 relate to other issuers).",
+    "git grep over all tracked files for 'chewy' / 'CHWY' / CIK 0001766502 at d5144d1: zero matches.",
+    "git log --all --grep for chewy: zero commits.",
+    "Issuer not in the 15-issuer exclusion list; not used in any ground-truth, precedent, or synthetic corpus.",
+    "Selected content-blind by pre-registered EDGAR query and title-block rule; no body text was read before selection."
+  ],
+  "compactHitList": [
+    {
+      "i": 1,
+      "company": [
+        "CIRRUS LOGIC, INC.  (CRUS)  (CIK 0000772406)"
+      ],
+      "file_date": "2026-05-06",
+      "form": "8-K",
+      "file_type": "8-K",
+      "adsh": "0000772406-26-000012",
+      "id": "0000772406-26-000012:crus-20260504.htm"
+    },
+    {
+      "i": 2,
+      "company": [
+        "Solaris Energy Infrastructure, Inc.  (SEI)  (CIK 0001697500)"
+      ],
+      "file_date": "2026-05-12",
+      "form": "8-K",
+      "file_type": "8-K",
+      "adsh": "0001193125-26-219852",
+      "id": "0001193125-26-219852:d112244d8k.htm"
+    },
+    {
+      "i": 3,
+      "company": [
+        "DIGI INTERNATIONAL INC  (DGII)  (CIK 0000854775)"
+      ],
+      "file_date": "2026-08-31",
+      "form": "8-K",
+      "file_type": "8-K",
+      "adsh": "0001104659-26-103966",
+      "id": "0001104659-26-103966:tm2624262d1_8k.htm"
+    },
+    {
+      "i": 4,
+      "company": [
+        "CROWN CASTLE INC.  (CCI)  (CIK 0001051470)"
+      ],
+      "file_date": "2026-05-01",
+      "form": "8-K",
+      "file_type": "8-K",
+      "adsh": "0001051470-26-000055",
+      "id": "0001051470-26-000055:cci-20260501.htm"
+    },
+    {
+      "i": 5,
+      "company": [
+        "SEMTECH CORP  (SMTC)  (CIK 0000088941)"
+      ],
+      "file_date": "2026-07-06",
+      "form": "8-K",
+      "file_type": "8-K",
+      "adsh": "0000088941-26-000022",
+      "id": "0000088941-26-000022:smtc-20260706.htm"
+    },
+    {
+      "i": 6,
+      "company": [
+        "J&J SNACK FOODS CORP  (JJSF)  (CIK 0000785956)"
+      ],
+      "file_date": "2026-06-10",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001437749-26-020193",
+      "id": "0001437749-26-020193:ex_975043.htm"
+    },
+    {
+      "i": 7,
+      "company": [
+        "Amneal Pharmaceuticals, Inc.  (AMRX)  (CIK 0001723128)"
+      ],
+      "file_date": "2026-08-03",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001628280-26-051900",
+      "id": "0001628280-26-051900:a20260803_repricingpacka.htm"
+    },
+    {
+      "i": 8,
+      "company": [
+        "V2X, Inc.  (VVX)  (CIK 0001601548)"
+      ],
+      "file_date": "2026-06-01",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001628280-26-039479",
+      "id": "0001628280-26-039479:exhibit101-8xkxv2xxrbcxa.htm"
+    },
+    {
+      "i": 9,
+      "company": [
+        "Midera Food Processing, Inc.  (MFP)  (CIK 0002088281)"
+      ],
+      "file_date": "2026-06-29",
+      "form": "8-K",
+      "file_type": "8-K",
+      "adsh": "0001193125-26-288554",
+      "id": "0001193125-26-288554:d70874d8k.htm"
+    },
+    {
+      "i": 10,
+      "company": [
+        "Bally's Corp  (BALY)  (CIK 0001747079)"
+      ],
+      "file_date": "2026-08-05",
+      "form": "8-K",
+      "file_type": "EX-1.1",
+      "adsh": "0001213900-26-085392",
+      "id": "0001213900-26-085392:ea030035601ex1-1.htm"
+    },
+    {
+      "i": 11,
+      "company": [
+        "CORE MOLDING TECHNOLOGIES INC  (CMT)  (CIK 0001026655)"
+      ],
+      "file_date": "2026-07-07",
+      "form": "8-K",
+      "file_type": "8-K",
+      "adsh": "0001026655-26-000043",
+      "id": "0001026655-26-000043:cmt-20260702.htm"
+    },
+    {
+      "i": 12,
+      "company": [
+        "BrightView Holdings, Inc.  (BV)  (CIK 0001734713)"
+      ],
+      "file_date": "2026-05-05",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-206439",
+      "id": "0001193125-26-206439:bv-ex10_1.htm"
+    },
+    {
+      "i": 13,
+      "company": [
+        "Bandwidth Inc.  (BAND)  (CIK 0001514416)"
+      ],
+      "file_date": "2026-07-29",
+      "form": "8-K",
+      "file_type": "8-K",
+      "adsh": "0001514416-26-000055",
+      "id": "0001514416-26-000055:band-20260724.htm"
+    },
+    {
+      "i": 14,
+      "company": [
+        "Chewy, Inc.  (CHWY)  (CIK 0001766502)"
+      ],
+      "file_date": "2026-06-24",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-281042",
+      "id": "0001193125-26-281042:d43042dex101.htm"
+    },
+    {
+      "i": 15,
+      "company": [
+        "Alkermes plc.  (ALKS)  (CIK 0001520262)"
+      ],
+      "file_date": "2026-08-12",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-345901",
+      "id": "0001193125-26-345901:alks-ex10_1.htm"
+    },
+    {
+      "i": 16,
+      "company": [
+        "Redwire Corp  (RDW)  (CIK 0001819810)"
+      ],
+      "file_date": "2026-07-01",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001819810-26-000084",
+      "id": "0001819810-26-000084:exhibit101amendmentno1toam.htm"
+    },
+    {
+      "i": 17,
+      "company": [
+        "MARAVAI LIFESCIENCES HOLDINGS, INC.  (MRVI)  (CIK 0001823239)"
+      ],
+      "file_date": "2026-06-03",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001823239-26-000049",
+      "id": "0001823239-26-000049:newcreditagreement.htm"
+    },
+    {
+      "i": 18,
+      "company": [
+        "BrightView Holdings, Inc.  (BV)  (CIK 0001734713)"
+      ],
+      "file_date": "2026-06-18",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001104659-26-075744",
+      "id": "0001104659-26-075744:tm2618044d1_ex10-1.htm"
+    },
+    {
+      "i": 19,
+      "company": [
+        "Floor & Decor Holdings, Inc.  (FND)  (CIK 0001507079)"
+      ],
+      "file_date": "2026-06-25",
+      "form": "8-K",
+      "file_type": "8-K",
+      "adsh": "0001628280-26-045555",
+      "id": "0001628280-26-045555:fnd-20260624.htm"
+    },
+    {
+      "i": 20,
+      "company": [
+        "Viatris Inc  (VTRS)  (CIK 0001792044)"
+      ],
+      "file_date": "2026-07-01",
+      "form": "8-K",
+      "file_type": "8-K",
+      "adsh": "0001140361-26-027216",
+      "id": "0001140361-26-027216:ef20077152_8k.htm"
+    },
+    {
+      "i": 21,
+      "company": [
+        "Westrock Coffee Co  (WEST)  (CIK 0001806347)"
+      ],
+      "file_date": "2026-06-30",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001104659-26-079351",
+      "id": "0001104659-26-079351:tm2618568d1_ex10-1.htm"
+    },
+    {
+      "i": 22,
+      "company": [
+        "Sotera Health Co  (SHC)  (CIK 0001822479)"
+      ],
+      "file_date": "2026-05-20",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-232585",
+      "id": "0001193125-26-232585:d107933dex101.htm"
+    },
+    {
+      "i": 23,
+      "company": [
+        "Chewy, Inc.  (CHWY)  (CIK 0001766502)"
+      ],
+      "file_date": "2026-06-24",
+      "form": "8-K",
+      "file_type": "EX-10.2",
+      "adsh": "0001193125-26-281042",
+      "id": "0001193125-26-281042:d43042dex102.htm"
+    },
+    {
+      "i": 24,
+      "company": [
+        "TIC Solutions, Inc.  (TIC, TICAW)  (CIK 0002032966)"
+      ],
+      "file_date": "2026-06-05",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001628280-26-040905",
+      "id": "0001628280-26-040905:ticsolutions-thirdamendmen.htm"
+    },
+    {
+      "i": 25,
+      "company": [
+        "GoDaddy Inc.  (GDDY)  (CIK 0001609711)"
+      ],
+      "file_date": "2026-08-04",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001609711-26-000092",
+      "id": "0001609711-26-000092:ex101-73126.htm"
+    },
+    {
+      "i": 26,
+      "company": [
+        "SUJA LIFE, INC.  (SUJA)  (CIK 0001934114)"
+      ],
+      "file_date": "2026-08-20",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001628280-26-058249",
+      "id": "0001628280-26-058249:suja-arcreditagreement20.htm"
+    },
+    {
+      "i": 27,
+      "company": [
+        "AMERICAN EAGLE OUTFITTERS INC  (AEO)  (CIK 0000919012)"
+      ],
+      "file_date": "2026-06-10",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-266019",
+      "id": "0001193125-26-266019:aeo-ex10_1.htm"
+    },
+    {
+      "i": 28,
+      "company": [
+        "Virtu Financial, Inc.  (VIRT)  (CIK 0001592386)"
+      ],
+      "file_date": "2026-07-23",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0000950142-26-002156",
+      "id": "0000950142-26-002156:eh260810393_ex1001.htm"
+    },
+    {
+      "i": 29,
+      "company": [
+        "MCKESSON CORP  (MCK)  (CIK 0000927653)"
+      ],
+      "file_date": "2026-06-12",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0000927653-26-000167",
+      "id": "0000927653-26-000167:mck_ex101termloanagreement.htm"
+    },
+    {
+      "i": 30,
+      "company": [
+        "BRIGHT HORIZONS FAMILY SOLUTIONS INC.  (BFAM)  (CIK 0001437578)"
+      ],
+      "file_date": "2026-06-01",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-251551",
+      "id": "0001193125-26-251551:d139662dex101.htm"
+    },
+    {
+      "i": 31,
+      "company": [
+        "SUJA LIFE, INC.  (SUJA)  (CIK 0001934114)"
+      ],
+      "file_date": "2026-05-08",
+      "form": "8-K",
+      "file_type": "EX-10.5",
+      "adsh": "0001104659-26-057915",
+      "id": "0001104659-26-057915:tm2530822d27_ex10-5.htm"
+    },
+    {
+      "i": 32,
+      "company": [
+        "Academy Sports & Outdoors, Inc.  (ASO)  (CIK 0001817358)"
+      ],
+      "file_date": "2026-05-14",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001140361-26-021318",
+      "id": "0001140361-26-021318:ef20073235_ex10-1.htm"
+    },
+    {
+      "i": 33,
+      "company": [
+        "Clear Secure, Inc.  (YOU)  (CIK 0001856314)"
+      ],
+      "file_date": "2026-06-23",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0000950142-26-001859",
+      "id": "0000950142-26-001859:eh260797127_1001.htm"
+    },
+    {
+      "i": 34,
+      "company": [
+        "PENN Entertainment, Inc.  (PENN)  (CIK 0000921738)"
+      ],
+      "file_date": "2026-05-28",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001104659-26-067476",
+      "id": "0001104659-26-067476:tm2615773d1_ex10-1.htm"
+    },
+    {
+      "i": 35,
+      "company": [
+        "Avantor, Inc.  (AVTR)  (CIK 0001722482)"
+      ],
+      "file_date": "2026-07-17",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001628280-26-048676",
+      "id": "0001628280-26-048676:avantor-amendmentno15xco.htm"
+    },
+    {
+      "i": 36,
+      "company": [
+        "Clear Channel Outdoor Holdings, Inc.  (CCO)  (CIK 0001334978)"
+      ],
+      "file_date": "2026-05-18",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001213900-26-058449",
+      "id": "0001213900-26-058449:ea029106101ex10-1.htm"
+    },
+    {
+      "i": 37,
+      "company": [
+        "MAXIMUS, INC.  (MMS)  (CIK 0001032220)"
+      ],
+      "file_date": "2026-05-28",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001032220-26-000030",
+      "id": "0001032220-26-000030:maximus-secondamendmenttoa.htm"
+    },
+    {
+      "i": 38,
+      "company": [
+        "ENSIGN GROUP, INC  (ENSG)  (CIK 0001125376)"
+      ],
+      "file_date": "2026-08-20",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001125376-26-000038",
+      "id": "0001125376-26-000038:augfourthcreditagreementexs.htm"
+    },
+    {
+      "i": 39,
+      "company": [
+        "Academy Sports & Outdoors, Inc.  (ASO)  (CIK 0001817358)"
+      ],
+      "file_date": "2026-05-14",
+      "form": "8-K",
+      "file_type": "EX-4.1",
+      "adsh": "0001140361-26-021318",
+      "id": "0001140361-26-021318:ef20073235_ex4-1.htm"
+    },
+    {
+      "i": 40,
+      "company": [
+        "QVC Group, Inc.  (QVCCQ, QVCDQ)  (CIK 0001254699)"
+      ],
+      "file_date": "2026-08-07",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001104659-26-092407",
+      "id": "0001104659-26-092407:tm2622253d2_ex10-1.htm"
+    },
+    {
+      "i": 41,
+      "company": [
+        "AZZ INC  (AZZ)  (CIK 0000008947)"
+      ],
+      "file_date": "2026-05-08",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0000008947-26-000108",
+      "id": "0000008947-26-000108:a10_1-7thamendmenttocredit.htm"
+    },
+    {
+      "i": 42,
+      "company": [
+        "EquipmentShare.com Inc  (EQPT)  (CIK 0001693736)"
+      ],
+      "file_date": "2026-07-02",
+      "form": "8-K",
+      "file_type": "EX-4.1",
+      "adsh": "0000950103-26-010008",
+      "id": "0000950103-26-010008:dp249450_ex0401.htm"
+    },
+    {
+      "i": 43,
+      "company": [
+        "Solaris Energy Infrastructure, Inc.  (SEI)  (CIK 0001697500)"
+      ],
+      "file_date": "2026-05-12",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-219852",
+      "id": "0001193125-26-219852:d112244dex101.htm"
+    },
+    {
+      "i": 44,
+      "company": [
+        "VSE CORP  (VSEC, VSECU)  (CIK 0000102752)"
+      ],
+      "file_date": "2026-05-07",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-210245",
+      "id": "0001193125-26-210245:d115996dex101.htm"
+    },
+    {
+      "i": 45,
+      "company": [
+        "Repay Holdings Corp  (RPAY)  (CIK 0001720592)"
+      ],
+      "file_date": "2026-06-15",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001720592-26-000004",
+      "id": "0001720592-26-000004:rpay-ex10_1.htm"
+    },
+    {
+      "i": 46,
+      "company": [
+        "DELUXE CORP  (DLX)  (CIK 0000027996)"
+      ],
+      "file_date": "2026-07-31",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001104659-26-089269",
+      "id": "0001104659-26-089269:tm2621737d1_ex10-1.htm"
+    },
+    {
+      "i": 47,
+      "company": [
+        "RadNet, Inc.  (RDNT)  (CIK 0000790526)"
+      ],
+      "file_date": "2026-06-10",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001683168-26-004716",
+      "id": "0001683168-26-004716:radnet_ex1001.htm"
+    },
+    {
+      "i": 48,
+      "company": [
+        "Floor & Decor Holdings, Inc.  (FND)  (CIK 0001507079)"
+      ],
+      "file_date": "2026-06-25",
+      "form": "8-K",
+      "file_type": "EX-10.2",
+      "adsh": "0001628280-26-045555",
+      "id": "0001628280-26-045555:fnd-20260624x8kxex102.htm"
+    },
+    {
+      "i": 49,
+      "company": [
+        "WHIRLPOOL CORP /DE/  (WHR, WHR-PA)  (CIK 0000106640)"
+      ],
+      "file_date": "2026-06-16",
+      "form": "8-K",
+      "file_type": "EX-4.1",
+      "adsh": "0001193125-26-272923",
+      "id": "0001193125-26-272923:d144434dex41.htm"
+    },
+    {
+      "i": 50,
+      "company": [
+        "APi Group Corp  (APG)  (CIK 0001796209)"
+      ],
+      "file_date": "2026-05-18",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-229096",
+      "id": "0001193125-26-229096:d69397dex101.htm"
+    },
+    {
+      "i": 51,
+      "company": [
+        "RESIDEO TECHNOLOGIES, INC.  (REZI)  (CIK 0001740332)"
+      ],
+      "file_date": "2026-06-04",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001213900-26-065300",
+      "id": "0001213900-26-065300:ea029337901ex10-1.htm"
+    },
+    {
+      "i": 52,
+      "company": [
+        "Cushman & Wakefield Ltd.  (CWK)  (CIK 0001628369)"
+      ],
+      "file_date": "2026-06-15",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001628369-26-000102",
+      "id": "0001628369-26-000102:exhibit101-june152026.htm"
+    },
+    {
+      "i": 53,
+      "company": [
+        "CIMPRESS plc  (CMPR)  (CIK 0001262976)"
+      ],
+      "file_date": "2026-06-04",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001262976-26-000020",
+      "id": "0001262976-26-000020:cimpress-2026amendmentan.htm"
+    },
+    {
+      "i": 54,
+      "company": [
+        "LIGAND PHARMACEUTICALS INC  (LGND, LGNDZ, LGNXZ, LGNYZ, LGNZZ)  (CIK 0000886163)"
+      ],
+      "file_date": "2026-07-14",
+      "form": "8-K",
+      "file_type": "8-K",
+      "adsh": "0001193125-26-302660",
+      "id": "0001193125-26-302660:d108457d8k.htm"
+    },
+    {
+      "i": 55,
+      "company": [
+        "CarGurus, Inc.  (CARG)  (CIK 0001494259)"
+      ],
+      "file_date": "2026-08-06",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-338014",
+      "id": "0001193125-26-338014:carg-ex10_1.htm"
+    },
+    {
+      "i": 56,
+      "company": [
+        "Ares Core Infrastructure Fund  (CIK 0002031750)"
+      ],
+      "file_date": "2026-05-04",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001628280-26-029840",
+      "id": "0001628280-26-029840:exhibit101bcprenaissancecr.htm"
+    },
+    {
+      "i": 57,
+      "company": [
+        "US Foods Holding Corp.  (USFD)  (CIK 0001665918)"
+      ],
+      "file_date": "2026-06-02",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001665918-26-000041",
+      "id": "0001665918-26-000041:usfoods-coveramendmentandr.htm"
+    },
+    {
+      "i": 58,
+      "company": [
+        "AVIS BUDGET GROUP, INC.  (CAR)  (CIK 0000723612)"
+      ],
+      "file_date": "2026-07-01",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0000950142-26-001951",
+      "id": "0000950142-26-001951:eh260800571_ex1001.htm"
+    },
+    {
+      "i": 59,
+      "company": [
+        "SITIME Corp  (SITM)  (CIK 0001451809)"
+      ],
+      "file_date": "2026-07-01",
+      "form": "8-K",
+      "file_type": "8-K",
+      "adsh": "0001193125-26-291561",
+      "id": "0001193125-26-291561:d71116d8k.htm"
+    },
+    {
+      "i": 60,
+      "company": [
+        "AECOM  (ACM)  (CIK 0000868857)"
+      ],
+      "file_date": "2026-06-11",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001104659-26-072942",
+      "id": "0001104659-26-072942:tm2617534d1_ex10-1.htm"
+    },
+    {
+      "i": 61,
+      "company": [
+        "Worthington Steel, Inc.  (WS)  (CIK 0001968487)"
+      ],
+      "file_date": "2026-06-02",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-253821",
+      "id": "0001193125-26-253821:d435492dex101.htm"
+    },
+    {
+      "i": 62,
+      "company": [
+        "TTM TECHNOLOGIES INC  (TTMI)  (CIK 0001116942)"
+      ],
+      "file_date": "2026-06-03",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-255711",
+      "id": "0001193125-26-255711:d220132dex101.htm"
+    },
+    {
+      "i": 63,
+      "company": [
+        "HERBALIFE LTD.  (HLF)  (CIK 0001180262)"
+      ],
+      "file_date": "2026-05-01",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001213900-26-051010",
+      "id": "0001213900-26-051010:ea028835301ex10-1.htm"
+    },
+    {
+      "i": 64,
+      "company": [
+        "Repay Holdings Corp  (RPAY)  (CIK 0001720592)"
+      ],
+      "file_date": "2026-06-01",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-251442",
+      "id": "0001193125-26-251442:rpay-ex10_1.htm"
+    },
+    {
+      "i": 65,
+      "company": [
+        "Hilton Grand Vacations Inc.  (HGV)  (CIK 0001674168)"
+      ],
+      "file_date": "2026-07-17",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001140361-26-028827",
+      "id": "0001140361-26-028827:ef20078182_ex10-1.htm"
+    },
+    {
+      "i": 66,
+      "company": [
+        "UGI CORP /PA/  (UGI)  (CIK 0000884614)"
+      ],
+      "file_date": "2026-07-07",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001104659-26-081321",
+      "id": "0001104659-26-081321:ugi-20260630xex10d1.htm"
+    },
+    {
+      "i": 67,
+      "company": [
+        "ADTRAN Holdings, Inc.  (ADTN)  (CIK 0000926282)"
+      ],
+      "file_date": "2026-07-23",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-314198",
+      "id": "0001193125-26-314198:adtn-ex10_1.htm"
+    },
+    {
+      "i": 68,
+      "company": [
+        "EagleRock Land, LLC  (EROK)  (CIK 0002104882)"
+      ],
+      "file_date": "2026-05-21",
+      "form": "8-K",
+      "file_type": "EX-10.3",
+      "adsh": "0001193125-26-234739",
+      "id": "0001193125-26-234739:d22877dex103.htm"
+    },
+    {
+      "i": 69,
+      "company": [
+        "HERTZ GLOBAL HOLDINGS, INC  (HTZ, HTZWW)  (CIK 0001657853)",
+        "HERTZ CORP  (CIK 0000047129)"
+      ],
+      "file_date": "2026-06-29",
+      "form": "8-K",
+      "file_type": "EX-4.1",
+      "adsh": "0001104659-26-078857",
+      "id": "0001104659-26-078857:tm2619276d1_ex4-1.htm"
+    },
+    {
+      "i": 70,
+      "company": [
+        "ACCENDRA HEALTH INC/VA/  (ACH)  (CIK 0000075252)"
+      ],
+      "file_date": "2026-06-15",
+      "form": "8-K",
+      "file_type": "EX-4.1",
+      "adsh": "0001193125-26-271115",
+      "id": "0001193125-26-271115:d100115dex41.htm"
+    },
+    {
+      "i": 71,
+      "company": [
+        "AVANOS MEDICAL, INC.  (AVNS)  (CIK 0001606498)"
+      ],
+      "file_date": "2026-07-30",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001606498-26-000115",
+      "id": "0001606498-26-000115:avnsform8k_07272026xex101.htm"
+    },
+    {
+      "i": 72,
+      "company": [
+        "RESIDEO TECHNOLOGIES, INC.  (REZI)  (CIK 0001740332)"
+      ],
+      "file_date": "2026-07-01",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001213900-26-074244",
+      "id": "0001213900-26-074244:ea029642801ex10-1.htm"
+    },
+    {
+      "i": 73,
+      "company": [
+        "ACCENDRA HEALTH INC/VA/  (ACH)  (CIK 0000075252)"
+      ],
+      "file_date": "2026-06-15",
+      "form": "8-K",
+      "file_type": "EX-4.3",
+      "adsh": "0001193125-26-271115",
+      "id": "0001193125-26-271115:d100115dex43.htm"
+    },
+    {
+      "i": 74,
+      "company": [
+        "PITNEY BOWES INC /DE/  (PBI, PBI-PB)  (CIK 0000078814)"
+      ],
+      "file_date": "2026-05-19",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001628280-26-036154",
+      "id": "0001628280-26-036154:pb-thirdamendmentxex1011.htm"
+    },
+    {
+      "i": 75,
+      "company": [
+        "ACCENDRA HEALTH INC/VA/  (ACH)  (CIK 0000075252)"
+      ],
+      "file_date": "2026-06-15",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-271115",
+      "id": "0001193125-26-271115:d100115dex101.htm"
+    },
+    {
+      "i": 76,
+      "company": [
+        "XPO, Inc.  (XPO)  (CIK 0001166003)"
+      ],
+      "file_date": "2026-06-01",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001104659-26-068522",
+      "id": "0001104659-26-068522:tm2616097d1_ex10-1.htm"
+    },
+    {
+      "i": 77,
+      "company": [
+        "SEADRILL Ltd  (SDRL)  (CIK 0001737706)"
+      ],
+      "file_date": "2026-06-30",
+      "form": "8-K",
+      "file_type": "EX-4.1",
+      "adsh": "0001193125-26-290671",
+      "id": "0001193125-26-290671:d106615dex41.htm"
+    },
+    {
+      "i": 78,
+      "company": [
+        "NEUROCRINE BIOSCIENCES INC  (NBIX)  (CIK 0000914475)"
+      ],
+      "file_date": "2026-05-18",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-228013",
+      "id": "0001193125-26-228013:d94926dex101.htm"
+    },
+    {
+      "i": 79,
+      "company": [
+        "ACCENDRA HEALTH INC/VA/  (ACH)  (CIK 0000075252)"
+      ],
+      "file_date": "2026-06-15",
+      "form": "8-K",
+      "file_type": "EX-10.2",
+      "adsh": "0001193125-26-271115",
+      "id": "0001193125-26-271115:d100115dex102.htm"
+    },
+    {
+      "i": 80,
+      "company": [
+        "Backblaze, Inc.  (BLZE)  (CIK 0001462056)"
+      ],
+      "file_date": "2026-08-24",
+      "form": "8-K",
+      "file_type": "EX-10.3",
+      "adsh": "0001140361-26-034200",
+      "id": "0001140361-26-034200:ef20080933_ex10-3.htm"
+    },
+    {
+      "i": 81,
+      "company": [
+        "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+      ],
+      "file_date": "2026-06-18",
+      "form": "8-K",
+      "file_type": "EX-4.1",
+      "adsh": "0001769628-26-000291",
+      "id": "0001769628-26-000291:exhibit41.htm"
+    },
+    {
+      "i": 82,
+      "company": [
+        "GRANITE CONSTRUCTION INC  (GVA)  (CIK 0000861459)"
+      ],
+      "file_date": "2026-06-02",
+      "form": "8-K",
+      "file_type": "EX-4.1",
+      "adsh": "0001437749-26-019166",
+      "id": "0001437749-26-019166:ex_970386.htm"
+    },
+    {
+      "i": 83,
+      "company": [
+        "Floor & Decor Holdings, Inc.  (FND)  (CIK 0001507079)"
+      ],
+      "file_date": "2026-06-25",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001628280-26-045555",
+      "id": "0001628280-26-045555:fnd-20260624x8kxex101.htm"
+    },
+    {
+      "i": 84,
+      "company": [
+        "ENTERPRISE PRODUCTS PARTNERS L.P.  (EPD, EPDU)  (CIK 0001061219)"
+      ],
+      "file_date": "2026-07-30",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001061219-26-000017",
+      "id": "0001061219-26-000017:epd-20260730xex101.htm"
+    },
+    {
+      "i": 85,
+      "company": [
+        "RPC INC  (RES)  (CIK 0000742278)"
+      ],
+      "file_date": "2026-07-07",
+      "form": "8-K",
+      "file_type": "EX-99.1",
+      "adsh": "0001104659-26-081292",
+      "id": "0001104659-26-081292:res-20260630xex99d1.htm"
+    },
+    {
+      "i": 86,
+      "company": [
+        "Backblaze, Inc.  (BLZE)  (CIK 0001462056)"
+      ],
+      "file_date": "2026-08-24",
+      "form": "8-K",
+      "file_type": "EX-10.2",
+      "adsh": "0001140361-26-034200",
+      "id": "0001140361-26-034200:ef20080933_ex10-2.htm"
+    },
+    {
+      "i": 87,
+      "company": [
+        "Suncrete, Inc.  (RMIX)  (CIK 0002094433)"
+      ],
+      "file_date": "2026-07-07",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-297543",
+      "id": "0001193125-26-297543:d220322dex101.htm"
+    },
+    {
+      "i": 88,
+      "company": [
+        "Worthington Steel, Inc.  (WS)  (CIK 0001968487)"
+      ],
+      "file_date": "2026-06-30",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001968487-26-000018",
+      "id": "0001968487-26-000018:ws-ex10_1.htm"
+    },
+    {
+      "i": 89,
+      "company": [
+        "GRIFFON CORP  (GFF)  (CIK 0000050725)"
+      ],
+      "file_date": "2026-08-19",
+      "form": "8-K",
+      "file_type": "EX-99.1",
+      "adsh": "0000930413-26-002595",
+      "id": "0000930413-26-002595:c117477_ex99-1.htm"
+    },
+    {
+      "i": 90,
+      "company": [
+        "Neutron Holdings, Inc.  (LIME)  (CIK 0001699963)"
+      ],
+      "file_date": "2026-07-06",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001628280-26-047289",
+      "id": "0001628280-26-047289:exhibit101-closing8xk.htm"
+    },
+    {
+      "i": 91,
+      "company": [
+        "CONMED Corp  (CNMD)  (CIK 0000816956)"
+      ],
+      "file_date": "2026-06-01",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0002077096-26-000190",
+      "id": "0002077096-26-000190:ea029246401ex10-1.htm"
+    },
+    {
+      "i": 92,
+      "company": [
+        "Core & Main, Inc.  (CNM)  (CIK 0001856525)"
+      ],
+      "file_date": "2026-07-02",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-294978",
+      "id": "0001193125-26-294978:d150669dex101.htm"
+    },
+    {
+      "i": 93,
+      "company": [
+        "XPO, Inc.  (XPO)  (CIK 0001166003)"
+      ],
+      "file_date": "2026-06-01",
+      "form": "8-K",
+      "file_type": "EX-10.2",
+      "adsh": "0001104659-26-068522",
+      "id": "0001104659-26-068522:tm2616097d1_ex10-2.htm"
+    },
+    {
+      "i": 94,
+      "company": [
+        "WHIRLPOOL CORP /DE/  (WHR, WHR-PA)  (CIK 0000106640)"
+      ],
+      "file_date": "2026-06-16",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001193125-26-272923",
+      "id": "0001193125-26-272923:d144434dex101.htm"
+    },
+    {
+      "i": 95,
+      "company": [
+        "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+      ],
+      "file_date": "2026-06-18",
+      "form": "8-K",
+      "file_type": "EX-4.3",
+      "adsh": "0001769628-26-000291",
+      "id": "0001769628-26-000291:exhibit43.htm"
+    },
+    {
+      "i": 96,
+      "company": [
+        "Shoals Technologies Group, Inc.  (SHLS)  (CIK 0001831651)"
+      ],
+      "file_date": "2026-06-12",
+      "form": "8-K/A",
+      "file_type": "EX-10.1",
+      "adsh": "0001831651-26-000098",
+      "id": "0001831651-26-000098:seniorsecuredcreditagreeme.htm"
+    },
+    {
+      "i": 97,
+      "company": [
+        "Solstice Advanced Materials Inc.  (SOLS)  (CIK 0002064953)"
+      ],
+      "file_date": "2026-07-27",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001104659-26-086878",
+      "id": "0001104659-26-086878:tm2620579d3_ex10-1.htm"
+    },
+    {
+      "i": 98,
+      "company": [
+        "Voyager Technologies, Inc./TX  (VOYG)  (CIK 0001788060)"
+      ],
+      "file_date": "2026-07-08",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001628280-26-047657",
+      "id": "0001628280-26-047657:exhibit101-fourthamendment.htm"
+    },
+    {
+      "i": 99,
+      "company": [
+        "WILLIAMS COMPANIES, INC.  (WMB)  (CIK 0000107263)",
+        "NORTHWEST PIPELINE LLC  (CIK 0000110019)",
+        "TRANSCONTINENTAL GAS PIPE LINE COMPANY, LLC  (CIK 0000099250)"
+      ],
+      "file_date": "2026-05-20",
+      "form": "8-K",
+      "file_type": "EX-10.2",
+      "adsh": "0001193125-26-232714",
+      "id": "0001193125-26-232714:d227957dex102.htm"
+    },
+    {
+      "i": 100,
+      "company": [
+        "FULLER H B CO  (FUL)  (CIK 0000039368)"
+      ],
+      "file_date": "2026-07-20",
+      "form": "8-K",
+      "file_type": "EX-10.1",
+      "adsh": "0001437749-26-023846",
+      "id": "0001437749-26-023846:ex_989568.htm"
+    }
+  ]
+}

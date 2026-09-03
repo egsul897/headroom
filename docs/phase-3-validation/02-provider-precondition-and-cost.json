@@ -1,0 +1,27 @@
+{
+  "artifact": "02-provider-precondition-and-cost",
+  "provider": "Vercel AI Gateway (AI_GATEWAY_API_KEY is the only model credential in this environment; no ANTHROPIC_API_KEY)",
+  "model": "anthropic/claude-sonnet-5 (stage callers)",
+  "probe": {
+    "performedBefore": "any paid stage",
+    "request": "minimal chat completion via gateway",
+    "result": "HTTP 402",
+    "errorCode": "quota_for_entity_exceeded",
+    "interpretation": "Key-level budget cap of $150.00 exhausted (total_used $150.494171); credits endpoint shows balance $14.505829 but the key cap blocks all calls."
+  },
+  "paidModelCallsMade": 0,
+  "paidCostUsd": 0.0,
+  "probeCostUsd": 0.0,
+  "estimateIfCredentialRestored": {
+    "basis": "Per-unit costs observed in Phase 3F/3F.2 and post-holdout semantic-accountability runs on the same stack",
+    "discoveryPassB": "~$0.30 per document",
+    "perSectionUnit": "$0.83-$1.43 (Pass A x2 + 3B compile + 3C review)",
+    "units": "113 section units with deterministic signals; cap proposed at 12 highest-signal body units for the first paid run, whole-agreement discovery uncapped",
+    "estimateUsd": "18-20 at 12-unit cap; ~$110-165 uncapped",
+    "proposedHardBudgetUsd": 20.0,
+    "hardBudgetEnforcement": "harness must abort before any call that would exceed cumulative spend of $20.00"
+  },
+  "status": "ENVIRONMENT_BLOCKED",
+  "workaroundAttempted": false,
+  "reason": "Mission forbids unauthorized spend paths; no alternative credential exists; blocking recorded rather than circumvented."
+}

@@ -1,0 +1,58 @@
+{
+  "artifact": "07-root-causes-by-stage",
+  "stages": [
+    {
+      "stage": "environment / provider",
+      "rootCause": "Vercel AI Gateway key budget cap ($150.00) exhausted before this mission (total_used $150.494171); every paid stage returns HTTP 402 quota_for_entity_exceeded. No alternative credential (no ANTHROPIC_API_KEY).",
+      "classification": "ENVIRONMENT_BLOCKED",
+      "owner": "operator (raise key cap or supply credential)",
+      "remediationInThisMission": "none (forbidden)"
+    },
+    {
+      "stage": "ingestion / extraction",
+      "rootCause": "None observed; HTML->text extraction preserved section numbering, definitions quotes, page markers.",
+      "classification": "OK"
+    },
+    {
+      "stage": "2A structure",
+      "rootCause": "OBS-1: TOC entries parsed as 116 duplicate SECTION nodes; OBS-3: 'Available Amount' pointer-definition not listed (resolves in 6.08(a)(3)).",
+      "classification": "SAFE (over-inclusion / pointer)",
+      "remediationInThisMission": "none"
+    },
+    {
+      "stage": "2A deterministic discovery",
+      "rootCause": "OBS-2: signal density lower for 2.18/5.01/5.18/7.01 than Article VI; 17 candidates on TOC stubs.",
+      "classification": "REVIEW"
+    },
+    {
+      "stage": "2B Pass B discovery",
+      "rootCause": "ENVIRONMENT_BLOCKED",
+      "classification": "ENVIRONMENT_BLOCKED"
+    },
+    {
+      "stage": "2C package graph",
+      "rootCause": "None; single-document package, no ABL sibling registered by design.",
+      "classification": "OK"
+    },
+    {
+      "stage": "2G operative state",
+      "rootCause": "None; base document only, OPERATIVE_STATE_RESOLVED with zero effects.",
+      "classification": "OK"
+    },
+    {
+      "stage": "Pass A / 3B / 3C",
+      "rootCause": "ENVIRONMENT_BLOCKED",
+      "classification": "ENVIRONMENT_BLOCKED"
+    },
+    {
+      "stage": "3E Layers A/B",
+      "rootCause": "Ran against empty compiled set; refused to certify (PACKAGE_SEMANTICALLY_INCOMPLETE).",
+      "classification": "SAFE_FAILURE (expected)"
+    },
+    {
+      "stage": "3E Layer C",
+      "rootCause": "ENVIRONMENT_BLOCKED",
+      "classification": "ENVIRONMENT_BLOCKED"
+    }
+  ]
+}

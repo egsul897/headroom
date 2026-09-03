@@ -1,0 +1,1669 @@
+{
+  "artifact": "04-human-reference-set",
+  "method": "Human (analyst) read of the operative text at pinned offsets in the extracted text (sha256 f63b9dc6...), sampled across the whole agreement: Article I definitions, Section 1.08, Article II (2.09, 2.18), Article V (5.01, 5.18), Article VI (all operative sections), Article VII (7.01). Authored before any paid stage and independent of compiler output (none exists).",
+  "itemCount": 46,
+  "byCategory": {
+    "A high-value restrictions": 7,
+    "B permissions/baskets": 15,
+    "C exceptions/provisos": 9,
+    "D quantitative components": 9,
+    "E dependency/cross-reference mechanics": 5,
+    "F non-obvious feature": 1
+  },
+  "byMateriality": {
+    "CRITICAL": 28,
+    "MATERIAL": 18,
+    "MINOR": 0
+  },
+  "offsetsRelativeTo": "extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+  "items": [
+    {
+      "id": "A1",
+      "category": "A high-value restrictions",
+      "materiality": "CRITICAL",
+      "section": "6.01(a)",
+      "description": "Ratio debt incurrence test: pari passu secured FLLR <= greater of 2.00x and prior; junior secured SSLR <= greater of 3.00x/prior OR ICR >= lesser of 1.75x/prior; unsecured TLR <= greater of 4.00x/prior OR ICR >= lesser of 1.75x/prior (Permitted Ratio Debt)",
+      "span": [
+        608901,
+        612151
+      ],
+      "excerptHead": "Section 6.01 Limitation on Incurrence of Indebtedness and Issuance of Disqualified Stock and Preferred Stoc k . (a) the Borrowers shall not, and shall not perm",
+      "dependencies": [
+        "definition:First Lien Leverage Ratio",
+        "definition:Senior Secured Leverage Ratio",
+        "definition:Total Leverage Ratio",
+        "definition:Interest Coverage Ratio"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.01",
+          "nodeType": "SECTION",
+          "sectionRef": "6.01",
+          "topLevelSection": "6.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [
+          "first lien leverage ratio",
+          "senior secured leverage ratio",
+          "total leverage ratio",
+          "interest coverage ratio"
+        ],
+        "definitionsExpected": [
+          "first lien leverage ratio",
+          "senior secured leverage ratio",
+          "total leverage ratio",
+          "interest coverage ratio"
+        ]
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "A2",
+      "category": "A high-value restrictions",
+      "materiality": "CRITICAL",
+      "section": "6.02",
+      "description": "Limitation on Liens: only Permitted Liens; junior/equal-and-ratable rule with Increased Amount; Lien on Collateral securing pari/junior debt requires intercreditor",
+      "span": [
+        642524,
+        644692
+      ],
+      "excerptHead": "Section 6.02 Limitation on Liens . The Borrowers shall not, and shall not permit any Restricted Subsidiary to create, incur or assume any Lien (except Permitted",
+      "dependencies": [
+        "definition:Permitted Liens"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.02",
+          "nodeType": "SECTION",
+          "sectionRef": "6.02",
+          "topLevelSection": "6.02"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [
+          "permitted liens"
+        ],
+        "definitionsExpected": [
+          "permitted liens"
+        ]
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "A3",
+      "category": "A high-value restrictions",
+      "materiality": "MATERIAL",
+      "section": "6.03",
+      "description": "Limitation on Fundamental Changes: merger/consolidation/disposal-of-all-or-substantially-all with successor and no-EoD conditions; carve-out redirecting to 6.05 and 6.08/Permitted Investments",
+      "span": [
+        644692,
+        650455
+      ],
+      "excerptHead": "Section 6.03 Limitation on Fundamental Changes . The Borrowers will not, nor will it permit any Restricted Subsidiaries to, merge into or consolidate or amalgam",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.03",
+          "nodeType": "SECTION",
+          "sectionRef": "6.03",
+          "topLevelSection": "6.03"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "A4",
+      "category": "A high-value restrictions",
+      "materiality": "CRITICAL",
+      "section": "6.05(a)",
+      "description": "Asset Sales: FMV requirement plus cash consideration test: at least 75% cash (with Designated Non-cash Consideration cap greater of $360.0M / 50% EBITDA); 50% threshold below greater of $144.0M/20% EBITDA; 75% above greater of $216.0M/30% EBITDA",
+      "span": [
+        650489,
+        654594
+      ],
+      "excerptHead": "Section 6.05 Limitation on Asset Sales . (a) The Borrowers shall not, and shall not permit any Restricted Subsidiary to, consummate an Asset Sale, unless: (1)",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.05",
+          "nodeType": "SECTION",
+          "sectionRef": "6.05",
+          "topLevelSection": "6.05"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "A5",
+      "category": "A high-value restrictions",
+      "materiality": "CRITICAL",
+      "section": "6.08(a)",
+      "description": "Restricted Payments core prohibition: no RP unless no EoD, and aggregate RPs since Effective Date <= Available Amount (6.08(a)(3) builder)",
+      "span": [
+        659042,
+        670071
+      ],
+      "excerptHead": "Section 6.08 Limitation on Restricted Payments . (a) The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to: (i) declare or pay",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.08",
+          "nodeType": "SECTION",
+          "sectionRef": "6.08",
+          "topLevelSection": "6.08"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "A6",
+      "category": "A high-value restrictions",
+      "materiality": "MATERIAL",
+      "section": "5.18(a)",
+      "description": "Affiliate transactions: arm's-length requirement above greater of $144.0M and 20% of Consolidated EBITDA; fairness/valuation alternatives",
+      "span": [
+        593406,
+        607122
+      ],
+      "excerptHead": "Section 5.18 Limitation on Transactions with Affiliates . (a) The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to, make any pa",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::5.18",
+          "nodeType": "SECTION",
+          "sectionRef": "5.18",
+          "topLevelSection": "5.18"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "A7",
+      "category": "A high-value restrictions",
+      "materiality": "CRITICAL",
+      "section": "7.01(d)/(e)",
+      "description": "Immediate Event of Default (no cure) for breach of 5.02(a), 5.04 (existence), 5.10, or any Article VI covenant; 30-day post-notice cure for other covenants",
+      "span": [
+        701185,
+        701796
+      ],
+      "excerptHead": "(d) the Borrowers or any other Restricted Party shall fail to observe or perform any covenant, condition or agreement contained in Sections 5.02(a), 5.04 (with ",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::7.01(d)",
+          "nodeType": "SUBSECTION",
+          "sectionRef": "7.01(d)",
+          "topLevelSection": "7.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "B1",
+      "category": "B permissions/baskets",
+      "materiality": "CRITICAL",
+      "section": "6.01(b)(1)",
+      "description": "Loan Document debt plus ABL facility debt capped at greater of $800.0M and the Borrowing Base, plus Fixed Incremental Amount (clause (Z))",
+      "span": [
+        612837,
+        613535
+      ],
+      "excerptHead": "Section 6.01(b)(1); (4) (a) Indebtedness (including Capitalized Lease Obligations and Purchase Money Obligations), Disqualified Stock and Preferred Stock incur",
+      "dependencies": [
+        "definition:Fixed Incremental Amount"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.01(b)(3)",
+          "nodeType": "CLAUSE",
+          "sectionRef": "6.01(b)(3)",
+          "topLevelSection": "6.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [
+          "fixed incremental amount"
+        ],
+        "definitionsExpected": [
+          "fixed incremental amount"
+        ]
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "B2",
+      "category": "B permissions/baskets",
+      "materiality": "MATERIAL",
+      "section": "6.01(b)(4)",
+      "description": "Capital lease / purchase money / sale-leaseback debt: greater of $360.0M and 50% EBITDA, plus amount incurrable with pro forma FLLR <= 2.50x, plus closing-date capital leases",
+      "span": [
+        613535,
+        614500
+      ],
+      "excerptHead": "Section 6.01(b)(4), and all Refinancing Indebtedness incurred to Refinance any Indebtedness, Disqualified Stock and Preferred Stock incurred pursuant to this Se",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.01(b)(4)(a)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "6.01(b)(4)(a)",
+          "topLevelSection": "6.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "B3",
+      "category": "B permissions/baskets",
+      "materiality": "CRITICAL",
+      "section": "6.01(b)(12)",
+      "description": "(a) contribution debt up to 200% of net cash equity contributions (Contribution Indebtedness); (b) general debt basket greater of $720.0M and 100% EBITDA",
+      "span": [
+        621202,
+        623379
+      ],
+      "excerptHead": "(12) (a) Indebtedness, Disqualified Stock and Preferred Stock of any Restricted Party in an aggregate principal amount or liquidation preference up to 200% of t",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.01(c)(b)",
+          "nodeType": "CLAUSE",
+          "sectionRef": "6.01(c)(b)",
+          "topLevelSection": "6.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "B4",
+      "category": "B permissions/baskets",
+      "materiality": "MATERIAL",
+      "section": "6.01(b)(18)",
+      "description": "Non-Guarantor Restricted Party debt basket: greater of $720.0M and 100% EBITDA (with refinancings)",
+      "span": [
+        630144,
+        630700
+      ],
+      "excerptHead": "Section 6.01(b)(13) hereof incurred to Refinance Indebtedness initially incurred in reliance on this Section 6.01(b)(18)), the greater of (x) $720.0 million and",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.01(d)(2)(ii)(i)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "6.01(d)(2)(ii)(i)",
+          "topLevelSection": "6.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "B5",
+      "category": "B permissions/baskets",
+      "materiality": "MATERIAL",
+      "section": "6.01(b)(19)",
+      "description": "Acquired / acquisition debt: greater of $720.0M and 100% EBITDA, or ratio-neutral / no-worse tests",
+      "span": [
+        630700,
+        631400
+      ],
+      "excerptHead": "ck of any Restricted Party incurred or issued to finance or assumed in connection with an acquisition or Investment in an aggregate principal amount not to exce",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.01(d)(2)(ii)(ii)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "6.01(d)(2)(ii)(ii)",
+          "topLevelSection": "6.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "B6",
+      "category": "B permissions/baskets",
+      "materiality": "MATERIAL",
+      "section": "6.01(b)(27)",
+      "description": "Joint venture debt: greater of $360.0M and 50% EBITDA",
+      "span": [
+        634000,
+        634400
+      ],
+      "excerptHead": " aggregate principal amount of such Indebtedness incurred pursuant to this Section 6.01(b)(27) and together with any outstanding Indebtedness under Section 6.01",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.01(d)(2)(ii)(ii)(ii)(b)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "6.01(d)(2)(ii)(ii)(ii)(b)",
+          "topLevelSection": "6.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "B7",
+      "category": "B permissions/baskets",
+      "materiality": "CRITICAL",
+      "section": "6.01(b)(31)/(32)/(33)",
+      "description": "Debt in reliance on Available RP Capacity Amount; Available Amount; Incremental Equivalent Debt within Incremental Cap",
+      "span": [
+        634400,
+        636112
+      ],
+      "excerptHead": "on and (y) 50% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis; (28) Unsecured Capitalized Leases; (29) [reser",
+      "dependencies": [
+        "definition:Available RP Capacity Amount",
+        "definition:Incremental Cap",
+        "definition:Incremental Equivalent Debt"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.01(d)(2)(ii)(ii)(ii)(b)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "6.01(d)(2)(ii)(ii)(ii)(b)",
+          "topLevelSection": "6.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [
+          "available rp capacity amount",
+          "incremental cap",
+          "incremental equivalent debt"
+        ],
+        "definitionsExpected": [
+          "available rp capacity amount",
+          "incremental cap",
+          "incremental equivalent debt"
+        ]
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "B8",
+      "category": "B permissions/baskets",
+      "materiality": "MATERIAL",
+      "section": "6.08(b)(9)",
+      "description": "Post-IPO dividends: up to 6.0% p.a. of net cash IPO proceeds plus 7.0% p.a. of Market Capitalization",
+      "span": [
+        679678,
+        681538
+      ],
+      "excerptHead": "(9) (i) (a) the declaration and payment of dividends on any Borrower\u2019s common stock (or the payment of dividends to any Parent Entity to fund a payment of divid",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.08(i)(ii)(9)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "6.08(i)(ii)(9)",
+          "topLevelSection": "6.08"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "B9",
+      "category": "B permissions/baskets",
+      "materiality": "CRITICAL",
+      "section": "6.08(b)(10)",
+      "description": "Ratio-based unlimited RP: FLLR <= 2.00x or ICR >= 1.75x on a pro forma basis, no Specified Event of Default",
+      "span": [
+        681538,
+        682568
+      ],
+      "excerptHead": "(10) of this Section 6.08(b)) that have been used to incur Indebtedness, Disqualified Stock or Preferred Stock pursuant to clause (31) of Section 6.01(b), and t",
+      "dependencies": [
+        "definition:Specified Event of Default"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.08(i)(ii)(10)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "6.08(i)(ii)(10)",
+          "topLevelSection": "6.08"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [
+          "specified event of default"
+        ],
+        "definitionsExpected": [
+          "specified event of default"
+        ]
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "B10",
+      "category": "B permissions/baskets",
+      "materiality": "CRITICAL",
+      "section": "6.08(b)(12)",
+      "description": "General RP basket: greater of $720.0M and 100% EBITDA; Restricted Investments made under it count against Available Investment Capacity",
+      "span": [
+        683084,
+        683600
+      ],
+      "excerptHead": "Section 6.08(b)(12) not to exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA for the most recently ended Test Period, calculated on a",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.08(i)(ii)(12)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "6.08(i)(ii)(12)",
+          "topLevelSection": "6.08"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "B11",
+      "category": "B permissions/baskets",
+      "materiality": "CRITICAL",
+      "section": "6.08(b)(15)/(25)",
+      "description": "Restricted Debt Payments: general basket greater of $720.0M and 100% EBITDA; ratio RDP basket; Threshold Amount RDP exception",
+      "span": [
+        684625,
+        693909
+      ],
+      "excerptHead": "Section 6.08(b)(15) not to exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA of the Initial Borrower for the most recently ended Test",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.08(i)(ii)(15)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "6.08(i)(ii)(15)",
+          "topLevelSection": "6.08"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "B12",
+      "category": "B permissions/baskets",
+      "materiality": "CRITICAL",
+      "section": "Permitted Investments (13)",
+      "description": "General Investment basket (General Basket Amount): greater of $720.0M and 100% EBITDA, with reclassification to clause (1) on becoming a Restricted Subsidiary",
+      "span": [
+        255193,
+        255900
+      ],
+      "excerptHead": "(13) additional Investments having an aggregate Fair Market Value, taken together with all other Investments made pursuant to this clause (13) that are at that ",
+      "dependencies": [
+        "definition:Permitted Investments"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::1.01(13)(13)",
+          "nodeType": "CLAUSE",
+          "sectionRef": "1.01(13)(13)",
+          "topLevelSection": "1.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [
+          "permitted investments"
+        ],
+        "definitionsExpected": [
+          "permitted investments"
+        ]
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "B13",
+      "category": "B permissions/baskets",
+      "materiality": "MATERIAL",
+      "section": "Permitted Liens (46)",
+      "description": "Liens up to (i) Available RP Capacity Amount and (ii) Available Amount Not Otherwise Applied; may be pari passu or junior on Collateral with intercreditor",
+      "span": [
+        286424,
+        287000
+      ],
+      "excerptHead": "(46) (i) Liens in an aggregate amount not to exceed the Available RP Capacity Amount and (ii) Liens in an aggregate amount not to exceed the Available Amount th",
+      "dependencies": [
+        "definition:Permitted Liens"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::1.01(13)(46)",
+          "nodeType": "CLAUSE",
+          "sectionRef": "1.01(13)(46)",
+          "topLevelSection": "1.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [
+          "permitted liens"
+        ],
+        "definitionsExpected": [
+          "permitted liens"
+        ]
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "B14",
+      "category": "B permissions/baskets",
+      "materiality": "CRITICAL",
+      "section": "Incremental Cap / Fixed Incremental Amount",
+      "description": "Incremental Cap = Fixed Incremental Amount (greater of $720.0M and 100% EBITDA + unused 6.01(b)(12)(b) + unused General Lien Basket Reallocated Amount + unused Available RP Capacity Amount - prior Fixed-Amount usage) + Voluntary Prepayment Incremental Amount + Ratio Incremental Amount + Extension Amount",
+      "span": [
+        184409,
+        185400
+      ],
+      "excerptHead": "\u201c Fixed Incremental Amount \u201d means, at any date, the sum of (a) the greater of (i) $720.0 million and (ii) an amount equal to 100% of Consolidated EBITDA on a P",
+      "dependencies": [
+        "definition:Incremental Cap"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::1.01(13)(4)(A)(b)(B)(B)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "1.01(13)(4)(A)(b)(B)(B)",
+          "topLevelSection": "1.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [
+          "incremental cap"
+        ],
+        "definitionsExpected": [
+          "incremental cap"
+        ]
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "B15",
+      "category": "B permissions/baskets",
+      "materiality": "MATERIAL",
+      "section": "2.18(b)",
+      "description": "Incremental Facility sole condition: no Event of Default (only Specified Event of Default for Permitted Acquisitions/Investments), subject to 1.08 LCT mechanics",
+      "span": [
+        498027,
+        498599
+      ],
+      "excerptHead": "(b) Conditions . The availability of an Incremental Facility under this Agreement will be subject only to the following condition: subject, for the avoidance of",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::2.18(b)",
+          "nodeType": "SUBSECTION",
+          "sectionRef": "2.18(b)",
+          "topLevelSection": "2.18"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "C1",
+      "category": "C exceptions/provisos",
+      "materiality": "CRITICAL",
+      "section": "6.08(a)(3)",
+      "description": "Available Amount builder: starter greater of $540.0M and 75% EBITDA; greater of 50% cumulative CNI / 100% Retained ECF / cumulative EBITDA minus 140% cumulative interest; equity proceeds; contributions; investment returns; redesignations; retained declined proceeds; minus Permitted Liens (46)(ii) and 6.01(b)(32) usage; Specified EoD blocker",
+      "span": [
+        662400,
+        670071
+      ],
+      "excerptHead": "Section 6.08(b) hereof), is less than the sum of (without duplication) (the sum or the amounts attributable to clauses (a) through (f) below are referred to her",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.08(a)(iv)(i)(i)(3)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "6.08(a)(iv)(i)(i)(3)",
+          "topLevelSection": "6.08"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "C2",
+      "category": "C exceptions/provisos",
+      "materiality": "CRITICAL",
+      "section": "2.09(c)",
+      "description": "ECF sweep provisos: dollar-for-dollar reduction for voluntary prepayments, RDPs, and other listed deductions; no prepayment if amount < greater of $180.0M and 25% EBITDA (only the excess); carry-forward of excess deductions; due 10 BD after 5.01 delivery",
+      "span": [
+        431608,
+        434969
+      ],
+      "excerptHead": "(c) Following the end of each fiscal year of the Borrowers, commencing with the first (1st) full fiscal year ending after the Effective Date, the Borrowers shal",
+      "dependencies": [
+        "definition:ECF Percentage"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::2.09(c)",
+          "nodeType": "SUBSECTION",
+          "sectionRef": "2.09(c)",
+          "topLevelSection": "2.09"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [
+          "ecf percentage"
+        ],
+        "definitionsExpected": [
+          "ecf percentage"
+        ]
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "C3",
+      "category": "C exceptions/provisos",
+      "materiality": "CRITICAL",
+      "section": "Prepayment Event (a)/(b)",
+      "description": "Asset-sale prepayment thresholds: Transaction Threshold greater of $144.0M/20% EBITDA; Annual Threshold greater of $216.0M/30% EBITDA; unused thresholds carry forward; non-permitted debt proceeds 100%",
+      "span": [
+        291823,
+        293300
+      ],
+      "excerptHead": "\u201c Prepayment Event \u201d means: (a) any Asset Sale of Collateral consummated by a Loan Party solely pursuant to Section 6.05(a)(2)(ii), other than (i) the issuance",
+      "dependencies": [
+        "definition:Prepayment Event"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::1.01(13)(51)(ii)(ii)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "1.01(13)(51)(ii)(ii)",
+          "topLevelSection": "1.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [
+          "prepayment event"
+        ],
+        "definitionsExpected": [
+          "prepayment event"
+        ]
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "C4",
+      "category": "C exceptions/provisos",
+      "materiality": "MATERIAL",
+      "section": "2.09(d)",
+      "description": "Lender right to decline mandatory prepayments (Retained Declined Proceeds) except optional prepayments and non-permitted-debt Prepayment Events",
+      "span": [
+        434969,
+        436946
+      ],
+      "excerptHead": "(d) Prior to any optional or mandatory prepayment of Borrowings hereunder, the Initial Borrower shall select the Borrowing or Borrowings to be prepaid and shall",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::2.09(d)",
+          "nodeType": "SUBSECTION",
+          "sectionRef": "2.09(d)",
+          "topLevelSection": "2.09"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "C5",
+      "category": "C exceptions/provisos",
+      "materiality": "CRITICAL",
+      "section": "7.01(g) proviso",
+      "description": "Cross-acceleration carve-outs (secured debt on asset disposition, Swap termination events, affiliate-held debt, cured defaults); financial-covenant default in Material Indebtedness is not an EoD until actual acceleration not rescinded",
+      "span": [
+        702056,
+        704050
+      ],
+      "excerptHead": "(g) any event or condition occurs that results in any Material Indebtedness of a Loan Party becoming due prior to its scheduled maturity or that enables or perm",
+      "dependencies": [
+        "definition:Material Indebtedness"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::7.01(g)",
+          "nodeType": "SUBSECTION",
+          "sectionRef": "7.01(g)",
+          "topLevelSection": "7.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [
+          "material indebtedness"
+        ],
+        "definitionsExpected": [
+          "material indebtedness"
+        ]
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "C6",
+      "category": "C exceptions/provisos",
+      "materiality": "MATERIAL",
+      "section": "6.05(b)",
+      "description": "Reinvestment right: Net Proceeds may be reinvested within the Asset Sale Proceeds Application Period (24 months), extended by 180-day / 120-day commitment application periods; commitment/letter of intent treated as permitted application",
+      "span": [
+        654594,
+        658982
+      ],
+      "excerptHead": "Section 6.05(a)(2)(ii) (the \u201c Asset Sale Proceeds Application Period \u201d), such Loan Party shall apply an amount equal to the Net Proceeds from such Asset Sale: ",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.05(b)",
+          "nodeType": "SUBSECTION",
+          "sectionRef": "6.05(b)",
+          "topLevelSection": "6.05"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "C7",
+      "category": "C exceptions/provisos",
+      "materiality": "MATERIAL",
+      "section": "2.09(a)(i)(B)",
+      "description": "Soft call: 1.00% prepayment premium on Initial Term Loans prepaid or repriced in a Repricing Transaction on or before the 6-month anniversary of the Effective Date",
+      "span": [
+        428388,
+        429976
+      ],
+      "excerptHead": "Section 2.09 Prepayment of Loans . (a) (i)The Borrowers shall have the right at any time and from time to time to prepay any Borrowing in whole or in part, sub",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::2.09",
+          "nodeType": "SECTION",
+          "sectionRef": "2.09",
+          "topLevelSection": "2.09"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "C8",
+      "category": "C exceptions/provisos",
+      "materiality": "MATERIAL",
+      "section": "6.08(b)(1)",
+      "description": "Dividend/redemption permitted if paid within 60 days after declaration or irrevocable notice and permitted on the declaration/notice date",
+      "span": [
+        670108,
+        670628
+      ],
+      "excerptHead": "(1) the payment of any dividend or other distribution or the consummation of any irrevocable redemption within sixty (60) days after the date of declaration the",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.08(i)(ii)(1)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "6.08(i)(ii)(1)",
+          "topLevelSection": "6.08"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "C9",
+      "category": "C exceptions/provisos",
+      "materiality": "CRITICAL",
+      "section": "1.08",
+      "description": "Limited Condition Transaction elections; pro forma calculations; Fixed Amounts vs Incurrence-Based Amounts classification and reallocation (1.08(f)); commitments not an incurrence until funded",
+      "span": [
+        376281,
+        397593
+      ],
+      "excerptHead": "Section 1.08 Limited Condition Transactions, Pro Forma Calculations and Other Calculations . Notwithstanding anything to the contrary in this Agreement or any L",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::1.08",
+          "nodeType": "SECTION",
+          "sectionRef": "1.08",
+          "topLevelSection": "1.08"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "D1",
+      "category": "D quantitative components",
+      "materiality": "CRITICAL",
+      "section": "Threshold Amount / Material Indebtedness",
+      "description": "Threshold Amount = greater of $324.0M and 45% of Consolidated EBITDA; Material Indebtedness = Loan Party debt/Swap obligations above Threshold Amount (drives 7.01(f)/(g) cross-default)",
+      "span": [
+        350042,
+        350203
+      ],
+      "excerptHead": "\u201c Threshold Amount \u201d means the greater of (a) $324.0 million and (b) 45% of Consolidated EBITDA on a Pro Forma Basis as of the applicable date of determination.",
+      "dependencies": [
+        "definition:Material Indebtedness"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::1.01(13)(51)(iii)(f)(5)(b)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "1.01(13)(51)(iii)(f)(5)(b)",
+          "topLevelSection": "1.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [
+          "material indebtedness"
+        ],
+        "definitionsExpected": [
+          "material indebtedness"
+        ]
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "D2",
+      "category": "D quantitative components",
+      "materiality": "CRITICAL",
+      "section": "ECF Percentage",
+      "description": "50.0%; 25.0% if FLLR <= 2.50x and > 2.00x; 0.0% if FLLR <= 2.00x (pro forma, recalculable under 2.09(c))",
+      "span": [
+        143120,
+        144000
+      ],
+      "excerptHead": "\u201c ECF Percentage \u201d means with respect to any Excess Cash Flow Period, 50.0%; provided that (i) the ECF Percentage shall be 25.0% if the First Lien Leverage Rati",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::1.01(13)(3)(e)(ii)(ii)(b)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "1.01(13)(3)(e)(ii)(ii)(b)",
+          "topLevelSection": "1.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "D3",
+      "category": "D quantitative components",
+      "materiality": "CRITICAL",
+      "section": "Disposition Percentage",
+      "description": "100.0%; 50.0% if FLLR <= 2.50x and > 2.00x; 0.0% if FLLR <= 2.00x; tested once at Borrower election between LOI and end of application period",
+      "span": [
+        136765,
+        137900
+      ],
+      "excerptHead": "\u201c Disposition Percentage \u201d means, with respect to any prepayment with Net Proceeds required by Section 2.09(b) as a result of any Asset Sale consummated by a Lo",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::1.01(13)(3)(c)(e)(3)(i)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "1.01(13)(3)(c)(e)(3)(i)",
+          "topLevelSection": "1.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "D4",
+      "category": "D quantitative components",
+      "materiality": "MATERIAL",
+      "section": "Applicable Rate",
+      "description": "Initial Term Loans: Term SOFR + 1.75%, ABR + 0.75%; other Classes per Incremental/Refinancing/Permitted Amendment",
+      "span": [
+        21883,
+        22200
+      ],
+      "excerptHead": "\u201c Applicable Rate \u201d means: (a) with respect to the Initial Term Loans, (1) for Term SOFR Loans, 1.75% and (2) for ABR Loans, 0.75%; and (b) with respect to an",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::1.01(2)(b)(ii)(c)(2)(d)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "1.01(2)(b)(ii)(c)(2)(d)",
+          "topLevelSection": "1.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "D5",
+      "category": "D quantitative components",
+      "materiality": "CRITICAL",
+      "section": "Ratio definitions",
+      "description": "FLLR = Consolidated First Lien Debt (excl. Excluded Revolving Loans) / EBITDA; SSLR = Consolidated Senior Secured Debt (excl. Excluded Revolving Loans) / EBITDA; TLR = Consolidated Total Debt (excl. Excluded Revolving Loans) / EBITDA; ICR = EBITDA / Consolidated Interest Expense",
+      "span": [
+        183487,
+        183700
+      ],
+      "excerptHead": "\u201c First Lien Leverage Ratio \u201d means, on any date, the ratio of (a) Consolidated First Lien Debt as of such date (excluding any Excluded Revolving Loans) as of s",
+      "dependencies": [
+        "definition:Interest Coverage Ratio",
+        "definition:Senior Secured Leverage Ratio",
+        "definition:Total Leverage Ratio"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::1.01(13)(4)(A)(b)(B)(B)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "1.01(13)(4)(A)(b)(B)(B)",
+          "topLevelSection": "1.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [
+          "interest coverage ratio",
+          "senior secured leverage ratio",
+          "total leverage ratio"
+        ],
+        "definitionsExpected": [
+          "interest coverage ratio",
+          "senior secured leverage ratio",
+          "total leverage ratio"
+        ]
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "D6",
+      "category": "D quantitative components",
+      "materiality": "MATERIAL",
+      "section": "Test Period",
+      "description": "Four consecutive fiscal quarters or twelve-month period most recently ended, at Borrower election, for which statements are internally available or delivered under 5.01(a)/(b)",
+      "span": [
+        349461,
+        350042
+      ],
+      "excerptHead": "\u201c Test Period \u201d means, at any date of determination, (a) the period of four (4) consecutive fiscal quarters of the Initial Borrower or (b) twelve (12)-month per",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::1.01(13)(51)(iii)(f)(5)(a)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "1.01(13)(51)(iii)(f)(5)(a)",
+          "topLevelSection": "1.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "D7",
+      "category": "D quantitative components",
+      "materiality": "CRITICAL",
+      "section": "7.01(a)/(b)/(c)",
+      "description": "Payment grace: principal 2 Business Days (grace usable at most 5 times per Facility); interest/fees 10 Business Days; underpayment notice mechanics; representations 30 days after notice (Specified Representations no grace)",
+      "span": [
+        697603,
+        701185
+      ],
+      "excerptHead": "Section 7.01 Events of Default . If any of the following events (any such event, an \u201c Event of Default \u201d) shall occur: (a) any Borrower shall fail to pay any pr",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::7.01",
+          "nodeType": "SECTION",
+          "sectionRef": "7.01",
+          "topLevelSection": "7.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "D8",
+      "category": "D quantitative components",
+      "materiality": "MATERIAL",
+      "section": "5.01(a)/(b)",
+      "description": "Annual audited statements by SEC filing deadline or 150 days; quarterly by SEC deadline or 75 days; going-concern qualification carve-outs (A)-(D)",
+      "span": [
+        561978,
+        565500
+      ],
+      "excerptHead": "Section 5.01 Financial Statements and Other Information . The Initial Borrower will furnish to the Administrative Agent (for distribution to each Lender through",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::5.01",
+          "nodeType": "SECTION",
+          "sectionRef": "5.01",
+          "topLevelSection": "5.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "D9",
+      "category": "D quantitative components",
+      "materiality": "MATERIAL",
+      "section": "Consolidated EBITDA",
+      "description": "Add-back definition (CNI plus enumerated add-backs at Borrower election) - large multi-page definition used by every 'greater of $X and Y% of Consolidated EBITDA' basket",
+      "span": [
+        79182,
+        99357
+      ],
+      "excerptHead": "\u201c Consolidated EBITDA \u201d means, for any Test Period, with respect to any Person for any period, the Consolidated Net Income of such Person and its Restricted Sub",
+      "dependencies": [],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::1.01(13)(1)(c)(a)(b)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "1.01(13)(1)(c)(a)(b)",
+          "topLevelSection": "1.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "E1",
+      "category": "E dependency/cross-reference mechanics",
+      "materiality": "CRITICAL",
+      "section": "Available RP Capacity Amount",
+      "description": "Shared capacity across 6.08 RPs / Permitted Investments, reduced by 6.01(b)(31) debt (and (b)(13) refinancings thereof) and Permitted Liens (46)(i); no double reduction; Borrower may reallocate",
+      "span": [
+        35791,
+        36900
+      ],
+      "excerptHead": "\u201c Available RP Capacity Amount \u201d means, at any time of determination (and after giving effect to any reallocation or reclassification permitted hereunder), the ",
+      "dependencies": [
+        "6.01(b)(31)",
+        "Permitted Liens (46)(i)",
+        "6.08"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::1.01(2)(c)(2)(ff)(b)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "1.01(2)(c)(2)(ff)(b)",
+          "topLevelSection": "1.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "E2",
+      "category": "E dependency/cross-reference mechanics",
+      "materiality": "MATERIAL",
+      "section": "Available Investment Capacity Amount",
+      "description": "= Permitted Investments (13) capacity minus amount used under 6.08(b)(26)",
+      "span": [
+        35389,
+        35791
+      ],
+      "excerptHead": "\u201c Available Investment Capacity Amount \u201d means, at any time, (a) the amount of Investments that may be made at the time of determination pursuant to clause 13 o",
+      "dependencies": [
+        "Permitted Investments (13)",
+        "6.08(b)(26)"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::1.01(2)(c)(2)(ff)(a)(b)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "1.01(2)(c)(2)(ff)(a)(b)",
+          "topLevelSection": "1.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "E3",
+      "category": "E dependency/cross-reference mechanics",
+      "materiality": "CRITICAL",
+      "section": "Fixed Incremental Amount consumption",
+      "description": "Fixed Incremental Amount is increased by unused 6.01(b)(12)(b), General Lien Basket Reallocated Amount and Available RP Capacity Amount, and reduced by Incremental Facilities, Incremental Equivalent Debt and 6.01(b)(1)(Z)/(14)(e)(2) debt incurred in reliance on it (subject to reclassification)",
+      "span": [
+        184409,
+        185400
+      ],
+      "excerptHead": "\u201c Fixed Incremental Amount \u201d means, at any date, the sum of (a) the greater of (i) $720.0 million and (ii) an amount equal to 100% of Consolidated EBITDA on a P",
+      "dependencies": [
+        "6.01(b)(12)(b)",
+        "6.01(b)(1)(Z)",
+        "6.01(b)(14)(e)(2)",
+        "2.18"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::1.01(13)(4)(A)(b)(B)(B)",
+          "nodeType": "SUBCLAUSE",
+          "sectionRef": "1.01(13)(4)(A)(b)(B)(B)",
+          "topLevelSection": "1.01"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "E4",
+      "category": "E dependency/cross-reference mechanics",
+      "materiality": "CRITICAL",
+      "section": "2.09(b) <-> 6.05(b) <-> Prepayment Event <-> Disposition Percentage",
+      "description": "Asset-sale sweep chain: Prepayment Event (thresholds) -> Net Proceeds -> Disposition Percentage (FLLR grid) -> 2.09(b) within 10 BD, reduced dollar-for-dollar by 6.05(b) reinvestment",
+      "span": [
+        430523,
+        431608
+      ],
+      "excerptHead": "(b) Subject to the provisions of Section 6.05(b), in the event and on each occasion that any Net Proceeds are received by or on behalf of a Loan Party (or, in t",
+      "dependencies": [
+        "6.05(b)",
+        "definition:Prepayment Event",
+        "definition:Disposition Percentage",
+        "definition:First Lien Leverage Ratio"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::2.09(b)",
+          "nodeType": "SUBSECTION",
+          "sectionRef": "2.09(b)",
+          "topLevelSection": "2.09"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [
+          "prepayment event",
+          "disposition percentage",
+          "first lien leverage ratio"
+        ],
+        "definitionsExpected": [
+          "prepayment event",
+          "disposition percentage",
+          "first lien leverage ratio"
+        ]
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "E5",
+      "category": "E dependency/cross-reference mechanics",
+      "materiality": "CRITICAL",
+      "section": "Available Amount cross-basket consumption",
+      "description": "Available Amount reduced by Liens under Permitted Liens (46)(ii) and debt under 6.01(b)(32); Available Amount usable for RPs (6.08(b)), Investments and RDPs",
+      "span": [
+        669952,
+        670071
+      ],
+      "excerptHead": "Section 6.01(b)(32) since the Effective Date and outstanding thereunder at such time. (b) The foregoing provisions of Section 6.08(a) shall not prohibit: (1) ",
+      "dependencies": [
+        "Permitted Liens (46)(ii)",
+        "6.01(b)(32)"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.08(i)(ii)",
+          "nodeType": "CLAUSE",
+          "sectionRef": "6.08(i)(ii)",
+          "topLevelSection": "6.08"
+        },
+        "deterministicCandidateInBodySection": true,
+        "bodyUnitInSection": true,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    },
+    {
+      "id": "F1",
+      "category": "F non-obvious feature",
+      "materiality": "CRITICAL",
+      "section": "Article VI layout",
+      "description": "NO financial maintenance covenant: Article VI operative sections are 6.01/6.02/6.03/6.05/6.08 only; 6.04, 6.06, 6.07 are [Reserved]; 7.01(d) makes any Article VI breach an immediate EoD; 5.01(a)(C) qualification carve-out refers to maintenance covenants only in OTHER debt documents. Selected because no compiler stage would produce a positive claim for an absence; a system that silently reports 'no maintenance covenant found' is indistinguishable from one that missed it.",
+      "span": [
+        650455,
+        659042
+      ],
+      "excerptHead": "Section 6.04 [Reserved] . -139- Section 6.05 Limitation on Asset Sales . (a) The Borrowers shall not, and shall not permit any Restricted Subsidiary to, cons",
+      "dependencies": [
+        "7.01(d)",
+        "5.01(a)"
+      ],
+      "deterministicReach": {
+        "coveringNode": {
+          "nodeKey": "doc-a::6.04",
+          "nodeType": "SECTION",
+          "sectionRef": "6.04",
+          "topLevelSection": "6.04"
+        },
+        "deterministicCandidateInBodySection": false,
+        "bodyUnitInSection": false,
+        "definitionsDetected": [],
+        "definitionsExpected": []
+      },
+      "passA_run1": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passA_run2": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passB_IR": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "passC": "NOT_RUN",
+      "verifier": "NOT_RUN_ENVIRONMENT_BLOCKED",
+      "recallCredit": "NOT_EVALUABLE",
+      "substantiveCredit": "NOT_EVALUABLE",
+      "trustSafety": "NOT_EVALUATED"
+    }
+  ]
+}

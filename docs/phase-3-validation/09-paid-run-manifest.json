@@ -1,0 +1,68 @@
+{
+  "artifact": "09-paid-run-manifest",
+  "status": "READY_NOT_EXECUTED",
+  "productionSha": "d5144d1cb2f4612132847cdb28a9547506bab469",
+  "productionTreeHash": "da7106fac07c369695156cfa0c7d8a30350ea636c5e108060c0e84f67dd4d1ef",
+  "precondition": "Provider probe must return HTTP 200 before any stage; record probe cost.",
+  "inputs": {
+    "fixture": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/",
+    "extractedSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+    "deterministicOutputs": "tests/fixtures/unseen-packages/phase-3-validation-chwy-run/ (reuse stage1/2A/3/5 unchanged)",
+    "referenceSet": "docs/phase-3-validation/04-human-reference-set.json (frozen; do not edit after paid run starts)"
+  },
+  "stages": [
+    {
+      "order": 1,
+      "stage": "2B Pass B discovery",
+      "scope": "whole document",
+      "estimateUsd": 0.3
+    },
+    {
+      "order": 2,
+      "stage": "unit selection",
+      "rule": "exclude TOC-node units (charEnd <= 8980); rank body units by 2A signal count; take top 12 - expected: 6.08, 6.01, 1.01 slices, 2.18, 7.01, 1.08, 2.09, 6.05, 5.01, 5.18, 6.03, 6.02"
+    },
+    {
+      "order": 3,
+      "stage": "Pass A semantic inventory run 1 then run 2 (stability)",
+      "perUnitUsd": "0.25-0.40 each run"
+    },
+    {
+      "order": 4,
+      "stage": "3B compile (document-then-emission order, large-compilation strategy)",
+      "perUnitUsd": "0.35-0.60"
+    },
+    {
+      "order": 5,
+      "stage": "Pass C deterministic reconciliation",
+      "estimateUsd": 0
+    },
+    {
+      "order": 6,
+      "stage": "3C independent verifier (+ deterministic source inventory)",
+      "perUnitUsd": "0.15-0.30"
+    },
+    {
+      "order": 7,
+      "stage": "3E coverage audit incl. Layer C",
+      "estimateUsd": "1-2"
+    },
+    {
+      "order": 8,
+      "stage": "score against 04-human-reference-set; classify SAFE_FAILURE vs DANGEROUS_SILENT_FAILURE per item; compute gates",
+      "estimateUsd": 0
+    }
+  ],
+  "budget": {
+    "estimateUsd": "18-20",
+    "hardBudgetUsd": 20.0,
+    "abortRule": "abort before any call once cumulative recorded spend >= $20.00; preserve partial outputs; report exact spend"
+  },
+  "forbidden": [
+    "production changes",
+    "reference-set edits after start",
+    "second agreement",
+    "remediation",
+    "Phase 4"
+  ]
+}

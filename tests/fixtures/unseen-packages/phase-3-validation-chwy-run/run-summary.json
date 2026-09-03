@@ -1,0 +1,48 @@
+{
+  "runId": "PHASE_3_VALIDATION_CHWY_DETERMINISTIC",
+  "finishedAt": "2026-09-03T13:02:34.464Z",
+  "productionTreeHash": "da7106fac07c369695156cfa0c7d8a30350ea636c5e108060c0e84f67dd4d1ef",
+  "paidModelCalls": 0,
+  "paidCostUsd": 0,
+  "blockedStages": [
+    "2B Pass B discovery",
+    "Pass A semantic inventory (x2 stability)",
+    "3B compile",
+    "3C semantic review",
+    "3E Layer C"
+  ],
+  "structural": {
+    "textChars": 864362,
+    "totalNodes": 1559,
+    "nodesByType": {
+      "ARTICLE": 18,
+      "SECTION": 232,
+      "SUBSECTION": 301,
+      "CLAUSE": 322,
+      "SUBCLAUSE": 686
+    },
+    "definitionsDetected": 381,
+    "referencesDetected": 1198,
+    "articles": 18,
+    "sections": 232
+  },
+  "deterministicCandidates": 766,
+  "sectionUnitsWithSignals": 113,
+  "sourceContextStates": {
+    "DEPENDENCY_EXPANDED_SOURCE": 58,
+    "COMPLETE_LOCAL_SOURCE": 55
+  },
+  "classification": [
+    {
+      "documentId": "doc-a",
+      "type": "CREDIT_AGREEMENT",
+      "confidence": 0.9,
+      "evidence": [
+        "CREDIT AGREEMENT"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    }
+  ],
+  "operativeStateStatus": "OPERATIVE_STATE_RESOLVED",
+  "coverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE"
+}

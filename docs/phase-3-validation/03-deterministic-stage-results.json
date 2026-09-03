@@ -1,0 +1,296 @@
+{
+  "artifact": "03-deterministic-stage-results",
+  "harness": "scripts/phase-3-validation-chwy-deterministic-run.ts",
+  "runOutputs": "tests/fixtures/unseen-packages/phase-3-validation-chwy-run/",
+  "runSummary": {
+    "runId": "PHASE_3_VALIDATION_CHWY_DETERMINISTIC",
+    "finishedAt": "2026-09-03T13:02:34.464Z",
+    "productionTreeHash": "da7106fac07c369695156cfa0c7d8a30350ea636c5e108060c0e84f67dd4d1ef",
+    "paidModelCalls": 0,
+    "paidCostUsd": 0,
+    "blockedStages": [
+      "2B Pass B discovery",
+      "Pass A semantic inventory (x2 stability)",
+      "3B compile",
+      "3C semantic review",
+      "3E Layer C"
+    ],
+    "structural": {
+      "textChars": 864362,
+      "totalNodes": 1559,
+      "nodesByType": {
+        "ARTICLE": 18,
+        "SECTION": 232,
+        "SUBSECTION": 301,
+        "CLAUSE": 322,
+        "SUBCLAUSE": 686
+      },
+      "definitionsDetected": 381,
+      "referencesDetected": 1198,
+      "articles": 18,
+      "sections": 232
+    },
+    "deterministicCandidates": 766,
+    "sectionUnitsWithSignals": 113,
+    "sourceContextStates": {
+      "DEPENDENCY_EXPANDED_SOURCE": 58,
+      "COMPLETE_LOCAL_SOURCE": 55
+    },
+    "classification": [
+      {
+        "documentId": "doc-a",
+        "type": "CREDIT_AGREEMENT",
+        "confidence": 0.9,
+        "evidence": [
+          "CREDIT AGREEMENT"
+        ],
+        "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+      }
+    ],
+    "operativeStateStatus": "OPERATIVE_STATE_RESOLVED",
+    "coverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE"
+  },
+  "stages": [
+    {
+      "stage": "1 structure / definitions / references / index",
+      "status": "COMPLETED",
+      "result": "1559 nodes (18 ARTICLE, 232 SECTION, 301 SUBSECTION, 322 CLAUSE, 686 SUBCLAUSE); 381 definitions; 1198 references"
+    },
+    {
+      "stage": "2A deterministic discovery signals (zero-LLM)",
+      "status": "COMPLETED",
+      "result": "766 candidates over 101 sections"
+    },
+    {
+      "stage": "2B Pass B semantic discovery",
+      "status": "ENVIRONMENT_BLOCKED"
+    },
+    {
+      "stage": "2C package graph",
+      "status": "COMPLETED",
+      "result": "CREDIT_AGREEMENT (0.9, DETERMINISTIC_TITLE_PATTERN); 1 instrument; 0 relationship / 0 modification candidates (single-document package)"
+    },
+    {
+      "stage": "2G operative state",
+      "status": "COMPLETED",
+      "result": "OPERATIVE_STATE_RESOLVED; 0 amendment effects (base document only); 0 provisions because no compiled provisions exist without paid stages"
+    },
+    {
+      "stage": "2D context bundles + 3E source context + 3C source inventory per unit",
+      "status": "COMPLETED",
+      "result": "113 units: 58 DEPENDENCY_EXPANDED_SOURCE, 55 COMPLETE_LOCAL_SOURCE"
+    },
+    {
+      "stage": "Pass A semantic inventory run 1",
+      "status": "ENVIRONMENT_BLOCKED"
+    },
+    {
+      "stage": "Pass A semantic inventory run 2 (stability)",
+      "status": "ENVIRONMENT_BLOCKED"
+    },
+    {
+      "stage": "3B compile (Pass B composition)",
+      "status": "ENVIRONMENT_BLOCKED"
+    },
+    {
+      "stage": "Pass C reconciliation",
+      "status": "NOT_RUN (no Pass A / Pass B outputs)"
+    },
+    {
+      "stage": "3C independent verifier",
+      "status": "ENVIRONMENT_BLOCKED"
+    },
+    {
+      "stage": "3E coverage audit Layers A/B",
+      "status": "COMPLETED",
+      "result": "PACKAGE_SEMANTICALLY_INCOMPLETE against an empty compiled set: 297 CRITICAL + 1029 MATERIAL dangerous-unaccounted; unrepresented families OTHER_UNCLASSIFIED 2189, INDEBTEDNESS 417, LIENS 184, INVESTMENTS 133. This is the expected SAFE outcome when nothing was compiled: the audit refuses to certify coverage."
+    },
+    {
+      "stage": "3E Layer C",
+      "status": "ENVIRONMENT_BLOCKED"
+    }
+  ],
+  "deterministicObservations": [
+    {
+      "id": "OBS-1",
+      "observation": "Table-of-contents entries were parsed as 116 SECTION nodes (chars < 8980) duplicating the 116 body sections; 17 of 766 deterministic candidates and 16 of 113 units sit on TOC nodes (each 39-116 chars, headline_heading signal only).",
+      "effect": "Duplicate low-value units; body units unaffected. Would cost paid calls on 16 trivial units if not filtered by a cap policy.",
+      "classification": "SAFE (over-inclusion, not omission)",
+      "remediation": "NOT PERFORMED (mission forbids)"
+    },
+    {
+      "id": "OBS-2",
+      "observation": "Body sections 2.18, 5.01, 5.18 and 7.01 carry no deterministic signal on the SECTION node itself; their 2A candidates sit on sub-nodes (e.g. 7.01(g), 2.18(c)) - body candidate counts: 2.18=22, 5.01=15, 5.18=10, 7.01=21, 6.01=33, 6.08=63, 1.08=19. Section-level units were still constructed for all of them.",
+      "effect": "No recall risk from unit construction; 2A signal density is lower for reporting/incremental sections than for Article VI, so Pass B semantic discovery (blocked) would carry more of the load there.",
+      "classification": "SAFE (units exist); REVIEW for signal density",
+      "remediation": "NOT PERFORMED",
+      "bodyCandidateCounts": {
+        "2.18": {
+          "bodyCandidates": 22,
+          "signals": [
+            "covenant_verb",
+            "dollar_value",
+            "exception_marker",
+            "percentage",
+            "permission_construction",
+            "permitted_construct",
+            "prohibitive_construction",
+            "shared_cap"
+          ],
+          "sampleRefs": [
+            "2.18(a)(ii)",
+            "2.18(b)",
+            "2.18(c)(i)",
+            "2.18(c)(iii)",
+            "2.18(c)(iv)(A)",
+            "2.18(c)(iv)(B)"
+          ]
+        },
+        "5.01": {
+          "bodyCandidates": 15,
+          "signals": [
+            "exception_marker",
+            "financial_metric",
+            "percentage",
+            "permission_construction",
+            "permitted_construct",
+            "prohibitive_construction"
+          ],
+          "sampleRefs": [
+            "5.01(a)",
+            "5.01(b)",
+            "5.01(c)(b)",
+            "5.01(f)",
+            "5.01(g)",
+            "5.01(g)(b)"
+          ]
+        },
+        "5.18": {
+          "bodyCandidates": 10,
+          "signals": [
+            "covenant_verb",
+            "dollar_value",
+            "exception_marker",
+            "financial_metric",
+            "greater_lesser_of",
+            "percentage",
+            "permission_construction",
+            "permitted_construct",
+            "prohibitive_construction"
+          ],
+          "sampleRefs": [
+            "5.18(a)",
+            "5.18(b)",
+            "5.18(b)(1)(b)",
+            "5.18(b)(2)",
+            "5.18(c)",
+            "5.18(c)(a)"
+          ]
+        },
+        "7.01": {
+          "bodyCandidates": 21,
+          "signals": [
+            "covenant_verb",
+            "cure_or_trigger",
+            "exception_marker",
+            "permission_construction",
+            "prohibitive_construction",
+            "shared_cap"
+          ],
+          "sampleRefs": [
+            "7.01(a)",
+            "7.01(a)(i)",
+            "7.01(a)(ii)(a)(a)",
+            "7.01(a)(ii)(a)(a)(B)",
+            "7.01(a)(ii)(a)(b)",
+            "7.01(b)"
+          ]
+        },
+        "6.01": {
+          "bodyCandidates": 33,
+          "signals": [
+            "builder_language",
+            "covenant_verb",
+            "dollar_value",
+            "exception_marker",
+            "financial_metric",
+            "greater_lesser_of",
+            "headline_heading",
+            "percentage",
+            "permission_construction",
+            "permitted_construct",
+            "prohibitive_construction",
+            "ratio_expression",
+            "shared_cap"
+          ],
+          "sampleRefs": [
+            "6.01",
+            "6.01(a)",
+            "6.01(a)(i)",
+            "6.01(a)(ii)",
+            "6.01(a)(ii)(i)",
+            "6.01(a)(ii)(ii)"
+          ]
+        },
+        "6.08": {
+          "bodyCandidates": 63,
+          "signals": [
+            "builder_language",
+            "covenant_verb",
+            "cure_or_trigger",
+            "dollar_value",
+            "exception_marker",
+            "financial_metric",
+            "greater_lesser_of",
+            "headline_heading",
+            "percentage",
+            "permission_construction",
+            "permitted_construct",
+            "prohibitive_construction",
+            "ratio_expression",
+            "shared_cap"
+          ],
+          "sampleRefs": [
+            "6.08",
+            "6.08(a)",
+            "6.08(a)(i)",
+            "6.08(a)(i)(a)",
+            "6.08(a)(ii)",
+            "6.08(a)(iii)"
+          ]
+        },
+        "1.08": {
+          "bodyCandidates": 19,
+          "signals": [
+            "covenant_verb",
+            "exception_marker",
+            "financial_metric",
+            "percentage",
+            "permission_construction",
+            "permitted_construct",
+            "prohibitive_construction",
+            "shared_cap"
+          ],
+          "sampleRefs": [
+            "1.08",
+            "1.08(a)(i)",
+            "1.08(a)(iii)",
+            "1.08(b)",
+            "1.08(c)",
+            "1.08(c)(ii)"
+          ]
+        }
+      }
+    },
+    {
+      "id": "OBS-3",
+      "observation": "All 22 reference definitions were detected by detectStructuralDefinitions, including 'Interest Coverage Ratio' whose term is split across a line break in the extracted text; 'Available Amount' (a has-the-meaning-assigned pointer to 6.08(a)(3)) is not in the definitions list.",
+      "classification": "SAFE for 21/22; 'Available Amount' resolves via 6.08(a)(3) body text."
+    },
+    {
+      "id": "OBS-4",
+      "observation": "Article VI contains only 6.01, 6.02, 6.03, 6.05, 6.08 as operative sections; 6.04, 6.06, 6.07 are parsed as [Reserved] SECTION nodes. There is no financial maintenance covenant in this agreement (covenant-lite term loan).",
+      "classification": "Reference item F1."
+    }
+  ]
+}
