@@ -1,0 +1,1594 @@
+{
+  "artifact": "12-pass-a-stability",
+  "method": "Run 1 = Pass A inside the frozen compileCovenantToIR; run 2 = standalone runSemanticInventory on the IDENTICAL resolved source context object, same prompt/model/config. Strict = identical content-derived inventoryItemId (Jaccard). Semantic = same semanticRole and >= 50% span overlap of the shorter span, greedy 1:1 (Jaccard over matched pairs). Critical/material = semantic matching restricted to items CRITICAL/MATERIAL in either run. Runs were never merged.",
+  "totals": {
+    "strict": 0.1948,
+    "semantic": 0.4477,
+    "criticalMaterial": 0.4573,
+    "counts": {
+      "strict": [
+        97,
+        498
+      ],
+      "semantic": [
+        184,
+        411
+      ],
+      "material": [
+        182,
+        398
+      ]
+    }
+  },
+  "units": [
+    {
+      "unit": "1.01",
+      "status": "NOT_EVALUABLE",
+      "reason": "inventory call failed: {\"type\":\"error\",\"error\":{\"type\":\"api_error\",\"message\":\"Upstream stream ended before terminal chunk (gateway_stream_terminated)\"},\"code\":\"",
+      "run1": 109,
+      "run2": null
+    },
+    {
+      "unit": "6.08",
+      "run1": 288,
+      "run2": 307,
+      "run1Hash": "0fc9364158cf79253ee21bbf76fb3fe4baa5786d726852486f1d978eb209be07",
+      "run2Hash": "fc6276cb800dad7cdc37aff4ab41e04f514e02170f954a4266dfc11196572346",
+      "hashIdentical": false,
+      "strictStability": 0.1948,
+      "semanticStability": 0.4477,
+      "materialStability": 0.4573,
+      "materialOnlyRun1": 99,
+      "materialOnlyRun2": 121
+    },
+    {
+      "unit": "9.04",
+      "status": "NOT_EVALUABLE",
+      "reason": "inventory call failed: BUDGET_EXHAUSTED before passA-run2:semantic_inventory: spent $13.9612 + est $0.1456 > cap $14.00",
+      "run1": 218,
+      "run2": null
+    }
+  ],
+  "materialDisagreements": [
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "the greater of (x) 50% of the Consolidated Net Income of the Restricted Parties (including any predecessor of the\nBorrowers) for the period "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "repayments of loans or\nadvances, and releases of guarantees which constitute Restricted Investments made by the Restricted Parties, in each "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "The foregoing provisions of Section 6.08(a) shall not prohibit:"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "the payment of any dividend or other distribution or the consummation of any irrevocable redemption within sixty\n(60) days after the date of"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "(assuming, in the case of a redemption payment, the giving of the notice of such redemption payment would have been deemed to be a Restricte"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "CONDITION",
+      "excerpt": "that is made within ninety (90) days of such sale"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "the declaration and payment of dividends on the Treasury Capital Stock out of the proceeds of the substantially concurrent sale (other\nthan "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "the\ndeclaration and payment of dividends on the Refunding Capital Stock (other than Refunding Capital Stock the proceeds of which were used "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "Subordinated Indebtedness of the Borrowers or a Guarantor made in exchange for, or out of the proceeds received from a sale made within nine"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "Disqualified Stock of the Borrowers or a Guarantor made in exchange for, or out of the proceeds of a sale made within ninety (90) days of, D"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "that, in each case, is incurred in\ncompliance with Section 6.01 hereof"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "THRESHOLD",
+      "excerpt": "such amount shall increase to the\ngreater of (x) $504.0 million and (y) 70.0% of Consolidated EBITDA for the most recently ended Test Period"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "(with unused amounts in any calendar year being carried over to\nsucceeding calendar years)"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "to the extent the cash proceeds from the sale of such Equity Interests have not otherwise been applied to\nthe payment of Restricted Payments"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "which, if not used in any year, may be carried forward to any subsequent fiscal year"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "RECLASSIFICATION",
+      "excerpt": "shall not be deemed to constitute a Restricted Payment for purposes of this Section 6.08 or any other\nprovision of this Agreement"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "the declaration and payment of dividends to holders of any class or series of Designated Preferred Stock\n(other than Disqualified Stock) iss"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "the declaration and payment of dividends to any Parent Entity, the\nproceeds of which shall be used to fund the payment of dividends to holde"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "the declaration and payment of dividends on Refunding Capital Stock that is Preferred Stock in excess of the dividends\ndeclarable and payabl"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "Restricted Payments by any Restricted\nSubsidiary to the Borrowers or any Parent Entity to the extent the proceeds of such Restricted Payment"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "PERMISSION",
+      "excerpt": "payments made or expected to be made by any Restricted Party in respect of withholding or similar taxes payable upon or in\nconnection with t"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "any Restricted Payment (other than any Restricted\nDebt Payment); provided that on a Pro Forma Basis after giving effect to such Restricted P"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "Restricted Payments (i) in an amount that does not exceed the\namount of Excluded Contributions received since the Effective Date"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "(ii) in an amount equal to the amount of Net cash proceeds from an asset sale or disposition in respect of property or assets acquired, if t"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "other Restricted Payments at any one time outstanding in an\naggregate amount taken together with all other Restricted Payments made pursuant"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "PERMISSION",
+      "excerpt": "distributions or payments of Receivables\nFees"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "used to fund amounts owed to Affiliates (including dividends or distributions to any Parent Entity to permit payment by such Parent Entity o"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "Restricted Debt Payments at any one time outstanding in an\naggregate amount taken together with all other Restricted Debt Payments made purs"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "the\ndeclaration and payment of dividends or distributions by the Initial Borrower to, or the making of loans to, any Parent Entity in aggreg"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "any U.S. federal, state, local, provincial, territorial or non-U.S. income or similar taxes (as applicable) of such Tax Group for such taxab"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "following the first public offering of the common stock of any Parent Entity after\nthe Effective Date, listing fees and other costs and expe"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "PERMISSION",
+      "excerpt": "or Indebtedness owed to any Restricted Party by an\nUnrestricted Subsidiary"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "PERMISSION",
+      "excerpt": "purchases of Receivables Assets in connection with any Permitted Receivables\nFinancing or any purchase obligation in connection therewith"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "THRESHOLD",
+      "excerpt": "the aggregate amount of Restricted\nPayments that may be made in reliance on this clause (21)(iii) shall not exceed the greater of (x) $720.0"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "PERMISSION",
+      "excerpt": "mandatory redemptions of Disqualified Stock issued as a Restricted Payment or as consideration for a Permitted Investment\nso long as the amo"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "PERMISSION",
+      "excerpt": "Restricted Payments made in connection with or in order to consummate the Transactions and pay fees and expenses related\nthereto"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "PERMISSION",
+      "excerpt": "any Restricted Payment made in connection with a Permitted Tax Restructuring or related transactions"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "any Restricted Debt Payment; provided that on a Pro Forma Basis after giving effect to any such any\nprepayment, redemption, purchase, repurc"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "Restricted Payments in an aggregate amount not to exceed the Available Investment Capacity Amount"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "Restricted Debt Payments in an aggregate outstanding principal amount which, when taken together with the principal amount\nof all other Rest"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "OTHER",
+      "excerpt": "If any Restricted Party makes a Restricted Payment which at the time of the making of such\nRestricted Payment would in the good faith determ"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "OTHER",
+      "excerpt": "including any dividend, payment or distribution payable in connection with any merger, amalgamation or consolidation other"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PROHIBITION",
+      "excerpt": "for value any Equity Interests of the Borrowers or any Parent Entity, including in connection with any merger, amalgamation or consolidation"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "DEPENDENCY",
+      "excerpt": "(the payments and other actions set forth in clause (iii) (other than the exceptions thereto in such clause (iii)) above being collectively "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "DEPENDENCY",
+      "excerpt": "(iii) above) being collectively referred\nto as \u201c Restricted Payments \u201d),"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "EXCEPTION",
+      "excerpt": "(including Restricted Payments permitted by Sections 6.08(b)(1) and 6.08(b)(6)(c) hereof, but excluding all other Restricted\nPayments permit"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "DEPENDENCY",
+      "excerpt": "is less than the sum of (without duplication) (the sum or the amounts attributable to clauses (a) through (f) below are referred to herein a"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "(z) shall, in each case, be calculated on a Pro Forma Basis);"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "Event of Default; plus"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "(excluding contributions of the proceeds from the sale of Designated Preferred Stock of such companies or contributions to the extent such a"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "Interests) of the Borrowers sold to a Restricted Party, as the case may be,"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "the capital of any Restricted Party (including the aggregate principal amount of any Indebtedness of any Restricted Party contributed to any"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "consolidation, amalgamation or merger after the Effective Date"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "advances, and releases of guarantees which constitute Restricted Investments made by the Restricted Parties, in each case, after the Effecti"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "TRIGGER",
+      "excerpt": "amalgamation or consolidation of an Unrestricted Subsidiary into any Restricted Party or the transfer of assets of an Unrestricted Subsidiar"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "Unrestricted Subsidiary (or the net assets transferred) at the time of the redesignation of such Unrestricted Subsidiary as a Restricted Sub"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "calculated on a Pro Forma Basis; plus"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "minus\n\n(i) the cumulative amount of (i) Liens incurred pursuant to clause (46)(ii) of the definition of \u201cPermitted\nLiens\u201d since the Effectiv"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "TIME_PERIOD",
+      "excerpt": "(60) days after the date of declaration thereof or the giving of such irrevocable notice, as applicable, if, at the date of declaration or t"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "CONDITION",
+      "excerpt": "to the extent, in the case of an issuance or sale by a Parent Entity, such amount was contributed to a\nBorrower (in each case, other than an"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "PERMISSION",
+      "excerpt": "declaration and payment of dividends on the Refunding Capital Stock (other than Refunding Capital Stock the proceeds of which were used to r"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "defeasance or other acquisition or retirement of Equity Interests (other than Disqualified Stock) of the Borrowers or any Parent Entity held"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "calculated on a Pro Forma Basis, at the time of such Restricted Payment"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "succeeding calendar years);"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "CONDITION",
+      "excerpt": "calculated on a Pro Forma Basis, at the time of such Restricted Payment (with unused amounts in any calendar year being carried over to\nsucc"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "provided , further , that such amount in any calendar year may be increased by an amount not to exceed:"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "REFERENCE",
+      "excerpt": "the payment of Restricted Payments by virtue of Section 6.08(a)(3) hereof; plus"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "employees, managers or independent contractors of direct or indirect Parent Entity, any Restricted Party that are foregone in return for the"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "of any Restricted Payments previously made with the cash proceeds described in Sections 6.08(b)(4)(a),"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "TIME_PERIOD",
+      "excerpt": "(c) hereof in any calendar year;\nprovided , further ,"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "any Restricted Party from any future, present or former employees, directors, officers, managers or consultants (or their respective Control"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "Restricted Parties from the sale of such Designated Preferred Stock;"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "REFERENCE",
+      "excerpt": "declarable and payable thereon pursuant to Section 6.08(b)(2) hereof;"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "EXCEPTION",
+      "excerpt": "connection with the exercise of Equity Interests by, or vesting of any Equity Interests or any other equity award (including in connection w"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "ALTERNATIVE",
+      "excerpt": "any prepayment, purchase, repurchase, redemption, defeasance, discharge, retirement or other acquisition of the Borrowers\u2019 Equity Interests "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "DEPENDENCY",
+      "excerpt": "exceed the amount contemplated by sub-clause"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "(10) of this Section 6.08(b)) that have been used to incur Indebtedness, Disqualified Stock or Preferred Stock pursuant to clause (31) of Se"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "or assets was financed with Excluded Contributions;"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "and expenses related thereto, including, without limitation, cash payments to holders of Equity Interests (including restricted stock units)"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "declaration and payment of dividends or distributions by the Initial Borrower to, or the making of loans to, any Parent Entity in aggregate "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "required to maintain its organizational existence or good standing under applicable law;"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "(1) for any taxable period\nfor which the Borrowers and/or any of their respective Subsidiaries is a member (or disregarded as separate from "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "federal, state, local, provincial, territorial or non-U.S. income or similar taxes (as applicable) of such Tax Group for such taxable period"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "(2) for any taxable period in which the Borrowers and/or any of their respective Subsidiaries is treated as a partnership or pass-through en"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "DEPENDENCY",
+      "excerpt": "any similar tax imposed in lieu of an income tax) (any such taxes, the \u201c Tax Amount \u201d) of any direct or indirect equity owner of the Borrowe"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "(including, without limitation, expenses related to the maintenance of corporate or other existence and auditing or other accounting or tax "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "the Effective Date, listing fees and other costs and expenses attributable to being a public company, of any Parent Entity;"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "or other non-ordinary course transaction (whether or not successful) of such Parent Entity;"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "OTHER",
+      "excerpt": "holder of securities convertible into or exchangeable for Equity Interests of any Restricted Party or any Parent Entity;"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "OTHER",
+      "excerpt": "Subsidiary (or a Restricted Party that, directly or indirectly, owns the Equity Interests of one or more Unrestricted Subsidiaries and no ot"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "OTHER",
+      "excerpt": "Unrestricted Subsidiary (or a Restricted Party that, directly or indirectly, owns the Equity Interests of one or more Unrestricted Subsidiar"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "OTHER",
+      "excerpt": "Subsidiaries, the primary assets of which are cash and/or Cash Equivalents;"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "Proceeds, (ii) Retained Asset Sale Proceeds and (iii) proceeds from dispositions or asset sales the proceeds of which are not required to be"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "THRESHOLD",
+      "excerpt": "Period would not exceed (A) 2.00x or (B) the First Lien Leverage Ratio as of the last day of the then most recently ended Test Period or"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "THRESHOLD",
+      "excerpt": "1.75:1.00 or (B) the Interest Coverage Ratio level as of the last day of the then most recently ended Test Period and (II) there is no conti"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "VALUE",
+      "excerpt": "As of the Effective Date, all of the Initial Borrower\u2019s Subsidiaries shall be Restricted Subsidiaries."
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "REQUIREMENT",
+      "excerpt": "For purposes of designating any Restricted Subsidiary as an Unrestricted Subsidiary, all\noutstanding Investments by any Restricted Party (ex"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "REQUIREMENT",
+      "excerpt": "Restricted Payment would in the good faith determination of the Initial Borrower be permitted under the provisions of the Agreement, such Re"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run1",
+      "materiality": "CRITICAL",
+      "role": "RECLASSIFICATION",
+      "excerpt": "For purposes of\ndetermining compliance with this Section 6.08, in the event that a proposed Restricted Payment or Investment (or a portion t"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "REFERENCE",
+      "excerpt": "Sections 6.01(b)(7), (8) and (9) hereof"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "OTHER",
+      "excerpt": "the payments and other actions set forth in clause (iii) (other than the exceptions thereto in such clause (iii)) above being collectively r"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "OTHER",
+      "excerpt": "all such payments and other actions set forth in clauses (i) through (iv) above (other than any exceptions thereto in such clauses (i) and ("
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "DEPENDENCY",
+      "excerpt": "including Restricted Payments permitted by Sections 6.08(b)(1) and 6.08(b)(6)(c) hereof, but excluding all other Restricted\nPayments permitt"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "OTHER",
+      "excerpt": "(the sum or the amounts attributable to clauses (a) through (f) below are referred to herein as the \u201c Available Amount \u201d)"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "ALTERNATIVE",
+      "excerpt": "(z) (A) cumulative\nConsolidated EBITDA of any Restricted Party for each fiscal quarter following the Effective Date for which financial stat"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "(which amount shall be deemed to be zero for any fiscal quarter in which such amount for such fiscal quarter is less than zero )"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "which amounts under clauses (x), (y)\nand (z) shall, in each case, be calculated on a Pro Forma Basis"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "Equity Interests to any\nfuture, present or former employees, directors, managers or consultants of the Borrowers, any Parent Entity and the "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "DEPENDENCY",
+      "excerpt": "Section 6.08(b)(4) hereof; or\n(y) Designated Preferred Stock"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "REFERENCE",
+      "excerpt": "Section 6.08(b)(2)(b) or (6)(c) hereof"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "REFERENCE",
+      "excerpt": "Section 2.09(b)"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "REFERENCE",
+      "excerpt": "Section 6.01(b)(32)"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "REFERENCE",
+      "excerpt": "clause (46)(ii) of the definition of \u201cPermitted\nLiens\u201d"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "DEPENDENCY",
+      "excerpt": "The foregoing provisions of Section 6.08(a) shall not prohibit:"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "the payment of any dividend or other distribution or the consummation of any irrevocable redemption within sixty\n(60) days after the date of"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "in an amount equal to or less than the proceeds of a sale or issuance (other than\nto a Restricted Subsidiary) of, Equity Interests of the Bo"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "the\ndeclaration and payment of dividends on the Refunding Capital Stock (other than Refunding Capital Stock the proceeds of which were used "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "REFERENCE",
+      "excerpt": "was permitted under Section 6.08(b)(6) hereof"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "out of the proceeds received from a sale made within ninety (90) days of, Refinancing Indebtedness or Disqualified Stock of the Borrowers or"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "a Restricted Payment to pay for the redemption, purchase, repurchase,\ndefeasance or other acquisition or retirement of Equity Interests (oth"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "such amount in any calendar year may be increased by an amount not to exceed:"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "to the extent the cash proceeds from the sale of such Equity Interests have not otherwise been applied to\nthe payment of Restricted Payments"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "the declaration and payment of dividends to any Parent Entity, the\nproceeds of which shall be used to fund the payment of dividends to holde"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "the declaration and payment of dividends on Refunding Capital Stock that is Preferred Stock in excess of the dividends\ndeclarable and payabl"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "Restricted Payments by any Restricted\nSubsidiary to the Borrowers or any Parent Entity to the extent the proceeds of such Restricted Payment"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "payments made or expected to be made by any Restricted Party in respect of withholding or similar taxes payable upon or in\nconnection with t"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "EXCEPTION",
+      "excerpt": "in an amount not to exceed the sum of (A) 6.0% per annum of the net cash proceeds received by or contributed to the\nBorrowers in or from any"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "for aggregate consideration that, when taken together with dividends permitted by sub-clause (a), does not\nexceed the amount contemplated by"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "REFERENCE",
+      "excerpt": "clause (31) of Section 6.01(b)"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "EXCEPTION",
+      "excerpt": "any Restricted Payment (other than any Restricted\nDebt Payment); provided that on a Pro Forma Basis after giving effect to such Restricted P"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "at the election of the\nInitial Borrower, (i) the First Lien Leverage Ratio"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "Restricted Payments (i) in an amount that does not exceed the\namount of Excluded Contributions received since the Effective Date"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "(ii) in an amount equal to the amount of Net cash proceeds from an asset sale or disposition in respect of property or assets acquired, if t"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "distributions or payments of Receivables\nFees"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "any Restricted Payment (A) made in connection with or in order to consummate the Transactions and the fees\nand expenses related thereto"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "used to fund amounts owed to Affiliates (including dividends or distributions to any Parent Entity to permit payment by such Parent Entity o"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "ALTERNATIVE",
+      "excerpt": "100% of Consolidated EBITDA of the Initial Borrower for the most\nrecently ended Test Period"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "the\ndeclaration and payment of dividends or distributions by the Initial Borrower to, or the making of loans to, any Parent Entity in aggreg"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "any such taxes, the \u201c Tax Amount \u201d) of any direct or indirect equity owner of the Borrowers and/or any of its respective\nSubsidiaries, as ap"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "REFERENCE",
+      "excerpt": "Sections 5.18(b)(3), (8), (9) and\n(12) hereof"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "the distribution, by dividend or otherwise, or other transfer or disposition of shares of Capital Stock of an Unrestricted\nSubsidiary (or a "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "payments or distributions to satisfy\ndissenters\u2019 or appraisal rights and the settlement of any claims or actions (whether actual, contingent"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "REFERENCE",
+      "excerpt": "Section 6.03 hereof"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "purchases of Receivables Assets in connection with any Permitted Receivables\nFinancing or any purchase obligation in connection therewith"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "ALTERNATIVE",
+      "excerpt": "shall not exceed the greater of (x) $720.0 million"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "ALTERNATIVE",
+      "excerpt": "(y) 100% of Consolidated EBITDA for the most recently ended Test Period"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "mandatory redemptions of Disqualified Stock issued as a Restricted Payment or as consideration for a Permitted Investment\nso long as the amo"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "Restricted Payments made in connection with or in order to consummate the Transactions and pay fees and expenses related\nthereto"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "any Restricted Payment made in connection with a Permitted Tax Restructuring or related transactions"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "EXCEPTION",
+      "excerpt": "any Restricted Debt Payment; provided that on a Pro Forma Basis after giving effect to any such any\nprepayment, redemption, purchase, repurc"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "ALTERNATIVE",
+      "excerpt": "or (B) the First Lien Leverage Ratio as of the last day of the then most recently ended Test Period"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "ALTERNATIVE",
+      "excerpt": "the Interest Coverage Ratio on a pro forma basis is at least equal to or greater than (A)\n1.75:1.00 or (B) the Interest Coverage Ratio level"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "CONDITION",
+      "excerpt": "and (II) there is no continuing Specified Event of Default"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "SHARED_CAP",
+      "excerpt": "Restricted Payments in an aggregate amount not to exceed the Available Investment Capacity Amount"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "DEPENDENCY",
+      "excerpt": "the Available Investment Capacity Amount"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "DEPENDENCY",
+      "excerpt": "the Available RP Capacity Amount (determined on the date of such incurrence)"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "REQUIREMENT",
+      "excerpt": "As of the Effective Date, all of the Initial Borrower\u2019s Subsidiaries shall be Restricted Subsidiaries."
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "DEPENDENCY",
+      "excerpt": "For purposes of designating any Restricted Subsidiary as an Unrestricted Subsidiary, all\noutstanding Investments by any Restricted Party (ex"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "EXCEPTION",
+      "excerpt": "unless such Unrestricted Subsidiary has granted an irrevocable license to use such Material\nIntellectual Property to a Loan Party"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "If any Restricted Party makes a Restricted Payment which at the time of the making of such\nRestricted Payment would in the good faith determ"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "RECLASSIFICATION",
+      "excerpt": "the Initial Borrower shall be entitled to classify or later reclassify (based on circumstances existing on the date\nof such reclassification"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "in the event that a proposed Restricted Payment or Investment (or a portion thereof) meets the criteria of Sections 6.08(b)(1) through (25) "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "including any dividend, payment or distribution payable in connection with any merger, amalgamation or consolidation other"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "for value any Equity Interests of the Borrowers or any Parent Entity, including in connection with any merger, amalgamation or consolidation"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "OTHER",
+      "excerpt": "\u201c Restricted Debt Payments \u201d and"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "OTHER",
+      "excerpt": "to as \u201c Restricted Payments \u201d),"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "REFERENCE",
+      "excerpt": "Payments permitted by Section 6.08(b) hereof), is less than the sum of (without duplication)"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "REFERENCE",
+      "excerpt": "Disqualified Stock or Preferred Stock pursuant to"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": ") from the issue or sale of:"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "REFERENCE",
+      "excerpt": "Effective Date and (iii) the aggregate amount of proceeds from dispositions or asset sales the proceeds of which are not required to be appl"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "REFERENCE",
+      "excerpt": "Liens\u201d since the Effective Date and outstanding thereunder at such time and (ii) Indebtedness incurred pursuant to"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "since the Effective Date and outstanding thereunder at such time."
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "CONDITION",
+      "excerpt": "(60) days after the date of declaration thereof or the giving of such irrevocable notice, as applicable, if, at the date of declaration or t"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "TIME_PERIOD",
+      "excerpt": "that is made within ninety (90) days of such sale to the extent, in the case of an issuance or sale by a Parent Entity, such amount was cont"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "ALTERNATIVE",
+      "excerpt": "(ii) Disqualified Stock of the Borrowers or a Guarantor made in exchange for, or out of the proceeds of a sale made within ninety (90) days "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "REFERENCE",
+      "excerpt": "in each case, is incurred in\ncompliance with"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "retirement or other acquisition); provided , however ,"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "succeeding calendar years); provided , further ,"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "EXCEPTION",
+      "excerpt": "offerings with respect to a Borrower\u2019s common stock registered on Form S-8 (or comparable form) and other than any public sale constituting "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "EXCEPTION",
+      "excerpt": "the payment of Restricted Payments by virtue of Section 6.08(a)(3) hereof; plus"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "THRESHOLD",
+      "excerpt": "employees, managers or independent contractors of direct or indirect Parent Entity, any Restricted Party that are foregone in return for the"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "if not used in any year, may be carried forward to any subsequent fiscal year; less"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "REFERENCE",
+      "excerpt": "6.08(b)(4)(a),"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "REFERENCE",
+      "excerpt": "(c) hereof in any calendar year;\nprovided , further ,"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "EXCEPTION",
+      "excerpt": "in connection with a repurchase of Equity Interests of the Borrowers or any Parent Entity shall not be deemed to constitute a Restricted Pay"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "THRESHOLD",
+      "excerpt": "declarable and payable thereon pursuant to Section 6.08(b)(2) hereof;"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "connection with the exercise of Equity Interests by, or vesting of any Equity Interests or any other equity award (including in connection w"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "Borrowers in or from any public offering of the Borrowers\u2019 common stock or the common stock of any Parent Entity,"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "EXCEPTION",
+      "excerpt": "S-8 (or comparable form) and other than any public sale constituting an Excluded Contribution and"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "REFERENCE",
+      "excerpt": "or a portion of the dividends permitted by sub-clause"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "any prepayment, purchase, repurchase, redemption, defeasance, discharge, retirement or other acquisition of the Borrowers\u2019 Equity Interests "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "REFERENCE",
+      "excerpt": "(10) of this Section 6.08(b)) that have been used to incur Indebtedness, Disqualified Stock or Preferred Stock pursuant to"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "REFERENCE",
+      "excerpt": "and to incur Liens pursuant to"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "EXCEPTION",
+      "excerpt": "or assets was financed with Excluded Contributions;"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "SHARED_CAP",
+      "excerpt": "aggregate amount taken together with all other Restricted Payments made pursuant to this Section 6.08(b)(12) not to exceed the greater of"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "EXCEPTION",
+      "excerpt": "(other than Section 5.18(b)(2) and"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "SHARED_CAP",
+      "excerpt": "aggregate amount taken together with all other Restricted Debt Payments made pursuant to this Section 6.08(b)(15) not to exceed the greater "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "THRESHOLD",
+      "excerpt": "declaration and payment of dividends or distributions by the Initial Borrower to, or the making of loans to, any Parent Entity in aggregate "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "PERMISSION",
+      "excerpt": "required to maintain its organizational existence or good standing under applicable law;"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "(1) for any taxable period\nfor which the Borrowers and/or any of their respective Subsidiaries is a member (or disregarded as separate from "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "PERMISSION",
+      "excerpt": "(2) for any taxable period in which the Borrowers and/or any of their respective Subsidiaries is treated as a partnership or pass-through en"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "any similar tax imposed in lieu of an income tax) ("
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "FORMULA_COMPONENT",
+      "excerpt": "Subsidiaries, as applicable, for such taxable period that are attributable to the Borrowers and/or any of its respective Subsidiaries, as ap"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "PERMISSION",
+      "excerpt": "(including, without limitation, expenses related to the maintenance of corporate or other existence and auditing or other accounting or tax "
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "CONDITION",
+      "excerpt": "Subsidiaries, the primary assets of which are cash and/or Cash Equivalents;"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "ALTERNATIVE",
+      "excerpt": "(i) Retained Declined\nProceeds,"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "ALTERNATIVE",
+      "excerpt": "(ii) Retained Asset Sale Proceeds and"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "ALTERNATIVE",
+      "excerpt": "(iii) proceeds from dispositions or asset sales the proceeds of which are not required to be applied pursuant to Section 2.09(b),"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "DEPENDENCY",
+      "excerpt": "Payments that may be made in reliance on this clause"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "ALTERNATIVE",
+      "excerpt": "(y) 100% of Consolidated EBITDA for the most recently ended Test Period;"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "ALTERNATIVE",
+      "excerpt": "(B) the First Lien Leverage Ratio as of the last day of the then most recently ended Test Period or"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "THRESHOLD",
+      "excerpt": "1.75:1.00 or (B) the Interest Coverage Ratio level as of the last day of the then most recently ended Test Period"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "SHARED_CAP",
+      "excerpt": "of all other Restricted Debt Payments incurred pursuant to this clause (27) and then outstanding, will not exceed"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "PROHIBITION",
+      "excerpt": "shall not permit any Unrestricted Subsidiary to become a Restricted Subsidiary except pursuant to the definition of \u201cUnrestricted Subsidiary"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "RECLASSIFICATION",
+      "excerpt": "outstanding Investments by any Restricted Party (except to the extent repaid) in the Subsidiary so designated shall be deemed to be Restrict"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "CONDITION",
+      "excerpt": "definition of \u201cPermitted Investments,\u201d and if such Subsidiary otherwise meets the definition of an Unrestricted Subsidiary."
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "MATERIAL",
+      "role": "DEPENDENCY",
+      "excerpt": "Notwithstanding this Section 6.08,"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "CURE",
+      "excerpt": "Restricted Payment would in the good faith determination of the Initial Borrower be permitted under the provisions of the Agreement, such Re"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "REFERENCE",
+      "excerpt": "Section 6.08(a) hereof and/or one or more of the exceptions contained in the definition of \u201cPermitted Investments,\u201d"
+    },
+    {
+      "unit": "6.08",
+      "onlyIn": "run2",
+      "materiality": "CRITICAL",
+      "role": "RECLASSIFICATION",
+      "excerpt": "such Restricted Payment or Investment (or portion thereof) among such Sections 6.08(b)(1) through (25) and Section 6.08(a) hereof and/or one"
+    }
+  ]
+}

@@ -46,3 +46,29 @@ working provider credential exists.
 
 Harness: `scripts/phase-3-validation-chwy-deterministic-run.ts` (zero paid calls).
 Fixture: `tests/fixtures/unseen-packages/chwy-2026-credit-agreement/` (+ `extraction-manifest.json`).
+
+## Paid run (resumed 2026-09-03, credential restored)
+
+Executed `09-paid-run-manifest.json` with `scripts/phase-3-validation-chwy-paid-run.ts` at production tree
+`da7106fac07c3696…` (unchanged). Effective cap $14.00 (gateway balance $14.51 < manifest $20).
+
+| Item | Result |
+|---|---|
+| Paid model calls / spend | 125 calls / $13.961228 (rate card = gateway-reported delta) / 1,373 budget refusals |
+| 2B whole-document discovery | 839 candidates, 113 sections, 1 transient failure (1.09), DISCOVERY_PARTIAL, $4.66 |
+| Units (top 12 by 2A signal count) | 3 attempted (1.01, 6.08, 9.04); 9 not attempted (budget) |
+| 1.01 (353k chars) | Pass A 109 items (COVERAGE_GAP); compile FAILED (caller retrieval-nudge protocol defect F-1); run 2 gateway failure |
+| 6.08 (38k chars) | Pass A 288 / 307 items; compile PARTIAL 38 rules + 6 defs; verifier MATERIAL_DISCREPANCY (25 material, 22 scale artefacts F-3) |
+| 9.04 (30k chars) | Pass A 218 items; compile refused at cap |
+| Pass A stability (6.08) | strict 0.19 / semantic 0.45 / critical-material 0.46 |
+| Reference set (46) | discovered by Pass A 18/46 (0.39; 0.82 over attempted units); FULL 2 mechanical → 1 after adjudication; PARTIAL 6; MISSING 14; NOT_ATTEMPTED 24 |
+| Trust safety | 0 dangerous silent failures / 44 safe failures → **TRUST_SAFETY_PASS** |
+| Phase 3 generalization | **PHASE_3_GENERALIZATION_NEEDS_ITERATION** |
+| Phase 4 gate | **NOT_READY_FOR_PHASE_4_CONTRACT_COMPUTATION** |
+
+Paid-run artifacts: `11-paid-run-summary.json` (stages, spend, findings F-1..F-7, OBS carry-forward),
+`12-pass-a-stability.json`, `13-reference-set-scoring.json` + `13b-substantive-adjudication.json`,
+`14-metrics-paid.json`, `15-trust-safety.json`, `16-root-causes-paid.json`, `17-gates-and-verdict-paid.json`.
+Run outputs: `tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/` (incl. the zero-cost
+`stage3e-coverage-linked.json` re-link produced by `scripts/phase-3-validation-chwy-3e-relink.ts`).
+Scorer: `scripts/phase-3-validation-chwy-score.py` (gate rules pre-registered before results were read).

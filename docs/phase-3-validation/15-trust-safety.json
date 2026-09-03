@@ -1,0 +1,438 @@
+{
+  "artifact": "15-trust-safety",
+  "rule": "DANGEROUS_SILENT_FAILURE only when material semantics are missing/wrong AND the covering unit is trusted as semantically complete (compile COMPLETED + accountability semanticallyComplete + verifier VERIFIED_*) AND the 3E coverage entry for the span is FULLY_REPRESENTED_VERIFIED; every other deficiency is SAFE_FAILURE with its blocking state listed.",
+  "deficientItems": 44,
+  "dangerousSilentFailures": 0,
+  "safeFailures": 44,
+  "unitsTrustedAsComplete": [],
+  "rows": [
+    {
+      "id": "A1",
+      "materiality": "CRITICAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "A2",
+      "materiality": "CRITICAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "A3",
+      "materiality": "MATERIAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "A4",
+      "materiality": "CRITICAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "A5",
+      "materiality": "CRITICAL",
+      "representation": "PARTIAL",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "ACCOUNTABILITY_INCOMPLETE",
+        "COMPILE_PARTIAL",
+        "INVENTORY_COVERAGE_GAP",
+        "VERIFIER_MATERIAL_DISCREPANCY"
+      ]
+    },
+    {
+      "id": "A6",
+      "materiality": "MATERIAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "A7",
+      "materiality": "CRITICAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "B1",
+      "materiality": "CRITICAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "B2",
+      "materiality": "MATERIAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "B3",
+      "materiality": "CRITICAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "B4",
+      "materiality": "MATERIAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "B5",
+      "materiality": "MATERIAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "B6",
+      "materiality": "MATERIAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "B7",
+      "materiality": "CRITICAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "B8",
+      "materiality": "MATERIAL",
+      "representation": "PARTIAL",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "ACCOUNTABILITY_INCOMPLETE",
+        "COMPILE_PARTIAL",
+        "INVENTORY_COVERAGE_GAP",
+        "VERIFIER_MATERIAL_DISCREPANCY"
+      ]
+    },
+    {
+      "id": "B9",
+      "materiality": "CRITICAL",
+      "representation": "PARTIAL",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "ACCOUNTABILITY_INCOMPLETE",
+        "COMPILE_PARTIAL",
+        "INVENTORY_COVERAGE_GAP",
+        "VERIFIER_MATERIAL_DISCREPANCY"
+      ]
+    },
+    {
+      "id": "B11",
+      "materiality": "CRITICAL",
+      "representation": "PARTIAL",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "ACCOUNTABILITY_INCOMPLETE",
+        "COMPILE_PARTIAL",
+        "INVENTORY_COVERAGE_GAP",
+        "VERIFIER_MATERIAL_DISCREPANCY"
+      ]
+    },
+    {
+      "id": "B12",
+      "materiality": "CRITICAL",
+      "representation": "MISSING",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ]
+    },
+    {
+      "id": "B13",
+      "materiality": "MATERIAL",
+      "representation": "MISSING",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ]
+    },
+    {
+      "id": "B14",
+      "materiality": "CRITICAL",
+      "representation": "MISSING",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ]
+    },
+    {
+      "id": "B15",
+      "materiality": "MATERIAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "C1",
+      "materiality": "CRITICAL",
+      "representation": "PARTIAL",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "ACCOUNTABILITY_INCOMPLETE",
+        "COMPILE_PARTIAL",
+        "INVENTORY_COVERAGE_GAP",
+        "VERIFIER_MATERIAL_DISCREPANCY"
+      ]
+    },
+    {
+      "id": "C2",
+      "materiality": "CRITICAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "C3",
+      "materiality": "CRITICAL",
+      "representation": "MISSING",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ]
+    },
+    {
+      "id": "C4",
+      "materiality": "MATERIAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "C5",
+      "materiality": "CRITICAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "C6",
+      "materiality": "MATERIAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "C7",
+      "materiality": "MATERIAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "C8",
+      "materiality": "MATERIAL",
+      "representation": "PARTIAL",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "ACCOUNTABILITY_INCOMPLETE",
+        "COMPILE_PARTIAL",
+        "INVENTORY_COVERAGE_GAP",
+        "VERIFIER_MATERIAL_DISCREPANCY"
+      ]
+    },
+    {
+      "id": "C9",
+      "materiality": "CRITICAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "D1",
+      "materiality": "CRITICAL",
+      "representation": "MISSING",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ]
+    },
+    {
+      "id": "D2",
+      "materiality": "CRITICAL",
+      "representation": "MISSING",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ]
+    },
+    {
+      "id": "D3",
+      "materiality": "CRITICAL",
+      "representation": "MISSING",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ]
+    },
+    {
+      "id": "D4",
+      "materiality": "MATERIAL",
+      "representation": "MISSING",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ]
+    },
+    {
+      "id": "D5",
+      "materiality": "CRITICAL",
+      "representation": "MISSING",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ]
+    },
+    {
+      "id": "D6",
+      "materiality": "MATERIAL",
+      "representation": "MISSING",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ]
+    },
+    {
+      "id": "D7",
+      "materiality": "CRITICAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "D8",
+      "materiality": "MATERIAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "D9",
+      "materiality": "MATERIAL",
+      "representation": "MISSING",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ]
+    },
+    {
+      "id": "E1",
+      "materiality": "CRITICAL",
+      "representation": "MISSING",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ]
+    },
+    {
+      "id": "E2",
+      "materiality": "MATERIAL",
+      "representation": "MISSING",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ]
+    },
+    {
+      "id": "E3",
+      "materiality": "CRITICAL",
+      "representation": "MISSING",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ]
+    },
+    {
+      "id": "E4",
+      "materiality": "CRITICAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    },
+    {
+      "id": "F1",
+      "materiality": "CRITICAL",
+      "representation": "NOT_ATTEMPTED",
+      "trustSafety": "SAFE_FAILURE",
+      "blockers": [
+        "UNIT_NOT_COMPILED"
+      ]
+    }
+  ]
+}

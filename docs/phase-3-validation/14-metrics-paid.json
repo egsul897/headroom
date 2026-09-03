@@ -1,0 +1,85 @@
+{
+  "artifact": "14-metrics-paid",
+  "referenceItems": 46,
+  "criticalMaterialItems": 46,
+  "attemptedItems": 22,
+  "notAttempted": 24,
+  "all46": {
+    "materialDiscoveryRecall": 0.3913,
+    "overallDiscoveryRecall": 0.3913,
+    "quantitativeComponentRecall": 0.5556,
+    "exceptionConditionRecall": 0.3333,
+    "dependencyCrossReferenceRecall": 0.6,
+    "fullMechanicalRate": 0.0435
+  },
+  "attemptedUnitsOnly": {
+    "materialDiscoveryRecall": 0.8182,
+    "overallDiscoveryRecall": 0.8182,
+    "quantitativeComponentRecall": 0.7143,
+    "exceptionConditionRecall": 1.0,
+    "dependencyCrossReferenceRecall": 0.75,
+    "fullMechanicalRate": 0.0909
+  },
+  "representationCounts": {
+    "FULL": 2,
+    "PARTIAL": 6,
+    "UNSUPPORTED": 0,
+    "AMBIGUOUS": 0,
+    "MISSING": 14,
+    "NOT_ATTEMPTED": 24
+  },
+  "byCategory": {
+    "A": {
+      "items": 7,
+      "discovered": 1,
+      "full": 0,
+      "notAttempted": 6
+    },
+    "B": {
+      "items": 15,
+      "discovered": 6,
+      "full": 1,
+      "notAttempted": 8
+    },
+    "C": {
+      "items": 9,
+      "discovered": 3,
+      "full": 0,
+      "notAttempted": 6
+    },
+    "D": {
+      "items": 9,
+      "discovered": 5,
+      "full": 0,
+      "notAttempted": 2
+    },
+    "E": {
+      "items": 5,
+      "discovered": 3,
+      "full": 1,
+      "notAttempted": 1
+    },
+    "F": {
+      "items": 1,
+      "discovered": 0,
+      "full": 0,
+      "notAttempted": 1
+    }
+  },
+  "discovery2B": {
+    "note": "clause-level = a 2B candidate anchored to a node no larger than 4x the reference span; section-level = any 2B candidate anchored to a node overlapping the span (2B's Pass C expansion anchors most candidates at the SECTION node for large sections)",
+    "sectionLevelAll46": 1.0,
+    "sectionLevelMaterial": 1.0,
+    "all46": 0.4565,
+    "material": 0.4565,
+    "byCategory": {
+      "A": 1.0,
+      "B": 0.2,
+      "C": 0.7778,
+      "D": 0.2222,
+      "E": 0.2,
+      "F": 1.0
+    }
+  },
+  "note": "fullSubstantiveCreditRate is finalized in 17 after human adjudication of the mechanical FULL rows (13b); mechanical FULL is an upper bound."
+}

@@ -34,10 +34,24 @@ def ov(a, b, c, d):
 ref = load(REF); items = ref["items"]
 summary = load(f"{RUN}/run-summary.json"); ledger = load(f"{RUN}/cost-ledger.json")
 disc = load(f"{RUN}/stage2b-discovery.json") if os.path.exists(f"{RUN}/stage2b-discovery.json") else {}
-cov = load(f"{RUN}/stage3e-coverage.json") if os.path.exists(f"{RUN}/stage3e-coverage.json") else {}
+cov_primary = load(f"{RUN}/stage3e-coverage.json") if os.path.exists(f"{RUN}/stage3e-coverage.json") else {}
+cov = load(f"{RUN}/stage3e-coverage-linked.json") if os.path.exists(f"{RUN}/stage3e-coverage-linked.json") else cov_primary
+COV_SOURCE = "stage3e-coverage-linked.json (zero-cost re-link; compiled units visible to reconciliation)" if os.path.exists(f"{RUN}/stage3e-coverage-linked.json") else "stage3e-coverage.json"
+node_start = {n["nodeId"]: n["charStart"] for n in load(f"{DET}/stage1-all-nodes.json")}
+disc_spans = []
+for c in disc.get("candidates", []):
+    for nid in c.get("structuralNodeIds", []):
+        pass
+_nodes = {n["nodeId"]: n for n in load(f"{DET}/stage1-all-nodes.json")}
+for c in disc.get("candidates", []):
+    for nid in c.get("structuralNodeIds", []):
+        n = _nodes.get(nid)
+        if n: disc_spans.append((n["charStart"], n["charEnd"], c["discoveryId"], c.get("role"), c.get("normalizedSourceRef")))
 units = {}
 for f in sorted(glob.glob(f"{RUN}/unit-*.json")):
-    u = load(f); units[u["unit"]["sectionRef"]] = u
+    u = load(f)
+    if "unit" not in u: continue
+    units[u["unit"]["sectionRef"]] = u
 
 # ---------------- absolute spans for inventory items ----------------
 def region_map(compile_):
@@ -66,7 +80,9 @@ def sem_match(a, b):
 stab_units = []; agg = {"strict": [0, 0], "semantic": [0, 0], "material": [0, 0]}
 disagreements = []
 for ref_, v in unit_views.items():
-    if not v["inv1"] or v["u"].get("inventoryRun2") is None: stab_units.append({"unit": ref_, "status": "NOT_EVALUABLE", "run1": len(v["inv1"]), "run2": None}); continue
+    r2 = v["u"].get("inventoryRun2")
+    if not v["inv1"] or r2 is None or r2.get("inventoryStatus") in ("INVENTORY_FAILED", "INVENTORY_SKIPPED_NO_PROVIDER"):
+        stab_units.append({"unit": ref_, "status": "NOT_EVALUABLE", "reason": (r2 or {}).get("inventoryStatusReason", "no run 2")[:160], "run1": len(v["inv1"]), "run2": None}); continue
     ids1 = {it["inventoryItemId"] for it, _ in v["inv1"]}; ids2 = {it["inventoryItemId"] for it, _ in v["inv2"]}
     strict_i, strict_u = len(ids1 & ids2), len(ids1 | ids2)
     used = set(); matched = 0; mat_matched = 0; mat_only1 = []; mat_only2 = []
@@ -107,7 +123,8 @@ def cov_status_for(a, b):
     hits = []
     for e in cov_units:
         for an in e["anchors"]:
-            if ov(a, b, an["charStart"], an["charEnd"]) > 0: hits.append(e["state"]); break
+            base = node_start.get(an.get("structuralNodeId"), 0) if an.get("structuralNodeId") else 0
+            if ov(a, b, base + an["charStart"], base + an["charEnd"]) > 0: hits.append(e["state"]); break
     return hits
 
 # ---------------- reference-set scoring ----------------
@@ -150,6 +167,8 @@ for it in items:
     elif rep in ("PARTIAL", "MISSING"): stage = "IR_COMPOSITION"
     else: stage = "IR_COMPOSITION"
     cov_hits = cov_status_for(a, b)
+    hits2b = [{"discoveryId": did, "role": role, "ref": nref} for (cs, ce, did, role, nref) in disc_spans if ov(a, b, cs, ce) > 0 and (ce - cs) <= 4 * max(b - a, 400)]
+    hits2b_section = [{"discoveryId": did, "role": role, "ref": nref} for (cs, ce, did, role, nref) in disc_spans if ov(a, b, cs, ce) > 0]
     sec_token = re.split(r"[ /]", it["section"])[0]
     vf = []
     for ref_ in dict.fromkeys(attempted):
@@ -168,8 +187,8 @@ for it in items:
         if s["verifyStatus"] and s["verifyStatus"] not in TRUSTED_VERIFY: blockers.append("VERIFIER_" + s["verifyStatus"])
     if rep == "NOT_ATTEMPTED": blockers.append("UNIT_NOT_COMPILED")
     if rep in ("UNSUPPORTED", "AMBIGUOUS"): blockers.append(rep)
-    rows.append({"id": it["id"], "category": it["category"][0], "materiality": mat, "section": it["section"], "span": it["span"], "coveringUnits": attempted, "discoveredByPassA": bool(disc_items), "passARun2Hits": run2_hits, "inventoryItems": disc_items[:12], "inventoryItemCount": len(disc_items), "composedIntoIR": any(d == "REPRESENTED" for d in dispositions), "representationMechanical": rep, "unitStates": unit_states, "coverageAuditStatuses": cov_hits[:6], "verifierFindingsTouching": vf[:6], "trustedAsComplete": trusted, "earliestFailureStage": stage, "trustSafety": trust, "trustBlockers": sorted(set(blockers)), "substantiveCredit": "PENDING_HUMAN_ADJUDICATION" if rep == "FULL" else "NONE"})
-W("13-reference-set-scoring", {"artifact": "13-reference-set-scoring", "referenceSet": REF, "referenceItems": len(rows), "method": "Mechanical mapping of each frozen reference span onto the paid-run evidence: covering units (any resolved source-context region overlapping the span), Pass A run-1 inventory items overlapping the span (>= 40 chars or the whole item), Pass C dispositions of those items, unit-level compile/accountability/verifier states, and 3E coverage statuses. representationMechanical: FULL = every material overlapping item REPRESENTED with no missing quantitative value; PARTIAL = some REPRESENTED; UNSUPPORTED/AMBIGUOUS = explicit non-complete disposition; MISSING = not inventoried or all MISSING_FROM_COMPOSITION; NOT_ATTEMPTED = no compiled unit reached the span. Human substantive adjudication of FULL items is recorded separately in 13b.", "rows": rows})
+    rows.append({"id": it["id"], "category": it["category"][0], "materiality": mat, "section": it["section"], "span": it["span"], "coveringUnits": attempted, "discoveredByPassA": bool(disc_items), "discoveredBy2B": bool(hits2b), "discoveredBy2BSectionLevel": bool(hits2b_section), "candidates2BSectionLevel": len(hits2b_section), "candidates2B": hits2b[:6], "passARun2Hits": run2_hits, "inventoryItems": disc_items[:12], "inventoryItemCount": len(disc_items), "composedIntoIR": any(d == "REPRESENTED" for d in dispositions), "representationMechanical": rep, "unitStates": unit_states, "coverageAuditStatuses": cov_hits[:6], "verifierFindingsTouching": vf[:6], "trustedAsComplete": trusted, "earliestFailureStage": stage, "trustSafety": trust, "trustBlockers": sorted(set(blockers)), "substantiveCredit": "PENDING_HUMAN_ADJUDICATION" if rep == "FULL" else "NONE"})
+W("13-reference-set-scoring", {"artifact": "13-reference-set-scoring", "referenceSet": REF, "referenceItems": len(rows), "coverageSource": COV_SOURCE, "method": "Mechanical mapping of each frozen reference span onto the paid-run evidence: covering units (any resolved source-context region overlapping the span), Pass A run-1 inventory items overlapping the span (>= 40 chars or the whole item), Pass C dispositions of those items, unit-level compile/accountability/verifier states, and 3E coverage statuses. representationMechanical: FULL = every material overlapping item REPRESENTED with no missing quantitative value; PARTIAL = some REPRESENTED; UNSUPPORTED/AMBIGUOUS = explicit non-complete disposition; MISSING = not inventoried or all MISSING_FROM_COMPOSITION; NOT_ATTEMPTED = no compiled unit reached the span. Human substantive adjudication of FULL items is recorded separately in 13b.", "rows": rows})
 
 # ---------------- metrics ----------------
 def rate(n, d): return round(n / d, 4) if d else None
@@ -182,6 +201,7 @@ metrics = {
   "attemptedUnitsOnly": {"materialDiscoveryRecall": rate(sum(r["discoveredByPassA"] for r in attempted_rows if r["materiality"] in MATERIAL), sum(1 for r in attempted_rows if r["materiality"] in MATERIAL)), "overallDiscoveryRecall": rate(sum(r["discoveredByPassA"] for r in attempted_rows), len(attempted_rows)), "quantitativeComponentRecall": rate(sum(r["discoveredByPassA"] for r in attempted_rows if r["category"] == "D"), sum(1 for r in attempted_rows if r["category"] == "D")), "exceptionConditionRecall": rate(sum(r["discoveredByPassA"] for r in attempted_rows if r["category"] == "C"), sum(1 for r in attempted_rows if r["category"] == "C")), "dependencyCrossReferenceRecall": rate(sum(r["discoveredByPassA"] for r in attempted_rows if r["category"] == "E"), sum(1 for r in attempted_rows if r["category"] == "E")), "fullMechanicalRate": rate(sum(r["representationMechanical"] == "FULL" for r in attempted_rows), len(attempted_rows))},
   "representationCounts": {k: sum(r["representationMechanical"] == k for r in rows) for k in ("FULL", "PARTIAL", "UNSUPPORTED", "AMBIGUOUS", "MISSING", "NOT_ATTEMPTED")},
   "byCategory": {c: {"items": len(cat(c)), "discovered": sum(r["discoveredByPassA"] for r in cat(c)), "full": sum(r["representationMechanical"] == "FULL" for r in cat(c)), "notAttempted": sum(r["representationMechanical"] == "NOT_ATTEMPTED" for r in cat(c))} for c in "ABCDEF"},
+  "discovery2B": {"note": "clause-level = a 2B candidate anchored to a node no larger than 4x the reference span; section-level = any 2B candidate anchored to a node overlapping the span (2B's Pass C expansion anchors most candidates at the SECTION node for large sections)", "sectionLevelAll46": rate(sum(r["discoveredBy2BSectionLevel"] for r in rows), len(rows)), "sectionLevelMaterial": rate(sum(r["discoveredBy2BSectionLevel"] for r in mat_rows), len(mat_rows)), "all46": rate(sum(r["discoveredBy2B"] for r in rows), len(rows)), "material": rate(sum(r["discoveredBy2B"] for r in mat_rows), len(mat_rows)), "byCategory": {c: rate(sum(r["discoveredBy2B"] for r in cat(c)), len(cat(c))) for c in "ABCDEF"}},
   "note": "fullSubstantiveCreditRate is finalized in 17 after human adjudication of the mechanical FULL rows (13b); mechanical FULL is an upper bound.",
 }
 W("14-metrics-paid", {"artifact": "14-metrics-paid", **metrics})
