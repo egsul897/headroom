@@ -1,0 +1,93 @@
+{
+  "mission": "PHASE 3 CHEWY REMEDIATION 2 / F-2 STRUCTURAL SUB-CLAUSE MIS-NESTING",
+  "startingSha": "a942558715b206757d1e518638969e1b760efbc9",
+  "paidCalls": 0,
+  "paidSpendUsd": 0,
+  "productionFilesChanged": ["lib/contract-model/compiler/clause-hierarchy.ts"],
+  "reproduction": {
+    "source": "tests/fixtures/unseen-packages/phase-3-validation-chwy-run/stage1-all-nodes.json (committed before-state) vs runStructureStage at starting SHA",
+    "earliestDivergence": {
+      "charStart": 661773,
+      "text": "clauses (i) through (iv) above",
+      "effect": "inline reference token (i) accepted as a label and nested as 6.08(a)(iv)(i)"
+    },
+    "falseSubsection": {
+      "charStart": 665769,
+      "text": "this clause\\n(b) shall not include",
+      "effect": "cross-reference (b) promoted to SUBSECTION 6.08(b); builder items (c)-(h) promoted to subsections"
+    },
+    "falseOuter": {
+      "text": "minus (i)",
+      "effect": "inline (i) opened a false 6.08(i) subsection; the true 6.08(b) at 670039 was dropped (index 2 was neither continuation nor start) and its numbered children were emitted as 6.08(i)(ii)(N)"
+    }
+  },
+  "mechanisms": [
+    {
+      "id": 1,
+      "name": "inline reference marker filter",
+      "functions": ["isInlineReferenceMarker", "structuralMarkerOccurrences"],
+      "rule": "a parenthesised token preceded within 40 chars by a reference lead-in (clause(s), paragraph(s), section(s), subsection(s), item(s), through, spelled numerals) or followed within 16 chars by a reference trailer (through, above, below, hereof, thereof, of this/the/such Section|clause|...) is not a structural label; reference status propagates along ', / and / or / through' chains"
+    },
+    {
+      "id": 2,
+      "name": "hanging-paragraph pop",
+      "functions": ["hasHangingParagraph"],
+      "rule": "when a paragraph break followed by prose separates the previous label from a start-of-new-list label, the innermost open list is closed before the new list opens, so a new label family after a closed list does not nest under the last item"
+    },
+    {
+      "id": 3,
+      "name": "nearest same-family list wins for mid-line continuation",
+      "rule": "a continuation marker that appears mid-line inside an inline enumeration (bare comma or conjunction, not ';' or ':') does not resume a far-outer list when a nearer open list of the same marker family exists"
+    },
+    {
+      "id": 4,
+      "name": "comma exclusion limited to horizontal whitespace",
+      "rule": "MARKER_OCCURRENCE lookbehind (?<!,[ \\t]) so a line-start label after ',\\n' is still a label"
+    }
+  ],
+  "chewyAfterState": {
+    "subsections": ["6.08(a)", "6.08(b)"],
+    "6.08(a)children": ["(i)", "(ii)", "(iii)", "(iv)", "(1)", "(2)", "(3)"],
+    "6.08(a)(3)children": "(a)-(i)",
+    "6.08(b)children": "(1)-(27), parent 6.08(b)",
+    "6.08(b)(16)children": "(a)-(h)",
+    "false6.08(i)": false,
+    "totalNodes": 1548
+  },
+  "testSuites": {
+    "tests/contract-model/clause-hierarchy.test.ts": "8/8 pass",
+    "tests/contract-model/clause-hierarchy-f2-nesting.test.ts": "18/18 pass (new; matrix A-J incl. Chewy exact regression H)",
+    "tests/contract-model/cross-reference-boundary*.test.ts + semantic-coverage-real-fwrg-regression + semantic-coverage-real-lsb-regression": "26/26 pass (exact node counts updated 418->396, 76->75; every removed node is an inline reference)",
+    "structural / context / discovery / source-context / 3E suites": "pass except pre-existing failures listed below",
+    "full tests/contract-model": "35 failed / 1849 passed / 172 skipped, identical at starting SHA and after the fix (one flaky recert-independent test swaps between two names)",
+    "tsc": "only pre-existing errors in untouched tests/foundation-audit/* files",
+    "eslint": "clean on changed and new files"
+  },
+  "preExistingFailures": [
+    "Prisma/DB-backed suites (no database in this environment)",
+    "coverage-structural Coherent suites",
+    "structural-persistence suites",
+    "semantic-accountability pass-a / pass-bc synthetic suites",
+    "flaky: part-b-recert-finding4-independent <-> part-b-terminal-recert-open3-independent"
+  ],
+  "deterministicChewyHarnessDeltas": {
+    "nodes": {"before": 1559, "after": 1548},
+    "nodeTypes": {"SUBSECTION": [301, 328], "CLAUSE": [322, 362], "SUBCLAUSE": [686, 608]},
+    "candidates": {"before": 766, "after": 768},
+    "units": {"before": 113, "after": 113},
+    "sourceContextStates": "unchanged",
+    "coverageStatus": "unchanged",
+    "committedOutputs": "restored unchanged (git checkout) after recording deltas"
+  },
+  "relink": {
+    "recordedCompilerRefsResolved": {"before": "3/36", "after": "33/36", "unresolved": "3 compound/prose citations"},
+    "passA608Candidates": {"before": 64, "after": 70, "false608i": [38, 0], "real608bN": [0, 42]},
+    "contextBundleItems": {"before": 6, "after": 7, "status": "BUDGET_EXCEEDED both"},
+    "sourceUnit": "COMPLETE_LOCAL_SOURCE, 38529 chars both",
+    "coverage3E_rekeyed": {"UNREPRESENTED": [168, 113], "AMBIGUOUS_MATCH": [65, 126], "FULLY_REPRESENTED_REVIEW_REQUIRED": [8, 8]}
+  },
+  "residualNotFixed": [
+    "definitions sections chain independent numbered lists across definitions (e.g. SUP 1.01); out of scope for F-2 (different root)"
+  ],
+  "verdict": "F2_CLOSED"
+}

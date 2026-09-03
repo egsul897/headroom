@@ -1,0 +1,42 @@
+{
+  "artifact": "04-invariant-and-fix",
+  "invariant": "A LOCAL LABEL SUCH AS (a), (b), (1), (A) DOES NOT DETERMINE STRUCTURAL LEVEL BY ITSELF. Its level is resolved from structural context: the ancestor stack, the neighboring label sequence, the enclosing clause syntax (reference lead-ins / spelled numerals / conjunction chains), local list continuation (hanging paragraphs), and source boundaries (line starts, list punctuation).",
+  "implementation": [
+    {
+      "mechanism": 1,
+      "name": "legal numbering grammar - inline references and spelled numerals are not labels",
+      "code": "isInlineReferenceMarker + structuralMarkerOccurrences (reference status propagates along ', / and / or / through' chains)",
+      "examples": [
+        "clauses (i) through (iv) above",
+        "this clause (b) shall not include",
+        "paragraph (c) of this Section",
+        "clauses (9) or (10) of this Section 6.08(b)",
+        "sixty (60) days",
+        "one (1) year"
+      ]
+    },
+    {
+      "mechanism": 2,
+      "name": "list continuation / source boundaries - a NEW label family after a hanging paragraph attaches to the enclosing level",
+      "code": "hasHangingParagraph + 'if (hangingParagraphBefore && stack.length >= 2) stack.length -= 1' before a start marker is pushed; continuations of the innermost list are unaffected; page-marker lines and the next label never count as prose"
+    },
+    {
+      "mechanism": 3,
+      "name": "neighboring label sequence - a label continues the NEAREST open list of its family; inline enumeration never re-opens a distant outer subsection",
+      "code": "outer-resume skipped when the marker is mid-line, joined by a bare comma/conjunction (not ';'/':'), and a nearer open list of the same family exists"
+    },
+    {
+      "mechanism": "1b",
+      "name": "comma exclusion limited to horizontal whitespace",
+      "code": "MARKER_OCCURRENCE lookbehind (?<!,[ \\t]) so 'without duplication,\\n(a) franchise ...' (label on a new line after a lead-in ending in a comma) is a label"
+    }
+  ],
+  "agreementSpecificLogic": "none - no section numbers, term names, offsets, or covenant lists; only drafting grammar (reference lead-ins, number words, range/position words, list punctuation, paragraph boundaries, label families)",
+  "preservedTransitions": "true outer X(b) after X(a)'s content: verified on Chewy 6.08(b) (line start after a sentence), FWRG 6.07(b)-(kk) (single-line flattened text, ';'-separated), synthetic tests B and the flattened-text tests in clause-hierarchy-f2-nesting.test.ts",
+  "notChanged": [
+    "stage-structure.ts ARTICLE/SECTION recognition",
+    "node identity (nodeId = stable key of documentId+nodeType+charStart)",
+    "span/ordinal/parent construction",
+    "semantic compiler, inventory, prompts, IR, verifier, source coverage, quantitative scanner, precedent, reference set, scoring"
+  ]
+}

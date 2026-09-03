@@ -1,0 +1,84 @@
+{
+  "artifact": "06-deterministic-relink-summary",
+  "tool": "scripts/f2-chewy-relink.ts run under the pre-fix parser (06a, via git stash) and the fixed parser (06b); zero paid calls; recorded IR from unit-6.08.json unchanged",
+  "recordedCompilerRefs": {
+    "total": 36,
+    "resolveBefore": 3,
+    "resolveAfter": 33,
+    "unresolvedAfter": [
+      "6.08(b)(21)(i)-(ii)",
+      "6.08(b)(21)(iii)",
+      "6.08(a) (chapeau) and \u00a76.08 (closing paragraphs)"
+    ],
+    "note": "the 3 unresolved are compound/prose citations ('6.08(b)(21)(i)-(ii)', chapeau text), not single refs"
+  },
+  "deterministicDiscovery608": {
+    "before": {
+      "candidates": 64,
+      "false608i": 38,
+      "real608b": 0,
+      "sample": []
+    },
+    "after": {
+      "candidates": 70,
+      "false608i": 0,
+      "real608b": 42,
+      "sample": [
+        "6.08(b)(10)",
+        "6.08(b)(10)(A)",
+        "6.08(b)(10)(B)",
+        "6.08(b)(10)(B)(A)",
+        "6.08(b)(10)(B)(B)",
+        "6.08(b)(12)"
+      ]
+    }
+  },
+  "contextBundle608": {
+    "before": {
+      "items": 6,
+      "sufficiency": "BUDGET_EXCEEDED",
+      "unresolvedDependencies": 79
+    },
+    "after": {
+      "items": 7,
+      "sufficiency": "BUDGET_EXCEEDED",
+      "unresolvedDependencies": 81
+    }
+  },
+  "sourceUnit608": {
+    "before": {
+      "state": "COMPLETE_LOCAL_SOURCE",
+      "regions": 1,
+      "chars": 38529
+    },
+    "after": {
+      "state": "COMPLETE_LOCAL_SOURCE",
+      "regions": 1,
+      "chars": 38529
+    }
+  },
+  "coverage3eLayersAB": {
+    "asRecordedCandidateRef": "the paid harness compiled under an ad-hoc section-level candidateRef that is not a 2B discoveryId; 3E keys compiled output by discoveryId, so the recorded output is UNREPRESENTED under both parsers (harness identity mismatch, not structural)",
+    "rekeyedToDiscoveredCandidates": {
+      "before": {
+        "candidatesIn608": 36,
+        "thisStructure": {
+          "SOURCE_CONTEXT_INCOMPLETE": 1,
+          "AMBIGUOUS_MATCH": 65,
+          "UNREPRESENTED": 168,
+          "FULLY_REPRESENTED_REVIEW_REQUIRED": 8
+        }
+      },
+      "after": {
+        "candidatesIn608": 30,
+        "thisStructure": {
+          "SOURCE_CONTEXT_INCOMPLETE": 1,
+          "AMBIGUOUS_MATCH": 126,
+          "UNREPRESENTED": 113,
+          "FULLY_REPRESENTED_REVIEW_REQUIRED": 8
+        }
+      }
+    },
+    "reading": "UNREPRESENTED 168 -> 113 and AMBIGUOUS_MATCH 65 -> 126: 55 more 6.08 units now link to a compiled rule citation; FULLY_REPRESENTED stays 8 because the recorded IR is unchanged - no semantic claim is made"
+  }
+}
