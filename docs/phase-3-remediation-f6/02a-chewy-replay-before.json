@@ -1,0 +1,3452 @@
+{
+  "file": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/unit-6.08.json",
+  "reproducedRecordedIRExactly": true,
+  "reproducedRecordedAccountabilityCounts": true,
+  "recordedAccountabilityCounts": {
+    "inventoried": 288,
+    "material": 278,
+    "represented": 253,
+    "intentionallyNonComputational": 0,
+    "unsupported": 20,
+    "ambiguous": 2,
+    "missingFromComposition": 13,
+    "materialMissingFromComposition": 13,
+    "criticalMissingFromComposition": 10,
+    "materialQuantitativeValues": 52,
+    "materialQuantitativeValuesMissing": 8,
+    "uninventoriedValues": 0,
+    "unaccountedSource": 68,
+    "danglingLineageReferences": 1,
+    "canonicalizedLineageReferences": 291
+  },
+  "replayAccountabilityCounts": {
+    "inventoried": 288,
+    "material": 278,
+    "represented": 253,
+    "intentionallyNonComputational": 0,
+    "unsupported": 20,
+    "ambiguous": 2,
+    "missingFromComposition": 13,
+    "materialMissingFromComposition": 13,
+    "criticalMissingFromComposition": 10,
+    "materialQuantitativeValues": 52,
+    "materialQuantitativeValuesMissing": 8,
+    "uninventoriedValues": 0,
+    "unaccountedSource": 68,
+    "danglingLineageReferences": 1,
+    "canonicalizedLineageReferences": 291
+  },
+  "semanticallyComplete": false,
+  "rules": 38,
+  "definitions": 6,
+  "sharedCapacities": 0,
+  "ruleSufficiency": {
+    "COMPLETE": 26,
+    "PARTIAL": 12,
+    "AMBIGUOUS": 0,
+    "UNSUPPORTED": 0,
+    "MISSING_CONTEXT": 0,
+    "CONFLICTED": 0
+  },
+  "definitionSufficiency": {
+    "COMPLETE": 3,
+    "PARTIAL": 2,
+    "AMBIGUOUS": 1,
+    "UNSUPPORTED": 0,
+    "MISSING_CONTEXT": 0,
+    "CONFLICTED": 0
+  },
+  "expressionStats": {
+    "unsupportedNodes": 8,
+    "modelEmittedUnsupported": 11,
+    "nodesOnlyInAttemptedStructure": 62,
+    "partialCompositesKept": 0,
+    "liveNodes": 44
+  },
+  "irValidation": {
+    "ok": false,
+    "issuesByKind": {
+      "TYPE_ERROR": 2
+    },
+    "issues": [
+      "[TYPE_ERROR] [UNLIMITED_CAPACITY] UnlimitedCapacity.gatedBy must be BOOLEAN",
+      "[TYPE_ERROR] [UNLIMITED_CAPACITY] UnlimitedCapacity.gatedBy must be BOOLEAN"
+    ]
+  },
+  "danglingRuleDependencies": 0,
+  "danglingLineageReferences": 1,
+  "unresolvedDependencies": 12,
+  "typeWarnings": [
+    "[rule[r_b4].ADD[0]] IF condition must be BOOLEAN and both branches must resolve to the same type",
+    "[rule[r_b4]] ADD operands do not type-check together under the IR's own composition rules",
+    "[rule[r_b9]] SUBTRACT operands do not type-check together",
+    "[rule[r_b10].UNLIMITED_CAPACITY.gatedBy.AND[1]] NOT operand is not BOOLEAN",
+    "[rule[r_b10].UNLIMITED_CAPACITY.gatedBy] AND operands do not type-check together under the IR's own composition rules",
+    "[rule[r_b25].UNLIMITED_CAPACITY.gatedBy.AND[1]] NOT operand is not BOOLEAN",
+    "[rule[r_b25].UNLIMITED_CAPACITY.gatedBy] AND operands do not type-check together under the IR's own composition rules",
+    "[definition[d_avail_inv_cap]] SUBTRACT operands do not type-check together",
+    "[definition[d_avail_rp_cap]] SUBTRACT operands do not type-check together",
+    "[definition[d_avail].SUBTRACT.left.ADD[1]] MULTIPLY operands do not type-check together under the IR's own composition rules",
+    "[definition[d_avail].SUBTRACT.left.ADD[2]] MULTIPLY operands do not type-check together under the IR's own composition rules",
+    "[definition[d_avail].SUBTRACT.left.ADD[3]] MULTIPLY operands do not type-check together under the IR's own composition rules",
+    "[definition[d_avail].SUBTRACT.left.ADD[6]] ADD operands do not type-check together under the IR's own composition rules",
+    "[definition[d_avail].SUBTRACT.left] ADD operands do not type-check together under the IR's own composition rules",
+    "[definition[d_avail].SUBTRACT.right] ADD operands do not type-check together under the IR's own composition rules",
+    "[definition[d_avail]] SUBTRACT operands do not type-check together"
+  ],
+  "expressions": [
+    {
+      "owner": "rule 6.08(a)",
+      "slot": "conditions[0]",
+      "ir": "COMPARE(ADD:MONEY(TXIN(\"Proposed Restricted Payment amount\":MONEY), TXIN(\"Aggregate prior unreturned Restricted Pa\":MONEY)) LT TERM(\"Available Amount\":MONEY))",
+      "inferredType": "BOOLEAN",
+      "sufficiency": "PARTIAL"
+    },
+    {
+      "owner": "rule 6.08(b)(2)",
+      "slot": "capacityExpression",
+      "ir": "TXIN(\"proceeds of substantially concurrent sal\":MONEY)",
+      "inferredType": "MONEY",
+      "sufficiency": "COMPLETE"
+    },
+    {
+      "owner": "rule 6.08(b)(3)",
+      "slot": "capacityExpression",
+      "ir": "TXIN(\"proceeds of Refinancing Indebtedness or \":MONEY)",
+      "inferredType": "MONEY",
+      "sufficiency": "PARTIAL"
+    },
+    {
+      "owner": "rule 6.08(b)(4)",
+      "slot": "capacityExpression",
+      "ir": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"IF\")\"; attempted=IF:BOOLEAN(TXIN(\"first public offering of Borrower/Parent\":MONEY) ? MAX:MONEY(MONEY(504000000), MULTIPLY:MONEY(PERCENT(0.7), METRIC(\"Consolidated EBITDA\":MONEY))) : MAX:MONEY(MONEY(252000000), MULTIPLY:MONEY(PERCENT(0.35), METRIC(\"Consolidated EBITDA\":MONEY))))), SUBTRACT:MONEY(ADD:MONEY(TXIN(\"cash proceeds from equity sales to emplo\":MONEY), TXIN(\"cash proceeds of key man life insurance \":MONEY), TXIN(\"bona fide cash bonuses foregone in excha\":MONEY)), TXIN(\"Restricted Payments previously made with\":MONEY))))",
+      "inferredType": "UNSUPPORTED",
+      "sufficiency": "PARTIAL"
+    },
+    {
+      "owner": "rule 6.08(b)(6)(a)",
+      "slot": "capacityExpression",
+      "ir": "TXIN(\"aggregate cash actually received from th\":MONEY)",
+      "inferredType": "MONEY",
+      "sufficiency": "COMPLETE"
+    },
+    {
+      "owner": "rule 6.08(b)(8)",
+      "slot": "capacityExpression",
+      "ir": "UNLIMITED(gatedBy=null)",
+      "inferredType": "CAPACITY",
+      "sufficiency": "COMPLETE"
+    },
+    {
+      "owner": "rule 6.08(b)(9)",
+      "slot": "capacityExpression",
+      "ir": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(ADD:MONEY(MULTIPLY:MONEY(PERCENT(0.06), TXIN(\"net cash proceeds received by/contribute\":MONEY)), MULTIPLY:MONEY(PERCENT(0.07), METRIC(\"Market Capitalization\":MONEY))), UNSUPPORTED(\"amounts used to incur Indebtedness/Disqualified St\")))",
+      "inferredType": "UNSUPPORTED",
+      "sufficiency": "PARTIAL"
+    },
+    {
+      "owner": "rule 6.08(b)(10)",
+      "slot": "capacityExpression",
+      "ir": "UNLIMITED(gatedBy=UNSUPPORTED(\"unrecognized or malformed expression (kind=\"AND\")\"; attempted=AND:BOOLEAN(OR:BOOLEAN(OR:BOOLEAN(COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE RATIO(2)), COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE TERM(\"First Lien Leverage Ratio as of the last\":RATIO))), OR:BOOLEAN(COMPARE(METRIC(\"Interest Coverage Ratio\":RATIO) GTE RATIO(1.75)), COMPARE(METRIC(\"Interest Coverage Ratio\":RATIO) GTE TERM(\"Interest Coverage Ratio as of the last d\":RATIO)))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"NOT\")\"; attempted=NOT(TERM(\"Specified Event of Default\":MONEY))))))",
+      "inferredType": "gate:UNSUPPORTED",
+      "sufficiency": "PARTIAL"
+    },
+    {
+      "owner": "rule 6.08(b)(11)(i)",
+      "slot": "capacityExpression",
+      "ir": "TERM(\"Excluded Contributions received since th\":MONEY)",
+      "inferredType": "MONEY",
+      "sufficiency": "COMPLETE"
+    },
+    {
+      "owner": "rule 6.08(b)(11)(ii)",
+      "slot": "capacityExpression",
+      "ir": "TXIN(\"Net cash proceeds from an asset sale/dis\":MONEY)",
+      "inferredType": "MONEY",
+      "sufficiency": "COMPLETE"
+    },
+    {
+      "owner": "rule 6.08(b)(12)",
+      "slot": "capacityExpression",
+      "ir": "MAX:MONEY(MONEY(720000000), MULTIPLY:MONEY(PERCENT(1), METRIC(\"Consolidated EBITDA\":MONEY)))",
+      "inferredType": "MONEY",
+      "sufficiency": "COMPLETE"
+    },
+    {
+      "owner": "rule 6.08(b)(13)",
+      "slot": "capacityExpression",
+      "ir": "UNLIMITED(gatedBy=null)",
+      "inferredType": "CAPACITY",
+      "sufficiency": "COMPLETE"
+    },
+    {
+      "owner": "rule 6.08(b)(14)",
+      "slot": "capacityExpression",
+      "ir": "UNLIMITED(gatedBy=null)",
+      "inferredType": "CAPACITY",
+      "sufficiency": "PARTIAL"
+    },
+    {
+      "owner": "rule 6.08(b)(15)",
+      "slot": "capacityExpression",
+      "ir": "MAX:MONEY(MONEY(720000000), MULTIPLY:MONEY(PERCENT(1), METRIC(\"Consolidated EBITDA\":MONEY)))",
+      "inferredType": "MONEY",
+      "sufficiency": "COMPLETE"
+    },
+    {
+      "owner": "rule 6.08(b)(16)",
+      "slot": "capacityExpression",
+      "ir": "UNSUPPORTED(\"aggregate pass-through funding for Parent Entity t\")",
+      "inferredType": "UNSUPPORTED",
+      "sufficiency": "PARTIAL"
+    },
+    {
+      "owner": "rule 6.08(b)(17)",
+      "slot": "capacityExpression",
+      "ir": "UNLIMITED(gatedBy=null)",
+      "inferredType": "CAPACITY",
+      "sufficiency": "COMPLETE"
+    },
+    {
+      "owner": "rule 6.08(b)(18)",
+      "slot": "capacityExpression",
+      "ir": "UNLIMITED(gatedBy=null)",
+      "inferredType": "CAPACITY",
+      "sufficiency": "COMPLETE"
+    },
+    {
+      "owner": "rule 6.08(b)(19)",
+      "slot": "capacityExpression",
+      "ir": "UNLIMITED(gatedBy=null)",
+      "inferredType": "CAPACITY",
+      "sufficiency": "PARTIAL"
+    },
+    {
+      "owner": "rule 6.08(b)(20)",
+      "slot": "capacityExpression",
+      "ir": "UNLIMITED(gatedBy=null)",
+      "inferredType": "CAPACITY",
+      "sufficiency": "COMPLETE"
+    },
+    {
+      "owner": "rule 6.08(b)(21)(i)-(ii)",
+      "slot": "capacityExpression",
+      "ir": "ADD:MONEY(TERM(\"Retained Declined Proceeds\":MONEY), TERM(\"Retained Asset Sale Proceeds\":MONEY))",
+      "inferredType": "MONEY",
+      "sufficiency": "COMPLETE"
+    },
+    {
+      "owner": "rule 6.08(b)(21)(iii)",
+      "slot": "capacityExpression",
+      "ir": "MAX:MONEY(MONEY(720000000), MULTIPLY:MONEY(PERCENT(1), METRIC(\"Consolidated EBITDA\":MONEY)))",
+      "inferredType": "MONEY",
+      "sufficiency": "COMPLETE"
+    },
+    {
+      "owner": "rule 6.08(b)(22)",
+      "slot": "capacityExpression",
+      "ir": "TXIN(\"the amount that constituted the original\":MONEY)",
+      "inferredType": "MONEY",
+      "sufficiency": "COMPLETE"
+    },
+    {
+      "owner": "rule 6.08(b)(23)",
+      "slot": "capacityExpression",
+      "ir": "UNLIMITED(gatedBy=null)",
+      "inferredType": "CAPACITY",
+      "sufficiency": "COMPLETE"
+    },
+    {
+      "owner": "rule 6.08(b)(24)",
+      "slot": "capacityExpression",
+      "ir": "UNLIMITED(gatedBy=null)",
+      "inferredType": "CAPACITY",
+      "sufficiency": "COMPLETE"
+    },
+    {
+      "owner": "rule 6.08(b)(25)",
+      "slot": "capacityExpression",
+      "ir": "UNLIMITED(gatedBy=UNSUPPORTED(\"unrecognized or malformed expression (kind=\"AND\")\"; attempted=AND:BOOLEAN(OR:BOOLEAN(OR:BOOLEAN(COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE RATIO(2)), COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE TERM(\"First Lien Leverage Ratio as of the last\":RATIO))), OR:BOOLEAN(COMPARE(METRIC(\"Interest Coverage Ratio\":RATIO) GTE RATIO(1.75)), COMPARE(METRIC(\"Interest Coverage Ratio\":RATIO) GTE TERM(\"Interest Coverage Ratio as of the last d\":RATIO)))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"NOT\")\"; attempted=NOT(TERM(\"Specified Event of Default\":MONEY))))))",
+      "inferredType": "gate:UNSUPPORTED",
+      "sufficiency": "PARTIAL"
+    },
+    {
+      "owner": "rule 6.08(b)(26)",
+      "slot": "capacityExpression",
+      "ir": "TERM(\"Available Investment Capacity Amount\":MONEY)",
+      "inferredType": "MONEY",
+      "sufficiency": "PARTIAL"
+    },
+    {
+      "owner": "rule 6.08(b)(27)",
+      "slot": "capacityExpression",
+      "ir": "TERM(\"Available RP Capacity Amount\":MONEY)",
+      "inferredType": "MONEY",
+      "sufficiency": "PARTIAL"
+    },
+    {
+      "owner": "rule 6.08",
+      "slot": "capacityExpression",
+      "ir": "UNLIMITED(gatedBy=null)",
+      "inferredType": "CAPACITY",
+      "sufficiency": "COMPLETE"
+    },
+    {
+      "owner": "definition \"Threshold Amount\"",
+      "slot": "calculationExpression",
+      "ir": "MAX:MONEY(MONEY(324000000), MULTIPLY:MONEY(PERCENT(0.45), METRIC(\"Consolidated EBITDA\":MONEY)))",
+      "inferredType": "MONEY",
+      "sufficiency": "COMPLETE"
+    },
+    {
+      "owner": "definition \"Available Investment Capacity Amount\"",
+      "slot": "calculationExpression",
+      "ir": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED(\"Investments that may be made pursuant to clause 13\"), TXIN(\"amount of Available Investment Capacity \":MONEY)))",
+      "inferredType": "UNSUPPORTED",
+      "sufficiency": "PARTIAL"
+    },
+    {
+      "owner": "definition \"Available RP Capacity Amount\"",
+      "slot": "calculationExpression",
+      "ir": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED(\"the amount of Restricted Payments that may be made\"), ADD:MONEY(TXIN(\"outstanding Indebtedness incurred under \":MONEY), TXIN(\"amount utilized to incur Liens under cla\":MONEY))))",
+      "inferredType": "UNSUPPORTED",
+      "sufficiency": "PARTIAL"
+    },
+    {
+      "owner": "definition \"Available Amount\"",
+      "slot": "calculationExpression",
+      "ir": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(MAX:MONEY(MULTIPLY:MONEY(PERCENT(0.5), METRIC(\"Consolidated Net Income\":MONEY)), MULTIPLY:MONEY(PERCENT(1), TERM(\"Retained Excess Cash Flow\":MONEY)), SUBTRACT:MONEY(METRIC(\"Consolidated EBITDA\":MONEY), MULTIPLY:MONEY(PERCENT(1.4), METRIC(\"Consolidated Interest Expense\":MONEY)))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"MULTIP\"; attempted=MULTIPLY:NUMBER(PERCENT(1), UNSUPPORTED(\"net cash proceeds/FMV from issue or sale of Equity\"))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"MULTIP\"; attempted=MULTIPLY:NUMBER(PERCENT(1), UNSUPPORTED(\"cash/FMV contributed to the capital of a Restricte\"))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"MULTIP\"; attempted=MULTIPLY:NUMBER(PERCENT(1), UNSUPPORTED(\"amounts received via sale/return on Restricted Inv\"))), UNSUPPORTED(\"Fair Market Value of an Investment (or net assets)\"), MAX:MONEY(MONEY(540000000), MULTIPLY:MONEY(PERCENT(0.75), METRIC(\"Consolidated EBITDA\":MONEY))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(TERM(\"Retained Declined Proceeds\":MONEY), TERM(\"Retained Asset Sale Proceeds\":MONEY), UNSUPPORTED(\"aggregate proceeds from dispositions/asset sales n\"))), MULTIPLY:MONEY(PERCENT(1), TERM(\"Sale and Leaseback Transaction Proceeds\":MONEY)))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(UNSUPPORTED(\"cumulative Liens incurred under clause (46)(ii) of\"), UNSUPPORTED(\"Indebtedness incurred pursuant to Section 6.01(b)(\")))))",
+      "inferredType": "UNSUPPORTED",
+      "sufficiency": "AMBIGUOUS"
+    }
+  ],
+  "accountabilityItems": [
+    {
+      "inventoryItemId": "inv-item:0216cd6e61ef0c1d1a17ca9b",
+      "semanticRole": "PROHIBITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:8f73791d05ec6c84cc6b6a93",
+      "semanticRole": "EXCEPTION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0].exceptions[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:18962619a59810088c47fed0",
+      "semanticRole": "EXCEPTION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0].exceptions[1]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:5d21cfa0a99fdd8bb481e111",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0].exceptions[1]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:f05d916283b4c504dbd6a110",
+      "semanticRole": "EXCEPTION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0].exceptions[2]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:9b91ac2b55ab6b9bd329c6eb",
+      "semanticRole": "PROHIBITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:cd423d7caf8b2aaad713cec0",
+      "semanticRole": "PROHIBITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:0f509662104b78895141510f",
+      "semanticRole": "EXCEPTION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0].exceptions[3]",
+        "rules[0].unresolvedDependencies[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:186b2da2dc28d1dd68370170",
+      "semanticRole": "EXCEPTION",
+      "materiality": "CRITICAL",
+      "disposition": "MISSING_FROM_COMPOSITION",
+      "quantitative": [
+        {
+          "raw": "one (1) year",
+          "disposition": "VALUE_MISSING_FROM_COMPOSITION"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[0].exceptions[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:87b1e9702ad56826f4996741",
+      "semanticRole": "EXCEPTION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0].exceptions[5]",
+        "definitions[2]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:92435da36876beb9c40999db",
+      "semanticRole": "PROHIBITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:d7e3a8a9f654182f4bd13dbd",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:012131a5350ca53057eb36b8",
+      "semanticRole": "OTHER",
+      "materiality": "INFORMATIONAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:9bd70aa8bd4d9925e28916c6",
+      "semanticRole": "OTHER",
+      "materiality": "INFORMATIONAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:bd43e44d80189acd8cc4bfee",
+      "semanticRole": "THRESHOLD",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0].conditions[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:fb94c5778957c130aad42a6c",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "50%",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:72c7fd9b304d55a0ea0977fe",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "50%",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:dc5cfdc4e613a9c0d47bc235",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:306db0aa79d0bc6a1aabda56",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [
+        {
+          "raw": "100%",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        }
+      ],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:0a3d7fc327a49f6bc336162c",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:a85ba163fa4a50de7348321f",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:892dccd636f61f09459c9723",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "140%",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:724d3b73576c589beb7c9808",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:648bb677e2e65a736cc6d920",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:ca11684a5201ce1f9990ab55",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [
+        {
+          "raw": "100%",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        }
+      ],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:4a259d40a6a499a3c8b55715",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:4baf8681ffb70ff71ad52f3a",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:0af6b30f650c575379d9b7da",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:c59637a43b2e9742529905e1",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:6d8e5d1e1729ed7ab377dffe",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:8a38039e587bd09a96a1e53c",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:5c5b6413a9b9adfce3918235",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:fa6c8b0e4755eb1310b3e06c",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:79509fa175db204b988d5655",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:885fff870ec34c41075a127a",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [
+        {
+          "raw": "100%",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        }
+      ],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:3f4adb300d7b9e1195dd2903",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:a40771acb9ea6a859c7207c9",
+      "semanticRole": "EXCEPTION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:ef1ff791e3cfb2d46faaaa7b",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [
+        {
+          "raw": "100%",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        }
+      ],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:cf33b7a63aad4911e27af88a",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:a3b9c5a432d5883626a4b854",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:729bc2ada8e33f05386cbce3",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:32a7f5590359b942eb307aff",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:160c90217dcc1dfa335ea1ee",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:9343ce8b3a5d96408b94bf1b",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:60caf28a8ecf53ce08f5f6c7",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:2b94a4f7314139dba1b84d4a",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:cbdcb4d48b25a99a8f16cd03",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "$540.0 million",
+          "disposition": "VALUE_DISPOSITIONED"
+        },
+        {
+          "raw": "75%",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:b8b3178fd493d66697cf3684",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "$540.0 million",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:73473b35e1bf1831a19966df",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "75%",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:b6a4e2b40f79444731e9251f",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:1cf22551838f29826490c7af",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [
+        {
+          "raw": "100%",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        }
+      ],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:a7ce8616ba9f0d8011c3b6b5",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:716be39a7c754d8f72cd8327",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:055135b45602edfc2bf5825c",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "MISSING_FROM_COMPOSITION",
+      "quantitative": [
+        {
+          "raw": "sixty\n(60) days",
+          "disposition": "VALUE_MISSING_FROM_COMPOSITION"
+        },
+        {
+          "raw": "sixty\n(60) days",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[1]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:54c6821acd1ff7fbedf8ea9a",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[1]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:dd7ef20d17776dbd3bd8ddfd",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "MISSING_FROM_COMPOSITION",
+      "quantitative": [
+        {
+          "raw": "ninety (90) days",
+          "disposition": "VALUE_MISSING_FROM_COMPOSITION"
+        },
+        {
+          "raw": "ninety (90) days",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[2].conditions[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:fa0237785073e615231f863d",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[2]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:5ef0047834842789b6710f13",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[2]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:2b74eeef6bdbfc91661f9e41",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[2]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:2e9d40027dba46b7d4afe196",
+      "semanticRole": "THRESHOLD",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[2]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:88d6a20d5200d59436d5d7f5",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "MISSING_FROM_COMPOSITION",
+      "quantitative": [
+        {
+          "raw": "ninety (90) days",
+          "disposition": "VALUE_MISSING_FROM_COMPOSITION"
+        },
+        {
+          "raw": "ninety (90) days",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[3]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:9a259b60f41acf6f401a28ac",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "MISSING_FROM_COMPOSITION",
+      "quantitative": [
+        {
+          "raw": "ninety (90) days",
+          "disposition": "VALUE_MISSING_FROM_COMPOSITION"
+        },
+        {
+          "raw": "ninety (90) days",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[3]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:f01afd298e93b3588530120e",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "AMBIGUOUS",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[3].unresolvedDependencies[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:6855a39e81ba03d27e08060a",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:3ecab54fb96a361d31eef442",
+      "semanticRole": "THRESHOLD",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "$252.0 million",
+          "disposition": "VALUE_DISPOSITIONED"
+        },
+        {
+          "raw": "35%",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:d0c62ff05a24de9c42cd22ac",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "$252.0 million",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:13f8714edff4ee617e96b29c",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "35%",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:17e4368b7c3031a54204b54f",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:387110b764aae7f4e3c5bd36",
+      "semanticRole": "THRESHOLD",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "$504.0 million",
+          "disposition": "VALUE_DISPOSITIONED"
+        },
+        {
+          "raw": "70.0%",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:3406b1717673b78db6270d31",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "$504.0 million",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:56869b0538f755b8d2b94eb0",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "70.0%",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:0b33e51e83c35c504f9091fc",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:3deb08bc081e2b88626a90b7",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:53623fc2ef1468e72d923347",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:d7e44b26fae7a0102c230ea0",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:2695eb3d7ddea8e0e7bc5729",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:866071bc82ac0a72d23af1eb",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:78ca6347735a2c15d2faaab8",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:0c0fd0dd85ba29f3b1e70175",
+      "semanticRole": "PERMISSION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:2b7ec8a3d01b950b0cab7b97",
+      "semanticRole": "EXCEPTION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4].conditions[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:3d9bf524b52a268756a542dc",
+      "semanticRole": "RECLASSIFICATION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4].conditions[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:8f124ff93d7ba553e8908357",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:f3eb11d2785fe1a4d775afb0",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[6]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:dc89ff99c9d2cdf364f25648",
+      "semanticRole": "THRESHOLD",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[6]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:e2101fc98838c1102ea22e92",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[7]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:3a2ff4483302a9fa568b81a2",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[8]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:2503a6218e8d607192745548",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[9]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:a88a8c9f2ee775c1d5b3ccf1",
+      "semanticRole": "PERMISSION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[10]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:33355a9c1fc48a0b3dad4d7d",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "7.0%",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[11]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:4b44e47e468890905a655dc6",
+      "semanticRole": "THRESHOLD",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[11]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:04cce2e3ae9c69a745a054ca",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[11]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:1193ca615dcc9fe72c03c491",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[12]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:86e64995b1a3e12d4aa74ca1",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "2.00:1.00",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[12]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:48f46ac3fea2ac5448a28603",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[12]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:898f62b26c441dcabfa36aca",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "1.75:1.00",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[12]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:a4ac97988fdea13239ac15d5",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[12]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:2ac1f47ac69168642d7c8f35",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[12]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:ef6cfb4f6094571e376fbee6",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[13]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:11700ae16eca2a391dce5d05",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[14]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:cbdf918435ec4db23fd26353",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [
+        {
+          "raw": "$720.0 million",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        },
+        {
+          "raw": "100%",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[15]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:588b5c4d56be0854ed20a971",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [
+        {
+          "raw": "$720.0 million",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[15]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:e6c507dc0c5889592a7267de",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [
+        {
+          "raw": "100%",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[15]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:b316099223c302324e49d524",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[15].conditions[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:1f38060a5efdb085a375ed6a",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[15].conditions[1]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:07fd7886cc02504561e2d464",
+      "semanticRole": "PERMISSION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[16]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:c69b5b9ec012a022565c8112",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[17]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:e510713955a3ac89c2606da4",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[17]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:da568acb47984c08a3ca2072",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [
+        {
+          "raw": "$720.0 million",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        },
+        {
+          "raw": "100%",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[18]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:face3743fbc37e6b965e4bc0",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [
+        {
+          "raw": "100%",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[18]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:c6a48f5b5245eb2c1c982667",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:33ad3bc84ba17dbafde2e96a",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:c8c13df78341e913a1c927d9",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:7f5e1f0223fd416844fecc40",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:9ee711fe3df53b74970e5f6b",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:35fb89b779b710ff4beec967",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:1d1b1f52e567c1d910ca64df",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:084e9a809d6bd61b1e7b9d3e",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:1923cd8f66664d59fab5e516",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:f637ea53fe0073f434f9ea14",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:75d47f03227a2b33422932ea",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:687715197b535f4e793ed960",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:efd5374b6d097b49ac4b0113",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:0438250052e98be3acb3ab47",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:08e1043c8a34629a1d5028f6",
+      "semanticRole": "PERMISSION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[20]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:ab0784b8338c0cd9d2e28f1d",
+      "semanticRole": "PERMISSION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[20]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:198c84b0a735d8f16ec5af1d",
+      "semanticRole": "PERMISSION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[21]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:bfb130b3aa8dc0643a8ed75e",
+      "semanticRole": "PERMISSION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[21]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:e0bb4504157232db66b25122",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[21]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:cb2886469d07b06dc912a128",
+      "semanticRole": "PERMISSION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[23]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:a39bfbe9b8e82d4d4f0b7ad5",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[24]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:d02285ab2b49d9fd74aa7ef1",
+      "semanticRole": "THRESHOLD",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [
+        {
+          "raw": "$720.0 million",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        },
+        {
+          "raw": "100%",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[25]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:37446a6edb4071761e73d492",
+      "semanticRole": "PERMISSION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[26]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:0c6a6fd84e11a8fe2e624fb1",
+      "semanticRole": "PERMISSION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[27]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:43da9bacb73a3401f8f27160",
+      "semanticRole": "PERMISSION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[28]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:9dd2950e65566ce0ff8a7692",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[29]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:439fa76c4033f55855c6418b",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "2.00x",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[29]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:195eea71c2b629a44d543773",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[29]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:02caea32a5d3ef73fe86921f",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[30]",
+        "definitions[3]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:6c3f41ed9a8b2b8b40ae4dcd",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[31]",
+        "definitions[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:fd436c4c0815b7b28fb19c99",
+      "semanticRole": "VALUE",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[32]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:f7c071d45a5f862a1ed29dd0",
+      "semanticRole": "OTHER",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[33]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:8f24a43621ccc413176af0a5",
+      "semanticRole": "PROHIBITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[34]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:f68b42b1219d97c6670a3331",
+      "semanticRole": "OTHER",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[35]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:8f3ec306da4d871c58ef310d",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[36]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:aef8a64ab78ac62fc59a48e9",
+      "semanticRole": "PROHIBITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:87c66b51692eae5b37367143",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:eace8a7368a55e4c7a021afa",
+      "semanticRole": "OTHER",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:9ae94c1a6045ab4c4746798e",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0].exceptions[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:96c57335471fd1f514b62035",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0].exceptions[1]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:d0f541cf11204a00048403b0",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0].exceptions[1]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:bcb88281711b5c1c8f8e3e8d",
+      "semanticRole": "DEPENDENCY",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0].exceptions[2]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:d472921a730186b3c690e908",
+      "semanticRole": "PROHIBITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:932468074e1c54582f423153",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:8f471db0c7dbfaf5955d19f3",
+      "semanticRole": "EXCEPTION",
+      "materiality": "CRITICAL",
+      "disposition": "MISSING_FROM_COMPOSITION",
+      "quantitative": [
+        {
+          "raw": "one (1) year",
+          "disposition": "VALUE_MISSING_FROM_COMPOSITION"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[0].exceptions[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:c1e6e5341eb3af26cf5b73cb",
+      "semanticRole": "REFERENCE",
+      "materiality": "REVIEW_UNCERTAIN",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0].exceptions[5]",
+        "definitions[2]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:0830f2483ac83229f03ea840",
+      "semanticRole": "DEPENDENCY",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[0]",
+        "definitions[1]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:37f4434ceb6547b5b36804d2",
+      "semanticRole": "DEPENDENCY",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:07cc04d65b025b0ff1d24225",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0].conditions[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:6b3444089b9b4057e082b44e",
+      "semanticRole": "EXCEPTION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[0].conditions[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:f3beab7131eeb6d2ccdc1f60",
+      "semanticRole": "DEPENDENCY",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:23339c13932d8f3d5a6be6f8",
+      "semanticRole": "TIME_PERIOD",
+      "materiality": "CRITICAL",
+      "disposition": "MISSING_FROM_COMPOSITION",
+      "quantitative": [
+        {
+          "raw": "one (1) accounting period",
+          "disposition": "VALUE_MISSING_FROM_COMPOSITION"
+        }
+      ],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:c368814f09286994fafc43e8",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "MISSING_FROM_COMPOSITION",
+      "quantitative": [],
+      "lineageIrPaths": []
+    },
+    {
+      "inventoryItemId": "inv-item:91104b98f70132d8690e7004",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:fdc6f3ebdfbf88975f0d28bc",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:3dbda498604b4c6ccac6f746",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:b2a53ec9daafb2b86ce2bd14",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:94d88e48b4a1f1d574b46e50",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:df08b15d3df848ca594f7ebb",
+      "semanticRole": "REFERENCE",
+      "materiality": "MATERIAL",
+      "disposition": "MISSING_FROM_COMPOSITION",
+      "quantitative": [],
+      "lineageIrPaths": []
+    },
+    {
+      "inventoryItemId": "inv-item:a5188475c57735d549b9f2bb",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:483787943e0ec01a6fbedb60",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:2a5c63bf4e8238c517408f1c",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:a827ca5eb46bbb84d6867cda",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:54ac85ea348a272cdc3c02ce",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:14e01fdb2091e9f9d60b4c18",
+      "semanticRole": "EXCEPTION",
+      "materiality": "REVIEW_UNCERTAIN",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:d8951f17868d9ad616da9688",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:2356e65b1728f5dcb4dead56",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:2796dfcc67cc53702f658812",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:8a679ddb91a8f24e082b5e67",
+      "semanticRole": "REFERENCE",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:1740faa4f9caa55dff70d815",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:c86de8240b244904a3d4f730",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:18fa3b0c54c32c61794a44f2",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:032d488a768932dd812ea99f",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:8b913fc3642f21bdf23cc581",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:c4254c8877c5652e69d1cea9",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:b6d4b0b7003ece50e9937e79",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:a5d33284b04cffb845f3eeed",
+      "semanticRole": "TIME_PERIOD",
+      "materiality": "REVIEW_UNCERTAIN",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:dbe37091b4488f46032faeb5",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:f9a08ed6d4e97ebf255a9705",
+      "semanticRole": "TRIGGER",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:32ece089fece40ca5acee3ae",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:412522838cf75094517a81a2",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:74bd7bc96b6339f25163278e",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:2424a4715d79096f82cf82c6",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:aba72269bff4e632a93e1e35",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:4273874b3c9a8d86659808e0",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:0ac39eba04089ab77a46a532",
+      "semanticRole": "TIME_PERIOD",
+      "materiality": "CRITICAL",
+      "disposition": "MISSING_FROM_COMPOSITION",
+      "quantitative": [
+        {
+          "raw": "(60) days",
+          "disposition": "VALUE_MISSING_FROM_COMPOSITION"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[1]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:3c7df6fb0cdd551e63495fec",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[2]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:873fa6e9f4358a6e1c1a8a42",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[2]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:c2bae7563ab2aeab5ccb1533",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[2]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:c0ba371c8f2c8f168c79637e",
+      "semanticRole": "PERMISSION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[2]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:eb8a1372ec063c8efdce8229",
+      "semanticRole": "PERMISSION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[3]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:2e572306c5aafe39416cf22d",
+      "semanticRole": "REFERENCE",
+      "materiality": "MATERIAL",
+      "disposition": "AMBIGUOUS",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[3].unresolvedDependencies[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:5b6e9caa907b2b24cc3a4046",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "MISSING_FROM_COMPOSITION",
+      "quantitative": [],
+      "lineageIrPaths": []
+    },
+    {
+      "inventoryItemId": "inv-item:9cdb635289e8d55177b26e3d",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:2c91449d28a797ecc8903525",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:31ad6cb625315f6ff4773d3a",
+      "semanticRole": "TRIGGER",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:35113bcf21dafec8b8c28411",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:c4fe2b29167e50676cb0894c",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "REVIEW_UNCERTAIN",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:4f90e14e52ed3f86be461704",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:4f2f798f617b48fd5e921310",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:18343292a5ab7fdce1d42268",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:56a2dbffd588c4b3487a0e4f",
+      "semanticRole": "REFERENCE",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:770c18c65f78b33ff66b86f2",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:f22e45395dd2880b0bedfeba",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:e7a46668a4b54c7eb1b5613e",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:05267339e89e4491edd8e177",
+      "semanticRole": "REFERENCE",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:2def9799df1614d88daaaed2",
+      "semanticRole": "TIME_PERIOD",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:ec69ed085c9ddc414c9d69ec",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:ec117b617f103cefc7ee8904",
+      "semanticRole": "DEPENDENCY",
+      "materiality": "REVIEW_UNCERTAIN",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:1df672fef63d11c23b3c4e0f",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:228bc3f25c3147f9e7c04d13",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[6]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:bf1df76b123426cceb7a0067",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[6]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:7c828d2de01c8fee78f2faa4",
+      "semanticRole": "REQUIREMENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[7]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:964074ee2678239a8508f99e",
+      "semanticRole": "REFERENCE",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[8]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:3f708aa5435b7fea751d7794",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[9]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:e58a3f9aec4583d2c37e0709",
+      "semanticRole": "EXCEPTION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[10]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:02e3c64ca1cd38bd8a45e89b",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[11]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:abbeb548a74273faa56e047c",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "6.0%",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[11]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:fa1d103d3c82f9913ada1434",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[11]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:7437edb8958b2b9a60a84b69",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[11]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:c5e6c4b6242eff08fd620e24",
+      "semanticRole": "ALTERNATIVE",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[11]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:3b5dc331d31cf1bdbd3361d5",
+      "semanticRole": "DEPENDENCY",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[11]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:d79ba5df719f8732b516c203",
+      "semanticRole": "REFERENCE",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[11]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:872fbec1bc3232fc5d39e606",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[11]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:68f6861e594ab5cdbcceb521",
+      "semanticRole": "REFERENCE",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[11]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:81fcf32841f3355dd4006f2a",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[12]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:e9ebc54c4bedee9a732fb9f4",
+      "semanticRole": "THRESHOLD",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "1.75:1.00",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[12]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:4d795ebda93ebeb1e75c7f03",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[12]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:263768679e44694fb7752ced",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[13]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:573048a864cdf6d3492d2bfe",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[14]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:b0563016d76a5ebe750a1f2a",
+      "semanticRole": "SHARED_CAP",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[15]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:3b7426a937ac3e127b40b748",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[15]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:90e0e2a158f70f2059fb9f5a",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[15].conditions[0]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:d8623b0afa3e807b313f429c",
+      "semanticRole": "OTHER",
+      "materiality": "REVIEW_UNCERTAIN",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[16]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:f91dfaaa9b7e0e25d21c584f",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[17]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:5e5b9d1aee5557712033f1e8",
+      "semanticRole": "REFERENCE",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[17]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:0af5d4bd0297b1571a40d7f6",
+      "semanticRole": "SHARED_CAP",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [
+        {
+          "raw": "$720.0 million",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[18]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:14d411d14a7f7d2b4169b169",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[18]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:d79b241508cbcfa7cfac763f",
+      "semanticRole": "PERMISSION",
+      "materiality": "CRITICAL",
+      "disposition": "MISSING_FROM_COMPOSITION",
+      "quantitative": [],
+      "lineageIrPaths": []
+    },
+    {
+      "inventoryItemId": "inv-item:4b59f22b8daf39d0b90942e9",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:c211d84b1f13d28c182b0651",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:28de4eec508d134569f53d27",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:39bc57e845af0edefeff53ca",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:0f66f28256fdbaf646ce4e8f",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:ffdd477a012304efddf23795",
+      "semanticRole": "DEPENDENCY",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:2b4ecb5eb849bbc4367d8527",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:fb391cd7b9bfaf4a3c97c361",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:c9555e80a3820df3d19060ed",
+      "semanticRole": "PERMISSION",
+      "materiality": "MATERIAL",
+      "disposition": "MISSING_FROM_COMPOSITION",
+      "quantitative": [],
+      "lineageIrPaths": []
+    },
+    {
+      "inventoryItemId": "inv-item:0cbac7ee3f0604ea5dafea77",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:037c344f830e0fddeae2bf8a",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:defdae4a7d1156db45c6138f",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:ca61c8aaa29ebf026b628c0c",
+      "semanticRole": "OTHER",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:7d82aae64aff20db4ea85773",
+      "semanticRole": "REFERENCE",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:531407c7a0a747fab73903cd",
+      "semanticRole": "CONDITION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:4e64c53ecf4322893ee7d354",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:b4d22407234ee70fec42b2ec",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[19]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:9605a0ea5b5a383b3f2374dd",
+      "semanticRole": "EXCEPTION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[20]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:8e9ffe708e16df136b331422",
+      "semanticRole": "OTHER",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[20]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:f1804371d6b093650775a087",
+      "semanticRole": "OTHER",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[21]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:9555a6d6720c295448393c69",
+      "semanticRole": "OTHER",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[21]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:82a83764b1db2d55e5bce76d",
+      "semanticRole": "OTHER",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[21]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:883f99691d291628635de70b",
+      "semanticRole": "PERMISSION",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[22]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:b4a6d7015ac9586b229b2364",
+      "semanticRole": "OTHER",
+      "materiality": "REVIEW_UNCERTAIN",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[23]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:9450efcb179ca8cac19368e2",
+      "semanticRole": "FORMULA_COMPONENT",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[25]",
+        "definitions[5]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:4954e5fb1ee6241178af39ef",
+      "semanticRole": "SHARED_CAP",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [
+        {
+          "raw": "$720.0 million",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        },
+        {
+          "raw": "100%",
+          "disposition": "VALUE_PRESENT_IN_IR"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[25]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:fa9c5d48c89c300b28f68ef9",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[26]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:f7c86a75f11487d13733b9e6",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[29]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:5f2e1ef5065a83911682bac6",
+      "semanticRole": "THRESHOLD",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "2.00x",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[29]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:d9b3430629660c3451d577ca",
+      "semanticRole": "THRESHOLD",
+      "materiality": "CRITICAL",
+      "disposition": "UNSUPPORTED",
+      "quantitative": [
+        {
+          "raw": "1.75:1.00",
+          "disposition": "VALUE_DISPOSITIONED"
+        }
+      ],
+      "lineageIrPaths": [
+        "rules[29]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:e5102d502426bd8c3c1a6acb",
+      "semanticRole": "SHARED_CAP",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[31]",
+        "definitions[4]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:8dd22494549d1752a1b9cfde",
+      "semanticRole": "DEPENDENCY",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[32]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:4f79f023ef59e013dcaf6ac0",
+      "semanticRole": "VALUE",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[33]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:a4bc9eaca00b42b51544ec1f",
+      "semanticRole": "PROHIBITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[33]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:5f8f367508ab04c42b8090c3",
+      "semanticRole": "REQUIREMENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[33]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:dc3806af79696b0487a78f4b",
+      "semanticRole": "CONDITION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[33]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:bf17780523fea108916671b7",
+      "semanticRole": "REQUIREMENT",
+      "materiality": "REVIEW_UNCERTAIN",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[34]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:54e4c266b5e7b05a53a34234",
+      "semanticRole": "REQUIREMENT",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[35]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:5abc96007f8261ddbd3ceefb",
+      "semanticRole": "DEPENDENCY",
+      "materiality": "MATERIAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[36]"
+      ]
+    },
+    {
+      "inventoryItemId": "inv-item:64a1f076697cf0a470b675e8",
+      "semanticRole": "RECLASSIFICATION",
+      "materiality": "CRITICAL",
+      "disposition": "REPRESENTED",
+      "quantitative": [],
+      "lineageIrPaths": [
+        "rules[37]"
+      ]
+    }
+  ]
+}

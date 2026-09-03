@@ -1,0 +1,2472 @@
+{
+  "artifact": "06 - F-6 same-root search: every recorded compiler payload under tests/fixtures replayed through the deterministic path before vs after the fix (zero model calls)",
+  "recordsFound": 40,
+  "recordsReplayed": 38,
+  "recordsWithWireParseError": 2,
+  "recordsReproducedExactlyAtStartingSha": 22,
+  "recordsNotReproducedExactly": "older runs whose recorded rules predate later provenance/lineage/identity changes - their expressions still replay deterministically and are compared before vs after on the same replay path",
+  "recordsWithSameRootRepairs": 21,
+  "expressionsRepaired": 34,
+  "totals": {
+    "before": {
+      "unsupportedLive": 61,
+      "nodesOnlyInAttempted": 192,
+      "typeErrors": 7
+    },
+    "after": {
+      "unsupportedLive": 152,
+      "nodesOnlyInAttempted": 53,
+      "partialCompositesKept": 93,
+      "typeErrors": 0,
+      "falseCompleteness": 0
+    }
+  },
+  "sufficiencyTotals": {
+    "rulesBefore": {
+      "COMPLETE": 74,
+      "PARTIAL": 24,
+      "AMBIGUOUS": 0,
+      "UNSUPPORTED": 0
+    },
+    "rulesAfter": {
+      "COMPLETE": 76,
+      "PARTIAL": 22,
+      "AMBIGUOUS": 0,
+      "UNSUPPORTED": 0
+    },
+    "definitionsBefore": {
+      "COMPLETE": 41,
+      "PARTIAL": 38,
+      "AMBIGUOUS": 4,
+      "UNSUPPORTED": 0
+    },
+    "definitionsAfter": {
+      "COMPLETE": 44,
+      "PARTIAL": 35,
+      "AMBIGUOUS": 4,
+      "UNSUPPORTED": 0
+    }
+  },
+  "note": "nodesOnlyInAttempted counts IR structure that existed only inside an UNSUPPORTED wrapper sidecar (invisible to executability, reconciliation and verification); unsupportedLive rises after the fix because previously-hidden model-emitted UNSUPPORTED leaves are now live, in-place nodes. Records whose expressions changed are the same-root population; nothing outside the expression type path was touched.",
+  "records": [
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1/region-applicable-liquidity-rate.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 2,
+        "nodesOnlyInAttempted": 7,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 3,
+          "PARTIAL": 2,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 28,
+        "nodesOnlyInAttempted": 5,
+        "partialCompositesKept": 9,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 3,
+          "PARTIAL": 2,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 2,
+      "repaired": [
+        {
+          "owner": "definition \"Applicable Rate\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "UNSUPPORTED",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"IF\")\"; attempted=IF:BOOLEAN(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"NOT\")\"; attempted=NOT(TXIN(\"FirstFullFiscalQuarterFinancialStatement\":MONEY))) ? UNSUPPORTED(\"Initial-period Applicable Rate differs by Loan Typ\") : UNSUPPORT",
+          "irAfter": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"IF\")\"; attempted=IF:BOOLEAN(NOT(TXIN(\"FirstFullFiscalQuarterFinancialStatement\":BOOLEAN)) ? UNSUPPORTED(\"Initial-period Applicable Rate differs by Loan Typ\") : UNSUPPORTED(\"unrecognized or malformed expression (kind=\"IF\")\"; attempted=IF:BOOLEA"
+        },
+        {
+          "owner": "definition \"Asset Sale\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "AND",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"AND\")\"; attempted=AND:BOOLEAN(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"OR\")\"; attempted=OR:BOOLEAN(UNSUPPORTED(\"sale, conveyance, transfer or other disposition (s\"), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"AND\"",
+          "irAfter": "AND:BOOLEAN(OR:BOOLEAN(UNSUPPORTED(\"sale, conveyance, transfer or other disposition (s\"), AND:BOOLEAN(UNSUPPORTED(\"issuance or sale of Equity Interests of any Subsid\"), NOT(UNSUPPORTED(\"Preferred Stock or Disqualified Stock of Subsidiar\")))), NOT(OR:BOOLEAN(OR:BOOLEAN(UNSUPPORTED(\"disposition of Cas"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1/region-ebitda.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 7,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 4,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 1,
+      "repaired": [
+        {
+          "owner": "definition \"Consolidated EBITDA\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "SUBTRACT",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(TERM(\"Consolidated Net Income\":MONEY), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUM\")\"; attempted=SUM:NUMB",
+          "irAfter": "SUBTRACT:MONEY(ADD:MONEY(TERM(\"Consolidated Net Income\":MONEY), SUM:MONEY(ADD:MONEY(METRIC(\"Total Interest Expense and Interest Rate Hedging Losses (net of interest income and hedging gains)\":MONEY), METRIC(\"Bank/Letter of Credit/Letter of Guarantee/Bankers' Acceptance Fees and Surety Bond Costs (Fi"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1/region-first-lien-debt.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 0,
+      "repaired": []
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1/region-interest-expense.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 7,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 3,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 1,
+      "repaired": [
+        {
+          "owner": "definition \"Consolidated Maintenance EBITDA\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "SUBTRACT",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(METRIC(\"Consolidated Maintenance Net Income\":MONEY), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUM\")\"; atte",
+          "irAfter": "SUBTRACT:MONEY(ADD:MONEY(METRIC(\"Consolidated Maintenance Net Income\":MONEY), SUM:MONEY(ADD:MONEY(METRIC(\"Total interest expense\":MONEY), METRIC(\"Losses on interest-rate hedging derivative instruments, net of interest income/gains thereon (to extent not reflected in total interest expense)\":MONEY), "
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1/region-net-income.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 3,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 17,
+        "nodesOnlyInAttempted": 10,
+        "partialCompositesKept": 4,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 1,
+      "repaired": [
+        {
+          "owner": "definition \"Consolidated Net Income\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "ADD",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(METRIC(\"Net Income\":MONEY), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUM\")\"; attempted=SUM:NUMBER(UNSUPPOR",
+          "irAfter": "ADD:MONEY(SUBTRACT:MONEY(METRIC(\"Net Income\":MONEY), SUM:MONEY(UNSUPPORTED(\"Cumulative effect of a change in accounting princi\"), UNSUPPORTED(\"Gain or loss on asset sales, disposals or abandonm\"), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1/region-secured-net-leverage.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 2,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 1,
+      "repaired": [
+        {
+          "owner": "definition \"Secured Net Leverage Ratio\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "NUMBER",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "DURING",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "COMPLETE",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"DURING\"; attempted=DURING(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"DIVIDE\"; attempted=DIVIDE:NUMBER(SUBTRACT:MONEY(METRIC(\"Consolidated Secured Debt\":MONEY), METRIC(\"Qualifying Unrestricted or Facility-Restricted Cash and Cash ",
+          "irAfter": "DURING(DIVIDE:NUMBER(SUBTRACT:MONEY(METRIC(\"Consolidated Secured Debt\":MONEY), METRIC(\"Qualifying Unrestricted or Facility-Restricted Cash and Cash Equivalents\":MONEY)), IF:MONEY(TXIN(\"CalculationPurposeIsFinancialMaintenance\":BOOLEAN) ? METRIC(\"Consolidated Maintenance EBITDA\":MONEY) : METRIC(\"Cons"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-haiku-discarded/region-applicable-liquidity-rate.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": false,
+      "before": {
+        "unsupportedLive": 3,
+        "nodesOnlyInAttempted": 9,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 3,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 2,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 3,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 3,
+      "repaired": [
+        {
+          "owner": "rule 1.01",
+          "slot": "exceptions[0].conditions[0]",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "BOOLEAN",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "COMPARE",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"COMPAR\"; attempted=COMPARE(TERM(\"Event of Default\":MONEY) EQ BOOL(true)))",
+          "irAfter": "COMPARE(TERM(\"Event of Default\":BOOLEAN) EQ BOOL(true))"
+        },
+        {
+          "owner": "rule 1.01",
+          "slot": "exceptions[0].conditions[1]",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "BOOLEAN",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "NOT",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"NOT\")\"; attempted=NOT(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"OR\")\"; attempted=OR:BOOLEAN(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"COMPAR\"; attempted=COMPARE(TERM(\"Event of Default\":MONEY) EQ BOOL(false))), TXI",
+          "irAfter": "NOT(OR:BOOLEAN(COMPARE(TERM(\"Event of Default\":BOOLEAN) EQ BOOL(false)), TXIN(\"Event of Default Waived\":BOOLEAN)))"
+        },
+        {
+          "owner": "definition \"Applicable Rate\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "IF",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"IF\")\"; attempted=IF:BOOLEAN(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"COMPAR\"; attempted=COMPARE(TXIN(\"Delivery Status of Financial Statements \":MONEY) EQ BOOL(false))) ? UNSUPPORTED(\"unrecognized or malformed expression (kind=\"",
+          "irAfter": "IF:PERCENT(COMPARE(TXIN(\"Delivery Status of Financial Statements \":BOOLEAN) EQ BOOL(false)) ? IF:PERCENT(TERM(\"Term Benchmark Loans\":BOOLEAN) ? PERCENT(0.08) : PERCENT(0.07)) : SCHEDULE(IF:PERCENT(COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) GT RATIO(1)) ? IF:PERCENT(TERM(\"Term Benchmark Loans"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-haiku-discarded/region-first-lien-debt.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": false,
+      "before": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 2,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 2,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 0,
+      "repaired": []
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-haiku-discarded/region-interest-expense.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": false,
+      "before": {
+        "unsupportedLive": 5,
+        "nodesOnlyInAttempted": 9,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 3,
+          "AMBIGUOUS": 1,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 1,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 19,
+        "nodesOnlyInAttempted": 14,
+        "partialCompositesKept": 2,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 3,
+          "AMBIGUOUS": 1,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 1,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 1,
+      "repaired": [
+        {
+          "owner": "definition \"Consolidated Maintenance EBITDA\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "SUBTRACT",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(TERM(\"Consolidated Maintenance Net Income\":MONEY), UNSUPPORTED(\"total interest expense and any losses on derivativ\"), UNSU",
+          "irAfter": "SUBTRACT:MONEY(ADD:MONEY(TERM(\"Consolidated Maintenance Net Income\":MONEY), UNSUPPORTED(\"total interest expense and any losses on derivativ\"), UNSUPPORTED(\"provision for taxes based on income, profits, reve\"), TERM(\"Consolidated Depreciation and Amortizati\":MONEY), UNSUPPORTED(\"any other non-cash ch"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-haiku-discarded/region-new-definitions.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 3,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 3,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 0,
+      "repaired": []
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-haiku-discarded/region-secured-net-leverage.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 2,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 2,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 0,
+      "repaired": []
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-pre-canonicalization-fix/region-applicable-liquidity-rate.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 2,
+        "nodesOnlyInAttempted": 7,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 3,
+          "PARTIAL": 2,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 35,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 25,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 3,
+          "PARTIAL": 2,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 2,
+      "repaired": [
+        {
+          "owner": "definition \"Applicable Rate\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "IF",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"IF\")\"; attempted=IF:BOOLEAN(TXIN(\"Loan Type is Term Benchmark Loan\":MONEY) ? UNSUPPORTED(\"unrecognized or malformed expression (kind=\"IF\")\"; attempted=IF:BOOLEAN(TXIN(\"Determination date precedes delivery of \":MONEY) ? PERCENT(0.08) : UNSUPPOR",
+          "irAfter": "IF:PERCENT(TXIN(\"Loan Type is Term Benchmark Loan\":BOOLEAN) ? IF:PERCENT(TXIN(\"Determination date precedes delivery of \":BOOLEAN) ? PERCENT(0.08) : IF:PERCENT(AND:BOOLEAN(TXIN(\"Required Facility Lenders elect to apply\":BOOLEAN), OR:BOOLEAN(EVENT(TXIN(\"Compliance Certificate delivery under Se\":BOOLEA"
+        },
+        {
+          "owner": "definition \"Asset Sale\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "AND",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"AND\")\"; attempted=AND:BOOLEAN(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"OR\")\"; attempted=OR:BOOLEAN(UNSUPPORTED(\"the sale, conveyance, transfer or other dispositio\"), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"AND\"",
+          "irAfter": "AND:BOOLEAN(OR:BOOLEAN(UNSUPPORTED(\"the sale, conveyance, transfer or other dispositio\"), AND:BOOLEAN(UNSUPPORTED(\"the issuance or sale of Equity Interests of any Su\"), NOT(OR:BOOLEAN(UNSUPPORTED(\"Preferred Stock or Disqualified Stock of Subsidiar\"), UNSUPPORTED(\"directors' qualifying shares or shar"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-pre-canonicalization-fix/region-ebitda.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 3,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 5,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 9,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 1,
+      "repaired": [
+        {
+          "owner": "definition \"Consolidated EBITDA\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "SUBTRACT",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(METRIC(\"Consolidated Net Income\":MONEY), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUM\")\"; attempted=SUM:NU",
+          "irAfter": "SUBTRACT:MONEY(ADD:MONEY(METRIC(\"Consolidated Net Income\":MONEY), SUM:MONEY(METRIC(\"Interest Expense, Hedging Losses (Net) and Financing-Related Fees, including items excluded from Consolidated Interest Expense (clause (a))\":MONEY), METRIC(\"Provision for Income and Similar Taxes, including Future Le"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-pre-canonicalization-fix/region-first-lien-debt.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 0,
+      "repaired": []
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-pre-canonicalization-fix/region-interest-expense.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 2,
+        "nodesOnlyInAttempted": 16,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 2,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 2,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 5,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 2,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 2,
+      "repaired": [
+        {
+          "owner": "definition \"Consolidated Interest Expense\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "SUBTRACT",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(ADD:MONEY(ADD:MONEY(METRIC(\"Cash Interest Expense on Indebtedness, net of Cash Interest Income (excluding Non-Recourse Indebtedness)\":MONEY), METRIC(\"Letter of Credit/Bankers' Acceptance Fees and Net Cash Hed",
+          "irAfter": "SUBTRACT:MONEY(ADD:MONEY(ADD:MONEY(METRIC(\"Cash Interest Expense on Indebtedness, net of Cash Interest Income (excluding Non-Recourse Indebtedness)\":MONEY), METRIC(\"Letter of Credit/Bankers' Acceptance Fees and Net Cash Hedging Costs (excluding early termination costs)\":MONEY)), ADD:MONEY(METRIC(\"Am"
+        },
+        {
+          "owner": "definition \"Consolidated Maintenance EBITDA\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "SUBTRACT",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(TERM(\"Consolidated Maintenance Net Income\":MONEY), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUM\")\"; attemp",
+          "irAfter": "SUBTRACT:MONEY(ADD:MONEY(TERM(\"Consolidated Maintenance Net Income\":MONEY), SUM:MONEY(ADD:MONEY(METRIC(\"Total Interest Expense (including unreflected hedging losses net of income/gains, plus bank/LC/LG/BA fees and surety bond costs for financing activities)\":MONEY), TERM(\"Consolidated Interest Expen"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-pre-canonicalization-fix/region-secured-net-leverage.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 3,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 2,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 1,
+      "repaired": [
+        {
+          "owner": "definition \"Secured Net Leverage Ratio\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "DIVIDE",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"DIVIDE\"; attempted=DIVIDE:NUMBER(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(AS_OF(METRIC(\"Consolidated Secured Debt\":MONEY)), UNSUPPORTED(\"The aggregate amount of cash and Cash Equivalents \"))),",
+          "irAfter": "DIVIDE:NUMBER(SUBTRACT:MONEY(AS_OF(METRIC(\"Consolidated Secured Debt\":MONEY)), UNSUPPORTED(\"The aggregate amount of cash and Cash Equivalents \")), IF:MONEY(TXIN(\"IsCalculationForFinancialMaintenanceCove\":BOOLEAN) ? DURING(METRIC(\"Consolidated Maintenance EBITDA\":MONEY)) : DURING(METRIC(\"Consolidated"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-2/region-applicable-liquidity-rate.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 3,
+        "nodesOnlyInAttempted": 11,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 4,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 2,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 5,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 2,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 2,
+      "repaired": [
+        {
+          "owner": "definition \"Applicable Rate\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "PERCENT",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "IF",
+          "sufficiencyBefore": "AMBIGUOUS",
+          "sufficiencyAfter": "AMBIGUOUS",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"IF\")\"; attempted=IF:BOOLEAN(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"NOT\")\"; attempted=NOT(TXIN(\"FinancialStatementsDeliveredForFirstFull\":MONEY))) ? PERCENT(0.07) : UNSUPPORTED(\"unrecognized or malformed expression (kind=\"IF\")",
+          "irAfter": "IF:PERCENT(NOT(TXIN(\"FinancialStatementsDeliveredForFirstFull\":BOOLEAN)) ? PERCENT(0.07) : IF:PERCENT(OR:BOOLEAN(TXIN(\"ComplianceCertificateRequiredButNotYetDe\":BOOLEAN), TXIN(\"EventOfDefaultUnderSection8_01_1_Continu\":BOOLEAN)) ? PERCENT(0.07) : IF:PERCENT(COMPARE(METRIC(\"Secured Net Leverage Ratio"
+        },
+        {
+          "owner": "definition \"Asset Sale\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "BOOLEAN",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "AND",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "COMPLETE",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"AND\")\"; attempted=AND:BOOLEAN(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"OR\")\"; attempted=OR:BOOLEAN(TXIN(\"DispositionOfPropertyOrAssetsOfBorrowerO\":MONEY), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"AND\")\"; attempt",
+          "irAfter": "AND:BOOLEAN(OR:BOOLEAN(TXIN(\"DispositionOfPropertyOrAssetsOfBorrowerO\":BOOLEAN), AND:BOOLEAN(TXIN(\"IssuanceOrSaleOfSubsidiaryEquityInterest\":BOOLEAN), NOT(TXIN(\"IsCompliantPreferredOrDisqualifiedStockI\":BOOLEAN)))), NOT(OR:BOOLEAN(OR:BOOLEAN(TXIN(\"DispositionOfCashEquivalentsOrInvestment\":BOOLEAN), "
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-2/region-ebitda.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 7,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 5,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 1,
+      "repaired": [
+        {
+          "owner": "definition \"Consolidated EBITDA\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "SUBTRACT",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(TERM(\"Consolidated Net Income\":MONEY), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMB",
+          "irAfter": "SUBTRACT:MONEY(ADD:MONEY(TERM(\"Consolidated Net Income\":MONEY), ADD:MONEY(SUM:MONEY(ADD:MONEY(METRIC(\"Total Interest Expense, Net Hedging Losses and Interest Income/Gains\":MONEY), METRIC(\"Bank/Letter of Credit/Letter of Guarantee/Bankers' Acceptance Fees and Surety Bond Costs (Financing)\":MONEY), ME"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-2/region-first-lien-debt.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 0,
+      "repaired": []
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-2/region-interest-expense.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 0,
+      "repaired": []
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-2/region-net-income.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 8,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 3,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 7,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 1,
+      "repaired": [
+        {
+          "owner": "definition \"Consolidated Net Income\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "SUBTRACT",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(ADD:MONEY(METRIC(\"Net Income\":MONEY), SUM:MONEY(METRIC(\"Business Interruption Insurance Proceeds Received or Receivable\":MONEY), METRIC(\"Expenses or Charges Reimbursed or Reimbursable by a Third Party\":MONEY)",
+          "irAfter": "SUBTRACT:MONEY(ADD:MONEY(METRIC(\"Net Income\":MONEY), SUM:MONEY(METRIC(\"Business Interruption Insurance Proceeds Received or Receivable\":MONEY), METRIC(\"Expenses or Charges Reimbursed or Reimbursable by a Third Party\":MONEY), METRIC(\"Amounts Covered by Indemnification/Reimbursement re Acquisition, In"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-2/region-new-definitions.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": false,
+      "before": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 1,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 1,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 0,
+      "repaired": []
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-2/region-secured-net-leverage.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 2,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 1,
+      "repaired": [
+        {
+          "owner": "definition \"Secured Net Leverage Ratio\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "NUMBER",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "DURING",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "COMPLETE",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"DURING\"; attempted=DURING(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"DIVIDE\"; attempted=DIVIDE:NUMBER(SUBTRACT:MONEY(METRIC(\"Consolidated Secured Debt\":MONEY), METRIC(\"Qualifying Cash and Cash Equivalents (unrestricted, or restri",
+          "irAfter": "DURING(DIVIDE:NUMBER(SUBTRACT:MONEY(METRIC(\"Consolidated Secured Debt\":MONEY), METRIC(\"Qualifying Cash and Cash Equivalents (unrestricted, or restricted in favor of the Facilities)\":MONEY)), IF:MONEY(TXIN(\"IsCalculationForFinancialMaintenanceCove\":BOOLEAN) ? METRIC(\"Consolidated Maintenance EBITDA\":"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1/region-debt-dsgr.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 22,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 1,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 22,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 1,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 0,
+      "repaired": []
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1/region-definitions-lsb.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": false,
+      "before": {
+        "unsupportedLive": 4,
+        "nodesOnlyInAttempted": 11,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 8,
+          "PARTIAL": 4,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 2,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 5,
+        "nodesOnlyInAttempted": 8,
+        "partialCompositesKept": 3,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 8,
+          "PARTIAL": 4,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 2,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 2,
+      "repaired": [
+        {
+          "owner": "definition \"Borrowing Base\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "MONEY",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "ADD",
+          "kindAfter": "ADD",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "ADD:MONEY(MULTIPLY:MONEY(PERCENT(0.9), TERM(\"Eligible Accounts\":MONEY)), MIN:MONEY(MULTIPLY:MONEY(PERCENT(0.75), TERM(\"Eligible Inventory\":MONEY)), MULTIPLY:MONEY(PERCENT(0.85), METRIC(\"Net Orderly Liquidation Value Percentage (per most recent Inventory appraisal ordered by the Administrative Agent)",
+          "irAfter": "ADD:MONEY(MULTIPLY:MONEY(PERCENT(0.9), TERM(\"Eligible Accounts\":MONEY)), MIN:MONEY(MULTIPLY:MONEY(PERCENT(0.75), TERM(\"Eligible Inventory\":MONEY)), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"MULTIP\"; attempted=MULTIPLY:NUMBER(PERCENT(0.85), METRIC(\"Net Orderly Liquidation Value Percent"
+        },
+        {
+          "owner": "definition \"Payment Conditions\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "AND",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"AND\")\"; attempted=AND:BOOLEAN(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"NOT\")\"; attempted=NOT(TERM(\"Default\":MONEY))), DURING(COMPARE(TERM(\"Specified Availability\":MONEY) GTE MAX:MONEY(MULTIPLY:MONEY(PERCENT(0.2), TERM(\"Revolvin",
+          "irAfter": "AND:BOOLEAN(NOT(TERM(\"Default\":BOOLEAN)), DURING(COMPARE(TERM(\"Specified Availability\":MONEY) GTE MAX:MONEY(MULTIPLY:MONEY(PERCENT(0.2), TERM(\"Revolving Commitment\":MONEY)), MONEY(13000000)))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"IF\")\"; attempted=IF:BOOLEAN(UNSUPPORTED(\"whether "
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/unit-6.08.json",
+      "pointer": "/compile",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 8,
+        "nodesOnlyInAttempted": 62,
+        "typeErrors": 2,
+        "ruleSufficiency": {
+          "COMPLETE": 26,
+          "PARTIAL": 12,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 3,
+          "PARTIAL": 2,
+          "AMBIGUOUS": 1,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 10,
+        "nodesOnlyInAttempted": 12,
+        "partialCompositesKept": 6,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 28,
+          "PARTIAL": 10,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 3,
+          "PARTIAL": 2,
+          "AMBIGUOUS": 1,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 7,
+      "repaired": [
+        {
+          "owner": "rule 6.08(b)(4)",
+          "slot": "capacityExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "MONEY",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "ADD",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"IF\")\"; attempted=IF:BOOLEAN(TXIN(\"first public offering of Borrower/Parent\":MONEY) ? MAX:MONEY(MONEY(504000000), MULTIPLY:MONEY(PERCENT(0.7), METRIC(\"Consoli",
+          "irAfter": "ADD:MONEY(IF:MONEY(TXIN(\"first public offering of Borrower/Parent\":BOOLEAN) ? MAX:MONEY(MONEY(504000000), MULTIPLY:MONEY(PERCENT(0.7), METRIC(\"Consolidated EBITDA\":MONEY))) : MAX:MONEY(MONEY(252000000), MULTIPLY:MONEY(PERCENT(0.35), METRIC(\"Consolidated EBITDA\":MONEY)))), SUBTRACT:MONEY(ADD:MONEY(TX"
+        },
+        {
+          "owner": "rule 6.08(b)(9)",
+          "slot": "capacityExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "SUBTRACT",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(ADD:MONEY(MULTIPLY:MONEY(PERCENT(0.06), TXIN(\"net cash proceeds received by/contribute\":MONEY)), MULTIPLY:MONEY(PERCENT(0.07), METRIC(\"Market Capitalization\":MONEY))), UNSUPPORTED(\"amounts used to incur Indeb",
+          "irAfter": "SUBTRACT:MONEY(ADD:MONEY(MULTIPLY:MONEY(PERCENT(0.06), TXIN(\"net cash proceeds received by/contribute\":MONEY)), MULTIPLY:MONEY(PERCENT(0.07), METRIC(\"Market Capitalization\":MONEY))), UNSUPPORTED(\"amounts used to incur Indebtedness/Disqualified St\"))"
+        },
+        {
+          "owner": "rule 6.08(b)(10)",
+          "slot": "capacityExpression",
+          "inferredTypeBefore": "gate:UNSUPPORTED",
+          "inferredTypeAfter": "gate:BOOLEAN",
+          "kindBefore": "UNLIMITED",
+          "kindAfter": "UNLIMITED",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "COMPLETE",
+          "irBefore": "UNLIMITED(gatedBy=UNSUPPORTED(\"unrecognized or malformed expression (kind=\"AND\")\"; attempted=AND:BOOLEAN(OR:BOOLEAN(OR:BOOLEAN(COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE RATIO(2)), COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE TERM(\"First Lien Leverage Ratio as of the last\":RATIO)",
+          "irAfter": "UNLIMITED(gatedBy=AND:BOOLEAN(OR:BOOLEAN(OR:BOOLEAN(COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE RATIO(2)), COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE TERM(\"First Lien Leverage Ratio as of the last\":RATIO))), OR:BOOLEAN(COMPARE(METRIC(\"Interest Coverage Ratio\":RATIO) GTE RATIO(1."
+        },
+        {
+          "owner": "rule 6.08(b)(25)",
+          "slot": "capacityExpression",
+          "inferredTypeBefore": "gate:UNSUPPORTED",
+          "inferredTypeAfter": "gate:BOOLEAN",
+          "kindBefore": "UNLIMITED",
+          "kindAfter": "UNLIMITED",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "COMPLETE",
+          "irBefore": "UNLIMITED(gatedBy=UNSUPPORTED(\"unrecognized or malformed expression (kind=\"AND\")\"; attempted=AND:BOOLEAN(OR:BOOLEAN(OR:BOOLEAN(COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE RATIO(2)), COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE TERM(\"First Lien Leverage Ratio as of the last\":RATIO)",
+          "irAfter": "UNLIMITED(gatedBy=AND:BOOLEAN(OR:BOOLEAN(OR:BOOLEAN(COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE RATIO(2)), COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE TERM(\"First Lien Leverage Ratio as of the last\":RATIO))), OR:BOOLEAN(COMPARE(METRIC(\"Interest Coverage Ratio\":RATIO) GTE RATIO(1."
+        },
+        {
+          "owner": "definition \"Available Investment Capacity Amount\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "SUBTRACT",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED(\"Investments that may be made pursuant to clause 13\"), TXIN(\"amount of Available Investment Capacity \":MONEY)))",
+          "irAfter": "SUBTRACT:MONEY(UNSUPPORTED(\"Investments that may be made pursuant to clause 13\"), TXIN(\"amount of Available Investment Capacity \":MONEY))"
+        },
+        {
+          "owner": "definition \"Available RP Capacity Amount\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "SUBTRACT",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED(\"the amount of Restricted Payments that may be made\"), ADD:MONEY(TXIN(\"outstanding Indebtedness incurred under \":MONEY), TXIN(\"amount utilized to incur Liens under cla\":MONEY))))",
+          "irAfter": "SUBTRACT:MONEY(UNSUPPORTED(\"the amount of Restricted Payments that may be made\"), ADD:MONEY(TXIN(\"outstanding Indebtedness incurred under \":MONEY), TXIN(\"amount utilized to incur Liens under cla\":MONEY)))"
+        },
+        {
+          "owner": "definition \"Available Amount\"",
+          "slot": "calculationExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "SUBTRACT",
+          "sufficiencyBefore": "AMBIGUOUS",
+          "sufficiencyAfter": "AMBIGUOUS",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(MAX:MONEY(MULTIPLY:MONEY(PERCENT(0.5), METRIC(\"Consolidated Net Income\":MONEY)), MULTIPLY:MONEY(PERCENT(1), TERM(\"Retained",
+          "irAfter": "SUBTRACT:MONEY(ADD:MONEY(MAX:MONEY(MULTIPLY:MONEY(PERCENT(0.5), METRIC(\"Consolidated Net Income\":MONEY)), MULTIPLY:MONEY(PERCENT(1), TERM(\"Retained Excess Cash Flow\":MONEY)), SUBTRACT:MONEY(METRIC(\"Consolidated EBITDA\":MONEY), MULTIPLY:MONEY(PERCENT(1.4), METRIC(\"Consolidated Interest Expense\":MONEY"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[0]/result",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": false,
+      "before": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 3,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 3,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 0,
+      "repaired": []
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[1]/result",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": false,
+      "before": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 0,
+      "repaired": []
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[2]/result",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": false,
+      "before": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 0,
+      "repaired": []
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[3]/result",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": false,
+      "before": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 8,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 1,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 1,
+      "repaired": [
+        {
+          "owner": "rule 6.04(b)(iv)",
+          "slot": "capacityExpression",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "ADD",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(MAX:MONEY(MONEY(21000000), MULTIPLY:MONEY(PERCENT(0.35), DURING(METRIC(\"Consolidated Adjusted EBITDA\":MONEY)))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"RULE_R\")))",
+          "irAfter": "ADD:MONEY(MAX:MONEY(MONEY(21000000), MULTIPLY:MONEY(PERCENT(0.35), DURING(METRIC(\"Consolidated Adjusted EBITDA\":MONEY)))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"RULE_R\"))"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[4]/result",
+      "status": "WIRE_PARSE_ERROR",
+      "classification": "A MODEL_OUTPUT_INVALID (the recorded wire payload does not satisfy SubmitCompilationSchema; out of F-6 scope)",
+      "error": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"rules\",\n      0,\n      \"capacityExpression\",\n      \"gatedBy\",\n      \"right\",\n  "
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[5]/result",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": false,
+      "before": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 0,
+      "repaired": []
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[7]/result",
+      "status": "WIRE_PARSE_ERROR",
+      "classification": "A MODEL_OUTPUT_INVALID (the recorded wire payload does not satisfy SubmitCompilationSchema; out of F-6 scope)",
+      "error": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"rules\",\n      17,\n      \"localRef\"\n    ],\n    \"message\": \"Invalid input: expect"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[8]/result",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": false,
+      "before": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 0,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 0,
+      "repaired": []
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[9]/result",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": false,
+      "before": {
+        "unsupportedLive": 3,
+        "nodesOnlyInAttempted": 0,
+        "typeErrors": 1,
+        "ruleSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 2,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 1,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 3,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 2,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 1,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 0,
+      "repaired": []
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[10]/result",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": false,
+      "before": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 4,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 1,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 4,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 1,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 0,
+      "repaired": []
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[11]/result",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": true,
+      "before": {
+        "unsupportedLive": 2,
+        "nodesOnlyInAttempted": 0,
+        "typeErrors": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 2,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 2,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 0,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 2,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 0,
+      "repaired": []
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b1-real-revalidation-rerun/run-1787870304722.json",
+      "pointer": "/results[0]/result",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": false,
+      "before": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 3,
+        "typeErrors": 1,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 1,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 4,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 0,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 1,
+      "repaired": [
+        {
+          "owner": "rule 6.10(a)",
+          "slot": "capacityExpression",
+          "inferredTypeBefore": "gate:UNSUPPORTED",
+          "inferredTypeAfter": "gate:UNSUPPORTED",
+          "kindBefore": "UNLIMITED",
+          "kindAfter": "UNLIMITED",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNLIMITED(gatedBy=UNSUPPORTED(\"unrecognized or malformed expression (kind=\"COMPAR\"; attempted=COMPARE(METRIC(\"Total Rent Adjusted Net Leverage Ratio\":RATIO) LTE UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(SCHEDULE(RATIO(5.5), RATIO(5.25)), UNSUPPORTED(\"unrec",
+          "irAfter": "UNLIMITED(gatedBy=COMPARE(METRIC(\"Total Rent Adjusted Net Leverage Ratio\":RATIO) LTE ADD:RATIO(SCHEDULE(RATIO(5.5), RATIO(5.25)), IF:RATIO(AND:BOOLEAN(EVENT(TERM(\"Material Acquisition\":BOOLEAN)), UNSUPPORTED(\"Anti-stacking proviso requiring at least one Fisca\")) ? RATIO(0.5) : RATIO(0)))))"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b1-real-revalidation-rerun/run-1787871112005.json",
+      "pointer": "/results[0]/result",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": false,
+      "before": {
+        "unsupportedLive": 7,
+        "nodesOnlyInAttempted": 5,
+        "typeErrors": 2,
+        "ruleSufficiency": {
+          "COMPLETE": 10,
+          "PARTIAL": 5,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 3,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 7,
+        "nodesOnlyInAttempted": 0,
+        "partialCompositesKept": 1,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 10,
+          "PARTIAL": 5,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 3,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 0,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 1,
+      "repaired": [
+        {
+          "owner": "rule 6.01",
+          "slot": "capacityExpression",
+          "inferredTypeBefore": "gate:UNSUPPORTED",
+          "inferredTypeAfter": "gate:UNSUPPORTED",
+          "kindBefore": "UNLIMITED",
+          "kindAfter": "UNLIMITED",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNLIMITED(gatedBy=UNSUPPORTED(\"unrecognized or malformed expression (kind=\"AND\")\"; attempted=AND:BOOLEAN(COMPARE(METRIC(\"Fixed Charge Coverage Ratio\":RATIO) GT RATIO(2)), UNSUPPORTED(\"Payment Conditions satisfied with respect to the i\"))))",
+          "irAfter": "UNLIMITED(gatedBy=AND:BOOLEAN(COMPARE(METRIC(\"Fixed Charge Coverage Ratio\":RATIO) GT RATIO(2)), UNSUPPORTED(\"Payment Conditions satisfied with respect to the i\")))"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b1-real-revalidation-rerun/run-1787871112005.json",
+      "pointer": "/results[1]/result",
+      "status": "REPLAYED",
+      "reproducedRecordedIRExactlyAtStartingSha": false,
+      "before": {
+        "unsupportedLive": 3,
+        "nodesOnlyInAttempted": 2,
+        "typeErrors": 1,
+        "ruleSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 2,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 1,
+          "CONFLICTED": 0
+        }
+      },
+      "after": {
+        "unsupportedLive": 3,
+        "nodesOnlyInAttempted": 4,
+        "partialCompositesKept": 1,
+        "typeErrors": 0,
+        "falseCompleteness": 0,
+        "ruleSufficiency": {
+          "COMPLETE": 2,
+          "PARTIAL": 1,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 2,
+          "CONFLICTED": 0
+        },
+        "definitionSufficiency": {
+          "COMPLETE": 1,
+          "PARTIAL": 0,
+          "AMBIGUOUS": 0,
+          "UNSUPPORTED": 0,
+          "MISSING_CONTEXT": 1,
+          "CONFLICTED": 0
+        }
+      },
+      "expressionsRepaired": 1,
+      "repaired": [
+        {
+          "owner": "rule 6.11(d)",
+          "slot": "conditions[0]",
+          "inferredTypeBefore": "UNSUPPORTED",
+          "inferredTypeAfter": "UNSUPPORTED",
+          "kindBefore": "UNSUPPORTED",
+          "kindAfter": "NOT",
+          "sufficiencyBefore": "PARTIAL",
+          "sufficiencyAfter": "PARTIAL",
+          "irBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"NOT\")\"; attempted=NOT(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"OR\")\"; attempted=OR:BOOLEAN(RULEREF(ir-rule:655d60b74b7891a70da22775), RULEREF(ir-rule:dc3b5a8a7be3ac9cf8665af2), RULEREF(ir-rule:504081c8b2dfd9dc4990233e)))))",
+          "irAfter": "NOT(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"OR\")\"; attempted=OR:BOOLEAN(RULEREF(ir-rule:655d60b74b7891a70da22775), RULEREF(ir-rule:dc3b5a8a7be3ac9cf8665af2), RULEREF(ir-rule:504081c8b2dfd9dc4990233e))))"
+        }
+      ]
+    }
+  ]
+}

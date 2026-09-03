@@ -160,30 +160,43 @@ function childExpressions(expr: IRExpression): IRExpression[] {
 }
 
 export interface IntraDefinitionComponentCompletenessResult {
-  /** True only when calculationExpression is an UNSUPPORTED node carrying an attemptedStructure sidecar (i.e. a composite that WAS assembled but failed its own top-level type-check) - false for every other case, including "already fully compiled" and "genuinely atomic/model-emitted UNSUPPORTED with nothing to walk." */
+  /**
+   * True when calculationExpression is a PARTIAL representation with
+   * component structure to report: either (F-6) a live composite that keeps
+   * its well-typed operands with one or more UNSUPPORTED children in place,
+   * or (pre-F-6 shape, still produced for a genuine type conflict or a
+   * composite with no typed operand) an UNSUPPORTED node carrying an
+   * attemptedStructure sidecar. False for "already fully compiled" and for a
+   * genuinely atomic/model-emitted UNSUPPORTED leaf with nothing to walk.
+   */
   applicable: boolean;
-  /** Total nodes in the attempted structure's tree (root plus every descendant reachable via childExpressions), including the root itself. */
+  /** Total nodes in the walked tree (root plus every descendant reachable via childExpressions, descending into nested attemptedStructure sidecars), including the root itself. */
   totalComponentCount: number;
-  /** Of totalComponentCount, how many are NOT themselves kind="UNSUPPORTED" - i.e. successfully normalized/type-checked structure that would otherwise have been silently discarded. */
+  /** Of totalComponentCount, how many are NOT themselves kind="UNSUPPORTED" - i.e. successfully normalized/type-checked structure. */
   wellTypedComponentCount: number;
-  /** Of totalComponentCount, how many ARE kind="UNSUPPORTED" - the genuinely-failed component(s) that poisoned the parent composite's own type. */
+  /** Of totalComponentCount, how many ARE kind="UNSUPPORTED" - the genuinely-failed component(s). */
   unsupportedComponentCount: number;
   /** Each unsupported component's own `reason` string, for direct citation - never a re-interpretation of what the component means. */
   unsupportedComponentReasons: string[];
   reason: string | null;
 }
 
+function containsUnsupported(expr: IRExpression): boolean {
+  if (expr.kind === "UNSUPPORTED") return true;
+  return childExpressions(expr).some(containsUnsupported);
+}
+
 /**
- * Walks a definition's calculationExpression tree. When it is an UNSUPPORTED
- * node produced by buildComposite's poison-propagation discard (normalize.ts)
- * - i.e. it carries an attemptedStructure sidecar - this reports how many of
- * the attempted structure's own components DID successfully normalize versus
- * how many were genuinely unsupported, instead of the current all-or-nothing
- * "calculationExpression.kind === UNSUPPORTED" binary. Never fires (never
- * reports applicable=true) for an expression that is not this specific
- * shape - a plain COMPLETE calculationExpression, or a genuinely atomic
- * UNSUPPORTED leaf with no attempted structure, both correctly report
- * applicable=false.
+ * Walks a definition's calculationExpression tree and reports how many of
+ * its components DID successfully normalize versus how many are genuinely
+ * unsupported, instead of an all-or-nothing "kind === UNSUPPORTED" binary.
+ * Two shapes are walked: (F-6) a live composite that keeps its well-typed
+ * operands with UNSUPPORTED children in place - walked from the root; and
+ * an UNSUPPORTED root carrying an attemptedStructure sidecar (a genuine
+ * type conflict, or a composite with no typed operand) - walked from the
+ * sidecar, exactly as before F-6. Never fires (never reports
+ * applicable=true) for a fully-typed calculationExpression or for a
+ * genuinely atomic UNSUPPORTED leaf with no structure to walk.
  */
 export function checkIntraDefinitionComponentCompleteness(calculationExpression: IRExpression | null | undefined): IntraDefinitionComponentCompletenessResult {
   const notApplicable: IntraDefinitionComponentCompletenessResult = {
@@ -194,7 +207,9 @@ export function checkIntraDefinitionComponentCompleteness(calculationExpression:
     unsupportedComponentReasons: [],
     reason: null,
   };
-  if (!calculationExpression || calculationExpression.kind !== "UNSUPPORTED" || !calculationExpression.attemptedStructure) return notApplicable;
+  if (!calculationExpression) return notApplicable;
+  const root = calculationExpression.kind === "UNSUPPORTED" ? calculationExpression.attemptedStructure : containsUnsupported(calculationExpression) ? calculationExpression : undefined;
+  if (!root) return notApplicable;
 
   let total = 0;
   let wellTyped = 0;
@@ -226,14 +241,15 @@ export function checkIntraDefinitionComponentCompleteness(calculationExpression:
     }
     for (const child of childExpressions(expr)) walk(child, depth + 1);
   }
-  walk(calculationExpression.attemptedStructure, 0);
+  walk(root, 0);
 
+  const collapsed = calculationExpression.kind === "UNSUPPORTED";
   return {
     applicable: true,
     totalComponentCount: total,
     wellTypedComponentCount: wellTyped,
     unsupportedComponentCount: unsupported,
     unsupportedComponentReasons: unsupportedReasons,
-    reason: `This definition's calculationExpression is UNSUPPORTED at its own top level, but its preserved attempted structure contains ${total} total component node(s): ${wellTyped} successfully normalized/type-checked and ${unsupported} genuinely unsupported (poisoning the parent's own top-level type). This is a structural component count only - it does not assert legal correctness of the captured components.`,
+    reason: `This definition's calculationExpression is ${collapsed ? "UNSUPPORTED at its own top level, but its preserved attempted structure" : "a PARTIAL representation (non-executable, its unsupported components kept in place) that"} contains ${total} total component node(s): ${wellTyped} successfully normalized/type-checked and ${unsupported} genuinely unsupported. This is a structural component count only - it does not assert legal correctness of the captured components.`,
   };
 }

@@ -1,0 +1,31 @@
+{
+  "artifact": "03 - F-6 failure-path classification of every recorded Chewy §6.08 degradation (A-G taxonomy of the mission)",
+  "classes": {
+    "A_MODEL_OUTPUT_INVALID": "the compiler emitted something outside the documented wire contract",
+    "B_WIRE_SCHEMA_TOO_NARROW": "a valid generic concept rejected unnecessarily by the tolerant wire schema",
+    "C_NORMALIZATION_LOSS": "wire accepted but normalization drops/mis-types structure",
+    "D_IR_SCHEMA_GAP": "genuinely not representable in the compositional IR",
+    "E_TYPE_CHECKER_DEFECT": "representable, but the type checker/validator incorrectly rejects it",
+    "F_REFERENCE_TYPING_DEFECT": "metric/definition/rule/shared-cap references receive incorrect types",
+    "G_OTHER": "anything else"
+  },
+  "recordedF6Expressions": 7,
+  "perExpression": [
+    { "expression": "6.08(b)(4) capacityExpression", "earliestFailure": "F", "secondary": "E", "detail": "TRANSACTION_INPUT_REFERENCE 'first public offering ... has been consummated' carried no valueType and was defaulted to MONEY in the IF.condition slot; the IF then failed 'condition must be BOOLEAN' and the enclosing ADD collapsed with it (E)." },
+    { "expression": "6.08(b)(9) capacityExpression", "earliestFailure": "E", "detail": "SUBTRACT(MONEY-tree, model-emitted UNSUPPORTED usage deduction): the type checker returned UNSUPPORTED for the whole and normalization collapsed the composite; the represented left side survived only inside a diagnostic sidecar." },
+    { "expression": "6.08(b)(10) capacityExpression (UNLIMITED gate)", "earliestFailure": "F", "secondary": "E", "detail": "DEFINED_TERM_REFERENCE 'Specified Event of Default' under NOT carried no valueType -> MONEY; NOT/AND collapsed; validate.ts then raised TYPE_ERROR 'gatedBy must be BOOLEAN' on an unknown-typed gate -> IR_VALIDATION_FAILURE on the unit." },
+    { "expression": "6.08(b)(25) capacityExpression (UNLIMITED gate)", "earliestFailure": "F", "secondary": "E", "detail": "identical mechanism to 6.08(b)(10)." },
+    { "expression": "definition 'Available Investment Capacity Amount'", "earliestFailure": "E", "detail": "SUBTRACT(model-emitted UNSUPPORTED pool component, typed usage deduction) collapsed whole." },
+    { "expression": "definition 'Available RP Capacity Amount'", "earliestFailure": "E", "detail": "SUBTRACT(model-emitted UNSUPPORTED pool component, ADD(typed usage deductions)) collapsed whole." },
+    { "expression": "definition 'Available Amount'", "earliestFailure": "E", "detail": "five honestly unsupported addends (three wrapped in MULTIPLY(PERCENT(1), ...)) collapsed the positive ADD, then the outer SUBTRACT; every fully typed component (50% CNI, Retained ECF, EBITDA - 140% interest, MAX($540M, 75% EBITDA), retained proceeds, sale-leaseback proceeds) existed only in nested sidecars." }
+  ],
+  "counts": { "A": 0, "B": 0, "C": 0, "D": 0, "E": 7, "F": 3, "G": 0, "note": "3 of the 7 have F as the EARLIEST failure and E as the consequence; the other 4 are E outright. Counting by earliest failure: F=3, E=4." },
+  "earliestDominantFailureStage": "IR type-check / normalization boundary (buildComposite + inferType): 'type unknown' (an untyped reference, or an honest UNSUPPORTED child) was treated as 'type invalid', so the whole composite was discarded. Both F and E are the same conflation seen from two sides.",
+  "existingIrSufficient": true,
+  "existingIrSufficiencyEvidence": "every after-state expression is expressed with pre-existing kinds only: MONEY/PERCENT/RATIO literals, METRIC_REFERENCE/DEFINED_TERM_REFERENCE/TRANSACTION_INPUT_REFERENCE/LEDGER_USAGE_REFERENCE/RULE_REFERENCE, ADD/SUBTRACT/MULTIPLY/MAX/MIN/SUM, COMPARE/AND/OR/NOT/IF, UNLIMITED_CAPACITY, IRSharedCapacity + memberRuleIds + dependsOn. No new expression kind was added.",
+  "outOfScopeRecordedDegradations": [
+    { "issue": "conditionType 'THRESHOLD_TEST' -> UNSUPPORTED (rule 6.08(a))", "class": "A", "note": "vocabulary, not the expression type path; the condition's expression normalized fully before and after" },
+    { "issue": "ruleType 'PERMISSION' -> QUALITATIVE_OBLIGATION (16 rules)", "class": "A", "note": "vocabulary; posture PERMISSION preserved; separate root, not addressed here" },
+    { "issue": "2 recorded phase-3b payloads fail SubmitCompilationSchema (missing localRef; wrong field type)", "class": "A", "note": "historical wire-contract violations, listed in 06-same-root-search.json" }
+  ]
+}

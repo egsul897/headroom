@@ -1,0 +1,50 @@
+{
+  "artifact": "04 - F-6 architectural invariant, type-system audit, and the compositional fix",
+  "invariant": "The Phase 3 IR stays compositional: no new expression kinds. 'Greater of $720M and 100% of EBITDA' and 'greater of $50M and 12.5% of Total Assets' are the same MAX(MONEY, MULTIPLY(PERCENT, METRIC_REFERENCE)); ratio-OR-ratio gates are OR(COMPARE, COMPARE); builders are SUBTRACT(ADD(...), SUM(...)); shared pools are IRSharedCapacity + LEDGER_USAGE_REFERENCE/DEFINED_TERM_REFERENCE + dependsOn. Representability (Phase 3) is separated from executability (Phase 4): a typed symbolic tree over metrics with no financial inputs is COMPLETE; a missing runtime value is never UNSUPPORTED semantics.",
+  "rootMechanism": "The type lattice conflated UNKNOWN with INVALID. (1) An untyped reference was blanket-defaulted to MONEY regardless of the slot it occupied, so boolean predicates poisoned NOT/AND/OR/IF. (2) Any UNSUPPORTED child made inferType(parent) UNSUPPORTED, and normalization treated that exactly like a dimensional conflict: the composite was replaced by an UNSUPPORTED wrapper (its represented siblings kept only in a diagnostic sidecar invisible to Pass C value correspondence, verification and coverage). (3) validate.ts reported an operator over an unknown-typed subtree as a TYPE_ERROR, which turned an honest PARTIAL into an IR_VALIDATION_FAILURE on the whole unit.",
+  "fix": {
+    "lib/contract-model/ir/type-check.ts": [
+      "analyzeType(expr): { known, unsupported, conflict } - the dimension the KNOWN operands fix (null when nothing typed is known), whether the subtree contains an UNSUPPORTED node (never executable), and a node-local dimensional CONFLICT message among the known operands.",
+      "inferType is re-expressed over analyzeType with an unchanged contract: UNSUPPORTED for any subtree that is unsupported, conflicting or of unknown dimension. Nothing that consults inferType can treat a partial tree as executable.",
+      "validateExpressionTypes reports arity and CONFLICTS only; an operator over an UNSUPPORTED child is no longer a TYPE_ERROR. gatedBy / IF.condition / EVENT_ACTIVE.triggerCondition are flagged only when their KNOWN type is non-BOOLEAN.",
+      "MULTIPLY dimension rule tightened to its own documented intent: PERCENT and NUMBER are scaling factors; at most one MONEY or RATIO operand; MONEY x MONEY and MONEY x RATIO are conflicts (the earlier code let MONEY x MONEY through as MONEY)."
+    ],
+    "lib/contract-model/compiler/semantic/normalize.ts": [
+      "buildComposite: CONFLICT or no typed operand -> UNSUPPORTED wrapper with attemptedStructure (unchanged); UNKNOWN with a determinable dimension -> the composite is KEPT, typed by its known part, with the unsupported child left in place (a normalization warning records it).",
+      "Slot typing for references with no valueType: BOOLEAN under NOT/AND/OR, IF.condition, UNLIMITED_CAPACITY.gatedBy, EVENT_ACTIVE.triggerCondition and IRCondition.expression; the typed siblings' unique dimension under COMPARE/ADD/SUM/MAX/MIN/SUBTRACT/MULTIPLY(non-percent)/IF-branches/SCHEDULE, inherited down through nested composites; MONEY only when nothing fixes it. An explicit valueType is never overridden. DIVIDE operands are not sibling-typed (numerator and denominator legitimately differ).",
+      "normalizeSiblings: three tiers (self-declared operands, then composites/unsupported with the tier-1 dimension, then untyped references with the unique dimension of tiers 1+2); operand order preserved exactly."
+    ],
+    "lib/contract-model/ir/validate.ts": [
+      "New issue kind FALSE_COMPLETENESS: a rule/definition declaring COMPLETE while any owned expression (capacity, gate, condition, exception condition, calculation) has inferType UNSUPPORTED. This is the structural guard that keeps 'unsupported semantics cannot become COMPLETE because the outer expression validates' true now that partial composites are live IR."
+    ],
+    "lib/contract-model/compiler/semantic-accountability/reconciliation.ts": [
+      "Pass C: an inventory item with direct lineage into an UNSUPPORTED node (or its attempted structure) is dispositioned UNSUPPORTED even when a broader claim on an enclosing composite/rule/definition would otherwise credit it. Without this, a kept partial composite's REPRESENTED lineage could outvote its unsupported child's claim (a new path F-6 would otherwise have opened)."
+    ],
+    "lib/contract-model/compiler/semantic/completeness-check.ts": [
+      "checkIntraDefinitionComponentCompleteness now also walks a live partial composite (not only an UNSUPPORTED wrapper's sidecar) so the well-typed/unsupported component split is reported for both shapes."
+    ],
+    "lib/contract-model/compiler/semantic/wire-schema.ts": ["doc comment on valueType only - no schema change."]
+  },
+  "wireSchemaChanges": "none (comment only). The tolerant wire shape already carried every construct; the loss was downstream.",
+  "newGenericIrPrimitives": "none",
+  "typeSystemAudit": {
+    "MONEY+MONEY->MONEY": "unchanged", "MONEY-MONEY->MONEY": "unchanged", "PERCENT x MONEY->MONEY": "unchanged", "PERCENT x NUMBER->NUMBER": "unchanged",
+    "MAX/MIN(MONEY,MONEY)->MONEY": "unchanged", "COMPARE(RATIO,RATIO)->BOOLEAN": "unchanged", "COMPARE(MONEY,MONEY)->BOOLEAN": "unchanged", "COMPARE(PERCENT,PERCENT)->BOOLEAN": "unchanged",
+    "AND/OR(BOOLEAN...)->BOOLEAN": "unchanged", "IF(BOOLEAN,T,T)->T": "unchanged",
+    "MONEY x MONEY": "now CONFLICT (was accepted as MONEY)", "MONEY x NUMBER": "now MONEY (NUMBER is a scalar multiplier; was CONFLICT)",
+    "reference type propagation": "deterministic slot typing where the slot fixes exactly one dimension; explicit types never overridden",
+    "invalid dimensional combinations": "still rejected: ADD(MONEY,RATIO), SUBTRACT(MONEY,RATIO), MAX(MONEY,RATIO), COMPARE(MONEY,RATIO), AND(BOOLEAN,MONEY), NOT(MONEY), IF(MONEY,...) - see tests/contract-model/ir/type-check-partial.test.ts",
+    "MONEY/RATIO coercion": "none anywhere"
+  },
+  "sharedCapacityBuilderRepresentation": {
+    "namedPool": "IRSharedCapacity (capExpression, memberRuleIds) or an IRDefinition the pool is named by",
+    "additions": "ADD/SUM operands of the pool's capExpression / definition calculationExpression (growers as MAX(MONEY, MULTIPLY(PERCENT, METRIC_REFERENCE)))",
+    "deductionsUsage": "SUBTRACT(..., LEDGER_USAGE_REFERENCE(sharedCapId)) or SUBTRACT(..., TRANSACTION_INPUT_REFERENCE/SUM of prior draws)",
+    "referencesFromMultiplePermissions": "DEFINED_TERM_REFERENCE to the pool's term and/or LEDGER_USAGE_REFERENCE(sharedCapId) inside each member's capacityExpression; memberRuleIds resolve to the member rules",
+    "conditionsAffectingAvailability": "UNLIMITED_CAPACITY.gatedBy / IRCondition.expression (BOOLEAN-slot typed)",
+    "crossRuleDependency": "dependsOn SHARES_CAPACITY_WITH / BASKET_FEEDING (existing ContractRuleRelationshipType)",
+    "verdict": "existing IR sufficient; only the path that lost partial pools was repaired. Chewy: Available Amount (builder), Available Investment Capacity Amount and Available RP Capacity Amount (shared pools) keep their SUBTRACT/ADD shape with the unsupported components in place; 6.08(b)(26)/(27) reference them by DEFINED_TERM_REFERENCE. Synthetic proof: normalize-f6-compositional.test.ts anti-enumeration D.",
+    "observationNotAGap": "there is no expression node that evaluates an IRSharedCapacity's own cap as a value (RULE_REFERENCE covers a rule's capacity, DEFINED_TERM_REFERENCE a named pool). Not needed for Phase 3 representability; noted for Phase 4."
+  },
+  "lineageAndProvenance": "withLineage/provenanceFor are applied to the kept composite exactly as before; each child keeps its own inventoryItemIds and citation (inherited from the nearest ancestor when absent); rule sourceSectionRef and definition dependsOnTerms untouched. Proven in normalize-f6-compositional.test.ts and chewy-6-08-f6-replay.test.ts."
+}

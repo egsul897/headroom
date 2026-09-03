@@ -19,7 +19,7 @@
 import { CovenantFamily, ContractRuleType, ContractRulePosture, ContractRuleRelationshipType, EntityClassTag } from "@prisma/client";
 import { CONTRACT_ACTIONS, CONTRACT_CONDITION_TYPES } from "../../types";
 import { withExpressionId, computeRuleId, computeDefinitionId, computeSharedCapId } from "../../ir/identity";
-import { inferType } from "../../ir/type-check";
+import { analyzeType, inferType } from "../../ir/type-check";
 import { UNSUPPORTED_TYPE, type IRCapacityExpression, type IRCondition, type IRDefinition, type IRException, type IRExpression, type IRRule, type IRRuleDependency, type IRSharedCapacity, type IRUnresolvedDependency, type IRValueType, type OperativeLineageRef, type RepresentationSufficiency, type SourceProvenance, type UnlimitedCapacity } from "../../ir/types";
 import type { SubmitCompilationInput, WireCondition, WireDefinition, WireException, WireExpression, WireRule, WireSharedCapacity } from "./wire-schema";
 import type { IRExtensionCandidate, SemanticCompilerInput } from "./types";
@@ -91,21 +91,41 @@ function unsupportedNode(ctx: NormCtx, reason: string, wire: WireExpression, pro
  * on the draft is safe, and the REAL computed type is substituted before
  * the final withExpressionId call (which must see the correct type, since
  * it is part of the node's own content-derived identity).
+ *
+ * F-6 (Phase 3 Chewy remediation 3) - three outcomes, decided by
+ * analyzeType's UNKNOWN/CONFLICT distinction rather than the old
+ * all-or-nothing inferType:
+ *   1. CONFLICT (the known operands are dimensionally inconsistent, e.g.
+ *      ADD(MONEY, BOOLEAN)): collapse to an UNSUPPORTED node carrying the
+ *      fully-assembled attempt as a diagnostic sidecar - unchanged.
+ *   2. UNKNOWN with no typed operand at all (every operand is itself
+ *      unsupported, so the composite's own dimension is undeterminable):
+ *      same collapse - nothing represented is lost, and no type is guessed.
+ *   3. UNKNOWN with a determinable dimension (some operand is unsupported,
+ *      but the typed operands agree): KEEP the composite, typed by its
+ *      known part, with the unsupported child left in place. inferType
+ *      still reports UNSUPPORTED for it (never executable), the owning
+ *      rule/definition is forced below COMPLETE by
+ *      enforceSufficiencyConsistency, and Pass C credits the represented
+ *      siblings while the unsupported child stays visibly UNSUPPORTED.
  */
 function buildComposite(ctx: NormCtx, kind: string, fields: Record<string, unknown>, placeholderType: string, wire: WireExpression, prov: SourceProvenance | undefined, unsupportedMessage: string): IRExpression {
   const draft = { kind, type: placeholderType, exprId: "", ...fields, provenance: prov } as unknown as IRExpression;
-  const computed = inferType(draft);
-  if (computed === UNSUPPORTED_TYPE) {
+  const analysis = analyzeType(draft);
+  if (analysis.conflict !== null || analysis.known === null) {
     // Preserve the fully-assembled attempt (every sibling operand that DID
     // successfully normalize/type-check, exprId'd and all) as a diagnostic
     // sidecar rather than discarding it - this composite's OWN top-level
-    // value genuinely cannot be typed/executed (that verdict is correct and
-    // unchanged), but completeness-checking and review must still be able
-    // to see which specific operand(s) caused it, not just an opaque blob.
+    // value genuinely cannot be typed (a real conflict, or no typed operand
+    // to determine it from), but completeness-checking and review must
+    // still be able to see which specific operand(s) caused it, not just an
+    // opaque blob.
     const attempted = withExpressionId({ ...(draft as unknown as Record<string, unknown>), type: placeholderType } as unknown as IRExpression);
-    return unsupportedNode(ctx, unsupportedMessage, wire, prov, attempted);
+    const reason = analysis.conflict !== null ? `${unsupportedMessage}: ${analysis.conflict}` : `${unsupportedMessage}: no operand carries a determinable type (every operand is itself unsupported)`;
+    return unsupportedNode(ctx, reason, wire, prov, attempted);
   }
-  return withExpressionId({ ...(draft as unknown as Record<string, unknown>), type: computed } as unknown as IRExpression);
+  if (analysis.unsupported) warn(ctx, `${kind} keeps its structure with at least one UNSUPPORTED operand in place - typed ${analysis.known} from its represented operands; PARTIAL, never executable (F-6)`);
+  return withExpressionId({ ...(draft as unknown as Record<string, unknown>), type: analysis.known } as unknown as IRExpression);
 }
 
 /**
@@ -119,11 +139,101 @@ function withLineage<T extends object>(node: T, ids: string[] | undefined): T {
   return ids && ids.length > 0 ? ({ ...node, inventoryItemIds: [...ids] } as T) : node;
 }
 
-export function normalizeExpression(wire: WireExpression | null | undefined, ctx: NormCtx): IRExpression {
-  return withLineage(normalizeExpressionInner(wire, ctx), wire?.inventoryItemIds);
+
+const METRIC_VALUE_TYPES = ["MONEY", "RATIO", "NUMBER"] as const;
+
+/**
+ * F-6 (Phase 3 Chewy remediation 3) - a reference node whose wire form
+ * carries no usable valueType. The wire contract says "defaults to MONEY
+ * when omitted"; that blanket default is exactly what typed a boolean
+ * predicate ("Specified Event of Default", "an IPO has been consummated")
+ * as MONEY and poisoned every NOT/AND/IF above it. Such a reference now
+ * takes the ONE dimension its slot deterministically requires (see
+ * normalizeSiblings / the `expected` parameter) and only falls back to
+ * MONEY when the slot fixes nothing. An EXPLICIT valueType is never
+ * overridden - a model that says MONEY in a BOOLEAN slot has made a claim
+ * the type checker must reject, not one normalization should repair.
+ */
+function isUntypedReferenceWire(wire: WireExpression | null | undefined): boolean {
+  if (!wire) return false;
+  if (wire.kind === "METRIC_REFERENCE") return !matchEnum(wire.valueType, METRIC_VALUE_TYPES);
+  if (wire.kind === "DEFINED_TERM_REFERENCE" || wire.kind === "TRANSACTION_INPUT_REFERENCE") return !matchEnum(wire.valueType, IR_VALUE_TYPES);
+  return false;
 }
 
-function normalizeExpressionInner(wire: WireExpression | null | undefined, ctx: NormCtx): IRExpression {
+const WIRE_LITERAL_TYPES: Record<string, IRValueType> = { MONEY: "MONEY", NUMBER: "NUMBER", PERCENT: "PERCENT", RATIO: "RATIO", BOOLEAN_LITERAL: "BOOLEAN", DATE_LITERAL: "DATE", RULE_REFERENCE: "CAPACITY", LEDGER_USAGE_REFERENCE: "MONEY", ENTITY_SCOPE_REFERENCE: "ENTITY_SET" };
+
+/** The type a wire node declares on its own, independent of any sibling - a literal's kind, an explicitly typed reference's valueType; null for composites, UNSUPPORTED and untyped references. */
+function wireDeclaredType(wire: WireExpression | null | undefined): IRValueType | null {
+  if (!wire) return null;
+  const literal = WIRE_LITERAL_TYPES[wire.kind];
+  if (literal) return literal;
+  if (wire.kind === "METRIC_REFERENCE") return matchEnum(wire.valueType, METRIC_VALUE_TYPES);
+  if (wire.kind === "DEFINED_TERM_REFERENCE" || wire.kind === "TRANSACTION_INPUT_REFERENCE") return matchEnum(wire.valueType, IR_VALUE_TYPES);
+  return null;
+}
+
+interface SiblingSlot {
+  wire: WireExpression | null | undefined;
+  scope: string;
+}
+
+/**
+ * Normalizes the operands of one composite so that an untyped reference
+ * takes the dimension its typed siblings fix for the slot. Three tiers,
+ * each normalized with the expectation the earlier tiers established:
+ *   1. self-declared operands (literals, explicitly typed references);
+ *   2. composites/unsupported/unknown operands, with the tier-1 dimension
+ *      (or the parent's inherited expectation) as their own expectation;
+ *   3. untyped references, with the unique known dimension of tiers 1+2
+ *      (or the inherited expectation) - MONEY only when nothing fixes it.
+ * A slot type is only ever "the one dimension every typed sibling shares";
+ * two different sibling dimensions fix nothing (the composite is then a
+ * genuine conflict for the type checker to reject). Operand order is
+ * preserved exactly. `fixed` short-circuits all of this for slots whose
+ * type is fixed by the operator itself (AND/OR operands are BOOLEAN).
+ */
+function normalizeSiblings(ctx: NormCtx, parent: WireExpression, slots: SiblingSlot[], options: { fixed?: IRValueType; inherited?: IRValueType; excludePercent?: boolean } = {}): IRExpression[] {
+  const results: (IRExpression | undefined)[] = new Array(slots.length).fill(undefined);
+  if (options.fixed) {
+    slots.forEach((slot, i) => (results[i] = normalizeExpression(slot.wire, childCtx(ctx, parent, slot.scope), options.fixed)));
+    return results as IRExpression[];
+  }
+  const knownDimension = (): IRValueType | undefined => {
+    const dims = new Set<IRValueType>();
+    for (const node of results) {
+      if (!node) continue;
+      const analysis = analyzeType(node);
+      if (analysis.conflict !== null || analysis.known === null) continue;
+      if (options.excludePercent && analysis.known === "PERCENT") continue;
+      dims.add(analysis.known);
+    }
+    return dims.size === 1 ? [...dims][0] : undefined;
+  };
+  const tierOf = (slot: SiblingSlot): 1 | 2 | 3 => (wireDeclaredType(slot.wire) !== null ? 1 : isUntypedReferenceWire(slot.wire) ? 3 : 2);
+  for (const tier of [1, 2, 3] as const) {
+    const expected = tier === 1 ? undefined : (knownDimension() ?? options.inherited);
+    slots.forEach((slot, i) => {
+      if (tierOf(slot) !== tier) return;
+      results[i] = normalizeExpression(slot.wire, childCtx(ctx, parent, slot.scope), expected);
+    });
+  }
+  return results as IRExpression[];
+}
+
+/**
+ * `expected` (F-6): the one dimension the enclosing slot deterministically
+ * requires, when there is one (BOOLEAN under NOT/AND/OR/IF-condition/gate/
+ * trigger/condition; the typed siblings' shared dimension under ADD/MAX/
+ * COMPARE/...). Consulted ONLY by references that carry no valueType of
+ * their own and by composites passing it down to such references; never
+ * overrides an explicit type, never changes a literal.
+ */
+export function normalizeExpression(wire: WireExpression | null | undefined, ctx: NormCtx, expected?: IRValueType): IRExpression {
+  return withLineage(normalizeExpressionInner(wire, ctx, expected), wire?.inventoryItemIds);
+}
+
+function normalizeExpressionInner(wire: WireExpression | null | undefined, ctx: NormCtx, expected?: IRValueType): IRExpression {
   if (!wire) return unsupportedNode(ctx, "no expression was provided where one was required", { kind: "MISSING" });
   const prov = provenanceFor(ctx, wire.citation, wire.excerpt);
 
@@ -149,13 +259,15 @@ function normalizeExpressionInner(wire: WireExpression | null | undefined, ctx: 
 
     case "METRIC_REFERENCE": {
       if (!wire.metricName) return unsupportedNode(ctx, "METRIC_REFERENCE node missing metricName", wire, prov);
-      const valueType = (matchEnum(wire.valueType, ["MONEY", "RATIO", "NUMBER"] as const) ?? "MONEY") as "MONEY" | "RATIO" | "NUMBER";
-      if (wire.valueType && !matchEnum(wire.valueType, ["MONEY", "RATIO", "NUMBER"] as const)) warn(ctx, `METRIC_REFERENCE "${wire.metricName}" had unrecognized valueType "${wire.valueType}" - defaulted to MONEY`);
+      const explicitMetricType = matchEnum(wire.valueType, METRIC_VALUE_TYPES);
+      const slotMetricType = expected && (METRIC_VALUE_TYPES as readonly string[]).includes(expected) ? (expected as "MONEY" | "RATIO" | "NUMBER") : null;
+      const valueType: "MONEY" | "RATIO" | "NUMBER" = explicitMetricType ?? slotMetricType ?? "MONEY";
+      if (wire.valueType && !explicitMetricType) warn(ctx, `METRIC_REFERENCE "${wire.metricName}" had unrecognized valueType "${wire.valueType}" - ${slotMetricType ? `typed ${slotMetricType} from its slot` : "defaulted to MONEY"}`);
       return withExpressionId({ kind: "METRIC_REFERENCE", type: valueType, metricName: wire.metricName, companyId: ctx.companyId, instrumentKey: ctx.instrumentKey, resolvedDefinitionId: null });
     }
     case "DEFINED_TERM_REFERENCE": {
       if (!wire.termName) return unsupportedNode(ctx, "DEFINED_TERM_REFERENCE node missing termName", wire, prov);
-      const valueType = (matchEnum(wire.valueType, IR_VALUE_TYPES) ?? "MONEY") as IRValueType;
+      const valueType: IRValueType = matchEnum(wire.valueType, IR_VALUE_TYPES) ?? expected ?? "MONEY";
       return withExpressionId({ kind: "DEFINED_TERM_REFERENCE", type: valueType, termName: wire.termName, companyId: ctx.companyId, instrumentKey: ctx.instrumentKey, resolvedDefinitionId: null });
     }
     case "RULE_REFERENCE": {
@@ -172,7 +284,7 @@ function normalizeExpressionInner(wire: WireExpression | null | undefined, ctx: 
     }
     case "TRANSACTION_INPUT_REFERENCE": {
       if (!wire.inputName) return unsupportedNode(ctx, "TRANSACTION_INPUT_REFERENCE node missing inputName", wire, prov);
-      const valueType = (matchEnum(wire.valueType, IR_VALUE_TYPES) ?? "MONEY") as IRValueType;
+      const valueType: IRValueType = matchEnum(wire.valueType, IR_VALUE_TYPES) ?? expected ?? "MONEY";
       return withExpressionId({ kind: "TRANSACTION_INPUT_REFERENCE", type: valueType, inputName: wire.inputName });
     }
     case "ENTITY_SCOPE_REFERENCE": {
@@ -190,7 +302,13 @@ function normalizeExpressionInner(wire: WireExpression | null | undefined, ctx: 
     case "OR": {
       const wireOperands = wire.operands ?? [];
       if (wireOperands.length === 0) return unsupportedNode(ctx, `${wire.kind} requires at least one operand`, wire, prov);
-      const operands = wireOperands.map((o, i) => normalizeExpression(o, childCtx(ctx, wire, `${wire.kind}[${i}]`)));
+      const boolean = wire.kind === "AND" || wire.kind === "OR";
+      const operands = normalizeSiblings(
+        ctx,
+        wire,
+        wireOperands.map((o, i) => ({ wire: o, scope: `${wire.kind}[${i}]` })),
+        boolean ? { fixed: "BOOLEAN" } : { inherited: expected, excludePercent: wire.kind === "MULTIPLY" }
+      );
       return buildComposite(ctx, wire.kind, { operands }, wire.kind === "AND" || wire.kind === "OR" ? "BOOLEAN" : "NUMBER", wire, prov, `${wire.kind} operands do not type-check together under the IR's own composition rules`);
     }
     case "SUBTRACT":
@@ -200,52 +318,59 @@ function normalizeExpressionInner(wire: WireExpression | null | undefined, ctx: 
       const leftWire = wire.kind === "DIVIDE" ? wire.numerator : wire.left;
       const rightWire = wire.kind === "DIVIDE" ? wire.denominator : wire.right;
       if (!leftWire || !rightWire) return unsupportedNode(ctx, `${wire.kind} requires both operands`, wire, prov);
-      const left = normalizeExpression(leftWire, childCtx(ctx, wire, `${wire.kind}.${leftKey}`));
-      const right = normalizeExpression(rightWire, childCtx(ctx, wire, `${wire.kind}.${rightKey}`));
-      return buildComposite(ctx, wire.kind, { [leftKey]: left, [rightKey]: right }, wire.kind === "DIVIDE" ? "NUMBER" : "NUMBER", wire, prov, `${wire.kind} operands do not type-check together`);
+      // SUBTRACT operands share one dimension (sibling-typed, inheriting the
+      // slot's expectation); DIVIDE's numerator and denominator legitimately
+      // differ, so each is normalized on its own with no expectation.
+      const [left, right] =
+        wire.kind === "SUBTRACT"
+          ? normalizeSiblings(ctx, wire, [{ wire: leftWire, scope: `${wire.kind}.${leftKey}` }, { wire: rightWire, scope: `${wire.kind}.${rightKey}` }], { inherited: expected })
+          : [normalizeExpression(leftWire, childCtx(ctx, wire, `${wire.kind}.${leftKey}`)), normalizeExpression(rightWire, childCtx(ctx, wire, `${wire.kind}.${rightKey}`))];
+      return buildComposite(ctx, wire.kind, { [leftKey]: left, [rightKey]: right }, "NUMBER", wire, prov, `${wire.kind} operands do not type-check together`);
     }
     case "COMPARE": {
       if (!wire.left || !wire.right) return unsupportedNode(ctx, "COMPARE requires both left and right operands", wire, prov);
       const operator = matchEnum(wire.operator, ["GT", "GTE", "LT", "LTE", "EQ"] as const) ?? "EQ";
       if (!wire.operator || !matchEnum(wire.operator, ["GT", "GTE", "LT", "LTE", "EQ"] as const)) warn(ctx, `COMPARE had unrecognized operator "${wire.operator}" - defaulted to EQ`);
-      const left = normalizeExpression(wire.left, childCtx(ctx, wire, "COMPARE.left"));
-      const right = normalizeExpression(wire.right, childCtx(ctx, wire, "COMPARE.right"));
+      // The two sides of a COMPARE share one dimension - an untyped side takes the typed side's (a ratio metric compared against an untyped "Ratio as of the last Test Period" term types that term RATIO, never MONEY).
+      const [left, right] = normalizeSiblings(ctx, wire, [{ wire: wire.left, scope: "COMPARE.left" }, { wire: wire.right, scope: "COMPARE.right" }]);
       return buildComposite(ctx, "COMPARE", { left, operator, right }, "BOOLEAN", wire, prov, "COMPARE operands are not the same type");
     }
     case "NOT": {
       if (!wire.operand) return unsupportedNode(ctx, "NOT requires an operand", wire, prov);
-      const operand = normalizeExpression(wire.operand, childCtx(ctx, wire, "NOT.operand"));
+      const operand = normalizeExpression(wire.operand, childCtx(ctx, wire, "NOT.operand"), "BOOLEAN");
       return buildComposite(ctx, "NOT", { operand }, "BOOLEAN", wire, prov, "NOT operand is not BOOLEAN");
     }
     case "IF": {
       if (!wire.condition || !wire.then) return unsupportedNode(ctx, "IF requires condition and then", wire, prov);
-      const condition = normalizeExpression(wire.condition, childCtx(ctx, wire, "IF.condition"));
-      const thenExpr = normalizeExpression(wire.then, childCtx(ctx, wire, "IF.then"));
-      const elseExpr = wire.else ? normalizeExpression(wire.else, childCtx(ctx, wire, "IF.else")) : null;
+      const condition = normalizeExpression(wire.condition, childCtx(ctx, wire, "IF.condition"), "BOOLEAN");
+      const branches = normalizeSiblings(ctx, wire, wire.else ? [{ wire: wire.then, scope: "IF.then" }, { wire: wire.else, scope: "IF.else" }] : [{ wire: wire.then, scope: "IF.then" }], { inherited: expected });
+      const thenExpr = branches[0]!;
+      const elseExpr = wire.else ? branches[1]! : null;
       return buildComposite(ctx, "IF", { condition, then: thenExpr, else: elseExpr }, "BOOLEAN", wire, prov, "IF condition must be BOOLEAN and both branches must resolve to the same type");
     }
     case "AS_OF": {
       // AS_OF's own value is carried on the generic `operand` field (the same field NOT/DURING_PERIOD use for their single child) rather than a dedicated one - one fewer field for the model to learn.
       const valueWire = wire.operand;
       if (!valueWire) return unsupportedNode(ctx, "AS_OF requires an operand (the value being dated)", wire, prov);
-      const value = normalizeExpression(valueWire, childCtx(ctx, wire, "AS_OF.value"));
+      const value = normalizeExpression(valueWire, childCtx(ctx, wire, "AS_OF.value"), expected);
       const asOfDate = wire.asOfDate ?? "(unspecified)";
       return buildComposite(ctx, "AS_OF", { value, asOfDate }, "RATIO", wire, prov, "AS_OF value type could not be determined");
     }
     case "DURING_PERIOD": {
       if (!wire.operand) return unsupportedNode(ctx, "DURING_PERIOD requires an operand (the value being period-scoped)", wire, prov);
-      const value = normalizeExpression(wire.operand, childCtx(ctx, wire, "DURING_PERIOD.value"));
+      const value = normalizeExpression(wire.operand, childCtx(ctx, wire, "DURING_PERIOD.value"), expected);
       return buildComposite(ctx, "DURING_PERIOD", { value, periodDescription: wire.periodDescription ?? "(unspecified period)" }, "RATIO", wire, prov, "DURING_PERIOD value type could not be determined");
     }
     case "SCHEDULE": {
       const wireCases = wire.cases ?? [];
       if (wireCases.length === 0) return unsupportedNode(ctx, "SCHEDULE requires at least one case", wire, prov);
-      const cases = wireCases.map((c, i) => ({ from: c.from, to: c.to, description: c.description, value: normalizeExpression(c.value, childCtx(ctx, wire, `SCHEDULE.cases[${i}]`)) }));
-      const defaultValue = wire.defaultValue ? normalizeExpression(wire.defaultValue, childCtx(ctx, wire, "SCHEDULE.defaultValue")) : null;
+      const caseValues = normalizeSiblings(ctx, wire, [...wireCases.map((c, i) => ({ wire: c.value, scope: `SCHEDULE.cases[${i}]` })), ...(wire.defaultValue ? [{ wire: wire.defaultValue, scope: "SCHEDULE.defaultValue" }] : [])], { inherited: expected });
+      const cases = wireCases.map((c, i) => ({ from: c.from, to: c.to, description: c.description, value: caseValues[i]! }));
+      const defaultValue = wire.defaultValue ? caseValues[wireCases.length]! : null;
       return buildComposite(ctx, "SCHEDULE", { cases, defaultValue }, "RATIO", wire, prov, "SCHEDULE cases (and defaultValue, if set) do not all resolve to the same type");
     }
     case "EVENT_ACTIVE": {
-      const triggerCondition = wire.triggerCondition ? normalizeExpression(wire.triggerCondition, childCtx(ctx, wire, "EVENT_ACTIVE.triggerCondition")) : null;
+      const triggerCondition = wire.triggerCondition ? normalizeExpression(wire.triggerCondition, childCtx(ctx, wire, "EVENT_ACTIVE.triggerCondition"), "BOOLEAN") : null;
       return buildComposite(ctx, "EVENT_ACTIVE", { eventDescription: wire.eventDescription ?? "(unspecified event)", triggerCondition, activeDuration: wire.activeDuration ?? null }, "BOOLEAN", wire, prov, "EVENT_ACTIVE triggerCondition must be BOOLEAN");
     }
     case "UNSUPPORTED":
@@ -259,7 +384,7 @@ export function normalizeCapacityExpression(wire: WireExpression | null | undefi
   if (!wire) return null;
   if (wire.kind === "UNLIMITED_CAPACITY") {
     const prov = provenanceFor(ctx, wire.citation, wire.excerpt);
-    const gatedBy = wire.gatedBy ? normalizeExpression(wire.gatedBy, childCtx(ctx, wire, "UNLIMITED_CAPACITY.gatedBy")) : null;
+    const gatedBy = wire.gatedBy ? normalizeExpression(wire.gatedBy, childCtx(ctx, wire, "UNLIMITED_CAPACITY.gatedBy"), "BOOLEAN") : null;
     if (gatedBy && inferType(gatedBy) !== "BOOLEAN" && inferType(gatedBy) !== UNSUPPORTED_TYPE) {
       warn(ctx, "UnlimitedCapacity.gatedBy did not resolve to BOOLEAN - kept as-is for validate.ts to flag structurally");
     }
@@ -277,7 +402,7 @@ function normalizeCondition(wire: WireCondition, ctx: NormCtx, index: number): I
     {
       conditionId: `${ctx.scopePath}.condition[${index}]`,
       conditionType,
-      expression: wire.expression ? normalizeExpression(wire.expression, childCtx(ctx, wire.expression, `condition[${index}].expression`)) : null,
+      expression: wire.expression ? normalizeExpression(wire.expression, childCtx(ctx, wire.expression, `condition[${index}].expression`), "BOOLEAN") : null,
       referencesDefinitionId: wire.referencesDefinitionId,
       description: wire.description,
       provenance: prov,

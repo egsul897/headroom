@@ -40,7 +40,7 @@ export interface WireExpression {
   // references
   metricName?: string;
   termName?: string;
-  /** Explicit "MONEY"|"RATIO"|"NUMBER" hint for METRIC_REFERENCE/DEFINED_TERM_REFERENCE/TRANSACTION_INPUT_REFERENCE - REQUIRED whenever the referenced value is itself a ratio (e.g. "Leverage Ratio", "Fixed Charge Coverage Ratio") rather than a dollar figure, since normalize.ts cannot safely guess this from the name alone (mirrors IRMetricReference's own real field, which the IR itself declares explicitly, never infers). Defaults to MONEY when omitted - most contractual metrics are money-denominated. */
+  /** Explicit "MONEY"|"RATIO"|"NUMBER" hint for METRIC_REFERENCE (any IRValueType for DEFINED_TERM_REFERENCE/TRANSACTION_INPUT_REFERENCE) - REQUIRED whenever the referenced value is itself a ratio (e.g. "Leverage Ratio", "Fixed Charge Coverage Ratio") rather than a dollar figure, since normalize.ts cannot safely guess this from the name alone (mirrors IRMetricReference's own real field, which the IR itself declares explicitly, never infers). When omitted (F-6), normalize.ts types the reference from the ONE dimension its slot deterministically requires - BOOLEAN under NOT/AND/OR/IF-condition/gate/trigger, the typed sibling's dimension under COMPARE/ADD/MAX/... - and only then defaults to MONEY. An explicit value is never overridden. */
   valueType?: string;
   ruleRef?: string;
   sharedCapRef?: string;

@@ -365,13 +365,21 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
 
     let disposition: InventoryDisposition;
     let inferredPaths: string[] = [];
+    // F-6: an item consumed into an UNSUPPORTED node (or into that node's attempted structure) is UNSUPPORTED
+    // there by the composition's own most specific claim. A broader lineage claim on an enclosing composite,
+    // rule or definition never outvotes it - since partial composites keep their unsupported children in place
+    // as live IR, the enclosing node is itself REPRESENTED, and without this rule the item would be credited.
+    const directlyUnsupported = lineage.some((e) => e.kind === "UNSUPPORTED");
     if (lineage.length > 0) {
       if (anyValueMissing) {
         disposition = "MISSING_FROM_COMPOSITION";
         reasons.push(`composition lineage claims this item (${lineage.map((e) => e.irPath).join(", ")}) but ${quantitative.filter((q) => q.disposition === "VALUE_MISSING_FROM_COMPOSITION").map((q) => q.value.rawText).join(", ")} appears nowhere in the composed IR - a lineage claim without value correspondence does not count`);
-      } else if (lineage.some((e) => e.kind === "REPRESENTED") && !anyValueOnlyAttempted) {
+      } else if (lineage.some((e) => e.kind === "REPRESENTED") && !anyValueOnlyAttempted && !directlyUnsupported) {
         disposition = "REPRESENTED";
         reasons.push(`lineage: ${lineage.map((e) => e.irPath).join(", ")}${quantitative.length > 0 ? `; every stated value present (${quantitative.flatMap((q) => q.irPaths).join(", ")})` : ""}`);
+      } else if (directlyUnsupported && lineage.some((e) => e.kind === "REPRESENTED")) {
+        disposition = "UNSUPPORTED";
+        reasons.push(`consumed into an UNSUPPORTED node (${lineage.filter((e) => e.kind === "UNSUPPORTED").map((e) => e.irPath).join(", ")}) - the broader lineage claim at ${lineage.filter((e) => e.kind === "REPRESENTED").map((e) => e.irPath).join(", ")} does not override the composition's own most specific UNSUPPORTED claim`);
       } else if (lineage.some((e) => e.kind === "UNRESOLVED_DEPENDENCY") && !lineage.some((e) => e.kind === "REPRESENTED")) {
         disposition = "AMBIGUOUS";
         reasons.push(`carried as an unresolved cross-unit dependency (${lineage.map((e) => e.irPath).join(", ")}) - target not resolvable within this unit, never guessed`);

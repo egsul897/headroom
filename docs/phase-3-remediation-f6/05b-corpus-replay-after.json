@@ -1,0 +1,2427 @@
+{
+  "records": 40,
+  "rows": [
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1/region-applicable-liquidity-rate.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 0,
+      "definitions": 5,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 3,
+        "PARTIAL": 2,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 28,
+        "modelEmittedUnsupported": 32,
+        "nodesOnlyInAttemptedStructure": 5,
+        "partialCompositesKept": 9,
+        "liveNodes": 62
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 13,
+      "expressions": [
+        {
+          "owner": "definition \"Applicable Liquidity Threshold\"",
+          "slot": "calculationExpression",
+          "ir": "MIN:MONEY(ADD:MONEY(MONEY(37500000), MULTIPLY:MONEY(PERCENT(0.26), MAX:MONEY(MONEY(0), SUBTRACT:MONEY(METRIC(\"Super-Senior Revolving Facility Maximum Committed Amount\":MONEY), MONEY(62000000))))), MONEY(50000000))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "definition \"Applicable Rate\"",
+          "slot": "calculationExpression",
+          "ir": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"IF\")\"; attempted=IF:BOOLEAN(NOT(TXIN(\"FirstFullFiscalQuarterFinancialStatement\":BOOLEAN)) ? UNSUPPORTED(\"Initial-period Applicable Rate differs by Loan Typ\") : UNSUPPORTED(\"unrecognized or malformed expression (kind=\"IF\")\"; attempted=IF:BOOLEAN(AND:BOOLEAN(OR:BOOLEAN(EVENT(null), EVENT(null)), TXIN(\"RequiredFacilityLendersElectPricingLevel\":BOOLEAN)) ? UNSUPPORTED(\"Pricing Level 1 rate (as set forth in the grid) ap\") : UNSUPPORTED(\"unrecognized or malformed expression (kind=\"IF\")\"; attempted=IF:BOOLEAN(COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) GT RATIO(1)) ? UNSUPPORTED(\"Pricing Level 1: 8.00% for Term Benchmark Loans, 7\") : UNSUPPORTED(\"unrecognized or malformed expression (kind=\"IF\")\"; attempted=IF:BOOLEAN(COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) GT RATIO(0.5)) ? UNSUPPORTED(\"Pricing Level 2: 7.75% for Term Benchmark Loans, 6\") : UNSUPPORTED(\"Pricing Level 3: 7.50% for Term Benchmark Loans, 6\")))))))))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "definition \"Asset Sale\"",
+          "slot": "calculationExpression",
+          "ir": "AND:BOOLEAN(OR:BOOLEAN(UNSUPPORTED(\"sale, conveyance, transfer or other disposition (s\"), AND:BOOLEAN(UNSUPPORTED(\"issuance or sale of Equity Interests of any Subsid\"), NOT(UNSUPPORTED(\"Preferred Stock or Disqualified Stock of Subsidiar\")))), NOT(OR:BOOLEAN(OR:BOOLEAN(UNSUPPORTED(\"disposition of Cash Equivalents or Investment Grad\"), UNSUPPORTED(\"obsolete, damaged or worn out property/assets, or \"), UNSUPPORTED(\"improvements made to leased real property delivere\"), UNSUPPORTED(\"assets for charitable contributions/gifts to the e\")), UNSUPPORTED(\"disposition of all or substantially all Borrower a\"), UNSUPPORTED(\"disposition in connection with a permitted and mad\"), OR:BOOLEAN(AND:BOOLEAN(COMPARE(TXIN(\"DispositionFairMarketValue\":MONEY) GTE MONEY(500000)), COMPARE(TXIN(\"DispositionFairMarketValue\":MONEY) LT MONEY(5000000)), COMPARE(TXIN(\"AggregateFairMarketValueOfAllSuchDisposi\":MONEY) LTE MONEY(20000000))), COMPARE(TXIN(\"DispositionFairMarketValue\":MONEY) LT MONEY(500000))), UNSUPPORTED(\"intercompany dispositions/issuances between a Subs\"), UNSUPPORTED(\"like-kind exchange under Section 1031 of the Inter\"), OR:BOOLEAN(UNSUPPORTED(\"lease, assignment, sublease, license or sublicense\"), UNSUPPORTED(\"exercise of termination rights with respect to a l\")), UNSUPPORTED(\"foreclosures, condemnation, expropriation, eminent\"), UNSUPPORTED(\"sales of accounts receivable/participations, Secur\"), UNSUPPORTED(\"financing transactions re: property built/acquired\"), UNSUPPORTED(\"sale/lease/assignment/license/sublease/discount of\"), UNSUPPORTED(\"licensing/sublicensing of intellectual property or\"), UNSUPPORTED(\"surrender/waiver of contract rights, or settlement\"), UNSUPPORTED(\"unwinding of Hedging Obligations in the ordinary c\"), UNSUPPORTED(\"dispositions of Investments in joint ventures requ\"), UNSUPPORTED(\"lapse, abandonment or other disposition of intelle\"), UNSUPPORTED(\"the granting of a Lien permitted under Section 7.0\"), UNSUPPORTED(\"issuance of directors' qualifying shares and Forei\"), OR:BOOLEAN(UNSUPPORTED(\"disposition of assets (including Equity Interests)\"), UNSUPPORTED(\"disposition made in connection with antitrust auth\")), UNSUPPORTED(\"disposition of property exchanged for credit again\"))))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1/region-ebitda.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 0,
+      "definitions": 1,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 1,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 1,
+        "modelEmittedUnsupported": 1,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 4,
+        "liveNodes": 48
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 4,
+      "expressions": [
+        {
+          "owner": "definition \"Consolidated EBITDA\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(ADD:MONEY(TERM(\"Consolidated Net Income\":MONEY), SUM:MONEY(ADD:MONEY(METRIC(\"Total Interest Expense and Interest Rate Hedging Losses (net of interest income and hedging gains)\":MONEY), METRIC(\"Bank/Letter of Credit/Letter of Guarantee/Bankers' Acceptance Fees and Surety Bond Costs (Financing Activities)\":MONEY), METRIC(\"Items Excluded from Consolidated Interest Expense\":MONEY)), ADD:MONEY(METRIC(\"Provision for Income/Profits/Revenue/Capital-Based Taxes\":MONEY), METRIC(\"Net Tax Expense Associated with Consolidated Net Income Adjustments\":MONEY)), TERM(\"Consolidated Depreciation and Amortizati\":MONEY), ADD:MONEY(METRIC(\"Other Non-Cash Charges (including write-offs/write-downs reducing Consolidated Net Income)\":MONEY), UNSUPPORTED(\"Election right to defer add-back of a non-cash cha\")), ADD:MONEY(METRIC(\"Minority Interest Expense (Non-Controlling Interest Income of Third Parties in Non-Wholly-Owned Subsidiaries, excluding cash distributions)\":MONEY), METRIC(\"ASC Topic 810 Consolidation Reduction Add-Back\":MONEY)), MIN:MONEY(ADD:MONEY(ADD:MONEY(METRIC(\"Board of Director Fees\":MONEY), METRIC(\"Optionholder Distribution Compensation Payments\":MONEY)), ADD:MONEY(METRIC(\"Extraordinary, Non-Recurring or Unusual Losses, Fees, Costs, Charges or Expenses\":MONEY), METRIC(\"Restructuring Costs, Charges, Accruals or Reserves\":MONEY)), METRIC(\"Independent Board Member Compensation/Expense Reimbursement Payments\":MONEY)), MULTIPLY:MONEY(PERCENT(0.1), METRIC(\"Consolidated EBITDA (calculated without giving effect to clauses (f), (m) and (n) addbacks)\":MONEY))), METRIC(\"Cash Receipts (or Netting Arrangements) Recovering Previously-Deducted Non-Cash Gains\":MONEY), METRIC(\"Management/Employee Benefit Plan Costs or Expenses (funded with capital contributions or qualifying equity issuance proceeds, excluding Disqualified Stock)\":MONEY), METRIC(\"Net Pension/Post-Employment Benefit Costs (Amortization of Prior Service Costs, Actuarial Losses, ASC 715 Transition Obligation and Similar Items)\":MONEY), TERM(\"Transaction Expenses\":MONEY), MIN:MONEY(SUBTRACT:MONEY(METRIC(\"Gross 'Run-Rate' Cost Savings, Synergies and Operating Expense Reductions Related to Permitted Acquisitions\":MONEY), METRIC(\"Actual Benefits Realized from Such Actions During the Period\":MONEY)), MULTIPLY:MONEY(PERCENT(0.15), TERM(\"Acquired EBITDA\":MONEY))), METRIC(\"Internal Software Development Costs Expensed But Capitalizable Under GAAP\":MONEY), METRIC(\"Loss from Discontinued Operations\":MONEY))), SUM:MONEY(METRIC(\"Non-Cash Gains\":MONEY), METRIC(\"Non-Controlling Interest Loss Added to Consolidated Net Income\":MONEY), METRIC(\"Net Income from Discontinued Operations\":MONEY), METRIC(\"Extraordinary, Non-Recurring or Unusual Gains\":MONEY)))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1/region-first-lien-debt.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": true,
+      "rules": 0,
+      "definitions": 2,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 2,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 0,
+        "modelEmittedUnsupported": 0,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 36
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "definition \"Consolidated First Lien Secured Debt\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(SUM:MONEY(METRIC(\"Indebtedness for borrowed money (secured by first priority lien)\":MONEY), TERM(\"Capitalized Lease Obligations\":MONEY), METRIC(\"purchase money Indebtedness (secured by first priority lien)\":MONEY)), SUM:MONEY(TERM(\"Non-Recourse Indebtedness\":MONEY), METRIC(\"undrawn amounts under revolving credit facilities\":MONEY), SUBTRACT:MONEY(METRIC(\"Indebtedness in respect of letters of credit, bank guarantees and performance or similar bonds\":MONEY), METRIC(\"drawn standby letters of credit not reimbursed within three (3) Business Days\":MONEY)), TERM(\"Hedging Obligations\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "definition \"Consolidated Interest Expense\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(ADD:MONEY(ADD:MONEY(SUBTRACT:MONEY(METRIC(\"cash interest expense (including that attributable to Capitalized Lease Obligations)\":MONEY), METRIC(\"cash interest income\":MONEY)), ADD:MONEY(METRIC(\"commissions, discounts and other fees/charges owed with respect to letters of credit and bankers' acceptance financing\":MONEY), METRIC(\"net cash costs under hedging agreements (other than in connection with early termination)\":MONEY))), ADD:MONEY(METRIC(\"non-cash interest expense from amortization of original issue discount on Indebtedness issued at less than par (excluding Facilities Indebtedness incurred in connection with the Transactions and any Non-Recourse Indebtedness)\":MONEY), METRIC(\"pay-in-kind interest expense payable pursuant to the terms of the agreements governing Indebtedness for borrowed money\":MONEY))), SUM:MONEY(METRIC(\"amortization of deferred financing costs, debt issuance costs, commissions, fees and expenses, and other non-cash interest amounts not referred to in clauses (b)(i)/(b)(ii)\":MONEY), METRIC(\"interest expense attributable to mark-to-market valuation movements of Hedging Obligations and other derivative instruments (incl. FASB ASC Topic 815)\":MONEY), METRIC(\"costs of incurring or terminating Hedging Obligations and interest-rate hedge breakage costs\":MONEY), METRIC(\"commissions, discounts, yield, make-whole premium and other fees/charges incurred in connection with Non-Recourse Indebtedness\":MONEY), METRIC(\"additional interest owing pursuant to a registration rights agreement with respect to any securities\":MONEY), METRIC(\"make-whole premium or other breakage costs of any Indebtedness, including Indebtedness issued in connection with the Transactions\":MONEY), METRIC(\"penalties and interest relating to taxes\":MONEY), METRIC(\"accretion or accrual of discounted liabilities not constituting Indebtedness\":MONEY), METRIC(\"expense resulting from discounting of Indebtedness in connection with recapitalization or purchase accounting\":MONEY), METRIC(\"interest expense attributable to the exercise of appraisal rights and settlement of related claims/actions in connection with the Transactions, any acquisition or Investment\":MONEY), METRIC(\"annual agency fees paid to administrative and collateral agents with respect to secured or unsecured Indebtedness, including the Facilities and the Super-Priority Revolving Credit Agreement\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1/region-interest-expense.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 0,
+      "definitions": 3,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 2,
+        "PARTIAL": 1,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 1,
+        "modelEmittedUnsupported": 1,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 3,
+        "liveNodes": 77
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 3,
+      "expressions": [
+        {
+          "owner": "definition \"Consolidated Interest Expense\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(ADD:MONEY(SUBTRACT:MONEY(SUM:MONEY(METRIC(\"Cash interest expense (including Capitalized Lease Obligations interest, accruing at the GAAP-implicit rate) on Indebtedness other than Non-Recourse Indebtedness\":MONEY), METRIC(\"Commissions, discounts and other fees and charges owed re letters of credit and bankers' acceptance financing\":MONEY), METRIC(\"Net cash costs under hedging agreements (excluding costs of early termination)\":MONEY)), METRIC(\"Cash interest income\":MONEY)), ADD:MONEY(METRIC(\"Amortization of original issue discount from issuance of Indebtedness at less than par (excluding Facilities/Transactions Indebtedness and Non-Recourse Indebtedness)\":MONEY), METRIC(\"Pay-in-kind interest expense payable under agreements governing Indebtedness for borrowed money\":MONEY))), SUM:MONEY(METRIC(\"Amortization of deferred financing costs, debt issuance costs, commissions, fees and expenses and other non-cash interest (other than under clauses (b)(i)/(b)(ii))\":MONEY), METRIC(\"Interest expense from mark-to-market valuation movement of Hedging Obligations/derivative instruments (incl. ASC 815)\":MONEY), METRIC(\"Costs of incurring/terminating Hedging Obligations and cash breakage costs re interest rate hedging agreements\":MONEY), METRIC(\"Commissions, discounts, yield, make-whole premium and other fees/charges re Non-Recourse Indebtedness\":MONEY), METRIC(\"'Additional interest' owing under a registration rights agreement re securities\":MONEY), METRIC(\"Make-whole premium/breakage cost payments re any Indebtedness (incl. Transactions-related)\":MONEY), METRIC(\"Penalties and interest relating to taxes\":MONEY), METRIC(\"Accretion or accrual of discounted liabilities not constituting Indebtedness\":MONEY), METRIC(\"Expense from discounting Indebtedness re recapitalization or purchase accounting\":MONEY), METRIC(\"Interest expense attributable to appraisal rights exercise/settlement of related claims re Transactions, acquisition or Investment\":MONEY), METRIC(\"Annual agency fees to administrative/collateral agents re secured/unsecured Indebtedness (incl. Facilities and Super-Priority Revolving Credit Agreement)\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "definition \"Consolidated Maintenance EBITDA\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(ADD:MONEY(METRIC(\"Consolidated Maintenance Net Income\":MONEY), SUM:MONEY(ADD:MONEY(METRIC(\"Total interest expense\":MONEY), METRIC(\"Losses on interest-rate hedging derivative instruments, net of interest income/gains thereon (to extent not reflected in total interest expense)\":MONEY), METRIC(\"Bank/letter of credit fees, letter of guarantee/bankers' acceptance fees and surety bond costs re financing activities\":MONEY), METRIC(\"Items excluded from the definition of Consolidated Interest Expense\":MONEY)), ADD:MONEY(METRIC(\"Provision for income/profits/revenue/capital taxes (federal, foreign, state, franchise, excise, VAT, property, withholding, in-lieu-of levies)\":MONEY), METRIC(\"Penalties and interest related to taxes or arising from tax examinations\":MONEY), METRIC(\"Net tax expense associated with adjustments made pursuant to the Consolidated Maintenance Net Income definition\":MONEY)), METRIC(\"Consolidated Depreciation and Amortization Expense\":MONEY), UNSUPPORTED(\"Addback for other non-cash charges (incl. write-of\"), ADD:MONEY(METRIC(\"Minority interest expense / non-controlling interest income attributable to third parties in non-wholly-owned Subsidiaries (excl. cash distributions)\":MONEY), METRIC(\"Reductions in Consolidated Maintenance Net Income from ASC Topic 810 consolidation adjustments\":MONEY)), ADD:MONEY(METRIC(\"Board of director fees\":MONEY), METRIC(\"Payments to optionholders compensating them as though equityholders entitled to share in an equityholder distribution\":MONEY)), METRIC(\"Loss or discount on sale of receivables, Securitization Assets and related assets to a Securitization Subsidiary under a Qualified Securitization Facility\":MONEY), METRIC(\"Cash receipts (or netting arrangements reducing cash expenditures) not representing Maintenance EBITDA/Net Income in a prior period, to the extent related non-cash gains were deducted under clause (2) in a prior period and not added back\":MONEY), METRIC(\"Costs/expenses under management equity/stock option/employee benefit plans, funded with capital contributions or net proceeds of Equity Interest issuances (other than Disqualified Stock)\":MONEY), ADD:MONEY(METRIC(\"Net pension/post-employment benefit costs - amortization of unrecognized prior service costs\":MONEY), METRIC(\"Actuarial losses and ASC 715 unrecognized net obligation amortization and similar items\":MONEY)), SUBTRACT:MONEY(METRIC(\"Run-rate cost savings, synergies and operating expense reductions related to restructuring (incl. facility closures/workforce reductions) or Permitted Acquisitions, projected by the Borrower in good faith to result from actions/substantial steps taken within 12 months after period-end, calculated pro forma as if realized on the first day of the period\":MONEY), METRIC(\"Actual benefits realized from such actions during the period\":MONEY)), METRIC(\"Extraordinary, non-recurring or unusual losses, fees, costs, charges or expenses, and restructuring/integration costs, charges, accruals or reserves\":MONEY), METRIC(\"Payments in the nature of compensation or expense reimbursement to independent board members\":MONEY), METRIC(\"Internal software development costs expensed that could have been capitalized under GAAP\":MONEY), METRIC(\"Loss from discontinued operations (only when/to the extent actually disposed, if classified as discontinued due to a disposal agreement)\":MONEY), METRIC(\"Earn-out and contingent consideration obligations/adjustments and purchase price adjustments\":MONEY), METRIC(\"Transaction Expenses\":MONEY))), SUM:MONEY(METRIC(\"Non-cash gains (excl. reversal of an accrual/reserve for a potential cash item that reduced Net Income/EBITDA in a prior period, unless already added back)\":MONEY), METRIC(\"Non-controlling interest loss added to (and not deducted from) Consolidated Maintenance Net Income\":MONEY), METRIC(\"Net income from discontinued operations (only when/to the extent actually disposed, if classified as discontinued due to a disposal agreement)\":MONEY), METRIC(\"Extraordinary, non-recurring or unusual gains\":MONEY)))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "definition \"Consolidated First Lien Secured Debt\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(METRIC(\"Aggregate principal amount of Indebtedness for borrowed money, Capitalized Lease Obligations and purchase money Indebtedness of the Borrower and its Subsidiaries, secured by a first priority lien on the Borrower's or a Subsidiary's assets, determined on a consolidated basis under GAAP\":MONEY), SUM:MONEY(TERM(\"Non-Recourse Indebtedness\":MONEY), METRIC(\"Undrawn amounts under revolving credit facilities\":MONEY), METRIC(\"Indebtedness re letters of credit, bank guarantees and performance or similar bonds, except drawn standby letters of credit unreimbursed within three (3) Business Days\":MONEY), TERM(\"Hedging Obligations\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1/region-net-income.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 0,
+      "definitions": 1,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 1,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 17,
+        "modelEmittedUnsupported": 21,
+        "nodesOnlyInAttemptedStructure": 10,
+        "partialCompositesKept": 4,
+        "liveNodes": 25
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 7,
+      "expressions": [
+        {
+          "owner": "definition \"Consolidated Net Income\"",
+          "slot": "calculationExpression",
+          "ir": "ADD:MONEY(SUBTRACT:MONEY(METRIC(\"Net Income\":MONEY), SUM:MONEY(UNSUPPORTED(\"Cumulative effect of a change in accounting princi\"), UNSUPPORTED(\"Gain or loss on asset sales, disposals or abandonm\"), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED(\"Net Income for the period of any Person that is no\"), UNSUPPORTED(\"Add-back reducing the clause (5) exclusion by divi\"))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED(\"Net Income for the period of any Subsidiary (other\"), UNSUPPORTED(\"Add-back reducing the clause (6) exclusion by the \"))), UNSUPPORTED(\"Effects of adjustments (including effects pushed d\"), UNSUPPORTED(\"Income or loss from the early extinguishment or co\"), UNSUPPORTED(\"Any impairment charge or asset write-off/write-dow\"), UNSUPPORTED(\"Equity-based or non-cash compensation charges/expe\"), SUM:MONEY(UNSUPPORTED(\"Fees, expenses or charges (and amortization thereo\"), MIN:MONEY(TXIN(\"Aggregate Charges or Nonrecurring Merger\":MONEY), MONEY(5000000))), UNSUPPORTED(\"Accruals and reserves established or adjusted in c\"), UNSUPPORTED(\"Expenses, charges or losses to the extent covered \"), UNSUPPORTED(\"Non-cash gain/loss attributable to mark-to-market \"), UNSUPPORTED(\"Net unrealized (after offset) non-cash gain or los\"), UNSUPPORTED(\"Adjustments resulting from application of ASC Topi\"), UNSUPPORTED(\"Any non-cash rent expense.\"), UNSUPPORTED(\"Non-cash expenses, accruals or reserves related to\"))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUM\")\"; attempted=SUM:NUMBER(UNSUPPORTED(\"Amount of proceeds received or receivable from bus\"), UNSUPPORTED(\"Amount of expenses or charges incurred that are, d\"), UNSUPPORTED(\"Amounts covered by indemnification or other reimbu\"))))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1/region-secured-net-leverage.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 0,
+      "definitions": 2,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 2,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 0,
+        "modelEmittedUnsupported": 0,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 9
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "definition \"Secured Net Leverage Ratio\"",
+          "slot": "calculationExpression",
+          "ir": "DURING(DIVIDE:NUMBER(SUBTRACT:MONEY(METRIC(\"Consolidated Secured Debt\":MONEY), METRIC(\"Qualifying Unrestricted or Facility-Restricted Cash and Cash Equivalents\":MONEY)), IF:MONEY(TXIN(\"CalculationPurposeIsFinancialMaintenance\":BOOLEAN) ? METRIC(\"Consolidated Maintenance EBITDA\":MONEY) : METRIC(\"Consolidated EBITDA\":MONEY))))",
+          "inferredType": "NUMBER",
+          "sufficiency": "COMPLETE"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-haiku-discarded/region-applicable-liquidity-rate.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 1,
+      "definitions": 3,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 1,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 3,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 1,
+        "modelEmittedUnsupported": 1,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 2,
+        "liveNodes": 62
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 2,
+      "expressions": [
+        {
+          "owner": "rule 1.01",
+          "slot": "exceptions[0].conditions[0]",
+          "ir": "COMPARE(TERM(\"Event of Default\":BOOLEAN) EQ BOOL(true))",
+          "inferredType": "BOOLEAN",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "rule 1.01",
+          "slot": "exceptions[0].conditions[1]",
+          "ir": "NOT(OR:BOOLEAN(COMPARE(TERM(\"Event of Default\":BOOLEAN) EQ BOOL(false)), TXIN(\"Event of Default Waived\":BOOLEAN)))",
+          "inferredType": "BOOLEAN",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "definition \"Applicable Liquidity Threshold\"",
+          "slot": "calculationExpression",
+          "ir": "MIN:MONEY(ADD:MONEY(MONEY(37500000), IF:MONEY(COMPARE(TERM(\"RCF Increase Amount\":MONEY) GT MONEY(0)) ? MULTIPLY:MONEY(PERCENT(0.26), TERM(\"RCF Increase Amount\":MONEY)) : MONEY(0))), MONEY(50000000))",
+          "inferredType": "MONEY",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "definition \"RCF Increase Amount\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(METRIC(\"Maximum Committed Amount of Super-Senior Revolving Facility\":MONEY), MONEY(62000000))",
+          "inferredType": "MONEY",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "definition \"Applicable Rate\"",
+          "slot": "calculationExpression",
+          "ir": "IF:PERCENT(COMPARE(TXIN(\"Delivery Status of Financial Statements \":BOOLEAN) EQ BOOL(false)) ? IF:PERCENT(TERM(\"Term Benchmark Loans\":BOOLEAN) ? PERCENT(0.08) : PERCENT(0.07)) : SCHEDULE(IF:PERCENT(COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) GT RATIO(1)) ? IF:PERCENT(TERM(\"Term Benchmark Loans\":BOOLEAN) ? PERCENT(0.08) : PERCENT(0.07)) : null), IF:PERCENT(AND:BOOLEAN(COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) LTE RATIO(1)), COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) GT RATIO(0.5))) ? IF:PERCENT(TERM(\"Term Benchmark Loans\":BOOLEAN) ? PERCENT(0.0775) : PERCENT(0.0675)) : null), IF:PERCENT(COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) LTE RATIO(0.5)) ? IF:PERCENT(TERM(\"Term Benchmark Loans\":BOOLEAN) ? PERCENT(0.075) : PERCENT(0.065)) : null)))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-haiku-discarded/region-first-lien-debt.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 0,
+      "definitions": 2,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 2,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 1,
+        "modelEmittedUnsupported": 1,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 10
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "definition \"Consolidated First Lien Secured Debt\"",
+          "slot": "calculationExpression",
+          "ir": "UNSUPPORTED(\"Consolidated First Lien Secured Debt is an aggrega\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "definition \"Consolidated Interest Expense\"",
+          "slot": "calculationExpression",
+          "ir": "ADD:MONEY(ADD:MONEY(METRIC(\"cash interest expense\":MONEY), METRIC(\"interest income (negative component)\":MONEY), METRIC(\"commissions, discounts and other fees and charges for letters of credit and bankers' acceptance financing\":MONEY), METRIC(\"net cash costs under hedging agreements\":MONEY)), ADD:MONEY(METRIC(\"amortization of original issue discount\":MONEY), METRIC(\"pay-in-kind interest expense\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-haiku-discarded/region-interest-expense.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 0,
+      "definitions": 5,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 3,
+        "AMBIGUOUS": 1,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 1,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 19,
+        "modelEmittedUnsupported": 26,
+        "nodesOnlyInAttemptedStructure": 14,
+        "partialCompositesKept": 2,
+        "liveNodes": 26
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 8,
+      "expressions": [
+        {
+          "owner": "definition \"Consolidated Interest Expense\"",
+          "slot": "calculationExpression",
+          "ir": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(UNSUPPORTED(\"cash interest expense (including Capitalized Lease\"))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(UNSUPPORTED(\"amortization of original issue discount from Indeb\"), UNSUPPORTED(\"pay-in-kind interest expense payable pursuant to a\")))))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "definition \"Consolidated Maintenance EBITDA\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(ADD:MONEY(TERM(\"Consolidated Maintenance Net Income\":MONEY), UNSUPPORTED(\"total interest expense and any losses on derivativ\"), UNSUPPORTED(\"provision for taxes based on income, profits, reve\"), TERM(\"Consolidated Depreciation and Amortizati\":MONEY), UNSUPPORTED(\"any other non-cash charges, including write-offs o\"), UNSUPPORTED(\"minority interest expense, non-controlling interes\"), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(UNSUPPORTED(\"board of director fees\"), UNSUPPORTED(\"payments to optionholders in connection with distr\"))), UNSUPPORTED(\"loss or discount on sale of receivables, Securitiz\"), UNSUPPORTED(\"cash receipts or netting arrangements resulting in\"), UNSUPPORTED(\"costs or expenses under management equity plan, st\"), UNSUPPORTED(\"net pension or post-employment benefit costs repre\"), UNSUPPORTED(\"\"run-rate\" cost savings, synergies, and operating \"), UNSUPPORTED(\"extraordinary, non-recurring or unusual losses, fe\"), UNSUPPORTED(\"payments in the nature of compensation or expense \"), UNSUPPORTED(\"internal software development costs that are expen\"), UNSUPPORTED(\"any loss from discontinued operations, but only wh\")), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(UNSUPPORTED(\"non-cash gains for such period, excluding any non-\"), UNSUPPORTED(\"any non-controlling interest consisting of loss at\"), UNSUPPORTED(\"any net income from discontinued operations, but o\"), UNSUPPORTED(\"any extraordinary, non-recurring or unusual gains\"))))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "definition \"Consolidated Maintenance Net Income\"",
+          "slot": "calculationExpression",
+          "ir": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED(\"net income (loss) of Person and its Subsidiaries f\"), UNSUPPORTED(\"the exclusions (and effects thereof) listed in cla\")))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "AMBIGUOUS"
+        },
+        {
+          "owner": "definition \"Consolidated Net Income\"",
+          "slot": "calculationExpression",
+          "ir": "UNSUPPORTED(\"net income (loss) of Person and its Subsidiaries f\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "MISSING_CONTEXT"
+        },
+        {
+          "owner": "definition \"Consolidated First Lien Secured Debt\"",
+          "slot": "calculationExpression",
+          "ir": "UNSUPPORTED(\"aggregate principal amount of Indebtedness of Borr\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-haiku-discarded/region-new-definitions.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": true,
+      "rules": 1,
+      "definitions": 3,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 1,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 3,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 1,
+        "modelEmittedUnsupported": 1,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 10
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "definition \"Invoice Restrictions\"",
+          "slot": "calculationExpression",
+          "ir": "UNSUPPORTED(\"Invoice Restrictions are defined by reference to t\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "definition \"Maintenance Liquidity\"",
+          "slot": "calculationExpression",
+          "ir": "ADD:MONEY(ADD:MONEY(SUBTRACT:MONEY(METRIC(\"aggregate commitments under Super-Priority Revolving Credit Facility\":MONEY), ADD:MONEY(METRIC(\"aggregate principal amount of outstanding revolving loans under Super-Priority Revolving Credit Facility\":MONEY), METRIC(\"face amount of letters of credit issued thereunder, less any reimbursed amounts\":MONEY)))), METRIC(\"Adjustment to Liquidity\":MONEY), METRIC(\"unrestricted cash and Cash Equivalents of the Borrower and its Subsidiaries\":MONEY))",
+          "inferredType": "MONEY",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-haiku-discarded/region-secured-net-leverage.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": true,
+      "rules": 0,
+      "definitions": 2,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 2,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 1,
+        "modelEmittedUnsupported": 1,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 1
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "definition \"Secured Net Leverage Ratio\"",
+          "slot": "calculationExpression",
+          "ir": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"DIVIDE\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-pre-canonicalization-fix/region-applicable-liquidity-rate.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 0,
+      "definitions": 5,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 3,
+        "PARTIAL": 2,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 35,
+        "modelEmittedUnsupported": 35,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 25,
+        "liveNodes": 140
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 25,
+      "expressions": [
+        {
+          "owner": "definition \"Applicable Liquidity Threshold\"",
+          "slot": "calculationExpression",
+          "ir": "IF:MONEY(COMPARE(METRIC(\"Super-Senior Revolving Facility Maximum Committed Amount (including Refinancing Indebtedness thereof)\":MONEY) GT MONEY(62000000)) ? MIN:MONEY(ADD:MONEY(MONEY(37500000), MULTIPLY:MONEY(PERCENT(0.26), SUBTRACT:MONEY(METRIC(\"Super-Senior Revolving Facility Maximum Committed Amount (including Refinancing Indebtedness thereof)\":MONEY), MONEY(62000000)))), MONEY(50000000)) : MONEY(37500000))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "definition \"Applicable Rate\"",
+          "slot": "calculationExpression",
+          "ir": "IF:PERCENT(TXIN(\"Loan Type is Term Benchmark Loan\":BOOLEAN) ? IF:PERCENT(TXIN(\"Determination date precedes delivery of \":BOOLEAN) ? PERCENT(0.08) : IF:PERCENT(AND:BOOLEAN(TXIN(\"Required Facility Lenders elect to apply\":BOOLEAN), OR:BOOLEAN(EVENT(TXIN(\"Compliance Certificate delivery under Se\":BOOLEAN)), EVENT(TERM(\"Event of Default\":BOOLEAN)))) ? PERCENT(0.08) : IF:PERCENT(COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) GT RATIO(1)) ? PERCENT(0.08) : IF:PERCENT(AND:BOOLEAN(COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) LT RATIO(1)), COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) GT RATIO(0.5))) ? PERCENT(0.0775) : IF:PERCENT(COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) LT RATIO(0.5)) ? PERCENT(0.075) : UNSUPPORTED(\"Secured Net Leverage Ratio exactly equal to 1.00x \")))))) : IF:PERCENT(TXIN(\"Determination date precedes delivery of \":BOOLEAN) ? PERCENT(0.07) : IF:PERCENT(AND:BOOLEAN(TXIN(\"Required Facility Lenders elect to apply\":BOOLEAN), OR:BOOLEAN(EVENT(null), EVENT(null))) ? PERCENT(0.07) : IF:PERCENT(COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) GT RATIO(1)) ? PERCENT(0.07) : IF:PERCENT(AND:BOOLEAN(COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) LT RATIO(1)), COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) GT RATIO(0.5))) ? PERCENT(0.0675) : IF:PERCENT(COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) LT RATIO(0.5)) ? PERCENT(0.065) : UNSUPPORTED(\"Secured Net Leverage Ratio exactly equal to 1.00x \")))))))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "definition \"Asset Sale\"",
+          "slot": "calculationExpression",
+          "ir": "AND:BOOLEAN(OR:BOOLEAN(UNSUPPORTED(\"the sale, conveyance, transfer or other dispositio\"), AND:BOOLEAN(UNSUPPORTED(\"the issuance or sale of Equity Interests of any Su\"), NOT(OR:BOOLEAN(UNSUPPORTED(\"Preferred Stock or Disqualified Stock of Subsidiar\"), UNSUPPORTED(\"directors' qualifying shares or shares/interests r\"))))), NOT(OR:BOOLEAN(OR:BOOLEAN(UNSUPPORTED(\"disposition of Cash Equivalents or Investment Grad\"), UNSUPPORTED(\"disposition of obsolete, damaged or worn out prope\"), UNSUPPORTED(\"improvements made to leased real property to landl\"), UNSUPPORTED(\"assets used for charitable contributions or simila\")), AND:BOOLEAN(UNSUPPORTED(\"disposition of all or substantially all of the ass\"), NOT(UNSUPPORTED(\"dispositions under Section 7.03(6) or Section 7.03\"))), OR:BOOLEAN(UNSUPPORTED(\"disposition in connection with the making of a Res\"), UNSUPPORTED(\"disposition in connection with any Permitted Inves\"), UNSUPPORTED(\"disposition in connection with any acquisition oth\")), OR:BOOLEAN(AND:BOOLEAN(AND:BOOLEAN(COMPARE(TXIN(\"Fair market value of individual disposit\":MONEY) GTE MONEY(500000)), COMPARE(TXIN(\"Fair market value of individual disposit\":MONEY) LT MONEY(5000000))), COMPARE(METRIC(\"Aggregate fair market value of dispositions/issuances relying on Asset Sale exception (d)(i)\":MONEY) LTE MONEY(20000000))), COMPARE(TXIN(\"Fair market value of individual disposit\":MONEY) LT MONEY(500000))), UNSUPPORTED(\"intercompany disposition/issuance between the Borr\"), UNSUPPORTED(\"like-kind exchange of property (excluding boot) fo\"), OR:BOOLEAN(UNSUPPORTED(\"lease, assignment, sublease, license or sublicense\"), UNSUPPORTED(\"exercise of termination rights with respect to any\")), UNSUPPORTED(\"foreclosures, condemnation, expropriation, eminent\"), OR:BOOLEAN(UNSUPPORTED(\"sales of accounts receivable, participations there\"), UNSUPPORTED(\"sales of receivables in connection with Receivable\"), UNSUPPORTED(\"disposition of an account receivable in connection\")), UNSUPPORTED(\"financing transactions with respect to property bu\"), UNSUPPORTED(\"ordinary-course sale, lease, assignment, license, \"), UNSUPPORTED(\"licensing or sublicensing of intellectual property\"), UNSUPPORTED(\"surrender/waiver of contract rights or settlement/\"), UNSUPPORTED(\"unwinding of any Hedging Obligations in the ordina\"), UNSUPPORTED(\"sales, transfers and other dispositions of joint v\"), UNSUPPORTED(\"lapse, abandonment or other disposition of intelle\"), UNSUPPORTED(\"the granting of a Lien that is permitted under Sec\"), UNSUPPORTED(\"issuance of directors' qualifying shares and share\"), OR:BOOLEAN(UNSUPPORTED(\"assets acquired in a permitted transaction that ar\"), UNSUPPORTED(\"disposition made in connection with antitrust auth\")), UNSUPPORTED(\"dispositions of property exchanged for credit agai\"))))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-pre-canonicalization-fix/region-ebitda.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 0,
+      "definitions": 1,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 1,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 5,
+        "modelEmittedUnsupported": 5,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 9,
+        "liveNodes": 49
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 9,
+      "expressions": [
+        {
+          "owner": "definition \"Consolidated EBITDA\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(ADD:MONEY(METRIC(\"Consolidated Net Income\":MONEY), SUM:MONEY(METRIC(\"Interest Expense, Hedging Losses (Net) and Financing-Related Fees, including items excluded from Consolidated Interest Expense (clause (a))\":MONEY), METRIC(\"Provision for Income and Similar Taxes, including Future Levies, Penalties/Interest, and CNI-Related Tax Adjustments (clause (b))\":MONEY), METRIC(\"Consolidated Depreciation and Amortization Expense\":MONEY), ADD:MONEY(METRIC(\"Other Non-Cash Charges, including Write-offs/Write-downs (clause (d))\":MONEY), UNSUPPORTED(\"Borrower's election not to add back a non-cash cha\")), METRIC(\"Minority/Non-Controlling Interest Expense (net of cash distributions) and ASC Topic 810 Consolidation Reduction Add-Back (clause (e))\":MONEY), MIN:MONEY(ADD:MONEY(ADD:MONEY(METRIC(\"Board of Director Fees (clause (f)(i))\":MONEY), METRIC(\"Optionholder Distribution-Related Compensation Payments (clause (f)(ii))\":MONEY)), METRIC(\"Extraordinary, Non-Recurring or Unusual Losses/Costs and Restructuring Charges (clause (m))\":MONEY), METRIC(\"Independent Board Member Compensation/Expense Reimbursement (clause (n))\":MONEY)), LEDGER(ir-sharedcap:f1a966d274dbc98b9e0dc1f3)), METRIC(\"Cash Receipts/Netting Arrangements Reversing Prior-Period Non-Cash Gain Exclusions (clause (h))\":MONEY), ADD:MONEY(METRIC(\"Management/Employee Benefit Plan and Stock Subscription/Shareholder Agreement Costs (clause (i))\":MONEY), UNSUPPORTED(\"Limitation that the clause (i) addback applies onl\")), METRIC(\"Net Pension/Post-Employment Benefit Cost Amortization Add-Back (ASC Topic 715) (clause (j))\":MONEY), METRIC(\"Transaction Expenses\":MONEY), MIN:MONEY(SUBTRACT:MONEY(METRIC(\"Projected Run-Rate Cost Savings, Synergies and Operating Expense Reductions related to a Permitted Acquisition (clause (l), gross)\":MONEY), METRIC(\"Actual Benefits Realized from Run-Rate Actions During the Period\":MONEY)), LEDGER(ir-sharedcap:bcb889d126c9a2496155b675)), METRIC(\"Expensed Internal Software Development Costs Otherwise Capitalizable Under GAAP (clause (o))\":MONEY), ADD:MONEY(METRIC(\"Loss from Discontinued Operations (clause (p))\":MONEY), UNSUPPORTED(\"Timing limitation: if operations are classified as\")))), SUM:MONEY(ADD:MONEY(METRIC(\"Non-Cash Gains (clause (2)(a))\":MONEY), UNSUPPORTED(\"Nested carve-back: the reversal-exclusion does not\")), METRIC(\"Non-Controlling Interest Loss Added to Consolidated Net Income (clause (2)(b))\":MONEY), ADD:MONEY(METRIC(\"Net Income from Discontinued Operations (clause (2)(c))\":MONEY), UNSUPPORTED(\"Timing limitation: if operations are classified as\")), METRIC(\"Extraordinary, Non-Recurring or Unusual Gains (clause (2)(d))\":MONEY)))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-pre-canonicalization-fix/region-first-lien-debt.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": true,
+      "rules": 0,
+      "definitions": 2,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 2,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 0,
+        "modelEmittedUnsupported": 0,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 34
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "definition \"Consolidated First Lien Secured Debt\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(SUM:MONEY(TERM(\"Indebtedness\":MONEY), TERM(\"Capitalized Lease Obligations\":MONEY), TERM(\"purchase money Indebtedness\":MONEY)), SUM:MONEY(TERM(\"Non-Recourse Indebtedness\":MONEY), METRIC(\"undrawn amounts under revolving credit facilities\":MONEY), SUBTRACT:MONEY(METRIC(\"Indebtedness in respect of letters of credit, bank guarantees and performance or similar bonds\":MONEY), METRIC(\"drawn standby letters of credit not reimbursed within three (3) Business Days\":MONEY)), TERM(\"Hedging Obligations\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "definition \"Consolidated Interest Expense\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(ADD:MONEY(ADD:MONEY(SUBTRACT:MONEY(METRIC(\"cash interest expense (including that attributable to Capitalized Lease Obligations) on Indebtedness other than Non-Recourse Indebtedness\":MONEY), METRIC(\"cash interest income\":MONEY)), METRIC(\"commissions, discounts and other fees and charges owed with respect to letters of credit and bankers' acceptance financing, and net cash costs under hedging agreements (excluding early termination costs)\":MONEY)), ADD:MONEY(METRIC(\"amortization of original issue discount from issuance of Indebtedness at less than par (excluding Indebtedness borrowed under the Facilities in connection with the Transactions and any Non-Recourse Indebtedness)\":MONEY), METRIC(\"pay-in-kind interest expense payable pursuant to the terms of the agreements governing Indebtedness for borrowed money\":MONEY))), SUM:MONEY(METRIC(\"amortization of deferred financing costs, debt issuance costs, commissions, fees and expenses and other non-cash interest amounts (other than those referred to in clauses (b)(i) and (b)(ii))\":MONEY), METRIC(\"interest expense attributable to mark-to-market valuation movement of Hedging Obligations and other derivative instruments (incl. under FASB ASC Topic 815)\":MONEY), METRIC(\"costs of incurring or terminating Hedging Obligations and cash breakage costs on interest rate hedging agreements\":MONEY), METRIC(\"commissions, discounts, yield, make-whole premium and other fees/charges incurred in connection with any Non-Recourse Indebtedness\":MONEY), METRIC(\"'additional interest' owing pursuant to a registration rights agreement\":MONEY), METRIC(\"payments with respect to make-whole premiums or other breakage costs of any Indebtedness (incl. Indebtedness issued in connection with the Transactions)\":MONEY), METRIC(\"penalties and interest relating to taxes\":MONEY), METRIC(\"accretion or accrual of discounted liabilities not constituting Indebtedness\":MONEY), METRIC(\"expense resulting from discounting of Indebtedness in connection with recapitalization or purchase accounting\":MONEY), METRIC(\"interest expense attributable to exercise of appraisal rights and settlement of related claims/actions in connection with the Transactions, any acquisition or Investment\":MONEY), METRIC(\"annual agency fees paid to administrative and collateral agents re secured/unsecured debt facilities (incl. the Facilities and the Super-Priority Revolving Credit Agreement)\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-pre-canonicalization-fix/region-interest-expense.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 0,
+      "definitions": 2,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 2,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 2,
+        "modelEmittedUnsupported": 2,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 5,
+        "liveNodes": 54
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 5,
+      "expressions": [
+        {
+          "owner": "definition \"Consolidated Interest Expense\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(ADD:MONEY(ADD:MONEY(METRIC(\"Cash Interest Expense on Indebtedness, net of Cash Interest Income (excluding Non-Recourse Indebtedness)\":MONEY), METRIC(\"Letter of Credit/Bankers' Acceptance Fees and Net Cash Hedging Costs (excluding early termination costs)\":MONEY)), ADD:MONEY(METRIC(\"Amortization of Original Issue Discount on Indebtedness Issued at Less Than Par (excluding Facilities Indebtedness incurred in the Transactions and Non-Recourse Indebtedness)\":MONEY), METRIC(\"Pay-In-Kind Interest Expense on Indebtedness for Borrowed Money\":MONEY))), UNSUPPORTED(\"Twelve categorical exclusions from Consolidated In\"))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "definition \"Consolidated Maintenance EBITDA\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(ADD:MONEY(TERM(\"Consolidated Maintenance Net Income\":MONEY), SUM:MONEY(ADD:MONEY(METRIC(\"Total Interest Expense (including unreflected hedging losses net of income/gains, plus bank/LC/LG/BA fees and surety bond costs for financing activities)\":MONEY), TERM(\"Consolidated Interest Expense\":MONEY)), METRIC(\"Provision for Taxes Based on Income/Profits/Revenue/Capital (including related penalties/interest and net tax expense from Consolidated Maintenance Net Income adjustments)\":MONEY), TERM(\"Consolidated Depreciation and Amortizati\":MONEY), ADD:MONEY(METRIC(\"Other Non-Cash Charges (including write-offs/write-downs) Reducing Consolidated Maintenance Net Income\":MONEY), UNSUPPORTED(\"Election not to add back non-cash charges represen\")), ADD:MONEY(METRIC(\"Minority Interest Expense and Non-Controlling Interest Income Attributable to Third Parties in Non-Wholly-Owned Subsidiaries (excluding cash distributions)\":MONEY), METRIC(\"Reductions in Consolidated Maintenance Net Income from Application of ASC Topic No. 810 (Consolidation)\":MONEY)), ADD:MONEY(METRIC(\"Board of Director Fees\":MONEY), METRIC(\"Optionholder Distribution-Equalization Payments\":MONEY)), METRIC(\"Loss or Discount on Sale of Receivables/Securitization Assets to a Securitization Subsidiary under a Qualified Securitization Facility\":MONEY), METRIC(\"Cash Receipts (or Netting Arrangements) Not Representing CME/CMNI in a Prior Period, to the Extent Related Non-Cash Gains Were Deducted Under Clause (2) in a Prior Period and Not Added Back\":MONEY), METRIC(\"Costs/Expenses under Management Equity/Stock Option/Employee Benefit Plans or Stock Subscription/Shareholder Agreements, Funded by Cash Capital Contributions or Net Cash Proceeds of Equity Interest Issuances (excluding Disqualified Stock)\":MONEY), METRIC(\"Net Pension/Post-Employment Benefit Costs (Prior Service Cost/Actuarial Loss Amortization, ASC Topic 715 Transition Amounts, and Similar Items)\":MONEY), SUBTRACT:MONEY(SUM:MONEY(METRIC(\"Run-Rate Cost Savings/Synergies/Opex Reductions from Restructuring (including facility closures and workforce reductions)\":MONEY), METRIC(\"Run-Rate Cost Savings/Synergies/Opex Reductions from Permitted Acquisitions\":MONEY)), METRIC(\"Actual Benefits Realized from Such Actions During the Period\":MONEY)), SUM:MONEY(METRIC(\"Extraordinary/Non-Recurring/Unusual Losses, Fees, Costs, Charges or Expenses and Restructuring Costs/Charges/Accruals/Reserves\":MONEY), METRIC(\"Payments in the Nature of Compensation or Expense Reimbursement to Independent Board Members\":MONEY), METRIC(\"Internal Software Development Costs Expensed but Capitalizable under GAAP\":MONEY), METRIC(\"Loss from Discontinued Operations (subject to actual-disposition proviso)\":MONEY), METRIC(\"Earn-Out and Contingent Consideration Obligations and Adjustments, and Purchase Price Adjustments\":MONEY), TERM(\"Transaction Expenses\":MONEY)))), SUM:MONEY(METRIC(\"Non-Cash Gains for the Period (subject to prior-period accrual/reserve reversal carveback)\":MONEY), METRIC(\"Non-Controlling Interest Loss Added to (and Not Deducted from) Consolidated Maintenance Net Income\":MONEY), METRIC(\"Net Income from Discontinued Operations (subject to actual-disposition proviso)\":MONEY), METRIC(\"Extraordinary/Non-Recurring/Unusual Gains\":MONEY)))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-1-pre-canonicalization-fix/region-secured-net-leverage.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 0,
+      "definitions": 2,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 1,
+        "PARTIAL": 1,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 1,
+        "modelEmittedUnsupported": 1,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 2,
+        "liveNodes": 11
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 2,
+      "expressions": [
+        {
+          "owner": "definition \"Secured Net Leverage Ratio\"",
+          "slot": "calculationExpression",
+          "ir": "DIVIDE:NUMBER(SUBTRACT:MONEY(AS_OF(METRIC(\"Consolidated Secured Debt\":MONEY)), UNSUPPORTED(\"The aggregate amount of cash and Cash Equivalents \")), IF:MONEY(TXIN(\"IsCalculationForFinancialMaintenanceCove\":BOOLEAN) ? DURING(METRIC(\"Consolidated Maintenance EBITDA\":MONEY)) : DURING(METRIC(\"Consolidated EBITDA\":MONEY))))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-2/region-applicable-liquidity-rate.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 0,
+      "definitions": 7,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 5,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 2,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 0,
+        "modelEmittedUnsupported": 0,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 106
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "definition \"Applicable Liquidity Threshold\"",
+          "slot": "calculationExpression",
+          "ir": "MIN:MONEY(ADD:MONEY(MONEY(37500000), MULTIPLY:MONEY(PERCENT(0.26), TERM(\"RCF Increase Amount\":MONEY))), MONEY(50000000))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "definition \"RCF Increase Amount\"",
+          "slot": "calculationExpression",
+          "ir": "MAX:MONEY(MONEY(0), SUBTRACT:MONEY(METRIC(\"Super-Senior Revolving Facility Maximum Committed Amount (including Refinancing Indebtedness thereof)\":MONEY), MONEY(62000000)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "definition \"Applicable Rate\"",
+          "slot": "calculationExpression",
+          "ir": "IF:PERCENT(NOT(TXIN(\"FinancialStatementsDeliveredForFirstFull\":BOOLEAN)) ? PERCENT(0.08) : IF:PERCENT(OR:BOOLEAN(TXIN(\"ComplianceCertificateRequiredButNotYetDe\":BOOLEAN), TXIN(\"EventOfDefaultUnderSection8_01_1_Continu\":BOOLEAN)) ? PERCENT(0.08) : IF:PERCENT(COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) GT RATIO(1)) ? PERCENT(0.08) : IF:PERCENT(COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) GT RATIO(0.5)) ? PERCENT(0.0775) : PERCENT(0.075)))))",
+          "inferredType": "PERCENT",
+          "sufficiency": "AMBIGUOUS"
+        },
+        {
+          "owner": "definition \"Applicable Rate\"",
+          "slot": "calculationExpression",
+          "ir": "IF:PERCENT(NOT(TXIN(\"FinancialStatementsDeliveredForFirstFull\":BOOLEAN)) ? PERCENT(0.07) : IF:PERCENT(OR:BOOLEAN(TXIN(\"ComplianceCertificateRequiredButNotYetDe\":BOOLEAN), TXIN(\"EventOfDefaultUnderSection8_01_1_Continu\":BOOLEAN)) ? PERCENT(0.07) : IF:PERCENT(COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) GT RATIO(1)) ? PERCENT(0.07) : IF:PERCENT(COMPARE(METRIC(\"Secured Net Leverage Ratio\":RATIO) GT RATIO(0.5)) ? PERCENT(0.0675) : PERCENT(0.065)))))",
+          "inferredType": "PERCENT",
+          "sufficiency": "AMBIGUOUS"
+        },
+        {
+          "owner": "definition \"Asset Sale\"",
+          "slot": "calculationExpression",
+          "ir": "AND:BOOLEAN(OR:BOOLEAN(TXIN(\"DispositionOfPropertyOrAssetsOfBorrowerO\":BOOLEAN), AND:BOOLEAN(TXIN(\"IssuanceOrSaleOfSubsidiaryEquityInterest\":BOOLEAN), NOT(TXIN(\"IsCompliantPreferredOrDisqualifiedStockI\":BOOLEAN)))), NOT(OR:BOOLEAN(OR:BOOLEAN(TXIN(\"DispositionOfCashEquivalentsOrInvestment\":BOOLEAN), TXIN(\"DispositionOfObsoleteDamagedWornOrHeldFo\":BOOLEAN), TXIN(\"ImprovementsToLeasedRealPropertyToLandlo\":BOOLEAN), TXIN(\"CharitableContributionOrSimilarGiftOfImm\":BOOLEAN)), TXIN(\"DispositionOfAllOrSubstantiallyAllAssets\":BOOLEAN), TXIN(\"DispositionInConnectionWithPermittedRest\":BOOLEAN), OR:BOOLEAN(AND:BOOLEAN(COMPARE(TXIN(\"TransactionFairMarketValue\":MONEY) GTE MONEY(500000)), COMPARE(TXIN(\"TransactionFairMarketValue\":MONEY) LT MONEY(5000000)), COMPARE(TXIN(\"AggregateFairMarketValueOfAllSuchTransac\":MONEY) LTE MONEY(20000000))), COMPARE(TXIN(\"TransactionFairMarketValue\":MONEY) LT MONEY(500000))), TXIN(\"IntercompanyDispositionBetweenBorrowerAn\":BOOLEAN), TXIN(\"LikeKindExchangeUnderSection1031ForUseIn\":BOOLEAN), OR:BOOLEAN(TXIN(\"LeaseAssignmentSubleaseLicenseSublicense\":BOOLEAN), TXIN(\"ExerciseOfTerminationRightsUnderLeaseSub\":BOOLEAN)), TXIN(\"ForeclosureCondemnationExpropriationEmin\":BOOLEAN), OR:BOOLEAN(TXIN(\"SaleOfReceivablesOrSecuritizationAssetsU\":BOOLEAN), TXIN(\"DispositionOfAccountReceivableInConnecti\":BOOLEAN)), TXIN(\"FinancingTransactionForPropertyBuiltOrAc\":BOOLEAN), OR:BOOLEAN(TXIN(\"SaleLeaseAssignmentLicenseSubleaseOrDisc\":BOOLEAN), TXIN(\"ConversionOfReceivablesToNotesOrOtherDis\":BOOLEAN)), TXIN(\"LicensingOrSublicensingOfIPOrGeneralInta\":BOOLEAN), TXIN(\"SurrenderWaiverSettlementOfContractRight\":BOOLEAN), TXIN(\"UnwindingOfHedgingObligationsOrdinaryCou\":BOOLEAN), TXIN(\"JointVentureInvestmentDispositionUnderCu\":BOOLEAN), TXIN(\"LapseAbandonmentOfImmaterialIPRightsOrdi\":BOOLEAN), TXIN(\"GrantOfLienPermittedUnderSection7_01\":BOOLEAN), TXIN(\"IssuanceOfDirectorsQualifyingSharesOrFor\":BOOLEAN), OR:BOOLEAN(TXIN(\"DispositionOfAssetsAcquiredInPermittedTr\":BOOLEAN), TXIN(\"DispositionForAntitrustApprovalOrOtherwi\":BOOLEAN)), TXIN(\"PropertyExchangedForCreditAgainstPurchas\":BOOLEAN))))",
+          "inferredType": "BOOLEAN",
+          "sufficiency": "COMPLETE"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-2/region-ebitda.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 0,
+      "definitions": 1,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 1,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 1,
+        "modelEmittedUnsupported": 1,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 5,
+        "liveNodes": 53
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 5,
+      "expressions": [
+        {
+          "owner": "definition \"Consolidated EBITDA\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(ADD:MONEY(TERM(\"Consolidated Net Income\":MONEY), ADD:MONEY(SUM:MONEY(ADD:MONEY(METRIC(\"Total Interest Expense, Net Hedging Losses and Interest Income/Gains\":MONEY), METRIC(\"Bank/Letter of Credit/Letter of Guarantee/Bankers' Acceptance Fees and Surety Bond Costs (Financing)\":MONEY), METRIC(\"Items Excluded from Consolidated Interest Expense\":MONEY)), ADD:MONEY(METRIC(\"Provision for Income/Profits/Capital-Based Taxes (incl. future tax levies, penalties/interest)\":MONEY), METRIC(\"Net Tax Expense Associated with Consolidated Net Income Adjustments\":MONEY)), TERM(\"Consolidated Depreciation and Amortizati\":MONEY), ADD:MONEY(METRIC(\"Other Non-Cash Charges (Write-offs/Write-downs)\":MONEY), UNSUPPORTED(\"Borrower's election not to add back a non-cash cha\")), ADD:MONEY(METRIC(\"Minority Interest Expense and Non-Controlling Interest Income (excl. Cash Distributions)\":MONEY), METRIC(\"ASC Topic 810 Consolidation-Related Reductions to Consolidated Net Income\":MONEY)), MIN:MONEY(ADD:MONEY(ADD:MONEY(METRIC(\"Board of Director Fees\":MONEY), METRIC(\"Optionholder Distribution-Equalization Payments\":MONEY)), ADD:MONEY(METRIC(\"Extraordinary/Non-Recurring/Unusual Losses, Fees, Costs, Charges or Expenses (incl. Strategic Initiative Accruals/Reserves)\":MONEY), METRIC(\"Restructuring/Integration Costs, Charges, Accruals or Reserves\":MONEY)), METRIC(\"Independent Board Member Compensation/Expense Reimbursement Payments\":MONEY)), MULTIPLY:MONEY(PERCENT(0.1), METRIC(\"Consolidated EBITDA (calculated without giving effect to addbacks under clauses (f), (m) and (n))\":MONEY))), METRIC(\"Costs/Expenses under Management Equity or Employee Benefit Plans Funded by Capital Contributions or Qualifying Equity Issuance Proceeds\":MONEY), ADD:MONEY(METRIC(\"Net Pension/OPEB Costs (ASC 715 Amortization Items)\":MONEY), METRIC(\"Other Items of a Similar Nature to Pension/OPEB Adjustments\":MONEY)), TERM(\"Transaction Expenses\":MONEY), METRIC(\"Internal Software Development Costs Expensed but Capitalizable under GAAP\":MONEY), METRIC(\"Loss from Discontinued Operations (Disposal-Timing Gated)\":MONEY)), SUM:MONEY(METRIC(\"Cash Receipts/Netting Arrangements Reversing Prior-Period Non-Cash-Gain Deductions from EBITDA\":MONEY), MIN:MONEY(SUBTRACT:MONEY(METRIC(\"Run-Rate Cost Savings, Synergies and Operating Expense Reductions from Permitted Acquisitions (Pro Forma)\":MONEY), METRIC(\"Actual Benefits Realized During the Period from Such Actions\":MONEY)), LEDGER(ir-sharedcap:8a8a84ec6c4d8b9a3d1e54d4))))), SUM:MONEY(METRIC(\"Non-Cash Gains (excl. Certain Reversal-of-Prior-Period-Accrual Exceptions)\":MONEY), METRIC(\"Non-Controlling Interest Loss Added to (and Not Deducted from) Consolidated Net Income\":MONEY), METRIC(\"Net Income from Discontinued Operations (Disposal-Timing Gated)\":MONEY), METRIC(\"Extraordinary/Non-Recurring/Unusual Gains\":MONEY)))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-2/region-first-lien-debt.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": true,
+      "rules": 0,
+      "definitions": 2,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 2,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 0,
+        "modelEmittedUnsupported": 0,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 33
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "definition \"Consolidated First Lien Secured Debt\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(SUM:MONEY(METRIC(\"Indebtedness for borrowed money (secured by a first priority lien)\":MONEY), TERM(\"Capitalized Lease Obligations\":MONEY), METRIC(\"purchase money Indebtedness (secured by a first priority lien)\":MONEY)), SUM:MONEY(TERM(\"Non-Recourse Indebtedness\":MONEY), METRIC(\"undrawn amounts under revolving credit facilities\":MONEY), SUBTRACT:MONEY(METRIC(\"Indebtedness in respect of letters of credit, bank guarantees and performance or similar bonds\":MONEY), METRIC(\"obligations in respect of drawn standby letters of credit not reimbursed within three (3) Business Days (carved back into the count, not excluded)\":MONEY)), TERM(\"Hedging Obligations\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "definition \"Consolidated Interest Expense\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(SUM:MONEY(SUM:MONEY(METRIC(\"cash interest expense (including Capitalized Lease Obligations attributable interest), net of cash interest income, on Indebtedness other than Non-Recourse Indebtedness\":MONEY), METRIC(\"commissions, discounts and other fees/charges re letters of credit and bankers' acceptance financing, and net cash costs under hedging agreements (excluding early termination)\":MONEY)), SUBTRACT:MONEY(METRIC(\"non-cash interest expense - amortization of original issue discount from issuance of Indebtedness at less than par\":MONEY), METRIC(\"OID amortization attributable to Indebtedness borrowed under the Facilities in connection with the Transactions, and to any Non-Recourse Indebtedness (excluded)\":MONEY)), METRIC(\"pay-in-kind interest expense payable pursuant to agreements governing Indebtedness for borrowed money\":MONEY)), SUM:MONEY(METRIC(\"amortization of deferred financing costs, debt issuance costs, commissions, fees/expenses and other non-cash interest (other than (b)(i)/(b)(ii))\":MONEY), METRIC(\"interest expense attributable to mark-to-market movement of Hedging Obligations/derivative instruments (ASC 815)\":MONEY), METRIC(\"costs of incurring/terminating Hedging Obligations and cash breakage costs for interest rate hedging agreements\":MONEY), METRIC(\"commissions, discounts, yield, make-whole premium and other fees/charges incurred in connection with Non-Recourse Indebtedness\":MONEY), METRIC(\"additional interest owing pursuant to a registration rights agreement\":MONEY), METRIC(\"make-whole premiums or other breakage costs of any Indebtedness, including Indebtedness issued in connection with the Transactions\":MONEY), METRIC(\"penalties and interest relating to taxes\":MONEY), METRIC(\"accretion or accrual of discounted liabilities not constituting Indebtedness\":MONEY), METRIC(\"expense from discounting of Indebtedness in connection with recapitalization or purchase accounting\":MONEY), METRIC(\"interest expense attributable to the exercise of appraisal rights and settlement of related claims/actions in connection with the Transactions, any acquisition or Investment\":MONEY), METRIC(\"annual agency fees paid to administrative/collateral agents re secured or unsecured Indebtedness, including the Facilities and the Super-Priority Revolving Credit Agreement\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-2/region-interest-expense.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": true,
+      "rules": 0,
+      "definitions": 2,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 1,
+        "PARTIAL": 1,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 0,
+        "modelEmittedUnsupported": 0,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 57
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "definition \"Consolidated Interest Expense\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(ADD:MONEY(METRIC(\"Cash interest expense (incl. Capitalized Lease Obligations attribution), net of cash interest income, on Indebtedness other than Non-Recourse Indebtedness, including LC/bankers' acceptance commissions/fees and net cash hedging costs (other than in connection with early termination)\":MONEY), ADD:MONEY(METRIC(\"Amortization of original issue discount from issuance of Indebtedness at less than par (excluding Indebtedness borrowed under the Facilities in connection with the Transactions and any Non-Recourse Indebtedness)\":MONEY), METRIC(\"Pay-in-kind interest expense payable pursuant to the terms of agreements governing Indebtedness for borrowed money\":MONEY))), SUM:MONEY(METRIC(\"Amortization of deferred financing costs, debt issuance costs, commissions, fees and expenses and other non-cash interest not referred to in clauses (b)(i)/(b)(ii) (incl. effects of acquisition method or pushdown accounting)\":MONEY), METRIC(\"Interest expense attributable to mark-to-market valuation movement of obligations under Hedging Obligations and other derivative instruments (incl. FASB ASC Topic 815)\":MONEY), METRIC(\"Costs of incurring or terminating Hedging Obligations and cash breakage costs on interest-rate hedging agreements\":MONEY), METRIC(\"Commissions, discounts, yield, make-whole premium and other fees/charges (incl. interest expense) incurred in connection with Non-Recourse Indebtedness\":MONEY), METRIC(\"\"Additional interest\" owing under a registration rights agreement with respect to any securities\":MONEY), METRIC(\"Payments for make-whole premiums or other breakage costs of Indebtedness, including Indebtedness issued in connection with the Transactions\":MONEY), METRIC(\"Penalties and interest relating to taxes\":MONEY), METRIC(\"Accretion or accrual of discounted liabilities not constituting Indebtedness\":MONEY), METRIC(\"Expense resulting from discounting of Indebtedness in connection with recapitalization or purchase accounting\":MONEY), METRIC(\"Interest expense attributable to exercise of appraisal rights and settlement of related claims/actions in connection with the Transactions, any acquisition or Investment\":MONEY), METRIC(\"Annual agency fees paid to administrative and collateral agents re secured/unsecured Indebtedness (incl. security/collateral trust arrangements), including the Facilities and the Super-Priority Revolving Credit Agreement\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "definition \"Consolidated Maintenance EBITDA\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(ADD:MONEY(TERM(\"Consolidated Maintenance Net Income\":MONEY), SUM:MONEY(ADD:MONEY(METRIC(\"Total interest expense (and, to the extent not reflected therein, losses on hedging derivative instruments net of income/gains, plus bank/LC/guarantee/bankers'-acceptance fees and surety bond costs in connection with financing activities)\":MONEY), METRIC(\"Items excluded from the definition of \"Consolidated Interest Expense\" pursuant to that definition (added back here)\":MONEY)), METRIC(\"Provision for taxes based on income, profits, revenue or capital (incl. federal/foreign/state income, franchise, excise, VAT and similar taxes, property taxes, foreign withholding taxes, related penalties/interest, and net tax expense from Consolidated Maintenance Net Income adjustments)\":MONEY), METRIC(\"Consolidated Depreciation and Amortization Expense\":MONEY), METRIC(\"Other non-cash charges, including write-offs/write-downs reducing Consolidated Maintenance Net Income (subject to a future-period cash-payment subtraction mechanic for accrual/reserve items, excepting pre-Closing-Date deferred-compensation settlements and prior-period-prepaid-item amortization)\":MONEY), METRIC(\"Minority interest expense; non-controlling-interest income of third parties in non-wholly-owned Subsidiaries (excluding cash distributions); and ASC Topic 810 consolidation-related reductions\":MONEY), METRIC(\"Loss or discount on sale of receivables, Securitization Assets and related assets to a Securitization Subsidiary in connection with a Qualified Securitization Facility\":MONEY), METRIC(\"Cash receipts (or netting arrangements reducing cash expenditures) not representing Consolidated Maintenance EBITDA/Net Income in a prior period, to the extent related non-cash gains were deducted under clause (2) in a previous period and not added back\":MONEY), METRIC(\"Costs or expenses under a management equity/stock option/employee benefit plan or stock subscription/shareholder agreement, to the extent funded with contributed capital or net proceeds of an Equity Interests issuance (other than Disqualified Stock)\":MONEY), METRIC(\"Net pension/other post-employment benefit costs representing amortization of unrecognized prior service costs, actuarial losses, and unrecognized net obligation under FASB ASC Topic 715, and similar items\":MONEY), MIN:MONEY(ADD:MONEY(ADD:MONEY(METRIC(\"Board of director fees\":MONEY), METRIC(\"Payments to optionholders in connection with distributions to equityholders, compensating them as though they were equityholders entitled to share in the distribution\":MONEY)), SUBTRACT:MONEY(ADD:MONEY(METRIC(\"'Run-rate' cost savings, synergies and operating expense reductions related to any restructuring (incl. facility closures and workforce reductions), projected within 12 months, pro forma as of first day of period\":MONEY), METRIC(\"'Run-rate' cost savings, synergies and operating expense reductions related to any Permitted Acquisition, projected within 12 months, pro forma as of first day of period (subject to a 15%-of-Acquired-EBITDA aggregate cap shared with Section 1.07(3), not computed in this node - see sufficiencyReasons)\":MONEY)), METRIC(\"Actual benefits realized from run-rate cost-savings actions during the applicable period\":MONEY)), METRIC(\"Extraordinary, non-recurring or unusual losses, fees, costs, charges or expenses (incl. strategic initiatives and restructuring/integration costs, facility closures, workforce reductions, reserve adjustments)\":MONEY), METRIC(\"Payments in the nature of compensation or expense reimbursement made to independent board members\":MONEY)), MULTIPLY:MONEY(PERCENT(0.15), METRIC(\"Consolidated Maintenance EBITDA (calculated without giving effect to addbacks under clauses (f), (l), (m) and (n))\":MONEY))), METRIC(\"Internal software development costs expensed during the period that could have been capitalized under GAAP\":MONEY), METRIC(\"Loss from discontinued operations (limited, where classified as discontinued solely due to a disposal agreement, to when/to the extent actually disposed)\":MONEY), METRIC(\"Earn-out and contingent consideration obligations (incl. to the extent accounted for as bonuses) and adjustments thereof, and purchase price adjustments\":MONEY), METRIC(\"Transaction Expenses\":MONEY))), SUM:MONEY(METRIC(\"Non-cash gains for the period (excluding reversals of accruals/reserves for potential cash items that previously reduced Consolidated Maintenance Net Income/EBITDA, unless already added back)\":MONEY), METRIC(\"Non-controlling-interest loss of third parties in non-wholly-owned Subsidiaries added to (and not deducted from) Consolidated Maintenance Net Income\":MONEY), METRIC(\"Net income from discontinued operations (limited, where classified as discontinued solely due to a disposal agreement, to when/to the extent actually disposed)\":MONEY), METRIC(\"Extraordinary, non-recurring or unusual gains\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-2/region-net-income.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 0,
+      "definitions": 1,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 1,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 3,
+        "modelEmittedUnsupported": 3,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 7,
+        "liveNodes": 51
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 7,
+      "expressions": [
+        {
+          "owner": "definition \"Consolidated Net Income\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(ADD:MONEY(METRIC(\"Net Income\":MONEY), SUM:MONEY(METRIC(\"Business Interruption Insurance Proceeds Received or Receivable\":MONEY), METRIC(\"Expenses or Charges Reimbursed or Reimbursable by a Third Party\":MONEY), METRIC(\"Amounts Covered by Indemnification/Reimbursement re Acquisition, Investment or Permitted Disposition of Assets\":MONEY))), SUM:MONEY(METRIC(\"Cumulative Effect of Change in Accounting Principles/Policies\":MONEY), METRIC(\"Gain (Loss) on Asset Sales, Disposals or Abandonments (Non-Ordinary-Course)\":MONEY), SUBTRACT:MONEY(METRIC(\"Net Income of Non-Subsidiary or Equity-Method Investee\":MONEY), METRIC(\"Dividends/Distributions Actually Paid in Cash or Cash Equivalents to Such Person or Subsidiary\":MONEY)), SUBTRACT:MONEY(IF:MONEY(AND:BOOLEAN(UNSUPPORTED(\"Subsidiary (other than a Guarantor) is, at the dat\"), NOT(UNSUPPORTED(\"the dividend/distribution restriction has been leg\")), NOT(UNSUPPORTED(\"the Borrower reasonably believes such restriction \"))) ? METRIC(\"Net Income of Restricted Non-Guarantor Subsidiary\":MONEY) : MONEY(0)), METRIC(\"Dividends/Distributions Actually Paid or Permissibly Payable in Cash or Cash Equivalents\":MONEY)), METRIC(\"Effects of Recapitalization or Purchase Accounting Adjustments\":MONEY), ADD:MONEY(METRIC(\"Gain (Loss) on Early Extinguishment or Conversion of Indebtedness\":MONEY), METRIC(\"Gain (Loss) on Early Extinguishment or Conversion of Derivative Instruments\":MONEY)), ADD:MONEY(METRIC(\"Impairment Charges, Asset Write-offs or Write-downs (GAAP)\":MONEY), METRIC(\"Amortization of Intangibles (GAAP)\":MONEY)), ADD:MONEY(METRIC(\"Equity-Based or Non-Cash Compensation Charges/Expenses\":MONEY), METRIC(\"Non-Cash Compensation Expense under ASC Topic 718 / ASC Topic 505-50\":MONEY), METRIC(\"Income (Loss) Attributable to Deferred Compensation Plans or Trusts\":MONEY)), ADD:MONEY(METRIC(\"Fees, Expenses or Charges (and Amortization thereof) re Acquisitions, Investments, Asset Sales, Indebtedness Incurrence/Repayment, Equity Issuances, Recapitalizations, Refinancings or Debt Amendments\":MONEY), MIN:MONEY(METRIC(\"Charges or Nonrecurring Merger Costs re Unsuccessful/Non-Consummated Transaction\":MONEY), MONEY(5000000))), METRIC(\"Accruals and Reserves Established/Adjusted in Connection with the Transactions, an Investment or an Acquisition (GAAP)\":MONEY), ADD:MONEY(METRIC(\"Expenses, Charges or Losses Covered by Insurance and Reimbursed/Reimbursable by a Third Party\":MONEY), METRIC(\"Expenses, Charges or Losses Covered by Indemnification/Reimbursement re Acquisition, Investment or Permitted Asset Disposition\":MONEY)), ADD:MONEY(METRIC(\"Non-Cash Mark-to-Market Gain (Loss) on Derivative Instruments (ASC Topic 815)\":MONEY), METRIC(\"Mark-to-Market Movement of Other Financial Instruments (ASC Topic 825)\":MONEY)), METRIC(\"Net Unrealized Non-Cash Currency Transaction/Translation Gain or Loss (Including Indebtedness Remeasurement)\":MONEY), METRIC(\"Adjustments from Application of ASC Topic No. 460 (Guarantees) or Comparable Regulation\":MONEY), METRIC(\"Non-Cash Rent Expense\":MONEY), METRIC(\"Non-Cash Expenses, Accruals or Reserves re Historical Tax Exposure Adjustments\":MONEY)))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-2/region-new-definitions.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 2,
+      "definitions": 3,
+      "ruleSufficiency": {
+        "COMPLETE": 2,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 1,
+        "PARTIAL": 1,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 1,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 1,
+        "modelEmittedUnsupported": 1,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 30
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "rule 2.05(2)(c)(i)",
+          "slot": "capacityExpression",
+          "ir": "MIN:MONEY(METRIC(\"Super-Priority Revolving Loans then outstanding (aggregate principal amount)\":MONEY), SUBTRACT:MONEY(METRIC(\"Unrestricted cash on hand of the Borrower and its Subsidiaries as of month-end\":MONEY), MONEY(50000000)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 2.05(2)(c)(i)",
+          "slot": "conditions[0]",
+          "ir": "COMPARE(METRIC(\"Unrestricted cash on hand of the Borrower and its Subsidiaries as of month-end\":MONEY) GT MONEY(50000000))",
+          "inferredType": "BOOLEAN",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 2.05(2)(c)(ii)",
+          "slot": "capacityExpression",
+          "ir": "SUBTRACT:MONEY(TERM(\"Maintenance Liquidity\":MONEY), MONEY(115000000))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 2.05(2)(c)(ii)",
+          "slot": "conditions[0]",
+          "ir": "COMPARE(TERM(\"Maintenance Liquidity\":MONEY) GT MONEY(115000000))",
+          "inferredType": "BOOLEAN",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 2.05(2)(c)(ii)",
+          "slot": "exceptions[0].conditions[0]",
+          "ir": "COMPARE(TXIN(\"Deficiency Amount\":MONEY) LT MONEY(1300000))",
+          "inferredType": "BOOLEAN",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "definition \"Invoice Restrictions\"",
+          "slot": "calculationExpression",
+          "ir": "UNSUPPORTED(\"\"Invoice Restrictions\" has no meaning stated in th\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "MISSING_CONTEXT"
+        },
+        {
+          "owner": "definition \"Maintenance Liquidity\"",
+          "slot": "calculationExpression",
+          "ir": "ADD:MONEY(SUBTRACT:MONEY(METRIC(\"Aggregate commitments under the Super-Priority Revolving Credit Facility (including revolving commitments in respect of Permitted Euro Revolving Indebtedness, or any Refinancing Indebtedness thereof)\":MONEY), ADD:MONEY(METRIC(\"Outstanding revolving loans under the Super-Priority Revolving Credit Facility and any Permitted Euro Revolving Indebtedness (or Refinancing Indebtedness thereof)\":MONEY), SUBTRACT:MONEY(METRIC(\"Face amount of letters of credit issued under such revolving facilities\":MONEY), METRIC(\"Reimbursed amounts under such letters of credit\":MONEY)))), METRIC(\"Adjustment to Liquidity (as set forth in the most recently delivered Monthly Factoring Report)\":MONEY), ADD:MONEY(METRIC(\"Unrestricted cash of the Borrower and its Subsidiaries\":MONEY), TERM(\"Cash Equivalents\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/holdout/run-2/region-secured-net-leverage.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 0,
+      "definitions": 2,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 2,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 0,
+        "modelEmittedUnsupported": 0,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 9
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "definition \"Secured Net Leverage Ratio\"",
+          "slot": "calculationExpression",
+          "ir": "DURING(DIVIDE:NUMBER(SUBTRACT:MONEY(METRIC(\"Consolidated Secured Debt\":MONEY), METRIC(\"Qualifying Cash and Cash Equivalents (unrestricted, or restricted in favor of the Facilities)\":MONEY)), IF:MONEY(TXIN(\"IsCalculationForFinancialMaintenanceCove\":BOOLEAN) ? METRIC(\"Consolidated Maintenance EBITDA\":MONEY) : METRIC(\"Consolidated EBITDA\":MONEY))))",
+          "inferredType": "NUMBER",
+          "sufficiency": "COMPLETE"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1/region-debt-dsgr.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": true,
+      "rules": 23,
+      "definitions": 2,
+      "ruleSufficiency": {
+        "COMPLETE": 22,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 1,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 2,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 1,
+        "modelEmittedUnsupported": 1,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 15
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "rule 6.01(a)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(b)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(b)(iii)",
+          "slot": "capacityExpression",
+          "ir": "LEDGER(ir-sharedcap:f653232473b304e28c945a96)",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(c)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(c)(iii)",
+          "slot": "capacityExpression",
+          "ir": "LEDGER(ir-sharedcap:f653232473b304e28c945a96)",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(d)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(e)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(f)",
+          "slot": "capacityExpression",
+          "ir": "UNSUPPORTED(\"The permitted amount equals the Indebtedness exist\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "MISSING_CONTEXT"
+        },
+        {
+          "owner": "rule 6.01(g)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(h)",
+          "slot": "capacityExpression",
+          "ir": "MONEY(20000000)",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(i)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(j)(i)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(j)(ii)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(k)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(l)(i)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(l)(ii)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(m)(i)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(m)(ii)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(n)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(o)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(p)",
+          "slot": "capacityExpression",
+          "ir": "MULTIPLY:MONEY(PERCENT(0.15), METRIC(\"Applicable EBITDA\":MONEY))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(q)",
+          "slot": "capacityExpression",
+          "ir": "MAX:MONEY(MONEY(25000000), MULTIPLY:MONEY(PERCENT(0.25), METRIC(\"Applicable EBITDA\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1/region-definitions-lsb.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 0,
+      "definitions": 14,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 8,
+        "PARTIAL": 4,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 2,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 5,
+        "modelEmittedUnsupported": 6,
+        "nodesOnlyInAttemptedStructure": 8,
+        "partialCompositesKept": 3,
+        "liveNodes": 62
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 5,
+      "expressions": [
+        {
+          "owner": "definition \"Availability\"",
+          "slot": "calculationExpression",
+          "ir": "IF:MONEY(EVENT(null) ? SUBTRACT:MONEY(SUBTRACT:MONEY(MIN:MONEY(TERM(\"Aggregate Revolving Commitment\":MONEY), TERM(\"Borrowing Base\":MONEY)), TERM(\"Aggregate Revolving Exposure\":MONEY)), TERM(\"Reserves\":MONEY)) : SUBTRACT:MONEY(SUBTRACT:MONEY(SUBTRACT:MONEY(MIN:MONEY(TERM(\"Aggregate Revolving Commitment\":MONEY), TERM(\"Borrowing Base\":MONEY)), TERM(\"Aggregate Revolving Exposure\":MONEY)), TERM(\"Availability Block\":MONEY)), TERM(\"Reserves\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "definition \"Borrowing Base\"",
+          "slot": "calculationExpression",
+          "ir": "ADD:MONEY(MULTIPLY:MONEY(PERCENT(0.9), TERM(\"Eligible Accounts\":MONEY)), MIN:MONEY(MULTIPLY:MONEY(PERCENT(0.75), TERM(\"Eligible Inventory\":MONEY)), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"MULTIP\"; attempted=MULTIPLY:NUMBER(PERCENT(0.85), METRIC(\"Net Orderly Liquidation Value Percentage (per most recent Inventory appraisal ordered by the Administrative Agent)\":MONEY), TERM(\"Eligible Inventory\":MONEY)))))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "definition \"Fixed Charge Coverage Ratio\"",
+          "slot": "calculationExpression",
+          "ir": "DIVIDE:NUMBER(SUBTRACT:MONEY(METRIC(\"EBITDA\":MONEY), METRIC(\"Capital Expenditures\":MONEY)), ADD:MONEY(METRIC(\"Scheduled Principal Payments on Indebtedness (excluding final scheduled Obligations payment at Maturity Date, Secured Notes final maturity payment, and ordinary-course insurance-premium financing to the extent expensed)\":MONEY), METRIC(\"Consolidated Net Interest Expense\":MONEY), METRIC(\"Capitalized Lease Obligations scheduled payments\":MONEY)))",
+          "inferredType": "NUMBER",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "definition \"Payment Conditions\"",
+          "slot": "calculationExpression",
+          "ir": "AND:BOOLEAN(NOT(TERM(\"Default\":BOOLEAN)), DURING(COMPARE(TERM(\"Specified Availability\":MONEY) GTE MAX:MONEY(MULTIPLY:MONEY(PERCENT(0.2), TERM(\"Revolving Commitment\":MONEY)), MONEY(13000000)))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"IF\")\"; attempted=IF:BOOLEAN(UNSUPPORTED(\"whether the Payment Condition Transaction is a Res\") ? UNSUPPORTED(\"in lieu of the clause (c) certificate, certain cer\") : UNSUPPORTED(\"requirement that the Borrower Representative deliv\"))))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "definition \"ABL Priority Collateral\"",
+          "slot": "calculationExpression",
+          "ir": "UNSUPPORTED(\"meaning defined entirely by cross-reference to the\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "MISSING_CONTEXT"
+        },
+        {
+          "owner": "definition \"Notes Priority Collateral\"",
+          "slot": "calculationExpression",
+          "ir": "UNSUPPORTED(\"meaning defined entirely by cross-reference to the\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "MISSING_CONTEXT"
+        },
+        {
+          "owner": "definition \"Permitted Liens\"",
+          "slot": "calculationExpression",
+          "ir": "UNSUPPORTED(\"Enumerated list of ~13 lettered categories of Lien\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "definition \"Permitted Purchase Money Indebtedness\"",
+          "slot": "calculationExpression",
+          "ir": "MAX:MONEY(MONEY(70000000), MULTIPLY:MONEY(PERCENT(0.055), METRIC(\"total consolidated assets of the Loan Parties and their Subsidiaries (per GAAP balance sheet)\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "definition \"Specified Availability\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(SUBTRACT:MONEY(MIN:MONEY(TERM(\"Aggregate Revolving Commitment\":MONEY), TERM(\"Borrowing Base\":MONEY)), TERM(\"Aggregate Revolving Exposure\":MONEY)), TERM(\"Reserves\":MONEY))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/unit-6.08.json",
+      "pointer": "/compile",
+      "reproducedRecordedIRExactly": false,
+      "rules": 38,
+      "definitions": 6,
+      "ruleSufficiency": {
+        "COMPLETE": 28,
+        "PARTIAL": 10,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 3,
+        "PARTIAL": 2,
+        "AMBIGUOUS": 1,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 10,
+        "modelEmittedUnsupported": 11,
+        "nodesOnlyInAttemptedStructure": 12,
+        "partialCompositesKept": 6,
+        "liveNodes": 140
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 10,
+      "expressions": [
+        {
+          "owner": "rule 6.08(a)",
+          "slot": "conditions[0]",
+          "ir": "COMPARE(ADD:MONEY(TXIN(\"Proposed Restricted Payment amount\":MONEY), TXIN(\"Aggregate prior unreturned Restricted Pa\":MONEY)) LT TERM(\"Available Amount\":MONEY))",
+          "inferredType": "BOOLEAN",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "rule 6.08(b)(2)",
+          "slot": "capacityExpression",
+          "ir": "TXIN(\"proceeds of substantially concurrent sal\":MONEY)",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.08(b)(3)",
+          "slot": "capacityExpression",
+          "ir": "TXIN(\"proceeds of Refinancing Indebtedness or \":MONEY)",
+          "inferredType": "MONEY",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "rule 6.08(b)(4)",
+          "slot": "capacityExpression",
+          "ir": "ADD:MONEY(IF:MONEY(TXIN(\"first public offering of Borrower/Parent\":BOOLEAN) ? MAX:MONEY(MONEY(504000000), MULTIPLY:MONEY(PERCENT(0.7), METRIC(\"Consolidated EBITDA\":MONEY))) : MAX:MONEY(MONEY(252000000), MULTIPLY:MONEY(PERCENT(0.35), METRIC(\"Consolidated EBITDA\":MONEY)))), SUBTRACT:MONEY(ADD:MONEY(TXIN(\"cash proceeds from equity sales to emplo\":MONEY), TXIN(\"cash proceeds of key man life insurance \":MONEY), TXIN(\"bona fide cash bonuses foregone in excha\":MONEY)), TXIN(\"Restricted Payments previously made with\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "rule 6.08(b)(6)(a)",
+          "slot": "capacityExpression",
+          "ir": "TXIN(\"aggregate cash actually received from th\":MONEY)",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.08(b)(8)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.08(b)(9)",
+          "slot": "capacityExpression",
+          "ir": "SUBTRACT:MONEY(ADD:MONEY(MULTIPLY:MONEY(PERCENT(0.06), TXIN(\"net cash proceeds received by/contribute\":MONEY)), MULTIPLY:MONEY(PERCENT(0.07), METRIC(\"Market Capitalization\":MONEY))), UNSUPPORTED(\"amounts used to incur Indebtedness/Disqualified St\"))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "rule 6.08(b)(10)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=AND:BOOLEAN(OR:BOOLEAN(OR:BOOLEAN(COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE RATIO(2)), COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE TERM(\"First Lien Leverage Ratio as of the last\":RATIO))), OR:BOOLEAN(COMPARE(METRIC(\"Interest Coverage Ratio\":RATIO) GTE RATIO(1.75)), COMPARE(METRIC(\"Interest Coverage Ratio\":RATIO) GTE TERM(\"Interest Coverage Ratio as of the last d\":RATIO)))), NOT(TERM(\"Specified Event of Default\":BOOLEAN))))",
+          "inferredType": "gate:BOOLEAN",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.08(b)(11)(i)",
+          "slot": "capacityExpression",
+          "ir": "TERM(\"Excluded Contributions received since th\":MONEY)",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.08(b)(11)(ii)",
+          "slot": "capacityExpression",
+          "ir": "TXIN(\"Net cash proceeds from an asset sale/dis\":MONEY)",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.08(b)(12)",
+          "slot": "capacityExpression",
+          "ir": "MAX:MONEY(MONEY(720000000), MULTIPLY:MONEY(PERCENT(1), METRIC(\"Consolidated EBITDA\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.08(b)(13)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.08(b)(14)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "rule 6.08(b)(15)",
+          "slot": "capacityExpression",
+          "ir": "MAX:MONEY(MONEY(720000000), MULTIPLY:MONEY(PERCENT(1), METRIC(\"Consolidated EBITDA\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.08(b)(16)",
+          "slot": "capacityExpression",
+          "ir": "UNSUPPORTED(\"aggregate pass-through funding for Parent Entity t\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "rule 6.08(b)(17)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.08(b)(18)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.08(b)(19)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "rule 6.08(b)(20)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.08(b)(21)(i)-(ii)",
+          "slot": "capacityExpression",
+          "ir": "ADD:MONEY(TERM(\"Retained Declined Proceeds\":MONEY), TERM(\"Retained Asset Sale Proceeds\":MONEY))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.08(b)(21)(iii)",
+          "slot": "capacityExpression",
+          "ir": "MAX:MONEY(MONEY(720000000), MULTIPLY:MONEY(PERCENT(1), METRIC(\"Consolidated EBITDA\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.08(b)(22)",
+          "slot": "capacityExpression",
+          "ir": "TXIN(\"the amount that constituted the original\":MONEY)",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.08(b)(23)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.08(b)(24)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.08(b)(25)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=AND:BOOLEAN(OR:BOOLEAN(OR:BOOLEAN(COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE RATIO(2)), COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE TERM(\"First Lien Leverage Ratio as of the last\":RATIO))), OR:BOOLEAN(COMPARE(METRIC(\"Interest Coverage Ratio\":RATIO) GTE RATIO(1.75)), COMPARE(METRIC(\"Interest Coverage Ratio\":RATIO) GTE TERM(\"Interest Coverage Ratio as of the last d\":RATIO)))), NOT(TERM(\"Specified Event of Default\":BOOLEAN))))",
+          "inferredType": "gate:BOOLEAN",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.08(b)(26)",
+          "slot": "capacityExpression",
+          "ir": "TERM(\"Available Investment Capacity Amount\":MONEY)",
+          "inferredType": "MONEY",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "rule 6.08(b)(27)",
+          "slot": "capacityExpression",
+          "ir": "TERM(\"Available RP Capacity Amount\":MONEY)",
+          "inferredType": "MONEY",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "rule 6.08",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "definition \"Threshold Amount\"",
+          "slot": "calculationExpression",
+          "ir": "MAX:MONEY(MONEY(324000000), MULTIPLY:MONEY(PERCENT(0.45), METRIC(\"Consolidated EBITDA\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "definition \"Available Investment Capacity Amount\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(UNSUPPORTED(\"Investments that may be made pursuant to clause 13\"), TXIN(\"amount of Available Investment Capacity \":MONEY))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "definition \"Available RP Capacity Amount\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(UNSUPPORTED(\"the amount of Restricted Payments that may be made\"), ADD:MONEY(TXIN(\"outstanding Indebtedness incurred under \":MONEY), TXIN(\"amount utilized to incur Liens under cla\":MONEY)))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "definition \"Available Amount\"",
+          "slot": "calculationExpression",
+          "ir": "SUBTRACT:MONEY(ADD:MONEY(MAX:MONEY(MULTIPLY:MONEY(PERCENT(0.5), METRIC(\"Consolidated Net Income\":MONEY)), MULTIPLY:MONEY(PERCENT(1), TERM(\"Retained Excess Cash Flow\":MONEY)), SUBTRACT:MONEY(METRIC(\"Consolidated EBITDA\":MONEY), MULTIPLY:MONEY(PERCENT(1.4), METRIC(\"Consolidated Interest Expense\":MONEY)))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"MULTIP\"; attempted=MULTIPLY:NUMBER(PERCENT(1), UNSUPPORTED(\"net cash proceeds/FMV from issue or sale of Equity\"))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"MULTIP\"; attempted=MULTIPLY:NUMBER(PERCENT(1), UNSUPPORTED(\"cash/FMV contributed to the capital of a Restricte\"))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"MULTIP\"; attempted=MULTIPLY:NUMBER(PERCENT(1), UNSUPPORTED(\"amounts received via sale/return on Restricted Inv\"))), UNSUPPORTED(\"Fair Market Value of an Investment (or net assets)\"), MAX:MONEY(MONEY(540000000), MULTIPLY:MONEY(PERCENT(0.75), METRIC(\"Consolidated EBITDA\":MONEY))), ADD:MONEY(TERM(\"Retained Declined Proceeds\":MONEY), TERM(\"Retained Asset Sale Proceeds\":MONEY), UNSUPPORTED(\"aggregate proceeds from dispositions/asset sales n\")), MULTIPLY:MONEY(PERCENT(1), TERM(\"Sale and Leaseback Transaction Proceeds\":MONEY))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(UNSUPPORTED(\"cumulative Liens incurred under clause (46)(ii) of\"), UNSUPPORTED(\"Indebtedness incurred pursuant to Section 6.01(b)(\"))))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "AMBIGUOUS"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[0]/result",
+      "reproducedRecordedIRExactly": false,
+      "rules": 3,
+      "definitions": 0,
+      "ruleSufficiency": {
+        "COMPLETE": 3,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 0,
+        "modelEmittedUnsupported": 0,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 5
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "rule 6.01(g)(i)",
+          "slot": "capacityExpression",
+          "ir": "MAX:MONEY(MONEY(2500000), MULTIPLY:MONEY(PERCENT(0.05), METRIC(\"Consolidated Adjusted EBITDA\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(g)(ii)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(g)(iii)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[1]/result",
+      "reproducedRecordedIRExactly": false,
+      "rules": 1,
+      "definitions": 0,
+      "ruleSufficiency": {
+        "COMPLETE": 1,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 0,
+        "modelEmittedUnsupported": 0,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 6
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "rule 6.04(a)(x)",
+          "slot": "capacityExpression",
+          "ir": "MAX:MONEY(MONEY(21000000), MULTIPLY:MONEY(PERCENT(0.35), DURING(METRIC(\"Consolidated Adjusted EBITDA\":MONEY))))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[2]/result",
+      "reproducedRecordedIRExactly": false,
+      "rules": 1,
+      "definitions": 0,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 1,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 0,
+        "modelEmittedUnsupported": 0,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 3
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "rule 6.04(a)(xi)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=COMPARE(METRIC(\"Total Rent Adjusted Net Leverage Ratio\":RATIO) LTE RATIO(3.5)))",
+          "inferredType": "gate:BOOLEAN",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[3]/result",
+      "reproducedRecordedIRExactly": false,
+      "rules": 1,
+      "definitions": 1,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 1,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 1,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 1,
+        "modelEmittedUnsupported": 0,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 1,
+        "liveNodes": 14
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 1,
+      "expressions": [
+        {
+          "owner": "rule 6.04(b)(iv)",
+          "slot": "capacityExpression",
+          "ir": "ADD:MONEY(MAX:MONEY(MONEY(21000000), MULTIPLY:MONEY(PERCENT(0.35), DURING(METRIC(\"Consolidated Adjusted EBITDA\":MONEY)))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"RULE_R\"))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[4]/result",
+      "error": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"rules\",\n      0,\n      \"capacityExpression\",\n      \"gatedBy\",\n      \"right\",\n      \"then\",\n      \"operands\",\n      0,\n      \"cases\",\n      0,\n      \"value\",\n      \"kind\"\n    ],\n    \"message\": \"Invalid input: expected st"
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[5]/result",
+      "reproducedRecordedIRExactly": false,
+      "rules": 1,
+      "definitions": 0,
+      "ruleSufficiency": {
+        "COMPLETE": 1,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 0,
+        "modelEmittedUnsupported": 0,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 4
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "rule 6.10(b)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=COMPARE(DURING(METRIC(\"Fixed Charge Coverage Ratio\":RATIO)) GTE RATIO(1.25)))",
+          "inferredType": "gate:BOOLEAN",
+          "sufficiency": "COMPLETE"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[7]/result",
+      "error": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"rules\",\n      17,\n      \"localRef\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"rules\",\n      17,\n      \""
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[8]/result",
+      "reproducedRecordedIRExactly": false,
+      "rules": 1,
+      "definitions": 0,
+      "ruleSufficiency": {
+        "COMPLETE": 1,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 0,
+        "modelEmittedUnsupported": 0,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 5
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "rule 6.01(i)",
+          "slot": "capacityExpression",
+          "ir": "MAX:MONEY(MONEY(70000000), MULTIPLY:MONEY(PERCENT(0.055), METRIC(\"total consolidated assets of the Loan Parties and their Subsidiaries\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[9]/result",
+      "reproducedRecordedIRExactly": false,
+      "rules": 5,
+      "definitions": 2,
+      "ruleSufficiency": {
+        "COMPLETE": 2,
+        "PARTIAL": 1,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 2,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 1,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 1,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 3,
+        "modelEmittedUnsupported": 3,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 5
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "rule 6.11(a)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.11(b)",
+          "slot": "capacityExpression",
+          "ir": "UNSUPPORTED(\"Scope of Restricted Payments permitted because the\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "MISSING_CONTEXT"
+        },
+        {
+          "owner": "rule 6.11(c)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=UNSUPPORTED(\"'Payment Conditions' defined-term gate on this Res\"))",
+          "inferredType": "gate:UNSUPPORTED",
+          "sufficiency": "MISSING_CONTEXT"
+        },
+        {
+          "owner": "rule 6.11(d)",
+          "slot": "capacityExpression",
+          "ir": "DURING(MONEY(500000))",
+          "inferredType": "MONEY",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "rule 6.11(d)",
+          "slot": "conditions[0]",
+          "ir": "UNSUPPORTED(\"Negative cross-rule eligibility gate: payment must\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[10]/result",
+      "reproducedRecordedIRExactly": false,
+      "rules": 5,
+      "definitions": 0,
+      "ruleSufficiency": {
+        "COMPLETE": 4,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 1,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 1,
+        "modelEmittedUnsupported": 1,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 1
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "rule 6.13(a)",
+          "slot": "capacityExpression",
+          "ir": "UNSUPPORTED(\"Investments listed on Schedule 6.13 (a specific, i\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "MISSING_CONTEXT"
+        },
+        {
+          "owner": "rule 6.13(b)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.13(c)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.13(d)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b-real-regression-run/run-1787866714176.json",
+      "pointer": "/results[11]/result",
+      "reproducedRecordedIRExactly": true,
+      "rules": 0,
+      "definitions": 2,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 2,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 2,
+        "modelEmittedUnsupported": 2,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 0,
+        "liveNodes": 2
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 0,
+      "expressions": [
+        {
+          "owner": "definition \"ABL Priority Collateral\"",
+          "slot": "calculationExpression",
+          "ir": "UNSUPPORTED(\"Definition of 'ABL Priority Collateral' is wholly \")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "MISSING_CONTEXT"
+        },
+        {
+          "owner": "definition \"Notes Priority Collateral\"",
+          "slot": "calculationExpression",
+          "ir": "UNSUPPORTED(\"Definition of 'Notes Priority Collateral' is wholl\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "MISSING_CONTEXT"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b1-real-revalidation-rerun/run-1787870304722.json",
+      "pointer": "/results[0]/result",
+      "reproducedRecordedIRExactly": false,
+      "rules": 1,
+      "definitions": 0,
+      "ruleSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 1,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 0,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 1,
+        "modelEmittedUnsupported": 1,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 4,
+        "liveNodes": 14
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 4,
+      "expressions": [
+        {
+          "owner": "rule 6.10(a)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=COMPARE(METRIC(\"Total Rent Adjusted Net Leverage Ratio\":RATIO) LTE ADD:RATIO(SCHEDULE(RATIO(5.5), RATIO(5.25)), IF:RATIO(AND:BOOLEAN(EVENT(TERM(\"Material Acquisition\":BOOLEAN)), UNSUPPORTED(\"Anti-stacking proviso requiring at least one Fisca\")) ? RATIO(0.5) : RATIO(0)))))",
+          "inferredType": "gate:UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b1-real-revalidation-rerun/run-1787871112005.json",
+      "pointer": "/results[0]/result",
+      "reproducedRecordedIRExactly": false,
+      "rules": 18,
+      "definitions": 3,
+      "ruleSufficiency": {
+        "COMPLETE": 10,
+        "PARTIAL": 5,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 3,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 2,
+        "PARTIAL": 1,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 0,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 7,
+        "modelEmittedUnsupported": 7,
+        "nodesOnlyInAttemptedStructure": 0,
+        "partialCompositesKept": 1,
+        "liveNodes": 28
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 1,
+      "expressions": [
+        {
+          "owner": "rule 6.01",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=AND:BOOLEAN(COMPARE(METRIC(\"Fixed Charge Coverage Ratio\":RATIO) GT RATIO(2)), UNSUPPORTED(\"Payment Conditions satisfied with respect to the i\")))",
+          "inferredType": "gate:UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "rule 6.01(a)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(b)",
+          "slot": "capacityExpression",
+          "ir": "UNSUPPORTED(\"Indebtedness amounts listed on Schedule 6.01\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "MISSING_CONTEXT"
+        },
+        {
+          "owner": "rule 6.01(c)",
+          "slot": "capacityExpression",
+          "ir": "MAX:MONEY(MONEY(70000000), MULTIPLY:MONEY(PERCENT(0.055), METRIC(\"total consolidated assets of the Loan Parties and their Subsidiaries\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(d)",
+          "slot": "capacityExpression",
+          "ir": "UNSUPPORTED(\"Incremental principal increase permitted on refina\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "rule 6.01(f)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(g)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=UNSUPPORTED(\"Subordination terms reasonably satisfactory to the\"))",
+          "inferredType": "gate:UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "rule 6.01(i)",
+          "slot": "capacityExpression",
+          "ir": "MAX:MONEY(MONEY(70000000), MULTIPLY:MONEY(PERCENT(0.055), METRIC(\"total consolidated assets of the Loan Parties and their Subsidiaries\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(j)",
+          "slot": "capacityExpression",
+          "ir": "UNSUPPORTED(\"Indebtedness constituting Permitted Investments\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "MISSING_CONTEXT"
+        },
+        {
+          "owner": "rule 6.01(l)",
+          "slot": "capacityExpression",
+          "ir": "TXIN(\"amount of insurance premiums financed\":MONEY)",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(m)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(n)",
+          "slot": "capacityExpression",
+          "ir": "UNSUPPORTED(\"Indebtedness in respect of Third Party Swap Obliga\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "MISSING_CONTEXT"
+        },
+        {
+          "owner": "rule 6.01(p)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(q)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "rule 6.01(r)",
+          "slot": "capacityExpression",
+          "ir": "MONEY(2000000)",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(s)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.01(t)",
+          "slot": "capacityExpression",
+          "ir": "UNSUPPORTED(\"Capacity to guarantee Indebtedness permitted under\")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "definition \"Permitted Purchase Money Indebtedness\"",
+          "slot": "calculationExpression",
+          "ir": "MAX:MONEY(MONEY(70000000), MULTIPLY:MONEY(PERCENT(0.055), METRIC(\"total consolidated assets of the Loan Parties and their Subsidiaries\":MONEY)))",
+          "inferredType": "MONEY",
+          "sufficiency": "COMPLETE"
+        }
+      ]
+    },
+    {
+      "file": "tests/fixtures/unseen-packages/phase-3b1-real-revalidation-rerun/run-1787871112005.json",
+      "pointer": "/results[1]/result",
+      "reproducedRecordedIRExactly": false,
+      "rules": 5,
+      "definitions": 2,
+      "ruleSufficiency": {
+        "COMPLETE": 2,
+        "PARTIAL": 1,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 2,
+        "CONFLICTED": 0
+      },
+      "definitionSufficiency": {
+        "COMPLETE": 1,
+        "PARTIAL": 0,
+        "AMBIGUOUS": 0,
+        "UNSUPPORTED": 0,
+        "MISSING_CONTEXT": 1,
+        "CONFLICTED": 0
+      },
+      "expressionStats": {
+        "unsupportedNodes": 3,
+        "modelEmittedUnsupported": 2,
+        "nodesOnlyInAttemptedStructure": 4,
+        "partialCompositesKept": 1,
+        "liveNodes": 6
+      },
+      "irValidationIssuesByKind": {},
+      "typeWarnings": 2,
+      "expressions": [
+        {
+          "owner": "rule 6.11(a)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=null)",
+          "inferredType": "CAPACITY",
+          "sufficiency": "COMPLETE"
+        },
+        {
+          "owner": "rule 6.11(b)",
+          "slot": "capacityExpression",
+          "ir": "UNSUPPORTED(\"Capacity/economics of Restricted Payments treated \")",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "MISSING_CONTEXT"
+        },
+        {
+          "owner": "rule 6.11(c)",
+          "slot": "capacityExpression",
+          "ir": "UNLIMITED(gatedBy=UNSUPPORTED(\"Satisfaction of the defined term 'Payment Conditio\"))",
+          "inferredType": "gate:UNSUPPORTED",
+          "sufficiency": "MISSING_CONTEXT"
+        },
+        {
+          "owner": "rule 6.11(d)",
+          "slot": "capacityExpression",
+          "ir": "DURING(MONEY(500000))",
+          "inferredType": "MONEY",
+          "sufficiency": "PARTIAL"
+        },
+        {
+          "owner": "rule 6.11(d)",
+          "slot": "conditions[0]",
+          "ir": "NOT(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"OR\")\"; attempted=OR:BOOLEAN(RULEREF(ir-rule:655d60b74b7891a70da22775), RULEREF(ir-rule:dc3b5a8a7be3ac9cf8665af2), RULEREF(ir-rule:504081c8b2dfd9dc4990233e))))",
+          "inferredType": "UNSUPPORTED",
+          "sufficiency": "PARTIAL"
+        }
+      ]
+    }
+  ]
+}
