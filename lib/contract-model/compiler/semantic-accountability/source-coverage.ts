@@ -184,6 +184,31 @@ export function segmentSourceUnits(text: string, protectedRanges: { charStart: n
  * the adverbial adjuncts still swallow "jointly and severally" and "directly or indirectly", and `contentWords`
  * still cannot see digits, so a bare section number is invisible to it.
  */
+/**
+ * ADVERBIAL ADJUNCTS - a partition of the closed class below, not new vocabulary and not a phrase list.
+ *
+ * The comment that used to sit on these words read: "An adjunct modifies a proposition and cannot head one; a
+ * residue made only of these sits beside text an item already anchors." The first half is true and the second
+ * half does not follow from it. MODIFYING A PROPOSITION IS CHANGING IT. An independent red team demonstrated
+ * the consequence twice over: "jointly and severally," and "directly or indirectly," score zero content words,
+ * so both were dismissed as "the residue of splitting a parent unit" - joint-and-several liability silently
+ * converted to several liability, and anti-evasion language silently deleted - while the clauses on either
+ * side were covered and the region reported semanticallyComplete.
+ *
+ * Grammatical shortness does not make text non-semantic. These words change scope ("solely", "only"),
+ * allocation ("jointly", "severally"), directness ("directly", "indirectly"), distribution ("collectively",
+ * "individually", "respectively") and anaphoric reach ("foregoing", "aforesaid", "above", "below") of whatever
+ * they attach to. A fragment carrying one is standalone modifier content, not syntactic glue.
+ *
+ * They stay inside FUNCTION_WORDS because the nominal-label tests (canaries #5, #7, #8) legitimately treat
+ * them as grammar when deciding whether a NAME is a name. What changes is narrower: they can no longer let a
+ * residue disappear as STRUCTURAL_NOISE.
+ */
+const ADVERBIAL_ADJUNCTS = new Set([
+  "solely", "only", "also", "otherwise", "further", "respectively", "generally", "collectively", "individually",
+  "directly", "indirectly", "together", "jointly", "severally", "hereinafter", "aforesaid", "foregoing", "above", "below",
+]);
+
 const FUNCTION_WORDS = new Set([
   // determiners, pronouns, prepositions, auxiliaries - pure grammar
   "a", "an", "and", "andor", "any", "are", "as", "at", "be", "been", "being", "both", "but", "by", "each", "either", "for", "from", "hereby", "hereof", "hereto", "hereunder", "in", "into", "is", "it", "its", "of", "on", "or", "other", "over", "per", "such", "than", "that", "the", "their", "then", "there", "thereof", "thereto", "thereunder", "these", "this", "those", "to", "under", "was", "were", "which", "who", "whom", "whose", "with", "within", "without",
@@ -197,10 +222,9 @@ const FUNCTION_WORDS = new Set([
   // A word that can introduce a condition, exception, proviso or override is never sufficient, on its own, to
   // make uncovered text harmless: provided, except, unless, including, subject, notwithstanding, however,
   // pursuant, whereas. They are content words now, and glue like ", provided that" is surfaced instead.
-  // adverbial adjuncts. An adjunct modifies a proposition and cannot head one; a residue made only of these
-  // sits beside text an item already anchors.
-  "solely", "only", "also", "otherwise", "further", "respectively", "generally", "collectively", "individually",
-  "directly", "indirectly", "together", "jointly", "severally", "hereinafter", "aforesaid", "foregoing", "above", "below",
+  // adverbial adjuncts - see ADVERBIAL_ADJUNCTS below. They remain in this set because the nominal-label tests
+  // treat them as grammar, but they can NO LONGER make a residue vanish as structural noise (canary #9).
+  ...ADVERBIAL_ADJUNCTS,
   // arithmetic connectives joining formula components an item already anchors ("... plus, ...", ", the sum of").
   // A residue carrying an actual amount is never dismissed here - the value guard runs first.
   "plus", "minus", "less", "sum", "difference", "product", "quotient",
@@ -359,8 +383,12 @@ export function classifyUnaccountedFragment(fragment: string, values: Quantitati
     // fragment any of those establishes keeps its disposition. What is left is an unexplained number, and an
     // unexplained number is accountable.
     const carriesUnexplainedDigits = /\d/.test(trimmed.replace(new RegExp(ENUMERATOR_SRC, "g"), " "));
+    // A residue carrying an adverbial adjunct is standalone modifier content, not glue (canary #9). The check
+    // is deliberately confined to this branch: contentWords keeps its meaning everywhere else, so the
+    // connective-ownership machinery (canary #2B) is untouched.
+    const carriesAdjunct = (trimmed.toLowerCase().match(new RegExp(WORD_RE.source, "g")) ?? []).some((w) => ADVERBIAL_ADJUNCTS.has(w.replace(/[^a-z]/g, "")));
     const words = contentWords(trimmed);
-    if (words.length === 0 && !carriesUnexplainedDigits) return { disposition: "STRUCTURAL_NOISE", reason: "enumerators, punctuation and closed-class connectives only - the residue of splitting a parent unit" };
+    if (words.length === 0 && !carriesUnexplainedDigits && !carriesAdjunct) return { disposition: "STRUCTURAL_NOISE", reason: "enumerators, punctuation and closed-class connectives only - the residue of splitting a parent unit" };
     // Headings carry no clause terminator and no verb-bearing body; require BOTH the caption shape and the absence of an internal terminator.
     // A caption has no SENTENCE terminator inside it. A decimal point inside a section number ("7.04") is not one,
     // so the terminator must be followed by whitespace to count.
@@ -370,6 +398,12 @@ export function classifyUnaccountedFragment(fragment: string, values: Quantitati
     const numbered = NUMBERED_CAPTION_FRAME_RE.exec(trimmed);
     if (noInternalTerminator && numbered !== null && isNominalLabel(numbered[1]!)) return { disposition: "HEADING_OR_LABEL", reason: "a section caption - the text after the number is a name, not a proposition" };
     if (noInternalTerminator && isAllCapsNominalHeading(trimmed)) return { disposition: "HEADING_OR_LABEL", reason: "an all-caps heading line - a determinerless nominal, not a proposition" };
+    if (carriesAdjunct) {
+      return {
+        disposition: "UNACCOUNTED_SOURCE",
+        reason: "carries an adverbial adjunct that no inventory item anchors - a modifier changes the scope, allocation, directness or distribution of what it attaches to, so it is standalone content and not the glue left over from splitting a parent unit",
+      };
+    }
     // Last, once every positive structural rule above has had its chance: an unexplained number is accountable.
     if (carriesUnexplainedDigits) {
       return {

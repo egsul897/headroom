@@ -684,6 +684,56 @@ describe("canary #8 - typography does not prove heading-hood", () => {
   });
 });
 
+describe("canary #9 - a modifier is not glue", () => {
+  // The red team's finding-3 fixtures, verbatim. Both modifiers score zero content words because every word
+  // sits in the adverbial-adjunct block of FUNCTION_WORDS, so both were STRUCTURAL_NOISE - "the residue of
+  // splitting a parent unit" - between two covered clauses, with unaccounted 0 and semanticallyComplete true.
+  const S3 = "The Borrowers shall repay the Obligations, jointly and severally, on the Maturity Date.";
+  const S4 = "The Borrower shall not, directly or indirectly, create any Lien upon the Collateral.";
+
+  it("FIXTURE A: 'jointly and severally' is accountable, not structural noise", async () => {
+    const anchored = ["The Borrowers shall repay the Obligations,", "on the Maturity Date."];
+    const cov = coverOne(S3, anchored);
+    expect(unaccountedText(cov)).toContain("jointly and severally");
+    expect(cov.countsByDisposition.STRUCTURAL_NOISE).toBe(0);
+
+    const sc = { state: "COMPLETE_LOCAL_SOURCE" as const, regions: [region("operative", S3)], unresolvedReferences: [], reasons: [], totalChars: S3.length, budgetChars: 10_000 };
+    const wire: WireInventoryItem[] = anchored.map((excerpt, i) => ({ localRef: `i${i}`, semanticRole: "OTHER", proposition: `clause ${i}`, excerpt, regionId: "operative", quantitativeValues: [], referencedTerms: [], referencedSections: [], parentRef: null, relatedRefs: [], materiality: "CRITICAL", ambiguity: "NONE", ambiguityReason: null, operative: "OPERATIVE" }));
+    const inv = await runSemanticInventory({ candidateRef: "canary9", documentId: "d", sourceContext: sc, caller: scriptedCaller(wire) });
+    expect(inv.inventoryStatus).toBe("INVENTORY_COVERAGE_GAP");
+    const rec = reconcileInventoryWithComposition({
+      inventory: inv,
+      composition: { rules: [{ inventoryItemIds: inv.items.map((i) => i.inventoryItemId), capacityExpression: null, conditions: [], exceptions: [], dependsOn: [], unresolvedDependencies: [] }], definitions: [], sharedCapacities: [] } as never,
+      dispositions: inv.items.map((i) => ({ inventoryItemId: i.inventoryItemId, disposition: "REPRESENTED", note: "matched" })),
+      sourceContextState: sc.state,
+    });
+    expect(rec.semanticallyComplete).toBe(false);
+  });
+
+  it("FIXTURE B: 'directly or indirectly' is accountable, not structural noise", () => {
+    const cov = coverOne(S4, ["The Borrower shall not,", "create any Lien upon the Collateral."]);
+    expect(unaccountedText(cov)).toContain("directly or indirectly");
+    expect(cov.countsByDisposition.STRUCTURAL_NOISE).toBe(0);
+  });
+
+  it("PURE GLUE CONTROL: a connective with no independent modifier content is still non-blocking", () => {
+    for (const f of ["and", "or", "of the", "(a)"]) {
+      const { disposition } = classifyUnaccountedFragment(f, []);
+      expect(disposition, `${f} -> ${disposition}`).toBe("STRUCTURAL_NOISE");
+    }
+    expect(classifyUnaccountedFragment("; :,", []).disposition).toBe("PUNCTUATION_OR_DELIMITER");
+  });
+
+  it("GENERIC MODIFIER: no legal vocabulary and no phrase list - the rule is the word class", () => {
+    // Wholly non-legal, and never named anywhere in the implementation.
+    const text = "The parties are responsible, both individually and collectively, for the outcome.";
+    expect(unaccountedText(coverOne(text, ["The parties are responsible,", "for the outcome."]))).toContain("individually and collectively");
+    // Scope modifiers are caught by the same class, not by a phrase match.
+    expect(classifyUnaccountedFragment("solely,", []).disposition).toBe("UNACCOUNTED_SOURCE");
+    expect(classifyUnaccountedFragment("respectively,", []).disposition).toBe("UNACCOUNTED_SOURCE");
+  });
+});
+
 describe("source coverage - segmentation, tables and duplicates", () => {
   it("line-broken rows are separate units, not one block (audit finding 7)", () => {
     const text = "Reporting Requirements\nAnnual statements within 90 days after year end\nQuarterly statements within 45 days after quarter end\nNotice of any Default promptly";
