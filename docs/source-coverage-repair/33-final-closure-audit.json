@@ -1,0 +1,515 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "33-final-closure-audit",
+  "mission": "FINAL PHASE 3 SOURCE-COVERAGE CLOSURE AUDIT - deterministic only, zero paid calls, no production changes",
+  "startingSha": "c95c57362000a0343fa512ca08d97278961f8825",
+  "productionCodeChanged": false,
+  "method": "Every preserved harness under scripts/red-team-original/ run unmodified; all canary reproduction harnesses #2-#12 and the descent-ownership harness run unmodified; suites run; RT-10/12/13/14 reachability re-derived by static trace of current production code rather than copied from artifact 29. No new fixture was constructed.",
+  "preservedHarnessIntegrity": {
+    "verified": true,
+    "evidence": "git log shows the only commit touching scripts/red-team-original/ is 4466e06 (the artifact-29 preservation commit); git diff 4466e06..HEAD -- scripts/red-team-original/ is empty. Current sha256 recorded below.",
+    "sha256": {
+      "e2e.ts": "5a37869f5ad0ace337ad2179a66c19678f23a3fa6faf3b507e8e936f89721399",
+      "e2e2.ts": "8f5e45bc57505d3b64208b4b64174acef5b11a38d202da9ade9132607bc75be8",
+      "e2e3.ts": "d3e864f6ee79b376a78698e344c1d8fdfdea39ca57cd63f394857a117eb2a94b",
+      "e2e4.ts": "27c6518c369b16f6567da5e64487bd5a106d896cea4771a2a1fd052c026ab62b",
+      "p1.ts": "a5db22875a7396a05c77ab64b4c69138d55035a34c5d8e2b291d9e1a497d6243",
+      "p2.ts": "89618f64c0942f91c7a1e49592c501385ca373798265310e4fce22ca91f015b4",
+      "p3.ts": "a9f6584b48210381af4b0e23b3177000e3998f1fde35006e75b2c7774de6ecf7",
+      "p4.ts": "a65d48e202b55caaf6f12b9392bcf6f48f08f837215d9b551866e27d395e11dd"
+    }
+  },
+  "closureMatrix": [
+    {
+      "scenario": "S1 all-caps waiver",
+      "originalCurrentRisk": "HEADING_OR_LABEL silent complete -> surfaced",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "#8, #10",
+      "status": "CLOSED",
+      "reason": "e2e.ts run unmodified on c95c573: surfaced"
+    },
+    {
+      "scenario": "S2 numbered clause as heading",
+      "originalCurrentRisk": "HEADING_OR_LABEL silent -> surfaced",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "#7",
+      "status": "CLOSED",
+      "reason": "e2e.ts run unmodified on c95c573: surfaced"
+    },
+    {
+      "scenario": "S3 jointly and severally",
+      "originalCurrentRisk": "STRUCTURAL_NOISE silent -> surfaced",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "#9",
+      "status": "CLOSED",
+      "reason": "e2e.ts run unmodified on c95c573: surfaced"
+    },
+    {
+      "scenario": "S4 directly or indirectly",
+      "originalCurrentRisk": "STRUCTURAL_NOISE silent -> surfaced",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "#9",
+      "status": "CLOSED",
+      "reason": "e2e.ts run unmodified on c95c573: surfaced"
+    },
+    {
+      "scenario": "S5 child descent lead-in",
+      "originalCurrentRisk": "COVERED_BY_CHILD_DESCENT over 176-char lead-in silent -> surfaced",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "#4",
+      "status": "CLOSED",
+      "reason": "e2e.ts run unmodified on c95c573: surfaced"
+    },
+    {
+      "scenario": "S6 quoted amendment text",
+      "originalCurrentRisk": "DEFINED_TERM_LABEL silent -> surfaced",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "#5",
+      "status": "CLOSED",
+      "reason": "e2e.ts run unmodified on c95c573: surfaced"
+    },
+    {
+      "scenario": "S7 non-Latin (CJK) clause",
+      "originalCurrentRisk": "PUNCTUATION_OR_DELIMITER silent -> surfaced",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "#11",
+      "status": "CLOSED",
+      "reason": "e2e.ts run unmodified on c95c573: surfaced"
+    },
+    {
+      "scenario": "S8 bare integer cap",
+      "originalCurrentRisk": "NON_SEMANTIC_FORMATTING silent -> surfaced",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "#6",
+      "status": "CLOSED",
+      "reason": "e2e.ts run unmodified on c95c573: surfaced"
+    },
+    {
+      "scenario": "S9 except as provided",
+      "originalCurrentRisk": "STRUCTURAL_NOISE silent -> surfaced",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "#2, #2B",
+      "status": "CLOSED",
+      "reason": "e2e.ts run unmodified on c95c573: surfaced"
+    },
+    {
+      "scenario": "S10 spelled-out cap in caps",
+      "originalCurrentRisk": "HEADING_OR_LABEL silent; value invisible -> surfaced",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "#8, #10",
+      "status": "CLOSED",
+      "reason": "e2e.ts run unmodified on c95c573: surfaced"
+    },
+    {
+      "scenario": "V1 CHF cap in child-descent lead-in",
+      "originalCurrentRisk": "COVERED_BY_CHILD_DESCENT, CHF invisible, silent complete -> surfaced",
+      "currentDisposition": "UNACCOUNTED_SOURCE + MONEY/CHF value unaccounted",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "artifact 30 (ISO currency-code MONEY pattern)",
+      "status": "CLOSED",
+      "reason": "REVERIFIED: e2e2.ts unmodified: status=INVENTORY_COVERAGE_GAP unacc=1 vals=1 complete=false rollup=REVIEW_REQUIRED; p3 scanner 'CHF 2,000,000' -> ['CHF 2,000,000']",
+      "note": "REVERIFIED (former blocker)"
+    },
+    {
+      "scenario": "V2 USD cap in lead-in (control)",
+      "originalCurrentRisk": "none - surfaced originally -> surfaced",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "control",
+      "status": "CLOSED",
+      "reason": "e2e2.ts unmodified: surfaced, unacc=1, complete=false"
+    },
+    {
+      "scenario": "V3 spelled-out cure period lead-in",
+      "originalCurrentRisk": "COVERED_BY_CHILD_DESCENT silent -> surfaced",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "#4 coordination split",
+      "status": "CLOSED",
+      "reason": "e2e2.ts unmodified: surfaced, unacc=1, complete=false"
+    },
+    {
+      "scenario": "V4 caption-shaped cap",
+      "originalCurrentRisk": "HEADING_OR_LABEL silent -> surfaced",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "#7",
+      "status": "CLOSED",
+      "reason": "e2e2.ts unmodified: surfaced, unacc=1, complete=false"
+    },
+    {
+      "scenario": "V5 nested lead-in",
+      "originalCurrentRisk": "none - surfaced originally -> surfaced",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "n/a",
+      "status": "CLOSED",
+      "reason": "e2e2.ts unmodified: surfaced, unacc=1, complete=false"
+    },
+    {
+      "scenario": "V6 carve-out lead-in",
+      "originalCurrentRisk": "COVERED_BY_CHILD_DESCENT silent -> surfaced",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "#4",
+      "status": "CLOSED",
+      "reason": "e2e2.ts unmodified: surfaced, unacc=1, complete=false"
+    },
+    {
+      "scenario": "E2E3-A one overbroad span (RT-8)",
+      "originalCurrentRisk": "vacuous whole-unit span discharged 3 propositions -> clipped",
+      "currentDisposition": "credit clipped; remainder UNACCOUNTED_SOURCE; RATIO+DAYS unaccounted",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "#3",
+      "status": "CLOSED",
+      "reason": "e2e3.ts: unacc=1 vals=2 complete=false"
+    },
+    {
+      "scenario": "E2E3-B gap-echo (RT-9)",
+      "originalCurrentRisk": "echo flipped status to INVENTORY_OK -> clipped",
+      "currentDisposition": "echo accepted (itemsAdded=1) but clipped; 1 stretch UNACCOUNTED_SOURCE",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "#3 (incidental)",
+      "status": "CLOSED",
+      "reason": "e2e3.ts: unacc=1 vals=2 complete=false"
+    },
+    {
+      "scenario": "E2E4 overbroad span + IR values (RT-8)",
+      "originalCurrentRisk": "REPRESENTED with all values, silent -> clipped",
+      "currentDisposition": "REPRESENTED item, coverage clipped",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "#3",
+      "status": "CLOSED",
+      "reason": "e2e4.ts: unacc=1 vals=2 complete=false, 3 failure reasons"
+    },
+    {
+      "scenario": "RT-3 classifier probes (p1) - 23 of 24",
+      "originalCurrentRisk": "STRUCTURAL_NOISE -> UNACCOUNTED",
+      "currentDisposition": "UNACCOUNTED_SOURCE x23",
+      "inventoryStatus": "n/a",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "remediation": "#2, #9",
+      "status": "CLOSED",
+      "reason": "p1.ts: 24/24 UNACCOUNTED_SOURCE"
+    },
+    {
+      "scenario": "RT-3 probe 'less the sum of clauses (a) and (b),'",
+      "originalCurrentRisk": "STRUCTURAL_NOISE at classifier level -> UNACCOUNTED",
+      "currentDisposition": "UNACCOUNTED_SOURCE (operator reason)",
+      "inventoryStatus": "n/a",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "remediation": "artifact 31 (ARITHMETIC_OPERATORS partition)",
+      "status": "CLOSED",
+      "reason": "REVERIFIED: p1.ts unmodified -> UNACCOUNTED_SOURCE",
+      "note": "REVERIFIED (former blocker)"
+    },
+    {
+      "scenario": "RT-3 OCR/Unicode variants (p4)",
+      "originalCurrentRisk": "collapsed into list -> UNACCOUNTED",
+      "currentDisposition": "UNACCOUNTED_SOURCE x6",
+      "inventoryStatus": "n/a",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "remediation": "#2, #9, #11",
+      "status": "CLOSED",
+      "reason": "p4.ts: all six UNACCOUNTED_SOURCE"
+    },
+    {
+      "scenario": "RT-6 non-Latin probes (p1 CJK + Cyrillic)",
+      "originalCurrentRisk": "PUNCTUATION_OR_DELIMITER -> UNACCOUNTED",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "inventoryStatus": "n/a",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "remediation": "#11, #12",
+      "status": "CLOSED",
+      "reason": "p1.ts: both UNACCOUNTED_SOURCE"
+    },
+    {
+      "scenario": "RT-1/RT-2 length boundaries (p3)",
+      "originalCurrentRisk": "caps<=82 / numbered<=80 were headings -> UNACCOUNTED",
+      "currentDisposition": "UNACCOUNTED_SOURCE at every length 40..95 both shapes; waiver paragraph surfaces",
+      "inventoryStatus": "n/a",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "remediation": "#7, #8, #10",
+      "status": "CLOSED",
+      "reason": "p3.ts unchanged"
+    },
+    {
+      "scenario": "RT-7 value-scanner blind spots (p3)",
+      "originalCurrentRisk": "enabler of V1; 12 of 14 probes return [] -> 12 of 14 still return [] (CHF now scanned)",
+      "currentDisposition": "scanner: 'five million dollars','fifty percent','one hundred and eighty days','one-half of the Net Proceeds','\u00a5500,000,000','2,500,000 (the \"Cap\")','3/31/2030','31 March 2030','one half of one percent','twenty-five basis points','thirty days' -> []",
+      "inventoryStatus": "n/a (classifier/scanner level)",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "remediation": "artifact 30 closed the ISO-code instance only; the extractor was otherwise deliberately not expanded (#6, #7, #8)",
+      "status": "BLOCKER",
+      "reason": "STATIC-TRACE BLOCKER, not an executed silent completion. The child-descent discharge at source-coverage.ts lines 741-744 still has exactly one substance test for the final residue: rebuilt[lastResidue].values.length === 0, where values come from scanQuantitativeValues. Every other guard (childrenAccounted, childrenOwned, residue-first split, introducesChildren) is satisfied by the original V1 frame - a single-conjunct substantive lead-in whose enumerated children are all inventoried. V1 closed because 'CHF 2,000,000' is now scanned; the identical frame carrying any of the 11 value forms above that the preserved p3 probes show still return [] would be discharged COVERED_BY_CHILD_DESCENT and reach unaccounted=0 / INVENTORY_OK / semanticallyComplete=true. Production reachability: orchestrator.ts:418 feeds raw node text -> compileCovenantToIR -> resolveSourceContext -> runSemanticInventory -> computeSourceCoverage with no intervening filter. Not executed: the mission forbids constructing a new fixture; this row re-assesses the original artifact-29 RT-7 row, which artifact 29 already recorded as 'same root cause as V1'.",
+      "note": "rootCauseSharedWithV1: the descent value guard is only as strong as the scanner (red team's own words); the ISO-code remediation closed the instance, not the class"
+    },
+    {
+      "scenario": "RT-10 bogus ExternalAccountabilityLink (p2-C, p2-D)",
+      "originalCurrentRisk": "would discharge a region on an unverified link",
+      "currentDisposition": "ACCOUNTED_BY_EXTERNAL_UNIT, unaccounted=0 (unchanged when a link is supplied)",
+      "inventoryStatus": "would be INVENTORY_OK if reached",
+      "semanticallyComplete": "would be true if reached",
+      "rollup": "n/a",
+      "remediation": "none",
+      "status": "REVIEW_ONLY",
+      "reason": "LATENT_UNREACHABLE: the only production caller of runSemanticInventory (compile.ts:187) passes no externalAccountability; grep of lib/ and app/ finds no constructor of ExternalAccountabilityLink outside the type, the pass-through in inventory.ts and source-coverage.ts itself. ownerInventoryHash is required by the type but never verified against an actual inventory - the hole is real, the path is closed by construction."
+    },
+    {
+      "scenario": "RT-12 duplicate region ids (p2-A)",
+      "originalCurrentRisk": "span in region A masks same offsets in region B",
+      "currentDisposition": "COVERED_BY_INVENTORY on both (unchanged)",
+      "inventoryStatus": "n/a",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "remediation": "none",
+      "status": "REVIEW_ONLY",
+      "reason": "LATENT_UNREACHABLE: source-context.ts constructs exactly one 'operative' region (line 183) and 'xref-N' with a strictly incrementing expansionIndex (lines 224/249/251); no other producer feeds computeSourceCoverage in production."
+    },
+    {
+      "scenario": "RT-13 zero regions (p2-B)",
+      "originalCurrentRisk": "empty input vacuously complete",
+      "currentDisposition": "unaccounted=0, regionsConsidered=[] (unchanged)",
+      "inventoryStatus": "INVENTORY_OK on nothing (if reached)",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "remediation": "none",
+      "status": "REVIEW_ONLY",
+      "reason": "LATENT_UNREACHABLE: resolveSourceContext initialises regions=[operativeRegion] (line 197) unconditionally, so a production source context always has >=1 region. Residual edge: an EMPTY operative text region is representable (orchestrator.ts:418 does not guard) and would be INVENTORY_OK with an empty inventory - but there is no source text to omit, so it cannot produce substantive omission."
+    },
+    {
+      "scenario": "RT-15 false positives (p2-F)",
+      "originalCurrentRisk": "furniture reported UNACCOUNTED",
+      "currentDisposition": "still UNACCOUNTED; 'ARTICLE VII\\nNEGATIVE COVENANTS' CITATION_ONLY + UNACCOUNTED",
+      "inventoryStatus": "n/a",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "remediation": "by design",
+      "status": "REVIEW_ONLY",
+      "reason": "SAFE_REVIEW: conservative review noise only"
+    },
+    {
+      "scenario": "RT-11 three enforcement points read one field",
+      "originalCurrentRisk": "no defence in depth",
+      "currentDisposition": "still true",
+      "inventoryStatus": "n/a",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "remediation": "deferred",
+      "status": "REVIEW_ONLY",
+      "reason": "SAFE_REVIEW: architectural; no scenario depends on it"
+    },
+    {
+      "scenario": "RT-14 accountability:false escape hatch",
+      "originalCurrentRisk": "compile COMPLETED without guards",
+      "currentDisposition": "rollup still gates",
+      "inventoryStatus": "n/a",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "remediation": "deferred",
+      "status": "REVIEW_ONLY",
+      "reason": "SAFE_REVIEW / gated: classifyUnit (rollup.ts:22) pushes 'no accountability result' -> REVIEW_REQUIRED whenever accountability is null; SEMANTICALLY_COMPLETE additionally requires acc.semanticallyComplete, compile COMPLETED and a VERIFIED_* verify status; rollupAgreementSemanticStatus is REVIEW_REQUIRED if any unit requires review. grep finds no production caller passing accountability:false (compile.ts:176 default is on)."
+    },
+    {
+      "scenario": "RT-16 could-not-break controls",
+      "originalCurrentRisk": "none",
+      "currentDisposition": "ordering/duplicate invariance true; run-on tail UNACCOUNTED; long token UNACCOUNTED; INFORMATIONAL accounts for nothing; comma-straddling value one unit",
+      "inventoryStatus": "n/a",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "remediation": "n/a",
+      "status": "CLOSED",
+      "reason": "p4.ts unchanged"
+    },
+    {
+      "scenario": "NEW: RT-3 in-situ child-descent interaction (artifact 31/32 pinned scenario)",
+      "originalCurrentRisk": "operator lead-in re-discharged by noise-only children: COVERED_BY_CHILD_DESCENT, unacc=0 -> surfaced",
+      "currentDisposition": "UNACCOUNTED_SOURCE 'less the sum of clauses'; children '(a) and (b), ' STRUCTURAL_NOISE (accounted, not owned); COVERED_BY_CHILD_DESCENT count 0",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "remediation": "artifact 32 (SEMANTIC_OWNERSHIP / childrenOwned)",
+      "status": "CLOSED",
+      "reason": "scripts/source-coverage-descent-ownership-reproduce.ts: unaccounted=1 childDescent=0; source-coverage.test.ts test A pins end-to-end INVENTORY_COVERAGE_GAP and semanticallyComplete=false",
+      "note": "NEW derived row"
+    }
+  ],
+  "counts": {
+    "totalRows": 33,
+    "CLOSED": 26,
+    "REVIEW_ONLY": 6,
+    "BLOCKER": 1,
+    "productionReachableLatentBlockers": 1,
+    "dangerousSilentCompletionsExecuted": 0
+  },
+  "formerBlockers": {
+    "V1": {
+      "required": "CHF 2,000,000 -> MONEY/CHF; lead-in not discharged; INVENTORY_COVERAGE_GAP; complete=false; REVIEW_REQUIRED",
+      "observed": "all four met via the unmodified e2e2.ts and p3.ts",
+      "status": "CLOSED"
+    },
+    "RT3Direct": {
+      "required": "UNACCOUNTED_SOURCE",
+      "observed": "UNACCOUNTED_SOURCE via unmodified p1.ts; 24/24",
+      "status": "CLOSED"
+    },
+    "RT3ChildDescentInSitu": {
+      "required": [
+        "noise-only children do not own",
+        "parent UNACCOUNTED_SOURCE",
+        "no COVERED_BY_CHILD_DESCENT over parent",
+        "unaccounted>0",
+        "inventory status blocks completeness",
+        "semanticallyComplete=false"
+      ],
+      "observed": "all six met (harness + pinned test A)",
+      "status": "CLOSED"
+    }
+  },
+  "legitimateChildDescentRegression": {
+    "genuineInventoriedChildren": "canary #4 CONTROL A pure chapeau: COVERED_BY_CHILD_DESCENT, unaccounted=0 (unchanged); canary #4 CONTROL B mixed parent: introducer descends, substantive conjunct + DAYS value stay accountable (unchanged); descent harness CONTROL: childDescent=1 unaccounted=0",
+    "mixedListOneNoiseOnlyChild": "descent denied; lead-in UNACCOUNTED_SOURCE; '(b)' STRUCTURAL_NOISE",
+    "nestedRecursive": "no chain - enumerated units are never parents; top lead-in UNACCOUNTED_SOURCE, childDescent=0; V5 in e2e2.ts still surfaces",
+    "status": "PASS"
+  },
+  "canaries2to12": {
+    "status": "PASS - all eleven harnesses exit 0",
+    "unaccountedSpanCounts": {
+      "2": 3,
+      "3": 2,
+      "4": 2,
+      "5": 4,
+      "6": 9,
+      "7": 6,
+      "8": 11,
+      "9": 5,
+      "10": 8,
+      "11": 4,
+      "12": 3
+    },
+    "changedDispositions": "none observed relative to artifact 32"
+  },
+  "suites": {
+    "sourceCoverage": "125/125",
+    "adversarial": "3/3 (not expanded)",
+    "corpus": "12 failed | 280 passed (292) excluding the 5-test independence file; failing set identical to artifact 32: I1 x2 + 3 I1-derived stability assertions, I23 x2, I26 x2, I27 x2; corpus-wide residue assertion lists only I1: ['plus,']",
+    "preservedHarnesses": "e2e 10/10 surfaced; e2e2 6/6 surfaced; e2e3 A/B surfaced; e2e4 surfaced; p1 24/24 UNACCOUNTED; p2/p3/p4 as recorded in the matrix"
+  },
+  "reviewOnlyItems": {
+    "I1_plus": {
+      "label": "SAFE_REVIEW",
+      "note": "'plus,' unanchored between ground-truth components; Pass A conservative gap, Pass B composes the formula; not silent"
+    },
+    "I23_Solely": {
+      "label": "SAFE_REVIEW",
+      "note": "PLAUSIBLE_REVIEW, surfaced not silent"
+    },
+    "I26_eventNotice": {
+      "label": "SAFE_REVIEW",
+      "note": "TRUE_SAFETY_IMPROVEMENT - a surfaced omission"
+    },
+    "I27_Notwithstanding": {
+      "label": "SAFE_REVIEW",
+      "note": "OBVIOUS_FALSE_GAP - conservative"
+    },
+    "bareAllCapsHeadings": {
+      "label": "SAFE_REVIEW",
+      "note": "review-blocking since #10; never silent"
+    },
+    "unicodeSentenceBoundary": {
+      "label": "SAFE_REVIEW",
+      "note": "ideographic full stop does not split a unit; a larger unit with partial coverage leaves the remainder UNACCOUNTED because CJK letters are accountable (#11) - conservative, not silent"
+    },
+    "RT7_remainingScannerBlindSpots": {
+      "label": "BLOCKER",
+      "note": "see matrix row RT-7: static-trace reachable through the unchanged descent value guard; the only remediated form is the ISO currency code"
+    },
+    "RT10_externalAccountability": {
+      "label": "LATENT_UNREACHABLE"
+    },
+    "RT12_duplicateRegionIds": {
+      "label": "LATENT_UNREACHABLE"
+    },
+    "RT13_zeroRegions": {
+      "label": "LATENT_UNREACHABLE"
+    },
+    "RT14_rollupArchitecture": {
+      "label": "SAFE_REVIEW",
+      "note": "gates confirmed present and default-on"
+    }
+  },
+  "qualityGates": {
+    "typescript": "6 pre-existing errors in tests/foundation-audit/*; 0 in semantic-accountability",
+    "lint": "1 pre-existing error in tests/foundation-audit/amendment-operative-state-adversarial.test.ts"
+  },
+  "groundTruthChanged": false,
+  "spend": {
+    "paidModelCalls": 0,
+    "vercelDeploys": 0,
+    "providerBalanceReadOnly": "GET /v1/credits: total_used $150.494171, balance $14.505829 - unchanged from artifacts 31 and 32"
+  },
+  "finalVerdict": "SOURCE_COVERAGE_TRUST_BOUNDARY_NOT_CLOSED",
+  "minimumBlockers": [
+    {
+      "id": "RT-7 x child-descent value guard",
+      "statement": "The child-descent discharge (source-coverage.ts:741-744) tests the final residue's substance solely by scanQuantitativeValues; the preserved p3 probes show 11 original value forms still scan to []. The original V1 frame with any of those forms is therefore statically reachable to unaccounted=0 / INVENTORY_OK / semanticallyComplete=true in production. V1's ISO-currency remediation closed the instance, not the class the red team named ('the value guard is only as strong as the scanner'). No executed silent completion exists in the preserved inventory; this is a static-trace blocker and no fix is recommended here."
+    }
+  ],
+  "verdictBasis": "Every executed original scenario surfaces (0 dangerous silent completions). Both former distinct blockers and the derived descent row are CLOSED. Verdict A additionally requires that no production-reachable finding can cause substantive omission while trusted complete; the RT-7 row fails that test by static trace of unchanged production code plus preserved probe outputs.",
+  "phase3GateRecommendation": "PHASE_3_NOT_READY_FOR_REAL_WORLD_VALIDATION",
+  "gateBasis": "One bounded, statically-reachable latent path remains at the same trust boundary the last three remediations targeted. It is the exact residual the red team predicted. This does not authorise or forbid paid validation; it states the deterministic work is not yet closed."
+}

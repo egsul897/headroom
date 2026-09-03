@@ -1,0 +1,62 @@
+{
+  "artifact": "10-resume-attempt-2026-09-03",
+  "mission": "RESUME PHASE 3 CHEWY UNSEEN VALIDATION / PAID STAGES ONLY",
+  "startingSha": "82416056f79f22584dc97ff88e0ae39fd5c513b7",
+  "resumeConditions": {
+    "headDescendedFromStartingSha": true,
+    "workingTreeClean": true,
+    "productionDiffVsFreeze_d5144d1": "empty (lib, app, prisma)",
+    "productionTreeHash": "da7106fac07c369695156cfa0c7d8a30350ea636c5e108060c0e84f67dd4d1ef",
+    "productionTreeFileCount": 346,
+    "treeHashMatchesMissionFreeze": true,
+    "rawHtmlSha256Matches": true,
+    "extractedTextSha256Matches": true,
+    "referenceSetByteIdentical": true,
+    "referenceSetItems": 46,
+    "deterministicRunArtifactsUnchanged": true,
+    "paidRunManifestUnchanged": true
+  },
+  "providerProbe": {
+    "count": 1,
+    "at": "2026-09-03T14:12:12Z",
+    "endpoint": "https://ai-gateway.vercel.sh/v1/messages",
+    "model": "anthropic/claude-opus-5",
+    "maxTokens": 1,
+    "httpStatus": 402,
+    "errorType": "quota_for_entity_exceeded",
+    "errorMessage": "API key budget exceeded. Current spend: $150.49, limit: $150.00.",
+    "retried": false,
+    "providerSwitched": false,
+    "configurationChanged": false
+  },
+  "result": "PAID_VALIDATION_ENVIRONMENT_BLOCKED",
+  "substantivePaidCalls": 0,
+  "incrementalPaidCostUsd": 0.0,
+  "stagesRun": [],
+  "referenceSetScoring": "NOT_PERFORMED",
+  "gates": {
+    "TRUST_SAFETY": "NOT_EVALUATED",
+    "PHASE_3_GENERALIZATION": "NOT_EVALUATED",
+    "PHASE_4": "NOT_READY_FOR_PHASE_4_CONTRACT_COMPUTATION"
+  },
+  "observationsCarriedForward": [
+    "OBS-1",
+    "OBS-2",
+    "OBS-3"
+  ],
+  "nextStep": "Provide the active gateway key to this environment (AI_GATEWAY_API_KEY env var or .env.local), then re-issue the resume mission unchanged.",
+  "secondProbe": {
+    "at": "2026-09-03T15:33:15Z",
+    "trigger": "operator reported budget restored",
+    "endpoint": "https://ai-gateway.vercel.sh/v1/messages",
+    "model": "anthropic/claude-opus-5",
+    "maxTokens": 1,
+    "httpStatus": 400,
+    "errorType": "invalid_request_error",
+    "errorMessage": "Quota entity \"api_key_id_GRxaR7s0IWUGPnS8DpViDRTPqsmgZ0KPW8iVfwan29Q6at07\" is inactive or archived.",
+    "credentialUsed": ".env.local AI_GATEWAY_API_KEY (vck_5h..., the only credential present; process env unset, .env entry commented out)",
+    "interpretation": "The key present in this environment has been archived at the gateway; a budget increase on a different key does not reach this environment until that key is provided.",
+    "retried": false,
+    "configurationChanged": false
+  }
+}

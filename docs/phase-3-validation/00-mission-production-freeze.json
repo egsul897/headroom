@@ -1,0 +1,28 @@
+{
+  "artifact": "00-mission-production-freeze",
+  "startingSha": "d5144d1cb2f4612132847cdb28a9547506bab469",
+  "productionTreeHash": "da7106fac07c369695156cfa0c7d8a30350ea636c5e108060c0e84f67dd4d1ef",
+  "treeHashScope": "lib/, app/, prisma/ via computeProductionTreeHash (scripts/semantic-accountability-freeze.ts), 346 files",
+  "frozenSurfaces": [
+    "compiler prompts",
+    "semantic inventory (Pass A)",
+    "composition (Pass B)",
+    "reconciliation (Pass C)",
+    "verifier (3C)",
+    "source coverage (3E)",
+    "quantitative scanner",
+    "structural parser",
+    "IR",
+    "precedent logic",
+    "ground truth",
+    "thresholds"
+  ],
+  "verification": "git diff --stat d5144d1 -- lib app prisma package.json is empty at commit time",
+  "staleFreezeNote": "docs/semantic-accountability freeze record still points at SHA 5344861; scripts/semantic-accountability-freeze.ts verify reports PRODUCTION DRIFT against that stale record because subsequent authorized remediation commits (c95c573..d5144d1) changed source-coverage.ts. This mission-specific record supersedes it for this run only; the stale record was not edited (docs are not production, but the mission did not authorize touching it).",
+  "allowedChanges": [
+    "validation harness scripts/phase-3-validation-chwy-deterministic-run.ts",
+    "run artifacts tests/fixtures/unseen-packages/phase-3-validation-chwy-run/",
+    "source registration tests/fixtures/unseen-packages/chwy-2026-credit-agreement/ (+ extraction-manifest.json)",
+    "docs/phase-3-validation/"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "artifact": "13b-substantive-adjudication",
+  "rule": "Full credit only when every material component (cap, condition, exception, shared-cap dependency, reclassification rule) of the reference item is preserved in the IR; the two mechanical FULL rows and the six PARTIAL rows were read against the IR by hand",
+  "adjudications": {
+    "B10": {
+      "mechanical": "FULL",
+      "humanSubstantiveCredit": "FULL",
+      "basis": "rules[15] 6.08(b)(12): MAX($720,000,000, 100% x Consolidated EBITDA) + proviso (A) Restricted Investment counted at FMV when made, fixed thereafter + proviso (B) no Specified Event of Default on a pro forma basis - every material component of the source clause is present; Consolidated EBITDA is a metric reference (resolvedDefinitionId null), acceptable for a basket definition. Verifier's UNSUPPORTED_IR_ADDITION on 720000000 is the F-3 scale artefact.",
+      "trust": "unit not trusted (compile PARTIAL, accountability incomplete, verifier MATERIAL_DISCREPANCY) - credit is semantic only"
+    },
+    "E5": {
+      "mechanical": "FULL",
+      "humanSubstantiveCredit": "UNSUPPORTED",
+      "basis": "the overlapping inventory item is REPRESENTED via lineage into the Available Amount definition, but that definition's calculationExpression is UNSUPPORTED (SUBTRACT operands do not type-check) so the reduction for Permitted Liens (46)(ii) and 6.01(b)(32) debt is not computably preserved",
+      "trust": "explicit UNSUPPORTED - SAFE_FAILURE"
+    },
+    "A5": {
+      "mechanical": "PARTIAL",
+      "humanSubstantiveCredit": "PARTIAL",
+      "basis": "rules[0] 6.08(a) prohibition with 37 exceptions and the Available Amount condition, but the condition expression is UNSUPPORTED and the Available Amount builder (C1) is not computable; verifier flags entity scope (Unrestricted Subsidiaries) as a genuine material discrepancy"
+    },
+    "B8": {
+      "mechanical": "PARTIAL",
+      "humanSubstantiveCredit": "PARTIAL",
+      "basis": "rules[11] 6.08(b)(9) capacity UNSUPPORTED (SUBTRACT type-check); 6.0%/7.0% values missing from IR"
+    },
+    "B9": {
+      "mechanical": "PARTIAL",
+      "humanSubstantiveCredit": "PARTIAL",
+      "basis": "rules[12] 6.08(b)(10) UNLIMITED_CAPACITY gated by an UNSUPPORTED AND expression; 2.00x / 1.75x ratios missing from IR; RDP exclusion exception present"
+    },
+    "B11": {
+      "mechanical": "PARTIAL",
+      "humanSubstantiveCredit": "PARTIAL",
+      "basis": "rules[18] 6.08(b)(15) MAX($720M,100% EBITDA) present; ratio RDP (b)(25) gate UNSUPPORTED; Threshold Amount RDP exception represented via definition (F-4)"
+    },
+    "C1": {
+      "mechanical": "PARTIAL",
+      "humanSubstantiveCredit": "PARTIAL",
+      "basis": "Available Amount builder: 50% CNI / 140% interest / $540M-75% starter components UNSUPPORTED; builder period and clause (46)(ii)/6.01(b)(32) reductions inside an UNSUPPORTED expression"
+    },
+    "C8": {
+      "mechanical": "PARTIAL",
+      "humanSubstantiveCredit": "PARTIAL",
+      "basis": "rules[1] 6.08(b)(1) captured as a condition description; the 60-day period value is MISSING_FROM_COMPOSITION (two inventory items missing)"
+    }
+  },
+  "fullSubstantiveCredit": {
+    "all46": 1,
+    "rate46": 0.0217,
+    "attempted": 22,
+    "rateAttempted": 0.0455
+  }
+}

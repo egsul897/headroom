@@ -1,0 +1,3570 @@
+{
+  "artifact": "13-reference-set-scoring",
+  "referenceSet": "docs/phase-3-validation/04-human-reference-set.json",
+  "referenceItems": 46,
+  "coverageSource": "stage3e-coverage-linked.json (zero-cost re-link; compiled units visible to reconciliation)",
+  "method": "Mechanical mapping of each frozen reference span onto the paid-run evidence: covering units (any resolved source-context region overlapping the span), Pass A run-1 inventory items overlapping the span (>= 40 chars or the whole item), Pass C dispositions of those items, unit-level compile/accountability/verifier states, and 3E coverage statuses. representationMechanical: FULL = every material overlapping item REPRESENTED with no missing quantitative value; PARTIAL = some REPRESENTED; UNSUPPORTED/AMBIGUOUS = explicit non-complete disposition; MISSING = not inventoried or all MISSING_FROM_COMPOSITION; NOT_ATTEMPTED = no compiled unit reached the span. Human substantive adjudication of FULL items is recorded separately in 13b.",
+  "rows": [
+    {
+      "id": "A1",
+      "category": "A",
+      "materiality": "CRITICAL",
+      "section": "6.01(a)",
+      "span": [
+        608901,
+        612151
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 21,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:7502cde25153235fe4d4700d",
+          "role": "GENERAL_PROHIBITION",
+          "ref": "6.01(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:f9a2b856ee383e592956eb31",
+          "role": "RATIO_BASED_PERMISSION",
+          "ref": "6.01(a)"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "A2",
+      "category": "A",
+      "materiality": "CRITICAL",
+      "section": "6.02",
+      "span": [
+        642524,
+        644692
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 7,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:7fb829fcee2c6b3a7f64252c",
+          "role": "GENERAL_PROHIBITION",
+          "ref": "6.02"
+        },
+        {
+          "discoveryId": "discovery-candidate:3c867ee2ce09935abb725bf1",
+          "role": "CONDITION",
+          "ref": "6.02(1)"
+        },
+        {
+          "discoveryId": "discovery-candidate:3c867ee2ce09935abb725bf1",
+          "role": "CONDITION",
+          "ref": "6.02(1)"
+        },
+        {
+          "discoveryId": "discovery-candidate:d16760e8d0cc615c92d3bbcb",
+          "role": "CONDITION",
+          "ref": "6.02(2)"
+        },
+        {
+          "discoveryId": "discovery-candidate:d16760e8d0cc615c92d3bbcb",
+          "role": "CONDITION",
+          "ref": "6.02(2)"
+        },
+        {
+          "discoveryId": "discovery-candidate:e6a9e02289b9e6752581fb48",
+          "role": "PROVISO",
+          "ref": "6.02"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "A3",
+      "category": "A",
+      "materiality": "MATERIAL",
+      "section": "6.03",
+      "span": [
+        644692,
+        650455
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 41,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:c9d976a5b13beafabfd8807b",
+          "role": "GENERAL_PROHIBITION",
+          "ref": "6.03"
+        },
+        {
+          "discoveryId": "discovery-candidate:1ad66b62627fd2d62483ec8e",
+          "role": "EXCEPTION",
+          "ref": "6.03(a)(i)"
+        },
+        {
+          "discoveryId": "discovery-candidate:1ad66b62627fd2d62483ec8e",
+          "role": "EXCEPTION",
+          "ref": "6.03(a)(i)"
+        },
+        {
+          "discoveryId": "discovery-candidate:454eceda3a8be65203ed2fa1",
+          "role": "EXCEPTION",
+          "ref": "6.03(a)(ii)"
+        },
+        {
+          "discoveryId": "discovery-candidate:454eceda3a8be65203ed2fa1",
+          "role": "EXCEPTION",
+          "ref": "6.03(a)(ii)"
+        },
+        {
+          "discoveryId": "discovery-candidate:95ca971eba1f4ecc9782b265",
+          "role": "CONDITION",
+          "ref": "6.03(a)(ii)(1)"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "A4",
+      "category": "A",
+      "materiality": "CRITICAL",
+      "section": "6.05(a)",
+      "span": [
+        650489,
+        654594
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 18,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:019a53659a4626f946d77263",
+          "role": "GENERAL_PROHIBITION",
+          "ref": "6.05(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:a8a84391959f21b29ee79007",
+          "role": "CONDITION",
+          "ref": "6.05(a)(1)"
+        },
+        {
+          "discoveryId": "discovery-candidate:a8a84391959f21b29ee79007",
+          "role": "CONDITION",
+          "ref": "6.05(a)(1)"
+        },
+        {
+          "discoveryId": "discovery-candidate:07815621fe80a8cc267fbcbe",
+          "role": "CONDITION",
+          "ref": "6.05(a)(2)"
+        },
+        {
+          "discoveryId": "discovery-candidate:07815621fe80a8cc267fbcbe",
+          "role": "CONDITION",
+          "ref": "6.05(a)(2)"
+        },
+        {
+          "discoveryId": "discovery-candidate:610a3fd69ae77d16e34a481d",
+          "role": "CONDITION",
+          "ref": "6.05(a)(2)"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "A5",
+      "category": "A",
+      "materiality": "CRITICAL",
+      "section": "6.08(a)",
+      "span": [
+        659042,
+        670071
+      ],
+      "coveringUnits": [
+        "6.08"
+      ],
+      "discoveredByPassA": true,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 45,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:c7cae40c3925d889a79765eb",
+          "role": "GENERAL_PROHIBITION",
+          "ref": "6.08(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:92e66b1b6cff4f990e05ad34",
+          "role": "GENERAL_PROHIBITION",
+          "ref": "6.08(a)(i)"
+        },
+        {
+          "discoveryId": "discovery-candidate:33e1dab3a134b6f970c09b16",
+          "role": "EXCEPTION",
+          "ref": "6.08(a)(i)(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:33e1dab3a134b6f970c09b16",
+          "role": "EXCEPTION",
+          "ref": "6.08(a)(i)(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:dd63248d851cb27e08acd497",
+          "role": "EXCEPTION",
+          "ref": "6.08(a)(i)(b)"
+        },
+        {
+          "discoveryId": "discovery-candidate:dd63248d851cb27e08acd497",
+          "role": "EXCEPTION",
+          "ref": "6.08(a)(i)(b)"
+        }
+      ],
+      "passARun2Hits": 108,
+      "inventoryItems": [
+        {
+          "unit": "6.08",
+          "id": "inv-item:0216cd6e61ef0c1d1a17ca9b",
+          "role": "PROHIBITION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:8f73791d05ec6c84cc6b6a93",
+          "role": "EXCEPTION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "dividends, payments or distributions by the Borrowers payable solely in Equity Interests (other than\nDisqualified Stock)"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:18962619a59810088c47fed0",
+          "role": "EXCEPTION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "dividends, payments or distributions by a Restricted Subsidiary so long as,"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:5d21cfa0a99fdd8bb481e111",
+          "role": "CONDITION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "any Restricted Party receives at least its pro rata share\n(taking into account any Preferred Stock) of such dividend, pa"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:f05d916283b4c504dbd6a110",
+          "role": "EXCEPTION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "dividends or distributions payable to any Parent Entity to fund interest payments in respect of Indebtedness of such\nPar"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:9b91ac2b55ab6b9bd329c6eb",
+          "role": "PROHIBITION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "purchase, redeem, defease or otherwise acquire or retire\nfor value any Equity Interests of the Borrowers or any Parent E"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:cd423d7caf8b2aaad713cec0",
+          "role": "PROHIBITION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "make any principal payment on, or redeem, repurchase, defease, discharge or otherwise acquire or retire for value, in\nea"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:0f509662104b78895141510f",
+          "role": "EXCEPTION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "Indebtedness permitted to be incurred or issued under any of Sections 6.01(b)(7), (8) and (9) hereof"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:186b2da2dc28d1dd68370170",
+          "role": "EXCEPTION",
+          "materiality": "CRITICAL",
+          "disposition": "MISSING_FROM_COMPOSITION",
+          "valuesMissing": 1,
+          "excerpt": "the prepayment, redemption, purchase, repurchase, defeasance, discharge or other acquisition or retirement of Subordinat"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:87b1e9702ad56826f4996741",
+          "role": "EXCEPTION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "Indebtedness individually having an aggregate principal amount which is below the\nThreshold Amount; or"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:92435da36876beb9c40999db",
+          "role": "PROHIBITION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "make any Restricted Investment,"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:d7e3a8a9f654182f4bd13dbd",
+          "role": "CONDITION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "unless, at the time of such Restricted Payment (or the declaration thereof):"
+        }
+      ],
+      "inventoryItemCount": 103,
+      "composedIntoIR": true,
+      "representationMechanical": "PARTIAL",
+      "unitStates": [
+        {
+          "unit": "6.08",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "PARTIAL",
+          "failureReasons": [
+            "IR_VALIDATION_FAILURE",
+            "OPERATIVE_STATE_UNRESOLVED",
+            "SEMANTIC_INVENTORY_COVERAGE_GAP",
+            "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+          ],
+          "semanticallyComplete": false,
+          "verifyStatus": "MATERIAL_DISCREPANCY",
+          "materialFindings": 25
+        }
+      ],
+      "coverageAuditStatuses": [
+        "AMBIGUOUS_MATCH",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "AMBIGUOUS_MATCH",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [
+        {
+          "unit": "6.08",
+          "severity": "MATERIAL",
+          "type": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "irPath": "definitions[2] (termName: Threshold Amount).calculationExpression",
+          "citation": "\u00a76.08(a)(iii)(c)"
+        },
+        {
+          "unit": "6.08",
+          "severity": "MATERIAL",
+          "type": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "irPath": "rules[0].entityScope / entityScopeExcluded (and this pattern repeats across essentially ev",
+          "citation": "\u00a76.08(a) (chapeau) and \u00a76.08 (closing paragraphs)"
+        },
+        {
+          "unit": "6.08",
+          "severity": "UNCERTAIN",
+          "type": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "irPath": "definitions[5] (Available Amount).calculationExpression (the resolved MAX node for clause ",
+          "citation": "\u00a76.08(a)(3)(a)"
+        }
+      ],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "IR_COMPOSITION",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "ACCOUNTABILITY_INCOMPLETE",
+        "COMPILE_PARTIAL",
+        "INVENTORY_COVERAGE_GAP",
+        "VERIFIER_MATERIAL_DISCREPANCY"
+      ],
+      "substantiveCredit": "PARTIAL",
+      "adjudication": "rules[0] 6.08(a) prohibition with 37 exceptions and the Available Amount condition, but the condition expression is UNSUPPORTED and the Available Amount builder (C1) is not computable; verifier flags entity scope (Unrestricted Subsidiaries) as a genuine material discrepancy"
+    },
+    {
+      "id": "A6",
+      "category": "A",
+      "materiality": "MATERIAL",
+      "section": "5.18(a)",
+      "span": [
+        593406,
+        607122
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 16,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:98c1666229f659ea98a873ae",
+          "role": "GENERAL_PROHIBITION",
+          "ref": "5.18(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:a957064d577b22c6acd553e0",
+          "role": "EXCEPTION",
+          "ref": "5.18(b)"
+        },
+        {
+          "discoveryId": "discovery-candidate:a957064d577b22c6acd553e0",
+          "role": "EXCEPTION",
+          "ref": "5.18(b)"
+        },
+        {
+          "discoveryId": "discovery-candidate:be8887dc315eaa7a56a512c8",
+          "role": "EXCEPTION",
+          "ref": "5.18(b)(1)(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:be8887dc315eaa7a56a512c8",
+          "role": "EXCEPTION",
+          "ref": "5.18(b)(1)(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:d28e1c28628a7c258421a052",
+          "role": "EXCEPTION",
+          "ref": "5.18(b)(1)(b)"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "A7",
+      "category": "A",
+      "materiality": "CRITICAL",
+      "section": "7.01(d)/(e)",
+      "span": [
+        701185,
+        701796
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 16,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:6591b931ff4e4c25132f6670",
+          "role": "TRIGGER",
+          "ref": "7.01(d)"
+        },
+        {
+          "discoveryId": "discovery-candidate:3bacc29e6d6fc4408ff5dc0b",
+          "role": "TRIGGER",
+          "ref": "7.01(e)"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "B1",
+      "category": "B",
+      "materiality": "CRITICAL",
+      "section": "6.01(b)(1)",
+      "span": [
+        612837,
+        613535
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 21,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:e87fe13501ee61a433e0c0b4",
+          "role": "EXCEPTION",
+          "ref": "6.01(b)(3)"
+        },
+        {
+          "discoveryId": "discovery-candidate:f261eb5d1a744c816f2c5aaa",
+          "role": "BASKET",
+          "ref": "6.01(b)(4)(a)"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "B2",
+      "category": "B",
+      "materiality": "MATERIAL",
+      "section": "6.01(b)(4)",
+      "span": [
+        613535,
+        614500
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 22,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:f261eb5d1a744c816f2c5aaa",
+          "role": "BASKET",
+          "ref": "6.01(b)(4)(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:f62db8ebcda9d35c4fc03b2a",
+          "role": "BUILDER",
+          "ref": "6.01(b)(4)(a)(i)"
+        },
+        {
+          "discoveryId": "discovery-candidate:dbe8ccb162675149aa57bb9c",
+          "role": "BUILDER",
+          "ref": "6.01(b)(4)(a)(ii)"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "B3",
+      "category": "B",
+      "materiality": "CRITICAL",
+      "section": "6.01(b)(12)",
+      "span": [
+        621202,
+        623379
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 19,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "B4",
+      "category": "B",
+      "materiality": "MATERIAL",
+      "section": "6.01(b)(18)",
+      "span": [
+        630144,
+        630700
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 19,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "B5",
+      "category": "B",
+      "materiality": "MATERIAL",
+      "section": "6.01(b)(19)",
+      "span": [
+        630700,
+        631400
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 19,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "B6",
+      "category": "B",
+      "materiality": "MATERIAL",
+      "section": "6.01(b)(27)",
+      "span": [
+        634000,
+        634400
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 19,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "B7",
+      "category": "B",
+      "materiality": "CRITICAL",
+      "section": "6.01(b)(31)/(32)/(33)",
+      "span": [
+        634400,
+        636112
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 19,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "B8",
+      "category": "B",
+      "materiality": "MATERIAL",
+      "section": "6.08(b)(9)",
+      "span": [
+        679678,
+        681538
+      ],
+      "coveringUnits": [
+        "6.08"
+      ],
+      "discoveredByPassA": true,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 25,
+      "candidates2B": [],
+      "passARun2Hits": 14,
+      "inventoryItems": [
+        {
+          "unit": "6.08",
+          "id": "inv-item:33355a9c1fc48a0b3dad4d7d",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "UNSUPPORTED",
+          "valuesMissing": 0,
+          "excerpt": "an aggregate amount per annum not to exceed 7.0% of Market Capitalization"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:4b44e47e468890905a655dc6",
+          "role": "THRESHOLD",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "for aggregate consideration that, when taken together with dividends permitted by sub-clause (a), does not\nexceed the am"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:04cce2e3ae9c69a745a054ca",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "any amounts (to the extent not reducing the amounts available under clause (3) of the first (1st) paragraph under\nSectio"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:02e3c64ca1cd38bd8a45e89b",
+          "role": "PERMISSION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "(a) the declaration and payment of dividends on any Borrower\u2019s common stock (or the payment of dividends to\nany Parent E"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:abbeb548a74273faa56e047c",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "UNSUPPORTED",
+          "valuesMissing": 0,
+          "excerpt": "in an amount not to exceed the sum of (A) 6.0% per annum of the net cash proceeds received by or contributed to the\nBorr"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:fa1d103d3c82f9913ada1434",
+          "role": "EXCEPTION",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "other than public offerings with respect to the Borrowers\u2019 common stock registered on Form\nS-8 (or comparable form) and "
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:7437edb8958b2b9a60a84b69",
+          "role": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "(b) in lieu of all\nor a portion of the dividends permitted by sub-clause"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:c5e6c4b6242eff08fd620e24",
+          "role": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "any prepayment, purchase, repurchase, redemption, defeasance, discharge, retirement or other acquisition of the Borrower"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:3b5dc331d31cf1bdbd3361d5",
+          "role": "DEPENDENCY",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "exceed the amount contemplated by sub-clause"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:d79ba5df719f8732b516c203",
+          "role": "REFERENCE",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "Section 6.08(a) and clause"
+        }
+      ],
+      "inventoryItemCount": 10,
+      "composedIntoIR": true,
+      "representationMechanical": "PARTIAL",
+      "unitStates": [
+        {
+          "unit": "6.08",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "PARTIAL",
+          "failureReasons": [
+            "IR_VALIDATION_FAILURE",
+            "OPERATIVE_STATE_UNRESOLVED",
+            "SEMANTIC_INVENTORY_COVERAGE_GAP",
+            "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+          ],
+          "semanticallyComplete": false,
+          "verifyStatus": "MATERIAL_DISCREPANCY",
+          "materialFindings": 25
+        }
+      ],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "IR_COMPOSITION",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "ACCOUNTABILITY_INCOMPLETE",
+        "COMPILE_PARTIAL",
+        "INVENTORY_COVERAGE_GAP",
+        "VERIFIER_MATERIAL_DISCREPANCY"
+      ],
+      "substantiveCredit": "PARTIAL",
+      "adjudication": "rules[11] 6.08(b)(9) capacity UNSUPPORTED (SUBTRACT type-check); 6.0%/7.0% values missing from IR"
+    },
+    {
+      "id": "B9",
+      "category": "B",
+      "materiality": "CRITICAL",
+      "section": "6.08(b)(10)",
+      "span": [
+        681538,
+        682568
+      ],
+      "coveringUnits": [
+        "6.08"
+      ],
+      "discoveredByPassA": true,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 25,
+      "candidates2B": [],
+      "passARun2Hits": 17,
+      "inventoryItems": [
+        {
+          "unit": "6.08",
+          "id": "inv-item:04cce2e3ae9c69a745a054ca",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "any amounts (to the extent not reducing the amounts available under clause (3) of the first (1st) paragraph under\nSectio"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:1193ca615dcc9fe72c03c491",
+          "role": "PERMISSION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "any Restricted Payment (other than any Restricted\nDebt Payment); provided that on a Pro Forma Basis after giving effect "
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:86e64995b1a3e12d4aa74ca1",
+          "role": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": "UNSUPPORTED",
+          "valuesMissing": 0,
+          "excerpt": "the First Lien Leverage Ratio of the Initial Borrower for the Test Period would not exceed (A) 2.00:1.00"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:48f46ac3fea2ac5448a28603",
+          "role": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "the First Lien Leverage Ratio as of the last day of the then most recently ended Test Period"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:a4ac97988fdea13239ac15d5",
+          "role": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "the Interest Coverage Ratio level as of the last day of the then most recently ended Test Period"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:2ac1f47ac69168642d7c8f35",
+          "role": "CONDITION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "there is no\ncontinuing Specified Event of Default"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:872fbec1bc3232fc5d39e606",
+          "role": "CONDITION",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "(10) of this Section 6.08(b)) that have been used to incur Indebtedness, Disqualified Stock or Preferred Stock pursuant "
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:68f6861e594ab5cdbcceb521",
+          "role": "REFERENCE",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "(46)(i) of the definition of \u201cPermitted Liens\u201d;"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:81fcf32841f3355dd4006f2a",
+          "role": "CONDITION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "Debt Payment); provided that on a Pro Forma Basis after giving effect to such Restricted Payment and the incurrence of a"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:e9ebc54c4bedee9a732fb9f4",
+          "role": "THRESHOLD",
+          "materiality": "CRITICAL",
+          "disposition": "UNSUPPORTED",
+          "valuesMissing": 0,
+          "excerpt": "(ii) the Interest Coverage Ratio on a pro forma basis is at least equal to or greater than (A) 1.75:1.00 or"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:4d795ebda93ebeb1e75c7f03",
+          "role": "CONDITION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "continuing Specified Event of Default;"
+        }
+      ],
+      "inventoryItemCount": 11,
+      "composedIntoIR": true,
+      "representationMechanical": "PARTIAL",
+      "unitStates": [
+        {
+          "unit": "6.08",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "PARTIAL",
+          "failureReasons": [
+            "IR_VALIDATION_FAILURE",
+            "OPERATIVE_STATE_UNRESOLVED",
+            "SEMANTIC_INVENTORY_COVERAGE_GAP",
+            "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+          ],
+          "semanticallyComplete": false,
+          "verifyStatus": "MATERIAL_DISCREPANCY",
+          "materialFindings": 25
+        }
+      ],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "IR_COMPOSITION",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "ACCOUNTABILITY_INCOMPLETE",
+        "COMPILE_PARTIAL",
+        "INVENTORY_COVERAGE_GAP",
+        "VERIFIER_MATERIAL_DISCREPANCY"
+      ],
+      "substantiveCredit": "PARTIAL",
+      "adjudication": "rules[12] 6.08(b)(10) UNLIMITED_CAPACITY gated by an UNSUPPORTED AND expression; 2.00x / 1.75x ratios missing from IR; RDP exclusion exception present"
+    },
+    {
+      "id": "B10",
+      "category": "B",
+      "materiality": "CRITICAL",
+      "section": "6.08(b)(12)",
+      "span": [
+        683084,
+        683600
+      ],
+      "coveringUnits": [
+        "6.08"
+      ],
+      "discoveredByPassA": true,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 25,
+      "candidates2B": [],
+      "passARun2Hits": 8,
+      "inventoryItems": [
+        {
+          "unit": "6.08",
+          "id": "inv-item:cbdf918435ec4db23fd26353",
+          "role": "PERMISSION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "other Restricted Payments at any one time outstanding in an\naggregate amount taken together with all other Restricted Pa"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:588b5c4d56be0854ed20a971",
+          "role": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "$720.0 million"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:e6c507dc0c5889592a7267de",
+          "role": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "100% of Consolidated EBITDA for the most recently ended Test Period"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:b316099223c302324e49d524",
+          "role": "CONDITION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "if this Section 6.08(b)(12) is utilized to make a Restricted Investment, the amount counted against the basket shall be "
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:b0563016d76a5ebe750a1f2a",
+          "role": "SHARED_CAP",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "aggregate amount taken together with all other Restricted Payments made pursuant to this Section 6.08(b)(12) not to exce"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:3b7426a937ac3e127b40b748",
+          "role": "CONDITION",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "calculated on a Pro Forma Basis, at the time of such Restricted Payment;"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:90e0e2a158f70f2059fb9f5a",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "Restricted Investment at any time outstanding (with the Fair Market Value of such Investment being measured at the time "
+        }
+      ],
+      "inventoryItemCount": 7,
+      "composedIntoIR": true,
+      "representationMechanical": "FULL",
+      "unitStates": [
+        {
+          "unit": "6.08",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "PARTIAL",
+          "failureReasons": [
+            "IR_VALIDATION_FAILURE",
+            "OPERATIVE_STATE_UNRESOLVED",
+            "SEMANTIC_INVENTORY_COVERAGE_GAP",
+            "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+          ],
+          "semanticallyComplete": false,
+          "verifyStatus": "MATERIAL_DISCREPANCY",
+          "materialFindings": 25
+        }
+      ],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "FULLY_REPRESENTED_REVIEW_REQUIRED",
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": null,
+      "trustSafety": null,
+      "trustBlockers": [
+        "ACCOUNTABILITY_INCOMPLETE",
+        "COMPILE_PARTIAL",
+        "INVENTORY_COVERAGE_GAP",
+        "VERIFIER_MATERIAL_DISCREPANCY"
+      ],
+      "substantiveCredit": "FULL",
+      "adjudication": "rules[15] 6.08(b)(12): MAX($720,000,000, 100% x Consolidated EBITDA) + proviso (A) Restricted Investment counted at FMV when made, fixed thereafter + proviso (B) no Specified Event of Default on a pro forma basis - every material component of the source clause is present; Consolidated EBITDA is a metric reference (resolvedDefinitionId null), acceptable for a basket definition. Verifier's UNSUPPORTED_IR_ADDITION on 720000000 is the F-3 scale artefact."
+    },
+    {
+      "id": "B11",
+      "category": "B",
+      "materiality": "CRITICAL",
+      "section": "6.08(b)(15)/(25)",
+      "span": [
+        684625,
+        693909
+      ],
+      "coveringUnits": [
+        "6.08"
+      ],
+      "discoveredByPassA": true,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 25,
+      "candidates2B": [],
+      "passARun2Hits": 64,
+      "inventoryItems": [
+        {
+          "unit": "6.08",
+          "id": "inv-item:898f62b26c441dcabfa36aca",
+          "role": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": "UNSUPPORTED",
+          "valuesMissing": 0,
+          "excerpt": "the Interest Coverage Ratio on a pro forma basis is at least equal to or greater than (A)\n1.75:1.00"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:da568acb47984c08a3ca2072",
+          "role": "PERMISSION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "Restricted Debt Payments at any one time outstanding in an\naggregate amount taken together with all other Restricted Deb"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:face3743fbc37e6b965e4bc0",
+          "role": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "100% of Consolidated EBITDA of the Initial Borrower for the most\nrecently ended Test Period"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:c6a48f5b5245eb2c1c982667",
+          "role": "PERMISSION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "the\ndeclaration and payment of dividends or distributions by the Initial Borrower to, or the making of loans to, any Par"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:33ad3bc84ba17dbafde2e96a",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "franchise, excise and similar taxes and other fees, taxes and expenses, in each case,\nrequired to maintain its organizat"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:c8c13df78341e913a1c927d9",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "any U.S. federal, state, local, provincial, territorial or non-U.S. income or similar taxes (as applicable) of such Tax "
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:7f5e1f0223fd416844fecc40",
+          "role": "CONDITION",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "the Tax Amount shall be calculated assuming the highest combined marginal U.S. federal, state, local and/or non-U.S. inc"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:9ee711fe3df53b74970e5f6b",
+          "role": "CONDITION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "Restricted Payments under this clause (b) in respect of any Taxes attributable to the income of any Unrestricted Subsidi"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:35fb89b779b710ff4beec967",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "customary salary, bonus, severance and other\nbenefits payable to, and indemnities provided on behalf of, future, current"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:1d1b1f52e567c1d910ca64df",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "general corporate, organizational, operating, administrative, compliance, overhead and other costs and expenses\n(includi"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:084e9a809d6bd61b1e7b9d3e",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "following the first public offering of the common stock of any Parent Entity after\nthe Effective Date, listing fees and "
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:1923cd8f66664d59fab5e516",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "fees and expenses related to any equity or debt offering, financing transaction, acquisitions, divestitures, investments"
+        }
+      ],
+      "inventoryItemCount": 63,
+      "composedIntoIR": true,
+      "representationMechanical": "PARTIAL",
+      "unitStates": [
+        {
+          "unit": "6.08",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "PARTIAL",
+          "failureReasons": [
+            "IR_VALIDATION_FAILURE",
+            "OPERATIVE_STATE_UNRESOLVED",
+            "SEMANTIC_INVENTORY_COVERAGE_GAP",
+            "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+          ],
+          "semanticallyComplete": false,
+          "verifyStatus": "MATERIAL_DISCREPANCY",
+          "materialFindings": 25
+        }
+      ],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "FULLY_REPRESENTED_REVIEW_REQUIRED",
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "IR_COMPOSITION",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "ACCOUNTABILITY_INCOMPLETE",
+        "COMPILE_PARTIAL",
+        "INVENTORY_COVERAGE_GAP",
+        "VERIFIER_MATERIAL_DISCREPANCY"
+      ],
+      "substantiveCredit": "PARTIAL",
+      "adjudication": "rules[18] 6.08(b)(15) MAX($720M,100% EBITDA) present; ratio RDP (b)(25) gate UNSUPPORTED; Threshold Amount RDP exception represented via definition (F-4)"
+    },
+    {
+      "id": "B12",
+      "category": "B",
+      "materiality": "CRITICAL",
+      "section": "Permitted Investments (13)",
+      "span": [
+        255193,
+        255900
+      ],
+      "coveringUnits": [
+        "1.01"
+      ],
+      "discoveredByPassA": true,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 44,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [
+        {
+          "unit": "1.01",
+          "id": "inv-item:4791c1047af2d96cf3108a20",
+          "role": "EXCEPTION",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "additional Investments having an aggregate Fair Market Value, taken together with all other Investments\nmade pursuant to"
+        }
+      ],
+      "inventoryItemCount": 1,
+      "composedIntoIR": false,
+      "representationMechanical": "MISSING",
+      "unitStates": [
+        {
+          "unit": "1.01",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "FAILED",
+          "failureReasons": [
+            "PROVIDER_FAILURE"
+          ],
+          "semanticallyComplete": null,
+          "verifyStatus": null,
+          "materialFindings": 0
+        }
+      ],
+      "coverageAuditStatuses": [
+        "AMBIGUOUS_MATCH",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "IR_COMPOSITION",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "B13",
+      "category": "B",
+      "materiality": "MATERIAL",
+      "section": "Permitted Liens (46)",
+      "span": [
+        286424,
+        287000
+      ],
+      "coveringUnits": [
+        "1.01"
+      ],
+      "discoveredByPassA": false,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 44,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "MISSING",
+      "unitStates": [
+        {
+          "unit": "1.01",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "FAILED",
+          "failureReasons": [
+            "PROVIDER_FAILURE"
+          ],
+          "semanticallyComplete": null,
+          "verifyStatus": null,
+          "materialFindings": 0
+        }
+      ],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "SOURCE_INVENTORY",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "B14",
+      "category": "B",
+      "materiality": "CRITICAL",
+      "section": "Incremental Cap / Fixed Incremental Amount",
+      "span": [
+        184409,
+        185400
+      ],
+      "coveringUnits": [
+        "1.01"
+      ],
+      "discoveredByPassA": true,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 44,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [
+        {
+          "unit": "1.01",
+          "id": "inv-item:9e86ceeb6f2f72225585dbba",
+          "role": "EXCEPTION",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "the greater of (i) $720.0 million and (ii) an amount equal to 100% of Consolidated EBITDA on a Pro Forma Basis for the m"
+        },
+        {
+          "unit": "1.01",
+          "id": "inv-item:cff6aba64520d09fac7ca41f",
+          "role": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "$720.0 million"
+        },
+        {
+          "unit": "1.01",
+          "id": "inv-item:3a78fe5b5a1e4208a5236ac1",
+          "role": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "100% of Consolidated EBITDA on a Pro Forma Basis for the most recently completed four (4) consecutive\nfiscal quarters"
+        },
+        {
+          "unit": "1.01",
+          "id": "inv-item:8b28d97d989435401a6d146f",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "plus (b) any unused amounts under Section 6.01(b)(12)(b), plus (c) any unused amounts under the General Lien Basket\nReal"
+        }
+      ],
+      "inventoryItemCount": 4,
+      "composedIntoIR": false,
+      "representationMechanical": "MISSING",
+      "unitStates": [
+        {
+          "unit": "1.01",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "FAILED",
+          "failureReasons": [
+            "PROVIDER_FAILURE"
+          ],
+          "semanticallyComplete": null,
+          "verifyStatus": null,
+          "materialFindings": 0
+        }
+      ],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "IR_COMPOSITION",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "B15",
+      "category": "B",
+      "materiality": "MATERIAL",
+      "section": "2.18(b)",
+      "span": [
+        498027,
+        498599
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 12,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:bff3ffcacd4f0ee0e1d4a253",
+          "role": "CONDITION",
+          "ref": "2.18(b)"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "C1",
+      "category": "C",
+      "materiality": "CRITICAL",
+      "section": "6.08(a)(3)",
+      "span": [
+        662400,
+        670071
+      ],
+      "coveringUnits": [
+        "6.08"
+      ],
+      "discoveredByPassA": true,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 36,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:c7cae40c3925d889a79765eb",
+          "role": "GENERAL_PROHIBITION",
+          "ref": "6.08(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:2aaad3b7822b5d7bbcd18822",
+          "role": "GENERAL_PROHIBITION",
+          "ref": "6.08(a)(iv)"
+        },
+        {
+          "discoveryId": "discovery-candidate:0e5cafaccfa450624d2e887e",
+          "role": "EXCEPTION",
+          "ref": "6.08(b)"
+        },
+        {
+          "discoveryId": "discovery-candidate:f0679b34ad7ad49f2f552be4",
+          "role": "OTHER_RELEVANT_RULE",
+          "ref": "6.08(c)"
+        },
+        {
+          "discoveryId": "discovery-candidate:f25594c7b203514c0a390e9e",
+          "role": "GENERAL_PROHIBITION",
+          "ref": "6.08(d)(i)"
+        },
+        {
+          "discoveryId": "discovery-candidate:ae95e3be9a0b385f6853d337",
+          "role": "DESIGNATION_RULE",
+          "ref": "6.08(d)(ii)"
+        }
+      ],
+      "passARun2Hits": 75,
+      "inventoryItems": [
+        {
+          "unit": "6.08",
+          "id": "inv-item:fb94c5778957c130aad42a6c",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "UNSUPPORTED",
+          "valuesMissing": 0,
+          "excerpt": "the greater of (x) 50% of the Consolidated Net Income of the Restricted Parties (including any predecessor of the\nBorrow"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:72c7fd9b304d55a0ea0977fe",
+          "role": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": "UNSUPPORTED",
+          "valuesMissing": 0,
+          "excerpt": "50% of the Consolidated Net Income of the Restricted Parties"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:dc5cfdc4e613a9c0d47bc235",
+          "role": "CONDITION",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "which amount shall be deemed to be zero for any fiscal quarter in which the Consolidated Net Income for such\nfiscal quar"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:306db0aa79d0bc6a1aabda56",
+          "role": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "the sum of 100% of Retained Excess Cash Flow"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:0a3d7fc327a49f6bc336162c",
+          "role": "CONDITION",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "which amount shall be deemed to be zero for any fiscal quarter in which such amount for such fiscal quarter is less than"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:a85ba163fa4a50de7348321f",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "cumulative\nConsolidated EBITDA of any Restricted Party for each fiscal quarter following the Effective Date for which fi"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:892dccd636f61f09459c9723",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "UNSUPPORTED",
+          "valuesMissing": 0,
+          "excerpt": "140% of\nthe cumulative Consolidated Interest Expense for such applicable fiscal quarter"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:724d3b73576c589beb7c9808",
+          "role": "CONDITION",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "which amounts under clauses (x), (y)\nand (z) shall, in each case, be calculated on a Pro Forma Basis"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:648bb677e2e65a736cc6d920",
+          "role": "CONDITION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "provided that no Restricted Payment constituting a volitional dividend or distribution shall be made in reliance on this"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:ca11684a5201ce1f9990ab55",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "100% of the aggregate net cash proceeds and the Fair Market Value of marketable\nsecurities or other property received by"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:4a259d40a6a499a3c8b55715",
+          "role": "EXCEPTION",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "(other than net cash proceeds from an ABL Cure Amount or to the extent such net cash proceeds have been used to incur In"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:4baf8681ffb70ff71ad52f3a",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "Equity Interests of the Borrowers, including Treasury Capital Stock (as defined below), but excluding cash proceeds and\n"
+        }
+      ],
+      "inventoryItemCount": 73,
+      "composedIntoIR": true,
+      "representationMechanical": "PARTIAL",
+      "unitStates": [
+        {
+          "unit": "6.08",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "PARTIAL",
+          "failureReasons": [
+            "IR_VALIDATION_FAILURE",
+            "OPERATIVE_STATE_UNRESOLVED",
+            "SEMANTIC_INVENTORY_COVERAGE_GAP",
+            "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+          ],
+          "semanticallyComplete": false,
+          "verifyStatus": "MATERIAL_DISCREPANCY",
+          "materialFindings": 25
+        }
+      ],
+      "coverageAuditStatuses": [
+        "AMBIGUOUS_MATCH",
+        "UNREPRESENTED",
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH",
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [
+        {
+          "unit": "6.08",
+          "severity": "UNCERTAIN",
+          "type": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "irPath": "definitions[5] (Available Amount).calculationExpression (the resolved MAX node for clause ",
+          "citation": "\u00a76.08(a)(3)(a)"
+        }
+      ],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "IR_COMPOSITION",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "ACCOUNTABILITY_INCOMPLETE",
+        "COMPILE_PARTIAL",
+        "INVENTORY_COVERAGE_GAP",
+        "VERIFIER_MATERIAL_DISCREPANCY"
+      ],
+      "substantiveCredit": "PARTIAL",
+      "adjudication": "Available Amount builder: 50% CNI / 140% interest / $540M-75% starter components UNSUPPORTED; builder period and clause (46)(ii)/6.01(b)(32) reductions inside an UNSUPPORTED expression"
+    },
+    {
+      "id": "C2",
+      "category": "C",
+      "materiality": "CRITICAL",
+      "section": "2.09(c)",
+      "span": [
+        431608,
+        434969
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 25,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:b4285d3171a114b94e7d3242",
+          "role": "FINANCIAL_TEST",
+          "ref": "2.09(c)"
+        },
+        {
+          "discoveryId": "discovery-candidate:4d475c9b6dd61e3dcc150516",
+          "role": "EXCEPTION",
+          "ref": "2.09(c)(i)"
+        },
+        {
+          "discoveryId": "discovery-candidate:1f143a885060c905e2ab58fa",
+          "role": "EXCEPTION",
+          "ref": "2.09(c)(ii)"
+        },
+        {
+          "discoveryId": "discovery-candidate:7c10595c77726b3004d721ab",
+          "role": "EXCEPTION",
+          "ref": "2.09(c)"
+        },
+        {
+          "discoveryId": "discovery-candidate:142db7a3f96baded0244e49c",
+          "role": "BUILDER",
+          "ref": "2.09(c)"
+        },
+        {
+          "discoveryId": "discovery-candidate:d8c6bffa57466d669e92382b",
+          "role": "CONDITION",
+          "ref": "2.09(c)"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "C3",
+      "category": "C",
+      "materiality": "CRITICAL",
+      "section": "Prepayment Event (a)/(b)",
+      "span": [
+        291823,
+        293300
+      ],
+      "coveringUnits": [
+        "1.01"
+      ],
+      "discoveredByPassA": true,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 44,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [
+        {
+          "unit": "1.01",
+          "id": "inv-item:2096052f696a830b72bcf305",
+          "role": "EXCEPTION",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "dispositions resulting in aggregate Net Proceeds not exceeding the greater of $144.0 million and 20% of Consolidated EBI"
+        },
+        {
+          "unit": "1.01",
+          "id": "inv-item:435bebbab162719b57e8df07",
+          "role": "EXCEPTION",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "dispositions resulting in aggregate Net Proceeds not exceeding the greater of\n$216.0 million and 30% of Consolidated EBI"
+        }
+      ],
+      "inventoryItemCount": 2,
+      "composedIntoIR": false,
+      "representationMechanical": "MISSING",
+      "unitStates": [
+        {
+          "unit": "1.01",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "FAILED",
+          "failureReasons": [
+            "PROVIDER_FAILURE"
+          ],
+          "semanticallyComplete": null,
+          "verifyStatus": null,
+          "materialFindings": 0
+        }
+      ],
+      "coverageAuditStatuses": [
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "IR_COMPOSITION",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "C4",
+      "category": "C",
+      "materiality": "MATERIAL",
+      "section": "2.09(d)",
+      "span": [
+        434969,
+        436946
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 25,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:cf1e5d04e54318a597517212",
+          "role": "CONDITION",
+          "ref": "2.09(d)"
+        },
+        {
+          "discoveryId": "discovery-candidate:232cc521ec3b43bc970484c0",
+          "role": "PERMISSION",
+          "ref": "2.09(d)"
+        },
+        {
+          "discoveryId": "discovery-candidate:d757be45ade80c7cc72de782",
+          "role": "EXCEPTION",
+          "ref": "2.09(d)"
+        },
+        {
+          "discoveryId": "discovery-candidate:1bce2f8c797fc6334262b40e",
+          "role": "CONDITION",
+          "ref": "2.09(e)"
+        },
+        {
+          "discoveryId": "discovery-candidate:c54bb75e4585859d5b029d53",
+          "role": "PROVISO",
+          "ref": "2.09(e)"
+        },
+        {
+          "discoveryId": "discovery-candidate:9a109e33c769ab421920bfb8",
+          "role": "EXCEPTION",
+          "ref": "2.09(e)"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "C5",
+      "category": "C",
+      "materiality": "CRITICAL",
+      "section": "7.01(g) proviso",
+      "span": [
+        702056,
+        704050
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 17,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:00b7de10637b8fce733b251d",
+          "role": "TRIGGER",
+          "ref": "7.01(g)"
+        },
+        {
+          "discoveryId": "discovery-candidate:495bf3b6f917a02e5f654c74",
+          "role": "EXCEPTION",
+          "ref": "7.01(g)(i)"
+        },
+        {
+          "discoveryId": "discovery-candidate:37b31dec894f9b68ea1c1f87",
+          "role": "CONDITION",
+          "ref": "7.01(g)"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "C6",
+      "category": "C",
+      "materiality": "MATERIAL",
+      "section": "6.05(b)",
+      "span": [
+        654594,
+        658982
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 14,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:a8a84391959f21b29ee79007",
+          "role": "CONDITION",
+          "ref": "6.05(a)(1)"
+        },
+        {
+          "discoveryId": "discovery-candidate:07815621fe80a8cc267fbcbe",
+          "role": "CONDITION",
+          "ref": "6.05(a)(2)"
+        },
+        {
+          "discoveryId": "discovery-candidate:610a3fd69ae77d16e34a481d",
+          "role": "CONDITION",
+          "ref": "6.05(a)(2)"
+        },
+        {
+          "discoveryId": "discovery-candidate:27ef37d4ae281e97be417b9c",
+          "role": "EXCEPTION",
+          "ref": "6.05(a)(2)(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:b8c3560549525ffcee4c00f0",
+          "role": "EXCEPTION",
+          "ref": "6.05(a)(2)(b)"
+        },
+        {
+          "discoveryId": "discovery-candidate:b54ed7fe4f8f7bb7c224d99b",
+          "role": "BASKET",
+          "ref": "6.05(a)(2)(c)"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "C7",
+      "category": "C",
+      "materiality": "MATERIAL",
+      "section": "2.09(a)(i)(B)",
+      "span": [
+        428388,
+        429976
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 24,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:35bf94fe797213aa414e7d29",
+          "role": "PERMISSION",
+          "ref": "2.09(a)(i)"
+        },
+        {
+          "discoveryId": "discovery-candidate:4f8c5953a31e99530693c9a1",
+          "role": "EXCEPTION",
+          "ref": "2.09(a)(i)(A)"
+        },
+        {
+          "discoveryId": "discovery-candidate:c4d32629343e58834213c58a",
+          "role": "PROVISO",
+          "ref": "2.09(a)(i)(B)"
+        },
+        {
+          "discoveryId": "discovery-candidate:c5288d750fcc7a896b463814",
+          "role": "PROVISO",
+          "ref": "2.09(a)(i)(B)(i)"
+        },
+        {
+          "discoveryId": "discovery-candidate:b240beb01d483f15d4923852",
+          "role": "PROVISO",
+          "ref": "2.09(a)(i)(B)(ii)"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "C8",
+      "category": "C",
+      "materiality": "MATERIAL",
+      "section": "6.08(b)(1)",
+      "span": [
+        670108,
+        670628
+      ],
+      "coveringUnits": [
+        "6.08"
+      ],
+      "discoveredByPassA": true,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 25,
+      "candidates2B": [],
+      "passARun2Hits": 2,
+      "inventoryItems": [
+        {
+          "unit": "6.08",
+          "id": "inv-item:055135b45602edfc2bf5825c",
+          "role": "PERMISSION",
+          "materiality": "CRITICAL",
+          "disposition": "MISSING_FROM_COMPOSITION",
+          "valuesMissing": 1,
+          "excerpt": "the payment of any dividend or other distribution or the consummation of any irrevocable redemption within sixty\n(60) da"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:54c6821acd1ff7fbedf8ea9a",
+          "role": "CONDITION",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "(assuming, in the case of a redemption payment, the giving of the notice of such redemption payment would have been deem"
+        },
+        {
+          "unit": "6.08",
+          "id": "inv-item:0ac39eba04089ab77a46a532",
+          "role": "TIME_PERIOD",
+          "materiality": "CRITICAL",
+          "disposition": "MISSING_FROM_COMPOSITION",
+          "valuesMissing": 1,
+          "excerpt": "(60) days after the date of declaration thereof or the giving of such irrevocable notice, as applicable, if, at the date"
+        }
+      ],
+      "inventoryItemCount": 3,
+      "composedIntoIR": true,
+      "representationMechanical": "PARTIAL",
+      "unitStates": [
+        {
+          "unit": "6.08",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "PARTIAL",
+          "failureReasons": [
+            "IR_VALIDATION_FAILURE",
+            "OPERATIVE_STATE_UNRESOLVED",
+            "SEMANTIC_INVENTORY_COVERAGE_GAP",
+            "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+          ],
+          "semanticallyComplete": false,
+          "verifyStatus": "MATERIAL_DISCREPANCY",
+          "materialFindings": 25
+        }
+      ],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "IR_COMPOSITION",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "ACCOUNTABILITY_INCOMPLETE",
+        "COMPILE_PARTIAL",
+        "INVENTORY_COVERAGE_GAP",
+        "VERIFIER_MATERIAL_DISCREPANCY"
+      ],
+      "substantiveCredit": "PARTIAL",
+      "adjudication": "rules[1] 6.08(b)(1) captured as a condition description; the 60-day period value is MISSING_FROM_COMPOSITION (two inventory items missing)"
+    },
+    {
+      "id": "C9",
+      "category": "C",
+      "materiality": "CRITICAL",
+      "section": "1.08",
+      "span": [
+        376281,
+        397593
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 39,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:77848031d076a975d33a4ac2",
+          "role": "DESIGNATION_RULE",
+          "ref": "1.08(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:3746c55b7f0755c138bbcf59",
+          "role": "FINANCIAL_TEST",
+          "ref": "1.08(a)(i)"
+        },
+        {
+          "discoveryId": "discovery-candidate:f67f541f0a6b73a2a757c44b",
+          "role": "CONDITION",
+          "ref": "1.08(a)(ii)"
+        },
+        {
+          "discoveryId": "discovery-candidate:f67f541f0a6b73a2a757c44b",
+          "role": "CONDITION",
+          "ref": "1.08(a)(ii)"
+        },
+        {
+          "discoveryId": "discovery-candidate:6ed137b682e2f05bb6b25cb9",
+          "role": "BASKET",
+          "ref": "1.08(a)(iii)"
+        },
+        {
+          "discoveryId": "discovery-candidate:6ed137b682e2f05bb6b25cb9",
+          "role": "BASKET",
+          "ref": "1.08(a)(iii)"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "D1",
+      "category": "D",
+      "materiality": "CRITICAL",
+      "section": "Threshold Amount / Material Indebtedness",
+      "span": [
+        350042,
+        350203
+      ],
+      "coveringUnits": [
+        "1.01"
+      ],
+      "discoveredByPassA": true,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 44,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [
+        {
+          "unit": "1.01",
+          "id": "inv-item:2a6efbcd8e47268fccc5081f",
+          "role": "EXCEPTION",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "means the greater of (a) $324.0 million and (b) 45% of\nConsolidated EBITDA on a Pro Forma Basis as of the applicable dat"
+        }
+      ],
+      "inventoryItemCount": 1,
+      "composedIntoIR": false,
+      "representationMechanical": "MISSING",
+      "unitStates": [
+        {
+          "unit": "1.01",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "FAILED",
+          "failureReasons": [
+            "PROVIDER_FAILURE"
+          ],
+          "semanticallyComplete": null,
+          "verifyStatus": null,
+          "materialFindings": 0
+        }
+      ],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "IR_COMPOSITION",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "D2",
+      "category": "D",
+      "materiality": "CRITICAL",
+      "section": "ECF Percentage",
+      "span": [
+        143120,
+        144000
+      ],
+      "coveringUnits": [
+        "1.01"
+      ],
+      "discoveredByPassA": true,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 44,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [
+        {
+          "unit": "1.01",
+          "id": "inv-item:4afd9623a2233cadc64b7996",
+          "role": "VALUE",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "means with respect to any Excess Cash Flow Period, 50.0%"
+        }
+      ],
+      "inventoryItemCount": 1,
+      "composedIntoIR": false,
+      "representationMechanical": "MISSING",
+      "unitStates": [
+        {
+          "unit": "1.01",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "FAILED",
+          "failureReasons": [
+            "PROVIDER_FAILURE"
+          ],
+          "semanticallyComplete": null,
+          "verifyStatus": null,
+          "materialFindings": 0
+        }
+      ],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "IR_COMPOSITION",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "D3",
+      "category": "D",
+      "materiality": "CRITICAL",
+      "section": "Disposition Percentage",
+      "span": [
+        136765,
+        137900
+      ],
+      "coveringUnits": [
+        "1.01"
+      ],
+      "discoveredByPassA": true,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 44,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [
+        {
+          "unit": "1.01",
+          "id": "inv-item:bcb1952482c40eeb345a112d",
+          "role": "VALUE",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "100.0%"
+        },
+        {
+          "unit": "1.01",
+          "id": "inv-item:cf64fc7643adb7f35f917e96",
+          "role": "THRESHOLD",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "the Disposition Percentage (i) shall be 50.0% if the First Lien Leverage Ratio as of the\napplicable time of determinatio"
+        },
+        {
+          "unit": "1.01",
+          "id": "inv-item:6cd88efec2c0749c0e0c0a84",
+          "role": "THRESHOLD",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "shall be 0.0% if the First Lien Leverage Ratio as of the applicable time of determination is less than or equal to 2.00:"
+        }
+      ],
+      "inventoryItemCount": 3,
+      "composedIntoIR": false,
+      "representationMechanical": "MISSING",
+      "unitStates": [
+        {
+          "unit": "1.01",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "FAILED",
+          "failureReasons": [
+            "PROVIDER_FAILURE"
+          ],
+          "semanticallyComplete": null,
+          "verifyStatus": null,
+          "materialFindings": 0
+        }
+      ],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "AMBIGUOUS_MATCH",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "IR_COMPOSITION",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "D4",
+      "category": "D",
+      "materiality": "MATERIAL",
+      "section": "Applicable Rate",
+      "span": [
+        21883,
+        22200
+      ],
+      "coveringUnits": [
+        "1.01"
+      ],
+      "discoveredByPassA": true,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 44,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [
+        {
+          "unit": "1.01",
+          "id": "inv-item:b70ddb9b1e45a1d6cea28109",
+          "role": "VALUE",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "for Term SOFR Loans, 1.75%"
+        },
+        {
+          "unit": "1.01",
+          "id": "inv-item:98a2a63931fda612ac6a57a0",
+          "role": "VALUE",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "for ABR Loans, 0.75%"
+        }
+      ],
+      "inventoryItemCount": 2,
+      "composedIntoIR": false,
+      "representationMechanical": "MISSING",
+      "unitStates": [
+        {
+          "unit": "1.01",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "FAILED",
+          "failureReasons": [
+            "PROVIDER_FAILURE"
+          ],
+          "semanticallyComplete": null,
+          "verifyStatus": null,
+          "materialFindings": 0
+        }
+      ],
+      "coverageAuditStatuses": [
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "IR_COMPOSITION",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "D5",
+      "category": "D",
+      "materiality": "CRITICAL",
+      "section": "Ratio definitions",
+      "span": [
+        183487,
+        183700
+      ],
+      "coveringUnits": [
+        "1.01"
+      ],
+      "discoveredByPassA": false,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 44,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "MISSING",
+      "unitStates": [
+        {
+          "unit": "1.01",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "FAILED",
+          "failureReasons": [
+            "PROVIDER_FAILURE"
+          ],
+          "semanticallyComplete": null,
+          "verifyStatus": null,
+          "materialFindings": 0
+        }
+      ],
+      "coverageAuditStatuses": [
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "SOURCE_INVENTORY",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "D6",
+      "category": "D",
+      "materiality": "MATERIAL",
+      "section": "Test Period",
+      "span": [
+        349461,
+        350042
+      ],
+      "coveringUnits": [
+        "1.01"
+      ],
+      "discoveredByPassA": false,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 44,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "MISSING",
+      "unitStates": [
+        {
+          "unit": "1.01",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "FAILED",
+          "failureReasons": [
+            "PROVIDER_FAILURE"
+          ],
+          "semanticallyComplete": null,
+          "verifyStatus": null,
+          "materialFindings": 0
+        }
+      ],
+      "coverageAuditStatuses": [
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "SOURCE_INVENTORY",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "D7",
+      "category": "D",
+      "materiality": "CRITICAL",
+      "section": "7.01(a)/(b)/(c)",
+      "span": [
+        697603,
+        701185
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 23,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:0c9cb351714e8e3a34e53026",
+          "role": "TRIGGER",
+          "ref": "7.01(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:8b66df5d409181e907fb314a",
+          "role": "PROVISO",
+          "ref": "7.01(a)(i)"
+        },
+        {
+          "discoveryId": "discovery-candidate:7405e3cd233aae75ed4a6528",
+          "role": "CONDITION",
+          "ref": "7.01(a)(ii)"
+        },
+        {
+          "discoveryId": "discovery-candidate:e30e5cc857c4baede421a9ad",
+          "role": "CONDITION",
+          "ref": "7.01(a)(ii)(a)(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:459636e04ecbdaacd4006421",
+          "role": "CONDITION",
+          "ref": "7.01(a)(ii)(a)(a)(B)"
+        },
+        {
+          "discoveryId": "discovery-candidate:c25db1c49afe939e612b13d4",
+          "role": "TRIGGER",
+          "ref": "7.01(b)"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "D8",
+      "category": "D",
+      "materiality": "MATERIAL",
+      "section": "5.01(a)/(b)",
+      "span": [
+        561978,
+        565500
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 15,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:53a21aa106286cacd90ae258",
+          "role": "OTHER_RELEVANT_RULE",
+          "ref": "5.01(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:5ec5a82c39806e31441c5469",
+          "role": "EXCEPTION",
+          "ref": "5.01(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:5ec5a82c39806e31441c5469",
+          "role": "EXCEPTION",
+          "ref": "5.01(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:fba06704c06e9b65a3a7daa7",
+          "role": "PROVISO",
+          "ref": "5.01(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:fba06704c06e9b65a3a7daa7",
+          "role": "PROVISO",
+          "ref": "5.01(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:1c55296af9fce746c497f8b1",
+          "role": "OTHER_RELEVANT_RULE",
+          "ref": "5.01(b)"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "D9",
+      "category": "D",
+      "materiality": "MATERIAL",
+      "section": "Consolidated EBITDA",
+      "span": [
+        79182,
+        99357
+      ],
+      "coveringUnits": [
+        "1.01"
+      ],
+      "discoveredByPassA": true,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 44,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [
+        {
+          "unit": "1.01",
+          "id": "inv-item:30e65e4a2e01a1770fa4efc0",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "MATERIAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "which accrued during the first thirty-six (36) months after opening\nsuch new location, new project, new market or initia"
+        },
+        {
+          "unit": "1.01",
+          "id": "inv-item:259833ee6d36bb9e9b7fb8e8",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "MATERIAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "from operations or assets expected to\nbe disposed of, abandoned and/or discontinued within twelve (12) months after the "
+        },
+        {
+          "unit": "1.01",
+          "id": "inv-item:adea7c0c177b413e95fc2ab0",
+          "role": "CONDITION",
+          "materiality": "MATERIAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "the amounts added back pursuant to this clause (b)(i)(y) are expected by the Initial Borrower in good faith to result fr"
+        },
+        {
+          "unit": "1.01",
+          "id": "inv-item:bb05010156962d7fb9143cde",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "MATERIAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "for\nany facility, site or project that is yet to be completed or operating for business for a period of thirty-six (36) "
+        },
+        {
+          "unit": "1.01",
+          "id": "inv-item:79f678aba3fa1caa910d15ad",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "for purposes of calculating the availability under any basket, ratio or other financial metric under this Agreement or c"
+        }
+      ],
+      "inventoryItemCount": 5,
+      "composedIntoIR": false,
+      "representationMechanical": "MISSING",
+      "unitStates": [
+        {
+          "unit": "1.01",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "FAILED",
+          "failureReasons": [
+            "PROVIDER_FAILURE"
+          ],
+          "semanticallyComplete": null,
+          "verifyStatus": null,
+          "materialFindings": 0
+        }
+      ],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "IR_COMPOSITION",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "E1",
+      "category": "E",
+      "materiality": "CRITICAL",
+      "section": "Available RP Capacity Amount",
+      "span": [
+        35791,
+        36900
+      ],
+      "coveringUnits": [
+        "1.01"
+      ],
+      "discoveredByPassA": false,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 44,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "MISSING",
+      "unitStates": [
+        {
+          "unit": "1.01",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "FAILED",
+          "failureReasons": [
+            "PROVIDER_FAILURE"
+          ],
+          "semanticallyComplete": null,
+          "verifyStatus": null,
+          "materialFindings": 0
+        }
+      ],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "AMBIGUOUS_MATCH",
+        "UNREPRESENTED",
+        "AMBIGUOUS_MATCH",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "SOURCE_INVENTORY",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "E2",
+      "category": "E",
+      "materiality": "MATERIAL",
+      "section": "Available Investment Capacity Amount",
+      "span": [
+        35389,
+        35791
+      ],
+      "coveringUnits": [
+        "1.01"
+      ],
+      "discoveredByPassA": true,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 44,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [
+        {
+          "unit": "1.01",
+          "id": "inv-item:c081b7907f1d12ed28484634",
+          "role": "SHARED_CAP",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "the amount of Investments that may be made at the time of determination\npursuant to clause 13 of \u201cPermitted Investments,"
+        }
+      ],
+      "inventoryItemCount": 1,
+      "composedIntoIR": false,
+      "representationMechanical": "MISSING",
+      "unitStates": [
+        {
+          "unit": "1.01",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "FAILED",
+          "failureReasons": [
+            "PROVIDER_FAILURE"
+          ],
+          "semanticallyComplete": null,
+          "verifyStatus": null,
+          "materialFindings": 0
+        }
+      ],
+      "coverageAuditStatuses": [
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "IR_COMPOSITION",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "E3",
+      "category": "E",
+      "materiality": "CRITICAL",
+      "section": "Fixed Incremental Amount consumption",
+      "span": [
+        184409,
+        185400
+      ],
+      "coveringUnits": [
+        "1.01"
+      ],
+      "discoveredByPassA": true,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 44,
+      "candidates2B": [],
+      "passARun2Hits": 0,
+      "inventoryItems": [
+        {
+          "unit": "1.01",
+          "id": "inv-item:9e86ceeb6f2f72225585dbba",
+          "role": "EXCEPTION",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "the greater of (i) $720.0 million and (ii) an amount equal to 100% of Consolidated EBITDA on a Pro Forma Basis for the m"
+        },
+        {
+          "unit": "1.01",
+          "id": "inv-item:cff6aba64520d09fac7ca41f",
+          "role": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "$720.0 million"
+        },
+        {
+          "unit": "1.01",
+          "id": "inv-item:3a78fe5b5a1e4208a5236ac1",
+          "role": "ALTERNATIVE",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "100% of Consolidated EBITDA on a Pro Forma Basis for the most recently completed four (4) consecutive\nfiscal quarters"
+        },
+        {
+          "unit": "1.01",
+          "id": "inv-item:8b28d97d989435401a6d146f",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": null,
+          "valuesMissing": 0,
+          "excerpt": "plus (b) any unused amounts under Section 6.01(b)(12)(b), plus (c) any unused amounts under the General Lien Basket\nReal"
+        }
+      ],
+      "inventoryItemCount": 4,
+      "composedIntoIR": false,
+      "representationMechanical": "MISSING",
+      "unitStates": [
+        {
+          "unit": "1.01",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "FAILED",
+          "failureReasons": [
+            "PROVIDER_FAILURE"
+          ],
+          "semanticallyComplete": null,
+          "verifyStatus": null,
+          "materialFindings": 0
+        }
+      ],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "IR_COMPOSITION",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "COMPILE_FAILED",
+        "INVENTORY_COVERAGE_GAP"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "E4",
+      "category": "E",
+      "materiality": "CRITICAL",
+      "section": "2.09(b) <-> 6.05(b) <-> Prepayment Event <-> Disposition Percentage",
+      "span": [
+        430523,
+        431608
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 21,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:f20539ffeb050b306734ca7a",
+          "role": "TRIGGER",
+          "ref": "2.09(b)"
+        },
+        {
+          "discoveryId": "discovery-candidate:820353063b53544f8362791d",
+          "role": "EXCEPTION",
+          "ref": "2.09(b)"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED",
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    },
+    {
+      "id": "E5",
+      "category": "E",
+      "materiality": "CRITICAL",
+      "section": "Available Amount cross-basket consumption",
+      "span": [
+        669952,
+        670071
+      ],
+      "coveringUnits": [
+        "6.08"
+      ],
+      "discoveredByPassA": true,
+      "discoveredBy2B": false,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 25,
+      "candidates2B": [],
+      "passARun2Hits": 3,
+      "inventoryItems": [
+        {
+          "unit": "6.08",
+          "id": "inv-item:a7ce8616ba9f0d8011c3b6b5",
+          "role": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "valuesMissing": 0,
+          "excerpt": "(ii) Indebtedness incurred pursuant to Section 6.01(b)(32) since the Effective Date and outstanding thereunder at such t"
+        }
+      ],
+      "inventoryItemCount": 1,
+      "composedIntoIR": true,
+      "representationMechanical": "FULL",
+      "unitStates": [
+        {
+          "unit": "6.08",
+          "sourceContext": "COMPLETE_LOCAL_SOURCE",
+          "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+          "compileStatus": "PARTIAL",
+          "failureReasons": [
+            "IR_VALIDATION_FAILURE",
+            "OPERATIVE_STATE_UNRESOLVED",
+            "SEMANTIC_INVENTORY_COVERAGE_GAP",
+            "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+          ],
+          "semanticallyComplete": false,
+          "verifyStatus": "MATERIAL_DISCREPANCY",
+          "materialFindings": 25
+        }
+      ],
+      "coverageAuditStatuses": [
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH",
+        "AMBIGUOUS_MATCH"
+      ],
+      "verifierFindingsTouching": [
+        {
+          "unit": "6.08",
+          "severity": "UNCERTAIN",
+          "type": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+          "irPath": "definitions[5] (Available Amount).calculationExpression (the resolved MAX node for clause ",
+          "citation": "\u00a76.08(a)(3)(a)"
+        }
+      ],
+      "trustedAsComplete": false,
+      "earliestFailureStage": null,
+      "trustSafety": null,
+      "trustBlockers": [
+        "ACCOUNTABILITY_INCOMPLETE",
+        "COMPILE_PARTIAL",
+        "INVENTORY_COVERAGE_GAP",
+        "VERIFIER_MATERIAL_DISCREPANCY"
+      ],
+      "substantiveCredit": "UNSUPPORTED",
+      "adjudication": "the overlapping inventory item is REPRESENTED via lineage into the Available Amount definition, but that definition's calculationExpression is UNSUPPORTED (SUBTRACT operands do not type-check) so the reduction for Permitted Liens (46)(ii) and 6.01(b)(32) debt is not computably preserved"
+    },
+    {
+      "id": "F1",
+      "category": "F",
+      "materiality": "CRITICAL",
+      "section": "Article VI layout",
+      "span": [
+        650455,
+        659042
+      ],
+      "coveringUnits": [],
+      "discoveredByPassA": false,
+      "discoveredBy2B": true,
+      "discoveredBy2BSectionLevel": true,
+      "candidates2BSectionLevel": 21,
+      "candidates2B": [
+        {
+          "discoveryId": "discovery-candidate:019a53659a4626f946d77263",
+          "role": "GENERAL_PROHIBITION",
+          "ref": "6.05(a)"
+        },
+        {
+          "discoveryId": "discovery-candidate:a8a84391959f21b29ee79007",
+          "role": "CONDITION",
+          "ref": "6.05(a)(1)"
+        },
+        {
+          "discoveryId": "discovery-candidate:a8a84391959f21b29ee79007",
+          "role": "CONDITION",
+          "ref": "6.05(a)(1)"
+        },
+        {
+          "discoveryId": "discovery-candidate:07815621fe80a8cc267fbcbe",
+          "role": "CONDITION",
+          "ref": "6.05(a)(2)"
+        },
+        {
+          "discoveryId": "discovery-candidate:07815621fe80a8cc267fbcbe",
+          "role": "CONDITION",
+          "ref": "6.05(a)(2)"
+        },
+        {
+          "discoveryId": "discovery-candidate:610a3fd69ae77d16e34a481d",
+          "role": "CONDITION",
+          "ref": "6.05(a)(2)"
+        }
+      ],
+      "passARun2Hits": 0,
+      "inventoryItems": [],
+      "inventoryItemCount": 0,
+      "composedIntoIR": false,
+      "representationMechanical": "NOT_ATTEMPTED",
+      "unitStates": [],
+      "coverageAuditStatuses": [
+        "SOURCE_CONTEXT_INCOMPLETE",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED",
+        "UNREPRESENTED"
+      ],
+      "verifierFindingsTouching": [],
+      "trustedAsComplete": false,
+      "earliestFailureStage": "OTHER",
+      "trustSafety": "SAFE_FAILURE",
+      "trustBlockers": [
+        "UNIT_NOT_COMPILED"
+      ],
+      "substantiveCredit": "NONE"
+    }
+  ],
+  "humanAdjudication": {
+    "B10": {
+      "mechanical": "FULL",
+      "humanSubstantiveCredit": "FULL",
+      "basis": "rules[15] 6.08(b)(12): MAX($720,000,000, 100% x Consolidated EBITDA) + proviso (A) Restricted Investment counted at FMV when made, fixed thereafter + proviso (B) no Specified Event of Default on a pro forma basis - every material component of the source clause is present; Consolidated EBITDA is a metric reference (resolvedDefinitionId null), acceptable for a basket definition. Verifier's UNSUPPORTED_IR_ADDITION on 720000000 is the F-3 scale artefact.",
+      "trust": "unit not trusted (compile PARTIAL, accountability incomplete, verifier MATERIAL_DISCREPANCY) - credit is semantic only"
+    },
+    "E5": {
+      "mechanical": "FULL",
+      "humanSubstantiveCredit": "UNSUPPORTED",
+      "basis": "the overlapping inventory item is REPRESENTED via lineage into the Available Amount definition, but that definition's calculationExpression is UNSUPPORTED (SUBTRACT operands do not type-check) so the reduction for Permitted Liens (46)(ii) and 6.01(b)(32) debt is not computably preserved",
+      "trust": "explicit UNSUPPORTED - SAFE_FAILURE"
+    },
+    "A5": {
+      "mechanical": "PARTIAL",
+      "humanSubstantiveCredit": "PARTIAL",
+      "basis": "rules[0] 6.08(a) prohibition with 37 exceptions and the Available Amount condition, but the condition expression is UNSUPPORTED and the Available Amount builder (C1) is not computable; verifier flags entity scope (Unrestricted Subsidiaries) as a genuine material discrepancy"
+    },
+    "B8": {
+      "mechanical": "PARTIAL",
+      "humanSubstantiveCredit": "PARTIAL",
+      "basis": "rules[11] 6.08(b)(9) capacity UNSUPPORTED (SUBTRACT type-check); 6.0%/7.0% values missing from IR"
+    },
+    "B9": {
+      "mechanical": "PARTIAL",
+      "humanSubstantiveCredit": "PARTIAL",
+      "basis": "rules[12] 6.08(b)(10) UNLIMITED_CAPACITY gated by an UNSUPPORTED AND expression; 2.00x / 1.75x ratios missing from IR; RDP exclusion exception present"
+    },
+    "B11": {
+      "mechanical": "PARTIAL",
+      "humanSubstantiveCredit": "PARTIAL",
+      "basis": "rules[18] 6.08(b)(15) MAX($720M,100% EBITDA) present; ratio RDP (b)(25) gate UNSUPPORTED; Threshold Amount RDP exception represented via definition (F-4)"
+    },
+    "C1": {
+      "mechanical": "PARTIAL",
+      "humanSubstantiveCredit": "PARTIAL",
+      "basis": "Available Amount builder: 50% CNI / 140% interest / $540M-75% starter components UNSUPPORTED; builder period and clause (46)(ii)/6.01(b)(32) reductions inside an UNSUPPORTED expression"
+    },
+    "C8": {
+      "mechanical": "PARTIAL",
+      "humanSubstantiveCredit": "PARTIAL",
+      "basis": "rules[1] 6.08(b)(1) captured as a condition description; the 60-day period value is MISSING_FROM_COMPOSITION (two inventory items missing)"
+    }
+  },
+  "fullSubstantiveCredit": {
+    "all46": 1,
+    "rate46": 0.0217,
+    "attempted": 22,
+    "rateAttempted": 0.0455
+  }
+}

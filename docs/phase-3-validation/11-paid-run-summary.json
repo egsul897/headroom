@@ -1,0 +1,254 @@
+{
+  "artifact": "11-paid-run-summary",
+  "runDir": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/",
+  "harness": "scripts/phase-3-validation-chwy-paid-run.ts",
+  "startedAt": "2026-09-03T16:28:45.471Z",
+  "finishedAt": "2026-09-03T19:19:13.921Z",
+  "productionTreeHash": "da7106fac07c369695156cfa0c7d8a30350ea636c5e108060c0e84f67dd4d1ef",
+  "models": {
+    "stage": "anthropic/claude-sonnet-5",
+    "compiler": "anthropic/claude-sonnet-5"
+  },
+  "versions": {
+    "compilerAlgorithm": "semantic-accountability-compiler.v4",
+    "compilerPrompt": "semantic-accountability-compiler-prompt.v4",
+    "toolPolicy": "phase-3b1-tool-policy.v2",
+    "accountabilityAlgorithm": "semantic-accountability.v3",
+    "inventoryPrompt": "semantic-inventory-prompt.v3",
+    "irSchema": "headroom-covenant-ir.v1"
+  },
+  "budget": {
+    "manifestHardCapUsd": 20.0,
+    "effectiveCapUsd": 14.0,
+    "effectiveCapReason": "gateway credit balance was $14.505764 before the run; cap = min(manifest $20, balance - margin)",
+    "spentUsdRateCard": 13.961228,
+    "gatewayReportedSpendUsd": 13.961228,
+    "creditsBefore": {
+      "balance": "14.505764",
+      "total_used": "150.494236"
+    },
+    "creditsAfter": {
+      "balance": "0.544536",
+      "total_used": "164.455464"
+    },
+    "paidModelCalls": 125,
+    "budgetRefusals": 1373,
+    "refusalsByStage": {
+      "compile": 1,
+      "passA-run2": 1,
+      "3E-layerC": 1371
+    },
+    "byStage": {
+      "stage": {
+        "calls": 112,
+        "inputTokens": 492617,
+        "outputTokens": 366988,
+        "costUsd": 4.6551
+      },
+      "passA-run1": {
+        "calls": 5,
+        "inputTokens": 200710,
+        "outputTokens": 382685,
+        "costUsd": 4.2283
+      },
+      "compile": {
+        "calls": 5,
+        "inputTokens": 708595,
+        "outputTokens": 143086,
+        "costUsd": 2.848
+      },
+      "passA-run2": {
+        "calls": 2,
+        "inputTokens": 38134,
+        "outputTokens": 182423,
+        "costUsd": 1.9005
+      },
+      "verify": {
+        "calls": 1,
+        "inputTokens": 85458,
+        "outputTokens": 15838,
+        "costUsd": 0.3293
+      }
+    },
+    "probeBeforeRun": {
+      "httpStatus": 200,
+      "inputTokens": 8,
+      "outputTokens": 1,
+      "costUsd": 4.1e-05
+    }
+  },
+  "stages": {
+    "2B": {
+      "status": "COMPLETED_PARTIAL",
+      "candidates": 839,
+      "sectionsAttempted": 113,
+      "sectionFailures": 1,
+      "failedSection": "1.09 (gateway stale-key 400, transient)",
+      "health": "DISCOVERY_PARTIAL",
+      "modelCalls": 112,
+      "costUsd": 4.6551
+    },
+    "unitSelection": {
+      "rule": "exclude TOC units; rank body units by 2A signal count; top 12",
+      "selected": [
+        "1.01",
+        "6.08",
+        "9.04",
+        "6.01",
+        "2.18",
+        "7.01",
+        "1.08",
+        "9.02",
+        "2.09",
+        "6.03",
+        "5.01",
+        "9.14"
+      ],
+      "attempted": [
+        "1.01",
+        "6.08",
+        "9.04"
+      ],
+      "notAttemptedBudget": [
+        "6.01",
+        "2.18",
+        "7.01",
+        "1.08",
+        "9.02",
+        "2.09",
+        "6.03",
+        "5.01",
+        "9.14"
+      ],
+      "manifestExpectedListDiscrepancy": "09-paid-run-manifest listed an expected order beginning 6.08, 6.01, '1.01 slices'; the normative rule (signal count) yields 1.01 first as one whole-section unit, 9.04/9.02/9.14 inside the top 12 and 6.05/5.18/6.02 outside it; the normative rule was followed"
+    },
+    "units": [
+      {
+        "unit": "1.01",
+        "chars": 353523,
+        "passARun1": "INVENTORY_COVERAGE_GAP 109 items (721 unaccounted stretches; gap call gateway_stream_timeout)",
+        "compile": "FAILED PROVIDER_FAILURE (F-1) after one 312k-token turn",
+        "passARun2": "INVENTORY_FAILED (gateway_stream_terminated)",
+        "verify": "SKIPPED",
+        "costUsd": 2.0447
+      },
+      {
+        "unit": "6.08",
+        "chars": 38529,
+        "passARun1": "INVENTORY_COVERAGE_GAP 288 items",
+        "compile": "PARTIAL 38 rules / 6 definitions; IR_VALIDATION_FAILURE, OPERATIVE_STATE_UNRESOLVED, SEMANTIC_INVENTORY_COVERAGE_GAP, INVENTORY_ITEM_MISSING_FROM_COMPOSITION; accountability incomplete (278 material: 253 represented, 20 unsupported, 2 ambiguous, 13 missing incl. 10 critical; 8 material values missing; 1 dangling lineage)",
+        "passARun2": "INVENTORY_COVERAGE_GAP 307 items",
+        "verify": "MATERIAL_DISCREPANCY 28 findings (25 material; 22 are million-scale artefacts F-3, 1 is F-4, 2 genuine: entity scope, (b)(18) cash-box proviso)",
+        "costUsd": 5.4596
+      },
+      {
+        "unit": "9.04",
+        "chars": 29580,
+        "passARun1": "INVENTORY_COVERAGE_GAP 218 items",
+        "compile": "FAILED - budget guard refused the first compile turn (est $0.2875 > remaining)",
+        "passARun2": "INVENTORY_FAILED - budget refused",
+        "verify": "SKIPPED",
+        "costUsd": 1.8018
+      }
+    ],
+    "3C": "ran on 6.08 only",
+    "3E": {
+      "primary": "PACKAGE_SEMANTICALLY_INCOMPLETE, DOCUMENT_GATE_FAILED, 3687 units, 1326 dangerous-unaccounted (1309 CANDIDATE_DISCOVERED_NEVER_COMPILED, 17 NO_CANDIDATE_EVER_DISCOVERED); Layer C: all 1371 region calls refused by the budget guard (aiInventoryFailed=true)",
+      "linkedRerun": "stage3e-coverage-linked.json (zero-cost, Layers A/B, compiled section units added to discoveredCandidates): still PACKAGE_SEMANTICALLY_INCOMPLETE; states UNREPRESENTED 1346, AMBIGUOUS_MATCH 1327, SOURCE_CONTEXT_INCOMPLETE 1006, FULLY_REPRESENTED_REVIEW_REQUIRED 8 (all value-coincidence matches on '1'); the compiled 6.08 rules cannot be anchored because of F-2"
+    }
+  },
+  "findings": [
+    {
+      "id": "F-1",
+      "stage": "IR_COMPOSITION (compiler caller)",
+      "severity": "BLOCKING_FOR_LARGE_UNITS",
+      "title": "Retrieval-nudge branch drops the submit tool_result and discards a completed submission",
+      "evidence": "unit-1.01.json compile.unresolvedIssues[0]: HTTP 400 'tool_use ids were found without tool_result blocks immediately after' on messages.2 after a 312k-input/60k-output first turn; lib/contract-model/compiler/semantic/caller.ts pushes the assistant message containing the submit_compilation tool_use and then a plain-text user nudge with no tool_result when sufficiency is UNSUPPORTED/MISSING_CONTEXT and no tools were called",
+      "effect": "Whole 353k-char definitions unit lost ($2.04 spent, 0 rules); classified PROVIDER_FAILURE although it is a caller protocol defect",
+      "trust": "SAFE (compile FAILED, nothing trusted)",
+      "remediation": "NOT PERFORMED"
+    },
+    {
+      "id": "F-2",
+      "stage": "STRUCTURAL_CONTEXT (structural parser)",
+      "severity": "MATERIAL",
+      "title": "Section 6.08 sub-clause labels mis-nested: the Available Amount builder's lettered sub-clauses (a)-(h) inside 6.08(a)(3) are promoted to SUBSECTION level, so the real 6.08(b) is labelled 6.08(i) and 6.08(b)(N) becomes 6.08(i)(ii)(N)",
+      "evidence": "stage1-all-nodes: 6.08(b) SUBSECTION at char 665769 (inside the builder) vs the real 'Section 6.08(a) shall not prohibit' at 670071; deterministic candidates and 3E units carry refs like 6.08(i)(ii)(9)",
+      "effect": "Compiler-emitted sourceSectionRef '6.08(b)(12)' cannot be anchored to 3E units or 2B candidates; the 3E audit reports the compiled 6.08 as UNREPRESENTED/AMBIGUOUS_MATCH (safe direction, but coverage evidence for the one compiled covenant section is lost); 2B normalizedSourceRefs for 6.08 are wrong",
+      "trust": "SAFE (3E refuses trust)",
+      "remediation": "NOT PERFORMED"
+    },
+    {
+      "id": "F-3",
+      "stage": "VERIFIER (3C deterministic reconciliation)",
+      "severity": "MATERIAL_FALSE_POSITIVES",
+      "title": "Million-scale amounts parsed without scale: '$720.0 million' -> 720 vs IR 720000000",
+      "evidence": "unit-6.08 verify.sourceInventory AMOUNT '$540.0 million' -> 540; 22 of 25 MATERIAL findings on 6.08 are MISSING_BASKET/UNSUPPORTED_IR_ADDITION pairs on million-scale figures; lib/contract-model/compiler/semantic-verification/source-inventory.ts parseMoney ignores 'million'; the same pattern is visible in the earlier holdout run (18-verifier-analysis: '$37.5 million' findings attributed to composition omission)",
+      "effect": "Verifier status MATERIAL_DISCREPANCY driven largely by parser artefacts; genuine omissions ($540M/$252M/$504M, 50%/140%/75%/35%/70%/6%/7%, 2.00x/1.75x) are also reported, so the direction is safe but precision is poor; 42 million-form amounts in this agreement vs 0 in the DSGR/Riot/LSB fixtures",
+      "trust": "SAFE",
+      "remediation": "NOT PERFORMED"
+    },
+    {
+      "id": "F-4",
+      "stage": "VERIFIER (3C semantic review)",
+      "severity": "FALSE_POSITIVE",
+      "title": "Verifier flags a tool-retrieved definition as fabricated",
+      "evidence": "6.08 finding on definitions[2] Threshold Amount: 'no source text or retrieved context anywhere states...'; the compile toolCallLog shows getDefinition('Threshold Amount') was called and the source definition (offset 350042) is exactly greater of $324.0M and 45% of Consolidated EBITDA",
+      "effect": "Verifier does not see compiler tool retrievals, so correct retrieved values are reported as unsupported additions",
+      "trust": "SAFE",
+      "remediation": "NOT PERFORMED"
+    },
+    {
+      "id": "F-5",
+      "stage": "SOURCE_INVENTORY (Pass A)",
+      "severity": "MATERIAL",
+      "title": "Pass A run-to-run instability on a real 38k-char unit",
+      "evidence": "6.08: run 1 288 items / run 2 307 items; strict 0.19, semantic 0.45, critical/material 0.46; 99 material items only in run 1, 121 only in run 2; both runs INVENTORY_COVERAGE_GAP",
+      "effect": "Inventory content is not reproducible at the item level; accountability is established against whichever run the compile consumed",
+      "trust": "SAFE (COVERAGE_GAP disclosed)",
+      "remediation": "NOT PERFORMED"
+    },
+    {
+      "id": "F-6",
+      "stage": "IR_COMPOSITION",
+      "severity": "MATERIAL",
+      "title": "Quantitative sub-expressions fail IR type-check and degrade to UNSUPPORTED",
+      "evidence": "6.08 rules (b)(4) ADD, (b)(9) SUBTRACT, (b)(10)/(b)(25) AND gates, definitions Available Amount / Available RP Capacity Amount / Available Investment Capacity Amount SUBTRACT all UNSUPPORTED ('operands do not type-check'); 20 UNSUPPORTED dispositions, 13 MISSING_FROM_COMPOSITION (10 critical)",
+      "effect": "Ratio RP basket, IPO dividend basket, Available Amount builder and shared-capacity definitions are not computable; compile PARTIAL with IR_VALIDATION_FAILURE",
+      "trust": "SAFE (explicit UNSUPPORTED / PARTIAL)",
+      "remediation": "NOT PERFORMED"
+    },
+    {
+      "id": "F-7",
+      "stage": "OTHER (harness/provider)",
+      "severity": "OPERATIONAL",
+      "title": "Whole-section windows bypass the 40k operative-unit budget; gateway stream timeouts/terminations on very large calls",
+      "evidence": "1.01 Pass A run 1 consumed 131,897 input tokens (source-context unit cap governs extension only); 1.01 gap re-inventory gateway_stream_timeout; 1.01 Pass A run 2 gateway_stream_terminated; 2B section 1.09 failed once with a stale-key gateway error",
+      "effect": "Cost concentration (2 of 3 attempted units consumed $3.85 with no IR) and one 2B section lost",
+      "trust": "SAFE",
+      "remediation": "NOT PERFORMED"
+    }
+  ],
+  "observationsCarriedForward": {
+    "OBS-1": {
+      "carriedForward": true,
+      "impactInPaidRun": "None material: TOC units were excluded by the manifest rule; 16 TOC 2B section calls cost ~$0.09",
+      "upgraded": false
+    },
+    "OBS-2": {
+      "carriedForward": true,
+      "impactInPaidRun": "None observed: 2.18/5.01/5.18/7.01 were never reached (budget); 2B produced 27/15/10/28 candidates for them",
+      "upgraded": false
+    },
+    "OBS-3": {
+      "carriedForward": true,
+      "impactInPaidRun": "Available Amount was compiled as a definition from 6.08(a)(3) itself but its calculationExpression is UNSUPPORTED (F-6); the pointer-definition gap did not cause a distinct failure",
+      "upgraded": false
+    },
+    "OBS-4": {
+      "note": "no financial maintenance covenant (reference item F1) - not reached"
+    },
+    "OBS-5 (new)": "whole-section windows bypass the operative-unit budget (F-7)",
+    "OBS-6 (new)": "6.08 sub-clause mis-nesting (F-2) - the only observation that materially caused a semantic-evidence failure in the paid run; recorded as a root cause, not remediated"
+  }
+}

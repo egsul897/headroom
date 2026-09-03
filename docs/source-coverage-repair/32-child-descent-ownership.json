@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "32-child-descent-ownership",
+  "mission": "BOUNDED CHILD-DESCENT OWNERSHIP REMEDIATION - noise-only children must not discharge a substantive parent",
+  "startingSha": "553d420dca744c25bcfd15ab1c87a2964912d519",
+  "pinnedFailure": {
+    "text": "Consolidated Net Income, less the sum of clauses (a) and (b), for such period",
+    "anchored": ["Consolidated Net Income,", "for such period"],
+    "provenance": "artifact 31 disclosedLimitation_descentInteraction; RT-3 operator lead-in in situ",
+    "reproducedBefore": true,
+    "before": {
+      "parentUnit": "less the sum of clauses ",
+      "parentDisposition": "COVERED_BY_CHILD_DESCENT",
+      "children": [{ "unit": "(a) and (b), ", "spans": ["STRUCTURAL_NOISE"] }],
+      "unaccounted": 0,
+      "childDescentSpans": 1,
+      "mechanism": "the descent rule tested children against ACCOUNTED (the review-need set), and STRUCTURAL_NOISE is accounted; so a parent whose only children were enumerator glue inherited coverage from text the detector itself had judged meaningless"
+    },
+    "after": {
+      "parentDisposition": "UNACCOUNTED_SOURCE",
+      "parentExcerpt": "less the sum of clauses",
+      "children": [{ "unit": "(a) and (b), ", "spans": ["STRUCTURAL_NOISE"] }],
+      "unaccounted": 1,
+      "childDescentSpans": 0,
+      "endToEnd": "runSemanticInventory -> INVENTORY_COVERAGE_GAP; reconcileInventoryWithComposition -> semanticallyComplete=false (pinned by test A)"
+    }
+  },
+  "existingPredicate": {
+    "name": "isAccountedDisposition / ACCOUNTED",
+    "question": "does this stretch need review?",
+    "members": ["COVERED_BY_INVENTORY", "COVERED_BY_CHILD_DESCENT", "COVERED_BY_CONNECTIVE_OWNERSHIP", "ACCOUNTED_BY_EXTERNAL_UNIT", "STRUCTURAL_NOISE", "HEADING_OR_LABEL", "CITATION_ONLY", "DEFINED_TERM_LABEL", "PUNCTUATION_OR_DELIMITER", "NON_SEMANTIC_FORMATTING"],
+    "unchanged": true
+  },
+  "semanticOwnershipDistinction": {
+    "name": "isSemanticallyOwned / SEMANTIC_OWNERSHIP",
+    "question": "is the meaning of this stretch represented somewhere?",
+    "members": ["COVERED_BY_INVENTORY", "ACCOUNTED_BY_EXTERNAL_UNIT"],
+    "descentRuleNow": "every child must be entirely accounted (no review needed) AND every child must carry at least one semantically owned span; a glue-only, label-only, citation-only or punctuation-only child denies descent",
+    "deliberateExclusions": {
+      "COVERED_BY_CHILD_DESCENT": "cannot occur on a child - parents are always non-enumerated units and children always enumerated, so an enumerated unit is never a parent",
+      "COVERED_BY_CONNECTIVE_OWNERSHIP": "assigned after the descent loop, so never present on a child at evaluation time",
+      "why": "listing them would change nothing today while licensing a self-justifying chain tomorrow; every descent terminates in one step at an inventory or external anchor"
+    },
+    "phraseSpecificLogic": false,
+    "fixtureLiteralInProduction": "0 non-comment occurrences of the fixture text; the comment cites the RT-3 lead-in as provenance only"
+  },
+  "productionFilesChanged": ["lib/contract-model/compiler/semantic-accountability/source-coverage.ts"],
+  "quantitativeTsChanged": false,
+  "arithmeticClassificationChanged": false,
+  "schemasIrInventoryReconciliationChanged": false,
+  "controls": {
+    "legitimateDescent_canary4_pureChapeau": {
+      "text": "The Borrower may make the following Investments: (a) Investments in Subsidiaries. (b) Investments in Joint Ventures.",
+      "result": "COVERED_BY_CHILD_DESCENT on the lead-in, unaccounted=0 - unchanged; all three canary #4 descent controls still descend"
+    },
+    "mixedList_oneGlueOnlyChild": {
+      "text": "The Borrower may make the following Investments: (a) Investments in Subsidiaries. (b)",
+      "result": "descent denied; lead-in UNACCOUNTED_SOURCE; '(b)' STRUCTURAL_NOISE"
+    },
+    "recursiveDescent": {
+      "text": "The Borrower shall deliver: (a) the following: (i) annual statements. (ii) quarterly statements.",
+      "result": "no chain: '(a) the following: ' is enumerated so it is a child, not a parent; it is glue-only (STRUCTURAL_NOISE), so the top lead-in 'The Borrower shall deliver:' stays UNACCOUNTED_SOURCE; childDescent=0; (i)/(ii) COVERED_BY_INVENTORY",
+      "note": "recursion is structurally impossible in this rule; the test pins the observed mechanism rather than a hypothetical chain"
+    }
+  },
+  "preservedHarnesses": {
+    "v1_e2e2": "V1-V6 all surfaced; V1 'CHF 2,000,000' -> INVENTORY_COVERAGE_GAP unacc=1 vals=1 complete=false - unchanged",
+    "rt3_p1": "24 of 24 fragments UNACCOUNTED_SOURCE - unchanged",
+    "canaries2to12": "all eleven reproduction harnesses exit 0 with their expected UNACCOUNTED counts (2:3, 3:2, 4:2, 5:4, 6:9, 7:6, 8:11, 9:5, 10:8, 11:4, 12:3)",
+    "reproductionHarness": "scripts/source-coverage-descent-ownership-reproduce.ts (added; before-state confirmed by running it against the starting SHA's production file)"
+  },
+  "tests": {
+    "added": 3,
+    "rewritten": 1,
+    "names": [
+      "child-descent ownership - A. pinned failure: a substantive parent with noise-only enumerator children stays UNACCOUNTED and blocks completeness",
+      "child-descent ownership - B. positive control: a genuine chapeau whose children are inventoried still descends",
+      "child-descent ownership - C. descent does not chain: an enumerated unit is never a parent, so a nested lead-in cannot borrow its grandchildren's anchors",
+      "closure remediation RT-3 - CLOSED (child-descent ownership remediation): inline enumerator references after an operator no longer let child descent re-discharge it (rewritten from the DISCLOSED LIMITATION test)"
+    ],
+    "sourceCoverageSuite": "125/125 (122 before)",
+    "adversarialSuite": "3/3, not expanded"
+  },
+  "corpusImpact": {
+    "before": "12 failed | 277 passed (289)",
+    "after": "12 failed | 280 passed (292)",
+    "delta": "+3 tests, +0 failures; the failing set is identical",
+    "newlySurfacedGaps": [],
+    "i1": "unchanged - 'plus,' remains the only corpus-wide residue (PLAUSIBLE_REVIEW, observed through the same five assertions as artifact 31)",
+    "i23_i26_i27": "unchanged, still red, out of scope",
+    "groundTruthChanged": false
+  },
+  "qualityGates": {
+    "typescript": "6 pre-existing errors in tests/foundation-audit/*; zero in semantic-accountability",
+    "lint": "1 pre-existing error (tests/foundation-audit/amendment-operative-state-adversarial.test.ts); changed files lint clean"
+  },
+  "spend": {
+    "paidModelCalls": 0,
+    "vercelDeploys": 0,
+    "providerBalanceReadOnly": "GET /v1/credits: total_used $150.49, balance $14.51 - total_used unchanged from artifact 31"
+  },
+  "noiseOnlyDescentBlockerClosed": true
+}

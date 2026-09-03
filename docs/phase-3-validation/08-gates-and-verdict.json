@@ -1,0 +1,29 @@
+{
+  "artifact": "08-gates-and-verdict",
+  "TRUST_SAFETY_GATE": {
+    "result": "NOT_EVALUATED",
+    "rule": "PASS only if dangerous silent failures == 0 on real compiler output; no compiler output exists.",
+    "canClaimPass": false
+  },
+  "PHASE_3_GENERALIZATION": {
+    "verdict": "NOT_EVALUATED",
+    "allowedValues": [
+      "PHASE_3_GENERALIZATION_PASS",
+      "PHASE_3_GENERALIZATION_NEEDS_ITERATION",
+      "PHASE_3_GENERALIZATION_FAIL"
+    ],
+    "reason": "Zero paid evidence; issuing any of the three allowed verdicts would be fabricated. The mission's single-agreement validation remains OPEN, not failed."
+  },
+  "PHASE_4_GATE": {
+    "result": "NOT_READY_FOR_PHASE_4_CONTRACT_COMPUTATION",
+    "reason": "Phase 4 requires PHASE_3_GENERALIZATION_PASS and TRUST SAFETY PASS on a real unseen agreement; neither was obtainable."
+  },
+  "whatIsReady": [
+    "Agreement selected content-blind and registered with hashes",
+    "Operative document truth established (single base document, no amendments)",
+    "Deterministic stack completed and preserved",
+    "46-item human reference set authored independent of any compiler output",
+    "Ready-to-execute paid-run manifest with $20 hard budget (09-paid-run-manifest.json)"
+  ],
+  "nextStep": "Restore provider credential/key cap, then execute 09-paid-run-manifest.json unchanged against the same frozen SHA d5144d1 and the same reference set. No second agreement, no remediation, no Phase 4 until that run is scored."
+}

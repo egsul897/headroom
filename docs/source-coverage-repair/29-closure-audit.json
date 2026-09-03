@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "29-closure-audit",
+  "mission": "PHASE 3 SOURCE-COVERAGE TRUST-BOUNDARY CLOSURE AUDIT - deterministic, historical, zero paid calls",
+  "startingSha": "e4d07cbaa123305e85d13926f579035415317983",
+  "productionCodeChanged": false,
+  "method": "Every preserved independent-red-team harness (/tmp/rt/*.ts, now preserved verbatim under scripts/red-team-original/) was run UNMODIFIED against current HEAD. No fixture was rewritten, translated or reconstructed from memory. No new adversarial scenario was generated.",
+  "originalInventory": {
+    "source": "docs/source-coverage-repair/13-independent-red-team-audit.json (8 BLOCKER, 3 MAJOR, 3 MINOR, 1 FALSE_POSITIVE, 1 DISCLOSED-LIMITATION = 16 findings) and the red team's own scripts",
+    "endToEndSilentOmissionScenarios": 16,
+    "endToEndOriginallySilent": 14,
+    "endToEndOriginallySurfaced": ["V2 (USD control)", "V5 (nested lead-in - descent does not chain)"],
+    "additionalEndToEnd": ["E2E3-A overbroad span (RT-8)", "E2E3-B gap-echo (RT-9)", "E2E4 overbroad span reconciled with IR values (RT-8)"],
+    "probeScripts": 4,
+    "matrixRows": 32
+  },
+  "closureMatrix": [
+    { "scenario": "S1 all-caps waiver", "originalFailure": "HEADING_OR_LABEL via ALLCAPS_CAPTION_RE; silent complete", "currentDisposition": "UNACCOUNTED_SOURCE", "currentCompleteness": "INVENTORY_COVERAGE_GAP / complete=false / REVIEW_REQUIRED", "mappedCanary": "#8, #10", "status": "CLOSED" },
+    { "scenario": "S2 numbered clause as heading", "originalFailure": "HEADING_OR_LABEL via NUMBERED_CAPTION_RE; silent", "currentDisposition": "UNACCOUNTED_SOURCE", "currentCompleteness": "gap / false", "mappedCanary": "#7", "status": "CLOSED" },
+    { "scenario": "S3 jointly and severally", "originalFailure": "STRUCTURAL_NOISE via FUNCTION_WORDS adjuncts; silent", "currentDisposition": "UNACCOUNTED_SOURCE", "currentCompleteness": "gap / false", "mappedCanary": "#9", "status": "CLOSED" },
+    { "scenario": "S4 directly or indirectly", "originalFailure": "STRUCTURAL_NOISE via FUNCTION_WORDS adjuncts; silent", "currentDisposition": "UNACCOUNTED_SOURCE", "currentCompleteness": "gap / false", "mappedCanary": "#9", "status": "CLOSED" },
+    { "scenario": "S5 child descent lead-in", "originalFailure": "COVERED_BY_CHILD_DESCENT discharged a 176-char multi-obligation lead-in; silent", "currentDisposition": "UNACCOUNTED_SOURCE (prepayment + cure conjuncts); only 'shall not incur ... other than' descends", "currentCompleteness": "gap / false", "mappedCanary": "#4", "status": "CLOSED" },
+    { "scenario": "S6 quoted amendment text", "originalFailure": "DEFINED_TERM_LABEL via DEFINED_TERM_LABEL_RE; silent", "currentDisposition": "UNACCOUNTED_SOURCE", "currentCompleteness": "gap / false", "mappedCanary": "#5", "status": "CLOSED" },
+    { "scenario": "S7 non-Latin (CJK) clause", "originalFailure": "PUNCTUATION_OR_DELIMITER via ASCII alphanumeric test; silent", "currentDisposition": "UNACCOUNTED_SOURCE", "currentCompleteness": "gap / false", "mappedCanary": "#11", "status": "CLOSED" },
+    { "scenario": "S8 bare integer cap", "originalFailure": "NON_SEMANTIC_FORMATTING via PAGE_FURNITURE_RE; silent", "currentDisposition": "UNACCOUNTED_SOURCE x2", "currentCompleteness": "gap / false", "mappedCanary": "#6", "status": "CLOSED" },
+    { "scenario": "S9 except as provided", "originalFailure": "STRUCTURAL_NOISE via FUNCTION_WORDS connectives; silent", "currentDisposition": "UNACCOUNTED_SOURCE", "currentCompleteness": "gap / false", "mappedCanary": "#2, #2B", "status": "CLOSED" },
+    { "scenario": "S10 spelled-out cap in caps", "originalFailure": "HEADING_OR_LABEL via ALLCAPS_CAPTION_RE; value invisible to scanner; silent", "currentDisposition": "UNACCOUNTED_SOURCE (source route); value still unextracted", "currentCompleteness": "gap / false", "mappedCanary": "#8, #10", "status": "CLOSED" },
+    { "scenario": "V1 CHF cap in child-descent lead-in", "originalFailure": "COVERED_BY_CHILD_DESCENT; CHF 2,000,000 invisible to the scanner so the value guard never fires; silent", "currentDisposition": "COVERED_BY_CHILD_DESCENT over the ENTIRE lead-in 'The Borrower shall not make Restricted Payments in an aggregate amount exceeding CHF 2,000,000 in any fiscal year other than '", "currentCompleteness": "INVENTORY_OK / unaccounted=0 / uninventoriedValues=0 / semanticallyComplete=TRUE / rollup SEMANTICALLY_COMPLETE", "mappedCanary": "NONE - #4 repaired multi-conjunct lead-ins only; a single-conjunct substantive lead-in whose only substance signal is an unrecognised value was never assigned a canary", "status": "BLOCKER", "classification": "DANGEROUS_SILENT_COMPLETE" },
+    { "scenario": "V2 USD cap in lead-in (control)", "originalFailure": "none - surfaced originally via the value guard", "currentDisposition": "UNACCOUNTED_SOURCE + MONEY value unaccounted", "currentCompleteness": "gap / false", "mappedCanary": "control", "status": "CLOSED" },
+    { "scenario": "V3 spelled-out cure period lead-in", "originalFailure": "COVERED_BY_CHILD_DESCENT; 'one hundred and eighty days' invisible; silent", "currentDisposition": "UNACCOUNTED_SOURCE (the cure conjunct, split at 'and')", "currentCompleteness": "gap / false", "mappedCanary": "#4 (via coordination split; the value itself is still unextracted)", "status": "CLOSED" },
+    { "scenario": "V4 caption-shaped cap", "originalFailure": "HEADING_OR_LABEL via NUMBERED_CAPTION_RE; 2,500,000 invisible; silent", "currentDisposition": "UNACCOUNTED_SOURCE", "currentCompleteness": "gap / false", "mappedCanary": "#7", "status": "CLOSED" },
+    { "scenario": "V5 nested lead-in", "originalFailure": "none - surfaced originally (descent does not chain through an enumerated parent)", "currentDisposition": "UNACCOUNTED_SOURCE", "currentCompleteness": "gap / false", "mappedCanary": "n/a", "status": "CLOSED" },
+    { "scenario": "V6 carve-out lead-in", "originalFailure": "COVERED_BY_CHILD_DESCENT; silent", "currentDisposition": "UNACCOUNTED_SOURCE (split at 'and')", "currentCompleteness": "gap / false", "mappedCanary": "#4", "status": "CLOSED" },
+    { "scenario": "E2E3-A one overbroad span (RT-8)", "originalFailure": "whole-unit span with vacuous proposition discharged three propositions; silent", "currentDisposition": "credit clipped to first independent proposition; remainder UNACCOUNTED_SOURCE; RATIO + DAYS unaccounted", "currentCompleteness": "gap / false", "mappedCanary": "#3", "status": "CLOSED" },
+    { "scenario": "E2E3-B gap-echo (RT-9)", "originalFailure": "gap call echoed the gap back as one CRITICAL item; status flipped to INVENTORY_OK; silent", "currentDisposition": "echo item accepted (itemsAdded=1) but its overbroad span is clipped; 1 stretch remains UNACCOUNTED_SOURCE", "currentCompleteness": "gap / false", "mappedCanary": "#3 (INCIDENTAL - see unmappedOrPartial)", "status": "CLOSED" },
+    { "scenario": "E2E4 overbroad span + IR values (RT-8)", "originalFailure": "item reconciled REPRESENTED with all three values; silent", "currentDisposition": "REPRESENTED item, but coverage clipped; unaccounted=1, values=2", "currentCompleteness": "gap / false, three failure reasons", "mappedCanary": "#3", "status": "CLOSED" },
+    { "scenario": "RT-3 classifier probes (p1) - 23 of 24 fragments", "originalFailure": "STRUCTURAL_NOISE for every fragment", "currentDisposition": "UNACCOUNTED_SOURCE for all 23", "currentCompleteness": "n/a (classifier level)", "mappedCanary": "#2, #9", "status": "CLOSED" },
+    { "scenario": "RT-3 probe 'less the sum of clauses (a) and (b),'", "originalFailure": "STRUCTURAL_NOISE - arithmetic connectives 'less', 'sum' and lead-in noun 'clauses' are all FUNCTION_WORDS", "currentDisposition": "STRUCTURAL_NOISE (unchanged)", "currentCompleteness": "accounted at classifier level; no preserved e2e harness exercises it, and §7 forbids building one", "mappedCanary": "NONE - the arithmetic-connective subset of FUNCTION_WORDS (plus, minus, less, sum, difference, product, quotient) was never assigned a canary. 'minus the sum of the foregoing,' and 'plus the product of the foregoing,' now surface ONLY because 'foregoing' is an adjunct (#9) - the operator hole itself is intact", "status": "BLOCKER", "classification": "SAFE_ACCOUNTED at the wrong layer - an original finding-3 fragment still receives an accounted disposition" },
+    { "scenario": "RT-3 OCR/Unicode variants (p4)", "originalFailure": "soft-hyphen, zero-width-space and ideographic-space variants collapsed INTO the list", "currentDisposition": "UNACCOUNTED_SOURCE for all six", "currentCompleteness": "n/a", "mappedCanary": "#2, #9, #11", "status": "CLOSED" },
+    { "scenario": "RT-6 non-Latin probes (p1 CJK + Cyrillic)", "originalFailure": "PUNCTUATION_OR_DELIMITER", "currentDisposition": "UNACCOUNTED_SOURCE", "currentCompleteness": "n/a", "mappedCanary": "#11, #12", "status": "CLOSED" },
+    { "scenario": "RT-1/RT-2 length boundaries (p3)", "originalFailure": "caps <=82 chars and numbered body <=80 chars were headings", "currentDisposition": "UNACCOUNTED_SOURCE at every measured length (40..95) for both shapes; the waiver paragraph surfaces", "currentCompleteness": "n/a", "mappedCanary": "#7, #8, #10", "status": "CLOSED" },
+    { "scenario": "RT-7 value-scanner blind spots (p3)", "originalFailure": "'five million dollars', 'thirty days', 'CHF 2,000,000', '2,500,000', dates etc. all return zero values", "currentDisposition": "UNCHANGED - all 12 blind-spot probes still return []", "currentCompleteness": "the enabler of V1: 'CHF 2,000,000' -> []", "mappedCanary": "NONE (deliberately deferred by #6, #7, #8 - 'do not expand the extractor')", "status": "BLOCKER", "classification": "same root cause as V1 - counted here for completeness, not as a second defect" },
+    { "scenario": "RT-10 bogus ExternalAccountabilityLink (p2-C, p2-D)", "originalFailure": "region discharged ACCOUNTED_BY_EXTERNAL_UNIT on two unverified strings", "currentDisposition": "ACCOUNTED_BY_EXTERNAL_UNIT (unchanged); unaccounted=0", "currentCompleteness": "would complete IF a link were supplied; grep confirms no production caller constructs one (only the pass-through in inventory.ts and the test harness)", "mappedCanary": "NONE - unmapped, latent, no regression fixture", "status": "REVIEW_ONLY" },
+    { "scenario": "RT-12 duplicate region ids (p2-A)", "originalFailure": "a span in region A masks the same offsets in region B", "currentDisposition": "COVERED_BY_INVENTORY on both (unchanged)", "currentCompleteness": "unreachable: source-context.ts constructs only 'operative' and 'xref-N' ids", "mappedCanary": "NONE - unmapped, latent", "status": "REVIEW_ONLY" },
+    { "scenario": "RT-13 zero regions (p2-B)", "originalFailure": "empty input is vacuously complete", "currentDisposition": "unaccounted=0, regionsConsidered=[] (unchanged)", "currentCompleteness": "INVENTORY_OK on nothing", "mappedCanary": "NONE - unmapped", "status": "REVIEW_ONLY" },
+    { "scenario": "RT-15 false positives (p2-F)", "originalFailure": "genuine furniture reported UNACCOUNTED", "currentDisposition": "still UNACCOUNTED; 'ARTICLE VII\\nNEGATIVE COVENANTS' now CITATION_ONLY + UNACCOUNTED (canary #10 cost)", "currentCompleteness": "review noise only", "mappedCanary": "by design", "status": "REVIEW_ONLY" },
+    { "scenario": "RT-11 three enforcement points read one field", "originalFailure": "architectural - no defence in depth against a wrong disposition", "currentDisposition": "still true", "currentCompleteness": "n/a", "mappedCanary": "NONE - architectural, deferred", "status": "REVIEW_ONLY" },
+    { "scenario": "RT-14 accountability:false escape hatch", "originalFailure": "compile can be COMPLETED with no guards; rollup catches it", "currentDisposition": "no preserved fixture; rollup still gates", "currentCompleteness": "n/a", "mappedCanary": "NONE - deferred; not a detector hole", "status": "REVIEW_ONLY" },
+    { "scenario": "RT-16 could-not-break controls", "originalFailure": "none", "currentDisposition": "ordering/duplicate invariance true; run-on tail UNACCOUNTED; 5000-char token UNACCOUNTED; INFORMATIONAL accounts for nothing; comma-straddling value kept in one unit", "currentCompleteness": "n/a", "mappedCanary": "n/a", "status": "CLOSED" }
+  ],
+  "counts": { "CLOSED": 23, "REVIEW_ONLY": 6, "BLOCKER": 3, "distinctBlockingRootCauses": 2 },
+  "minimumBlockingOriginalScenarios": [
+    {
+      "scenario": "V1 CHF cap in child-descent lead-in (e2e2.ts)",
+      "evidence": "run unmodified on current HEAD: status=INVENTORY_OK unacc=0 vals=0 complete=true rollup=SEMANTICALLY_COMPLETE. computeSourceCoverage marks the entire lead-in COVERED_BY_CHILD_DESCENT with reason 'introduces an enumerated list whose 2 child clause(s) are each accounted for; carries no independent conjunct and no quantitative value of its own'. scanQuantitativeValues over the lead-in returns []. The USD twin (V2) surfaces, proving the value guard is the only thing standing.",
+      "rootCause": "RT-4 x RT-7 interaction, which the original audit named explicitly: 'the value guard is only as strong as the scanner'. Canary #4 made descent residue-first at COORDINATION boundaries; a lead-in with no 'and'/'or' is one fragment, is the final fragment, runs up to the children, and is discharged. Its substance (a cap) is visible to the detector only through the extractor, and the extractor has no bare-number or foreign-currency pattern.",
+      "notFixedHere": "per §9 - STOP and report"
+    },
+    {
+      "scenario": "RT-3 probe 'less the sum of clauses (a) and (b),' (p1.ts)",
+      "evidence": "run unmodified on current HEAD: STRUCTURAL_NOISE. The other 23 probes surface.",
+      "rootCause": "the arithmetic-connective subset of FUNCTION_WORDS was never partitioned out. The sibling probes containing 'foregoing' surface only because 'foregoing' became an adjunct in canary #9 - incidental, not a repair of the operator class.",
+      "caveat": "accounted at classifier level; the original inventory holds no end-to-end harness for it and §7 forbids constructing one. Listed as BLOCKER because an original finding-3 fragment still receives an accounted disposition, which is the definition of the hole; requiring an e2e demonstration this audit is not permitted to build would be a loophole.",
+      "notFixedHere": "per §9"
+    }
+  ],
+  "unmappedOrPartial": [
+    "RT-3 arithmetic connectives - never assigned a canary (see blocking list)",
+    "RT-7 extractor recall - deliberately deferred by #6/#7/#8; enables V1",
+    "RT-9 gap-echo - closed only INCIDENTALLY by canary #3's span clipping; the underlying 'detection converted into model say-so' concern (a tight-span echo with a vacuous proposition) was never assigned a canary and has no fixture. Not constructed here per §7.",
+    "RT-10 ExternalAccountabilityLink - unmapped, latent, no regression fixture",
+    "RT-11 single-field enforcement - architectural, deferred",
+    "RT-12 duplicate region ids - unmapped, latent (unreachable by construction)",
+    "RT-13 zero regions - unmapped",
+    "RT-14 accountability:false - deferred, no fixture"
+  ],
+  "knownNonClosureItems": {
+    "I23_Solely": "PLAUSIBLE_REVIEW (artifact 25); still red; ground truth unchanged; not a closure failure",
+    "I26_noticeObligation": "TRUE_SAFETY_IMPROVEMENT (artifact 20); still red; a surfaced omission, not a silent one; not a closure failure",
+    "I27_Notwithstanding": "OBVIOUS_FALSE_GAP (artifact 18); still red; conservative review; not a closure failure",
+    "bareAllCapsHeadings": "review-blocking since canary #10 (NEGATIVE COVENANTS, RESTRICTED PAYMENTS, EVENTS OF DEFAULT, ARTICLE VII\\nNEGATIVE COVENANTS -> UNACCOUNTED_SOURCE). Conservative; never reaches the corpus because the operative region starts at the numbered caption. Not a closure failure.",
+    "unicodeSegmentation": "independentSegmentBounds recognises only ASCII terminators; an ideographic full stop does not split a unit. No original attack depends on it (S7 is line-broken). Not a closure failure.",
+    "spelledOutValues": "extractor blind to spelled-out numbers, bare grouped integers and non-USD/GBP/EUR currency. NOT merely a limitation here: it is the enabler of V1, so it participates in the closure failure. Where the SOURCE route carries the text (S10, V3, V4, S8) it is blocked; where the only substance signal is the value inside an otherwise-discharged frame (V1) it is not."
+  },
+  "regressionState": {
+    "preservedHarnesses": "all 8 ran unmodified; no API drift; e2e.ts 10/10 surfaced; e2e2.ts 5/6 surfaced (V1 SILENT); e2e3/e2e4 all surfaced; p1 23/24 UNACCOUNTED; p2/p3/p4 as recorded",
+    "sourceCoverageSuite": "116/116",
+    "adversarialSuite": "3/3 (2400 generated cases, 0 dangerous false negatives) - NOT expanded",
+    "semanticAccountabilityCorpus": "7 failed | 276 passed (283) - I23, I26, I27 only, unchanged",
+    "typescript": "6 errors, all pre-existing in tests/foundation-audit/*; zero in semantic-accountability",
+    "lint": "1 error, pre-existing (@typescript-eslint/no-var-requires rule definition) in tests/foundation-audit/amendment-operative-state-adversarial.test.ts",
+    "regressionsIntroduced": 0,
+    "groundTruthChanged": false
+  },
+  "spend": { "paidModelCalls": 0, "vercelDeploys": 0, "providerProbe": "HTTP 402 quota_for_entity_exceeded, $150.49 / $150.00 - unchanged" },
+  "artifactsPreserved": "scripts/red-team-original/ - the eight original harnesses, verbatim, sha256-verified against /tmp/rt",
+  "finalVerdict": "SOURCE_COVERAGE_TRUST_BOUNDARY_NOT_CLOSED",
+  "verdictBasis": "One original end-to-end scenario (V1) still silently reaches semanticallyComplete=true with substantive source unrepresented, reproduced by the red team's own unmodified harness. One original finding-3 probe fragment still receives an accounted disposition. Verdict A requires zero of each."
+}

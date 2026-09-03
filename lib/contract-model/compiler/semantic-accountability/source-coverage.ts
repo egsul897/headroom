@@ -76,6 +76,30 @@ const ACCOUNTED: ReadonlySet<CoverageDisposition> = new Set<CoverageDisposition>
 
 export const isAccountedDisposition = (d: CoverageDisposition): boolean => ACCOUNTED.has(d);
 
+/**
+ * SEMANTIC OWNERSHIP is narrower than ACCOUNTED (child-descent ownership remediation).
+ *
+ * "Accounted" answers "does this stretch need review?" - and a heading, a citation, an enumerator or a comma
+ * does not. "Semantically owned" answers a different question: "is the meaning of this stretch REPRESENTED
+ * somewhere?" Only two dispositions say yes: an inventory item anchors it, or a disclosed external unit owns
+ * it. The six non-semantic classes say the opposite - there is no meaning here to represent.
+ *
+ * Child descent is semantic ownership propagation: a lead-in inherits coverage from the clauses it introduces
+ * BECAUSE those clauses carry the meaning. It used to test the broad ACCOUNTED set, so a parent whose
+ * "children" were nothing but enumerator glue - "(a) and" / "(b)," - was discharged on the strength of text
+ * that is, by the detector's own verdict, meaningless. The RT-3 remediation surfaced "less the sum of
+ * clauses " correctly and descent then re-absorbed it. A child being non-semantic proves nothing about a
+ * substantive parent; it only proves the child needs no review.
+ *
+ * COVERED_BY_CHILD_DESCENT and COVERED_BY_CONNECTIVE_OWNERSHIP are deliberately NOT here. Neither can occur on
+ * a child at evaluation time - parents are always non-enumerated units and children always enumerated, so an
+ * enumerated unit is never itself a parent, and connective ownership runs after the descent loop - so listing
+ * them would change nothing today while quietly licensing a self-justifying chain tomorrow. Every descent
+ * therefore terminates, in one step, in an inventory or external anchor.
+ */
+const SEMANTIC_OWNERSHIP: ReadonlySet<CoverageDisposition> = new Set<CoverageDisposition>(["COVERED_BY_INVENTORY", "ACCOUNTED_BY_EXTERNAL_UNIT"]);
+export const isSemanticallyOwned = (d: CoverageDisposition): boolean => SEMANTIC_OWNERSHIP.has(d);
+
 /** One accounted-for stretch of source. Spans tile each region completely: every non-whitespace character belongs to exactly one. */
 export interface SourceCoverageSpan {
   regionId: string;
@@ -209,6 +233,31 @@ const ADVERBIAL_ADJUNCTS = new Set([
   "directly", "indirectly", "together", "jointly", "severally", "hereinafter", "aforesaid", "foregoing", "above", "below",
 ]);
 
+/**
+ * ARITHMETIC / COMPOSITIONAL OPERATORS - a partition of the closed class below, not new vocabulary and not a
+ * phrase list. These are exactly the seven words that already sat on the "arithmetic connectives" line of
+ * FUNCTION_WORDS; nothing was invented or added.
+ *
+ * The comment that used to sit on them read: "arithmetic connectives joining formula components an item
+ * already anchors ... A residue carrying an actual amount is never dismissed here - the value guard runs
+ * first." Both halves are true and neither justifies dismissal. The OPERATOR is what says how the anchored
+ * components combine: "less the sum of clauses (a) and (b)" turns two covered components into a subtraction,
+ * and dropping it silently turns a net amount into a gross one. The value guard cannot help, because an
+ * operator fragment carries no amount of its own - the amounts are in the components it joins.
+ *
+ * An independent red team's finding 3 listed this class alongside the adjuncts. The adjunct half was closed
+ * by canary #9; the operator half was not, and the closure audit found the original probe
+ * "less the sum of clauses (a) and (b)," still STRUCTURAL_NOISE while its two sibling probes surfaced ONLY
+ * because "foregoing" happens to be an adjunct. That is incidental cover, not a repair. This partition closes
+ * the operator class itself: addition, subtraction, multiplication, division and aggregation language is
+ * substantive, and the classifier does not need to execute it - only refuse to dismiss it.
+ *
+ * They stay inside FUNCTION_WORDS because the nominal-label tests (canaries #5, #7) legitimately treat them as
+ * grammar inside a NAME ("Consolidated EBITDA less Taxes" is still a defined-term name). What changes is
+ * narrower: they can no longer let a residue disappear as STRUCTURAL_NOISE.
+ */
+const ARITHMETIC_OPERATORS = new Set(["plus", "minus", "less", "sum", "difference", "product", "quotient"]);
+
 const FUNCTION_WORDS = new Set([
   // determiners, pronouns, prepositions, auxiliaries - pure grammar
   "a", "an", "and", "andor", "any", "are", "as", "at", "be", "been", "being", "both", "but", "by", "each", "either", "for", "from", "hereby", "hereof", "hereto", "hereunder", "in", "into", "is", "it", "its", "of", "on", "or", "other", "over", "per", "such", "than", "that", "the", "their", "then", "there", "thereof", "thereto", "thereunder", "these", "this", "those", "to", "under", "was", "were", "which", "who", "whom", "whose", "with", "within", "without",
@@ -225,9 +274,10 @@ const FUNCTION_WORDS = new Set([
   // adverbial adjuncts - see ADVERBIAL_ADJUNCTS below. They remain in this set because the nominal-label tests
   // treat them as grammar, but they can NO LONGER make a residue vanish as structural noise (canary #9).
   ...ADVERBIAL_ADJUNCTS,
-  // arithmetic connectives joining formula components an item already anchors ("... plus, ...", ", the sum of").
-  // A residue carrying an actual amount is never dismissed here - the value guard runs first.
-  "plus", "minus", "less", "sum", "difference", "product", "quotient",
+  // arithmetic / compositional operators - see ARITHMETIC_OPERATORS below. They remain in this set because the
+  // nominal-label tests treat them as grammar, but they can NO LONGER make a residue vanish as structural
+  // noise (closure remediation RT-3).
+  ...ARITHMETIC_OPERATORS,
 ]);
 
 const WORD_RE = /[A-Za-z][A-Za-z'-]*/g;
@@ -250,7 +300,27 @@ const CITATION_ONLY_RE = /^[\s(]*(?:see\s+)?(?:section|clause|paragraph|subsecti
  * Lien on the Collateral" was a heading, and the line vanished with unaccounted 0, INVENTORY_OK and
  * semanticallyComplete true. The ceiling is gone; length never decides eligibility for scrutiny.
  */
-const NUMBERED_CAPTION_FRAME_RE = /^\s*(?:section|article|annex|exhibit|schedule|appendix)?\s*\d+(?:\.\d+)*\s*[.:)]?\s*([A-Za-z][^\n]*?)\s*[.:]?\s*$/i;
+/**
+ * NUMBERING ALONE IS NOT EVIDENCE OF A HEADING (numbered-caption remediation, artifact 36).
+ *
+ * The frame used to accept ANY leading integer - `\d+(?:\.\d+)*` with an optional section word - so the
+ * independent red team's own scanner probe "31 March 2030" was read as section "31" captioned "March 2030":
+ * the scanner does not see the date, the remainder is capitalised words, and the fragment left the
+ * accounting as HEADING_OR_LABEL. A bare integer in front of words is compatible with a date, a quantity
+ * ("25 Business Days"), a table cell, a schedule entry ("1. Existing Liens") and a heading alike; nothing
+ * about it says which. The frame therefore now requires POSITIVE legal-numbering grammar:
+ *   - an explicit structural word (Section, Article, Annex, Exhibit, Schedule, Appendix) followed by a number; or
+ *   - a dotted multi-level section number ("6.02", "7.04", "12.14") - the conventional section grammar, which no
+ *     date or unit quantity takes in prose (a bare decimal precedes a lowercase unit word, which fails the
+ *     nominal test anyway).
+ * A bare integer, with or without a trailing period, no longer qualifies; such a line is a review gap unless
+ * a stronger rule accounts for it. The remainder is put to isNominalLabel, which now also refuses any digit (a
+ * caption is a name; a digit in it is content the letter-only word test cannot see).
+ *
+ * This is deliberately not a date parser, not a month list and not an RT-7 string blacklist. quantitative.ts
+ * is unchanged and still returns [] for the probe; the classifier simply no longer treats numbering as proof.
+ */
+const NUMBERED_CAPTION_FRAME_RE = /^\s*(?:(?:section|article|annex|exhibit|schedule|appendix)\s*\d+(?:\.\d+)*|\d+(?:\.\d+)+)\s*[.:)]?\s*([A-Za-z][^\n]*?)\s*[.:]?\s*$/i;
 /**
  * ALL-CAPS TYPOGRAPHY NOW GRANTS NOTHING AT ALL (canary #10).
  *
@@ -325,11 +395,19 @@ const QUOTED_LABEL_FRAME_RE = /^\s*[“"]([^”"]+)[”"]\s*(?:means|shall\s+mea
  * Known and accepted false reviews: a lowercase defined term (`"business day"`) and a term carrying internal
  * periods (`"U.S. Government Securities"`) are reported rather than dismissed. Per the trust-boundary
  * architecture, a false review is acceptable and a silently dropped covenant is not.
+ *
+ *   3. No digit anywhere in the candidate (numbered-caption remediation, artifact 36). The word test below is
+ *      letter-only, so "March 2030" used to pass as a name on the strength of "March" alone while the year was
+ *      invisible to it. A digit is content that this test cannot read; a candidate carrying one is not proven
+ *      a name. This is the canary #6 principle applied to labels, and it is the same helper for both frames,
+ *      so a quoted date ("31 March 2030" inside quotation marks) is no longer a defined-term label either.
+ *      Accepted false review: a genuine defined term that carries a digit (`"2029 Notes"`) is reported.
  */
 function isNominalLabel(candidate: string): boolean {
   const text = candidate.trim();
   if (text.length === 0) return false;
   if (/[.;:!?,]/.test(text)) return false;
+  if (/\d/.test(text)) return false;
   const words = text.match(new RegExp(WORD_RE.source, "g")) ?? [];
   if (words.length === 0) return false;
   let carriesAName = false;
@@ -379,9 +457,14 @@ export function classifyUnaccountedFragment(fragment: string, values: Quantitati
     // A residue carrying an adverbial adjunct is standalone modifier content, not glue (canary #9). The check
     // is deliberately confined to this branch: contentWords keeps its meaning everywhere else, so the
     // connective-ownership machinery (canary #2B) is untouched.
-    const carriesAdjunct = (trimmed.toLowerCase().match(new RegExp(WORD_RE.source, "g")) ?? []).some((w) => ADVERBIAL_ADJUNCTS.has(w.replace(/[^a-z]/g, "")));
+    const lowerWords = trimmed.toLowerCase().match(new RegExp(WORD_RE.source, "g")) ?? [];
+    const carriesAdjunct = lowerWords.some((w) => ADVERBIAL_ADJUNCTS.has(w.replace(/[^a-z]/g, "")));
+    // A residue carrying an arithmetic / compositional operator is substantive, not glue (closure remediation
+    // RT-3). Confined to this branch exactly as the adjunct guard is: contentWords keeps its meaning everywhere
+    // else, so connective ownership and the nominal-label tests are untouched.
+    const carriesOperator = lowerWords.some((w) => ARITHMETIC_OPERATORS.has(w.replace(/[^a-z]/g, "")));
     const words = contentWords(trimmed);
-    if (words.length === 0 && !carriesUnexplainedDigits && !carriesUnexplainedLetters && !carriesAdjunct) return { disposition: "STRUCTURAL_NOISE", reason: "enumerators, punctuation and closed-class connectives only - the residue of splitting a parent unit" };
+    if (words.length === 0 && !carriesUnexplainedDigits && !carriesUnexplainedLetters && !carriesAdjunct && !carriesOperator) return { disposition: "STRUCTURAL_NOISE", reason: "enumerators, punctuation and closed-class connectives only - the residue of splitting a parent unit" };
     // Headings carry no clause terminator and no verb-bearing body; require BOTH the caption shape and the absence of an internal terminator.
     // A caption has no SENTENCE terminator inside it. A decimal point inside a section number ("7.04") is not one,
     // so the terminator must be followed by whitespace to count.
@@ -389,7 +472,13 @@ export function classifyUnaccountedFragment(fragment: string, values: Quantitati
     // Neither frame decides. A numbered line is a caption only when what FOLLOWS the number is a label
     // (canary #7); an ALL-CAPS line is a heading only when it is a determinerless nominal (canary #8).
     const numbered = NUMBERED_CAPTION_FRAME_RE.exec(trimmed);
-    if (noInternalTerminator && numbered !== null && isNominalLabel(numbered[1]!)) return { disposition: "HEADING_OR_LABEL", reason: "a section caption - the text after the number is a name, not a proposition" };
+    if (noInternalTerminator && numbered !== null && isNominalLabel(numbered[1]!)) return { disposition: "HEADING_OR_LABEL", reason: "a section caption - legal section numbering (a structural word or a dotted section number) followed by a name, not a proposition" };
+    if (carriesOperator) {
+      return {
+        disposition: "UNACCOUNTED_SOURCE",
+        reason: "carries an arithmetic or compositional operator that no inventory item anchors - the operator says how covered components combine, so it is standalone content and not the glue left over from splitting a parent unit",
+      };
+    }
     if (carriesAdjunct) {
       return {
         disposition: "UNACCOUNTED_SOURCE",
@@ -650,17 +739,44 @@ export function computeSourceCoverage(input: SourceCoverageInput): SourceCoverag
     }
 
     // Child descent (§7): a chapeau's own unaccounted residue is discharged only when EVERY child it owns is
-    // accounted for and the residue carries no quantitative value of its own. Credit flows child -> parent only:
-    // a covered parent never discharges an uncovered child (that is exactly the audit's carve-out failure).
+    // accounted for AND semantically owned, and the residue is POSITIVELY shown to be nothing but the connective
+    // that introduces them. Credit flows child -> parent only: a covered parent never discharges an uncovered
+    // child (that is exactly the audit's carve-out failure).
+    //
+    // RT-7 architectural remediation. This rule used to discharge the final residue whenever the value scanner
+    // found nothing in it: "no recognised quantitative value" => "no quantitative semantics" => "safe to
+    // discharge". That inference is unsound - the scanner is a source of POSITIVE evidence that a fragment is
+    // substantive, never NEGATIVE proof that it is harmless. The independent red team's own scanner probes
+    // ("five million dollars", "thirty days", "2,500,000 (the \"Cap\")", "twenty-five basis points" ...) all
+    // scan to nothing, so the V1 frame carrying any of them - a single-conjunct cap running straight into two
+    // inventoried carve-outs - reached unaccounted=0 / INVENTORY_OK / semanticallyComplete=true.
+    //
+    // Absence of detection is not proof of absence. A residue the classifier itself refused to dismiss (it has
+    // content words, or an operator, or an adjunct, or digits) is substantive by the detector's own verdict,
+    // and the only thing the old rule added was that a second, weaker detector had also found nothing. Descent
+    // therefore no longer discharges ANY content-bearing residue. The one positive proof this layer possesses
+    // that a fragment introduces its children and says nothing of its own is the canary #2 predicate already
+    // used for connective ownership: every content word is a subordinating connective and the fragment carries
+    // no object (no value, no digit, no reference noun, no quotation). "provided that", "except", "unless",
+    // "including" ahead of owned enumerated children are discharged on that evidence; "The Borrower may make
+    // the following Investments:" is not, because "Borrower", "make" and "Investments" are the lead-in's own
+    // content and nothing in this layer can prove they are represented by the children. That is a review gap,
+    // and a safe one. Positive-evidence descent for a content-bearing chapeau needs a signal this layer does
+    // not have - an inventory span or an explicit parent item anchoring the lead-in - and until it exists the
+    // lead-in stays UNACCOUNTED_SOURCE rather than being discharged on a scanner's silence.
     for (let i = 0; i < units.length; i++) {
       const children = parentOf.map((p, j) => (p === i ? j : -1)).filter((j) => j >= 0);
       if (children.length === 0) continue;
+      // Two conditions, and they are different questions. Every child must need no review (nothing in it is
+      // UNACCOUNTED_SOURCE) AND every child must carry at least one semantically OWNED span - an inventory or
+      // external anchor. A child made only of enumerator glue, punctuation, a label or a citation is accounted
+      // for but represents nothing, so it cannot lend its parent any semantics to inherit.
       const childrenAccounted = children.every((j) => unitSpans[j]!.every((s) => isAccountedDisposition(s.disposition)));
-      if (!childrenAccounted) continue;
+      const childrenOwned = children.every((j) => unitSpans[j]!.some((s) => isSemanticallyOwned(s.disposition)));
+      if (!childrenAccounted || !childrenOwned) continue;
       // Residue-first (canary #4): the parent residue is split at coordination boundaries and ONLY the final
       // fragment - the one that introduces the children - can be discharged. An earlier conjunct is an
-      // independent predicate of the parent's own, so it stays accountable; a fragment carrying a value of any
-      // kind is never discharged.
+      // independent predicate of the parent's own, so it stays accountable.
       const rebuilt: SourceCoverageSpan[] = [];
       for (const s of unitSpans[i]!) {
         if (s.disposition !== "UNACCOUNTED_SOURCE") {
@@ -674,8 +790,15 @@ export function computeSourceCoverage(input: SourceCoverageInput): SourceCoverag
       // The eligible fragment must be the last thing in the parent unit apart from whitespace/punctuation, i.e.
       // it must actually run up to the children.
       const introducesChildren = lastResidue >= 0 && rebuilt.slice(lastResidue + 1).every((s) => s.excerpt.trim().length === 0 || s.disposition === "PUNCTUATION_OR_DELIMITER");
-      if (introducesChildren && rebuilt[lastResidue]!.values.length === 0) {
-        rebuilt[lastResidue] = { ...rebuilt[lastResidue]!, disposition: "COVERED_BY_CHILD_DESCENT", reason: `introduces an enumerated list whose ${children.length} child clause(s) are each accounted for; carries no independent conjunct and no quantitative value of its own` };
+      if (!introducesChildren) continue;
+      const residue = rebuilt[lastResidue]!;
+      // POSITIVE evidence only: the residue must BE a bare subordinating connective (canary #2 predicate). The
+      // scanner participates solely as positive evidence inside that predicate (a value makes it not bare);
+      // its silence proves nothing and grants nothing.
+      if (isPureClauseIntroducer(residue.excerpt, residue.values)) {
+        rebuilt[lastResidue] = { ...residue, disposition: "COVERED_BY_CHILD_DESCENT", reason: `a bare subordinating connective introducing an enumerated list whose ${children.length} child clause(s) are each anchored by an inventory item or an external unit and need no review; the fragment is positively nothing but the connective - no content word, value, digit, reference or quotation of its own` };
+      } else {
+        rebuilt[lastResidue] = { ...residue, reason: `${residue.reason}; introduces ${children.length} owned child clause(s) but carries content of its own that no inventory item anchors - child descent is refused because nothing in this layer can prove the lead-in's own semantics are represented by its children (absence of a recognised value is not such proof)` };
       }
       unitSpans[i] = rebuilt;
     }

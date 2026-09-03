@@ -53,6 +53,18 @@ const PATTERNS: PatternDef[] = [
   { kind: "PERIOD", re: /\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+(?:consecutive\s+)?(?:full\s+)?(?:fiscal\s+|calendar\s+)?(quarters?|months?|years?|weeks?)\b/gi, normalize: (m) => { const w = m[1]!.toLowerCase(); const n = WORD_NUMBERS[w] ?? parseNumber(w); return { value: n ?? null, unit: m[2]!.toLowerCase().replace(/s$/, "") }; } },
   { kind: "DATE", re: new RegExp(`\\b${MONTH}\\s+\\d{1,2},\\s+\\d{4}\\b|\\b\\d{4}-\\d{2}-\\d{2}\\b`, "g"), normalize: (m) => ({ value: null, unit: m[0] }) },
   { kind: "MULTIPLIER", re: /\b\d+(?:\.\d+)?\s?times\b/gi, normalize: (m) => ({ value: parseNumber((m[0].match(/^\d+(?:\.\d+)?/) ?? ["0"])[0]), unit: "times" }) },
+  // Generic ISO-style currency-code money: an uppercase three-letter code immediately followed by an amount
+  // ("CHF 2,000,000", "SGD 5.5 million"). The symbol/USD pattern above already carried ONE hardcoded code, USD;
+  // this generalises that shape rather than adding a currency list, and keeps the code in `unit` exactly as
+  // the symbol pattern keeps USD/GBP/EUR. It is deliberately LAST: every more specific unit shape (percent,
+  // ratio, days, ...) claims its span first, so "LTV 65%" stays a PERCENT and only a code+amount that nothing
+  // else explains becomes MONEY. Case-sensitive on purpose - "chf 2,000,000" is not a code.
+  //
+  // Why (closure remediation V1): the original red-team scenario V1 put a CHF cap inside a child-descent
+  // lead-in. Its USD twin surfaced because the value guard saw a MONEY value; V1 completed silently because
+  // this scanner returned nothing, and the value guard is only as strong as the scanner. Recognition here
+  // makes the guard fire; nothing about descent changes.
+  { kind: "MONEY", re: /\b[A-Z]{3}\s?\d[\d,]*(?:\.\d+)?(?:\s?(?:million|billion|thousand|mm|bn))?\b/g, normalize: (m) => ({ value: parseMoney(m[0].slice(3)), unit: m[0].slice(0, 3) }) },
 ];
 
 function overlaps(a: { charStart: number; charEnd: number }, b: { charStart: number; charEnd: number }): boolean {

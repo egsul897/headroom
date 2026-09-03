@@ -1,0 +1,59 @@
+{
+  "artifact": "17-gates-and-verdict-paid",
+  "preRegisteredRules": "scripts/phase-3-validation-chwy-score.py GATE_RULES (written before any paid output was read)",
+  "inputs": {
+    "dangerousSilentFailures": 0,
+    "safeFailures": 44,
+    "deficientItems": 44,
+    "unitsSelected": 12,
+    "unitsAttempted": 3,
+    "unitsWithIR": 1,
+    "attemptedMaterialDiscoveryRecall": 0.8182,
+    "all46MaterialDiscoveryRecall": 0.3913,
+    "fullSubstantiveCreditRateAttempted": 0.0455,
+    "fullSubstantiveCreditRate46": 0.0217,
+    "passACriticalMaterialStability": 0.4573,
+    "passAStrictStability": 0.1948,
+    "passASemanticStability": 0.4477,
+    "whyNotEvaluatedFully": "budget cap ($14.00 effective; $13.96 spent) reached after 3 of 12 units; 24 of 46 reference items never reached; only unit 6.08 produced IR"
+  },
+  "TRUST_SAFETY": {
+    "result": "TRUST_SAFETY_PASS",
+    "basis": "every deficient reference item is covered by an explicit non-complete state (UNIT_NOT_COMPILED, COMPILE_FAILED/PARTIAL, INVENTORY_COVERAGE_GAP, ACCOUNTABILITY_INCOMPLETE, VERIFIER_MATERIAL_DISCREPANCY, UNSUPPORTED); no unit was trusted as semantically complete; the 3E audit reports PACKAGE_SEMANTICALLY_INCOMPLETE",
+    "caveat": "trust safety here is largely a consequence of the pipeline refusing to complete, not of verified-correct output; the verifier's MATERIAL_DISCREPANCY on 6.08 is itself mostly parser artefact (F-3)"
+  },
+  "PHASE_3_GENERALIZATION": {
+    "verdict": "PHASE_3_GENERALIZATION_NEEDS_ITERATION",
+    "basis": "TRUST_SAFETY_PASS; attempted-unit material discovery recall 0.82 (>= 0.50, so not FAIL); but only 3 of 12 selected units attempted, full substantive credit 1/22 attempted (0.045) far below 0.60, Pass A critical/material stability 0.46 below 0.80, and two frozen-stack defects (F-1 caller protocol, F-2 6.08 mis-nesting) plus verifier scale parsing (F-3) prevent any PASS reading"
+  },
+  "PHASE_4": {
+    "result": "NOT_READY_FOR_PHASE_4_CONTRACT_COMPUTATION",
+    "basis": "requires TRUST_SAFETY_PASS and PHASE_3_GENERALIZATION_PASS; the latter is NEEDS_ITERATION"
+  },
+  "rootCausesRanked": [
+    {
+      "rank": 1,
+      "cause": "Budget exhaustion driven by whole-section unit windows (1.01 353k chars, 9.04 30k chars) consuming $3.85 with zero IR; 9 of 12 units and 24 of 46 reference items never attempted",
+      "stage": "OTHER (harness unit definition + frozen source-context cap that governs extension only)",
+      "items": 24
+    },
+    {
+      "rank": 2,
+      "cause": "Compiler caller retrieval-nudge protocol defect (F-1) discarding a completed 1.01 submission; definitions-dependent items (B12-B14, C3, D1-D6, D9, E1-E3) left MISSING",
+      "stage": "IR_COMPOSITION",
+      "items": 14
+    },
+    {
+      "rank": 3,
+      "cause": "IR type-check degradation to UNSUPPORTED for ratio gates, builder arithmetic and shared-capacity definitions (F-6), leaving 6.08 items PARTIAL",
+      "stage": "IR_COMPOSITION",
+      "items": 7
+    }
+  ],
+  "secondaryRootCauses": [
+    "F-2 structural mis-nesting of 6.08 (STRUCTURAL_CONTEXT) - blocks 3E anchoring of the only compiled section",
+    "F-3/F-4 verifier precision (VERIFIER)",
+    "F-5 Pass A instability (SOURCE_INVENTORY)",
+    "F-7 gateway stream limits on very large calls (OTHER)"
+  ]
+}

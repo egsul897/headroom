@@ -1,0 +1,270 @@
+{
+  "companyId": "phase-3-validation-chwy",
+  "packageKey": "chwy-2026-credit-agreement",
+  "classifications": [
+    {
+      "documentId": "doc-a",
+      "type": "CREDIT_AGREEMENT",
+      "confidence": 0.9,
+      "evidence": [
+        "CREDIT AGREEMENT"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    }
+  ],
+  "identities": [
+    {
+      "documentId": "doc-a",
+      "title": "CREDIT AGREEMENT",
+      "agreementTypeLabel": "CREDIT AGREEMENT",
+      "executionDate": "June 23, 2026",
+      "effectiveDate": "June 23, 2026",
+      "parties": [],
+      "borrowerOrIssuer": null,
+      "administrativeAgentOrTrustee": "JPMORGAN CHASE BANK, N.A.",
+      "facilityOrInstrumentName": "CREDIT AGREEMENT",
+      "originalAgreementReferenceHint": null,
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "title": {
+          "text": "\nCREDIT AGREEMENT",
+          "charStart": 77
+        },
+        "executionDate": {
+          "text": "dated as of\nJune 23, 2026",
+          "charStart": 95
+        },
+        "administrativeAgentOrTrustee": {
+          "text": "JPMORGAN CHASE BANK, N.A.,\nas\nAdministrative Agent",
+          "charStart": 200
+        }
+      }
+    }
+  ],
+  "relationshipCandidates": [],
+  "modificationCandidates": [],
+  "crossDocumentReferenceLeads": [
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the ABL Credit Agreement",
+      "charStart": 11575,
+      "namedAgreementHint": "ABL Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the ABL Intercreditor Agreement",
+      "charStart": 12804,
+      "namedAgreementHint": "ABL Intercreditor Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INTERCREDITOR_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the Collateral Agreement",
+      "charStart": 72495,
+      "namedAgreementHint": "Collateral Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "subject to the ABL Intercreditor Agreement",
+      "charStart": 72538,
+      "namedAgreementHint": "ABL Intercreditor Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INTERCREDITOR_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the Collateral Agreement",
+      "charStart": 73185,
+      "namedAgreementHint": "Collateral Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the ABL Credit Agreement",
+      "charStart": 116050,
+      "namedAgreementHint": "ABL Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the terms of this Agreement",
+      "charStart": 175082,
+      "namedAgreementHint": "terms of this Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "subject to the relevant Intercreditor Agreement",
+      "charStart": 197930,
+      "namedAgreementHint": "relevant Intercreditor Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INTERCREDITOR_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "subject to the applicable Customary Intercreditor Agreement",
+      "charStart": 272140,
+      "namedAgreementHint": "applicable Customary Intercreditor Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INTERCREDITOR_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "subject to the applicable Customary Intercreditor Agreement",
+      "charStart": 279659,
+      "namedAgreementHint": "applicable Customary Intercreditor Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INTERCREDITOR_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 308804,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the indenture",
+      "charStart": 328789,
+      "namedAgreementHint": "indenture",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INDENTURE exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the terms of this Agreement",
+      "charStart": 346219,
+      "namedAgreementHint": "terms of this Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the ABL Intercreditor Agreement",
+      "charStart": 346823,
+      "namedAgreementHint": "ABL Intercreditor Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INTERCREDITOR_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the terms of this Agreement",
+      "charStart": 375793,
+      "namedAgreementHint": "terms of this Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 512378,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the management and monitoring agreement",
+      "charStart": 596131,
+      "namedAgreementHint": "management and monitoring agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the ABL Credit Agreement",
+      "charStart": 612544,
+      "namedAgreementHint": "ABL Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the\nIntercreditor Agreement",
+      "charStart": 716384,
+      "namedAgreementHint": "Intercreditor Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INTERCREDITOR_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the terms hereof as a Lender hereunder for all purposes of this Agreement",
+      "charStart": 794708,
+      "namedAgreementHint": "terms hereof as a Lender hereunder for all purposes of this Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "subject to the terms and provisions of such Intercreditor Agreement",
+      "charStart": 848384,
+      "namedAgreementHint": "terms and provisions of such Intercreditor Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INTERCREDITOR_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Intercreditor Agreement",
+      "charStart": 848733,
+      "namedAgreementHint": "Intercreditor Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INTERCREDITOR_AGREEMENT exists in this package"
+    }
+  ],
+  "instruments": [
+    {
+      "instrumentKey": "instrument:doc-a",
+      "name": "CREDIT AGREEMENT",
+      "documentIds": [
+        "doc-a"
+      ],
+      "baseDocumentId": "doc-a",
+      "confidence": 0.5,
+      "reviewStatus": "RESOLVED"
+    }
+  ],
+  "performance": {
+    "documentCount": 1,
+    "totalCharsScanned": 864362,
+    "relationshipCandidatesGenerated": 0,
+    "relationshipsResolved": 0,
+    "relationshipsUnresolved": 0,
+    "modificationCandidatesGenerated": 0,
+    "crossDocumentReferenceLeadsGenerated": 22,
+    "wallClockMs": 22,
+    "semanticCallsUsed": 0
+  }
+}

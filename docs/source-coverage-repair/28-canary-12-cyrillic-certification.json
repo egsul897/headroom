@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "28-canary-12-cyrillic-certification",
+  "mission": "SINGLE CANARY #12 - exact historical Cyrillic source certification (verify-first)",
+  "startingSha": "bf2230ee260b4141a8ee6ed5e93b671b17dd3a38",
+  "kind": "CERTIFICATION - no production change",
+  "fixture": {
+    "text": "Заемщик не вправе создавать залог.",
+    "provenance": "the red team's preserved classifier probe, /tmp/rt/p1.ts line 18, verified in place; audit finding 6 states 'Same for Cyrillic' against the S7 end-to-end shape. Used verbatim - not rewritten, translated or substituted.",
+    "unicodeProperties": "34 code units; first U+0417, last U+002E; \\p{L} count 29; \\p{Script=Cyrillic} count 29; ASCII [A-Za-z0-9] count 0",
+    "surround": "the audit's finding-6 end-to-end shape (S7): the uninventoried non-Latin clause between two covered English clauses, with the Cyrillic sentence substituted in exactly as the finding describes",
+    "segmentation": "line breaks isolate the clause as its own unit",
+    "inventorySpans": "two CRITICAL items anchoring the English clauses; the Cyrillic clause anchored by nothing",
+    "extractedQuantitativeValues": "none"
+  },
+  "originalHistoricalFailure": "PUNCTUATION_OR_DELIMITER via the ASCII punctuation test `!/[A-Za-z0-9]/` - zero ASCII letters, so the whole clause was 'punctuation and delimiters only'; unaccounted 0, INVENTORY_OK, semanticallyComplete true (audit finding 6, same mechanism as the CJK fixture).",
+  "behaviourOnStartingShaToday": {
+    "classifier": "UNACCOUNTED_SOURCE",
+    "coverage": "[COVERED_BY_INVENTORY] line 1 | [PUNCTUATION_OR_DELIMITER] \"\\n\" | [UNACCOUNTED_SOURCE] \"Заемщик не вправе создавать залог.\" | [COVERED_BY_INVENTORY] line 3",
+    "unaccountedSource": 1,
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+    "reconciliation": "coverage-gap failure reason present",
+    "semanticallyComplete": false
+  },
+  "decisionGate": "CASE A",
+  "cyrillicFixedByCanary11": true,
+  "why": "Canary #11 replaced the ASCII punctuation test with `!/[\\p{L}\\p{N}]/u` and added a `\\p{L}`-based unexplained-letter guard on the STRUCTURAL_NOISE branch. Both detect letters in any script, not any particular script, so Cyrillic letters are caught by exactly the same two rules that caught Han letters. Nothing Cyrillic-specific exists or was added: no ranges as a trust rule, no Russian vocabulary, no translation, no tokenisation, no special case for Заемщик or залог.",
+  "productionCodeChanged": false,
+  "earliestResponsibleBranch": "not applicable - no failure to trace on the starting SHA",
+  "controls": {
+    "canary11Cjk": "借款人不得在抵押物上设定任何留置权或其他担保权益。 -> UNACCOUNTED_SOURCE, still review-blocking when uninventoried",
+    "punctuation": "\"; :,\" -> PUNCTUATION_OR_DELIMITER (existing control, reused; no new Unicode matrix)"
+  },
+  "priorCanariesStillHold": {
+    "canary2_S9": "UNACCOUNTED_SOURCE; semanticallyComplete false",
+    "canary2b_I5": "connective ownership correct; I5 green in the corpus",
+    "canary3_RT8": "blanket span still clipped",
+    "canary4_RT4": "parent obligations still surface; only the introducing fragment descends",
+    "canary5_S6": "quoted replacement UNACCOUNTED_SOURCE; quoted term names still DEFINED_TERM_LABEL",
+    "canary6_S8": "bare basket amounts and generic numbers still UNACCOUNTED_SOURCE",
+    "canary7": "numbered covenant and V4 amount line still UNACCOUNTED_SOURCE; all four numbered captions still HEADING_OR_LABEL; Section 7.11. still CITATION_ONLY",
+    "canary8": "both original ALL-CAPS attacks still UNACCOUNTED_SOURCE",
+    "canary9": "both modifiers still UNACCOUNTED_SOURCE; pure glue still STRUCTURAL_NOISE",
+    "canary10": "determinerless ALL-CAPS proposition still UNACCOUNTED_SOURCE; bare ALL-CAPS headings remain review gaps as authorised - not restored",
+    "canary11": "CJK fixture still UNACCOUNTED_SOURCE; punctuation controls unchanged"
+  },
+  "tests": {
+    "added": 1,
+    "name": "canary #12 CERTIFICATION: the exact historical Cyrillic clause is accountable and review-blocking",
+    "sourceCoverageSuite": "116/116 passing (115 before, +1 certification)",
+    "adversarialSuite": "2400 generated cases, 0 dangerous false negatives, unchanged - no fuzzing",
+    "existingTestsAltered": []
+  },
+  "corpusImpact": {
+    "before": "7 failed | 275 passed (282)",
+    "after": "7 failed | 276 passed (283)",
+    "delta": "+1 test (the certification), zero new failures",
+    "newlySurfacedCorpusGaps": 0,
+    "failingScenariosUnchanged": ["I23", "I26", "I27"],
+    "groundTruthChanged": false
+  },
+  "qualityGates": {
+    "typescript": "npx tsc --noEmit - 6 errors, all pre-existing in tests/foundation-audit/*; identical count to the starting SHA; zero in semantic-accountability or source-coverage",
+    "lint": "npx next lint --dir lib --dir tests --dir scripts - 1 error, pre-existing; none in changed files"
+  },
+  "spend": { "paidModelCalls": 0, "vercelDeploys": 0, "providerProbe": "HTTP 402 quota_for_entity_exceeded, current spend $150.49 / limit $150.00 - unchanged" },
+  "reproductionHarness": "scripts/source-coverage-canary12-reproduce.ts (committed; run with npx tsx)",
+  "canary12Certified": true,
+  "scopeDiscipline": "Verify-first honoured: no production diff was manufactured. Other scripts, Unicode sentence-boundary segmentation, ideographic punctuation splitting, spelled-out values, ALL-CAPS heading metadata, I23, I26 and I27 all untouched. No fuzzing, no broad multilingual testing, no real validation, no paid calls, no deploy. No further canary will be chosen; the next task is the deterministic closure audit."
+}
