@@ -840,6 +840,51 @@ describe("canary #12 - the historical Cyrillic fixture, certified", () => {
   });
 });
 
+describe("closure remediation V1 - a currency-code cap blocks child descent", () => {
+  // Original red-team scenario V1 (scripts/red-team-original/e2e2.ts), verbatim. Its USD twin (V2) surfaced
+  // because "$2,000,000" is a MONEY value and the descent value guard fires; V1 completed silently because
+  // "CHF 2,000,000" produced no value at all. Child descent is identical in both - the scanner was the gate.
+  const V1 = "The Borrower shall not make Restricted Payments in an aggregate amount exceeding CHF 2,000,000 in any fiscal year other than (a) intercompany dividends (b) tax distributions.";
+  const CHILDREN = ["(a) intercompany dividends", "(b) tax distributions."];
+
+  it("A. generic ISO-style currency-code amounts are MONEY; an uppercase token without an amount is not", () => {
+    const v = scanQuantitativeValues("exceeding CHF 2,000,000 in any fiscal year");
+    expect(v.map((x) => [x.kind, x.rawText, x.normalizedValue, x.unit])).toEqual([["MONEY", "CHF 2,000,000", 2_000_000, "CHF"]]);
+    // not CHF-specific: any code of the same shape, with a scale suffix
+    expect(scanQuantitativeValues("a cap of SGD 5.5 million").map((x) => [x.kind, x.normalizedValue, x.unit])).toEqual([["MONEY", 5_500_000, "SGD"]]);
+    // no numeric adjacency -> not money
+    expect(scanQuantitativeValues("the ABC Facility and the LTV Covenant")).toEqual([]);
+    // lowercase is not a code
+    expect(scanQuantitativeValues("chf 2,000,000")).toEqual([]);
+    // more specific unit shapes keep precedence: a percent after a code stays a PERCENT
+    expect(scanQuantitativeValues("LTV 65%").map((x) => x.kind)).toEqual(["PERCENT"]);
+    // the pre-existing symbol/USD path is untouched
+    expect(scanQuantitativeValues("USD 2,000,000 and $3,000,000").map((x) => [x.rawText, x.unit])).toEqual([["USD 2,000,000", "USD"], ["$3,000,000", "USD"]]);
+  });
+
+  it("B. exact historical V1: the CHF lead-in is no longer discharged by child descent and cannot complete", async () => {
+    const cov = coverOne(V1, CHILDREN);
+    expect(unaccountedText(cov)).toContain("exceeding CHF 2,000,000");
+    expect(cov.countsByDisposition.COVERED_BY_CHILD_DESCENT).toBe(0);
+    expect(cov.unaccountedValues.map((v) => v.rawText)).toContain("CHF 2,000,000");
+
+    const sc = { state: "COMPLETE_LOCAL_SOURCE" as const, regions: [region("operative", V1)], unresolvedReferences: [], reasons: [], totalChars: V1.length, budgetChars: 10_000 };
+    const wire: WireInventoryItem[] = CHILDREN.map((excerpt, i) => ({ localRef: `r${i}`, semanticRole: "REQUIREMENT", proposition: "p", excerpt, regionId: "operative", quantitativeValues: [], referencedTerms: [], referencedSections: [], parentRef: null, relatedRefs: [], materiality: "CRITICAL", ambiguity: "NONE", ambiguityReason: null, operative: "OPERATIVE" }));
+    const inv = await runSemanticInventory({ candidateRef: "closure-v1", documentId: "d", sourceContext: sc, caller: scriptedCaller(wire) });
+    expect(inv.inventoryStatus).not.toBe("INVENTORY_OK");
+    expect(inv.unaccountedSource.length + inv.uninventoriedValues.length).toBeGreaterThan(0);
+    const acc = reconcileInventoryWithComposition({
+      inventory: inv,
+      composition: { rules: [{ inventoryItemIds: inv.items.map((i) => i.inventoryItemId), capacityExpression: null, conditions: [], exceptions: [], dependsOn: [], unresolvedDependencies: [] }], definitions: [], sharedCapacities: [] } as never,
+      dispositions: [],
+      sourceContextState: sc.state,
+    });
+    expect(acc.semanticallyComplete).toBe(false);
+    const roll = rollupAgreementSemanticStatus([{ candidateRef: acc.candidateRef, compileStatus: "COMPLETED", verifyStatus: "VERIFIED_NO_MATERIAL_GAP_FOUND", accountability: acc, operativeStateUncertain: false, unresolvedCrossReferences: 0 }]);
+    expect(roll.status).not.toBe("SEMANTICALLY_COMPLETE");
+  });
+});
+
 describe("source coverage - segmentation, tables and duplicates", () => {
   it("line-broken rows are separate units, not one block (audit finding 7)", () => {
     const text = "Reporting Requirements\nAnnual statements within 90 days after year end\nQuarterly statements within 45 days after quarter end\nNotice of any Default promptly";
