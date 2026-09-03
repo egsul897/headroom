@@ -219,8 +219,19 @@ const CITATION_ONLY_RE = /^[\s(]*(?:see\s+)?(?:section|clause|paragraph|subsecti
 /** A heading or caption: no clause terminator inside, and either a numbered caption ("Section 7.11.", "6.02 Liens.") or an ALL-CAPS/Title-Case caption line. */
 const NUMBERED_CAPTION_RE = /^\s*(?:section|article|annex|exhibit|schedule|appendix)?\s*\d+(?:\.\d+)*\s*[.:)]?\s*[A-Za-z][\w\s,'&/-]{0,80}?\s*[.:]?\s*$/i;
 const ALLCAPS_CAPTION_RE = /^\s*[A-Z][A-Z0-9\s,'&/.-]{2,80}\s*$/;
-/** Page furniture: "Page 12", "12 of 40", "- 12 -", a lone number, a dotted TOC leader line. */
-const PAGE_FURNITURE_RE = /^\s*(?:page\s+\d+(?:\s+of\s+\d+)?|[-–—\s]*\d+[-–—\s]*|\d+\s+of\s+\d+)\s*$/i;
+/**
+ * Page furniture: "Page 12", "Page 12 of 40", "12 of 40", "- 12 -". Pagination must be established by
+ * AFFIRMATIVE STRUCTURE - the word "page", the "N of M" folio idiom, or a number enclosed by dashes on both
+ * sides. Numeric shape alone proves nothing (canary #6).
+ *
+ * The alternative `[-–—\s]*\d+[-–—\s]*` used to sit in the middle of this list, which made ANY standalone
+ * integer page furniture. An independent red team walked a basket table straight through it: a bare
+ * `25000000` on its own line was "page or table-of-contents furniture" and a basket amount disappeared with
+ * unaccounted 0, INVENTORY_OK and semanticallyComplete true. A lone number may be a page number, a table cell,
+ * a basket, a threshold, a period, a multiplier or any other contractual input; nothing about its shape says
+ * which, so it is no longer suppressed here.
+ */
+const PAGE_FURNITURE_RE = /^\s*(?:page\s+\d+(?:\s+of\s+\d+)?|\d+\s+of\s+\d+|[-–—]\s*\d+\s*[-–—])\s*$/i;
 const TOC_LEADER_RE = /\.{4,}\s*\d+\s*$/;
 /**
  * The QUOTE FRAME of a possible defined-term label: `"Permitted Liens"`, or `"Permitted Liens" means`, standing
@@ -282,13 +293,28 @@ export function classifyUnaccountedFragment(fragment: string, values: Quantitati
     if (CITATION_ONLY_RE.test(trimmed)) return { disposition: "CITATION_ONLY", reason: "a bare cross-reference with no proposition of its own" };
     const quoted = QUOTED_LABEL_FRAME_RE.exec(trimmed);
     if (quoted && isQuotedTermName(quoted[1]!)) return { disposition: "DEFINED_TERM_LABEL", reason: "a quoted defined-term name - nominal only, no proposition inside the quotation" };
+    // A digit that survives enumerator stripping is contractual content the letter-blind rules below cannot
+    // see (canary #6). contentWords matches [A-Za-z] only, so "25000000", "4.00" and "2028" all score zero
+    // content words and would otherwise be dismissed as the residue of splitting a parent unit. Enumerator
+    // forms - "(2)", "3." - are stripped first, so numeric enumerators are still suppressed as before. This
+    // runs AFTER every positive structural rule - pagination, citation and the caption rules below - so a
+    // fragment any of those establishes keeps its disposition. What is left is an unexplained number, and an
+    // unexplained number is accountable.
+    const carriesUnexplainedDigits = /\d/.test(trimmed.replace(new RegExp(ENUMERATOR_SRC, "g"), " "));
     const words = contentWords(trimmed);
-    if (words.length === 0) return { disposition: "STRUCTURAL_NOISE", reason: "enumerators, punctuation and closed-class connectives only - the residue of splitting a parent unit" };
+    if (words.length === 0 && !carriesUnexplainedDigits) return { disposition: "STRUCTURAL_NOISE", reason: "enumerators, punctuation and closed-class connectives only - the residue of splitting a parent unit" };
     // Headings carry no clause terminator and no verb-bearing body; require BOTH the caption shape and the absence of an internal terminator.
     // A caption has no SENTENCE terminator inside it. A decimal point inside a section number ("7.04") is not one,
     // so the terminator must be followed by whitespace to count.
     const noInternalTerminator = !/[.;:!?]\s+\S/.test(trimmed);
     if (noInternalTerminator && (ALLCAPS_CAPTION_RE.test(trimmed) || NUMBERED_CAPTION_RE.test(trimmed))) return { disposition: "HEADING_OR_LABEL", reason: "a section caption or heading line" };
+    // Last, once every positive structural rule above has had its chance: an unexplained number is accountable.
+    if (carriesUnexplainedDigits) {
+      return {
+        disposition: "UNACCOUNTED_SOURCE",
+        reason: "carries a number that no inventory item anchors, that the quantitative extractor did not recognise, and that no deterministic rule establishes as pagination - a bare number may be a basket, a threshold, a period or a page number, and its shape does not say which",
+      };
+    }
   }
   return {
     disposition: "UNACCOUNTED_SOURCE",

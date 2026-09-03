@@ -529,6 +529,56 @@ describe("canary #5 - quotation marks do not make source non-semantic", () => {
   });
 });
 
+describe("canary #6 - numeric shape alone does not prove page furniture", () => {
+  // The red team's S8 fixture, verbatim: a basket table whose amounts carry no currency symbol. Before, the
+  // PAGE_FURNITURE_RE alternative [-\u2013\u2014\\s]*\\d+[-\u2013\u2014\\s]* made every standalone integer "page or
+  // table-of-contents furniture", and the extractor has no bare-number pattern, so both basket amounts
+  // vanished with unaccounted 0, uninventoriedValues 0, INVENTORY_OK and semanticallyComplete true.
+  const S8 = "The following baskets apply:\nGeneral Basket\n25000000\nAcquisition Basket\n40000000\nThe Borrower shall not exceed the applicable basket.";
+  const ANCHORED = ["The following baskets apply:", "General Basket", "Acquisition Basket", "The Borrower shall not exceed the applicable basket."];
+
+  it("ATTACK: bare basket amounts are accountable, not page furniture", async () => {
+    // The value route is genuinely closed here: the extractor has no bare-number pattern, so the source route
+    // is the only thing standing between a basket amount and silence.
+    expect(scanQuantitativeValues("25000000")).toEqual([]);
+    const cov = coverOne(S8, ANCHORED);
+    expect(unaccountedText(cov)).toContain("25000000");
+    expect(unaccountedText(cov)).toContain("40000000");
+    expect(cov.countsByDisposition.NON_SEMANTIC_FORMATTING).toBe(0);
+
+    const sc = { state: "COMPLETE_LOCAL_SOURCE" as const, regions: [region("operative", S8)], unresolvedReferences: [], reasons: [], totalChars: S8.length, budgetChars: 10_000 };
+    const wire: WireInventoryItem[] = ANCHORED.map((excerpt, i) => ({ localRef: `i${i}`, semanticRole: "OTHER", proposition: `basket line ${i}`, excerpt, regionId: "operative", quantitativeValues: [], referencedTerms: [], referencedSections: [], parentRef: null, relatedRefs: [], materiality: "CRITICAL", ambiguity: "NONE", ambiguityReason: null, operative: "OPERATIVE" }));
+    const inv = await runSemanticInventory({ candidateRef: "canary6", documentId: "d", sourceContext: sc, caller: scriptedCaller(wire) });
+    expect(inv.inventoryStatus).toBe("INVENTORY_COVERAGE_GAP");
+    const rec = reconcileInventoryWithComposition({
+      inventory: inv,
+      composition: { rules: [{ inventoryItemIds: inv.items.map((i) => i.inventoryItemId), capacityExpression: null, conditions: [], exceptions: [], dependsOn: [], unresolvedDependencies: [] }], definitions: [], sharedCapacities: [] } as never,
+      dispositions: inv.items.map((i) => ({ inventoryItemId: i.inventoryItemId, disposition: "REPRESENTED", note: "matched" })),
+      sourceContextState: sc.state,
+    });
+    expect(rec.semanticallyComplete).toBe(false);
+  });
+
+  it("TRUE PAGE-NUMBER CONTROL: affirmative pagination structure is still suppressed", () => {
+    for (const f of ["Page 12", "Page 12 of 40", "12 of 40", "- 12 -", "Negative Covenants..............72"]) {
+      const { disposition } = classifyUnaccountedFragment(f, []);
+      expect(disposition, `${f} -> ${disposition}`).toBe("NON_SEMANTIC_FORMATTING");
+    }
+    // And numeric enumerator residue is still glue, not a gap.
+    for (const f of ["(a)", "(2)", "(iv)"]) {
+      expect(classifyUnaccountedFragment(f, []).disposition, f).toBe("STRUCTURAL_NOISE");
+    }
+  });
+
+  it("GENERIC BARE NUMBER: a number with no pagination structure around it is accountable", () => {
+    // Wholly non-legal - no covenant family, no currency, no unit.
+    expect(unaccountedText(coverOne("Threshold\n75", ["Threshold"]))).toContain("75");
+    for (const f of ["12", "75", "100", "4.00", "2028"]) {
+      expect(classifyUnaccountedFragment(f, []).disposition, f).toBe("UNACCOUNTED_SOURCE");
+    }
+  });
+});
+
 describe("source coverage - segmentation, tables and duplicates", () => {
   it("line-broken rows are separate units, not one block (audit finding 7)", () => {
     const text = "Reporting Requirements\nAnnual statements within 90 days after year end\nQuarterly statements within 45 days after quarter end\nNotice of any Default promptly";
