@@ -711,8 +711,31 @@ export function computeSourceCoverage(input: SourceCoverageInput): SourceCoverag
     }
 
     // Child descent (§7): a chapeau's own unaccounted residue is discharged only when EVERY child it owns is
-    // accounted for and the residue carries no quantitative value of its own. Credit flows child -> parent only:
-    // a covered parent never discharges an uncovered child (that is exactly the audit's carve-out failure).
+    // accounted for AND semantically owned, and the residue is POSITIVELY shown to be nothing but the connective
+    // that introduces them. Credit flows child -> parent only: a covered parent never discharges an uncovered
+    // child (that is exactly the audit's carve-out failure).
+    //
+    // RT-7 architectural remediation. This rule used to discharge the final residue whenever the value scanner
+    // found nothing in it: "no recognised quantitative value" => "no quantitative semantics" => "safe to
+    // discharge". That inference is unsound - the scanner is a source of POSITIVE evidence that a fragment is
+    // substantive, never NEGATIVE proof that it is harmless. The independent red team's own scanner probes
+    // ("five million dollars", "thirty days", "2,500,000 (the \"Cap\")", "twenty-five basis points" ...) all
+    // scan to nothing, so the V1 frame carrying any of them - a single-conjunct cap running straight into two
+    // inventoried carve-outs - reached unaccounted=0 / INVENTORY_OK / semanticallyComplete=true.
+    //
+    // Absence of detection is not proof of absence. A residue the classifier itself refused to dismiss (it has
+    // content words, or an operator, or an adjunct, or digits) is substantive by the detector's own verdict,
+    // and the only thing the old rule added was that a second, weaker detector had also found nothing. Descent
+    // therefore no longer discharges ANY content-bearing residue. The one positive proof this layer possesses
+    // that a fragment introduces its children and says nothing of its own is the canary #2 predicate already
+    // used for connective ownership: every content word is a subordinating connective and the fragment carries
+    // no object (no value, no digit, no reference noun, no quotation). "provided that", "except", "unless",
+    // "including" ahead of owned enumerated children are discharged on that evidence; "The Borrower may make
+    // the following Investments:" is not, because "Borrower", "make" and "Investments" are the lead-in's own
+    // content and nothing in this layer can prove they are represented by the children. That is a review gap,
+    // and a safe one. Positive-evidence descent for a content-bearing chapeau needs a signal this layer does
+    // not have - an inventory span or an explicit parent item anchoring the lead-in - and until it exists the
+    // lead-in stays UNACCOUNTED_SOURCE rather than being discharged on a scanner's silence.
     for (let i = 0; i < units.length; i++) {
       const children = parentOf.map((p, j) => (p === i ? j : -1)).filter((j) => j >= 0);
       if (children.length === 0) continue;
@@ -725,8 +748,7 @@ export function computeSourceCoverage(input: SourceCoverageInput): SourceCoverag
       if (!childrenAccounted || !childrenOwned) continue;
       // Residue-first (canary #4): the parent residue is split at coordination boundaries and ONLY the final
       // fragment - the one that introduces the children - can be discharged. An earlier conjunct is an
-      // independent predicate of the parent's own, so it stays accountable; a fragment carrying a value of any
-      // kind is never discharged.
+      // independent predicate of the parent's own, so it stays accountable.
       const rebuilt: SourceCoverageSpan[] = [];
       for (const s of unitSpans[i]!) {
         if (s.disposition !== "UNACCOUNTED_SOURCE") {
@@ -740,8 +762,15 @@ export function computeSourceCoverage(input: SourceCoverageInput): SourceCoverag
       // The eligible fragment must be the last thing in the parent unit apart from whitespace/punctuation, i.e.
       // it must actually run up to the children.
       const introducesChildren = lastResidue >= 0 && rebuilt.slice(lastResidue + 1).every((s) => s.excerpt.trim().length === 0 || s.disposition === "PUNCTUATION_OR_DELIMITER");
-      if (introducesChildren && rebuilt[lastResidue]!.values.length === 0) {
-        rebuilt[lastResidue] = { ...rebuilt[lastResidue]!, disposition: "COVERED_BY_CHILD_DESCENT", reason: `introduces an enumerated list whose ${children.length} child clause(s) are each anchored by an inventory item or an external unit and need no review; carries no independent conjunct and no quantitative value of its own` };
+      if (!introducesChildren) continue;
+      const residue = rebuilt[lastResidue]!;
+      // POSITIVE evidence only: the residue must BE a bare subordinating connective (canary #2 predicate). The
+      // scanner participates solely as positive evidence inside that predicate (a value makes it not bare);
+      // its silence proves nothing and grants nothing.
+      if (isPureClauseIntroducer(residue.excerpt, residue.values)) {
+        rebuilt[lastResidue] = { ...residue, disposition: "COVERED_BY_CHILD_DESCENT", reason: `a bare subordinating connective introducing an enumerated list whose ${children.length} child clause(s) are each anchored by an inventory item or an external unit and need no review; the fragment is positively nothing but the connective - no content word, value, digit, reference or quotation of its own` };
+      } else {
+        rebuilt[lastResidue] = { ...residue, reason: `${residue.reason}; introduces ${children.length} owned child clause(s) but carries content of its own that no inventory item anchors - child descent is refused because nothing in this layer can prove the lead-in's own semantics are represented by its children (absence of a recognised value is not such proof)` };
       }
       unitSpans[i] = rebuilt;
     }

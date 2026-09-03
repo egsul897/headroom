@@ -164,11 +164,14 @@ describe("source coverage - enumerated carve-outs, chapeaux and nesting (mission
     expect(unaccountedText(cov)).not.toContain("other than the following");
   });
 
-  it("a lead-in with no internal comma IS discharged in full by its covered children", () => {
+  it("a content-bearing lead-in with no internal comma is NOT discharged by its covered children (RT-7 remediation: scanner silence grants nothing)", () => {
+    // Used to assert the opposite. "shall report" is the lead-in's own content; nothing in this layer can
+    // prove the children represent it, so it is a review gap - a safe one - rather than a discharge.
     const text = "The Borrower shall report the following: (a) Revenue; (b) EBITDA.";
     const cov = coverOne(text, ["(a) Revenue", "(b) EBITDA"]);
-    expect(cov.unaccounted).toEqual([]);
-    expect(cov.countsByDisposition.COVERED_BY_CHILD_DESCENT).toBeGreaterThan(0);
+    expect(unaccountedText(cov)).toContain("The Borrower shall report the following:");
+    expect(cov.countsByDisposition.COVERED_BY_CHILD_DESCENT).toBe(0);
+    expect(cov.unaccounted.length).toBe(1);
   });
   it("descent is refused when even ONE child is unaccounted", () => {
     const cov = coverOne(lienText, ["(i) Liens for taxes not yet due", "(ii) statutory Liens of landlords", "(iii) Liens securing Priority Debt"]);
@@ -180,10 +183,15 @@ describe("source coverage - enumerated carve-outs, chapeaux and nesting (mission
     const cov = coverOne(text, ["(a) trade payables", "(b) capital leases"]);
     expect(unaccountedText(cov)).toContain("$10,000,000");
   });
-  it("an inline enumerated list with no colon still has a lead-in owner", () => {
+  it("an inline enumerated list with no colon still has a lead-in owner - and that owner stays accountable (RT-7 remediation)", () => {
+    // The structural parent/child relation is unchanged (the children are owned by the lead-in, so exactly one
+    // gap remains, not three). The lead-in itself - the definiendum "The Applicable Margin ... shall be" - is
+    // content the children do not represent, so it is surfaced instead of discharged.
     const text = "The Applicable Margin for any day shall be (a) 2.50% per annum if leverage is high, (b) 1.50% per annum otherwise.";
     const cov = coverOne(text, ["2.50% per annum if leverage is high", "1.50% per annum otherwise"]);
-    expect(cov.unaccounted).toEqual([]);
+    expect(cov.unaccounted.length).toBe(1);
+    expect(unaccountedText(cov)).toContain("The Applicable Margin for any day shall be");
+    expect(cov.countsByDisposition.COVERED_BY_CHILD_DESCENT).toBe(0);
   });
   it("a nested sub-enumeration is accounted independently of its parent list", () => {
     const text = "The Borrower shall not dispose of assets, except: (a) sales of inventory; (b) sales of equipment, provided that (i) no Default exists and (ii) proceeds are reinvested.";
@@ -453,8 +461,10 @@ describe("canary #4 - child coverage cannot erase independent parent semantics",
     const cov = coverOne(RT4, ["(a) the Existing Debt", "(b) the Revolving Loans."]);
     expect(unaccountedText(cov)).toContain("shall prepay the Loans in full upon a Change of Control");
     expect(unaccountedText(cov)).toContain("shall cure any Default within thirty days after notice");
-    // The introducing fragment - and only it - is discharged.
-    expect(cov.spans.some((s) => s.disposition === "COVERED_BY_CHILD_DESCENT" && s.excerpt.includes("other than"))).toBe(true);
+    // RT-7 remediation: the introducing fragment used to be discharged on the scanner's silence. It carries a
+    // prohibition of its own ("shall not incur any Indebtedness"), so it now stays accountable too.
+    expect(unaccountedText(cov)).toContain("shall not incur any Indebtedness other than");
+    expect(cov.countsByDisposition.COVERED_BY_CHILD_DESCENT).toBe(0);
 
     const sc = { state: "COMPLETE_LOCAL_SOURCE" as const, regions: [region("operative", RT4)], unresolvedReferences: [], reasons: [], totalChars: RT4.length, budgetChars: 10_000 };
     const wire = ["(a) the Existing Debt", "(b) the Revolving Loans."].map((excerpt, i): WireInventoryItem => ({ localRef: `c${i}`, semanticRole: "EXCEPTION", proposition: `child ${i}`, excerpt, regionId: "operative", quantitativeValues: [], referencedTerms: [], referencedSections: [], parentRef: null, relatedRefs: [], materiality: "CRITICAL", ambiguity: "NONE", ambiguityReason: null, operative: "OPERATIVE" }));
@@ -469,11 +479,17 @@ describe("canary #4 - child coverage cannot erase independent parent semantics",
     expect(rec.semanticallyComplete).toBe(false);
   });
 
-  it("LEGITIMATE PURE CHAPEAU: a lead-in that only introduces its children is still discharged by descent", () => {
+  it("CONTENT-BEARING CHAPEAU: a lead-in with content words of its own is a review gap, not a discharge (RT-7 remediation)", () => {
+    // Formerly "LEGITIMATE PURE CHAPEAU ... still discharged". The lead-in reads as a pure introduction to a
+    // human, but "Borrower", "make" and "Investments" are its own content and the layer has no positive
+    // structural evidence that the children represent them - only the scanner's silence, which is exactly
+    // the inference the V1/RT-7 frame exploits. Review cost accepted: a safe false review beats a speculative
+    // discharge.
     const text = "The Borrower may make the following Investments: (a) Investments in Subsidiaries. (b) Investments in Joint Ventures.";
     const cov = coverOne(text, ["(a) Investments in Subsidiaries.", "(b) Investments in Joint Ventures."]);
-    expect(cov.unaccounted).toEqual([]);
-    expect(cov.countsByDisposition.COVERED_BY_CHILD_DESCENT).toBeGreaterThan(0);
+    expect(unaccountedText(cov)).toContain("The Borrower may make the following Investments:");
+    expect(cov.unaccounted.length).toBe(1);
+    expect(cov.countsByDisposition.COVERED_BY_CHILD_DESCENT).toBe(0);
   });
 
   it("MIXED PARENT: a parent obligation and its value stay accountable while the introducing fragment is discharged", () => {
@@ -482,7 +498,10 @@ describe("canary #4 - child coverage cannot erase independent parent semantics",
     const cov = coverOne(text, ["(a) Action A.", "(b) Action B."]);
     expect(unaccountedText(cov)).toContain("shall comply within 30 days");
     expect(cov.unaccountedValues.map((v) => v.kind)).toContain("DAYS");
-    expect(cov.spans.some((s) => s.disposition === "COVERED_BY_CHILD_DESCENT" && s.excerpt.includes("following actions"))).toBe(true);
+    // RT-7 remediation: the introducing conjunct "may take only the following actions:" carries a permission and
+    // a scope restriction ("only") of its own, so it is surfaced rather than discharged.
+    expect(unaccountedText(cov)).toContain("may take only the following actions:");
+    expect(cov.countsByDisposition.COVERED_BY_CHILD_DESCENT).toBe(0);
   });
 });
 
@@ -947,15 +966,21 @@ describe("child-descent ownership - accounted is not owned", () => {
     expect(acc.semanticallyComplete).toBe(false);
   });
 
-  it("B. positive control: a genuine chapeau whose children are inventoried still descends", () => {
-    // the canary #4 pure-chapeau control, verbatim - every child carries a COVERED_BY_INVENTORY span
-    const text = "The Borrower may make the following Investments: (a) Investments in Subsidiaries. (b) Investments in Joint Ventures.";
-    const cov = coverOne(text, ["(a) Investments in Subsidiaries.", "(b) Investments in Joint Ventures."]);
+  it("B. positive control: a bare subordinating connective whose children are all owned still descends; a glue-only child still denies it", () => {
+    // After the RT-7 remediation the only positively provable introducer is a bare clause-introducing
+    // connective (the canary #2 predicate). Every child carries a COVERED_BY_INVENTORY span here.
+    const text = "The Borrower shall not dispose of assets, except (a) sales of inventory. (b) sales of equipment.";
+    const cov = coverOne(text, ["The Borrower shall not dispose of assets,", "(a) sales of inventory.", "(b) sales of equipment."]);
     expect(cov.unaccounted).toEqual([]);
-    expect(cov.countsByDisposition.COVERED_BY_CHILD_DESCENT).toBeGreaterThan(0);
+    expect(cov.spans.some((x) => x.disposition === "COVERED_BY_CHILD_DESCENT" && x.excerpt.trim() === "except")).toBe(true);
     // and a mixed list - one inventoried child, one glue-only child - does NOT descend: every child must own
-    const mixed = "The Borrower may make the following Investments: (a) Investments in Subsidiaries. (b)";
-    expect(coverOne(mixed, ["(a) Investments in Subsidiaries."]).countsByDisposition.COVERED_BY_CHILD_DESCENT).toBe(0);
+    const mixed = "The Borrower shall not dispose of assets, except (a) sales of inventory. (b)";
+    const mcov = coverOne(mixed, ["The Borrower shall not dispose of assets,", "(a) sales of inventory."]);
+    expect(mcov.countsByDisposition.COVERED_BY_CHILD_DESCENT).toBe(0);
+    // (the connective is still accounted, but by the OTHER positive rule - adjacency to the covered complement
+    // that begins where it ends (canary #2 connective ownership) - never by descent through a glue-only child)
+    expect(mcov.spans.some((x) => x.disposition === "COVERED_BY_CONNECTIVE_OWNERSHIP" && x.excerpt.trim() === "except")).toBe(true);
+    expect(mcov.spans.some((x) => x.disposition === "STRUCTURAL_NOISE" && x.excerpt.trim() === "(b)")).toBe(true);
   });
 
   it("C. descent does not chain: an enumerated unit is never a parent, so a nested lead-in cannot borrow its grandchildren's anchors", () => {
@@ -972,6 +997,74 @@ describe("child-descent ownership - accounted is not owned", () => {
     expect(unaccountedText(cov)).toContain("The Borrower shall deliver:");
     expect(cov.spans.some((x) => x.disposition === "STRUCTURAL_NOISE" && x.excerpt.includes("the following"))).toBe(true);
     expect(cov.spans.filter((x) => x.disposition === "COVERED_BY_INVENTORY").length).toBe(2);
+  });
+});
+
+describe("RT-7 architectural remediation - child descent is positive-evidence only", () => {
+  // The red team's V1 frame (scripts/red-team-original/e2e2.ts), verbatim except that the quantitative slot is
+  // occupied by each ORIGINAL p3.ts scanner probe. Before: every scanner-blind form was discharged
+  // COVERED_BY_CHILD_DESCENT and reached unaccounted=0 / INVENTORY_OK / semanticallyComplete=true.
+  const CHILDREN = ["(a) intercompany dividends", "(b) tax distributions."];
+  const frame = (slot: string) => `The Borrower shall not make Restricted Payments in an aggregate amount exceeding ${slot} in any fiscal year other than (a) intercompany dividends (b) tax distributions.`;
+  const periodFrame = (slot: string) => `The Borrower shall not make Restricted Payments in an aggregate amount exceeding the Threshold Amount within ${slot} other than (a) intercompany dividends (b) tax distributions.`;
+  const SCANNER_BLIND_AMOUNTS = ["five million dollars", "fifty percent", "one-half of the Net Proceeds", "\u00a5500,000,000", "2,500,000 (the \"Cap\")", "one half of one percent", "twenty-five basis points"];
+  const SCANNER_BLIND_PERIODS = ["thirty days", "3/31/2030", "31 March 2030"];
+
+  it("A. first executable fixture: 'five million dollars' in the V1 frame is scanner-blind and is no longer discharged; completeness is blocked end to end", async () => {
+    const text = frame("five million dollars");
+    expect(scanQuantitativeValues("five million dollars")).toEqual([]);
+    const cov = coverOne(text, CHILDREN);
+    expect(cov.countsByDisposition.COVERED_BY_CHILD_DESCENT).toBe(0);
+    expect(unaccountedText(cov)).toContain("exceeding five million dollars");
+    // children are semantically owned - the denial is about the parent's own content, not about the children
+    expect(cov.spans.filter((x) => x.disposition === "COVERED_BY_INVENTORY").length).toBe(2);
+
+    const sc = { state: "COMPLETE_LOCAL_SOURCE" as const, regions: [region("operative", text)], unresolvedReferences: [], reasons: [], totalChars: text.length, budgetChars: 10_000 };
+    const wire: WireInventoryItem[] = CHILDREN.map((excerpt, i) => ({ localRef: `r${i}`, semanticRole: "REQUIREMENT", proposition: "p", excerpt, regionId: "operative", quantitativeValues: [], referencedTerms: [], referencedSections: [], parentRef: null, relatedRefs: [], materiality: "CRITICAL", ambiguity: "NONE", ambiguityReason: null, operative: "OPERATIVE" }));
+    const inv = await runSemanticInventory({ candidateRef: "rt7", documentId: "d", sourceContext: sc, caller: scriptedCaller(wire) });
+    expect(inv.inventoryStatus).toBe("INVENTORY_COVERAGE_GAP");
+    const acc = reconcileInventoryWithComposition({
+      inventory: inv,
+      composition: { rules: [{ inventoryItemIds: inv.items.map((i) => i.inventoryItemId), capacityExpression: null, conditions: [], exceptions: [], dependsOn: [], unresolvedDependencies: [] }], definitions: [], sharedCapacities: [] } as never,
+      dispositions: [],
+      sourceContextState: sc.state,
+    });
+    expect(acc.semanticallyComplete).toBe(false);
+  });
+
+  it("B. the whole original RT-7 class: no scanner-blind form in the V1 frame is discharged through child descent", () => {
+    for (const slot of SCANNER_BLIND_AMOUNTS) {
+      expect(scanQuantitativeValues(slot), slot).toEqual([]);
+      const cov = coverOne(frame(slot), CHILDREN);
+      expect(cov.countsByDisposition.COVERED_BY_CHILD_DESCENT, slot).toBe(0);
+      expect(cov.unaccounted.length, slot).toBeGreaterThan(0);
+    }
+    for (const slot of SCANNER_BLIND_PERIODS) {
+      expect(scanQuantitativeValues(slot), slot).toEqual([]);
+      const cov = coverOne(periodFrame(slot), CHILDREN);
+      expect(cov.countsByDisposition.COVERED_BY_CHILD_DESCENT, slot).toBe(0);
+      expect(cov.unaccounted.length, slot).toBeGreaterThan(0);
+    }
+  });
+
+  it("C. the scanner is positive evidence only: a scanner-visible value still surfaces, and its absence grants nothing", () => {
+    const visible = coverOne(frame("$2,000,000"), CHILDREN);
+    expect(visible.unaccountedValues.map((v) => v.rawText)).toContain("$2,000,000");
+    expect(visible.countsByDisposition.COVERED_BY_CHILD_DESCENT).toBe(0);
+    const blind = coverOne(frame("five million dollars"), CHILDREN);
+    expect(blind.unaccountedValues).toEqual([]);
+    expect(blind.countsByDisposition.COVERED_BY_CHILD_DESCENT).toBe(0);
+    expect(unaccountedText(blind)).toContain("five million dollars");
+  });
+
+  it("D. positive-evidence descent: a bare subordinating connective ahead of owned children is discharged; one carrying an object of its own is not", () => {
+    const bare = coverOne("The Borrower shall not dispose of assets, unless (a) no Default exists. (b) proceeds are reinvested.", ["The Borrower shall not dispose of assets,", "(a) no Default exists.", "(b) proceeds are reinvested."]);
+    expect(bare.unaccounted).toEqual([]);
+    expect(bare.spans.some((x) => x.disposition === "COVERED_BY_CHILD_DESCENT" && x.excerpt.trim() === "unless")).toBe(true);
+    // the canary #2 object test: a cross-reference inside the connective is content, never discharged
+    const withObject = coverOne("The Borrower shall not dispose of assets, except as provided in Section 6.02 (a) sales of inventory. (b) sales of equipment.", ["The Borrower shall not dispose of assets,", "(a) sales of inventory.", "(b) sales of equipment."]);
+    expect(withObject.countsByDisposition.COVERED_BY_CHILD_DESCENT).toBe(0);
+    expect(unaccountedText(withObject)).toContain("except as provided in Section 6.02");
   });
 });
 
