@@ -487,6 +487,48 @@ describe("canary #4 - child coverage cannot erase independent parent semantics",
   });
 });
 
+describe("canary #5 - quotation marks do not make source non-semantic", () => {
+  // The red team's S6 fixture, verbatim: an amendment installing a replacement covenant. Before, the quoted
+  // replacement matched DEFINED_TERM_LABEL_RE (any quoted run up to 120 chars alone in a segment) and the whole
+  // new covenant disappeared with INVENTORY_OK / semanticallyComplete=true.
+  const S6 = 'Section 6.02 of the Credit Agreement is amended and restated to read as follows: "The Borrower shall not make any Restricted Payment while any Default is continuing."';
+  const LEAD_IN = "Section 6.02 of the Credit Agreement is amended and restated to read as follows:";
+
+  it("ATTACK: quoted replacement covenant text is accountable, not a defined-term label", async () => {
+    const cov = coverOne(S6, [LEAD_IN]);
+    expect(unaccountedText(cov)).toContain("shall not make any Restricted Payment");
+    expect(cov.spans.some((s) => s.disposition === "DEFINED_TERM_LABEL")).toBe(false);
+
+    const sc = { state: "COMPLETE_LOCAL_SOURCE" as const, regions: [region("operative", S6)], unresolvedReferences: [], reasons: [], totalChars: S6.length, budgetChars: 10_000 };
+    const wire: WireInventoryItem[] = [{ localRef: "lead", semanticRole: "OTHER", proposition: "section 6.02 is amended and restated", excerpt: LEAD_IN, regionId: "operative", quantitativeValues: [], referencedTerms: [], referencedSections: [], parentRef: null, relatedRefs: [], materiality: "CRITICAL", ambiguity: "NONE", ambiguityReason: null, operative: "OPERATIVE" }];
+    const inv = await runSemanticInventory({ candidateRef: "canary5", documentId: "d", sourceContext: sc, caller: scriptedCaller(wire) });
+    expect(inv.inventoryStatus).toBe("INVENTORY_COVERAGE_GAP");
+    const rec = reconcileInventoryWithComposition({
+      inventory: inv,
+      composition: { rules: [{ inventoryItemIds: inv.items.map((i) => i.inventoryItemId), capacityExpression: null, conditions: [], exceptions: [], dependsOn: [], unresolvedDependencies: [] }], definitions: [], sharedCapacities: [] } as never,
+      dispositions: inv.items.map((i) => ({ inventoryItemId: i.inventoryItemId, disposition: "REPRESENTED", note: "matched" })),
+      sourceContextState: sc.state,
+    });
+    expect(rec.semanticallyComplete).toBe(false);
+  });
+
+  it("TRUE LABEL CONTROL: a quoted defined-term name is still non-blocking", () => {
+    const text = 'The following terms are defined below.\n"Consolidated EBITDA"\n"Applicable Margin"\nEach term has the meaning assigned to it.';
+    const cov = coverOne(text, ["The following terms are defined below.", "Each term has the meaning assigned to it."]);
+    expect(cov.unaccounted).toEqual([]);
+    expect(cov.countsByDisposition.DEFINED_TERM_LABEL).toBeGreaterThan(0);
+    for (const name of ['"Consolidated EBITDA"', '"Applicable Margin" means', '"Change of Control".']) {
+      expect(classifyUnaccountedFragment(name, []).disposition, name).toBe("DEFINED_TERM_LABEL");
+    }
+  });
+
+  it("GENERIC QUOTED PROPOSITION: no legal or amendment vocabulary needed to keep quoted text accountable", () => {
+    const text = 'The text is replaced with:\n"The Company must deliver the report."';
+    const cov = coverOne(text, ["The text is replaced with:"]);
+    expect(unaccountedText(cov)).toContain("The Company must deliver the report.");
+  });
+});
+
 describe("source coverage - segmentation, tables and duplicates", () => {
   it("line-broken rows are separate units, not one block (audit finding 7)", () => {
     const text = "Reporting Requirements\nAnnual statements within 90 days after year end\nQuarterly statements within 45 days after quarter end\nNotice of any Default promptly";

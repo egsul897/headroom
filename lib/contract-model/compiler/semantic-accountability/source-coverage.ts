@@ -222,8 +222,49 @@ const ALLCAPS_CAPTION_RE = /^\s*[A-Z][A-Z0-9\s,'&/.-]{2,80}\s*$/;
 /** Page furniture: "Page 12", "12 of 40", "- 12 -", a lone number, a dotted TOC leader line. */
 const PAGE_FURNITURE_RE = /^\s*(?:page\s+\d+(?:\s+of\s+\d+)?|[-–—\s]*\d+[-–—\s]*|\d+\s+of\s+\d+)\s*$/i;
 const TOC_LEADER_RE = /\.{4,}\s*\d+\s*$/;
-/** A defined-term label with no operative body: `"Permitted Liens"` or `"Permitted Liens" means` on its own. */
-const DEFINED_TERM_LABEL_RE = /^\s*[“"][^”"]{1,120}[”"]\s*(?:means|shall\s+mean|has\s+the\s+meaning[^.]*)?\s*[.:;,]?\s*$/i;
+/**
+ * The QUOTE FRAME of a possible defined-term label: `"Permitted Liens"`, or `"Permitted Liens" means`, standing
+ * alone in a segment. The frame alone decides nothing - quotation marks are not evidence about what they
+ * contain. What is inside the quotes is captured and put to isQuotedTermName below (canary #5).
+ */
+const QUOTED_LABEL_FRAME_RE = /^\s*[“"]([^”"]+)[”"]\s*(?:means|shall\s+mean|has\s+the\s+meaning[^.]*)?\s*[.:;,]?\s*$/i;
+
+/**
+ * Is the text inside a pair of quotation marks a defined-term NAME rather than a proposition? (canary #5)
+ *
+ * Previously this asked only whether a quoted run was at most 120 characters and stood alone in its segment,
+ * so an entire replacement covenant installed by an amendment - the operative point of the amendment - was
+ * dismissed as "a quoted defined-term label with no operative body". Quotation marks do not make source
+ * non-semantic; quoted source is accountable exactly like unquoted source.
+ *
+ * The test is now POSITIVE and structural: label-hood must be established, and only two things establish it.
+ *   1. No clause punctuation inside the quotes. A sentence terminator or a comma is sentence structure, and a
+ *      name has none.
+ *   2. Every word inside is either pure grammar (the existing closed class) or an orthographic proper-noun
+ *      form, and at least one is a name. A proposition fails this on its predicate: a lowercase content word
+ *      such as "make", "deliver" or "continuing" is a verb doing work, not part of a name.
+ *
+ * Anything not established as a name keeps the conservative default and is surfaced for review. There is no
+ * length ceiling here, no vocabulary belonging to any subject matter, and no notion of what an amendment is.
+ *
+ * Known and accepted false reviews: a lowercase defined term (`"business day"`) and a term carrying internal
+ * periods (`"U.S. Government Securities"`) are reported rather than dismissed. Per the trust-boundary
+ * architecture, a false review is acceptable and a silently dropped covenant is not.
+ */
+function isQuotedTermName(interior: string): boolean {
+  const text = interior.trim();
+  if (text.length === 0) return false;
+  if (/[.;:!?,]/.test(text)) return false;
+  const words = text.match(new RegExp(WORD_RE.source, "g")) ?? [];
+  if (words.length === 0) return false;
+  let carriesAName = false;
+  for (const word of words) {
+    if (FUNCTION_WORDS.has(word.toLowerCase().replace(/[^a-z]/g, ""))) continue;
+    if (!/^[A-Z]/.test(word)) return false;
+    carriesAName = true;
+  }
+  return carriesAName;
+}
 
 /**
  * Classifies a fragment that no inventory item anchors. Returns
@@ -239,7 +280,8 @@ export function classifyUnaccountedFragment(fragment: string, values: Quantitati
   if (values.length === 0) {
     if (PAGE_FURNITURE_RE.test(trimmed) || TOC_LEADER_RE.test(trimmed)) return { disposition: "NON_SEMANTIC_FORMATTING", reason: "page or table-of-contents furniture" };
     if (CITATION_ONLY_RE.test(trimmed)) return { disposition: "CITATION_ONLY", reason: "a bare cross-reference with no proposition of its own" };
-    if (DEFINED_TERM_LABEL_RE.test(trimmed)) return { disposition: "DEFINED_TERM_LABEL", reason: "a quoted defined-term label with no operative body" };
+    const quoted = QUOTED_LABEL_FRAME_RE.exec(trimmed);
+    if (quoted && isQuotedTermName(quoted[1]!)) return { disposition: "DEFINED_TERM_LABEL", reason: "a quoted defined-term name - nominal only, no proposition inside the quotation" };
     const words = contentWords(trimmed);
     if (words.length === 0) return { disposition: "STRUCTURAL_NOISE", reason: "enumerators, punctuation and closed-class connectives only - the residue of splitting a parent unit" };
     // Headings carry no clause terminator and no verb-bearing body; require BOTH the caption shape and the absence of an internal terminator.
