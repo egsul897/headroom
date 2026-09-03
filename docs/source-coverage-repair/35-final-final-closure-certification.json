@@ -1,0 +1,654 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "35-final-final-closure-certification",
+  "mission": "PHASE 3 FINAL-FINAL CLOSURE CERTIFICATION - deterministic only, production frozen, zero paid calls",
+  "startingSha": "572a496fb118a56603e79f05c9a40ff44ed6b051",
+  "productionCodeChanged": false,
+  "harnessIntegrity": {
+    "original": {
+      "unchangedSincePreservation": true,
+      "evidence": "only commit touching scripts/red-team-original/ is 4466e06; git diff 4466e06..HEAD on that directory is empty",
+      "sha256": {
+        "e2e.ts": "5a37869f5ad0ace337ad2179a66c19678f23a3fa6faf3b507e8e936f89721399",
+        "e2e2.ts": "8f5e45bc57505d3b64208b4b64174acef5b11a38d202da9ade9132607bc75be8",
+        "e2e3.ts": "d3e864f6ee79b376a78698e344c1d8fdfdea39ca57cd63f394857a117eb2a94b",
+        "e2e4.ts": "27c6518c369b16f6567da5e64487bd5a106d896cea4771a2a1fd052c026ab62b",
+        "p1.ts": "a5db22875a7396a05c77ab64b4c69138d55035a34c5d8e2b291d9e1a497d6243",
+        "p2.ts": "89618f64c0942f91c7a1e49592c501385ca373798265310e4fce22ca91f015b4",
+        "p3.ts": "a9f6584b48210381af4b0e23b3177000e3998f1fde35006e75b2c7774de6ecf7",
+        "p4.ts": "a65d48e202b55caaf6f12b9392bcf6f48f08f837215d9b551866e27d395e11dd"
+      }
+    },
+    "derived": {
+      "unchangedSinceRemediationCommits": true,
+      "evidence": "each canary harness #2-#12 has exactly one commit (its creation); descent-ownership harness last touched c95c573 (artifact 32); rt7 harness last touched 572a496 (artifact 34)",
+      "sha256": {
+        "canary2": "8210b4eb1be08662d7d99fe67a1346c24ac335d1931e1ab8fd6c92635b453c22",
+        "canary3": "00d41f83e4f24cee2e9e42a638f35032bf48f7dc162677215c6d9c68dfba607b",
+        "canary4": "7df464fd811560fe26dabe0a94c6d2cd24aef8525df8e2c9ce88d2dad7616afc",
+        "canary5": "eec0eb378d00cc3e2ac0ca26981fff58d6c83247d79598217eabe10119a662e1",
+        "canary6": "29e6eb48e8195b2b62cc3cd17d1c20733c65927897057e994ff3c8b63b3e06e7",
+        "canary7": "6e38a50c618f482e4b9cd47f9fb36dea87e8afd2ccdfa1c0f138882ab8d09149",
+        "canary8": "969eba82455db8698643070e4b5d00a2799f5ffa4e05e95704c695ae9e7b1c4c",
+        "canary9": "88ef6c2fcb74d59524e66d3c3e2b456db1104c05510f6c18bf99f91ebdc951af",
+        "canary10": "d7a3d0273d46bef709446848f3c33306e5f0081a812669205ad1f552ed80759f",
+        "canary11": "44158186165ae02810008b6c3404016e2691f334578e6b133f0620322bf582e6",
+        "canary12": "681e27272d19d3f85a57f985b3fae2597d36d4eef843625d48b3e461c4ca9fbd",
+        "descent-ownership": "1ac6f093d3483d46f877438be70afbb16caf139b58bc2192302f5e61ebbd5f7e",
+        "rt7-descent": "d3e22bfd0a7064e3d2ea8ff3f573a07600f9f782257ec01465f5f19152ea4418"
+      }
+    }
+  },
+  "certificationMatrix": [
+    {
+      "scenario": "S1 all-caps waiver",
+      "risk": "HEADING_OR_LABEL silent complete",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "e2e.ts unmodified on 572a496: surfaced; status=INVENTORY_COVERAGE_GAP, complete=false, rollup=REVIEW_REQUIRED",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "#8,#10"
+    },
+    {
+      "scenario": "S2 numbered clause as heading",
+      "risk": "HEADING_OR_LABEL silent",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "e2e.ts unmodified on 572a496: surfaced; status=INVENTORY_COVERAGE_GAP, complete=false, rollup=REVIEW_REQUIRED",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "#7"
+    },
+    {
+      "scenario": "S3 jointly and severally",
+      "risk": "STRUCTURAL_NOISE silent",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "e2e.ts unmodified on 572a496: surfaced; status=INVENTORY_COVERAGE_GAP, complete=false, rollup=REVIEW_REQUIRED",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "#9"
+    },
+    {
+      "scenario": "S4 directly or indirectly",
+      "risk": "STRUCTURAL_NOISE silent",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "e2e.ts unmodified on 572a496: surfaced; status=INVENTORY_COVERAGE_GAP, complete=false, rollup=REVIEW_REQUIRED",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "#9"
+    },
+    {
+      "scenario": "S5 child descent lead-in",
+      "risk": "COVERED_BY_CHILD_DESCENT over 176-char lead-in silent",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "e2e.ts unmodified on 572a496: surfaced; status=INVENTORY_COVERAGE_GAP, complete=false, rollup=REVIEW_REQUIRED",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "#4, artifact 34"
+    },
+    {
+      "scenario": "S6 quoted amendment text",
+      "risk": "DEFINED_TERM_LABEL silent",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "e2e.ts unmodified on 572a496: surfaced; status=INVENTORY_COVERAGE_GAP, complete=false, rollup=REVIEW_REQUIRED",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "#5"
+    },
+    {
+      "scenario": "S7 non-Latin (CJK) clause",
+      "risk": "PUNCTUATION_OR_DELIMITER silent",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "e2e.ts unmodified on 572a496: surfaced; status=INVENTORY_COVERAGE_GAP, complete=false, rollup=REVIEW_REQUIRED",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "#11"
+    },
+    {
+      "scenario": "S8 bare integer cap",
+      "risk": "NON_SEMANTIC_FORMATTING silent",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "e2e.ts unmodified on 572a496: surfaced; status=INVENTORY_COVERAGE_GAP, complete=false, rollup=REVIEW_REQUIRED",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "#6"
+    },
+    {
+      "scenario": "S9 except as provided",
+      "risk": "STRUCTURAL_NOISE silent",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "e2e.ts unmodified on 572a496: surfaced; status=INVENTORY_COVERAGE_GAP, complete=false, rollup=REVIEW_REQUIRED",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "#2"
+    },
+    {
+      "scenario": "S10 spelled-out cap in caps",
+      "risk": "HEADING_OR_LABEL silent; value invisible",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "e2e.ts unmodified on 572a496: surfaced; status=INVENTORY_COVERAGE_GAP, complete=false, rollup=REVIEW_REQUIRED",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "#8,#10"
+    },
+    {
+      "scenario": "V1 CHF cap in child-descent lead-in",
+      "risk": "COVERED_BY_CHILD_DESCENT + CHF invisible; silent complete",
+      "currentDisposition": "UNACCOUNTED_SOURCE; MONEY/CHF value unaccounted",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "REVERIFIED: e2e2.ts unmodified: status=INVENTORY_COVERAGE_GAP unacc=1 vals=1 complete=false rollup=REVIEW_REQUIRED; p3 scanner 'CHF 2,000,000' -> ['CHF 2,000,000']; descent now also refused on positive-evidence grounds (artifact 34)",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "artifact 30 (ISO currency code) + artifact 34 (positive-evidence descent)"
+    },
+    {
+      "scenario": "V2 USD cap in lead-in (control)",
+      "risk": "none",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "e2e2.ts unmodified: surfaced, unacc=1, complete=false, REVIEW_REQUIRED",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "control"
+    },
+    {
+      "scenario": "V3 spelled-out cure period lead-in",
+      "risk": "COVERED_BY_CHILD_DESCENT silent",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "e2e2.ts unmodified: surfaced, unacc=1, complete=false, REVIEW_REQUIRED",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "#4, artifact 34"
+    },
+    {
+      "scenario": "V4 caption-shaped cap",
+      "risk": "HEADING_OR_LABEL silent",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "e2e2.ts unmodified: surfaced, unacc=1, complete=false, REVIEW_REQUIRED",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "#7"
+    },
+    {
+      "scenario": "V5 nested lead-in",
+      "risk": "none",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "e2e2.ts unmodified: surfaced, unacc=1, complete=false, REVIEW_REQUIRED",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "n/a"
+    },
+    {
+      "scenario": "V6 carve-out lead-in",
+      "risk": "COVERED_BY_CHILD_DESCENT silent",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "e2e2.ts unmodified: surfaced, unacc=1, complete=false, REVIEW_REQUIRED",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "#4, artifact 34"
+    },
+    {
+      "scenario": "E2E3-A one overbroad span (RT-8)",
+      "risk": "vacuous whole-unit span discharged 3 propositions",
+      "currentDisposition": "credit clipped; remainder UNACCOUNTED_SOURCE; RATIO+DAYS unaccounted",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "e2e3.ts: unacc=1 vals=2 complete=false",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "#3"
+    },
+    {
+      "scenario": "E2E3-B gap-echo (RT-9)",
+      "risk": "echo flipped status to INVENTORY_OK",
+      "currentDisposition": "echo accepted but clipped; 1 stretch UNACCOUNTED_SOURCE",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "e2e3.ts: itemsAdded=1, unacc=1 vals=2 complete=false",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "#3 (incidental)"
+    },
+    {
+      "scenario": "E2E4 overbroad span + IR values (RT-8)",
+      "risk": "REPRESENTED with all values, silent",
+      "currentDisposition": "REPRESENTED item, coverage clipped",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "e2e4.ts: unacc=1 vals=2 complete=false, 3 failure reasons",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "#3"
+    },
+    {
+      "scenario": "RT-3 classifier probes (p1) - 23 of 24",
+      "risk": "STRUCTURAL_NOISE for every fragment",
+      "currentDisposition": "UNACCOUNTED_SOURCE x23",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "status": "CLOSED",
+      "evidence": "p1.ts: 24/24 UNACCOUNTED_SOURCE",
+      "remediation": "#2,#9"
+    },
+    {
+      "scenario": "RT-3 probe 'less the sum of clauses (a) and (b),'",
+      "risk": "STRUCTURAL_NOISE at classifier level",
+      "currentDisposition": "UNACCOUNTED_SOURCE (operator reason)",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "status": "CLOSED",
+      "evidence": "REVERIFIED: p1.ts unmodified -> UNACCOUNTED_SOURCE",
+      "remediation": "artifact 31"
+    },
+    {
+      "scenario": "RT-3 OCR/Unicode variants (p4)",
+      "risk": "collapsed into list",
+      "currentDisposition": "UNACCOUNTED_SOURCE x6",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "status": "CLOSED",
+      "evidence": "p4.ts unchanged",
+      "remediation": "#2,#9,#11"
+    },
+    {
+      "scenario": "RT-6 non-Latin probes (p1 CJK + Cyrillic)",
+      "risk": "PUNCTUATION_OR_DELIMITER",
+      "currentDisposition": "UNACCOUNTED_SOURCE",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "status": "CLOSED",
+      "evidence": "p1.ts: both UNACCOUNTED_SOURCE",
+      "remediation": "#11,#12"
+    },
+    {
+      "scenario": "RT-1/RT-2 length boundaries (p3)",
+      "risk": "caps<=82 / numbered<=80 were headings",
+      "currentDisposition": "UNACCOUNTED_SOURCE at every length 40..95, both shapes; waiver paragraph surfaces",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "status": "CLOSED",
+      "evidence": "p3.ts unchanged",
+      "remediation": "#7,#8,#10"
+    },
+    {
+      "scenario": "RT-7 value-scanner blind spots (p3) - descent route",
+      "risk": "scanner silence authorised child descent (V1 frame with any blind form silently completed)",
+      "currentDisposition": "scanner: 11 of 14 original forms still return []; V1 frame with every applicable blind form -> UNACCOUNTED_SOURCE, gap, complete=false, REVIEW_REQUIRED",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "scripts/source-coverage-rt7-descent-reproduce.ts: 0 SILENT / 16 surfaced; descent value guard deleted (artifact 34); p3.ts outputs unchanged",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "artifact 34 - scanner remains incomplete by design",
+      "note": "this row certifies the DESCENT route only; the classifier-level residual found in this certification is carried as its own row below"
+    },
+    {
+      "scenario": "RT-10 bogus ExternalAccountabilityLink (p2-C, p2-D)",
+      "risk": "unverified link discharges a region",
+      "currentDisposition": "ACCOUNTED_BY_EXTERNAL_UNIT when a link is supplied (unchanged)",
+      "semanticallyComplete": "would be true if reached",
+      "rollup": "n/a",
+      "status": "REVIEW_ONLY",
+      "evidence": "LATENT_UNREACHABLE (re-traced on 572a496): the only production caller of runSemanticInventory (compile.ts:187) passes no externalAccountability; no producer of ExternalAccountabilityLink exists in lib/ or app/ outside the coverage module and its pass-through",
+      "remediation": "none"
+    },
+    {
+      "scenario": "RT-12 duplicate region ids (p2-A)",
+      "risk": "span in region A masks region B",
+      "currentDisposition": "COVERED_BY_INVENTORY on both (unchanged)",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "status": "REVIEW_ONLY",
+      "evidence": "LATENT_UNREACHABLE (re-traced): source-context.ts emits exactly 'operative' (line 183) and 'xref-N' with a strictly incrementing index (224/249/251); inventory.ts:128 is the only production caller of computeSourceCoverage and passes those regions",
+      "remediation": "none"
+    },
+    {
+      "scenario": "RT-13 zero regions (p2-B)",
+      "risk": "empty input vacuously complete",
+      "currentDisposition": "unaccounted=0, regionsConsidered=[] (unchanged)",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "status": "REVIEW_ONLY",
+      "evidence": "LATENT_UNREACHABLE (re-traced): regions is initialised as [operativeRegion] (source-context.ts:197) unconditionally. Residual edge: an EMPTY operative text region is representable (orchestrator.ts:418 does not guard) and yields INVENTORY_OK over an empty inventory - but there is no source text to omit, so it cannot produce substantive omission",
+      "remediation": "none"
+    },
+    {
+      "scenario": "RT-15 false positives (p2-F)",
+      "risk": "furniture reported UNACCOUNTED",
+      "currentDisposition": "still UNACCOUNTED; 'ARTICLE VII\\nNEGATIVE COVENANTS' CITATION_ONLY + UNACCOUNTED",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "status": "REVIEW_ONLY",
+      "evidence": "SAFE_REVIEW: p2.ts unchanged",
+      "remediation": "by design"
+    },
+    {
+      "scenario": "RT-11 three enforcement points read one field",
+      "risk": "no defence in depth",
+      "currentDisposition": "still true",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "status": "REVIEW_ONLY",
+      "evidence": "SAFE_REVIEW: architectural; no scenario depends on it",
+      "remediation": "deferred"
+    },
+    {
+      "scenario": "RT-14 accountability:false escape hatch",
+      "risk": "compile COMPLETED without guards",
+      "currentDisposition": "rollup still gates",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "status": "REVIEW_ONLY",
+      "evidence": "SAFE_REVIEW (re-traced): rollup.ts:22 forces REVIEW_REQUIRED when accountability is null; SEMANTICALLY_COMPLETE also requires acc.semanticallyComplete, compile COMPLETED and a VERIFIED_* verify status; no production caller passes accountability:false; compile.ts:176 default is on",
+      "remediation": "deferred"
+    },
+    {
+      "scenario": "RT-16 could-not-break controls",
+      "risk": "none",
+      "currentDisposition": "ordering/duplicate invariance true; run-on tail UNACCOUNTED; long token UNACCOUNTED; INFORMATIONAL accounts for nothing; comma-straddling value one unit",
+      "semanticallyComplete": "n/a",
+      "rollup": "n/a",
+      "status": "CLOSED",
+      "evidence": "p4.ts unchanged",
+      "remediation": "n/a"
+    },
+    {
+      "scenario": "DERIVED: RT-3 in-situ child-descent interaction (artifacts 31/32)",
+      "risk": "operator lead-in re-discharged by noise-only children; silent",
+      "currentDisposition": "parent 'less the sum of clauses' UNACCOUNTED_SOURCE; children '(a) and (b), ' STRUCTURAL_NOISE (accounted, not owned); descent 0",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED",
+      "status": "CLOSED",
+      "evidence": "scripts/source-coverage-descent-ownership-reproduce.ts: unaccounted=1 childDescent=0; source-coverage.test.ts test A pins INVENTORY_COVERAGE_GAP + complete=false end to end",
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "remediation": "artifact 32 (SEMANTIC_OWNERSHIP) + artifact 34"
+    },
+    {
+      "scenario": "DERIVED: RT-7 x numbered-caption rule - bare 'DD Month YYYY' date residue (original p3 probe '31 March 2030')",
+      "risk": "a scanner-blind date residue standing alone is dismissed as a section caption: NUMBERED_CAPTION_FRAME_RE reads '31' as a section number and 'March 2030' as a nominal label; HEADING_OR_LABEL is an ACCOUNTED disposition",
+      "currentDisposition": "classifyUnaccountedFragment('31 March 2030', []) -> HEADING_OR_LABEL 'a section caption - the text after the number is a name, not a proposition'",
+      "semanticallyComplete": "statically true if the date is the only uncovered residue",
+      "rollup": "statically SEMANTICALLY_COMPLETE if every other gate passes",
+      "status": "BLOCKER",
+      "evidence": "CLASSIFIER-LEVEL EVIDENCE + STATIC PROPAGATION, not an executed end-to-end silent completion: (1) p3.ts: '31 March 2030' -> [] (scanner-blind); (2) the caption branch sits inside the `values.length === 0` gate of classifyUnaccountedFragment (source-coverage.ts:410-447), so scanner silence is a NECESSARY condition for the dismissal; (3) HEADING_OR_LABEL is in ACCOUNTED (line 54/70), so a unit whose only uncovered residue is such a date reaches unaccounted=0; (4) uninventoriedValues cannot flag it because the scanner does not see it; (5) inventory.ts then returns INVENTORY_OK and reconciliation.ts:447 can compute semanticallyComplete=true. The sibling probe '3/31/2030' is protected by the canary #6 digit guard because it does not match the caption frame; '31 March 2030' matches it. Found by running the preserved p3 probe strings through the classifier in isolation (\u00a711); the V1-frame variant surfaces only because the frame carries other content. Not repaired here.",
+      "inventoryStatus": "INVENTORY_OK (static)",
+      "remediation": "NONE - newly recorded in this certification",
+      "standard": "same standard artifact 29 applied to the RT-3 probe: an original probe fragment receiving an accounted disposition is the definition of the hole"
+    }
+  ],
+  "counts": {
+    "totalRows": 34,
+    "CLOSED": 27,
+    "REVIEW_ONLY": 6,
+    "BLOCKER": 1,
+    "dangerousExecutedSilentCompletions": 0,
+    "dangerousStaticallyReachableSilentCompletions": 1,
+    "productionReachableLatentBlockers": 1
+  },
+  "formerBlockers": {
+    "V1_CHF": {
+      "required": [
+        "MONEY/CHF",
+        "INVENTORY_COVERAGE_GAP",
+        "semanticallyComplete=false",
+        "REVIEW_REQUIRED"
+      ],
+      "observed": "all four via unmodified e2e2.ts and p3.ts",
+      "status": "CLOSED"
+    },
+    "RT3_direct": {
+      "required": "UNACCOUNTED_SOURCE",
+      "observed": "UNACCOUNTED_SOURCE (p1.ts, 24/24)",
+      "status": "CLOSED"
+    },
+    "RT3_inSitu": {
+      "required": [
+        "parent UNACCOUNTED_SOURCE",
+        "zero descent over parent",
+        "complete=false"
+      ],
+      "observed": "met (harness + pinned test)",
+      "status": "CLOSED"
+    },
+    "noiseOnlyDescent": {
+      "required": "noise-only children cannot provide ownership",
+      "observed": "glue-only child denies descent in harness CONTROL and test B; SEMANTIC_OWNERSHIP unchanged",
+      "status": "CLOSED"
+    },
+    "RT7_descentRoute": {
+      "required": "zero silent completions across preserved V1-frame variants",
+      "observed": "0 SILENT / 16 surfaced",
+      "status": "CLOSED"
+    }
+  },
+  "childDescentInvariant": {
+    "operativeRule": "every child fully accounted AND every child semantically owned AND residue is the final coordination fragment running up to the children AND residue is positively a bare subordinating connective (isPureClauseIntroducer); otherwise UNACCOUNTED_SOURCE",
+    "oldInferenceRemoved": "no `values.length === 0` authorisation remains in the descent loop (source-coverage.ts:766-775); the scanner enters only as positive evidence inside isPureClauseIntroducer (line 510: a value makes the fragment not bare)",
+    "alternateRoutesUsingScannerSilence": [
+      {
+        "location": "classifyUnaccountedFragment, source-coverage.ts:410 `if (values.length === 0) { ... }`",
+        "description": "the non-semantic classification branch (page furniture, citation, quoted label, numbered caption, structural noise) is entered only when the scanner found nothing. Inside it the canary #6/#9/#11/RT-3 guards (digits, non-Latin letters, adjuncts, operators) protect the STRUCTURAL_NOISE sink, and the caption rule is protected by isNominalLabel - but isNominalLabel does not reject a label carrying digits, so the original p3 date '31 March 2030' is accepted as caption '31' + name 'March 2030'. This is the one route found where scanner silence is a necessary condition for an accounted disposition on a substantive original probe. Recorded as the matrix BLOCKER row; not fixed.",
+        "status": "BLOCKER (static)"
+      },
+      {
+        "location": "inventory.ts:189 sourceLooksMaterial",
+        "description": "uses the scanner POSITIVELY to escalate an empty inventory to INVENTORY_EMPTY_SUSPECT; its silence does not by itself promote anything - coverage decides unaccounted first (inventory.ts:335) and an empty inventory is INVENTORY_OK only when coverage accounts for every stretch",
+        "status": "SAFE"
+      }
+    ]
+  },
+  "legitimateDescentReviewCost": {
+    "descentSpansInCorpus": 4,
+    "stillDescending": [
+      "I16 'provided that '",
+      "I18 'provided that '",
+      "I27 'provided that '",
+      "I44 'provided that '"
+    ],
+    "lostDescent": [
+      {
+        "scenario": "I1",
+        "excerpt": "the sum of",
+        "classification": "TRUE_SAFETY_IMPROVEMENT"
+      },
+      {
+        "scenario": "I3",
+        "excerpt": "The Applicable Margin for any day shall be",
+        "classification": "PLAUSIBLE_REVIEW"
+      },
+      {
+        "scenario": "I4",
+        "excerpt": "plus",
+        "classification": "TRUE_SAFETY_IMPROVEMENT"
+      },
+      {
+        "scenario": "I25",
+        "excerpt": "The Borrower will furnish to the Administrative Agent:",
+        "classification": "PLAUSIBLE_REVIEW"
+      }
+    ],
+    "canary4Controls": "pure chapeau and mixed-parent introducer now UNACCOUNTED_SOURCE (PLAUSIBLE_REVIEW); the attack's third conjunct 'shall not incur any Indebtedness other than' now surfaces (TRUE_SAFETY_IMPROVEMENT)"
+  },
+  "canaries2to12": {
+    "status": "all PASS (exit 0)",
+    "unaccountedAndDescentCounts": {
+      "2": "3/0",
+      "3": "2/0",
+      "4": "3/0",
+      "5": "4/0",
+      "6": "9/0",
+      "7": "6/0",
+      "8": "11/0",
+      "9": "5/0",
+      "10": "8/0",
+      "11": "4/0",
+      "12": "3/0"
+    },
+    "note": "canary #4 carries the conservative change from artifact 34: 2 -> 3 UNACCOUNTED, 3 -> 0 descent"
+  },
+  "reviewOnlyLatent": {
+    "RT10": "LATENT_UNREACHABLE",
+    "RT12": "LATENT_UNREACHABLE",
+    "RT13": "LATENT_UNREACHABLE",
+    "RT14": "SAFE_REVIEW"
+  },
+  "knownReviewGaps": [
+    {
+      "scenario": "I1",
+      "excerpts": [
+        "plus,",
+        "the sum of"
+      ],
+      "classification": "TRUE_SAFETY_IMPROVEMENT (operators unanchored at Pass A)",
+      "passABlocksTrustedCompleteness": true,
+      "representedDownstream": "Pass B composes the formula; Pass B/C report 0 material MISSING, 0 dangling - only semanticallyComplete fails, and only because of the Pass A gap",
+      "groundTruthCleanupNeeded": true
+    },
+    {
+      "scenario": "I3",
+      "excerpts": [
+        "The Applicable Margin for any day shall be"
+      ],
+      "classification": "PLAUSIBLE_REVIEW",
+      "passABlocksTrustedCompleteness": true,
+      "representedDownstream": "Pass B/C 0 material MISSING, 0 dangling",
+      "groundTruthCleanupNeeded": true
+    },
+    {
+      "scenario": "I4",
+      "excerpts": [
+        "plus"
+      ],
+      "classification": "TRUE_SAFETY_IMPROVEMENT",
+      "passABlocksTrustedCompleteness": true,
+      "representedDownstream": "Pass B/C 0 material MISSING, 0 dangling",
+      "groundTruthCleanupNeeded": true
+    },
+    {
+      "scenario": "I23",
+      "excerpts": [
+        "Solely"
+      ],
+      "classification": "PLAUSIBLE_REVIEW",
+      "passABlocksTrustedCompleteness": true,
+      "representedDownstream": "Pass B/C 0 material MISSING",
+      "groundTruthCleanupNeeded": true
+    },
+    {
+      "scenario": "I25",
+      "excerpts": [
+        "The Borrower will furnish to the Administrative Agent:"
+      ],
+      "classification": "PLAUSIBLE_REVIEW",
+      "passABlocksTrustedCompleteness": true,
+      "representedDownstream": "Pass B/C 0 material MISSING, 0 dangling",
+      "groundTruthCleanupNeeded": true
+    },
+    {
+      "scenario": "I26",
+      "excerpts": [
+        "The Borrower will furnish written notice to the Administrative Agent"
+      ],
+      "classification": "TRUE_SAFETY_IMPROVEMENT",
+      "passABlocksTrustedCompleteness": true,
+      "representedDownstream": "Pass B/C 0 material MISSING",
+      "groundTruthCleanupNeeded": true
+    },
+    {
+      "scenario": "I27",
+      "excerpts": [
+        "Notwithstanding"
+      ],
+      "classification": "OBVIOUS_FALSE_GAP",
+      "passABlocksTrustedCompleteness": true,
+      "representedDownstream": "Pass B/C 0 material MISSING",
+      "groundTruthCleanupNeeded": true
+    }
+  ],
+  "otherCorpusGaps": "none - the corpus certification script reports exactly these seven scenarios with unaccounted>0; no scenario has uninventoried values",
+  "remainingScannerBlindFormats": [
+    "five million dollars",
+    "fifty percent",
+    "one hundred and eighty days",
+    "one-half of the Net Proceeds",
+    "\u00a5500,000,000",
+    "2,500,000 (the \"Cap\")",
+    "3/31/2030",
+    "31 March 2030",
+    "one half of one percent",
+    "twenty-five basis points",
+    "thirty days"
+  ],
+  "canAScannerMissByItselfAuthoriseDescentOrCompleteness": {
+    "descent": "NO - 0 silent completions across all 16 V1-frame variants; the descent loop no longer consults scanner silence",
+    "completenessViaClassifier": "YES, for one original form - '31 March 2030' standing alone classifies HEADING_OR_LABEL (accounted); every other blind form classifies UNACCOUNTED_SOURCE in isolation. See the BLOCKER row.",
+    "classifierInIsolation": {
+      "five million dollars": "UNACCOUNTED_SOURCE",
+      "fifty percent": "UNACCOUNTED_SOURCE",
+      "one hundred and eighty days": "UNACCOUNTED_SOURCE",
+      "one-half of the Net Proceeds": "UNACCOUNTED_SOURCE",
+      "\u00a5500,000,000": "UNACCOUNTED_SOURCE",
+      "2,500,000 (the \"Cap\")": "UNACCOUNTED_SOURCE",
+      "3/31/2030": "UNACCOUNTED_SOURCE (digit guard)",
+      "31 March 2030": "HEADING_OR_LABEL",
+      "one half of one percent": "UNACCOUNTED_SOURCE",
+      "twenty-five basis points": "UNACCOUNTED_SOURCE",
+      "thirty days": "UNACCOUNTED_SOURCE"
+    }
+  },
+  "suites": {
+    "sourceCoverage": "129/129",
+    "adversarial": "3/3 (not expanded)",
+    "corpus": "18 failed | 278 passed (296) excluding the 5-test independence file; failing set = I1, I3, I4, I23, I25, I26, I27 x (Pass A + Pass B/C) + 4 I1-derived stability assertions; corpus-wide residue assertion lists I1: ['plus,','the sum of']",
+    "preservedHarnesses": "e2e 10/10 surfaced; e2e2 6/6 surfaced; e2e3 A/B surfaced; e2e4 surfaced; p1 24/24; p2/p3/p4 as recorded"
+  },
+  "qualityGates": {
+    "typescript": "6 pre-existing errors in tests/foundation-audit/*; 0 in semantic-accountability",
+    "lint": "1 pre-existing error in tests/foundation-audit"
+  },
+  "groundTruthChanged": false,
+  "spend": {
+    "paidModelCalls": 0,
+    "vercelDeploys": 0,
+    "providerBalanceReadOnly": "GET /v1/credits total_used $150.494171 - unchanged since artifact 31"
+  },
+  "finalVerdict": "SOURCE_COVERAGE_TRUST_BOUNDARY_NOT_CLOSED",
+  "minimumBlockers": [
+    {
+      "id": "numbered-caption rule x scanner-blind date",
+      "statement": "classifyUnaccountedFragment dismisses the original p3 probe '31 March 2030', standing alone as an uncovered residue, as HEADING_OR_LABEL (an accounted disposition) because NUMBERED_CAPTION_FRAME_RE reads '31' as a section number and isNominalLabel accepts 'March 2030' as a name. The branch is reachable only when the scanner finds nothing, so scanner silence is a necessary condition. Statically this yields unaccounted=0 with no uninventoried value, INVENTORY_OK, and semanticallyComplete=true when everything else is represented. Classifier-level and static-propagation evidence only; no end-to-end fixture was constructed in this mission."
+    }
+  ],
+  "verdictBasis": "Every executed original scenario and every executed derived scenario surfaces (0 executed silent completions); all five former blockers are closed; RT-10/12/13/14 remain unreachable or gated. Verdict A additionally requires that no scanner miss can by itself authorise trusted completeness and that no already-discovered derived defect remains. Running the preserved p3 probe strings through the classifier in isolation found one original form that receives an accounted disposition. By the standard artifact 29 applied to the RT-3 probe, that is a blocker until shown otherwise.",
+  "phase3OverallGate": "PHASE_3_NOT_READY_FOR_REAL_WORLD_VALIDATION",
+  "gateBasis": "one bounded classifier-level route remains at the trust boundary; the source-coverage verdict is NOT_CLOSED, so the gate cannot be READY. This is a gate recommendation only."
+}
