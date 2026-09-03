@@ -579,6 +579,55 @@ describe("canary #6 - numeric shape alone does not prove page furniture", () => 
   });
 });
 
+describe("canary #7 - numbering does not make text a caption", () => {
+  // The red team's finding-2 fixture, verbatim: three numbered covenants, the middle one uninventoried.
+  // Before, NUMBERED_CAPTION_RE's body was an arbitrary run of words under an ~80-character ceiling, so the
+  // whole negative covenant was HEADING_OR_LABEL and vanished with unaccounted 0 / semanticallyComplete true.
+  const F2 = "6.01 The Borrower shall deliver annual financial statements to the Agent.\n6.02 The Borrower shall not create any Lien on the Collateral\n6.03 The Borrower shall maintain insurance with reputable insurers at all times.";
+  const ANCHORED = ["6.01 The Borrower shall deliver annual financial statements to the Agent.", "6.03 The Borrower shall maintain insurance with reputable insurers at all times."];
+
+  it("ATTACK: a numbered line carrying a proposition is accountable, not a caption", async () => {
+    const cov = coverOne(F2, ANCHORED);
+    expect(unaccountedText(cov)).toContain("6.02 The Borrower shall not create any Lien on the Collateral");
+    expect(cov.countsByDisposition.HEADING_OR_LABEL).toBe(0);
+
+    const sc = { state: "COMPLETE_LOCAL_SOURCE" as const, regions: [region("operative", F2)], unresolvedReferences: [], reasons: [], totalChars: F2.length, budgetChars: 10_000 };
+    const wire: WireInventoryItem[] = ANCHORED.map((excerpt, i) => ({ localRef: `i${i}`, semanticRole: "OTHER", proposition: `covenant ${i}`, excerpt, regionId: "operative", quantitativeValues: [], referencedTerms: [], referencedSections: [], parentRef: null, relatedRefs: [], materiality: "CRITICAL", ambiguity: "NONE", ambiguityReason: null, operative: "OPERATIVE" }));
+    const inv = await runSemanticInventory({ candidateRef: "canary7", documentId: "d", sourceContext: sc, caller: scriptedCaller(wire) });
+    expect(inv.inventoryStatus).toBe("INVENTORY_COVERAGE_GAP");
+    const rec = reconcileInventoryWithComposition({
+      inventory: inv,
+      composition: { rules: [{ inventoryItemIds: inv.items.map((i) => i.inventoryItemId), capacityExpression: null, conditions: [], exceptions: [], dependsOn: [], unresolvedDependencies: [] }], definitions: [], sharedCapacities: [] } as never,
+      dispositions: inv.items.map((i) => ({ inventoryItemId: i.inventoryItemId, disposition: "REPRESENTED", note: "matched" })),
+      sourceContextState: sc.state,
+    });
+    expect(rec.semanticallyComplete).toBe(false);
+  });
+
+  it("ATTACK V4: a numbered line carrying a material amount surfaces, and the amount is why it matters", () => {
+    // The extractor does NOT recognise a bare grouped integer - MONEY needs a currency symbol and there is no
+    // bare-number kind - so nothing in the value route could have saved this line. The source route is it.
+    const V4 = "5.02 The maximum aggregate basket amount is 2,500,000";
+    expect(scanQuantitativeValues(V4)).toEqual([]);
+    expect(classifyUnaccountedFragment(V4, []).disposition).toBe("UNACCOUNTED_SOURCE");
+    expect(unaccountedText(coverOne(V4, []))).toContain("2,500,000");
+  });
+
+  it("TRUE NUMBERED-CAPTION CONTROL: a numbered line whose remainder is a name is still suppressed", () => {
+    for (const f of ["SECTION 7.04 Dispositions.", "6.02 Liens.", "7.05 Restricted Payments", "6.02 Limitation on Indebtedness."]) {
+      const { disposition } = classifyUnaccountedFragment(f, []);
+      expect(disposition, `${f} -> ${disposition}`).toBe("HEADING_OR_LABEL");
+    }
+    // A bare numbered cross-reference keeps its own disposition, unchanged by this canary.
+    expect(classifyUnaccountedFragment("Section 7.11.", []).disposition).toBe("CITATION_ONLY");
+  });
+
+  it("GENERIC NUMBERED PROPOSITION: no legal vocabulary needed to tell a proposition from a name", () => {
+    expect(classifyUnaccountedFragment("5.02 The Company must deliver the report.", []).disposition).toBe("UNACCOUNTED_SOURCE");
+    expect(unaccountedText(coverOne("5.02 The Company must deliver the report.", []))).toContain("must deliver the report");
+  });
+});
+
 describe("source coverage - segmentation, tables and duplicates", () => {
   it("line-broken rows are separate units, not one block (audit finding 7)", () => {
     const text = "Reporting Requirements\nAnnual statements within 90 days after year end\nQuarterly statements within 45 days after quarter end\nNotice of any Default promptly";

@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "23-canary-7-numbered-covenant-text",
+  "mission": "SINGLE CANARY #7 - numbered covenant text must not be dismissed as a caption",
+  "startingSha": "6d0434d581b8c6effe94469484ce62ea10eaa2f1",
+  "failureFixed": "A numbered source line carrying substantive covenant language was classified HEADING_OR_LABEL and disappeared from source accountability while semantic completeness remained true.",
+  "provenance": "independent red-team audit, finding 2, plus its V4 variant (docs/source-coverage-repair/13-independent-red-team-audit.json)",
+  "fixture": {
+    "fullSource": "6.01 The Borrower shall deliver annual financial statements to the Agent.\n6.02 The Borrower shall not create any Lien on the Collateral\n6.03 The Borrower shall maintain insurance with reputable insurers at all times.",
+    "numberedFragment": "6.02 The Borrower shall not create any Lien on the Collateral",
+    "structuralUnits": ["6.01 ... to the Agent.", "6.02 ... on the Collateral", "6.03 ... at all times."],
+    "inventorySpans": "two CRITICAL items anchoring 6.01 and 6.03. 6.02 is anchored by nothing.",
+    "extractedQuantitativeValues": "none in the base fixture",
+    "v4Variant": {
+      "source": "5.02 The maximum aggregate basket amount is 2,500,000",
+      "extractorAnswer": "scanQuantitativeValues(\"2,500,000\") -> [] and scanQuantitativeValues(<the whole line>) -> []. MONEY requires a currency symbol and there is no bare-number kind, so the amount is invisible to the value route. §6 answered explicitly: NOT recognised.",
+      "consequence": "The source route was the only thing that could surface this line, and the caption rule closed it. Canary #6's unexplained-digit guard runs AFTER the caption rules, so it did not incidentally cover this - the caption branch won first."
+    },
+    "reproduced": true
+  },
+  "before": {
+    "dispositionOfNumberedFragment": "HEADING_OR_LABEL (\"a section caption or heading line\")",
+    "coverageSpans": "[COVERED_BY_INVENTORY] 6.01 | [PUNCTUATION_OR_DELIMITER] \"\\n\" | [HEADING_OR_LABEL] \"6.02 The Borrower shall not create any Lien on the Collateral\\n\" | [COVERED_BY_INVENTORY] 6.03",
+    "unaccountedSource": 0,
+    "unaccountedValues": 0,
+    "inventoryStatus": "INVENTORY_OK",
+    "reconciliation": "no failure reason",
+    "semanticallyComplete": true,
+    "v4Before": "[HEADING_OR_LABEL] \"5.02 The maximum aggregate basket amount is 2,500,000\", unaccounted 0, unaccountedValues 0",
+    "note": "An entire negative covenant, and separately a material basket amount, disappeared with no signal at any of the three enforcement points."
+  },
+  "earliestResponsibleBranch": {
+    "function": "classifyUnaccountedFragment",
+    "file": "lib/contract-model/compiler/semantic-accountability/source-coverage.ts",
+    "branch": "the NUMBERED_CAPTION_RE arm of the caption test (noInternalTerminator && (ALLCAPS || NUMBERED))",
+    "trace": "segmentSourceUnits splits at line breaks, so 6.02 is its own unit -> the extractor finds no values in it -> no inventory span covers it -> classifyUnaccountedFragment runs -> pagination, citation and quoted-label rules decline -> contentWords is non-empty so STRUCTURAL_NOISE declines -> the caption test fires and returns HEADING_OR_LABEL. It is the first branch to grant an accounted disposition."
+  },
+  "rootCause": "NUMBERED_CAPTION_RE was /^\\s*(?:section|article|annex|exhibit|schedule|appendix)?\\s*\\d+(?:\\.\\d+)*\\s*[.:)]?\\s*[A-Za-z][\\w\\s,'&/-]{0,80}?\\s*[.:]?\\s*$/i. Its body was an ARBITRARY RUN OF WORDS UNDER A LENGTH CEILING. Caption-hood was inferred from three things that prove nothing: a leading section number, the absence of an internal clause terminator, and being short enough. What actually follows the number was never examined. The red team measured the boundary at ~80 characters of body - a length ceiling deciding eligibility for scrutiny.",
+  "genericRuleImplemented": {
+    "invariant": "NUMBERING DOES NOT MAKE TEXT A CAPTION. A numbered line is a caption only when what FOLLOWS the number is itself a label; otherwise it is accountable source.",
+    "mechanism": "NUMBERED_CAPTION_RE became NUMBERED_CAPTION_FRAME_RE, which matches only the numbering frame and captures the remainder. The remainder is put to isNominalLabel - the same positive structural test canary #5 introduced for the text inside quotation marks, reused unchanged rather than duplicated. Both frames pose the same question and neither frame answers it: quotes do not make text a name, and neither does a section number.",
+    "isNominalLabel": [
+      "1. No clause punctuation inside (. ; : ! ? ,) - sentence structure, which a name has none of.",
+      "2. Every word is either pure grammar (the existing FUNCTION_WORDS closed class) or an orthographic proper-noun form, and at least one is a name."
+    ],
+    "whyThisIsNotAVerbList": "Nothing enumerates shall / may / must / incur / pay / make / maintain / permit / restrict, and no covenant-family pattern exists. A proposition is rejected because it carries a LOWERCASE CONTENT WORD acting as its predicate - 'shall', 'create', 'must', 'deliver', 'maximum' all fail the same orthographic test, and so would any verb in any subject matter. That is why '6.02 Liens.' separates from '6.02 The Company must deliver the report.' without the detector knowing anything about liens or reports.",
+    "lengthCeilingRemoved": "the {0,80} body bound is gone; length never decides eligibility for scrutiny",
+    "notDecidedBy": ["a leading section number", "Title Case by itself", "shortness", "a trailing period"],
+    "scopeNote": "The ALL-CAPS arm of the same caption test is untouched and remains a known-broken shape heuristic - out of scope by instruction, and now labelled as such in the code.",
+    "acceptedFalseReviews": "A caption whose remainder carries a lowercase word ('6.02 Liens and encumbrances.') is now reported rather than dismissed. Per the trust-boundary architecture a false review is acceptable and a silently dropped covenant is not."
+  },
+  "valuesAreHardSafetySignals": {
+    "unchanged": "The whole suppression block is still gated on values.length === 0, so a fragment carrying a recognised quantitative value can never receive HEADING_OR_LABEL. That guard was already correct and was not touched.",
+    "v4Answer": "The extractor does NOT recognise 2,500,000 - confirmed by direct call and asserted in a permanent test. The source route now carries it: the line surfaces as UNACCOUNTED_SOURCE with the amount inside the reported excerpt.",
+    "extractorNotBroadened": "no pattern was added to quantitative.ts"
+  },
+  "productionFilesChanged": [
+    "lib/contract-model/compiler/semantic-accountability/source-coverage.ts - NUMBERED_CAPTION_RE replaced by NUMBERED_CAPTION_FRAME_RE + a positive isNominalLabel test on the captured remainder; isQuotedTermName renamed isNominalLabel to reflect that it now serves both frames (no change to its logic)"
+  ],
+  "attackAfter": {
+    "coverageSpans": "[COVERED_BY_INVENTORY] 6.01 | [PUNCTUATION_OR_DELIMITER] \"\\n\" | [UNACCOUNTED_SOURCE] \"6.02 The Borrower shall not create any Lien on the Collateral\" | [COVERED_BY_INVENTORY] 6.03",
+    "unaccountedSource": 1,
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+    "semanticallyComplete": false,
+    "headingOrLabelSpansRemaining": 0,
+    "v4After": "[UNACCOUNTED_SOURCE] \"5.02 The maximum aggregate basket amount is 2,500,000\", unaccounted 1 - the amount is inside the reported excerpt"
+  },
+  "controls": {
+    "trueNumberedCaption": {
+      "fixtures": ["SECTION 7.04 Dispositions.", "6.02 Liens.", "7.05 Restricted Payments", "6.02 Limitation on Indebtedness."],
+      "result": "all still HEADING_OR_LABEL and non-blocking, before and after",
+      "alsoUnchanged": "\"Section 7.11.\" still CITATION_ONLY - it never reached the caption rule"
+    },
+    "genericNumberedProposition": {
+      "fixture": "5.02 The Company must deliver the report.",
+      "before": "HEADING_OR_LABEL",
+      "after": "UNACCOUNTED_SOURCE",
+      "verdict": "no covenant family, no legal vocabulary anywhere in the fixture"
+    }
+  },
+  "priorCanariesStillHold": {
+    "canary2_S9": "\"except as provided in Section 6.02,\" still UNACCOUNTED_SOURCE; INVENTORY_COVERAGE_GAP; semanticallyComplete false",
+    "canary2b_I5": "connective ownership correct; I5 green in the corpus",
+    "canary3_RT8": "blanket span still clipped; RATIO and DAYS still unaccounted",
+    "canary4_RT4": "prepayment and cure obligations still surface; only the introducing fragment descends; both controls unchanged",
+    "canary5_S6": "quoted replacement still UNACCOUNTED_SOURCE; quoted term names still DEFINED_TERM_LABEL; generic quoted proposition still surfaced",
+    "canary6_S8": "both bare basket amounts still UNACCOUNTED_SOURCE; generic \"75\" still surfaced; pagination controls unchanged"
+  },
+  "tests": {
+    "added": 4,
+    "names": [
+      "canary #7 ATTACK: a numbered line carrying a proposition is accountable, not a caption",
+      "canary #7 ATTACK V4: a numbered line carrying a material amount surfaces, and the amount is why it matters",
+      "canary #7 TRUE NUMBERED-CAPTION CONTROL: a numbered line whose remainder is a name is still suppressed",
+      "canary #7 GENERIC NUMBERED PROPOSITION: no legal vocabulary needed to tell a proposition from a name"
+    ],
+    "sourceCoverageSuite": "103/103 passing (99 before, +4 new)",
+    "adversarialSuite": "2400 generated cases, 0 dangerous false negatives, unchanged - no new fuzzing added",
+    "existingTestsAltered": []
+  },
+  "corpusImpact": {
+    "before": "5 failed | 261 passed (266)",
+    "after": "5 failed | 265 passed (270)",
+    "delta": "+4 tests (the four new canary #7 tests, all green); ZERO new failures",
+    "newlySurfacedCorpusGaps": 0,
+    "remainingFailures": [
+      { "scenarioId": "I26", "status": "out of scope by mission instruction; unchanged since canary #4; classified TRUE_SAFETY_IMPROVEMENT in artifact 20" },
+      { "scenarioId": "I27", "status": "out of scope by mission instruction; unchanged since canary #2B; classified OBVIOUS_FALSE_GAP in artifact 18" }
+    ],
+    "realRegressions": 0,
+    "groundTruthChanged": false
+  },
+  "qualityGates": {
+    "typescript": "npx tsc --noEmit - 6 errors, all pre-existing in tests/foundation-audit/*; identical count to the starting SHA; zero in semantic-accountability or source-coverage",
+    "lint": "npx next lint --dir lib --dir tests --dir scripts - 1 error, pre-existing (@typescript-eslint/no-var-requires rule definition missing in tests/foundation-audit/amendment-operative-state-adversarial.test.ts); none in changed files"
+  },
+  "spend": { "paidModelCalls": 0, "vercelDeploys": 0, "providerProbe": "HTTP 402 quota_for_entity_exceeded, current spend $150.49 / limit $150.00 - unchanged from before this mission" },
+  "reproductionHarness": "scripts/source-coverage-canary7-reproduce.ts (committed; run with npx tsx)",
+  "canary7Solved": true,
+  "scopeDiscipline": "One failure fixed. The ALL-CAPS heading arm, 'jointly and severally', 'directly or indirectly', CJK, Cyrillic, spelled-out-number extraction, I26 and I27 all left untouched as instructed. The quantitative extractor was not broadened. No collateral gap repaired, no ground truth edited, no new fuzzing, no broad red-team, no paid validation."
+}

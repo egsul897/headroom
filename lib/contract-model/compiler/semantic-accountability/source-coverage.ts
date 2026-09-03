@@ -216,8 +216,17 @@ function contentWords(fragment: string): string[] {
 
 /** "Section 6.02", "clause (iv)", "Schedule 1.01(a)" and nothing else. */
 const CITATION_ONLY_RE = /^[\s(]*(?:see\s+)?(?:section|clause|paragraph|subsection|article|annex|exhibit|schedule|appendix)s?\s*[\dA-Za-z.()–—-]*\s*[.,;:)]*\s*$/i;
-/** A heading or caption: no clause terminator inside, and either a numbered caption ("Section 7.11.", "6.02 Liens.") or an ALL-CAPS/Title-Case caption line. */
-const NUMBERED_CAPTION_RE = /^\s*(?:section|article|annex|exhibit|schedule|appendix)?\s*\d+(?:\.\d+)*\s*[.:)]?\s*[A-Za-z][\w\s,'&/-]{0,80}?\s*[.:]?\s*$/i;
+/**
+ * The FRAME of a possible numbered caption ("6.02 Liens.", "SECTION 7.04 Dispositions."), capturing whatever
+ * follows the number. The frame alone decides nothing - numbering is not evidence that what follows is a
+ * label (canary #7). The remainder is put to isNominalLabel below.
+ *
+ * The body used to be `[A-Za-z][\w\s,'&/-]{0,80}?`: an arbitrary run of words under a length ceiling. An
+ * independent red team walked a whole negative covenant through it - "6.02 The Borrower shall not create any
+ * Lien on the Collateral" was a heading, and the line vanished with unaccounted 0, INVENTORY_OK and
+ * semanticallyComplete true. The ceiling is gone; length never decides eligibility for scrutiny.
+ */
+const NUMBERED_CAPTION_FRAME_RE = /^\s*(?:section|article|annex|exhibit|schedule|appendix)?\s*\d+(?:\.\d+)*\s*[.:)]?\s*([A-Za-z][^\n]*?)\s*[.:]?\s*$/i;
 const ALLCAPS_CAPTION_RE = /^\s*[A-Z][A-Z0-9\s,'&/.-]{2,80}\s*$/;
 /**
  * Page furniture: "Page 12", "Page 12 of 40", "12 of 40", "- 12 -". Pagination must be established by
@@ -236,12 +245,16 @@ const TOC_LEADER_RE = /\.{4,}\s*\d+\s*$/;
 /**
  * The QUOTE FRAME of a possible defined-term label: `"Permitted Liens"`, or `"Permitted Liens" means`, standing
  * alone in a segment. The frame alone decides nothing - quotation marks are not evidence about what they
- * contain. What is inside the quotes is captured and put to isQuotedTermName below (canary #5).
+ * contain. What is inside the quotes is captured and put to isNominalLabel below (canary #5).
  */
 const QUOTED_LABEL_FRAME_RE = /^\s*[“"]([^”"]+)[”"]\s*(?:means|shall\s+mean|has\s+the\s+meaning[^.]*)?\s*[.:;,]?\s*$/i;
 
 /**
- * Is the text inside a pair of quotation marks a defined-term NAME rather than a proposition? (canary #5)
+ * Is this text a LABEL - a name - rather than a proposition?
+ *
+ * Introduced for the text inside a pair of quotation marks (canary #5) and reused unchanged for the remainder
+ * of a numbered caption (canary #7). Both frames pose the same question, and neither frame answers it: quotes
+ * do not make text a name, and neither does a section number.
  *
  * Previously this asked only whether a quoted run was at most 120 characters and stood alone in its segment,
  * so an entire replacement covenant installed by an amendment - the operative point of the amendment - was
@@ -262,8 +275,8 @@ const QUOTED_LABEL_FRAME_RE = /^\s*[“"]([^”"]+)[”"]\s*(?:means|shall\s+mea
  * periods (`"U.S. Government Securities"`) are reported rather than dismissed. Per the trust-boundary
  * architecture, a false review is acceptable and a silently dropped covenant is not.
  */
-function isQuotedTermName(interior: string): boolean {
-  const text = interior.trim();
+function isNominalLabel(candidate: string): boolean {
+  const text = candidate.trim();
   if (text.length === 0) return false;
   if (/[.;:!?,]/.test(text)) return false;
   const words = text.match(new RegExp(WORD_RE.source, "g")) ?? [];
@@ -292,7 +305,7 @@ export function classifyUnaccountedFragment(fragment: string, values: Quantitati
     if (PAGE_FURNITURE_RE.test(trimmed) || TOC_LEADER_RE.test(trimmed)) return { disposition: "NON_SEMANTIC_FORMATTING", reason: "page or table-of-contents furniture" };
     if (CITATION_ONLY_RE.test(trimmed)) return { disposition: "CITATION_ONLY", reason: "a bare cross-reference with no proposition of its own" };
     const quoted = QUOTED_LABEL_FRAME_RE.exec(trimmed);
-    if (quoted && isQuotedTermName(quoted[1]!)) return { disposition: "DEFINED_TERM_LABEL", reason: "a quoted defined-term name - nominal only, no proposition inside the quotation" };
+    if (quoted && isNominalLabel(quoted[1]!)) return { disposition: "DEFINED_TERM_LABEL", reason: "a quoted defined-term name - nominal only, no proposition inside the quotation" };
     // A digit that survives enumerator stripping is contractual content the letter-blind rules below cannot
     // see (canary #6). contentWords matches [A-Za-z] only, so "25000000", "4.00" and "2028" all score zero
     // content words and would otherwise be dismissed as the residue of splitting a parent unit. Enumerator
@@ -307,7 +320,10 @@ export function classifyUnaccountedFragment(fragment: string, values: Quantitati
     // A caption has no SENTENCE terminator inside it. A decimal point inside a section number ("7.04") is not one,
     // so the terminator must be followed by whitespace to count.
     const noInternalTerminator = !/[.;:!?]\s+\S/.test(trimmed);
-    if (noInternalTerminator && (ALLCAPS_CAPTION_RE.test(trimmed) || NUMBERED_CAPTION_RE.test(trimmed))) return { disposition: "HEADING_OR_LABEL", reason: "a section caption or heading line" };
+    // A numbered line is a caption only when what FOLLOWS the number is itself a label (canary #7). The
+    // ALL-CAPS path is untouched by this canary and remains a known-broken shape heuristic.
+    const numbered = NUMBERED_CAPTION_FRAME_RE.exec(trimmed);
+    if (noInternalTerminator && (ALLCAPS_CAPTION_RE.test(trimmed) || (numbered !== null && isNominalLabel(numbered[1]!)))) return { disposition: "HEADING_OR_LABEL", reason: "a section caption or heading line - the text after the number is a name, not a proposition" };
     // Last, once every positive structural rule above has had its chance: an unexplained number is accountable.
     if (carriesUnexplainedDigits) {
       return {
