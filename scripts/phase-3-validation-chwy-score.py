@@ -97,15 +97,17 @@ W("12-pass-a-stability", {"artifact": "12-pass-a-stability", "method": "Run 1 = 
 cov_units = []
 try:
     for d in cov.get("packageCoverage", {}).get("documents", []):
-        for e in d.get("units", []): cov_units.append(e)
-except Exception: pass
+        states = {e["semanticUnitId"]: e for e in d.get("coverageEntries", [])}
+        for un in d.get("units", []):
+            e = states.get(un["semanticUnitId"], {})
+            cov_units.append({"anchors": un.get("anchors", []), "state": e.get("coverageState"), "materiality": un.get("materiality"), "family": un.get("family")})
+except Exception as ex:
+    print("coverage lookup unavailable:", ex)
 def cov_status_for(a, b):
     hits = []
     for e in cov_units:
-        anchors = e.get("anchors") or e.get("unit", {}).get("anchors") or []
-        for an in anchors:
-            cs, ce = an.get("charStart"), an.get("charEnd")
-            if cs is not None and ce is not None and ov(a, b, cs, ce) > 0: hits.append(e.get("status") or e.get("coverageStatus") or e.get("gateStatus")); break
+        for an in e["anchors"]:
+            if ov(a, b, an["charStart"], an["charEnd"]) > 0: hits.append(e["state"]); break
     return hits
 
 # ---------------- reference-set scoring ----------------
@@ -148,9 +150,15 @@ for it in items:
     elif rep in ("PARTIAL", "MISSING"): stage = "IR_COMPOSITION"
     else: stage = "IR_COMPOSITION"
     cov_hits = cov_status_for(a, b)
+    sec_token = re.split(r"[ /]", it["section"])[0]
+    vf = []
+    for ref_ in dict.fromkeys(attempted):
+        for f in (unit_views[ref_]["u"].get("verify") or {}).get("findings", []):
+            cite = (f.get("sourceCitation") or "") + " " + (f.get("irPath") or "")
+            if sec_token and sec_token in cite: vf.append({"unit": ref_, "severity": f.get("severity"), "type": f.get("findingType"), "irPath": (f.get("irPath") or "")[:90], "citation": f.get("sourceCitation")})
     trust = None
     if deficient:
-        trust = "DANGEROUS_SILENT_FAILURE" if (trusted and rep in ("PARTIAL", "MISSING") and all("FULLY_REPRESENTED_VERIFIED" == h for h in cov_hits) and cov_hits) else "SAFE_FAILURE"
+        trust = "DANGEROUS_SILENT_FAILURE" if (trusted and rep in ("PARTIAL", "MISSING") and cov_hits and all(h == "FULLY_REPRESENTED_VERIFIED" for h in cov_hits)) else "SAFE_FAILURE"
     blockers = []
     for s in unit_states:
         if s["sourceContext"] in ("TRUNCATED_SOURCE", "STRUCTURALLY_INCOMPLETE_SOURCE", "UNKNOWN_SOURCE_COMPLETENESS"): blockers.append(s["sourceContext"])
@@ -160,7 +168,7 @@ for it in items:
         if s["verifyStatus"] and s["verifyStatus"] not in TRUSTED_VERIFY: blockers.append("VERIFIER_" + s["verifyStatus"])
     if rep == "NOT_ATTEMPTED": blockers.append("UNIT_NOT_COMPILED")
     if rep in ("UNSUPPORTED", "AMBIGUOUS"): blockers.append(rep)
-    rows.append({"id": it["id"], "category": it["category"][0], "materiality": mat, "section": it["section"], "span": it["span"], "coveringUnits": attempted, "discoveredByPassA": bool(disc_items), "passARun2Hits": run2_hits, "inventoryItems": disc_items[:12], "inventoryItemCount": len(disc_items), "composedIntoIR": any(d == "REPRESENTED" for d in dispositions), "representationMechanical": rep, "unitStates": unit_states, "coverageAuditStatuses": cov_hits[:4], "trustedAsComplete": trusted, "earliestFailureStage": stage, "trustSafety": trust, "trustBlockers": sorted(set(blockers)), "substantiveCredit": "PENDING_HUMAN_ADJUDICATION" if rep == "FULL" else "NONE"})
+    rows.append({"id": it["id"], "category": it["category"][0], "materiality": mat, "section": it["section"], "span": it["span"], "coveringUnits": attempted, "discoveredByPassA": bool(disc_items), "passARun2Hits": run2_hits, "inventoryItems": disc_items[:12], "inventoryItemCount": len(disc_items), "composedIntoIR": any(d == "REPRESENTED" for d in dispositions), "representationMechanical": rep, "unitStates": unit_states, "coverageAuditStatuses": cov_hits[:6], "verifierFindingsTouching": vf[:6], "trustedAsComplete": trusted, "earliestFailureStage": stage, "trustSafety": trust, "trustBlockers": sorted(set(blockers)), "substantiveCredit": "PENDING_HUMAN_ADJUDICATION" if rep == "FULL" else "NONE"})
 W("13-reference-set-scoring", {"artifact": "13-reference-set-scoring", "referenceSet": REF, "referenceItems": len(rows), "method": "Mechanical mapping of each frozen reference span onto the paid-run evidence: covering units (any resolved source-context region overlapping the span), Pass A run-1 inventory items overlapping the span (>= 40 chars or the whole item), Pass C dispositions of those items, unit-level compile/accountability/verifier states, and 3E coverage statuses. representationMechanical: FULL = every material overlapping item REPRESENTED with no missing quantitative value; PARTIAL = some REPRESENTED; UNSUPPORTED/AMBIGUOUS = explicit non-complete disposition; MISSING = not inventoried or all MISSING_FROM_COMPOSITION; NOT_ATTEMPTED = no compiled unit reached the span. Human substantive adjudication of FULL items is recorded separately in 13b.", "rows": rows})
 
 # ---------------- metrics ----------------
