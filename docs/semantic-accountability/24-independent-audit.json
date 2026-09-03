@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "24-independent-audit",
+  "requirement": "Mission section 33: independent adversarial audit.",
+  "method": "This audit was performed by the same session that built the architecture (not a fresh independent agent), but every finding below is grounded in a specific, checkable artifact - a test, a real preserved run, or a direct code read - rather than asserted from memory. Flagged explicitly where independence is weaker than a fresh-agent audit would provide.",
+  "findings": [
+    {
+      "id": "AUD-1",
+      "area": "Independence contract",
+      "check": "Pass A never imports semantic/compile|normalize|caller, semantic-verification, semantic-precedent, /ir/, discovery, context-retrieval.",
+      "result": "PASS",
+      "evidence": "tests/contract-model/semantic-accountability-independence.test.ts (5 tests, static import-boundary scan)."
+    },
+    {
+      "id": "AUD-2",
+      "area": "Verifier independence",
+      "check": "semantic-verification/* never imports semantic-accountability/*; the real validation harness strips sourceContext/frozenInventory before calling the verifier.",
+      "result": "PASS",
+      "evidence": "Same independence test + docs/semantic-accountability/20-verifier-independence.json (verifierOperativeSource field on every real region)."
+    },
+    {
+      "id": "AUD-3",
+      "area": "Anti-enumeration",
+      "check": "No accountability logic keyed to a real benchmark identifier (metric name, section number, defined term, GT amount, basket name).",
+      "result": "PASS (with one caveat)",
+      "evidence": "Independence test's benchmark-identifier scan of non-comment code passes. CAVEAT: prose comments in tools.ts/prompt.ts (pre-existing, not written by this mission) illustrate with generic example names like 'Consolidated EBITDA' - never in executable logic. Not a violation but noted for a future scan."
+    },
+    {
+      "id": "AUD-4",
+      "area": "Real-content defect discovery",
+      "check": "Did real validation surface a genuine architecture defect the synthetic corpus missed?",
+      "result": "YES - RVD-1 found and fixed",
+      "evidence": "docs/semantic-accountability/06-shared-cap-root-cause.json realValidationDefectsFound; 0 dangling-lineage regressions after the fix in both post-fix holdout runs."
+    },
+    {
+      "id": "AUD-5",
+      "area": "Canonicalization fix scope",
+      "check": "Does the digest-based id canonicalization silently accept a genuinely wrong id, widening false credit?",
+      "result": "PASS",
+      "evidence": "Regression test proves a same-shape-but-wrong id (24 hex chars, no real item) stays dangling; canonicalization only fires on an exact 24-hex-char digest match against a REAL frozen item."
+    },
+    {
+      "id": "AUD-6",
+      "area": "Disposition stability",
+      "check": "Is the 90.1% holdout disposition-stability result explained away or reported honestly?",
+      "result": "REPORTED, NOT EXPLAINED AWAY",
+      "evidence": "docs/semantic-accountability/14-holdout-stability.json gate 'dispositionStability' explicitly marked pass:false; inventoryVariance (372) vastly exceeds compositionVariance (0) - the instability is almost entirely in WHAT Pass A inventories on a second real-model pass, not in how a shared item is dispositioned."
+    },
+    {
+      "id": "AUD-7",
+      "area": "Whole-agreement scope honesty",
+      "check": "Is the 3/12-region whole-agreement result presented as if it were the full validation?",
+      "result": "PASS",
+      "evidence": "15-whole-agreement-run-1.json explicitly reports regionsCompleted=3, regionsEnvironmentBlocked=9; 16/17 explicitly NOT_MEASURED; 18-shared-cap-validation.json explicitly NOT_MEASURED_ON_REAL_CONTENT."
+    },
+    {
+      "id": "AUD-8",
+      "area": "Agreement-level rollup honesty",
+      "check": "Does accountability.semanticallyComplete=true on individual units get overstated as agreement-level completeness?",
+      "result": "PASS - correctly downgraded",
+      "evidence": "19-agreement-level-coverage.json: all 3 real runs classified SEMANTICALLY_INCOMPLETE at the rollup level because the INDEPENDENT verifier found MATERIAL_DISCREPANCY findings in nearly every region, even where accountability's own signal said complete - the two layers are not conflated."
+    },
+    {
+      "id": "AUD-9",
+      "area": "Cost/model-substitution disclosure",
+      "check": "Was the discarded Haiku 4.5 run and the model-substitution decision fully disclosed rather than quietly dropped from the record?",
+      "result": "PASS",
+      "evidence": "tests/fixtures/semantic-accountability-validation/holdout/run-1-haiku-discarded/DISCARDED.md preserved, never deleted; 07-implementation-results.json / commit history record the decision."
+    },
+    {
+      "id": "AUD-10",
+      "area": "Pre-fix evidence disclosure",
+      "check": "Was the pre-canonicalization-fix Sonnet-5 run (which looked like a total architecture failure) hidden once the real cause was found?",
+      "result": "PASS",
+      "evidence": "tests/fixtures/semantic-accountability-validation/holdout/run-1-pre-canonicalization-fix/DISCARDED.md preserved with full root-cause explanation, never deleted."
+    },
+    {
+      "id": "AUD-11",
+      "area": "Production freeze integrity",
+      "check": "Did every real paid call execute against a hash-verified frozen tree?",
+      "result": "PASS",
+      "evidence": "scripts/semantic-accountability-validation.ts calls assertProductionFrozen() first and refuses to run on drift; every preserved run-summary.json records productionSha+productionTreeHash (78c9fb1 for the discarded pre-fix run, 976a565 for all fixed-code runs)."
+    },
+    {
+      "id": "AUD-12",
+      "area": "Cost transparency",
+      "check": "Is real spend fully accounted for and disclosed, including the wasted/diagnostic portion?",
+      "result": "PASS",
+      "evidence": "Every run-summary.json carries totalCostUsd; this session's chat record discloses the $11.22 spent on discarded runs separately from the ~$20 spent on evidence used in the final verdict."
+    },
+    {
+      "id": "AUD-13",
+      "area": "Quantitative reconciliation strictness",
+      "check": "Can a lineage claim earn REPRESENTED for a valued item without the value itself appearing in the IR?",
+      "result": "PASS",
+      "evidence": "Control C8 (21-false-credit-controls.json); pass-bc-reconciliation.test.ts."
+    },
+    {
+      "id": "AUD-14",
+      "area": "Unresolved-dependency handling on real content",
+      "check": "Do real cross-references that could not be resolved get silently dropped?",
+      "result": "PASS",
+      "evidence": "Real holdout regions (interest-expense, applicable-liquidity-rate) show unresolvedReferences counts (5-7) disclosed on every run, both pre- and post-fix - never zero when references genuinely could not resolve."
+    },
+    {
+      "id": "AUD-15",
+      "area": "Shared-cap real coverage gap",
+      "check": "Is the mission's own required shared-cap real-content validation actually complete?",
+      "result": "FAIL (disclosed)",
+      "evidence": "18-shared-cap-validation.json: NOT_MEASURED_ON_REAL_CONTENT - the pre-registered cross-reference-dsgr region never executed (ENVIRONMENT_BLOCKED). This is the single most significant open item blocking full Phase 3 closure."
+    },
+    {
+      "id": "AUD-16",
+      "area": "Session-relative independence caveat",
+      "check": "Is this audit performed by an agent independent of the one that built the fix?",
+      "result": "CAVEAT - same session",
+      "evidence": "This audit was NOT performed by a separate/fresh agent (unlike several prior missions in this codebase's history, e.g. 3F.1.3/3F.1.4's dispatched auditor agents). Every finding is evidence-grounded (cites a specific file/test/run), which partially mitigates this, but a genuinely independent re-audit is recommended before Phase 4."
+    },
+    {
+      "id": "AUD-17",
+      "area": "Provider-failure classification honesty",
+      "check": "Are the 9 ENVIRONMENT_BLOCKED whole-agreement regions ever miscounted as compile failures, verification failures, or 'nothing material found'?",
+      "result": "PASS",
+      "evidence": "19-agreement-level-coverage.json's rollup script explicitly filters out PROVIDER_FAILURE units before computing the rollup, rather than counting them as SEMANTICALLY_INCOMPLETE units on the architecture's own merits; 15-whole-agreement-run-1.json labels each with environmentBlocked:true and the verbatim 402 message."
+    }
+  ],
+  "summary": {
+    "pass": 14,
+    "passWithCaveat": 2,
+    "fail": 1,
+    "totalItems": 17
+  }
+}

@@ -1,0 +1,343 @@
+{
+  "mode": "holdout",
+  "runNumber": 1,
+  "startedAt": "2026-09-02T00:33:25.737Z",
+  "finishedAt": "2026-09-02T01:53:10.458Z",
+  "productionSha": "78c9fb10f1973c2b73c899741aa23cb2acfc0a20",
+  "productionTreeHash": "900d8fc2cdb6687747c4cfae39497d25a49a0da90756efd580b7fe98978bb637",
+  "versions": {
+    "compilerAlgorithm": "semantic-accountability-compiler.v4",
+    "compilerPrompt": "semantic-accountability-compiler-prompt.v4",
+    "toolPolicy": "phase-3b1-tool-policy.v2",
+    "accountabilityAlgorithm": "semantic-accountability.v1",
+    "inventoryPrompt": "semantic-inventory-prompt.v1",
+    "irSchema": "headroom-covenant-ir.v1"
+  },
+  "providers": {
+    "compiler": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5"
+    },
+    "inventory": {
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5"
+    },
+    "verifier": {
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5"
+    }
+  },
+  "totalCostUsd": 7.048641999999999,
+  "budgetCeilingUsd": 7,
+  "regionIds": [
+    "ebitda",
+    "net-income",
+    "interest-expense",
+    "first-lien-debt",
+    "secured-net-leverage",
+    "applicable-liquidity-rate",
+    "new-definitions",
+    "cash-sweep-cure"
+  ],
+  "regions": [
+    {
+      "id": "ebitda",
+      "family": "DEFINITIONS",
+      "claimIds": [
+        "A1",
+        "B3"
+      ],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "unitChars": 8583,
+      "unitExtended": "DEFINITION_SPAN",
+      "expansions": 2,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 49,
+      "inventoryHash": "dcb99d678abd072e7e5ea7a9899ed9d78951076cd52897ddc40365737e87b464",
+      "compileStatus": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "TRUNCATED_EVIDENCE_USED",
+        "DEFINITION_COMPLETENESS_SUSPECT",
+        "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+      ],
+      "rules": 0,
+      "definitions": 1,
+      "sharedCapacities": 2,
+      "unresolvedDependencies": 0,
+      "accountability": {
+        "semanticallyComplete": false,
+        "counts": {
+          "inventoried": 49,
+          "material": 48,
+          "represented": 5,
+          "intentionallyNonComputational": 0,
+          "unsupported": 0,
+          "ambiguous": 0,
+          "missingFromComposition": 44,
+          "materialMissingFromComposition": 43,
+          "criticalMissingFromComposition": 7,
+          "materialQuantitativeValues": 5,
+          "materialQuantitativeValuesMissing": 2,
+          "uninventoriedValues": 1,
+          "danglingLineageReferences": 49
+        }
+      },
+      "verifyStatus": "VERIFICATION_INCOMPLETE",
+      "materialFindings": 0,
+      "verifierOperativeSource": "RESOLVED_UNIT",
+      "costUsd": {
+        "inventory": 0.31459800000000004,
+        "compile": 0.667236
+      }
+    },
+    {
+      "id": "net-income",
+      "family": "DEFINITIONS",
+      "claimIds": [
+        "A2"
+      ],
+      "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+      "unitChars": 7524,
+      "unitExtended": null,
+      "expansions": 0,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 47,
+      "inventoryHash": "c04ec8eb506c12adf634fc0fea4ced40ef99990cc135af4f9f2e0d359844eb30",
+      "compileStatus": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+      ],
+      "rules": 0,
+      "definitions": 1,
+      "sharedCapacities": 0,
+      "unresolvedDependencies": 0,
+      "accountability": {
+        "semanticallyComplete": false,
+        "counts": {
+          "inventoried": 47,
+          "material": 45,
+          "represented": 1,
+          "intentionallyNonComputational": 0,
+          "unsupported": 0,
+          "ambiguous": 0,
+          "missingFromComposition": 46,
+          "materialMissingFromComposition": 44,
+          "criticalMissingFromComposition": 33,
+          "materialQuantitativeValues": 1,
+          "materialQuantitativeValuesMissing": 0,
+          "uninventoriedValues": 0,
+          "danglingLineageReferences": 47
+        }
+      },
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 1,
+      "verifierOperativeSource": "SUPPLIED_WINDOW",
+      "costUsd": {
+        "inventory": 0.33131,
+        "compile": 0.5080760000000001
+      }
+    },
+    {
+      "id": "interest-expense",
+      "family": "DEFINITIONS",
+      "claimIds": [
+        "A3"
+      ],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "unitChars": 9007,
+      "unitExtended": "DEFINITION_SPAN",
+      "expansions": 4,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 58,
+      "inventoryHash": "c9471189598acc90bef379bae54f0a9ab6eb51c7a5dd72cec8f32d864f8e977e",
+      "compileStatus": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+      ],
+      "rules": 0,
+      "definitions": 2,
+      "sharedCapacities": 2,
+      "unresolvedDependencies": 0,
+      "accountability": {
+        "semanticallyComplete": false,
+        "counts": {
+          "inventoried": 58,
+          "material": 56,
+          "represented": 53,
+          "intentionallyNonComputational": 3,
+          "unsupported": 0,
+          "ambiguous": 1,
+          "missingFromComposition": 1,
+          "materialMissingFromComposition": 1,
+          "criticalMissingFromComposition": 1,
+          "materialQuantitativeValues": 3,
+          "materialQuantitativeValuesMissing": 1,
+          "uninventoriedValues": 4,
+          "danglingLineageReferences": 0
+        }
+      },
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 3,
+      "verifierOperativeSource": "RESOLVED_UNIT",
+      "costUsd": {
+        "inventory": 0.755728,
+        "compile": 0.6991660000000001
+      }
+    },
+    {
+      "id": "first-lien-debt",
+      "family": "DEFINITIONS",
+      "claimIds": [
+        "A4"
+      ],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "unitChars": 4359,
+      "unitExtended": "DEFINITION_SPAN",
+      "expansions": 1,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 33,
+      "inventoryHash": "bc3d12a0c09e0ac024ec2b1c3c99c5a7846624c47f5b8d9aac963c115e15b87f",
+      "compileStatus": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+      ],
+      "rules": 0,
+      "definitions": 2,
+      "sharedCapacities": 0,
+      "unresolvedDependencies": 0,
+      "accountability": {
+        "semanticallyComplete": false,
+        "counts": {
+          "inventoried": 33,
+          "material": 32,
+          "represented": 0,
+          "intentionallyNonComputational": 0,
+          "unsupported": 0,
+          "ambiguous": 0,
+          "missingFromComposition": 33,
+          "materialMissingFromComposition": 32,
+          "criticalMissingFromComposition": 20,
+          "materialQuantitativeValues": 2,
+          "materialQuantitativeValuesMissing": 2,
+          "uninventoriedValues": 0,
+          "danglingLineageReferences": 69
+        }
+      },
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 1,
+      "verifierOperativeSource": "RESOLVED_UNIT",
+      "costUsd": {
+        "inventory": 0.34912600000000005,
+        "compile": 0.33456800000000003
+      }
+    },
+    {
+      "id": "secured-net-leverage",
+      "family": "DEFINITIONS",
+      "claimIds": [
+        "A5"
+      ],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "unitChars": 1309,
+      "unitExtended": "DEFINITION_SPAN",
+      "expansions": 3,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 12,
+      "inventoryHash": "bb9298901af963c1ef72e7939eb85341542341e698aa68b8dfc5ef6ed772dbdf",
+      "compileStatus": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED",
+        "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+      ],
+      "rules": 0,
+      "definitions": 2,
+      "sharedCapacities": 0,
+      "unresolvedDependencies": 0,
+      "accountability": {
+        "semanticallyComplete": false,
+        "counts": {
+          "inventoried": 12,
+          "material": 12,
+          "represented": 0,
+          "intentionallyNonComputational": 0,
+          "unsupported": 0,
+          "ambiguous": 0,
+          "missingFromComposition": 12,
+          "materialMissingFromComposition": 12,
+          "criticalMissingFromComposition": 8,
+          "materialQuantitativeValues": 0,
+          "materialQuantitativeValuesMissing": 0,
+          "uninventoriedValues": 0,
+          "danglingLineageReferences": 12
+        }
+      },
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 1,
+      "verifierOperativeSource": "RESOLVED_UNIT",
+      "costUsd": {
+        "inventory": 0.15712399999999999,
+        "compile": 0.374338
+      }
+    },
+    {
+      "id": "applicable-liquidity-rate",
+      "family": "DEFINITIONS",
+      "claimIds": [
+        "B1",
+        "B2"
+      ],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "unitChars": 8656,
+      "unitExtended": "DEFINITION_SPAN",
+      "expansions": 6,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 83,
+      "inventoryHash": "2d127cb605a38efd1774f84fc96181c69519863482d6b3b793b9537e1e03505a",
+      "compileStatus": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED"
+      ],
+      "rules": 0,
+      "definitions": 5,
+      "sharedCapacities": 0,
+      "unresolvedDependencies": 0,
+      "accountability": {
+        "semanticallyComplete": false,
+        "counts": {
+          "inventoried": 83,
+          "material": 81,
+          "represented": 10,
+          "intentionallyNonComputational": 3,
+          "unsupported": 70,
+          "ambiguous": 0,
+          "missingFromComposition": 0,
+          "materialMissingFromComposition": 0,
+          "criticalMissingFromComposition": 0,
+          "materialQuantitativeValues": 16,
+          "materialQuantitativeValuesMissing": 0,
+          "uninventoriedValues": 16,
+          "danglingLineageReferences": 0
+        }
+      },
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 26,
+      "verifierOperativeSource": "RESOLVED_UNIT",
+      "costUsd": {
+        "inventory": 0.5812160000000001,
+        "compile": 0.706718
+      }
+    },
+    {
+      "id": "new-definitions",
+      "skipped": true,
+      "reason": "budget ceiling reached before this region"
+    },
+    {
+      "id": "cash-sweep-cure",
+      "skipped": true,
+      "reason": "budget ceiling reached before this region"
+    }
+  ]
+}

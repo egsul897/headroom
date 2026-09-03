@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "24-canary-8-allcaps-substantive-text",
+  "mission": "SINGLE CANARY #8 - ALL-CAPS substantive text must not be dismissed as a heading",
+  "startingSha": "fd316936a46ae3317d9e7b9e8b1a57755f919508",
+  "failureFixed": "Substantive source written in ALL CAPS was classified HEADING_OR_LABEL on typography alone and disappeared from source accountability while semantic completeness remained true.",
+  "provenance": "independent red-team audit, finding 1, scenarios S2 and S10 (docs/source-coverage-repair/13-independent-red-team-audit.json)",
+  "fixture": {
+    "fullSource": "The Borrower shall repay the Loans in accordance with Section 2.05.\nEACH PARTY HEREBY IRREVOCABLY WAIVES ANY RIGHT TO TRIAL BY JURY\nThe Administrative Agent shall give notice of any prepayment.",
+    "allCapsFragment": "EACH PARTY HEREBY IRREVOCABLY WAIVES ANY RIGHT TO TRIAL BY JURY",
+    "s10Variant": "IN NO EVENT SHALL THE AGGREGATE LIABILITY EXCEED FIVE MILLION DOLLARS",
+    "inventorySpans": "two CRITICAL items anchoring the first and third lines. The waiver is anchored by nothing.",
+    "extractedQuantitativeValues": "none in either fixture - scanQuantitativeValues returns [] for both. FIVE MILLION DOLLARS is spelled out and the extractor is digit-bearing (out of scope by instruction). §12 answered: no recognised values, so nothing in the value route could have blocked; the source route was the only defence and typography closed it.",
+    "reproduced": true
+  },
+  "before": {
+    "dispositionOfAllCapsFragment": "HEADING_OR_LABEL (\"a section caption or heading line\")",
+    "coverageSpans": "[COVERED_BY_INVENTORY] line 1 | [PUNCTUATION_OR_DELIMITER] \"\\n\" | [HEADING_OR_LABEL] \"EACH PARTY HEREBY IRREVOCABLY WAIVES ANY RIGHT TO TRIAL BY JURY\\n\" | [COVERED_BY_INVENTORY] line 3",
+    "unaccountedSource": 0,
+    "unaccountedValues": 0,
+    "inventoryStatus": "INVENTORY_OK",
+    "reconciliation": "no failure reason",
+    "semanticallyComplete": true,
+    "s10Before": "[HEADING_OR_LABEL] the whole liability cap, unaccounted 0",
+    "note": "A jury-trial waiver and, separately, a liability cap disappeared with no signal at any of the three enforcement points."
+  },
+  "earliestResponsibleBranch": {
+    "function": "classifyUnaccountedFragment",
+    "file": "lib/contract-model/compiler/semantic-accountability/source-coverage.ts",
+    "branch": "the ALLCAPS_CAPTION_RE arm of the caption test (noInternalTerminator && (ALLCAPS || numbered))",
+    "trace": "segmentSourceUnits splits at line breaks, so the waiver is its own unit -> the extractor finds no values -> no inventory span covers it -> classifyUnaccountedFragment runs -> pagination, citation, quoted-label and structural-noise rules all decline -> the ALL-CAPS arm fires and returns HEADING_OR_LABEL. It is the first branch to grant an accounted disposition."
+  },
+  "rootCause": "ALLCAPS_CAPTION_RE was /^\\s*[A-Z][A-Z0-9\\s,'&/.-]{2,80}\\s*$/. Capitalisation plus a length ceiling WAS the rule; nothing examined what the text asserted. The red team measured the boundary exactly - all caps up to 82 characters was a heading, 84 characters was not - so length was literally the trust boundary. All caps is the standard drafting register for jury-trial waivers, warranty disclaimers and liability caps, so the register that marks the most aggressively enforceable terms in an agreement was the register that made them invisible.",
+  "theOrthographicTrap": {
+    "section": "§11 - the core challenge",
+    "whatWasTested": "Before writing the fix, isNominalLabel (the canary #5/#7 positive label test) was run against all five fixtures.",
+    "measuredResult": {
+      "NEGATIVE COVENANTS": true,
+      "EVENTS OF DEFAULT": true,
+      "EACH PARTY HEREBY IRREVOCABLY WAIVES ANY RIGHT TO TRIAL BY JURY": true,
+      "IN NO EVENT SHALL THE AGGREGATE LIABILITY EXCEED FIVE MILLION DOLLARS": true,
+      "THE COMPANY MUST DELIVER THE REPORT": true
+    },
+    "conclusion": "isNominalLabel separates a name from a proposition by finding a LOWERCASE content word acting as the predicate. Uppercasing destroys that signal: every word in all caps satisfies the proper-noun form, so the function returns true for headings and propositions alike. Delegating the ALL-CAPS frame to it, as §4 invites, would have declared every all-caps line a name - the exact failure this canary exists to prevent. §4 was therefore investigated and rejected on measured evidence, and a conservative case-independent rule was chosen instead per §11."
+  },
+  "genericRuleImplemented": {
+    "invariant": "TYPOGRAPHY DOES NOT PROVE HEADING-HOOD. ALL CAPS alone cannot grant an accounted disposition; unknown stays UNACCOUNTED_SOURCE.",
+    "frameDoesNotDecide": "ALLCAPS_CAPTION_RE became ALLCAPS_FRAME_RE - it only recognises the typographic frame and grants nothing, exactly as canary #5 did to quotation marks and canary #7 to section numbers. The two caption arms are now separate branches, each with its own positive test and its own reason string.",
+    "positiveTest": "isAllCapsNominalHeading: no clause punctuation (. ; : ! ? ,), at least one word, and NO DETERMINER OR PRONOUN anywhere in the run.",
+    "whyDeterminers": "What survives uppercasing is grammatical structure. A heading is a bare nominal - a title - and titles in drafting are determinerless ('NEGATIVE COVENANTS', 'EVENTS OF DEFAULT'). A proposition needs arguments, and an argument is introduced by a determiner or is a pronoun. A determiner inside an all-caps run is therefore positive evidence that the run predicates something, and its absence is the only structural evidence of title-hood that casing leaves intact.",
+    "notNewVocabulary": "DETERMINERS is a partition of words already present in FUNCTION_WORDS. Nothing in it is a verb, a modal, or specific to any subject matter. No list of SHALL / MAY / MUST / WILL / PAY / DELIVER / MAINTAIN / WAIVE exists anywhere in the implementation, and the fix was never allowed to lowercase-and-match.",
+    "lengthCeilingRemoved": "the {2,80} bound is gone. Two permanent assertions hold the line in both directions: a SHORT all-caps proposition ('THE FEE IS WAIVED') surfaces, and a LONG all-caps nominal (109 characters) is still suppressed.",
+    "hardcodedStrings": "none - NEGATIVE COVENANTS, RESTRICTED PAYMENTS and EVENTS OF DEFAULT pass because they are determinerless nominals, not because they are named anywhere."
+  },
+  "disclosedLimitation": {
+    "statement": "A determinerless all-caps predication - 'BORROWER SHALL PAY INTEREST' - still passes as a heading.",
+    "why": "The determiner test marks an argument position; it is not a parser, and it is honestly weaker than the mixed-case test. The alternative that would close it is a modal or verb list, which §5 and the trust-boundary architecture forbid.",
+    "handling": "Recorded rather than papered over, and pinned by a permanent test so it cannot drift unnoticed. It defeats every fixture in the red team's finding 1, and it is not claimed to close the ALL-CAPS layer completely."
+  },
+  "valuesRemainHardBlockers": {
+    "unchanged": "The whole suppression block is still gated on values.length === 0, so a fragment carrying a recognised quantitative value can never receive HEADING_OR_LABEL. Untouched.",
+    "extractorNotExpanded": "no pattern was added to quantitative.ts"
+  },
+  "productionFilesChanged": [
+    "lib/contract-model/compiler/semantic-accountability/source-coverage.ts - ALLCAPS_CAPTION_RE replaced by ALLCAPS_FRAME_RE + DETERMINERS + isAllCapsNominalHeading(); the caption test split into two independent branches"
+  ],
+  "attackAfter": {
+    "coverageSpans": "[COVERED_BY_INVENTORY] line 1 | [PUNCTUATION_OR_DELIMITER] \"\\n\" | [UNACCOUNTED_SOURCE] \"EACH PARTY HEREBY IRREVOCABLY WAIVES ANY RIGHT TO TRIAL BY JURY\" | [COVERED_BY_INVENTORY] line 3",
+    "unaccountedSource": 1,
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+    "semanticallyComplete": false,
+    "headingOrLabelSpansRemaining": 0,
+    "s10After": "[UNACCOUNTED_SOURCE] the whole liability cap, unaccounted 1"
+  },
+  "controls": {
+    "trueAllCapsHeading": {
+      "fixtures": ["ARTICLE VII\\nNEGATIVE COVENANTS", "NEGATIVE COVENANTS", "RESTRICTED PAYMENTS", "EVENTS OF DEFAULT"],
+      "result": "all still HEADING_OR_LABEL and non-blocking, before and after. The first is the fixture already present in the general matrix."
+    },
+    "genericAllCapsProposition": {
+      "fixture": "THE COMPANY MUST DELIVER THE REPORT",
+      "before": "HEADING_OR_LABEL",
+      "after": "UNACCOUNTED_SOURCE",
+      "verdict": "no covenant family, no legal vocabulary in the fixture"
+    },
+    "lengthIsNotTheBoundary": {
+      "shortProposition": "THE FEE IS WAIVED -> UNACCOUNTED_SOURCE",
+      "longNominal": "REPRESENTATIONS WARRANTIES COVENANTS EVENTS OF DEFAULT REMEDIES INDEMNIFICATION AND MISCELLANEOUS PROVISIONS (109 chars) -> HEADING_OR_LABEL"
+    }
+  },
+  "priorCanariesStillHold": {
+    "canary2_S9": "\"except as provided in Section 6.02,\" still UNACCOUNTED_SOURCE; semanticallyComplete false",
+    "canary2b_I5": "connective ownership correct; I5 green in the corpus (its ARTICLE VII / NEGATIVE COVENANTS heading still suppressed)",
+    "canary3_RT8": "blanket span still clipped; RATIO and DAYS still unaccounted",
+    "canary4_RT4": "prepayment and cure obligations still surface; only the introducing fragment descends; both controls unchanged",
+    "canary5_S6": "quoted replacement still UNACCOUNTED_SOURCE; quoted term names still DEFINED_TERM_LABEL",
+    "canary6_S8": "both bare basket amounts still UNACCOUNTED_SOURCE; generic \"75\" still surfaced",
+    "canary7": "6.02 and the V4 amount line still UNACCOUNTED_SOURCE; SECTION 7.04 Dispositions. / 6.02 Liens. / 7.05 Restricted Payments / 6.02 Limitation on Indebtedness. all still HEADING_OR_LABEL; Section 7.11. still CITATION_ONLY"
+  },
+  "tests": {
+    "added": 4,
+    "names": [
+      "canary #8 ATTACK: substantive ALL-CAPS text is accountable, not a heading",
+      "canary #8 TRUE ALL-CAPS HEADING CONTROL: a determinerless all-caps nominal is still suppressed",
+      "canary #8 GENERIC ALL-CAPS PROPOSITION: no legal vocabulary needed, and no length rule survives",
+      "canary #8 DISCLOSED LIMITATION: a determinerless all-caps predication still passes as a heading"
+    ],
+    "sourceCoverageSuite": "107/107 passing (103 before, +4 new)",
+    "adversarialSuite": "2400 generated cases, 0 dangerous false negatives, unchanged - no new fuzzing added",
+    "existingTestsAltered": []
+  },
+  "corpusImpact": {
+    "before": "5 failed | 265 passed (270)",
+    "after": "5 failed | 269 passed (274)",
+    "delta": "+4 tests (the four new canary #8 tests, all green); ZERO new failures",
+    "newlySurfacedCorpusGaps": 0,
+    "remainingFailures": [
+      { "scenarioId": "I26", "status": "out of scope by mission instruction; unchanged since canary #4; classified TRUE_SAFETY_IMPROVEMENT in artifact 20" },
+      { "scenarioId": "I27", "status": "out of scope by mission instruction; unchanged since canary #2B; classified OBVIOUS_FALSE_GAP in artifact 18" }
+    ],
+    "realRegressions": 0,
+    "groundTruthChanged": false
+  },
+  "qualityGates": {
+    "typescript": "npx tsc --noEmit - 6 errors, all pre-existing in tests/foundation-audit/*; identical count to the starting SHA; zero in semantic-accountability or source-coverage",
+    "lint": "npx next lint --dir lib --dir tests --dir scripts - 1 error, pre-existing (@typescript-eslint/no-var-requires rule definition missing in tests/foundation-audit/amendment-operative-state-adversarial.test.ts); none in changed files"
+  },
+  "spend": { "paidModelCalls": 0, "vercelDeploys": 0, "providerProbe": "HTTP 402 quota_for_entity_exceeded, current spend $150.49 / limit $150.00 - unchanged from before this mission" },
+  "reproductionHarness": "scripts/source-coverage-canary8-reproduce.ts (committed; run with npx tsx)",
+  "canary8Solved": true,
+  "scopeDiscipline": "One failure fixed. 'jointly and severally', 'directly or indirectly', CJK, Cyrillic, spelled-out-number extraction, I26 and I27 all left untouched as instructed. The quantitative extractor was not expanded. No collateral gap repaired, no ground truth edited, no new fuzzing, no broad red-team, no paid validation."
+}

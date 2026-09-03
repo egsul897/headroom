@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "24-final-verdict",
+  "mission": "HEADROOM - PHASE 3 FINAL CLOSURE / PASS-A INVENTORY STABILITY + COMPLETION OF BLOCKED WHOLE-AGREEMENT VALIDATION",
+  "startingEvidenceSha": "55e29d6",
+  "startingProductionSha": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+  "finalProductionSha": "1957105c58be77465745566167f1a05708d4d3b5",
+  "verdict": "PHASE_3_NOT_CLOSED",
+  "closureRuleApplied": "Mission \u00a726 requires ALL of gates A-R to pass. They do not (23-phase3-release-gate.json).",
+  "limitingLayer": {
+    "returned": "TRUST_BOUNDARY_REGRESSION",
+    "why": "Gate R fails on a demonstrated trust-boundary defect and that is the most severe finding of the mission: the third independent audit drove the real Pass A / Pass C / rollup functions and showed material operative text - a springing guarantee and all-assets lien grant, an absolute debt prohibition, four enumerated Lien carve-outs, a 30-day cure period, a maturity date, and a $75M cap inside an expanded definition - each dropped with INVENTORY_OK, uninventoriedSegments [], semanticallyComplete true, no failure reason, and an agreement rollup of SEMANTICALLY_COMPLETE. The v2 layer holds on the DETECTED path (a surfaced gap cannot be talked away - the auditor tried and failed) but its DETECTION path is five conjunctive filters, each individually sufficient to silence a material omission. 'Regression' is used here in the taxonomy's sense of a trust-boundary failure, not to imply the pre-v2 code was better: before v2 there was no operative-text accounting at all.",
+    "alsoBlocking": {
+      "PASS_A_MODEL_STABILITY_LIMIT": "Gate A fails on real evidence independently of the audit: semantic inventory stability 77.6% conservative / 64.8% strict-fold against a 95% gate, on the two source-identical v1 holdout runs, with PASS_A_MODEL_OMISSION as the measured earliest failure layer (04). Gate J likewise fails at 86.7% semantic label stability.",
+      "ENVIRONMENT_BLOCKED": "Gates C-I could not be measured at all: the Vercel AI Gateway credential returns HTTP 402 quota_for_entity_exceeded at $150.49 against a $150.00 limit, identical at the first and last check of this mission - independent confirmation that zero paid calls were made."
+    }
+  },
+  "whatWasEstablishedThisMission": [
+    "The 372-item Pass A variance population is classified end to end (01, 03): SOURCE_SPAN 196, GRANULARITY 108, ROLE 44, TRUE_SEMANTIC_VARIANCE 9, GENUINE_OMISSION 14, UNKNOWN 1.",
+    "Both stability numbers are reported side by side without moving the goalposts (02): STRICT_ID_STABILITY 18.88% inventory / 90.11% disposition-on-shared-ids; SEMANTIC_INVENTORY_STABILITY 90.4% lenient, 77.6% conservative (the gated figure), 64.8% strict-fold, 88.0% adjudicated (informational).",
+    "The earliest failure layer is measured, not inferred (04): source context, transport, the schema/excerpt gate and normalization are each ruled out with counts; PASS_A_MODEL_OMISSION is the residual.",
+    "One bounded architectural change was chosen and implemented (05 OPTION C): Pass A now accounts for operative TEXT it did not inventory, makes one targeted gap call, and reports any residue as INVENTORY_COVERAGE_GAP / uninventoriedSegments. Pass B, Pass C, the IR and the Phase 3C verifier are untouched.",
+    "Three independent audits were run by fresh agents; two returned blockers, both remediated inside the same bounded scope with tests, and production was re-frozen after each."
+  ],
+  "whatIsStillUnknown": [
+    "Whether the v2 coverage accounting raises real-content semantic stability at all, and by how much: it is proven on synthetic material (169/169) and unmeasured on real content.",
+    "Whole-agreement CRITICAL/MATERIAL inventory recall, disposition rate, and value recall over all 12 regions (only 3 regions of run-1 ever completed, on the v1 SHA).",
+    "Real shared-cap / cross-reference dependency behaviour on real content (16).",
+    "Whether the gap re-inventory call closes surfaced gaps in practice or mostly leaves them surfaced - the difference between a stability fix and an honesty fix.",
+    "Whether the v2 layer's real-content behaviour is dominated by the detection-path holes above - on real credit-agreement prose the audit's finding 1 and finding 7 cases (ordinary 'will cause' drafting, extracted tables) are common, so the layer's measured effect could be substantially smaller than the synthetic corpus suggests."
+  ],
+  "whatThisIsNot": "This is not a request for another giant validation cycle (\u00a727). The single blocking input is provider budget. The completion path is bounded and already written down: 09's exact command twice for \u00a714, then the pre-registered \u00a715 manifest with --resume, then 11/12-17 recomputed from the run artifacts by scripts that already exist.",
+  "estimatedCostToComplete": "~$43 at the recorded per-region rates (08), for \u00a714 (2 runs x pre-registered subset), \u00a715 (run-1 regions 4-12 + full run-2), and \u00a717.",
+  "phase4Readiness": "NOT READY. Phase 4 depends on trusting a whole-agreement semantic accountability result; that result does not exist, and the one stability number that does exist is below its gate.",
+  "finalVerdictString": "PHASE_3_NOT_CLOSED_LIMITING_LAYER_TRUST_BOUNDARY_REGRESSION",
+  "auditBacklog": {
+    "note": "Recorded, not remediated. Patching these would mean shipping further unaudited production changes past the final freeze in a mission whose gates have already failed, and findings 1/6/7/8 cannot be closed without redesigning the detection layer, which this mission's scope forbids (\u00a79). This is the bounded backlog for whoever picks it up - not a proposal for another giant validation cycle (\u00a727).",
+    "ordered": [
+      {
+        "id": "AUD3-2",
+        "severity": "BLOCKER",
+        "fix": "one line",
+        "what": "reconciliation.ts:426 - completeness counts only MONEY/PERCENT/RATIO; uncovered DAYS, PERIOD, DATE and MULTIPLIER values are silent. A dropped cure period, notice period, maturity date or incremental multiple is invisible."
+      },
+      {
+        "id": "AUD3-3",
+        "severity": "BLOCKER",
+        "fix": "one line + a scope decision",
+        "what": "the value gate is filtered to regionId === 'operative' and segments are computed for OPERATIVE regions only, so an inline expanded definition's cap, condition and pledge are all unaccounted."
+      },
+      {
+        "id": "AUD3-1",
+        "severity": "BLOCKER",
+        "fix": "detection redesign",
+        "what": "a segment is eligible to be a gap only if it matches a closed connective vocabulary; ordinary drafting ('will cause', 'agrees to cause', 'undertakes') is an unconditional opt-out."
+      },
+      {
+        "id": "AUD3-8",
+        "severity": "MAJOR",
+        "fix": "a span-size / item-density check before ACCOUNTING_SPAN is trusted",
+        "what": "one blanket CRITICAL item spanning a whole region reads clean on every accounting signal; a gap call that echoes the segment verbatim closes its own gap."
+      },
+      {
+        "id": "AUD3-6",
+        "severity": "MAJOR",
+        "fix": "detection redesign",
+        "what": "the 50% coverage threshold lets up to half of a boundary-free sentence vanish behind one accepted span."
+      },
+      {
+        "id": "AUD3-7",
+        "severity": "MAJOR",
+        "fix": "segmentation",
+        "what": "a line break is a boundary only before an enumerator, so a line-broken reporting block or an extracted table is one segment and fails open twice over."
+      },
+      {
+        "id": "AUD3-4",
+        "severity": "MAJOR",
+        "fix": "floor calibration, with the corpus false-positive problem solved rather than traded away",
+        "what": "the 40-char floor drops a 29-char absolute prohibition and four 26-35 char Lien carve-outs."
+      },
+      {
+        "id": "AUD3-5",
+        "severity": "MAJOR",
+        "fix": "one line",
+        "what": "OPENS_WITH_CONDITIONAL_RE is anchored at ^, so an enumerator prefix ('(iv) except ...') defeats the conditional-tail floor the comment promises."
+      },
+      {
+        "id": "AUD3-9",
+        "severity": "MINOR",
+        "fix": "add two constants to the cache key",
+        "what": "the semantic-compiler cache key omits the accountability algorithm and prompt versions; harmless in-process today, a durable stale-verdict channel if the cache is moved to Postgres as its interface anticipates."
+      },
+      {
+        "id": "AUD3-10",
+        "severity": "MINOR",
+        "fix": "mirror semantic-coverage/freeze.ts",
+        "what": "frozenContentHash is written but never verified; the accountability freeze is a recorded digest, not an enforced one."
+      }
+    ]
+  }
+}

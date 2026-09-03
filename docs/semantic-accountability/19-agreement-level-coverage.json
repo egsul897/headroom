@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "19-agreement-level-coverage",
+  "requirement": "Mission section 26: agreement-level rollup - a package with material MISSING_FROM_COMPOSITION cannot be SEMANTICALLY_COMPLETE.",
+  "holdoutRun1": {
+    "status": "SEMANTICALLY_INCOMPLETE",
+    "reasons": [
+      "6 unit(s) SEMANTICALLY_INCOMPLETE; 1 material item(s) MISSING_FROM_COMPOSITION across the agreement"
+    ],
+    "units": [
+      {
+        "candidateRef": "applicable-liquidity-rate",
+        "unitStatus": "SEMANTICALLY_INCOMPLETE",
+        "reasons": [
+          "independent verification found a MATERIAL discrepancy"
+        ]
+      },
+      {
+        "candidateRef": "ebitda",
+        "unitStatus": "SEMANTICALLY_INCOMPLETE",
+        "reasons": [
+          "independent verification found a MATERIAL discrepancy"
+        ]
+      },
+      {
+        "candidateRef": "first-lien-debt",
+        "unitStatus": "SEMANTICALLY_INCOMPLETE",
+        "reasons": [
+          "1 material inventory item(s) MISSING_FROM_COMPOSITION",
+          "2 material quantitative value(s) missing from the composed IR"
+        ]
+      },
+      {
+        "candidateRef": "interest-expense",
+        "unitStatus": "SEMANTICALLY_INCOMPLETE",
+        "reasons": [
+          "independent verification found a MATERIAL discrepancy"
+        ]
+      },
+      {
+        "candidateRef": "net-income",
+        "unitStatus": "SEMANTICALLY_INCOMPLETE",
+        "reasons": [
+          "independent verification found a MATERIAL discrepancy"
+        ]
+      },
+      {
+        "candidateRef": "secured-net-leverage",
+        "unitStatus": "SEMANTICALLY_INCOMPLETE",
+        "reasons": [
+          "independent verification found a MATERIAL discrepancy"
+        ]
+      }
+    ],
+    "counts": {
+      "units": 6,
+      "complete": 0,
+      "incomplete": 6,
+      "reviewRequired": 0,
+      "materialMissingFromComposition": 1,
+      "unresolvedCrossReferences": 12
+    }
+  },
+  "holdoutRun2": {
+    "status": "SEMANTICALLY_INCOMPLETE",
+    "reasons": [
+      "6 unit(s) SEMANTICALLY_INCOMPLETE; 5 material item(s) MISSING_FROM_COMPOSITION across the agreement"
+    ],
+    "units": [
+      {
+        "candidateRef": "applicable-liquidity-rate",
+        "unitStatus": "SEMANTICALLY_INCOMPLETE",
+        "reasons": [
+          "independent verification found a MATERIAL discrepancy"
+        ]
+      },
+      {
+        "candidateRef": "ebitda",
+        "unitStatus": "SEMANTICALLY_INCOMPLETE",
+        "reasons": [
+          "independent verification found a MATERIAL discrepancy"
+        ]
+      },
+      {
+        "candidateRef": "first-lien-debt",
+        "unitStatus": "SEMANTICALLY_INCOMPLETE",
+        "reasons": [
+          "3 material inventory item(s) MISSING_FROM_COMPOSITION",
+          "3 material quantitative value(s) missing from the composed IR",
+          "independent verification found a MATERIAL discrepancy"
+        ]
+      },
+      {
+        "candidateRef": "interest-expense",
+        "unitStatus": "SEMANTICALLY_INCOMPLETE",
+        "reasons": [
+          "2 material inventory item(s) MISSING_FROM_COMPOSITION",
+          "3 material quantitative value(s) missing from the composed IR",
+          "independent verification found a MATERIAL discrepancy"
+        ]
+      },
+      {
+        "candidateRef": "net-income",
+        "unitStatus": "SEMANTICALLY_INCOMPLETE",
+        "reasons": [
+          "independent verification found a MATERIAL discrepancy"
+        ]
+      },
+      {
+        "candidateRef": "new-definitions",
+        "unitStatus": "REVIEW_REQUIRED",
+        "reasons": [
+          "compile status REVIEW_REQUIRED",
+          "not independently verified",
+          "operative state uncertain",
+          "3 unresolved cross-reference(s)"
+        ]
+      },
+      {
+        "candidateRef": "secured-net-leverage",
+        "unitStatus": "SEMANTICALLY_INCOMPLETE",
+        "reasons": [
+          "independent verification found a MATERIAL discrepancy"
+        ]
+      }
+    ],
+    "counts": {
+      "units": 7,
+      "complete": 0,
+      "incomplete": 6,
+      "reviewRequired": 1,
+      "materialMissingFromComposition": 5,
+      "unresolvedCrossReferences": 15
+    }
+  },
+  "wholeAgreementRun1": {
+    "status": "SEMANTICALLY_INCOMPLETE",
+    "reasons": [
+      "3 unit(s) SEMANTICALLY_INCOMPLETE; 9 material item(s) MISSING_FROM_COMPOSITION across the agreement"
+    ],
+    "units": [
+      {
+        "candidateRef": "debt-dsgr",
+        "unitStatus": "SEMANTICALLY_INCOMPLETE",
+        "reasons": [
+          "independent verification found a MATERIAL discrepancy"
+        ]
+      },
+      {
+        "candidateRef": "definitions-dsgr",
+        "unitStatus": "SEMANTICALLY_INCOMPLETE",
+        "reasons": [
+          "8 material inventory item(s) MISSING_FROM_COMPOSITION",
+          "10 material quantitative value(s) missing from the composed IR",
+          "independent verification found a MATERIAL discrepancy"
+        ]
+      },
+      {
+        "candidateRef": "definitions-lsb",
+        "unitStatus": "SEMANTICALLY_INCOMPLETE",
+        "reasons": [
+          "1 material inventory item(s) MISSING_FROM_COMPOSITION",
+          "2 material quantitative value(s) missing from the composed IR",
+          "independent verification found a MATERIAL discrepancy"
+        ]
+      }
+    ],
+    "counts": {
+      "units": 3,
+      "complete": 0,
+      "incomplete": 3,
+      "reviewRequired": 0,
+      "materialMissingFromComposition": 9,
+      "unresolvedCrossReferences": 97
+    }
+  },
+  "note": "Each 'agreement' here is the set of compiled units within one real validation run (regions that actually executed - ENVIRONMENT_BLOCKED regions excluded from the rollup, not silently counted as complete). Real per-package rollup across a FULL agreement (all provisions) was not exercised this session - each validation covers a bounded, pre-registered region set, not a full document."
+}

@@ -155,6 +155,15 @@ export type IREntityScope = { include: EntityClassTag[]; exclude: EntityClassTag
 interface IRExprBase {
   exprId: string;
   provenance?: SourceProvenance;
+  /**
+   * SEMANTIC ACCOUNTABILITY lineage (additive, optional): the Pass A
+   * inventoryItemIds this node consumes (docs/semantic-accountability/
+   * 04-composition-lineage-design.json). Metadata about accountability, not
+   * computational content - identity.ts excludes it from exprId exactly as
+   * it excludes provenance. Absent on nodes produced before this layer
+   * existed or by hand-authored fixtures.
+   */
+  inventoryItemIds?: string[];
 }
 
 // --- literals ---------------------------------------------------------------
@@ -460,6 +469,8 @@ export interface UnlimitedCapacity {
   /** The condition(s) that gate this unlimited capacity, if any (e.g. a ratio test) - most real unlimited baskets are still conditional, never a bare "no limit at all." */
   gatedBy: IRExpression | null;
   provenance?: SourceProvenance;
+  /** SEMANTIC ACCOUNTABILITY lineage (additive, optional) - see IRExprBase.inventoryItemIds. */
+  inventoryItemIds?: string[];
 }
 
 export type IRCapacityExpression = IRExpression | UnlimitedCapacity;
@@ -479,6 +490,8 @@ export interface IRCondition {
   referencesDefinitionId: string | null;
   description: string;
   provenance: SourceProvenance | null;
+  /** SEMANTIC ACCOUNTABILITY lineage (additive, optional) - see IRExprBase.inventoryItemIds. */
+  inventoryItemIds?: string[];
 }
 
 export interface IRException {
@@ -490,6 +503,8 @@ export interface IRException {
   permissionRuleId: string | null;
   conditions: IRCondition[];
   provenance: SourceProvenance | null;
+  /** SEMANTIC ACCOUNTABILITY lineage (additive, optional) - see IRExprBase.inventoryItemIds. */
+  inventoryItemIds?: string[];
 }
 
 // ---------------------------------------------------------------------------
@@ -506,6 +521,32 @@ export interface IRRuleDependency {
   relationshipType: ContractRuleRelationshipType;
   targetRuleId: string;
   description: string;
+  /** SEMANTIC ACCOUNTABILITY lineage (additive, optional) - the DEPENDENCY/REFERENCE/SHARED_CAP inventory item(s) this edge represents. */
+  inventoryItemIds?: string[];
+}
+
+/**
+ * SEMANTIC ACCOUNTABILITY (additive; docs/semantic-accountability/06-shared-
+ * cap-root-cause.json R-4): a dependency the source text REALLY states but
+ * whose target lives outside this compilation unit (another section compiled
+ * separately, or a reference that could not be resolved to a unique node).
+ * Before this field existed, normalize.ts silently DROPPED such edges
+ * ("dependency dropped rather than left dangling"), which is how the real
+ * §6.04(b) -> §6.01(b)(iii)/(c)(iii) shared-cap linkage vanished. Kept here
+ * as an explicit, never-resolved edge: it satisfies validate.ts's dangling-
+ * reference rule (no fake targetRuleId), feeds Pass C as an AMBIGUOUS
+ * (review) disposition, never a REPRESENTED one, and is never "guessed"
+ * into a real IRRuleDependency (mission §15).
+ */
+export interface IRUnresolvedDependency {
+  relationshipType: ContractRuleRelationshipType;
+  /** The exact reference text the composition emitted ("Section 6.01(b)(iii)", "clause (x) of this Section"). */
+  targetRef: string;
+  description: string;
+  /** Why it could not be resolved within this unit. */
+  reason: string;
+  /** SEMANTIC ACCOUNTABILITY lineage (additive, optional). */
+  inventoryItemIds?: string[];
 }
 
 // ---------------------------------------------------------------------------
@@ -524,6 +565,8 @@ export interface IRSharedCapacity {
   capExpression: IRCapacityExpression;
   memberRuleIds: string[];
   provenance: SourceProvenance | null;
+  /** SEMANTIC ACCOUNTABILITY lineage (additive, optional) - the SHARED_CAP inventory item(s) this resource represents. */
+  inventoryItemIds?: string[];
 }
 
 // ---------------------------------------------------------------------------
@@ -563,6 +606,8 @@ export interface IRRule {
   conditions: IRCondition[];
   exceptions: IRException[];
   dependsOn: IRRuleDependency[];
+  /** SEMANTIC ACCOUNTABILITY (additive, optional) - see IRUnresolvedDependency. Absent (not empty) on rules produced before this layer existed. */
+  unresolvedDependencies?: IRUnresolvedDependency[];
 
   operativeLineage: OperativeLineageRef | null;
 
@@ -575,6 +620,8 @@ export interface IRRule {
   compilerVersion: string | null;
   /** Content-hash of the source text/operative state this rule was derived from - the invalidation identity a future incremental-recompilation pass would key on (North Star §3), never wired up this phase. */
   sourceContentVersion: string | null;
+  /** SEMANTIC ACCOUNTABILITY lineage (additive, optional) - the inventory items this rule as a whole consumes (its posture/action/scope proposition); expression-level lineage lives on the nodes themselves. */
+  inventoryItemIds?: string[];
 }
 
 // ---------------------------------------------------------------------------
@@ -602,6 +649,8 @@ export interface IRDefinition {
   provenance: SourceProvenance | null;
   compilerVersion: string | null;
   sourceContentVersion: string | null;
+  /** SEMANTIC ACCOUNTABILITY lineage (additive, optional) - see IRRule.inventoryItemIds. */
+  inventoryItemIds?: string[];
 }
 
 // ---------------------------------------------------------------------------

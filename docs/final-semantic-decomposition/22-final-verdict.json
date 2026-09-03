@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FINAL_VERDICT",
+  "requirement": "Section 30: Return exactly one of the 7 named verdicts.",
+  "verdict": "SEMANTIC_DECOMPOSITION_NEEDS_ITERATION",
+  "reasoning": {
+    "whyNotClosed": "21-phase3-release-gate.json requires ALL of A-N true; D (A1-A6 >=5/6), E (B1-B4 qualifier gate), and G (whole-agreement recall >=95%) are false, and I (agreement-level dependencies) is only partial. The conjunction fails.",
+    "whyNotWholeAgreementGeneralizationFailed": "This verdict would apply if the architecture failed to generalize across families or if this mission's fix were shown to be package-specific tuning. Neither is true: H (substantive capture in every tested family) is MET, the sole production fix is a generic, family-agnostic tree-recursion correction verified across 8 real provision families spanning 2 packages neither of which is Superior, and 20-independent-audit.json found 0 benchmark-gaming blockers. The architecture generalizes; its RECALL on hard, unseen material is simply not yet high enough - a capability gap, not a generalization failure.",
+    "whyNotIrArchitectureDecisionRequired": "02-whole-agreement-semantic-family-audit.json found 0 of 11 families to be IR_GAP (9 REPRESENTABLE_NOW, 2 PARTIALLY_REPRESENTABLE-but-untested-before-this-mission, now confirmed representable by the reality check). No genuine IR primitive gap was discovered this mission that would require a redesign decision before further work can proceed.",
+    "whyNotTrustBoundaryRegression": "Every hard safety gate (F, J, K, L, M, N) is MET. 0 silent material omissions, 0 false trusted semantics, 14/14 false-credit controls, clean known-package regression, 0 net-new test regressions, 0 audit blockers. No safety property regressed.",
+    "whyNotEnvironmentBlocked": "All real, paid work (frozen holdout replay, 12-region reality check) executed successfully to completion within budget ($10.178 of the $15 authorized). No infrastructure, credential, or environment failure occurred.",
+    "whyNotValidationContaminated": "20-independent-audit.json found 0 benchmark-gaming anti-patterns; the synthetic tests and the reality-check region selection were both pre-registered source-first per Section 21's own method, and no GT was modified or newly authored from the holdout."
+  },
+  "whatWouldMoveThisToClosure": [
+    "A1-A6/B1-B4's own demonstrated run-to-run variance suggests real sampling noise is part of the residual gap, not purely a capability ceiling - repeated executions (beyond the 3 already run) or a stability-improving change (e.g. lower-temperature or multi-sample-and-reconcile compilation) may be needed before a single execution can be trusted to represent true capability.",
+    "The reality check's own MISSING_BASKET/MISSING_RULE finding class (8 of 36 material findings) points at a concrete, generalizable next investigation: why do specific quantitative values (percentages, ratios, dollar amounts) sometimes fail to appear anywhere in the compiled IR even when the surrounding rule/definition IS produced - a narrower, more tractable target than a full architecture change.",
+    "The SharedCapacity/cross-reference dependency gap (15-dependency-graph-check.json) is a second concrete, narrow target: 0 of 12 real regions produced a populated SharedCapacity object despite at least one confirmed real shared cap in the source text."
+  ]
+}

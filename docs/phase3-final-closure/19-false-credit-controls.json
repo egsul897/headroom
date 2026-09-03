@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "19-false-credit-controls",
+  "requirement": "Mission \u00a721: run the 14 permanent false-credit controls UNCHANGED against the frozen production (FINAL_PASS_A_STABILITY_SHA 1957105c58be77465745566167f1a05708d4d3b5). Required 14/14 PASS.",
+  "run": "npx vitest run tests/contract-model/semantic-accountability tests/contract-model/semantic-accountability-independence.test.ts -> 4 files, 169/169 passed at the final freeze 1957105 (the 139 pre-existing control-bearing tests are unchanged; 30 new v2/audit tests added alongside, none replaced or weakened)",
+  "controls": [
+    {
+      "id": "C1",
+      "name": "Self-declared REPRESENTED never accepted",
+      "test": "pass-bc-reconciliation.test.ts 'self-declared REPRESENTED is never accepted as a disposition'",
+      "pass": true
+    },
+    {
+      "id": "C2",
+      "name": "Dangling lineage never silently dropped",
+      "test": "pass-bc-reconciliation.test.ts dangling-lineage test",
+      "pass": true
+    },
+    {
+      "id": "C3",
+      "name": "Canonicalization resolves only genuine content-digest matches",
+      "test": "pass-bc-reconciliation.test.ts 'a genuinely bogus id of the same shape stays dangling'",
+      "pass": true
+    },
+    {
+      "id": "C4",
+      "name": "TRUNCATED/STRUCTURALLY_INCOMPLETE/UNKNOWN source never scored complete",
+      "test": "pass-a-inventory.test.ts I39 + \u00a712/\u00a713 source-context tests",
+      "pass": true
+    },
+    {
+      "id": "C5",
+      "name": "Unresolved cross-unit dependency preserved, never dropped",
+      "test": "I10/I29/I32/I40 tests",
+      "pass": true
+    },
+    {
+      "id": "C6",
+      "name": "Ambiguous reference never guessed",
+      "test": "I40 test",
+      "pass": true
+    },
+    {
+      "id": "C7",
+      "name": "Degenerate duplicate occurrence excluded WITH disclosure",
+      "test": "reference-resolver table-of-contents test",
+      "pass": true
+    },
+    {
+      "id": "C8",
+      "name": "A lineage claim without value correspondence earns no credit",
+      "test": "pass-bc-reconciliation.test.ts 'no false COMPLETE: ... links every item by lineage but carries wrong values'",
+      "pass": true
+    },
+    {
+      "id": "C9",
+      "name": "Anti-hallucination gate rejects unverifiable excerpts",
+      "test": "pass-a-inventory.test.ts anti-hallucination test; v2 addition: pass-a-stability.test.ts 'gap items pass the same anti-hallucination gate'",
+      "pass": true
+    },
+    {
+      "id": "C10",
+      "name": "Empty inventory over material-looking source is INVENTORY_EMPTY_SUSPECT",
+      "test": "pass-a-inventory.test.ts empty-inventory test",
+      "pass": true
+    },
+    {
+      "id": "C11",
+      "name": "Uninventoried values surfaced, never dropped",
+      "test": "pass-a-inventory.test.ts 'a value the model never inventoried is surfaced as UNINVENTORIED'; v2 extends the same discipline to TEXT: pass-a-stability.test.ts 'gap call returns nothing -> INVENTORY_COVERAGE_GAP with the residual span surfaced'",
+      "pass": true
+    },
+    {
+      "id": "C12",
+      "name": "Injected material omissions detected, never credited as complete",
+      "test": "I41-I44 synthetic injection gates (100% detection)",
+      "pass": true
+    },
+    {
+      "id": "C13",
+      "name": "INVENTORY_SKIPPED_NO_PROVIDER / INVENTORY_FAILED never treated as accountable",
+      "test": "pass-a-inventory.test.ts skip/fail tests; v2: INVENTORY_COVERAGE_GAP likewise blocks semanticallyComplete (pass-a-stability.test.ts Pass C test)",
+      "pass": true
+    },
+    {
+      "id": "C14",
+      "name": "Agreement-level rollup: one unit's material MISSING_FROM_COMPOSITION taints the agreement",
+      "test": "pass-bc-reconciliation.test.ts rollup test",
+      "pass": true
+    }
+  ],
+  "summary": {
+    "pass": 14,
+    "fail": 0
+  },
+  "v2Note": "No control was weakened or removed. The v2 change only ever ADDS items (through the identical gates) or SURFACES gaps; it never merges, deduplicates across runs, rewrites, or normalizes away a condition/exception. A fifteenth behaviour (INVENTORY_COVERAGE_GAP blocks completeness) is recorded under C11/C13 rather than as a new numbered control, to keep the permanent set at exactly 14 as the mission requires."
+}

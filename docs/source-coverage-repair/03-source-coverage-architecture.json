@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "03-source-coverage-architecture",
+  "module": "lib/contract-model/compiler/semantic-accountability/source-coverage.ts",
+  "questionAnswered": "What source material in this semantic unit has no semantic disposition?",
+  "principle": "Source is PRESUMED ACCOUNTABLE. Every character of every region gets exactly one disposition and the DEFAULT is UNACCOUNTED_SOURCE. Heuristics rank and suppress obvious noise; they never decide eligibility.",
+  "unitScope": [
+    "the primary OPERATIVE region",
+    "every CROSS_REFERENCE_EXPANSION region",
+    "every ENCLOSING_NODE_EXPANSION region"
+  ],
+  "dispositions": {
+    "COVERED_BY_INVENTORY": "anchored by a CRITICAL/MATERIAL item span",
+    "COVERED_BY_CHILD_DESCENT": "a lead-in whose enumerated children are all accounted, carrying no quantitative value of its own",
+    "ACCOUNTED_BY_EXTERNAL_UNIT": "a region owned by another semantic unit through an explicit link carrying owner ref AND owner inventory hash",
+    "STRUCTURAL_NOISE": "enumerators, punctuation and closed-class connectives only - the residue of splitting a parent unit",
+    "HEADING_OR_LABEL": "a section caption with no internal sentence terminator",
+    "CITATION_ONLY": "a bare cross-reference with no proposition",
+    "DEFINED_TERM_LABEL": "a quoted term label with no operative body",
+    "PUNCTUATION_OR_DELIMITER": "punctuation and whitespace",
+    "NON_SEMANTIC_FORMATTING": "page and table-of-contents furniture",
+    "UNACCOUNTED_SOURCE": "THE DEFAULT - nothing accounts for this text"
+  },
+  "whatIsNoLongerAGate": [
+    "any word list",
+    "any length floor",
+    "any coverage threshold",
+    "any region label or region kind",
+    "any quantitative-kind shortlist"
+  ],
+  "residueArithmetic": "Coverage is computed per RESIDUE inside each unit, not per unit. Partial coverage yields uncovered character runs that are classified on their own, so no fraction of a sentence can hide behind an adjacent covered span.",
+  "valueRule": "Every quantitative kind, every region. A value is unaccounted unless a CRITICAL/MATERIAL item anchors it; a value inside deterministically non-semantic source is not reported, and a fragment carrying a value is never dismissed as noise.",
+  "modelRole": "The gap re-inventory call is REMEDIATION. Detection is deterministic and runs before and after it; whatever the model returns, coverage is recomputed and any residue is surfaced.",
+  "unchanged": [
+    "Pass B composition",
+    "Pass C disposition semantics",
+    "the General Covenant IR",
+    "the Phase 3C verifier",
+    "the package graph",
+    "operative state",
+    "financial truth"
+  ]
+}

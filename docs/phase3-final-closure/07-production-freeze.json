@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "07-production-freeze",
+  "FINAL_PASS_A_STABILITY_SHA": "1957105c58be77465745566167f1a05708d4d3b5",
+  "previousProductionSha": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+  "frozenAt": "2026-09-02T16:51:49.929Z",
+  "tree": {
+    "treeHash": "be0a05b9f77de06cac308b526fa57db42f7a7b40733658dcc4ca7b38e13f500b",
+    "fileCount": 345,
+    "roots": [
+      "lib",
+      "app",
+      "prisma"
+    ]
+  },
+  "previousTreeHash": "1f94d5bda78201207d5295c93a765ce9a51d257b33a41f590f12c77556d2fc24",
+  "record": "docs/semantic-accountability/10-production-freeze.json (rewritten by scripts/semantic-accountability-freeze.ts --write at HEAD=1957105)",
+  "productionFilesChangedSincePreviousFreeze": [
+    "lib/contract-model/compiler/semantic-accountability/inventory.ts (v2 coverage accounting + targeted gap re-inventory + INVENTORY_COVERAGE_GAP; audit fixes B1/B2'')",
+    "lib/contract-model/compiler/semantic-accountability/prompt.ts (buildGapReinventoryUserContent)",
+    "lib/contract-model/compiler/semantic-accountability/types.ts (v2 versions, UncoveredOperativeSegment, GapReinventoryRecord, uninventoriedSegments, counts.uninventoriedSegments)",
+    "lib/contract-model/compiler/semantic-accountability/reconciliation.ts (counts/reasons + defense-in-depth: semanticallyComplete requires uninventoriedSegments.length === 0; disposition semantics unchanged)",
+    "lib/contract-model/compiler/semantic/types.ts (failure reason SEMANTIC_INVENTORY_COVERAGE_GAP)",
+    "lib/contract-model/compiler/semantic/compile.ts (maps INVENTORY_COVERAGE_GAP or any residual segment to that failure reason; no composition logic change)",
+    "inventory.ts again in commit 8c (re-audit residuals: ACCOUNTING_SPAN also gates quantitative-value coverage; conditional-tail segmentation with a lower 16-char floor for connective-opening tails; general 40-char floor and generic vocabulary retained)",
+    "reconciliation.ts again in commit 8c (a REVIEW_UNCERTAIN item left MISSING_FROM_COMPOSITION blocks semantic completeness)",
+    "semantic/types.ts + semantic/compile.ts again in commit 8c (failure reason SEMANTIC_ACCOUNTABILITY_INCOMPLETE)"
+  ],
+  "untouched": [
+    "Pass B composition (semantic/compile.ts model loop, normalize.ts, prompt)",
+    "Pass C disposition semantics",
+    "IR (lib/contract-model/ir/**)",
+    "Phase 3C verifier (semantic-verification/**)",
+    "operative state",
+    "package graph",
+    "source-context.ts",
+    "reference-resolver.ts",
+    "app/**",
+    "prisma/**"
+  ],
+  "frozenPaths": [
+    "lib/**",
+    "app/**",
+    "prisma/**",
+    "compiler prompts + configuration (lib/contract-model/compiler/**/prompt.ts, lib/contract-model/compiler/semantic/*.ts, lib/contract-model/compiler/semantic-accountability/*.ts)"
+  ],
+  "rule": "No production change after this record. Any post-freeze change is a NEW SHA and a new validation.",
+  "evidenceProvenanceNote": "The two holdout runs and the 3 completed whole-agreement run-1 regions were produced on 976a565 (v1 ids). A resumed whole-agreement run-1 will carry regions on both SHAs, disclosed per region by the harness's productionShaByRegion; cross-run comparison is semantic (span-based), never by exact id, so the v1->v2 id re-keying does not affect stability measurement.",
+  "freezeHistory": [
+    {
+      "sha": "bd3b5bec2c955e8c9c99a379e288e10e056a95e9",
+      "treeHash": "6bd4bbf7c088b237a9641651c2020a12a2cfd363cc03467bb1adb20d505eb56c",
+      "frozenAt": "2026-09-02T11:54:42.878Z",
+      "reason": "superseded after the independent audit (22) found blockers in the first v2 cut; remediation in commit 8a"
+    },
+    {
+      "sha": "c496751f91cbc91e5b27b87a1cc128e0757f5a11",
+      "treeHash": "1f94d5bda78201207d5295c93a765ce9a51d257b33a41f590f12c77556d2fc24",
+      "reason": "superseded after the second independent re-audit found residual coverage-accounting gaps; remediation in commit 8c"
+    }
+  ]
+}

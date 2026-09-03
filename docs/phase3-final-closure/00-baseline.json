@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "00-baseline",
+  "startingEvidenceHead": "55e29d6d1ccf684a1f8a3b6d864121709c3e4b4f",
+  "productionFreeze": {
+    "SEMANTIC_ACCOUNTABILITY_PRODUCTION_SHA": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+    "treeHash": "199ba3f88e5bc31ae25572f6b59054c7f4733ab99dffad234d7c9a4601e4b5c1",
+    "fileCount": 345,
+    "verifiedBy": "npx tsx scripts/semantic-accountability-freeze.ts -> 'production frozen and intact' (exit 0) at the start of this mission, before any change"
+  },
+  "headLineage": ["55e29d6 final quality gates, release gate, verdict", "fda13d9 whole-agreement run-1 preserved (3/12, ENVIRONMENT_BLOCKED)", "678248c holdout stability comparator", "147961a holdout run-2 preserved", "3e1822a holdout run-1 preserved", "420a95c re-freeze after canonicalization fix", "976a565 RVD-1 fix (frozen production SHA)"],
+  "existingReleaseGateArtifacts": "docs/semantic-accountability/00..26 present; 25-phase3-release-gate.json: 9 pass / 4 fail (G5 disposition stability 90.11%<95%; G9 whole-agreement ENVIRONMENT_BLOCKED; G10 shared-cap NOT_MEASURED; G12 audit AUD-15 mirrors G10)",
+  "rvd1Regression": "tests/contract-model/semantic-accountability/pass-bc-reconciliation.test.ts canonicalization tests present and passing (part of the 139)",
+  "syntheticCorpus": "npx vitest run tests/contract-model/semantic-accountability -> 3 files, 139/139 passed (pass-a-inventory 69, pass-bc-reconciliation 65, independence 5)",
+  "falseCreditControls": "docs/semantic-accountability/21-false-credit-controls.json: 14/14 pass, each backed by a named test in the 139 (C1-C3, C8, C14 reconciliation; C4-C7 source-context/reference-resolver; C9-C13 inventory/injected-omission gates I41-I44)",
+  "workingTreeClean": true,
+  "paidCallsMade": 0,
+  "note": "Recorded before any forensic script or production change. The two post-RVD-1 holdout runs (tests/fixtures/semantic-accountability-validation/holdout/run-1, run-2) are the ONLY inputs to the Pass A forensics; no new model calls."
+}

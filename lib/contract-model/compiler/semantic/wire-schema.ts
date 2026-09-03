@@ -76,6 +76,9 @@ export interface WireExpression {
   semanticDescription?: string;
   reason?: string;
   sourceEvidence?: string;
+
+  // SEMANTIC ACCOUNTABILITY lineage (additive): the frozen Pass A inventoryItemIds this node consumes.
+  inventoryItemIds?: string[];
 }
 
 export const WireExpressionSchema: z.ZodType<WireExpression> = z.lazy(() =>
@@ -117,6 +120,7 @@ export const WireExpressionSchema: z.ZodType<WireExpression> = z.lazy(() =>
     semanticDescription: z.string().optional(),
     reason: z.string().optional(),
     sourceEvidence: z.string().optional(),
+    inventoryItemIds: z.array(z.string()).optional(),
   })
 );
 
@@ -127,6 +131,7 @@ export const WireConditionSchema = z.object({
   description: z.string().default(""),
   citation: z.string().nullable().default(null),
   excerpt: z.string().nullable().default(null),
+  inventoryItemIds: z.array(z.string()).optional(),
 });
 export type WireCondition = z.infer<typeof WireConditionSchema>;
 
@@ -137,6 +142,7 @@ export const WireExceptionSchema = z.object({
   conditions: z.array(WireConditionSchema).default([]),
   citation: z.string().nullable().default(null),
   excerpt: z.string().nullable().default(null),
+  inventoryItemIds: z.array(z.string()).optional(),
 });
 export type WireException = z.infer<typeof WireExceptionSchema>;
 
@@ -145,6 +151,7 @@ export const WireDependencySchema = z.object({
   /** A localRef within this same call, OR a real, already-existing IR ruleId string the model learned via a getRuleDependency/getSharedCapContext tool call - normalize.ts tries localRef resolution first, then accepts the string verbatim as an external ruleId. */
   targetRef: z.string(),
   description: z.string().default(""),
+  inventoryItemIds: z.array(z.string()).optional(),
 });
 export type WireDependency = z.infer<typeof WireDependencySchema>;
 
@@ -166,6 +173,7 @@ export const WireRuleSchema = z.object({
   sufficiencyReasons: z.array(z.string()).default([]),
   citation: z.string().nullable().default(null),
   excerpt: z.string().nullable().default(null),
+  inventoryItemIds: z.array(z.string()).optional(),
 });
 export type WireRule = z.infer<typeof WireRuleSchema>;
 
@@ -179,6 +187,7 @@ export const WireDefinitionSchema = z.object({
   sufficiencyReasons: z.array(z.string()).default([]),
   citation: z.string().nullable().default(null),
   excerpt: z.string().nullable().default(null),
+  inventoryItemIds: z.array(z.string()).optional(),
 });
 export type WireDefinition = z.infer<typeof WireDefinitionSchema>;
 
@@ -190,8 +199,25 @@ export const WireSharedCapacitySchema = z.object({
   memberRefs: z.array(z.string()).default([]),
   citation: z.string().nullable().default(null),
   excerpt: z.string().nullable().default(null),
+  inventoryItemIds: z.array(z.string()).optional(),
 });
 export type WireSharedCapacity = z.infer<typeof WireSharedCapacitySchema>;
+
+/**
+ * SEMANTIC ACCOUNTABILITY (mission §8): the composition's explicit
+ * disposition for a frozen inventory item it did NOT consume into any IR
+ * node. Every MATERIAL/CRITICAL item must be either consumed (lineage) or
+ * dispositioned here; anything else is MISSING_FROM_COMPOSITION in Pass C.
+ * `disposition` is a tolerant string: INTENTIONALLY_NON_COMPUTATIONAL |
+ * UNSUPPORTED | AMBIGUOUS (REPRESENTED is inferred from lineage, never
+ * self-declared here).
+ */
+export const WireInventoryDispositionSchema = z.object({
+  inventoryItemId: z.string(),
+  disposition: z.string().default("AMBIGUOUS"),
+  note: z.string().default(""),
+});
+export type WireInventoryDisposition = z.infer<typeof WireInventoryDispositionSchema>;
 
 export const WireIRExtensionCandidateSchema = z.object({
   sourceEvidence: z.string().default(""),
@@ -206,6 +232,7 @@ export const SubmitCompilationSchema = z.object({
   definitions: z.array(WireDefinitionSchema).default([]),
   sharedCapacities: z.array(WireSharedCapacitySchema).default([]),
   irExtensionCandidates: z.array(WireIRExtensionCandidateSchema).default([]),
+  inventoryDispositions: z.array(WireInventoryDispositionSchema).optional(),
   overallNotes: z.array(z.string()).default([]),
 });
 export type SubmitCompilationInput = z.infer<typeof SubmitCompilationSchema>;

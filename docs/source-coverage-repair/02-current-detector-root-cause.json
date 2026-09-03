@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "02-current-detector-root-cause",
+  "question": "Why could the v2 detector drop material text silently?",
+  "rootCause": "Eligibility, not arithmetic. v2 asked 'what source material MATCHING MY HEURISTIC VOCABULARY has no disposition?'. A span had to clear FIVE CONJUNCTIVE filters before it was even a candidate to be reported.",
+  "theFiveFilters": [
+    {
+      "filter": "connective vocabulary (OPERATIVE_SEGMENT_RE)",
+      "where": "inventory.ts v2 :119, applied :165",
+      "howItSilences": "ordinary drafting that uses 'will cause', 'agrees to cause', 'undertakes', 'is obligated to', or no modal at all never matched, so it was never eligible at any coverage or length"
+    },
+    {
+      "filter": "40-character floor (SEGMENT_MIN_NON_WHITESPACE_CHARS)",
+      "where": "inventory.ts v2 :115",
+      "howItSilences": "a 29-character absolute prohibition and 26-35 character enumerated carve-outs fell under it"
+    },
+    {
+      "filter": "50% coverage threshold (SEGMENT_COVERED_THRESHOLD)",
+      "where": "inventory.ts v2 :118",
+      "howItSilences": "up to half of a boundary-free sentence disappeared behind one accepted span; the verdict was per SEGMENT, so the uncovered remainder was never examined on its own"
+    },
+    {
+      "filter": "punctuation/enumerator boundary (SEGMENT_BOUNDARY_RE)",
+      "where": "inventory.ts v2 :124",
+      "howItSilences": "a newline was a boundary only before an enumerator, so a line-broken reporting block or an extracted table was ONE segment; an enumerator prefix also defeated the '^'-anchored conditional-tail rule"
+    },
+    {
+      "filter": "region label ('operative')",
+      "where": "inventory.ts v2 :324 and reconciliation.ts v2 :426",
+      "howItSilences": "segments were computed for OPERATIVE regions only, and the value gate was filtered to the region literally named 'operative', so an incorporated definition's cap, condition and pledge were all exempt"
+    }
+  ],
+  "sixthDefect": {
+    "filter": "quantitative-kind shortlist",
+    "where": "reconciliation.ts v2 :426",
+    "howItSilences": "completeness counted only MONEY/PERCENT/RATIO, so an uncovered cure period (DAYS), notice period (PERIOD), maturity date (DATE) or incremental multiple (MULTIPLIER) blocked nothing"
+  },
+  "whatWasSound": "The DETECTED path. Once a gap was detected it could not be talked away: a non-covering gap item, a throwing gap call and non-material gap items all left it open, and both reconciliation and compile keyed on the residual list independently of the status string. The repair keeps all of that and replaces only the detection path.",
+  "deeperCause": "The polarity was inverted. v2 required text to LOOK operative before it earned scrutiny; a detector whose job is to find what the model missed cannot rely on recognising what the model missed."
+}

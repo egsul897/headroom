@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "07-implementation-results",
+  "startingEvidenceSha": "9dfdfe652ab0fc9b6199c51e55125d1e1ad85349",
+  "commits": {
+    "1": "dd8fdb3 architecture decision + shared-cap root cause (no production changes)",
+    "2": "3868ad7 Pass A semantic inventory + quantitative scanner + source-context sufficiency + reference resolver + independence test",
+    "3": "f7846b2 Pass B composition lineage (inventoryItemIds + inventoryDispositions) + Pass C deterministic reconciliation + agreement rollup",
+    "4": "d9fc8ba shared-cap / cross-reference dependency remediation (unresolvedDependencies preserved, tool resolution via generic resolver, prompt guidance)",
+    "5": "80ef420 generic synthetic corpus I1-I45, injected-omission gates, IRRuleDependency lineage, definition-span truncation fix, ratio-as-percent correspondence, section-inference guard",
+    "5b": "0e3d49b compilation-unit extension (mission section 13): window extended to its real unit boundary with provenance; compile.ts composes against the resolved unit; CompileOptions.sourceContextBudget",
+    "5c": "78c9fb1 section-bounded definition spans + growth-only unit extension (two real-text defects found by the zero-cost dry run over the frozen regions)",
+    "6": "(this commit) production freeze record (SEMANTIC_ACCOUNTABILITY_PRODUCTION_SHA=78c9fb1), provider health + cost plan, fixed validation harness, stability comparator - no production changes"
+  },
+  "architectureImplemented": {
+    "passA": "lib/contract-model/compiler/semantic-accountability/{inventory,quantitative,prompt,wire-schema,source-context,reference-resolver}.ts - source-only, frozen (content-hashed) before Pass B",
+    "passB": "lib/contract-model/compiler/semantic/{wire-schema,normalize,prompt,caller,compile,tools}.ts + lib/contract-model/ir/types.ts - additive lineage on every IR node kind, IRUnresolvedDependency, inventoryDispositions",
+    "passC": "lib/contract-model/compiler/semantic-accountability/{reconciliation,rollup}.ts - deterministic, no model decides a final status",
+    "verifier": "lib/contract-model/compiler/semantic-verification/* UNTOUCHED (enforced by tests/contract-model/semantic-accountability-independence.test.ts)"
+  },
+  "filesChanged": {
+    "production": [
+      "lib/contract-model/compiler/semantic-accountability/index.ts",
+      "lib/contract-model/compiler/semantic-accountability/inventory.ts",
+      "lib/contract-model/compiler/semantic-accountability/prompt.ts",
+      "lib/contract-model/compiler/semantic-accountability/quantitative.ts",
+      "lib/contract-model/compiler/semantic-accountability/reconciliation.ts",
+      "lib/contract-model/compiler/semantic-accountability/reference-resolver.ts",
+      "lib/contract-model/compiler/semantic-accountability/rollup.ts",
+      "lib/contract-model/compiler/semantic-accountability/source-context.ts",
+      "lib/contract-model/compiler/semantic-accountability/types.ts",
+      "lib/contract-model/compiler/semantic-accountability/wire-schema.ts",
+      "lib/contract-model/compiler/semantic/caller.ts",
+      "lib/contract-model/compiler/semantic/compile.ts",
+      "lib/contract-model/compiler/semantic/normalize.ts",
+      "lib/contract-model/compiler/semantic/prompt.ts",
+      "lib/contract-model/compiler/semantic/tools.ts",
+      "lib/contract-model/compiler/semantic/types.ts",
+      "lib/contract-model/compiler/semantic/wire-schema.ts",
+      "lib/contract-model/ir/identity.ts",
+      "lib/contract-model/ir/types.ts"
+    ],
+    "tests": [
+      "tests/contract-model/semantic-accountability-independence.test.ts",
+      "tests/contract-model/semantic-accountability/corpus.ts",
+      "tests/contract-model/semantic-accountability/harness.ts",
+      "tests/contract-model/semantic-accountability/pass-a-inventory.test.ts",
+      "tests/contract-model/semantic-accountability/pass-bc-reconciliation.test.ts"
+    ],
+    "scripts": [
+      "scripts/lib/semantic-accountability-regions.ts",
+      "scripts/semantic-accountability-cost-plan.ts",
+      "scripts/semantic-accountability-freeze.ts",
+      "scripts/semantic-accountability-shared-cap-trace.ts",
+      "scripts/semantic-accountability-stability.ts",
+      "scripts/semantic-accountability-synthetic-report.ts",
+      "scripts/semantic-accountability-validation.ts"
+    ],
+    "docs": [
+      "docs/semantic-accountability/00-baseline.json",
+      "docs/semantic-accountability/01-architecture-decision.json",
+      "docs/semantic-accountability/02-inventory-schema.json",
+      "docs/semantic-accountability/03-source-context-sufficiency.json",
+      "docs/semantic-accountability/04-composition-lineage-design.json",
+      "docs/semantic-accountability/05-reconciliation-design.json",
+      "docs/semantic-accountability/06-shared-cap-root-cause-trace.json",
+      "docs/semantic-accountability/06-shared-cap-root-cause.json",
+      "docs/semantic-accountability/07-implementation-results.json",
+      "docs/semantic-accountability/08-generic-inventory-tests.json",
+      "docs/semantic-accountability/09-generic-reconciliation-tests.json",
+      "docs/semantic-accountability/10-production-freeze.json",
+      "docs/semantic-accountability/11-provider-cost-plan.json"
+    ],
+    "count": 44
+  },
+  "syntheticGates": {
+    "passA": {
+      "criticalInventoryRecall": {
+        "measured": 1,
+        "required": 1,
+        "pass": true,
+        "expected": 117,
+        "recalled": 117
+      },
+      "materialInventoryRecall": {
+        "measured": 1,
+        "required": 0.98,
+        "pass": true,
+        "expected": 185,
+        "recalled": 185
+      },
+      "materialQuantitativeValueRecall": {
+        "measured": 1,
+        "required": 0.99,
+        "pass": true,
+        "expected": 122,
+        "recalled": 122
+      },
+      "silentMaterialAbsences": {
+        "measured": 0,
+        "required": 0,
+        "pass": true
+      },
+      "hallucinatedExcerptsAccepted": {
+        "measured": 0,
+        "note": "the scripted model emits only verbatim excerpts; the anti-hallucination gate is exercised by dedicated tests (1 fabricated excerpt rejected, 0 accepted)"
+      }
+    },
+    "passBC": {
+      "explicitDispositionRate": {
+        "measured": 1,
+        "required": 0.99,
+        "pass": true,
+        "materialItems": 185,
+        "breakdown": {
+          "material": 185,
+          "dispositioned": 185,
+          "represented": 179,
+          "ambiguous": 5,
+          "nonComputational": 1,
+          "unsupported": 0,
+          "missing": 0
+        }
+      },
+      "injectedOmissionDetection": {
+        "I41_item": {
+          "injections": 169,
+          "detected": 169,
+          "rate": 1,
+          "pass": true
+        },
+        "I42_money": {
+          "injections": 59,
+          "detected": 59,
+          "rate": 1,
+          "pass": true
+        },
+        "I43_percent": {
+          "injections": 14,
+          "detected": 14,
+          "rate": 1,
+          "pass": true
+        },
+        "I44_condition": {
+          "injections": 16,
+          "detected": 16,
+          "rate": 1,
+          "pass": true
+        },
+        "required": 1
+      },
+      "falseSemanticallyComplete": {
+        "measured": 0,
+        "required": 0,
+        "pass": true
+      },
+      "truncatedNeverComplete": {
+        "pass": true
+      }
+    },
+    "corpus": {
+      "scenarios": 45,
+      "namedScenarios": "I1-I45",
+      "whollySynthetic": true,
+      "sourceContextStates": {
+        "COMPLETE_LOCAL_SOURCE": 40,
+        "DEPENDENCY_EXPANDED_SOURCE": 4,
+        "TRUNCATED_SOURCE": 1
+      }
+    },
+    "testFiles": [
+      "tests/contract-model/semantic-accountability/pass-a-inventory.test.ts (69 tests)",
+      "tests/contract-model/semantic-accountability/pass-bc-reconciliation.test.ts (64 tests)",
+      "tests/contract-model/semantic-accountability-independence.test.ts (5 tests)"
+    ],
+    "allPass": true
+  },
+  "defectsFoundBySyntheticCorpusAndFixedBeforeFreeze": [
+    {
+      "id": "SD-1",
+      "layer": "source-context",
+      "finding": "a definition-prose window with no following definition was never flagged TRUNCATED (unit end defaulted to the window's own end)",
+      "fix": "unit end = next definition, else the deepest enclosing structural node's end, else document end"
+    },
+    {
+      "id": "SD-2",
+      "layer": "reconciliation",
+      "finding": "a SHARED_CAP/DEPENDENCY item whose section reference matched an unresolved dependency was inferred AMBIGUOUS even when its own quantitative value was absent from the IR",
+      "fix": "section/term inference requires no missing value; otherwise MISSING_FROM_COMPOSITION"
+    },
+    {
+      "id": "SD-3",
+      "layer": "reconciliation",
+      "finding": "a multiple ('2.5x') is encoded in the IR as a PERCENT scaling factor, which the RATIO/MULTIPLIER correspondence rule did not accept",
+      "fix": "RATIO/MULTIPLIER values also correspond to an equal PERCENT literal"
+    },
+    {
+      "id": "SD-4",
+      "layer": "normalize/IR",
+      "finding": "resolved within-unit dependsOn edges carried no lineage, so an in-unit DEPENDENCY item could only be accounted by term inference",
+      "fix": "IRRuleDependency.inventoryItemIds (additive) + Pass C walks dependsOn lineage"
+    },
+    {
+      "id": "SD-5",
+      "layer": "source-context",
+      "finding": "(real-text dry run) an inline definition detected ~250k chars earlier in the agreement captured every covenant window as its 'definition span', so 10 of 12 real regions reported TRUNCATED_SOURCE",
+      "fix": "a definition span is used only when it lives inside the anchor's SECTION-level unit and is clamped to it; a window at the head of a definitions section starts its own span"
+    },
+    {
+      "id": "SD-6",
+      "layer": "source-context",
+      "finding": "(real-text dry run) a definition span could end inside the supplied window, shrinking the resolved unit below what was supplied (2,900 chars -> 377 chars)",
+      "fix": "the resolved unit always contains the supplied window - extension only ever grows"
+    }
+  ],
+  "antiEnumeration": "No accountability logic is keyed to any agreement, metric name, section number, basket name or ground-truth amount; enforced by the benchmark-identifier scan in the independence test and demonstrated by I36-I38 (identical outcomes across arbitrary metric names, section numbering and clause order).",
+  "notYetMeasured": "Real-model inventory recall, composition disposition and stability (mission \u00a721-\u00a727) - measured only by the frozen real validations after the production freeze.",
+  "productionFreeze": {
+    "SEMANTIC_ACCOUNTABILITY_PRODUCTION_SHA": "78c9fb10f1973c2b73c899741aa23cb2acfc0a20",
+    "record": "docs/semantic-accountability/10-production-freeze.json",
+    "enforcement": "scripts/semantic-accountability-validation.ts re-hashes lib/app/prisma at start and refuses to run on drift"
+  },
+  "qualityGatesAtFreeze": {
+    "typescript": {
+      "command": "npx tsc --noEmit -p tsconfig.json",
+      "newErrors": 0,
+      "baselineDebt": "6 pre-existing errors, all in tests/foundation-audit/ (identical to the starting SHA)"
+    },
+    "lint": {
+      "command": "npx next lint",
+      "result": "No ESLint warnings or errors"
+    },
+    "vitest": {
+      "command": "npx vitest run",
+      "testFiles": "287 passed / 2 failed (289)",
+      "tests": "3335 passed / 2 failed (3337)",
+      "failures": [
+        "tests/contract-model/architecture-proposal-node-identity.test.ts > no new directory under tests/fixtures/unseen-packages/",
+        "tests/contract-model/phase-3f1-1-forensic-machinery.test.ts > no new package directory under tests/fixtures/unseen-packages/"
+      ],
+      "baselineDebt": "both failures are the pre-existing fixture-directory allowlist checks (they enumerate allowed prefixes conmed-/dsgr-/fwrg-/lsb-/phase-*) that the Mission-4 final-* evidence directories already violated at the starting SHA; this mission added no directory under tests/fixtures/unseen-packages/ (validation output goes to tests/fixtures/semantic-accountability-validation/), so the debt is exactly unchanged: 2 failing tests before, 2 after",
+      "newFailures": 0
+    }
+  }
+}

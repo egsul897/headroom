@@ -171,7 +171,10 @@ describe("POST-3F.2 Unit A2/A9/A11 - wired into compileCovenantToIR's safe-failu
     ]);
     const caller = new RealSemanticCaller("test", "test-model", client);
     const input = testCompilerInput({ operativeSourceText: "§9.01: incur Indebtedness up to $1; pay dividends up to $2." });
-    const result = await compileCovenantToIR(input, { caller });
+    // Accountability off: this test is about the definition-completeness check's silence on a rules-only source.
+    // The scripted client answers Pass B only, so with accountability on the unit is correctly REVIEW_REQUIRED for
+    // uninventoried source and the check under test would never be reached.
+    const result = await compileCovenantToIR(input, { caller, accountability: false });
     expect(result.status).toBe("COMPLETED"); // multiple independent rules still compile cleanly - no regression from Unit A
     expect(result.rules).toHaveLength(2);
     expect(result.definitionCompletenessCheck).toBeNull(); // zero quoted-term citations in this rules-only source - correctly silent

@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "22-canary-6-bare-numeric-content",
+  "mission": "SINGLE CANARY #6 - bare numeric contract content must not be dismissed as page furniture",
+  "startingSha": "ea41726c561b931e9b45da7ef742e5708d66d955",
+  "failureFixed": "A bare integer contractual value was classified NON_SEMANTIC_FORMATTING (page furniture) and disappeared from source accountability while semantic completeness remained true.",
+  "provenance": "independent red-team audit, finding 7, scenario S8 (docs/source-coverage-repair/13-independent-red-team-audit.json)",
+  "fixture": {
+    "fullSource": "The following baskets apply:\nGeneral Basket\n25000000\nAcquisition Basket\n40000000\nThe Borrower shall not exceed the applicable basket.",
+    "numericFragments": ["25000000", "40000000"],
+    "region": "operative (OPERATIVE)",
+    "structuralUnits": ["The following baskets apply:", "General Basket", "25000000", "Acquisition Basket", "40000000", "The Borrower shall not exceed the applicable basket."],
+    "inventorySpans": "four CRITICAL items: the lead-in, both basket labels, and the closing sentence. Neither amount is anchored.",
+    "extractedQuantitativeValues": "none - scanQuantitativeValues(\"25000000\") returns []",
+    "reproduced": true
+  },
+  "before": {
+    "dispositionOfNumericFragment": "NON_SEMANTIC_FORMATTING (\"page or table-of-contents furniture\")",
+    "coverageSpans": "[COVERED_BY_INVENTORY] lead-in | [COVERED_BY_INVENTORY] General Basket | [NON_SEMANTIC_FORMATTING] \"25000000\\n\" | [COVERED_BY_INVENTORY] Acquisition Basket | [NON_SEMANTIC_FORMATTING] \"40000000\\n\" | [COVERED_BY_INVENTORY] closing sentence",
+    "unaccountedSource": 0,
+    "unaccountedValues": 0,
+    "inventoryStatus": "INVENTORY_OK",
+    "reconciliation": "no failure reason",
+    "semanticallyComplete": true,
+    "note": "Both basket amounts - the entire economic content of the table - disappeared with no signal at any of the three enforcement points."
+  },
+  "earliestResponsibleBranch": {
+    "function": "classifyUnaccountedFragment",
+    "file": "lib/contract-model/compiler/semantic-accountability/source-coverage.ts",
+    "branch": "the PAGE_FURNITURE_RE test inside the values.length === 0 block",
+    "trace": "segmentSourceUnits splits at line breaks, so \"25000000\" is its own unit -> scanQuantitativeValues finds nothing in it -> no inventory span covers it -> classifyUnaccountedFragment runs -> PAGE_FURNITURE_RE fires FIRST and returns an accounted disposition.",
+    "secondBranchOnTheSameFragment": "Had PAGE_FURNITURE_RE alone been narrowed, the fragment would have fallen through to the STRUCTURAL_NOISE branch and been suppressed anyway: contentWords matches [A-Za-z] only, so a pure number scores zero content words. Verified pre-fix on \"4.00\", which reached STRUCTURAL_NOISE rather than page furniture. Both suppressions live in this one function and share one cause - letter-blindness - so closing the layer required closing both."
+  },
+  "rootCause": "PAGE_FURNITURE_RE was /^\\s*(?:page\\s+\\d+(?:\\s+of\\s+\\d+)?|[-–—\\s]*\\d+[-–—\\s]*|\\d+\\s+of\\s+\\d+)\\s*$/i. Its middle alternative matched ANY standalone integer, so numeric shape alone was taken as proof of pagination. The value route offered no backstop: the quantitative extractor's PATTERNS list has MONEY, PERCENT, RATIO, DAYS, PERIOD, DATE and MULTIPLIER but no bare-number kind, so an amount written without a currency symbol or unit produces zero values and the value guard never fires.",
+  "genericRuleImplemented": {
+    "invariant": "NUMERIC SHAPE ALONE DOES NOT PROVE PAGE FURNITURE. Pagination must be established by affirmative structure; unknown numeric source remains accountable.",
+    "paginationNowRequires": [
+      "the word \"page\" (\"Page 12\", \"Page 12 of 40\"), or",
+      "the \"N of M\" folio idiom (\"12 of 40\"), or",
+      "a number enclosed by dashes on BOTH sides (\"- 12 -\"), or",
+      "a dotted table-of-contents leader line (TOC_LEADER_RE, unchanged)"
+    ],
+    "removed": "the [-–—\\s]*\\d+[-–—\\s]* alternative - there is no longer any rule equivalent to \"standalone integer => page furniture\"",
+    "digitGuard": "A digit that survives enumerator stripping makes the fragment accountable, because the letter-blind rules cannot see it. Enumerator forms are stripped first, so \"(2)\" and \"3.\" remain STRUCTURAL_NOISE as before.",
+    "ordering": "The guard runs LAST, after pagination, citation, quoted-label and the caption rules, so every positive structural rule keeps first refusal. An ordering defect in the first draft of this patch put the guard before the caption rules and turned \"SECTION 7.04 Dispositions.\" into a gap; the existing test caught it and the guard was moved rather than the test changed.",
+    "noLocationMagic": "Nothing keys on position in the region, proximity to a newline, or any first-N/last-N character rule. Nothing keys on the fragment being short or isolated.",
+    "valueAccountingUntouched": "Per §6 the quantitative extractor was NOT expanded - no bare-number pattern was added. Recognised values still block independently and are still never overridden by a noise or furniture classification; that guard (values.length === 0 gating the whole suppression block) is unchanged."
+  },
+  "productionFilesChanged": [
+    "lib/contract-model/compiler/semantic-accountability/source-coverage.ts - PAGE_FURNITURE_RE narrowed to affirmative pagination structure; a trailing unexplained-digit guard added to classifyUnaccountedFragment"
+  ],
+  "attackAfter": {
+    "coverageSpans": "[COVERED_BY_INVENTORY] lead-in | [COVERED_BY_INVENTORY] General Basket | [UNACCOUNTED_SOURCE] \"25000000\" | [COVERED_BY_INVENTORY] Acquisition Basket | [UNACCOUNTED_SOURCE] \"40000000\" | [COVERED_BY_INVENTORY] closing sentence",
+    "unaccountedSource": 2,
+    "unaccountedValues": 0,
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+    "semanticallyComplete": false,
+    "nonSemanticFormattingSpansRemaining": 0,
+    "honestNote": "unaccountedValues stays 0 because the extractor still does not recognise a bare integer - by instruction. The SOURCE route is what now blocks, which is exactly the acceptable outcome §7 names."
+  },
+  "controls": {
+    "truePageNumber": {
+      "fixtures": ["Page 12", "Page 12 of 40", "12 of 40", "- 12 -", "Negative Covenants..............72"],
+      "result": "all still NON_SEMANTIC_FORMATTING and non-blocking, before and after"
+    },
+    "numericEnumeratorResidue": {
+      "fixtures": ["(a)", "(2)", "(iv)"],
+      "result": "all still STRUCTURAL_NOISE - the enumerator-stripping step keeps numeric enumerators suppressed"
+    },
+    "genericBareNumber": {
+      "fixture": "Threshold\\n75",
+      "before": "NON_SEMANTIC_FORMATTING, 0 unaccounted",
+      "after": "UNACCOUNTED_SOURCE, 1 unaccounted",
+      "classifierSweep": { "12": "UNACCOUNTED_SOURCE", "75": "UNACCOUNTED_SOURCE", "100": "UNACCOUNTED_SOURCE", "4.00": "UNACCOUNTED_SOURCE", "2028": "UNACCOUNTED_SOURCE" },
+      "verdict": "no covenant vocabulary, no currency, no unit anywhere in the fixture"
+    }
+  },
+  "priorCanariesStillHold": {
+    "canary2_S9": "\"except as provided in Section 6.02,\" still UNACCOUNTED_SOURCE; INVENTORY_COVERAGE_GAP; semanticallyComplete false",
+    "canary2b_I5": "both connectives still COVERED_BY_CONNECTIVE_OWNERSHIP; I5 passes in the corpus",
+    "canary3_RT8": "blanket span still clipped to its first independent proposition; RATIO and DAYS still unaccounted",
+    "canary4_RT4": "prepayment and cure obligations still surface; only the introducing fragment descends; both controls unchanged",
+    "canary5_S6": "quoted replacement covenant still UNACCOUNTED_SOURCE; quoted defined-term names still DEFINED_TERM_LABEL; generic quoted proposition still surfaced"
+  },
+  "tests": {
+    "added": 3,
+    "names": [
+      "canary #6 ATTACK: bare basket amounts are accountable, not page furniture",
+      "canary #6 TRUE PAGE-NUMBER CONTROL: affirmative pagination structure is still suppressed",
+      "canary #6 GENERIC BARE NUMBER: a number with no pagination structure around it is accountable"
+    ],
+    "sourceCoverageSuite": "99/99 passing (96 before, +3 new)",
+    "adversarialSuite": "2400 generated cases, 0 dangerous false negatives, unchanged - no new fuzzing added",
+    "existingTestsAltered": []
+  },
+  "corpusImpact": {
+    "before": "5 failed | 258 passed (263)",
+    "after": "5 failed | 261 passed (266)",
+    "delta": "+3 tests (the three new canary #6 tests, all green); ZERO new failures",
+    "newlySurfacedCorpusGaps": 0,
+    "remainingFailures": [
+      { "scenarioId": "I26", "status": "out of scope by mission instruction; unchanged since canary #4; classified TRUE_SAFETY_IMPROVEMENT in artifact 20" },
+      { "scenarioId": "I27", "status": "out of scope by mission instruction; unchanged since canary #2B; classified OBVIOUS_FALSE_GAP in artifact 18" }
+    ],
+    "realRegressions": 0,
+    "groundTruthChanged": false
+  },
+  "qualityGates": {
+    "typescript": "npx tsc --noEmit - 6 errors, all pre-existing in tests/foundation-audit/*; identical count to the starting SHA; zero in semantic-accountability or source-coverage",
+    "lint": "npx next lint --dir lib --dir tests --dir scripts - 1 error, pre-existing (@typescript-eslint/no-var-requires rule definition missing in tests/foundation-audit/amendment-operative-state-adversarial.test.ts); none in changed files"
+  },
+  "spend": { "paidModelCalls": 0, "vercelDeploys": 0, "providerProbe": "HTTP 402 quota_for_entity_exceeded, current spend $150.49 / limit $150.00 - unchanged from before this mission" },
+  "reproductionHarness": "scripts/source-coverage-canary6-reproduce.ts (committed; run with npx tsx)",
+  "canary6Solved": true,
+  "scopeDiscipline": "One failure fixed. ALL-CAPS headings, numbered captions (red-team finding 2, including the '5.02 ... 2,500,000' variant), 'jointly and severally', 'directly or indirectly', CJK, Cyrillic, general word-token digit blindness, spelled-out values, I26 and I27 all left untouched as instructed. The quantitative extractor was not expanded. No collateral gap repaired, no ground truth edited, no new fuzzing, no broad red-team, no paid validation."
+}

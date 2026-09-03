@@ -20,7 +20,7 @@ import { CovenantFamily, ContractRuleType, ContractRulePosture, ContractRuleRela
 import { CONTRACT_ACTIONS, CONTRACT_CONDITION_TYPES } from "../../types";
 import { withExpressionId, computeRuleId, computeDefinitionId, computeSharedCapId } from "../../ir/identity";
 import { inferType } from "../../ir/type-check";
-import { UNSUPPORTED_TYPE, type IRCapacityExpression, type IRCondition, type IRDefinition, type IRException, type IRExpression, type IRRule, type IRRuleDependency, type IRSharedCapacity, type IRValueType, type OperativeLineageRef, type RepresentationSufficiency, type SourceProvenance } from "../../ir/types";
+import { UNSUPPORTED_TYPE, type IRCapacityExpression, type IRCondition, type IRDefinition, type IRException, type IRExpression, type IRRule, type IRRuleDependency, type IRSharedCapacity, type IRUnresolvedDependency, type IRValueType, type OperativeLineageRef, type RepresentationSufficiency, type SourceProvenance, type UnlimitedCapacity } from "../../ir/types";
 import type { SubmitCompilationInput, WireCondition, WireDefinition, WireException, WireExpression, WireRule, WireSharedCapacity } from "./wire-schema";
 import type { IRExtensionCandidate, SemanticCompilerInput } from "./types";
 
@@ -108,7 +108,22 @@ function buildComposite(ctx: NormCtx, kind: string, fields: Record<string, unkno
   return withExpressionId({ ...(draft as unknown as Record<string, unknown>), type: computed } as unknown as IRExpression);
 }
 
+/**
+ * SEMANTIC ACCOUNTABILITY (additive): attaches the wire node's own Pass A
+ * lineage to the normalized IR node. Lineage is metadata (identity.ts excludes
+ * it from exprId), so attaching it after withExpressionId is exactly
+ * equivalent to attaching it before. Absent (never an empty array) when the
+ * wire node carried none, so pre-existing fixtures/snapshots are unchanged.
+ */
+function withLineage<T extends object>(node: T, ids: string[] | undefined): T {
+  return ids && ids.length > 0 ? ({ ...node, inventoryItemIds: [...ids] } as T) : node;
+}
+
 export function normalizeExpression(wire: WireExpression | null | undefined, ctx: NormCtx): IRExpression {
+  return withLineage(normalizeExpressionInner(wire, ctx), wire?.inventoryItemIds);
+}
+
+function normalizeExpressionInner(wire: WireExpression | null | undefined, ctx: NormCtx): IRExpression {
   if (!wire) return unsupportedNode(ctx, "no expression was provided where one was required", { kind: "MISSING" });
   const prov = provenanceFor(ctx, wire.citation, wire.excerpt);
 
@@ -248,7 +263,8 @@ export function normalizeCapacityExpression(wire: WireExpression | null | undefi
     if (gatedBy && inferType(gatedBy) !== "BOOLEAN" && inferType(gatedBy) !== UNSUPPORTED_TYPE) {
       warn(ctx, "UnlimitedCapacity.gatedBy did not resolve to BOOLEAN - kept as-is for validate.ts to flag structurally");
     }
-    return { kind: "UNLIMITED_CAPACITY", type: "CAPACITY", gatedBy, provenance: prov };
+    const unlimited: UnlimitedCapacity = { kind: "UNLIMITED_CAPACITY", type: "CAPACITY", gatedBy, provenance: prov };
+    return withLineage(unlimited, wire.inventoryItemIds);
   }
   return normalizeExpression(wire, ctx);
 }
@@ -257,40 +273,58 @@ function normalizeCondition(wire: WireCondition, ctx: NormCtx, index: number): I
   const conditionType = matchEnum(wire.conditionType, CONTRACT_CONDITION_TYPES) ?? "UNSUPPORTED";
   if (!matchEnum(wire.conditionType, CONTRACT_CONDITION_TYPES)) warn(ctx, `condition[${index}].conditionType "${wire.conditionType}" not recognized - normalized to UNSUPPORTED`);
   const prov = provenanceFor(ctx, wire.citation, wire.excerpt) ?? null;
-  return {
-    conditionId: `${ctx.scopePath}.condition[${index}]`,
-    conditionType,
-    expression: wire.expression ? normalizeExpression(wire.expression, childCtx(ctx, wire.expression, `condition[${index}].expression`)) : null,
-    referencesDefinitionId: wire.referencesDefinitionId,
-    description: wire.description,
-    provenance: prov,
-  };
+  return withLineage(
+    {
+      conditionId: `${ctx.scopePath}.condition[${index}]`,
+      conditionType,
+      expression: wire.expression ? normalizeExpression(wire.expression, childCtx(ctx, wire.expression, `condition[${index}].expression`)) : null,
+      referencesDefinitionId: wire.referencesDefinitionId,
+      description: wire.description,
+      provenance: prov,
+    },
+    wire.inventoryItemIds
+  );
 }
 
 function normalizeException(wire: WireException, ctx: NormCtx, index: number, appliesToRuleId: string): IRException {
   const prov = provenanceFor(ctx, wire.citation, wire.excerpt) ?? null;
   const permissionRuleId = wire.permissionRef ? ctx.resolveRuleRef(wire.permissionRef) : null;
   if (wire.permissionRef && !permissionRuleId) warn(ctx, `exception[${index}].permissionRef "${wire.permissionRef}" did not resolve to any rule in this compilation attempt`);
-  return {
-    exceptionId: `${ctx.scopePath}.exception[${index}]`,
-    appliesToRuleId,
-    description: wire.description,
-    permissionRuleId,
-    conditions: wire.conditions.map((c, i) => normalizeCondition(c, ctx, i)),
-    provenance: prov,
-  };
+  return withLineage(
+    {
+      exceptionId: `${ctx.scopePath}.exception[${index}]`,
+      appliesToRuleId,
+      description: wire.description,
+      permissionRuleId,
+      conditions: wire.conditions.map((c, i) => normalizeCondition(c, ctx, i)),
+      provenance: prov,
+    },
+    wire.inventoryItemIds
+  );
 }
 
-function normalizeDependency(wire: WireRule["dependsOn"][number], ctx: NormCtx, index: number): IRRuleDependency | null {
+/**
+ * SEMANTIC ACCOUNTABILITY (docs/semantic-accountability/06-shared-cap-root-
+ * cause.json, R-4): a dependsOn whose targetRef is neither a same-batch
+ * localRef nor a real ir-rule: id used to be DROPPED here with only a
+ * warning string left behind - which is exactly how the real, model-emitted
+ * §6.04(b) -> §6.01(b)(iii)/(c)(iii) shared-cap linkage vanished. It is now
+ * preserved as an explicit IRUnresolvedDependency (no fake targetRuleId, so
+ * validate.ts's dangling-reference rule is untouched); Pass C dispositions
+ * the corresponding DEPENDENCY/REFERENCE inventory item AMBIGUOUS (review),
+ * never REPRESENTED and never silently absent. The target is never guessed.
+ */
+function normalizeDependency(wire: WireRule["dependsOn"][number], ctx: NormCtx, index: number): { resolved: IRRuleDependency } | { unresolved: IRUnresolvedDependency } {
   const relationshipType = matchEnum(wire.relationshipType, Object.values(ContractRuleRelationshipType));
   const finalType = relationshipType ?? "REQUIRES";
   if (!relationshipType) warn(ctx, `dependsOn[${index}].relationshipType "${wire.relationshipType}" not recognized - defaulted to REQUIRES`);
   const targetRuleId = ctx.resolveRuleRef(wire.targetRef);
   if (!targetRuleId) {
-    warn(ctx, `dependsOn[${index}].targetRef "${wire.targetRef}" did not resolve - dependency dropped rather than left dangling`);
-    return null;
+    const reason = `dependsOn[${index}].targetRef "${wire.targetRef}" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped`;
+    warn(ctx, reason);
+    return { unresolved: withLineage({ relationshipType: finalType, targetRef: wire.targetRef, description: wire.description, reason }, wire.inventoryItemIds) };
   }
-  return { relationshipType: finalType, targetRuleId, description: wire.description };
+  return { resolved: withLineage({ relationshipType: finalType, targetRuleId, description: wire.description }, wire.inventoryItemIds) };
 }
 
 /** Deterministic sufficiency-consistency enforcement (task §27) - applied to every rule/definition AFTER normalization, independent of what the model itself claimed. */
@@ -324,6 +358,8 @@ export interface NormalizedCompilation {
   definitions: IRDefinition[];
   sharedCapacities: IRSharedCapacity[];
   irExtensionCandidates: IRExtensionCandidate[];
+  /** SEMANTIC ACCOUNTABILITY: the composition's own explicit dispositions for inventory items it did not consume (passed through verbatim for Pass C; never interpreted here). */
+  inventoryDispositions: NonNullable<SubmitCompilationInput["inventoryDispositions"]>;
   warnings: NormalizationWarning[];
 }
 
@@ -366,7 +402,9 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
     const capacityExpression = normalizeCapacityExpression(wireRule.capacityExpression, ctx);
     const conditions = wireRule.conditions.map((c, i) => normalizeCondition(c, ctx, i));
     const exceptions = wireRule.exceptions.map((e, i) => normalizeException(e, ctx, i, ruleId));
-    const dependsOn = wireRule.dependsOn.map((d, i) => normalizeDependency(d, ctx, i)).filter((d): d is IRRuleDependency => d !== null);
+    const normalizedDependencies = wireRule.dependsOn.map((d, i) => normalizeDependency(d, ctx, i));
+    const dependsOn = normalizedDependencies.flatMap((d) => ("resolved" in d ? [d.resolved] : []));
+    const unresolvedDependencies = normalizedDependencies.flatMap((d) => ("unresolved" in d ? [d.unresolved] : []));
 
     const rawSufficiency = matchEnum(wireRule.sufficiency, SUFFICIENCY_VALUES) ?? "AMBIGUOUS";
     const consistent = enforceSufficiencyConsistency(rawSufficiency, wireRule.sufficiencyReasons, capacityExpression, input.operativeLineage);
@@ -389,6 +427,7 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
       conditions,
       exceptions,
       dependsOn,
+      ...(unresolvedDependencies.length > 0 ? { unresolvedDependencies } : {}),
       operativeLineage: input.operativeLineage,
       sufficiency: consistent.sufficiency,
       sufficiencyReasons: [...consistent.reasons, ...(warnings.filter((w) => w.scope.startsWith(ctx.scopePath)).map((w) => w.message))],
@@ -396,7 +435,7 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
       compilerVersion: input.compilerAlgorithmVersion,
       sourceContentVersion: null,
     };
-    return rule;
+    return withLineage(rule, wireRule.inventoryItemIds);
   });
 
   const definitions: IRDefinition[] = submission.definitions.map((wireDef) => {
@@ -421,23 +460,27 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
       compilerVersion: input.compilerAlgorithmVersion,
       sourceContentVersion: null,
     };
-    return definition;
+    return withLineage(definition, wireDef.inventoryItemIds);
   });
 
   const sharedCapacities: IRSharedCapacity[] = submission.sharedCapacities.map((wireCap) => {
     const ctx = baseCtx(`sharedCap[${wireCap.localRef}]`);
     const capExpression = normalizeCapacityExpression(wireCap.capExpression, ctx) ?? unsupportedNode(ctx, "sharedCapacity capExpression missing or invalid", wireCap.capExpression);
     const memberRuleIds = wireCap.memberRefs.map(resolveRuleRef).filter((id): id is string => !!id);
-    return {
-      sharedCapId: sharedCapIdByLocalRef.get(wireCap.localRef)!,
-      companyId,
-      instrumentKey,
-      description: wireCap.description,
-      capExpression,
-      memberRuleIds,
-      provenance: provenanceFor(ctx, wireCap.citation, wireCap.excerpt) ?? null,
-    };
+    return withLineage(
+      {
+        sharedCapId: sharedCapIdByLocalRef.get(wireCap.localRef)!,
+        companyId,
+        instrumentKey,
+        description: wireCap.description,
+        capExpression,
+        memberRuleIds,
+        provenance: provenanceFor(ctx, wireCap.citation, wireCap.excerpt) ?? null,
+      },
+      wireCap.inventoryItemIds
+    );
   });
 
-  return { rules, definitions, sharedCapacities, irExtensionCandidates: submission.irExtensionCandidates, warnings };
+  // `?? []` - a hand-built SubmitCompilationInput (pre-existing fixtures/tests) may predate the inventoryDispositions field; tolerated, never a crash.
+  return { rules, definitions, sharedCapacities, irExtensionCandidates: submission.irExtensionCandidates, inventoryDispositions: submission.inventoryDispositions ?? [], warnings };
 }

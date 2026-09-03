@@ -1,0 +1,462 @@
+{
+  "run": {
+    "mode": "whole-agreement",
+    "runNumber": 1,
+    "productionSha": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+    "productionTreeHash": "199ba3f88e5bc31ae25572f6b59054c7f4733ab99dffad234d7c9a4601e4b5c1"
+  },
+  "region": {
+    "id": "investments-dsgr",
+    "claimIds": [],
+    "family": "RESTRICTED_PAYMENTS_INVESTMENTS",
+    "documentId": "dsgr-a",
+    "label": "DSGR 2022 A&R Credit Agreement - SECTION 6.04 Investments",
+    "sourceSectionRef": "6.04",
+    "window": {
+      "charStart": 455225,
+      "charEnd": 459225,
+      "chars": 4000
+    },
+    "anchor": {
+      "nodeId": "structural-node:9701a9f7b9b2f32310575d9d",
+      "nodeKey": "dsgr-a::6.04",
+      "sectionRef": "6.04",
+      "charStart": 455225,
+      "charEnd": 463076
+    },
+    "structuralNodeIds": [
+      "structural-node:9701a9f7b9b2f32310575d9d"
+    ],
+    "structuralNodeKeys": [
+      "dsgr-a::6.04"
+    ]
+  },
+  "operativeSourceText": "SECTION 6.04. Investments, Loans, Advances, Guarantees and Acquisitions . No Loan Party will, nor will it permit any Restricted\nSubsidiary to, form any subsidiary after the Effective Date, or purchase, hold or acquire (including pursuant to any merger or amalgamation with any Person that was not a Loan Party and a wholly owned Restricted Subsidiary prior to such merger) any\nEquity Interests, evidences of indebtedness or other securities (including any option, warrant or other right to acquire any of the foregoing) of, make or permit to exist any loans or advances to, Guarantee any obligations of, or make or permit to\nexist any investment or any other interest in, any other Person, or purchase or otherwise acquire (in one transaction or a series of transactions) any assets of any other Person constituting a business unit (whether through purchase of assets,\nmerger or otherwise), except:\n\n111\n\n(a) Permitted Investments;\n\n(b) investments by the Loan Parties in Equity Interests in their respective Restricted Subsidiaries that are Loan Parties; provided\nthat any such Equity Interests held by a Loan Party shall be pledged pursuant to the applicable Security Agreement; provided further that the aggregate outstanding amount of investments by U.S. Loan Parties in Restricted Subsidiaries\nthat are not U.S. Loan Parties made after the Effective Date, together with the aggregate principal amount of all outstanding Indebtedness permitted under Section 6.01(b)(iii) and the aggregate amount of Guarantees permitted under\nSection 6.01(c)(iii), shall not at any time exceed an amount equal to 15% of EBITDA.\n\n(c) loans or advances made by any Loan Party to\nany other Loan Party or Restricted Subsidiary and made by any Restricted Subsidiary that is not a Loan Party to a Loan Party or any other Restricted Subsidiary, provided that (i) any such loans and advances made by a Loan Party shall be\nevidenced by a promissory note pledged pursuant to the applicable Security Agreement, and (ii) loans and advances by U.S. Loan Parties to Restricted Subsidiaries that are not Loan Parties shall be subject to the terms of\nSection 6.01(b)(iii), determined without regard to any write-downs or write-offs.\n\n(d) Guarantees permitted under Section 6.01;\n\n(e) notes payable, or stock or other securities issued by account debtors to a Loan Party pursuant to negotiated agreements with respect\nto settlement of such account debtor’s Accounts in the ordinary course of business, consistent with past practices;\n\n(f) investments\nin the form of Swap Agreements permitted by Section 6.07;\n\n(g) investments constituting deposits described in clauses (c) and\n(d) of the definition of the term “Permitted Encumbrances”;\n\n(h) Permitted Acquisitions;\n\n(i) investments of any Person existing at the time such Person becomes a Restricted Subsidiary (other than in connection with any designation\nof an Unrestricted Subsidiary as a Restricted Subsidiary) of a Loan Party or consolidates or merges with a Loan Party or any of such party’s Restricted Subsidiaries (including in connection with a Permitted Acquisition), so long as such\ninvestments were not made in contemplation of such Person becoming a Restricted Subsidiary or of such merger;\n\n(j) the Closing Date\nAcquisitions;\n\n(k) investments in existence on the date hereof and described in Schedule 6.04 , and investments consisting of any\nmodification, replacement, renewal, refinancing, reinvestment, or extension of any such investment; provided that the amount of any such investment is not increased from the amount of such investment on the Effective Date except pursuant to\nthe terms of such investment (including in respect of any unused commitment), plus any accrued but unpaid interest (including any portion thereof which is payable in kind in accordance with the terms of such modified, extended, renewed, refinanced\nor replaced investment) and premium payable by the terms of such investment thereon and fees and expenses associated therewith, in ea",
+  "contextBundle": {
+    "items": 52,
+    "sufficiencyState": "BUDGET_EXCEEDED",
+    "originatingStructuralNodeIds": [
+      "structural-node:9701a9f7b9b2f32310575d9d"
+    ],
+    "unresolvedDependencies": 33,
+    "error": null
+  },
+  "compile": {
+    "status": "FAILED",
+    "failureReasons": [
+      "PROVIDER_FAILURE"
+    ],
+    "errorDetail": null,
+    "rules": [],
+    "definitions": [],
+    "sharedCapacities": [],
+    "irExtensionCandidates": [],
+    "unresolvedIssues": [
+      "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}"
+    ],
+    "toolCallLog": [],
+    "inputHasUnresolvedOperativeEvidence": true,
+    "unresolvedEvidenceItemIds": [
+      "context-item:a0a66058dc78ce111bbc6ac714253bc76d9d633362e1bfa6c352d7d609a5a2a0"
+    ],
+    "definitionCompletenessCheck": null,
+    "sourceContext": {
+      "state": "DEPENDENCY_EXPANDED_SOURCE",
+      "regions": [
+        {
+          "regionId": "operative",
+          "kind": "OPERATIVE",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:9701a9f7b9b2f32310575d9d",
+          "sectionRef": "6.04",
+          "charStart": 455225,
+          "charEnd": 463076,
+          "text": "SECTION 6.04. Investments, Loans, Advances, Guarantees and Acquisitions . No Loan Party will, nor will it permit any Restricted\nSubsidiary to, form any subsidiary after the Effective Date, or purchase, hold or acquire (including pursuant to any merger or amalgamation with any Person that was not a Loan Party and a wholly owned Restricted Subsidiary prior to such merger) any\nEquity Interests, evidences of indebtedness or other securities (including any option, warrant or other right to acquire any of the foregoing) of, make or permit to exist any loans or advances to, Guarantee any obligations of, or make or permit to\nexist any investment or any other interest in, any other Person, or purchase or otherwise acquire (in one transaction or a series of transactions) any assets of any other Person constituting a business unit (whether through purchase of assets,\nmerger or otherwise), except:\n\n111\n\n(a) Permitted Investments;\n\n(b) investments by the Loan Parties in Equity Interests in their respective Restricted Subsidiaries that are Loan Parties; provided\nthat any such Equity Interests held by a Loan Party shall be pledged pursuant to the applicable Security Agreement; provided further that the aggregate outstanding amount of investments by U.S. Loan Parties in Restricted Subsidiaries\nthat are not U.S. Loan Parties made after the Effective Date, together with the aggregate principal amount of all outstanding Indebtedness permitted under Section 6.01(b)(iii) and the aggregate amount of Guarantees permitted under\nSection 6.01(c)(iii), shall not at any time exceed an amount equal to 15% of EBITDA.\n\n(c) loans or advances made by any Loan Party to\nany other Loan Party or Restricted Subsidiary and made by any Restricted Subsidiary that is not a Loan Party to a Loan Party or any other Restricted Subsidiary, provided that (i) any such loans and advances made by a Loan Party shall be\nevidenced by a promissory note pledged pursuant to the applicable Security Agreement, and (ii) loans and advances by U.S. Loan Parties to Restricted Subsidiaries that are not Loan Parties shall be subject to the terms of\nSection 6.01(b)(iii), determined without regard to any write-downs or write-offs.\n\n(d) Guarantees permitted under Section 6.01;\n\n(e) notes payable, or stock or other securities issued by account debtors to a Loan Party pursuant to negotiated agreements with respect\nto settlement of such account debtor’s Accounts in the ordinary course of business, consistent with past practices;\n\n(f) investments\nin the form of Swap Agreements permitted by Section 6.07;\n\n(g) investments constituting deposits described in clauses (c) and\n(d) of the definition of the term “Permitted Encumbrances”;\n\n(h) Permitted Acquisitions;\n\n(i) investments of any Person existing at the time such Person becomes a Restricted Subsidiary (other than in connection with any designation\nof an Unrestricted Subsidiary as a Restricted Subsidiary) of a Loan Party or consolidates or merges with a Loan Party or any of such party’s Restricted Subsidiaries (including in connection with a Permitted Acquisition), so long as such\ninvestments were not made in contemplation of such Person becoming a Restricted Subsidiary or of such merger;\n\n(j) the Closing Date\nAcquisitions;\n\n(k) investments in existence on the date hereof and described in Schedule 6.04 , and investments consisting of any\nmodification, replacement, renewal, refinancing, reinvestment, or extension of any such investment; provided that the amount of any such investment is not increased from the amount of such investment on the Effective Date except pursuant to\nthe terms of such investment (including in respect of any unused commitment), plus any accrued but unpaid interest (including any portion thereof which is payable in kind in accordance with the terms of such modified, extended, renewed, refinanced\nor replaced investment) and premium payable by the terms of such investment thereon and fees and expenses associated therewith, in each case, as in existence on the Effective Date;\n\n(l) (i) loans or advances made by a Loan Party to (or Guarantees provided on behalf of) its employees on an arms-length basis in the\nordinary course of business consistent with past practices for travel and entertainment expenses, relocation costs and similar purposes up to a maximum of $5,000,000 in the aggregate at any one time outstanding and\n(ii) non-cash loans made by a Loan Party or any Restricted Subsidiary to officers, directors, governors, managers and employees of any Loan Party or any Restricted Subsidiary, which are used by such\nPersons to simultaneously purchase Equity Interests (other than Disqualified Stock) of the Company;\n\n112\n\n(m) investments consisting of purchases and acquisitions of inventory, supplies, material,\nequipment, or other similar assets, or of services, in each case, in the ordinary course of business;\n\n(n) the non-exclusive licensing of intellectual property (i) in the ordinary course of business or (ii) which do not materially interfere with the ordinary conduct of the business of the Company or any Restricted\nSubsidiary and do not secure any Indebtedness;\n\n(o) deposits required by any Governmental Authority or public utility, including with\nrespect to Taxes and other similar charges to the extent the applicable obligations would not otherwise constitute an Event of Default;\n\n(p) investments in prepaid expenses, negotiable instruments held for collection and lease, utility and workers compensation, performance and\nsimilar deposits entered into as a result of the operations of the business, in each case, in the ordinary course of business;\n\n(q) other\ninvestments in an amount not to exceed the Available Amount immediately prior to the time of the making of such investment, so long as at the time of making such investment and immediately after giving effect (including giving effect on a pro forma\nbasis) thereto, (i) no Event of Default then exists or would result therefrom and (ii) the Total Net Leverage Ratio is not greater than the ratio that is 0.5 to 1.00 lower than the maximum Total Net Leverage Ratio permitted under\nSection 6.12; and\n\n(r) other investments, loans or advances in an aggregate outstanding amount for all such investments, loans and\nadvances not to exceed at any time an amount equal to the greater of $25,000,000 and 25% of Applicable EBITDA, in each case, determined at the time such investment, loan or advance is made; provided that before and immediately after giving\neffect to such investment, loan or advance, no Event of Default has occurred and is continuing or would result therefrom.\n\nFor purposes of the definition\nof “Unrestricted Subsidiary” and the covenants described under Section 5.15 and under this Section 6.04: (x) “investments” shall include the portion (proportionate to the Company’s or the applicable Restricted\nSubsidiary’s Equity Interests in such Subsidiary) of the fair market value of the net assets of a Subsidiary at the time that such Subsidiary is designated an Unrestricted Subsidiary; provided , that upon a\nre-designation of such Subsidiary as a Restricted Subsidiary, the Company (or the applicable Restricted Subsidiary owning such re-designated Subsidiary) shall be deemed\nto continue to have a permanent “investment” in an Unrestricted Subsidiary in an amount (if positive) equal to (A) the Company’s or such Restricted Subsidiary’s “investment” in such Subsidiary at the time of such re-designation, less (B) the portion (proportionate to the Company’s or the applicable Restricted Subsidiary’s Equity Interests in such Subsidiary) of the fair market value of the net assets of such\nSubsidiary at the time of such re-designation; and (y) any property transferred to or from an Unrestricted Subsidiary shall be valued at its fair market value at the time of such transfer.\n\n",
+          "expandedFor": null,
+          "truncatedAtBudget": false,
+          "unitExtension": {
+            "originalCharStart": 455225,
+            "originalCharEnd": 459225,
+            "unitBoundary": "ANCHOR_NODE",
+            "note": "supplied window [455225, 459225) extended to the anchoring unit 6.04 [455225, 463076) - 3849 non-whitespace chars of the unit's own text were outside the window"
+          }
+        },
+        {
+          "regionId": "xref-1",
+          "kind": "CROSS_REFERENCE_EXPANSION",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:2cf556d70cbb729dd2a8996b",
+          "sectionRef": "6.01(b)",
+          "charStart": 436374,
+          "charEnd": 437466,
+          "text": "(b) Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted\nSubsidiary owing to any Borrower or any other Restricted Subsidiary, provided that (i) Indebtedness of any Restricted Subsidiary that is not a Loan Party owing to any Borrower or any other Loan Party shall be subject to the limitations\nset forth in Section 6.04, (ii) Indebtedness of any Loan Party owing to any Restricted Subsidiary that is not a Loan Party shall be subordinated to the Secured Obligations on terms reasonably satisfactory to the Administrative Agent, and\n(iii) the aggregate principal amount of Indebtedness of Restricted Subsidiaries that are not U.S. Loan Parties owing to U.S. Loan Parties at any time outstanding, together with the aggregate amount of all outstanding Guarantees permitted under\nSection 6.01(c)(iii) and the aggregate amount of all outstanding investments by U.S. Loan Parties in Restricted Subsidiaries that are not U.S. Loan Parties made after the Effective Date under Section 6.04(b), shall not at any time exceed\nan amount equal to 15% of Applicable EBITDA;\n\n",
+          "expandedFor": {
+            "referenceText": "Section 6.01(b)(iii)",
+            "resolution": "RESOLVED_VIA_ENCLOSING_NODE",
+            "note": "\"6.01(b)(iii)\" is not its own structural node; resolved to the nearest enclosing node \"6.01(b)\" - the requested sub-clause is inline text within it"
+          },
+          "truncatedAtBudget": false,
+          "unitExtension": null
+        },
+        {
+          "regionId": "xref-2",
+          "kind": "CROSS_REFERENCE_EXPANSION",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:692919f375fefcedeed3791b",
+          "sectionRef": "6.01(c)",
+          "charStart": 437466,
+          "charEnd": 438426,
+          "text": "(c) Guarantees by any Borrower of Indebtedness of any Restricted Subsidiary and by any\nRestricted Subsidiary of Indebtedness of any Borrower or any other Restricted Subsidiary, provided that (i) the Indebtedness so Guaranteed is permitted by this Section 6.01, (ii) Guarantees by any Borrower or other Loan Party of\nIndebtedness of any Restricted Subsidiary that is not a Loan Party shall be subject to Section 6.04, (iii) the aggregate principal amount of Indebtedness of Restricted Subsidiaries that are not U.S. Loan Parties that is Guaranteed by U.S. Loan\nParties at any time outstanding, together with the aggregate amount of all outstanding Indebtedness permitted under Section 6.01(b)(iii) and the aggregate amount of all outstanding investments by U.S. Loan Parties in Restricted Subsidiaries\nthat are not U.S. Loan Parties made after the Effective Date under Section 6.04(b), shall not at any time exceed an amount equal to 15% of Applicable EBITDA;\n\n",
+          "expandedFor": {
+            "referenceText": "Section 6.01(c)(iii)",
+            "resolution": "RESOLVED_VIA_ENCLOSING_NODE",
+            "note": "\"6.01(c)(iii)\" is not its own structural node; resolved to the nearest enclosing node \"6.01(c)\" - the requested sub-clause is inline text within it"
+          },
+          "truncatedAtBudget": false,
+          "unitExtension": null
+        },
+        {
+          "regionId": "xref-3",
+          "kind": "CROSS_REFERENCE_EXPANSION",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:0ed7b844fc4eba6d04f7d065",
+          "sectionRef": "6.01",
+          "charStart": 436142,
+          "charEnd": 442142,
+          "text": "SECTION 6.01. Indebtedness . No Loan Party\nwill, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:\n\n(a) the Secured\nObligations and the Guaranteed Obligations;\n\n106\n\n(b) Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted\nSubsidiary owing to any Borrower or any other Restricted Subsidiary, provided that (i) Indebtedness of any Restricted Subsidiary that is not a Loan Party owing to any Borrower or any other Loan Party shall be subject to the limitations\nset forth in Section 6.04, (ii) Indebtedness of any Loan Party owing to any Restricted Subsidiary that is not a Loan Party shall be subordinated to the Secured Obligations on terms reasonably satisfactory to the Administrative Agent, and\n(iii) the aggregate principal amount of Indebtedness of Restricted Subsidiaries that are not U.S. Loan Parties owing to U.S. Loan Parties at any time outstanding, together with the aggregate amount of all outstanding Guarantees permitted under\nSection 6.01(c)(iii) and the aggregate amount of all outstanding investments by U.S. Loan Parties in Restricted Subsidiaries that are not U.S. Loan Parties made after the Effective Date under Section 6.04(b), shall not at any time exceed\nan amount equal to 15% of Applicable EBITDA;\n\n(c) Guarantees by any Borrower of Indebtedness of any Restricted Subsidiary and by any\nRestricted Subsidiary of Indebtedness of any Borrower or any other Restricted Subsidiary, provided that (i) the Indebtedness so Guaranteed is permitted by this Section 6.01, (ii) Guarantees by any Borrower or other Loan Party of\nIndebtedness of any Restricted Subsidiary that is not a Loan Party shall be subject to Section 6.04, (iii) the aggregate principal amount of Indebtedness of Restricted Subsidiaries that are not U.S. Loan Parties that is Guaranteed by U.S. Loan\nParties at any time outstanding, together with the aggregate amount of all outstanding Indebtedness permitted under Section 6.01(b)(iii) and the aggregate amount of all outstanding investments by U.S. Loan Parties in Restricted Subsidiaries\nthat are not U.S. Loan Parties made after the Effective Date under Section 6.04(b), shall not at any time exceed an amount equal to 15% of Applicable EBITDA;\n\n(d) Indebtedness owed to any Person providing workers’ compensation, health, disability or other employee benefits or property, casualty\nor liability insurance, pursuant to reimbursement or indemnification obligations to such Person, in each case incurred in the ordinary course of business;\n\n(e) Indebtedness of any Loan Party in respect of performance bonds, bid bonds, appeal bonds, surety bonds and similar obligations, in each case\nprovided in the ordinary course of business;\n\n(f) Indebtedness existing on the date hereof and listed on Schedule 6.01 and any Refinance\nIndebtedness in respect thereof;\n\n(g) Indebtedness which represents extensions, renewals, refinancing or replacements (such Indebtedness\nbeing so extended, renewed, refinanced or replaced being referred to herein as the “ Refinance Indebtedness ”) of any of the Indebtedness described in clause (f) hereof (such Indebtedness being referred to herein as the\n“ Original Indebtedness ”); provided that (i) such Refinance Indebtedness does not increase the principal amount thereof (other than by the amount of any unused commitments thereunder, accrued interest, fees, defeasance\ncosts and premium (including call and tender premiums), if any, underwriting discounts, fees, commissions and expenses (including original issue discount, upfront fees and similar items), in each case, in connection with the refinancing of such\nOriginal Indebtedness and the incurrence or issuance of such Refinance Indebtedness), (ii) any Liens securing such Refinance Indebtedness are not extended to any additional property of any Loan Party or any Restricted Subsidiary (other than any\naccessions, improvements or additions to the property securing the Original Indebtedness and after acquired property to the extent applicable), (iii) no Loan Party or any Restricted Subsidiary that is not originally obligated with respect to\nrepayment of such Original Indebtedness is required to become obligated with respect to such Refinance Indebtedness, (iv) such Refinance Indebtedness does not result in a shortening of the average weighted maturity of such Original\nIndebtedness, (v) the terms of such Refinance Indebtedness are not less favorable to the obligor thereunder than the original terms of such Original Indebtedness and (vi) if such Original Indebtedness was subordinated in right of payment\nto the Obligations or any of the other Secured Obligations, then the terms and conditions of such Refinance Indebtedness must include subordination terms and conditions that are at least as favorable to the Administrative Agent and the Lenders as\nthose that were applicable to such Original Indebtedness;\n\n107\n\n(h) Indebtedness of any Person that is designated as a Restricted Subsidiary after the date\nhereof; provided that (i) such Indebtedness exists at the time such Person becomes a Restricted Subsidiary and is not created in contemplation of or in connection with such Person becoming a Restricted Subsidiary and (ii) the\naggregate principal amount of Indebtedness permitted by this clause (h), shall not exceed $20,000,000 at any time outstanding;\n\n(i) to the\nextent constituting Indebtedness, customer deposits and advance payments (including progress payments) received in the ordinary course of business from customers for goods and services purchased in the ordinary course of business;\n\n(j) Indebtedness (i) in respect of Banking Services and other netting services, overdraft protections, employee credit card programs,\nautomatic clearinghouse arrangements and similar arrangements, in each case, in connection with deposit accounts and incurred in the ordinary course of business and (ii) arising from the honoring by a bank or other financial inst",
+          "expandedFor": {
+            "referenceText": "Section 6.01",
+            "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+            "note": "2 occurrences share \"6.01\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken"
+          },
+          "truncatedAtBudget": true,
+          "unitExtension": null
+        },
+        {
+          "regionId": "xref-4",
+          "kind": "CROSS_REFERENCE_EXPANSION",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:5554d4fd9ffb369643064f1d",
+          "sectionRef": "6.07",
+          "charStart": 468205,
+          "charEnd": 468878,
+          "text": "SECTION 6.07. Swap Agreements . No Loan\nParty will, nor will it permit any Restricted Subsidiary to, enter into any Swap Agreement, except (a) Swap Agreements entered into to hedge or mitigate risks to which any Loan Party or any Restricted Subsidiary has actual exposure (other than\nthose in respect of Equity Interests of any Loan Party or any Restricted Subsidiary), and (b) Swap Agreements entered into in order to effectively cap, collar or exchange interest rates (from floating to fixed rates, from one floating rate to\nanother floating rate or otherwise) with respect to any interest-bearing liability or investment of any Loan Party or any Restricted Subsidiary.\n\n",
+          "expandedFor": {
+            "referenceText": "Section 6.07",
+            "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+            "note": "2 occurrences share \"6.07\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken"
+          },
+          "truncatedAtBudget": false,
+          "unitExtension": null
+        },
+        {
+          "regionId": "xref-5",
+          "kind": "CROSS_REFERENCE_EXPANSION",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:9d65f46ccd0c4023ca905660",
+          "sectionRef": "6.12",
+          "charStart": 476724,
+          "charEnd": 478798,
+          "text": "SECTION 6.12. Financial Covenants .\n\n(a) Interest Coverage Ratio . The Company will not permit the Interest Coverage Ratio, for any period of four consecutive fiscal quarters\nof the Company ending on the last day of any fiscal quarter of the Company (commencing with the fiscal quarter ending June 30, 2022), to be less than 3.00 to 1.00.\n\n(b) Total Net Leverage Ratio . The Company will not permit the Total Net Leverage Ratio, on the last day of any fiscal quarter of the\nCompany ending on or after June 30, 2022, to be greater than (i) 4.00 to 1.00 as of the end of each fiscal quarter of the Company ending on or after June 30, 2022 but prior to March 31, 2024, (ii) 3.75 to 1.00 as of the\nend of each fiscal quarter of the Company ending on or after March 31, 2024 but prior to March 31, 2026 and (iii) 3.50 to 1.00 as of the end of each fiscal quarter of the Company ending on or after March 31, 2026; provided\nthat, upon the written request of the Borrower Representative delivered to the Administrative Agent in connection with any Material Acquisition, the maximum Total Net Leverage Ratio permitted under Section 6.12(b)(i), (ii) or (iii), as\napplicable, for each of the four fiscal quarters of the Company ending immediately following the consummation date of such Material Acquisition shall be increased by 0.50 to 1.00 (any such period of four consecutive fiscal quarters being referred to\nas a “ Total Net Leverage Ratio Adjustment ”); provided further, however, that such Total Net Leverage Ratio Adjustment shall occur (i) only twice during the term of this Agreement, and (ii) only to the extent that no\nEvent of Default has then occurred and is continuing. Promptly following receipt of notice from the Borrower Representative of its election to give effect to a Total Net Leverage Ratio Adjustment, the Administrative Agent shall give written notice\nof the Total Net Leverage Ratio Adjustment to the Lenders, and this Agreement shall be automatically amended, without any further action by any party, to reflect such Total Net Leverage Ratio Adjustment.\n\n",
+          "expandedFor": {
+            "referenceText": "Section 6.12",
+            "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+            "note": "2 occurrences share \"6.12\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken"
+          },
+          "truncatedAtBudget": false,
+          "unitExtension": null
+        },
+        {
+          "regionId": "xref-6",
+          "kind": "CROSS_REFERENCE_EXPANSION",
+          "documentId": "dsgr-a",
+          "sourceNodeId": "structural-node:88108e38b93c80943e5cb3a8",
+          "sectionRef": "5.15",
+          "charStart": 433509,
+          "charEnd": 435898,
+          "text": "SECTION 5.15. Designation of Unrestricted Subsidiaries . The Company may at any time after the Effective Date designate any\nRestricted Subsidiary as an Unrestricted Subsidiary or any Unrestricted Subsidiary as a Restricted Subsidiary; provided that (a) immediately before and after giving effect (including giving effect on a pro forma basis) to any such designation,\n(i) no Default or Event of Default shall have occurred and be continuing or would result therefrom and (ii) the Company shall be in pro forma compliance with the financial covenants set forth in Section 6.12, (b) no Loan Party may be\ndesignated as an Unrestricted Subsidiary, (c) no Subsidiary may be designated as an Unrestricted Subsidiary if, after such designation, it would be a “Restricted Subsidiary” (or analogous concept) for the purpose of any secured\nIndebtedness permitted hereunder, (d) no Unrestricted Subsidiary may (i) own Equity Interests in any Restricted Subsidiary or (ii) hold a Lien on any property of a Loan Party or any Restricted Subsidiary that is not a Subsidiary to be\nso designated as an Unrestricted Subsidiary, and (e) after giving effect to such designation as an Unrestricted Subsidiary, such Unrestricted Subsidiary shall not own any intellectual property that is material to the business of the Company and\nthe Restricted Subsidiaries; provided further that the Company and its Restricted Subsidiaries may grant non-exclusive licenses of any intellectual property to any Unrestricted Subsidiary in the ordinary\ncourse of business so long as the Company and its Restricted Subsidiaries retain the beneficial ownership and the same rights to use such intellectual property as held prior to such license. The designation of any Subsidiary as an Unrestricted\nSubsidiary after the Effective Date shall constitute an investment by the Company (or the applicable Restricted Subsidiary that owns such designated Subsidiary) therein at the date of designation as set forth in Section 6.04. The designation of\nany Unrestricted Subsidiary as a Restricted Subsidiary shall constitute (i) the incurrence at the time of designation of any investment, Indebtedness or Liens of such Subsidiary existing at such time and (ii) a return on any investment by\nthe Company (or the applicable Restricted Subsidiary that owns such designated Subsidiary) in Unrestricted Subsidiaries pursuant to Section 6.04.\n\n",
+          "expandedFor": {
+            "referenceText": "Section 5.15",
+            "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+            "note": "2 occurrences share \"5.15\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken"
+          },
+          "truncatedAtBudget": false,
+          "unitExtension": null
+        }
+      ],
+      "unresolvedReferences": [],
+      "reasons": [],
+      "totalChars": 21039,
+      "budgetChars": 24000
+    },
+    "frozenInventory": {
+      "candidateRef": "semantic-accountability:whole-agreement:investments-dsgr",
+      "items": [],
+      "uninventoriedValues": [
+        {
+          "kind": "PERCENT",
+          "rawText": "15%",
+          "normalizedValue": 0.15,
+          "unit": "%",
+          "charStart": 1600,
+          "charEnd": 1603,
+          "regionId": "operative"
+        },
+        {
+          "kind": "MONEY",
+          "rawText": "$5,000,000",
+          "normalizedValue": 5000000,
+          "unit": "USD",
+          "charStart": 4337,
+          "charEnd": 4347,
+          "regionId": "operative"
+        },
+        {
+          "kind": "RATIO",
+          "rawText": "0.5 to 1.00",
+          "normalizedValue": 0.5,
+          "unit": "x",
+          "charStart": 6062,
+          "charEnd": 6073,
+          "regionId": "operative"
+        },
+        {
+          "kind": "MONEY",
+          "rawText": "$25,000,000",
+          "normalizedValue": 25000000,
+          "unit": "USD",
+          "charStart": 6338,
+          "charEnd": 6349,
+          "regionId": "operative"
+        },
+        {
+          "kind": "PERCENT",
+          "rawText": "25%",
+          "normalizedValue": 0.25,
+          "unit": "%",
+          "charStart": 6354,
+          "charEnd": 6357,
+          "regionId": "operative"
+        },
+        {
+          "kind": "PERCENT",
+          "rawText": "15%",
+          "normalizedValue": 0.15,
+          "unit": "%",
+          "charStart": 1065,
+          "charEnd": 1068,
+          "regionId": "xref-1"
+        },
+        {
+          "kind": "PERCENT",
+          "rawText": "15%",
+          "normalizedValue": 0.15,
+          "unit": "%",
+          "charStart": 933,
+          "charEnd": 936,
+          "regionId": "xref-2"
+        },
+        {
+          "kind": "PERCENT",
+          "rawText": "15%",
+          "normalizedValue": 0.15,
+          "unit": "%",
+          "charStart": 1297,
+          "charEnd": 1300,
+          "regionId": "xref-3"
+        },
+        {
+          "kind": "PERCENT",
+          "rawText": "15%",
+          "normalizedValue": 0.15,
+          "unit": "%",
+          "charStart": 2257,
+          "charEnd": 2260,
+          "regionId": "xref-3"
+        },
+        {
+          "kind": "MONEY",
+          "rawText": "$20,000,000",
+          "normalizedValue": 20000000,
+          "unit": "USD",
+          "charStart": 5356,
+          "charEnd": 5367,
+          "regionId": "xref-3"
+        },
+        {
+          "kind": "PERIOD",
+          "rawText": "four consecutive fiscal quarters",
+          "normalizedValue": 4,
+          "unit": "quarter",
+          "charStart": 142,
+          "charEnd": 174,
+          "regionId": "xref-5"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "June 30, 2022",
+          "normalizedValue": null,
+          "unit": "June 30, 2022",
+          "charStart": 293,
+          "charEnd": 306,
+          "regionId": "xref-5"
+        },
+        {
+          "kind": "RATIO",
+          "rawText": "3.00 to 1.00",
+          "normalizedValue": 3,
+          "unit": "x",
+          "charStart": 325,
+          "charEnd": 337,
+          "regionId": "xref-5"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "June 30, 2022",
+          "normalizedValue": null,
+          "unit": "June 30, 2022",
+          "charStart": 501,
+          "charEnd": 514,
+          "regionId": "xref-5"
+        },
+        {
+          "kind": "RATIO",
+          "rawText": "4.00 to 1.00",
+          "normalizedValue": 4,
+          "unit": "x",
+          "charStart": 539,
+          "charEnd": 551,
+          "regionId": "xref-5"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "June 30, 2022",
+          "normalizedValue": null,
+          "unit": "June 30, 2022",
+          "charStart": 623,
+          "charEnd": 636,
+          "regionId": "xref-5"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "March 31, 2024",
+          "normalizedValue": null,
+          "unit": "March 31, 2024",
+          "charStart": 650,
+          "charEnd": 664,
+          "regionId": "xref-5"
+        },
+        {
+          "kind": "RATIO",
+          "rawText": "3.75 to 1.00",
+          "normalizedValue": 3.75,
+          "unit": "x",
+          "charStart": 671,
+          "charEnd": 683,
+          "regionId": "xref-5"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "March 31, 2024",
+          "normalizedValue": null,
+          "unit": "March 31, 2024",
+          "charStart": 755,
+          "charEnd": 769,
+          "regionId": "xref-5"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "March 31, 2026",
+          "normalizedValue": null,
+          "unit": "March 31, 2026",
+          "charStart": 783,
+          "charEnd": 797,
+          "regionId": "xref-5"
+        },
+        {
+          "kind": "RATIO",
+          "rawText": "3.50 to 1.00",
+          "normalizedValue": 3.5,
+          "unit": "x",
+          "charStart": 808,
+          "charEnd": 820,
+          "regionId": "xref-5"
+        },
+        {
+          "kind": "DATE",
+          "rawText": "March 31, 2026",
+          "normalizedValue": null,
+          "unit": "March 31, 2026",
+          "charStart": 892,
+          "charEnd": 906,
+          "regionId": "xref-5"
+        },
+        {
+          "kind": "PERIOD",
+          "rawText": "four fiscal quarters",
+          "normalizedValue": 4,
+          "unit": "quarter",
+          "charStart": 1181,
+          "charEnd": 1201,
+          "regionId": "xref-5"
+        },
+        {
+          "kind": "RATIO",
+          "rawText": "0.50 to 1.00",
+          "normalizedValue": 0.5,
+          "unit": "x",
+          "charStart": 1319,
+          "charEnd": 1331,
+          "regionId": "xref-5"
+        },
+        {
+          "kind": "PERIOD",
+          "rawText": "four consecutive fiscal quarters",
+          "normalizedValue": 4,
+          "unit": "quarter",
+          "charStart": 1352,
+          "charEnd": 1384,
+          "regionId": "xref-5"
+        }
+      ],
+      "inventoryStatus": "INVENTORY_FAILED",
+      "inventoryStatusReason": "inventory call failed: 402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}",
+      "rejectedUnverifiableItems": 0,
+      "rejectedDuplicateItems": 0,
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "frozenContentHash": "c6109ccb675c5c9cfd98510ef2cf31b23f853a8388fa275376e7709c6b6eb933",
+      "frozenAt": "2026-09-02T06:45:43.563Z",
+      "algorithmVersion": "semantic-accountability.v1",
+      "promptVersion": "semantic-inventory-prompt.v1",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "telemetryCostUsd": null
+    },
+    "accountability": null,
+    "rawModelOutput": null,
+    "provider": "vercel-ai-gateway",
+    "model": "anthropic/claude-sonnet-5",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "semantic-accountability-compiler-prompt.v4",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-02T06:45:43.892Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 327,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}"
+    },
+    "cacheKey": "6a6d1c83fc840597e7dee92ab42e36561b0e1251c2d75dcdadfd7793418d5c3c",
+    "compiledAt": "2026-09-02T06:45:43.892Z"
+  },
+  "verify": null,
+  "verifierOperativeSource": "SUPPLIED_WINDOW"
+}

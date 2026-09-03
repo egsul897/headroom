@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "27-canary-11-cjk-substantive-source",
+  "mission": "SINGLE CANARY #11 - CJK substantive source must not be dismissed as punctuation or structural noise",
+  "startingSha": "943e44d90e78905584a90c38d54431a7a770be00",
+  "failureFixed": "Substantive CJK source was classified PUNCTUATION_OR_DELIMITER because the classifier assumed Latin/ASCII word structure, and disappeared from source accountability while semantic completeness remained true.",
+  "provenance": "independent red-team audit, finding 6, scenario S7. Recovered VERBATIM from the red team's own preserved script /tmp/rt/e2e.ts line 90 - not translated, not substituted.",
+  "fixture": {
+    "fullSource": "The Borrower shall comply with all Applicable Laws.\n借款人不得在抵押物上设定任何留置权或其他担保权益。\nThe Agent may inspect the books of the Borrower.",
+    "uncoveredFragment": "借款人不得在抵押物上设定任何留置权或其他担保权益。",
+    "scriptCharacteristics": "25 code units; first U+501F, last U+3002 IDEOGRAPHIC FULL STOP; \\p{L} count 24; \\p{Script=Han} count 24; ASCII [A-Za-z0-9] count 0",
+    "inventorySpans": "two CRITICAL items anchoring lines 1 and 3. The CJK clause is anchored by nothing.",
+    "segmentation": "line breaks isolate the clause as its own unit - segmentation is not the failing layer",
+    "extractedQuantitativeValues": "none",
+    "reproduced": true
+  },
+  "before": {
+    "disposition": "PUNCTUATION_OR_DELIMITER (\"punctuation and delimiters only, no alphanumeric content\")",
+    "coverageSpans": "[COVERED_BY_INVENTORY] line 1 | [PUNCTUATION_OR_DELIMITER] \"\\n借款人不得在抵押物上设定任何留置权或其他担保权益。\\n\" | [COVERED_BY_INVENTORY] line 3",
+    "unaccountedSource": 0,
+    "inventoryStatus": "INVENTORY_OK",
+    "reconciliation": "no failure reason",
+    "semanticallyComplete": true
+  },
+  "earliestResponsibleBranch": {
+    "function": "classifyUnaccountedFragment",
+    "file": "lib/contract-model/compiler/semantic-accountability/source-coverage.ts",
+    "branch": "the SECOND statement of the function - the punctuation test - which runs before the values guard and before every other rule",
+    "retracedAfterCanaries2to10": "Yes. The audit's original diagnosis named this line and it is still exact: nothing in canaries #2-#10 touched the punctuation test. It is the first branch to grant an accounted disposition, and it fires before anything else can.",
+    "secondBranchOnTheSamePath": "Had only the punctuation test been widened, the fragment would have fallen through to the STRUCTURAL_NOISE branch: WORD_RE is [A-Za-z]-only, so contentWords scores zero words for any non-Latin text and the fragment would have been dismissed as 'the residue of splitting a parent unit'. Verified by reasoning through the flow before patching; both are on the directly responsible path and both were closed."
+  },
+  "asciiAssumptionResponsible": {
+    "primary": "`!/[A-Za-z0-9]/.test(trimmed)` -> PUNCTUATION_OR_DELIMITER. 'No ASCII alphanumerics' was taken to mean 'punctuation and delimiters only'. A Chinese sentence has zero ASCII letters, so it satisfied the test perfectly.",
+    "secondary": "`WORD_RE = /[A-Za-z][A-Za-z'-]*/g` feeding contentWords, which feeds the STRUCTURAL_NOISE test. Any script outside Basic Latin produces zero content words.",
+    "scopeOfAudit": "only the directly responsible path was audited, per §4. WORD_RE itself was NOT rewritten - it still drives the closed-class filter, the nominal-label tests and connective ownership exactly as before. No repository-wide Unicode refactor."
+  },
+  "genericInvariantImplemented": {
+    "invariant": "NON-LATIN TEXT IS NOT PUNCTUATION. Punctuation is the absence of any letter or digit in ANY script, and a letter the ASCII word scanner cannot see is substantive content that no rule can prove is formatting. Unknown is accountable.",
+    "change1": "punctuation test is now `!/[\\p{L}\\p{N}]/u` - Unicode property escapes, script-agnostic",
+    "change2": "carriesUnexplainedLetters = /\\p{L}/u over the fragment with enumerators and ASCII letters removed; the STRUCTURAL_NOISE branch declines when it is set, and an explicit UNACCOUNTED_SOURCE reason is returned at the end after every positive structural rule has had first refusal (the canary #6 ordering lesson)",
+    "whatItDoesNot": "no Chinese/Japanese/Korean detection, no CJK character list, no CJK legal vocabulary, no translation, no linguistic tokenisation, no special case for the historical phrase. The rule detects letters, not languages.",
+    "structuralFramesUnaffected": "pagination, bare citations, numbered captions, quoted labels, connective ownership and punctuation dispositions all verified unchanged - none of them can claim a non-Latin fragment, and none was modified"
+  },
+  "productionFilesChanged": [
+    "lib/contract-model/compiler/semantic-accountability/source-coverage.ts - punctuation test widened to Unicode letters/digits; carriesUnexplainedLetters guard added to the STRUCTURAL_NOISE branch with an explicit terminal reason"
+  ],
+  "attackAfter": {
+    "disposition": "UNACCOUNTED_SOURCE",
+    "coverageSpans": "[COVERED_BY_INVENTORY] line 1 | [PUNCTUATION_OR_DELIMITER] \"\\n\" | [UNACCOUNTED_SOURCE] \"借款人不得在抵押物上设定任何留置权或其他担保权益。\" | [COVERED_BY_INVENTORY] line 3",
+    "unaccountedSource": 1,
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+    "semanticallyComplete": false
+  },
+  "controls": {
+    "genericCjkContent": { "fixture": "公司交付报告", "before": "PUNCTUATION_OR_DELIMITER", "after": "UNACCOUNTED_SOURCE", "note": "its literal characters appear in no production logic" },
+    "punctuation": {
+      "\"; :,\"": "PUNCTUATION_OR_DELIMITER (existing control, unchanged)",
+      "\"。、「」\"": "PUNCTUATION_OR_DELIMITER (Unicode twin - naturally isolated, no scope expansion)",
+      "\" \\u3000 \"": "PUNCTUATION_OR_DELIMITER (ideographic space, whitespace-only)"
+    }
+  },
+  "incidentalCyrillicObservation": {
+    "statement": "INCIDENTAL OBSERVATION ONLY - NOT CERTIFICATION. A generic Cyrillic probe (\"Заемщик не должен создавать залог\") now classifies UNACCOUNTED_SOURCE rather than PUNCTUATION_OR_DELIMITER, because the fix detects letters rather than any particular script.",
+    "notDone": "The historical Cyrillic fixture (/tmp/rt/p1.ts line 18, \"Заемщик не вправе создавать залог.\") was located but deliberately NOT added as a fixture, NOT run as a certification, and NOT claimed solved. That is Canary #12 if wanted."
+  },
+  "observationOutOfScope": "independentSegmentBounds still recognises only ASCII terminators [.;:!?]; the ideographic full stop does not split a unit. The historical fixture is line-broken so segmentation was not the failing layer here. Recorded, not changed - §7 forbids expanding scope.",
+  "priorCanariesStillHold": {
+    "canary2_S9": "UNACCOUNTED_SOURCE; semanticallyComplete false",
+    "canary2b_I5": "connective ownership correct; I5 green in the corpus",
+    "canary3_RT8": "blanket span still clipped",
+    "canary4_RT4": "parent obligations still surface; only the introducing fragment descends",
+    "canary5_S6": "quoted replacement UNACCOUNTED_SOURCE; quoted term names still DEFINED_TERM_LABEL",
+    "canary6_S8": "bare basket amounts and generic numbers still UNACCOUNTED_SOURCE",
+    "canary7": "numbered covenant and V4 amount line still UNACCOUNTED_SOURCE; all four numbered captions still HEADING_OR_LABEL",
+    "canary8": "both original ALL-CAPS attacks still UNACCOUNTED_SOURCE",
+    "canary9": "both modifiers still UNACCOUNTED_SOURCE; pure glue still STRUCTURAL_NOISE",
+    "canary10": "determinerless ALL-CAPS proposition still UNACCOUNTED_SOURCE; bare ALL-CAPS headings remain review gaps as authorised - not required to be suppressed again"
+  },
+  "tests": {
+    "added": 3,
+    "names": [
+      "canary #11 ATTACK: substantive CJK source is accountable, not punctuation and not structural noise",
+      "canary #11 GENERIC CJK CONTENT CONTROL: substantive Unicode letters are not punctuation - no language understanding involved",
+      "canary #11 PUNCTUATION CONTROL: ASCII and Unicode punctuation-only fragments stay non-blocking"
+    ],
+    "sourceCoverageSuite": "115/115 passing (112 before, +3 new)",
+    "adversarialSuite": "2400 generated cases, 0 dangerous false negatives, unchanged - no fuzzing changes",
+    "existingTestsAltered": []
+  },
+  "corpusImpact": {
+    "before": "7 failed | 272 passed (279)",
+    "after": "7 failed | 275 passed (282)",
+    "delta": "+3 tests (the three new canary #11 tests, all green); ZERO new failures",
+    "newlySurfacedCorpusGaps": 0,
+    "failingScenariosUnchanged": ["I23", "I26", "I27"],
+    "realRegressions": 0,
+    "groundTruthChanged": false
+  },
+  "qualityGates": {
+    "typescript": "npx tsc --noEmit - 6 errors, all pre-existing in tests/foundation-audit/*; identical count to the starting SHA; zero in semantic-accountability or source-coverage",
+    "lint": "npx next lint --dir lib --dir tests --dir scripts - 1 error, pre-existing; none in changed files"
+  },
+  "spend": { "paidModelCalls": 0, "vercelDeploys": 0, "providerProbe": "HTTP 402 quota_for_entity_exceeded, current spend $150.49 / limit $150.00 - unchanged" },
+  "reproductionHarness": "scripts/source-coverage-canary11-reproduce.ts (committed; run with npx tsx)",
+  "canary11Solved": true,
+  "scopeDiscipline": "One historical failure fixed. Cyrillic not certified, other scripts not addressed, no multilingual NLP, no spelled-out values, no ALL-CAPS heading plumbing, I23/I26/I27 untouched. No fuzzing, no red-team, no real validation, no paid calls, no deploy."
+}

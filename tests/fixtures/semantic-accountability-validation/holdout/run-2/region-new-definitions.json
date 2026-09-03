@@ -1,0 +1,2103 @@
+{
+  "run": {
+    "mode": "holdout",
+    "runNumber": 2,
+    "productionSha": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+    "productionTreeHash": "199ba3f88e5bc31ae25572f6b59054c7f4733ab99dffad234d7c9a4601e4b5c1"
+  },
+  "region": {
+    "id": "new-definitions",
+    "claimIds": [
+      "A6"
+    ],
+    "family": "AMENDMENT",
+    "documentId": "doc-c",
+    "label": "SECTION 2(a) - new sibling definitions",
+    "sourceSectionRef": "2(a)",
+    "window": {
+      "charStart": 2266,
+      "charEnd": 3539,
+      "chars": 1273
+    },
+    "anchor": {
+      "nodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+      "nodeKey": "doc-c::2(a)",
+      "sectionRef": "2(a)",
+      "charStart": 2262,
+      "charEnd": 3212
+    },
+    "structuralNodeIds": [
+      "structural-node:8b2e32a9dc4994a1b47fe161"
+    ],
+    "structuralNodeKeys": [
+      "doc-c::2(a)"
+    ]
+  },
+  "operativeSourceText": "Section 1.01 of the Credit Agreement is\nhereby amended by adding the following definitions in the appropriate alphabetical order:\n“Invoice\nRestrictions” has the meaning set forth in the Monthly Factoring Report.\n“Maintenance Liquidity”\nmeans, as of any date of determination, (a) the sum as of such date of (x) the aggregate amount of the commitments under the Super-Priority Revolving Credit Facility (including the aggregate revolving commitments with respect to any\nPermitted Euro Revolving Indebtedness) (or any Refinancing Indebtedness in respect thereof) minus (y) the aggregate principal amount of the outstanding revolving loans under the Super-Priority Revolving Credit Facility and any\noutstanding revolving loans in respect of any Permitted Euro Revolving Indebtedness (or any Refinancing Indebtedness in respect thereof) and, in each case, the face amount of any letters of credit issued thereunder (less any reimbursed amounts)\nplus (b) the “Adjustment to Liquidity” as set forth in the most recently delivered Monthly Factoring Report plus (c) unrestricted cash and Cash Equivalents of the Borrower and its Subsidiaries.\n\n“Monthly Factoring Report” means a report substantially in\nthe form of Exhibit E or any other form approved by the Administrative Agent.\n",
+  "contextBundle": {
+    "items": 4,
+    "sufficiencyState": "INCOMPLETE",
+    "originatingStructuralNodeIds": [
+      "structural-node:8b2e32a9dc4994a1b47fe161"
+    ],
+    "unresolvedDependencies": 32,
+    "error": null
+  },
+  "compile": {
+    "status": "REVIEW_REQUIRED",
+    "failureReasons": [
+      "MISSING_CONTEXT",
+      "OPERATIVE_STATE_UNRESOLVED"
+    ],
+    "errorDetail": null,
+    "rules": [
+      {
+        "ruleId": "ir-rule:345653a9e530820f521fd270",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "sourceSectionRef": "2.05(2)(c)(i)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "OBLIGATION",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "MIN",
+          "type": "MONEY",
+          "exprId": "ir-expr:29d8e1d4832b0ba235350ad7",
+          "operands": [
+            {
+              "kind": "METRIC_REFERENCE",
+              "type": "MONEY",
+              "metricName": "Super-Priority Revolving Loans then outstanding (aggregate principal amount)",
+              "companyId": "final-phase3-closure-holdout-sup",
+              "instrumentKey": "sup-term-loan-instrument",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:f2c5ba80eea781518da51dfe"
+            },
+            {
+              "kind": "SUBTRACT",
+              "type": "MONEY",
+              "exprId": "ir-expr:93a0da2b93bd8a1d31919511",
+              "left": {
+                "kind": "METRIC_REFERENCE",
+                "type": "MONEY",
+                "metricName": "Unrestricted cash on hand of the Borrower and its Subsidiaries as of month-end",
+                "companyId": "final-phase3-closure-holdout-sup",
+                "instrumentKey": "sup-term-loan-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:dbdcbe44828731fe00407752"
+              },
+              "right": {
+                "kind": "MONEY",
+                "type": "MONEY",
+                "amount": 50000000,
+                "currency": "USD",
+                "provenance": {
+                  "documentId": "doc-c",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§2(b) [restated §2.05(2)(c)(i)]",
+                  "excerpt": null
+                },
+                "exprId": "ir-expr:45561ea5ddbb8d2724802508"
+              },
+              "provenance": {
+                "documentId": "doc-c",
+                "sourceNodeKey": null,
+                "sourceCitation": "§2(b) [restated §2.05(2)(c)(i)]",
+                "excerpt": null
+              }
+            }
+          ],
+          "provenance": {
+            "documentId": "doc-c",
+            "sourceNodeKey": null,
+            "sourceCitation": "§2(b) [restated §2.05(2)(c)(i)]",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "COMPARE",
+              "type": "BOOLEAN",
+              "exprId": "ir-expr:d452bef0a0eb4a87e986d325",
+              "left": {
+                "kind": "METRIC_REFERENCE",
+                "type": "MONEY",
+                "metricName": "Unrestricted cash on hand of the Borrower and its Subsidiaries as of month-end",
+                "companyId": "final-phase3-closure-holdout-sup",
+                "instrumentKey": "sup-term-loan-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:dbdcbe44828731fe00407752"
+              },
+              "operator": "GT",
+              "right": {
+                "kind": "MONEY",
+                "type": "MONEY",
+                "amount": 50000000,
+                "currency": "USD",
+                "provenance": {
+                  "documentId": "doc-c",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§2(a)",
+                  "excerpt": null
+                },
+                "exprId": "ir-expr:10e822fa0f71bb3a096ede66"
+              },
+              "provenance": {
+                "documentId": "doc-c",
+                "sourceNodeKey": null,
+                "sourceCitation": "§2(a)",
+                "excerpt": null
+              }
+            },
+            "referencesDefinitionId": null,
+            "description": "Unrestricted cash on hand of the Borrower and its Subsidiaries as of the last day of any calendar month exceeds $50,000,000, tested after giving effect to all mandatory prepayments of Term Loans required by Sections 2.05(2)(a), (b) and (d).",
+            "provenance": {
+              "documentId": "doc-c",
+              "sourceNodeKey": null,
+              "sourceCitation": "§2(b) [restated §2.05(2)(c)(i)]",
+              "excerpt": null
+            },
+            "inventoryItemIds": [
+              "86a9a2dc8435513f30fbb1c5"
+            ]
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Section 2.05(2)(a)",
+            "description": "Tested only after giving effect to mandatory Term Loan prepayments required by Section 2.05(2)(a); that section could not be located as a structural node in this instrument.",
+            "reason": "dependsOn[0].targetRef \"Section 2.05(2)(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+            "inventoryItemIds": [
+              "62bec901b7ed49f92130bfe6"
+            ]
+          },
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Section 2.05(2)(b)",
+            "description": "Tested only after giving effect to mandatory Term Loan prepayments required by Section 2.05(2)(b); that section could not be located as a structural node in this instrument.",
+            "reason": "dependsOn[1].targetRef \"Section 2.05(2)(b)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+            "inventoryItemIds": [
+              "62bec901b7ed49f92130bfe6"
+            ]
+          },
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Section 2.05(2)(d)",
+            "description": "Tested only after giving effect to mandatory Term Loan prepayments required by Section 2.05(2)(d); that section could not be located as a structural node in this instrument.",
+            "reason": "dependsOn[2].targetRef \"Section 2.05(2)(d)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Full operative text of restated Section 2.05(2)(c)(i) was available (confirmed-current context bundle item) despite the primary source excerpt for this task being physically cut off at the same point.",
+          "covenantFamily \"MANDATORY_PREPAYMENT\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"MANDATORY_PREPAYMENT\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "condition[0].conditionType \"THRESHOLD_EXCEEDED\" not recognized - normalized to UNSUPPORTED",
+          "dependsOn[0].targetRef \"Section 2.05(2)(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+          "dependsOn[1].targetRef \"Section 2.05(2)(b)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+          "dependsOn[2].targetRef \"Section 2.05(2)(d)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+        ],
+        "provenance": {
+          "documentId": "doc-c",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2(b) [restated §2.05(2)(c)]",
+          "excerpt": "the Borrower and its Subsidiaries has (i) unrestricted cash on hand as of the last day of any calendar month in an amount that is greater than $50 million, the Borrower shall ... prepay ... Super-Priority Revolving Loans equal to the lesser of (x) the aggregate principal amount of Super-Priority Revolving Loans then-outstanding and (y) the amount necessary to cause the amount of unrestricted cash on hand ... to be less than or equal to $50 million"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "inventoryItemIds": [
+          "8826e518000777d674bd1aa7",
+          "3a7f96c474c84a160ce93869",
+          "86a9a2dc8435513f30fbb1c5"
+        ]
+      },
+      {
+        "ruleId": "ir-rule:13989ce85ec9ddb123efb573",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "sourceSectionRef": "2.05(2)(c)(ii)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "OBLIGATION",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "SUBTRACT",
+          "type": "MONEY",
+          "exprId": "ir-expr:743c521a07473df00b623fe8",
+          "left": {
+            "kind": "DEFINED_TERM_REFERENCE",
+            "type": "MONEY",
+            "termName": "Maintenance Liquidity",
+            "companyId": "final-phase3-closure-holdout-sup",
+            "instrumentKey": "sup-term-loan-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:6a3ad90afd6a19123396c33b"
+          },
+          "right": {
+            "kind": "MONEY",
+            "type": "MONEY",
+            "amount": 115000000,
+            "currency": "USD",
+            "provenance": {
+              "documentId": "doc-c",
+              "sourceNodeKey": null,
+              "sourceCitation": "§2(b) [restated §2.05(2)(c)(ii)]",
+              "excerpt": null
+            },
+            "exprId": "ir-expr:fee4dc80eadf4243ee018190"
+          },
+          "provenance": {
+            "documentId": "doc-c",
+            "sourceNodeKey": null,
+            "sourceCitation": "§2(b) [restated §2.05(2)(c)(ii)]",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r2].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "COMPARE",
+              "type": "BOOLEAN",
+              "exprId": "ir-expr:d1d52161d7d3887d46d16bef",
+              "left": {
+                "kind": "DEFINED_TERM_REFERENCE",
+                "type": "MONEY",
+                "termName": "Maintenance Liquidity",
+                "companyId": "final-phase3-closure-holdout-sup",
+                "instrumentKey": "sup-term-loan-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:6a3ad90afd6a19123396c33b"
+              },
+              "operator": "GT",
+              "right": {
+                "kind": "MONEY",
+                "type": "MONEY",
+                "amount": 115000000,
+                "currency": "USD",
+                "provenance": {
+                  "documentId": "doc-c",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§2(a)",
+                  "excerpt": null
+                },
+                "exprId": "ir-expr:b4346bd69af05750a9288288"
+              },
+              "provenance": {
+                "documentId": "doc-c",
+                "sourceNodeKey": null,
+                "sourceCitation": "§2(a)",
+                "excerpt": null
+              }
+            },
+            "referencesDefinitionId": null,
+            "description": "After giving effect to any mandatory prepayment under clause (i) above, Maintenance Liquidity as of the last day of any calendar month exceeds $115,000,000.",
+            "provenance": {
+              "documentId": "doc-c",
+              "sourceNodeKey": null,
+              "sourceCitation": "§2(b) [restated §2.05(2)(c)(ii)]",
+              "excerpt": null
+            }
+          }
+        ],
+        "exceptions": [
+          {
+            "exceptionId": "rule[r2].exception[0]",
+            "appliesToRuleId": "ir-rule:13989ce85ec9ddb123efb573",
+            "description": "No Default or Event of Default occurs (or is deemed to have occurred) for failure to prepay a shortfall ('Deficiency Amount') resulting from a Maintenance Liquidity miscalculation discovered within 30 days after month-end, so long as the Deficiency Amount is less than $1,300,000 and the Borrower prepays it within 5 Business Days of obtaining knowledge of the miscalculation.",
+            "permissionRuleId": null,
+            "conditions": [
+              {
+                "conditionId": "rule[r2].condition[0]",
+                "conditionType": "UNSUPPORTED",
+                "expression": {
+                  "kind": "COMPARE",
+                  "type": "BOOLEAN",
+                  "exprId": "ir-expr:e0da06719ec4fccaa0709345",
+                  "left": {
+                    "kind": "TRANSACTION_INPUT_REFERENCE",
+                    "type": "MONEY",
+                    "inputName": "Deficiency Amount",
+                    "exprId": "ir-expr:983669196368bd5409aac9bb"
+                  },
+                  "operator": "LT",
+                  "right": {
+                    "kind": "MONEY",
+                    "type": "MONEY",
+                    "amount": 1300000,
+                    "currency": "USD",
+                    "provenance": {
+                      "documentId": "doc-c",
+                      "sourceNodeKey": null,
+                      "sourceCitation": "§2(a)",
+                      "excerpt": null
+                    },
+                    "exprId": "ir-expr:42613b64a69fb918826d56ce"
+                  },
+                  "provenance": {
+                    "documentId": "doc-c",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§2(a)",
+                    "excerpt": null
+                  }
+                },
+                "referencesDefinitionId": null,
+                "description": "Deficiency Amount is less than $1,300,000",
+                "provenance": {
+                  "documentId": "doc-c",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§2(b) [restated §2.05(2)(c)(ii) proviso]",
+                  "excerpt": null
+                }
+              },
+              {
+                "conditionId": "rule[r2].condition[1]",
+                "conditionType": "UNSUPPORTED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "Borrower prepays the Deficiency Amount within 5 Business Days of obtaining knowledge of the miscalculation",
+                "provenance": {
+                  "documentId": "doc-c",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§2(b) [restated §2.05(2)(c)(ii) proviso]",
+                  "excerpt": null
+                }
+              }
+            ],
+            "provenance": {
+              "documentId": "doc-c",
+              "sourceNodeKey": null,
+              "sourceCitation": "§2(b) [restated §2.05(2)(c)(ii) proviso]",
+              "excerpt": "provided, however, if ... the Borrower obtains knowledge that Maintenance Liquidity was miscalculated ... (such amount, the “Deficiency Amount”), no Default or Event of Default shall occur ... so long as (x) the Deficiency Amount is less than $1,300,000, and (y) within 5 Business Days of obtaining knowledge ... the Borrower makes a prepayment of such Deficiency Amount"
+            }
+          }
+        ],
+        "dependsOn": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRuleId": "ir-rule:345653a9e530820f521fd270",
+            "description": "Maintenance Liquidity for this test is calculated after giving effect to any mandatory prepayment made under clause (i)."
+          }
+        ],
+        "unresolvedDependencies": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Section 2.05(2)(a)",
+            "description": "Tested only after giving effect to mandatory Term Loan prepayments required by Section 2.05(2)(a); that section could not be located as a structural node in this instrument.",
+            "reason": "dependsOn[1].targetRef \"Section 2.05(2)(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+            "inventoryItemIds": [
+              "62bec901b7ed49f92130bfe6"
+            ]
+          },
+          {
+            "relationshipType": "REQUIRES",
+            "targetRef": "Section 2.05(2)(b)",
+            "description": "Tested only after giving effect to mandatory Term Loan prepayments required by Section 2.05(2)(b); that section could not be located as a structural node in this instrument.",
+            "reason": "dependsOn[2].targetRef \"Section 2.05(2)(b)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+            "inventoryItemIds": [
+              "62bec901b7ed49f92130bfe6"
+            ]
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Full operative text of restated Section 2.05(2)(c)(ii), including the Deficiency Amount cure proviso and the no-refund disclaimer, was available via the confirmed-current context bundle.",
+          "covenantFamily \"MANDATORY_PREPAYMENT\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"MANDATORY_PREPAYMENT\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "condition[0].conditionType \"THRESHOLD_EXCEEDED\" not recognized - normalized to UNSUPPORTED",
+          "condition[0].conditionType \"THRESHOLD_NOT_EXCEEDED\" not recognized - normalized to UNSUPPORTED",
+          "condition[1].conditionType \"CURE_PERIOD\" not recognized - normalized to UNSUPPORTED",
+          "dependsOn[1].targetRef \"Section 2.05(2)(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+          "dependsOn[2].targetRef \"Section 2.05(2)(b)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+        ],
+        "provenance": {
+          "documentId": "doc-c",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2(b) [restated §2.05(2)(c)]",
+          "excerpt": "after giving effect to any mandatory prepayment pursuant to clause (i) above, Maintenance Liquidity as of the last day of any calendar month that is greater than $115 million, the Borrower shall ... prepay ... Term Loans ... to the extent necessary to cause Maintenance Liquidity ... to be less than or equal to $115 million"
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "inventoryItemIds": [
+          "8826e518000777d674bd1aa7",
+          "3a7f96c474c84a160ce93869"
+        ]
+      }
+    ],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:983a978297d0da9452f5da36",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "termName": "Invoice Restrictions",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§2(a): “Invoice Restrictions” has the meaning set forth in the Monthly Factoring Report.",
+          "semanticDescription": "\"Invoice Restrictions\" has no meaning stated in the Credit Agreement itself; its substantive content is defined entirely by cross-reference to the Monthly Factoring Report (a report in the form of Exhibit E, or an Administrative-Agent-approved alternative form).",
+          "reason": "Exhibit E, which would contain the actual invoice eligibility/restriction criteria, is a physical exhibit reported as '[On file with the Administrative Agent]' and was not included in any available document or resolvable via tools; getDefinition/getReferencedProvision calls confirm no such content is in the instrument package.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-c",
+            "sourceNodeKey": null,
+            "sourceCitation": "§2(a)",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:ed58f8f187d17b41bb732291",
+          "inventoryItemIds": [
+            "b7c4e344e4f11fcb3b286d37"
+          ]
+        },
+        "dependsOnTerms": [
+          "Monthly Factoring Report"
+        ],
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "The term's entire substantive meaning is deferred to a report form (Exhibit E) that is on file with the Administrative Agent and not digitized/available in the evidence package; no tool could retrieve it (physical exhibit, not a resolvable cross-reference).",
+          "Exhibit E, which would contain the actual invoice eligibility/restriction criteria, is a physical exhibit reported as '[On file with the Administrative Agent]' and was not included in any available document or resolvable via tools; getDefinition/getReferencedProvision calls confirm no such content is in the instrument package."
+        ],
+        "provenance": {
+          "documentId": "doc-c",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2(a)",
+          "excerpt": "“Invoice Restrictions” has the meaning set forth in the Monthly Factoring Report."
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "inventoryItemIds": [
+          "090f3e4d6e3267e198e9d0ef",
+          "b7c4e344e4f11fcb3b286d37",
+          "7fbc8caf058e7d012f088c25"
+        ]
+      },
+      {
+        "definitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "termName": "Maintenance Liquidity",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "ADD",
+          "type": "MONEY",
+          "exprId": "ir-expr:a311bbb4bd326013095f13bb",
+          "operands": [
+            {
+              "kind": "SUBTRACT",
+              "type": "MONEY",
+              "exprId": "ir-expr:4b2571907a702fe516b78270",
+              "left": {
+                "kind": "METRIC_REFERENCE",
+                "type": "MONEY",
+                "metricName": "Aggregate commitments under the Super-Priority Revolving Credit Facility (including revolving commitments in respect of Permitted Euro Revolving Indebtedness, or any Refinancing Indebtedness thereof)",
+                "companyId": "final-phase3-closure-holdout-sup",
+                "instrumentKey": "sup-term-loan-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:cc26fd78684753b4a103b506",
+                "inventoryItemIds": [
+                  "d995f3048ddac515588b3784"
+                ]
+              },
+              "right": {
+                "kind": "ADD",
+                "type": "MONEY",
+                "exprId": "ir-expr:7ada4cd4110ce2992db8cce8",
+                "operands": [
+                  {
+                    "kind": "METRIC_REFERENCE",
+                    "type": "MONEY",
+                    "metricName": "Outstanding revolving loans under the Super-Priority Revolving Credit Facility and any Permitted Euro Revolving Indebtedness (or Refinancing Indebtedness thereof)",
+                    "companyId": "final-phase3-closure-holdout-sup",
+                    "instrumentKey": "sup-term-loan-instrument",
+                    "resolvedDefinitionId": null,
+                    "exprId": "ir-expr:9a60a836da97ac747dc31294",
+                    "inventoryItemIds": [
+                      "4cfd69ec1dc2a704ecdd4039"
+                    ]
+                  },
+                  {
+                    "kind": "SUBTRACT",
+                    "type": "MONEY",
+                    "exprId": "ir-expr:081f7db6b8e3d07940fa2963",
+                    "left": {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "Face amount of letters of credit issued under such revolving facilities",
+                      "companyId": "final-phase3-closure-holdout-sup",
+                      "instrumentKey": "sup-term-loan-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:af20eb6f85376ac5c1a80423",
+                      "inventoryItemIds": [
+                        "affe2f12c646c89aeafb3693"
+                      ]
+                    },
+                    "right": {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "Reimbursed amounts under such letters of credit",
+                      "companyId": "final-phase3-closure-holdout-sup",
+                      "instrumentKey": "sup-term-loan-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:213a7bc716e151501b2fe12c",
+                      "inventoryItemIds": [
+                        "af6fe45d9f89c61b93587773"
+                      ]
+                    },
+                    "provenance": {
+                      "documentId": "doc-c",
+                      "sourceNodeKey": null,
+                      "sourceCitation": "§2(a)",
+                      "excerpt": null
+                    }
+                  }
+                ],
+                "provenance": {
+                  "documentId": "doc-c",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§2(a)",
+                  "excerpt": null
+                }
+              },
+              "provenance": {
+                "documentId": "doc-c",
+                "sourceNodeKey": null,
+                "sourceCitation": "§2(a)",
+                "excerpt": null
+              },
+              "inventoryItemIds": [
+                "8c1d5f59a742c3d40a2cf49f"
+              ]
+            },
+            {
+              "kind": "METRIC_REFERENCE",
+              "type": "MONEY",
+              "metricName": "Adjustment to Liquidity (as set forth in the most recently delivered Monthly Factoring Report)",
+              "companyId": "final-phase3-closure-holdout-sup",
+              "instrumentKey": "sup-term-loan-instrument",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:0a649f5080e8a88b36005955",
+              "inventoryItemIds": [
+                "43caa8f3113637d9555b847c",
+                "23f74785157934e1d155c8e1"
+              ]
+            },
+            {
+              "kind": "ADD",
+              "type": "MONEY",
+              "exprId": "ir-expr:67ec9fd643d847ea36d70f19",
+              "operands": [
+                {
+                  "kind": "METRIC_REFERENCE",
+                  "type": "MONEY",
+                  "metricName": "Unrestricted cash of the Borrower and its Subsidiaries",
+                  "companyId": "final-phase3-closure-holdout-sup",
+                  "instrumentKey": "sup-term-loan-instrument",
+                  "resolvedDefinitionId": null,
+                  "exprId": "ir-expr:0d017ed37ca7008d1190cfb5"
+                },
+                {
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "type": "MONEY",
+                  "termName": "Cash Equivalents",
+                  "companyId": "final-phase3-closure-holdout-sup",
+                  "instrumentKey": "sup-term-loan-instrument",
+                  "resolvedDefinitionId": null,
+                  "exprId": "ir-expr:3f99cd31116b4afda2b114c7"
+                }
+              ],
+              "provenance": {
+                "documentId": "doc-c",
+                "sourceNodeKey": null,
+                "sourceCitation": "§2(a)",
+                "excerpt": null
+              },
+              "inventoryItemIds": [
+                "bc7f47dc083e6108bfa9bbf0"
+              ]
+            }
+          ],
+          "provenance": {
+            "documentId": "doc-c",
+            "sourceNodeKey": null,
+            "sourceCitation": "§2(a)",
+            "excerpt": null
+          },
+          "inventoryItemIds": [
+            "4a2f7bd2b8e491bd81e92352"
+          ]
+        },
+        "dependsOnTerms": [
+          "Super-Priority Revolving Credit Facility",
+          "Permitted Euro Revolving Indebtedness",
+          "Refinancing Indebtedness",
+          "Monthly Factoring Report",
+          "Adjustment to Liquidity",
+          "Cash Equivalents",
+          "Borrower"
+        ],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "The additive formula structure (clause (a) net revolving availability, plus clause (b) Adjustment to Liquidity, plus clause (c) cash/Cash Equivalents) is fully and faithfully represented from the source text.",
+          "The clause (b) input, 'Adjustment to Liquidity', is used but nowhere defined in this instrument or any related document (confirmed via getDefinition, which returned no match); its actual value/sign convention cannot be determined from available evidence, so that one operand is a bare metric reference rather than a resolvable value."
+        ],
+        "provenance": {
+          "documentId": "doc-c",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2(a)",
+          "excerpt": null
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "inventoryItemIds": [
+          "090f3e4d6e3267e198e9d0ef"
+        ]
+      },
+      {
+        "definitionId": "ir-definition:bd3691079b5fcc4e60dbf071",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "termName": "Monthly Factoring Report",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Administrative Agent"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "The definition's own two-alternative structure (Exhibit E form, or any other Administrative-Agent-approved form) is fully captured from the text; the unresolved content of Exhibit E itself (an exhibit on file with the Administrative Agent, not digitized) does not impair representing THIS definition's own structure, though it does limit downstream use of report-derived figures elsewhere (see 'Maintenance Liquidity' and 'Invoice Restrictions')."
+        ],
+        "provenance": {
+          "documentId": "doc-c",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2(a)",
+          "excerpt": "“Monthly Factoring Report” means a report substantially in the form of Exhibit E or any other form approved by the Administrative Agent."
+        },
+        "compilerVersion": "semantic-accountability-compiler.v4",
+        "sourceContentVersion": null,
+        "inventoryItemIds": [
+          "090f3e4d6e3267e198e9d0ef",
+          "b3fbaad387aecabf5c09d6ba",
+          "1a2f0b6e0e3a888c566d2bd1",
+          "0be9ca90c6c3fd6c1bc19356",
+          "d6a0053a4e0244b2d3dd35ab"
+        ]
+      }
+    ],
+    "sharedCapacities": [],
+    "irExtensionCandidates": [
+      {
+        "sourceEvidence": "§2(a): “Adjustment to Liquidity” as set forth in the most recently delivered Monthly Factoring Report; and “Invoice Restrictions” has the meaning set forth in the Monthly Factoring Report (itself a report substantially in the form of Exhibit E, which is on file with the Administrative Agent and not incorporated as searchable text).",
+        "semanticRequirement": "A way to flag that a defined term's or formula operand's value is not fixed by the agreement text but is instead whatever figure/criteria appears in a periodically-delivered, externally-templated report/exhibit (here, a Monthly Factoring Report per Exhibit E) - distinct from an ordinary METRIC_REFERENCE to a financial-statement-derived metric like EBITDA, because the reporting template itself, not just its computed output, is outside the four corners of the agreement.",
+        "whyExistingPrimitivesFail": "METRIC_REFERENCE can name the value but cannot express that its source is a delivered-report line item governed by an exhibit template subject to Administrative Agent approval/substitution, which is a materially different provenance/reliability signal than an internally-defined financial metric.",
+        "candidateGeneralizedPrimitive": "REPORT_DERIVED_VALUE_REFERENCE (reportName, lineItem, formTemplateRef) - a reference node analogous to METRIC_REFERENCE but explicitly tagged as sourced from a periodic third-party-form report rather than computed from the agreement's own defined financial metrics."
+      }
+    ],
+    "unresolvedIssues": [
+      "[rule[r1]] covenantFamily \"MANDATORY_PREPAYMENT\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+      "[rule[r1]] ruleType \"MANDATORY_PREPAYMENT\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "[rule[r1]] condition[0].conditionType \"THRESHOLD_EXCEEDED\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r1]] dependsOn[0].targetRef \"Section 2.05(2)(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "[rule[r1]] dependsOn[1].targetRef \"Section 2.05(2)(b)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "[rule[r1]] dependsOn[2].targetRef \"Section 2.05(2)(d)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "[rule[r2]] covenantFamily \"MANDATORY_PREPAYMENT\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+      "[rule[r2]] ruleType \"MANDATORY_PREPAYMENT\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "[rule[r2]] condition[0].conditionType \"THRESHOLD_EXCEEDED\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r2]] condition[0].conditionType \"THRESHOLD_NOT_EXCEEDED\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r2]] condition[1].conditionType \"CURE_PERIOD\" not recognized - normalized to UNSUPPORTED",
+      "[rule[r2]] dependsOn[1].targetRef \"Section 2.05(2)(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "[rule[r2]] dependsOn[2].targetRef \"Section 2.05(2)(b)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "[definition[d1]] Exhibit E, which would contain the actual invoice eligibility/restriction criteria, is a physical exhibit reported as '[On file with the Administrative Agent]' and was not included in any available document or resolvable via tools; getDefinition/getReferencedProvision calls confirm no such content is in the instrument package.",
+      "Primary source excerpt for this task (labeled 2(a)) was physically truncated mid-sentence at 'Sections 2.05(2)(a), (b) and'; the fuller restated text of Section 2.05(2)(c) was obtained from Phase 2's already-gathered context bundle, whose evidenceStatus for that item is CURRENT, and was used to compile rules r1/r2 with COMPLETE sufficiency for the mandatory prepayment mechanics themselves.",
+      "Cross-references to 'Section 1.01', 'Section 2.05(2)(c)', and 'Section 2.05(2)(a)/(b)' could not be resolved to structural nodes in this instrument; getReferencedProvision was attempted for 'Section 1.01' and 'Section 2.05(2)(a)' in this session (both returned not-found), consistent with Phase 2's prior NOT_FOUND findings. These are preserved as explicit dependsOn entries rather than dropped or guessed.",
+      "getDefinition('Adjustment to Liquidity') was attempted and confirmed no matching defined term exists anywhere in the instrument package; this term is treated as an unresolved, report-sourced input throughout.",
+      "Exhibit E's actual content is reported only as '[On file with the Administrative Agent]' - a physical exhibit never digitized - so no tool in this toolset could resolve its content; this affects the substantive completeness of 'Invoice Restrictions' and the 'Adjustment to Liquidity' operand of 'Maintenance Liquidity', but not the structural completeness of the 'Monthly Factoring Report' definition itself."
+    ],
+    "toolCallLog": [
+      {
+        "toolName": "getDefinition",
+        "input": {
+          "term": "Adjustment to Liquidity"
+        },
+        "outputSummary": "refused: no defined term matching \"Adjustment to Liquidity\" found in this instrument's documents",
+        "charsReturned": 87,
+        "timestamp": "2026-09-02T04:42:24.986Z"
+      },
+      {
+        "toolName": "getReferencedProvision",
+        "input": {
+          "ref": "Section 1.01"
+        },
+        "outputSummary": "refused: reference \"Section 1.01\" did not resolve to any section (or any enclosing section) within this instrument's documents",
+        "charsReturned": 117,
+        "timestamp": "2026-09-02T04:42:31.352Z"
+      },
+      {
+        "toolName": "getReferencedProvision",
+        "input": {
+          "ref": "Section 2.05(2)(a)"
+        },
+        "outputSummary": "refused: reference \"Section 2.05(2)(a)\" did not resolve to any section (or any enclosing section) within this instrument's documents",
+        "charsReturned": 123,
+        "timestamp": "2026-09-02T04:42:31.352Z"
+      }
+    ],
+    "inputHasUnresolvedOperativeEvidence": false,
+    "unresolvedEvidenceItemIds": [],
+    "definitionCompletenessCheck": null,
+    "sourceContext": {
+      "state": "COMPLETE_LOCAL_SOURCE",
+      "regions": [
+        {
+          "regionId": "operative",
+          "kind": "OPERATIVE",
+          "documentId": "doc-c",
+          "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+          "sectionRef": "2(a)",
+          "charStart": 2266,
+          "charEnd": 3779,
+          "text": "Section 1.01 of the Credit Agreement is\nhereby amended by adding the following definitions in the appropriate alphabetical order:\n“Invoice\nRestrictions” has the meaning set forth in the Monthly Factoring Report.\n“Maintenance Liquidity”\nmeans, as of any date of determination, (a) the sum as of such date of (x) the aggregate amount of the commitments under the Super-Priority Revolving Credit Facility (including the aggregate revolving commitments with respect to any\nPermitted Euro Revolving Indebtedness) (or any Refinancing Indebtedness in respect thereof) minus (y) the aggregate principal amount of the outstanding revolving loans under the Super-Priority Revolving Credit Facility and any\noutstanding revolving loans in respect of any Permitted Euro Revolving Indebtedness (or any Refinancing Indebtedness in respect thereof) and, in each case, the face amount of any letters of credit issued thereunder (less any reimbursed amounts)\nplus (b) the “Adjustment to Liquidity” as set forth in the most recently delivered Monthly Factoring Report plus (c) unrestricted cash and Cash Equivalents of the Borrower and its Subsidiaries.\n\n“Monthly Factoring Report” means a report substantially in\nthe form of Exhibit E or any other form approved by the Administrative Agent.\n(b) Section 2.05(2)(c) of the Credit Agreement is hereby\namended and restated in its entirety with the following:\n(c) If, after giving effect to all mandatory prepayments of Term\nLoans to the extent required by Sections 2.05(2)(a), (b) and ",
+          "expandedFor": null,
+          "truncatedAtBudget": false,
+          "unitExtension": {
+            "originalCharStart": 2266,
+            "originalCharEnd": 3539,
+            "unitBoundary": "DEFINITION_SPAN",
+            "note": "supplied window [2266, 3539) extended to the definition span of \"Maintenance Liquidity\" through \"Monthly Factoring Report\" [2266, 3779) - 239 non-whitespace chars of the unit's own text were outside the window"
+          }
+        }
+      ],
+      "unresolvedReferences": [
+        {
+          "referenceText": "Section 1.01",
+          "normalizedRef": "1.01",
+          "status": "NOT_FOUND",
+          "reason": "no structural occurrence matches \"1.01\" or any enclosing node of it",
+          "candidateNodeIds": []
+        },
+        {
+          "referenceText": "Section 2.05(2)(c)",
+          "normalizedRef": "2.05(2)(c)",
+          "status": "NOT_FOUND",
+          "reason": "no structural occurrence matches \"2.05(2)(c)\" or any enclosing node of it",
+          "candidateNodeIds": []
+        },
+        {
+          "referenceText": "Sections 2.05(2)(a)",
+          "normalizedRef": "2.05(2)(a)",
+          "status": "NOT_FOUND",
+          "reason": "no structural occurrence matches \"2.05(2)(a)\" or any enclosing node of it",
+          "candidateNodeIds": []
+        }
+      ],
+      "reasons": [],
+      "totalChars": 1513,
+      "budgetChars": 24000
+    },
+    "frozenInventory": {
+      "candidateRef": "semantic-accountability:holdout:new-definitions",
+      "items": [
+        {
+          "inventoryItemId": "inv-item:090f3e4d6e3267e198e9d0ef",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 0,
+            "charEnd": 129,
+            "sourceCitation": "§2(a)",
+            "excerpt": "Section 1.01 of the Credit Agreement is\nhereby amended by adding the following definitions in the appropriate alphabetical order:"
+          },
+          "semanticRole": "OTHER",
+          "proposition": "Section 1.01 of the Credit Agreement is amended by adding the following new definitions (including “Invoice Restrictions,” “Maintenance Liquidity,” and “Monthly Factoring Report”) in the appropriate alphabetical order.",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Invoice Restrictions",
+            "Maintenance Liquidity",
+            "Monthly Factoring Report"
+          ],
+          "referencedSections": [
+            "Section 1.01"
+          ],
+          "parentItemId": null,
+          "relatedItemIds": [],
+          "materiality": "CRITICAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "OPERATIVE",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:7fbc8caf058e7d012f088c25",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 0,
+            "charEnd": 12,
+            "sourceCitation": "§2(a)",
+            "excerpt": "Section 1.01"
+          },
+          "semanticRole": "REFERENCE",
+          "proposition": "The amendment targets Section 1.01 of the Credit Agreement, a cross-reference that cannot be located within the provided structural regions.",
+          "quantitativeValues": [],
+          "referencedTerms": [],
+          "referencedSections": [
+            "Section 1.01"
+          ],
+          "parentItemId": "inv-item:090f3e4d6e3267e198e9d0ef",
+          "relatedItemIds": [],
+          "materiality": "MATERIAL",
+          "ambiguity": "AMBIGUOUS_REFERENCE",
+          "ambiguityReason": "No structural occurrence matches \"Section 1.01\" or any enclosing node of it in the provided regions.",
+          "operative": "OPERATIVE",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:b7c4e344e4f11fcb3b286d37",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 130,
+            "charEnd": 211,
+            "sourceCitation": "§2(a)",
+            "excerpt": "“Invoice\nRestrictions” has the meaning set forth in the Monthly Factoring Report."
+          },
+          "semanticRole": "DEPENDENCY",
+          "proposition": "“Invoice Restrictions” is defined by cross-reference: it has the meaning set forth in the Monthly Factoring Report, rather than a meaning stated in the Credit Agreement itself.",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Invoice Restrictions",
+            "Monthly Factoring Report"
+          ],
+          "referencedSections": [],
+          "parentItemId": null,
+          "relatedItemIds": [
+            "inv-item:b3fbaad387aecabf5c09d6ba"
+          ],
+          "materiality": "MATERIAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:4a2f7bd2b8e491bd81e92352",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 212,
+            "charEnd": 401,
+            "sourceCitation": "§2(a)",
+            "excerpt": "“Maintenance Liquidity”\nmeans, as of any date of determination, (a) the sum as of such date of (x) the aggregate amount of the commitments under the Super-Priority Revolving Credit Facility"
+          },
+          "semanticRole": "OTHER",
+          "proposition": "“Maintenance Liquidity” means, as of any date of determination, the sum of clause (a) (net revolving availability under the Super-Priority Revolving Credit Facility and related indebtedness) plus clause (b) (the Adjustment to Liquidity per the most recent Monthly Factoring Report) plus clause (c) (unrestricted cash and Cash Equivalents of the Borrower and its Subsidiaries).",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Super-Priority Revolving Credit Facility",
+            "Permitted Euro Revolving Indebtedness",
+            "Refinancing Indebtedness",
+            "Monthly Factoring Report",
+            "Cash Equivalents",
+            "Borrower"
+          ],
+          "referencedSections": [],
+          "parentItemId": null,
+          "relatedItemIds": [
+            "inv-item:8c1d5f59a742c3d40a2cf49f",
+            "inv-item:43caa8f3113637d9555b847c",
+            "inv-item:bc7f47dc083e6108bfa9bbf0"
+          ],
+          "materiality": "CRITICAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:8c1d5f59a742c3d40a2cf49f",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 276,
+            "charEnd": 306,
+            "sourceCitation": "§2(a)",
+            "excerpt": "(a) the sum as of such date of"
+          },
+          "semanticRole": "FORMULA_COMPONENT",
+          "proposition": "Clause (a) of Maintenance Liquidity equals component (x) (aggregate revolving commitments under the Super-Priority Revolving Credit Facility and related Permitted Euro Revolving Indebtedness/Refinancing Indebtedness) minus component (y) (outstanding revolving loans and letters of credit face amount thereunder, net of reimbursed amounts).",
+          "quantitativeValues": [],
+          "referencedTerms": [],
+          "referencedSections": [],
+          "parentItemId": "inv-item:4a2f7bd2b8e491bd81e92352",
+          "relatedItemIds": [
+            "inv-item:d995f3048ddac515588b3784",
+            "inv-item:4cfd69ec1dc2a704ecdd4039"
+          ],
+          "materiality": "CRITICAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:d995f3048ddac515588b3784",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 311,
+            "charEnd": 560,
+            "sourceCitation": "§2(a)",
+            "excerpt": "the aggregate amount of the commitments under the Super-Priority Revolving Credit Facility (including the aggregate revolving commitments with respect to any\nPermitted Euro Revolving Indebtedness) (or any Refinancing Indebtedness in respect thereof)"
+          },
+          "semanticRole": "FORMULA_COMPONENT",
+          "proposition": "Component (x) of clause (a): the aggregate amount of commitments under the Super-Priority Revolving Credit Facility, including revolving commitments in respect of Permitted Euro Revolving Indebtedness or any Refinancing Indebtedness thereof.",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Super-Priority Revolving Credit Facility",
+            "Permitted Euro Revolving Indebtedness",
+            "Refinancing Indebtedness"
+          ],
+          "referencedSections": [],
+          "parentItemId": "inv-item:8c1d5f59a742c3d40a2cf49f",
+          "relatedItemIds": [],
+          "materiality": "CRITICAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:4cfd69ec1dc2a704ecdd4039",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 571,
+            "charEnd": 832,
+            "sourceCitation": "§2(a)",
+            "excerpt": "the aggregate principal amount of the outstanding revolving loans under the Super-Priority Revolving Credit Facility and any\noutstanding revolving loans in respect of any Permitted Euro Revolving Indebtedness (or any Refinancing Indebtedness in respect thereof)"
+          },
+          "semanticRole": "FORMULA_COMPONENT",
+          "proposition": "Component (y) of clause (a): the aggregate principal amount of outstanding revolving loans under the Super-Priority Revolving Credit Facility and outstanding revolving loans in respect of Permitted Euro Revolving Indebtedness (or any Refinancing Indebtedness thereof).",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Super-Priority Revolving Credit Facility",
+            "Permitted Euro Revolving Indebtedness",
+            "Refinancing Indebtedness"
+          ],
+          "referencedSections": [],
+          "parentItemId": "inv-item:8c1d5f59a742c3d40a2cf49f",
+          "relatedItemIds": [
+            "inv-item:affe2f12c646c89aeafb3693"
+          ],
+          "materiality": "CRITICAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:affe2f12c646c89aeafb3693",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 852,
+            "charEnd": 910,
+            "sourceCitation": "§2(a)",
+            "excerpt": "the face amount of any letters of credit issued thereunder"
+          },
+          "semanticRole": "FORMULA_COMPONENT",
+          "proposition": "Component (y) further includes, in each case, the face amount of any letters of credit issued under the relevant revolving facilities.",
+          "quantitativeValues": [],
+          "referencedTerms": [],
+          "referencedSections": [],
+          "parentItemId": "inv-item:4cfd69ec1dc2a704ecdd4039",
+          "relatedItemIds": [
+            "inv-item:af6fe45d9f89c61b93587773"
+          ],
+          "materiality": "CRITICAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:af6fe45d9f89c61b93587773",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 911,
+            "charEnd": 940,
+            "sourceCitation": "§2(a)",
+            "excerpt": "(less any reimbursed amounts)"
+          },
+          "semanticRole": "EXCEPTION",
+          "proposition": "The letters-of-credit face amount included in component (y) is reduced by any reimbursed amounts.",
+          "quantitativeValues": [],
+          "referencedTerms": [],
+          "referencedSections": [],
+          "parentItemId": "inv-item:affe2f12c646c89aeafb3693",
+          "relatedItemIds": [],
+          "materiality": "MATERIAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:43caa8f3113637d9555b847c",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 941,
+            "charEnd": 1048,
+            "sourceCitation": "§2(a)",
+            "excerpt": "plus (b) the “Adjustment to Liquidity” as set forth in the most recently delivered Monthly Factoring Report"
+          },
+          "semanticRole": "FORMULA_COMPONENT",
+          "proposition": "Clause (b) of Maintenance Liquidity adds the “Adjustment to Liquidity” as set forth in the most recently delivered Monthly Factoring Report.",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Adjustment to Liquidity",
+            "Monthly Factoring Report"
+          ],
+          "referencedSections": [],
+          "parentItemId": "inv-item:4a2f7bd2b8e491bd81e92352",
+          "relatedItemIds": [
+            "inv-item:23f74785157934e1d155c8e1"
+          ],
+          "materiality": "CRITICAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:23f74785157934e1d155c8e1",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 996,
+            "charEnd": 1048,
+            "sourceCitation": "§2(a)",
+            "excerpt": "the most recently delivered Monthly Factoring Report"
+          },
+          "semanticRole": "DEPENDENCY",
+          "proposition": "Clause (b)'s value depends on the “Adjustment to Liquidity” figure sourced from the most recently delivered Monthly Factoring Report; the term “Adjustment to Liquidity” itself is used but not defined anywhere in the provided text.",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Adjustment to Liquidity",
+            "Monthly Factoring Report"
+          ],
+          "referencedSections": [],
+          "parentItemId": "inv-item:43caa8f3113637d9555b847c",
+          "relatedItemIds": [
+            "inv-item:b3fbaad387aecabf5c09d6ba"
+          ],
+          "materiality": "MATERIAL",
+          "ambiguity": "AMBIGUOUS_REFERENCE",
+          "ambiguityReason": "The term \"Adjustment to Liquidity\" is used but not defined within this region or elsewhere in the provided text; its source and calculation cannot be verified.",
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:bc7f47dc083e6108bfa9bbf0",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 1049,
+            "charEnd": 1134,
+            "sourceCitation": "§2(a)",
+            "excerpt": "plus (c) unrestricted cash and Cash Equivalents of the Borrower and its Subsidiaries."
+          },
+          "semanticRole": "FORMULA_COMPONENT",
+          "proposition": "Clause (c) of Maintenance Liquidity adds unrestricted cash and Cash Equivalents of the Borrower and its Subsidiaries.",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Cash Equivalents",
+            "Borrower"
+          ],
+          "referencedSections": [],
+          "parentItemId": "inv-item:4a2f7bd2b8e491bd81e92352",
+          "relatedItemIds": [],
+          "materiality": "CRITICAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:b3fbaad387aecabf5c09d6ba",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 1136,
+            "charEnd": 1272,
+            "sourceCitation": "§2(a)",
+            "excerpt": "“Monthly Factoring Report” means a report substantially in\nthe form of Exhibit E or any other form approved by the Administrative Agent."
+          },
+          "semanticRole": "OTHER",
+          "proposition": "“Monthly Factoring Report” is defined as a report substantially in the form of Exhibit E or any other form approved by the Administrative Agent.",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Monthly Factoring Report",
+            "Administrative Agent"
+          ],
+          "referencedSections": [
+            "Exhibit E"
+          ],
+          "parentItemId": null,
+          "relatedItemIds": [
+            "inv-item:b7c4e344e4f11fcb3b286d37",
+            "inv-item:43caa8f3113637d9555b847c",
+            "inv-item:23f74785157934e1d155c8e1"
+          ],
+          "materiality": "MATERIAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:1a2f0b6e0e3a888c566d2bd1",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 1169,
+            "charEnd": 1216,
+            "sourceCitation": "§2(a)",
+            "excerpt": "a report substantially in\nthe form of Exhibit E"
+          },
+          "semanticRole": "ALTERNATIVE",
+          "proposition": "First alternative form of the Monthly Factoring Report: substantially in the form of Exhibit E.",
+          "quantitativeValues": [],
+          "referencedTerms": [],
+          "referencedSections": [
+            "Exhibit E"
+          ],
+          "parentItemId": "inv-item:b3fbaad387aecabf5c09d6ba",
+          "relatedItemIds": [
+            "inv-item:d6a0053a4e0244b2d3dd35ab"
+          ],
+          "materiality": "MATERIAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:0be9ca90c6c3fd6c1bc19356",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 1220,
+            "charEnd": 1271,
+            "sourceCitation": "§2(a)",
+            "excerpt": "any other form approved by the Administrative Agent"
+          },
+          "semanticRole": "ALTERNATIVE",
+          "proposition": "Second alternative form of the Monthly Factoring Report: any other form approved by the Administrative Agent.",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Administrative Agent"
+          ],
+          "referencedSections": [],
+          "parentItemId": "inv-item:b3fbaad387aecabf5c09d6ba",
+          "relatedItemIds": [],
+          "materiality": "MATERIAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:d6a0053a4e0244b2d3dd35ab",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 1207,
+            "charEnd": 1216,
+            "sourceCitation": "§2(a)",
+            "excerpt": "Exhibit E"
+          },
+          "semanticRole": "REFERENCE",
+          "proposition": "The first alternative form of the Monthly Factoring Report cross-references Exhibit E, the content of which is not included in the provided regions.",
+          "quantitativeValues": [],
+          "referencedTerms": [],
+          "referencedSections": [
+            "Exhibit E"
+          ],
+          "parentItemId": "inv-item:1a2f0b6e0e3a888c566d2bd1",
+          "relatedItemIds": [],
+          "materiality": "MATERIAL",
+          "ambiguity": "AMBIGUOUS_REFERENCE",
+          "ambiguityReason": "Exhibit E is referenced as the required template form but its content/location is not included in the provided regions.",
+          "operative": "DEFINITIONAL",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:8826e518000777d674bd1aa7",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 1273,
+            "charEnd": 1386,
+            "sourceCitation": "§2(a)",
+            "excerpt": "(b) Section 2.05(2)(c) of the Credit Agreement is hereby\namended and restated in its entirety with the following:"
+          },
+          "semanticRole": "OTHER",
+          "proposition": "Section 2.05(2)(c) of the Credit Agreement is amended and restated in its entirety with new text.",
+          "quantitativeValues": [],
+          "referencedTerms": [],
+          "referencedSections": [
+            "Section 2.05(2)(c)"
+          ],
+          "parentItemId": null,
+          "relatedItemIds": [
+            "inv-item:86a9a2dc8435513f30fbb1c5"
+          ],
+          "materiality": "CRITICAL",
+          "ambiguity": "NONE",
+          "ambiguityReason": null,
+          "operative": "OPERATIVE",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:3a7f96c474c84a160ce93869",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 1277,
+            "charEnd": 1295,
+            "sourceCitation": "§2(a)",
+            "excerpt": "Section 2.05(2)(c)"
+          },
+          "semanticRole": "REFERENCE",
+          "proposition": "The amendment targets Section 2.05(2)(c) of the Credit Agreement, a cross-reference that cannot be located within the provided structural regions.",
+          "quantitativeValues": [],
+          "referencedTerms": [],
+          "referencedSections": [
+            "Section 2.05(2)(c)"
+          ],
+          "parentItemId": "inv-item:8826e518000777d674bd1aa7",
+          "relatedItemIds": [],
+          "materiality": "MATERIAL",
+          "ambiguity": "AMBIGUOUS_REFERENCE",
+          "ambiguityReason": "No structural occurrence matches \"Section 2.05(2)(c)\" or any enclosing node of it in the provided regions.",
+          "operative": "OPERATIVE",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:86a9a2dc8435513f30fbb1c5",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 1387,
+            "charEnd": 1512,
+            "sourceCitation": "§2(a)",
+            "excerpt": "(c) If, after giving effect to all mandatory prepayments of Term\nLoans to the extent required by Sections 2.05(2)(a), (b) and"
+          },
+          "semanticRole": "CONDITION",
+          "proposition": "The restated Section 2.05(2)(c) begins a conditional clause: if, after giving effect to all mandatory prepayments of Term Loans required by Sections 2.05(2)(a) and (b), [the remainder of the condition and its consequence are cut off at the end of the region].",
+          "quantitativeValues": [],
+          "referencedTerms": [
+            "Term Loans"
+          ],
+          "referencedSections": [
+            "Section 2.05(2)(a)",
+            "Section 2.05(2)(b)"
+          ],
+          "parentItemId": "inv-item:8826e518000777d674bd1aa7",
+          "relatedItemIds": [
+            "inv-item:62bec901b7ed49f92130bfe6"
+          ],
+          "materiality": "CRITICAL",
+          "ambiguity": "AMBIGUOUS_DRAFTING",
+          "ambiguityReason": "The clause is truncated at the end of the region; the condition's consequence and the full scope of the referenced mandatory prepayment provisions are not stated.",
+          "operative": "OPERATIVE",
+          "detectionMethod": "MODEL"
+        },
+        {
+          "inventoryItemId": "inv-item:62bec901b7ed49f92130bfe6",
+          "sourceSpan": {
+            "regionId": "operative",
+            "documentId": "doc-c",
+            "sourceNodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 1484,
+            "charEnd": 1508,
+            "sourceCitation": "§2(a)",
+            "excerpt": "Sections 2.05(2)(a), (b)"
+          },
+          "semanticRole": "REFERENCE",
+          "proposition": "The new clause (c) cross-references Sections 2.05(2)(a) and (b), neither of which can be located within the provided structural regions.",
+          "quantitativeValues": [],
+          "referencedTerms": [],
+          "referencedSections": [
+            "Section 2.05(2)(a)",
+            "Section 2.05(2)(b)"
+          ],
+          "parentItemId": "inv-item:86a9a2dc8435513f30fbb1c5",
+          "relatedItemIds": [],
+          "materiality": "MATERIAL",
+          "ambiguity": "AMBIGUOUS_REFERENCE",
+          "ambiguityReason": "No structural occurrence matches \"Sections 2.05(2)(a)\" or \"(b)\" or any enclosing node of them in the provided regions.",
+          "operative": "OPERATIVE",
+          "detectionMethod": "MODEL"
+        }
+      ],
+      "uninventoriedValues": [],
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryStatusReason": "20 item(s) accepted, 0 rejected as unverifiable, 0 duplicate(s) dropped",
+      "rejectedUnverifiableItems": 0,
+      "rejectedDuplicateItems": 0,
+      "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+      "frozenContentHash": "5902292051b16edb6b3d807827c6254186e2b15535b4ea18dbb51ac312f84f39",
+      "frozenAt": "2026-09-02T04:41:01.537Z",
+      "algorithmVersion": "semantic-accountability.v1",
+      "promptVersion": "semantic-inventory-prompt.v1",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "telemetryCostUsd": 0.23753800000000003
+    },
+    "accountability": {
+      "candidateRef": "semantic-accountability:holdout:new-definitions",
+      "inventoryStatus": "INVENTORY_OK",
+      "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+      "items": [
+        {
+          "inventoryItemId": "inv-item:090f3e4d6e3267e198e9d0ef",
+          "semanticRole": "OTHER",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[0]",
+            "definitions[1]",
+            "definitions[2]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[0], definitions[1], definitions[2]"
+        },
+        {
+          "inventoryItemId": "inv-item:7fbc8caf058e7d012f088c25",
+          "semanticRole": "REFERENCE",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[0]"
+          ],
+          "modelDisposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+          "quantitative": [],
+          "reason": "lineage: definitions[0]"
+        },
+        {
+          "inventoryItemId": "inv-item:b7c4e344e4f11fcb3b286d37",
+          "semanticRole": "DEPENDENCY",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[0]",
+            "definitions[0].calculationExpression"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[0], definitions[0].calculationExpression"
+        },
+        {
+          "inventoryItemId": "inv-item:4a2f7bd2b8e491bd81e92352",
+          "semanticRole": "OTHER",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[1].calculationExpression"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[1].calculationExpression"
+        },
+        {
+          "inventoryItemId": "inv-item:8c1d5f59a742c3d40a2cf49f",
+          "semanticRole": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[1].calculationExpression.operands[0]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[1].calculationExpression.operands[0]"
+        },
+        {
+          "inventoryItemId": "inv-item:d995f3048ddac515588b3784",
+          "semanticRole": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[1].calculationExpression.operands[0].left"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[1].calculationExpression.operands[0].left"
+        },
+        {
+          "inventoryItemId": "inv-item:4cfd69ec1dc2a704ecdd4039",
+          "semanticRole": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[1].calculationExpression.operands[0].right.operands[0]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[1].calculationExpression.operands[0].right.operands[0]"
+        },
+        {
+          "inventoryItemId": "inv-item:affe2f12c646c89aeafb3693",
+          "semanticRole": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[1].calculationExpression.operands[0].right.operands[1].left"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[1].calculationExpression.operands[0].right.operands[1].left"
+        },
+        {
+          "inventoryItemId": "inv-item:af6fe45d9f89c61b93587773",
+          "semanticRole": "EXCEPTION",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[1].calculationExpression.operands[0].right.operands[1].right"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[1].calculationExpression.operands[0].right.operands[1].right"
+        },
+        {
+          "inventoryItemId": "inv-item:43caa8f3113637d9555b847c",
+          "semanticRole": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[1].calculationExpression.operands[1]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[1].calculationExpression.operands[1]"
+        },
+        {
+          "inventoryItemId": "inv-item:23f74785157934e1d155c8e1",
+          "semanticRole": "DEPENDENCY",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[1].calculationExpression.operands[1]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[1].calculationExpression.operands[1]"
+        },
+        {
+          "inventoryItemId": "inv-item:bc7f47dc083e6108bfa9bbf0",
+          "semanticRole": "FORMULA_COMPONENT",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[1].calculationExpression.operands[2]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[1].calculationExpression.operands[2]"
+        },
+        {
+          "inventoryItemId": "inv-item:b3fbaad387aecabf5c09d6ba",
+          "semanticRole": "OTHER",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[2]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[2]"
+        },
+        {
+          "inventoryItemId": "inv-item:1a2f0b6e0e3a888c566d2bd1",
+          "semanticRole": "ALTERNATIVE",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[2]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[2]"
+        },
+        {
+          "inventoryItemId": "inv-item:0be9ca90c6c3fd6c1bc19356",
+          "semanticRole": "ALTERNATIVE",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[2]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[2]"
+        },
+        {
+          "inventoryItemId": "inv-item:d6a0053a4e0244b2d3dd35ab",
+          "semanticRole": "REFERENCE",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "definitions[2]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: definitions[2]"
+        },
+        {
+          "inventoryItemId": "inv-item:8826e518000777d674bd1aa7",
+          "semanticRole": "OTHER",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "rules[0]",
+            "rules[1]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: rules[0], rules[1]"
+        },
+        {
+          "inventoryItemId": "inv-item:3a7f96c474c84a160ce93869",
+          "semanticRole": "REFERENCE",
+          "materiality": "MATERIAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "rules[0]",
+            "rules[1]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: rules[0], rules[1]"
+        },
+        {
+          "inventoryItemId": "inv-item:86a9a2dc8435513f30fbb1c5",
+          "semanticRole": "CONDITION",
+          "materiality": "CRITICAL",
+          "disposition": "REPRESENTED",
+          "lineageIrPaths": [
+            "rules[0]",
+            "rules[0].conditions[0]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "lineage: rules[0], rules[0].conditions[0]"
+        },
+        {
+          "inventoryItemId": "inv-item:62bec901b7ed49f92130bfe6",
+          "semanticRole": "REFERENCE",
+          "materiality": "MATERIAL",
+          "disposition": "AMBIGUOUS",
+          "lineageIrPaths": [
+            "rules[0].unresolvedDependencies[0]",
+            "rules[0].unresolvedDependencies[1]",
+            "rules[1].unresolvedDependencies[0]",
+            "rules[1].unresolvedDependencies[1]"
+          ],
+          "modelDisposition": null,
+          "quantitative": [],
+          "reason": "carried as an unresolved cross-unit dependency (rules[0].unresolvedDependencies[0], rules[0].unresolvedDependencies[1], rules[1].unresolvedDependencies[0], rules[1].unresolvedDependencies[1]) - target not resolvable within this unit, never guessed"
+        }
+      ],
+      "counts": {
+        "inventoried": 20,
+        "material": 20,
+        "represented": 19,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 1,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 0,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 30
+      },
+      "semanticallyComplete": true,
+      "reasons": [],
+      "algorithmVersion": "semantic-accountability.v1"
+    },
+    "rawModelOutput": {
+      "definitions": [
+        {
+          "localRef": "d1",
+          "termName": "Invoice Restrictions",
+          "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+          "calculationExpression": {
+            "kind": "UNSUPPORTED",
+            "semanticDescription": "\"Invoice Restrictions\" has no meaning stated in the Credit Agreement itself; its substantive content is defined entirely by cross-reference to the Monthly Factoring Report (a report in the form of Exhibit E, or an Administrative-Agent-approved alternative form).",
+            "reason": "Exhibit E, which would contain the actual invoice eligibility/restriction criteria, is a physical exhibit reported as '[On file with the Administrative Agent]' and was not included in any available document or resolvable via tools; getDefinition/getReferencedProvision calls confirm no such content is in the instrument package.",
+            "sourceEvidence": "§2(a): “Invoice Restrictions” has the meaning set forth in the Monthly Factoring Report.",
+            "inventoryItemIds": [
+              "b7c4e344e4f11fcb3b286d37"
+            ]
+          },
+          "dependsOnTerms": [
+            "Monthly Factoring Report"
+          ],
+          "sufficiency": "MISSING_CONTEXT",
+          "sufficiencyReasons": [
+            "The term's entire substantive meaning is deferred to a report form (Exhibit E) that is on file with the Administrative Agent and not digitized/available in the evidence package; no tool could retrieve it (physical exhibit, not a resolvable cross-reference)."
+          ],
+          "citation": "§2(a)",
+          "excerpt": "“Invoice Restrictions” has the meaning set forth in the Monthly Factoring Report.",
+          "inventoryItemIds": [
+            "090f3e4d6e3267e198e9d0ef",
+            "b7c4e344e4f11fcb3b286d37",
+            "7fbc8caf058e7d012f088c25"
+          ]
+        },
+        {
+          "localRef": "d2",
+          "termName": "Maintenance Liquidity",
+          "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+          "calculationExpression": {
+            "kind": "ADD",
+            "operands": [
+              {
+                "kind": "SUBTRACT",
+                "left": {
+                  "kind": "METRIC_REFERENCE",
+                  "metricName": "Aggregate commitments under the Super-Priority Revolving Credit Facility (including revolving commitments in respect of Permitted Euro Revolving Indebtedness, or any Refinancing Indebtedness thereof)",
+                  "citation": "§2(a)",
+                  "inventoryItemIds": [
+                    "d995f3048ddac515588b3784"
+                  ]
+                },
+                "right": {
+                  "kind": "ADD",
+                  "operands": [
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "metricName": "Outstanding revolving loans under the Super-Priority Revolving Credit Facility and any Permitted Euro Revolving Indebtedness (or Refinancing Indebtedness thereof)",
+                      "citation": "§2(a)",
+                      "inventoryItemIds": [
+                        "4cfd69ec1dc2a704ecdd4039"
+                      ]
+                    },
+                    {
+                      "kind": "SUBTRACT",
+                      "left": {
+                        "kind": "METRIC_REFERENCE",
+                        "metricName": "Face amount of letters of credit issued under such revolving facilities",
+                        "citation": "§2(a)",
+                        "inventoryItemIds": [
+                          "affe2f12c646c89aeafb3693"
+                        ]
+                      },
+                      "right": {
+                        "kind": "METRIC_REFERENCE",
+                        "metricName": "Reimbursed amounts under such letters of credit",
+                        "citation": "§2(a)",
+                        "inventoryItemIds": [
+                          "af6fe45d9f89c61b93587773"
+                        ]
+                      },
+                      "citation": "§2(a)"
+                    }
+                  ],
+                  "citation": "§2(a)"
+                },
+                "citation": "§2(a)",
+                "inventoryItemIds": [
+                  "8c1d5f59a742c3d40a2cf49f"
+                ]
+              },
+              {
+                "kind": "METRIC_REFERENCE",
+                "metricName": "Adjustment to Liquidity (as set forth in the most recently delivered Monthly Factoring Report)",
+                "citation": "§2(a)",
+                "inventoryItemIds": [
+                  "43caa8f3113637d9555b847c",
+                  "23f74785157934e1d155c8e1"
+                ]
+              },
+              {
+                "kind": "ADD",
+                "operands": [
+                  {
+                    "kind": "METRIC_REFERENCE",
+                    "metricName": "Unrestricted cash of the Borrower and its Subsidiaries"
+                  },
+                  {
+                    "kind": "DEFINED_TERM_REFERENCE",
+                    "termName": "Cash Equivalents"
+                  }
+                ],
+                "citation": "§2(a)",
+                "inventoryItemIds": [
+                  "bc7f47dc083e6108bfa9bbf0"
+                ]
+              }
+            ],
+            "citation": "§2(a)",
+            "inventoryItemIds": [
+              "4a2f7bd2b8e491bd81e92352"
+            ]
+          },
+          "dependsOnTerms": [
+            "Super-Priority Revolving Credit Facility",
+            "Permitted Euro Revolving Indebtedness",
+            "Refinancing Indebtedness",
+            "Monthly Factoring Report",
+            "Adjustment to Liquidity",
+            "Cash Equivalents",
+            "Borrower"
+          ],
+          "sufficiency": "PARTIAL",
+          "sufficiencyReasons": [
+            "The additive formula structure (clause (a) net revolving availability, plus clause (b) Adjustment to Liquidity, plus clause (c) cash/Cash Equivalents) is fully and faithfully represented from the source text.",
+            "The clause (b) input, 'Adjustment to Liquidity', is used but nowhere defined in this instrument or any related document (confirmed via getDefinition, which returned no match); its actual value/sign convention cannot be determined from available evidence, so that one operand is a bare metric reference rather than a resolvable value."
+          ],
+          "citation": "§2(a)",
+          "inventoryItemIds": [
+            "090f3e4d6e3267e198e9d0ef"
+          ]
+        },
+        {
+          "localRef": "d3",
+          "termName": "Monthly Factoring Report",
+          "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+          "calculationExpression": null,
+          "dependsOnTerms": [
+            "Administrative Agent"
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "The definition's own two-alternative structure (Exhibit E form, or any other Administrative-Agent-approved form) is fully captured from the text; the unresolved content of Exhibit E itself (an exhibit on file with the Administrative Agent, not digitized) does not impair representing THIS definition's own structure, though it does limit downstream use of report-derived figures elsewhere (see 'Maintenance Liquidity' and 'Invoice Restrictions')."
+          ],
+          "citation": "§2(a)",
+          "excerpt": "“Monthly Factoring Report” means a report substantially in the form of Exhibit E or any other form approved by the Administrative Agent.",
+          "inventoryItemIds": [
+            "090f3e4d6e3267e198e9d0ef",
+            "b3fbaad387aecabf5c09d6ba",
+            "1a2f0b6e0e3a888c566d2bd1",
+            "0be9ca90c6c3fd6c1bc19356",
+            "d6a0053a4e0244b2d3dd35ab"
+          ]
+        }
+      ],
+      "rules": [
+        {
+          "localRef": "r1",
+          "sourceSectionRef": "2.05(2)(c)(i)",
+          "covenantFamily": "MANDATORY_PREPAYMENT",
+          "ruleType": "MANDATORY_PREPAYMENT",
+          "posture": "OBLIGATION",
+          "action": "PREPAY_SUPER_PRIORITY_REVOLVING_LOANS",
+          "capacityExpression": {
+            "kind": "MIN",
+            "operands": [
+              {
+                "kind": "METRIC_REFERENCE",
+                "metricName": "Super-Priority Revolving Loans then outstanding (aggregate principal amount)"
+              },
+              {
+                "kind": "SUBTRACT",
+                "left": {
+                  "kind": "METRIC_REFERENCE",
+                  "metricName": "Unrestricted cash on hand of the Borrower and its Subsidiaries as of month-end"
+                },
+                "right": {
+                  "kind": "MONEY",
+                  "amount": 50000000,
+                  "currency": "USD"
+                }
+              }
+            ],
+            "citation": "§2(b) [restated §2.05(2)(c)(i)]"
+          },
+          "conditions": [
+            {
+              "conditionType": "THRESHOLD_EXCEEDED",
+              "description": "Unrestricted cash on hand of the Borrower and its Subsidiaries as of the last day of any calendar month exceeds $50,000,000, tested after giving effect to all mandatory prepayments of Term Loans required by Sections 2.05(2)(a), (b) and (d).",
+              "expression": {
+                "kind": "COMPARE",
+                "left": {
+                  "kind": "METRIC_REFERENCE",
+                  "metricName": "Unrestricted cash on hand of the Borrower and its Subsidiaries as of month-end"
+                },
+                "operator": "GT",
+                "right": {
+                  "kind": "MONEY",
+                  "amount": 50000000,
+                  "currency": "USD"
+                }
+              },
+              "citation": "§2(b) [restated §2.05(2)(c)(i)]",
+              "inventoryItemIds": [
+                "86a9a2dc8435513f30fbb1c5"
+              ]
+            }
+          ],
+          "dependsOn": [
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Section 2.05(2)(a)",
+              "description": "Tested only after giving effect to mandatory Term Loan prepayments required by Section 2.05(2)(a); that section could not be located as a structural node in this instrument.",
+              "inventoryItemIds": [
+                "62bec901b7ed49f92130bfe6"
+              ]
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Section 2.05(2)(b)",
+              "description": "Tested only after giving effect to mandatory Term Loan prepayments required by Section 2.05(2)(b); that section could not be located as a structural node in this instrument.",
+              "inventoryItemIds": [
+                "62bec901b7ed49f92130bfe6"
+              ]
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Section 2.05(2)(d)",
+              "description": "Tested only after giving effect to mandatory Term Loan prepayments required by Section 2.05(2)(d); that section could not be located as a structural node in this instrument."
+            }
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "Full operative text of restated Section 2.05(2)(c)(i) was available (confirmed-current context bundle item) despite the primary source excerpt for this task being physically cut off at the same point."
+          ],
+          "citation": "§2(b) [restated §2.05(2)(c)]",
+          "excerpt": "the Borrower and its Subsidiaries has (i) unrestricted cash on hand as of the last day of any calendar month in an amount that is greater than $50 million, the Borrower shall ... prepay ... Super-Priority Revolving Loans equal to the lesser of (x) the aggregate principal amount of Super-Priority Revolving Loans then-outstanding and (y) the amount necessary to cause the amount of unrestricted cash on hand ... to be less than or equal to $50 million",
+          "inventoryItemIds": [
+            "8826e518000777d674bd1aa7",
+            "3a7f96c474c84a160ce93869",
+            "86a9a2dc8435513f30fbb1c5"
+          ]
+        },
+        {
+          "localRef": "r2",
+          "sourceSectionRef": "2.05(2)(c)(ii)",
+          "covenantFamily": "MANDATORY_PREPAYMENT",
+          "ruleType": "MANDATORY_PREPAYMENT",
+          "posture": "OBLIGATION",
+          "action": "PREPAY_TERM_LOANS",
+          "capacityExpression": {
+            "kind": "SUBTRACT",
+            "left": {
+              "kind": "DEFINED_TERM_REFERENCE",
+              "termName": "Maintenance Liquidity"
+            },
+            "right": {
+              "kind": "MONEY",
+              "amount": 115000000,
+              "currency": "USD"
+            },
+            "citation": "§2(b) [restated §2.05(2)(c)(ii)]"
+          },
+          "conditions": [
+            {
+              "conditionType": "THRESHOLD_EXCEEDED",
+              "description": "After giving effect to any mandatory prepayment under clause (i) above, Maintenance Liquidity as of the last day of any calendar month exceeds $115,000,000.",
+              "expression": {
+                "kind": "COMPARE",
+                "left": {
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "termName": "Maintenance Liquidity"
+                },
+                "operator": "GT",
+                "right": {
+                  "kind": "MONEY",
+                  "amount": 115000000,
+                  "currency": "USD"
+                }
+              },
+              "citation": "§2(b) [restated §2.05(2)(c)(ii)]"
+            }
+          ],
+          "exceptions": [
+            {
+              "description": "No Default or Event of Default occurs (or is deemed to have occurred) for failure to prepay a shortfall ('Deficiency Amount') resulting from a Maintenance Liquidity miscalculation discovered within 30 days after month-end, so long as the Deficiency Amount is less than $1,300,000 and the Borrower prepays it within 5 Business Days of obtaining knowledge of the miscalculation.",
+              "permissionRef": null,
+              "conditions": [
+                {
+                  "conditionType": "THRESHOLD_NOT_EXCEEDED",
+                  "description": "Deficiency Amount is less than $1,300,000",
+                  "expression": {
+                    "kind": "COMPARE",
+                    "left": {
+                      "kind": "TRANSACTION_INPUT_REFERENCE",
+                      "inputName": "Deficiency Amount"
+                    },
+                    "operator": "LT",
+                    "right": {
+                      "kind": "MONEY",
+                      "amount": 1300000,
+                      "currency": "USD"
+                    }
+                  },
+                  "citation": "§2(b) [restated §2.05(2)(c)(ii) proviso]"
+                },
+                {
+                  "conditionType": "CURE_PERIOD",
+                  "description": "Borrower prepays the Deficiency Amount within 5 Business Days of obtaining knowledge of the miscalculation",
+                  "citation": "§2(b) [restated §2.05(2)(c)(ii) proviso]"
+                }
+              ],
+              "citation": "§2(b) [restated §2.05(2)(c)(ii) proviso]",
+              "excerpt": "provided, however, if ... the Borrower obtains knowledge that Maintenance Liquidity was miscalculated ... (such amount, the “Deficiency Amount”), no Default or Event of Default shall occur ... so long as (x) the Deficiency Amount is less than $1,300,000, and (y) within 5 Business Days of obtaining knowledge ... the Borrower makes a prepayment of such Deficiency Amount"
+            }
+          ],
+          "dependsOn": [
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "r1",
+              "description": "Maintenance Liquidity for this test is calculated after giving effect to any mandatory prepayment made under clause (i)."
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Section 2.05(2)(a)",
+              "description": "Tested only after giving effect to mandatory Term Loan prepayments required by Section 2.05(2)(a); that section could not be located as a structural node in this instrument.",
+              "inventoryItemIds": [
+                "62bec901b7ed49f92130bfe6"
+              ]
+            },
+            {
+              "relationshipType": "REQUIRES",
+              "targetRef": "Section 2.05(2)(b)",
+              "description": "Tested only after giving effect to mandatory Term Loan prepayments required by Section 2.05(2)(b); that section could not be located as a structural node in this instrument.",
+              "inventoryItemIds": [
+                "62bec901b7ed49f92130bfe6"
+              ]
+            }
+          ],
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "Full operative text of restated Section 2.05(2)(c)(ii), including the Deficiency Amount cure proviso and the no-refund disclaimer, was available via the confirmed-current context bundle."
+          ],
+          "citation": "§2(b) [restated §2.05(2)(c)]",
+          "excerpt": "after giving effect to any mandatory prepayment pursuant to clause (i) above, Maintenance Liquidity as of the last day of any calendar month that is greater than $115 million, the Borrower shall ... prepay ... Term Loans ... to the extent necessary to cause Maintenance Liquidity ... to be less than or equal to $115 million",
+          "inventoryItemIds": [
+            "8826e518000777d674bd1aa7",
+            "3a7f96c474c84a160ce93869"
+          ]
+        }
+      ],
+      "sharedCapacities": [],
+      "irExtensionCandidates": [
+        {
+          "sourceEvidence": "§2(a): “Adjustment to Liquidity” as set forth in the most recently delivered Monthly Factoring Report; and “Invoice Restrictions” has the meaning set forth in the Monthly Factoring Report (itself a report substantially in the form of Exhibit E, which is on file with the Administrative Agent and not incorporated as searchable text).",
+          "semanticRequirement": "A way to flag that a defined term's or formula operand's value is not fixed by the agreement text but is instead whatever figure/criteria appears in a periodically-delivered, externally-templated report/exhibit (here, a Monthly Factoring Report per Exhibit E) - distinct from an ordinary METRIC_REFERENCE to a financial-statement-derived metric like EBITDA, because the reporting template itself, not just its computed output, is outside the four corners of the agreement.",
+          "whyExistingPrimitivesFail": "METRIC_REFERENCE can name the value but cannot express that its source is a delivered-report line item governed by an exhibit template subject to Administrative Agent approval/substitution, which is a materially different provenance/reliability signal than an internally-defined financial metric.",
+          "candidateGeneralizedPrimitive": "REPORT_DERIVED_VALUE_REFERENCE (reportName, lineItem, formTemplateRef) - a reference node analogous to METRIC_REFERENCE but explicitly tagged as sourced from a periodic third-party-form report rather than computed from the agreement's own defined financial metrics."
+        }
+      ],
+      "overallNotes": [
+        "Primary source excerpt for this task (labeled 2(a)) was physically truncated mid-sentence at 'Sections 2.05(2)(a), (b) and'; the fuller restated text of Section 2.05(2)(c) was obtained from Phase 2's already-gathered context bundle, whose evidenceStatus for that item is CURRENT, and was used to compile rules r1/r2 with COMPLETE sufficiency for the mandatory prepayment mechanics themselves.",
+        "Cross-references to 'Section 1.01', 'Section 2.05(2)(c)', and 'Section 2.05(2)(a)/(b)' could not be resolved to structural nodes in this instrument; getReferencedProvision was attempted for 'Section 1.01' and 'Section 2.05(2)(a)' in this session (both returned not-found), consistent with Phase 2's prior NOT_FOUND findings. These are preserved as explicit dependsOn entries rather than dropped or guessed.",
+        "getDefinition('Adjustment to Liquidity') was attempted and confirmed no matching defined term exists anywhere in the instrument package; this term is treated as an unresolved, report-sourced input throughout.",
+        "Exhibit E's actual content is reported only as '[On file with the Administrative Agent]' - a physical exhibit never digitized - so no tool in this toolset could resolve its content; this affects the substantive completeness of 'Invoice Restrictions' and the 'Adjustment to Liquidity' operand of 'Maintenance Liquidity', but not the structural completeness of the 'Monthly Factoring Report' definition itself."
+      ],
+      "inventoryDispositions": [
+        {
+          "inventoryItemId": "7fbc8caf058e7d012f088c25",
+          "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+          "note": "Purely a structural insertion-point pointer ('Section 1.01') for where the new definitions are added; confirmed unresolvable to a structural node via getReferencedProvision, but carries no independent computational/economic content of its own beyond identifying the definitions article."
+        }
+      ]
+    },
+    "provider": "vercel-ai-gateway",
+    "model": "anthropic/claude-sonnet-5",
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "semantic-accountability-compiler-prompt.v4",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-02T04:46:07.872Z",
+      "inputTokens": 123774,
+      "outputTokens": 32038,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 3,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 306331,
+      "calculatedCostUsd": 0.567928
+    },
+    "cacheKey": "e6953fb4ea7375b99f993caa05dee879b29fecd29d1e3e3092aaf77455693c9d",
+    "compiledAt": "2026-09-02T04:46:07.872Z"
+  },
+  "verify": null,
+  "verifierOperativeSource": "SUPPLIED_WINDOW"
+}

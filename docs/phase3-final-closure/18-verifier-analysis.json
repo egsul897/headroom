@@ -1,0 +1,898 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "18-verifier-analysis",
+  "independence": "Phase 3C verifier unchanged in this mission (no file under lib/contract-model/compiler/semantic-verification/ modified; tests/contract-model/semantic-accountability-independence.test.ts asserts it imports nothing from semantic-accountability). This analysis reads verifier findings and Pass A/C artifacts after the fact; it feeds nothing back into either.",
+  "method": "Each MATERIAL finding's sourceEvidence is located (whitespace-tolerant) in the unit's source-context regions and tested against frozen Pass A item spans (+/-200 chars tolerance for the coarse offset mapping). Layer rules in the file header.",
+  "runsAnalysed": [
+    "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+    "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+    "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1"
+  ],
+  "materialFindings": 84,
+  "byLayer": {
+    "INVENTORY_OMISSION": 12,
+    "COMPOSITION_OMISSION": 47,
+    "COMPOSITION_ADDITION": 15,
+    "SEMANTIC_DISAGREEMENT": 10
+  },
+  "byFindingType": {
+    "OTHER_MATERIAL_SEMANTIC_DISCREPANCY": 13,
+    "MISSING_BASKET": 39,
+    "MISSING_RULE": 8,
+    "UNSUPPORTED_IR_ADDITION": 15,
+    "MISSING_DEPENDENCY": 2,
+    "MISSING_CONDITION": 3,
+    "WRONG_ENTITY_SCOPE": 4
+  },
+  "byLayerAndRegion": {
+    "INVENTORY_OMISSION | applicable-liquidity-rate": 2,
+    "COMPOSITION_OMISSION | applicable-liquidity-rate": 38,
+    "COMPOSITION_ADDITION | applicable-liquidity-rate": 8,
+    "SEMANTIC_DISAGREEMENT | ebitda": 2,
+    "INVENTORY_OMISSION | interest-expense": 2,
+    "SEMANTIC_DISAGREEMENT | net-income": 1,
+    "SEMANTIC_DISAGREEMENT | secured-net-leverage": 2,
+    "INVENTORY_OMISSION | secured-net-leverage": 1,
+    "INVENTORY_OMISSION | ebitda": 1,
+    "INVENTORY_OMISSION | first-lien-debt": 1,
+    "COMPOSITION_ADDITION | interest-expense": 1,
+    "INVENTORY_OMISSION | net-income": 1,
+    "SEMANTIC_DISAGREEMENT | debt-dsgr": 4,
+    "COMPOSITION_OMISSION | debt-dsgr": 2,
+    "INVENTORY_OMISSION | debt-dsgr": 1,
+    "INVENTORY_OMISSION | definitions-dsgr": 3,
+    "COMPOSITION_OMISSION | definitions-dsgr": 4,
+    "COMPOSITION_ADDITION | definitions-dsgr": 6,
+    "SEMANTIC_DISAGREEMENT | definitions-lsb": 1,
+    "COMPOSITION_OMISSION | definitions-lsb": 3
+  },
+  "coveringItemDispositionWhenCovered": {
+    "n/a": 27,
+    "REPRESENTED": 13,
+    "UNSUPPORTED": 39,
+    "MISSING_FROM_COMPOSITION": 5
+  },
+  "reading": "A COMPOSITION_OMISSION or SEMANTIC_DISAGREEMENT finding means Pass A DID inventory the text (the accountability chain had it) and the disagreement sits in Pass B/C or in interpretation; an INVENTORY_OMISSION finding is the verifier independently catching a Pass A gap, which is exactly what the two-layer trust design is for. SOURCE_CONTEXT_INCOMPLETENESS attributes the finding to the unit boundary, not to either model.",
+  "rows": [
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+      "layer": "INVENTORY_OMISSION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[1].calculationExpression (and all nested 'then' branches)",
+      "sourceEvidence": "\"(A) 8.00% for Term Benchmark Loans, and (B) 7.00% for Base Rate Loans\" ... Pricing Level 1: 8.00%/7.00%; Pricing Level 2: 7.75%/6.75%; Pricing Level 3: 7.50%/6"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "REPRESENTED",
+      "irPath": "",
+      "sourceEvidence": "$37.5 million"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "REPRESENTED",
+      "irPath": "",
+      "sourceEvidence": "$62.0 million"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "REPRESENTED",
+      "irPath": "",
+      "sourceEvidence": "$50.0 million"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "$500,000"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "$5.0 million"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "$20 million"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "$500,000"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "8.00%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "7.00%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "8.00\n%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "7.00\n%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "7.75\n%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "6.75\n%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "7.50\n%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "6.50\n%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_RULE",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "1.00 to 1.00"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_RULE",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "1.00 to 1.00"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_RULE",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "0.50 to 1.00"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_RULE",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "0.50 to 1.00"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "UNSUPPORTED_IR_ADDITION",
+      "layer": "COMPOSITION_ADDITION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[0].calculationExpression.operands[0].operands[0]",
+      "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "UNSUPPORTED_IR_ADDITION",
+      "layer": "COMPOSITION_ADDITION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[0].calculationExpression.operands[0].operands[1].operands[1].operands[0]",
+      "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "UNSUPPORTED_IR_ADDITION",
+      "layer": "COMPOSITION_ADDITION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[0].calculationExpression.operands[0].operands[1].operands[1].operands[1].right",
+      "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "applicable-liquidity-rate",
+      "findingType": "UNSUPPORTED_IR_ADDITION",
+      "layer": "COMPOSITION_ADDITION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[0].calculationExpression.operands[1]",
+      "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "ebitda",
+      "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+      "layer": "SEMANTIC_DISAGREEMENT",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "definitions[0].calculationExpression.attemptedStructure.left.attemptedStructure.operands[10] (the MIN node citing '§1.01",
+      "sourceEvidence": "the aggregate amount of cost savings, synergies and operating expense reductions included pursuant to this clause (l), with respect to Permitted Acquisitions ta"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "interest-expense",
+      "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+      "layer": "INVENTORY_OMISSION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[termName=Consolidated Maintenance EBITDA].calculationExpression...clause(1)(l) node (ir-expr:1e355133b22d762",
+      "sourceEvidence": "(l) the amount of \"run-rate\" cost savings, synergies and operating expense reductions related to (i) any restructuring ... and (ii) any Permitted Acquisition .."
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "interest-expense",
+      "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+      "layer": "INVENTORY_OMISSION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[termName=Consolidated Maintenance EBITDA].calculationExpression (top-level '(1) increased by...' SUM node, i",
+      "sourceEvidence": "provided, that the aggregate amount of any amounts added back to Consolidated Maintenance EBITDA pursuant to clauses (f), (l) (m) and (n) above shall not exceed"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "net-income",
+      "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+      "layer": "SEMANTIC_DISAGREEMENT",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "ir-expr:3e03240f4407e85daa207272",
+      "sourceEvidence": "any charges or nonrecurring merger costs incurred during such period as a result of any such transaction, in each case whether or not successful or consummated "
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "secured-net-leverage",
+      "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+      "layer": "SEMANTIC_DISAGREEMENT",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "definitions[1] (termName='Secured Parties')",
+      "sourceEvidence": "“Secured Parties” means, collectively, the Administrative Agent, the Collateral Agent, the Lenders, each Supplemental Administrative Agent and each co-agent, su"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+      "region": "secured-net-leverage",
+      "findingType": "MISSING_DEPENDENCY",
+      "layer": "INVENTORY_OMISSION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[0].calculationExpression (termName='Secured Net Leverage Ratio')",
+      "sourceEvidence": "...to (b) (i) for purposes of determining compliance with the Financial Maintenance Covenant, Consolidated Maintenance EBITDA of the Borrower and its Subsidiari"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+      "layer": "INVENTORY_OMISSION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[2].calculationExpression.else.attemptedStructure.else.attemptedStructure (and duplicate at definitions[3])",
+      "sourceEvidence": "\"Any increase or decrease in the Applicable Rate resulting from a change in the Secured Net Leverage Ratio shall become effective as of the first Business Day i"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "REPRESENTED",
+      "irPath": "",
+      "sourceEvidence": "$37.5 million"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "REPRESENTED",
+      "irPath": "",
+      "sourceEvidence": "$62.0 million"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "REPRESENTED",
+      "irPath": "",
+      "sourceEvidence": "$50.0 million"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "$500,000"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "$5.0 million"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "$20 million"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "$500,000"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "8.00%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "7.00%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "8.00\n%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "7.00\n%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "7.75\n%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "6.75\n%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "7.50\n%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "6.50\n%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_RULE",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "1.00 to 1.00"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_RULE",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "1.00 to 1.00"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_RULE",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "0.50 to 1.00"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "MISSING_RULE",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "0.50 to 1.00"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "UNSUPPORTED_IR_ADDITION",
+      "layer": "COMPOSITION_ADDITION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[0].calculationExpression.operands[0].operands[0]",
+      "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "UNSUPPORTED_IR_ADDITION",
+      "layer": "COMPOSITION_ADDITION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[0].calculationExpression.operands[1]",
+      "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "UNSUPPORTED_IR_ADDITION",
+      "layer": "COMPOSITION_ADDITION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[1].calculationExpression.operands[0]",
+      "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "applicable-liquidity-rate",
+      "findingType": "UNSUPPORTED_IR_ADDITION",
+      "layer": "COMPOSITION_ADDITION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[1].calculationExpression.operands[1].right",
+      "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "ebitda",
+      "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+      "layer": "INVENTORY_OMISSION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[0].calculationExpression (root exprId ir-expr:78fa753a2c4a83597de0e3cc)",
+      "sourceEvidence": "\"Consolidated EBITDA\" means, with respect to any Person for any period, the Consolidated Net Income of such Person and its Subsidiaries for such period: (1) inc"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "ebitda",
+      "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+      "layer": "SEMANTIC_DISAGREEMENT",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "nested clause (l) node at exprId ir-expr:15b9ae16eed74be64e2c869c (MIN of SUBTRACT run-rate-savings-minus-actual-benefit",
+      "sourceEvidence": "provided that (i) such cost savings, synergies and operating expense reductions are reasonably identifiable and factually supportable and (ii) the aggregate amo"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "first-lien-debt",
+      "findingType": "MISSING_CONDITION",
+      "layer": "INVENTORY_OMISSION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[0].calculationExpression.left.operands[1] (DEFINED_TERM_REFERENCE termName=\"Capitalized Lease Obligations\")",
+      "sourceEvidence": "\"consisting only of Indebtedness for borrowed money, Capitalized Lease Obligations and purchase money Indebtedness, in each case secured by a first priority lie"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "interest-expense",
+      "findingType": "UNSUPPORTED_IR_ADDITION",
+      "layer": "COMPOSITION_ADDITION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[1].calculationExpression.left.operands[1].operands[9].operands[1].operands[0]",
+      "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "net-income",
+      "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+      "layer": "INVENTORY_OMISSION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[0].calculationExpression / definitions[0].sufficiency",
+      "sourceEvidence": "\"Consolidated Net Income\" means, with respect to any Person for any period, the net income (loss) of such Person and its Subsidiaries for such period determined"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+      "region": "secured-net-leverage",
+      "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+      "layer": "SEMANTIC_DISAGREEMENT",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "definitions[1] (termName=\"Secured Parties\")",
+      "sourceEvidence": "“Secured Parties” means, collectively, the Administrative Agent, the Collateral Agent, the Lenders, each Supplemental Administrative Agent and each co-agent, su"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "debt-dsgr",
+      "findingType": "WRONG_ENTITY_SCOPE",
+      "layer": "SEMANTIC_DISAGREEMENT",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "REPRESENTED",
+      "irPath": "rules[0].entityScope",
+      "sourceEvidence": "No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "debt-dsgr",
+      "findingType": "WRONG_ENTITY_SCOPE",
+      "layer": "SEMANTIC_DISAGREEMENT",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "REPRESENTED",
+      "irPath": "rules[2].entityScope",
+      "sourceEvidence": "Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted Subsidiary owing to any Borrower or any other Restricted Subsidiary..."
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "debt-dsgr",
+      "findingType": "WRONG_ENTITY_SCOPE",
+      "layer": "SEMANTIC_DISAGREEMENT",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "REPRESENTED",
+      "irPath": "rules[4].entityScope",
+      "sourceEvidence": "Guarantees by any Borrower of Indebtedness of any Restricted Subsidiary and by any Restricted Subsidiary of Indebtedness of any Borrower or any other Restricted"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "debt-dsgr",
+      "findingType": "MISSING_CONDITION",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "REPRESENTED",
+      "irPath": "rules[2].conditions",
+      "sourceEvidence": "provided that (i) Indebtedness of any Restricted Subsidiary that is not a Loan Party owing to any Borrower or any other Loan Party shall be subject to the limit"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "debt-dsgr",
+      "findingType": "MISSING_CONDITION",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "REPRESENTED",
+      "irPath": "rules[4].conditions",
+      "sourceEvidence": "provided that (i) the Indebtedness so Guaranteed is permitted by this Section 6.01, (ii) Guarantees by any Borrower or other Loan Party of Indebtedness of any R"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "debt-dsgr",
+      "findingType": "MISSING_DEPENDENCY",
+      "layer": "INVENTORY_OMISSION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "rules[3].dependsOn / rules[5].dependsOn",
+      "sourceEvidence": "...together with the aggregate amount of all outstanding Guarantees permitted under Section 6.01(c)(iii) and the aggregate amount of all outstanding investments"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "debt-dsgr",
+      "findingType": "WRONG_ENTITY_SCOPE",
+      "layer": "SEMANTIC_DISAGREEMENT",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "REPRESENTED",
+      "irPath": "rules[?].entityScope (Section 6.01(n) rule)",
+      "sourceEvidence": "Indebtedness of any Loan Party or any Restricted Subsidiary arising from agreements providing for customary indemnification, adjustment of purchase or acquisiti"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "definitions-dsgr",
+      "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+      "layer": "INVENTORY_OMISSION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions",
+      "sourceEvidence": "SECTION 1.01. Defined Terms . As used in this Agreement, the following terms have the meanings specified below: ... [continues for several hundred terms from \"A"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "definitions-dsgr",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "MISSING_FROM_COMPOSITION",
+      "irPath": "",
+      "sourceEvidence": "0.10%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "definitions-dsgr",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "MISSING_FROM_COMPOSITION",
+      "irPath": "",
+      "sourceEvidence": "0.10%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "definitions-dsgr",
+      "findingType": "MISSING_BASKET",
+      "layer": "INVENTORY_OMISSION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "",
+      "sourceEvidence": "1%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "definitions-dsgr",
+      "findingType": "MISSING_BASKET",
+      "layer": "INVENTORY_OMISSION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "",
+      "sourceEvidence": "1%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "definitions-dsgr",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "MISSING_FROM_COMPOSITION",
+      "irPath": "",
+      "sourceEvidence": "1.00%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "definitions-dsgr",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "MISSING_FROM_COMPOSITION",
+      "irPath": "",
+      "sourceEvidence": "1.00%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "definitions-dsgr",
+      "findingType": "UNSUPPORTED_IR_ADDITION",
+      "layer": "COMPOSITION_ADDITION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[6].calculationExpression.operands[0].operands[1]",
+      "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "definitions-dsgr",
+      "findingType": "UNSUPPORTED_IR_ADDITION",
+      "layer": "COMPOSITION_ADDITION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[7].calculationExpression.operands[0].operands[1]",
+      "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "definitions-dsgr",
+      "findingType": "UNSUPPORTED_IR_ADDITION",
+      "layer": "COMPOSITION_ADDITION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[18].calculationExpression.operands[0].then.operands[1].operands[1]",
+      "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "definitions-dsgr",
+      "findingType": "UNSUPPORTED_IR_ADDITION",
+      "layer": "COMPOSITION_ADDITION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[18].calculationExpression.operands[0].else.operands[1].operands[1]",
+      "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "definitions-dsgr",
+      "findingType": "UNSUPPORTED_IR_ADDITION",
+      "layer": "COMPOSITION_ADDITION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[18].calculationExpression.operands[0].else.operands[2].operands[1]",
+      "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "definitions-dsgr",
+      "findingType": "UNSUPPORTED_IR_ADDITION",
+      "layer": "COMPOSITION_ADDITION",
+      "evidenceCoveredByInventory": false,
+      "coveringItemDisposition": null,
+      "irPath": "definitions[18].calculationExpression.operands[1]",
+      "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "definitions-lsb",
+      "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+      "layer": "SEMANTIC_DISAGREEMENT",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "REPRESENTED",
+      "irPath": "definitions[termName=Availability].calculationExpression.then/else.left.right (DEFINED_TERM_REFERENCE 'Aggregate Revolvi",
+      "sourceEvidence": "minus (ii) the Aggregate Revolving Exposure (calculated, with respect to any Defaulting Lender, as if such Defaulting Lender had funded its Applicable Percentag"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "definitions-lsb",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "$13,000,000"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "definitions-lsb",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "UNSUPPORTED",
+      "irPath": "",
+      "sourceEvidence": "20%"
+    },
+    {
+      "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+      "region": "definitions-lsb",
+      "findingType": "MISSING_BASKET",
+      "layer": "COMPOSITION_OMISSION",
+      "evidenceCoveredByInventory": true,
+      "coveringItemDisposition": "MISSING_FROM_COMPOSITION",
+      "irPath": "",
+      "sourceEvidence": "6.250%"
+    }
+  ]
+}

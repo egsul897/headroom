@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "20-canary-4-child-descent",
+  "mission": "SINGLE CANARY #4 - child descent must not discharge semantically substantive parent text",
+  "startingSha": "3eb12b4a343c2deb1c0533ca704fa942a291d41b",
+  "failureFixed": "A substantive parent/chapeau span could become COVERED_BY_CHILD_DESCENT merely because its enumerated child clauses were covered. The parent's own independent obligations were discharged for free.",
+  "fixture": {
+    "source": "The Borrower shall prepay the Loans in full upon a Change of Control and shall cure any Default within thirty days after notice and shall not incur any Indebtedness other than (a) the Existing Debt (b) the Revolving Loans.",
+    "inventory": "two items only - '(a) the Existing Debt' and '(b) the Revolving Loans.' The prepayment obligation, the cure obligation and the incurrence prohibition are inventoried by nothing.",
+    "provenance": "red-team RT-4 / S5, verbatim",
+    "reproduced": true,
+    "before": {
+      "coverageSpans": "[COVERED_BY_CHILD_DESCENT] \"The Borrower shall prepay the Loans in full upon a Change of Control and shall cure any Default within thirty days after notice and shall not incur any Indebtedness other than \" | [STRUCTURAL_NOISE] \"(a) \" | [COVERED_BY_INVENTORY] \"the Existing Debt\" | [PUNCTUATION_OR_DELIMITER] \" \" | [STRUCTURAL_NOISE] \"(b) \" | [COVERED_BY_INVENTORY] \"the Revolving Loans\" | [PUNCTUATION_OR_DELIMITER] \".\"",
+      "dischargedChars": 176,
+      "unaccountedSource": 0,
+      "unaccountedValues": 0,
+      "inventoryStatus": "INVENTORY_OK",
+      "semanticallyComplete": true,
+      "reasons": []
+    },
+    "note": "Three independent obligations vanished silently. This is precisely the class the trust boundary exists to catch: nothing in Pass A, Pass B or Pass C could see them again."
+  },
+  "rootCause": "Descent operated on the parent UNIT, not on the parent's RESIDUE. The eligibility test was 'do all my children have an accounted disposition?', so a single uncovered blob spanning the entire lead-in inherited a blanket exemption from the children it happened to precede. Credit flowed child -> parent without asking what the parent text itself asserted. The only guard was a whole-residue quantitative-value check, which fires only when the parent happens to carry a digit-bearing value - 'shall prepay the Loans in full upon a Change of Control' carries none.",
+  "ruleChosen": {
+    "name": "residue-first descent with coordination-scoped eligibility",
+    "statement": "Split the parent's residue at coordination boundaries. Only the FINAL fragment - the one that actually runs up to the children, with nothing but whitespace or punctuation between it and them - is eligible for discharge. Every earlier fragment is an independent conjunct of the parent's own and stays accountable. The quantitative-value guard is then applied per fragment, not per residue.",
+    "independentBoundary": "coordination conjunctions ('and', 'or', 'and/or') plus the ordinary span geometry already computed by the coverage pass. Both are structural, not semantic.",
+    "eligibilityIsPositional": "A fragment earns discharge by POSITION (it introduces the children) - never by length, never by vocabulary.",
+    "conservativeDefault": "A fragment that cannot be shown to introduce the children stays UNACCOUNTED_SOURCE. If the residue's last fragment does not run up to the children (anything covered or substantive intervenes), NOTHING in the parent is discharged.",
+    "valuesAreHardBlockers": "A fragment carrying a quantitative value of any kind is never discharged, even when it is the introducing fragment (mission section 7).",
+    "whatItIsNot": [
+      "no parent character-length test",
+      "no token count",
+      "no number-of-children test",
+      "no magic threshold of any kind",
+      "no covenant-family keyword list (prepayment / debt / liens / cure / default / restricted payments appear nowhere in the implementation)",
+      "no modal-verb or obligation-verb vocabulary",
+      "no comparison of parent characters against child characters"
+    ]
+  },
+  "productionFilesChanged": [
+    "lib/contract-model/compiler/semantic-accountability/source-coverage.ts - added COORDINATION_BOUNDARY_RE and splitParentResidue(); rewrote the child-descent loop to be residue-first"
+  ],
+  "attackAfter": {
+    "coverageSpans": "[UNACCOUNTED_SOURCE] \"The Borrower shall prepay the Loans in full upon a Change of Control and shall cure any Default within thirty days after notice and\" | [COVERED_BY_CHILD_DESCENT] \"shall not incur any Indebtedness other than \" | [STRUCTURAL_NOISE] \"(a) \" | [COVERED_BY_INVENTORY] \"the Existing Debt\" | [PUNCTUATION_OR_DELIMITER] \" \" | [STRUCTURAL_NOISE] \"(b) \" | [COVERED_BY_INVENTORY] \"the Revolving Loans\" | [PUNCTUATION_OR_DELIMITER] \".\"",
+    "unaccountedSource": 1,
+    "unaccountedExcerpt": "The Borrower shall prepay the Loans in full upon a Change of Control and shall cure any Default within thirty days after notice and",
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+    "semanticallyComplete": false,
+    "honestLimitation": "unaccountedValues is still 0 here: 'thirty days' is spelled out and the quantitative extractor is digit-bearing. The SPAN is surfaced, so the omission is not silent, but the value itself is not independently counted. Pre-existing extractor limitation, out of scope for this canary; recorded, not repaired."
+  },
+  "controls": {
+    "pureChapeau": {
+      "fixture": "The Borrower may make the following Investments: (a) Investments in Subsidiaries. (b) Investments in Joint Ventures.",
+      "before": "0 unaccounted",
+      "after": "0 unaccounted - the lead-in is still COVERED_BY_CHILD_DESCENT",
+      "verdict": "no false gap introduced on a legitimate pure introducer"
+    },
+    "mixedParent": {
+      "fixture": "The Company shall comply within 30 days and may take only the following actions: (a) Action A. (b) Action B.",
+      "before": "[UNACCOUNTED_SOURCE] \"The Company shall comply within 30 days and may take only the following actions:\" - blocked only by the whole-residue value guard, so the entire residue including the genuine introducer was reported",
+      "after": "[UNACCOUNTED_SOURCE] \"The Company shall comply within 30 days and\" + [COVERED_BY_CHILD_DESCENT] \"may take only the following actions: \"; DAYS:30 days remains unaccounted",
+      "verdict": "the count is 1 both before and after, but the fix is strictly finer: the substantive conjunct is now isolated from the introducer instead of the reviewer being handed the whole sentence. Reported honestly - this control does not discriminate on count alone."
+    }
+  },
+  "priorCanariesStillHold": {
+    "canary2_S9": "'except as provided in Section 6.02' still UNACCOUNTED_SOURCE",
+    "canary2b_I5": "both connectives in I5 still COVERED_BY_CONNECTIVE_OWNERSHIP",
+    "canary3_RT8": "the whole-region blanket span is still clipped to its first independent proposition; RATIO and DAYS still unaccounted"
+  },
+  "tests": {
+    "added": 3,
+    "names": [
+      "canary #4 ATTACK: a lead-in carrying independent conjuncts keeps them accountable; only the fragment that introduces the children is discharged",
+      "canary #4 LEGITIMATE PURE CHAPEAU: a lead-in that only introduces its children is still discharged by descent",
+      "canary #4 MIXED PARENT: a parent obligation and its value stay accountable while the introducing fragment is discharged"
+    ],
+    "sourceCoverageSuite": "93/93 passing (90 before, +3 new)",
+    "adversarialSuite": "2400 generated cases, 0 dangerous false negatives, unchanged"
+  },
+  "corpusImpact": {
+    "before": "3 failed | 254 passed (257)",
+    "after": "5 failed | 255 passed (260)",
+    "delta": "+3 tests (the three new canary #4 tests, all green), +2 failures - both the same newly surfaced scenario, I26, counted once in pass-a-inventory and once in pass-bc-reconciliation",
+    "newlySurfacedCorpusGaps": 1,
+    "gaps": [
+      {
+        "scenarioId": "I26",
+        "excerpt": "The Borrower will furnish written notice to the Administrative Agent",
+        "classification": "TRUE_SAFETY_IMPROVEMENT",
+        "reasoning": "I26's source is 'SECTION 6.02 Notices. The Borrower will furnish written notice to the Administrative Agent within three (3) Business Days after any Responsible Officer obtains knowledge thereof of (a) the occurrence of any Default and (b) any ERISA Event ... in excess of $1,250,000.' The corpus inventories three items: the deadline and the two triggers. Nothing inventories the notice ACT itself, the modality, or the counterparty ('the Administrative Agent'). Pass B's rule for I26 carries action: null and capacityExpression: null, so the recipient exists nowhere in the compiled representation either. Before canary #4 this lead-in was discharged as COVERED_BY_CHILD_DESCENT purely because (a) and (b) were covered - the exact defect class. It is no longer eligible because a COVERED_BY_INVENTORY span (the deadline) sits between the residue and the children, so the residue does not run up to them.",
+        "groundTruthChanged": false,
+        "repaired": false,
+        "note": "The mission forbids repairing collateral gaps and forbids changing ground truth to get green tests. I26's expectSemanticallyComplete stays true and the two tests stay red. The correct repair is to inventory the notice obligation and its recipient, which is corpus work for a later mission."
+      }
+    ],
+    "preexistingFailures": [
+      {
+        "scenarioId": "I27",
+        "excerpt": "Notwithstanding",
+        "classification": "OBVIOUS_FALSE_GAP",
+        "status": "unchanged since canary #2B; 'notwithstanding' is deliberately excluded from CLAUSE_INTRODUCING_CONNECTIVES because it is an override operator, not a pure introducer. Recorded in artifact 18, not touched here."
+      }
+    ],
+    "realRegressions": 0,
+    "testsChangedToAccommodateTheFix": []
+  },
+  "qualityGates": {
+    "typescript": "npx tsc --noEmit - 6 errors, all pre-existing in tests/foundation-audit/*; identical count on the pre-fix tree; zero errors in semantic-accountability or source-coverage",
+    "lint": "npx next lint --dir lib --dir tests --dir scripts - 1 error, pre-existing (@typescript-eslint/no-var-requires rule definition missing in tests/foundation-audit/amendment-operative-state-adversarial.test.ts); none in changed files"
+  },
+  "spend": {
+    "paidModelCalls": 0,
+    "vercelDeploys": 0,
+    "providerProbe": "HTTP 402 quota_for_entity_exceeded, current spend $150.49 / limit $150.00 - byte-identical to the figure recorded before this mission started, which is positive proof no paid call was made"
+  },
+  "reproductionHarness": "scripts/source-coverage-canary4-reproduce.ts (committed; run with npx tsx)",
+  "canary4Solved": true,
+  "scopeDiscipline": "One failure fixed. No other canary re-opened, no collateral gap repaired, no ground truth edited, no independent red-team run, no paid validation."
+}

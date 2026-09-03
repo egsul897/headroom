@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "BASELINE",
+  "missionName": "HEADROOM - FINAL PHASE 3 SEMANTIC COVERAGE ARCHITECTURE: SOURCE INVENTORY -> IR COMPOSITION -> DETERMINISTIC RECONCILIATION",
+  "startingEvidenceSha": "9dfdfe652ab0fc9b6199c51e55125d1e1ad85349",
+  "mission4FrozenProductionSha": "bc4feaef5a307b40c32a19567f587a81e82abaea",
+  "mission4FreezeRecordCommit": "502242b2f2c067ee25d83c2988324ff7643d7c99",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "gitStatusAtStart": "clean working tree, HEAD == startingEvidenceSha",
+  "mission4Inherited": {
+    "irExpressiveEnough": true,
+    "recursiveAttemptedStructureDiagnosticRetained": true,
+    "safety": "0 silent material omissions across 20 real compile+verify calls; 0 false trusted semantics; 14/14 permanent controls",
+    "semanticCaptureInsufficient": "A1-A6 2/6 (latest frozen run), B1-B4 0/4 across three executions, 8 literal absent-value misses among 36 material findings in the 12-region reality check, material recall below 95%",
+    "dependencyCaptureIncomplete": "RULE->DEFINITION and RULE->RULE exist; the real shared cap was reported as producing zero SharedCapacity objects",
+    "knownBlindSpot": "no independent source-derived inventory exists against which the final IR can be reconciled when the model never attempts a material component at all"
+  },
+  "productionCodeReadBeforeAnyDesign": [
+    "lib/contract-model/compiler/semantic/{compile,caller,normalize,prompt,wire-schema,types,cache,completeness-check,tools,package-compile}.ts",
+    "lib/contract-model/ir/{types,validate,identity}.ts",
+    "lib/contract-model/compiler/semantic-verification/{verify,reviewer,prompt,source-inventory,ir-inventory,reconciliation,types}.ts",
+    "lib/contract-model/compiler/semantic-coverage/{ai-inventory,types}.ts (Phase 3E unit-level inventory - a different granularity, reviewed for reuse)",
+    "lib/contract-model/compiler/context-retrieval/{types,pipeline,reference-context}.ts",
+    "lib/contract-model/compiler/{llm-caller,structural-index,structural-references,structural-definitions,hashing}.ts",
+    "scripts/final-semantic-decomposition-{holdout-replay,reality-check}.ts (the Mission 4 validation harness)"
+  ],
+  "zeroCostReDerivationPerformedBeforeDesign": {
+    "script": "scripts/semantic-accountability-shared-cap-trace.ts",
+    "output": "docs/semantic-accountability/06-shared-cap-root-cause-trace.json",
+    "costUsd": 0,
+    "modelCalls": 0
+  },
+  "criticalBaselineFindingsThatReframeMission4": [
+    {
+      "id": "BF-1",
+      "finding": "EVERY real compile call Mission 4 (and Missions 2-3) made ran with an EMPTY Phase 2D context bundle.",
+      "evidence": "All four validation scripts (scripts/final-phase3-closure-holdout-run.ts, post-holdout-semantic-remediation-rerun.ts, final-semantic-decomposition-holdout-replay.ts, final-semantic-decomposition-reality-check.ts) construct an ad-hoc DiscoveredCandidate with `structuralNodeIds: []` (only the deprecated label-shaped structuralNodeKeys is set). context-retrieval/pipeline.ts anchors exclusively on candidate.structuralNodeIds[0] (Phase 3F.1.2 occurrence-safe identity) and, finding none, returns sufficiencyState INCOMPLETE with zero items and the HIGH-severity unresolved dependency 'Cannot retrieve context for a candidate with no anchoring structural node.' Re-derived deterministically in 06-shared-cap-root-cause-trace.json: itemCount 0 for both DSGR regions as run; 47-48 items (child rules, definitions, definition dependencies) when the real nodeId is supplied.",
+      "consequence": "Mission 4's A1-A6/B1-B4 and 12-region numbers measured the compiler WITHOUT any of the definitions/child clauses/cross-references Phase 2D exists to provide; every 'VERIFICATION_INCOMPLETE' verdict in those runs traces to verify.ts's `contextBundle.sufficiencyState !== SUFFICIENT` rule, not to a semantic finding. This is a validation-harness defect (the real discovery pipeline always populates structuralNodeIds), and it is exactly the class of defect Section 12's source-context sufficiency check exists to make impossible to miss.",
+      "howThisMissionHandlesIt": "The frozen-holdout and whole-agreement validations keep source, GT, regions, provider/model, verifier and scoring byte-identical; the harness now supplies the real physical nodeId (as production does) and the new source-context sufficiency layer records, per unit, exactly what context state the compile ran under. The pre-fix Mission 4 numbers are retained unmodified as the comparison baseline."
+    },
+    {
+      "id": "BF-2",
+      "finding": "Mission 4's 'zero SharedCapacity objects produced' claim was partly a MEASUREMENT artifact.",
+      "evidence": "The Mission 4 scripts preserved compile output as {status, rules, definitions, failureReasons, telemetry} - never sharedCapacities, toolCallLog, or rawModelOutput. In the preserved investments-dsgr output, rule ir-rule:b4ebe266 (§6.04(b)) carries capacityExpression LEDGER_USAGE_REFERENCE with sharedCapId ir-sharedcap:949e9cac..., which can only exist if the model DID emit a WireSharedCapacity that normalize.ts resolved. The object itself was dropped from the preserved file.",
+      "consequence": "The composition layer CAN produce a SharedCapacity for a same-batch shared cap; what was lost is (a) preservation, (b) the cross-unit linkage (see 06)."
+    },
+    {
+      "id": "BF-3",
+      "finding": "Cross-unit dependencies the model DID emit were silently dropped at normalization.",
+      "evidence": "Preserved sufficiencyReasons on §6.04(b)/(c)/(d)/(f): 'dependsOn[0].targetRef \"Section 6.01(b)(iii)\" did not resolve - dependency dropped rather than left dangling' (and Section 6.01(c)(iii), Section 6.01, Section 6.07). normalize.ts's resolveRuleRef accepts only a same-batch localRef or a literal ir-rule: id; IRRuleDependency has no representation for a real but externally-targeted dependency.",
+      "consequence": "A DEPENDENCY_ARCHITECTURE gap: the IR can only express dependencies within one compilation unit."
+    },
+    {
+      "id": "BF-4",
+      "finding": "Cross-reference resolution fails for two generic drafting shapes.",
+      "evidence": "Structural index: 'Section 6.04(b)' NOT_FOUND (a leading 'Section ' prefix is not normalized on the query side; '6.04(b)' alone is UNIQUE) and '6.01(b)(iii)' NOT_FOUND (an inline roman-numeral proviso inside a lettered clause is not its own node). Bare '6.04'/'6.01' are AMBIGUOUS because the document's table of contents is parsed as a second, degenerate SECTION occurrence (ownLen 33-78 chars, 0 children) sharing the label with the body section (descLen 7,851-8,790 chars, 17-18 children).",
+      "consequence": "Both the model's own getReferencedProvision calls ('cross-reference resolution attempted for both and failed, then tool budget was exhausted') and Phase 2D's reference expansion lose the sibling provision. Generic - no DSGR-specific text is involved."
+    },
+    {
+      "id": "BF-5",
+      "finding": "Even with a real anchor, Phase 2D's text budget is consumed by definition-dependency chains before explicit cross-references are expanded.",
+      "evidence": "With the real nodeId, both regions stop with 'maxTextBudgetChars reached' and 'maxDefinitionDepth (5) reached' carrying 25-27 DEFINITION_DEPENDENCY items and ZERO CROSS_REFERENCE items, even though detectStructuralReferences resolves 'Section 6.04(b)' from §6.01(b)(i)/(c)(i) uniquely (targetNodeId set).",
+      "consequence": "A CONTEXT_RETRIEVAL prioritization limit - the compilation unit Section 13 asks for (provision + required definitions + EXPLICIT cross-references) is not what the bundle delivers when definitions are deep."
+    },
+    {
+      "id": "BF-6",
+      "finding": "The Mission 4 anchor selection used a closed interval and mis-anchored one region.",
+      "evidence": "findAnchorNode used charStart <= idx <= charEnd; the investments region (offset 455225) anchored to the PRECEDING clause 6.03(g) whose charEnd == 455225, not to §6.04 (whose charStart == 455225). Half-open [charStart, charEnd) anchors correctly.",
+      "consequence": "Validation-harness defect only; corrected in this mission's scripts."
+    }
+  ],
+  "budgetPolicy": "Section 29: no paid call until architecture tests pass, production is frozen and provider health is confirmed; if expected real cost exceeds $12, STOP and request authorization. Mission 4's four real runs (3 holdout executions + 1 reality check) cost $3.05-3.12 and $7.12 respectively; this mission requires two executions of each PLUS a Pass A call per unit, so the expected cost materially exceeds $12 and authorization will be requested at the freeze point."
+}

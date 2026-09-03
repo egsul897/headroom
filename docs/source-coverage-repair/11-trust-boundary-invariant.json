@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "11-trust-boundary-invariant",
+  "invariant": "NO_SEMANTIC_COMPLETE_WITH_UNACCOUNTED_SOURCE",
+  "statement": "If any span of the semantic unit's source is UNACCOUNTED_SOURCE, or any quantitative value in it is unaccounted, then the inventory cannot be INVENTORY_OK in the completeness sense, reconciliation cannot report semanticallyComplete, and the agreement rollup cannot report SEMANTICALLY_COMPLETE.",
+  "enforcementPoints": [
+    {
+      "layer": "Pass A",
+      "file": "lib/contract-model/compiler/semantic-accountability/inventory.ts",
+      "mechanism": "the coverage verdict is decided before every other status branch; any residue yields INVENTORY_COVERAGE_GAP",
+      "independentOf": "reconciliation and compile"
+    },
+    {
+      "layer": "Pass C",
+      "file": "lib/contract-model/compiler/semantic-accountability/reconciliation.ts",
+      "mechanism": "semanticallyComplete requires unaccountedSource.length === 0 AND uninventoriedValues.length === 0, checked against the lists themselves",
+      "independentOf": "the inventory status string - a tampered INVENTORY_OK still fails"
+    },
+    {
+      "layer": "compile",
+      "file": "lib/contract-model/compiler/semantic/compile.ts",
+      "mechanism": "SEMANTIC_INVENTORY_COVERAGE_GAP is raised from the status OR from a non-empty unaccountedSource, each span reported with its excerpt and reason",
+      "independentOf": "reconciliation's boolean"
+    },
+    {
+      "layer": "rollup",
+      "file": "lib/contract-model/compiler/semantic-accountability/rollup.ts",
+      "mechanism": "unchanged by this mission - a null or incomplete accountability result becomes REVIEW_REQUIRED, never SEMANTICALLY_COMPLETE"
+    }
+  ],
+  "noSingleStringOfTruth": "No enforcement point reads another's verdict. Tests tamper with the status string and with the residual list separately and confirm each refusal independently.",
+  "freezeBinding": "unaccounted spans are part of frozenContentHash, so a gap cannot be edited out of a frozen inventory without changing its hash",
+  "materialityHonesty": "Mission \u00a715 - the detector never claims to know whether omitted text is material. UNACCOUNTED_SOURCE is review-blocking by default and is described in every reason string as 'materiality undetermined, never assumed immaterial'."
+}

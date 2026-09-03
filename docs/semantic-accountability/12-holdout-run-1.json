@@ -1,0 +1,442 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "12-holdout-run-1",
+  "mode": "holdout",
+  "runNumber": 1,
+  "productionSha": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+  "productionTreeHash": "199ba3f88e5bc31ae25572f6b59054c7f4733ab99dffad234d7c9a4601e4b5c1",
+  "providers": {
+    "compiler": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5"
+    },
+    "inventory": {
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5"
+    },
+    "verifier": {
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5"
+    }
+  },
+  "totalCostUsd": 7.3114740000000005,
+  "regionsCompleted": 6,
+  "regionsTotal": 8,
+  "semanticallyCompleteCount": 4,
+  "perClaimResults": {
+    "B1": {
+      "id": "applicable-liquidity-rate",
+      "claimIds": [
+        "B1",
+        "B2"
+      ],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "REVIEW_REQUIRED",
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 24,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 61,
+      "semanticallyComplete": false,
+      "counts": {
+        "inventoried": 61,
+        "material": 61,
+        "represented": 7,
+        "intentionallyNonComputational": 1,
+        "unsupported": 53,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 20,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 10,
+        "danglingLineageReferences": 1,
+        "canonicalizedLineageReferences": 0
+      }
+    },
+    "B2": {
+      "id": "applicable-liquidity-rate",
+      "claimIds": [
+        "B1",
+        "B2"
+      ],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "REVIEW_REQUIRED",
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 24,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 61,
+      "semanticallyComplete": false,
+      "counts": {
+        "inventoried": 61,
+        "material": 61,
+        "represented": 7,
+        "intentionallyNonComputational": 1,
+        "unsupported": 53,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 20,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 10,
+        "danglingLineageReferences": 1,
+        "canonicalizedLineageReferences": 0
+      }
+    },
+    "A1": {
+      "id": "ebitda",
+      "claimIds": [
+        "A1",
+        "B3"
+      ],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "REVIEW_REQUIRED",
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 1,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 53,
+      "semanticallyComplete": true,
+      "counts": {
+        "inventoried": 53,
+        "material": 52,
+        "represented": 0,
+        "intentionallyNonComputational": 2,
+        "unsupported": 51,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 4,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 1,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 53
+      }
+    },
+    "B3": {
+      "id": "ebitda",
+      "claimIds": [
+        "A1",
+        "B3"
+      ],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "REVIEW_REQUIRED",
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 1,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 53,
+      "semanticallyComplete": true,
+      "counts": {
+        "inventoried": 53,
+        "material": 52,
+        "represented": 0,
+        "intentionallyNonComputational": 2,
+        "unsupported": 51,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 4,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 1,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 53
+      }
+    },
+    "A4": {
+      "id": "first-lien-debt",
+      "claimIds": [
+        "A4"
+      ],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "REVIEW_REQUIRED",
+      "verifyStatus": "VERIFICATION_INCOMPLETE",
+      "materialFindings": 0,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 37,
+      "semanticallyComplete": false,
+      "counts": {
+        "inventoried": 37,
+        "material": 36,
+        "represented": 32,
+        "intentionallyNonComputational": 2,
+        "unsupported": 0,
+        "ambiguous": 2,
+        "missingFromComposition": 1,
+        "materialMissingFromComposition": 1,
+        "criticalMissingFromComposition": 1,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 2,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 37
+      }
+    },
+    "A3": {
+      "id": "interest-expense",
+      "claimIds": [
+        "A3"
+      ],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "REVIEW_REQUIRED",
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 2,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 73,
+      "semanticallyComplete": true,
+      "counts": {
+        "inventoried": 73,
+        "material": 69,
+        "represented": 29,
+        "intentionallyNonComputational": 2,
+        "unsupported": 41,
+        "ambiguous": 0,
+        "missingFromComposition": 1,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 4,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      }
+    },
+    "A2": {
+      "id": "net-income",
+      "claimIds": [
+        "A2"
+      ],
+      "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+      "compileStatus": "REVIEW_REQUIRED",
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 1,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 61,
+      "semanticallyComplete": true,
+      "counts": {
+        "inventoried": 61,
+        "material": 57,
+        "represented": 0,
+        "intentionallyNonComputational": 4,
+        "unsupported": 57,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 7,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 62
+      }
+    },
+    "A5": {
+      "id": "secured-net-leverage",
+      "claimIds": [
+        "A5"
+      ],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "REVIEW_REQUIRED",
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 2,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 15,
+      "semanticallyComplete": true,
+      "counts": {
+        "inventoried": 15,
+        "material": 15,
+        "represented": 5,
+        "intentionallyNonComputational": 1,
+        "unsupported": 9,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 0,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      }
+    }
+  },
+  "perRegion": [
+    {
+      "id": "applicable-liquidity-rate",
+      "claimIds": [
+        "B1",
+        "B2"
+      ],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "REVIEW_REQUIRED",
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 24,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 61,
+      "semanticallyComplete": false,
+      "counts": {
+        "inventoried": 61,
+        "material": 61,
+        "represented": 7,
+        "intentionallyNonComputational": 1,
+        "unsupported": 53,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 20,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 10,
+        "danglingLineageReferences": 1,
+        "canonicalizedLineageReferences": 0
+      }
+    },
+    {
+      "id": "ebitda",
+      "claimIds": [
+        "A1",
+        "B3"
+      ],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "REVIEW_REQUIRED",
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 1,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 53,
+      "semanticallyComplete": true,
+      "counts": {
+        "inventoried": 53,
+        "material": 52,
+        "represented": 0,
+        "intentionallyNonComputational": 2,
+        "unsupported": 51,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 4,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 1,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 53
+      }
+    },
+    {
+      "id": "first-lien-debt",
+      "claimIds": [
+        "A4"
+      ],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "REVIEW_REQUIRED",
+      "verifyStatus": "VERIFICATION_INCOMPLETE",
+      "materialFindings": 0,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 37,
+      "semanticallyComplete": false,
+      "counts": {
+        "inventoried": 37,
+        "material": 36,
+        "represented": 32,
+        "intentionallyNonComputational": 2,
+        "unsupported": 0,
+        "ambiguous": 2,
+        "missingFromComposition": 1,
+        "materialMissingFromComposition": 1,
+        "criticalMissingFromComposition": 1,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 2,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 37
+      }
+    },
+    {
+      "id": "interest-expense",
+      "claimIds": [
+        "A3"
+      ],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "REVIEW_REQUIRED",
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 2,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 73,
+      "semanticallyComplete": true,
+      "counts": {
+        "inventoried": 73,
+        "material": 69,
+        "represented": 29,
+        "intentionallyNonComputational": 2,
+        "unsupported": 41,
+        "ambiguous": 0,
+        "missingFromComposition": 1,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 4,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      }
+    },
+    {
+      "id": "net-income",
+      "claimIds": [
+        "A2"
+      ],
+      "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+      "compileStatus": "REVIEW_REQUIRED",
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 1,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 61,
+      "semanticallyComplete": true,
+      "counts": {
+        "inventoried": 61,
+        "material": 57,
+        "represented": 0,
+        "intentionallyNonComputational": 4,
+        "unsupported": 57,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 7,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 62
+      }
+    },
+    {
+      "id": "secured-net-leverage",
+      "claimIds": [
+        "A5"
+      ],
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "REVIEW_REQUIRED",
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 2,
+      "inventoryStatus": "INVENTORY_OK",
+      "inventoryItems": 15,
+      "semanticallyComplete": true,
+      "counts": {
+        "inventoried": 15,
+        "material": 15,
+        "represented": 5,
+        "intentionallyNonComputational": 1,
+        "unsupported": 9,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 0,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      }
+    }
+  ]
+}

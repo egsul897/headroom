@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "04-earliest-failure-layer",
+  "question": "For every GENUINE_OMISSION in 03, which layer failed first?",
+  "layersConsidered": [
+    "SOURCE_CONTEXT_LIMIT",
+    "PASS_A_MODEL_OMISSION",
+    "PASS_A_TRANSPORT_TRUNCATION",
+    "PASS_A_SCHEMA_PRESSURE",
+    "PASS_A_NORMALIZATION_LOSS"
+  ],
+  "evidence": {
+    "SOURCE_CONTEXT_LIMIT": {
+      "ruledOut": true,
+      "why": "Source context is byte-identical across the two runs for every region (asserted by the forensic script; it throws otherwise). Every omitted span sits inside text BOTH runs received. 0/22 omissions sit in a region truncated at budget (03.measuredCorrelations). Source-context state is identical per region across runs (DEPENDENCY_EXPANDED_SOURCE x5, COMPLETE_LOCAL_SOURCE x1)."
+    },
+    "PASS_A_TRANSPORT_TRUNCATION": {
+      "ruledOut": true,
+      "why": "The inventory call is a single schema-forced structured call with max_tokens=128K (lib/contract-model/analyzer/anthropic-analyzer.ts DEFAULT_MAX_TOKENS). A truncated response cannot parse against SubmitSemanticInventorySchema and runStructuredStage throws (stop_reason disclosed), which inventory.ts converts into INVENTORY_FAILED. Every one of the 12 region inventories across both runs is INVENTORY_OK, so no transport truncation occurred. The largest inventory (73 items) is far below any output ceiling."
+    },
+    "PASS_A_SCHEMA_PRESSURE": {
+      "ruledOut": true,
+      "why": "rejectedUnverifiableItems totals 1 across all 12 inventories (a paraphrased excerpt discarded by the anti-hallucination gate) - the schema/excerpt-verification gate is not dropping items at any meaningful rate."
+    },
+    "PASS_A_NORMALIZATION_LOSS": {
+      "ruledOut": true,
+      "why": "rejectedDuplicateItems totals 3 across all 12 inventories (two proposed items collapsing to the same role+span+values). Deterministic post-processing never drops an item for any other reason; excerpt-location is exact-then-whitespace-tolerant and located every accepted item at its true offsets."
+    },
+    "PASS_A_MODEL_OMISSION": {
+      "ruledOut": false,
+      "why": "Residual and directly evidenced: the model in one run simply did not emit any item touching the omitted text. Two signatures, both measured in 03: (1) REGION-TAIL omission - 9/22 omissions sit in the last 20% of their region text; the 4 CRITICAL items among them are one cluster at positions 0.86-0.98 of region xref-1, a CROSS_REFERENCE_EXPANSION region of the interest-expense unit (see criticalCluster below for the audit correction - inventorying expansion-region components is discretionary by the Pass A contract), and (2) SUB-CLAUSE omission - 10/22 omissions are spans under 60 characters ('to the extent not already included therein', 'and any other foreign currency transaction or translation gains and losses') that the coarser run's item spans skip over entirely (<20% coverage). 18/22 omissions are absent from run-2, i.e. run-2 decomposed more coarsely AND skipped text; run-1 did not exhaustively cover run-2's items either (4/22)."
+    }
+  },
+  "adjudicationOfTheOmissionList": {
+    "materialGenuineOmissions": 14,
+    "notSemantic": [
+      {
+        "region": "first-lien-debt",
+        "excerpt": "excluding, in each case:",
+        "reason": "connective header with no independent proposition; the twelve exclusions it introduces were inventoried individually in the other run"
+      }
+    ],
+    "semanticMaterialOmissions": 13,
+    "semanticCriticalOmissions": 4,
+    "semanticCriticalOmissionsInOperativeRegions": 0,
+    "semanticMaterialOmissionsInOperativeRegions": 9,
+    "criticalCluster": "CORRECTED AFTER INDEPENDENT AUDIT (22, item 1d): the 4 CRITICAL items of the 'Consolidated First Lien Secured Debt' definition that run-1 inventoried and run-2 did not sit in region xref-1 (a CROSS_REFERENCE_EXPANSION region of the interest-expense unit, 5965 chars), NOT in the unit-extended OPERATIVE region as first written here. The Pass A prompt makes inventorying an expansion region's own components discretionary ('inventory a non-operative region's own components only where the operative text incorporates them'), so this cluster is a difference in how far each run exercised that discretion, not an omission from the unit's operative text. The same definition IS the operative unit of the first-lien-debt region and was inventoried there in both runs. Consequence: the v2 coverage accounting (operative region only, by design - 05) does NOT reach this cluster, and 05's expectedEffect was overstated on this point; in the OPERATIVE regions the genuine material omissions are 10 (14 minus the 4 xref-1 items), CRITICAL semantic omissions 0 (the one CRITICAL operative-region omission is the 'excluding, in each case:' connective header adjudicated non-semantic).",
+    "auditCorrectionNote": "03.measuredCorrelations already recorded 5/22 omissions in non-operative regions; this section originally mislocated the cluster.",
+    "surfacedByIndependentVerifier": "1/22 (the verifier is not designed to detect inventory omissions; it audits the IR against the source)"
+  },
+  "conclusion": {
+    "earliestFailureLayer": "PASS_A_MODEL_OMISSION",
+    "notAProductionInfrastructureFailure": "source context, transport, schema gate and normalization all behave exactly as designed",
+    "whatProductionCurrentlyLacks": "Pass A has NO deterministic accounting of operative TEXT it did not inventory. It has one for quantitative values (uninventoriedValues, never dropped) but a run can leave whole sub-clauses or a trailing definition uncovered and still report INVENTORY_OK - the omission is invisible to Pass B/C and to the rollup. This is the specific gap the architecture decision (05) addresses."
+  }
+}

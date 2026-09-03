@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "08-provider-health-and-cost",
+  "check": {
+    "method": "cheapest authorized probe: scripts/final-lightweight-unseen-provider-probe.ts - one 16-max-token Gateway call (model anthropic/claude-sonnet-5), credential from .env.local",
+    "performedAt": "2026-09-02 (this mission, before any paid validation; repeated after the architecture decision)",
+    "result": "HTTP 402 quota_for_entity_exceeded",
+    "providerMessage": "API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.",
+    "interpretation": "The Vercel AI Gateway credential's own account-level budget is exhausted ($150.49 spent against a $150.00 limit; up from $150.34 at the end of the previous mission - the difference is the 402-rejected probes and the earlier partial whole-agreement run's final billed tokens). No paid validation step can start on this credential until the budget is raised or a fresh credential is supplied. This is an external provider/infrastructure condition, not a code or architecture finding.",
+    "finalRecheck": {
+      "performedAt": "2026-09-02, at the final freeze 1957105, immediately before writing the verdict",
+      "result": "HTTP 402 quota_for_entity_exceeded",
+      "providerMessage": "API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.",
+      "note": "The reported spend is IDENTICAL to the first check of this mission ($150.49), which is independent confirmation that this mission made zero paid model calls."
+    }
+  },
+  "blockedSteps": [
+    "\u00a714 targeted stability rerun (required because Pass A production changed)",
+    "\u00a715 whole-agreement run-1 completion (regions 4-12)",
+    "\u00a715 whole-agreement run-2 (12 regions)",
+    "\u00a717 shared-cap real validation (cross-reference-dsgr region)",
+    "\u00a718 whole-agreement stability",
+    "\u00a716/\u00a719 whole-agreement gates + agreement-level coverage on complete real evidence"
+  ],
+  "remainingSpendEstimate": {
+    "basis": "observed Sonnet-5 per-region costs in the preserved runs (holdout: $0.83-$1.33/region incl. inventory+compile+verify; whole-agreement definitions/debt regions: $1.19-$1.43/region) plus ~5-15% for the v2 gap re-inventory call where gaps exist",
+    "targetedStabilitySubset": {
+      "regions": [
+        "interest-expense",
+        "net-income",
+        "secured-net-leverage",
+        "applicable-liquidity-rate"
+      ],
+      "runs": 2,
+      "estimateUsd": 11.5,
+      "range": "9-14"
+    },
+    "wholeAgreementRun1Completion": {
+      "regions": 9,
+      "estimateUsd": 13.5,
+      "range": "11-17"
+    },
+    "wholeAgreementRun2": {
+      "regions": 12,
+      "estimateUsd": 18,
+      "range": "15-22"
+    },
+    "totalEstimateUsd": 43,
+    "totalRange": "35-53",
+    "note": "Per-invocation ceilings in the harness (--budget) stop a run before overshooting; the resumed run-1 continues from region 4 and never re-runs the 3 completed regions."
+  },
+  "cumulativeRealValidationSpendToDate": {
+    "holdoutHaikuDiscarded": 4.17,
+    "holdoutPreFixDiscarded": 7.05,
+    "holdoutRun1": 7.31,
+    "holdoutRun2": 7.59,
+    "wholeAgreementRun1Partial": 5.29,
+    "totalUsd": 31.41
+  },
+  "harnessReadiness": "scripts/semantic-accountability-validation.ts gained --resume (continue a provider-interrupted run: completed regions kept, failed records preserved under a provider-failure suffix, merged summary discloses productionSha per region) and --only (pre-registered subset for the targeted stability rerun). Zero paid calls were made to add these.",
+  "decisionRequired": "Raise the Gateway key budget (or supply a new credential in .env.local as AI_GATEWAY_API_KEY / ANTHROPIC_API_KEY) to execute the blocked steps; otherwise the closure verdict for the paid portion is ENVIRONMENT_BLOCKED."
+}

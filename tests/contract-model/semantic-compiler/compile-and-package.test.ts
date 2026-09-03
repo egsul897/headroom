@@ -124,12 +124,16 @@ describe("Phase 3B synthetic tests - compile orchestration + package-level batch
 
     expect(calls).toBe(2); // both were attempted - the failure did not short-circuit the batch
     expect(summary.results).toHaveLength(2);
-    expect(summary.completedCount).toBe(1);
     expect(summary.failedCount).toBe(1);
+    // The good sibling is isolated from the failure and produces a real result. It does not reach COMPLETED here
+    // because the stub source text is not inventoried by the fake caller, so source coverage correctly routes it to
+    // review - what this test asserts is isolation, not a completeness verdict.
+    const goodEntry = summary.results.find((r) => r.discoveryId === "good-1")!;
+    expect(goodEntry.result.status).toBe("REVIEW_REQUIRED");
+    expect(goodEntry.result.rules.length).toBeGreaterThan(0);
+    expect(goodEntry.result.unresolvedIssues.some((i) => /simulated provider failure/.test(i))).toBe(false);
     const badEntry = summary.results.find((r) => r.discoveryId === "bad-1")!;
     expect(badEntry.result.unresolvedIssues[0]).toMatch(/simulated provider failure/);
-    const goodEntry = summary.results.find((r) => r.discoveryId === "good-1")!;
-    expect(goodEntry.result.status).toBe("COMPLETED");
   });
 
   it("60 (eligibility filtering): a REPRESENTATION-role candidate is skipped, never sent to the compiler", async () => {

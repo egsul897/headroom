@@ -1,0 +1,1933 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "09-generic-reconciliation-tests",
+  "productionSha": "cd64ee33f61416deff137f247b5ae028ca42e7fc",
+  "gates": {
+    "explicitDispositionRate": {
+      "measured": 1,
+      "required": 0.99,
+      "pass": true,
+      "materialItems": 185,
+      "breakdown": {
+        "material": 185,
+        "dispositioned": 185,
+        "represented": 179,
+        "ambiguous": 5,
+        "nonComputational": 1,
+        "unsupported": 0,
+        "missing": 0
+      }
+    },
+    "injectedOmissionDetection": {
+      "I41_item": {
+        "injections": 169,
+        "detected": 169,
+        "rate": 1,
+        "pass": true
+      },
+      "I42_money": {
+        "injections": 59,
+        "detected": 59,
+        "rate": 1,
+        "pass": true
+      },
+      "I43_percent": {
+        "injections": 14,
+        "detected": 14,
+        "rate": 1,
+        "pass": true
+      },
+      "I44_condition": {
+        "injections": 16,
+        "detected": 16,
+        "rate": 1,
+        "pass": true
+      },
+      "required": 1
+    },
+    "falseSemanticallyComplete": {
+      "measured": 0,
+      "required": 0,
+      "pass": true
+    },
+    "truncatedNeverComplete": {
+      "pass": true
+    }
+  },
+  "method": "Each scenario's lineage-bearing composition is normalized by the real normalize.ts into real IR and reconciled by the real Pass C. Injections mutate that IR generically: strip every node carrying one item's lineage (I41), rewrite one MONEY literal (I42), rewrite one PERCENT literal (I43), drop one IRCondition (I44). An injection counts only when an independent JSON scan confirms the value no longer survives elsewhere in the IR (so a legitimately inferable value is never scored as an omission).",
+  "perScenario": [
+    {
+      "id": "I1",
+      "title": "dense definition, 20 components",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 21,
+        "material": 21,
+        "represented": 21,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          21,
+          21
+        ],
+        "money": [
+          0,
+          0
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I2",
+      "title": "ratio definition",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 2,
+        "material": 2,
+        "represented": 2,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 1,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          2,
+          2
+        ],
+        "money": [
+          0,
+          0
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I3",
+      "title": "pricing grid",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 3,
+        "material": 3,
+        "represented": 3,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 7,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          1,
+          1
+        ],
+        "money": [
+          0,
+          0
+        ],
+        "percent": [
+          3,
+          3
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I4",
+      "title": "capped addback",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 3,
+        "material": 3,
+        "represented": 3,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 1,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          3,
+          3
+        ],
+        "money": [
+          0,
+          0
+        ],
+        "percent": [
+          1,
+          1
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I5",
+      "title": "nested proviso",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 3,
+        "material": 3,
+        "represented": 3,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 3,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          3,
+          3
+        ],
+        "money": [
+          2,
+          2
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "I6",
+      "title": "debt fixed basket",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 3,
+        "material": 3,
+        "represented": 3,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          3,
+          3
+        ],
+        "money": [
+          2,
+          2
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I7",
+      "title": "debt grower basket",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 2,
+        "material": 2,
+        "represented": 2,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          2,
+          2
+        ],
+        "money": [
+          1,
+          1
+        ],
+        "percent": [
+          1,
+          1
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I8",
+      "title": "debt ratio basket",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 2,
+        "material": 2,
+        "represented": 2,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 1,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          1,
+          1
+        ],
+        "money": [
+          0,
+          0
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I9",
+      "title": "refinancing debt",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 5,
+        "material": 5,
+        "represented": 5,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          4,
+          4
+        ],
+        "money": [
+          2,
+          2
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I10",
+      "title": "lien tied to debt permission",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 4,
+        "material": 4,
+        "represented": 3,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 1,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 1,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 1,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 1,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          3,
+          3
+        ],
+        "money": [
+          1,
+          1
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I11",
+      "title": "ratio lien",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 2,
+        "material": 2,
+        "represented": 2,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 1,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          2,
+          2
+        ],
+        "money": [
+          0,
+          0
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I12",
+      "title": "RP builder",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 4,
+        "material": 4,
+        "represented": 4,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 4,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          4,
+          4
+        ],
+        "money": [
+          1,
+          1
+        ],
+        "percent": [
+          1,
+          1
+        ],
+        "condition": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "I13",
+      "title": "RP fixed basket",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 2,
+        "material": 2,
+        "represented": 2,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 1,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          2,
+          2
+        ],
+        "money": [
+          1,
+          1
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I14",
+      "title": "RP ratio basket",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 2,
+        "material": 2,
+        "represented": 2,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 1,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          2,
+          2
+        ],
+        "money": [
+          0,
+          0
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I15",
+      "title": "investment basket",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 3,
+        "material": 3,
+        "represented": 3,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          3,
+          3
+        ],
+        "money": [
+          1,
+          1
+        ],
+        "percent": [
+          1,
+          1
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I16",
+      "title": "permitted acquisition conditions",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 5,
+        "material": 5,
+        "represented": 5,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 3,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          5,
+          5
+        ],
+        "money": [
+          0,
+          0
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          4,
+          4
+        ]
+      }
+    },
+    {
+      "id": "I17",
+      "title": "unrestricted subsidiary investment",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 3,
+        "material": 3,
+        "represented": 2,
+        "intentionallyNonComputational": 1,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 1,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          2,
+          2
+        ],
+        "money": [
+          1,
+          1
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I18",
+      "title": "asset-sale permission",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 4,
+        "material": 4,
+        "represented": 4,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          4,
+          4
+        ],
+        "money": [
+          1,
+          1
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "I19",
+      "title": "reinvestment condition",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 5,
+        "material": 5,
+        "represented": 5,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 4,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          5,
+          5
+        ],
+        "money": [
+          0,
+          0
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I20",
+      "title": "mandatory prepayment",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 4,
+        "material": 4,
+        "represented": 4,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 7,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          4,
+          4
+        ],
+        "money": [
+          0,
+          0
+        ],
+        "percent": [
+          3,
+          3
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I21",
+      "title": "junior-debt payment restriction",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 3,
+        "material": 3,
+        "represented": 3,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 1,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          3,
+          3
+        ],
+        "money": [
+          1,
+          1
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I22",
+      "title": "leverage covenant",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 2,
+        "material": 2,
+        "represented": 2,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 1,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          2,
+          2
+        ],
+        "money": [
+          0,
+          0
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I23",
+      "title": "springing covenant",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 2,
+        "material": 2,
+        "represented": 2,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          2,
+          2
+        ],
+        "money": [
+          0,
+          0
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I24",
+      "title": "stepped covenant",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 4,
+        "material": 4,
+        "represented": 4,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 6,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          4,
+          4
+        ],
+        "money": [
+          0,
+          0
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I25",
+      "title": "reporting deadline",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 2,
+        "material": 2,
+        "represented": 2,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 3,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          2,
+          2
+        ],
+        "money": [
+          0,
+          0
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I26",
+      "title": "event notice",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 3,
+        "material": 3,
+        "represented": 3,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          3,
+          3
+        ],
+        "money": [
+          0,
+          0
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I27",
+      "title": "cure right",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 5,
+        "material": 5,
+        "represented": 4,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 1,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 1,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 1,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          4,
+          4
+        ],
+        "money": [
+          0,
+          0
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          3,
+          3
+        ]
+      }
+    },
+    {
+      "id": "I28",
+      "title": "shared cap between two rules",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 4,
+        "material": 4,
+        "represented": 4,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 3,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 1,
+      "injected": {
+        "item": [
+          3,
+          3
+        ],
+        "money": [
+          2,
+          2
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I29",
+      "title": "shared cap across covenant families",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 4,
+        "material": 4,
+        "represented": 3,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 1,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 1,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 1,
+      "sharedCapacities": 1,
+      "injected": {
+        "item": [
+          2,
+          2
+        ],
+        "money": [
+          1,
+          1
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I30",
+      "title": "reclassification",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 4,
+        "material": 4,
+        "represented": 4,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          4,
+          4
+        ],
+        "money": [
+          1,
+          1
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I31",
+      "title": "nested exception",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 4,
+        "material": 4,
+        "represented": 4,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 0,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          4,
+          4
+        ],
+        "money": [
+          0,
+          0
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "I32",
+      "title": "explicit section dependency",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 3,
+        "material": 3,
+        "represented": 2,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 1,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 1,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 1,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 1,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          2,
+          2
+        ],
+        "money": [
+          1,
+          1
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I33",
+      "title": "dependency chain length 3",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 6,
+        "material": 6,
+        "represented": 6,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 3,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          4,
+          4
+        ],
+        "money": [
+          3,
+          3
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I34",
+      "title": "three sibling definitions",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 3,
+        "material": 3,
+        "represented": 3,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          3,
+          3
+        ],
+        "money": [
+          1,
+          1
+        ],
+        "percent": [
+          1,
+          1
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I35",
+      "title": "25 independently operative baskets",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 26,
+        "material": 26,
+        "represented": 26,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 25,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          26,
+          26
+        ],
+        "money": [
+          25,
+          25
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I36",
+      "title": "arbitrary metric names",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 2,
+        "material": 2,
+        "represented": 2,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          2,
+          2
+        ],
+        "money": [
+          1,
+          1
+        ],
+        "percent": [
+          1,
+          1
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I37",
+      "title": "arbitrary section numbering",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 3,
+        "material": 3,
+        "represented": 3,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          3,
+          3
+        ],
+        "money": [
+          2,
+          2
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I38",
+      "title": "reordered clauses",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 3,
+        "material": 3,
+        "represented": 3,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          3,
+          3
+        ],
+        "money": [
+          2,
+          2
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I39",
+      "title": "source truncation",
+      "semanticallyComplete": false,
+      "expectedComplete": false,
+      "counts": {
+        "inventoried": 2,
+        "material": 2,
+        "represented": 2,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 1,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0
+    },
+    {
+      "id": "I40",
+      "title": "ambiguous reference",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 3,
+        "material": 3,
+        "represented": 2,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 1,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 1,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 1,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          2,
+          2
+        ],
+        "money": [
+          1,
+          1
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I41",
+      "title": "injected omission of one material inventory item (base)",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 3,
+        "material": 3,
+        "represented": 3,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          3,
+          3
+        ],
+        "money": [
+          2,
+          2
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I42",
+      "title": "injected omission of one monetary value (base)",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 2,
+        "material": 2,
+        "represented": 2,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          2,
+          2
+        ],
+        "money": [
+          1,
+          1
+        ],
+        "percent": [
+          1,
+          1
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I43",
+      "title": "injected omission of one percentage (base)",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 3,
+        "material": 3,
+        "represented": 3,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          3,
+          3
+        ],
+        "money": [
+          1,
+          1
+        ],
+        "percent": [
+          1,
+          1
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "I44",
+      "title": "injected omission of one condition (base)",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 5,
+        "material": 5,
+        "represented": 5,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 3,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          5,
+          5
+        ],
+        "money": [
+          0,
+          0
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          4,
+          4
+        ]
+      }
+    },
+    {
+      "id": "I45",
+      "title": "fully represented semantics but financial mapping unavailable",
+      "semanticallyComplete": true,
+      "expectedComplete": true,
+      "counts": {
+        "inventoried": 2,
+        "material": 2,
+        "represented": 2,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 2,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 0
+      },
+      "unresolvedDependencies": 0,
+      "sharedCapacities": 0,
+      "injected": {
+        "item": [
+          2,
+          2
+        ],
+        "money": [
+          1,
+          1
+        ],
+        "percent": [
+          0,
+          0
+        ],
+        "condition": [
+          0,
+          0
+        ]
+      }
+    }
+  ],
+  "tests": "tests/contract-model/semantic-accountability/pass-bc-reconciliation.test.ts"
+}

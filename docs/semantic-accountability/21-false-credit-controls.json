@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "21-false-credit-controls",
+  "requirement": "Mission section 30: 14/14 false-credit controls - the system must never award trust/completeness it has not earned.",
+  "controls": [
+    {
+      "id": "C1",
+      "name": "Self-declared REPRESENTED never accepted",
+      "mechanism": "reconciliation.ts normalizeDisposition() explicitly discards a composition's own 'REPRESENTED' claim; only lineage or value correspondence earns it.",
+      "evidence": "pass-bc-reconciliation.test.ts 'self-declared REPRESENTED is never accepted as a disposition'",
+      "pass": true
+    },
+    {
+      "id": "C2",
+      "name": "Dangling lineage never silently dropped",
+      "mechanism": "Every lineage/disposition id not matching a known item (after canonicalization) is counted in danglingLineageReferences and blocks semanticallyComplete.",
+      "evidence": "pass-bc-reconciliation.test.ts dangling-lineage test; real pre-fix holdout run-1 showed this catching 47-69 references/region.",
+      "pass": true
+    },
+    {
+      "id": "C3",
+      "name": "Canonicalization resolves only genuine content-digest matches, never a guess",
+      "mechanism": "canonicalizeId() matches by the item's own 24-hex-char stable-key digest; a same-shape but non-matching id stays dangling.",
+      "evidence": "pass-bc-reconciliation.test.ts 'a genuinely bogus id of the same shape stays dangling' (regression test for RVD-1).",
+      "pass": true
+    },
+    {
+      "id": "C4",
+      "name": "TRUNCATED_SOURCE/STRUCTURALLY_INCOMPLETE_SOURCE/UNKNOWN never scored complete",
+      "mechanism": "semanticallyComplete requires sourceContextState in {COMPLETE_LOCAL_SOURCE, DEPENDENCY_EXPANDED_SOURCE} - never raised by widening a window.",
+      "evidence": "I39 truncation test; source-context.ts growth-only extension + operative-unit budget.",
+      "pass": true
+    },
+    {
+      "id": "C5",
+      "name": "Unresolved cross-unit dependency preserved, never dropped",
+      "mechanism": "normalizeDependency() returns {unresolved: IRUnresolvedDependency} instead of discarding an unresolvable targetRef; Pass C dispositions it AMBIGUOUS, never REPRESENTED.",
+      "evidence": "I10/I29/I32/I40 tests; real holdout regions (interest-expense, applicable-liquidity-rate) show unresolvedRefs>0 disclosed, not silently absorbed.",
+      "pass": true
+    },
+    {
+      "id": "C6",
+      "name": "Ambiguous reference never guessed",
+      "mechanism": "resolveReferenceTarget() returns AMBIGUOUS with all candidate node ids listed when 2+ substantive occurrences share a label; no pick is made.",
+      "evidence": "I40 test.",
+      "pass": true
+    },
+    {
+      "id": "C7",
+      "name": "Degenerate duplicate occurrence excluded WITH disclosure",
+      "mechanism": "A heading-only/table-of-contents occurrence is excluded only when exactly one substantive occurrence remains, reported UNIQUE_AFTER_DEGENERATE_EXCLUSION with the excluded ids listed - never a silent pick among genuine ambiguity.",
+      "evidence": "reference-resolver test (table-of-contents shape).",
+      "pass": true
+    },
+    {
+      "id": "C8",
+      "name": "A lineage claim without value correspondence earns no credit",
+      "mechanism": "A valued item's disposition requires the value itself present in the IR, not merely a lineage pointer.",
+      "evidence": "pass-bc-reconciliation.test.ts 'no false COMPLETE: a composition that links every item by lineage but carries none of the values is MISSING for every valued item'.",
+      "pass": true
+    },
+    {
+      "id": "C9",
+      "name": "Anti-hallucination gate rejects unverifiable excerpts",
+      "mechanism": "An inventory item's excerpt must be a real (exact or whitespace-tolerant) substring of a real region; otherwise rejected and counted, never trusted.",
+      "evidence": "pass-a-inventory.test.ts anti-hallucination test.",
+      "pass": true
+    },
+    {
+      "id": "C10",
+      "name": "Empty inventory over material-looking source is flagged SUSPECT, never silent 'nothing material'",
+      "mechanism": "INVENTORY_EMPTY_SUSPECT status when 0 items are accepted over source carrying quantitative values or operative language.",
+      "evidence": "pass-a-inventory.test.ts empty-inventory test.",
+      "pass": true
+    },
+    {
+      "id": "C11",
+      "name": "Uninventoried values surfaced, never dropped",
+      "mechanism": "The deterministic scanner runs over every region independent of the model; any value no accepted item covers is listed in uninventoriedValues.",
+      "evidence": "pass-a-inventory.test.ts 'a value the model never inventoried is surfaced as UNINVENTORIED'; real runs report nonzero uninventoried counts per region (never silently zero).",
+      "pass": true
+    },
+    {
+      "id": "C12",
+      "name": "Injected material omissions detected, not credited as complete",
+      "mechanism": "Stripping an item's lineage node, rewriting a MONEY/PERCENT literal, or dropping a condition all flip semanticallyComplete to false and the item to MISSING_FROM_COMPOSITION.",
+      "evidence": "I41-I44 synthetic gates: 100% detection (169/169 items, 59/59 money, 14/14 percent, 16/16 conditions).",
+      "pass": true
+    },
+    {
+      "id": "C13",
+      "name": "INVENTORY_SKIPPED_NO_PROVIDER/INVENTORY_FAILED never treated as 'nothing material here'",
+      "mechanism": "Both statuses are disclosed distinctly from INVENTORY_OK-with-zero-items and block semanticallyComplete via inventoryStatus !== INVENTORY_OK.",
+      "evidence": "pass-a-inventory.test.ts skip/fail tests; real financial-covenant-dsgr/reporting-dsgr/cross-reference-dsgr regions show INVENTORY_FAILED (provider 402) correctly never scored complete.",
+      "pass": true
+    },
+    {
+      "id": "C14",
+      "name": "Agreement-level rollup: one unit's material MISSING_FROM_COMPOSITION blocks the whole agreement's SEMANTICALLY_COMPLETE",
+      "mechanism": "rollupAgreementSemanticStatus() returns SEMANTICALLY_INCOMPLETE whenever any unit carries a material MISSING_FROM_COMPOSITION count above zero.",
+      "evidence": "pass-bc-reconciliation.test.ts rollup test; real 19-agreement-level-coverage.json shows all 3 real runs correctly classified SEMANTICALLY_INCOMPLETE (independent verifier MATERIAL_DISCREPANCY findings alone were sufficient to block completeness in every real run, before accountability's own signal is even considered).",
+      "pass": true
+    }
+  ],
+  "summary": "14/14 controls pass, each with either a dedicated unit test, a real-run observation, or both."
+}

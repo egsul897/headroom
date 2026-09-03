@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "23-full-regression",
+  "purpose": "Full quality-gate run against production freeze SHA 976a5650cbdf3bd4ce16fd86b7370bee30b341e4, at the point of finalizing this workstream (SA commits 7-10).",
+  "typescript": {
+    "command": "npx tsc --noEmit",
+    "errorCount": 6,
+    "newErrorsFromThisWorkstream": 0,
+    "detail": "All 6 errors are pre-existing, confined to tests/foundation-audit/*.test.ts (cascade-and-concurrency.test.ts x2, discovery-fault-injection.test.ts x1, real-db-duplicate-physical-occurrence.test.ts x3), unrelated to semantic-accountability code. Matches the known baseline from prior phases of this project.",
+    "pass": true,
+    "passBasis": "0 new errors introduced; pre-existing baseline unchanged"
+  },
+  "lint": {
+    "command": "npx next lint",
+    "result": "No ESLint warnings or errors",
+    "note": "An earlier invocation of bare `npx eslint .` failed with a config error (Definition for rule '@typescript-eslint/no-var-requires' was not found) because it bypassed the project's Next.js ESLint wrapper and its flat-config setup - a tooling-invocation mistake, not a real lint failure. `npx next lint`, the project's actual lint entrypoint, ran clean.",
+    "pass": true
+  },
+  "vitest": {
+    "command": "npx vitest run",
+    "dbAvailableAtInvocation": false,
+    "result": "Test Files 103 failed | 186 passed (289); Tests 143 failed | 2671 passed | 524 skipped (3338)",
+    "seeAlso": "22-known-package-regression.json for the full reconciliation of all 103 failing files into 2 pre-existing baseline failures + 101 DB-unavailability failures + 0 semantic-accountability failures",
+    "semanticAccountabilitySuites": {
+      "filesFailing": 0,
+      "note": "Every test file under tests/contract-model/semantic-accountability/ passed, including the new RVD-1 canonicalization regression test added this session."
+    },
+    "dbAvailableBaselineCapturedEarlierThisSession": "Test Files 2 failed | 287 passed (289); Tests 2 failed | 3335 passed (3337) - both failures pre-existing and unrelated to this workstream (see 22-known-package-regression.json)",
+    "pass": true,
+    "passBasis": "0 regressions attributable to this workstream's code changes; all new failures trace to a disclosed, session-local DB-unavailability condition, not to the reconciliation.ts/types.ts changes"
+  },
+  "syntheticSemanticAccountabilitySuite": {
+    "seeAlso": ["08-generic-inventory-tests.json", "09-generic-reconciliation-tests.json"],
+    "result": "139/139 tests passing (regenerated after the RVD-1 fix and production re-freeze; gate values unchanged)"
+  },
+  "overallGate": {
+    "pass": true,
+    "reasoning": "All three checks (tsc, lint, vitest) show zero regressions attributable to code this workstream changed. The vitest run's elevated failure count is fully and specifically attributable to a disclosed environmental condition (Postgres unreachable), never conflated with a code-quality finding."
+  }
+}
