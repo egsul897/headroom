@@ -1,0 +1,52 @@
+{
+  "turnsSent": 2,
+  "sequence": [
+    {
+      "turn": 1,
+      "messages": [
+        {
+          "role": "user",
+          "content": "<text>"
+        }
+      ]
+    },
+    {
+      "turn": 2,
+      "messages": [
+        {
+          "role": "user",
+          "content": "<text>"
+        },
+        {
+          "role": "assistant",
+          "content": [
+            "tool_use(submit_compilation:toolu_01XVmzaisBtgfjUX3Q2qNCs4)"
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            "tool_result(toolu_01XVmzaisBtgfjUX3Q2qNCs4)"
+          ]
+        }
+      ]
+    }
+  ],
+  "violationsPerTurn": [
+    [],
+    []
+  ],
+  "result": {
+    "failureReason": null,
+    "failureDetail": null,
+    "submissionPresent": true,
+    "submissionDefinitions": [
+      {
+        "term": "Available Amount",
+        "sufficiency": "MISSING_CONTEXT"
+      }
+    ],
+    "rawSubmissionPresent": true,
+    "toolCalls": 0
+  }
+}

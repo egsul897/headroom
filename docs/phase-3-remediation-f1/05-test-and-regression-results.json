@@ -1,0 +1,59 @@
+{
+  "artifact": "05-test-and-regression-results",
+  "paidCalls": 0,
+  "paidCostUsd": 0.0,
+  "reproduction": {
+    "harness": "scripts/f1-tool-protocol-repro.ts (protocol-enforcing scripted client, recorded Chewy submit tool_use id toolu_01XVmzaisBtgfjUX3Q2qNCs4, MISSING_CONTEXT provisional submission, zero tool calls)",
+    "before": "01-before-reproduction.json: turn 2 = [user text, assistant tool_use(submit), user PLAIN TEXT]; validator: FOLLOWING_USER_CONTENT_IS_PLAIN_TEXT; result PROVIDER_FAILURE '400 ... tool_use ids were found without tool_result blocks immediately after'; submission null, rawSubmission null",
+    "after": "02-after-reproduction.json: turn 2 = [user text, assistant tool_use(submit), user tool_result(submit id)]; zero violations; failureReason null; submission retained with sufficiency MISSING_CONTEXT"
+  },
+  "newTests": {
+    "tests/contract-model/semantic-compiler/caller-tool-protocol.test.ts": {
+      "count": 13,
+      "matrix": {
+        "A": "terminal acceptance",
+        "B": "legitimate continuation (Chewy shape) with tool_result nudge",
+        "C": "single retrieval tool_use + tool_result",
+        "D": "multiple retrieval tool calls + results in order",
+        "E": "submit + retrieval tool_use in the same turn (allowed by the protocol; both answered)",
+        "F": "validator rejects malformed sequences (plain text after tool_use; missing id; text before results)",
+        "G": "insufficiency stays insufficiency; compile.ts never COMPLETED",
+        "H": "transport failure on continuation -> PROVIDER_FAILURE distinguishable, held submission retained, compile.ts REVIEW_REQUIRED",
+        "H2": "transport failure with nothing held -> null submission (nothing invented)",
+        "same-root 1": "turn ceiling after nudge retains held submission",
+        "same-root 2": "plain-text exhaustion after nudge retains held submission",
+        "existing nudge semantics": "once-only; skipped after a tool call; skipped at zero budget"
+      }
+    },
+    "tests/contract-model/semantic-compiler/chewy-1-01-caller-replay.test.ts": {
+      "count": 4,
+      "what": "recorded-state preconditions; caller replay protocol-valid with no PROVIDER_FAILURE; compile.ts replay REVIEW_REQUIRED with definitions preserved; gateway-failure replay retains the provisional submission under PROVIDER_FAILURE"
+    }
+  },
+  "suites": {
+    "tests/contract-model/semantic-compiler (existing 9 files)": {
+      "before": "98/98 pass",
+      "after": "98/98 pass"
+    },
+    "new F-1 files": "17/17 pass",
+    "broader set (semantic-accountability, compiler-orchestrator, post-holdout unit A/B, whole-agreement, open2 tool matrix, part-b tools adversarial, tools operative-state discipline, finding-2-3 e2e, tests/certification)": {
+      "atStartingSha_4b33b8f": "43 files: 15 failed / 28 passed; 873 tests: 42 failed / 699 passed / 132 skipped",
+      "afterFix": "identical: 15 failed / 28 passed; 42 failed / 699 passed / 132 skipped",
+      "conclusion": "no regression; failure sets identical file-by-file"
+    },
+    "preExistingFailureClasses": {
+      "PrismaClientInitializationError (no database in this environment)": 31,
+      "pass-a-inventory / pass-a-stability: expected INVENTORY_OK got INVENTORY_COVERAGE_GAP (synthetic corpus vs source-coverage v3 - predates this mission)": 3,
+      "pass-bc-reconciliation I26/I27 semanticallyComplete false": 2,
+      "pass-a-inventory I1 connective ownership expectation": 1
+    },
+    "tsc": "3 pre-existing errors in tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts (file untouched by this mission); no errors in changed files",
+    "eslint": "clean on all changed/new files",
+    "deterministicChewyHarness": "scripts/phase-3-validation-chwy-deterministic-run.ts rerun: identical results (766 candidates / 101 sections / 113 units / PACKAGE_SEMANTICALLY_INCOMPLETE); only finishedAt, wallClockMs and productionTreeHash (caller.ts changed) differ; committed outputs restored unchanged"
+  },
+  "productionFilesChanged": [
+    "lib/contract-model/compiler/semantic/caller.ts (modified)",
+    "lib/contract-model/compiler/semantic/tool-protocol.ts (new)"
+  ],
+  "forbiddenSurfacesTouched": false
+}

@@ -1,0 +1,52 @@
+{
+  "turnsSent": 2,
+  "sequence": [
+    {
+      "turn": 1,
+      "messages": [
+        {
+          "role": "user",
+          "content": "<text>"
+        }
+      ]
+    },
+    {
+      "turn": 2,
+      "messages": [
+        {
+          "role": "user",
+          "content": "<text>"
+        },
+        {
+          "role": "assistant",
+          "content": [
+            "tool_use(submit_compilation:toolu_01XVmzaisBtgfjUX3Q2qNCs4)"
+          ]
+        },
+        {
+          "role": "user",
+          "content": "<text>"
+        }
+      ]
+    }
+  ],
+  "violationsPerTurn": [
+    [],
+    [
+      {
+        "assistantMessageIndex": 1,
+        "toolUseId": "toolu_01XVmzaisBtgfjUX3Q2qNCs4",
+        "toolName": "submit_compilation",
+        "reason": "FOLLOWING_USER_CONTENT_IS_PLAIN_TEXT"
+      }
+    ]
+  ],
+  "result": {
+    "failureReason": "PROVIDER_FAILURE",
+    "failureDetail": "400 messages: `tool_use` ids were found without `tool_result` blocks immediately after: toolu_01XVmzaisBtgfjUX3Q2qNCs4. Each `tool_use` block must have a corres",
+    "submissionPresent": false,
+    "submissionDefinitions": null,
+    "rawSubmissionPresent": false,
+    "toolCalls": 0
+  }
+}
