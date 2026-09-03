@@ -772,6 +772,45 @@ describe("canary #10 - the determinerless ALL-CAPS predication hole is closed", 
   });
 });
 
+describe("canary #11 - non-Latin text is not punctuation", () => {
+  // The red team's S7 fixture, verbatim: a Chinese negative-pledge sentence between two covered English
+  // clauses. Before, the punctuation test was `!/[A-Za-z0-9]/`, so 24 Han letters with zero ASCII letters were
+  // "punctuation and delimiters only" and the clause vanished with unaccounted 0 / semanticallyComplete true.
+  const S7 = "The Borrower shall comply with all Applicable Laws.\n借款人不得在抵押物上设定任何留置权或其他担保权益。\nThe Agent may inspect the books of the Borrower.";
+  const CJK = "借款人不得在抵押物上设定任何留置权或其他担保权益。";
+  const ANCHORED = ["The Borrower shall comply with all Applicable Laws.", "The Agent may inspect the books of the Borrower."];
+
+  it("ATTACK: substantive CJK source is accountable, not punctuation and not structural noise", async () => {
+    expect(classifyUnaccountedFragment(CJK, []).disposition).toBe("UNACCOUNTED_SOURCE");
+    const cov = coverOne(S7, ANCHORED);
+    expect(unaccountedText(cov)).toContain(CJK);
+    expect(cov.countsByDisposition.STRUCTURAL_NOISE).toBe(0);
+
+    const sc = { state: "COMPLETE_LOCAL_SOURCE" as const, regions: [region("operative", S7)], unresolvedReferences: [], reasons: [], totalChars: S7.length, budgetChars: 10_000 };
+    const wire: WireInventoryItem[] = ANCHORED.map((excerpt, i) => ({ localRef: `i${i}`, semanticRole: "OTHER", proposition: `clause ${i}`, excerpt, regionId: "operative", quantitativeValues: [], referencedTerms: [], referencedSections: [], parentRef: null, relatedRefs: [], materiality: "CRITICAL", ambiguity: "NONE", ambiguityReason: null, operative: "OPERATIVE" }));
+    const inv = await runSemanticInventory({ candidateRef: "canary11", documentId: "d", sourceContext: sc, caller: scriptedCaller(wire) });
+    expect(inv.inventoryStatus).toBe("INVENTORY_COVERAGE_GAP");
+    const rec = reconcileInventoryWithComposition({
+      inventory: inv,
+      composition: { rules: [{ inventoryItemIds: inv.items.map((i) => i.inventoryItemId), capacityExpression: null, conditions: [], exceptions: [], dependsOn: [], unresolvedDependencies: [] }], definitions: [], sharedCapacities: [] } as never,
+      dispositions: inv.items.map((i) => ({ inventoryItemId: i.inventoryItemId, disposition: "REPRESENTED", note: "matched" })),
+      sourceContextState: sc.state,
+    });
+    expect(rec.semanticallyComplete).toBe(false);
+  });
+
+  it("GENERIC CJK CONTENT CONTROL: substantive Unicode letters are not punctuation - no language understanding involved", () => {
+    // The literal characters appear in no production list; the rule is \p{L}, not Chinese.
+    expect(classifyUnaccountedFragment("公司交付报告", []).disposition).toBe("UNACCOUNTED_SOURCE");
+  });
+
+  it("PUNCTUATION CONTROL: ASCII and Unicode punctuation-only fragments stay non-blocking", () => {
+    expect(classifyUnaccountedFragment("; :,", []).disposition).toBe("PUNCTUATION_OR_DELIMITER");
+    expect(classifyUnaccountedFragment("。、「」", []).disposition).toBe("PUNCTUATION_OR_DELIMITER");
+    expect(classifyUnaccountedFragment(" \u3000 ", []).disposition).toBe("PUNCTUATION_OR_DELIMITER");
+  });
+});
+
 describe("source coverage - segmentation, tables and duplicates", () => {
   it("line-broken rows are separate units, not one block (audit finding 7)", () => {
     const text = "Reporting Requirements\nAnnual statements within 90 days after year end\nQuarterly statements within 45 days after quarter end\nNotice of any Default promptly";

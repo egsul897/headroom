@@ -349,7 +349,12 @@ function isNominalLabel(candidate: string): boolean {
 export function classifyUnaccountedFragment(fragment: string, values: QuantitativeValue[]): { disposition: CoverageDisposition; reason: string } {
   const trimmed = fragment.trim();
   if (trimmed.length === 0) return { disposition: "PUNCTUATION_OR_DELIMITER", reason: "whitespace only" };
-  if (!/[A-Za-z0-9]/.test(trimmed)) return { disposition: "PUNCTUATION_OR_DELIMITER", reason: "punctuation and delimiters only, no alphanumeric content" };
+  // NON-LATIN TEXT IS NOT PUNCTUATION (canary #11). This test used to be `!/[A-Za-z0-9]/` - "no ASCII
+  // alphanumerics" taken to mean "punctuation and delimiters only". An independent red team walked a Chinese
+  // negative-pledge sentence through it: 24 Han letters and an ideographic full stop, zero ASCII letters, so
+  // the whole clause was PUNCTUATION_OR_DELIMITER and vanished between two covered English clauses. The
+  // absence of [A-Za-z] establishes nothing. Punctuation is the absence of any letter or digit in ANY script.
+  if (!/[\p{L}\p{N}]/u.test(trimmed)) return { disposition: "PUNCTUATION_OR_DELIMITER", reason: "punctuation and delimiters only - no letter or digit in any script" };
 
   // A fragment carrying a quantitative value is never dismissed as noise, whatever its shape.
   if (values.length === 0) {
@@ -365,12 +370,18 @@ export function classifyUnaccountedFragment(fragment: string, values: Quantitati
     // fragment any of those establishes keeps its disposition. What is left is an unexplained number, and an
     // unexplained number is accountable.
     const carriesUnexplainedDigits = /\d/.test(trimmed.replace(new RegExp(ENUMERATOR_SRC, "g"), " "));
+    // The same blindness, one layer down (canary #11): WORD_RE is [A-Za-z]-only, so contentWords sees nothing
+    // in a fragment written in any other script and the STRUCTURAL_NOISE branch would swallow it next. A letter
+    // the ASCII word scanner cannot see is substantive content that no rule here can prove is formatting. This
+    // is script-agnostic by construction - it detects letters, not Chinese, Japanese, Korean or anything else -
+    // and is confined to this branch: the ownership machinery and the nominal-label tests are unchanged.
+    const carriesUnexplainedLetters = /\p{L}/u.test(trimmed.replace(new RegExp(ENUMERATOR_SRC, "g"), " ").replace(/[A-Za-z]/g, ""));
     // A residue carrying an adverbial adjunct is standalone modifier content, not glue (canary #9). The check
     // is deliberately confined to this branch: contentWords keeps its meaning everywhere else, so the
     // connective-ownership machinery (canary #2B) is untouched.
     const carriesAdjunct = (trimmed.toLowerCase().match(new RegExp(WORD_RE.source, "g")) ?? []).some((w) => ADVERBIAL_ADJUNCTS.has(w.replace(/[^a-z]/g, "")));
     const words = contentWords(trimmed);
-    if (words.length === 0 && !carriesUnexplainedDigits && !carriesAdjunct) return { disposition: "STRUCTURAL_NOISE", reason: "enumerators, punctuation and closed-class connectives only - the residue of splitting a parent unit" };
+    if (words.length === 0 && !carriesUnexplainedDigits && !carriesUnexplainedLetters && !carriesAdjunct) return { disposition: "STRUCTURAL_NOISE", reason: "enumerators, punctuation and closed-class connectives only - the residue of splitting a parent unit" };
     // Headings carry no clause terminator and no verb-bearing body; require BOTH the caption shape and the absence of an internal terminator.
     // A caption has no SENTENCE terminator inside it. A decimal point inside a section number ("7.04") is not one,
     // so the terminator must be followed by whitespace to count.
@@ -383,6 +394,12 @@ export function classifyUnaccountedFragment(fragment: string, values: Quantitati
       return {
         disposition: "UNACCOUNTED_SOURCE",
         reason: "carries an adverbial adjunct that no inventory item anchors - a modifier changes the scope, allocation, directness or distribution of what it attaches to, so it is standalone content and not the glue left over from splitting a parent unit",
+      };
+    }
+    if (carriesUnexplainedLetters) {
+      return {
+        disposition: "UNACCOUNTED_SOURCE",
+        reason: "carries letters outside the Latin script that no inventory item anchors and that no deterministic rule establishes as formatting - the detector cannot read them, and what it cannot read it cannot dismiss",
       };
     }
     // Last, once every positive structural rule above has had its chance: an unexplained number is accountable.
