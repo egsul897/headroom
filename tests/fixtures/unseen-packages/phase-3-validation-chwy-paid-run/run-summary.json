@@ -1,0 +1,237 @@
+{
+  "runId": "PHASE_3_VALIDATION_CHWY_PAID",
+  "startedAt": "2026-09-03T16:28:45.471Z",
+  "finishedAt": "2026-09-03T19:19:13.921Z",
+  "productionSha": null,
+  "productionTreeHash": "da7106fac07c369695156cfa0c7d8a30350ea636c5e108060c0e84f67dd4d1ef",
+  "manifestHardBudgetUsd": 20,
+  "effectiveCapUsd": 14,
+  "spentUsdRateCard": 13.961228000000004,
+  "gatewayReportedSpendUsd": 13.961228000000006,
+  "paidModelCalls": 125,
+  "budgetRefusals": 1373,
+  "models": {
+    "stage": "anthropic/claude-sonnet-5",
+    "compiler": "anthropic/claude-sonnet-5"
+  },
+  "versions": {
+    "compilerAlgorithm": "semantic-accountability-compiler.v4",
+    "compilerPrompt": "semantic-accountability-compiler-prompt.v4",
+    "toolPolicy": "phase-3b1-tool-policy.v2",
+    "accountabilityAlgorithm": "semantic-accountability.v3",
+    "inventoryPrompt": "semantic-inventory-prompt.v3",
+    "irSchema": "headroom-covenant-ir.v1"
+  },
+  "discovery": {
+    "documentId": "doc-a",
+    "nodesInspected": 1559,
+    "deterministicCandidatesGenerated": 766,
+    "semanticCandidatesEvaluated": 1057,
+    "duplicatesBeforeReconciliation": 246,
+    "finalCandidateCount": 839,
+    "wallClockMs": 3279018.802263,
+    "modelCalls": 112,
+    "inputTokens": 492617,
+    "outputTokens": 366988,
+    "sectionsAttempted": 113,
+    "sectionFailures": 1,
+    "documentDiscoveryHealth": "DISCOVERY_PARTIAL"
+  },
+  "selectedUnits": [
+    "1.01",
+    "6.08",
+    "9.04",
+    "6.01",
+    "2.18",
+    "7.01",
+    "1.08",
+    "9.02",
+    "2.09",
+    "6.03",
+    "5.01",
+    "9.14"
+  ],
+  "units": [
+    {
+      "rank": 1,
+      "sectionRef": "1.01",
+      "candidateRef": "phase-3-validation:chwy:1.01",
+      "chars": 353523,
+      "stageOutcome": {
+        "compile": "FAILED",
+        "passARun2": "INVENTORY_FAILED",
+        "verify": "SKIPPED_COMPILE_FAILED_OR_ABSENT"
+      },
+      "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+      "unitChars": 353523,
+      "inventoryRun1": {
+        "status": "INVENTORY_COVERAGE_GAP",
+        "items": 109,
+        "hash": "9e5ec23580d3bbf3b5a69fdd932b6874caec1a14c0e3ef1e6e203dda07258e34"
+      },
+      "inventoryRun2": {
+        "status": "INVENTORY_FAILED",
+        "items": 0,
+        "hash": "82136072bff10b193931718a04f44a2b070a07ec7ea9a7e3ce48465a9bd1effe"
+      },
+      "compileStatus": "FAILED",
+      "failureReasons": [
+        "PROVIDER_FAILURE"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sharedCapacities": 0,
+      "accountability": null,
+      "verifyStatus": null,
+      "materialFindings": null,
+      "costUsd": 2.044690000000001
+    },
+    {
+      "rank": 2,
+      "sectionRef": "6.08",
+      "candidateRef": "phase-3-validation:chwy:6.08",
+      "chars": 38529,
+      "stageOutcome": {
+        "compile": "PARTIAL",
+        "passARun2": "INVENTORY_COVERAGE_GAP",
+        "verify": "MATERIAL_DISCREPANCY"
+      },
+      "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+      "unitChars": 38529,
+      "inventoryRun1": {
+        "status": "INVENTORY_COVERAGE_GAP",
+        "items": 288,
+        "hash": "0fc9364158cf79253ee21bbf76fb3fe4baa5786d726852486f1d978eb209be07"
+      },
+      "inventoryRun2": {
+        "status": "INVENTORY_COVERAGE_GAP",
+        "items": 307,
+        "hash": "fc6276cb800dad7cdc37aff4ab41e04f514e02170f954a4266dfc11196572346"
+      },
+      "compileStatus": "PARTIAL",
+      "failureReasons": [
+        "IR_VALIDATION_FAILURE",
+        "OPERATIVE_STATE_UNRESOLVED",
+        "SEMANTIC_INVENTORY_COVERAGE_GAP",
+        "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+      ],
+      "rules": 38,
+      "definitions": 6,
+      "sharedCapacities": 0,
+      "accountability": {
+        "semanticallyComplete": false,
+        "counts": {
+          "inventoried": 288,
+          "material": 278,
+          "represented": 253,
+          "intentionallyNonComputational": 0,
+          "unsupported": 20,
+          "ambiguous": 2,
+          "missingFromComposition": 13,
+          "materialMissingFromComposition": 13,
+          "criticalMissingFromComposition": 10,
+          "materialQuantitativeValues": 52,
+          "materialQuantitativeValuesMissing": 8,
+          "uninventoriedValues": 0,
+          "unaccountedSource": 68,
+          "danglingLineageReferences": 1,
+          "canonicalizedLineageReferences": 291
+        }
+      },
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "materialFindings": 25,
+      "costUsd": 5.459602
+    },
+    {
+      "rank": 3,
+      "sectionRef": "9.04",
+      "candidateRef": "phase-3-validation:chwy:9.04",
+      "chars": 29580,
+      "stageOutcome": {
+        "compile": "FAILED",
+        "passARun2": "INVENTORY_FAILED",
+        "verify": "SKIPPED_COMPILE_FAILED_OR_ABSENT"
+      },
+      "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+      "unitChars": 29580,
+      "inventoryRun1": {
+        "status": "INVENTORY_COVERAGE_GAP",
+        "items": 218,
+        "hash": "c0c750f257f2a1b2d28130dc4d97e52d77255667d014f4c660eef39b348bedef"
+      },
+      "inventoryRun2": {
+        "status": "INVENTORY_FAILED",
+        "items": 0,
+        "hash": "25a1eb3a7f1b23082d389ceadb68583e6e40cbb0359fb171e48bc6c00613c4fd"
+      },
+      "compileStatus": "FAILED",
+      "failureReasons": [
+        "PROVIDER_FAILURE"
+      ],
+      "rules": 0,
+      "definitions": 0,
+      "sharedCapacities": 0,
+      "accountability": null,
+      "verifyStatus": null,
+      "materialFindings": null,
+      "costUsd": 1.8018220000000014
+    },
+    {
+      "rank": 4,
+      "sectionRef": "6.01",
+      "candidateRef": "phase-3-validation:chwy:6.01",
+      "status": "NOT_ATTEMPTED_BUDGET_EXHAUSTED"
+    },
+    {
+      "rank": 5,
+      "sectionRef": "2.18",
+      "candidateRef": "phase-3-validation:chwy:2.18",
+      "status": "NOT_ATTEMPTED_BUDGET_EXHAUSTED"
+    },
+    {
+      "rank": 6,
+      "sectionRef": "7.01",
+      "candidateRef": "phase-3-validation:chwy:7.01",
+      "status": "NOT_ATTEMPTED_BUDGET_EXHAUSTED"
+    },
+    {
+      "rank": 7,
+      "sectionRef": "1.08",
+      "candidateRef": "phase-3-validation:chwy:1.08",
+      "status": "NOT_ATTEMPTED_BUDGET_EXHAUSTED"
+    },
+    {
+      "rank": 8,
+      "sectionRef": "9.02",
+      "candidateRef": "phase-3-validation:chwy:9.02",
+      "status": "NOT_ATTEMPTED_BUDGET_EXHAUSTED"
+    },
+    {
+      "rank": 9,
+      "sectionRef": "2.09",
+      "candidateRef": "phase-3-validation:chwy:2.09",
+      "status": "NOT_ATTEMPTED_BUDGET_EXHAUSTED"
+    },
+    {
+      "rank": 10,
+      "sectionRef": "6.03",
+      "candidateRef": "phase-3-validation:chwy:6.03",
+      "status": "NOT_ATTEMPTED_BUDGET_EXHAUSTED"
+    },
+    {
+      "rank": 11,
+      "sectionRef": "5.01",
+      "candidateRef": "phase-3-validation:chwy:5.01",
+      "status": "NOT_ATTEMPTED_BUDGET_EXHAUSTED"
+    },
+    {
+      "rank": 12,
+      "sectionRef": "9.14",
+      "candidateRef": "phase-3-validation:chwy:9.14",
+      "status": "NOT_ATTEMPTED_BUDGET_EXHAUSTED"
+    }
+  ],
+  "coverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE",
+  "coverageError": null,
+  "layerCFailed": true
+}
