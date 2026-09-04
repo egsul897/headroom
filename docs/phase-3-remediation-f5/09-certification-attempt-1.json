@@ -1,0 +1,104 @@
+{
+ "artifact": "F-5 certification attempt (PHASE 3 CHEWY F-5 CERTIFICATION, paid validation only)",
+ "verdict": "F5_CERTIFICATION_ENVIRONMENT_BLOCKED",
+ "startingSha": "16e82c7b15b226aa28cd0eabac4bcccdd6768c29",
+ "productionChanged": false,
+ "freezeCheck": {
+  "headDescendsFromStartingSha": true,
+  "headEqualsStartingSha": true,
+  "workingTreeCleanBeforeMission": true,
+  "productionBlobHashesAtStartingSha": {
+   "lib/contract-model/compiler/semantic-accountability/slots.ts": "cbaf31c5be0550a0c45c6eda8b471b20c31fafed",
+   "lib/contract-model/compiler/semantic-accountability/inventory.ts": "4e57da533744f5aeec629104ae3610f621fafe55",
+   "lib/contract-model/compiler/semantic-accountability/prompt.ts": "97eee8c4381eef9df10770b836e35b06dfe2f073",
+   "lib/contract-model/compiler/semantic-accountability/types.ts": "23d6487ab8e37d418ce81b428c32552a6a6e863e",
+   "lib/contract-model/compiler/semantic-accountability/wire-schema.ts": "a9595913b01993aac546e35aeadd51130957daab",
+   "lib/contract-model/compiler/semantic-accountability/source-coverage.ts": "910a0b67c0dc63fc2e50df8d22156cfc730ffaab",
+   "lib/contract-model/compiler/semantic-accountability/source-context.ts": "69fe5cdb10c9fd6a1a42e10009b100734a82bb0f",
+   "scripts/f5-pass-a-stability-run.ts": "0a70bbff9d80658a87b0fc32602300efda519fee",
+   "scripts/f5-align-runs.py": "35a3302f72e9919a69239a202b55ba19e62257b6",
+   "scripts/f5-reference-recall.py": "330719f03533b1674249e81ce6bee84c0be01200"
+  },
+  "frozenInputsBlobHashes": {
+   "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt": "3768712fa316084c8bfdf7eea70b030649fb7442",
+   "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/unit-6.08.json": "694f4c2d21e2c9cf1033f0015e228da852d02093",
+   "docs/phase-3-validation/04-human-reference-set.json": "6d2274914fd97571a97b083367b0ef8409c19703"
+  },
+  "unit608": {
+   "anchorMatchesFrozenUnit": true,
+   "operativeTextMatchesFrozenUnit": true,
+   "chars": 38529
+  },
+  "slotPartition": {
+   "slots": 335,
+   "operativeSlots": 335,
+   "batches": 7,
+   "slotIdHash": "7cb1fb8638e7e0c5be923155d4a61bec21d62e5f40270d8c523fa8a3686f6df8",
+   "slotSpanHash": "f909e03b82ce6ed8bb111764562c5428d98f3a9042693bdeaacaf2fbbad9a173",
+   "batchHash": "0cc436eab7745b70b7c316ee05fc5f671392b7a4d717fd2643de6f7f6549dc41",
+   "twoIndependentInvocationsByteIdentical": true,
+   "matchesFrozenRecord03": {
+    "slots": 335,
+    "batches": 7,
+    "sampleSlotIdsAndSpans": true
+   }
+  },
+  "versions": {
+   "accountabilityAlgorithm": "semantic-accountability.v4",
+   "inventoryPrompt": "semantic-inventory-prompt.v4",
+   "model": "anthropic/claude-sonnet-5"
+  },
+  "priorPaidOutputReused": false,
+  "result": "PASS - no substantive mismatch"
+ },
+ "budgetPrecheck": {
+  "harness": "npx tsx scripts/f5-pass-a-stability-run.ts precheck",
+  "hardIncrementalCapUsd": 8.0,
+  "pairEstimateUsdUpperBound": 4.8853,
+  "perRunEstimateUsdUpperBound": 2.4427,
+  "callsPerRunUpperBound": 14,
+  "gatewayCredits": {
+   "balance": 0.544536,
+   "totalUsed": 164.455464,
+   "probedAt": "2026-09-04T05:14:54Z",
+   "directProbeConfirmed": true
+  },
+  "balanceUnchangedSincePriorMissionAbort": true,
+  "decision": "ABORT: gateway balance $0.5445 is below the pair estimate $4.89 - no paid call made"
+ },
+ "paidCalls": {
+  "runA": {
+   "calls": 0,
+   "costUsd": 0
+  },
+  "runB": {
+   "calls": 0,
+   "costUsd": 0
+  },
+  "total": {
+   "calls": 0,
+   "costUsd": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "cacheTokens": 0
+  },
+  "gatewayCreditDelta": 0
+ },
+ "stabilityMetrics": "NOT COMPUTED - no new inventories exist (zero paid calls)",
+ "referenceRecall": "NOT COMPUTED - no new inventories exist; frozen reference set never loaded into any model context",
+ "trustSafety": "NOT ASSESSED on new runs - none exist; the zero-cost re-key evidence stands in docs/phase-3-remediation-f5/03-* and 06-*",
+ "gateEvaluation": {
+  "criticalMaterialStability>=0.85": "NOT EVALUATED",
+  "semanticStability>=0.80": "NOT EVALUATED",
+  "zeroDangerousSilentOmissions": "NOT EVALUATED",
+  "noMaterialRecallDegradation": "NOT EVALUATED",
+  "deterministicSlotPartitionIdentity": "PASS (zero-cost)"
+ },
+ "resumeInstructions": [
+  "Fund the Vercel AI Gateway to at least $4.89 (pair upper bound) - the $8.00 cap already covers it.",
+  "npx tsx scripts/f5-pass-a-stability-run.ts precheck   # expect decision GO",
+  "npx tsx scripts/f5-pass-a-stability-run.ts run certification   # runs A then B in one guarded invocation (the committed equivalent of 'run A' + 'run B'); outputs under tests/fixtures/unseen-packages/phase-3-remediation-f5-run/certification/",
+  "python3 scripts/f5-align-runs.py tests/fixtures/unseen-packages/phase-3-remediation-f5-run/certification/pair.json docs/phase-3-remediation-f5/09-certification",
+  "python3 scripts/f5-reference-recall.py tests/fixtures/unseen-packages/phase-3-remediation-f5-run/certification/pair.json docs/phase-3-remediation-f5/09-certification-reference-recall.json"
+ ]
+}

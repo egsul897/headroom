@@ -44,3 +44,11 @@ funds).
 | 06-same-root-zero-cost-regression.json | 33 recorded inventories re-keyed |
 | 07-paid-run-precheck.json | balance/cap precheck record (ABORT) |
 | 08-remediation-and-results.json | remediation, measurements, verdict |
+
+## 09 - Certification attempt 1 (paid validation only, production frozen)
+
+`09-certification-attempt-1.json`. Freeze check PASSED at `16e82c7b15b226aa28cd0eabac4bcccdd6768c29` (HEAD == starting SHA,
+clean tree, frozen 6.08 source/unit/reference blobs unchanged, slot partition 335 slots / 7 batches byte-identical across
+two invocations and matching record 03). Budget precheck: gateway balance $0.544536 vs pair upper bound $4.89 under the
+$8.00 cap. Decision: ABORT before any call. **Zero paid calls. Verdict: F5_CERTIFICATION_ENVIRONMENT_BLOCKED.** No
+stability or recall metrics were computed because no new inventories exist. Resume steps are listed in the artifact.
