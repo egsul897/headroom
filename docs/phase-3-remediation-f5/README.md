@@ -52,3 +52,15 @@ clean tree, frozen 6.08 source/unit/reference blobs unchanged, slot partition 33
 two invocations and matching record 03). Budget precheck: gateway balance $0.544536 vs pair upper bound $4.89 under the
 $8.00 cap. Decision: ABORT before any call. **Zero paid calls. Verdict: F5_CERTIFICATION_ENVIRONMENT_BLOCKED.** No
 stability or recall metrics were computed because no new inventories exist. Resume steps are listed in the artifact.
+
+## 10 - Certification (resume, paid validation only, production frozen)
+
+`10-certification-precheck.json` (GO at balance $50.54), raw runs under
+`tests/fixtures/unseen-packages/phase-3-remediation-f5-run/certification/` (run-A, run-B, ledger, pair),
+`10-certification-{alignment,decomposition,metrics}.json` (committed scorer), `10-certification-reference-recall.json`,
+`10-certification-summary.json`. Two independent v4 Pass A runs over frozen 6.08: A 379 items, B 382, 8 calls each,
+$6.54 rate card == gateway delta, no guard refusals. Strict 0.501, semantic 0.525, critical/material 0.524, coverage
+0.973, quantitative 0.947. Frozen-reference recall 1.0 in A, B and intersection. Both runs INVENTORY_COVERAGE_GAP; zero
+dangerous silent omissions; zero false completeness. Dominant residual mechanism: role variation inside identical slots
+(82 of 298 identical slot+span pairs differ only in role; D = 158/253). **Verdict: F5_NEEDS_ARCHITECTURAL_ITERATION.**
+No production, prompt, slot, scoring, or reference changes were made.
