@@ -36,8 +36,14 @@
  * Item-id derivation is unchanged in shape but carries this version, so ids are re-keyed relative to v2/v1
  * evidence (cross-run comparison is semantic, never by exact id).
  */
-export const SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION = "semantic-accountability.v3";
-export const SEMANTIC_INVENTORY_PROMPT_VERSION = "semantic-inventory-prompt.v3";
+/**
+ * v4 (F-5, Phase 3 Chewy remediation 4): Pass A inventories deterministic SOURCE SLOTS (slots.ts) instead of
+ * one free-form pass over the whole unit; item identity is keyed by slot + coordination sub-index + role +
+ * values rather than by the model's own excerpt boundaries; same-key items merge deterministically; the gap
+ * pass re-presents whole slots. Ids are re-keyed relative to v3 evidence (cross-run comparison is semantic).
+ */
+export const SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION = "semantic-accountability.v4";
+export const SEMANTIC_INVENTORY_PROMPT_VERSION = "semantic-inventory-prompt.v4";
 
 // ---------------------------------------------------------------------------
 // Semantic roles (mission §3) - compact semantic PRIMITIVES, never covenant
@@ -119,6 +125,10 @@ export interface SemanticInventoryItem {
   ambiguityReason: string | null;
   operative: OperativeFlag;
   detectionMethod: "MODEL" | "DETERMINISTIC_VALUE_SCAN";
+  /** F-5 (v4): the deterministic source slot (slots.ts) this item's primary span starts in - its identity anchor. Absent on v3-and-earlier evidence. */
+  slotId?: string;
+  /** F-5 (v4): how many same-key wire items were merged into this one (0 when none). */
+  mergedDuplicates?: number;
 }
 
 /** INVENTORY_COVERAGE_GAP (v3): the inventory ran, but after the bounded gap re-inventory at least one stretch of source in the semantic unit is still UNACCOUNTED_SOURCE - no item anchors it, no structural parent/child or external-ownership link discharges it, and no deterministic rule classifies it as non-semantic. Accountability for that text is NOT established; the residual spans are listed in unaccountedSource. Never treated as INVENTORY_OK. */
@@ -190,6 +200,8 @@ export interface FrozenSemanticInventory {
   provider: string;
   model: string;
   telemetryCostUsd: number | null;
+  /** F-5 (v4): the deterministic slot partition Pass A inventoried against, and how many bounded calls it took. Absent on v3-and-earlier evidence. */
+  partition?: { methods: Record<string, string>; slots: { slotId: string; regionId: string; sectionRef: string | null; charStart: number; charEnd: number }[]; batches: number; batchChars: number; gapBatches: number; firstPassCalls: number; gapCalls: number };
 }
 
 // ---------------------------------------------------------------------------

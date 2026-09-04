@@ -586,7 +586,7 @@ const emptyCounts = (): Record<CoverageDisposition, number> => Object.fromEntrie
  * Deliberately narrower than `segmentSourceUnits`, which also splits at commas, dashes and enumerators - those
  * separate the PARTS of one proposition, not one proposition from the next.
  */
-function independentSegmentBounds(text: string): number[] {
+export function independentSegmentBounds(text: string): number[] {
   const bounds = new Set<number>([0, text.length]);
   for (const m of text.matchAll(/[.;:!?]["')\]]?\s+/g)) bounds.add(m.index! + m[0].length);
   for (const m of text.matchAll(/\n+[ \t]*/g)) bounds.add(m.index! + m[0].length);

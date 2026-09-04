@@ -28,6 +28,8 @@ export const WireInventoryItemSchema = z.object({
   excerpt: z.string(),
   /** The regionId the excerpt was copied from (defaults to the operative region when omitted). */
   regionId: z.string().nullable().default(null),
+  /** F-5 (v4): the SLOT id the excerpt was copied from (slots.ts). Tolerant: a missing or unknown slotId is recovered from the located excerpt, never trusted on its own. */
+  slotId: z.string().nullable().optional(),
   quantitativeValues: z.array(WireInventoryValueSchema).default([]),
   referencedTerms: z.array(z.string()).default([]),
   referencedSections: z.array(z.string()).default([]),
