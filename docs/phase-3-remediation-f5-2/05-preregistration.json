@@ -1,0 +1,25 @@
+{
+ "artifact": "F-5.2A pre-registered architecture-proof gate (written BEFORE the obligation ledger was generated or mapped)",
+ "hypothesis": "deterministic slots stabilized WHERE the model looks; the model still decides HOW MANY independent propositions exist within each slot, so identical slot input yields different proposition sets",
+ "hypothesisProofCriteria": {
+  "everyFCaseSitsInASlotWhereTheMissingRunProducedFewerItems": ">= 90% of F cases",
+  "slotsPopulatedByBothRunsWithDifferentItemCounts": "> 0 and accounts for the F cases",
+  "noSourcePartitionFailureAndNoPostProcessingLoss": "0 cases at those stages"
+ },
+ "obligationCaptureDefinition": "an F case is CAPTURED only when an obligation exists whose normalized start is within one word of the omitted item's normalized start AND whose span overlaps >= 50% of the shorter of the two, AND that obligation is UNSATISFIED in the missing run under the satisfaction rule. Span overlap alone is never capture.",
+ "satisfactionRule": "an obligation is satisfied by a run when (a) a CRITICAL/MATERIAL item is ANCHORED at it (normalized starts within one word) and overlaps >= 50% of the obligation span; or (b) CRITICAL/MATERIAL items lying INSIDE the obligation span together cover >= 80% of its non-whitespace characters. A QUANTITATIVE_SPAN obligation additionally requires the anchoring/covering item to list the exact value; an EXPLICIT_REFERENCE obligation requires the item's span to contain the citation. A BASE_SLOT obligation is satisfied when any CRITICAL/MATERIAL item starts inside the slot or when the slot is fully discharged by a deterministic non-semantic disposition. A broad item never satisfies an obligation merely by containing its span.",
+ "falseObligationCandidateDefinition": "an obligation unsatisfied in BOTH runs whose span is, in both runs, entirely inside a CRITICAL/MATERIAL item that is not anchored at it (both independent runs treated the text as part of a larger proposition) - a candidate for over-splitting; obligations unsatisfied in both runs that overlap either run's final UNACCOUNTED source are NOT false obligations (they are exactly the review work the layer exists to create).",
+ "falseSatisfactionCandidateDefinition": "an obligation marked satisfied in a run only through rule (b) coverage by several inside items none of which is anchored at it, or a QUANTITATIVE/REFERENCE obligation satisfied by an item that lists the value/citation but whose span does not contain it.",
+ "gate": {
+  "hypothesisProven": true,
+  "fOmissionsCapturedByAnUnsatisfiedObligation": ">= 0.67 of the 50",
+  "bCasesReached": "reported; no threshold (B is boundary variance, not omission)",
+  "hCasesReached": "reported; no threshold",
+  "genericRules": "every rule is a source-form rule (enumerator, coordination, citation, value, qualifier/exception opener, selector, arithmetic operand, temporal value); no vocabulary from Chewy, Section 6.08, EBITDA, debt or RP baskets",
+  "deterministicIdentity": "two independent generations of the Chewy 6.08 ledger byte-identical; ids derive from documentId, regionId, slotId, span, kind, ordinal only",
+  "falseObligationCandidates": "<= 0.30 of all non-BASE obligations",
+  "trust": "an obligation can only create review work; raw source coverage remains authoritative and independent; unsatisfied obligation => INVENTORY_COVERAGE_GAP"
+ },
+ "verdictsAllowed": ["F5_2A_ARCHITECTURE_READY_FOR_PAID_CERTIFICATION", "F5_2_HYPOTHESIS_NOT_PROVEN", "F5_2_ARCHITECTURE_NOT_PROVEN", "F5_2_NOT_SAFE"],
+ "paidCallsAllowed": 0
+}

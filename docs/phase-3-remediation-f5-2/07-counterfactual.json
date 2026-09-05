@@ -1,0 +1,2915 @@
+{
+ "artifact": "F-5.2A zero-cost counterfactual: the source-owned obligation ledger for frozen Chewy 6.08 mapped onto the already-paid F-5.1 run A / run B (no model call)",
+ "ledger": {
+  "algorithmVersion": "inventory-obligations.experiment",
+  "sha256": "c79ccae955af547e13722874711213c269471886a256d296167122a0b50647f5",
+  "byteIdenticalAcrossTwoGenerations": true,
+  "totalObligations": 619,
+  "countsByKind": {
+   "EXPLICIT_REFERENCE": 67,
+   "BASE_SLOT": 296,
+   "ENUMERATED_BRANCH": 74,
+   "COORDINATED_FRAGMENT": 82,
+   "QUALIFIER_OR_PROVISO": 44,
+   "EXCEPTION_FRAGMENT": 28,
+   "ARITHMETIC_OPERAND": 5,
+   "QUANTITATIVE_SPAN": 20,
+   "TEMPORAL_SPAN": 3
+  },
+  "slotsWithObligations": 296,
+  "operativeSlots": 335,
+  "nonBaseObligations": 323
+ },
+ "satisfaction": {
+  "satisfiedByA": 404,
+  "satisfiedByB": 389,
+  "satisfiedByBoth": 371,
+  "unresolvedA": 215,
+  "unresolvedB": 230,
+  "aOnlyUnresolved": 18,
+  "bOnlyUnresolved": 33,
+  "unresolvedInBoth": 197,
+  "rateA": 0.6527,
+  "rateB": 0.6284,
+  "rateBoth": 0.5994,
+  "statusCountsA": {
+   "DISCHARGED_NON_SEMANTIC": 2,
+   "SATISFIED_BY_ANCHOR": 401,
+   "UNSATISFIED": 215,
+   "SATISFIED_BY_COVERAGE": 1
+  },
+  "statusCountsB": {
+   "DISCHARGED_NON_SEMANTIC": 2,
+   "SATISFIED_BY_ANCHOR": 387,
+   "UNSATISFIED": 230
+  },
+  "unresolvedByKindA": {
+   "COORDINATED_FRAGMENT": 35,
+   "QUALIFIER_OR_PROVISO": 35,
+   "EXCEPTION_FRAGMENT": 27,
+   "EXPLICIT_REFERENCE": 59,
+   "ENUMERATED_BRANCH": 35,
+   "BASE_SLOT": 13,
+   "ARITHMETIC_OPERAND": 5,
+   "QUANTITATIVE_SPAN": 3,
+   "TEMPORAL_SPAN": 3
+  },
+  "unresolvedByKindB": {
+   "COORDINATED_FRAGMENT": 36,
+   "QUALIFIER_OR_PROVISO": 35,
+   "EXCEPTION_FRAGMENT": 28,
+   "EXPLICIT_REFERENCE": 61,
+   "ENUMERATED_BRANCH": 43,
+   "BASE_SLOT": 16,
+   "ARITHMETIC_OPERAND": 5,
+   "QUANTITATIVE_SPAN": 3,
+   "TEMPORAL_SPAN": 3
+  }
+ },
+ "mode": "conservative",
+ "capture": {
+  "F": {
+   "total": 50,
+   "captured": 28,
+   "rate": 0.56,
+   "capturedByNonBaseObligation": 16,
+   "capturedOnlyByBaseSlot": 12,
+   "byKind": {
+    "EXPLICIT_REFERENCE": 3,
+    "ENUMERATED_BRANCH": 4,
+    "ENUMERATED_BRANCH+QUALIFIER_OR_PROVISO": 1,
+    "EXCEPTION_FRAGMENT": 1,
+    "BASE_SLOT": 12,
+    "QUALIFIER_OR_PROVISO": 4,
+    "COORDINATED_FRAGMENT": 1,
+    "COORDINATED_FRAGMENT+BASE_SLOT": 1,
+    "EXCEPTION_FRAGMENT+QUALIFIER_OR_PROVISO": 1
+   },
+   "anchoredButSatisfiedInMissingRun": 6,
+   "noAnchoredObligation": 16,
+   "byFailureStage": {
+    "captured": {
+     "MODEL_ENUMERATION_OMISSION": 15,
+     "GAP_MODEL_OMISSION": 13
+    },
+    "missed": {
+     "MODEL_ENUMERATION_OMISSION": 19,
+     "GAP_MODEL_OMISSION": 3
+    }
+   },
+   "bySourceForm": {
+    "captured": {
+     "G_EXPLICIT_CROSS_REFERENCE": 3,
+     "B_ENUMERATED_BRANCH": 5,
+     "F_EXCEPTION": 2,
+     "K_CONTINUATION_FRAGMENT": 12,
+     "E_QUALIFIER_OR_PROVISO": 4,
+     "A_COORDINATED_PROPOSITION": 1,
+     "L_OTHER": 1
+    },
+    "missed": {
+     "B_ENUMERATED_BRANCH": 3,
+     "K_CONTINUATION_FRAGMENT": 5,
+     "A_COORDINATED_PROPOSITION": 4,
+     "L_OTHER": 6,
+     "H_DEPENDENCY_FRAGMENT": 3,
+     "E_QUALIFIER_OR_PROVISO": 1
+    }
+   }
+  },
+  "B": {
+   "total": 12,
+   "captured": 5,
+   "rate": 0.4167
+  },
+  "H": {
+   "total": 6,
+   "captured": 1,
+   "rate": 0.1667
+  }
+ },
+ "falseObligationCandidates": {
+  "count": 172,
+  "rateOfNonBase": 0.5325,
+  "byKind": {
+   "COORDINATED_FRAGMENT": 29,
+   "QUALIFIER_OR_PROVISO": 28,
+   "EXCEPTION_FRAGMENT": 25,
+   "EXPLICIT_REFERENCE": 52,
+   "ENUMERATED_BRANCH": 28,
+   "ARITHMETIC_OPERAND": 4,
+   "QUANTITATIVE_SPAN": 3,
+   "TEMPORAL_SPAN": 3
+  },
+  "sample": [
+   {
+    "kind": "COORDINATED_FRAGMENT",
+    "slotId": "operative:6.08(a)#1",
+    "text": "shall not permit any of their Restricted Subsidiaries to:"
+   },
+   {
+    "kind": "QUALIFIER_OR_PROVISO",
+    "slotId": "operative:6.08(a)(i)(b)#1",
+    "text": "so long as,"
+   },
+   {
+    "kind": "EXCEPTION_FRAGMENT",
+    "slotId": "operative:6.08(a)(ii)#2",
+    "text": "other than any Restricted Party;"
+   },
+   {
+    "kind": "COORDINATED_FRAGMENT",
+    "slotId": "operative:6.08(a)(iii)#1",
+    "text": "redeem, repurchase, defease, discharge or otherwise acquire or retire for value, in"
+   },
+   {
+    "kind": "EXPLICIT_REFERENCE",
+    "slotId": "operative:6.08(a)(iii)#2",
+    "text": "scheduled"
+   },
+   {
+    "kind": "ENUMERATED_BRANCH",
+    "slotId": "operative:6.08(a)(iii)(b)#2",
+    "text": "(1) year of the date of prepayment, redemption, purchase, repurchase, defeasance, discharg"
+   },
+   {
+    "kind": "EXPLICIT_REFERENCE",
+    "slotId": "operative:6.08(a)(iv)#2",
+    "text": "clause (iii)"
+   },
+   {
+    "kind": "ENUMERATED_BRANCH",
+    "slotId": "operative:6.08(a)(iv)#2",
+    "text": "(iii) (other than the exceptions thereto in such clause (iii)) above being collectively re"
+   },
+   {
+    "kind": "EXCEPTION_FRAGMENT",
+    "slotId": "operative:6.08(a)(iv)#2",
+    "text": "other than the exceptions thereto in such clause (iii)) above being collectively referred "
+   },
+   {
+    "kind": "EXPLICIT_REFERENCE",
+    "slotId": "operative:6.08(a)(iv)#2",
+    "text": "clause (iii)"
+   },
+   {
+    "kind": "EXPLICIT_REFERENCE",
+    "slotId": "operative:6.08(a)(iv)#3",
+    "text": "clauses (i) through (iv)"
+   },
+   {
+    "kind": "ENUMERATED_BRANCH",
+    "slotId": "operative:6.08(a)(iv)#3",
+    "text": "(iv) above (other than any exceptions thereto in such clauses (i) and"
+   },
+   {
+    "kind": "EXCEPTION_FRAGMENT",
+    "slotId": "operative:6.08(a)(iv)#3",
+    "text": "other than any exceptions thereto in such clauses (i) and"
+   },
+   {
+    "kind": "EXPLICIT_REFERENCE",
+    "slotId": "operative:6.08(a)(iv)#3",
+    "text": "clauses (i) and (iii)"
+   },
+   {
+    "kind": "ENUMERATED_BRANCH",
+    "slotId": "operative:6.08(a)(iv)#3",
+    "text": "(iii) above) being collectively referred"
+   },
+   {
+    "kind": "COORDINATED_FRAGMENT",
+    "slotId": "operative:6.08(a)(3)#2",
+    "text": "excluding all other Restricted"
+   },
+   {
+    "kind": "EXCEPTION_FRAGMENT",
+    "slotId": "operative:6.08(a)(3)#2",
+    "text": "excluding all other Restricted"
+   },
+   {
+    "kind": "ARITHMETIC_OPERAND",
+    "slotId": "operative:6.08(a)(3)#3",
+    "text": "than the sum of (without duplication) (the sum or the amounts attributable to clauses (a) "
+   },
+   {
+    "kind": "EXPLICIT_REFERENCE",
+    "slotId": "operative:6.08(a)(3)#3",
+    "text": "clauses (a) through (f)"
+   },
+   {
+    "kind": "ENUMERATED_BRANCH",
+    "slotId": "operative:6.08(a)(3)#3",
+    "text": "(f) below are referred to herein as the “ Available Amount ”):"
+   },
+   {
+    "kind": "ENUMERATED_BRANCH",
+    "slotId": "operative:6.08(a)(3)(a)#2",
+    "text": "(1) accounting period) beginning on the first (1 st ) day of the fiscal quarter during whi"
+   },
+   {
+    "kind": "QUANTITATIVE_SPAN",
+    "slotId": "operative:6.08(a)(3)(a)#4",
+    "text": "100%"
+   },
+   {
+    "kind": "ARITHMETIC_OPERAND",
+    "slotId": "operative:6.08(a)(3)(a)#4",
+    "text": "than zero) and (z)"
+   },
+   {
+    "kind": "EXPLICIT_REFERENCE",
+    "slotId": "operative:6.08(a)(3)(a)(B)#4",
+    "text": "clause (a)"
+   },
+   {
+    "kind": "ENUMERATED_BRANCH",
+    "slotId": "operative:6.08(a)(3)(a)(B)#4",
+    "text": "(a) if there is a continuing Specified"
+   }
+  ]
+ },
+ "unresolvedInBothThatAreReviewWork": 12,
+ "falseSatisfactionCandidates": {
+  "A": 1,
+  "B": 0,
+  "definition": "satisfied only by inside-coverage (rule b) with no anchored item; listed for audit, counted as satisfied"
+ },
+ "stableGapTargets": {
+  "A": [
+   "inv-obligation:c9123e0a860cf27ba6352a6e",
+   "inv-obligation:94d91defe49600d9e4a829f5",
+   "inv-obligation:342fd2b72da602edca70924e",
+   "inv-obligation:ebfa6d6b7b71689adc203df2",
+   "inv-obligation:cef17c1151acdcd4ead6022f",
+   "inv-obligation:4decf85dbab63b7644790286",
+   "inv-obligation:37acaf678306d4fdf7790eb5",
+   "inv-obligation:57dc04673fe0ec1519f95672",
+   "inv-obligation:a4b991cc3b8ae7a070c97243",
+   "inv-obligation:380a5a5347a0bb6d05730b16",
+   "inv-obligation:d9f8e975a647f1577ef1ecbd",
+   "inv-obligation:e2309734c364bcad7a567bd3",
+   "inv-obligation:5f94f8febf5d294ac2cf94f2",
+   "inv-obligation:c4865be102011bfb177db8ac",
+   "inv-obligation:d283853b57bc939354a286f6",
+   "inv-obligation:51d3a6437779b5059dc69fa8",
+   "inv-obligation:5bae8b33ec611c442b8eaaef",
+   "inv-obligation:cb7d7207867f463a7f4575eb",
+   "inv-obligation:5862fb29191e5f244bffce99",
+   "inv-obligation:2345ba62e0d0de79a3b73bcf",
+   "inv-obligation:087daa784f84e689e81324ad",
+   "inv-obligation:8d36488fcc91b4155d286fe5",
+   "inv-obligation:92d9572d6a6aa5d5093047ed",
+   "inv-obligation:ac89d2928bcb5d59e42e5e60",
+   "inv-obligation:cd6c695b9bd2f2931c4e5006",
+   "inv-obligation:56ecaf1cf2193a3332694c6b",
+   "inv-obligation:b7e782ce412b169b714271a1",
+   "inv-obligation:92fd3808286c7805c239b950",
+   "inv-obligation:056c1032a575aa76e357e0e6",
+   "inv-obligation:e3d7abd2e6db17351d15a86f",
+   "inv-obligation:425d7a27c241b1abcc11b55f",
+   "inv-obligation:7d323374f7b8245bb01c7618",
+   "inv-obligation:36834cb1d4f4513de7ad9f24",
+   "inv-obligation:1a880502469dc5e327268ac2",
+   "inv-obligation:e1213131c78158eba4ee0cb5",
+   "inv-obligation:62c3525feeddb9c619fb25c6",
+   "inv-obligation:9fecab3958475e4d0ba6df0d",
+   "inv-obligation:82a2224ab08bf33d383c805e",
+   "inv-obligation:e0d51f9f52d82d24f297913c",
+   "inv-obligation:6d911f3578a60b0c475e623a",
+   "inv-obligation:78c34d8551dc9281f39f8ef5",
+   "inv-obligation:7c3263810134b67fc605ee81",
+   "inv-obligation:196a7ca1734703618fe4c8a2",
+   "inv-obligation:f5f4c95af40cc606bbfaa6f8",
+   "inv-obligation:6bc3e40c3fbc036c74c1063d",
+   "inv-obligation:f7ba74bd4df77de92bb4f0dc",
+   "inv-obligation:5cefc7dffc3271146139ba7f",
+   "inv-obligation:261c86cd03f03656c5700537",
+   "inv-obligation:abc65f3c84a3c4c335a1fe93",
+   "inv-obligation:32f0376f1d8a72e8574b568c",
+   "inv-obligation:31c66e2008e241f6ab33b8b6",
+   "inv-obligation:a7fa28161a8ef9cf5fb9070a",
+   "inv-obligation:7bb57203a93f41eeec9ae3ef",
+   "inv-obligation:3208527f4ac4cf9c8bffa43d",
+   "inv-obligation:d5389b3a78572916060b5ac7",
+   "inv-obligation:b00e67614a7f585d9dfce8b8",
+   "inv-obligation:7e24a36e2c1ccf0fbaf0ea8e",
+   "inv-obligation:e2e50133c479900da833ff3b",
+   "inv-obligation:80b7b86cd7106fd07d760ac7",
+   "inv-obligation:8cd07f4e12f4aebf2a7a3c2c",
+   "inv-obligation:824026a3fb2776b674b2d780",
+   "inv-obligation:b5d9cb2bbdf1d11b67a61b3b",
+   "inv-obligation:aea4746d7fd9dcc8ff5be8a5",
+   "inv-obligation:0cc16f9f470e5c5a71f65b8f",
+   "inv-obligation:49525b95274679eacd3703fd",
+   "inv-obligation:98cc4918b530f5aa9bc52e4b",
+   "inv-obligation:215470f3e07ff819934b1c31",
+   "inv-obligation:c5087c47dcae6b045b7ef421",
+   "inv-obligation:970273488c74336072b47341",
+   "inv-obligation:9fc4919b38d6eae264065838",
+   "inv-obligation:d0f7a114489d737971881dbb",
+   "inv-obligation:f51af6cd066fcd7e33409097",
+   "inv-obligation:3efe22d5a0145936393427af",
+   "inv-obligation:c19dc6eb192f7729ccec6739",
+   "inv-obligation:b508342500b85bf0d1476409",
+   "inv-obligation:25aeafb4fa20cf1d18d0da0e",
+   "inv-obligation:92ac7790a24762e67526c32c",
+   "inv-obligation:eb62331e1810c944b6a284ea",
+   "inv-obligation:e7d13d5ef75c9b6242c4b4ef",
+   "inv-obligation:a3c30639a99e7ba15a0ab0af",
+   "inv-obligation:2c66dc5efb19b469c74f6717",
+   "inv-obligation:7e2798d1344ca3e62e6ff8ab",
+   "inv-obligation:68d9c0df1fac33989a339dde",
+   "inv-obligation:4e34a366650a9ade02878ee6",
+   "inv-obligation:e28a2dc5d242bf2bc5d650c5",
+   "inv-obligation:b115982119cdcf63c662e8d3",
+   "inv-obligation:934218e882141ddffd6d8b85",
+   "inv-obligation:5f573713cc455b191ea44dba",
+   "inv-obligation:e0e026f18a79ef57f9433bdf",
+   "inv-obligation:c9f9d5c55695b978f5a0371e",
+   "inv-obligation:d11f34df3782db76d11e5f16",
+   "inv-obligation:608cec7bb1e123606130ccd2",
+   "inv-obligation:1f16033a50b5203127e07f2c",
+   "inv-obligation:9b720d2fa2c3d1f42a534617",
+   "inv-obligation:56a08859fcb7579054bf53ba",
+   "inv-obligation:cc9430b48103da30c4f34605",
+   "inv-obligation:4536defa169d6e63a0195956",
+   "inv-obligation:5ed8861d246a652642237805",
+   "inv-obligation:13c4eafb38ee033c48670538",
+   "inv-obligation:5265bef4e0680ca42fcc0291",
+   "inv-obligation:6c014ffd130eb225291a0764",
+   "inv-obligation:55ac123a0b3d350c66183771",
+   "inv-obligation:76f0453521e3b66fd94a58d4",
+   "inv-obligation:9c1f7618c881c5268aab63fa",
+   "inv-obligation:0ea85210d3e9bca5d8d03ae0",
+   "inv-obligation:94cd5e03b933c2601b716907",
+   "inv-obligation:13416b595d0920826af5b134",
+   "inv-obligation:66c64dfaa37a59f2ea4e13b3",
+   "inv-obligation:7961a9375ebfe68dc8a97d5e",
+   "inv-obligation:0d5d19de466d917bc0780d07",
+   "inv-obligation:d5c3bb20894174394700b608",
+   "inv-obligation:663b4a07d5b1d1e9e3c2667d",
+   "inv-obligation:07b8b3ae6431c4db7cfb08a3",
+   "inv-obligation:2a7f3459b4222b8c70be09c7",
+   "inv-obligation:cb38cc434e636213ca064506",
+   "inv-obligation:25c95c5949e636609cadc3a8",
+   "inv-obligation:bf43bc7ea4ddf0cbead2c3b3",
+   "inv-obligation:12390520b02ac2463a9ef0bf",
+   "inv-obligation:ecde1ce7bdd42e93ea63b277",
+   "inv-obligation:832f302f785f631bccd8dd40",
+   "inv-obligation:b7b59a6c4cc43141d67caefa",
+   "inv-obligation:276fecbf2aa76f8ebb3a7eb0",
+   "inv-obligation:bbb5cbfc4f7a0912de678e3a",
+   "inv-obligation:a3d027d00efb5e292a710c7e",
+   "inv-obligation:d8b4025814ee68701a94237c",
+   "inv-obligation:93356e3bcdce9b1027bf17eb",
+   "inv-obligation:fdead09b849ac0e0b00d7ff6",
+   "inv-obligation:5a23d65ebab51917d7e88a54",
+   "inv-obligation:d85b8f06d7008a588b737405",
+   "inv-obligation:60da7c4ba5fe239f2e6c6c1b",
+   "inv-obligation:d7a3912b489b88200be182f8",
+   "inv-obligation:934a97b01823ced8c987e50b",
+   "inv-obligation:de67ce63b9745b847cf451cd",
+   "inv-obligation:ed08df6d450956b89cc161a3",
+   "inv-obligation:1363a123b52d2b8fb3a05245",
+   "inv-obligation:57fbc9ad9b31b87315c8e952",
+   "inv-obligation:474891fb9a9f1459f4eb3ccc",
+   "inv-obligation:24a8652c2e69d8debcd9c257",
+   "inv-obligation:3b4970f8036313ef8a177895",
+   "inv-obligation:be917c45bb52107d0ce05bbd",
+   "inv-obligation:073e2c24dd7d5a0fba69bd86",
+   "inv-obligation:256e645eeb98aaf7102f3b22",
+   "inv-obligation:39fe12339c40f8134a3a7ba7",
+   "inv-obligation:cb8290348a4288fbd7ff659c",
+   "inv-obligation:5d39a31de983938820df615d",
+   "inv-obligation:250265705a015390e5806dea",
+   "inv-obligation:fd4402150476175a841bcc46",
+   "inv-obligation:6b45b554b76f49dfa5a0f0e8",
+   "inv-obligation:a3596c31b40203b7e4228a50",
+   "inv-obligation:5078ebb501bd4297de8a51c3",
+   "inv-obligation:0e908f24ce1f97a9ab7ae489",
+   "inv-obligation:1148f6633dfadd2cc6ba5533",
+   "inv-obligation:0db1bf09b17dc2b25dc059d4",
+   "inv-obligation:c8e7a69b3b7918da25cc5b02",
+   "inv-obligation:3aa162a02d89e913d70413c2",
+   "inv-obligation:b5d7387832a2e82c7ce14a18",
+   "inv-obligation:4f4ecd3105c82c01ed671341",
+   "inv-obligation:3d9b2b014def2b29d2071dcf",
+   "inv-obligation:09f5bdd01a6c8b567a18c2bc",
+   "inv-obligation:9a57403703338e36e7365c83",
+   "inv-obligation:a5f222c4a66e0df0fea6ef47",
+   "inv-obligation:8208c5a8d4af62562eaab723",
+   "inv-obligation:0d0bdfdae422d3ded8e038e5",
+   "inv-obligation:3e12baba30b2237ea4f463e5",
+   "inv-obligation:1691480936135eca1ab1c4c2",
+   "inv-obligation:c0a248b65197df10b69a1fc7",
+   "inv-obligation:3660b19d4925181f35ce5472",
+   "inv-obligation:a9a138968357244f7d738e79",
+   "inv-obligation:5c2ed08b4a5e753eb89d8178",
+   "inv-obligation:5dd5baf09b9dd0c712a9b418",
+   "inv-obligation:b56492dea286a8e4e09ff209",
+   "inv-obligation:b82c54d68f975d3ff40d4f3c",
+   "inv-obligation:9661e8fd9488ec9b7eb6eaed",
+   "inv-obligation:759352bbacec608ff36e2d79",
+   "inv-obligation:76e52971165a1ccb7fc04d9a",
+   "inv-obligation:23aae8bab7587fac94ac9bf5",
+   "inv-obligation:d4faf280f86f1d0f8715935f",
+   "inv-obligation:73d124d42ecee33273c04975",
+   "inv-obligation:461546cd18539d7abfa04fbc",
+   "inv-obligation:a2a7dc46b3afcad093e80762",
+   "inv-obligation:698e1020eb2c39987f955846",
+   "inv-obligation:470c1381d6611b3c271c90c7",
+   "inv-obligation:fd0a23b08e984d711805a74b",
+   "inv-obligation:f82e4ba9f83a304f6ce7a968",
+   "inv-obligation:c75f3f6a1897587f889e2853",
+   "inv-obligation:d96ceda475a070f10cc5b89e",
+   "inv-obligation:9eee5ffb7c773db46d52c4f6",
+   "inv-obligation:78644388c899aa84fd174800",
+   "inv-obligation:b3c305d93862c2b028887e75",
+   "inv-obligation:fab554f8b85f0decaf1634f3",
+   "inv-obligation:31cc0b5e1ac71c69b557060e",
+   "inv-obligation:085a394162c8d9b98f3c0c9e",
+   "inv-obligation:22ef082e28d4f9f7e2207d4b",
+   "inv-obligation:3913fd567590fa9e760d165c",
+   "inv-obligation:a1e388054d0d3a99fd26f8df",
+   "inv-obligation:82639edc17209bf34207715d",
+   "inv-obligation:5d856c6110aeb3fd246d9d38",
+   "inv-obligation:f27541a0bca00cdcffb537ad",
+   "inv-obligation:4fb0c1aa35bda6a49a7a6bf0",
+   "inv-obligation:e125d1d36362dfae15363a43",
+   "inv-obligation:4164aa0d0c89000fc5eeacfa",
+   "inv-obligation:4373d222cd55ac9c21c4dbb3",
+   "inv-obligation:6c892d25e0050ac55fdf530e",
+   "inv-obligation:5f3c04cb575a6556de5d8339",
+   "inv-obligation:3fd0437f08cec06154cd0ca2",
+   "inv-obligation:47e3aa1c55a15981af3f1b1a",
+   "inv-obligation:c4dad81bbea46230205f11a7",
+   "inv-obligation:a4745aca94b0119a5f4961a6",
+   "inv-obligation:9004229f8cb0b5c2631bdc21",
+   "inv-obligation:a633f8bf9addf28d6a4255e7",
+   "inv-obligation:3158efdd71c25472ee919d19",
+   "inv-obligation:8f9bf1656b1931c63d0ec370",
+   "inv-obligation:3415381cc6293955da2fcdbd",
+   "inv-obligation:45627bc4983f0db3d5000ad9",
+   "inv-obligation:0921aa6a0d0f5602447b959c"
+  ],
+  "B": [
+   "inv-obligation:c9123e0a860cf27ba6352a6e",
+   "inv-obligation:94d91defe49600d9e4a829f5",
+   "inv-obligation:342fd2b72da602edca70924e",
+   "inv-obligation:ebfa6d6b7b71689adc203df2",
+   "inv-obligation:cef17c1151acdcd4ead6022f",
+   "inv-obligation:5ea888e98e540b3ebaa57ca5",
+   "inv-obligation:4decf85dbab63b7644790286",
+   "inv-obligation:37acaf678306d4fdf7790eb5",
+   "inv-obligation:57dc04673fe0ec1519f95672",
+   "inv-obligation:a4b991cc3b8ae7a070c97243",
+   "inv-obligation:380a5a5347a0bb6d05730b16",
+   "inv-obligation:d9f8e975a647f1577ef1ecbd",
+   "inv-obligation:e2309734c364bcad7a567bd3",
+   "inv-obligation:5f94f8febf5d294ac2cf94f2",
+   "inv-obligation:c4865be102011bfb177db8ac",
+   "inv-obligation:d283853b57bc939354a286f6",
+   "inv-obligation:51d3a6437779b5059dc69fa8",
+   "inv-obligation:a93bfb35a366a849772c4432",
+   "inv-obligation:cb7d7207867f463a7f4575eb",
+   "inv-obligation:5862fb29191e5f244bffce99",
+   "inv-obligation:ceb7b02eec5bfd5c508397f8",
+   "inv-obligation:087daa784f84e689e81324ad",
+   "inv-obligation:8d36488fcc91b4155d286fe5",
+   "inv-obligation:92d9572d6a6aa5d5093047ed",
+   "inv-obligation:ac89d2928bcb5d59e42e5e60",
+   "inv-obligation:56ecaf1cf2193a3332694c6b",
+   "inv-obligation:b7e782ce412b169b714271a1",
+   "inv-obligation:92fd3808286c7805c239b950",
+   "inv-obligation:056c1032a575aa76e357e0e6",
+   "inv-obligation:e3d7abd2e6db17351d15a86f",
+   "inv-obligation:425d7a27c241b1abcc11b55f",
+   "inv-obligation:7d323374f7b8245bb01c7618",
+   "inv-obligation:36834cb1d4f4513de7ad9f24",
+   "inv-obligation:1a880502469dc5e327268ac2",
+   "inv-obligation:54bfbd7c678c56456db59f30",
+   "inv-obligation:62c3525feeddb9c619fb25c6",
+   "inv-obligation:9fecab3958475e4d0ba6df0d",
+   "inv-obligation:82a2224ab08bf33d383c805e",
+   "inv-obligation:e0d51f9f52d82d24f297913c",
+   "inv-obligation:6d911f3578a60b0c475e623a",
+   "inv-obligation:78c34d8551dc9281f39f8ef5",
+   "inv-obligation:7c3263810134b67fc605ee81",
+   "inv-obligation:196a7ca1734703618fe4c8a2",
+   "inv-obligation:f5f4c95af40cc606bbfaa6f8",
+   "inv-obligation:f7ba74bd4df77de92bb4f0dc",
+   "inv-obligation:5cefc7dffc3271146139ba7f",
+   "inv-obligation:261c86cd03f03656c5700537",
+   "inv-obligation:090a0769e4d54634e960bffe",
+   "inv-obligation:abc65f3c84a3c4c335a1fe93",
+   "inv-obligation:32f0376f1d8a72e8574b568c",
+   "inv-obligation:31c66e2008e241f6ab33b8b6",
+   "inv-obligation:efa5f7a816ed8ada71eed1f0",
+   "inv-obligation:072099e89049aa0d8206c45c",
+   "inv-obligation:541d47f266a1595b00d5bef3",
+   "inv-obligation:a7fa28161a8ef9cf5fb9070a",
+   "inv-obligation:7bb57203a93f41eeec9ae3ef",
+   "inv-obligation:3208527f4ac4cf9c8bffa43d",
+   "inv-obligation:d5389b3a78572916060b5ac7",
+   "inv-obligation:b00e67614a7f585d9dfce8b8",
+   "inv-obligation:e2e50133c479900da833ff3b",
+   "inv-obligation:80b7b86cd7106fd07d760ac7",
+   "inv-obligation:8cd07f4e12f4aebf2a7a3c2c",
+   "inv-obligation:2dc9a756e502a125293e3f59",
+   "inv-obligation:824026a3fb2776b674b2d780",
+   "inv-obligation:aea4746d7fd9dcc8ff5be8a5",
+   "inv-obligation:0cc16f9f470e5c5a71f65b8f",
+   "inv-obligation:49525b95274679eacd3703fd",
+   "inv-obligation:215470f3e07ff819934b1c31",
+   "inv-obligation:c5087c47dcae6b045b7ef421",
+   "inv-obligation:970273488c74336072b47341",
+   "inv-obligation:9fc4919b38d6eae264065838",
+   "inv-obligation:f51af6cd066fcd7e33409097",
+   "inv-obligation:3efe22d5a0145936393427af",
+   "inv-obligation:c19dc6eb192f7729ccec6739",
+   "inv-obligation:25aeafb4fa20cf1d18d0da0e",
+   "inv-obligation:2193dcf73b6c9cbb3b7865b8",
+   "inv-obligation:14f735410f8d96e4c710a47e",
+   "inv-obligation:92ac7790a24762e67526c32c",
+   "inv-obligation:c69099a6ed47f3823ba97ac5",
+   "inv-obligation:545f9be35531dcdb2489ebb6",
+   "inv-obligation:f0410ebaf284b6d5e9d913de",
+   "inv-obligation:eb62331e1810c944b6a284ea",
+   "inv-obligation:35cba08f3c2cba0024e59c4c",
+   "inv-obligation:e7d13d5ef75c9b6242c4b4ef",
+   "inv-obligation:a3c30639a99e7ba15a0ab0af",
+   "inv-obligation:2c66dc5efb19b469c74f6717",
+   "inv-obligation:7e2798d1344ca3e62e6ff8ab",
+   "inv-obligation:68d9c0df1fac33989a339dde",
+   "inv-obligation:4e34a366650a9ade02878ee6",
+   "inv-obligation:e28a2dc5d242bf2bc5d650c5",
+   "inv-obligation:b115982119cdcf63c662e8d3",
+   "inv-obligation:934218e882141ddffd6d8b85",
+   "inv-obligation:5f573713cc455b191ea44dba",
+   "inv-obligation:e0e026f18a79ef57f9433bdf",
+   "inv-obligation:c9f9d5c55695b978f5a0371e",
+   "inv-obligation:d11f34df3782db76d11e5f16",
+   "inv-obligation:1f16033a50b5203127e07f2c",
+   "inv-obligation:9b720d2fa2c3d1f42a534617",
+   "inv-obligation:b4c80e97ac75280bc9365b84",
+   "inv-obligation:56a08859fcb7579054bf53ba",
+   "inv-obligation:cc9430b48103da30c4f34605",
+   "inv-obligation:4536defa169d6e63a0195956",
+   "inv-obligation:75600746f983bd1a6f501802",
+   "inv-obligation:5ed8861d246a652642237805",
+   "inv-obligation:13c4eafb38ee033c48670538",
+   "inv-obligation:5265bef4e0680ca42fcc0291",
+   "inv-obligation:6c014ffd130eb225291a0764",
+   "inv-obligation:55ac123a0b3d350c66183771",
+   "inv-obligation:76f0453521e3b66fd94a58d4",
+   "inv-obligation:9c1f7618c881c5268aab63fa",
+   "inv-obligation:0ea85210d3e9bca5d8d03ae0",
+   "inv-obligation:94cd5e03b933c2601b716907",
+   "inv-obligation:66c64dfaa37a59f2ea4e13b3",
+   "inv-obligation:7961a9375ebfe68dc8a97d5e",
+   "inv-obligation:d5c3bb20894174394700b608",
+   "inv-obligation:a68bf9986fbe391d37ca1a80",
+   "inv-obligation:663b4a07d5b1d1e9e3c2667d",
+   "inv-obligation:07b8b3ae6431c4db7cfb08a3",
+   "inv-obligation:2a7f3459b4222b8c70be09c7",
+   "inv-obligation:cb38cc434e636213ca064506",
+   "inv-obligation:25c95c5949e636609cadc3a8",
+   "inv-obligation:bf43bc7ea4ddf0cbead2c3b3",
+   "inv-obligation:12390520b02ac2463a9ef0bf",
+   "inv-obligation:ecde1ce7bdd42e93ea63b277",
+   "inv-obligation:0f30412086b14d4ba0cf83e0",
+   "inv-obligation:832f302f785f631bccd8dd40",
+   "inv-obligation:b7b59a6c4cc43141d67caefa",
+   "inv-obligation:276fecbf2aa76f8ebb3a7eb0",
+   "inv-obligation:bbb5cbfc4f7a0912de678e3a",
+   "inv-obligation:a3d027d00efb5e292a710c7e",
+   "inv-obligation:d8b4025814ee68701a94237c",
+   "inv-obligation:93356e3bcdce9b1027bf17eb",
+   "inv-obligation:fdead09b849ac0e0b00d7ff6",
+   "inv-obligation:5a23d65ebab51917d7e88a54",
+   "inv-obligation:d85b8f06d7008a588b737405",
+   "inv-obligation:60da7c4ba5fe239f2e6c6c1b",
+   "inv-obligation:d7a3912b489b88200be182f8",
+   "inv-obligation:934a97b01823ced8c987e50b",
+   "inv-obligation:de67ce63b9745b847cf451cd",
+   "inv-obligation:ed08df6d450956b89cc161a3",
+   "inv-obligation:1363a123b52d2b8fb3a05245",
+   "inv-obligation:57fbc9ad9b31b87315c8e952",
+   "inv-obligation:474891fb9a9f1459f4eb3ccc",
+   "inv-obligation:24a8652c2e69d8debcd9c257",
+   "inv-obligation:be917c45bb52107d0ce05bbd",
+   "inv-obligation:073e2c24dd7d5a0fba69bd86",
+   "inv-obligation:b27a5d418554845deaac2d72",
+   "inv-obligation:256e645eeb98aaf7102f3b22",
+   "inv-obligation:39fe12339c40f8134a3a7ba7",
+   "inv-obligation:07593a9a1d67f778a47d21bb",
+   "inv-obligation:cb8290348a4288fbd7ff659c",
+   "inv-obligation:5d39a31de983938820df615d",
+   "inv-obligation:250265705a015390e5806dea",
+   "inv-obligation:a3596c31b40203b7e4228a50",
+   "inv-obligation:5078ebb501bd4297de8a51c3",
+   "inv-obligation:0e908f24ce1f97a9ab7ae489",
+   "inv-obligation:62d3af2de1bd2949b6e724e9",
+   "inv-obligation:1148f6633dfadd2cc6ba5533",
+   "inv-obligation:0db1bf09b17dc2b25dc059d4",
+   "inv-obligation:dde1dd9e6d23f0d36dd9c41f",
+   "inv-obligation:b507ea67aa427f63d4f6f87a",
+   "inv-obligation:0921d6dc07f5319b533ac9d5",
+   "inv-obligation:c8e7a69b3b7918da25cc5b02",
+   "inv-obligation:3aa162a02d89e913d70413c2",
+   "inv-obligation:910dbfbc96b6dcacbb99ea94",
+   "inv-obligation:a0318d1937b2c64b3c8a4a66",
+   "inv-obligation:9343dcf5dee61fc4def5e884",
+   "inv-obligation:00446205ca78178918b51b09",
+   "inv-obligation:b5d7387832a2e82c7ce14a18",
+   "inv-obligation:4f4ecd3105c82c01ed671341",
+   "inv-obligation:b810debd25b2242c9c469333",
+   "inv-obligation:1dcd64592193e3331a35455a",
+   "inv-obligation:6576e33b3f29d678c0956cc6",
+   "inv-obligation:3d9b2b014def2b29d2071dcf",
+   "inv-obligation:09f5bdd01a6c8b567a18c2bc",
+   "inv-obligation:9a57403703338e36e7365c83",
+   "inv-obligation:a5f222c4a66e0df0fea6ef47",
+   "inv-obligation:8208c5a8d4af62562eaab723",
+   "inv-obligation:0d0bdfdae422d3ded8e038e5",
+   "inv-obligation:3e12baba30b2237ea4f463e5",
+   "inv-obligation:c0a248b65197df10b69a1fc7",
+   "inv-obligation:3660b19d4925181f35ce5472",
+   "inv-obligation:a9a138968357244f7d738e79",
+   "inv-obligation:5c2ed08b4a5e753eb89d8178",
+   "inv-obligation:5dd5baf09b9dd0c712a9b418",
+   "inv-obligation:b56492dea286a8e4e09ff209",
+   "inv-obligation:b82c54d68f975d3ff40d4f3c",
+   "inv-obligation:9661e8fd9488ec9b7eb6eaed",
+   "inv-obligation:759352bbacec608ff36e2d79",
+   "inv-obligation:76e52971165a1ccb7fc04d9a",
+   "inv-obligation:23aae8bab7587fac94ac9bf5",
+   "inv-obligation:d4faf280f86f1d0f8715935f",
+   "inv-obligation:73d124d42ecee33273c04975",
+   "inv-obligation:461546cd18539d7abfa04fbc",
+   "inv-obligation:a2a7dc46b3afcad093e80762",
+   "inv-obligation:698e1020eb2c39987f955846",
+   "inv-obligation:470c1381d6611b3c271c90c7",
+   "inv-obligation:fd0a23b08e984d711805a74b",
+   "inv-obligation:f82e4ba9f83a304f6ce7a968",
+   "inv-obligation:c75f3f6a1897587f889e2853",
+   "inv-obligation:d96ceda475a070f10cc5b89e",
+   "inv-obligation:53662d565c6ec1bd3347d06d",
+   "inv-obligation:9eee5ffb7c773db46d52c4f6",
+   "inv-obligation:78644388c899aa84fd174800",
+   "inv-obligation:b3c305d93862c2b028887e75",
+   "inv-obligation:fab554f8b85f0decaf1634f3",
+   "inv-obligation:31cc0b5e1ac71c69b557060e",
+   "inv-obligation:085a394162c8d9b98f3c0c9e",
+   "inv-obligation:22ef082e28d4f9f7e2207d4b",
+   "inv-obligation:3913fd567590fa9e760d165c",
+   "inv-obligation:a1e388054d0d3a99fd26f8df",
+   "inv-obligation:82639edc17209bf34207715d",
+   "inv-obligation:5d856c6110aeb3fd246d9d38",
+   "inv-obligation:f27541a0bca00cdcffb537ad",
+   "inv-obligation:4fb0c1aa35bda6a49a7a6bf0",
+   "inv-obligation:e125d1d36362dfae15363a43",
+   "inv-obligation:4164aa0d0c89000fc5eeacfa",
+   "inv-obligation:4373d222cd55ac9c21c4dbb3",
+   "inv-obligation:6c892d25e0050ac55fdf530e",
+   "inv-obligation:5f3c04cb575a6556de5d8339",
+   "inv-obligation:3fd0437f08cec06154cd0ca2",
+   "inv-obligation:47e3aa1c55a15981af3f1b1a",
+   "inv-obligation:c4dad81bbea46230205f11a7",
+   "inv-obligation:a4745aca94b0119a5f4961a6",
+   "inv-obligation:9004229f8cb0b5c2631bdc21",
+   "inv-obligation:a633f8bf9addf28d6a4255e7",
+   "inv-obligation:3158efdd71c25472ee919d19",
+   "inv-obligation:8f9bf1656b1931c63d0ec370",
+   "inv-obligation:3415381cc6293955da2fcdbd",
+   "inv-obligation:0921aa6a0d0f5602447b959c"
+  ],
+  "intersection": 197,
+  "unionSize": 248,
+  "jaccard": 0.7944,
+  "before": {
+   "unaccountedSegmentsA": 33,
+   "unaccountedSegmentsB": 32,
+   "identical": 18
+  }
+ },
+ "fCases": [
+  {
+   "id": "inv-item:6cc18d694b97293840792cd1",
+   "missingRun": "B",
+   "span": [
+    1911,
+    1943
+   ],
+   "slotId": "operative:6.08(a)(iii)(a)#1",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "G_EXPLICIT_CROSS_REFERENCE",
+   "materiality": "MATERIAL",
+   "excerpt": "Sections 6.01(b)(7), (8) and (9)",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:5ea888e98e540b3ebaa57ca5",
+     "kind": "EXPLICIT_REFERENCE",
+     "span": [
+      1911,
+      1943
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "EXPLICIT_REFERENCE"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:decaf3458cf8051b8783d992",
+   "missingRun": "B",
+   "span": [
+    6540,
+    6613
+   ],
+   "slotId": "operative:6.08(a)(3)(b)#16",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "B_ENUMERATED_BRANCH",
+   "materiality": "MATERIAL",
+   "excerpt": "(ii) Indebtedness of any Restricted Party that has been converted into or",
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:3ac15fdf96ceeb85d9aa50a4",
+   "missingRun": "B",
+   "span": [
+    7024,
+    7125
+   ],
+   "slotId": "operative:6.08(a)(3)(b)#20",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "B_ENUMERATED_BRANCH",
+   "materiality": "MATERIAL",
+   "excerpt": "(Y) Disqualified Stock (or Indebtedness that has been converted or exchanged into Disqualified Stock",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:090a0769e4d54634e960bffe",
+     "kind": "ENUMERATED_BRANCH",
+     "span": [
+      7024,
+      7156
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "ENUMERATED_BRANCH"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:256513e7c7ab5997ece8e707",
+   "missingRun": "B",
+   "span": [
+    7126,
+    7156
+   ],
+   "slotId": "operative:6.08(a)(3)(b)#20",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "B_ENUMERATED_BRANCH",
+   "materiality": "MATERIAL",
+   "excerpt": "or (Z) Excluded Contributions;",
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:d4e07eb24f0077cd9d6837f2",
+   "missingRun": "B",
+   "span": [
+    10159,
+    10202
+   ],
+   "slotId": "operative:6.08(a)(3)(g)(i)#1",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "B_ENUMERATED_BRANCH",
+   "materiality": "MATERIAL",
+   "excerpt": "(ii) Retained Asset Sale Proceeds since the",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:2dc9a756e502a125293e3f59",
+     "kind": "ENUMERATED_BRANCH",
+     "span": [
+      10159,
+      10202
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "ENUMERATED_BRANCH"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:210c2c9c9f3110079bcc93ad",
+   "missingRun": "B",
+   "span": [
+    10463,
+    10538
+   ],
+   "slotId": "operative:6.08(a)(3)(h)#1",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "B_ENUMERATED_BRANCH",
+   "materiality": "CRITICAL",
+   "excerpt": "(h) 100% of the aggregate amount received in cash and the Fair Market Value",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:91a4426f724aee1b9e5e4202",
+     "kind": "QUANTITATIVE_SPAN",
+     "span": [
+      10467,
+      10471
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    }
+   ],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": true,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:7b7eee5232b3ddbe4dca6702",
+   "missingRun": "B",
+   "span": [
+    10680,
+    10685
+   ],
+   "slotId": "operative:6.08(a)(3)(h)#3",
+   "failureStage": "GAP_MODEL_OMISSION",
+   "sourceForm": "K_CONTINUATION_FRAGMENT",
+   "materiality": "MATERIAL",
+   "excerpt": "minus",
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:cce79de89d896178253b4062",
+   "missingRun": "B",
+   "span": [
+    11742,
+    11943
+   ],
+   "slotId": "operative:6.08(b)(2)(a)#2",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "A_COORDINATED_PROPOSITION",
+   "materiality": "CRITICAL",
+   "excerpt": "or Subordinated Indebtedness of any Restricted Party, or any Equity Interests of any Parent Entity, ",
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:645cb655bbd3cadd0849b680",
+   "missingRun": "B",
+   "span": [
+    12243,
+    12272
+   ],
+   "slotId": "operative:6.08(b)(2)(a)#4",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "L_OTHER",
+   "materiality": "MATERIAL",
+   "excerpt": "(“ Refunding Capital Stock ”)",
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:0d4df05dc8b1742c7ff0534b",
+   "missingRun": "B",
+   "span": [
+    12274,
+    12412
+   ],
+   "slotId": "operative:6.08(b)(2)(a)#4",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "B_ENUMERATED_BRANCH",
+   "materiality": "CRITICAL",
+   "excerpt": "(b) the declaration and payment of dividends on the Treasury Capital Stock out of the proceeds of th",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:c69099a6ed47f3823ba97ac5",
+     "kind": "ENUMERATED_BRANCH",
+     "span": [
+      12274,
+      12412
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "ENUMERATED_BRANCH"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:310b903c3c03cfc9a78d1554",
+   "missingRun": "B",
+   "span": [
+    12474,
+    12647
+   ],
+   "slotId": "operative:6.08(b)(2)(a)#5",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "B_ENUMERATED_BRANCH",
+   "materiality": "CRITICAL",
+   "excerpt": "and (c) if immediately prior to the retirement of Treasury Capital Stock, the declaration and paymen",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:545f9be35531dcdb2489ebb6",
+     "kind": "ENUMERATED_BRANCH",
+     "span": [
+      12478,
+      12647
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    },
+    {
+     "id": "inv-obligation:f0410ebaf284b6d5e9d913de",
+     "kind": "QUALIFIER_OR_PROVISO",
+     "span": [
+      12482,
+      12647
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "ENUMERATED_BRANCH",
+    "QUALIFIER_OR_PROVISO"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:613b290701b05b3ec953c64c",
+   "missingRun": "B",
+   "span": [
+    12716,
+    12896
+   ],
+   "slotId": "operative:6.08(b)(2)(a)#6",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "F_EXCEPTION",
+   "materiality": "CRITICAL",
+   "excerpt": "(other than Refunding Capital Stock the proceeds of which were used to redeem, purchase, repurchase,",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:35cba08f3c2cba0024e59c4c",
+     "kind": "EXCEPTION_FRAGMENT",
+     "span": [
+      12717,
+      12896
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "EXCEPTION_FRAGMENT"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:7116bf5ef7a2f8591d286386",
+   "missingRun": "B",
+   "span": [
+    15102,
+    15129
+   ],
+   "slotId": "operative:6.08(b)(4)#9",
+   "failureStage": "GAP_MODEL_OMISSION",
+   "sourceForm": "K_CONTINUATION_FRAGMENT",
+   "materiality": "MATERIAL",
+   "excerpt": "succeeding calendar years);",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:b4c80e97ac75280bc9365b84",
+     "kind": "BASE_SLOT",
+     "span": [
+      15102,
+      15129
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": true,
+   "capturedBy": [
+    "BASE_SLOT"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": true
+  },
+  {
+   "id": "inv-item:ff7801133b7ca108b95d3197",
+   "missingRun": "B",
+   "span": [
+    15770,
+    15797
+   ],
+   "slotId": "operative:6.08(b)(4)#13",
+   "failureStage": "GAP_MODEL_OMISSION",
+   "sourceForm": "K_CONTINUATION_FRAGMENT",
+   "materiality": "MATERIAL",
+   "excerpt": "succeeding calendar years);",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:75600746f983bd1a6f501802",
+     "kind": "BASE_SLOT",
+     "span": [
+      15770,
+      15797
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": true,
+   "capturedBy": [
+    "BASE_SLOT"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": true
+  },
+  {
+   "id": "inv-item:133e19c1d584606795338eb3",
+   "missingRun": "B",
+   "span": [
+    17231,
+    17235
+   ],
+   "slotId": "operative:6.08(b)(4)(c)#4",
+   "failureStage": "GAP_MODEL_OMISSION",
+   "sourceForm": "K_CONTINUATION_FRAGMENT",
+   "materiality": "CRITICAL",
+   "excerpt": "less",
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:1a23f665b508e9de8e4731d0",
+   "missingRun": "B",
+   "span": [
+    18327,
+    18386
+   ],
+   "slotId": "operative:6.08(b)(5)#2",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "H_DEPENDENCY_FRAGMENT",
+   "materiality": "MATERIAL",
+   "excerpt": "in each case, issued in accordance with Section 6.01 hereof",
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:9535cfecba93586918386d7b",
+   "missingRun": "B",
+   "span": [
+    18387,
+    18455
+   ],
+   "slotId": "operative:6.08(b)(5)#2",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "E_QUALIFIER_OR_PROVISO",
+   "materiality": "MATERIAL",
+   "excerpt": "to the extent such dividends are included in the definition of Fixed",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:a68bf9986fbe391d37ca1a80",
+     "kind": "QUALIFIER_OR_PROVISO",
+     "span": [
+      18387,
+      18455
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "QUALIFIER_OR_PROVISO"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:d1317fa2817a561881c89601",
+   "missingRun": "B",
+   "span": [
+    18610,
+    18666
+   ],
+   "slotId": "operative:6.08(b)(6)(a)#2",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "L_OTHER",
+   "materiality": "MATERIAL",
+   "excerpt": "issued by any Restricted Party after the Effective Date;",
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:ccfc618dfdb658de0bd0d0a9",
+   "missingRun": "B",
+   "span": [
+    20153,
+    20203
+   ],
+   "slotId": "operative:6.08(b)(8)#3",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "A_COORDINATED_PROPOSITION",
+   "materiality": "CRITICAL",
+   "excerpt": "or repurchases or withholdings of Equity Interests",
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:b97e1dbbafc0e99fd75338a0",
+   "missingRun": "B",
+   "span": [
+    20426,
+    20452
+   ],
+   "slotId": "operative:6.08(b)(8)#4",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "A_COORDINATED_PROPOSITION",
+   "materiality": "CRITICAL",
+   "excerpt": "or payments in lieu of the",
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:7993ce95ecf602a1b5ff1c45",
+   "missingRun": "B",
+   "span": [
+    20494,
+    20634
+   ],
+   "slotId": "operative:6.08(b)(8)#5",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "A_COORDINATED_PROPOSITION",
+   "materiality": "CRITICAL",
+   "excerpt": "or withholding obligation with respect to, such options or warrants or other incentive interests or ",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:0f30412086b14d4ba0cf83e0",
+     "kind": "COORDINATED_FRAGMENT",
+     "span": [
+      20497,
+      20634
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "COORDINATED_FRAGMENT"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:7064b938f4cc8c2632e257e0",
+   "missingRun": "B",
+   "span": [
+    21112,
+    21149
+   ],
+   "slotId": "operative:6.08(b)(9)(i)(a)#3",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "L_OTHER",
+   "materiality": "CRITICAL",
+   "excerpt": "in an amount not to exceed the sum of",
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:ca2d4f7c11533917fc3d3530",
+   "missingRun": "B",
+   "span": [
+    21691,
+    21835
+   ],
+   "slotId": "operative:6.08(b)(9)(i)(b)#2",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "L_OTHER",
+   "materiality": "CRITICAL",
+   "excerpt": "any prepayment, purchase, repurchase, redemption, defeasance, discharge, retirement or other acquisi",
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:54421ce716a29adb50ea78c9",
+   "missingRun": "B",
+   "span": [
+    22526,
+    22681
+   ],
+   "slotId": "operative:6.08(b)(9)(ii)#2",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "H_DEPENDENCY_FRAGMENT",
+   "materiality": "MATERIAL",
+   "excerpt": "that have been used to incur Indebtedness, Disqualified Stock or Preferred Stock pursuant to clause ",
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:ab7cc08bed35e59b092687ab",
+   "missingRun": "B",
+   "span": [
+    23458,
+    23478
+   ],
+   "slotId": "operative:6.08(b)(10)(B)(B)#1",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "B_ENUMERATED_BRANCH",
+   "materiality": "CRITICAL",
+   "excerpt": "and (II) there is no",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:b27a5d418554845deaac2d72",
+     "kind": "ENUMERATED_BRANCH",
+     "span": [
+      23462,
+      23478
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "ENUMERATED_BRANCH"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:fe3c7015a78f95e564bb03eb",
+   "missingRun": "B",
+   "span": [
+    23953,
+    24061
+   ],
+   "slotId": "operative:6.08(b)(12)#2",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "K_CONTINUATION_FRAGMENT",
+   "materiality": "CRITICAL",
+   "excerpt": "aggregate amount taken together with all other Restricted Payments made pursuant to this Section 6.0",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:a073497f80908def2858d42a",
+     "kind": "COORDINATED_FRAGMENT",
+     "span": [
+      23953,
+      24058
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    },
+    {
+     "id": "inv-obligation:a363296889f7703e49eb70f4",
+     "kind": "BASE_SLOT",
+     "span": [
+      23953,
+      24186
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    }
+   ],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": true,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:63708745f618bc0c68dbb048",
+   "missingRun": "B",
+   "span": [
+    25489,
+    25602
+   ],
+   "slotId": "operative:6.08(b)(15)#2",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "K_CONTINUATION_FRAGMENT",
+   "materiality": "CRITICAL",
+   "excerpt": "aggregate amount taken together with all other Restricted Debt Payments made pursuant to this Sectio",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:7da5d985f5178e5466af8a36",
+     "kind": "COORDINATED_FRAGMENT",
+     "span": [
+      25489,
+      25599
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    },
+    {
+     "id": "inv-obligation:ecc986a349e46c68547128ad",
+     "kind": "BASE_SLOT",
+     "span": [
+      25489,
+      25723
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    }
+   ],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": true,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:9cafc298c6f3b10255db240e",
+   "missingRun": "B",
+   "span": [
+    26456,
+    26563
+   ],
+   "slotId": "operative:6.08(b)(16)(b)(1)#3",
+   "failureStage": "GAP_MODEL_OMISSION",
+   "sourceForm": "K_CONTINUATION_FRAGMENT",
+   "materiality": "MATERIAL",
+   "excerpt": "federal income tax purposes) of a consolidated, combined, affiliated, unitary or similar tax group f",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:dde1dd9e6d23f0d36dd9c41f",
+     "kind": "BASE_SLOT",
+     "span": [
+      26456,
+      26563
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": true,
+   "capturedBy": [
+    "BASE_SLOT"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": true
+  },
+  {
+   "id": "inv-item:4cb890a5ec1998b322199300",
+   "missingRun": "B",
+   "span": [
+    26572,
+    26614
+   ],
+   "slotId": "operative:6.08(b)(16)(b)(1)#5",
+   "failureStage": "GAP_MODEL_OMISSION",
+   "sourceForm": "K_CONTINUATION_FRAGMENT",
+   "materiality": "MATERIAL",
+   "excerpt": "and/or applicable state, local or non-U.S.",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:b507ea67aa427f63d4f6f87a",
+     "kind": "BASE_SLOT",
+     "span": [
+      26572,
+      26614
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": true,
+   "capturedBy": [
+    "BASE_SLOT"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": true
+  },
+  {
+   "id": "inv-item:0f8a11989ee53b30fca48952",
+   "missingRun": "B",
+   "span": [
+    27250,
+    27287
+   ],
+   "slotId": "operative:6.08(b)(16)(b)(2)#3",
+   "failureStage": "GAP_MODEL_OMISSION",
+   "sourceForm": "K_CONTINUATION_FRAGMENT",
+   "materiality": "MATERIAL",
+   "excerpt": "federal income tax purposes) for U.S.",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:910dbfbc96b6dcacbb99ea94",
+     "kind": "BASE_SLOT",
+     "span": [
+      27250,
+      27287
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": true,
+   "capturedBy": [
+    "BASE_SLOT"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": true
+  },
+  {
+   "id": "inv-item:0c91179c8d3c16c6c19cad21",
+   "missingRun": "B",
+   "span": [
+    27288,
+    27330
+   ],
+   "slotId": "operative:6.08(b)(16)(b)(2)#4",
+   "failureStage": "GAP_MODEL_OMISSION",
+   "sourceForm": "K_CONTINUATION_FRAGMENT",
+   "materiality": "MATERIAL",
+   "excerpt": "and/or applicable state, local or non-U.S.",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:a0318d1937b2c64b3c8a4a66",
+     "kind": "BASE_SLOT",
+     "span": [
+      27288,
+      27330
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": true,
+   "capturedBy": [
+    "BASE_SLOT"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": true
+  },
+  {
+   "id": "inv-item:9b6f544f52702ab958e8cf09",
+   "missingRun": "B",
+   "span": [
+    27450,
+    27466
+   ],
+   "slotId": "operative:6.08(b)(16)(b)(2)#7",
+   "failureStage": "GAP_MODEL_OMISSION",
+   "sourceForm": "K_CONTINUATION_FRAGMENT",
+   "materiality": "MATERIAL",
+   "excerpt": "income taxes (or",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:9343dcf5dee61fc4def5e884",
+     "kind": "BASE_SLOT",
+     "span": [
+      27450,
+      27466
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": true,
+   "capturedBy": [
+    "BASE_SLOT"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": true
+  },
+  {
+   "id": "inv-item:4fa3b9e1354ff38a10e53f52",
+   "missingRun": "B",
+   "span": [
+    27975,
+    28012
+   ],
+   "slotId": "operative:6.08(b)(16)(b)(2)#11",
+   "failureStage": "GAP_MODEL_OMISSION",
+   "sourceForm": "K_CONTINUATION_FRAGMENT",
+   "materiality": "MATERIAL",
+   "excerpt": "federal, state, local and/or non-U.S.",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:b810debd25b2242c9c469333",
+     "kind": "BASE_SLOT",
+     "span": [
+      27975,
+      28012
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": true,
+   "capturedBy": [
+    "BASE_SLOT"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": true
+  },
+  {
+   "id": "inv-item:0d1fcb6adb37b10cf1a0a35d",
+   "missingRun": "B",
+   "span": [
+    28082,
+    28155
+   ],
+   "slotId": "operative:6.08(b)(16)(b)(2)#13",
+   "failureStage": "GAP_MODEL_OMISSION",
+   "sourceForm": "K_CONTINUATION_FRAGMENT",
+   "materiality": "MATERIAL",
+   "excerpt": "the Borrowers and/or any of their respective Subsidiaries, as applicable;",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:1dcd64592193e3331a35455a",
+     "kind": "COORDINATED_FRAGMENT",
+     "span": [
+      28082,
+      28102
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    },
+    {
+     "id": "inv-obligation:6576e33b3f29d678c0956cc6",
+     "kind": "BASE_SLOT",
+     "span": [
+      28082,
+      28155
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "COORDINATED_FRAGMENT",
+    "BASE_SLOT"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": true
+  },
+  {
+   "id": "inv-item:5110cac40f96001de90a14c1",
+   "missingRun": "B",
+   "span": [
+    33360,
+    33408
+   ],
+   "slotId": "operative:6.08(b)(21)(i)#2",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "E_QUALIFIER_OR_PROVISO",
+   "materiality": "CRITICAL",
+   "excerpt": "provided that the aggregate amount of Restricted",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:37633ecca7af8e113f967449",
+     "kind": "QUALIFIER_OR_PROVISO",
+     "span": [
+      33360,
+      33408
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    }
+   ],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": true,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:76cb45bd4ab183e72bebb3cf",
+   "missingRun": "B",
+   "span": [
+    36042,
+    36071
+   ],
+   "slotId": "operative:6.08(b)(27)#9",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "F_EXCEPTION",
+   "materiality": "MATERIAL",
+   "excerpt": "(except to the extent repaid)",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:a1e388054d0d3a99fd26f8df",
+     "kind": "EXCEPTION_FRAGMENT",
+     "span": [
+      36043,
+      36235
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    },
+    {
+     "id": "inv-obligation:82639edc17209bf34207715d",
+     "kind": "QUALIFIER_OR_PROVISO",
+     "span": [
+      36050,
+      36235
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "EXCEPTION_FRAGMENT",
+    "QUALIFIER_OR_PROVISO"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:be7fa1dbef025182ac9eb1ae",
+   "missingRun": "A",
+   "span": [
+    2886,
+    2962
+   ],
+   "slotId": "operative:6.08(a)(iv)#4",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "E_QUALIFIER_OR_PROVISO",
+   "materiality": "CRITICAL",
+   "excerpt": "unless, at the time of such Restricted Payment (or the declaration thereof):",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:5bae8b33ec611c442b8eaaef",
+     "kind": "QUALIFIER_OR_PROVISO",
+     "span": [
+      2886,
+      2962
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "QUALIFIER_OR_PROVISO"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:9e613227dc5a5efa1627bb42",
+   "missingRun": "A",
+   "span": [
+    8926,
+    8952
+   ],
+   "slotId": "operative:6.08(a)(3)(d)(ii)#3",
+   "failureStage": "GAP_MODEL_OMISSION",
+   "sourceForm": "K_CONTINUATION_FRAGMENT",
+   "materiality": "MATERIAL",
+   "excerpt": "after the Effective Date);",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:7e24a36e2c1ccf0fbaf0ea8e",
+     "kind": "BASE_SLOT",
+     "span": [
+      8926,
+      8952
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": true,
+   "capturedBy": [
+    "BASE_SLOT"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": true
+  },
+  {
+   "id": "inv-item:9f2addd230b397a90c759009",
+   "missingRun": "A",
+   "span": [
+    10359,
+    10374
+   ],
+   "slotId": "operative:6.08(a)(3)(g)(i)#2",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "G_EXPLICIT_CROSS_REFERENCE",
+   "materiality": "MATERIAL",
+   "excerpt": "Section 2.09(b)",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:b5d9cb2bbdf1d11b67a61b3b",
+     "kind": "EXPLICIT_REFERENCE",
+     "span": [
+      10359,
+      10374
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "EXPLICIT_REFERENCE"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:21ff6c5be66617e473b4763f",
+   "missingRun": "A",
+   "span": [
+    10910,
+    10929
+   ],
+   "slotId": "operative:6.08(a)(3)(i)(ii)#1",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "G_EXPLICIT_CROSS_REFERENCE",
+   "materiality": "MATERIAL",
+   "excerpt": "Section 6.01(b)(32)",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:98cc4918b530f5aa9bc52e4b",
+     "kind": "EXPLICIT_REFERENCE",
+     "span": [
+      10910,
+      10929
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "EXPLICIT_REFERENCE"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:9bc81e94daaf96bfb978be98",
+   "missingRun": "A",
+   "span": [
+    14692,
+    14725
+   ],
+   "slotId": "operative:6.08(b)(4)#6",
+   "failureStage": "GAP_MODEL_OMISSION",
+   "sourceForm": "L_OTHER",
+   "materiality": "MATERIAL",
+   "excerpt": "retirement or other acquisition);",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:608cec7bb1e123606130ccd2",
+     "kind": "BASE_SLOT",
+     "span": [
+      14685,
+      14725
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": true,
+   "capturedBy": [
+    "BASE_SLOT"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": true
+  },
+  {
+   "id": "inv-item:62d388950ad3920e51188216",
+   "missingRun": "A",
+   "span": [
+    18108,
+    18136
+   ],
+   "slotId": "operative:6.08(b)(4)(d)#8",
+   "failureStage": "GAP_MODEL_OMISSION",
+   "sourceForm": "K_CONTINUATION_FRAGMENT",
+   "materiality": "CRITICAL",
+   "excerpt": "provision of this Agreement;",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:0d5d19de466d917bc0780d07",
+     "kind": "BASE_SLOT",
+     "span": [
+      18108,
+      18136
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": true,
+   "capturedBy": [
+    "BASE_SLOT"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": true
+  },
+  {
+   "id": "inv-item:285f1e2fb48d4c62d91ce59e",
+   "missingRun": "A",
+   "span": [
+    22689,
+    22736
+   ],
+   "slotId": "operative:6.08(b)(9)(ii)#3",
+   "failureStage": "GAP_MODEL_OMISSION",
+   "sourceForm": "L_OTHER",
+   "materiality": "MATERIAL",
+   "excerpt": "(46)(i) of the definition of “Permitted Liens”;",
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": true
+  },
+  {
+   "id": "inv-item:83123662324df9afe11428a3",
+   "missingRun": "A",
+   "span": [
+    25326,
+    25375
+   ],
+   "slotId": "operative:6.08(b)(14)(B)#1",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "E_QUALIFIER_OR_PROVISO",
+   "materiality": "MATERIAL",
+   "excerpt": "to the extent permitted by Section 5.18(b) hereof",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:6b45b554b76f49dfa5a0f0e8",
+     "kind": "QUALIFIER_OR_PROVISO",
+     "span": [
+      25326,
+      25375
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "QUALIFIER_OR_PROVISO"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:8ebff4f01a3f0a2f6152cd0c",
+   "missingRun": "A",
+   "span": [
+    27562,
+    27646
+   ],
+   "slotId": "operative:6.08(b)(16)(b)(2)#8",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "L_OTHER",
+   "materiality": "MATERIAL",
+   "excerpt": "of any direct or indirect equity owner of the Borrowers and/or any of its respective",
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:88ccdcde45bb7f91d6dc9741",
+   "missingRun": "A",
+   "span": [
+    28744,
+    28826
+   ],
+   "slotId": "operative:6.08(b)(16)(c)#2",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "E_QUALIFIER_OR_PROVISO",
+   "materiality": "MATERIAL",
+   "excerpt": "to the extent such salaries, bonuses, severance and other benefits and indemnities",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:1691480936135eca1ab1c4c2",
+     "kind": "QUALIFIER_OR_PROVISO",
+     "span": [
+      28744,
+      28826
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "QUALIFIER_OR_PROVISO"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:f35f65450a52eb47ab3aa7fe",
+   "missingRun": "A",
+   "span": [
+    35394,
+    35635
+   ],
+   "slotId": "operative:6.08(b)(27)#4",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "K_CONTINUATION_FRAGMENT",
+   "materiality": "CRITICAL",
+   "excerpt": "the LCT Test Date, in the case of a Limited Condition Transaction, or the date of the Restricted Pay",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:a7fd218aba5f0666e19cd062",
+     "kind": "COORDINATED_FRAGMENT",
+     "span": [
+      35394,
+      35463
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    },
+    {
+     "id": "inv-obligation:f69c56989c0cba60ec951d6e",
+     "kind": "BASE_SLOT",
+     "span": [
+      35394,
+      35635
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    }
+   ],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": true,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:3b104cbdc2bc6a547237dc53",
+   "missingRun": "A",
+   "span": [
+    36264,
+    36458
+   ],
+   "slotId": "operative:6.08(b)(27)#10",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "H_DEPENDENCY_FRAGMENT",
+   "materiality": "CRITICAL",
+   "excerpt": "Such designation shall be permitted only if a Restricted Payment or Permitted Investments in such am",
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:b0b5a1a4b38231319fc58f21",
+   "missingRun": "A",
+   "span": [
+    36498,
+    36582
+   ],
+   "slotId": "operative:6.08(b)(27)#11",
+   "failureStage": "MODEL_ENUMERATION_OMISSION",
+   "sourceForm": "A_COORDINATED_PROPOSITION",
+   "materiality": "CRITICAL",
+   "excerpt": "and if such Subsidiary otherwise meets the definition of an Unrestricted Subsidiary.",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:2b25d9dd0fa5d065ba43a929",
+     "kind": "QUALIFIER_OR_PROVISO",
+     "span": [
+      36502,
+      36582
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    }
+   ],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": true,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:880d72d52663ddd1fe7513b3",
+   "missingRun": "A",
+   "span": [
+    38444,
+    38528
+   ],
+   "slotId": "operative:6.08(b)(27)#24",
+   "failureStage": "GAP_MODEL_OMISSION",
+   "sourceForm": "K_CONTINUATION_FRAGMENT",
+   "materiality": "CRITICAL",
+   "excerpt": "“Permitted Investments,” in a manner that otherwise complies with this Section 6.08.",
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:45627bc4983f0db3d5000ad9",
+     "kind": "BASE_SLOT",
+     "span": [
+      38444,
+      38528
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": true,
+   "capturedBy": [
+    "BASE_SLOT"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": true
+  }
+ ],
+ "bCases": [
+  {
+   "id": "inv-item:679be1302aceaac819a636a5",
+   "missingRun": "B",
+   "span": [
+    4100,
+    4319
+   ],
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:4ca19a15472fe18cbd1b99db",
+     "kind": "COORDINATED_FRAGMENT",
+     "span": [
+      4100,
+      4134
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    },
+    {
+     "id": "inv-obligation:68d5c08ce77d8345173e7ee6",
+     "kind": "BASE_SLOT",
+     "span": [
+      4100,
+      4319
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    }
+   ],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": true,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:dcf11322eb23e36949412d67",
+   "missingRun": "A",
+   "span": [
+    4135,
+    4319
+   ],
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:cd6c695b9bd2f2931c4e5006",
+     "kind": "ENUMERATED_BRANCH",
+     "span": [
+      4135,
+      4319
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "ENUMERATED_BRANCH"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:e79b8424cca81a04dfe4e759",
+   "missingRun": "B",
+   "span": [
+    4578,
+    4824
+   ],
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:6a4dbc320c118ed5e260a464",
+     "kind": "BASE_SLOT",
+     "span": [
+      4578,
+      4824
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    }
+   ],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": true,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:8817112967fbe97e9511a6c1",
+   "missingRun": "A",
+   "span": [
+    4578,
+    4786
+   ],
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:6a4dbc320c118ed5e260a464",
+     "kind": "BASE_SLOT",
+     "span": [
+      4578,
+      4824
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    }
+   ],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": true,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:214c9b0a17e4232244456a2b",
+   "missingRun": "B",
+   "span": [
+    7794,
+    7842
+   ],
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:efa5f7a816ed8ada71eed1f0",
+     "kind": "ENUMERATED_BRANCH",
+     "span": [
+      7794,
+      7842
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "ENUMERATED_BRANCH"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:8cc6af26af5d27513643ebb7",
+   "missingRun": "B",
+   "span": [
+    7870,
+    7913
+   ],
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:541d47f266a1595b00d5bef3",
+     "kind": "ENUMERATED_BRANCH",
+     "span": [
+      7873,
+      7913
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "ENUMERATED_BRANCH"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:bf029f35702216965707d368",
+   "missingRun": "B",
+   "span": [
+    7843,
+    7869
+   ],
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:072099e89049aa0d8206c45c",
+     "kind": "ENUMERATED_BRANCH",
+     "span": [
+      7843,
+      7872
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "ENUMERATED_BRANCH"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:cba6e1dd200cd4129a09035d",
+   "missingRun": "A",
+   "span": [
+    7763,
+    7913
+   ],
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:cfa88cdeb0817708107b35b8",
+     "kind": "EXPLICIT_REFERENCE",
+     "span": [
+      7763,
+      7785
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    },
+    {
+     "id": "inv-obligation:e4d3096cb203baffc7f104d8",
+     "kind": "BASE_SLOT",
+     "span": [
+      7763,
+      7913
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    }
+   ],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": true,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:1b5fd3b9ea84e6b0c6a2a690",
+   "missingRun": "B",
+   "span": [
+    12031,
+    12080
+   ],
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:b4751ff187a28c1b7fd5477c",
+   "missingRun": "A",
+   "span": [
+    11944,
+    12183
+   ],
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:b508342500b85bf0d1476409",
+     "kind": "COORDINATED_FRAGMENT",
+     "span": [
+      11944,
+      12057
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    },
+    {
+     "id": "inv-obligation:433b87d952745f61ef7c68e8",
+     "kind": "BASE_SLOT",
+     "span": [
+      11944,
+      12183
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "COORDINATED_FRAGMENT"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:9ed0c8ec2425d8b2b2e590a1",
+   "missingRun": "B",
+   "span": [
+    20836,
+    20991
+   ],
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:eaa6f721fca36ca6f042faca",
+   "missingRun": "A",
+   "span": [
+    20752,
+    20991
+   ],
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:8eedcac8fa1f8ac3784a79a6",
+     "kind": "BASE_SLOT",
+     "span": [
+      20752,
+      20991
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    }
+   ],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": true,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  }
+ ],
+ "hCases": [
+  {
+   "id": "inv-item:ea98bf5eeeba5f9744e99e01",
+   "missingRun": "A",
+   "span": [
+    4100,
+    4134
+   ],
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:4ca19a15472fe18cbd1b99db",
+     "kind": "COORDINATED_FRAGMENT",
+     "span": [
+      4100,
+      4134
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    },
+    {
+     "id": "inv-obligation:68d5c08ce77d8345173e7ee6",
+     "kind": "BASE_SLOT",
+     "span": [
+      4100,
+      4319
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    }
+   ],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": true,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:a858b0d3cfb71d3226aab515",
+   "missingRun": "A",
+   "span": [
+    4787,
+    4815
+   ],
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:268010a31e11a2805ab30bcb",
+   "missingRun": "B",
+   "span": [
+    11944,
+    11971
+   ],
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:b508342500b85bf0d1476409",
+     "kind": "COORDINATED_FRAGMENT",
+     "span": [
+      11944,
+      12057
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    },
+    {
+     "id": "inv-obligation:433b87d952745f61ef7c68e8",
+     "kind": "BASE_SLOT",
+     "span": [
+      11944,
+      12183
+     ],
+     "statusInMissingRun": "SATISFIED_BY_ANCHOR"
+    }
+   ],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": true,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:9747b6b73dfd10369b9dee03",
+   "missingRun": "B",
+   "span": [
+    12081,
+    12183
+   ],
+   "anchoredObligations": [
+    {
+     "id": "inv-obligation:14f735410f8d96e4c710a47e",
+     "kind": "QUALIFIER_OR_PROVISO",
+     "span": [
+      12081,
+      12183
+     ],
+     "statusInMissingRun": "UNSATISFIED"
+    }
+   ],
+   "captured": true,
+   "capturedByNonBase": true,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [
+    "QUALIFIER_OR_PROVISO"
+   ],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": false,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:ecc138338556eeabe3d08318",
+   "missingRun": "B",
+   "span": [
+    11976,
+    12030
+   ],
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  },
+  {
+   "id": "inv-item:0914469284c7b2179ece8c48",
+   "missingRun": "B",
+   "span": [
+    20962,
+    20991
+   ],
+   "anchoredObligations": [],
+   "captured": false,
+   "capturedByNonBase": false,
+   "capturedOnlyByBaseSlot": false,
+   "capturedBy": [],
+   "anchoredButSatisfiedInMissingRun": false,
+   "noAnchoredObligation": true,
+   "baseSlotUnsatisfiedInMissingRun": false
+  }
+ ],
+ "unresolvedAOnlySample": [
+  {
+   "kind": "QUALIFIER_OR_PROVISO",
+   "slotId": "operative:6.08(a)(iv)#4",
+   "text": "unless, at the time of such Restricted Payment (or the declaration thereof):"
+  },
+  {
+   "kind": "ENUMERATED_BRANCH",
+   "slotId": "operative:6.08(a)(3)#3",
+   "text": "b) hereof), is less than the sum of (without duplication) (the sum or the amounts attribut"
+  },
+  {
+   "kind": "ENUMERATED_BRANCH",
+   "slotId": "operative:6.08(a)(3)(a)#4",
+   "text": "(y) the sum of 100% of Retained Excess Cash Flow (which amount shall be deemed to be zero "
+  },
+  {
+   "kind": "ENUMERATED_BRANCH",
+   "slotId": "operative:6.08(a)(3)(b)#3",
+   "text": "a) hereof) from the issue or sale of:"
+  },
+  {
+   "kind": "BASE_SLOT",
+   "slotId": "operative:6.08(a)(3)(b)#18",
+   "text": "provided , however , that this clause"
+  },
+  {
+   "kind": "BASE_SLOT",
+   "slotId": "operative:6.08(a)(3)(d)(ii)#3",
+   "text": "after the Effective Date);"
+  },
+  {
+   "kind": "EXPLICIT_REFERENCE",
+   "slotId": "operative:6.08(a)(3)(g)(i)#2",
+   "text": "Section 2.09(b)"
+  },
+  {
+   "kind": "EXPLICIT_REFERENCE",
+   "slotId": "operative:6.08(a)(3)(i)(ii)#1",
+   "text": "Section 6.01(b)(32)"
+  },
+  {
+   "kind": "COORDINATED_FRAGMENT",
+   "slotId": "operative:6.08(b)(2)(a)#2",
+   "text": "(“ Treasury Capital Stock ”) or Subordinated Indebtedness of any Restricted Party, or"
+  },
+  {
+   "kind": "COORDINATED_FRAGMENT",
+   "slotId": "operative:6.08(b)(2)(a)#3",
+   "text": "to a Restricted Subsidiary) of, Equity Interests of the Borrowers or any Parent Entity tha"
+  },
+  {
+   "kind": "BASE_SLOT",
+   "slotId": "operative:6.08(b)(4)#6",
+   "text": "-145-\n\nretirement or other acquisition);"
+  },
+  {
+   "kind": "BASE_SLOT",
+   "slotId": "operative:6.08(b)(4)(d)#5",
+   "text": "provided , further , that cancellation of Indebtedness owing to"
+  },
+  {
+   "kind": "BASE_SLOT",
+   "slotId": "operative:6.08(b)(4)(d)#8",
+   "text": "provision of this Agreement;"
+  },
+  {
+   "kind": "BASE_SLOT",
+   "slotId": "operative:6.08(b)(9)(ii)#3",
+   "text": "clause (46)(i) of the definition of “Permitted Liens”;"
+  },
+  {
+   "kind": "BASE_SLOT",
+   "slotId": "operative:6.08(b)(14)(A)#3",
+   "text": "agreement of the Borrowers or"
+  },
+  {
+   "kind": "QUALIFIER_OR_PROVISO",
+   "slotId": "operative:6.08(b)(14)(B)#1",
+   "text": "to the extent permitted by Section 5.18(b) hereof"
+  },
+  {
+   "kind": "QUALIFIER_OR_PROVISO",
+   "slotId": "operative:6.08(b)(16)(c)#2",
+   "text": "to the extent such salaries, bonuses, severance and other benefits and indemnities"
+  },
+  {
+   "kind": "BASE_SLOT",
+   "slotId": "operative:6.08(b)(27)#24",
+   "text": "“Permitted Investments,” in a manner that otherwise complies with this Section 6.08."
+  }
+ ],
+ "unresolvedBOnlySample": [
+  {
+   "kind": "EXPLICIT_REFERENCE",
+   "slotId": "operative:6.08(a)(iii)(a)#1",
+   "text": "Sections 6.01(b)(7), (8) and (9)"
+  },
+  {
+   "kind": "EXPLICIT_REFERENCE",
+   "slotId": "operative:6.08(a)(3)#2",
+   "text": "Sections 6.08(b)(1)"
+  },
+  {
+   "kind": "EXPLICIT_REFERENCE",
+   "slotId": "operative:6.08(a)(3)#3",
+   "text": "Section 6.08(b)"
+  },
+  {
+   "kind": "EXPLICIT_REFERENCE",
+   "slotId": "operative:6.08(a)(3)(b)#3",
+   "text": "Section 6.08(b)(12)(a)"
+  },
+  {
+   "kind": "ENUMERATED_BRANCH",
+   "slotId": "operative:6.08(a)(3)(b)#20",
+   "text": "(Y) Disqualified Stock (or Indebtedness that has been converted or exchanged into Disquali"
+  },
+  {
+   "kind": "ENUMERATED_BRANCH",
+   "slotId": "operative:6.08(a)(3)(c)(i)#2",
+   "text": "(ii) are contributed by a Restricted Subsidiary,"
+  },
+  {
+   "kind": "ENUMERATED_BRANCH",
+   "slotId": "operative:6.08(a)(3)(c)(i)#2",
+   "text": "(iii) from ABL Cure Amount or"
+  },
+  {
+   "kind": "ENUMERATED_BRANCH",
+   "slotId": "operative:6.08(a)(3)(c)(i)#2",
+   "text": "(iv) constitute Excluded Contributions);"
+  },
+  {
+   "kind": "ENUMERATED_BRANCH",
+   "slotId": "operative:6.08(a)(3)(g)(i)#1",
+   "text": "(ii) Retained Asset Sale Proceeds since the"
+  },
+  {
+   "kind": "ENUMERATED_BRANCH",
+   "slotId": "operative:6.08(b)(2)(a)#3",
+   "text": "(90) days of such sale to the extent, in the case of an issuance or sale by a Parent Entit"
+  },
+  {
+   "kind": "QUALIFIER_OR_PROVISO",
+   "slotId": "operative:6.08(b)(2)(a)#3",
+   "text": "to the extent, in the case of an issuance or sale by a Parent Entity, such amount was cont"
+  },
+  {
+   "kind": "ENUMERATED_BRANCH",
+   "slotId": "operative:6.08(b)(2)(a)#4",
+   "text": "(b) the declaration and payment of dividends on the Treasury Capital Stock out of the proc"
+  },
+  {
+   "kind": "ENUMERATED_BRANCH",
+   "slotId": "operative:6.08(b)(2)(a)#5",
+   "text": "(c) if immediately prior to the retirement of Treasury Capital Stock, the declaration and "
+  },
+  {
+   "kind": "QUALIFIER_OR_PROVISO",
+   "slotId": "operative:6.08(b)(2)(a)#5",
+   "text": "if immediately prior to the retirement of Treasury Capital Stock, the declaration and paym"
+  },
+  {
+   "kind": "EXCEPTION_FRAGMENT",
+   "slotId": "operative:6.08(b)(2)(a)#6",
+   "text": "other than Refunding Capital Stock the proceeds of which were used to redeem, purchase, re"
+  },
+  {
+   "kind": "BASE_SLOT",
+   "slotId": "operative:6.08(b)(4)#9",
+   "text": "succeeding calendar years);"
+  },
+  {
+   "kind": "BASE_SLOT",
+   "slotId": "operative:6.08(b)(4)#13",
+   "text": "succeeding calendar years);"
+  },
+  {
+   "kind": "QUALIFIER_OR_PROVISO",
+   "slotId": "operative:6.08(b)(5)#2",
+   "text": "to the extent such dividends are included in the definition of Fixed"
+  },
+  {
+   "kind": "COORDINATED_FRAGMENT",
+   "slotId": "operative:6.08(b)(8)#5",
+   "text": "withholding obligation with respect to, such options or warrants or other incentive intere"
+  },
+  {
+   "kind": "ENUMERATED_BRANCH",
+   "slotId": "operative:6.08(b)(10)(B)(B)#1",
+   "text": "(II) there is no"
+  }
+ ]
+}
