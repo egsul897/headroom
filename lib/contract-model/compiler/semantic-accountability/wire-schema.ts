@@ -21,8 +21,10 @@ export const WireInventoryValueSchema = z.object({
 export const WireInventoryItemSchema = z.object({
   /** Model-chosen short identifier unique within this ONE inventory call (e.g. "i1") - used only so parentRef/relatedRefs can cross-reference each other; never the item's real identity (computed deterministically by inventory.ts). */
   localRef: z.string(),
-  /** One of the semantic roles listed in the prompt (tolerant). */
+  /** The proposition's primary semantic role, one of the roles listed in the prompt (tolerant). */
   semanticRole: z.string().default("OTHER"),
+  /** v5 (F-5.1): every OTHER role the same proposition genuinely also serves (e.g. an alternative branch that is also a formula addend lists ["FORMULA_COMPONENT"]). Tolerant; unknown values are ignored; identity never depends on it. */
+  additionalRoles: z.array(z.string()).optional(),
   proposition: z.string().default(""),
   /** VERBATIM, character-for-character substring of one region's text - verified before the item is ever trusted. */
   excerpt: z.string(),

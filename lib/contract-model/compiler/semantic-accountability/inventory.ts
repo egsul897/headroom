@@ -38,6 +38,7 @@ import { buildGapReinventoryUserContent, buildInventorySystemPrompt, buildInvent
 import { quantitativeValuesEquivalent, scanQuantitativeValues } from "./quantitative";
 import { SubmitSemanticInventorySchema, type WireInventoryItem } from "./wire-schema";
 import { INVENTORY_AMBIGUITIES, INVENTORY_MATERIALITIES, OPERATIVE_FLAGS, QUANTITATIVE_KINDS, SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION, SEMANTIC_INVENTORY_PROMPT_VERSION, SEMANTIC_ROLES } from "./types";
+import { deriveLegacyRole, deriveSemanticFunctions, effectsContradict, functionsSignature, unionFunctions, type SemanticFunctions } from "./semantic-functions";
 import type { FrozenSemanticInventory, GapReinventoryRecord, InventoryAmbiguity, InventoryMateriality, InventoryStatus, OperativeFlag, QuantitativeKind, QuantitativeValue, SemanticInventoryItem, SemanticRole, SourceCoverageSummary, SourceContextRegion, SourceContextResult, UnaccountedSourceSpan } from "./types";
 import { computeSourceCoverage, isAccountedDisposition, type AccountingSpanInput, type ExternalAccountabilityLink, type SourceCoverageResult } from "./source-coverage";
 import { batchSlots, coordinationIndex, partitionSourceSlots, slotForOffset, type SlotBatch, type SlotPartition, type SourceSlot } from "./slots";
@@ -92,17 +93,35 @@ export function locateExcerpt(regionText: string, excerpt: string): { charStart:
  * so two excerpts of the same proposition that started a few words apart were two identities - 10% of the
  * frozen run-only items), and it is NOT the model's free-text proposition or its referenced-term list (measured on
  * the frozen runs, model-listed identifiers are themselves unstable and halve cross-run identity agreement).
- * Two genuinely distinct propositions in one sentence key differently through the coordination sub-index, the
- * role, or their values; two wordings of the same proposition key the same and merge (mergeAccepted).
+ * Two genuinely distinct propositions in one sentence key differently through the coordination sub-index, their
+ * values, their span cluster or a contradictory deontic effect; two wordings of the same proposition key the same and
+ * merge (mergeAccepted).
+ *
+ * v5 (F-5.1): the semantic ROLE is NOT an identity component any more. The certification pair proved that one source
+ * proposition carrying several overlapping functions (alternative + addend, condition + floor, exception + permission)
+ * received two identities purely from the label the model happened to pick. Identity now represents WHAT SOURCE
+ * SEMANTIC EXISTS (slot, coordination position, span cluster, values); the canonical semantic functions describe it.
  */
-export function computeInventoryItemId(candidateRef: string, role: SemanticRole, regionId: string, slotId: string, coordinationSubIndex: number, values: QuantitativeValue[], clusterOrdinal: number = 0, valueSignatureOverride?: string): string {
+export function computeInventoryItemId(candidateRef: string, regionId: string, slotId: string, coordinationSubIndex: number, values: QuantitativeValue[], clusterOrdinal: number = 0, valueSignatureOverride?: string): string {
   const valueSignature =
     valueSignatureOverride ??
     values
       .map((v) => `${v.kind}:${v.normalizedValue ?? v.rawText.replace(/\s+/g, " ").trim().toLowerCase()}`)
       .sort()
       .join("|");
-  return computeStableKey("inv-item", candidateRef, role, regionId, slotId, String(coordinationSubIndex), String(clusterOrdinal), valueSignature, SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION);
+  return computeStableKey("inv-item", candidateRef, regionId, slotId, String(coordinationSubIndex), String(clusterOrdinal), valueSignature, SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION);
+}
+
+/** The clause position an excerpt really starts at: leading whitespace, punctuation, enumerators ("(a)", "(iv)") and coordinating connectives ("and", "or", "plus", "less") are skipped so two wordings of one proposition that differ only in whether they copied the enumerator share a start. */
+export function normalizedStart(regionText: string, charStart: number): number {
+  let i = charStart;
+  const LEAD = /^(?:\s+|[,;:.]+|\(?[a-z0-9]{1,4}\)|(?:and\/or|and|or|but|nor|plus|minus|less)(?=[\s,;(]))/i;
+  for (;;) {
+    const m = LEAD.exec(regionText.slice(i, i + 32));
+    if (!m || m[0].length === 0) break;
+    i += m[0].length;
+  }
+  return i;
 }
 
 /** Deterministic merge of a same-identity wire item into the already-accepted one: the span becomes the union of both (they overlap by construction, so the union is one contiguous stretch and no coverage credit is lost), values and identifiers are unioned, materiality takes the strongest claim, the first proposition stays (order-independent for identity, span, values, refs and materiality). */
@@ -124,6 +143,15 @@ function mergeAccepted(target: SemanticInventoryItem, incoming: SemanticInventor
     target.ambiguityReason = incoming.ambiguityReason;
   }
   if (target.operative === "UNKNOWN") target.operative = incoming.operative;
+  // v5: the canonical functions are the UNION of both descriptions of this one proposition; the declared labels are kept for transparency; the legacy role is re-derived.
+  if (target.semanticFunctions && incoming.semanticFunctions) {
+    target.semanticFunctions = unionFunctions(target.semanticFunctions, incoming.semanticFunctions);
+    target.declaredRoles = [...new Set([...(target.declaredRoles ?? []), ...(incoming.declaredRoles ?? [])])];
+    const declaredTokens = new Set([...(target.functionProvenance?.declared ?? []), ...(incoming.functionProvenance?.declared ?? [])]);
+    const allTokens = functionsSignature(target.semanticFunctions).split("|").filter(Boolean);
+    target.functionProvenance = { declared: allTokens.filter((t) => declaredTokens.has(t)), deterministic: allTokens.filter((t) => !declaredTokens.has(t)) };
+    target.semanticRole = deriveLegacyRole(target.semanticFunctions, target.declaredRoles);
+  }
   target.mergedDuplicates = (target.mergedDuplicates ?? 0) + 1;
 }
 
@@ -191,7 +219,7 @@ function summaryFrom(cov: SourceCoverageResult, links: ExternalAccountabilityLin
 }
 
 function freezeHash(items: SemanticInventoryItem[], uninventoried: FrozenSemanticInventory["uninventoriedValues"], unaccounted: UnaccountedSourceSpan[]): string {
-  const parts = items.map((i) => `${i.inventoryItemId}|${i.semanticRole}|${i.materiality}|${i.sourceSpan.regionId}:${i.sourceSpan.charStart}-${i.sourceSpan.charEnd}|${i.quantitativeValues.map((v) => `${v.kind}=${v.normalizedValue ?? v.rawText}`).join(",")}`);
+  const parts = items.map((i) => `${i.inventoryItemId}|${i.semanticFunctions ? functionsSignature(i.semanticFunctions) : i.semanticRole}|${i.materiality}|${i.sourceSpan.regionId}:${i.sourceSpan.charStart}-${i.sourceSpan.charEnd}|${i.quantitativeValues.map((v) => `${v.kind}=${v.normalizedValue ?? v.rawText}`).join(",")}`);
   parts.push(...uninventoried.map((v) => `uninv|${v.regionId}:${v.charStart}-${v.charEnd}|${v.kind}=${v.normalizedValue ?? v.rawText}`));
   parts.push(...unaccounted.map((s) => `unacc|${s.regionId}:${s.charStart}-${s.charEnd}`));
   return hashParts([SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION, ...parts.sort()]);
@@ -236,7 +264,7 @@ function sourceLooksMaterial(sourceContext: SourceContextResult): boolean {
 }
 
 /** Deterministic post-processing of a wire submission into trusted, identity-bearing inventory items. Exported so the synthetic corpus can exercise it directly without a model. */
-export function normalizeInventorySubmission(input: Pick<SemanticInventoryInput, "candidateRef" | "sourceContext"> & { structuralIndex?: StructuralIndex | null }, wireItems: WireInventoryItem[], partition?: SlotPartition): { items: SemanticInventoryItem[]; rejectedUnverifiable: number; rejectedDuplicates: number } {
+export function normalizeInventorySubmission(input: Pick<SemanticInventoryInput, "candidateRef" | "sourceContext"> & { structuralIndex?: StructuralIndex | null }, wireItems: WireInventoryItem[], partition?: SlotPartition): { items: SemanticInventoryItem[]; rejectedUnverifiable: number; rejectedDuplicates: number; /** v5: the wire localRefs each accepted item absorbed (its own plus every merged duplicate) - for replay/migration accounting. */ memberLocalRefs: Record<string, string[]> } {
   const regions = input.sourceContext.regions;
   const operative = regions.find((r) => r.kind === "OPERATIVE") ?? regions[0];
   const slots = partition ?? partitionSourceSlots({ sourceContext: input.sourceContext, structuralIndex: input.structuralIndex ?? null });
@@ -244,7 +272,7 @@ export function normalizeInventorySubmission(input: Pick<SemanticInventoryInput,
   let rejectedDuplicates = 0;
 
   // Phase 1: verify every excerpt against the source and build the identity-free item.
-  interface Located { wire: WireInventoryItem; order: number; item: SemanticInventoryItem; baseKey: string; regionId: string; regionText: string; charStart: number; charEnd: number }
+  interface Located { wire: WireInventoryItem; order: number; item: SemanticInventoryItem; baseKey: string; regionId: string; regionText: string; charStart: number; charEnd: number; nStart: number }
   const located: Located[] = [];
   wireItems.forEach((wire, order) => {
     const excerpt = wire.excerpt.trim().slice(0, MAX_EXCERPT_CHARS);
@@ -269,7 +297,7 @@ export function normalizeInventorySubmission(input: Pick<SemanticInventoryInput,
       return;
     }
     const slot = slotForOffset(slots, loc.region.regionId, loc.charStart);
-    const role = matchEnum(wire.semanticRole, SEMANTIC_ROLES, "OTHER" as SemanticRole);
+    const declaredRoles: SemanticRole[] = [...new Set([wire.semanticRole, ...(wire.additionalRoles ?? [])].map((r) => matchEnum(r, SEMANTIC_ROLES, "OTHER" as SemanticRole)))];
     const regionText = loc.region.text;
     const values: QuantitativeValue[] = wire.quantitativeValues.map((v) => normalizeWireValue(v, regionText, loc!.charStart, loc!.charEnd)).filter((v) => v.rawText.length > 0);
     // Deterministic completion: any scanner value inside this item's span that the model did not list is attached (the model may under-list; the accounting must not).
@@ -280,7 +308,12 @@ export function normalizeInventorySubmission(input: Pick<SemanticInventoryInput,
     values.sort((a, b) => a.charStart - b.charStart);
     const slotId = slot ? slot.slotId : `${loc.region.regionId}:region#1`;
     const valueSignature = values.map((v) => `${v.kind}:${v.normalizedValue ?? v.rawText.replace(/\s+/g, " ").trim().toLowerCase()}`).sort().join("|");
-    const baseKey = [role, loc.region.regionId, slotId, String(slot ? coordinationIndex(slot, loc.charStart) : 0), valueSignature].join("\u0000");
+    // v5: identity is role-blind - the base key is source ownership only.
+    const baseKey = [loc.region.regionId, slotId, String(slot ? coordinationIndex(slot, loc.charStart) : 0), valueSignature].join("\u0000");
+    const operativeFlag = matchEnum(wire.operative, OPERATIVE_FLAGS, "UNKNOWN" as OperativeFlag);
+    const precedingText = slot ? [...slot.context.map((c) => c.text), slot.text.slice(0, Math.max(0, loc.charStart - slot.charStart))].join("\n") : regionText.slice(Math.max(0, loc.charStart - 400), loc.charStart);
+    const derived = deriveSemanticFunctions({ declaredRoles, spanText: regionText.slice(loc.charStart, loc.charEnd), precedingText, values, referencedSections: wire.referencedSections.map((sec) => sec.trim()).filter(Boolean), operative: operativeFlag });
+    const role = deriveLegacyRole(derived.functions, declaredRoles);
     const item: SemanticInventoryItem = {
       inventoryItemId: "",
       sourceSpan: {
@@ -294,6 +327,9 @@ export function normalizeInventorySubmission(input: Pick<SemanticInventoryInput,
         excerpt: regionText.slice(loc.charStart, loc.charEnd),
       },
       semanticRole: role,
+      semanticFunctions: derived.functions,
+      declaredRoles,
+      functionProvenance: derived.provenance,
       proposition: wire.proposition.trim(),
       quantitativeValues: values,
       referencedTerms: wire.referencedTerms.map((t) => t.trim()).filter(Boolean),
@@ -303,27 +339,54 @@ export function normalizeInventorySubmission(input: Pick<SemanticInventoryInput,
       materiality: matchEnum(wire.materiality, INVENTORY_MATERIALITIES, "REVIEW_UNCERTAIN" as InventoryMateriality),
       ambiguity: matchEnum(wire.ambiguity, INVENTORY_AMBIGUITIES, "NONE" as InventoryAmbiguity),
       ambiguityReason: wire.ambiguityReason?.trim() || null,
-      operative: matchEnum(wire.operative, OPERATIVE_FLAGS, "UNKNOWN" as OperativeFlag),
+      operative: operativeFlag,
       detectionMethod: "MODEL",
       slotId,
     };
-    located.push({ wire, order, item, baseKey, regionId: loc.region.regionId, regionText, charStart: loc.charStart, charEnd: loc.charEnd });
+    located.push({ wire, order, item, baseKey, regionId: loc.region.regionId, regionText, charStart: loc.charStart, charEnd: loc.charEnd, nStart: normalizedStart(regionText, loc.charStart) });
   });
 
-  // Phase 2: identity. Items sharing a base key (role, slot, coordination sub-index, values) are clustered by
+  // Phase 2: identity. Items sharing a base key (slot, coordination sub-index, values - v5: role-blind) are clustered by
   // MUTUAL span overlap (>= 50% of the LONGER span): such a pair is two wordings/boundaries of one proposition and
   // merges. A DISJOINT pair ("A plus B" as two addends) and a CONTAINED pair (a sub-exception inside its parent
-  // exception, a list member inside the list) are distinct propositions that happen to share a slot and role and
+  // exception, a list member inside the list) are distinct propositions that happen to share a slot and
   // stay separate items, distinguished by the deterministic ordinal of their cluster in source order. Measured on
   // the frozen Chewy runs this rule produces 0 false merges in either run. Clustering is by source position, so
   // the result is independent of the order the model listed the items in.
   const overlap = (a: Located, b: Located): number => Math.max(0, Math.min(a.charEnd, b.charEnd) - Math.max(a.charStart, b.charStart));
   const mutualOverlap = (a: Located, b: Located): number => overlap(a, b) / Math.max(1, Math.max(a.charEnd - a.charStart, b.charEnd - b.charStart));
   const containedOverlap = (a: Located, b: Located): number => overlap(a, b) / Math.max(1, Math.min(a.charEnd - a.charStart, b.charEnd - b.charStart));
-  // A source-owned VALUE pins a proposition: "$50,000,000" and "the greater of $50,000,000" (same slot, role and
+  // A source-owned VALUE pins a proposition: "$50,000,000" and "the greater of $50,000,000" (same slot and
   // value) are one alternative however wide the excerpt, so containment (>= 50% of the shorter) merges valued
   // items; value-free items need MUTUAL overlap (a nested sub-exception must not vanish into its parent).
-  const sameProposition = (a: Located, b: Located, hasValues: boolean): boolean => (hasValues ? containedOverlap(a, b) : mutualOverlap(a, b)) >= 0.5;
+  // v5 false-merge guards (identity is role-blind, so these carry the burden the role used to carry):
+  //  (1) two descriptions with CONTRADICTORY deontic effects (PERMISSION vs PROHIBITION vs REQUIREMENT) over one
+  //      stretch are two propositions, never one - they never share a cluster whatever their overlap;
+  //  (2) a value-free item that STARTS somewhere else than its overlapping neighbour (after the enumerator and any
+  //      coordinating connective, with one word of slop) is a NESTED proposition - a cross-reference inside the permission it qualifies,
+  //      a sub-exception inside its exception, a branch inside its selection - and stays its own identity.
+  //      Boundary slop between two wordings of one proposition sits at the END of the excerpt (or in a leading
+  //      enumerator), never at a different clause position; measured on the certification pair every intra-run
+  //      different-role overlap that is genuinely one proposition shares its start, every nested one does not.
+  const sameProposition = (a: Located, b: Located, hasValues: boolean): boolean =>
+    !effectsContradict(a.item.semanticFunctions!.effect, b.item.semanticFunctions!.effect) &&
+    (hasValues ? containedOverlap(a, b) >= 0.5 && (sameStart(a, b) || valueDominated(a) || valueDominated(b)) : sameStart(a, b) && mutualOverlap(a, b) >= 0.5);
+  //  (3) a VALUE pins a proposition only when the shorter excerpt is essentially the value itself ("$50,000,000" inside
+  //      "the greater of $50,000,000" is boundary slop); a value-bearing CLAUSE that starts elsewhere inside a longer
+  //      value-bearing clause ("capped at the greater of $720 million and 100% of EBITDA" inside the permission it caps,
+  //      branch "(x) 50% of CNI" inside the selection "the greater of (x) 50% of CNI and (y) ...") is a nested proposition.
+  const valueDominated = (l: Located): boolean => {
+    let residue = l.regionText.slice(l.charStart, l.charEnd);
+    for (const v of l.item.quantitativeValues) residue = residue.split(v.rawText).join(" ");
+    return (residue.match(/[A-Za-z]{2,}/g) ?? []).length <= 3;
+  };
+  // "Same start": the normalized starts coincide or differ by at most ONE word (a dropped article or first token is
+  // boundary slop; a nested proposition begins at least two words in - a citation, a proviso, a branch).
+  const sameStart = (a: Located, b: Located): boolean => {
+    if (a.nStart === b.nStart) return true;
+    const between = a.regionText.slice(Math.min(a.nStart, b.nStart), Math.max(a.nStart, b.nStart));
+    return (between.match(/\S+/g) ?? []).length <= 1;
+  };
   const groups = new Map<string, Located[]>();
   for (const l of located) groups.set(l.baseKey, [...(groups.get(l.baseKey) ?? []), l]);
   const accepted: { item: SemanticInventoryItem; localRefs: string[]; parentRef: string | null; relatedRefs: string[] }[] = [];
@@ -337,9 +400,9 @@ export function normalizeInventorySubmission(input: Pick<SemanticInventoryInput,
       if (cluster) cluster.push(m);
       else clusters.push([m]);
     }
-    const [role, regionId, slotId, coordination, valueSignature] = baseKey.split("\u0000") as [SemanticRole, string, string, string, string];
+    const [regionId, slotId, coordination, valueSignature] = baseKey.split("\u0000") as [string, string, string, string];
     clusters.forEach((cluster, ordinal) => {
-      const inventoryItemId = computeInventoryItemId(input.candidateRef, role, regionId, slotId, Number(coordination), cluster[0]!.item.quantitativeValues, ordinal, valueSignature);
+      const inventoryItemId = computeInventoryItemId(input.candidateRef, regionId, slotId, Number(coordination), cluster[0]!.item.quantitativeValues, ordinal, valueSignature);
       // The representative is the member the model listed first (its wording/span); the others merge into it.
       const byOrder = [...cluster].sort((a, b) => a.order - b.order);
       const head = byOrder[0]!;
@@ -359,7 +422,9 @@ export function normalizeInventorySubmission(input: Pick<SemanticInventoryInput,
     a.item.parentItemId = parentId === a.item.inventoryItemId ? null : parentId;
     a.item.relatedItemIds = [...new Set(a.relatedRefs.map((r) => localRefToId.get(r)).filter((id): id is string => !!id && id !== a.item.inventoryItemId))].sort();
   }
-  return { items: accepted.map((a) => a.item), rejectedUnverifiable, rejectedDuplicates };
+  const memberLocalRefs: Record<string, string[]> = {};
+  for (const a of accepted) memberLocalRefs[a.item.inventoryItemId] = a.localRefs;
+  return { items: accepted.map((a) => a.item), rejectedUnverifiable, rejectedDuplicates, memberLocalRefs };
 }
 
 /** Maps unaccounted coverage stretches onto the deterministic slots they fall in (a stretch crossing slots is attached to every slot it touches). */

@@ -1,0 +1,336 @@
+{
+ "artifact": "F-5.1 final summary: paid v5 certification pair over frozen Chewy 6.08 (canonical semantic functions, role-blind identity)",
+ "verdict": "F5_NEEDS_ARCHITECTURAL_ITERATION",
+ "verdictBasis": "the dominant F-5 mechanism is resolved (D_ROLE_INSTABILITY 158 -> 2 under the frozen scorer; strict identity 0.501 -> 0.7984; semantic stability 0.5251 -> 0.8374 canonical / 0.8324 legacy, clearing the 0.80 gate) and trust stays safe (0 dangerous silent omissions, 0 false completeness, recall 1.0), but critical/material stability 0.832 (canonical) / 0.8269 (legacy) misses the pre-registered 0.85 threshold. Thresholds were not lowered.",
+ "startingSha": "97da90b5ceb6d1b5fbdc388dcaa38c5ed0e81c84",
+ "paidPair": {
+  "label": "certification-v5",
+  "model": "anthropic/claude-sonnet-5",
+  "versions": {
+   "algorithm": "semantic-accountability.v5",
+   "prompt": "semantic-inventory-prompt.v5"
+  },
+  "runA": {
+   "calls": 8,
+   "inputTokens": 94148,
+   "outputTokens": 325346,
+   "rateCardUsd": 3.4418
+  },
+  "runB": {
+   "calls": 8,
+   "inputTokens": 96152,
+   "outputTokens": 324366,
+   "rateCardUsd": 3.436
+  },
+  "total": {
+   "calls": 16,
+   "inputTokens": 190300,
+   "outputTokens": 649712,
+   "rateCardUsd": 6.8777
+  },
+  "gatewayReportedSpendUsd": 6.87772,
+  "creditsBefore": {
+   "balance": 44.001382,
+   "totalUsed": 170.998618
+  },
+  "creditsAfter": {
+   "balance": 37.123662,
+   "totalUsed": 177.876338
+  },
+  "hardCapUsd": 8,
+  "refusals": [],
+  "referenceSetInModelContext": false
+ },
+ "items": {
+  "runA": 352,
+  "runB": 326,
+  "delta": -26
+ },
+ "stability": {
+  "strictCanonicalIdentity": {
+   "v4CertificationPair": 0.501,
+   "zeroCostMigrationProxy": 0.8101,
+   "paidV5Pair": 0.7984
+  },
+  "semantic": {
+   "v4Legacy": 0.5251,
+   "v4LabelBlindRepresentation": 0.8426,
+   "zeroCostMigrationProxyCanonical": 0.8456,
+   "paidV5Canonical": 0.8374,
+   "paidV5LegacyDerivedRole": 0.8324,
+   "paidV5LegacyDeclaredRole": 0.8324,
+   "paidV5FrozenScorer": 0.8324
+  },
+  "criticalMaterial": {
+   "v4Legacy": 0.5236,
+   "v4LabelBlindRepresentation": 0.8321,
+   "zeroCostMigrationProxyCanonical": 0.8358,
+   "paidV5Canonical": 0.832,
+   "paidV5LegacyDerivedRole": 0.8269,
+   "paidV5FrozenScorer": 0.8269
+  },
+  "functionStabilityByDimension_exact": {
+   "effect": 0.9385,
+   "logic": 0.6505,
+   "quantitative": 0.7832,
+   "dependency": 0.8835
+  },
+  "functionStabilityByDimension_jaccard": {
+   "effect": 0.9385,
+   "logic": 0.6896,
+   "quantitative": 0.801,
+   "dependency": 0.9013,
+   "allTokens": 0.6653
+  },
+  "allFunctionsExactAgreement": 0.4822,
+  "dimensionDisagreementsOnAlignedPairs": {
+   "effect": 19,
+   "logic": 108,
+   "dependency": 36,
+   "quantitative": 67
+  },
+  "legacyScalarRoleAgreementOnAlignedPairs": {
+   "derived": 0.6731,
+   "declaredPrimary": 0.6828
+  },
+  "sourceSpanCoverage": 0.9645,
+  "quantitative": 0.9474,
+  "conditionException": {
+   "canonical": 0.575,
+   "canonicalCounts": [
+    115,
+    200
+   ],
+   "legacy": 0.5029,
+   "legacyCounts": [
+    88,
+    175
+   ]
+  },
+  "dependencyXref": {
+   "canonical": 0.6526,
+   "canonicalCounts": [
+    62,
+    95
+   ],
+   "legacy": 0.4062,
+   "legacyCounts": [
+    13,
+    32
+   ]
+  },
+  "duplicateRate": {
+   "canonical": {
+    "run1": 0.0057,
+    "run2": 0.0
+   },
+   "frozenScorer": {
+    "run1": 0.0028,
+    "run2": 0.0031
+   }
+  }
+ },
+ "frozenScorerDecomposition": {
+  "identicalPairs": 301,
+  "runOnlyItemsClassified": 76,
+  "countsByClass": {
+   "A_IDENTITY_INSTABILITY": 4,
+   "B_GRANULARITY_INSTABILITY": 12,
+   "D_ROLE_INSTABILITY": 2,
+   "F_TRUE_SEMANTIC_OMISSION": 50,
+   "G_TRUE_SEMANTIC_ADDITION": 2,
+   "H_DEPENDENCY_FRAGMENTATION": 6
+  },
+  "countsByClassAndSeverity": {
+   "A_IDENTITY_INSTABILITY|material": 4,
+   "B_GRANULARITY_INSTABILITY|material": 12,
+   "D_ROLE_INSTABILITY|material": 2,
+   "F_TRUE_SEMANTIC_OMISSION|material": 50,
+   "G_TRUE_SEMANTIC_ADDITION|nonmaterial": 2,
+   "H_DEPENDENCY_FRAGMENTATION|material": 5,
+   "H_DEPENDENCY_FRAGMENTATION|nonmaterial": 1
+  },
+  "countsByClassAndRun": {
+   "A_IDENTITY_INSTABILITY|run1": 2,
+   "A_IDENTITY_INSTABILITY|run2": 2,
+   "B_GRANULARITY_INSTABILITY|run1": 7,
+   "B_GRANULARITY_INSTABILITY|run2": 5,
+   "D_ROLE_INSTABILITY|run1": 1,
+   "D_ROLE_INSTABILITY|run2": 1,
+   "F_TRUE_SEMANTIC_OMISSION|run1": 36,
+   "F_TRUE_SEMANTIC_OMISSION|run2": 14,
+   "G_TRUE_SEMANTIC_ADDITION|run1": 1,
+   "G_TRUE_SEMANTIC_ADDITION|run2": 1,
+   "H_DEPENDENCY_FRAGMENTATION|run1": 4,
+   "H_DEPENDENCY_FRAGMENTATION|run2": 2
+  },
+  "omissionsDisclosedVsNot": {
+   "disclosed": 16,
+   "notDisclosed": 0
+  },
+  "v4Certification": {
+   "D_ROLE_INSTABILITY": 158,
+   "F": 51,
+   "B": 20,
+   "H": 14,
+   "A": 8,
+   "G": 2,
+   "runOnlyItemsClassified": 253
+  }
+ },
+ "runOnlySubstantive": {
+  "canonical": {
+   "aOnly": 42,
+   "bOnly": 15,
+   "aOnlyDisclosedByB": 11,
+   "bOnlyDisclosedByA": 5
+  },
+  "frozenScorer": {
+   "materialOnlyA": 43,
+   "materialOnlyB": 16
+  }
+ },
+ "inventedSemantics": {
+  "canonical": {
+   "aOnlyNonMaterial": 1,
+   "bOnlyNonMaterial": 2
+  },
+  "frozenScorerG": 2,
+  "note": "the run-only non-material items are heading/lead-in echoes (INFORMATIONAL); no CRITICAL/MATERIAL invention"
+ },
+ "gapPass": {
+  "runA": {
+   "attempted": true,
+   "segmentsBefore": 44,
+   "itemsAdded": 14,
+   "duplicatesDropped": 4,
+   "unverifiableDropped": 6,
+   "segmentsAfter": 33,
+   "costUsd": 0.34164000000000005,
+   "error": null
+  },
+  "runB": {
+   "attempted": true,
+   "segmentsBefore": 39,
+   "itemsAdded": 21,
+   "duplicatesDropped": 2,
+   "unverifiableDropped": 0,
+   "segmentsAfter": 32,
+   "costUsd": 0.47530800000000006,
+   "error": null
+  },
+  "unaccountedSegmentsAfter": [
+   33,
+   32
+  ],
+  "identicalUnaccountedSegments": 18,
+  "v4Certification": {
+   "unaccountedSegmentsAfter": [
+    27,
+    18
+   ],
+   "identical": 9
+  },
+  "roleSpecificDuplicationFromGapPass": "none: rejectedDuplicateItems 0/0 in both runs (v4: 4/2); the gap pass still adds a run-specific set of items (14 vs 21) - a decomposition/omission mechanism, not the role root cause; left untouched per mission \u00a710"
+ },
+ "trustSafety": {
+  "inventoryStatus": [
+   "INVENTORY_COVERAGE_GAP",
+   "INVENTORY_COVERAGE_GAP"
+  ],
+  "accountedCharFraction": [
+   0.9774,
+   0.9766
+  ],
+  "uninventoriedValues": [
+   0,
+   0
+  ],
+  "rejectedUnverifiable": [
+   14,
+   10
+  ],
+  "falseCompleteness": 0,
+  "dangerousSilentOmissions": 0,
+  "safeDisclosedOmissions": {
+   "unaccountedSourceSegmentsA": 33,
+   "unaccountedSourceSegmentsB": 32,
+   "fItemsInsideOtherRunsUnaccountedSource": 16
+  }
+ },
+ "referenceRecall": {
+  "referenceItems": 7,
+  "runA": {
+   "items": 352,
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "discoveryRecall": 1.0,
+   "criticalMaterialRecall": 1.0,
+   "quantitativeRecall": 1.0,
+   "quantitativeValues": [
+    30,
+    30
+   ],
+   "conditionExceptionRecall": 1.0,
+   "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+  },
+  "runB": {
+   "items": 326,
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "discoveryRecall": 1.0,
+   "criticalMaterialRecall": 1.0,
+   "quantitativeRecall": 1.0,
+   "quantitativeValues": [
+    30,
+    30
+   ],
+   "conditionExceptionRecall": 1.0,
+   "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+  },
+  "intersection": {
+   "discoveryRecall": 1.0,
+   "criticalMaterialRecall": 1.0,
+   "quantitativeRecall": 1.0,
+   "conditionExceptionRecall": 1.0,
+   "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+  }
+ },
+ "gate": {
+  "criticalMaterialSemanticStability>=0.85": {
+   "canonical": 0.832,
+   "legacyDerived": 0.8269,
+   "pass": false
+  },
+  "semanticStability>=0.80": {
+   "canonical": 0.8374,
+   "legacyDerived": 0.8324,
+   "pass": true
+  },
+  "zeroDangerousSilentOmissions": {
+   "pass": true,
+   "evidence": "both runs INVENTORY_COVERAGE_GAP (REVIEW_REQUIRED); frozen scorer omissionsDisclosedVsNot = {\"disclosed\": 16, \"notDisclosed\": 0}; frozen 6.08 reference recall 1.0 in A, B and intersection"
+  },
+  "noMaterialRecallDegradation": {
+   "pass": true,
+   "evidence": "discovery / critical-material / quantitative / condition-exception recall 1.0 / 1.0 / 1.0 / 1.0 in A, in B and in intersection (baseline 1.0)"
+  },
+  "deterministicSlotPartitionIdentity": {
+   "pass": true,
+   "evidence": "335 slots / 7 batches, slots.ts byte-identical to the starting SHA; both runs record {batches:7, firstPassCalls:7, gapCalls:1}; 0 items without a slotId"
+  }
+ },
+ "antiGaming": {
+  "representationOnlyComponent": "scoring the UNCHANGED v4 pair label-blind: semantic 0.5251 -> 0.8426, critical/material 0.5236 -> 0.8321 (= the measured ontology ambiguity: 90 of 337 aligned pairs differed only in label, 87 adjudicated one-proposition-several-functions)",
+  "genuineIdentityComponent": "strict id stability 0.501 (v4 pair) -> 0.7984 (paid v5 pair): the role-blind key with start/value/effect guards makes the same proposition freeze to the same id",
+  "onThePaidPairBothRepresentationsAgree": "canonical 0.8374/0.832 vs frozen-scorer 0.8324/0.8269 - once identities converge the label-blind matcher adds only +0.005; the legacy metric is reported unchanged and was never deleted",
+  "residualNotAddressedByOntology": "F_TRUE_SEMANTIC_OMISSION 50 (A-only 42/43 material items, B-only 15/16): run A inventoried 26 more propositions than run B (352 vs 326) - per-run decomposition/omission of small formula fragments and gap-pass variance, exactly the secondary mechanisms the certification named; the function dimensions still disagree on 108 (logic) / 67 (quantitative) of 309 aligned pairs as attributes"
+ },
+ "dominantRemainingMechanism": {
+  "primary": "TRUE PER-RUN OMISSION / DECOMPOSITION VARIANCE - F_TRUE_SEMANTIC_OMISSION = 50 of 76 run-only items (66%), concentrated in run B omitting propositions run A inventoried (item count 352 vs 326); 16 of them sit in the other run's disclosed unaccounted source, the rest are covered only by a differently bounded item",
+  "secondary": [
+   "gap-pass variance (A +14 over 44 segments, B +21 over 39; 18 of 33/32 residual segments identical)",
+   "granularity B = 12, dependency fragmentation H = 6",
+   "attribute-level function variance on aligned pairs (logic exact agreement 0.65, quantitative 0.78) - no longer identity-bearing"
+  ],
+  "resolved": "D_ROLE_INSTABILITY 158 -> 2"
+ }
+}

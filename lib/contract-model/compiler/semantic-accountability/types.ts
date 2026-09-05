@@ -42,14 +42,24 @@
  * values rather than by the model's own excerpt boundaries; same-key items merge deterministically; the gap
  * pass re-presents whole slots. Ids are re-keyed relative to v3 evidence (cross-run comparison is semantic).
  */
-export const SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION = "semantic-accountability.v4";
-export const SEMANTIC_INVENTORY_PROMPT_VERSION = "semantic-inventory-prompt.v4";
+/**
+ * v5 (F-5.1, Phase 3 Chewy remediation 5): the scalar semanticRole is no longer identity-bearing. Items carry
+ * canonical SEMANTIC FUNCTIONS (semantic-functions.ts: effect / logic / quantitative / dependency, deterministically
+ * augmented from source structure); identity is keyed by source ownership only (slot + coordination sub-index +
+ * span cluster + values), so one source proposition described with two overlapping labels is ONE identity, while
+ * two propositions with contradictory deontic effects over one stretch stay two. semanticRole is retained as a
+ * derived compatibility field. Ids are re-keyed relative to v4 evidence (cross-run comparison is semantic).
+ */
+export const SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION = "semantic-accountability.v5";
+export const SEMANTIC_INVENTORY_PROMPT_VERSION = "semantic-inventory-prompt.v5";
 
 // ---------------------------------------------------------------------------
 // Semantic roles (mission §3) - compact semantic PRIMITIVES, never covenant
 // templates. A new drafting shape is a new instance of one of these, never a
 // new role.
 // ---------------------------------------------------------------------------
+
+import type { SemanticFunctions, SemanticFunctionProvenance } from "./semantic-functions";
 
 export const SEMANTIC_ROLES = ["VALUE", "FORMULA_COMPONENT", "THRESHOLD", "CONDITION", "EXCEPTION", "PERMISSION", "PROHIBITION", "REQUIREMENT", "ALTERNATIVE", "TRIGGER", "TIME_PERIOD", "DEPENDENCY", "REFERENCE", "RECLASSIFICATION", "SHARED_CAP", "CURE", "OTHER"] as const;
 export type SemanticRole = (typeof SEMANTIC_ROLES)[number];
@@ -111,7 +121,14 @@ export interface SemanticInventoryItem {
   /** Deterministic, content-derived (candidateRef + role + verbatim span + normalized values) - never array position, never the model's free-text proposition. */
   inventoryItemId: string;
   sourceSpan: InventorySourceSpan;
+  /** LEGACY COMPATIBILITY FIELD (v5): deterministically DERIVED from semanticFunctions (semantic-functions.ts deriveLegacyRole) - never identity-bearing, never the authoritative semantic description. On v4-and-earlier evidence it is the model's single declared role. */
   semanticRole: SemanticRole;
+  /** v5: the AUTHORITATIVE semantic description - canonical functions across orthogonal dimensions (declared roles' functions, deterministically augmented from the source structure). Absent on v4-and-earlier evidence (see semantic-functions.ts functionsOf). */
+  semanticFunctions?: SemanticFunctions;
+  /** v5: every role label the model declared for this proposition (primary first; union across merged duplicates) - transparency only. */
+  declaredRoles?: SemanticRole[];
+  /** v5: which function tokens were declared by the model and which were added by a deterministic source-structure rule. */
+  functionProvenance?: SemanticFunctionProvenance;
   /** Plain-language statement of the single atomic proposition this item carries. */
   proposition: string;
   quantitativeValues: QuantitativeValue[];

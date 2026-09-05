@@ -190,7 +190,8 @@ function summarizeAccountability(input: SemanticCompilerInput): string {
       for (const it of inv.items) {
         const values = it.quantitativeValues.length > 0 ? ` values={${it.quantitativeValues.map((v) => `${v.kind} ${v.rawText}`).join("; ")}}` : "";
         const refs = [...it.referencedTerms.map((t) => `term:${t}`), ...it.referencedSections.map((s) => `ref:${s}`)];
-        parts.push(`- ${it.inventoryItemId} [${it.semanticRole}/${it.materiality}${it.ambiguity !== "NONE" ? `/${it.ambiguity}` : ""}] ${it.proposition}${values}${refs.length > 0 ? ` {${refs.join(", ")}}` : ""} (${it.sourceSpan.sourceCitation}: "${it.sourceSpan.excerpt.slice(0, 160).replace(/\s+/g, " ")}")`);
+        const fn = it.semanticFunctions ? [it.semanticFunctions.effect !== "NONE" ? it.semanticFunctions.effect : null, ...it.semanticFunctions.logic, ...it.semanticFunctions.quantitative, ...it.semanticFunctions.dependency].filter(Boolean).join("+") : "";
+        parts.push(`- ${it.inventoryItemId} [${fn && fn !== it.semanticRole ? `${it.semanticRole}=${fn}` : it.semanticRole}/${it.materiality}${it.ambiguity !== "NONE" ? `/${it.ambiguity}` : ""}] ${it.proposition}${values}${refs.length > 0 ? ` {${refs.join(", ")}}` : ""} (${it.sourceSpan.sourceCitation}: "${it.sourceSpan.excerpt.slice(0, 160).replace(/\s+/g, " ")}")`);
       }
     } else {
       parts.push(`FROZEN SEMANTIC INVENTORY: ${inv.inventoryStatus} - ${inv.inventoryStatusReason}`);

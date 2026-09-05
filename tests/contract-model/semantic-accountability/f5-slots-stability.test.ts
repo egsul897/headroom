@@ -150,9 +150,15 @@ describe("F-5 canonical identity - same proposition converges, distinct proposit
     expect(a.items[0]!.inventoryItemId).not.toBe(a.items[1]!.inventoryItemId);
   });
 
-  it("different roles or different values over the same words are different identities", () => {
+  it("v5: different values over the same words are different identities; overlapping ROLE labels over the same words are ONE identity carrying both functions; contradictory deontic effects stay two", () => {
     const r = normalizeInventorySubmission(input, [wire("a", "THRESHOLD", "the Total Leverage Ratio does not exceed 4.50 to 1.00"), wire("b", "CONDITION", "the Total Leverage Ratio does not exceed 4.50 to 1.00"), wire("c", "VALUE", "$120,000,000"), wire("d", "VALUE", "$50,000,000")]);
-    expect(new Set(r.items.map((i) => i.inventoryItemId)).size).toBe(4);
+    expect(new Set(r.items.map((i) => i.inventoryItemId)).size).toBe(3); // the threshold/condition pair is one proposition (F-5.1)
+    const test = r.items.find((i) => i.sourceSpan.excerpt.startsWith("the Total Leverage Ratio"))!;
+    expect(test.semanticFunctions!.logic).toContain("CONDITION");
+    expect(test.semanticFunctions!.quantitative).toContain("THRESHOLD");
+    expect(test.declaredRoles).toEqual(["THRESHOLD", "CONDITION"]);
+    const contradictory = normalizeInventorySubmission(input, [wire("p", "PERMISSION", "the Company may make Restricted Payments so long as no Trigger Event has occurred"), wire("q", "PROHIBITION", "the Company may make Restricted Payments so long as no Trigger Event has occurred")]);
+    expect(contradictory.items).toHaveLength(2);
   });
 
   it("anti-hallucination and lineage: an excerpt not in the source is rejected; parent/related refs map onto merged identities without self-loops", () => {

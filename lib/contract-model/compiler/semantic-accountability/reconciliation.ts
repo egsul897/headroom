@@ -33,6 +33,7 @@
  * Reads the final IR type-only as a COMPARISON TARGET (independence contract
  * in types.ts) - never the compiler's reasoning, never the verifier.
  */
+import { functionsOf } from "./semantic-functions";
 import type { IRCapacityExpression, IRDefinition, IRExpression, IRRule, IRSharedCapacity } from "../../ir/types";
 import { numbersMatch } from "./quantitative";
 import { INVENTORY_DISPOSITIONS, SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION } from "./types";
@@ -391,15 +392,17 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
       disposition = explicit.disposition;
       reasons.push(`composition explicitly dispositioned it ${explicit.disposition}${explicit.note ? `: ${explicit.note}` : ""}`);
     } else {
+      // v5 (F-5.1): dependency behaviour comes from the canonical functions (a v4 item maps its scalar role).
+      const dep = functionsOf(item).dependency;
       // Deterministic correspondence without lineage (disclosed as inferred).
       if (item.quantitativeValues.length > 0 && quantitative.every((q) => q.disposition === "VALUE_PRESENT_IN_IR")) {
         disposition = "REPRESENTED";
         inferredPaths = quantitative.flatMap((q) => q.irPaths);
         reasons.push(`no lineage declared, but every stated value is present in the composed IR (${inferredPaths.join(", ")}) - inferred by value correspondence`);
-      } else if (!anyValueMissing && (item.semanticRole === "DEPENDENCY" || item.semanticRole === "REFERENCE") && item.referencedTerms.some((t) => walk.termNames.has(t.toLowerCase()))) {
+      } else if (!anyValueMissing && (dep.includes("DEPENDENCY") || dep.includes("REFERENCE")) && item.referencedTerms.some((t) => walk.termNames.has(t.toLowerCase()))) {
         disposition = "REPRESENTED";
         reasons.push(`no lineage declared, but the referenced term(s) ${item.referencedTerms.filter((t) => walk.termNames.has(t.toLowerCase())).join(", ")} appear as references/dependencies in the composed IR - inferred by term correspondence`);
-      } else if (!anyValueMissing && (item.semanticRole === "DEPENDENCY" || item.semanticRole === "REFERENCE" || item.semanticRole === "SHARED_CAP") && item.referencedSections.some((s) => walk.unresolvedTargetRefs.some((u) => u.includes(s.replace(/\s+/g, "").toLowerCase().replace(/^(sections?|§)/, ""))))) {
+      } else if (!anyValueMissing && (dep.includes("DEPENDENCY") || dep.includes("REFERENCE") || dep.includes("SHARED_CAP")) && item.referencedSections.some((s) => walk.unresolvedTargetRefs.some((u) => u.includes(s.replace(/\s+/g, "").toLowerCase().replace(/^(sections?|§)/, ""))))) {
         disposition = "AMBIGUOUS";
         reasons.push(`the referenced section is carried as an unresolved cross-unit dependency in the composed IR - review required, never guessed`);
       } else if (item.quantitativeValues.length > 0 && quantitative.every((q) => q.disposition !== "VALUE_MISSING_FROM_COMPOSITION")) {
