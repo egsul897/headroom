@@ -1,0 +1,695 @@
+{
+ "artifact": "F-5.1 canonical + legacy stability over one Pass A pair",
+ "input": "/tmp/claude-0/-home-user-headroom/fe43ab40-ccca-5e2c-9b2f-8f264a45dc31/scratchpad/pair-B-C.json",
+ "run1Items": 326,
+ "run2Items": 332,
+ "itemCountDelta": 6,
+ "strictStability": 0.88,
+ "strictCounts": [
+  308,
+  350
+ ],
+ "canonical": {
+  "definition": "same id OR (>=50% overlap of the shorter span AND no contradictory deontic effect) - label-blind",
+  "semanticStability": 0.9184,
+  "semanticCounts": [
+   315,
+   343
+  ],
+  "criticalMaterialStability": 0.9083,
+  "criticalMaterialCounts": [
+   307,
+   338
+  ]
+ },
+ "legacyDerivedRole": {
+  "definition": "frozen F-5 scorer: same id OR (same DERIVED semanticRole AND >=50% overlap)",
+  "semanticStability": 0.9072,
+  "semanticCounts": [
+   313,
+   345
+  ],
+  "criticalMaterialStability": 0.8971,
+  "criticalMaterialCounts": [
+   305,
+   340
+  ]
+ },
+ "legacyDeclaredRole": {
+  "definition": "frozen F-5 scorer on the model's DECLARED primary role",
+  "semanticStability": 0.9072,
+  "semanticCounts": [
+   313,
+   345
+  ],
+  "criticalMaterialStability": 0.8971,
+  "criticalMaterialCounts": [
+   305,
+   340
+  ]
+ },
+ "functionStabilityByDimension_jaccardMean": {
+  "effect": 0.9111,
+  "logic": 0.7942,
+  "quantitative": 0.8714,
+  "dependency": 0.9222,
+  "allTokens": 0.7595
+ },
+ "functionStabilityByDimension_exactAgreement": {
+  "effect": 0.9111,
+  "logic": 0.7524,
+  "quantitative": 0.8603,
+  "dependency": 0.8984
+ },
+ "allFunctionsExactAgreement": 0.5841,
+ "dimensionDisagreementsOnAlignedPairs": {
+  "logic": 78,
+  "effect": 28,
+  "dependency": 32,
+  "quantitative": 44
+ },
+ "legacyDerivedRoleAgreementOnAlignedPairs": 0.7651,
+ "declaredRoleAgreementOnAlignedPairs": 0.7746,
+ "alignedPairs": 315,
+ "sourceSpanCoverageStability": 0.9778,
+ "quantitativeComponentStability": 0.9474,
+ "conditionExceptionStability": {
+  "canonical": 0.7151,
+  "canonicalCounts": [
+   123,
+   172
+  ],
+  "legacy": 0.6597,
+  "legacyCounts": [
+   95,
+   144
+  ]
+ },
+ "dependencyXrefStability": {
+  "canonical": 0.7701,
+  "canonicalCounts": [
+   67,
+   87
+  ],
+  "legacy": 0.5,
+  "legacyCounts": [
+   14,
+   28
+  ]
+ },
+ "runOnlySubstantive": {
+  "aOnly": 11,
+  "bOnly": 15,
+  "aOnlyDisclosedByB": 3,
+  "bOnlyDisclosedByA": 6
+ },
+ "inventedSemantics": {
+  "aOnlyNonMaterial": 0,
+  "bOnlyNonMaterial": 2
+ },
+ "intraRunDuplicatePairs": {
+  "run1": 0,
+  "run2": 2
+ },
+ "duplicateRate": {
+  "run1": 0.0,
+  "run2": 0.006
+ },
+ "gapPass": {
+  "run1": {
+   "attempted": true,
+   "segmentsBefore": 39,
+   "itemsAdded": 21,
+   "duplicatesDropped": 2,
+   "unverifiableDropped": 0,
+   "segmentsAfter": 32,
+   "costUsd": 0.47530800000000006,
+   "error": null
+  },
+  "run2": {
+   "attempted": true,
+   "segmentsBefore": 51,
+   "itemsAdded": 24,
+   "duplicatesDropped": 4,
+   "unverifiableDropped": 0,
+   "segmentsAfter": 30,
+   "costUsd": 0.360924,
+   "error": null
+  },
+  "unaccountedSegments": [
+   32,
+   30
+  ],
+  "identicalUnaccountedSegments": 20
+ },
+ "inventoryStatus": [
+  "INVENTORY_COVERAGE_GAP",
+  "INVENTORY_COVERAGE_GAP"
+ ],
+ "accountedCharFraction": [
+  0.9766,
+  0.9836
+ ],
+ "runOnlyRows": [
+  {
+   "run": "A",
+   "id": "inv-item:be7fa1dbef025182ac9eb1ae",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION",
+     "TRIGGER"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    2886,
+    2962
+   ],
+   "excerpt": "unless, at the time of such Restricted Payment (or the declaration thereof):"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:7529c5b21a09f2fdd8a21f27",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    4320,
+    4334
+   ],
+   "excerpt": "(A) cumulative"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:fa9a024390970ca0c48466e0",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    5491,
+    5517
+   ],
+   "excerpt": "from the issue or sale of:"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:9f2addd230b397a90c759009",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    10359,
+    10374
+   ],
+   "excerpt": "Section 2.09(b)"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:21ff6c5be66617e473b4763f",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    10910,
+    10929
+   ],
+   "excerpt": "Section 6.01(b)(32)"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:9bc81e94daaf96bfb978be98",
+   "role": "PERMISSION",
+   "functions": {
+    "effect": "PERMISSION",
+    "logic": [],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    14692,
+    14725
+   ],
+   "excerpt": "retirement or other acquisition);"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:62d388950ad3920e51188216",
+   "role": "EXCEPTION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "EXCEPTION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    18108,
+    18136
+   ],
+   "excerpt": "provision of this Agreement;"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:8ebff4f01a3f0a2f6152cd0c",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    27562,
+    27646
+   ],
+   "excerpt": "of any direct or indirect equity owner of the Borrowers and/or any of its respective"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:88ccdcde45bb7f91d6dc9741",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    28744,
+    28826
+   ],
+   "excerpt": "to the extent such salaries, bonuses, severance and other benefits and indemnities"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:4bd275378a8df1106ef60dae",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    35464,
+    35635
+   ],
+   "excerpt": "the date of the Restricted Payment of the assets or securities proposed to be transferred or issued by any Restricted Pa"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:34e10076f5e40ced75374a03",
+   "role": "EXCEPTION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION",
+     "EXCEPTION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    36842,
+    36933
+   ],
+   "excerpt": "unless such Unrestricted Subsidiary has granted an irrevocable license to use such Material"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:38ad2fce0cdb9a708e3f4cad",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "materiality": "INFORMATIONAL",
+   "span": [
+    0,
+    48
+   ],
+   "excerpt": "Section 6.08 Limitation on Restricted Payments ."
+  },
+  {
+   "run": "B",
+   "id": "inv-item:6cc18d694b97293840792cd1",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    1911,
+    1943
+   ],
+   "excerpt": "Sections 6.01(b)(7), (8) and (9)"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:2d3a95642d4fd31634da0d09",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    4185,
+    4310
+   ],
+   "excerpt": "which amount shall be deemed to be zero for any fiscal quarter in which such amount for such fiscal quarter is less than"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:decaf3458cf8051b8783d992",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "REVIEW_UNCERTAIN",
+   "span": [
+    6540,
+    6613
+   ],
+   "excerpt": "(ii) Indebtedness of any Restricted Party that has been converted into or"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:210c2c9c9f3110079bcc93ad",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    10463,
+    10538
+   ],
+   "excerpt": "(h) 100% of the aggregate amount received in cash and the Fair Market Value"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:0d4df05dc8b1742c7ff0534b",
+   "role": "PERMISSION",
+   "functions": {
+    "effect": "PERMISSION",
+    "logic": [
+     "EXCEPTION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    12274,
+    12412
+   ],
+   "excerpt": "(b) the declaration and payment of dividends on the Treasury Capital Stock out of the proceeds of the substantially conc"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:dac0e918697fb67570dccd82",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    12478,
+    12647
+   ],
+   "excerpt": "(c) if immediately prior to the retirement of Treasury Capital Stock, the declaration and payment of dividends thereon w"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:7116bf5ef7a2f8591d286386",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [
+     "TIME_PERIOD"
+    ],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    15102,
+    15129
+   ],
+   "excerpt": "succeeding calendar years);"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:68b17c60ccfd7b0d467705cc",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [
+     "VALUE"
+    ],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    15541,
+    15555
+   ],
+   "excerpt": "$504.0 million"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:ff7801133b7ca108b95d3197",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [
+     "TIME_PERIOD"
+    ],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    15770,
+    15797
+   ],
+   "excerpt": "succeeding calendar years);"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:215e524366507fc41cbfa24f",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    21610,
+    21612
+   ],
+   "excerpt": "or"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:ca2d4f7c11533917fc3d3530",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "PERMISSION",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    21691,
+    21835
+   ],
+   "excerpt": "any prepayment, purchase, repurchase, redemption, defeasance, discharge, retirement or other acquisition of the Borrower"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:0825a9e582d80cb010158621",
+   "role": "PERMISSION",
+   "functions": {
+    "effect": "PERMISSION",
+    "logic": [],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    24774,
+    24779
+   ],
+   "excerpt": "Fees;"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:9cafc298c6f3b10255db240e",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    26456,
+    26563
+   ],
+   "excerpt": "federal income tax purposes) of a consolidated, combined, affiliated, unitary or similar tax group for U.S."
+  },
+  {
+   "run": "B",
+   "id": "inv-item:4fa3b9e1354ff38a10e53f52",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    27975,
+    28012
+   ],
+   "excerpt": "federal, state, local and/or non-U.S."
+  },
+  {
+   "run": "B",
+   "id": "inv-item:0d1fcb6adb37b10cf1a0a35d",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    28082,
+    28155
+   ],
+   "excerpt": "the Borrowers and/or any of their respective Subsidiaries, as applicable;"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:76cb45bd4ab183e72bebb3cf",
+   "role": "EXCEPTION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "EXCEPTION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    36042,
+    36071
+   ],
+   "excerpt": "(except to the extent repaid)"
+  }
+ ]
+}
