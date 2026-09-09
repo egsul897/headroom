@@ -13,6 +13,7 @@ import { buildStructuralIndex } from "../lib/contract-model/compiler/structural-
 import { resolveSourceContext } from "../lib/contract-model/compiler/semantic-accountability/source-context";
 import { partitionSourceSlots } from "../lib/contract-model/compiler/semantic-accountability/slots";
 import { buildEnsembleInventory, canonicalEnsembleJson, selectByPolicy, type EnsembleInventory } from "../lib/contract-model/compiler/semantic-accountability/ensemble";
+import { stampVerifiedSourceIdentity } from "../lib/contract-model/compiler/semantic-accountability/source-identity";
 import type { FrozenSemanticInventory, SemanticInventoryItem, SourceContextResult } from "../lib/contract-model/compiler/semantic-accountability/types";
 import type { StructuralIndex } from "../lib/contract-model/compiler/structural-index";
 
@@ -31,8 +32,9 @@ const index = buildStructuralIndex(new Map([["doc-a", { text, nodes }]]), detect
 const section = nodes.filter((n) => n.nodeType === "SECTION" && n.sectionRef === "6.08").sort((a, b) => b.charEnd - b.charStart - (a.charEnd - a.charStart))[0]!;
 const sourceContext = resolveSourceContext({ index, documentId: "doc-a", operativeSourceText: text.slice(section.charStart, section.charEnd), anchorNodeId: section.nodeId, operativeCharStart: section.charStart, documentText: text });
 const partition = partitionSourceSlots({ sourceContext, structuralIndex: index });
-const runA = JSON.parse(readFileSync(`${DIR}/run-A.json`, "utf-8")) as FrozenSemanticInventory;
-const runB = JSON.parse(readFileSync(`${DIR}/run-B.json`, "utf-8")) as FrozenSemanticInventory;
+// F-5.3B: pre-F-5.3B evidence is admitted to the STRICT ensemble only after the versioned re-anchoring migration verifies it against this exact source.
+const runA = stampVerifiedSourceIdentity(JSON.parse(readFileSync(`${DIR}/run-A.json`, "utf-8")) as FrozenSemanticInventory, sourceContext, partition);
+const runB = stampVerifiedSourceIdentity(JSON.parse(readFileSync(`${DIR}/run-B.json`, "utf-8")) as FrozenSemanticInventory, sourceContext, partition);
 const unit = JSON.parse(readFileSync(UNIT, "utf-8"));
 if (unit.compile.sourceContext.regions[0].text !== sourceContext.regions[0]!.text) throw new Error("region drift");
 const decomp = JSON.parse(readFileSync(DECOMP, "utf-8")) as { rows: { run: string; inventoryItemId: string; role: string; materiality: string; span: [number, number]; class: string; detail: string; excerpt: string }[] };
@@ -114,8 +116,10 @@ writeFileSync(`${out}/policy-canonical-union.json`, JSON.stringify(E, null, 1));
 function control(label: string, sc: SourceContextResult, a: FrozenSemanticInventory, b: FrozenSemanticInventory, idx: StructuralIndex | null) {
   const part = idx ? partitionSourceSlots({ sourceContext: sc, structuralIndex: idx }) : partitionSourceSlots({ sourceContext: sc, structuralIndex: null });
   const cref = a.candidateRef;
-  const e1 = buildEnsembleInventory({ candidateRef: cref, sourceContext: sc, structuralIndex: idx, partition: part, passes: [{ passId: "pass-1", inventory: { ...a, candidateRef: cref } }, { passId: "pass-2", inventory: { ...b, candidateRef: cref } }] });
-  const e2 = buildEnsembleInventory({ candidateRef: cref, sourceContext: sc, structuralIndex: idx, partition: part, passes: [{ passId: "pass-2", inventory: { ...b, candidateRef: cref } }, { passId: "pass-1", inventory: { ...a, candidateRef: cref } }] });
+  // Historical cross-version controls: EXPERIMENTAL mode, declaring exactly which compatibility checks older evidence cannot satisfy. Never the production path.
+  const compatibility = { mode: "EXPERIMENTAL_CROSS_VERSION" as const, acceptFailing: ["source-identity-recorded", "source-context-hash", "partition", "document", "algorithm-generation", "prompt-generation", "provider-model", "pass-status"] };
+  const e1 = buildEnsembleInventory({ candidateRef: cref, sourceContext: sc, structuralIndex: idx, partition: part, passes: [{ passId: "pass-1", inventory: { ...a, candidateRef: cref } }, { passId: "pass-2", inventory: { ...b, candidateRef: cref } }], compatibility });
+  const e2 = buildEnsembleInventory({ candidateRef: cref, sourceContext: sc, structuralIndex: idx, partition: part, passes: [{ passId: "pass-2", inventory: { ...b, candidateRef: cref } }, { passId: "pass-1", inventory: { ...a, candidateRef: cref } }], compatibility });
   const vs = new Set([...valueSet(a.items), ...valueSet(b.items)]), vu = valueSet(e1.items);
   const eff = (inv: FrozenSemanticInventory, id: string) => { const it = inv.items.find((i) => i.inventoryItemId === id); return it ? (it.semanticFunctions?.effect ?? (["PERMISSION", "PROHIBITION", "REQUIREMENT"].includes(it.semanticRole) ? it.semanticRole : "NONE")) : "NONE"; };
   const contra = e1.items.filter((i) => { const s = new Set([...(i.support!.memberItemIds["pass-1"] ?? []).map((id) => eff(a, id)), ...(i.support!.memberItemIds["pass-2"] ?? []).map((id) => eff(b, id))].filter((e) => deontic.has(e))); return s.size > 1; }).length;

@@ -25,6 +25,7 @@ import type { SemanticCompilationResult, SemanticCompilationStatus, SemanticComp
 import type { StageCaller } from "../llm-caller";
 import { resolveSourceContext } from "../semantic-accountability/source-context";
 import { runSemanticInventory } from "../semantic-accountability/inventory";
+import { resolveSemanticInventoryMode, runDualPassSemanticInventory, type SemanticInventoryMode } from "../semantic-accountability/dual-pass";
 import { reconcileInventoryWithComposition } from "../semantic-accountability/reconciliation";
 import type { FrozenSemanticInventory, SourceContextResult } from "../semantic-accountability/types";
 
@@ -147,6 +148,16 @@ export interface CompileOptions {
    * result and never mistaken for "nothing material here."
    */
   inventoryCaller?: StageCaller;
+  /**
+   * F-5.3B: production semantic-inventory mode. SINGLE_PASS = one Pass A execution (the pre-F-5.3B path, kept for
+   * tests/diagnostics). DUAL_PASS_ENSEMBLE = two INDEPENDENT Pass A executions over the same resolved source context,
+   * reconciled by the deterministic, provider-free ensemble (semantic-accountability/dual-pass.ts) into one frozen
+   * support-aware inventory - the candidate authoritative Phase 3 discovery unit. Omitted: the SEMANTIC_INVENTORY_MODE
+   * env var, else SINGLE_PASS. Never silently doubles spend: the second paid call exists only under this mode.
+   */
+  inventoryMode?: SemanticInventoryMode;
+  /** F-5.3B (DUAL_PASS_ENSEMBLE): one StageCaller per pass. Defaults to [inventoryCaller, inventoryCaller] when inventoryCaller is given (a stateless caller serves both independent executions), else the env-var-driven getStageCaller() for both. */
+  inventoryPassCallers?: [StageCaller, StageCaller];
   /** SEMANTIC ACCOUNTABILITY: source-context budgets (mission §12/§13). Defaults are the layer's own; tests use small caps to exercise TRUNCATED_SOURCE deterministically. */
   sourceContextBudget?: { budgetChars?: number; maxExpansionRegionChars?: number; maxOperativeUnitChars?: number };
   /** SEMANTIC ACCOUNTABILITY: set false to skip source-context sufficiency + Pass A + Pass C entirely (result.accountability === null). Default true. */
@@ -156,7 +167,10 @@ export interface CompileOptions {
 export async function compileCovenantToIR(input: SemanticCompilerInput, options: CompileOptions = {}): Promise<SemanticCompilationResult> {
   const caller = options.caller ?? getSemanticCaller();
   const cache = options.cache ?? defaultCache;
-  const providerIdentity = `${caller.providerName}::${caller.model}`;
+  // F-5.3B: the inventory mode is part of the compile's identity - a single-pass result must never be served from cache
+  // for a dual-pass request (or vice versa).
+  const inventoryMode: SemanticInventoryMode | null = options.accountability !== false ? resolveSemanticInventoryMode(options.inventoryMode) : null;
+  const providerIdentity = `${caller.providerName}::${caller.model}${inventoryMode ? `::inventory=${inventoryMode}` : ""}`;
   const cacheKey = computeCacheKey(input, providerIdentity);
 
   const cached = cache.get(cacheKey);
@@ -172,6 +186,7 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
   // === false (zero-cost previews / legacy callers), never silently.
   let sourceContext: SourceContextResult | null = null;
   let frozenInventory: FrozenSemanticInventory | null = null;
+  let inventoryPasses: SemanticCompilationResult["inventoryPasses"] = null;
   let callerInput: SemanticCompilerInput = input;
   if (options.accountability !== false) {
     const index = input.toolAccess.structuralIndex;
@@ -184,7 +199,16 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       documentText: index.getDocumentText(input.sourceDocumentId) ?? null,
       ...(options.sourceContextBudget ?? {}),
     });
-    frozenInventory = await runSemanticInventory({ candidateRef: input.candidateRef, documentId: input.sourceDocumentId, sourceContext, caller: options.inventoryCaller });
+    if (inventoryMode === "DUAL_PASS_ENSEMBLE") {
+      // F-5.3B: two independent Pass A executions -> deterministic ensemble (STRICT compatibility). The second paid
+      // call is made here, visibly, by the orchestration module - never inside ensemble.ts, never a third pass.
+      const passCallers = options.inventoryPassCallers ?? (options.inventoryCaller ? ([options.inventoryCaller, options.inventoryCaller] as [StageCaller, StageCaller]) : undefined);
+      const dual = await runDualPassSemanticInventory({ candidateRef: input.candidateRef, documentId: input.sourceDocumentId, sourceContext, structuralIndex: index, passCallers });
+      frozenInventory = dual.inventory;
+      inventoryPasses = dual.passes.map((p) => ({ passId: p.passId, frozenContentHash: p.inventory.frozenContentHash, inventoryStatus: p.inventory.inventoryStatus, items: p.inventory.items.length, telemetryCostUsd: p.inventory.telemetryCostUsd }));
+    } else {
+      frozenInventory = await runSemanticInventory({ candidateRef: input.candidateRef, documentId: input.sourceDocumentId, sourceContext, caller: options.inventoryCaller });
+    }
     // The COMPILATION UNIT (mission §13) is the resolved operative region - when the
     // supplied window was extended to its real unit boundary (with provenance on
     // sourceContext.regions[0].unitExtension), Pass B composes against the same
@@ -192,7 +216,7 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
     const operativeRegion = sourceContext.regions[0]!;
     callerInput = { ...input, operativeSourceText: operativeRegion.text, operativeCharStart: operativeRegion.charStart >= 0 ? operativeRegion.charStart : input.operativeCharStart, sourceContext, frozenInventory };
   }
-  const accountabilityFields = { sourceContext, frozenInventory };
+  const accountabilityFields = { sourceContext, frozenInventory, inventoryMode, inventoryPasses };
 
   // Phase 3F.1 §33/F6 - this call is never allowed to throw out of
   // compileCovenantToIR uncaught: a genuine transport/internal exception is
@@ -360,8 +384,17 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       failureReasons.push("INVENTORY_ITEM_MISSING_FROM_COMPOSITION");
       accountabilityIssues.push(...accountability.reasons.filter((r) => /MISSING_FROM_COMPOSITION|absent from the composed IR/.test(r)).map((r) => `[accountability] ${r}`));
     }
+    // F-5.3B - SUPPORT TRUST PROPAGATION: enforced here on the ensemble record AND on reconciliation's own field, each
+    // sufficient alone. inventoryStatus (raw source coverage) may read INVENTORY_OK while a CRITICAL/MATERIAL item is
+    // SINGLE_RUN or CONFLICTED; that combination is REVIEW_REQUIRED, never COMPLETED.
+    if ((frozenInventory?.ensemble?.supportReviewRequired ?? false) || (accountability?.supportReviewRequired ?? false)) {
+      failureReasons.push("SEMANTIC_SUPPORT_REVIEW_REQUIRED");
+      const e = frozenInventory?.ensemble;
+      accountabilityIssues.push(`[support] ${e ? `${e.counts.materialSingleRun} CRITICAL/MATERIAL single-run and ${e.counts.materialConflicted} conflicted item(s) across passes ${e.passIds.join("+")}` : `${accountability?.support?.materialSingleRun ?? 0} CRITICAL/MATERIAL single-run and ${accountability?.support?.materialConflicted ?? 0} conflicted item(s)`} carry independent-pass support asymmetry - review required; never resolved by composition`);
+      for (const cf of frozenInventory?.ensemble?.conflicts ?? []) accountabilityIssues.push(`[support] conflict ${cf.itemIds.join(" vs ")}: ${cf.reason}`);
+    }
 
-    if (accountability && !accountability.semanticallyComplete && frozenInventory && frozenInventory.inventoryStatus !== "INVENTORY_SKIPPED_NO_PROVIDER" && !failureReasons.some((r) => r === "INVENTORY_ITEM_MISSING_FROM_COMPOSITION" || r === "SEMANTIC_INVENTORY_UNAVAILABLE" || r === "SEMANTIC_INVENTORY_COVERAGE_GAP" || r === "SOURCE_CONTEXT_TRUNCATED")) {
+    if (accountability && !accountability.semanticallyComplete && frozenInventory && frozenInventory.inventoryStatus !== "INVENTORY_SKIPPED_NO_PROVIDER" && !failureReasons.some((r) => r === "INVENTORY_ITEM_MISSING_FROM_COMPOSITION" || r === "SEMANTIC_INVENTORY_UNAVAILABLE" || r === "SEMANTIC_INVENTORY_COVERAGE_GAP" || r === "SOURCE_CONTEXT_TRUNCATED" || r === "SEMANTIC_SUPPORT_REVIEW_REQUIRED")) {
       // Re-audit finding B2': every remaining way accountability can be incomplete (uninventoried operative money/percent/ratio values, a REVIEW_UNCERTAIN item missing from the composition, dangling lineage) must be visible on the attempt status, never left as a reason string only.
       failureReasons.push("SEMANTIC_ACCOUNTABILITY_INCOMPLETE");
       accountabilityIssues.push(...accountability.reasons.map((r) => `[accountability] ${r}`));

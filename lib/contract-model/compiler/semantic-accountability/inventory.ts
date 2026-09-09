@@ -42,6 +42,7 @@ import { deriveLegacyRole, deriveSemanticFunctions, effectsContradict, functions
 import type { FrozenSemanticInventory, GapReinventoryRecord, InventoryAmbiguity, InventoryMateriality, InventoryStatus, OperativeFlag, QuantitativeKind, QuantitativeValue, SemanticInventoryItem, SemanticRole, SourceCoverageSummary, SourceContextRegion, SourceContextResult, UnaccountedSourceSpan } from "./types";
 import { computeSourceCoverage, isAccountedDisposition, type AccountingSpanInput, type ExternalAccountabilityLink, type SourceCoverageResult } from "./source-coverage";
 import { batchSlots, coordinationIndex, partitionSourceSlots, slotForOffset, type SlotBatch, type SlotPartition, type SourceSlot } from "./slots";
+import { computePartitionHash, computeSourceContextHash } from "./source-identity";
 import type { StructuralIndex } from "../structural-index";
 
 export interface SemanticInventoryInput {
@@ -232,6 +233,7 @@ function buildResult(input: SemanticInventoryInput, caller: StageCaller, items: 
   // not reported; a value anywhere else that no CRITICAL/MATERIAL item anchors is.
   const uninventoried: FrozenSemanticInventory["uninventoriedValues"] = cov.unaccountedValues.map((v) => ({ ...v }));
   const unaccounted = unaccountedFrom(cov);
+  const sourceContextHash = computeSourceContextHash(input.sourceContext);
   return {
     candidateRef: input.candidateRef,
     items,
@@ -252,6 +254,11 @@ function buildResult(input: SemanticInventoryInput, caller: StageCaller, items: 
     model: caller.model,
     telemetryCostUsd: costUsd,
     ...(partition ? { partition } : {}),
+    // F-5.3B: the exact input this run inventoried, pinned at freeze so the dual-pass ensemble's compatibility gate can
+    // key on it (never on candidateRef alone). Not part of frozenContentHash (which covers the run's OUTPUT).
+    documentId: input.documentId,
+    sourceContextHash,
+    sourceIdentity: { method: "RECORDED_AT_FREEZE", sourceContextHash, partitionHash: partition ? computePartitionHash(partition) : null },
   };
 }
 

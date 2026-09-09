@@ -28,6 +28,7 @@ import type { IRDefinition, IRRule, IRSharedCapacity, OperativeLineageRef } from
 import type { AnalyzerCallTelemetry } from "../../analyzer/telemetry";
 import type { DefinitionCompletenessCheckResult } from "./completeness-check";
 import type { FrozenSemanticInventory, SemanticAccountabilityResult, SourceContextResult } from "../semantic-accountability/types";
+import type { SemanticInventoryMode } from "../semantic-accountability/dual-pass";
 
 /**
  * Phase 3B.1 (task §35) - any change to output orchestration, tool-use
@@ -184,7 +185,9 @@ export type SemanticCompilerFailureReason =
   /** SEMANTIC ACCOUNTABILITY v2 (Phase 3 final closure, decision 05): Pass A ran but, even after its bounded gap re-inventory, left at least one operative-text segment carrying operative/conditional drafting language uncovered (INVENTORY_COVERAGE_GAP, residual segments disclosed on frozenInventory.uninventoriedSegments). Accountability for that text is not established, so this attempt can never be COMPLETED - the omission is visible instead of silent. */
   | "SEMANTIC_INVENTORY_COVERAGE_GAP"
   /** SEMANTIC ACCOUNTABILITY v2 (re-audit): Pass C's semanticallyComplete is false for a reason not carried by the more specific reasons above (uninventoried operative money/percent/ratio values, a REVIEW_UNCERTAIN inventory item MISSING_FROM_COMPOSITION, dangling lineage) - the attempt can never be COMPLETED while its own accountability says it is incomplete. */
-  | "SEMANTIC_ACCOUNTABILITY_INCOMPLETE";
+  | "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+  /** F-5.3B (dual-pass ensemble): at least one CRITICAL/MATERIAL frozen-inventory item is SINGLE_RUN (found by one independent Pass A execution only) or CONFLICTED (two passes made incompatible claims over one source stretch). The item is real, source-verified inventory with weaker support provenance: Pass B must still consume/disposition it, and the attempt can never be COMPLETED - RAW SOURCE COMPLETE + MATERIAL SINGLETON => REVIEW_REQUIRED. Resolved only by the independent verifier, human approval or another certified mechanism, never by Pass B or a third run. */
+  | "SEMANTIC_SUPPORT_REVIEW_REQUIRED";
 
 /** Phase 3F.1 §33/F6 - preserved for every FAILED result whose failureReasons includes TRANSPORT_OR_INTERNAL_ERROR (never populated for any other failure path, which already carries its own structured detail via failureReasons/unresolvedIssues). Bounded and sanitized - never a raw stack dump, never a credential/token value, per task §33's explicit "no secrets/unrestricted stack dumps" instruction. */
 export interface SemanticCompilerErrorDetail {
@@ -265,6 +268,10 @@ export interface SemanticCompilationResult {
   frozenInventory?: FrozenSemanticInventory | null;
   /** SEMANTIC ACCOUNTABILITY: Pass C's deterministic reconciliation of the frozen inventory against the composed IR. Null when accountability was disabled or no submission was produced. Never consumed by the independent verifier. */
   accountability?: SemanticAccountabilityResult | null;
+  /** F-5.3B: which production inventory mode produced frozenInventory (SINGLE_PASS = one Pass A execution; DUAL_PASS_ENSEMBLE = two independent executions reconciled by ensemble.ts). Undefined on results built by pre-F-5.3B fixtures or with accountability disabled. */
+  inventoryMode?: SemanticInventoryMode | null;
+  /** F-5.3B (DUAL_PASS_ENSEMBLE only): the two frozen passes' own identities, so an auditor can reconstruct which pass said what without re-running anything. */
+  inventoryPasses?: { passId: string; frozenContentHash: string; inventoryStatus: string; items: number; telemetryCostUsd: number | null }[] | null;
   /** The raw, unnormalized wire object the model actually submitted - preserved for audit/debugging, never treated as authoritative (task §9). */
   rawModelOutput: unknown;
   provider: string;

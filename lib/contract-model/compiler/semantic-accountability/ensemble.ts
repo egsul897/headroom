@@ -21,18 +21,29 @@ import { hashParts } from "../hashing";
 import { normalizeInventorySubmission, normalizedStart } from "./inventory";
 import { effectsContradict, functionsOf, functionsSignature } from "./semantic-functions";
 import { computeSourceCoverage, isAccountedDisposition, type ExternalAccountabilityLink } from "./source-coverage";
+import { computePartitionHash, computeSourceContextHash } from "./source-identity";
 import type { SlotPartition } from "./slots";
-import type { EnsembleRecord, FrozenSemanticInventory, ItemSupport, SemanticInventoryItem, SourceContextResult, SupportStatus } from "./types";
+import { SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION, SEMANTIC_INVENTORY_PROMPT_VERSION } from "./types";
+import type { EnsembleCompatibilityMode, EnsembleCompatibilityRecord, EnsembleRecord, FrozenSemanticInventory, ItemSupport, SemanticInventoryItem, SourceContextResult, SupportStatus } from "./types";
 import type { WireInventoryItem } from "./wire-schema";
 import type { StructuralIndex } from "../structural-index";
 
 export const ENSEMBLE_ALGORITHM_VERSION = "semantic-ensemble.v1";
 export type UnionPolicy = "INTERSECTION_ONLY" | "RAW_UNION" | "SUPPORT_AWARE_CANONICAL_UNION";
+/** The Pass A evidence generations this ensemble may combine under STRICT. Exactly the current generation: a new generation is a deliberate, versioned decision, never an implicit one. */
+export const ENSEMBLE_SUPPORTED_ALGORITHM_VERSIONS: readonly string[] = [SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION];
+export const ENSEMBLE_SUPPORTED_PROMPT_VERSIONS: readonly string[] = [SEMANTIC_INVENTORY_PROMPT_VERSION];
 
 export interface EnsemblePass {
   /** Generic pass identifier (e.g. "pass-1"); never a semantic label. */
   passId: string;
   inventory: FrozenSemanticInventory;
+}
+export interface EnsembleCompatibilityOptions {
+  /** Default STRICT. EXPERIMENTAL_CROSS_VERSION is for diagnostics/historical controls only and must name the checks it accepts failing. */
+  mode?: EnsembleCompatibilityMode;
+  /** EXPERIMENTAL_CROSS_VERSION only: the check names (see COMPATIBILITY_CHECKS) that may fail without rejecting. Ignored - and must be empty - under STRICT. */
+  acceptFailing?: string[];
 }
 export interface EnsembleInput {
   candidateRef: string;
@@ -41,8 +52,71 @@ export interface EnsembleInput {
   partition?: SlotPartition;
   passes: EnsemblePass[];
   externalAccountability?: ExternalAccountabilityLink[];
+  /** F-5.3B input-compatibility gate (section 2). Omitted = STRICT. */
+  compatibility?: EnsembleCompatibilityOptions;
 }
 export type EnsembleInventory = FrozenSemanticInventory & { ensemble: EnsembleRecord };
+
+export const COMPATIBILITY_CHECKS = ["candidate-ref", "source-context-hash", "source-identity-recorded", "partition", "document", "algorithm-generation", "prompt-generation", "provider-model", "pass-status"] as const;
+export type CompatibilityCheck = (typeof COMPATIBILITY_CHECKS)[number];
+
+export class EnsembleIncompatibleInputError extends Error {
+  constructor(public readonly failures: { check: string; detail: string }[], public readonly record: EnsembleCompatibilityRecord) {
+    super(`ensemble refused: incompatible pass inputs - ${failures.map((f) => `[${f.check}] ${f.detail}`).join("; ")}`);
+    this.name = "EnsembleIncompatibleInputError";
+  }
+}
+
+/**
+ * INPUT-COMPATIBILITY GATE (F-5.3B section 2). Two passes may count as independent corroboration only if they are
+ * independent executions over semantically identical input under a compatible semantic inventory contract. Checked:
+ * candidateRef; the source-context hash of every pass against the supplied source context (a pass with NO recorded
+ * identity is rejected - see source-identity.ts's versioned migration for pre-F-5.3B evidence); the slot partition; the
+ * document; the accountability algorithm generation (must be the current one); the prompt generation; provider+model
+ * (identical for this certification); and that every pass actually ran (no FAILED/SKIPPED pass can corroborate).
+ * STRICT rejects on any failure. EXPERIMENTAL_CROSS_VERSION records every failure and admits only the ones the caller
+ * named in acceptFailing - never silently.
+ */
+export function checkEnsembleCompatibility(input: EnsembleInput): { record: EnsembleCompatibilityRecord; failures: { check: string; detail: string }[]; admitted: boolean } {
+  const mode: EnsembleCompatibilityMode = input.compatibility?.mode ?? "STRICT";
+  const accept = new Set(mode === "EXPERIMENTAL_CROSS_VERSION" ? input.compatibility?.acceptFailing ?? [] : []);
+  if (mode === "STRICT" && (input.compatibility?.acceptFailing?.length ?? 0) > 0) throw new Error("STRICT compatibility admits no declared exceptions - use EXPERIMENTAL_CROSS_VERSION explicitly for diagnostics");
+  const sourceContextHash = computeSourceContextHash(input.sourceContext);
+  const partitionHash = input.partition ? computePartitionHash(input.partition) : null;
+  const documentIds = [...new Set(input.sourceContext.regions.filter((r) => r.kind === "OPERATIVE").map((r) => r.documentId))].sort();
+  const checks: EnsembleCompatibilityRecord["checks"] = [];
+  const push = (check: CompatibilityCheck, pass: boolean, detail: string) => checks.push({ check, pass, detail });
+  const passes: EnsembleCompatibilityRecord["passes"] = {};
+  // Order-free record: passes are examined in passId order so Union(A,B) and Union(B,A) produce the same record.
+  const ordered = [...input.passes].sort((a, b) => a.passId.localeCompare(b.passId));
+  for (const p of ordered) {
+    const inv = p.inventory;
+    const invPartitionHash = inv.partition ? computePartitionHash(inv.partition) : inv.sourceIdentity?.partitionHash ?? null;
+    passes[p.passId] = { algorithmVersion: inv.algorithmVersion, promptVersion: inv.promptVersion, provider: inv.provider, model: inv.model, sourceContextHash: inv.sourceContextHash ?? null, sourceIdentityMethod: inv.sourceIdentity?.method ?? null, partitionHash: invPartitionHash, documentId: inv.documentId ?? null };
+    push("candidate-ref", inv.candidateRef === input.candidateRef, `${p.passId}: candidateRef ${inv.candidateRef}${inv.candidateRef === input.candidateRef ? " matches" : ` differs from ${input.candidateRef}`}`);
+    push("source-identity-recorded", !!inv.sourceContextHash, `${p.passId}: ${inv.sourceContextHash ? `source identity ${inv.sourceIdentity?.method ?? "recorded"}` : "no recorded source identity (pre-F-5.3B evidence must be verified by the source-identity migration first)"}`);
+    push("source-context-hash", inv.sourceContextHash === sourceContextHash, `${p.passId}: source-context hash ${inv.sourceContextHash ? inv.sourceContextHash.slice(0, 16) : "(none)"} vs ensemble ${sourceContextHash.slice(0, 16)}`);
+    push("partition", partitionHash === null ? true : invPartitionHash === partitionHash, partitionHash === null ? `${p.passId}: ensemble supplied no slot partition - not checked (source-context hash still binds the input)` : `${p.passId}: slot partition ${invPartitionHash ? invPartitionHash.slice(0, 16) : "(none recorded)"} vs ensemble ${partitionHash.slice(0, 16)}`);
+    const passDoc = inv.documentId ?? null;
+    push("document", passDoc === null ? documentIds.length <= 1 : documentIds.includes(passDoc), `${p.passId}: document ${passDoc ?? "(not recorded)"} vs ensemble ${documentIds.join(",") || "(none)"}`);
+    push("algorithm-generation", ENSEMBLE_SUPPORTED_ALGORITHM_VERSIONS.includes(inv.algorithmVersion), `${p.passId}: algorithm ${inv.algorithmVersion}${ENSEMBLE_SUPPORTED_ALGORITHM_VERSIONS.includes(inv.algorithmVersion) ? " supported" : ` not in [${ENSEMBLE_SUPPORTED_ALGORITHM_VERSIONS.join(", ")}] - a later versioned migration may declare compatibility; this ensemble does not`}`);
+    push("prompt-generation", ENSEMBLE_SUPPORTED_PROMPT_VERSIONS.includes(inv.promptVersion), `${p.passId}: prompt ${inv.promptVersion}${ENSEMBLE_SUPPORTED_PROMPT_VERSIONS.includes(inv.promptVersion) ? " supported" : " unsupported"}`);
+    const ran = inv.inventoryStatus === "INVENTORY_OK" || inv.inventoryStatus === "INVENTORY_COVERAGE_GAP";
+    push("pass-status", ran, `${p.passId}: ${inv.inventoryStatus}${ran ? "" : " - a pass that did not run cannot corroborate or be corroborated"}`);
+  }
+  // Cross-pass agreement: every pass must share generation, prompt, provider+model with every other pass.
+  const first = ordered[0]?.inventory;
+  for (const p of ordered.slice(1)) {
+    const inv = p.inventory;
+    push("algorithm-generation", inv.algorithmVersion === first!.algorithmVersion, `${p.passId} vs ${ordered[0]!.passId}: algorithm ${inv.algorithmVersion} vs ${first!.algorithmVersion}`);
+    push("prompt-generation", inv.promptVersion === first!.promptVersion, `${p.passId} vs ${ordered[0]!.passId}: prompt ${inv.promptVersion} vs ${first!.promptVersion}`);
+    push("provider-model", inv.provider === first!.provider && inv.model === first!.model, `${p.passId} vs ${ordered[0]!.passId}: ${inv.provider}/${inv.model} vs ${first!.provider}/${first!.model}`);
+  }
+  const failures = checks.filter((c) => !c.pass).map((c) => ({ check: c.check, detail: c.detail }));
+  const unaccepted = failures.filter((f) => !accept.has(f.check));
+  const record: EnsembleCompatibilityRecord = { mode, sourceContextHash, partitionHash, documentIds, passes, checks, declaredExceptions: [...accept].sort() };
+  return { record, failures, admitted: unaccepted.length === 0 };
+}
 
 const MATERIAL = new Set(["CRITICAL", "MATERIAL"]);
 const SEP = "::";
@@ -64,7 +138,9 @@ export function buildEnsembleInventory(input: EnsembleInput): EnsembleInventory 
   const passIds = [...new Set(input.passes.map((p) => p.passId))].sort();
   if (passIds.length !== input.passes.length) throw new Error("passIds must be unique");
   const regionText = new Map(input.sourceContext.regions.map((r) => [r.regionId, r.text] as const));
-  for (const p of input.passes) if (p.inventory.candidateRef !== input.candidateRef) throw new Error(`pass ${p.passId} belongs to ${p.inventory.candidateRef}, not ${input.candidateRef}`);
+  // F-5.3B section 2: explicit rejection of incompatible inputs - never a silent downgrade, never a union anyway.
+  const compat = checkEnsembleCompatibility(input);
+  if (!compat.admitted) throw new EnsembleIncompatibleInputError(compat.failures.filter((f) => !compat.record.declaredExceptions.includes(f.check)), compat.record);
   // Deterministic member order: by source position, then id, then passId - so the surviving wording/parent of a merged
   // item is the same whichever order the passes were supplied in.
   const members = input.passes
@@ -152,7 +228,7 @@ export function buildEnsembleInventory(input: EnsembleInput): EnsembleInventory 
   if (unaccounted.length > 0) reasonParts.push(`${unaccounted.length} stretch(es) of source remain UNACCOUNTED_SOURCE after the union - accountability for that text is not established by either pass`);
   if (reviewItems > 0) reasonParts.push(`${reviewItems} CRITICAL/MATERIAL item(s) carry support asymmetry or conflict - REVIEW_REQUIRED unless independently resolved later`);
   const passHashes = Object.fromEntries(input.passes.map((p) => [p.passId, p.inventory.frozenContentHash] as [string, string]).sort(([a], [b]) => a.localeCompare(b)));
-  const ensemble: EnsembleRecord = { algorithmVersion: ENSEMBLE_ALGORITHM_VERSION, policy: "SUPPORT_AWARE_CANONICAL_UNION", passIds, passHashes, counts, supportReviewRequired: reviewItems > 0, supportReviewFraction: items.length ? Number((reviewItems / items.length).toFixed(4)) : 0, conflicts: conflicts.sort((a, b) => a.itemIds[0]!.localeCompare(b.itemIds[0]!)) };
+  const ensemble: EnsembleRecord = { algorithmVersion: ENSEMBLE_ALGORITHM_VERSION, policy: "SUPPORT_AWARE_CANONICAL_UNION", passIds, passHashes, counts, supportReviewRequired: reviewItems > 0, supportReviewFraction: items.length ? Number((reviewItems / items.length).toFixed(4)) : 0, conflicts: conflicts.sort((a, b) => a.itemIds[0]!.localeCompare(b.itemIds[0]!)), compatibility: compat.record };
   const first = input.passes[0]!.inventory;
   const sorted = [...items].sort((a, b) => a.sourceSpan.regionId.localeCompare(b.sourceSpan.regionId) || a.sourceSpan.charStart - b.sourceSpan.charStart || a.sourceSpan.charEnd - b.sourceSpan.charEnd || a.inventoryItemId.localeCompare(b.inventoryItemId));
   return {
@@ -175,6 +251,9 @@ export function buildEnsembleInventory(input: EnsembleInput): EnsembleInventory 
     model: first.model,
     telemetryCostUsd: input.passes.reduce<number | null>((acc, p) => (acc === null && p.inventory.telemetryCostUsd === null ? null : (acc ?? 0) + (p.inventory.telemetryCostUsd ?? 0)), null),
     ...(first.partition ? { partition: first.partition } : {}),
+    ...(compat.record.documentIds.length === 1 ? { documentId: compat.record.documentIds[0] } : first.documentId ? { documentId: first.documentId } : {}),
+    sourceContextHash: compat.record.sourceContextHash,
+    sourceIdentity: { method: "RECORDED_AT_FREEZE", sourceContextHash: compat.record.sourceContextHash, partitionHash: compat.record.partitionHash },
     ensemble,
   };
 }

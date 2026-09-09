@@ -179,6 +179,49 @@ export interface EnsembleRecord {
   supportReviewRequired: boolean;
   supportReviewFraction: number;
   conflicts: { itemIds: string[]; reason: string; slotId: string | null }[];
+  /** F-5.3B: the input-compatibility gate's record - which mode admitted these passes and every check it made. Absent on F-5.3A-era ensembles. */
+  compatibility?: EnsembleCompatibilityRecord;
+}
+
+// ---------------------------------------------------------------------------
+// F-5.3B: source identity + ensemble input compatibility (additive).
+// ---------------------------------------------------------------------------
+
+/**
+ * How a frozen pass came to carry its sourceContextHash. RECORDED_AT_FREEZE: Pass A stamped it from the source context it
+ * actually inventoried. VERIFIED_BY_RE_ANCHORING: pre-F-5.3B evidence that carried no hash was re-verified item by item
+ * (every excerpt at its recorded offsets, every unaccounted span, the recorded slot partition) against a supplied source
+ * context by the versioned migration in ensemble.ts, and stamped with that context's hash. Never inferred from a label.
+ */
+export interface SourceIdentityRecord {
+  method: "RECORDED_AT_FREEZE" | "VERIFIED_BY_RE_ANCHORING";
+  sourceContextHash: string;
+  /** Hash of the deterministic slot partition the pass inventoried against (null when the pass carried no partition). */
+  partitionHash: string | null;
+  migrationVersion?: string;
+  verifiedAt?: string;
+}
+
+/**
+ * STRICT (production, authoritative): two passes count as independent corroboration only if they are independent
+ * executions over semantically identical input (same candidate, same source-context hash, same slot partition, same
+ * document) under a compatible inventory contract (same accountability algorithm generation - the current one - same
+ * prompt generation, same provider+model). Anything else is rejected explicitly; nothing is downgraded or unioned.
+ * EXPERIMENTAL_CROSS_VERSION (diagnostics/historical controls only): the same checks run and are recorded, but a
+ * declared subset may fail without rejecting; the record says so and no production path may select it.
+ */
+export type EnsembleCompatibilityMode = "STRICT" | "EXPERIMENTAL_CROSS_VERSION";
+
+export interface EnsembleCompatibilityRecord {
+  mode: EnsembleCompatibilityMode;
+  /** The source context the ensemble was built over. */
+  sourceContextHash: string;
+  partitionHash: string | null;
+  documentIds: string[];
+  passes: Record<string, { algorithmVersion: string; promptVersion: string; provider: string; model: string; sourceContextHash: string | null; sourceIdentityMethod: SourceIdentityRecord["method"] | null; partitionHash: string | null; documentId: string | null }>;
+  checks: { check: string; pass: boolean; detail: string }[];
+  /** EXPERIMENTAL_CROSS_VERSION only: the checks the caller explicitly declared it accepts failing. Empty under STRICT. */
+  declaredExceptions: string[];
 }
 
 /** INVENTORY_COVERAGE_GAP (v3): the inventory ran, but after the bounded gap re-inventory at least one stretch of source in the semantic unit is still UNACCOUNTED_SOURCE - no item anchors it, no structural parent/child or external-ownership link discharges it, and no deterministic rule classifies it as non-semantic. Accountability for that text is NOT established; the residual spans are listed in unaccountedSource. Never treated as INVENTORY_OK. */
@@ -254,6 +297,11 @@ export interface FrozenSemanticInventory {
   /** F-5.3: present only on an ensemble (dual-pass) inventory built by ensemble.ts. */
   ensemble?: EnsembleRecord;
   partition?: { methods: Record<string, string>; slots: { slotId: string; regionId: string; sectionRef: string | null; charStart: number; charEnd: number }[]; batches: number; batchChars: number; gapBatches: number; firstPassCalls: number; gapCalls: number };
+  /** F-5.3B: the document the unit's operative region belongs to (stamped at freeze; absent on pre-F-5.3B evidence). */
+  documentId?: string;
+  /** F-5.3B: content hash of the exact source context (every region's identity, offsets and text, plus state) Pass A inventoried - the ensemble's input-compatibility gate keys on it, never on candidateRef alone. Absent on pre-F-5.3B evidence until verified by the versioned re-anchoring migration. */
+  sourceContextHash?: string;
+  sourceIdentity?: SourceIdentityRecord;
 }
 
 // ---------------------------------------------------------------------------
@@ -321,6 +369,20 @@ export interface ReconciliationItem {
   modelDisposition: string | null;
   quantitative: { value: QuantitativeValue; disposition: QuantitativeDisposition; irPaths: string[] }[];
   reason: string;
+  /** F-5.3B: independent-pass support provenance copied from the ensemble inventory item (absent for single-pass evidence). Provenance only - it never changes the disposition and never excuses an omission. */
+  support?: ItemSupport;
+}
+
+/** F-5.3B: how the ensemble's support provenance intersects Pass C's dispositions. */
+export interface AccountabilitySupportSummary {
+  passIds: string[];
+  corroborated: number;
+  singleRun: number;
+  materialSingleRun: number;
+  conflicted: number;
+  materialConflicted: number;
+  /** Per disposition: how many items carried each support status. A REPRESENTED singleton still earns full accountability credit AND still keeps the unit REVIEW_REQUIRED. */
+  byDisposition: Record<InventoryDisposition, { corroborated: number; singleRun: number; conflicted: number }>;
 }
 
 export interface SemanticAccountabilityResult {
@@ -348,8 +410,16 @@ export interface SemanticAccountabilityResult {
     /** A lineage/disposition reference the composition gave WITHOUT its "tag:" prefix but whose content digest matched a real frozen item - resolved, not counted as dangling, but disclosed for audit (mission independence: canonicalization is deterministic string matching on the item's own stable content hash, never a model judgment). */
     canonicalizedLineageReferences: number;
   },
-  /** True only when: inventory ran (INVENTORY_OK), source context is not TRUNCATED/STRUCTURALLY_INCOMPLETE/UNKNOWN, every material item has a non-MISSING disposition, every material value is present or dispositioned, and no dangling lineage. */
+  /** True only when: inventory ran (INVENTORY_OK), source context is not TRUNCATED/STRUCTURALLY_INCOMPLETE/UNKNOWN, every material item has a non-MISSING disposition, every material value is present or dispositioned, no dangling lineage, AND (F-5.3B) no CRITICAL/MATERIAL item carries support asymmetry or conflict (supportReviewRequired false). */
   semanticallyComplete: boolean;
+  /**
+   * F-5.3B: independent-pass support trust, propagated from the ensemble (FrozenSemanticInventory.ensemble.supportReviewRequired)
+   * and re-derived here from the items themselves. True when any CRITICAL/MATERIAL item is SINGLE_RUN or CONFLICTED.
+   * Distinct from inventoryStatus (raw source-coverage accountability): RAW SOURCE COMPLETE + MATERIAL SINGLETON =>
+   * REVIEW_REQUIRED, never COMPLETE. False for single-pass evidence (which carries no support provenance at all).
+   */
+  supportReviewRequired: boolean;
+  support?: AccountabilitySupportSummary;
   reasons: string[];
   algorithmVersion: string;
 }
@@ -374,5 +444,5 @@ export interface AgreementLevelResult {
   status: AgreementSemanticStatus;
   reasons: string[];
   units: { candidateRef: string; unitStatus: AgreementSemanticStatus; reasons: string[] }[];
-  counts: { units: number; complete: number; incomplete: number; reviewRequired: number; materialMissingFromComposition: number; unresolvedCrossReferences: number };
+  counts: { units: number; complete: number; incomplete: number; reviewRequired: number; materialMissingFromComposition: number; unresolvedCrossReferences: number; /** F-5.3B: units whose accountability carries independent-pass support asymmetry/conflict. */ supportReviewRequired: number };
 }

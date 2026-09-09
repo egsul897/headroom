@@ -10,6 +10,7 @@ import { partitionSourceSlots } from "../../../lib/contract-model/compiler/seman
 import { resolveSourceContext } from "../../../lib/contract-model/compiler/semantic-accountability/source-context";
 import type { FrozenSemanticInventory, SemanticInventoryItem } from "../../../lib/contract-model/compiler/semantic-accountability/types";
 import type { WireInventoryItem } from "../../../lib/contract-model/compiler/semantic-accountability/wire-schema";
+import { computePartitionHash, computeSourceContextHash } from "../../../lib/contract-model/compiler/semantic-accountability/source-identity";
 import { buildTestIndex } from "../context-retrieval-test-utils";
 
 const DOC = "f5-3a-synthetic-doc";
@@ -40,7 +41,7 @@ const wire = (localRef: string, role: string, excerpt: string, extra: Partial<Wi
 /** A scripted single pass: the real normalizer over scripted wire, frozen into an inventory shape (no model). */
 function pass(items: WireInventoryItem[]): FrozenSemanticInventory {
   const r = normalizeInventorySubmission({ candidateRef: CREF, sourceContext: built.sourceContext, structuralIndex: built.index }, items, built.partition);
-  return { candidateRef: CREF, items: r.items, uninventoriedValues: [], unaccountedSource: [], sourceCoverage: { regionsConsidered: ["operative"], countsByDisposition: {}, charsByDisposition: {}, accountedCharFraction: 1, externallyAccountedRegions: [] }, gapReinventory: null, inventoryStatus: "INVENTORY_OK", inventoryStatusReason: "scripted", rejectedUnverifiableItems: r.rejectedUnverifiable, rejectedDuplicateItems: r.rejectedDuplicates, sourceContextState: built.sourceContext.state, frozenContentHash: `scripted-${items.map((i) => i.localRef).join("+")}`, frozenAt: "2026-01-01T00:00:00.000Z", algorithmVersion: "semantic-accountability.v5", promptVersion: "semantic-inventory-prompt.v5", provider: "scripted", model: "scripted", telemetryCostUsd: null };
+  return { candidateRef: CREF, items: r.items, uninventoriedValues: [], unaccountedSource: [], sourceCoverage: { regionsConsidered: ["operative"], countsByDisposition: {}, charsByDisposition: {}, accountedCharFraction: 1, externallyAccountedRegions: [] }, gapReinventory: null, inventoryStatus: "INVENTORY_OK", inventoryStatusReason: "scripted", rejectedUnverifiableItems: r.rejectedUnverifiable, rejectedDuplicateItems: r.rejectedDuplicates, sourceContextState: built.sourceContext.state, frozenContentHash: `scripted-${items.map((i) => i.localRef).join("+")}`, frozenAt: "2026-01-01T00:00:00.000Z", algorithmVersion: "semantic-accountability.v5", promptVersion: "semantic-inventory-prompt.v5", provider: "scripted", model: "scripted", telemetryCostUsd: null, documentId: DOC, sourceContextHash: computeSourceContextHash(built.sourceContext), sourceIdentity: { method: "RECORDED_AT_FREEZE", sourceContextHash: computeSourceContextHash(built.sourceContext), partitionHash: computePartitionHash(built.partition) } };
 }
 const ensemble = (a: WireInventoryItem[], b: WireInventoryItem[], order: "ab" | "ba" = "ab"): EnsembleInventory => {
   const passes = [{ passId: "pass-1", inventory: pass(a) }, { passId: "pass-2", inventory: pass(b) }];

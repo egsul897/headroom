@@ -33,6 +33,7 @@ import { buildToolSet, ToolRunner } from "./tools";
 import { SubmitCompilationSchema, WireDefinitionSchema, WireRuleSchema, type SubmitCompilationInput } from "./wire-schema";
 import { DEFAULT_TOOL_BUDGET, type SemanticCompilerFailureReason, type SemanticCompilerInput, type ToolCallLogEntry } from "./types";
 import { validateToolUseProtocol } from "./tool-protocol";
+import type { ItemSupport } from "../semantic-accountability/types";
 
 /** Env var override for the semantic compiler's own model choice - additive, defaults to the same Sonnet 5 this codebase already uses everywhere else for cost-disciplined real LLM calls (task §51's own "do not change provider/model opportunistically"). */
 const MODEL_ENV_VAR = "SEMANTIC_COMPILER_MODEL";
@@ -171,6 +172,20 @@ function formatContextItem(i: SemanticCompilerInput["contextBundle"]["items"][nu
  * (compile.ts) checks this deterministically afterwards, so this text is
  * guidance, never the enforcement mechanism.
  */
+/** F-5.3B: the support tag Pass B sees on every ensemble item. Provenance only; the proposition line is unchanged. */
+export function supportTagFor(it: { support?: ItemSupport }): string {
+  const s = it.support;
+  if (!s) return "";
+  if (s.supportStatus === "CORROBORATED") return "[CORROBORATED] ";
+  if (s.supportStatus === "SINGLE_RUN") return `[SINGLE_RUN ${s.supportingPasses.join("+")}] `;
+  return `[CONFLICTED with ${(s.conflictWith ?? []).join(", ")}${s.conflictReason ? `: ${s.conflictReason}` : ""}] `;
+}
+
+/** Exported for deterministic tests of the Pass B context (never called by production code outside this file). */
+export function renderAccountabilityContext(input: SemanticCompilerInput): string {
+  return summarizeAccountability(input);
+}
+
 function summarizeAccountability(input: SemanticCompilerInput): string {
   const parts: string[] = [];
   const sc = input.sourceContext;
@@ -186,12 +201,16 @@ function summarizeAccountability(input: SemanticCompilerInput): string {
   const inv = input.frozenInventory;
   if (inv) {
     if (inv.items.length > 0) {
+      if (inv.ensemble) {
+        const e = inv.ensemble;
+        parts.push(`DUAL-PASS ENSEMBLE INVENTORY: the ${inv.items.length} item(s) below are the canonical union of ${e.passIds.length} INDEPENDENT Pass A executions (${e.passIds.join(", ")}): ${e.counts.corroborated} corroborated, ${e.counts.singleRun} single-run, ${e.counts.conflicted} conflicted. Each item carries a SUPPORT tag. Support is PROVENANCE, never a filter: a [SINGLE_RUN <pass>] item is authoritative source-verified inventory that one independent pass found and the other did not - consume or disposition it exactly like a corroborated item, never omit it because only one pass found it. A [CONFLICTED with <id>] pair makes incompatible claims over one source stretch: disposition BOTH sides AMBIGUOUS (say why) unless the source text itself resolves the conflict - never pick a side silently, and representing one side does not resolve the conflict.`);
+      }
       parts.push(`FROZEN SEMANTIC INVENTORY (Pass A, ${inv.items.length} item(s), content hash ${inv.frozenContentHash.slice(0, 16)}). ACCOUNTABILITY OBLIGATION: every item marked CRITICAL or MATERIAL below MUST end up either (a) CONSUMED - list its inventoryItemId in the inventoryItemIds array of the rule, definition, sharedCapacity, condition, exception, or expression node that represents it (a node may consume several items; a definition's calculationExpression consumes its FORMULA_COMPONENT items on the operand nodes themselves), or (b) DISPOSITIONED - listed in inventoryDispositions with INTENTIONALLY_NON_COMPUTATIONAL (real but not a computable mechanic - e.g. a purely descriptive statement), UNSUPPORTED (you could not represent it faithfully; prefer an UNSUPPORTED node that consumes it), or AMBIGUOUS (the source supports more than one reading; say why). A material item you neither consume nor disposition is reported as MISSING_FROM_COMPOSITION by a deterministic check - never silently omit one, and never list an item's id on a node that does not actually carry that item's value or meaning.`);
       for (const it of inv.items) {
         const values = it.quantitativeValues.length > 0 ? ` values={${it.quantitativeValues.map((v) => `${v.kind} ${v.rawText}`).join("; ")}}` : "";
         const refs = [...it.referencedTerms.map((t) => `term:${t}`), ...it.referencedSections.map((s) => `ref:${s}`)];
         const fn = it.semanticFunctions ? [it.semanticFunctions.effect !== "NONE" ? it.semanticFunctions.effect : null, ...it.semanticFunctions.logic, ...it.semanticFunctions.quantitative, ...it.semanticFunctions.dependency].filter(Boolean).join("+") : "";
-        parts.push(`- ${it.inventoryItemId} [${fn && fn !== it.semanticRole ? `${it.semanticRole}=${fn}` : it.semanticRole}/${it.materiality}${it.ambiguity !== "NONE" ? `/${it.ambiguity}` : ""}] ${it.proposition}${values}${refs.length > 0 ? ` {${refs.join(", ")}}` : ""} (${it.sourceSpan.sourceCitation}: "${it.sourceSpan.excerpt.slice(0, 160).replace(/\s+/g, " ")}")`);
+        parts.push(`- ${it.inventoryItemId} ${supportTagFor(it)}[${fn && fn !== it.semanticRole ? `${it.semanticRole}=${fn}` : it.semanticRole}/${it.materiality}${it.ambiguity !== "NONE" ? `/${it.ambiguity}` : ""}] ${it.proposition}${values}${refs.length > 0 ? ` {${refs.join(", ")}}` : ""} (${it.sourceSpan.sourceCitation}: "${it.sourceSpan.excerpt.slice(0, 160).replace(/\s+/g, " ")}")`);
       }
     } else {
       parts.push(`FROZEN SEMANTIC INVENTORY: ${inv.inventoryStatus} - ${inv.inventoryStatusReason}`);
