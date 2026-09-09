@@ -1,0 +1,209 @@
+{
+ "1_canonicalUnionRecoversAllGenuineOmissionSemantics": {
+  "pass": true,
+  "F": {
+   "total": 50,
+   "intersectionOnly": 0.1,
+   "rawUnion": 1,
+   "canonicalUnion": 1,
+   "collapsedWithCounterpart": 5,
+   "singleRun": 45,
+   "corroborated": 5,
+   "conflicted": 0,
+   "valuesPreserved": 50,
+   "laterReviewRequired": 45
+  },
+  "B": {
+   "total": 12,
+   "intersectionOnly": 0,
+   "rawUnion": 1,
+   "canonicalUnion": 1,
+   "collapsedWithCounterpart": 0,
+   "singleRun": 12,
+   "corroborated": 0,
+   "conflicted": 0,
+   "valuesPreserved": 12,
+   "laterReviewRequired": 12
+  },
+  "H": {
+   "total": 6,
+   "intersectionOnly": 0,
+   "rawUnion": 1,
+   "canonicalUnion": 1,
+   "collapsedWithCounterpart": 0,
+   "singleRun": 6,
+   "corroborated": 0,
+   "conflicted": 0,
+   "valuesPreserved": 6,
+   "laterReviewRequired": 5
+  },
+  "A": {
+   "total": 4,
+   "intersectionOnly": 0,
+   "rawUnion": 1,
+   "canonicalUnion": 1,
+   "collapsedWithCounterpart": 0,
+   "singleRun": 4,
+   "corroborated": 0,
+   "conflicted": 0,
+   "valuesPreserved": 4,
+   "laterReviewRequired": 4
+  },
+  "D": {
+   "total": 2,
+   "intersectionOnly": 0,
+   "rawUnion": 1,
+   "canonicalUnion": 1,
+   "collapsedWithCounterpart": 0,
+   "singleRun": 2,
+   "corroborated": 0,
+   "conflicted": 0,
+   "valuesPreserved": 2,
+   "laterReviewRequired": 2
+  },
+  "G": {
+   "total": 2,
+   "intersectionOnly": 0.5,
+   "rawUnion": 1,
+   "canonicalUnion": 1,
+   "collapsedWithCounterpart": 1,
+   "singleRun": 1,
+   "corroborated": 1,
+   "conflicted": 0,
+   "valuesPreserved": 2,
+   "laterReviewRequired": 0
+  }
+ },
+ "2_noMaterialSourceUnsupportedAdditions": {
+  "pass": true,
+  "materialUnsupported": 0,
+  "rejectedUnverifiable": 0,
+  "additionsByClass": {
+   "A_GENUINE_SOURCE_SEMANTICS_OMITTED_BY_OTHER_PASS": 103,
+   "C_SOURCE_VERIFIED_UNCERTAIN": 10,
+   "C_INFORMATIONAL_SOURCE_VERIFIED": 1
+  }
+ },
+ "3_contradictorySemanticsNeverSilentlyMerged": {
+  "pass": true,
+  "paidPair": 0,
+  "controls": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ]
+ },
+ "4_sourceCoverageRemainsConservative": {
+  "pass": true,
+  "unionStatus": "INVENTORY_COVERAGE_GAP",
+  "unaccountedA_B_union": [
+   33,
+   32,
+   19
+  ],
+  "bothRunGapsStillGap": 19,
+  "aGapsRescuedByBOnly": 10,
+  "bGapsRescuedByAOnly": 11,
+  "recomputedNotOred": true
+ },
+ "5_valuesLineageProvenanceNotLost": {
+  "pass": true,
+  "valuesLost": 0,
+  "lineage": {
+   "parentLinksA": 283,
+   "parentLinksB": 246,
+   "parentLinksUnion": 317,
+   "unionParentLinksResolvingToUnionItems": 317,
+   "danglingUnionParents": 0,
+   "memberIdsPreserved": true,
+   "passItemsAccountedFor": {
+    "pass-1": 352,
+    "pass-2": 326
+   }
+  }
+ },
+ "6_frozenReferenceRecallDoesNotDegrade": {
+  "pass": true,
+  "recall": {
+   "INTERSECTION_ONLY": {
+    "items": 282,
+    "discoveryRecall": 1.0,
+    "criticalMaterialRecall": 1.0,
+    "quantitativeRecall": 0.9333,
+    "conditionExceptionRecall": 1.0,
+    "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+   },
+   "RAW_UNION": {
+    "items": 377,
+    "discoveryRecall": 1.0,
+    "criticalMaterialRecall": 1.0,
+    "quantitativeRecall": 1.0,
+    "conditionExceptionRecall": 1.0,
+    "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+   },
+   "SUPPORT_AWARE_CANONICAL_UNION": {
+    "items": 396,
+    "discoveryRecall": 1.0,
+    "criticalMaterialRecall": 1.0,
+    "quantitativeRecall": 1.0,
+    "conditionExceptionRecall": 1.0,
+    "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+   },
+   "runA": {
+    "items": 352,
+    "discoveryRecall": 1.0,
+    "criticalMaterialRecall": 1.0,
+    "quantitativeRecall": 1.0,
+    "conditionExceptionRecall": 1.0,
+    "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+   },
+   "runB": {
+    "items": 326,
+    "discoveryRecall": 1.0,
+    "criticalMaterialRecall": 1.0,
+    "quantitativeRecall": 1.0,
+    "conditionExceptionRecall": 1.0,
+    "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+   }
+  }
+ },
+ "7_singletonSemanticsExplicitlyProvenanceMarked": {
+  "pass": true,
+  "singletons": 114,
+  "materialSingletons": 112,
+  "everyItemCarriesSupport": true
+ },
+ "8_noFalseCompleteness": {
+  "pass": true,
+  "status": "INVENTORY_COVERAGE_GAP",
+  "supportReviewRequired": true,
+  "test": "anti-enumeration G + trust test 'union cannot claim semantic completeness' pass"
+ },
+ "9_unionOrderIndependent": {
+  "pass": true,
+  "paidPair": {
+   "unionAB_equals_unionBA": true,
+   "hashAB": "6f648e724520fdc9071c93d80860a5dbb37b5c03f9ae939a16ce2983b3e6d8ed",
+   "hashBA": "6f648e724520fdc9071c93d80860a5dbb37b5c03f9ae939a16ce2983b3e6d8ed"
+  },
+  "controls": [
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true
+  ]
+ },
+ "10_agreementIndependent": {
+  "pass": true,
+  "evidence": "no stability threshold enters the construction; the paid pair (semantic stability 0.837) and the v3 pair (0.45) and the v1 holdout regions all reconcile with 0 conflicts, 0 values lost; agreement only changes the review fraction (paid 0.283, v3 0.418, v1 regions 0.23-0.75)"
+ }
+}

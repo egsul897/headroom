@@ -146,6 +146,39 @@ export interface SemanticInventoryItem {
   slotId?: string;
   /** F-5 (v4): how many same-key wire items were merged into this one (0 when none). */
   mergedDuplicates?: number;
+  /** F-5.3 (ensemble): independent-pass support provenance. Present only on items of an ensemble (dual-pass) inventory. */
+  support?: ItemSupport;
+}
+
+// ---------------------------------------------------------------------------
+// F-5.3 dual-pass ensemble: support provenance (additive; single-pass inventories carry none of it).
+// ---------------------------------------------------------------------------
+
+export type SupportStatus = "CORROBORATED" | "SINGLE_RUN" | "CONFLICTED";
+
+export interface ItemSupport {
+  /** Generic pass identifiers (never literal run labels baked into semantics), sorted. */
+  supportingPasses: string[];
+  /** CORROBORATED = found independently by more than one pass; SINGLE_RUN = one pass only (NOT "false": one independent semantic pass found this source proposition and the other did not); CONFLICTED = another item over the same source makes an incompatible claim (kept, never chosen). */
+  supportStatus: SupportStatus;
+  /** Original inventoryItemIds of every pass member that canonicalized into this item, keyed by passId. */
+  memberItemIds: Record<string, string[]>;
+  /** For CONFLICTED: the canonical ids this item conflicts with and why. */
+  conflictWith?: string[];
+  conflictReason?: string;
+}
+
+export interface EnsembleRecord {
+  algorithmVersion: string;
+  policy: "SUPPORT_AWARE_CANONICAL_UNION";
+  passIds: string[];
+  /** frozenContentHash of every input pass, keyed by passId. */
+  passHashes: Record<string, string>;
+  counts: { canonicalItems: number; corroborated: number; singleRun: number; singleRunByPass: Record<string, number>; conflicted: number; materialSingleRun: number; informationalSingleRun: number; materialConflicted: number; rejectedUnverifiable: number };
+  /** True whenever any CRITICAL/MATERIAL item is SINGLE_RUN or CONFLICTED: support asymmetry forces REVIEW_REQUIRED unless independently resolved later (verifier, human approval, another certified mechanism). The union never claims semantic completeness by itself. */
+  supportReviewRequired: boolean;
+  supportReviewFraction: number;
+  conflicts: { itemIds: string[]; reason: string; slotId: string | null }[];
 }
 
 /** INVENTORY_COVERAGE_GAP (v3): the inventory ran, but after the bounded gap re-inventory at least one stretch of source in the semantic unit is still UNACCOUNTED_SOURCE - no item anchors it, no structural parent/child or external-ownership link discharges it, and no deterministic rule classifies it as non-semantic. Accountability for that text is NOT established; the residual spans are listed in unaccountedSource. Never treated as INVENTORY_OK. */
@@ -218,6 +251,8 @@ export interface FrozenSemanticInventory {
   model: string;
   telemetryCostUsd: number | null;
   /** F-5 (v4): the deterministic slot partition Pass A inventoried against, and how many bounded calls it took. Absent on v3-and-earlier evidence. */
+  /** F-5.3: present only on an ensemble (dual-pass) inventory built by ensemble.ts. */
+  ensemble?: EnsembleRecord;
   partition?: { methods: Record<string, string>; slots: { slotId: string; regionId: string; sectionRef: string | null; charStart: number; charEnd: number }[]; batches: number; batchChars: number; gapBatches: number; firstPassCalls: number; gapCalls: number };
 }
 

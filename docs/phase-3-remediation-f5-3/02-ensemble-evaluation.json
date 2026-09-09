@@ -1,0 +1,2305 @@
+{
+ "artifact": "F-5.3A dual-pass ensemble evaluation over the frozen F-5.1 paid pair (0 model calls)",
+ "hashes": {
+  "runA": "59b5a267e24b8fadd5c9e7be6a8a31a8ace97936c125a8f0bb320aa95c4fd24c",
+  "runB": "f7f7ad18b8839fe8e41d269e1efb24a621de061684beb578578c11f27d9e9b77",
+  "pair": "384e3595ea702dccb21dddeb902245434a21a10bfc4f039f85924e72ddc7c7e1",
+  "decomposition": "b8fb49623805cba6870b5b70f3b20c34e0a56df0df6260779a59f4c2f27bd1f6",
+  "canonicalScorer": "87fb312348f13dc1c4e42ba89eccee23e2ab2cc8ed915d6f9a0e87a0de4eb062",
+  "legacyScorer": "1ff775b54aa91e967e4339ce7c193f559073e667627e9df74f70164e8bd18988",
+  "referenceScorer": "dc9658c24a173df6d93aadc732c6426705f14cd3e48850656ac920347f667c1b",
+  "humanReference": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036",
+  "source": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+  "unit": "fc147145c2db7df77bfb7122b8442d3fe21f5645b5c4782b791ffa942c8b750c",
+  "semanticFunctions": "ebd54796670bb0ae6e6499464cfd1c347a0bc5073c504ec0ca7d0bf398ea92a3",
+  "inventory": "bebb28fa4e79d51240de6cbd82f5d943330c50455a159606668a322745e042c7",
+  "slots": "3b6d8a5e78cff528ccfb8b71f0ab21c023ec1bd46d3b9265a0a9cd8ad04ca67c",
+  "sourceCoverage": "7c0c3e0e7272d50596ade36716f5fcac4856ecf04d6158495baf71a96ad7f5f2",
+  "f52aFinalSummary": "b2f972e7b07a08cc3a2e296750b4510fc01ce369ab2ba127bc1d71aab2d2b51d",
+  "f52aGate": "3cdf3794e81acef3fe91f53f4eef6914755e7b193f0065541155f4011db3f08d"
+ },
+ "policies": {
+  "INTERSECTION_ONLY": {
+   "items": 282,
+   "material": 279
+  },
+  "RAW_UNION": {
+   "items": 377,
+   "material": 368,
+   "note": "exact-id union of both passes without canonicalization: overlapping descriptions of one proposition are kept twice"
+  },
+  "SUPPORT_AWARE_CANONICAL_UNION": {
+   "items": 396,
+   "material": 391
+  }
+ },
+ "ensemble": {
+  "counts": {
+   "canonicalItems": 396,
+   "corroborated": 282,
+   "singleRun": 114,
+   "singleRunByPass": {
+    "pass-1": 70,
+    "pass-2": 44
+   },
+   "conflicted": 0,
+   "materialSingleRun": 112,
+   "informationalSingleRun": 2,
+   "materialConflicted": 0,
+   "rejectedUnverifiable": 0
+  },
+  "supportReviewRequired": true,
+  "supportReviewFraction": 0.2828,
+  "conflicts": [],
+  "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+  "inventoryStatusReason": "396 canonical item(s) from 2 independent passes: 282 corroborated, 114 single-run (112 CRITICAL/MATERIAL), 0 conflicted; 19 stretch(es) of source remain UNACCOUNTED_SOURCE after the union - accountability for that text is not established by either pass; 112 CRITICAL/MATERIAL item(s) carry support asymmetry or conflict - REVIEW_REQUIRED unless independently resolved later",
+  "frozenContentHash": "6f648e724520fdc9071c93d80860a5dbb37b5c03f9ae939a16ce2983b3e6d8ed",
+  "algorithmVersion": "semantic-accountability.v5+semantic-ensemble.v1",
+  "rejectedDuplicateItems": 282,
+  "passHashes": {
+   "pass-1": "b406e85b809d89eb79f51241c8ff2645afce60e36a9a410988edc88c1cba38c4",
+   "pass-2": "9cfb29d4ec404553e8bde7c3c2e2d537d42ba10b1e429f133b2f3524bb0da9d7"
+  },
+  "itemsA": 352,
+  "itemsB": 326
+ },
+ "reviewBurden": {
+  "totalCanonical": 396,
+  "corroborated": 282,
+  "singletonA": 70,
+  "singletonB": 44,
+  "conflicted": 0,
+  "materialSingleton": 112,
+  "informationalSingleton": 2,
+  "materialConflicted": 0,
+  "percentRequiringSupportReview": 28.28
+ },
+ "recovery": {
+  "F": {
+   "total": 50,
+   "intersectionOnly": 0.1,
+   "rawUnion": 1,
+   "canonicalUnion": 1,
+   "collapsedWithCounterpart": 5,
+   "singleRun": 45,
+   "corroborated": 5,
+   "conflicted": 0,
+   "valuesPreserved": 50,
+   "laterReviewRequired": 45
+  },
+  "B": {
+   "total": 12,
+   "intersectionOnly": 0,
+   "rawUnion": 1,
+   "canonicalUnion": 1,
+   "collapsedWithCounterpart": 0,
+   "singleRun": 12,
+   "corroborated": 0,
+   "conflicted": 0,
+   "valuesPreserved": 12,
+   "laterReviewRequired": 12
+  },
+  "H": {
+   "total": 6,
+   "intersectionOnly": 0,
+   "rawUnion": 1,
+   "canonicalUnion": 1,
+   "collapsedWithCounterpart": 0,
+   "singleRun": 6,
+   "corroborated": 0,
+   "conflicted": 0,
+   "valuesPreserved": 6,
+   "laterReviewRequired": 5
+  },
+  "A": {
+   "total": 4,
+   "intersectionOnly": 0,
+   "rawUnion": 1,
+   "canonicalUnion": 1,
+   "collapsedWithCounterpart": 0,
+   "singleRun": 4,
+   "corroborated": 0,
+   "conflicted": 0,
+   "valuesPreserved": 4,
+   "laterReviewRequired": 4
+  },
+  "D": {
+   "total": 2,
+   "intersectionOnly": 0,
+   "rawUnion": 1,
+   "canonicalUnion": 1,
+   "collapsedWithCounterpart": 0,
+   "singleRun": 2,
+   "corroborated": 0,
+   "conflicted": 0,
+   "valuesPreserved": 2,
+   "laterReviewRequired": 2
+  },
+  "G": {
+   "total": 2,
+   "intersectionOnly": 0.5,
+   "rawUnion": 1,
+   "canonicalUnion": 1,
+   "collapsedWithCounterpart": 1,
+   "singleRun": 1,
+   "corroborated": 1,
+   "conflicted": 0,
+   "valuesPreserved": 2,
+   "laterReviewRequired": 0
+  }
+ },
+ "falseAdditions": {
+  "unionItemsBeyondIntersection": 114,
+  "byClass": {
+   "A_GENUINE_SOURCE_SEMANTICS_OMITTED_BY_OTHER_PASS": 103,
+   "C_SOURCE_VERIFIED_UNCERTAIN": 10,
+   "C_INFORMATIONAL_SOURCE_VERIFIED": 1
+  },
+  "granularityEquivalentsCanonicalized": {
+   "passItemsAbsorbedIntoCorroboratedItems": {
+    "pass-1": 282,
+    "pass-2": 282
+   },
+   "corroboratedCanonicalItems": 282
+  },
+  "unsupportedAdditions": {
+   "material": 0,
+   "informational": 0,
+   "rejectedUnverifiable": 0
+  },
+  "materialUnsupportedAdditions": 0
+ },
+ "coverage": {
+  "A": {
+   "unaccountedSegments": 33,
+   "accountedCharFraction": 0.9774,
+   "uninventoriedValues": 0
+  },
+  "B": {
+   "unaccountedSegments": 32,
+   "accountedCharFraction": 0.9766,
+   "uninventoriedValues": 0
+  },
+  "union": {
+   "unaccountedSegments": 19,
+   "accountedCharFraction": 0.9947,
+   "uninventoriedValues": 0,
+   "status": "INVENTORY_COVERAGE_GAP",
+   "countsByDisposition": {
+    "COVERED_BY_INVENTORY": 308,
+    "COVERED_BY_CHILD_DESCENT": 1,
+    "COVERED_BY_CONNECTIVE_OWNERSHIP": 0,
+    "ACCOUNTED_BY_EXTERNAL_UNIT": 0,
+    "STRUCTURAL_NOISE": 25,
+    "HEADING_OR_LABEL": 1,
+    "CITATION_ONLY": 1,
+    "DEFINED_TERM_LABEL": 0,
+    "PUNCTUATION_OR_DELIMITER": 304,
+    "NON_SEMANTIC_FORMATTING": 7,
+    "UNACCOUNTED_SOURCE": 19
+   }
+  },
+  "gapsInBothRunsStillGap": 19,
+  "gapsInBothRunsResolvedByUnion": 0,
+  "aGapsRescuedByBOnlySemantics": 10,
+  "bGapsRescuedByAOnlySemantics": 11,
+  "aGapsStillGap": 19,
+  "bGapsStillGap": 19,
+  "unionGapNotInEitherRun": 0
+ },
+ "preservation": {
+  "valuesLost": [],
+  "valuesLostCount": 0,
+  "lineage": {
+   "parentLinksA": 283,
+   "parentLinksB": 246,
+   "parentLinksUnion": 317,
+   "unionParentLinksResolvingToUnionItems": 317,
+   "danglingUnionParents": 0,
+   "memberIdsPreserved": true,
+   "passItemsAccountedFor": {
+    "pass-1": 352,
+    "pass-2": 326
+   }
+  },
+  "contradictoryEffectMerges": 0
+ },
+ "orderIndependence": {
+  "unionAB_equals_unionBA": true,
+  "hashAB": "6f648e724520fdc9071c93d80860a5dbb37b5c03f9ae939a16ce2983b3e6d8ed",
+  "hashBA": "6f648e724520fdc9071c93d80860a5dbb37b5c03f9ae939a16ce2983b3e6d8ed"
+ },
+ "cost": {
+  "unit": "Chewy 6.08 (38.5k chars, 335 slots, 7 batches + 1 gap call per run)",
+  "onePassUsd": {
+   "v5RunA": 3.4418,
+   "v5RunB": 3.436,
+   "mean": 3.4389
+  },
+  "dualPassUsd": 6.8777,
+  "incrementalUsd": 3.436,
+  "phase3ChewyPaidRun": {
+   "totalUsd": 13.9612,
+   "passARun1Usd": 4.2283,
+   "passARun2Usd": 1.9005,
+   "discoveryUsd": 4.6551,
+   "compileUsd": 2.8481,
+   "verifyUsd": 0.3293,
+   "passAShareOfTotalOnePass": 0.3506,
+   "secondPassAShareOfDualPassTotal": 0.2596,
+   "note": "the Phase 3 paid run already contained a second Pass A (stability run 2) for 3 units; the one-pass total excludes it and the dual-pass total adds one more Pass A of the run-1 size"
+  }
+ },
+ "historicalControls": [
+  {
+   "label": "chewy-6.08 v4 certification pair (migrated to v5 identity)",
+   "algorithm": [
+    "semantic-accountability.v5 (zero-cost migration of v4 evidence)",
+    "semantic-accountability.v5 (zero-cost migration of v4 evidence)"
+   ],
+   "itemsA": 375,
+   "itemsB": 378,
+   "canonical": 434,
+   "counts": {
+    "canonicalItems": 434,
+    "corroborated": 319,
+    "singleRun": 115,
+    "singleRunByPass": {
+     "pass-1": 56,
+     "pass-2": 59
+    },
+    "conflicted": 0,
+    "materialSingleRun": 112,
+    "informationalSingleRun": 3,
+    "materialConflicted": 0,
+    "rejectedUnverifiable": 0
+   },
+   "supportReviewFraction": 0.2581,
+   "conflicts": 0,
+   "contradictoryEffectMerges": 0,
+   "falseMergeCandidates": 4,
+   "falseMergeRows": [
+    {
+     "canonical": "inv-item:8b4626ff6dc0a5cd21fec2ed",
+     "a": {
+      "span": [
+       6689,
+       6726
+      ],
+      "role": "CONDITION",
+      "prop": "Proviso lead-in limiting clause (b)'s scope.",
+      "excerpt": "provided , however , that this clause"
+     },
+     "b": {
+      "span": [
+       6689,
+       6709
+      ],
+      "role": "EXCEPTION",
+      "prop": "A further proviso ('provided, however,') begins, qualifying the immediately preceding clause; its substance co",
+      "excerpt": "provided , however ,"
+     }
+    },
+    {
+     "canonical": "inv-item:cba6e1dd200cd4129a09035d",
+     "a": {
+      "span": [
+       7763,
+       7793
+      ],
+      "role": "REFERENCE",
+      "prop": "Cross-reference to Section 6.01(b)(12)(a) qualifying exclusion branch (i).",
+      "excerpt": "Section 6.01(b)(12)(a) hereof,"
+     },
+     "b": {
+      "span": [
+       7763,
+       7792
+      ],
+      "role": "REFERENCE",
+      "prop": "Dependency on Section 6.01(b)(12)(a) to determine the scope of the Disqualified Stock/Preferred Stock exclusio",
+      "excerpt": "Section 6.01(b)(12)(a) hereof"
+     }
+    },
+    {
+     "canonical": "inv-item:83123662324df9afe11428a3",
+     "a": {
+      "span": [
+       25353,
+       25368
+      ],
+      "role": "DEPENDENCY",
+      "prop": "Whether the Affiliate-funding use in clause (14)(B) qualifies depends on the permission in Section 5.18(b).",
+      "excerpt": "Section 5.18(b)"
+     },
+     "b": {
+      "span": [
+       25353,
+       25375
+      ],
+      "role": "REFERENCE",
+      "prop": "Branch (B) permission is dependent on, and limited by, Section 5.18(b).",
+      "excerpt": "Section 5.18(b) hereof"
+     }
+    },
+    {
+     "canonical": "inv-item:a84c1a2d438372481c39f9fb",
+     "a": {
+      "span": [
+       34688,
+       34704
+      ],
+      "role": "ALTERNATIVE",
+      "prop": "Fixed alternative for the Interest Coverage Ratio threshold: 1.75:1.00.",
+      "excerpt": "(A)\n1.75:1.00 or"
+     },
+     "b": {
+      "span": [
+       34692,
+       34704
+      ],
+      "role": "ALTERNATIVE",
+      "prop": "Sub-branch (A) of branch (ii): 1.75:1.00.",
+      "excerpt": "1.75:1.00 or"
+     }
+    }
+   ],
+   "conflictRows": [],
+   "valuesLost": 0,
+   "parentLinks": [
+    299,
+    296,
+    348
+   ],
+   "unaccounted": [
+    27,
+    18,
+    10
+   ],
+   "orderIndependent": true,
+   "rejectedUnverifiable": 0
+  },
+  {
+   "label": "chewy-6.08 v3 frozen pair (older algorithm; sensitivity)",
+   "algorithm": [
+    "semantic-accountability.v3",
+    "semantic-accountability.v3"
+   ],
+   "itemsA": 288,
+   "itemsB": 307,
+   "canonical": 376,
+   "counts": {
+    "canonicalItems": 376,
+    "corroborated": 214,
+    "singleRun": 162,
+    "singleRunByPass": {
+     "pass-1": 72,
+     "pass-2": 90
+    },
+    "conflicted": 0,
+    "materialSingleRun": 157,
+    "informationalSingleRun": 5,
+    "materialConflicted": 0,
+    "rejectedUnverifiable": 0
+   },
+   "supportReviewFraction": 0.4176,
+   "conflicts": 0,
+   "contradictoryEffectMerges": 0,
+   "falseMergeCandidates": 2,
+   "falseMergeRows": [
+    {
+     "canonical": "inv-item:60afc5af8038a8e51d2058f0",
+     "a": {
+      "span": [
+       7763,
+       7793
+      ],
+      "role": "REFERENCE",
+      "prop": "A cross-reference to Section 6.01(b)(12)(a) qualifies the preceding formula component.",
+      "excerpt": "Section 6.01(b)(12)(a) hereof,"
+     },
+     "b": {
+      "span": [
+       7763,
+       7792
+      ],
+      "role": "REFERENCE",
+      "prop": "Dependency on Section 6.01(b)(12)(a) for the clause (c) exclusion.",
+      "excerpt": "Section 6.01(b)(12)(a) hereof"
+     }
+    },
+    {
+     "canonical": "inv-item:2da0691005154d18b88caeb4",
+     "a": {
+      "span": [
+       7873,
+       7918
+      ],
+      "role": "EXCEPTION",
+      "prop": "An exclusion applies to amounts constituting Excluded Contributions, feeding into a further 'plus' formula ste",
+      "excerpt": "(iv) constitute Excluded Contributions); plus"
+     },
+     "b": {
+      "span": [
+       7878,
+       7911
+      ],
+      "role": "EXCEPTION",
+      "prop": "Clause (c) excludes amounts that constitute Excluded Contributions.",
+      "excerpt": "constitute Excluded Contributions"
+     }
+    }
+   ],
+   "conflictRows": [],
+   "valuesLost": 0,
+   "parentLinks": [
+    158,
+    194,
+    209
+   ],
+   "unaccounted": [
+    68,
+    75,
+    55
+   ],
+   "orderIndependent": true,
+   "rejectedUnverifiable": 0
+  },
+  {
+   "label": "holdout region-applicable-liquidity-rate (v1; sensitivity)",
+   "algorithm": [
+    "semantic-accountability.v1",
+    "semantic-accountability.v1"
+   ],
+   "itemsA": 61,
+   "itemsB": 66,
+   "canonical": 73,
+   "counts": {
+    "canonicalItems": 73,
+    "corroborated": 54,
+    "singleRun": 19,
+    "singleRunByPass": {
+     "pass-1": 7,
+     "pass-2": 12
+    },
+    "conflicted": 0,
+    "materialSingleRun": 17,
+    "informationalSingleRun": 2,
+    "materialConflicted": 0,
+    "rejectedUnverifiable": 0
+   },
+   "supportReviewFraction": 0.2329,
+   "conflicts": 0,
+   "contradictoryEffectMerges": 0,
+   "falseMergeCandidates": 1,
+   "falseMergeRows": [
+    {
+     "canonical": "inv-item:77b78906166e513ac8be1245",
+     "a": {
+      "span": [
+       3362,
+       3385
+      ],
+      "role": "EXCEPTION",
+      "prop": "Exception (a) wrapper: certain dispositions listed in sub-items (i)-(v) are excluded from Asset Sale.",
+      "excerpt": "(a) any disposition of:"
+     },
+     "b": {
+      "span": [
+       3366,
+       3385
+      ],
+      "role": "EXCEPTION",
+      "prop": "Clause (a) excludes certain dispositions enumerated in sub-clauses (i)-(v).",
+      "excerpt": "any disposition of:"
+     }
+    }
+   ],
+   "conflictRows": [],
+   "valuesLost": 0,
+   "parentLinks": [
+    52,
+    59,
+    65
+   ],
+   "unaccounted": [
+    0,
+    0,
+    67
+   ],
+   "orderIndependent": true,
+   "rejectedUnverifiable": 0
+  },
+  {
+   "label": "holdout region-ebitda (v1; sensitivity)",
+   "algorithm": [
+    "semantic-accountability.v1",
+    "semantic-accountability.v1"
+   ],
+   "itemsA": 53,
+   "itemsB": 55,
+   "canonical": 67,
+   "counts": {
+    "canonicalItems": 67,
+    "corroborated": 41,
+    "singleRun": 26,
+    "singleRunByPass": {
+     "pass-1": 12,
+     "pass-2": 14
+    },
+    "conflicted": 0,
+    "materialSingleRun": 26,
+    "informationalSingleRun": 0,
+    "materialConflicted": 0,
+    "rejectedUnverifiable": 0
+   },
+   "supportReviewFraction": 0.3881,
+   "conflicts": 0,
+   "contradictoryEffectMerges": 0,
+   "falseMergeCandidates": 0,
+   "falseMergeRows": [],
+   "conflictRows": [],
+   "valuesLost": 0,
+   "parentLinks": [
+    52,
+    54,
+    65
+   ],
+   "unaccounted": [
+    0,
+    0,
+    50
+   ],
+   "orderIndependent": true,
+   "rejectedUnverifiable": 0
+  },
+  {
+   "label": "holdout region-first-lien-debt (v1; sensitivity)",
+   "algorithm": [
+    "semantic-accountability.v1",
+    "semantic-accountability.v1"
+   ],
+   "itemsA": 37,
+   "itemsB": 28,
+   "canonical": 39,
+   "counts": {
+    "canonicalItems": 39,
+    "corroborated": 26,
+    "singleRun": 13,
+    "singleRunByPass": {
+     "pass-1": 11,
+     "pass-2": 2
+    },
+    "conflicted": 0,
+    "materialSingleRun": 13,
+    "informationalSingleRun": 0,
+    "materialConflicted": 0,
+    "rejectedUnverifiable": 0
+   },
+   "supportReviewFraction": 0.3333,
+   "conflicts": 0,
+   "contradictoryEffectMerges": 0,
+   "falseMergeCandidates": 0,
+   "falseMergeRows": [],
+   "conflictRows": [],
+   "valuesLost": 0,
+   "parentLinks": [
+    35,
+    26,
+    37
+   ],
+   "unaccounted": [
+    0,
+    0,
+    24
+   ],
+   "orderIndependent": true,
+   "rejectedUnverifiable": 0
+  },
+  {
+   "label": "holdout region-interest-expense (v1; sensitivity)",
+   "algorithm": [
+    "semantic-accountability.v1",
+    "semantic-accountability.v1"
+   ],
+   "itemsA": 73,
+   "itemsB": 59,
+   "canonical": 108,
+   "counts": {
+    "canonicalItems": 108,
+    "corroborated": 24,
+    "singleRun": 84,
+    "singleRunByPass": {
+     "pass-1": 49,
+     "pass-2": 35
+    },
+    "conflicted": 0,
+    "materialSingleRun": 81,
+    "informationalSingleRun": 3,
+    "materialConflicted": 0,
+    "rejectedUnverifiable": 0
+   },
+   "supportReviewFraction": 0.75,
+   "conflicts": 0,
+   "contradictoryEffectMerges": 0,
+   "falseMergeCandidates": 0,
+   "falseMergeRows": [],
+   "conflictRows": [],
+   "valuesLost": 0,
+   "parentLinks": [
+    70,
+    57,
+    103
+   ],
+   "unaccounted": [
+    0,
+    0,
+    43
+   ],
+   "orderIndependent": true,
+   "rejectedUnverifiable": 0
+  },
+  {
+   "label": "holdout region-net-income (v1; sensitivity)",
+   "algorithm": [
+    "semantic-accountability.v1",
+    "semantic-accountability.v1"
+   ],
+   "itemsA": 61,
+   "itemsB": 47,
+   "canonical": 72,
+   "counts": {
+    "canonicalItems": 72,
+    "corroborated": 36,
+    "singleRun": 36,
+    "singleRunByPass": {
+     "pass-1": 25,
+     "pass-2": 11
+    },
+    "conflicted": 0,
+    "materialSingleRun": 32,
+    "informationalSingleRun": 4,
+    "materialConflicted": 0,
+    "rejectedUnverifiable": 0
+   },
+   "supportReviewFraction": 0.4444,
+   "conflicts": 0,
+   "contradictoryEffectMerges": 0,
+   "falseMergeCandidates": 1,
+   "falseMergeRows": [
+    {
+     "canonical": "inv-item:2e814c3de503117b4a394322",
+     "a": {
+      "span": [
+       1987,
+       2122
+      ],
+      "role": "EXCEPTION",
+      "prop": "Consolidated Net Income is increased by the amount of dividends, other distributions or other payments, per tw",
+      "excerpt": "provided that Consolidated Net Income of a Person will be\nincreased by the amoun"
+     },
+     "b": {
+      "span": [
+       1987,
+       2223
+      ],
+      "role": "CONDITION",
+      "prop": "Proviso to exclusion (6): Consolidated Net Income is increased by amounts actually paid (or that could have be",
+      "excerpt": "provided that Consolidated Net Income of a Person will be\nincreased by the amoun"
+     }
+    }
+   ],
+   "conflictRows": [],
+   "valuesLost": 0,
+   "parentLinks": [
+    60,
+    46,
+    71
+   ],
+   "unaccounted": [
+    0,
+    0,
+    34
+   ],
+   "orderIndependent": true,
+   "rejectedUnverifiable": 0
+  },
+  {
+   "label": "holdout region-secured-net-leverage (v1; sensitivity)",
+   "algorithm": [
+    "semantic-accountability.v1",
+    "semantic-accountability.v1"
+   ],
+   "itemsA": 15,
+   "itemsB": 14,
+   "canonical": 20,
+   "counts": {
+    "canonicalItems": 20,
+    "corroborated": 9,
+    "singleRun": 11,
+    "singleRunByPass": {
+     "pass-1": 6,
+     "pass-2": 5
+    },
+    "conflicted": 0,
+    "materialSingleRun": 11,
+    "informationalSingleRun": 0,
+    "materialConflicted": 0,
+    "rejectedUnverifiable": 0
+   },
+   "supportReviewFraction": 0.55,
+   "conflicts": 0,
+   "contradictoryEffectMerges": 0,
+   "falseMergeCandidates": 0,
+   "falseMergeRows": [],
+   "conflictRows": [],
+   "valuesLost": 0,
+   "parentLinks": [
+    13,
+    12,
+    18
+   ],
+   "unaccounted": [
+    0,
+    0,
+    13
+   ],
+   "orderIndependent": true,
+   "rejectedUnverifiable": 0
+  }
+ ],
+ "recoveryRows": {
+  "F": [
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:6cc18d694b97293840792cd1",
+    "materiality": "MATERIAL",
+    "span": [
+     1911,
+     1943
+    ],
+    "excerpt": "Sections 6.01(b)(7), (8) and (9)",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:6cc18d694b97293840792cd1",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:decaf3458cf8051b8783d992",
+    "materiality": "MATERIAL",
+    "span": [
+     6540,
+     6613
+    ],
+    "excerpt": "(ii) Indebtedness of any Restricted Party that has been converted into or",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:decaf3458cf8051b8783d992",
+    "collapsedWithCounterpart": true,
+    "supportStatus": "CORROBORATED",
+    "inIntersectionOnly": true,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": false
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:3ac15fdf96ceeb85d9aa50a4",
+    "materiality": "MATERIAL",
+    "span": [
+     7024,
+     7125
+    ],
+    "excerpt": "(Y) Disqualified Stock (or Indebtedness that has been converted or exchanged int",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:3ac15fdf96ceeb85d9aa50a4",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:256513e7c7ab5997ece8e707",
+    "materiality": "MATERIAL",
+    "span": [
+     7126,
+     7156
+    ],
+    "excerpt": "or (Z) Excluded Contributions;",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:256513e7c7ab5997ece8e707",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:d4e07eb24f0077cd9d6837f2",
+    "materiality": "MATERIAL",
+    "span": [
+     10159,
+     10202
+    ],
+    "excerpt": "(ii) Retained Asset Sale Proceeds since the",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:d4e07eb24f0077cd9d6837f2",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:210c2c9c9f3110079bcc93ad",
+    "materiality": "CRITICAL",
+    "span": [
+     10463,
+     10538
+    ],
+    "excerpt": "(h) 100% of the aggregate amount received in cash and the Fair Market Value",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:210c2c9c9f3110079bcc93ad",
+    "collapsedWithCounterpart": true,
+    "supportStatus": "CORROBORATED",
+    "inIntersectionOnly": true,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": false
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:7b7eee5232b3ddbe4dca6702",
+    "materiality": "MATERIAL",
+    "span": [
+     10680,
+     10685
+    ],
+    "excerpt": "minus",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:7b7eee5232b3ddbe4dca6702",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:cce79de89d896178253b4062",
+    "materiality": "CRITICAL",
+    "span": [
+     11742,
+     11943
+    ],
+    "excerpt": "or Subordinated Indebtedness of any Restricted Party, or any Equity Interests of",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:e3248dd58c9a9d844beb2e34",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:645cb655bbd3cadd0849b680",
+    "materiality": "MATERIAL",
+    "span": [
+     12243,
+     12272
+    ],
+    "excerpt": "(“ Refunding Capital Stock ”)",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:35f7e5da4b0d8c5d260fb24b",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:0d4df05dc8b1742c7ff0534b",
+    "materiality": "CRITICAL",
+    "span": [
+     12274,
+     12412
+    ],
+    "excerpt": "(b) the declaration and payment of dividends on the Treasury Capital Stock out o",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:0d4df05dc8b1742c7ff0534b",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:310b903c3c03cfc9a78d1554",
+    "materiality": "CRITICAL",
+    "span": [
+     12474,
+     12647
+    ],
+    "excerpt": "and (c) if immediately prior to the retirement of Treasury Capital Stock, the de",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:e30e63e688922207577862f4",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:613b290701b05b3ec953c64c",
+    "materiality": "CRITICAL",
+    "span": [
+     12716,
+     12896
+    ],
+    "excerpt": "(other than Refunding Capital Stock the proceeds of which were used to redeem, p",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:613b290701b05b3ec953c64c",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:7116bf5ef7a2f8591d286386",
+    "materiality": "MATERIAL",
+    "span": [
+     15102,
+     15129
+    ],
+    "excerpt": "succeeding calendar years);",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:7116bf5ef7a2f8591d286386",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:ff7801133b7ca108b95d3197",
+    "materiality": "MATERIAL",
+    "span": [
+     15770,
+     15797
+    ],
+    "excerpt": "succeeding calendar years);",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:ff7801133b7ca108b95d3197",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:133e19c1d584606795338eb3",
+    "materiality": "CRITICAL",
+    "span": [
+     17231,
+     17235
+    ],
+    "excerpt": "less",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:133e19c1d584606795338eb3",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:1a23f665b508e9de8e4731d0",
+    "materiality": "MATERIAL",
+    "span": [
+     18327,
+     18386
+    ],
+    "excerpt": "in each case, issued in accordance with Section 6.01 hereof",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:1a23f665b508e9de8e4731d0",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:9535cfecba93586918386d7b",
+    "materiality": "MATERIAL",
+    "span": [
+     18387,
+     18455
+    ],
+    "excerpt": "to the extent such dividends are included in the definition of Fixed",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:9535cfecba93586918386d7b",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:d1317fa2817a561881c89601",
+    "materiality": "MATERIAL",
+    "span": [
+     18610,
+     18666
+    ],
+    "excerpt": "issued by any Restricted Party after the Effective Date;",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:2915a3877f63a98db4e07308",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:ccfc618dfdb658de0bd0d0a9",
+    "materiality": "CRITICAL",
+    "span": [
+     20153,
+     20203
+    ],
+    "excerpt": "or repurchases or withholdings of Equity Interests",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:ccfc618dfdb658de0bd0d0a9",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:b97e1dbbafc0e99fd75338a0",
+    "materiality": "CRITICAL",
+    "span": [
+     20426,
+     20452
+    ],
+    "excerpt": "or payments in lieu of the",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:b97e1dbbafc0e99fd75338a0",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:7993ce95ecf602a1b5ff1c45",
+    "materiality": "CRITICAL",
+    "span": [
+     20494,
+     20634
+    ],
+    "excerpt": "or withholding obligation with respect to, such options or warrants or other inc",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:2c19b9af8a84ff49f15f4fb5",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:7064b938f4cc8c2632e257e0",
+    "materiality": "CRITICAL",
+    "span": [
+     21112,
+     21149
+    ],
+    "excerpt": "in an amount not to exceed the sum of",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:7064b938f4cc8c2632e257e0",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:ca2d4f7c11533917fc3d3530",
+    "materiality": "CRITICAL",
+    "span": [
+     21691,
+     21835
+    ],
+    "excerpt": "any prepayment, purchase, repurchase, redemption, defeasance, discharge, retirem",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:39189bef30f974ce91b69f2b",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:54421ce716a29adb50ea78c9",
+    "materiality": "MATERIAL",
+    "span": [
+     22526,
+     22681
+    ],
+    "excerpt": "that have been used to incur Indebtedness, Disqualified Stock or Preferred Stock",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:54421ce716a29adb50ea78c9",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:ab7cc08bed35e59b092687ab",
+    "materiality": "CRITICAL",
+    "span": [
+     23458,
+     23478
+    ],
+    "excerpt": "and (II) there is no",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:ab7cc08bed35e59b092687ab",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:fe3c7015a78f95e564bb03eb",
+    "materiality": "CRITICAL",
+    "span": [
+     23953,
+     24061
+    ],
+    "excerpt": "aggregate amount taken together with all other Restricted Payments made pursuant",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:fe3c7015a78f95e564bb03eb",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:63708745f618bc0c68dbb048",
+    "materiality": "CRITICAL",
+    "span": [
+     25489,
+     25602
+    ],
+    "excerpt": "aggregate amount taken together with all other Restricted Debt Payments made pur",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:63708745f618bc0c68dbb048",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:9cafc298c6f3b10255db240e",
+    "materiality": "MATERIAL",
+    "span": [
+     26456,
+     26563
+    ],
+    "excerpt": "federal income tax purposes) of a consolidated, combined, affiliated, unitary or",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:9cafc298c6f3b10255db240e",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:4cb890a5ec1998b322199300",
+    "materiality": "MATERIAL",
+    "span": [
+     26572,
+     26614
+    ],
+    "excerpt": "and/or applicable state, local or non-U.S.",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:4cb890a5ec1998b322199300",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:0f8a11989ee53b30fca48952",
+    "materiality": "MATERIAL",
+    "span": [
+     27250,
+     27287
+    ],
+    "excerpt": "federal income tax purposes) for U.S.",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:0f8a11989ee53b30fca48952",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:0c91179c8d3c16c6c19cad21",
+    "materiality": "MATERIAL",
+    "span": [
+     27288,
+     27330
+    ],
+    "excerpt": "and/or applicable state, local or non-U.S.",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:0c91179c8d3c16c6c19cad21",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:9b6f544f52702ab958e8cf09",
+    "materiality": "MATERIAL",
+    "span": [
+     27450,
+     27466
+    ],
+    "excerpt": "income taxes (or",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:9b6f544f52702ab958e8cf09",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:4fa3b9e1354ff38a10e53f52",
+    "materiality": "MATERIAL",
+    "span": [
+     27975,
+     28012
+    ],
+    "excerpt": "federal, state, local and/or non-U.S.",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:4fa3b9e1354ff38a10e53f52",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:0d1fcb6adb37b10cf1a0a35d",
+    "materiality": "MATERIAL",
+    "span": [
+     28082,
+     28155
+    ],
+    "excerpt": "the Borrowers and/or any of their respective Subsidiaries, as applicable;",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:0d1fcb6adb37b10cf1a0a35d",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:5110cac40f96001de90a14c1",
+    "materiality": "CRITICAL",
+    "span": [
+     33360,
+     33408
+    ],
+    "excerpt": "provided that the aggregate amount of Restricted",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:5110cac40f96001de90a14c1",
+    "collapsedWithCounterpart": true,
+    "supportStatus": "CORROBORATED",
+    "inIntersectionOnly": true,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": false
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-1",
+    "id": "inv-item:76cb45bd4ab183e72bebb3cf",
+    "materiality": "MATERIAL",
+    "span": [
+     36042,
+     36071
+    ],
+    "excerpt": "(except to the extent repaid)",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:76cb45bd4ab183e72bebb3cf",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-2",
+    "id": "inv-item:be7fa1dbef025182ac9eb1ae",
+    "materiality": "CRITICAL",
+    "span": [
+     2886,
+     2962
+    ],
+    "excerpt": "unless, at the time of such Restricted Payment (or the declaration thereof):",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:55803279a1c441fa90c1315f",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-2",
+    "id": "inv-item:9e613227dc5a5efa1627bb42",
+    "materiality": "MATERIAL",
+    "span": [
+     8926,
+     8952
+    ],
+    "excerpt": "after the Effective Date);",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:9e613227dc5a5efa1627bb42",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-2",
+    "id": "inv-item:9f2addd230b397a90c759009",
+    "materiality": "MATERIAL",
+    "span": [
+     10359,
+     10374
+    ],
+    "excerpt": "Section 2.09(b)",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:9f2addd230b397a90c759009",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-2",
+    "id": "inv-item:21ff6c5be66617e473b4763f",
+    "materiality": "MATERIAL",
+    "span": [
+     10910,
+     10929
+    ],
+    "excerpt": "Section 6.01(b)(32)",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:21ff6c5be66617e473b4763f",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-2",
+    "id": "inv-item:9bc81e94daaf96bfb978be98",
+    "materiality": "MATERIAL",
+    "span": [
+     14692,
+     14725
+    ],
+    "excerpt": "retirement or other acquisition);",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:9bc81e94daaf96bfb978be98",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-2",
+    "id": "inv-item:62d388950ad3920e51188216",
+    "materiality": "CRITICAL",
+    "span": [
+     18108,
+     18136
+    ],
+    "excerpt": "provision of this Agreement;",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:62d388950ad3920e51188216",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-2",
+    "id": "inv-item:285f1e2fb48d4c62d91ce59e",
+    "materiality": "MATERIAL",
+    "span": [
+     22689,
+     22736
+    ],
+    "excerpt": "(46)(i) of the definition of “Permitted Liens”;",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:285f1e2fb48d4c62d91ce59e",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-2",
+    "id": "inv-item:83123662324df9afe11428a3",
+    "materiality": "MATERIAL",
+    "span": [
+     25326,
+     25375
+    ],
+    "excerpt": "to the extent permitted by Section 5.18(b) hereof",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:83123662324df9afe11428a3",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-2",
+    "id": "inv-item:8ebff4f01a3f0a2f6152cd0c",
+    "materiality": "MATERIAL",
+    "span": [
+     27562,
+     27646
+    ],
+    "excerpt": "of any direct or indirect equity owner of the Borrowers and/or any of its respec",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:dac963a2677f4ce72461162e",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-2",
+    "id": "inv-item:88ccdcde45bb7f91d6dc9741",
+    "materiality": "MATERIAL",
+    "span": [
+     28744,
+     28826
+    ],
+    "excerpt": "to the extent such salaries, bonuses, severance and other benefits and indemniti",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:88ccdcde45bb7f91d6dc9741",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-2",
+    "id": "inv-item:f35f65450a52eb47ab3aa7fe",
+    "materiality": "CRITICAL",
+    "span": [
+     35394,
+     35635
+    ],
+    "excerpt": "the LCT Test Date, in the case of a Limited Condition Transaction, or the date o",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:f35f65450a52eb47ab3aa7fe",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-2",
+    "id": "inv-item:3b104cbdc2bc6a547237dc53",
+    "materiality": "CRITICAL",
+    "span": [
+     36264,
+     36458
+    ],
+    "excerpt": "Such designation shall be permitted only if a Restricted Payment or Permitted In",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:3b104cbdc2bc6a547237dc53",
+    "collapsedWithCounterpart": true,
+    "supportStatus": "CORROBORATED",
+    "inIntersectionOnly": true,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": false
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-2",
+    "id": "inv-item:b0b5a1a4b38231319fc58f21",
+    "materiality": "CRITICAL",
+    "span": [
+     36498,
+     36582
+    ],
+    "excerpt": "and if such Subsidiary otherwise meets the definition of an Unrestricted Subsidi",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:b0b5a1a4b38231319fc58f21",
+    "collapsedWithCounterpart": true,
+    "supportStatus": "CORROBORATED",
+    "inIntersectionOnly": true,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": false
+   },
+   {
+    "class": "F_TRUE_SEMANTIC_OMISSION",
+    "presentPass": "pass-2",
+    "id": "inv-item:880d72d52663ddd1fe7513b3",
+    "materiality": "CRITICAL",
+    "span": [
+     38444,
+     38528
+    ],
+    "excerpt": "“Permitted Investments,” in a manner that otherwise complies with this Section 6",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:880d72d52663ddd1fe7513b3",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   }
+  ],
+  "B": [
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentPass": "pass-1",
+    "id": "inv-item:679be1302aceaac819a636a5",
+    "materiality": "CRITICAL",
+    "span": [
+     4100,
+     4319
+    ],
+    "excerpt": "fiscal quarter is less than zero), (y) the sum of 100% of Retained Excess Cash F",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:679be1302aceaac819a636a5",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentPass": "pass-2",
+    "id": "inv-item:dcf11322eb23e36949412d67",
+    "materiality": "CRITICAL",
+    "span": [
+     4135,
+     4319
+    ],
+    "excerpt": "(y) the sum of 100% of Retained Excess Cash Flow (which amount shall be deemed t",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:dcf11322eb23e36949412d67",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentPass": "pass-1",
+    "id": "inv-item:e79b8424cca81a04dfe4e759",
+    "materiality": "MATERIAL",
+    "span": [
+     4578,
+     4824
+    ],
+    "excerpt": "the cumulative Consolidated Interest Expense for such applicable fiscal quarter ",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:e79b8424cca81a04dfe4e759",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentPass": "pass-2",
+    "id": "inv-item:8817112967fbe97e9511a6c1",
+    "materiality": "MATERIAL",
+    "span": [
+     4578,
+     4786
+    ],
+    "excerpt": "the cumulative Consolidated Interest Expense for such applicable fiscal quarter ",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:8817112967fbe97e9511a6c1",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentPass": "pass-1",
+    "id": "inv-item:214c9b0a17e4232244456a2b",
+    "materiality": "MATERIAL",
+    "span": [
+     7794,
+     7842
+    ],
+    "excerpt": "(ii) are contributed by a Restricted Subsidiary,",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:214c9b0a17e4232244456a2b",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentPass": "pass-1",
+    "id": "inv-item:8cc6af26af5d27513643ebb7",
+    "materiality": "MATERIAL",
+    "span": [
+     7870,
+     7913
+    ],
+    "excerpt": "or (iv) constitute Excluded Contributions);",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:8cc6af26af5d27513643ebb7",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentPass": "pass-1",
+    "id": "inv-item:bf029f35702216965707d368",
+    "materiality": "MATERIAL",
+    "span": [
+     7843,
+     7869
+    ],
+    "excerpt": "(iii) from ABL Cure Amount",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:bf029f35702216965707d368",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentPass": "pass-2",
+    "id": "inv-item:cba6e1dd200cd4129a09035d",
+    "materiality": "MATERIAL",
+    "span": [
+     7763,
+     7913
+    ],
+    "excerpt": "Section 6.01(b)(12)(a) hereof, (ii) are contributed by a Restricted Subsidiary, ",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:cba6e1dd200cd4129a09035d",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentPass": "pass-1",
+    "id": "inv-item:1b5fd3b9ea84e6b0c6a2a690",
+    "materiality": "CRITICAL",
+    "span": [
+     12031,
+     12080
+    ],
+    "excerpt": "that is made within ninety (90) days of such sale",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:1b5fd3b9ea84e6b0c6a2a690",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentPass": "pass-2",
+    "id": "inv-item:b4751ff187a28c1b7fd5477c",
+    "materiality": "CRITICAL",
+    "span": [
+     11944,
+     12183
+    ],
+    "excerpt": "to a Restricted Subsidiary) of, Equity Interests of the Borrowers or any Parent ",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:b4751ff187a28c1b7fd5477c",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentPass": "pass-1",
+    "id": "inv-item:9ed0c8ec2425d8b2b2e590a1",
+    "materiality": "CRITICAL",
+    "span": [
+     20836,
+     20991
+    ],
+    "excerpt": "the redemption, purchase, repurchase, defeasance or other acquisition or retirem",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:9ed0c8ec2425d8b2b2e590a1",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentPass": "pass-2",
+    "id": "inv-item:eaa6f721fca36ca6f042faca",
+    "materiality": "CRITICAL",
+    "span": [
+     20752,
+     20991
+    ],
+    "excerpt": "any Parent Entity to fund a payment of dividends on such company’s common stock)",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:eaa6f721fca36ca6f042faca",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   }
+  ],
+  "H": [
+   {
+    "class": "H_DEPENDENCY_FRAGMENTATION",
+    "presentPass": "pass-2",
+    "id": "inv-item:ea98bf5eeeba5f9744e99e01",
+    "materiality": "MATERIAL",
+    "span": [
+     4100,
+     4134
+    ],
+    "excerpt": "fiscal quarter is less than zero),",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:ea98bf5eeeba5f9744e99e01",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "H_DEPENDENCY_FRAGMENTATION",
+    "presentPass": "pass-2",
+    "id": "inv-item:a858b0d3cfb71d3226aab515",
+    "materiality": "REVIEW_UNCERTAIN",
+    "span": [
+     4787,
+     4815
+    ],
+    "excerpt": "(which amounts under clauses",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:a858b0d3cfb71d3226aab515",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": false
+   },
+   {
+    "class": "H_DEPENDENCY_FRAGMENTATION",
+    "presentPass": "pass-1",
+    "id": "inv-item:268010a31e11a2805ab30bcb",
+    "materiality": "CRITICAL",
+    "span": [
+     11944,
+     11971
+    ],
+    "excerpt": "to a Restricted Subsidiary)",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:268010a31e11a2805ab30bcb",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "H_DEPENDENCY_FRAGMENTATION",
+    "presentPass": "pass-1",
+    "id": "inv-item:9747b6b73dfd10369b9dee03",
+    "materiality": "CRITICAL",
+    "span": [
+     12081,
+     12183
+    ],
+    "excerpt": "to the extent, in the case of an issuance or sale by a Parent Entity, such amoun",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:9747b6b73dfd10369b9dee03",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "H_DEPENDENCY_FRAGMENTATION",
+    "presentPass": "pass-1",
+    "id": "inv-item:ecc138338556eeabe3d08318",
+    "materiality": "MATERIAL",
+    "span": [
+     11976,
+     12030
+    ],
+    "excerpt": "Equity Interests of the Borrowers or any Parent Entity",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:ecc138338556eeabe3d08318",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "H_DEPENDENCY_FRAGMENTATION",
+    "presentPass": "pass-1",
+    "id": "inv-item:0914469284c7b2179ece8c48",
+    "materiality": "CRITICAL",
+    "span": [
+     20962,
+     20991
+    ],
+    "excerpt": "following consummation of the",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:0914469284c7b2179ece8c48",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   }
+  ],
+  "A": [
+   {
+    "class": "A_IDENTITY_INSTABILITY",
+    "presentPass": "pass-1",
+    "id": "inv-item:3b82c837dbd00494ed1692e9",
+    "materiality": "MATERIAL",
+    "span": [
+     3856,
+     4099
+    ],
+    "excerpt": "Borrower’s most recently ended fiscal quarter for which internal financial state",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:3b82c837dbd00494ed1692e9",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "A_IDENTITY_INSTABILITY",
+    "presentPass": "pass-2",
+    "id": "inv-item:66145a8e287531e8c380c1f2",
+    "materiality": "MATERIAL",
+    "span": [
+     3856,
+     4099
+    ],
+    "excerpt": "Borrower’s most recently ended fiscal quarter for which internal financial state",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:66145a8e287531e8c380c1f2",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "A_IDENTITY_INSTABILITY",
+    "presentPass": "pass-1",
+    "id": "inv-item:10a7bfac749befea4811d607",
+    "materiality": "CRITICAL",
+    "span": [
+     34594,
+     34687
+    ],
+    "excerpt": "or (ii) the Interest Coverage Ratio on a pro forma basis is at least equal to or",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:10a7bfac749befea4811d607",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "A_IDENTITY_INSTABILITY",
+    "presentPass": "pass-2",
+    "id": "inv-item:dd52de2678fb98c7b205ee39",
+    "materiality": "CRITICAL",
+    "span": [
+     34597,
+     34687
+    ],
+    "excerpt": "(ii) the Interest Coverage Ratio on a pro forma basis is at least equal to or gr",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:dd52de2678fb98c7b205ee39",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   }
+  ],
+  "D": [
+   {
+    "class": "D_ROLE_INSTABILITY",
+    "presentPass": "pass-1",
+    "id": "inv-item:101baa255ed97316ac785d5c",
+    "materiality": "MATERIAL",
+    "span": [
+     26826,
+     26884
+    ],
+    "excerpt": "federal, state, local, provincial, territorial or non-U.S.",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:101baa255ed97316ac785d5c",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   },
+   {
+    "class": "D_ROLE_INSTABILITY",
+    "presentPass": "pass-2",
+    "id": "inv-item:6d6a92ad11ce61ed76eb1d38",
+    "materiality": "MATERIAL",
+    "span": [
+     26817,
+     26884
+    ],
+    "excerpt": "any U.S. federal, state, local, provincial, territorial or non-U.S.",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:6d6a92ad11ce61ed76eb1d38",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": true
+   }
+  ],
+  "G": [
+   {
+    "class": "G_TRUE_SEMANTIC_ADDITION",
+    "presentPass": "pass-1",
+    "id": "inv-item:0825a9e582d80cb010158621",
+    "materiality": "INFORMATIONAL",
+    "span": [
+     24774,
+     24779
+    ],
+    "excerpt": "Fees;",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:0825a9e582d80cb010158621",
+    "collapsedWithCounterpart": false,
+    "supportStatus": "SINGLE_RUN",
+    "inIntersectionOnly": false,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": false
+   },
+   {
+    "class": "G_TRUE_SEMANTIC_ADDITION",
+    "presentPass": "pass-2",
+    "id": "inv-item:fdacd2ae37c5fa1f78bf9f44",
+    "materiality": "REVIEW_UNCERTAIN",
+    "span": [
+     35905,
+     35993
+    ],
+    "excerpt": "For purposes of designating any Restricted Subsidiary as an Unrestricted Subsidi",
+    "inCanonicalUnion": true,
+    "canonicalId": "inv-item:fdacd2ae37c5fa1f78bf9f44",
+    "collapsedWithCounterpart": true,
+    "supportStatus": "CORROBORATED",
+    "inIntersectionOnly": true,
+    "inRawUnion": true,
+    "sourceVerified": true,
+    "valuesPreserved": true,
+    "laterReviewRequired": false
+   }
+  ]
+ }
+}

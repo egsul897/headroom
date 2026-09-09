@@ -1,0 +1,39 @@
+{
+ "artifact": "F-5.3A design only (no model invoked): how Pass B / accountability must consume a dual-pass support-aware inventory, the freeze semantics, and the architectural comparison against a hypothetical adjudicator",
+ "passBContract": {
+  "invariant": "Pass B must account for EVERY canonical union proposition. SINGLE_RUN propositions are authoritative inventory: they are consumed or dispositioned exactly like corroborated ones. Support status is provenance, never a filter.",
+  "compilerContext": "the frozen inventory lines Pass B already receives gain a support tag per item ([CORROBORATED] / [SINGLE_RUN pass-2] / [CONFLICTED with <id>]); the accountability obligation text is unchanged (consume or disposition every CRITICAL/MATERIAL item); a CONFLICTED pair is presented as two items with an explicit conflict note and the instruction to disposition BOTH as AMBIGUOUS unless the source itself resolves the conflict - Pass B never picks a side.",
+  "reconciliationExposure": {
+   "REPRESENTED x CORROBORATED": "represented corroborated item - full credit",
+   "REPRESENTED x SINGLE_RUN": "represented singleton item - full accountability credit, but the unit stays REVIEW_REQUIRED for support asymmetry until independently resolved",
+   "UNSUPPORTED x CORROBORATED": "unsupported corroborated item - as today (UNSUPPORTED never earns credit)",
+   "UNSUPPORTED x SINGLE_RUN": "unsupported singleton item - as today, plus support asymmetry",
+   "MISSING_FROM_COMPOSITION x CORROBORATED": "missing corroborated item - semantic incompleteness (as today)",
+   "MISSING_FROM_COMPOSITION x SINGLE_RUN": "missing singleton item - semantic incompleteness; NEVER excused by its singleton status",
+   "CONFLICTED (any disposition)": "conflict - REVIEW_REQUIRED; a REPRESENTED disposition of one side does not resolve the conflict"
+  },
+  "reconciliationItemAdditiveFields": "ReconciliationItem gains support?: ItemSupport copied from the inventory item (same additive shape as SemanticInventoryItem.support); rollup gains counts of represented/unsupported/missing by support status and a conflicts count; SemanticAccountabilityResult.trust gains supportReviewRequired (true when any CRITICAL/MATERIAL item is SINGLE_RUN or CONFLICTED) that maps to REVIEW_REQUIRED exactly like an unresolved cross-reference does today",
+  "resolutionOfSupportAsymmetry": "only by (a) the independent semantic verifier confirming the singleton against the source, (b) human approval recorded as a reviewer correction, or (c) another certified mechanism; never by Pass B consuming it, never by a third model run 'voting'",
+  "generalCovenantIR": "unchanged - support provenance rides on the inventory/reconciliation side only",
+  "freezeSemantics": "the ensemble's frozenContentHash covers canonical propositions (id, semanticFunctions signature, materiality, source span, values), support (status + sorted supporting passes + sorted member ids per pass), the union's own unaccounted source and uninventoried values, and the input pass hashes; it is computed over a sorted part list so Union(pass-1, pass-2) and Union(pass-2, pass-1) hash identically (proven on the paid pair and every control); frozenAt is excluded from equality",
+  "versioning": "algorithmVersion = '<pass algorithm>+semantic-ensemble.v1'; passHashes pin the exact input evidence; a later re-ensemble with a different reconciliation version changes the hash",
+  "passIdentifiers": "generic, caller-supplied (e.g. pass-1 / pass-2 or any label); semantics never key on a literal label; the ensemble sorts pass ids so labels are order-free"
+ },
+ "adjudicationComparison": {
+  "A_supportAwareUnion": {
+   "recall": "union of both passes - nothing either pass found is dropped (paid pair: 50/50 F omissions retained, frozen reference recall 1.0)",
+   "provenance": "every canonical item lists its supporting passes and member ids; the freeze hash binds them",
+   "conservativeTrust": "singletons and conflicts force REVIEW_REQUIRED; raw coverage recomputed over the union stays authoritative (paid pair: 19 both-run gaps still block)",
+   "auditability": "an auditor can reconstruct which pass said what for every item without re-running anything",
+   "silentDeletion": "none by construction; INTERSECTION_ONLY (the delete rule) was measured and rejected: it would drop 45 of 50 omitted propositions and lower quantitative reference recall to 0.9333"
+  },
+  "B_adjudicateToOneAnswer": {
+   "recall": "bounded above by the union and reduced whenever the adjudicator sides against a genuine singleton; on the paid pair 112 material singletons would each be a coin the adjudicator must call",
+   "provenance": "lost unless the adjudicator's inputs and decision are themselves frozen - a third stochastic layer that itself needs a stability proof",
+   "conservativeTrust": "converts explicit support asymmetry back into an unmarked single answer: a wrong adjudication is a silent omission again (exactly the F-5 failure mode)",
+   "auditability": "requires trusting the adjudicator's judgment; disagreements are not visible after the fact",
+   "silentDeletion": "inherent: every adjudicated-away singleton is deleted without a raw-coverage trace when a broader item covers its text (34 of the 50 F cases were exactly that shape)"
+  },
+  "conclusion": "the support-aware union dominates on every property the mission lists; an adjudicator is at best a later, separately certified RESOLUTION mechanism for singletons (section 6), never the discovery unit. Not implemented."
+ }
+}
