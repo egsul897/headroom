@@ -1,0 +1,188 @@
+{
+ "artifact": "F-3 final summary - verifier quantitative scale normalization (generic, agreement-independent; 0 model calls)",
+ "missionStartingSha": "02af0865b094757814c354fb7c184bac3add4b1f",
+ "endingSha": "the commit that carries this artifact (git log -1 -- docs/phase-3-remediation-f3); no other SHA field exists in this artifact",
+ "at": "2026-09-10T17:25:11.355973Z",
+ "paid": {
+  "incrementalPaidCalls": 0,
+  "incrementalPaidCostUsd": 0.0,
+  "ledger": "no provider client was constructed in any script or test of this mission (replay reads frozen JSON; tests are scripted); the gateway balance was not touched"
+ },
+ "productionFilesChanged": [
+  "lib/contract-model/compiler/semantic-verification/amount-parser.ts",
+  "lib/contract-model/compiler/semantic-verification/ir-inventory.ts",
+  "lib/contract-model/compiler/semantic-verification/reconciliation.ts",
+  "lib/contract-model/compiler/semantic-verification/source-inventory.ts",
+  "lib/contract-model/compiler/semantic-verification/types.ts"
+ ],
+ "productionFileHashes": {
+  "lib/contract-model/compiler/semantic-verification/amount-parser.ts": "748edbeb95c74980f59aef7dd86285053c453dc2023b2f310026e41220274d8d",
+  "lib/contract-model/compiler/semantic-verification/ir-inventory.ts": "bb2b010b65bd72ac7e57b09c33c93642e05aa7bf275a752a6053b01b312187ea",
+  "lib/contract-model/compiler/semantic-verification/reconciliation.ts": "2f302277b2ec165a177d4268b6f9b3f226bc19f8ca68dc7085e594a8525a7dc1",
+  "lib/contract-model/compiler/semantic-verification/source-inventory.ts": "b8101fe65e08a70e034565d39cfa1ba8166b33e35ec55ce5097f91adee7802c2",
+  "lib/contract-model/compiler/semantic-verification/types.ts": "6121fc06e1ca2794f9173c7e6fe5ccb5d449452592aad96726890163fd9473d9"
+ },
+ "forbiddenAreasTouched": {
+  "touched": false,
+  "list": [],
+  "check": "diff limited to lib/contract-model/compiler/semantic-verification/{amount-parser.ts (new), source-inventory.ts, reconciliation.ts, ir-inventory.ts, types.ts}; semantic-accountability/, semantic/, ir/, coverage-audit/, discovery, precedent, Pass A prompts, F-5 scorers, human reference set untouched"
+ },
+ "rootCause": {
+  "classification": "B. SCALE_TOKEN_CAPTURED_BUT_DROPPED",
+  "earliestFailingFunction": "lib/contract-model/compiler/semantic-verification/source-inventory.ts :: parseMoney (v1), invoked from PATTERNS[0].parseValue for kind AMOUNT",
+  "before": {
+   "$720.0 million": 720
+  },
+  "after": {
+   "$720.0 million": 720000000
+  }
+ },
+ "fix": {
+  "genericFix": "amount-parser.ts: scale-aware AMOUNT grammar + parseScaledAmount (thousand/million/billion + the source-system's intentional mm/bn abbreviations; symbol, ISO-code and currency-word forms; exact BigInt integer arithmetic; currency carried; ambiguous/malformed scale tokens -> UNRESOLVED, value withheld); source-inventory.ts uses it and records provenance on every AMOUNT item (v2); ir-inventory.ts carries the MONEY literal's currency; reconciliation.ts matches canonical magnitude AND compatible currency, and routes UNRESOLVED amounts to AMBIGUOUS (UNCERTAIN finding) instead of skipping or comparing them",
+  "existingValueRepresentationSufficient": true,
+  "newPrimitiveOrType": "amount-parser.ts (ParsedAmount + parseScaledAmount + AMOUNT_RE); additive optional provenance fields on SourceInventoryItem (parsedAmount, scaleToken, scaleMultiplier, scaleStatus, currency) and currency on IrInventoryItem; no new IR/value model, no formula enums",
+  "scaleGrammar": {
+   "resolved": [
+    "thousand",
+    "million",
+    "billion",
+    "mm",
+    "bn"
+   ],
+   "caseInsensitive": true,
+   "layout": "whitespace/newline between figure and scale; punctuation after ; ) , ( tolerated",
+   "currencyForms": [
+    "$ \u00a3 \u20ac symbols",
+    "US$",
+    "ISO 3-capital-letter code prefix (USD 720 million)",
+    "currency word suffix (720 million dollars / euros / pounds)"
+   ],
+   "unresolvedWithheld": [
+    "m",
+    "k",
+    "mn",
+    "t",
+    "tn",
+    "b",
+    "bb",
+    "mln",
+    "bln",
+    "two scale tokens (\"million billion\")"
+   ],
+   "notMatched": [
+    "bare '720 million' (no currency) is not an AMOUNT to the verifier - never MONEY by inference",
+    "'$ million', 'million' alone",
+    "'AND 100%' (ISO branch is case-sensitive and a figure followed by % is never an amount)"
+   ]
+  },
+  "currencyHandling": "carried, never converted; two stated different currencies never match (NOT_ACCOUNTED_FOR with the currency named, IR side IR_ONLY); a side with no stated currency (IR NUMBER node, pre-F-3 inventory) keeps the pre-existing magnitude-only contract",
+  "dimensionHandling": "AMOUNT / PERCENT / RATIO kinds unchanged and never cross-compared; IR NUMBER nodes continue to inventory as AMOUNT (pre-existing contract, preserved and documented) so a MONEY literal the compiler emitted as a bare NUMBER still reconciles on magnitude",
+  "arithmetic": "BigInt over decimal digits x integer multiplier, divided exactly by 10^fractionDigits; exact:true within Number.MAX_SAFE_INTEGER; comparison keeps reconciliation.ts's relative tolerance 1e-6 (float noise only; canonical values are exact integers)",
+  "provenanceRetained": [
+   "rawText",
+   "parsedAmount",
+   "scaleToken",
+   "scaleMultiplier",
+   "currency",
+   "scaleStatus",
+   "numericValue (canonical)",
+   "charStart/charEnd + sourceCitation",
+   "reconciliation reason: canonical 720000000 USD = 720 x 1000000 \"million\""
+  ],
+  "independenceDesign": "B. fully independent parsing implementations - the verifier reads the raw source text with its own grammar (amount-parser.ts) and never consumes the compiler's normalized number; it deliberately mirrors the source system's intentional scale vocabulary without sharing code, and is stricter (single-letter abbreviations withheld for review). Independence stays meaningful because both sides must independently arrive at the same canonical figure from different evidence (source text vs composed IR) before anything is ACCOUNTED_FOR; the mechanical import-boundary test (semantic-verification-independence) still passes"
+ },
+ "equivalenceResults": {
+  "$720m_forms": {
+   "$720 million": 720000000,
+   "$720.0 million": 720000000,
+   "$0.72 billion": 720000000,
+   "$720,000,000": 720000000,
+   "USD 720 million": 720000000,
+   "720 million dollars": 720000000,
+   "allReconcileAccountedForAgainstMONEY(720000000,USD)": true
+  },
+  "$720m_vs_$721m": "discrepancy (NOT_ACCOUNTED_FOR + IR_ONLY)",
+  "$720m_vs_$720k": "discrepancy",
+  "$720m_vs_\u20ac720m": "discrepancy - currency mismatch named in the reason",
+  "12.5%_vs_15%": "discrepancy",
+  "2.00x_vs_2.50x": "discrepancy",
+  "$1.2b_vs_$1.2m": "discrepancy",
+  "$720m_vs_$720 elephants": "not equal ('$720 elephants' is a plain $720; prose carries no scale)"
+ },
+ "malformedResults": {
+  "$720 million billion": "UNRESOLVED -> value withheld -> AMBIGUOUS (UNCERTAIN finding, review)",
+  "$ million": "no figure -> no AMOUNT item",
+  "million": "no AMOUNT item",
+  "$720 mn": "UNRESOLVED -> review",
+  "$720 m / $720k": "UNRESOLVED -> review (ambiguous single-letter abbreviations)",
+  "$720 mm / $720 bn": "resolved (intentionally supported by the source system)",
+  "approximately $720 million": "720000000; 'approximately' is prose outside the value item",
+  "not more than $720 million": "720000000 + a separate COMPARISON_OPERATOR item 'not more than' (qualifier preserved)"
+ },
+ "chewyReplay": {
+  "replayed": 28,
+  "byClassification": {
+   "CANNOT_REPLAY": 4,
+   "TRUE_DISCREPANCY": 16,
+   "F3_SCALE_ARTIFACT_FIXED": 6,
+   "DIFFERENT_ROOT_CAUSE": 2
+  },
+  "materialBefore": 25,
+  "materialAfter": 19,
+  "deterministicBefore": 24,
+  "deterministicAfter": 18,
+  "materialUnresolvedCountBeforeAfter": [
+   24,
+   18
+  ],
+  "newFindingsIntroduced": 0,
+  "incorrectlySuppressed": 0,
+  "oldReportClaim": "22 of 25 material findings were scale artefacts",
+  "measured": "6 of 25 material findings are F-3 scale artefacts (3 x '$720.0 million' MISSING_BASKET + 3 x MONEY(720000000) UNSUPPORTED_IR_ADDITION); 16 are TRUE_DISCREPANCY ($540M/$252M/$504M, seven percents, four ratios absent from the PARTIAL IR, plus 2 NON_MATERIAL aggregate signals); 2 are DIFFERENT_ROOT_CAUSE (F-4: MONEY(324000000) and PERCENT(0.45) inside a definition the compiler retrieved from outside the verifier's window); 4 SEMANTIC_ONLY reviewer findings CANNOT_REPLAY without a model and are retained",
+  "findingIdNote": "recorded MISSING_BASKET / MISSING_RULE findings share one findingId per type (identity.ts excludes the value) - classification is keyed on each source value's own replay trace; identity is out of scope and disclosed"
+ },
+ "trust": {
+  "valuesLost": 0,
+  "danglingProvenance": 0,
+  "falseCompletenessIntroduced": false,
+  "detail": "the verifier still ends MATERIAL_DISCREPANCY on 6.08 (16 material deterministic + 3 material semantic findings remain); no finding was removed except the six whose canonical USD magnitudes now equal the compiled literal; every AMOUNT item keeps raw text, span and provenance; UNRESOLVED amounts surface for review rather than vanish"
+ },
+ "tests": {
+  "selected": [
+   "f3-verifier-scale-normalization (new, 40)",
+   "semantic-verification-source-inventory",
+   "semantic-verification-ir-inventory",
+   "semantic-verification-verify",
+   "semantic-verification-reviewer",
+   "semantic-verification-condition-remediation",
+   "semantic-verification-independence",
+   "node-supersession-awareness",
+   "semantic-coverage-independence",
+   "tests/certification/*"
+  ],
+  "baseline": "24 failed / 401 passed / 125 skipped at the starting SHA",
+  "after": "24 failed / 441 passed / 125 skipped",
+  "newlyIntroducedFailures": 0,
+  "preExistingFailuresUnchanged": true,
+  "note": "the 24 pre-existing failures are DB/environment-bound certification tests, identical set before and after"
+ },
+ "closureGate": {
+  "1_defectReproduced": true,
+  "2_earliestFailingStageIdentified": true,
+  "3_repairGenericAgreementIndependent": true,
+  "4_scaleValuesNormalizeCorrectly": true,
+  "5_currencyDimensionSemanticsIntact": true,
+  "6_equivalentTextualScalesReconcile": true,
+  "7_genuineDiscrepanciesDetectable": true,
+  "8_malformedInputsNotConfident": true,
+  "9_provenanceSurvives": true,
+  "10_verifierIndependencePreserved": true,
+  "11_chewyFindingsReplayedAndReclassified": true,
+  "12_noFalseCompletenessOrTrustWeakening": true,
+  "13_testsPassNoNewRegression": true,
+  "14_F4_F5_F6_F7_untouched": true,
+  "15_paidCalls0": true,
+  "16_paidCost0": true
+ },
+ "verdict": "F3_CLOSED"
+}

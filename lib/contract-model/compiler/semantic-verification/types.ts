@@ -273,6 +273,15 @@ export interface SourceInventoryItem {
   /** Char offset within the operative source text this item was found in - used for reconciliation-adjacent-window heuristics (e.g. "this MONEY figure sits inside a MAX(...) construction with this PERCENT figure"), never for legal conclusions on its own. */
   charStart: number;
   charEnd: number;
+  /** F-3 (AMOUNT items only): the figure as written before any scale ("$720.0 million" -> 720). Provenance for numericValue. */
+  parsedAmount?: number | null;
+  /** F-3 (AMOUNT items only): the scale word as written ("million"), or null. */
+  scaleToken?: string | null;
+  scaleMultiplier?: number | null;
+  /** F-3 (AMOUNT items only): NONE / RESOLVED / UNRESOLVED - UNRESOLVED withholds numericValue (null) and is reconciled as AMBIGUOUS (review), never as a confident magnitude. */
+  scaleStatus?: "NONE" | "RESOLVED" | "UNRESOLVED";
+  /** F-3 (AMOUNT items only): currency code from the symbol / ISO code / currency word ("USD"), or null when the source states none. Never converted. */
+  currency?: string | null;
 }
 
 export interface SourceInventory {
@@ -315,6 +324,8 @@ export interface IrInventoryItem {
   irPath: string;
   numericValue: number | null;
   textValue: string | null;
+  /** F-3: the IR MONEY literal's own currency code (null for NUMBER/PERCENT/RATIO nodes and for pre-F-3 inventories). */
+  currency?: string | null;
   /** True when this numeric/text value sits inside a MAX/MIN/SCHEDULE alternative-selection construction rather than being an unconditional, independently-operative figure. */
   isAlternativeWithinSelection: boolean;
   sourceCitation: string | null;

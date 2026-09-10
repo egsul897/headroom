@@ -19,13 +19,14 @@ interface WalkCtx {
   items: IrInventoryItem[];
 }
 
-function pushItem(ctx: WalkCtx, kind: IrInventoryItemKind, irPath: string, numericValue: number | null, textValue: string | null, isAlternative: boolean, sourceCitation: string | null, sourceExcerpt: string | null): void {
+function pushItem(ctx: WalkCtx, kind: IrInventoryItemKind, irPath: string, numericValue: number | null, textValue: string | null, isAlternative: boolean, sourceCitation: string | null, sourceExcerpt: string | null, currency: string | null = null): void {
   ctx.items.push({
     itemId: hashParts([ctx.candidateRef, ctx.ruleOrDefinitionId, irPath, kind, String(numericValue), textValue ?? "", IR_INVENTORY_ALGORITHM_VERSION]),
     kind,
     ruleOrDefinitionId: ctx.ruleOrDefinitionId,
     irPath,
     numericValue,
+    currency,
     textValue,
     isAlternativeWithinSelection: isAlternative,
     sourceCitation,
@@ -40,7 +41,8 @@ function walkExpression(ctx: WalkCtx, expr: IRExpression | null, path: string, i
 
   switch (expr.kind) {
     case "MONEY":
-      pushItem(ctx, "AMOUNT", path, expr.amount, null, isAlternative, citation, excerpt);
+      // F-3: the literal's currency travels with the value so reconciliation can refuse a cross-currency "match".
+      pushItem(ctx, "AMOUNT", path, expr.amount, null, isAlternative, citation, excerpt, expr.currency ?? null);
       return;
     case "NUMBER":
       pushItem(ctx, "AMOUNT", path, expr.value, null, isAlternative, citation, excerpt);

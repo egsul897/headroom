@@ -26,8 +26,15 @@ import type { SourceInventory, SourceInventoryItem, SourceInventoryItemKind } fr
 import { EMPTY_SUPERSESSION_INDEX, getNodeSupersessionStatus } from "../amendment/operative-state";
 import type { NodeSupersessionIndex } from "../amendment/types";
 import { CONDITION_SUSPICION_PATTERNS } from "./condition-suspicion";
+import { AMOUNT_RE, parseScaledAmount } from "./amount-parser";
 
-export const SOURCE_INVENTORY_ALGORITHM_VERSION = "phase-3c-source-inventory.v1";
+/**
+ * v2 (F-3, Phase 3 Chewy remediation): AMOUNT parsing is scale-aware (amount-parser.ts). v1's parseMoney stripped the
+ * captured "million"/"billion" token, so "$720.0 million" was inventoried as 720 and mismatched the compiler's
+ * 720000000 - the F-3 false-MATERIAL_DISCREPANCY cluster. Item ids carry this version, so v1 and v2 inventories are
+ * never confused; finding ids (identity.ts) do not depend on item ids and stay comparable across the fix.
+ */
+export const SOURCE_INVENTORY_ALGORITHM_VERSION = "phase-3c-source-inventory.v2";
 
 interface PatternDef {
   kind: SourceInventoryItemKind;
@@ -36,14 +43,10 @@ interface PatternDef {
   parseValue?: (match: RegExpMatchArray) => number | null;
 }
 
-function parseMoney(raw: string): number | null {
-  const digits = raw.replace(/[^\d.]/g, "");
-  const value = Number(digits);
-  return Number.isFinite(value) ? value : null;
-}
-
 const PATTERNS: PatternDef[] = [
-  { kind: "AMOUNT", re: /[$£€]\s?[\d,]+(?:\.\d+)?(?:\s?(?:million|billion))?/gi, parseValue: (m) => parseMoney(m[0]) },
+  // F-3: the AMOUNT grammar and its interpretation live in amount-parser.ts (scale words resolved to the canonical
+  // magnitude with exact integer arithmetic; currency carried; an ambiguous/malformed scale token withholds the value).
+  { kind: "AMOUNT", re: AMOUNT_RE, parseValue: (m) => parseScaledAmount(m[0]).canonicalValue },
   { kind: "PERCENT", re: /\d+(?:\.\d+)?\s?%/g, parseValue: (m) => Number(m[0].replace("%", "").trim()) / 100 },
   { kind: "RATIO", re: /\d+(?:\.\d+)?\s*(?:to\s*1\.0*\b|:\s*1\.0*\b|x\b)/gi, parseValue: (m) => Number((m[0].match(/^\d+(?:\.\d+)?/) ?? ["0"])[0]) },
   { kind: "COMPARISON_OPERATOR", re: /\b(?:greater of|lesser of|not to exceed|not less than|at least|no more than|not more than|shall not exceed|equal to or greater than|equal to or less than)\b/gi },
@@ -121,6 +124,10 @@ export function buildSourceInventory(candidateRef: string, operativeSourceText: 
 
   for (const pattern of PATTERNS) {
     for (const hit of collectPatternMatches(operativeSourceText, pattern.kind, pattern.re, pattern.parseValue)) {
+      // F-3 provenance: for AMOUNT items keep the figure-as-written, the scale token, the multiplier, the currency and
+      // the scale status next to the canonical numericValue, so a reviewer can see why "$720.0 million" became
+      // 720000000 USD (never only the canonical number).
+      const parsed = pattern.kind === "AMOUNT" ? parseScaledAmount(hit.rawText) : null;
       items.push({
         itemId: hashParts([candidateRef, pattern.kind, String(hit.charStart), String(hit.charEnd), SOURCE_INVENTORY_ALGORITHM_VERSION]),
         kind: pattern.kind,
@@ -131,6 +138,7 @@ export function buildSourceInventory(candidateRef: string, operativeSourceText: 
         structuralNodeKey,
         charStart: hit.charStart,
         charEnd: hit.charEnd,
+        ...(parsed ? { parsedAmount: parsed.parsedAmount, scaleToken: parsed.scaleToken, scaleMultiplier: parsed.scaleMultiplier, scaleStatus: parsed.scaleStatus, currency: parsed.currency } : {}),
       });
     }
   }

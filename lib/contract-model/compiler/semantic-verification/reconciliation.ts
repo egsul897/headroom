@@ -24,6 +24,17 @@ function numbersMatch(a: number, b: number): boolean {
 const NUMERIC_KIND_MAP: Record<string, IrInventoryItem["kind"]> = { AMOUNT: "AMOUNT", PERCENT: "PERCENT", RATIO: "RATIO" };
 
 /**
+ * F-3: a source AMOUNT and an IR AMOUNT compare in CANONICAL magnitude (scale already resolved by amount-parser.ts),
+ * and only when their currencies are compatible: two stated, different currencies never match ("$720 million" vs
+ * "€720 million" is not the same figure; no FX conversion exists here). A side with no stated currency (an IR NUMBER
+ * node, a pre-F-3 inventory) stays comparable on magnitude alone - the pre-existing contract, preserved.
+ */
+function currenciesCompatible(source: SourceInventoryItem, ir: IrInventoryItem): boolean {
+  const a = source.currency ?? null, b = ir.currency ?? null;
+  return a === null || b === null || a === b;
+}
+
+/**
  * Numeric reconciliation - the core, reliable deterministic mechanism (task
  * §6's "cheapest reliable mechanism should detect each error class first").
  * A source-stated dollar/percent/ratio figure absent from every compiled
@@ -38,15 +49,24 @@ function reconcileNumericItems(sourceItems: SourceInventoryItem[], irItems: IrIn
   const claimedIrItemIds = new Set<string>();
 
   for (const sourceItem of sourceItems) {
-    if (sourceItem.numericValue === null) continue;
     const irKind = NUMERIC_KIND_MAP[sourceItem.kind];
     if (!irKind) continue;
-    const matches = irItems.filter((ir) => ir.kind === irKind && ir.numericValue !== null && numbersMatch(ir.numericValue, sourceItem.numericValue!));
+    if (sourceItem.numericValue === null) {
+      // F-3: an AMOUNT whose scale token could not be resolved safely ("$720 mn", "$720 million billion") is never a
+      // confident number - it is surfaced for review as AMBIGUOUS, never silently skipped and never compared.
+      if (sourceItem.kind === "AMOUNT" && sourceItem.scaleStatus === "UNRESOLVED") items.push({ classification: "AMBIGUOUS", sourceItem, irItems: [], reason: `source AMOUNT "${sourceItem.rawText}" carries a scale token this grammar does not resolve (${sourceItem.scaleToken ?? "?"}) - magnitude withheld, review required` });
+      continue;
+    }
+    const magnitudeMatches = irItems.filter((ir) => ir.kind === irKind && ir.numericValue !== null && numbersMatch(ir.numericValue, sourceItem.numericValue!));
+    const matches = irKind === "AMOUNT" ? magnitudeMatches.filter((ir) => currenciesCompatible(sourceItem, ir)) : magnitudeMatches;
+    const provenance = sourceItem.kind === "AMOUNT" ? ` (canonical ${sourceItem.numericValue}${sourceItem.currency ? ` ${sourceItem.currency}` : ""}${sourceItem.scaleStatus === "RESOLVED" ? ` = ${sourceItem.parsedAmount} x ${sourceItem.scaleMultiplier} "${sourceItem.scaleToken}"` : ""})` : "";
     if (matches.length > 0) {
       for (const m of matches) claimedIrItemIds.add(m.itemId);
-      items.push({ classification: "ACCOUNTED_FOR", sourceItem, irItems: matches, reason: `source ${sourceItem.kind} ${sourceItem.numericValue} matches ${matches.length} compiled IR ${irKind} node(s)` });
+      items.push({ classification: "ACCOUNTED_FOR", sourceItem, irItems: matches, reason: `source ${sourceItem.kind} ${sourceItem.numericValue}${provenance} matches ${matches.length} compiled IR ${irKind} node(s)` });
+    } else if (magnitudeMatches.length > 0) {
+      items.push({ classification: "NOT_ACCOUNTED_FOR", sourceItem, irItems: [], reason: `source ${sourceItem.kind} ${sourceItem.numericValue} ${sourceItem.currency ?? ""} (from "${sourceItem.rawText}")${provenance} matches the magnitude of ${magnitudeMatches.length} compiled IR ${irKind} node(s) but in a different currency (${[...new Set(magnitudeMatches.map((m) => m.currency ?? "(none)"))].join(", ")}) - not the same figure` });
     } else {
-      items.push({ classification: "NOT_ACCOUNTED_FOR", sourceItem, irItems: [], reason: `source ${sourceItem.kind} ${sourceItem.numericValue} (from "${sourceItem.rawText}") does not appear as a ${irKind} value anywhere in the compiled IR` });
+      items.push({ classification: "NOT_ACCOUNTED_FOR", sourceItem, irItems: [], reason: `source ${sourceItem.kind} ${sourceItem.numericValue} (from "${sourceItem.rawText}")${provenance} does not appear as a ${irKind} value anywhere in the compiled IR` });
     }
   }
 

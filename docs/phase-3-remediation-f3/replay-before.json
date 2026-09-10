@@ -1,0 +1,1303 @@
+{
+ "artifact": "F-3 verifier deterministic replay (before) over frozen Chewy 6.08 - 0 model calls",
+ "label": "before",
+ "gitSha": "02af0865b094757814c354fb7c184bac3add4b1f",
+ "at": "2026-09-10T17:17:01.532Z",
+ "inputs": {
+  "unit": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/unit-6.08.json",
+  "unitSha256": "fc147145c2db7df77bfb7122b8442d3fe21f5645b5c4782b791ffa942c8b750c",
+  "operativeTextChars": 38529,
+  "operativeTextSha256": "98b4d151d733483b6e63d1bfce14b3bbfe79d46d1583498442eb73c7a22a51a9",
+  "rules": 38,
+  "definitions": 6,
+  "verifierOperativeSource": "SUPPLIED_WINDOW",
+  "recordedVerifierAlgorithm": "phase-3c-semantic-verifier.v1"
+ },
+ "reproduction": {
+  "sourceNumericItemsMatchRecorded": true,
+  "recordedSourceNumeric": [
+   {
+    "kind": "AMOUNT",
+    "rawText": "$540.0 million",
+    "numericValue": 540,
+    "charStart": 9958
+   },
+   {
+    "kind": "AMOUNT",
+    "rawText": "$252.0 million",
+    "numericValue": 252,
+    "charStart": 14875
+   },
+   {
+    "kind": "AMOUNT",
+    "rawText": "$504.0 million",
+    "numericValue": 504,
+    "charStart": 15541
+   },
+   {
+    "kind": "AMOUNT",
+    "rawText": "$720.0 million",
+    "numericValue": 720,
+    "charStart": 24095
+   },
+   {
+    "kind": "AMOUNT",
+    "rawText": "$720.0 million",
+    "numericValue": 720,
+    "charStart": 25636
+   },
+   {
+    "kind": "AMOUNT",
+    "rawText": "$720.0 million",
+    "numericValue": 720,
+    "charStart": 33508
+   },
+   {
+    "kind": "PERCENT",
+    "rawText": "50%",
+    "numericValue": 0.5,
+    "charStart": 3576
+   },
+   {
+    "kind": "PERCENT",
+    "rawText": "100%",
+    "numericValue": 1,
+    "charStart": 4150
+   },
+   {
+    "kind": "PERCENT",
+    "rawText": "140%",
+    "numericValue": 1.4,
+    "charStart": 4570
+   },
+   {
+    "kind": "PERCENT",
+    "rawText": "100%",
+    "numericValue": 1,
+    "charStart": 5085
+   },
+   {
+    "kind": "PERCENT",
+    "rawText": "100%",
+    "numericValue": 1,
+    "charStart": 7167
+   },
+   {
+    "kind": "PERCENT",
+    "rawText": "100%",
+    "numericValue": 1,
+    "charStart": 7924
+   },
+   {
+    "kind": "PERCENT",
+    "rawText": "75%",
+    "numericValue": 0.75,
+    "charStart": 9981
+   },
+   {
+    "kind": "PERCENT",
+    "rawText": "100%",
+    "numericValue": 1,
+    "charStart": 10467
+   },
+   {
+    "kind": "PERCENT",
+    "rawText": "35%",
+    "numericValue": 0.35,
+    "charStart": 14898
+   },
+   {
+    "kind": "PERCENT",
+    "rawText": "70.0%",
+    "numericValue": 0.7,
+    "charStart": 15564
+   },
+   {
+    "kind": "PERCENT",
+    "rawText": "6.0%",
+    "numericValue": 0.06,
+    "charStart": 21154
+   },
+   {
+    "kind": "PERCENT",
+    "rawText": "7.0%",
+    "numericValue": 0.07,
+    "charStart": 21579
+   },
+   {
+    "kind": "PERCENT",
+    "rawText": "100%",
+    "numericValue": 1,
+    "charStart": 24118
+   },
+   {
+    "kind": "PERCENT",
+    "rawText": "100%",
+    "numericValue": 1,
+    "charStart": 25659
+   },
+   {
+    "kind": "PERCENT",
+    "rawText": "100%",
+    "numericValue": 1,
+    "charStart": 33531
+   },
+   {
+    "kind": "RATIO",
+    "rawText": "2.00:1.00",
+    "numericValue": 2,
+    "charStart": 23136
+   },
+   {
+    "kind": "RATIO",
+    "rawText": "1.75:1.00",
+    "numericValue": 1.75,
+    "charStart": 23344
+   },
+   {
+    "kind": "RATIO",
+    "rawText": "2.00x",
+    "numericValue": 2,
+    "charStart": 34488
+   },
+   {
+    "kind": "RATIO",
+    "rawText": "1.75:1.00",
+    "numericValue": 1.75,
+    "charStart": 34692
+   }
+  ],
+  "reconciliationCounts": {
+   "ACCOUNTED_FOR": 53,
+   "POSSIBLY_ACCOUNTED_FOR": 388,
+   "NOT_ACCOUNTED_FOR": 17,
+   "IR_ONLY": 5,
+   "AMBIGUOUS": 2
+  },
+  "recordedReconciliationCounts": {
+   "ACCOUNTED_FOR": 53,
+   "POSSIBLY_ACCOUNTED_FOR": 388,
+   "NOT_ACCOUNTED_FOR": 17,
+   "IR_ONLY": 5,
+   "AMBIGUOUS": 2
+  },
+  "materialUnresolvedCount": 24,
+  "recordedMaterialUnresolvedCount": 24,
+  "deterministicFindings": 24,
+  "recordedDeterministicFindings": 24,
+  "deterministicFindingIdsIdenticalToRecorded": true,
+  "materialDeterministic": 22,
+  "recordedMaterialDeterministic": 22
+ },
+ "irNumericValues": {
+  "AMOUNT": [
+   324000000,
+   720000000
+  ],
+  "PERCENT": [
+   0.45,
+   1
+  ],
+  "RATIO": []
+ },
+ "trace": [
+  {
+   "kind": "AMOUNT",
+   "rawText": "$540.0 million",
+   "charStart": 9958,
+   "charEnd": 9972,
+   "sourceExcerpt": " made after the Effective Date; plus (f) the greater of (x) $540.0 million and (y) 75% of Consolidated EBITDA for ",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 540,
+   "compilerSideValuesCompared": [
+    324000000,
+    720000000
+   ],
+   "classification": "NOT_ACCOUNTED_FOR",
+   "reason": "source AMOUNT 540 (from \"$540.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR",
+   "finding": {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL"
+   }
+  },
+  {
+   "kind": "AMOUNT",
+   "rawText": "$252.0 million",
+   "charStart": 14875,
+   "charEnd": 14889,
+   "sourceExcerpt": "b)(4) do not exceed in any calendar year the greater of (x) $252.0 million and (y) 35% of Consolidated EBITDA for ",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 252,
+   "compilerSideValuesCompared": [
+    324000000,
+    720000000
+   ],
+   "classification": "NOT_ACCOUNTED_FOR",
+   "reason": "source AMOUNT 252 (from \"$252.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR",
+   "finding": {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL"
+   }
+  },
+  {
+   "kind": "AMOUNT",
+   "rawText": "$504.0 million",
+   "charStart": 15541,
+   "charEnd": 15555,
+   "sourceExcerpt": "tribution, such amount shall increase to the greater of (x) $504.0 million and (y) 70.0% of Consolidated EBITDA fo",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 504,
+   "compilerSideValuesCompared": [
+    324000000,
+    720000000
+   ],
+   "classification": "NOT_ACCOUNTED_FOR",
+   "reason": "source AMOUNT 504 (from \"$504.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR",
+   "finding": {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL"
+   }
+  },
+  {
+   "kind": "AMOUNT",
+   "rawText": "$720.0 million",
+   "charStart": 24095,
+   "charEnd": 24109,
+   "sourceExcerpt": "o this Section 6.08(b)(12) not to exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA for",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 720,
+   "compilerSideValuesCompared": [
+    324000000,
+    720000000
+   ],
+   "classification": "NOT_ACCOUNTED_FOR",
+   "reason": "source AMOUNT 720 (from \"$720.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR",
+   "finding": {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL"
+   }
+  },
+  {
+   "kind": "AMOUNT",
+   "rawText": "$720.0 million",
+   "charStart": 25636,
+   "charEnd": 25650,
+   "sourceExcerpt": "o this Section 6.08(b)(15) not to exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA of ",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 720,
+   "compilerSideValuesCompared": [
+    324000000,
+    720000000
+   ],
+   "classification": "NOT_ACCOUNTED_FOR",
+   "reason": "source AMOUNT 720 (from \"$720.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR",
+   "finding": {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL"
+   }
+  },
+  {
+   "kind": "AMOUNT",
+   "rawText": "$720.0 million",
+   "charStart": 33508,
+   "charEnd": 33522,
+   "sourceExcerpt": "n this clause (21)(iii) shall not exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA for",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 720,
+   "compilerSideValuesCompared": [
+    324000000,
+    720000000
+   ],
+   "classification": "NOT_ACCOUNTED_FOR",
+   "reason": "source AMOUNT 720 (from \"$720.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR",
+   "finding": {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL"
+   }
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "50%",
+   "charStart": 3576,
+   "charEnd": 3579,
+   "sourceExcerpt": "erein as the “ Available Amount ”): (a) the greater of (x) 50% of the Consolidated Net Income of the R",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 0.5,
+   "compilerSideValuesCompared": [
+    0.45,
+    1
+   ],
+   "classification": "NOT_ACCOUNTED_FOR",
+   "reason": "source PERCENT 0.5 (from \"50%\") does not appear as a PERCENT value anywhere in the compiled IR",
+   "finding": {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL"
+   }
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "100%",
+   "charStart": 4150,
+   "charEnd": 4154,
+   "sourceExcerpt": " for such fiscal quarter is less than zero), (y) the sum of 100% of Retained Excess Cash Flow (which amo",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 1,
+   "compilerSideValuesCompared": [
+    0.45,
+    1
+   ],
+   "classification": "ACCOUNTED_FOR",
+   "reason": "source PERCENT 1 matches 3 compiled IR PERCENT node(s)",
+   "finding": null
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "140%",
+   "charStart": 4570,
+   "charEnd": 4574,
+   "sourceExcerpt": "iscal quarter in which the Effective Date occurs, minus (B) 140% of the cumulative Consolidated Interest",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 1.4,
+   "compilerSideValuesCompared": [
+    0.45,
+    1
+   ],
+   "classification": "NOT_ACCOUNTED_FOR",
+   "reason": "source PERCENT 1.4 (from \"140%\") does not appear as a PERCENT value anywhere in the compiled IR",
+   "finding": {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL"
+   }
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "100%",
+   "charStart": 5085,
+   "charEnd": 5089,
+   "sourceExcerpt": " there is a continuing Specified Event of Default; plus (b) 100% of the aggregate net cash proceeds and ",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 1,
+   "compilerSideValuesCompared": [
+    0.45,
+    1
+   ],
+   "classification": "ACCOUNTED_FOR",
+   "reason": "source PERCENT 1 matches 3 compiled IR PERCENT node(s)",
+   "finding": null
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "100%",
+   "charStart": 7167,
+   "charEnd": 7171,
+   "sourceExcerpt": "isqualified Stock) or (Z) Excluded Contributions; plus (c) 100% of the aggregate amount of cash and the",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 1,
+   "compilerSideValuesCompared": [
+    0.45,
+    1
+   ],
+   "classification": "ACCOUNTED_FOR",
+   "reason": "source PERCENT 1 matches 3 compiled IR PERCENT node(s)",
+   "finding": null
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "100%",
+   "charStart": 7924,
+   "charEnd": 7928,
+   "sourceExcerpt": "mount or (iv) constitute Excluded Contributions); plus (d) 100% of the aggregate amount received in cas",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 1,
+   "compilerSideValuesCompared": [
+    0.45,
+    1
+   ],
+   "classification": "ACCOUNTED_FOR",
+   "reason": "source PERCENT 1 matches 3 compiled IR PERCENT node(s)",
+   "finding": null
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "75%",
+   "charStart": 9981,
+   "charEnd": 9984,
+   "sourceExcerpt": "ve Date; plus (f) the greater of (x) $540.0 million and (y) 75% of Consolidated EBITDA for the most rec",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 0.75,
+   "compilerSideValuesCompared": [
+    0.45,
+    1
+   ],
+   "classification": "NOT_ACCOUNTED_FOR",
+   "reason": "source PERCENT 0.75 (from \"75%\") does not appear as a PERCENT value anywhere in the compiled IR",
+   "finding": {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL"
+   }
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "100%",
+   "charStart": 10467,
+   "charEnd": 10471,
+   "sourceExcerpt": "s), as determined by the Initial Borrower; plus -144- (h) 100% of the aggregate amount received in cas",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 1,
+   "compilerSideValuesCompared": [
+    0.45,
+    1
+   ],
+   "classification": "ACCOUNTED_FOR",
+   "reason": "source PERCENT 1 matches 3 compiled IR PERCENT node(s)",
+   "finding": null
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "35%",
+   "charStart": 14898,
+   "charEnd": 14901,
+   "sourceExcerpt": "any calendar year the greater of (x) $252.0 million and (y) 35% of Consolidated EBITDA for the most rec",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 0.35,
+   "compilerSideValuesCompared": [
+    0.45,
+    1
+   ],
+   "classification": "NOT_ACCOUNTED_FOR",
+   "reason": "source PERCENT 0.35 (from \"35%\") does not appear as a PERCENT value anywhere in the compiled IR",
+   "finding": {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL"
+   }
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "70.0%",
+   "charStart": 15564,
+   "charEnd": 15569,
+   "sourceExcerpt": "shall increase to the greater of (x) $504.0 million and (y) 70.0% of Consolidated EBITDA for the most rec",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 0.7,
+   "compilerSideValuesCompared": [
+    0.45,
+    1
+   ],
+   "classification": "NOT_ACCOUNTED_FOR",
+   "reason": "source PERCENT 0.7 (from \"70.0%\") does not appear as a PERCENT value anywhere in the compiled IR",
+   "finding": {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL"
+   }
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "6.0%",
+   "charStart": 21154,
+   "charEnd": 21158,
+   "sourceExcerpt": "e Effective Date, in an amount not to exceed the sum of (A) 6.0% per annum of the net cash proceeds rece",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 0.06,
+   "compilerSideValuesCompared": [
+    0.45,
+    1
+   ],
+   "classification": "NOT_ACCOUNTED_FOR",
+   "reason": "source PERCENT 0.06 (from \"6.0%\") does not appear as a PERCENT value anywhere in the compiled IR",
+   "finding": {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL"
+   }
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "7.0%",
+   "charStart": 21579,
+   "charEnd": 21583,
+   "sourceExcerpt": "ibution and (B) an aggregate amount per annum not to exceed 7.0% of Market Capitalization, or (b) in lie",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 0.07,
+   "compilerSideValuesCompared": [
+    0.45,
+    1
+   ],
+   "classification": "NOT_ACCOUNTED_FOR",
+   "reason": "source PERCENT 0.07 (from \"7.0%\") does not appear as a PERCENT value anywhere in the compiled IR",
+   "finding": {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL"
+   }
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "100%",
+   "charStart": 24118,
+   "charEnd": 24122,
+   "sourceExcerpt": "12) not to exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA for the most rec",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 1,
+   "compilerSideValuesCompared": [
+    0.45,
+    1
+   ],
+   "classification": "ACCOUNTED_FOR",
+   "reason": "source PERCENT 1 matches 3 compiled IR PERCENT node(s)",
+   "finding": null
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "100%",
+   "charStart": 25659,
+   "charEnd": 25663,
+   "sourceExcerpt": "15) not to exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA of the Initial B",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 1,
+   "compilerSideValuesCompared": [
+    0.45,
+    1
+   ],
+   "classification": "ACCOUNTED_FOR",
+   "reason": "source PERCENT 1 matches 3 compiled IR PERCENT node(s)",
+   "finding": null
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "100%",
+   "charStart": 33531,
+   "charEnd": 33535,
+   "sourceExcerpt": " shall not exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA for the most rec",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 1,
+   "compilerSideValuesCompared": [
+    0.45,
+    1
+   ],
+   "classification": "ACCOUNTED_FOR",
+   "reason": "source PERCENT 1 matches 3 compiled IR PERCENT node(s)",
+   "finding": null
+  },
+  {
+   "kind": "RATIO",
+   "rawText": "2.00:1.00",
+   "charStart": 23136,
+   "charEnd": 23145,
+   "sourceExcerpt": "e Initial Borrower for the Test Period would not exceed (A) 2.00:1.00 or (B) the First Lien Leverage Ratio as",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 2,
+   "compilerSideValuesCompared": [],
+   "classification": "NOT_ACCOUNTED_FOR",
+   "reason": "source RATIO 2 (from \"2.00:1.00\") does not appear as a RATIO value anywhere in the compiled IR",
+   "finding": {
+    "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+    "findingType": "MISSING_RULE",
+    "severity": "MATERIAL"
+   }
+  },
+  {
+   "kind": "RATIO",
+   "rawText": "1.75:1.00",
+   "charStart": 23344,
+   "charEnd": 23353,
+   "sourceExcerpt": " a pro forma basis is at least equal to or greater than (A) 1.75:1.00 or (B) the Interest Coverage Ratio leve",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 1.75,
+   "compilerSideValuesCompared": [],
+   "classification": "NOT_ACCOUNTED_FOR",
+   "reason": "source RATIO 1.75 (from \"1.75:1.00\") does not appear as a RATIO value anywhere in the compiled IR",
+   "finding": {
+    "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+    "findingType": "MISSING_RULE",
+    "severity": "MATERIAL"
+   }
+  },
+  {
+   "kind": "RATIO",
+   "rawText": "2.00x",
+   "charStart": 34488,
+   "charEnd": 34493,
+   "sourceExcerpt": "or the most recently ended Test Period would not exceed (A) 2.00x or (B) the First Lien Leverage Ratio as",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 2,
+   "compilerSideValuesCompared": [],
+   "classification": "NOT_ACCOUNTED_FOR",
+   "reason": "source RATIO 2 (from \"2.00x\") does not appear as a RATIO value anywhere in the compiled IR",
+   "finding": {
+    "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+    "findingType": "MISSING_RULE",
+    "severity": "MATERIAL"
+   }
+  },
+  {
+   "kind": "RATIO",
+   "rawText": "1.75:1.00",
+   "charStart": 34692,
+   "charEnd": 34701,
+   "sourceExcerpt": " a pro forma basis is at least equal to or greater than (A) 1.75:1.00 or (B) the Interest Coverage Ratio leve",
+   "parsedAmount": null,
+   "scaleToken": null,
+   "scaleMultiplier": null,
+   "currency": null,
+   "scaleStatus": null,
+   "verifierCanonicalValue": 1.75,
+   "compilerSideValuesCompared": [],
+   "classification": "NOT_ACCOUNTED_FOR",
+   "reason": "source RATIO 1.75 (from \"1.75:1.00\") does not appear as a RATIO value anywhere in the compiled IR",
+   "finding": {
+    "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+    "findingType": "MISSING_RULE",
+    "severity": "MATERIAL"
+   }
+  }
+ ],
+ "irOnly": [
+  {
+   "kind": "AMOUNT",
+   "irPath": "rules[15].capacityExpression.operands[0]",
+   "value": 720000000,
+   "currency": null,
+   "reason": "compiled IR AMOUNT value 720000000 at rules[15].capacityExpression.operands[0] has no matching source-side figure",
+   "finding": "61df4151ac445a45d60a7f2357246f15d8b1331bc253003140476d0b8734984b"
+  },
+  {
+   "kind": "AMOUNT",
+   "irPath": "rules[18].capacityExpression.operands[0]",
+   "value": 720000000,
+   "currency": null,
+   "reason": "compiled IR AMOUNT value 720000000 at rules[18].capacityExpression.operands[0] has no matching source-side figure",
+   "finding": "b29f3c195fb467ec9b1304ddc3d41a08e6dd7bc232cfe4d63c1ba717758701bd"
+  },
+  {
+   "kind": "AMOUNT",
+   "irPath": "rules[25].capacityExpression.operands[0]",
+   "value": 720000000,
+   "currency": null,
+   "reason": "compiled IR AMOUNT value 720000000 at rules[25].capacityExpression.operands[0] has no matching source-side figure",
+   "finding": "42ea9754fc75d64ee40a3a3540951f9df5c73e264432ff2bdbd16efd968eeb55"
+  },
+  {
+   "kind": "AMOUNT",
+   "irPath": "definitions[2].calculationExpression.operands[0]",
+   "value": 324000000,
+   "currency": null,
+   "reason": "compiled IR AMOUNT value 324000000 at definitions[2].calculationExpression.operands[0] has no matching source-side figure",
+   "finding": "844f0a36f675e721815f0b9249d7c8967f7d342e398a4dd309025cf0eba5aca7"
+  },
+  {
+   "kind": "PERCENT",
+   "irPath": "definitions[2].calculationExpression.operands[1].operands[0]",
+   "value": 0.45,
+   "currency": null,
+   "reason": "compiled IR PERCENT value 0.45 at definitions[2].calculationExpression.operands[1].operands[0] has no matching source-side figure",
+   "finding": "c75b8e97b3d7ff939b81acf03721dcd51688f4e77ce62e7774537af30ca40241"
+  }
+ ],
+ "findings": [
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "$540.0 million",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source AMOUNT 540 (from \"$540.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "$252.0 million",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source AMOUNT 252 (from \"$252.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "$504.0 million",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source AMOUNT 504 (from \"$504.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "$720.0 million",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source AMOUNT 720 (from \"$720.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "$720.0 million",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source AMOUNT 720 (from \"$720.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "$720.0 million",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source AMOUNT 720 (from \"$720.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "50%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 0.5 (from \"50%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "140%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 1.4 (from \"140%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "75%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 0.75 (from \"75%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "35%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 0.35 (from \"35%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "70.0%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 0.7 (from \"70.0%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "6.0%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 0.06 (from \"6.0%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "7.0%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 0.07 (from \"7.0%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "2.00:1.00",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source RATIO 2 (from \"2.00:1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "1.75:1.00",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source RATIO 1.75 (from \"1.75:1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "2.00x",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source RATIO 2 (from \"2.00x\") does not appear as a RATIO value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "1.75:1.00",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source RATIO 1.75 (from \"1.75:1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "61df4151ac445a45d60a7f2357246f15d8b1331bc253003140476d0b8734984b",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severity": "MATERIAL",
+   "irPath": "rules[15].capacityExpression.operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole ca",
+   "proposedIrEvidence": "rules[15].capacityExpression.operands[0]=720000000",
+   "reasoning": "compiled IR AMOUNT value 720000000 at rules[15].capacityExpression.operands[0] has no matching source-side figure"
+  },
+  {
+   "findingId": "b29f3c195fb467ec9b1304ddc3d41a08e6dd7bc232cfe4d63c1ba717758701bd",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severity": "MATERIAL",
+   "irPath": "rules[18].capacityExpression.operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole ca",
+   "proposedIrEvidence": "rules[18].capacityExpression.operands[0]=720000000",
+   "reasoning": "compiled IR AMOUNT value 720000000 at rules[18].capacityExpression.operands[0] has no matching source-side figure"
+  },
+  {
+   "findingId": "42ea9754fc75d64ee40a3a3540951f9df5c73e264432ff2bdbd16efd968eeb55",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severity": "MATERIAL",
+   "irPath": "rules[25].capacityExpression.operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole ca",
+   "proposedIrEvidence": "rules[25].capacityExpression.operands[0]=720000000",
+   "reasoning": "compiled IR AMOUNT value 720000000 at rules[25].capacityExpression.operands[0] has no matching source-side figure"
+  },
+  {
+   "findingId": "844f0a36f675e721815f0b9249d7c8967f7d342e398a4dd309025cf0eba5aca7",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severity": "MATERIAL",
+   "irPath": "definitions[2].calculationExpression.operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole ca",
+   "proposedIrEvidence": "definitions[2].calculationExpression.operands[0]=324000000",
+   "reasoning": "compiled IR AMOUNT value 324000000 at definitions[2].calculationExpression.operands[0] has no matching source-side figure"
+  },
+  {
+   "findingId": "c75b8e97b3d7ff939b81acf03721dcd51688f4e77ce62e7774537af30ca40241",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severity": "MATERIAL",
+   "irPath": "definitions[2].calculationExpression.operands[1].operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole ca",
+   "proposedIrEvidence": "definitions[2].calculationExpression.operands[1].operands[0]=0.45",
+   "reasoning": "compiled IR PERCENT value 0.45 at definitions[2].calculationExpression.operands[1].operands[0] has no matching source-side figure"
+  },
+  {
+   "findingId": "036538e7a3bb253bc175f08ef0796b8a2b79a7ffba4466d16f1223a291f7d427",
+   "findingType": "WRONG_ENTITY_SCOPE",
+   "severity": "UNCERTAIN",
+   "irPath": null,
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole ca",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source text distinguishes 7 distinct entity-scope term(s) (restricted subsidiaries, restricted subsidiary, borrower, unrestricted subsidiary, guarantor, unrestricted subsidiaries, loan party) but the compiled IR records no entity-scope restriction - possible missing/wrong entity scope"
+  },
+  {
+   "findingId": "d040cc39bc75feb31918694cff828bbc6025e78c569713504bc285f417038401",
+   "findingType": "MISSING_RECLASSIFICATION",
+   "severity": "UNCERTAIN",
+   "irPath": null,
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole ca",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source text contains 4 reclassification/redesignation signal(s) but the compiled IR records no RECLASSIFIABLE_TO/REDESIGNATES_TO dependency - possible missing reclassification right"
+  }
+ ],
+ "recordedFindings": [
+  {
+   "findingId": "bf00d23a6608ceb5ab8fcd2047447fc6cc456cc0e2f2eacd086fbbbf6e18e915",
+   "method": "SEMANTIC_ONLY",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "MATERIAL",
+   "irPath": "definitions[2] (termName: Threshold Amount).calculationExpression",
+   "sourceEvidence": "\"(c) Indebtedness individually having an aggregate principal amount which is bel",
+   "proposedIrEvidence": "The proposed IR defines \"Threshold Amount\" with a fully resolved calculationExpr",
+   "reasoning": "This is a fabricated/unsupported numeric addition: no source text or retrieved context anywhere states that Threshold Amount equals the greater of $324.0 million and 45% of Consolidated EBITDA. Phase "
+  },
+  {
+   "findingId": "debeb1e7a51a2327f6095ce040efb8e4ef8a80342b6812c227584997f14434ef",
+   "method": "SEMANTIC_ONLY",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "MATERIAL",
+   "irPath": "rules[0].entityScope / entityScopeExcluded (and this pattern repeats across essentially every rule in the IR)",
+   "sourceEvidence": "\"The Borrowers shall not, and shall not permit any of their Restricted Subsidiar",
+   "proposedIrEvidence": "The top-level prohibition rule (ir-rule:92f832eccf22ae3e16c08e87), and essential",
+   "reasoning": "The source text is explicit and operative about who is bound: the prohibition runs against the Borrowers and any Restricted Subsidiaries they permit to act, and the source separately and explicitly st"
+  },
+  {
+   "findingId": "64d9e1ac0ffca6aed787661eb8f624ea0b7a33ce14374019548c8d0275e16c60",
+   "method": "SEMANTIC_ONLY",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "MATERIAL",
+   "irPath": "rules[18] (sourceSectionRef 6.08(b)(18)).capacityExpression",
+   "sourceEvidence": "\"(18) the distribution, by dividend or otherwise, or other transfer or dispositi",
+   "proposedIrEvidence": "ir-rule:bbf15a1d53bd3a669ac53eb5 represents this exception as an unconditional U",
+   "reasoning": "This is a real, independently operative limiting proviso in the source (a 'cash-box' carve-out preventing this basket from being used to distribute out an Unrestricted Subsidiary that is merely a cash"
+  },
+  {
+   "findingId": "dfc070b91ea395a30d9cb5dd4c1b8a8d1c4f10734fba12d5c51254c6eb7ab7c2",
+   "method": "SEMANTIC_ONLY",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "UNCERTAIN",
+   "irPath": "definitions[5] (Available Amount).calculationExpression (the resolved MAX node for clause (a), exprId ir-expr:7c9a478627966a15126184bc)",
+   "sourceEvidence": "\"...(which amounts under clauses (x), (y) and (z) shall, in each case, be calcul",
+   "proposedIrEvidence": "The MAX expression for clause (a) of the Available Amount build-up (50% CNI / 10",
+   "reasoning": "Although the overall Available Amount definition is honestly marked AMBIGUOUS due to other unresolved sub-pieces, the specific clause (a) sub-formula is presented as a resolved, usable expression yet "
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "$540.0 million",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source AMOUNT 540 (from \"$540.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "$252.0 million",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source AMOUNT 252 (from \"$252.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "$504.0 million",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source AMOUNT 504 (from \"$504.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "$720.0 million",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source AMOUNT 720 (from \"$720.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "$720.0 million",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source AMOUNT 720 (from \"$720.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "$720.0 million",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source AMOUNT 720 (from \"$720.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "50%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 0.5 (from \"50%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "140%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 1.4 (from \"140%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "75%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 0.75 (from \"75%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "35%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 0.35 (from \"35%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "70.0%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 0.7 (from \"70.0%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "6.0%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 0.06 (from \"6.0%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "7.0%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 0.07 (from \"7.0%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "2.00:1.00",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source RATIO 2 (from \"2.00:1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "1.75:1.00",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source RATIO 1.75 (from \"1.75:1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "2.00x",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source RATIO 2 (from \"2.00x\") does not appear as a RATIO value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "1.75:1.00",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source RATIO 1.75 (from \"1.75:1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "61df4151ac445a45d60a7f2357246f15d8b1331bc253003140476d0b8734984b",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severity": "MATERIAL",
+   "irPath": "rules[15].capacityExpression.operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole ca",
+   "proposedIrEvidence": "rules[15].capacityExpression.operands[0]=720000000",
+   "reasoning": "compiled IR AMOUNT value 720000000 at rules[15].capacityExpression.operands[0] has no matching source-side figure"
+  },
+  {
+   "findingId": "b29f3c195fb467ec9b1304ddc3d41a08e6dd7bc232cfe4d63c1ba717758701bd",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severity": "MATERIAL",
+   "irPath": "rules[18].capacityExpression.operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole ca",
+   "proposedIrEvidence": "rules[18].capacityExpression.operands[0]=720000000",
+   "reasoning": "compiled IR AMOUNT value 720000000 at rules[18].capacityExpression.operands[0] has no matching source-side figure"
+  },
+  {
+   "findingId": "42ea9754fc75d64ee40a3a3540951f9df5c73e264432ff2bdbd16efd968eeb55",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severity": "MATERIAL",
+   "irPath": "rules[25].capacityExpression.operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole ca",
+   "proposedIrEvidence": "rules[25].capacityExpression.operands[0]=720000000",
+   "reasoning": "compiled IR AMOUNT value 720000000 at rules[25].capacityExpression.operands[0] has no matching source-side figure"
+  },
+  {
+   "findingId": "844f0a36f675e721815f0b9249d7c8967f7d342e398a4dd309025cf0eba5aca7",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severity": "MATERIAL",
+   "irPath": "definitions[2].calculationExpression.operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole ca",
+   "proposedIrEvidence": "definitions[2].calculationExpression.operands[0]=324000000",
+   "reasoning": "compiled IR AMOUNT value 324000000 at definitions[2].calculationExpression.operands[0] has no matching source-side figure"
+  },
+  {
+   "findingId": "c75b8e97b3d7ff939b81acf03721dcd51688f4e77ce62e7774537af30ca40241",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severity": "MATERIAL",
+   "irPath": "definitions[2].calculationExpression.operands[1].operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole ca",
+   "proposedIrEvidence": "definitions[2].calculationExpression.operands[1].operands[0]=0.45",
+   "reasoning": "compiled IR PERCENT value 0.45 at definitions[2].calculationExpression.operands[1].operands[0] has no matching source-side figure"
+  },
+  {
+   "findingId": "036538e7a3bb253bc175f08ef0796b8a2b79a7ffba4466d16f1223a291f7d427",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "WRONG_ENTITY_SCOPE",
+   "severity": "NON_MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole ca",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source text distinguishes 7 distinct entity-scope term(s) (restricted subsidiaries, restricted subsidiary, borrower, unrestricted subsidiary, guarantor, unrestricted subsidiaries, loan party) but the "
+  },
+  {
+   "findingId": "d040cc39bc75feb31918694cff828bbc6025e78c569713504bc285f417038401",
+   "method": "DETERMINISTIC_ONLY",
+   "findingType": "MISSING_RECLASSIFICATION",
+   "severity": "NON_MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole ca",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source text contains 4 reclassification/redesignation signal(s) but the compiled IR records no RECLASSIFIABLE_TO/REDESIGNATES_TO dependency - possible missing reclassification right [downgraded to NON"
+  }
+ ]
+}
