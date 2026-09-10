@@ -1,0 +1,521 @@
+{
+ "artifact": "F-7A §1 - current large-unit compiler shape, reproduced with current code and 0 model calls",
+ "gitSha": "9b4c10bf7844f2966cb4c19dac90ee5fe6d9a7c5",
+ "at": "2026-09-10T21:00:45.534Z",
+ "documentSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+ "ledgerCompileTurns": [
+  {
+   "n": 114,
+   "inputTokens": 312143,
+   "outputTokens": 60318,
+   "at": "2026-09-03T17:52:47.291Z"
+  },
+  {
+   "n": 117,
+   "inputTokens": 95786,
+   "outputTokens": 11227,
+   "at": "2026-09-03T18:23:01.437Z"
+  },
+  {
+   "n": 118,
+   "inputTokens": 108407,
+   "outputTokens": 1330,
+   "at": "2026-09-03T18:23:20.029Z"
+  },
+  {
+   "n": 119,
+   "inputTokens": 110651,
+   "outputTokens": 54960,
+   "at": "2026-09-03T18:33:38.830Z"
+  },
+  {
+   "n": 125,
+   "inputTokens": 81608,
+   "outputTokens": 15251,
+   "at": "2026-09-03T19:19:11.900Z"
+  }
+ ],
+ "units": [
+  {
+   "sectionRef": "1.01",
+   "candidateRef": "phase-3-validation:chwy:1.01",
+   "contextBundleMatchesFrozenSummary": {
+    "items": [
+     1,
+     1
+    ],
+    "sufficiency": [
+     "BUDGET_EXCEEDED",
+     "BUDGET_EXCEEDED"
+    ],
+    "unresolvedDependencies": [
+     576,
+     576
+    ]
+   },
+   "sourceContextMatchesFrozen": {
+    "state": true,
+    "regions": true,
+    "operativeChars": true,
+    "operativeTextSha256Equal": true,
+    "unresolvedReferences": [
+     144,
+     139
+    ]
+   },
+   "sourceContext": {
+    "state": "COMPLETE_LOCAL_SOURCE",
+    "regions": 1,
+    "totalChars": 353523,
+    "budgetChars": 24000,
+    "unresolvedReferences": 144
+   },
+   "frozenInventory": {
+    "items": 109,
+    "material": 108,
+    "algorithmVersion": "semantic-accountability.v3",
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+    "unaccountedSource": 721,
+    "uninventoriedValues": 95
+   },
+   "definitionsInUnit": 379,
+   "crossReferences": {
+    "expansionRegions": 0,
+    "unresolved": 144,
+    "total": 144
+   },
+   "contextBundle": {
+    "items": 1,
+    "sufficiency": "BUDGET_EXCEEDED",
+    "chars": 353523,
+    "itemsByType": [
+     {
+      "type": "OPERATIVE_SOURCE",
+      "sourceCitation": "Section 1.01",
+      "chars": 353523,
+      "duplicatesOperativeText": true
+     }
+    ],
+    "unresolvedDependencies": 576,
+    "unresolvedDependenciesRenderedChars": 70765,
+    "operativeTextDuplicatedByBundleItem": true
+   },
+   "otherBreakdown": {
+    "CONTEXT_BUNDLE_ITEM_EXCERPTS": 353523,
+    "CONTEXT_BUNDLE_UNRESOLVED_DEPENDENCIES": 70765,
+    "SOURCE_CONTEXT_UNRESOLVED_CROSS_REFERENCES": 17516,
+    "PROMPT_SCAFFOLDING_AND_LABELS": 1154
+   },
+   "components": {
+    "OPERATIVE_SOURCE": 353523,
+    "SOURCE_CONTEXT_EXPANSIONS": 0,
+    "FROZEN_INVENTORY": 50988,
+    "SYSTEM_PROMPT": 12943,
+    "FEW_SHOT": 12283,
+    "TOOL_SCHEMAS_JSON": 16080,
+    "OTHER": 442960
+   },
+   "rendered": {
+    "systemChars": 25228,
+    "firstUserTurnChars": 847471,
+    "toolsJsonChars": 16080,
+    "totalFirstTurnChars": 888779,
+    "maxOutputTokensSetting": 128000
+   },
+   "recorded": {
+    "firstTurnInputTokens": 312143,
+    "outputTokens": 60318,
+    "compileStatus": "FAILED",
+    "failureReasons": [
+     "PROVIDER_FAILURE"
+    ],
+    "rules": 0,
+    "definitions": 0,
+    "rawSubmissionChars": 0,
+    "telemetry": {
+     "inputTokens": 312143,
+     "outputTokens": 60318,
+     "latencyMs": 582290,
+     "costUsd": 1.2274660000000002,
+     "error": "400 {\"error\":{\"message\":\"messages.2: `tool_use` ids were found without `tool_result` blocks immediately after: toolu_01XVmzaisBtgfjUX3Q2qNCs4. Each `tool_use` b"
+    }
+   },
+   "captureSanity": {
+    "callerReturnedSubmission": true,
+    "toolCallsMade": 0
+   },
+   "_unitFile": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/unit-1.01.json",
+   "_unitSha256": "a9221844bc412fe55a7be082a5ec06ceccbd211710d34da4e0ba2168296b5f35",
+   "estimatedInputTokens": {
+    "conservative": 351665,
+    "mean": 334409,
+    "recorded": 312143
+   }
+  },
+  {
+   "sectionRef": "6.08",
+   "candidateRef": "phase-3-validation:chwy:6.08",
+   "contextBundleMatchesFrozenSummary": {
+    "items": [
+     7,
+     6
+    ],
+    "sufficiency": [
+     "BUDGET_EXCEEDED",
+     "BUDGET_EXCEEDED"
+    ],
+    "unresolvedDependencies": [
+     81,
+     79
+    ]
+   },
+   "sourceContextMatchesFrozen": {
+    "state": true,
+    "regions": true,
+    "operativeChars": true,
+    "operativeTextSha256Equal": true,
+    "unresolvedReferences": [
+     12,
+     12
+    ]
+   },
+   "sourceContext": {
+    "state": "COMPLETE_LOCAL_SOURCE",
+    "regions": 1,
+    "totalChars": 38529,
+    "budgetChars": 24000,
+    "unresolvedReferences": 12
+   },
+   "frozenInventory": {
+    "items": 288,
+    "material": 278,
+    "algorithmVersion": "semantic-accountability.v3",
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+    "unaccountedSource": 68,
+    "uninventoriedValues": 0
+   },
+   "definitionsInUnit": 0,
+   "crossReferences": {
+    "expansionRegions": 0,
+    "unresolved": 12,
+    "total": 12
+   },
+   "contextBundle": {
+    "items": 7,
+    "sufficiency": "BUDGET_EXCEEDED",
+    "chars": 39740,
+    "itemsByType": [
+     {
+      "type": "OPERATIVE_SOURCE",
+      "sourceCitation": "Section 6.08",
+      "chars": 38529,
+      "duplicatesOperativeText": true
+     },
+     {
+      "type": "CHILD_RULE",
+      "sourceCitation": "Section 6.08(a)",
+      "chars": 92,
+      "duplicatesOperativeText": false
+     },
+     {
+      "type": "CHILD_RULE",
+      "sourceCitation": "Section 6.08(b)",
+      "chars": 69,
+      "duplicatesOperativeText": false
+     },
+     {
+      "type": "EXCEPTION",
+      "sourceCitation": "Section 6.03",
+      "chars": 292,
+      "duplicatesOperativeText": false
+     },
+     {
+      "type": "DEFINITION",
+      "sourceCitation": "Definition of \"Agreement\"",
+      "chars": 119,
+      "duplicatesOperativeText": false
+     },
+     {
+      "type": "DEFINITION",
+      "sourceCitation": "Definition of \"AHYDO Payment\"",
+      "chars": 177,
+      "duplicatesOperativeText": false
+     },
+     {
+      "type": "CROSS_REFERENCE",
+      "sourceCitation": "Section 6.08(a)(iii)",
+      "chars": 462,
+      "duplicatesOperativeText": false
+     }
+    ],
+    "unresolvedDependencies": 81,
+    "unresolvedDependenciesRenderedChars": 9901,
+    "operativeTextDuplicatedByBundleItem": true
+   },
+   "otherBreakdown": {
+    "CONTEXT_BUNDLE_ITEM_EXCERPTS": 39740,
+    "CONTEXT_BUNDLE_UNRESOLVED_DEPENDENCIES": 9901,
+    "SOURCE_CONTEXT_UNRESOLVED_CROSS_REFERENCES": 1495,
+    "PROMPT_SCAFFOLDING_AND_LABELS": 2552
+   },
+   "components": {
+    "OPERATIVE_SOURCE": 38529,
+    "SOURCE_CONTEXT_EXPANSIONS": 0,
+    "FROZEN_INVENTORY": 108557,
+    "SYSTEM_PROMPT": 12943,
+    "FEW_SHOT": 12283,
+    "TOOL_SCHEMAS_JSON": 16080,
+    "OTHER": 53690
+   },
+   "rendered": {
+    "systemChars": 25228,
+    "firstUserTurnChars": 200776,
+    "toolsJsonChars": 16080,
+    "totalFirstTurnChars": 242084,
+    "maxOutputTokensSetting": 128000
+   },
+   "recorded": {
+    "firstTurnInputTokens": 95786,
+    "outputTokens": 54960,
+    "compileStatus": "PARTIAL",
+    "failureReasons": [
+     "IR_VALIDATION_FAILURE",
+     "OPERATIVE_STATE_UNRESOLVED",
+     "SEMANTIC_INVENTORY_COVERAGE_GAP",
+     "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+    ],
+    "rules": 38,
+    "definitions": 6,
+    "rawSubmissionChars": 62142,
+    "telemetry": {
+     "inputTokens": 314844,
+     "outputTokens": 67517,
+     "latencyMs": 756204,
+     "costUsd": 1.304858,
+     "error": ""
+    }
+   },
+   "captureSanity": {
+    "callerReturnedSubmission": true,
+    "toolCallsMade": 0
+   },
+   "_unitFile": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/unit-6.08.json",
+   "_unitSha256": "fc147145c2db7df77bfb7122b8442d3fe21f5645b5c4782b791ffa942c8b750c",
+   "estimatedInputTokens": {
+    "conservative": 95786,
+    "mean": 91086,
+    "recorded": 95786
+   }
+  },
+  {
+   "sectionRef": "9.04",
+   "candidateRef": "phase-3-validation:chwy:9.04",
+   "contextBundleMatchesFrozenSummary": {
+    "items": [
+     15,
+     16
+    ],
+    "sufficiency": [
+     "BUDGET_EXCEEDED",
+     "BUDGET_EXCEEDED"
+    ],
+    "unresolvedDependencies": [
+     88,
+     87
+    ]
+   },
+   "sourceContextMatchesFrozen": {
+    "state": true,
+    "regions": true,
+    "operativeChars": true,
+    "operativeTextSha256Equal": true,
+    "unresolvedReferences": [
+     14,
+     14
+    ]
+   },
+   "sourceContext": {
+    "state": "COMPLETE_LOCAL_SOURCE",
+    "regions": 1,
+    "totalChars": 29580,
+    "budgetChars": 24000,
+    "unresolvedReferences": 14
+   },
+   "frozenInventory": {
+    "items": 218,
+    "material": 213,
+    "algorithmVersion": "semantic-accountability.v3",
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+    "unaccountedSource": 43,
+    "uninventoriedValues": 0
+   },
+   "definitionsInUnit": 0,
+   "crossReferences": {
+    "expansionRegions": 0,
+    "unresolved": 14,
+    "total": 14
+   },
+   "contextBundle": {
+    "items": 15,
+    "sufficiency": "BUDGET_EXCEEDED",
+    "chars": 39966,
+    "itemsByType": [
+     {
+      "type": "OPERATIVE_SOURCE",
+      "sourceCitation": "Section 9.04",
+      "chars": 29580,
+      "duplicatesOperativeText": true
+     },
+     {
+      "type": "CHILD_RULE",
+      "sourceCitation": "Section 9.04(a)",
+      "chars": 180,
+      "duplicatesOperativeText": false
+     },
+     {
+      "type": "CHILD_RULE",
+      "sourceCitation": "Section 9.04(b)",
+      "chars": 4,
+      "duplicatesOperativeText": false
+     },
+     {
+      "type": "CHILD_RULE",
+      "sourceCitation": "Section 9.04(c)",
+      "chars": 5,
+      "duplicatesOperativeText": false
+     },
+     {
+      "type": "CHILD_RULE",
+      "sourceCitation": "Section 9.04(d)",
+      "chars": 643,
+      "duplicatesOperativeText": false
+     },
+     {
+      "type": "CHILD_RULE",
+      "sourceCitation": "Section 9.04(e)",
+      "chars": 473,
+      "duplicatesOperativeText": false
+     },
+     {
+      "type": "CHILD_RULE",
+      "sourceCitation": "Section 9.04(f)",
+      "chars": 934,
+      "duplicatesOperativeText": false
+     },
+     {
+      "type": "CHILD_RULE",
+      "sourceCitation": "Section 9.04(g)",
+      "chars": 862,
+      "duplicatesOperativeText": false
+     },
+     {
+      "type": "CHILD_RULE",
+      "sourceCitation": "Section 9.04(h)",
+      "chars": 104,
+      "duplicatesOperativeText": false
+     },
+     {
+      "type": "CHILD_RULE",
+      "sourceCitation": "Section 9.04(i)",
+      "chars": 619,
+      "duplicatesOperativeText": false
+     },
+     {
+      "type": "UNVERIFIED_SIBLING_SIGNAL",
+      "sourceCitation": "Section 9.05",
+      "chars": 1264,
+      "duplicatesOperativeText": false
+     },
+     {
+      "type": "UNVERIFIED_SIBLING_SIGNAL",
+      "sourceCitation": "Section 9.06",
+      "chars": 3149,
+      "duplicatesOperativeText": false
+     },
+     {
+      "type": "PROVISO",
+      "sourceCitation": "Section 9.08",
+      "chars": 1551,
+      "duplicatesOperativeText": false
+     },
+     {
+      "type": "DEFINITION",
+      "sourceCitation": "Definition of \"Administrative Questionnaire\"",
+      "chars": 197,
+      "duplicatesOperativeText": false
+     },
+     {
+      "type": "DEFINITION",
+      "sourceCitation": "Definition of \"Affiliate\"",
+      "chars": 401,
+      "duplicatesOperativeText": false
+     }
+    ],
+    "unresolvedDependencies": 88,
+    "unresolvedDependenciesRenderedChars": 10811,
+    "operativeTextDuplicatedByBundleItem": true
+   },
+   "otherBreakdown": {
+    "CONTEXT_BUNDLE_ITEM_EXCERPTS": 39966,
+    "CONTEXT_BUNDLE_UNRESOLVED_DEPENDENCIES": 10811,
+    "SOURCE_CONTEXT_UNRESOLVED_CROSS_REFERENCES": 1679,
+    "PROMPT_SCAFFOLDING_AND_LABELS": 4403
+   },
+   "components": {
+    "OPERATIVE_SOURCE": 29580,
+    "SOURCE_CONTEXT_EXPANSIONS": 0,
+    "FROZEN_INVENTORY": 85945,
+    "SYSTEM_PROMPT": 12943,
+    "FEW_SHOT": 12283,
+    "TOOL_SCHEMAS_JSON": 16080,
+    "OTHER": 56861
+   },
+   "rendered": {
+    "systemChars": 25228,
+    "firstUserTurnChars": 172386,
+    "toolsJsonChars": 16080,
+    "totalFirstTurnChars": 213694,
+    "maxOutputTokensSetting": 128000
+   },
+   "recorded": {
+    "firstTurnInputTokens": 81608,
+    "outputTokens": 15251,
+    "compileStatus": "FAILED",
+    "failureReasons": [
+     "PROVIDER_FAILURE"
+    ],
+    "rules": 0,
+    "definitions": 0,
+    "rawSubmissionChars": 0,
+    "telemetry": {
+     "inputTokens": 81608,
+     "outputTokens": 15251,
+     "latencyMs": 158719,
+     "costUsd": 0.315726,
+     "error": "BUDGET_EXHAUSTED before compile:turn: spent $13.9612 + est $0.2875 > cap $14.00"
+    }
+   },
+   "captureSanity": {
+    "callerReturnedSubmission": true,
+    "toolCallsMade": 0
+   },
+   "_unitFile": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/unit-9.04.json",
+   "_unitSha256": "ac87ca09a7d712699a9bc9e407d43a4f0332fd48559b61cd928eb0b0b2a117ef",
+   "estimatedInputTokens": {
+    "conservative": 84553,
+    "mean": 80404,
+    "recorded": 81608
+   }
+  }
+ ],
+ "tokenEstimator": {
+  "method": "calibrated tokens-per-rendered-char from the three recorded Chewy first turns (cost-ledger compile:turn input tokens vs. the byte-exact first turn re-rendered by current code); the CONSERVATIVE (max) ratio is used for every estimate in F-7A",
+  "ratios": {
+   "1.01": 0.3512042926306765,
+   "6.08": 0.3956725764610631,
+   "9.04": 0.3818918640673112
+  },
+  "conservativeTokensPerChar": 0.3956725764610631,
+  "meanTokensPerChar": 0.37625624438635025
+ }
+}

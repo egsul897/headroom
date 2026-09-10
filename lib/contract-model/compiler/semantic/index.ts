@@ -9,3 +9,7 @@ export * from "./cache";
 export * from "./compile";
 export * from "./package-compile";
 export * from "./grading";
+export * from "./shard-types";
+export * from "./shard-planner";
+export * from "./shard-stitcher";
+export * from "./shard-execution";

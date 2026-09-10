@@ -1,0 +1,283 @@
+{
+ "artifact": "F-7A \u00a723 twelve-point zero-cost architecture gate + \u00a729 verdict + \u00a726 F-4 metadata acknowledgement + final summary",
+ "startingSha": "9b4c10bf7844f2966cb4c19dac90ee5fe6d9a7c5",
+ "gitShaAtWrite": "9b4c10bf7844f2966cb4c19dac90ee5fe6d9a7c5",
+ "paidModelCalls": 0,
+ "costUsd": 0.0,
+ "chewyRerun": false,
+ "deployments": 0,
+ "gate": [
+  {
+   "point": 1,
+   "requirement": "Shard boundaries derive only from frozen source structure + frozen inventory (no LLM, no token-only cuts)",
+   "evidence": "shard-planner.ts definitionUnits/structuralUnits/segmentUnits use the structural index and partitionSourceSlots; the packing never splits a unit; \u00a720 test 'swapping every formula ... changes no boundary'",
+   "met": true
+  },
+  {
+   "point": 2,
+   "requirement": "Definitions are atomic units",
+   "evidence": "1.01: 380 units = 379 DEFINITION + 1 LEAD_IN; a 26,695-char definition stays one (oversized) shard",
+   "met": true
+  },
+  {
+   "point": 3,
+   "requirement": "Every material item has exactly one primary owner",
+   "evidence": "ownership proofs: 1.01 108/108, 6.08 278/278, 9.04 213/213, synthetic 400/400 - zero unowned, zero multiply owned",
+   "met": true
+  },
+  {
+   "point": 4,
+   "requirement": "Cross-shard dependencies are bounded read-only context with provenance; unresolvable => MISSING_CONTEXT",
+   "evidence": "ShardContextEntry carries kind/owner unit/owner shard/source span; rendered as READ-ONLY CROSS_REFERENCE_EXPANSION regions; unresolved entries recorded; \u00a719 B tests",
+   "met": true
+  },
+  {
+   "point": 5,
+   "requirement": "Contextual copies earn no accountability credit",
+   "evidence": "stitcher strips lineage on unowned items (LINEAGE_CLAIM_ON_UNOWNED_ITEM), drops contextual emissions (never credited); \u00a719 B 'if B's shard fails, B's items are MISSING even though A's shard saw B as context'",
+   "met": true
+  },
+  {
+   "point": 6,
+   "requirement": "Deterministic stitching with globally stable ids",
+   "evidence": "ids derive from owner unit + source-ordered ordinal; \u00a710 tests: reversed emission order and a different packing yield identical rule ids",
+   "met": true
+  },
+  {
+   "point": 7,
+   "requirement": "Collisions explicit; no silent dedupe of incompatible semantics",
+   "evidence": "DEFINITION_DUPLICATE_CONSISTENT keeps one copy; DEFINITION_CONFLICT keeps the owner copy as AMBIGUOUS + review; RULE_POSSIBLE_DUPLICATE never merged (seen on real 6.08: 3 rules); \u00a719 H tests",
+   "met": true
+  },
+  {
+   "point": 8,
+   "requirement": "Global Pass C after stitching is the only completeness authority",
+   "evidence": "stitchShardResults runs reconcileInventoryWithComposition over the FULL frozen inventory; status derives from it",
+   "met": true
+  },
+  {
+   "point": 9,
+   "requirement": "Partial failure isolation: n-1 successes => PARTIAL/REVIEW_REQUIRED never COMPLETED; failed shard's items explicitly unresolved",
+   "evidence": "\u00a719 E tests; unresolvedOwnedItems lists items of non-complete shards; failureReasons PROVIDER_FAILURE + SHARD_INCOMPLETE",
+   "met": true
+  },
+  {
+   "point": 10,
+   "requirement": "Bounded retry of only the failed shard by deterministic hash",
+   "evidence": "executeShardPlan reuses prior SHARD_COMPLETE results with equal shardHash; retries only SHARD_PROVIDER_FAILURE up to maxAttemptsPerShard; \u00a719 F tests",
+   "met": true
+  },
+  {
+   "point": 11,
+   "requirement": "Shard freeze identity: a source change invalidates only the shards it touches; an inventory change invalidates all",
+   "evidence": "\u00a719 G tests (definition 73 changed: only its owner shard and the shard reading it as context change hash; frozenContentHash change invalidates every shard)",
+   "met": true
+  },
+  {
+   "point": 12,
+   "requirement": "Zero-cost historical simulation preserves recorded nodes/values/rules/definitions/dependencies; any lineage loss is explicit and surfaces as MISSING, never false completeness",
+   "evidence": "03: Chewy 6.08 - irNodes/rules/definitions/sharedCapacities/values/dependencyEdges preserved; lineageRefs 292->274 (18 minority claims on items owned by other shards stripped and recorded; 17/18 are owned by some shard and would be compiled by their owner in a real sharded run); Pass C after: represented 243 vs 253, materialMissing 22 vs 13, status REVIEW_REQUIRED (not COMPLETED); 6 holdout fixtures fully preserved; synthetic 400-def corpus fully preserved with identical dispositions",
+   "met": true,
+   "caveat": "a distribution simulation cannot show that the owner shards WOULD compile those 18 items - only a paid canary can (F-7B)"
+  }
+ ],
+ "gatePointsMet": 12,
+ "gatePoints": 12,
+ "verdict": "F7A_READY_FOR_PAID_CANARY",
+ "verdictRationale": "All 12 gate points are met with zero-cost evidence. What remains unprovable without a model is whether a bounded shard compiles its owned items as faithfully as the recorded monolithic attempts did for small units; that is the F-7B canary question, not an architecture question. F7_CLOSED is not available by construction.",
+ "notActivated": "executeShardPlan / planCompilationShards / stitchShardResults are exported but wired to no production path; compile.ts, caller.ts, prompt.ts, the tool protocol, Pass A, Pass C and the verifier are unchanged. No orchestration ran against Chewy.",
+ "chewy101Plan": {
+  "shardCount": 36,
+  "maxRenderedInputTokens": 34344,
+  "medianRenderedInputTokens": 24837,
+  "p95RenderedInputTokens": 30016,
+  "largestInventoryCount": 11,
+  "largestSourceShardChars": 26695,
+  "totalRenderedInputTokens": 896103,
+  "currentSingleCallInputTokens": 312143,
+  "ratioVsCurrentSingleCall": 2.871,
+  "contextDuplicationChars": 49835,
+  "fixedOverheadCharsPerCall": 43806,
+  "fixedOverheadTotalChars": 1577016,
+  "oversizedShards": 1,
+  "planHash": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36"
+ },
+ "historicalSimulation": {
+  "chewy608": {
+   "shards": 7,
+   "preserved": {
+    "irNodes": true,
+    "rules": true,
+    "definitions": true,
+    "sharedCapacities": true,
+    "values": true,
+    "lineageRefs": false,
+    "dependencyEdges": true,
+    "dependencyEdgesResolvedBefore": 3,
+    "dependencyEdgesResolvedAfter": 3,
+    "unresolvedDependenciesAfter": 12,
+    "unsupportedNodesAdded": 0
+   },
+   "lineageLost": 18,
+   "valuesLost": 0,
+   "collisions": {
+    "LINEAGE_CLAIM_ON_UNOWNED_ITEM": 18,
+    "RULE_POSSIBLE_DUPLICATE": 1
+   },
+   "accountability": {
+    "before": {
+     "represented": 253,
+     "materialMissing": 13,
+     "valuesMissing": 8,
+     "dangling": 1,
+     "semanticallyComplete": false
+    },
+    "after": {
+     "represented": 243,
+     "materialMissing": 22,
+     "valuesMissing": 8,
+     "dangling": 0,
+     "semanticallyComplete": false
+    },
+    "identicalDispositions": false
+   },
+   "stitchedStatus": "REVIEW_REQUIRED",
+   "canonicalizedLineageReferences": 291
+  },
+  "holdoutFixtures": [
+   {
+    "name": "holdout-applicable-liquidity-rate",
+    "shards": 4,
+    "preservedAll": true,
+    "attribution": {
+     "LINEAGE_OR_TERM": 5,
+     "SECTION_REF": 0,
+     "UNATTRIBUTED": 0
+    },
+    "termsNotDetectedAsUnits": []
+   },
+   {
+    "name": "holdout-cash-sweep-cure",
+    "shards": 2,
+    "preservedAll": true,
+    "attribution": {
+     "LINEAGE_OR_TERM": 0,
+     "SECTION_REF": 0,
+     "UNATTRIBUTED": 4
+    },
+    "termsNotDetectedAsUnits": [
+     "Deficiency Amount",
+     "Maintenance Liquidity"
+    ]
+   },
+   {
+    "name": "holdout-new-definitions",
+    "shards": 1,
+    "preservedAll": true,
+    "attribution": {
+     "LINEAGE_OR_TERM": 0,
+     "SECTION_REF": 0,
+     "UNATTRIBUTED": 3
+    },
+    "termsNotDetectedAsUnits": [
+     "Invoice Restrictions",
+     "Maintenance Liquidity",
+     "Monthly Factoring Report"
+    ]
+   },
+   {
+    "name": "holdout-interest-expense",
+    "shards": 3,
+    "preservedAll": true,
+    "attribution": {
+     "LINEAGE_OR_TERM": 2,
+     "SECTION_REF": 0,
+     "UNATTRIBUTED": 0
+    },
+    "termsNotDetectedAsUnits": []
+   },
+   {
+    "name": "holdout-secured-net-leverage",
+    "shards": 1,
+    "preservedAll": true,
+    "attribution": {
+     "LINEAGE_OR_TERM": 2,
+     "SECTION_REF": 0,
+     "UNATTRIBUTED": 0
+    },
+    "termsNotDetectedAsUnits": []
+   },
+   {
+    "name": "holdout-first-lien-debt",
+    "shards": 1,
+    "preservedAll": true,
+    "attribution": {
+     "LINEAGE_OR_TERM": 2,
+     "SECTION_REF": 0,
+     "UNATTRIBUTED": 0
+    },
+    "termsNotDetectedAsUnits": []
+   }
+  ],
+  "holdoutNote": "holdout-cash-sweep-cure and holdout-new-definitions are amendment-insert texts recorded before lineage existed (no inventoryItemIds) and their terms are not detected as definition units by the structural index, so attribution fell to the shard's first unit (UNATTRIBUTED) - preserved because the plan has 1-2 shards; recorded honestly, not counted as an ownership proof",
+  "syntheticCorpus": {
+   "shards": 26,
+   "preserved": {
+    "irNodes": true,
+    "rules": true,
+    "definitions": true,
+    "sharedCapacities": true,
+    "values": true,
+    "lineageRefs": true,
+    "dependencyEdges": true,
+    "dependencyEdgesResolvedBefore": 0,
+    "dependencyEdgesResolvedAfter": 0,
+    "unresolvedDependenciesAfter": 0,
+    "unsupportedNodesAdded": 0
+   },
+   "accountability": {
+    "before": {
+     "represented": 400,
+     "materialMissing": 0,
+     "valuesMissing": 0,
+     "dangling": 0,
+     "semanticallyComplete": true
+    },
+    "after": {
+     "represented": 400,
+     "materialMissing": 0,
+     "valuesMissing": 0,
+     "dangling": 0,
+     "semanticallyComplete": true
+    },
+    "identicalDispositions": true
+   },
+   "stitchedStatus": "COMPLETED"
+  }
+ },
+ "f4MetadataInconsistencyAcknowledged": {
+  "file": "docs/phase-3-remediation-f4/04-final-summary.json section15 (and 02-finding-replay-classification.json)",
+  "field": "beforeFindingIdsEqualRecordedPostF3Ids",
+  "value": false,
+  "narrativeClaim": "the F-4 narrative describes the replay-before finding set as equal to the recorded post-F3 set",
+  "classification": "HISTORICAL_EVIDENCE_METADATA_INCONSISTENCY - the classifier keyed findings by content because finding ids are shared across findings; the id-equality flag is false while the content comparison holds. F-4 artifacts are not modified (\u00a726); this flag is not carried into F-7A evidence."
+ },
+ "regression": {
+  "f7aTests": "31/31 pass (tests/contract-model/f7a-shard-planner-stitcher.test.ts)",
+  "compilerAccountabilitySuite": "664 passed, 18 failed, 7 skipped - the 18 failing test names are identical to the F-4 baseline set",
+  "verifierCertificationSuite": "318 passed, 24 failed, 125 skipped - the 24 failing test names are identical to the F-4 baseline set",
+  "tsc": "6 errors, all pre-existing in tests/foundation-audit (unchanged)",
+  "eslint": "0 errors on all touched files"
+ },
+ "unchanged": [
+  "Pass A (runSemanticInventory / dual pass)",
+  "F-5 ensemble",
+  "F-3 verifier normalization",
+  "F-4 authenticated evidence",
+  "F-6",
+  "verifier",
+  "IR schema",
+  "compile.ts / caller.ts / prompt.ts / tools.ts"
+ ],
+ "packageSpecificLogic": "none - no Chewy, section-number, or term-name special case in the planner/stitcher/execution modules"
+}

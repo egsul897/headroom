@@ -1,0 +1,2555 @@
+{
+ "artifact": "F-7A §17 deterministic shard plan for frozen Chewy units + §16 budget sensitivity (0 model calls)",
+ "gitSha": "9b4c10bf7844f2966cb4c19dac90ee5fe6d9a7c5",
+ "at": "2026-09-10T21:11:39.174Z",
+ "tokenEstimator": {
+  "tokensPerChar": 0.3957,
+  "source": "00-current-large-unit-shape.json calibration (conservative max)"
+ },
+ "1.01": {
+  "candidateRef": "phase-3-validation:chwy:1.01",
+  "operativeChars": 353523,
+  "frozenInventoryItems": 109,
+  "derivation": {
+   "operative": "STRUCTURAL_DEFINITIONS"
+  },
+  "units": 380,
+  "unitKinds": {
+   "LEAD_IN": 1,
+   "DEFINITION": 379
+  },
+  "mustLinkGroups": [],
+  "ownershipProof": {
+   "materialItems": 108,
+   "ownedOnce": 108,
+   "unowned": 0,
+   "multiplyOwned": 0
+  },
+  "unplacedItemIds": [],
+  "sensitivity": [
+   {
+    "label": "T6k/U16",
+    "budget": {
+     "targetPrimaryChars": 6000,
+     "maxPrimaryChars": 12000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 16
+    },
+    "shardCount": 59,
+    "maxInputTokens": 30562,
+    "medianInputTokens": 19968,
+    "p95InputTokens": 26449,
+    "maxOutputTokens": 39000,
+    "largestShardUnits": 15,
+    "shardsWithoutOwnedItems": 23,
+    "totalInputTokens": 1207125,
+    "ratioVsCurrentSingleCall": 3.867,
+    "largestShardPrimaryChars": 26695,
+    "largestShardOwnedItems": 10,
+    "oversizedShards": 3,
+    "contextDuplicationChars": 58780,
+    "contextDuplicationRatio": 0.166,
+    "ownership": {
+     "materialItems": 108,
+     "ownedOnce": 108,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 0,
+    "derivation": {
+     "operative": "STRUCTURAL_DEFINITIONS"
+    }
+   },
+   {
+    "label": "T9k/U16",
+    "budget": {
+     "targetPrimaryChars": 9000,
+     "maxPrimaryChars": 18000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 16
+    },
+    "shardCount": 40,
+    "maxInputTokens": 30562,
+    "medianInputTokens": 21730,
+    "p95InputTokens": 26673,
+    "maxOutputTokens": 41500,
+    "largestShardUnits": 16,
+    "shardsWithoutOwnedItems": 10,
+    "totalInputTokens": 876010,
+    "ratioVsCurrentSingleCall": 2.806,
+    "largestShardPrimaryChars": 26695,
+    "largestShardOwnedItems": 10,
+    "oversizedShards": 2,
+    "contextDuplicationChars": 54335,
+    "contextDuplicationRatio": 0.154,
+    "ownership": {
+     "materialItems": 108,
+     "ownedOnce": 108,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 0,
+    "derivation": {
+     "operative": "STRUCTURAL_DEFINITIONS"
+    }
+   },
+   {
+    "label": "T12k/U16 (default)",
+    "budget": {
+     "targetPrimaryChars": 12000,
+     "maxPrimaryChars": 24000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 16
+    },
+    "shardCount": 36,
+    "maxInputTokens": 30562,
+    "medianInputTokens": 22297,
+    "p95InputTokens": 26673,
+    "maxOutputTokens": 41500,
+    "largestShardUnits": 16,
+    "shardsWithoutOwnedItems": 8,
+    "totalInputTokens": 804892,
+    "ratioVsCurrentSingleCall": 2.579,
+    "largestShardPrimaryChars": 26695,
+    "largestShardOwnedItems": 11,
+    "oversizedShards": 1,
+    "contextDuplicationChars": 49835,
+    "contextDuplicationRatio": 0.141,
+    "ownership": {
+     "materialItems": 108,
+     "ownedOnce": 108,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 0,
+    "derivation": {
+     "operative": "STRUCTURAL_DEFINITIONS"
+    }
+   },
+   {
+    "label": "T12k/U32",
+    "budget": {
+     "targetPrimaryChars": 12000,
+     "maxPrimaryChars": 24000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 32
+    },
+    "shardCount": 33,
+    "maxInputTokens": 30562,
+    "medianInputTokens": 22362,
+    "p95InputTokens": 26673,
+    "maxOutputTokens": 71500,
+    "largestShardUnits": 28,
+    "shardsWithoutOwnedItems": 5,
+    "totalInputTokens": 752622,
+    "ratioVsCurrentSingleCall": 2.411,
+    "largestShardPrimaryChars": 26695,
+    "largestShardOwnedItems": 11,
+    "oversizedShards": 1,
+    "contextDuplicationChars": 49160,
+    "contextDuplicationRatio": 0.139,
+    "ownership": {
+     "materialItems": 108,
+     "ownedOnce": 108,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 0,
+    "derivation": {
+     "operative": "STRUCTURAL_DEFINITIONS"
+    }
+   },
+   {
+    "label": "T16k/U16",
+    "budget": {
+     "targetPrimaryChars": 16000,
+     "maxPrimaryChars": 32000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 16
+    },
+    "shardCount": 31,
+    "maxInputTokens": 30562,
+    "medianInputTokens": 22723,
+    "p95InputTokens": 27906,
+    "maxOutputTokens": 41500,
+    "largestShardUnits": 16,
+    "shardsWithoutOwnedItems": 5,
+    "totalInputTokens": 718425,
+    "ratioVsCurrentSingleCall": 2.302,
+    "largestShardPrimaryChars": 26695,
+    "largestShardOwnedItems": 13,
+    "oversizedShards": 0,
+    "contextDuplicationChars": 50359,
+    "contextDuplicationRatio": 0.142,
+    "ownership": {
+     "materialItems": 108,
+     "ownedOnce": 108,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 0,
+    "derivation": {
+     "operative": "STRUCTURAL_DEFINITIONS"
+    }
+   },
+   {
+    "label": "T24k/U24",
+    "budget": {
+     "targetPrimaryChars": 24000,
+     "maxPrimaryChars": 48000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 24
+    },
+    "shardCount": 21,
+    "maxInputTokens": 31089,
+    "medianInputTokens": 26147,
+    "p95InputTokens": 30562,
+    "maxOutputTokens": 61500,
+    "largestShardUnits": 24,
+    "shardsWithoutOwnedItems": 3,
+    "totalInputTokens": 543453,
+    "ratioVsCurrentSingleCall": 1.741,
+    "largestShardPrimaryChars": 26695,
+    "largestShardOwnedItems": 15,
+    "oversizedShards": 0,
+    "contextDuplicationChars": 46241,
+    "contextDuplicationRatio": 0.131,
+    "ownership": {
+     "materialItems": 108,
+     "ownedOnce": 108,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 0,
+    "derivation": {
+     "operative": "STRUCTURAL_DEFINITIONS"
+    }
+   },
+   {
+    "label": "T24k/U64",
+    "budget": {
+     "targetPrimaryChars": 24000,
+     "maxPrimaryChars": 48000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 64
+    },
+    "shardCount": 17,
+    "maxInputTokens": 31107,
+    "medianInputTokens": 28641,
+    "p95InputTokens": 31107,
+    "maxOutputTokens": 119000,
+    "largestShardUnits": 47,
+    "shardsWithoutOwnedItems": 2,
+    "totalInputTokens": 473658,
+    "ratioVsCurrentSingleCall": 1.517,
+    "largestShardPrimaryChars": 26695,
+    "largestShardOwnedItems": 13,
+    "oversizedShards": 0,
+    "contextDuplicationChars": 45093,
+    "contextDuplicationRatio": 0.128,
+    "ownership": {
+     "materialItems": 108,
+     "ownedOnce": 108,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 0,
+    "derivation": {
+     "operative": "STRUCTURAL_DEFINITIONS"
+    }
+   }
+  ],
+  "chosenBudget": {
+   "targetPrimaryChars": 12000,
+   "maxPrimaryChars": 24000,
+   "maxContextChars": 10000,
+   "maxContextEntryChars": 1800,
+   "maxUnitsPerShard": 16
+  },
+  "shards": [
+   {
+    "shardId": "shard:2866a115c3a6d5cc2089",
+    "shardHash": "761693f3812b6d46",
+    "primaryUnits": [
+     "1.01",
+     "ABL Credit Agreement",
+     "ABL Facility",
+     "ABL Intercreditor Agreement",
+     "ABL Lenders",
+     "ABL Loan Documents",
+     "ABL Loans",
+     "ABL Obligations",
+     "ABL Priority Collateral",
+     "Acquired EBITDA",
+     "Acquired\nIndebtedness",
+     "Additional Lender",
+     "Administrative Agent",
+     "Administrative Questionnaire",
+     "Affected Financial Institution",
+     "Affiliate"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 7965,
+    "ownedItems": 4,
+    "materialItems": 4,
+    "contextEntries": 0,
+    "contextKinds": {},
+    "contextChars": 0,
+    "unresolvedContext": 3,
+    "oversized": false,
+    "plannerEstimateTokens": 21078,
+    "outputTokensEstimate": 39000,
+    "renderedFirstTurnChars": 62765,
+    "renderedInputTokens": 24837
+   },
+   {
+    "shardId": "shard:b934f8ceb0d79b5cfe57",
+    "shardHash": "a517905c1e378aff",
+    "primaryUnits": [
+     "Affiliated Debt Fund",
+     "Affiliated Lender",
+     "Agent",
+     "Agents",
+     "Agreement",
+     "AHYDO Payment",
+     "Alternate Base Rate",
+     "Alternative Currency",
+     "Alternative Currency\nTerm Benchmark Rate",
+     "Applicable Account",
+     "Applicable Rate",
+     "Approved Electronic Communications",
+     "Approved Fund"
+    ],
+    "primaryUnitCount": 13,
+    "sourceChars": 7674,
+    "ownedItems": 7,
+    "materialItems": 7,
+    "contextEntries": 5,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 4
+    },
+    "contextChars": 1909,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 21914,
+    "outputTokensEstimate": 34000,
+    "renderedFirstTurnChars": 64429,
+    "renderedInputTokens": 25495
+   },
+   {
+    "shardId": "shard:1c29e71eef1717d4f9e1",
+    "shardHash": "85cd3fe537a3657f",
+    "primaryUnits": [
+     "Asset Sale",
+     "Assignment and Assumption",
+     "Available Investment Capacity Amount"
+    ],
+    "primaryUnitCount": 3,
+    "sourceChars": 11172,
+    "ownedItems": 11,
+    "materialItems": 11,
+    "contextEntries": 8,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 6,
+     "REFERENCED_SECTION": 1
+    },
+    "contextChars": 5735,
+    "unresolvedContext": 1,
+    "oversized": false,
+    "plannerEstimateTokens": 25818,
+    "outputTokensEstimate": 9000,
+    "renderedFirstTurnChars": 74575,
+    "renderedInputTokens": 29510
+   },
+   {
+    "shardId": "shard:4c30ced71fe038991b4b",
+    "shardHash": "ec01142d97abc7e2",
+    "primaryUnits": [
+     "Available RP Capacity Amount",
+     "Available Tenor",
+     "Bail-In Action",
+     "Bail-In\nLegislation",
+     "Basel III",
+     "Benchmark",
+     "Benchmark",
+     "Benchmark Replacement",
+     "Benchmark Replacement Conforming Changes",
+     "Benchmark Replacement Date",
+     "Benchmark Transition Event"
+    ],
+    "primaryUnitCount": 11,
+    "sourceChars": 11804,
+    "ownedItems": 2,
+    "materialItems": 1,
+    "contextEntries": 2,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 1
+    },
+    "contextChars": 336,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 22447,
+    "outputTokensEstimate": 29000,
+    "renderedFirstTurnChars": 63207,
+    "renderedInputTokens": 25012
+   },
+   {
+    "shardId": "shard:9dae67b10a1cb8ab8e61",
+    "shardHash": "482d471bf9fe47f2",
+    "primaryUnits": [
+     "Benchmark Unavailability Period",
+     "Benefit Plan",
+     "Board of\nDirectors",
+     "Board of\nGovernors",
+     "Borrowing",
+     "Borrowing Minimum",
+     "Borrowing Multiple",
+     "Borrowing Request",
+     "Business Day",
+     "Calculation Period",
+     "Canadian Prime Rate",
+     "Capital Expenditures",
+     "Capital Stock",
+     "Capitalized Lease Obligation",
+     "Capitalized Leases",
+     "Capitalized Software Expenditures"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 9303,
+    "ownedItems": 6,
+    "materialItems": 6,
+    "contextEntries": 1,
+    "contextKinds": {
+     "CHAPEAU": 1
+    },
+    "contextChars": 225,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 21942,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 61259,
+    "renderedInputTokens": 24241
+   },
+   {
+    "shardId": "shard:c68b6e6e275414f90c39",
+    "shardHash": "de7b889487ab225e",
+    "primaryUnits": [
+     "Cash Equivalents",
+     "Cash Management Obligations",
+     "Cash Management Services",
+     "Central Bank Rate",
+     "CFC",
+     "Change in Law"
+    ],
+    "primaryUnitCount": 6,
+    "sourceChars": 8855,
+    "ownedItems": 6,
+    "materialItems": 6,
+    "contextEntries": 1,
+    "contextKinds": {
+     "CHAPEAU": 1
+    },
+    "contextChars": 225,
+    "unresolvedContext": 1,
+    "oversized": false,
+    "plannerEstimateTokens": 21844,
+    "outputTokensEstimate": 16500,
+    "renderedFirstTurnChars": 58031,
+    "renderedInputTokens": 22963
+   },
+   {
+    "shardId": "shard:ec1aea485db261059c14",
+    "shardHash": "34dbec9a9ca679af",
+    "primaryUnits": [
+     "Change of Control",
+     "CME Term SOFR Administrator",
+     "Code",
+     "Collateral",
+     "Collateral Agreement"
+    ],
+    "primaryUnitCount": 5,
+    "sourceChars": 5170,
+    "ownedItems": 1,
+    "materialItems": 1,
+    "contextEntries": 2,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 1
+    },
+    "contextChars": 1039,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 19968,
+    "outputTokensEstimate": 14000,
+    "renderedFirstTurnChars": 55450,
+    "renderedInputTokens": 21942
+   },
+   {
+    "shardId": "shard:5f63d11e8ce53e883d6a",
+    "shardHash": "04b49f6f59cb8dad",
+    "primaryUnits": [
+     "Collateral and Guarantee Requirement",
+     "Commitment",
+     "Commodity Exchange Act",
+     "Compliance Certificate"
+    ],
+    "primaryUnitCount": 4,
+    "sourceChars": 8259,
+    "ownedItems": 3,
+    "materialItems": 3,
+    "contextEntries": 3,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 2
+    },
+    "contextChars": 2176,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 22031,
+    "outputTokensEstimate": 11500,
+    "renderedFirstTurnChars": 62252,
+    "renderedInputTokens": 24634
+   },
+   {
+    "shardId": "shard:87f08272567db019c17b",
+    "shardHash": "539e715598ac4b8f",
+    "primaryUnits": [
+     "Consolidated EBITDA"
+    ],
+    "primaryUnitCount": 1,
+    "sourceChars": 20175,
+    "ownedItems": 5,
+    "materialItems": 5,
+    "contextEntries": 2,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 1
+    },
+    "contextChars": 538,
+    "unresolvedContext": 1,
+    "oversized": false,
+    "plannerEstimateTokens": 26449,
+    "outputTokensEstimate": 4000,
+    "renderedFirstTurnChars": 72120,
+    "renderedInputTokens": 28538
+   },
+   {
+    "shardId": "shard:fc841e0f175ddcab1ccd",
+    "shardHash": "48fc56978d7c7d71",
+    "primaryUnits": [
+     "Consolidated First Lien Debt",
+     "Consolidated Interest Expense"
+    ],
+    "primaryUnitCount": 2,
+    "sourceChars": 3368,
+    "ownedItems": 0,
+    "materialItems": 0,
+    "contextEntries": 1,
+    "contextKinds": {
+     "CHAPEAU": 1
+    },
+    "contextChars": 225,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 18756,
+    "outputTokensEstimate": 6500,
+    "renderedFirstTurnChars": 47673,
+    "renderedInputTokens": 18865
+   },
+   {
+    "shardId": "shard:86eec078e4ee957898ac",
+    "shardHash": "44699221ab9197fe",
+    "primaryUnits": [
+     "Consolidated Net Income"
+    ],
+    "primaryUnitCount": 1,
+    "sourceChars": 11403,
+    "ownedItems": 2,
+    "materialItems": 2,
+    "contextEntries": 2,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_SECTION": 1
+    },
+    "contextChars": 767,
+    "unresolvedContext": 1,
+    "oversized": false,
+    "plannerEstimateTokens": 22575,
+    "outputTokensEstimate": 4000,
+    "renderedFirstTurnChars": 59863,
+    "renderedInputTokens": 23688
+   },
+   {
+    "shardId": "shard:e3ddb1887d6b8499929a",
+    "shardHash": "5abb0fef127e861e",
+    "primaryUnits": [
+     "Consolidated Senior Secured Debt",
+     "Consolidated Total Debt",
+     "Consolidated Working Capital",
+     "Contingent Obligations",
+     "Control",
+     "Controlled Investment Affiliate",
+     "CORRA",
+     "CORRA Administrator",
+     "Covered Entity",
+     "Credit Agreement Refinancing Indebtedness",
+     "Customary Bridge Loans",
+     "Customary Escrow Provisions",
+     "Customary Exceptions"
+    ],
+    "primaryUnitCount": 13,
+    "sourceChars": 11506,
+    "ownedItems": 3,
+    "materialItems": 3,
+    "contextEntries": 2,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 1
+    },
+    "contextChars": 1262,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 22945,
+    "outputTokensEstimate": 34000,
+    "renderedFirstTurnChars": 63698,
+    "renderedInputTokens": 25206
+   },
+   {
+    "shardId": "shard:e43dc65668a775eaca1a",
+    "shardHash": "fd9bcb3a167dc1aa",
+    "primaryUnits": [
+     "Customary Intercreditor Agreement",
+     "Daily Simple RFR",
+     "Default",
+     "Defaulting Lender",
+     "Delaware Divided LLC",
+     "Delaware LLC",
+     "Delaware LLC Division",
+     "Designated Non-cash\nConsideration",
+     "Designated Preferred Stock",
+     "Disinterested Director",
+     "Disposed EBITDA"
+    ],
+    "primaryUnitCount": 11,
+    "sourceChars": 11131,
+    "ownedItems": 3,
+    "materialItems": 3,
+    "contextEntries": 1,
+    "contextKinds": {
+     "CHAPEAU": 1
+    },
+    "contextChars": 225,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 22335,
+    "outputTokensEstimate": 29000,
+    "renderedFirstTurnChars": 62958,
+    "renderedInputTokens": 24913
+   },
+   {
+    "shardId": "shard:4d114bdf00429cf670f8",
+    "shardHash": "6b1825dc93b8db34",
+    "primaryUnits": [
+     "Disposition Percentage",
+     "Disqualified Lenders",
+     "Disqualified\nStock",
+     "Dollar Amount",
+     "Domestic Subsidiary",
+     "ECF Percentage",
+     "EEA Financial Institution",
+     "EEA Member Country",
+     "EEA Resolution Authority",
+     "Effective Date",
+     "Effective Yield",
+     "Eligible Assignee",
+     "EMU Legislation"
+    ],
+    "primaryUnitCount": 13,
+    "sourceChars": 11800,
+    "ownedItems": 7,
+    "materialItems": 7,
+    "contextEntries": 5,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 2,
+     "REFERENCED_SECTION": 2
+    },
+    "contextChars": 2356,
+    "unresolvedContext": 2,
+    "oversized": false,
+    "plannerEstimateTokens": 23934,
+    "outputTokensEstimate": 34000,
+    "renderedFirstTurnChars": 67943,
+    "renderedInputTokens": 26886
+   },
+   {
+    "shardId": "shard:845680480624a0f129ec",
+    "shardHash": "ae0cb8ac5ac6fa92",
+    "primaryUnits": [
+     "Environmental Laws",
+     "Environmental Liability",
+     "Equity Interests",
+     "ERISA",
+     "ERISA Affiliate",
+     "ERISA Event",
+     "EU Bail-In Legislation Schedule",
+     "EURIBOR\nRate",
+     "euro"
+    ],
+    "primaryUnitCount": 9,
+    "sourceChars": 5139,
+    "ownedItems": 1,
+    "materialItems": 1,
+    "contextEntries": 1,
+    "contextKinds": {
+     "CHAPEAU": 1
+    },
+    "contextChars": 225,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 19567,
+    "outputTokensEstimate": 24000,
+    "renderedFirstTurnChars": 52244,
+    "renderedInputTokens": 20673
+   },
+   {
+    "shardId": "shard:d3aac7c869cff4602343",
+    "shardHash": "23480ebdb0988850",
+    "primaryUnits": [
+     "Excess Cash Flow",
+     "Excess Cash Flow Interim Period",
+     "Excess Cash Flow Period",
+     "Exchange Act"
+    ],
+    "primaryUnitCount": 4,
+    "sourceChars": 10173,
+    "ownedItems": 1,
+    "materialItems": 1,
+    "contextEntries": 2,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_SECTION": 1
+    },
+    "contextChars": 2025,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 22348,
+    "outputTokensEstimate": 11500,
+    "renderedFirstTurnChars": 60917,
+    "renderedInputTokens": 24105
+   },
+   {
+    "shardId": "shard:d2efbf609b9828839ddf",
+    "shardHash": "28047c2b5b76287a",
+    "primaryUnits": [
+     "Excluded Assets",
+     "Excluded Contribution",
+     "Excluded Revolving Loans",
+     "Excluded Subsidiary"
+    ],
+    "primaryUnitCount": 4,
+    "sourceChars": 11247,
+    "ownedItems": 1,
+    "materialItems": 1,
+    "contextEntries": 3,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 2
+    },
+    "contextChars": 788,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 22297,
+    "outputTokensEstimate": 11500,
+    "renderedFirstTurnChars": 61354,
+    "renderedInputTokens": 24278
+   },
+   {
+    "shardId": "shard:bf3da01cb454860cdf5f",
+    "shardHash": "681651c0752343da",
+    "primaryUnits": [
+     "Excluded Swap Obligation",
+     "Excluded Taxes",
+     "Excluded Term Loans",
+     "Existing\nIndebtedness",
+     "Extension Amount",
+     "Facility",
+     "fair market value",
+     "Fair Value",
+     "FATCA",
+     "Federal Funds Effective Rate",
+     "Fee Letter",
+     "Financial Officer",
+     "First Lien Intercreditor Agreement",
+     "First Lien Leverage Ratio",
+     "Fixed Charges",
+     "Fixed\nIncremental Amount"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 10233,
+    "ownedItems": 8,
+    "materialItems": 8,
+    "contextEntries": 6,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 4,
+     "REFERENCED_SECTION": 1
+    },
+    "contextChars": 5891,
+    "unresolvedContext": 2,
+    "oversized": false,
+    "plannerEstimateTokens": 24820,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 74120,
+    "renderedInputTokens": 29330
+   },
+   {
+    "shardId": "shard:a8646966da2484b40b97",
+    "shardHash": "53b8d2efe4987c74",
+    "primaryUnits": [
+     "Foreign Intellectual Property",
+     "Foreign Subsidiary",
+     "Form Intercreditor Agreements",
+     "FSHCO",
+     "Fund",
+     "Funded Debt",
+     "GAAP",
+     "General Lien Basket",
+     "General Lien Basket Reallocated Amount",
+     "Governmental Authority",
+     "Guarantee Agreement",
+     "Guarantors",
+     "Hazardous Materials",
+     "Hedging Obligations",
+     "IFRS",
+     "Immaterial Subsidiary"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 10363,
+    "ownedItems": 2,
+    "materialItems": 2,
+    "contextEntries": 2,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_SECTION": 1
+    },
+    "contextChars": 1532,
+    "unresolvedContext": 1,
+    "oversized": false,
+    "plannerEstimateTokens": 22325,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 62174,
+    "renderedInputTokens": 24603
+   },
+   {
+    "shardId": "shard:30d337feeef5ba80d66b",
+    "shardHash": "7082b8c10ea56966",
+    "primaryUnits": [
+     "Immediate Family Members",
+     "Incremental Cap",
+     "Incremental Equivalent Debt",
+     "Incremental Facility",
+     "Incremental Loans",
+     "Incremental Revolving Commitment",
+     "Incremental Revolving Loans",
+     "Incremental Term Commitment",
+     "Incremental Term Facility",
+     "Indebtedness",
+     "Indemnified Taxes",
+     "Independent Financial Advisor",
+     "Initial Term Commitment",
+     "Initial Term Facility",
+     "Initial Term Loans",
+     "Initial Term Maturity Date"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 10017,
+    "ownedItems": 5,
+    "materialItems": 5,
+    "contextEntries": 2,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 1
+    },
+    "contextChars": 264,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 22152,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 65778,
+    "renderedInputTokens": 26029
+   },
+   {
+    "shardId": "shard:a45ccfe3d94f990e5348",
+    "shardHash": "5e5ca3d1c2758efb",
+    "primaryUnits": [
+     "Inside Maturity Basket",
+     "Intercreditor Agreements",
+     "Interest Coverage\nRatio",
+     "Interest Election Request",
+     "Interest Payment Date",
+     "Interest Period",
+     "Investment Grade Rating",
+     "Investment Grade Securities",
+     "Investments",
+     "Investor",
+     "Joint Venture",
+     "JPMCB",
+     "Junior Lien Priorit y"
+    ],
+    "primaryUnitCount": 13,
+    "sourceChars": 11995,
+    "ownedItems": 4,
+    "materialItems": 4,
+    "contextEntries": 4,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 2,
+     "REFERENCED_SECTION": 1
+    },
+    "contextChars": 3828,
+    "unresolvedContext": 1,
+    "oversized": false,
+    "plannerEstimateTokens": 24393,
+    "outputTokensEstimate": 34000,
+    "renderedFirstTurnChars": 69665,
+    "renderedInputTokens": 27567
+   },
+   {
+    "shardId": "shard:aac727054a5da5f1a9fd",
+    "shardHash": "9943af75025bd855",
+    "primaryUnits": [
+     "Junior Lien Intercreditor\nAgreement",
+     "Latest Maturity Date",
+     "Lead Arrangers",
+     "Lenders",
+     "Letter of Intent Transactions",
+     "Liabilities",
+     "Lien",
+     "Limited Condition\nTransaction",
+     "Limited Originator Recourse",
+     "Loan Document Obligations",
+     "Loan Documents",
+     "Loan Modification Agreement",
+     "Loan Parties",
+     "Loans",
+     "Management Investors",
+     "Market Capitalization"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 7577,
+    "ownedItems": 0,
+    "materialItems": 0,
+    "contextEntries": 1,
+    "contextKinds": {
+     "CHAPEAU": 1
+    },
+    "contextChars": 225,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 20422,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 57682,
+    "renderedInputTokens": 22825
+   },
+   {
+    "shardId": "shard:f3eb63624b7f5a5c3cca",
+    "shardHash": "9917d21e61733319",
+    "primaryUnits": [
+     "Material Acquisition",
+     "Material Adverse Effect",
+     "Material Indebtedness",
+     "Material Intellectual Property",
+     "Material Subsidiary",
+     "Maturity Date",
+     "Maturity Exception Facility",
+     "Model",
+     "Moody ’ s",
+     "Multiemployer Plan",
+     "Non-Cash Compensation Expense",
+     "Non-Loan Party Subsidiary",
+     "Not Otherwise Applied",
+     "Notice of Additional Guarantor",
+     "Numerical Permission",
+     "NYFRB"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 10945,
+    "ownedItems": 3,
+    "materialItems": 3,
+    "contextEntries": 4,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 2,
+     "REFERENCED_SECTION": 1
+    },
+    "contextChars": 4153,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 23815,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 69076,
+    "renderedInputTokens": 27334
+   },
+   {
+    "shardId": "shard:2804206d37b6f769705a",
+    "shardHash": "295194e683bbffe1",
+    "primaryUnits": [
+     "NYFRB Rate",
+     "NYFRB\nRate",
+     "Obligations",
+     "Ordinary Course Non-Recourse Third Party Financing Transaction",
+     "Organizational\nDocuments",
+     "Other Commitments",
+     "Other Connection Taxes",
+     "Other Loans",
+     "Other Revolving Commitments",
+     "Other Revolving Facility",
+     "Other Revolving Loans",
+     "Other Taxes",
+     "Other Term\nCommitments",
+     "Other Term\nFacility",
+     "Other Term Loans",
+     "Overnight Bank Funding Rate"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 7617,
+    "ownedItems": 0,
+    "materialItems": 0,
+    "contextEntries": 1,
+    "contextKinds": {
+     "CHAPEAU": 1
+    },
+    "contextChars": 225,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 20438,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 55038,
+    "renderedInputTokens": 21779
+   },
+   {
+    "shardId": "shard:8b21b0018e4a6cedd585",
+    "shardHash": "4cd2f84d10958b7f",
+    "primaryUnits": [
+     "Parent Entity",
+     "PBGC",
+     "Permitted Amendment",
+     "Permitted Asset Swap",
+     "Permitted Holder"
+    ],
+    "primaryUnitCount": 5,
+    "sourceChars": 4653,
+    "ownedItems": 0,
+    "materialItems": 0,
+    "contextEntries": 1,
+    "contextKinds": {
+     "CHAPEAU": 1
+    },
+    "contextChars": 225,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 19265,
+    "outputTokensEstimate": 14000,
+    "renderedFirstTurnChars": 53896,
+    "renderedInputTokens": 21327
+   },
+   {
+    "shardId": "shard:f048973d2e9a58498b81",
+    "shardHash": "732123dea5d25e56",
+    "primaryUnits": [
+     "Permitted Investments"
+    ],
+    "primaryUnitCount": 1,
+    "sourceChars": 14121,
+    "ownedItems": 6,
+    "materialItems": 6,
+    "contextEntries": 7,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 6
+    },
+    "contextChars": 6210,
+    "unresolvedContext": 1,
+    "oversized": false,
+    "plannerEstimateTokens": 26673,
+    "outputTokensEstimate": 4000,
+    "renderedFirstTurnChars": 75853,
+    "renderedInputTokens": 30016
+   },
+   {
+    "shardId": "shard:4f06625557e9aecbbb7a",
+    "shardHash": "f1b437e22ee07474",
+    "primaryUnits": [
+     "Permitted Liens"
+    ],
+    "primaryUnitCount": 1,
+    "sourceChars": 26695,
+    "ownedItems": 6,
+    "materialItems": 6,
+    "contextEntries": 7,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 6
+    },
+    "contextChars": 3701,
+    "unresolvedContext": 1,
+    "oversized": true,
+    "plannerEstimateTokens": 30562,
+    "outputTokensEstimate": 4000,
+    "renderedFirstTurnChars": 86792,
+    "renderedInputTokens": 34344
+   },
+   {
+    "shardId": "shard:3e3910ea2efd9edd45a3",
+    "shardHash": "183134ad7785f161",
+    "primaryUnits": [
+     "Permitted Receivables Financings",
+     "Permitted Tax Restructuring",
+     "Permitted Transferees",
+     "Person",
+     "Plan",
+     "Post-Transaction Period",
+     "Preferred Stock",
+     "Prepayment Event",
+     "Prepayment Notice",
+     "Present Fair Saleable Value",
+     "Prime Rate",
+     "Pro Forma Adjustment",
+     "Pro Forma Effect",
+     "Pro Forma Disposal Adjustment",
+     "Pro Forma Entity",
+     "Pro Rata Share"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 10103,
+    "ownedItems": 3,
+    "materialItems": 3,
+    "contextEntries": 3,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 2
+    },
+    "contextChars": 2796,
+    "unresolvedContext": 2,
+    "oversized": false,
+    "plannerEstimateTokens": 23054,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 65788,
+    "renderedInputTokens": 26033
+   },
+   {
+    "shardId": "shard:6248230fa539039e625f",
+    "shardHash": "917fead02cf8fb0b",
+    "primaryUnits": [
+     "PTE",
+     "Public Company Costs",
+     "Purchase Money Obligations",
+     "Purchasing Borrower Party",
+     "Qualified Equity Interests",
+     "Qualified Restricted Subsidiary",
+     "Qualified Jurisdiction",
+     "Ratio Incremental Amount",
+     "Receivables Assets",
+     "Receivables Fees",
+     "Receivables Non-Recourse Facility",
+     "Receivables Recourse Facility",
+     "Receivables Subsidiary",
+     "Recipient",
+     "Refinance",
+     "Refinancing Amendment"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 9729,
+    "ownedItems": 3,
+    "materialItems": 3,
+    "contextEntries": 5,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 4
+    },
+    "contextChars": 1815,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 22563,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 65762,
+    "renderedInputTokens": 26023
+   },
+   {
+    "shardId": "shard:5bbdd9026aa0eefb73f0",
+    "shardHash": "6ae7768f98f41902",
+    "primaryUnits": [
+     "Regulated Bank",
+     "Related Business Assets",
+     "Related Parties",
+     "Release",
+     "Relevant Governmental Body",
+     "Repricing Transaction",
+     "Repurchase Obligation",
+     "Required Lenders",
+     "Required Revolving Lenders",
+     "Required Term Lenders",
+     "Requirements of Law",
+     "Resolution Authority",
+     "Responsible Officer",
+     "Restricted",
+     "Restricted Investment",
+     "Restricted Parties"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 9851,
+    "ownedItems": 1,
+    "materialItems": 1,
+    "contextEntries": 1,
+    "contextKinds": {
+     "CHAPEAU": 1
+    },
+    "contextChars": 225,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 21443,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 63152,
+    "renderedInputTokens": 24990
+   },
+   {
+    "shardId": "shard:42a0ee858a3457c23f47",
+    "shardHash": "867efe57fd1ce295",
+    "primaryUnits": [
+     "Restricted Subsidiary",
+     "Retained Asset Sale Proceeds",
+     "Retained Excess Cash Flow",
+     "Revolving Borrowing",
+     "Revolving Commitment",
+     "Revolving Exposure",
+     "Revolving\nFacility",
+     "Revolving Lender",
+     "Revolving Loan",
+     "RFR",
+     "RFR Borrowing",
+     "RFR Business Day",
+     "RFR Loan",
+     "Sale and Lease-Back Transaction",
+     "Sanctions",
+     "SEC"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 4565,
+    "ownedItems": 0,
+    "materialItems": 0,
+    "contextEntries": 1,
+    "contextKinds": {
+     "CHAPEAU": 1
+    },
+    "contextChars": 225,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 19230,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 53441,
+    "renderedInputTokens": 21147
+   },
+   {
+    "shardId": "shard:2b74338b4b2dc108057c",
+    "shardHash": "ee58b2e5782a89d8",
+    "primaryUnits": [
+     "Secured Cash Management Obligations",
+     "Secured Indebtedness",
+     "Secured Obligations",
+     "Secured\nParties",
+     "Secured Swap\nObligations",
+     "Security Documents",
+     "Senior\nIndebtedness",
+     "Senior Representative",
+     "Senior Secured Leverage Ratio",
+     "Significant Subsidiary",
+     "Similar Business",
+     "SOFR",
+     "SOFR Administrator",
+     "SOFR Administrator ’ s Website",
+     "Solvent",
+     "SONIA"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 9340,
+    "ownedItems": 0,
+    "materialItems": 0,
+    "contextEntries": 1,
+    "contextKinds": {
+     "CHAPEAU": 1
+    },
+    "contextChars": 225,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 21119,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 57445,
+    "renderedInputTokens": 22731
+   },
+   {
+    "shardId": "shard:d8e77df4fadace785588",
+    "shardHash": "906bb9bf2b37febd",
+    "primaryUnits": [
+     "SONIA Administrator",
+     "SONIA Administrator ’ s Website",
+     "Specified Event of Default",
+     "Specified Representations",
+     "Specified Transaction",
+     "Sponsors",
+     "Spot Rate",
+     "Standard Securitization Undertakings",
+     "Subordinated Indebtedness",
+     "subsidiary",
+     "Subsidiary",
+     "Subsidiary Loan Party",
+     "Swap",
+     "Swap Agreement",
+     "Swap Obligation",
+     "TARGET Day"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 10967,
+    "ownedItems": 0,
+    "materialItems": 0,
+    "contextEntries": 1,
+    "contextKinds": {
+     "CHAPEAU": 1
+    },
+    "contextChars": 225,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 21763,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 61981,
+    "renderedInputTokens": 24526
+   },
+   {
+    "shardId": "shard:50e26ec2fb25035a3b7b",
+    "shardHash": "fe4747230a2a39c7",
+    "primaryUnits": [
+     "TARGET2",
+     "Taxes",
+     "Term Commitment",
+     "Term CORRA",
+     "Term CORRA Administrator",
+     "Term CORRA Reference Rate",
+     "Term Facility",
+     "Term Lenders",
+     "Term Priority\nCollateral",
+     "Term\nLoans",
+     "Term Maturity Date",
+     "Term SOFR Rate",
+     "Term SOFR Reference Rate",
+     "Test Period",
+     "Threshold Amount",
+     "Total Leverage Ratio"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 6520,
+    "ownedItems": 2,
+    "materialItems": 2,
+    "contextEntries": 4,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 3
+    },
+    "contextChars": 3378,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 21568,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 62560,
+    "renderedInputTokens": 24755
+   },
+   {
+    "shardId": "shard:e9d1223d90cc2dd9c683",
+    "shardHash": "5363f1f7b6d7bf68",
+    "primaryUnits": [
+     "Total Revolving Commitments",
+     "Transaction Expenses",
+     "Transactions",
+     "Transformative Transaction",
+     "U.S. Government Securities Business Day",
+     "Uniform Commercial Code",
+     "Uniform Commercial Code",
+     "UK Financial Institution",
+     "UK Resolution\nAuthority",
+     "Unrestricted Subsidiary",
+     "Unsecured Capital Lease\nObligations",
+     "Unsecured Capitalized Leases",
+     "USA PATRIOT Act",
+     "Vehicles",
+     "Voluntary Prepayment Incremental Amount",
+     "Weighted Average Life to Maturity"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 10314,
+    "ownedItems": 3,
+    "materialItems": 3,
+    "contextEntries": 4,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 3
+    },
+    "contextChars": 2227,
+    "unresolvedContext": 3,
+    "oversized": false,
+    "plannerEstimateTokens": 22913,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 67302,
+    "renderedInputTokens": 26632
+   },
+   {
+    "shardId": "shard:c6f9067a716712ae085a",
+    "shardHash": "8c0ad1ed342cc215",
+    "primaryUnits": [
+     "wholly owned subsidiary",
+     "Withdrawal Liability",
+     "Withholding Agent",
+     "Write-Down and Conversion Powers"
+    ],
+    "primaryUnitCount": 4,
+    "sourceChars": 1774,
+    "ownedItems": 0,
+    "materialItems": 0,
+    "contextEntries": 1,
+    "contextKinds": {
+     "CHAPEAU": 1
+    },
+    "contextChars": 225,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "plannerEstimateTokens": 18126,
+    "outputTokensEstimate": 11500,
+    "renderedFirstTurnChars": 46311,
+    "renderedInputTokens": 18326
+   }
+  ],
+  "aggregate": {
+   "shardCount": 36,
+   "maxRenderedInputTokens": 34344,
+   "medianRenderedInputTokens": 24837,
+   "p95RenderedInputTokens": 30016,
+   "largestSourceShardChars": 26695,
+   "largestInventoryCount": 11,
+   "contextDuplicationChars": 49835,
+   "totalRenderedInputTokens": 896103,
+   "currentSingleCallInputTokens": 312143,
+   "ratioVsCurrentSingleCall": 2.871,
+   "plannerVsRenderedMaxAbsError": 4510,
+   "oversizedShards": 1,
+   "planHash": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36"
+  }
+ },
+ "6.08": {
+  "candidateRef": "phase-3-validation:chwy:6.08",
+  "operativeChars": 38529,
+  "frozenInventoryItems": 288,
+  "derivation": {
+   "operative": "STRUCTURAL_NODES"
+  },
+  "units": 101,
+  "unitKinds": {
+   "NODE_OWN_TEXT": 101
+  },
+  "mustLinkGroups": [
+   {
+    "units": 2,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:6.08(a)(3)(c)->operative:NODE_OWN_TEXT:6.08(a)(3)(c)(i)"
+    ]
+   },
+   {
+    "units": 2,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:6.08(a)(3)(g)->operative:NODE_OWN_TEXT:6.08(a)(3)(g)(i)"
+    ]
+   },
+   {
+    "units": 2,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:6.08(a)(3)(h)->operative:NODE_OWN_TEXT:6.08(a)(3)(i)(i)"
+    ]
+   },
+   {
+    "units": 2,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:6.08(b)(9)(i)(a)->operative:NODE_OWN_TEXT:6.08(b)(9)(i)(a)(A)"
+    ]
+   },
+   {
+    "units": 2,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:6.08(b)(10)->operative:NODE_OWN_TEXT:6.08(b)(10)(A)"
+    ]
+   },
+   {
+    "units": 2,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:6.08(b)(10)(B)->operative:NODE_OWN_TEXT:6.08(b)(10)(B)(A)"
+    ]
+   },
+   {
+    "units": 2,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:6.08(b)(11)->operative:NODE_OWN_TEXT:6.08(b)(11)(i)"
+    ]
+   },
+   {
+    "units": 2,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:6.08(b)(14)->operative:NODE_OWN_TEXT:6.08(b)(14)(A)"
+    ]
+   },
+   {
+    "units": 2,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:6.08(b)(17)->operative:NODE_OWN_TEXT:6.08(b)(17)(a)",
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:6.08(b)(17)->operative:NODE_OWN_TEXT:6.08(b)(17)(a)"
+    ]
+   },
+   {
+    "units": 2,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:6.08(b)(21)->operative:NODE_OWN_TEXT:6.08(b)(21)(i)"
+    ]
+   },
+   {
+    "units": 6,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:6.08(b)(25)(I)(B)->operative:NODE_OWN_TEXT:6.08(b)(25)(I)(B)(A)",
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:6.08(b)(25)(I)->operative:NODE_OWN_TEXT:6.08(b)(25)(I)(A)",
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:6.08(b)(25)->operative:NODE_OWN_TEXT:6.08(b)(25)(I)",
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:6.08(b)(25)(I)->operative:NODE_OWN_TEXT:6.08(b)(25)(I)(B)",
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:6.08(b)(25)(I)(B)(A)->operative:NODE_OWN_TEXT:6.08(b)(25)(II)"
+    ]
+   }
+  ],
+  "ownershipProof": {
+   "materialItems": 278,
+   "ownedOnce": 278,
+   "unowned": 0,
+   "multiplyOwned": 0
+  },
+  "unplacedItemIds": [],
+  "sensitivity": [
+   {
+    "label": "T6k/U16",
+    "budget": {
+     "targetPrimaryChars": 6000,
+     "maxPrimaryChars": 12000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 16
+    },
+    "shardCount": 8,
+    "maxInputTokens": 31373,
+    "medianInputTokens": 28185,
+    "p95InputTokens": 31373,
+    "maxOutputTokens": 41500,
+    "largestShardUnits": 16,
+    "shardsWithoutOwnedItems": 0,
+    "totalInputTokens": 224367,
+    "ratioVsCurrentSingleCall": 2.342,
+    "largestShardPrimaryChars": 5815,
+    "largestShardOwnedItems": 58,
+    "oversizedShards": 0,
+    "contextDuplicationChars": 6501,
+    "contextDuplicationRatio": 0.169,
+    "ownership": {
+     "materialItems": 278,
+     "ownedOnce": 278,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 11,
+    "derivation": {
+     "operative": "STRUCTURAL_NODES"
+    }
+   },
+   {
+    "label": "T9k/U16",
+    "budget": {
+     "targetPrimaryChars": 9000,
+     "maxPrimaryChars": 18000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 16
+    },
+    "shardCount": 7,
+    "maxInputTokens": 33516,
+    "medianInputTokens": 28185,
+    "p95InputTokens": 33516,
+    "maxOutputTokens": 41500,
+    "largestShardUnits": 16,
+    "shardsWithoutOwnedItems": 0,
+    "totalInputTokens": 205709,
+    "ratioVsCurrentSingleCall": 2.148,
+    "largestShardPrimaryChars": 8499,
+    "largestShardOwnedItems": 63,
+    "oversizedShards": 0,
+    "contextDuplicationChars": 5717,
+    "contextDuplicationRatio": 0.148,
+    "ownership": {
+     "materialItems": 278,
+     "ownedOnce": 278,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 11,
+    "derivation": {
+     "operative": "STRUCTURAL_NODES"
+    }
+   },
+   {
+    "label": "T12k/U16 (default)",
+    "budget": {
+     "targetPrimaryChars": 12000,
+     "maxPrimaryChars": 24000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 16
+    },
+    "shardCount": 7,
+    "maxInputTokens": 33516,
+    "medianInputTokens": 28185,
+    "p95InputTokens": 33516,
+    "maxOutputTokens": 41500,
+    "largestShardUnits": 16,
+    "shardsWithoutOwnedItems": 0,
+    "totalInputTokens": 205709,
+    "ratioVsCurrentSingleCall": 2.148,
+    "largestShardPrimaryChars": 8499,
+    "largestShardOwnedItems": 63,
+    "oversizedShards": 0,
+    "contextDuplicationChars": 5717,
+    "contextDuplicationRatio": 0.148,
+    "ownership": {
+     "materialItems": 278,
+     "ownedOnce": 278,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 11,
+    "derivation": {
+     "operative": "STRUCTURAL_NODES"
+    }
+   },
+   {
+    "label": "T12k/U32",
+    "budget": {
+     "targetPrimaryChars": 12000,
+     "maxPrimaryChars": 24000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 32
+    },
+    "shardCount": 4,
+    "maxInputTokens": 39516,
+    "medianInputTokens": 37514,
+    "p95InputTokens": 39516,
+    "maxOutputTokens": 81500,
+    "largestShardUnits": 32,
+    "shardsWithoutOwnedItems": 0,
+    "totalInputTokens": 142221,
+    "ratioVsCurrentSingleCall": 1.485,
+    "largestShardPrimaryChars": 11866,
+    "largestShardOwnedItems": 102,
+    "oversizedShards": 0,
+    "contextDuplicationChars": 2362,
+    "contextDuplicationRatio": 0.061,
+    "ownership": {
+     "materialItems": 278,
+     "ownedOnce": 278,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 11,
+    "derivation": {
+     "operative": "STRUCTURAL_NODES"
+    }
+   },
+   {
+    "label": "T16k/U16",
+    "budget": {
+     "targetPrimaryChars": 16000,
+     "maxPrimaryChars": 32000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 16
+    },
+    "shardCount": 7,
+    "maxInputTokens": 33516,
+    "medianInputTokens": 28185,
+    "p95InputTokens": 33516,
+    "maxOutputTokens": 41500,
+    "largestShardUnits": 16,
+    "shardsWithoutOwnedItems": 0,
+    "totalInputTokens": 205709,
+    "ratioVsCurrentSingleCall": 2.148,
+    "largestShardPrimaryChars": 8499,
+    "largestShardOwnedItems": 63,
+    "oversizedShards": 0,
+    "contextDuplicationChars": 5717,
+    "contextDuplicationRatio": 0.148,
+    "ownership": {
+     "materialItems": 278,
+     "ownedOnce": 278,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 11,
+    "derivation": {
+     "operative": "STRUCTURAL_NODES"
+    }
+   },
+   {
+    "label": "T24k/U24",
+    "budget": {
+     "targetPrimaryChars": 24000,
+     "maxPrimaryChars": 48000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 24
+    },
+    "shardCount": 5,
+    "maxInputTokens": 37017,
+    "medianInputTokens": 32277,
+    "p95InputTokens": 37017,
+    "maxOutputTokens": 61500,
+    "largestShardUnits": 24,
+    "shardsWithoutOwnedItems": 0,
+    "totalInputTokens": 163618,
+    "ratioVsCurrentSingleCall": 1.708,
+    "largestShardPrimaryChars": 10414,
+    "largestShardOwnedItems": 85,
+    "oversizedShards": 0,
+    "contextDuplicationChars": 4241,
+    "contextDuplicationRatio": 0.11,
+    "ownership": {
+     "materialItems": 278,
+     "ownedOnce": 278,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 11,
+    "derivation": {
+     "operative": "STRUCTURAL_NODES"
+    }
+   },
+   {
+    "label": "T24k/U64",
+    "budget": {
+     "targetPrimaryChars": 24000,
+     "maxPrimaryChars": 48000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 64
+    },
+    "shardCount": 2,
+    "maxInputTokens": 57756,
+    "medianInputTokens": 57756,
+    "p95InputTokens": 57756,
+    "maxOutputTokens": 159000,
+    "largestShardUnits": 63,
+    "shardsWithoutOwnedItems": 0,
+    "totalInputTokens": 99785,
+    "ratioVsCurrentSingleCall": 1.042,
+    "largestShardPrimaryChars": 23888,
+    "largestShardOwnedItems": 193,
+    "oversizedShards": 0,
+    "contextDuplicationChars": 720,
+    "contextDuplicationRatio": 0.019,
+    "ownership": {
+     "materialItems": 278,
+     "ownedOnce": 278,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 11,
+    "derivation": {
+     "operative": "STRUCTURAL_NODES"
+    }
+   }
+  ],
+  "chosenBudget": {
+   "targetPrimaryChars": 12000,
+   "maxPrimaryChars": 24000,
+   "maxContextChars": 10000,
+   "maxContextEntryChars": 1800,
+   "maxUnitsPerShard": 16
+  },
+  "shards": [
+   {
+    "shardId": "shard:a8e99001562d34d3d15e",
+    "shardHash": "3ad65d12e1d548eb",
+    "primaryUnits": [
+     "6.08",
+     "6.08(a)",
+     "6.08(a)(i)",
+     "6.08(a)(i)(a)",
+     "6.08(a)(i)(b)",
+     "6.08(a)(i)(c)",
+     "6.08(a)(ii)",
+     "6.08(a)(iii)",
+     "6.08(a)(iii)(a)",
+     "6.08(a)(iii)(b)",
+     "6.08(a)(iii)(c)",
+     "6.08(a)(iv)",
+     "6.08(a)(1)",
+     "6.08(a)(2)",
+     "6.08(a)(3)",
+     "6.08(a)(3)(a)"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 4320,
+    "ownedItems": 39,
+    "materialItems": 35,
+    "contextEntries": 14,
+    "contextKinds": {
+     "REFERENCED_TERM": 9,
+     "REFERENCED_SECTION": 5
+    },
+    "contextChars": 9917,
+    "unresolvedContext": 8,
+    "oversized": false,
+    "plannerEstimateTokens": 28185,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 82433,
+    "renderedInputTokens": 32619
+   },
+   {
+    "shardId": "shard:4873f295f0c61571b83d",
+    "shardHash": "cfa380b065cef6ad",
+    "primaryUnits": [
+     "6.08(a)(3)(a)(A)",
+     "6.08(a)(3)(a)(B)",
+     "6.08(a)(3)(b)",
+     "6.08(a)(3)(c)",
+     "6.08(a)(3)(c)(i)",
+     "6.08(a)(3)(d)",
+     "6.08(a)(3)(d)(i)",
+     "6.08(a)(3)(d)(ii)",
+     "6.08(a)(3)(d)(iii)",
+     "6.08(a)(3)(e)",
+     "6.08(a)(3)(f)",
+     "6.08(a)(3)(g)",
+     "6.08(a)(3)(g)(i)",
+     "6.08(a)(3)(h)",
+     "6.08(a)(3)(i)",
+     "6.08(a)(3)(i)(i)"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 6551,
+    "ownedItems": 63,
+    "materialItems": 61,
+    "contextEntries": 13,
+    "contextKinds": {
+     "CHAPEAU": 3,
+     "PARENT_ITEM": 1,
+     "REFERENCED_TERM": 9
+    },
+    "contextChars": 9849,
+    "unresolvedContext": 26,
+    "oversized": false,
+    "plannerEstimateTokens": 32553,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 98958,
+    "renderedInputTokens": 39158
+   },
+   {
+    "shardId": "shard:b7cf0d61c844d94451f9",
+    "shardHash": "bd91978c8376619b",
+    "primaryUnits": [
+     "6.08(a)(3)(i)(ii)",
+     "6.08(b)",
+     "6.08(b)(1)",
+     "6.08(b)(2)(a)",
+     "6.08(b)(3)",
+     "6.08(b)(3)(i)",
+     "6.08(b)(3)(ii)",
+     "6.08(b)(4)",
+     "6.08(b)(4)(a)",
+     "6.08(b)(4)(b)",
+     "6.08(b)(4)(c)",
+     "6.08(b)(4)(d)",
+     "6.08(b)(5)",
+     "6.08(b)(6)(a)",
+     "6.08(b)(6)(b)",
+     "6.08(b)(6)(c)"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 8499,
+    "ownedItems": 63,
+    "materialItems": 62,
+    "contextEntries": 19,
+    "contextKinds": {
+     "CHAPEAU": 3,
+     "PARENT_ITEM": 1,
+     "REFERENCED_TERM": 10,
+     "REFERENCED_SECTION": 5
+    },
+    "contextChars": 9652,
+    "unresolvedContext": 7,
+    "oversized": false,
+    "plannerEstimateTokens": 33516,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 99496,
+    "renderedInputTokens": 39371
+   },
+   {
+    "shardId": "shard:2cf39550e15941804741",
+    "shardHash": "14391453a26175cd",
+    "primaryUnits": [
+     "6.08(b)(7)",
+     "6.08(b)(8)",
+     "6.08(b)(9)(i)(a)",
+     "6.08(b)(9)(i)(a)(A)",
+     "6.08(b)(9)(i)(a)(B)",
+     "6.08(b)(9)(i)(b)",
+     "6.08(b)(9)(ii)",
+     "6.08(b)(10)",
+     "6.08(b)(10)(A)",
+     "6.08(b)(10)(B)",
+     "6.08(b)(10)(B)(A)",
+     "6.08(b)(10)(B)(B)",
+     "6.08(b)(11)",
+     "6.08(b)(11)(i)",
+     "6.08(b)(11)(ii)",
+     "6.08(b)(12)"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 4904,
+    "ownedItems": 33,
+    "materialItems": 33,
+    "contextEntries": 17,
+    "contextKinds": {
+     "CHAPEAU": 2,
+     "PARENT_ITEM": 1,
+     "REFERENCED_TERM": 11,
+     "REFERENCED_SECTION": 3
+    },
+    "contextChars": 9793,
+    "unresolvedContext": 7,
+    "oversized": false,
+    "plannerEstimateTokens": 27858,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 83961,
+    "renderedInputTokens": 33224
+   },
+   {
+    "shardId": "shard:2bc28a3b460a345d80b6",
+    "shardHash": "8d84de204bc279ef",
+    "primaryUnits": [
+     "6.08(b)(12)(A)",
+     "6.08(b)(12)(B)",
+     "6.08(b)(13)",
+     "6.08(b)(14)",
+     "6.08(b)(14)(A)",
+     "6.08(b)(14)(B)",
+     "6.08(b)(15)",
+     "6.08(b)(16)",
+     "6.08(b)(16)(a)",
+     "6.08(b)(16)(b)(1)",
+     "6.08(b)(16)(b)(2)",
+     "6.08(b)(16)(c)",
+     "6.08(b)(16)(d)",
+     "6.08(b)(16)(e)",
+     "6.08(b)(16)(f)",
+     "6.08(b)(16)(g)"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 6955,
+    "ownedItems": 45,
+    "materialItems": 44,
+    "contextEntries": 20,
+    "contextKinds": {
+     "CHAPEAU": 3,
+     "PARENT_ITEM": 3,
+     "REFERENCED_TERM": 10,
+     "REFERENCED_SECTION": 4
+    },
+    "contextChars": 9448,
+    "unresolvedContext": 12,
+    "oversized": false,
+    "plannerEstimateTokens": 30681,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 93691,
+    "renderedInputTokens": 37074
+   },
+   {
+    "shardId": "shard:40e1fa3c403a13ff5c6b",
+    "shardHash": "426f142381cc49d9",
+    "primaryUnits": [
+     "6.08(b)(16)(h)",
+     "6.08(b)(17)",
+     "6.08(b)(17)(a)",
+     "6.08(b)(17)(b)",
+     "6.08(b)(18)",
+     "6.08(b)(19)",
+     "6.08(b)(20)",
+     "6.08(b)(21)",
+     "6.08(b)(21)(i)",
+     "6.08(b)(22)",
+     "6.08(b)(23)",
+     "6.08(b)(24)"
+    ],
+    "primaryUnitCount": 12,
+    "sourceChars": 2886,
+    "ownedItems": 22,
+    "materialItems": 21,
+    "contextEntries": 15,
+    "contextKinds": {
+     "CHAPEAU": 3,
+     "PARENT_ITEM": 2,
+     "REFERENCED_TERM": 9,
+     "REFERENCED_SECTION": 1
+    },
+    "contextChars": 9948,
+    "unresolvedContext": 10,
+    "oversized": false,
+    "plannerEstimateTokens": 25788,
+    "outputTokensEstimate": 31500,
+    "renderedFirstTurnChars": 77960,
+    "renderedInputTokens": 30849
+   },
+   {
+    "shardId": "shard:bbc3cdca731dfe015265",
+    "shardHash": "4718a44181e2e048",
+    "primaryUnits": [
+     "6.08(b)(25)",
+     "6.08(b)(25)(I)",
+     "6.08(b)(25)(I)(A)",
+     "6.08(b)(25)(I)(B)",
+     "6.08(b)(25)(I)(B)(A)",
+     "6.08(b)(25)(I)(B)(B)",
+     "6.08(b)(25)(II)",
+     "6.08(b)(26)",
+     "6.08(b)(27)"
+    ],
+    "primaryUnitCount": 9,
+    "sourceChars": 4414,
+    "ownedItems": 23,
+    "materialItems": 22,
+    "contextEntries": 15,
+    "contextKinds": {
+     "CHAPEAU": 2,
+     "PARENT_ITEM": 2,
+     "REFERENCED_TERM": 10,
+     "REFERENCED_SECTION": 1
+    },
+    "contextChars": 9973,
+    "unresolvedContext": 18,
+    "oversized": false,
+    "plannerEstimateTokens": 27128,
+    "outputTokensEstimate": 24000,
+    "renderedFirstTurnChars": 83176,
+    "renderedInputTokens": 32913
+   }
+  ],
+  "aggregate": {
+   "shardCount": 7,
+   "maxRenderedInputTokens": 39371,
+   "medianRenderedInputTokens": 33224,
+   "p95RenderedInputTokens": 39371,
+   "largestSourceShardChars": 8499,
+   "largestInventoryCount": 63,
+   "contextDuplicationChars": 5717,
+   "totalRenderedInputTokens": 245208,
+   "currentSingleCallInputTokens": 95786,
+   "ratioVsCurrentSingleCall": 2.56,
+   "plannerVsRenderedMaxAbsError": 6605,
+   "oversizedShards": 0,
+   "planHash": "1ae552e45cfa5ecb99a288d3ad97b2eb8ef52485ccfa33dae3d4bc64f80f3ca9"
+  }
+ },
+ "9.04": {
+  "candidateRef": "phase-3-validation:chwy:9.04",
+  "operativeChars": 29580,
+  "frozenInventoryItems": 218,
+  "derivation": {
+   "operative": "STRUCTURAL_NODES"
+  },
+  "units": 48,
+  "unitKinds": {
+   "NODE_OWN_TEXT": 48
+  },
+  "mustLinkGroups": [
+   {
+    "units": 2,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:9.04(b)(i)(A)->operative:NODE_OWN_TEXT:9.04(b)(i)(A)(1)",
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:9.04(b)(i)(A)->operative:NODE_OWN_TEXT:9.04(b)(i)(A)(1)"
+    ]
+   },
+   {
+    "units": 2,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:9.04(b)(i)(B)->operative:NODE_OWN_TEXT:9.04(b)(i)(B)(1)"
+    ]
+   },
+   {
+    "units": 2,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:9.04(b)(ii)(A)->operative:NODE_OWN_TEXT:9.04(b)(ii)(A)(1)"
+    ]
+   },
+   {
+    "units": 2,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:9.04(b)(iv)->operative:NODE_OWN_TEXT:9.04(b)(iv)(i)"
+    ]
+   },
+   {
+    "units": 2,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:9.04(c)(ii)->operative:NODE_OWN_TEXT:9.04(c)(ii)(A)"
+    ]
+   },
+   {
+    "units": 2,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:9.04(e)->operative:NODE_OWN_TEXT:9.04(e)(i)"
+    ]
+   },
+   {
+    "units": 2,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:9.04(e)(ii)->operative:NODE_OWN_TEXT:9.04(e)(ii)(i)"
+    ]
+   },
+   {
+    "units": 3,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:9.04(f)(8)->operative:NODE_OWN_TEXT:9.04(f)(8)(ii)",
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:9.04(f)(8)->operative:NODE_OWN_TEXT:9.04(f)(8)(i)"
+    ]
+   },
+   {
+    "units": 2,
+    "links": [
+     "ITEM_SPAN_CROSSES_UNITS:operative:NODE_OWN_TEXT:9.04(h)->operative:NODE_OWN_TEXT:9.04(i)"
+    ]
+   }
+  ],
+  "ownershipProof": {
+   "materialItems": 213,
+   "ownedOnce": 213,
+   "unowned": 0,
+   "multiplyOwned": 0
+  },
+  "unplacedItemIds": [],
+  "sensitivity": [
+   {
+    "label": "T6k/U16",
+    "budget": {
+     "targetPrimaryChars": 6000,
+     "maxPrimaryChars": 12000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 16
+    },
+    "shardCount": 6,
+    "maxInputTokens": 29264,
+    "medianInputTokens": 28012,
+    "p95InputTokens": 29264,
+    "maxOutputTokens": 29000,
+    "largestShardUnits": 11,
+    "shardsWithoutOwnedItems": 0,
+    "totalInputTokens": 159240,
+    "ratioVsCurrentSingleCall": 1.951,
+    "largestShardPrimaryChars": 5797,
+    "largestShardOwnedItems": 56,
+    "oversizedShards": 0,
+    "contextDuplicationChars": 2408,
+    "contextDuplicationRatio": 0.081,
+    "ownership": {
+     "materialItems": 213,
+     "ownedOnce": 213,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 9,
+    "derivation": {
+     "operative": "STRUCTURAL_NODES"
+    }
+   },
+   {
+    "label": "T9k/U16",
+    "budget": {
+     "targetPrimaryChars": 9000,
+     "maxPrimaryChars": 18000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 16
+    },
+    "shardCount": 4,
+    "maxInputTokens": 33450,
+    "medianInputTokens": 31293,
+    "p95InputTokens": 33450,
+    "maxOutputTokens": 39000,
+    "largestShardUnits": 15,
+    "shardsWithoutOwnedItems": 0,
+    "totalInputTokens": 123497,
+    "ratioVsCurrentSingleCall": 1.513,
+    "largestShardPrimaryChars": 8458,
+    "largestShardOwnedItems": 74,
+    "oversizedShards": 0,
+    "contextDuplicationChars": 1172,
+    "contextDuplicationRatio": 0.04,
+    "ownership": {
+     "materialItems": 213,
+     "ownedOnce": 213,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 9,
+    "derivation": {
+     "operative": "STRUCTURAL_NODES"
+    }
+   },
+   {
+    "label": "T12k/U16 (default)",
+    "budget": {
+     "targetPrimaryChars": 12000,
+     "maxPrimaryChars": 24000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 16
+    },
+    "shardCount": 3,
+    "maxInputTokens": 36161,
+    "medianInputTokens": 35570,
+    "p95InputTokens": 36161,
+    "maxOutputTokens": 41500,
+    "largestShardUnits": 16,
+    "shardsWithoutOwnedItems": 0,
+    "totalInputTokens": 105868,
+    "ratioVsCurrentSingleCall": 1.297,
+    "largestShardPrimaryChars": 10814,
+    "largestShardOwnedItems": 81,
+    "oversizedShards": 0,
+    "contextDuplicationChars": 74,
+    "contextDuplicationRatio": 0.003,
+    "ownership": {
+     "materialItems": 213,
+     "ownedOnce": 213,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 9,
+    "derivation": {
+     "operative": "STRUCTURAL_NODES"
+    }
+   },
+   {
+    "label": "T12k/U32",
+    "budget": {
+     "targetPrimaryChars": 12000,
+     "maxPrimaryChars": 24000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 32
+    },
+    "shardCount": 3,
+    "maxInputTokens": 38622,
+    "medianInputTokens": 38610,
+    "p95InputTokens": 38622,
+    "maxOutputTokens": 49000,
+    "largestShardUnits": 19,
+    "shardsWithoutOwnedItems": 0,
+    "totalInputTokens": 105855,
+    "ratioVsCurrentSingleCall": 1.297,
+    "largestShardPrimaryChars": 11991,
+    "largestShardOwnedItems": 93,
+    "oversizedShards": 0,
+    "contextDuplicationChars": 1172,
+    "contextDuplicationRatio": 0.04,
+    "ownership": {
+     "materialItems": 213,
+     "ownedOnce": 213,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 9,
+    "derivation": {
+     "operative": "STRUCTURAL_NODES"
+    }
+   },
+   {
+    "label": "T16k/U16",
+    "budget": {
+     "targetPrimaryChars": 16000,
+     "maxPrimaryChars": 32000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 16
+    },
+    "shardCount": 3,
+    "maxInputTokens": 36161,
+    "medianInputTokens": 35570,
+    "p95InputTokens": 36161,
+    "maxOutputTokens": 41500,
+    "largestShardUnits": 16,
+    "shardsWithoutOwnedItems": 0,
+    "totalInputTokens": 105868,
+    "ratioVsCurrentSingleCall": 1.297,
+    "largestShardPrimaryChars": 10814,
+    "largestShardOwnedItems": 81,
+    "oversizedShards": 0,
+    "contextDuplicationChars": 74,
+    "contextDuplicationRatio": 0.003,
+    "ownership": {
+     "materialItems": 213,
+     "ownedOnce": 213,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 9,
+    "derivation": {
+     "operative": "STRUCTURAL_NODES"
+    }
+   },
+   {
+    "label": "T24k/U24",
+    "budget": {
+     "targetPrimaryChars": 24000,
+     "maxPrimaryChars": 48000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 24
+    },
+    "shardCount": 2,
+    "maxInputTokens": 44820,
+    "medianInputTokens": 44820,
+    "p95InputTokens": 44820,
+    "maxOutputTokens": 61500,
+    "largestShardUnits": 24,
+    "shardsWithoutOwnedItems": 0,
+    "totalInputTokens": 87191,
+    "ratioVsCurrentSingleCall": 1.068,
+    "largestShardPrimaryChars": 15210,
+    "largestShardOwnedItems": 122,
+    "oversizedShards": 0,
+    "contextDuplicationChars": 55,
+    "contextDuplicationRatio": 0.002,
+    "ownership": {
+     "materialItems": 213,
+     "ownedOnce": 213,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 9,
+    "derivation": {
+     "operative": "STRUCTURAL_NODES"
+    }
+   },
+   {
+    "label": "T24k/U64",
+    "budget": {
+     "targetPrimaryChars": 24000,
+     "maxPrimaryChars": 48000,
+     "maxContextChars": 10000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 64
+    },
+    "shardCount": 2,
+    "maxInputTokens": 57608,
+    "medianInputTokens": 57608,
+    "p95InputTokens": 57608,
+    "maxOutputTokens": 94000,
+    "largestShardUnits": 37,
+    "shardsWithoutOwnedItems": 0,
+    "totalInputTokens": 86231,
+    "ratioVsCurrentSingleCall": 1.057,
+    "largestShardPrimaryChars": 23515,
+    "largestShardOwnedItems": 184,
+    "oversizedShards": 0,
+    "contextDuplicationChars": 1135,
+    "contextDuplicationRatio": 0.038,
+    "ownership": {
+     "materialItems": 213,
+     "ownedOnce": 213,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "unplaced": 0,
+    "mustLinkGroups": 9,
+    "derivation": {
+     "operative": "STRUCTURAL_NODES"
+    }
+   }
+  ],
+  "chosenBudget": {
+   "targetPrimaryChars": 12000,
+   "maxPrimaryChars": 24000,
+   "maxContextChars": 10000,
+   "maxContextEntryChars": 1800,
+   "maxUnitsPerShard": 16
+  },
+  "shards": [
+   {
+    "shardId": "shard:3a4a2f2c4b2d74093fd4",
+    "shardHash": "0e08179612835121",
+    "primaryUnits": [
+     "9.04",
+     "9.04(a)",
+     "9.04(a)(i)",
+     "9.04(b)(i)",
+     "9.04(b)(i)(A)",
+     "9.04(b)(i)(A)(1)",
+     "9.04(b)(i)(B)",
+     "9.04(b)(i)(B)(1)",
+     "9.04(b)(ii)",
+     "9.04(b)(ii)(A)",
+     "9.04(b)(ii)(A)(1)",
+     "9.04(b)(ii)(A)(2)",
+     "9.04(b)(ii)(B)",
+     "9.04(b)(ii)(C)",
+     "9.04(b)(ii)(D)",
+     "9.04(b)(iii)"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 9397,
+    "ownedItems": 81,
+    "materialItems": 79,
+    "contextEntries": 14,
+    "contextKinds": {
+     "REFERENCED_TERM": 7,
+     "REFERENCED_SECTION": 7
+    },
+    "contextChars": 8720,
+    "unresolvedContext": 8,
+    "oversized": false,
+    "plannerEstimateTokens": 35570,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 114256,
+    "renderedInputTokens": 45212
+   },
+   {
+    "shardId": "shard:feb09c286380beb4e20e",
+    "shardHash": "8b9805a589ef583e",
+    "primaryUnits": [
+     "9.04(b)(iv)",
+     "9.04(b)(iv)(i)",
+     "9.04(b)(v)",
+     "9.04(c)(i)",
+     "9.04(c)(i)(A)",
+     "9.04(c)(i)(B)",
+     "9.04(c)(ii)",
+     "9.04(c)(ii)(A)",
+     "9.04(c)(ii)(B)",
+     "9.04(c)(iii)",
+     "9.04(d)",
+     "9.04(e)",
+     "9.04(e)(i)",
+     "9.04(e)(ii)",
+     "9.04(e)(ii)(i)",
+     "9.04(e)(ii)(ii)"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 10814,
+    "ownedItems": 74,
+    "materialItems": 73,
+    "contextEntries": 10,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 4,
+     "REFERENCED_SECTION": 5
+    },
+    "contextChars": 6672,
+    "unresolvedContext": 17,
+    "oversized": false,
+    "plannerEstimateTokens": 36161,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 116554,
+    "renderedInputTokens": 46121
+   },
+   {
+    "shardId": "shard:7f5484e1a172d832218b",
+    "shardHash": "caa9868b38d1616e",
+    "primaryUnits": [
+     "9.04(f)",
+     "9.04(f)(1)",
+     "9.04(f)(2)",
+     "9.04(f)(3)",
+     "9.04(f)(4)",
+     "9.04(f)(5)",
+     "9.04(f)(6)",
+     "9.04(f)(7)",
+     "9.04(f)(8)",
+     "9.04(f)(8)(i)",
+     "9.04(f)(8)(ii)",
+     "9.04(f)(8)(iii)",
+     "9.04(g)",
+     "9.04(h)",
+     "9.04(i)",
+     "9.04(i)(i)"
+    ],
+    "primaryUnitCount": 16,
+    "sourceChars": 9369,
+    "ownedItems": 63,
+    "materialItems": 61,
+    "contextEntries": 9,
+    "contextKinds": {
+     "CHAPEAU": 1,
+     "REFERENCED_TERM": 7,
+     "REFERENCED_SECTION": 1
+    },
+    "contextChars": 7043,
+    "unresolvedContext": 16,
+    "oversized": false,
+    "plannerEstimateTokens": 34137,
+    "outputTokensEstimate": 41500,
+    "renderedFirstTurnChars": 109869,
+    "renderedInputTokens": 43476
+   }
+  ],
+  "aggregate": {
+   "shardCount": 3,
+   "maxRenderedInputTokens": 46121,
+   "medianRenderedInputTokens": 45212,
+   "p95RenderedInputTokens": 46121,
+   "largestSourceShardChars": 10814,
+   "largestInventoryCount": 81,
+   "contextDuplicationChars": 74,
+   "totalRenderedInputTokens": 134809,
+   "currentSingleCallInputTokens": 81608,
+   "ratioVsCurrentSingleCall": 1.652,
+   "plannerVsRenderedMaxAbsError": 9960,
+   "oversizedShards": 0,
+   "planHash": "0ccf3bfe5f474a202247fce52a9f21a2c415d915f2b8dd6c9fb41529ecbeb331"
+  }
+ }
+}

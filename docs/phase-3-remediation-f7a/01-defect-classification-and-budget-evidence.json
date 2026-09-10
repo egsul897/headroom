@@ -1,0 +1,449 @@
+{
+ "artifact": "F-7A \u00a71-\u00a74, \u00a716 - defect classification, root cause, bounded-architecture property and evidence-based per-shard budget (0 model calls)",
+ "startingSha": "9b4c10bf7844f2966cb4c19dac90ee5fe6d9a7c5",
+ "gitShaAtWrite": "9b4c10bf7844f2966cb4c19dac90ee5fe6d9a7c5",
+ "section1_currentShape": {
+  "source": "00-current-large-unit-shape.json (byte-exact first turn re-rendered by current code from the frozen unit artifacts; 0 model calls)",
+  "chewy101": {
+   "operativeChars": 353523,
+   "definitionsInUnit": 379,
+   "frozenInventoryItems": 109,
+   "renderedFirstTurnChars": 888779,
+   "components": {
+    "OPERATIVE_SOURCE": 353523,
+    "SOURCE_CONTEXT_EXPANSIONS": 0,
+    "FROZEN_INVENTORY": 50988,
+    "SYSTEM_PROMPT": 12943,
+    "FEW_SHOT": 12283,
+    "TOOL_SCHEMAS_JSON": 16080,
+    "OTHER": 442960
+   },
+   "otherBreakdown": {
+    "CONTEXT_BUNDLE_ITEM_EXCERPTS": 353523,
+    "CONTEXT_BUNDLE_UNRESOLVED_DEPENDENCIES": 70765,
+    "SOURCE_CONTEXT_UNRESOLVED_CROSS_REFERENCES": 17516,
+    "PROMPT_SCAFFOLDING_AND_LABELS": 1154
+   },
+   "estimatedInputTokens": {
+    "conservative": 351665,
+    "mean": 334409,
+    "recorded": 312143
+   },
+   "recorded": {
+    "firstTurnInputTokens": 312143,
+    "outputTokens": 60318,
+    "status": "FAILED",
+    "failureReasons": [
+     "PROVIDER_FAILURE"
+    ],
+    "latencyMs": 582290,
+    "costUsd": 1.2274660000000002,
+    "error": "400 {\"error\":{\"message\":\"messages.2: `tool_use` ids were found without `tool_result` blocks immediately after: toolu_01XVmzaisBtgfjUX3Q2qNCs4. Each `tool_use` b"
+   },
+   "outputBurden": {
+    "definitionsThatWouldHaveToBeEmittedInOneSubmission": 379,
+    "outputTokensPerDefinitionEstimate": 2500,
+    "impliedOutputTokens": 949000,
+    "maxOutputTokensSetting": 128000,
+    "conclusion": "a complete single-submission answer for 1.01 needs roughly 7x the output ceiling; the recorded attempt emitted 60,318 output tokens, then the continuation turn failed with a protocol 400 and everything was lost"
+   },
+   "largestContributors": [
+    {
+     "component": "CONTEXT_BUNDLE_ITEM_EXCERPTS (OPERATIVE_SOURCE item = a verbatim second copy of the operative text)",
+     "chars": 353523
+    },
+    {
+     "component": "OPERATIVE_SOURCE (the region itself)",
+     "chars": 353523
+    },
+    {
+     "component": "CONTEXT_BUNDLE_UNRESOLVED_DEPENDENCIES (576 entries)",
+     "chars": 70765
+    },
+    {
+     "component": "FROZEN_INVENTORY (109 items rendered as accountability lines)",
+     "chars": 50988
+    },
+    {
+     "component": "SOURCE_CONTEXT_UNRESOLVED_CROSS_REFERENCES (144)",
+     "chars": 17516
+    },
+    {
+     "component": "TOOL_SCHEMAS_JSON",
+     "chars": 16080
+    },
+    {
+     "component": "SYSTEM_PROMPT",
+     "chars": 12943
+    },
+    {
+     "component": "FEW_SHOT",
+     "chars": 12283
+    }
+   ]
+  },
+  "chewy608": {
+   "renderedFirstTurnChars": 242084,
+   "components": {
+    "OPERATIVE_SOURCE": 38529,
+    "SOURCE_CONTEXT_EXPANSIONS": 0,
+    "FROZEN_INVENTORY": 108557,
+    "SYSTEM_PROMPT": 12943,
+    "FEW_SHOT": 12283,
+    "TOOL_SCHEMAS_JSON": 16080,
+    "OTHER": 53690
+   },
+   "recordedFirstTurnInputTokens": 95786,
+   "recordedStatus": "PARTIAL",
+   "rules": 38,
+   "definitions": 6,
+   "allTurnsInputTokens": 314844,
+   "allTurnsOutputTokens": 67517
+  },
+  "chewy904": {
+   "renderedFirstTurnChars": 213694,
+   "components": {
+    "OPERATIVE_SOURCE": 29580,
+    "SOURCE_CONTEXT_EXPANSIONS": 0,
+    "FROZEN_INVENTORY": 85945,
+    "SYSTEM_PROMPT": 12943,
+    "FEW_SHOT": 12283,
+    "TOOL_SCHEMAS_JSON": 16080,
+    "OTHER": 56861
+   },
+   "recordedFirstTurnInputTokens": 81608,
+   "recordedStatus": "FAILED",
+   "error": "BUDGET_EXHAUSTED before compile:turn: spent $13.9612 + est $0.2875 > cap $14.00"
+  },
+  "fixedPerCallOverheadChars": {
+   "systemPrompt": 12943,
+   "fewShot": 12283,
+   "toolSchemasJson": 16080,
+   "total": 41306,
+   "note": "paid on every call; a shard plan multiplies it by the shard count - accounted for in every estimate (FIXED_CALL_OVERHEAD_CHARS)"
+  }
+ },
+ "section2_classification": {
+  "earliestScalabilityDefect": "A - UNBOUNDED_INPUT_UNIT",
+  "rootCauseLocation": "lib/contract-model/compiler/semantic/compile.ts:217 - callerInput is built with operativeSourceText = the WHOLE resolved operative region of the candidate (for 1.01 the entire 353,523-char definitions section, 379 definitions) plus the whole frozen inventory; the candidate is the section, and nothing between discovery and the caller bounds the unit of compilation by size or by structure",
+  "rootCauseStatement": "The unit of model work is the discovered candidate section, whatever its size. Every other observed symptom (B, C, D, E, F, G) is a consequence of or is amplified by that single fact: because the unit is the section, the context bundle duplicates the section (B), the inventory rendered is the section's whole inventory (C), the submission is the section's whole IR in one tool call (D, E), one failure loses the section (F), and the run-level cost cap has no per-unit view (G).",
+  "consequences": [
+   {
+    "code": "B",
+    "name": "REDUNDANT_CONTEXT_DUPLICATION",
+    "evidence": "00: contextBundle.operativeTextDuplicatedByBundleItem=true for all three units; the bundle's OPERATIVE_SOURCE item (context-retrieval/structural-context.ts:137) is the candidate's own text, rendered again by caller.ts summarizeContextBundle - 353,523 of 888,779 first-turn chars for 1.01 (39.8%)",
+    "statusInF7A": "removed in the shard input (buildShardCompilerInput drops OPERATIVE_SOURCE bundle items); not changed in the monolithic path (\u00a721/\u00a722: unchanged)"
+   },
+   {
+    "code": "C",
+    "name": "UNBOUNDED_INVENTORY_RENDERING",
+    "evidence": "00: FROZEN_INVENTORY 108,557 chars for 6.08 (288 items), 85,945 for 9.04 (218 items) - the largest single component for the two structural units",
+    "statusInF7A": "a shard renders only its OWNED items (6.08: max 63 per shard at the chosen budget)"
+   },
+   {
+    "code": "D",
+    "name": "WHOLE-UNIT_SINGLE-SUBMISSION_ATOMICITY",
+    "evidence": "the F-1 protocol expects one submit_compilation carrying every rule/definition of the unit; 1.01 recorded 0 rules / 0 definitions after 60,318 output tokens",
+    "statusInF7A": "per-shard submissions; deterministic stitching"
+   },
+   {
+    "code": "E",
+    "name": "OUTPUT_CONCENTRATION",
+    "evidence": "379 definitions x ~2,500 output tokens \u2248 949k output tokens against a 128,000 max_tokens setting (caller.ts:83)",
+    "statusInF7A": "max estimated output per shard at the chosen budget: 41,500 tokens (16 units)"
+   },
+   {
+    "code": "F",
+    "name": "STREAM_FAILURE_LOSES_WHOLE_UNIT",
+    "evidence": "1.01: one protocol error (HTTP 400 'tool_use ids were found without tool_result blocks', on the continuation turn after 582 s) => status FAILED, 0 objects, $1.23 spent on the turn ($2.04 for the unit incl. Pass A); nothing of the 60,318 output tokens survived",
+    "statusInF7A": "a shard failure is isolated to that shard; other shards' results are kept; retry addresses only the failed shard by hash. The exact trigger of the 400 is a transport/protocol question outside F-7A (cannot be reproduced without a model) and is left to F-1/F-7B"
+   },
+   {
+    "code": "G",
+    "name": "COST_GUARD_BLIND_TO_PER-UNIT_BURDEN",
+    "evidence": "9.04: 'BUDGET_EXHAUSTED before compile:turn: spent $13.9612 + est $0.2875 > cap $14.00' - the run-level cap tripped AFTER 1.01 had consumed $2.04 for nothing; there is no per-unit pre-call estimate that could refuse or split a 312k-token call",
+    "statusInF7A": "every shard carries a pre-call estimate (input + output tokens) computed before any call; an oversized must-link block is flagged, never silently sent"
+   }
+  ],
+  "notSelectedAsRoot": {
+   "H_OTHER": "no evidence of a defect outside A-G; the 6.08 PARTIAL (38 rules) at 95,786 first-turn tokens shows the same code path works when the unit happens to be small enough"
+  }
+ },
+ "section3_notSolvedByRaisingLimits": "Raising max_tokens or the cost cap changes none of A-G: the unit stays the section, the duplication stays, the inventory rendering stays, one submission still carries everything, and one failure still loses everything. A 1.01-sized unit needs ~949k output tokens - no setting reaches that. Limits were not changed in F-7A.",
+ "section4_boundedArchitectureProperty": "For every candidate, every model call has a bounded primary input (<= maxPrimaryChars of source, <= maxUnitsPerShard units), bounded read-only context (<= maxContextChars), bounded rendered inventory (owned items only), and a bounded expected output (estimateOutputTokens), all computed deterministically from the frozen source + frozen inventory BEFORE any call; the union of shard outputs is stitched deterministically; global completeness is decided only by the global Pass C over the full frozen inventory; a partial failure yields PARTIAL/REVIEW_REQUIRED, never COMPLETED.",
+ "section16_budgetEvidence": {
+  "recordedCalls": [
+   {
+    "unit": "1.01",
+    "firstTurnInputTokens": 312143,
+    "outputTokens": 60318,
+    "outcome": "FAILED (protocol error on continuation, whole unit lost)"
+   },
+   {
+    "unit": "6.08",
+    "firstTurnInputTokens": 95786,
+    "allTurnsInputTokens": 314844,
+    "allTurnsOutputTokens": 67517,
+    "outcome": "PARTIAL - 38 rules / 6 definitions returned"
+   },
+   {
+    "unit": "9.04",
+    "firstTurnInputTokens": 81608,
+    "outputTokens": 15251,
+    "outcome": "FAILED - run cost cap tripped (not a size failure)"
+   }
+  ],
+  "inference": "The only recorded call that returned a composition had a first turn of 95,786 input tokens and 62,142 chars of raw submission; the 312k-token call returned nothing. The per-shard target is therefore set so that the LARGEST shard of the largest known unit renders well under the size that succeeded, with output an order of magnitude under the ceiling.",
+  "tokenEstimator": {
+   "method": "calibrated tokens-per-rendered-char from the three recorded Chewy first turns (cost-ledger compile:turn input tokens vs. the byte-exact first turn re-rendered by current code); the CONSERVATIVE (max) ratio is used for every estimate in F-7A",
+   "ratios": {
+    "1.01": 0.3512042926306765,
+    "6.08": 0.3956725764610631,
+    "9.04": 0.3818918640673112
+   },
+   "conservativeTokensPerChar": 0.3956725764610631,
+   "meanTokensPerChar": 0.37625624438635025
+  },
+  "chosenBudget": {
+   "targetPrimaryChars": 12000,
+   "maxPrimaryChars": 24000,
+   "maxContextChars": 10000,
+   "maxContextEntryChars": 1800,
+   "maxUnitsPerShard": 16
+  },
+  "chosenBudgetRationale": "T12k/U16: max rendered first turn for 1.01 = 34,344 tokens (36% of the recorded successful 6.08 first turn), for 6.08 = 39,371, for 9.04 = 46,121; max estimated output 41,500 tokens (32% of max_tokens); 1 oversized shard in 1.01 (a single 26,695-char definition - a must-link atom that is never split, flagged for review); total input 2.6-2.9x the current single call for 1.01 because the fixed per-call overhead (~43.8k chars) is paid 36 times - accepted: the current single call returns nothing.",
+  "sensitivity_1_01": [
+   {
+    "label": "T6k/U16",
+    "shardCount": 59,
+    "maxInputTokens": 30562,
+    "medianInputTokens": 19968,
+    "p95InputTokens": 26449,
+    "maxOutputTokens": 39000,
+    "largestShardUnits": 15,
+    "oversizedShards": 3,
+    "totalInputTokens": 1207125,
+    "ratioVsCurrentSingleCall": 3.867,
+    "contextDuplicationRatio": 0.166
+   },
+   {
+    "label": "T9k/U16",
+    "shardCount": 40,
+    "maxInputTokens": 30562,
+    "medianInputTokens": 21730,
+    "p95InputTokens": 26673,
+    "maxOutputTokens": 41500,
+    "largestShardUnits": 16,
+    "oversizedShards": 2,
+    "totalInputTokens": 876010,
+    "ratioVsCurrentSingleCall": 2.806,
+    "contextDuplicationRatio": 0.154
+   },
+   {
+    "label": "T12k/U16 (default)",
+    "shardCount": 36,
+    "maxInputTokens": 30562,
+    "medianInputTokens": 22297,
+    "p95InputTokens": 26673,
+    "maxOutputTokens": 41500,
+    "largestShardUnits": 16,
+    "oversizedShards": 1,
+    "totalInputTokens": 804892,
+    "ratioVsCurrentSingleCall": 2.579,
+    "contextDuplicationRatio": 0.141
+   },
+   {
+    "label": "T12k/U32",
+    "shardCount": 33,
+    "maxInputTokens": 30562,
+    "medianInputTokens": 22362,
+    "p95InputTokens": 26673,
+    "maxOutputTokens": 71500,
+    "largestShardUnits": 28,
+    "oversizedShards": 1,
+    "totalInputTokens": 752622,
+    "ratioVsCurrentSingleCall": 2.411,
+    "contextDuplicationRatio": 0.139
+   },
+   {
+    "label": "T16k/U16",
+    "shardCount": 31,
+    "maxInputTokens": 30562,
+    "medianInputTokens": 22723,
+    "p95InputTokens": 27906,
+    "maxOutputTokens": 41500,
+    "largestShardUnits": 16,
+    "oversizedShards": 0,
+    "totalInputTokens": 718425,
+    "ratioVsCurrentSingleCall": 2.302,
+    "contextDuplicationRatio": 0.142
+   },
+   {
+    "label": "T24k/U24",
+    "shardCount": 21,
+    "maxInputTokens": 31089,
+    "medianInputTokens": 26147,
+    "p95InputTokens": 30562,
+    "maxOutputTokens": 61500,
+    "largestShardUnits": 24,
+    "oversizedShards": 0,
+    "totalInputTokens": 543453,
+    "ratioVsCurrentSingleCall": 1.741,
+    "contextDuplicationRatio": 0.131
+   },
+   {
+    "label": "T24k/U64",
+    "shardCount": 17,
+    "maxInputTokens": 31107,
+    "medianInputTokens": 28641,
+    "p95InputTokens": 31107,
+    "maxOutputTokens": 119000,
+    "largestShardUnits": 47,
+    "oversizedShards": 0,
+    "totalInputTokens": 473658,
+    "ratioVsCurrentSingleCall": 1.517,
+    "contextDuplicationRatio": 0.128
+   }
+  ],
+  "sensitivity_6_08": [
+   {
+    "label": "T6k/U16",
+    "shardCount": 8,
+    "maxInputTokens": 31373,
+    "maxOutputTokens": 41500,
+    "largestShardOwnedItems": 58,
+    "totalInputTokens": 224367,
+    "ratioVsCurrentSingleCall": 2.342
+   },
+   {
+    "label": "T9k/U16",
+    "shardCount": 7,
+    "maxInputTokens": 33516,
+    "maxOutputTokens": 41500,
+    "largestShardOwnedItems": 63,
+    "totalInputTokens": 205709,
+    "ratioVsCurrentSingleCall": 2.148
+   },
+   {
+    "label": "T12k/U16 (default)",
+    "shardCount": 7,
+    "maxInputTokens": 33516,
+    "maxOutputTokens": 41500,
+    "largestShardOwnedItems": 63,
+    "totalInputTokens": 205709,
+    "ratioVsCurrentSingleCall": 2.148
+   },
+   {
+    "label": "T12k/U32",
+    "shardCount": 4,
+    "maxInputTokens": 39516,
+    "maxOutputTokens": 81500,
+    "largestShardOwnedItems": 102,
+    "totalInputTokens": 142221,
+    "ratioVsCurrentSingleCall": 1.485
+   },
+   {
+    "label": "T16k/U16",
+    "shardCount": 7,
+    "maxInputTokens": 33516,
+    "maxOutputTokens": 41500,
+    "largestShardOwnedItems": 63,
+    "totalInputTokens": 205709,
+    "ratioVsCurrentSingleCall": 2.148
+   },
+   {
+    "label": "T24k/U24",
+    "shardCount": 5,
+    "maxInputTokens": 37017,
+    "maxOutputTokens": 61500,
+    "largestShardOwnedItems": 85,
+    "totalInputTokens": 163618,
+    "ratioVsCurrentSingleCall": 1.708
+   },
+   {
+    "label": "T24k/U64",
+    "shardCount": 2,
+    "maxInputTokens": 57756,
+    "maxOutputTokens": 159000,
+    "largestShardOwnedItems": 193,
+    "totalInputTokens": 99785,
+    "ratioVsCurrentSingleCall": 1.042
+   }
+  ],
+  "sensitivity_9_04": [
+   {
+    "label": "T6k/U16",
+    "shardCount": 6,
+    "maxInputTokens": 29264,
+    "maxOutputTokens": 29000,
+    "largestShardOwnedItems": 56,
+    "totalInputTokens": 159240,
+    "ratioVsCurrentSingleCall": 1.951
+   },
+   {
+    "label": "T9k/U16",
+    "shardCount": 4,
+    "maxInputTokens": 33450,
+    "maxOutputTokens": 39000,
+    "largestShardOwnedItems": 74,
+    "totalInputTokens": 123497,
+    "ratioVsCurrentSingleCall": 1.513
+   },
+   {
+    "label": "T12k/U16 (default)",
+    "shardCount": 3,
+    "maxInputTokens": 36161,
+    "maxOutputTokens": 41500,
+    "largestShardOwnedItems": 81,
+    "totalInputTokens": 105868,
+    "ratioVsCurrentSingleCall": 1.297
+   },
+   {
+    "label": "T12k/U32",
+    "shardCount": 3,
+    "maxInputTokens": 38622,
+    "maxOutputTokens": 49000,
+    "largestShardOwnedItems": 93,
+    "totalInputTokens": 105855,
+    "ratioVsCurrentSingleCall": 1.297
+   },
+   {
+    "label": "T16k/U16",
+    "shardCount": 3,
+    "maxInputTokens": 36161,
+    "maxOutputTokens": 41500,
+    "largestShardOwnedItems": 81,
+    "totalInputTokens": 105868,
+    "ratioVsCurrentSingleCall": 1.297
+   },
+   {
+    "label": "T24k/U24",
+    "shardCount": 2,
+    "maxInputTokens": 44820,
+    "maxOutputTokens": 61500,
+    "largestShardOwnedItems": 122,
+    "totalInputTokens": 87191,
+    "ratioVsCurrentSingleCall": 1.068
+   },
+   {
+    "label": "T24k/U64",
+    "shardCount": 2,
+    "maxInputTokens": 57608,
+    "maxOutputTokens": 94000,
+    "largestShardOwnedItems": 184,
+    "totalInputTokens": 86231,
+    "ratioVsCurrentSingleCall": 1.057
+   }
+  ],
+  "rejectedTargets": {
+   "T24k/U64": "max estimated output 119,000 tokens for 1.01 (93% of the ceiling) and 159,000 for 6.08 (over the ceiling) - reintroduces E",
+   "T6k/U16": "59 shards, 23 without any owned item, 3.87x total input - pays overhead for shards that own nothing"
+  },
+  "plannerVsRenderedCalibration": {
+   "1.01_maxAbsErrorTokens": 4510,
+   "6.08": 6605,
+   "9.04": 9960,
+   "note": "planner estimates are computed from chars before rendering; the rendered figure (real caller, capturing fake client) is the authority in 02"
+  }
+ }
+}

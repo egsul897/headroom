@@ -227,7 +227,11 @@ export type SemanticCompilerFailureReason =
   /** SEMANTIC ACCOUNTABILITY v2 (re-audit): Pass C's semanticallyComplete is false for a reason not carried by the more specific reasons above (uninventoried operative money/percent/ratio values, a REVIEW_UNCERTAIN inventory item MISSING_FROM_COMPOSITION, dangling lineage) - the attempt can never be COMPLETED while its own accountability says it is incomplete. */
   | "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
   /** F-5.3B (dual-pass ensemble): at least one CRITICAL/MATERIAL frozen-inventory item is SINGLE_RUN (found by one independent Pass A execution only) or CONFLICTED (two passes made incompatible claims over one source stretch). The item is real, source-verified inventory with weaker support provenance: Pass B must still consume/disposition it, and the attempt can never be COMPLETED - RAW SOURCE COMPLETE + MATERIAL SINGLETON => REVIEW_REQUIRED. Resolved only by the independent verifier, human approval or another certified mechanism, never by Pass B or a third run. */
-  | "SEMANTIC_SUPPORT_REVIEW_REQUIRED";
+  | "SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+  /** F-7A (bounded compilation shards): at least one shard of a sharded compilation did not end SHARD_COMPLETE (provider / schema / missing-context / partial) - the stitched candidate is PARTIAL at best and its owned material items are listed as unresolved; never COMPLETED. */
+  | "SHARD_INCOMPLETE"
+  /** F-7A: independently compiled shards emitted incompatible representations of the same source (or an emission owned by another shard, or a dangling cross-shard reference) - explicit review, never a silent choice. */
+  | "SHARD_CONFLICT";
 
 /** Phase 3F.1 §33/F6 - preserved for every FAILED result whose failureReasons includes TRANSPORT_OR_INTERNAL_ERROR (never populated for any other failure path, which already carries its own structured detail via failureReasons/unresolvedIssues). Bounded and sanitized - never a raw stack dump, never a credential/token value, per task §33's explicit "no secrets/unrestricted stack dumps" instruction. */
 export interface SemanticCompilerErrorDetail {
