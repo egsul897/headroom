@@ -1,0 +1,126 @@
+{
+ "artifact": "F-5.3B deterministic checks over E2 (0 model calls)",
+ "passIds": [
+  "cert-pass-1",
+  "cert-pass-2"
+ ],
+ "compatibility": {
+  "mode": "STRICT",
+  "allChecksPass": true,
+  "sourceIdentity": {
+   "cert-pass-1": {
+    "method": "RECORDED_AT_FREEZE",
+    "sourceContextHash": "66e94bcf2d5ba3cfbcba7cde973bac451aab67d9f4982d3b7a8d794b963cbcb0",
+    "partitionHash": "2c822c6c65520b80d361d873b4334b1251904629e491fc75247acfd671a62a75"
+   },
+   "cert-pass-2": {
+    "method": "RECORDED_AT_FREEZE",
+    "sourceContextHash": "66e94bcf2d5ba3cfbcba7cde973bac451aab67d9f4982d3b7a8d794b963cbcb0",
+    "partitionHash": "2c822c6c65520b80d361d873b4334b1251904629e491fc75247acfd671a62a75"
+   }
+  }
+ },
+ "orderIndependence": {
+  "unionCD_equals_unionDC": true,
+  "hashCD": "1dfe368a2f4dc6f0679f346742495d0f7a74968b41d38f0d9d4f0349124a992e",
+  "hashDC": "1dfe368a2f4dc6f0679f346742495d0f7a74968b41d38f0d9d4f0349124a992e",
+  "reproducesOrchestratorE2": true,
+  "orchestratorHash": "1dfe368a2f4dc6f0679f346742495d0f7a74968b41d38f0d9d4f0349124a992e"
+ },
+ "sourceVerification": {
+  "failures": 0,
+  "materialUnverifiableSurviving": 0,
+  "rejectedUnverifiableAtEnsemble": 0,
+  "rejectedUnverifiableInPasses": [
+   19,
+   24
+  ]
+ },
+ "supportPropagation": {
+  "ensembleSupportReviewRequired": true,
+  "reconciliationSupportReviewRequired": true,
+  "reconciliationSemanticallyComplete": false,
+  "reconciliationSupport": {
+   "passIds": [
+    "cert-pass-1",
+    "cert-pass-2"
+   ],
+   "corroborated": 292,
+   "singleRun": 98,
+   "materialSingleRun": 98,
+   "conflicted": 0,
+   "materialConflicted": 0,
+   "byDisposition": {
+    "REPRESENTED": {
+     "corroborated": 0,
+     "singleRun": 0,
+     "conflicted": 0
+    },
+    "INTENTIONALLY_NON_COMPUTATIONAL": {
+     "corroborated": 0,
+     "singleRun": 0,
+     "conflicted": 0
+    },
+    "UNSUPPORTED": {
+     "corroborated": 0,
+     "singleRun": 0,
+     "conflicted": 0
+    },
+    "AMBIGUOUS": {
+     "corroborated": 0,
+     "singleRun": 0,
+     "conflicted": 0
+    },
+    "MISSING_FROM_COMPOSITION": {
+     "corroborated": 292,
+     "singleRun": 98,
+     "conflicted": 0
+    }
+   }
+  },
+  "rollupStatus": "SEMANTICALLY_INCOMPLETE",
+  "rollupSupportReviewRequiredUnits": 1,
+  "counterfactualRawCompleteAllAccounted": {
+   "inventoryStatus": "INVENTORY_OK",
+   "materialMissing": 0,
+   "supportReviewRequired": true,
+   "semanticallyComplete": false,
+   "rollup": "REVIEW_REQUIRED"
+  }
+ },
+ "preservation": {
+  "valuesLost": 0,
+  "valuesLostList": [],
+  "parentLinks": 284,
+  "danglingParents": 0,
+  "contradictoryEffectMerges": 0,
+  "passItemsAccountedFor": {
+   "cert-pass-1": 332,
+   "cert-pass-2": 350
+  },
+  "passItems": [
+   332,
+   350
+  ]
+ },
+ "rawGaps": {
+  "cert-pass-1": 30,
+  "cert-pass-2": 25,
+  "union": 21,
+  "gapsInBothPasses": 21,
+  "gapsInBothPassesStillDisclosed": 21,
+  "cGapsRescuedByDOnlySemantics": 7,
+  "dGapsRescuedByCOnlySemantics": 2,
+  "cGapsStillGap": 21,
+  "dGapsStillGap": 21,
+  "gapsInBothResolvedByUnion": 0,
+  "unionGapNotInEitherInput": 0,
+  "accountedCharFraction": {
+   "cert-pass-1": 0.9836,
+   "cert-pass-2": 0.9837,
+   "union": 0.9919
+  },
+  "unionStatus": "INVENTORY_COVERAGE_GAP",
+  "falseCompleteness": false
+ }
+}

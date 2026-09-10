@@ -1,0 +1,1203 @@
+{
+ "artifact": "F-5.3B diagnostic: historical F/B/H residual semantics recovered by E2 (old ids not required)",
+ "F": {
+  "total": 50,
+  "recovered": 49,
+  "recoveryRate": 0.98,
+  "valuesPreserved": 48,
+  "bySupport": {
+   "CORROBORATED": 29,
+   "SINGLE_RUN": 20,
+   "CONFLICTED": 0
+  },
+  "notRecovered": [
+   {
+    "historicalId": "inv-item:9bc81e94daaf96bfb978be98",
+    "excerpt": "retirement or other acquisition);",
+    "materiality": "MATERIAL"
+   }
+  ]
+ },
+ "B": {
+  "total": 12,
+  "recovered": 12,
+  "recoveryRate": 1.0,
+  "valuesPreserved": 7,
+  "bySupport": {
+   "CORROBORATED": 5,
+   "SINGLE_RUN": 7,
+   "CONFLICTED": 0
+  },
+  "notRecovered": []
+ },
+ "H": {
+  "total": 6,
+  "recovered": 6,
+  "recoveryRate": 1.0,
+  "valuesPreserved": 6,
+  "bySupport": {
+   "CORROBORATED": 4,
+   "SINGLE_RUN": 2,
+   "CONFLICTED": 0
+  },
+  "notRecovered": []
+ },
+ "rows": [
+  {
+   "class": "F",
+   "historicalId": "inv-item:6cc18d694b97293840792cd1",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    1911,
+    1943
+   ],
+   "excerpt": "Sections 6.01(b)(7), (8) and (9)",
+   "recovered": true,
+   "e2Id": "inv-item:c8ef9ba329418c28936381fd",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:decaf3458cf8051b8783d992",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    6540,
+    6613
+   ],
+   "excerpt": "(ii) Indebtedness of any Restricted Party that has been converted into or",
+   "recovered": true,
+   "e2Id": "inv-item:5fd6de58419836d7984d30c5",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:3ac15fdf96ceeb85d9aa50a4",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    7024,
+    7125
+   ],
+   "excerpt": "(Y) Disqualified Stock (or Indebtedness that has been converted or exchanged into Disqualified Stock",
+   "recovered": true,
+   "e2Id": "inv-item:f709348b7825d1285fa9fe86",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:256513e7c7ab5997ece8e707",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    7126,
+    7156
+   ],
+   "excerpt": "or (Z) Excluded Contributions;",
+   "recovered": true,
+   "e2Id": "inv-item:f709348b7825d1285fa9fe86",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:d4e07eb24f0077cd9d6837f2",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    10159,
+    10202
+   ],
+   "excerpt": "(ii) Retained Asset Sale Proceeds since the",
+   "recovered": true,
+   "e2Id": "inv-item:96819c8bb1e4f47d58119997",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:210c2c9c9f3110079bcc93ad",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    10463,
+    10538
+   ],
+   "excerpt": "(h) 100% of the aggregate amount received in cash and the Fair Market Value",
+   "recovered": true,
+   "e2Id": "inv-item:ecb379d04057721d6991a8db",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": false,
+   "valuesExpected": 1
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:7b7eee5232b3ddbe4dca6702",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    10680,
+    10685
+   ],
+   "excerpt": "minus",
+   "recovered": true,
+   "e2Id": "inv-item:7b7eee5232b3ddbe4dca6702",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:cce79de89d896178253b4062",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    11742,
+    11943
+   ],
+   "excerpt": "or Subordinated Indebtedness of any Restricted Party, or any Equity Interests of any Parent Entity, ",
+   "recovered": true,
+   "e2Id": "inv-item:bfbadb7cbe730c50de797205",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:645cb655bbd3cadd0849b680",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    12243,
+    12272
+   ],
+   "excerpt": "(\u201c Refunding Capital Stock \u201d)",
+   "recovered": true,
+   "e2Id": "inv-item:2a9b9d5559acb140a5c43bef",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:0d4df05dc8b1742c7ff0534b",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    12274,
+    12412
+   ],
+   "excerpt": "(b) the declaration and payment of dividends on the Treasury Capital Stock out of the proceeds of th",
+   "recovered": true,
+   "e2Id": "inv-item:645cb655bbd3cadd0849b680",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:310b903c3c03cfc9a78d1554",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    12474,
+    12647
+   ],
+   "excerpt": "and (c) if immediately prior to the retirement of Treasury Capital Stock, the declaration and paymen",
+   "recovered": true,
+   "e2Id": "inv-item:310b903c3c03cfc9a78d1554",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:613b290701b05b3ec953c64c",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    12716,
+    12896
+   ],
+   "excerpt": "(other than Refunding Capital Stock the proceeds of which were used to redeem, purchase, repurchase,",
+   "recovered": true,
+   "e2Id": "inv-item:6a42a03e882403a8da456f21",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:7116bf5ef7a2f8591d286386",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    15102,
+    15129
+   ],
+   "excerpt": "succeeding calendar years);",
+   "recovered": true,
+   "e2Id": "inv-item:7116bf5ef7a2f8591d286386",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:ff7801133b7ca108b95d3197",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    15770,
+    15797
+   ],
+   "excerpt": "succeeding calendar years);",
+   "recovered": true,
+   "e2Id": "inv-item:ff7801133b7ca108b95d3197",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:133e19c1d584606795338eb3",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    17231,
+    17235
+   ],
+   "excerpt": "less",
+   "recovered": true,
+   "e2Id": "inv-item:133e19c1d584606795338eb3",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:1a23f665b508e9de8e4731d0",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    18327,
+    18386
+   ],
+   "excerpt": "in each case, issued in accordance with Section 6.01 hereof",
+   "recovered": true,
+   "e2Id": "inv-item:029b2623de7a786d9a3890d5",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:9535cfecba93586918386d7b",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    18387,
+    18455
+   ],
+   "excerpt": "to the extent such dividends are included in the definition of Fixed",
+   "recovered": true,
+   "e2Id": "inv-item:029b2623de7a786d9a3890d5",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:d1317fa2817a561881c89601",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    18610,
+    18666
+   ],
+   "excerpt": "issued by any Restricted Party after the Effective Date;",
+   "recovered": true,
+   "e2Id": "inv-item:d1317fa2817a561881c89601",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:ccfc618dfdb658de0bd0d0a9",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    20153,
+    20203
+   ],
+   "excerpt": "or repurchases or withholdings of Equity Interests",
+   "recovered": true,
+   "e2Id": "inv-item:3061685ca0b475a062d0bf3c",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:b97e1dbbafc0e99fd75338a0",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    20426,
+    20452
+   ],
+   "excerpt": "or payments in lieu of the",
+   "recovered": true,
+   "e2Id": "inv-item:9a46d8fbc4f9aafb1a40ee5c",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:7993ce95ecf602a1b5ff1c45",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    20494,
+    20634
+   ],
+   "excerpt": "or withholding obligation with respect to, such options or warrants or other incentive interests or ",
+   "recovered": true,
+   "e2Id": "inv-item:6f6c275973cc3e38ee5a5837",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:7064b938f4cc8c2632e257e0",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    21112,
+    21149
+   ],
+   "excerpt": "in an amount not to exceed the sum of",
+   "recovered": true,
+   "e2Id": "inv-item:9d28f9bf12bceedaa6d6df55",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:ca2d4f7c11533917fc3d3530",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    21691,
+    21835
+   ],
+   "excerpt": "any prepayment, purchase, repurchase, redemption, defeasance, discharge, retirement or other acquisi",
+   "recovered": true,
+   "e2Id": "inv-item:ca2d4f7c11533917fc3d3530",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:54421ce716a29adb50ea78c9",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    22526,
+    22681
+   ],
+   "excerpt": "that have been used to incur Indebtedness, Disqualified Stock or Preferred Stock pursuant to clause ",
+   "recovered": true,
+   "e2Id": "inv-item:9f4bf4101872b172df577c0d",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:ab7cc08bed35e59b092687ab",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    23458,
+    23478
+   ],
+   "excerpt": "and (II) there is no",
+   "recovered": true,
+   "e2Id": "inv-item:7884b3a769366e976d07e78f",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:fe3c7015a78f95e564bb03eb",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    23953,
+    24061
+   ],
+   "excerpt": "aggregate amount taken together with all other Restricted Payments made pursuant to this Section 6.0",
+   "recovered": true,
+   "e2Id": "inv-item:3353fff78dfd2ff84675f0be",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:63708745f618bc0c68dbb048",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    25489,
+    25602
+   ],
+   "excerpt": "aggregate amount taken together with all other Restricted Debt Payments made pursuant to this Sectio",
+   "recovered": true,
+   "e2Id": "inv-item:c2fa132282ddd869710a285f",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:9cafc298c6f3b10255db240e",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    26456,
+    26563
+   ],
+   "excerpt": "federal income tax purposes) of a consolidated, combined, affiliated, unitary or similar tax group f",
+   "recovered": true,
+   "e2Id": "inv-item:9cafc298c6f3b10255db240e",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:4cb890a5ec1998b322199300",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    26572,
+    26614
+   ],
+   "excerpt": "and/or applicable state, local or non-U.S.",
+   "recovered": true,
+   "e2Id": "inv-item:4cb890a5ec1998b322199300",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:0f8a11989ee53b30fca48952",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    27250,
+    27287
+   ],
+   "excerpt": "federal income tax purposes) for U.S.",
+   "recovered": true,
+   "e2Id": "inv-item:eabd2587410b07940d35f878",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:0c91179c8d3c16c6c19cad21",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    27288,
+    27330
+   ],
+   "excerpt": "and/or applicable state, local or non-U.S.",
+   "recovered": true,
+   "e2Id": "inv-item:0c91179c8d3c16c6c19cad21",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:9b6f544f52702ab958e8cf09",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    27450,
+    27466
+   ],
+   "excerpt": "income taxes (or",
+   "recovered": true,
+   "e2Id": "inv-item:9b6f544f52702ab958e8cf09",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:4fa3b9e1354ff38a10e53f52",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    27975,
+    28012
+   ],
+   "excerpt": "federal, state, local and/or non-U.S.",
+   "recovered": true,
+   "e2Id": "inv-item:4fa3b9e1354ff38a10e53f52",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:0d1fcb6adb37b10cf1a0a35d",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    28082,
+    28155
+   ],
+   "excerpt": "the Borrowers and/or any of their respective Subsidiaries, as applicable;",
+   "recovered": true,
+   "e2Id": "inv-item:0d1fcb6adb37b10cf1a0a35d",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:5110cac40f96001de90a14c1",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    33360,
+    33408
+   ],
+   "excerpt": "provided that the aggregate amount of Restricted",
+   "recovered": true,
+   "e2Id": "inv-item:5110cac40f96001de90a14c1",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:76cb45bd4ab183e72bebb3cf",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    36042,
+    36071
+   ],
+   "excerpt": "(except to the extent repaid)",
+   "recovered": true,
+   "e2Id": "inv-item:60f45504ed811acc47769d80",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:be7fa1dbef025182ac9eb1ae",
+   "presentRun": "B",
+   "materiality": "CRITICAL",
+   "span": [
+    2886,
+    2962
+   ],
+   "excerpt": "unless, at the time of such Restricted Payment (or the declaration thereof):",
+   "recovered": true,
+   "e2Id": "inv-item:02adfaad4ce7b9d6008c6766",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:9e613227dc5a5efa1627bb42",
+   "presentRun": "B",
+   "materiality": "MATERIAL",
+   "span": [
+    8926,
+    8952
+   ],
+   "excerpt": "after the Effective Date);",
+   "recovered": true,
+   "e2Id": "inv-item:9e613227dc5a5efa1627bb42",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:9f2addd230b397a90c759009",
+   "presentRun": "B",
+   "materiality": "MATERIAL",
+   "span": [
+    10359,
+    10374
+   ],
+   "excerpt": "Section 2.09(b)",
+   "recovered": true,
+   "e2Id": "inv-item:9a776d52cdffe8840a1f1890",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:21ff6c5be66617e473b4763f",
+   "presentRun": "B",
+   "materiality": "MATERIAL",
+   "span": [
+    10910,
+    10929
+   ],
+   "excerpt": "Section 6.01(b)(32)",
+   "recovered": true,
+   "e2Id": "inv-item:b18969bd405ec8a9f1278ce2",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:9bc81e94daaf96bfb978be98",
+   "presentRun": "B",
+   "materiality": "MATERIAL",
+   "span": [
+    14692,
+    14725
+   ],
+   "excerpt": "retirement or other acquisition);",
+   "recovered": false,
+   "e2Id": null,
+   "e2Support": null,
+   "overlapOfShorter": 0.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:62d388950ad3920e51188216",
+   "presentRun": "B",
+   "materiality": "CRITICAL",
+   "span": [
+    18108,
+    18136
+   ],
+   "excerpt": "provision of this Agreement;",
+   "recovered": true,
+   "e2Id": "inv-item:62d388950ad3920e51188216",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:285f1e2fb48d4c62d91ce59e",
+   "presentRun": "B",
+   "materiality": "MATERIAL",
+   "span": [
+    22689,
+    22736
+   ],
+   "excerpt": "(46)(i) of the definition of \u201cPermitted Liens\u201d;",
+   "recovered": true,
+   "e2Id": "inv-item:285f1e2fb48d4c62d91ce59e",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:83123662324df9afe11428a3",
+   "presentRun": "B",
+   "materiality": "MATERIAL",
+   "span": [
+    25326,
+    25375
+   ],
+   "excerpt": "to the extent permitted by Section 5.18(b) hereof",
+   "recovered": true,
+   "e2Id": "inv-item:3dd4228e98c6b5cdc5876c10",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:8ebff4f01a3f0a2f6152cd0c",
+   "presentRun": "B",
+   "materiality": "MATERIAL",
+   "span": [
+    27562,
+    27646
+   ],
+   "excerpt": "of any direct or indirect equity owner of the Borrowers and/or any of its respective",
+   "recovered": true,
+   "e2Id": "inv-item:6cfd12ad4275040c438c4e12",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:88ccdcde45bb7f91d6dc9741",
+   "presentRun": "B",
+   "materiality": "MATERIAL",
+   "span": [
+    28744,
+    28826
+   ],
+   "excerpt": "to the extent such salaries, bonuses, severance and other benefits and indemnities",
+   "recovered": true,
+   "e2Id": "inv-item:00802452bd979cffcc9370d0",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:f35f65450a52eb47ab3aa7fe",
+   "presentRun": "B",
+   "materiality": "CRITICAL",
+   "span": [
+    35394,
+    35635
+   ],
+   "excerpt": "the LCT Test Date, in the case of a Limited Condition Transaction, or the date of the Restricted Pay",
+   "recovered": true,
+   "e2Id": "inv-item:b52bc64a5c271ed04c9b536e",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:3b104cbdc2bc6a547237dc53",
+   "presentRun": "B",
+   "materiality": "CRITICAL",
+   "span": [
+    36264,
+    36458
+   ],
+   "excerpt": "Such designation shall be permitted only if a Restricted Payment or Permitted Investments in such am",
+   "recovered": true,
+   "e2Id": "inv-item:3b104cbdc2bc6a547237dc53",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:b0b5a1a4b38231319fc58f21",
+   "presentRun": "B",
+   "materiality": "CRITICAL",
+   "span": [
+    36498,
+    36582
+   ],
+   "excerpt": "and if such Subsidiary otherwise meets the definition of an Unrestricted Subsidiary.",
+   "recovered": true,
+   "e2Id": "inv-item:b0b5a1a4b38231319fc58f21",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "F",
+   "historicalId": "inv-item:880d72d52663ddd1fe7513b3",
+   "presentRun": "B",
+   "materiality": "CRITICAL",
+   "span": [
+    38444,
+    38528
+   ],
+   "excerpt": "\u201cPermitted Investments,\u201d in a manner that otherwise complies with this Section 6.08.",
+   "recovered": true,
+   "e2Id": "inv-item:880d72d52663ddd1fe7513b3",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "B",
+   "historicalId": "inv-item:679be1302aceaac819a636a5",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    4100,
+    4319
+   ],
+   "excerpt": "fiscal quarter is less than zero), (y) the sum of 100% of Retained Excess Cash Flow (which amount sh",
+   "recovered": true,
+   "e2Id": "inv-item:ea98bf5eeeba5f9744e99e01",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": false,
+   "valuesExpected": 2
+  },
+  {
+   "class": "B",
+   "historicalId": "inv-item:dcf11322eb23e36949412d67",
+   "presentRun": "B",
+   "materiality": "CRITICAL",
+   "span": [
+    4135,
+    4319
+   ],
+   "excerpt": "(y) the sum of 100% of Retained Excess Cash Flow (which amount shall be deemed to be zero for any fi",
+   "recovered": true,
+   "e2Id": "inv-item:679be1302aceaac819a636a5",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": false,
+   "valuesExpected": 1
+  },
+  {
+   "class": "B",
+   "historicalId": "inv-item:e79b8424cca81a04dfe4e759",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    4578,
+    4824
+   ],
+   "excerpt": "the cumulative Consolidated Interest Expense for such applicable fiscal quarter (which amount shall ",
+   "recovered": true,
+   "e2Id": "inv-item:8817112967fbe97e9511a6c1",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": false,
+   "valuesExpected": 1
+  },
+  {
+   "class": "B",
+   "historicalId": "inv-item:8817112967fbe97e9511a6c1",
+   "presentRun": "B",
+   "materiality": "MATERIAL",
+   "span": [
+    4578,
+    4786
+   ],
+   "excerpt": "the cumulative Consolidated Interest Expense for such applicable fiscal quarter (which amount shall ",
+   "recovered": true,
+   "e2Id": "inv-item:8817112967fbe97e9511a6c1",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "B",
+   "historicalId": "inv-item:214c9b0a17e4232244456a2b",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    7794,
+    7842
+   ],
+   "excerpt": "(ii) are contributed by a Restricted Subsidiary,",
+   "recovered": true,
+   "e2Id": "inv-item:cba6e1dd200cd4129a09035d",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "B",
+   "historicalId": "inv-item:8cc6af26af5d27513643ebb7",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    7870,
+    7913
+   ],
+   "excerpt": "or (iv) constitute Excluded Contributions);",
+   "recovered": true,
+   "e2Id": "inv-item:cba6e1dd200cd4129a09035d",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "B",
+   "historicalId": "inv-item:bf029f35702216965707d368",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    7843,
+    7869
+   ],
+   "excerpt": "(iii) from ABL Cure Amount",
+   "recovered": true,
+   "e2Id": "inv-item:cba6e1dd200cd4129a09035d",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "B",
+   "historicalId": "inv-item:cba6e1dd200cd4129a09035d",
+   "presentRun": "B",
+   "materiality": "MATERIAL",
+   "span": [
+    7763,
+    7913
+   ],
+   "excerpt": "Section 6.01(b)(12)(a) hereof, (ii) are contributed by a Restricted Subsidiary, (iii) from ABL Cure ",
+   "recovered": true,
+   "e2Id": "inv-item:60afc5af8038a8e51d2058f0",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "B",
+   "historicalId": "inv-item:1b5fd3b9ea84e6b0c6a2a690",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    12031,
+    12080
+   ],
+   "excerpt": "that is made within ninety (90) days of such sale",
+   "recovered": true,
+   "e2Id": "inv-item:b4751ff187a28c1b7fd5477c",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": false,
+   "valuesExpected": 2
+  },
+  {
+   "class": "B",
+   "historicalId": "inv-item:b4751ff187a28c1b7fd5477c",
+   "presentRun": "B",
+   "materiality": "CRITICAL",
+   "span": [
+    11944,
+    12183
+   ],
+   "excerpt": "to a Restricted Subsidiary) of, Equity Interests of the Borrowers or any Parent Entity that is made ",
+   "recovered": true,
+   "e2Id": "inv-item:b4751ff187a28c1b7fd5477c",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": false,
+   "valuesExpected": 2
+  },
+  {
+   "class": "B",
+   "historicalId": "inv-item:9ed0c8ec2425d8b2b2e590a1",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    20836,
+    20991
+   ],
+   "excerpt": "the redemption, purchase, repurchase, defeasance or other acquisition or retirement of any Equity In",
+   "recovered": true,
+   "e2Id": "inv-item:eaa6f721fca36ca6f042faca",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "B",
+   "historicalId": "inv-item:eaa6f721fca36ca6f042faca",
+   "presentRun": "B",
+   "materiality": "CRITICAL",
+   "span": [
+    20752,
+    20991
+   ],
+   "excerpt": "any Parent Entity to fund a payment of dividends on such company\u2019s common stock) or the redemption, ",
+   "recovered": true,
+   "e2Id": "inv-item:eaa6f721fca36ca6f042faca",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "H",
+   "historicalId": "inv-item:ea98bf5eeeba5f9744e99e01",
+   "presentRun": "B",
+   "materiality": "MATERIAL",
+   "span": [
+    4100,
+    4134
+   ],
+   "excerpt": "fiscal quarter is less than zero),",
+   "recovered": true,
+   "e2Id": "inv-item:ea98bf5eeeba5f9744e99e01",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "H",
+   "historicalId": "inv-item:a858b0d3cfb71d3226aab515",
+   "presentRun": "B",
+   "materiality": "REVIEW_UNCERTAIN",
+   "span": [
+    4787,
+    4815
+   ],
+   "excerpt": "(which amounts under clauses",
+   "recovered": true,
+   "e2Id": "inv-item:a858b0d3cfb71d3226aab515",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "H",
+   "historicalId": "inv-item:268010a31e11a2805ab30bcb",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    11944,
+    11971
+   ],
+   "excerpt": "to a Restricted Subsidiary)",
+   "recovered": true,
+   "e2Id": "inv-item:b4751ff187a28c1b7fd5477c",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "H",
+   "historicalId": "inv-item:9747b6b73dfd10369b9dee03",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    12081,
+    12183
+   ],
+   "excerpt": "to the extent, in the case of an issuance or sale by a Parent Entity, such amount was contributed to",
+   "recovered": true,
+   "e2Id": "inv-item:b4751ff187a28c1b7fd5477c",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "H",
+   "historicalId": "inv-item:ecc138338556eeabe3d08318",
+   "presentRun": "A",
+   "materiality": "MATERIAL",
+   "span": [
+    11976,
+    12030
+   ],
+   "excerpt": "Equity Interests of the Borrowers or any Parent Entity",
+   "recovered": true,
+   "e2Id": "inv-item:b4751ff187a28c1b7fd5477c",
+   "e2Support": "CORROBORATED",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  },
+  {
+   "class": "H",
+   "historicalId": "inv-item:0914469284c7b2179ece8c48",
+   "presentRun": "A",
+   "materiality": "CRITICAL",
+   "span": [
+    20962,
+    20991
+   ],
+   "excerpt": "following consummation of the",
+   "recovered": true,
+   "e2Id": "inv-item:eaa6f721fca36ca6f042faca",
+   "e2Support": "SINGLE_RUN",
+   "overlapOfShorter": 1.0,
+   "valuesPreserved": true,
+   "valuesExpected": 0
+  }
+ ]
+}

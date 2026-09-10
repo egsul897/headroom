@@ -1,0 +1,138 @@
+{
+ "artifact": "F-5.3B resume - material D/E/G inspection + support diagnostics (section 14/15)",
+ "alignedPairs": 363,
+ "alignedByExactId": 343,
+ "alignedByOverlapOnly": 20,
+ "singletonInBothByPass": {
+  "E1:pass-1 -> E2:cert-pass-1": 12,
+  "E1:pass-2 -> E2:cert-pass-1": 12,
+  "E1:pass-2 -> E2:cert-pass-2": 9,
+  "E1:pass-1 -> E2:cert-pass-2": 25
+ },
+ "singletonInBothSupportedByDifferentPassLabel": "not meaningful across ensembles built from different runs (E1 passes = old A/B, E2 passes = C/D2); the cross-tab above is reported as-is",
+ "conflictStatusChanges": {
+  "E1conflicts": 0,
+  "E2conflicts": 0,
+  "changes": 0
+ },
+ "reviewBurdenDifference": {
+  "E1supportReviewFraction": 0.2828,
+  "E2supportReviewFraction": 0.2513,
+  "delta": -0.0315,
+  "E1materialSingletons": 112,
+  "E2materialSingletons": 98
+ },
+ "materialDECases": [
+  {
+   "class": "D_TRUE_ENSEMBLE_OMISSION",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:9bc81e94daaf96bfb978be98",
+   "materiality": "MATERIAL",
+   "role": "PERMISSION",
+   "functions": {
+    "effect": "PERMISSION",
+    "logic": [],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-2"
+   ],
+   "span": [
+    14692,
+    14725
+   ],
+   "excerpt": "retirement or other acquisition);",
+   "proposition": "Completes the scope of exception (4) as covering retirement or other acquisition of the specified Equity Interests/Indebtedness.",
+   "values": [],
+   "sourceVerified": true,
+   "coverFractionByLackingMaterial": 0.0,
+   "lackingItemsTouchingSpan": [],
+   "lackingUnaccountedTouchingSpan": [
+    [
+     14692,
+     14725
+    ]
+   ],
+   "disclosedAsUnaccountedByLacking": true,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "G_OTHER",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:38ad2fce0cdb9a708e3f4cad",
+   "materiality": "INFORMATIONAL",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "support": "CORROBORATED",
+   "passes": [
+    "cert-pass-1",
+    "cert-pass-2"
+   ],
+   "span": [
+    0,
+    48
+   ],
+   "excerpt": "Section 6.08 Limitation on Restricted Payments .",
+   "proposition": "Section heading identifying the covenant as the Limitation on Restricted Payments.",
+   "values": [],
+   "sourceVerified": true,
+   "coverFractionByLackingMaterial": 0.0,
+   "lackingItemsTouchingSpan": [],
+   "lackingUnaccountedTouchingSpan": [],
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "E_TRUE_ENSEMBLE_ADDITION",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:eb869f49a85def3c3e0dd7d1",
+   "materiality": "MATERIAL",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-2"
+   ],
+   "span": [
+    33182,
+    33191
+   ],
+   "excerpt": "Proceeds,",
+   "proposition": "Completion of branch (i): Retained Declined Proceeds.",
+   "values": [],
+   "sourceVerified": true,
+   "coverFractionByLackingMaterial": 0.0,
+   "lackingItemsTouchingSpan": [],
+   "lackingUnaccountedTouchingSpan": [
+    [
+     33182,
+     33191
+    ]
+   ],
+   "disclosedAsUnaccountedByLacking": true,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  }
+ ]
+}

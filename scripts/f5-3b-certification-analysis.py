@@ -92,7 +92,7 @@ summary = {
     "additionalTrustGates": additional, "additionalTrustGatesPass": additional_pass,
     "successCriteria": criteria,
     "cost": cost,
-    "hashes": {"e2": sha(f"{DIR}/e2.json"), "runC": sha(f"{DIR}/run-C.json"), "runD": sha(f"{DIR}/run-D.json"), "ledger": sha(f"{DIR}/ledger.json"), "scorer": sha("scripts/f5-3b-ensemble-certification-score.py"), "scorerPreregistered": prereg["scorerSha256"], "scorerUnchangedSincePreregistration": sha("scripts/f5-3b-ensemble-certification-score.py") == prereg["scorerSha256"], "humanReference": sha("docs/phase-3-validation/04-human-reference-set.json"), "humanReferencePreregistered": prereg["humanReferenceSha256"]},
+    "hashes": {"e2": sha(f"{DIR}/e2.json"), "runC": sha("tests/fixtures/unseen-packages/phase-3-remediation-f5-run/certification-f5-3b/run-C.json"), "runD": sha(f"{DIR}/{RUN_D_FILE}"), "ledger": sha(f"{DIR}/ledger.json"), "scorer": sha("scripts/f5-3b-ensemble-certification-score.py"), "scorerPreregistered": prereg["scorerSha256"], "scorerUnchangedSincePreregistration": sha("scripts/f5-3b-ensemble-certification-score.py") == prereg["scorerSha256"], "humanReference": sha("docs/phase-3-validation/04-human-reference-set.json"), "humanReferencePreregistered": prereg["humanReferenceSha256"]},
 }
 json.dump(summary, open(f"{D}/11-final-summary.json" if D == BASE else f"{D}/09-final-summary.json", "w"), indent=1)
 print(json.dumps({k: summary[k] for k in ("verdict", "e2", "ensembleToEnsemble", "decomposition", "reviewBurden", "historicalResidualRecoveryByE2", "referenceRecall", "originalF5GatesPass", "additionalTrustGatesPass", "successCriteria", "cost")}, indent=1))
