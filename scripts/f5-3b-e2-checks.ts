@@ -6,9 +6,9 @@
  *    without a compiler call, so the empty composition is used: every item MISSING) and the agreement rollup, proving
  *    supportReviewRequired reaches REVIEW_REQUIRED and semanticallyComplete is refused;
  *  - re-verifies every E2 item excerpt/value against the frozen source (no source-unverifiable item survives).
- *   npx tsx scripts/f5-3b-e2-checks.ts <outJson>
+ *   npx tsx scripts/f5-3b-e2-checks.ts <outJson> [<pairDir>] [<runDFile>]
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { runStructureStage } from "../lib/contract-model/compiler/stage-structure";
 import { detectStructuralDefinitions } from "../lib/contract-model/compiler/structural-definitions";
 import { detectStructuralReferences } from "../lib/contract-model/compiler/structural-references";
@@ -22,8 +22,9 @@ import { rollupAgreementSemanticStatus } from "../lib/contract-model/compiler/se
 import type { FrozenSemanticInventory } from "../lib/contract-model/compiler/semantic-accountability/types";
 
 const SRC = "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt";
-const DIR = "tests/fixtures/unseen-packages/phase-3-remediation-f5-run/certification-f5-3b";
+const DIR = process.argv[3] ?? "tests/fixtures/unseen-packages/phase-3-remediation-f5-run/certification-f5-3b";
 const out = process.argv[2] ?? "docs/phase-3-remediation-f5-3b/09-e2-deterministic-checks.json";
+const RUN_D_FILE = process.argv[4] ?? "run-D.json";
 
 const text = readFileSync(SRC, "utf-8");
 const nodes = runStructureStage([{ documentId: "doc-a", label: "chwy", text }]).output;
@@ -31,8 +32,9 @@ const index = buildStructuralIndex(new Map([["doc-a", { text, nodes }]]), detect
 const section = nodes.filter((n) => n.nodeType === "SECTION" && n.sectionRef === "6.08").sort((a, b) => b.charEnd - b.charStart - (a.charEnd - a.charStart))[0]!;
 const sourceContext = resolveSourceContext({ index, documentId: "doc-a", operativeSourceText: text.slice(section.charStart, section.charEnd), anchorNodeId: section.nodeId, operativeCharStart: section.charStart, documentText: text });
 const partition = partitionSourceSlots({ sourceContext, structuralIndex: index });
-const runC = JSON.parse(readFileSync(`${DIR}/run-C.json`, "utf-8")) as FrozenSemanticInventory;
-const runD = JSON.parse(readFileSync(`${DIR}/run-D.json`, "utf-8")) as FrozenSemanticInventory;
+const RUN_C_PATH = existsSync(`${DIR}/run-C.json`) ? `${DIR}/run-C.json` : "tests/fixtures/unseen-packages/phase-3-remediation-f5-run/certification-f5-3b/run-C.json";
+const runC = JSON.parse(readFileSync(RUN_C_PATH, "utf-8")) as FrozenSemanticInventory;
+const runD = JSON.parse(readFileSync(`${DIR}/${RUN_D_FILE}`, "utf-8")) as FrozenSemanticInventory;
 const E2 = JSON.parse(readFileSync(`${DIR}/e2.json`, "utf-8")) as FrozenSemanticInventory & { ensemble: NonNullable<FrozenSemanticInventory["ensemble"]> };
 const ids = E2.ensemble.passIds;
 const build = (passes: { passId: string; inventory: FrozenSemanticInventory }[]) => buildEnsembleInventory({ candidateRef: runC.candidateRef, sourceContext, structuralIndex: index, partition, passes, compatibility: { mode: "STRICT" } });
@@ -65,6 +67,11 @@ const contradictoryMerges = E2.items.filter((i) => { const s = i.support!; const
 const ov = (a: { charStart: number; charEnd: number }, b: { charStart: number; charEnd: number }) => Math.max(0, Math.min(a.charEnd, b.charEnd) - Math.max(a.charStart, b.charStart));
 const bothGaps = runC.unaccountedSource.filter((u) => runD.unaccountedSource.some((v) => ov(u, v) > 0));
 const bothGapsStillDisclosed = bothGaps.filter((u) => E2.unaccountedSource.some((x) => ov(x, u) > 0)).length;
+// Section 11: coverage RECOMPUTED over the union (never OR-ed): which single-pass gaps were rescued by the OTHER pass's singleton semantics.
+const MATERIAL = new Set(["CRITICAL", "MATERIAL"]);
+const stillGap = (u: { charStart: number; charEnd: number }) => E2.unaccountedSource.some((x) => ov(x, u) > 0);
+const rescuedBy = (u: { charStart: number; charEnd: number }, passId: string) => !stillGap(u) && E2.items.some((i) => i.support?.supportStatus === "SINGLE_RUN" && i.support.supportingPasses[0] === passId && MATERIAL.has(i.materiality) && ov(i.sourceSpan, u) > 0);
+const rescue = { cGapsRescuedByDOnlySemantics: runC.unaccountedSource.filter((u) => rescuedBy(u, ids[1]!)).length, dGapsRescuedByCOnlySemantics: runD.unaccountedSource.filter((u) => rescuedBy(u, ids[0]!)).length, cGapsStillGap: runC.unaccountedSource.filter(stillGap).length, dGapsStillGap: runD.unaccountedSource.filter(stillGap).length, gapsInBothResolvedByUnion: bothGaps.length - bothGapsStillDisclosed, unionGapNotInEitherInput: E2.unaccountedSource.filter((u) => !runC.unaccountedSource.some((x) => ov(x, u) > 0) && !runD.unaccountedSource.some((x) => ov(x, u) > 0)).length, accountedCharFraction: { [ids[0]!]: runC.sourceCoverage.accountedCharFraction, [ids[1]!]: runD.sourceCoverage.accountedCharFraction, union: E2.sourceCoverage.accountedCharFraction } };
 
 const result = {
   artifact: "F-5.3B deterministic checks over E2 (0 model calls)",
@@ -74,7 +81,7 @@ const result = {
   sourceVerification: { failures: failures.length, materialUnverifiableSurviving: materialUnverifiable.length, rejectedUnverifiableAtEnsemble: E2.rejectedUnverifiableItems, rejectedUnverifiableInPasses: [runC.rejectedUnverifiableItems, runD.rejectedUnverifiableItems] },
   supportPropagation: { ensembleSupportReviewRequired: E2.ensemble.supportReviewRequired, reconciliationSupportReviewRequired: acc.supportReviewRequired, reconciliationSemanticallyComplete: acc.semanticallyComplete, reconciliationSupport: acc.support ?? null, rollupStatus: roll.status, rollupSupportReviewRequiredUnits: roll.counts.supportReviewRequired, counterfactualRawCompleteAllAccounted: { inventoryStatus: hypothetical.inventoryStatus, materialMissing: accH.counts.materialMissingFromComposition, supportReviewRequired: accH.supportReviewRequired, semanticallyComplete: accH.semanticallyComplete, rollup: rollupAgreementSemanticStatus([{ candidateRef: E2.candidateRef, compileStatus: "COMPLETED", verifyStatus: "VERIFIED_NO_MATERIAL_GAP_FOUND", accountability: accH, operativeStateUncertain: false, unresolvedCrossReferences: 0 }]).status } },
   preservation: { valuesLost: valuesLost.length, valuesLostList: valuesLost, parentLinks, danglingParents: dangling, contradictoryEffectMerges: contradictoryMerges, passItemsAccountedFor: { [ids[0]!]: runC.items.filter((i) => E2.items.some((u) => (u.support?.memberItemIds[ids[0]!] ?? []).includes(i.inventoryItemId))).length, [ids[1]!]: runD.items.filter((i) => E2.items.some((u) => (u.support?.memberItemIds[ids[1]!] ?? []).includes(i.inventoryItemId))).length }, passItems: [runC.items.length, runD.items.length] },
-  rawGaps: { [ids[0]!]: runC.unaccountedSource.length, [ids[1]!]: runD.unaccountedSource.length, union: E2.unaccountedSource.length, gapsInBothPasses: bothGaps.length, gapsInBothPassesStillDisclosed: bothGapsStillDisclosed, unionStatus: E2.inventoryStatus, falseCompleteness: E2.inventoryStatus === "INVENTORY_OK" && E2.unaccountedSource.length === 0 && !E2.ensemble.supportReviewRequired && E2.ensemble.counts.singleRun + E2.ensemble.counts.conflicted > 0 },
+  rawGaps: { [ids[0]!]: runC.unaccountedSource.length, [ids[1]!]: runD.unaccountedSource.length, union: E2.unaccountedSource.length, gapsInBothPasses: bothGaps.length, gapsInBothPassesStillDisclosed: bothGapsStillDisclosed, ...rescue, unionStatus: E2.inventoryStatus, falseCompleteness: E2.inventoryStatus === "INVENTORY_OK" && E2.unaccountedSource.length === 0 && !E2.ensemble.supportReviewRequired && E2.ensemble.counts.singleRun + E2.ensemble.counts.conflicted > 0 },
 };
 writeFileSync(out, JSON.stringify(result, null, 1));
 console.log(JSON.stringify(result, null, 1));

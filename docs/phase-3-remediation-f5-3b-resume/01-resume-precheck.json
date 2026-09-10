@@ -1,0 +1,52 @@
+{
+  "at": "2026-09-10T14:54:27.678Z",
+  "attempt": "cert-pass-2-attempt-2",
+  "identity": {
+    "candidateRef": "phase-3-validation:chwy:6.08",
+    "sourceContextHash": "66e94bcf2d5ba3cfbcba7cde973bac451aab67d9f4982d3b7a8d794b963cbcb0",
+    "partitionHash": "2c822c6c65520b80d361d873b4334b1251904629e491fc75247acfd671a62a75",
+    "slots": 335,
+    "batches": 7,
+    "documentId": "doc-a",
+    "chewySourceSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+    "frozenUnitSha256": "fc147145c2db7df77bfb7122b8442d3fe21f5645b5c4782b791ffa942c8b750c",
+    "accountabilityAlgorithm": "semantic-accountability.v5",
+    "inventoryPrompt": "semantic-inventory-prompt.v5",
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "runC": {
+      "candidateRef": "phase-3-validation:chwy:6.08",
+      "sourceContextHash": "66e94bcf2d5ba3cfbcba7cde973bac451aab67d9f4982d3b7a8d794b963cbcb0",
+      "partitionHash": "2c822c6c65520b80d361d873b4334b1251904629e491fc75247acfd671a62a75",
+      "documentId": "doc-a",
+      "algorithm": "semantic-accountability.v5",
+      "prompt": "semantic-inventory-prompt.v5",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "frozenContentHash": "b8cf5f54be8bab7f431cdc0f330fd9df3c9cd8918f4c3091ca8d6c597b92cead",
+      "fileSha256": "18a4ff62f22611060a8a132fc2a5e51f6da672cb8d77eafc66c98143961292f0"
+    }
+  },
+  "estimate": {
+    "inputTokensPerRun": 52260,
+    "assumedOutputTokensPerCall": 16000,
+    "callsUpperBound": 14,
+    "estimatorUsdUpperBound": 2.449,
+    "observedRunCUsd": 3.4024,
+    "worstCaseUsd": 3.4024
+  },
+  "hardIncrementalCapUsd": 4.5,
+  "gatewayCredits": {
+    "balance": 32.38877,
+    "totalUsed": 182.61123
+  },
+  "preconditions": {
+    "runCContentHashVerified": true,
+    "runCIdentityMatchesFrozenInput": true,
+    "runCContractMatchesThisRun": true,
+    "e1HashVerified": true,
+    "scorerHashVerified": true,
+    "noResumeArtifactsYet": true
+  },
+  "decision": "GO"
+}

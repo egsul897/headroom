@@ -6,16 +6,20 @@ historical residual recovery (section 14), cost (section 19), verdict (section 1
 frozen artifacts produced by the other F-5.3B scripts.
   python3 scripts/f5-3b-certification-analysis.py
 """
-import json, hashlib, subprocess, datetime
-D = "docs/phase-3-remediation-f5-3b"; DIR = "tests/fixtures/unseen-packages/phase-3-remediation-f5-run/certification-f5-3b"
+import json, hashlib, subprocess, datetime, sys
+# usage: analysis.py [<docsDir> <pairDir> <runDFile>]  (defaults = the first F-5.3B attempt layout)
+D = sys.argv[1] if len(sys.argv) > 1 else "docs/phase-3-remediation-f5-3b"
+DIR = sys.argv[2] if len(sys.argv) > 2 else "tests/fixtures/unseen-packages/phase-3-remediation-f5-run/certification-f5-3b"
+RUN_D_FILE = sys.argv[3] if len(sys.argv) > 3 else "run-D.json"
+BASE = "docs/phase-3-remediation-f5-3b"
 J = lambda p: json.load(open(p))
 sha = lambda p: hashlib.sha256(open(p, "rb").read()).hexdigest()
-E1, E2 = J(f"{D}/e1-final.json"), J(f"{DIR}/e2.json")
-runC, runD = J(f"{DIR}/run-C.json"), J(f"{DIR}/run-D.json")
-ledger = J(f"{DIR}/ledger.json"); precheck = J(f"{D}/04-paid-pair-precheck.json")
+E1, E2 = J(f"{BASE}/e1-final.json"), J(f"{DIR}/e2.json")
+runC, runD = J("tests/fixtures/unseen-packages/phase-3-remediation-f5-run/certification-f5-3b/run-C.json"), J(f"{DIR}/{RUN_D_FILE}")
+ledger = J(f"{DIR}/ledger.json"); precheck = J(f"{D}/04-paid-pair-precheck.json") if D == BASE else J(f"{D}/01-resume-precheck.json")
 score = J(f"{D}/07-ensemble-certification-score.json"); checks = J(f"{D}/09-e2-deterministic-checks.json")
 recall = J(f"{D}/08-reference-recall-e1-e2.json"); resid = J(f"{D}/10-historical-residual-recovery-e2.json")
-prereg = J(f"{D}/03-scorer-preregistration.json"); baseline = J(f"{D}/00-freeze-manifest-and-e1-baseline.json"); e1final = J(f"{D}/06-e1-rebuilt-final-code.json")
+prereg = J(f"{BASE}/03-scorer-preregistration.json"); baseline = J(f"{BASE}/00-freeze-manifest-and-e1-baseline.json"); e1final = J(f"{BASE}/06-e1-rebuilt-final-code.json")
 ids = E2["ensemble"]["passIds"]; c2 = E2["ensemble"]["counts"]; c1 = E1["ensemble"]["counts"]
 MAT = ("CRITICAL", "MATERIAL")
 
@@ -52,7 +56,7 @@ criteria = {
     "2_inputCompatibilityGatePasses": additional["inputCompatibilityGatePassed"]["pass"],
     "3_supportAsymmetryConflictsPropagateToReviewRequired": additional["supportReviewRequiredPropagatesToReviewRequired"]["pass"],
     "4_e1Reproduced": baseline["e1"]["reproduced"] and e1final["e1"]["reproduced"],
-    "5_exactlyOneNewPairCompleted": len(ledger["passIds"]) == 2 and runC["inventoryStatus"] in ("INVENTORY_OK", "INVENTORY_COVERAGE_GAP") and runD["inventoryStatus"] in ("INVENTORY_OK", "INVENTORY_COVERAGE_GAP") and ledger["ensembleBuilt"],
+    "5_exactlyOneNewPairCompleted": len(ledger["passIds"]) == 2 and runC["inventoryStatus"] in ("INVENTORY_OK", "INVENTORY_COVERAGE_GAP") and runD["inventoryStatus"] in ("INVENTORY_OK", "INVENTORY_COVERAGE_GAP") and (ledger.get("ensembleBuilt") if "ensembleBuilt" in ledger else ledger["ensemble"]["built"]),
     "6_e2BuiltFromCDOnly": sorted(E2["ensemble"]["passHashes"].values()) == sorted([runC["frozenContentHash"], runD["frozenContentHash"]]) and len(E2["ensemble"]["passIds"]) == 2,
     "7_criticalMaterialEnsembleStabilityGte085": g["criticalMaterialSemanticStability"]["pass"],
     "8_ensembleSemanticStabilityGte080": g["semanticStability"]["pass"],
@@ -67,7 +71,8 @@ if all(criteria.values()): verdict = "F5_CLOSED"
 elif trust_safe: verdict = "F5_NEEDS_ARCHITECTURAL_ITERATION"
 else: verdict = "F5_NOT_CLOSED"
 
-cost = {"paidCalls": len(ledger["calls"]), "paidSpendUsdRateCard": round(ledger["spent"], 4), "gatewayReportedSpendUsd": ledger.get("gatewayReportedSpendUsd"), "creditsBefore": ledger.get("creditsBefore"), "creditsAfter": ledger.get("creditsAfter"), "cap": ledger["cap"], "refusals": len(ledger["refusals"]), "byPass": {p: round(sum(k["costUsd"] for k in ledger["calls"] if k["stage"].startswith(p + ":")), 4) for p in ids}, "estimateBefore": precheck["estimate"]}
+labels = sorted(set(k["stage"].split(":")[0] for k in ledger["calls"]))
+cost = {"paidCalls": len(ledger["calls"]), "failedCalls": len(ledger.get("failures", [])), "paidSpendUsdRateCard": round(ledger["spent"], 4), "gatewayReportedSpendUsd": ledger.get("gatewayReportedSpendUsd"), "creditsBefore": ledger.get("creditsBefore"), "creditsAfter": ledger.get("creditsAfter"), "cap": ledger["cap"], "refusals": len(ledger["refusals"]), "byLabel": {p: round(sum(k["costUsd"] for k in ledger["calls"] if k["stage"].startswith(p + ":")), 4) for p in labels}, "estimateBefore": precheck["estimate"], "runCPreservedCostUsd(priorMission)": runC["telemetryCostUsd"]}
 support_diag = score["support"]
 summary = {
     "artifact": "F-5.3B final summary - dual-pass ensemble production activation + authoritative output certification",
@@ -89,5 +94,5 @@ summary = {
     "cost": cost,
     "hashes": {"e2": sha(f"{DIR}/e2.json"), "runC": sha(f"{DIR}/run-C.json"), "runD": sha(f"{DIR}/run-D.json"), "ledger": sha(f"{DIR}/ledger.json"), "scorer": sha("scripts/f5-3b-ensemble-certification-score.py"), "scorerPreregistered": prereg["scorerSha256"], "scorerUnchangedSincePreregistration": sha("scripts/f5-3b-ensemble-certification-score.py") == prereg["scorerSha256"], "humanReference": sha("docs/phase-3-validation/04-human-reference-set.json"), "humanReferencePreregistered": prereg["humanReferenceSha256"]},
 }
-json.dump(summary, open(f"{D}/11-final-summary.json", "w"), indent=1)
+json.dump(summary, open(f"{D}/11-final-summary.json" if D == BASE else f"{D}/09-final-summary.json", "w"), indent=1)
 print(json.dumps({k: summary[k] for k in ("verdict", "e2", "ensembleToEnsemble", "decomposition", "reviewBurden", "historicalResidualRecoveryByE2", "referenceRecall", "originalF5GatesPass", "additionalTrustGatesPass", "successCriteria", "cost")}, indent=1))
