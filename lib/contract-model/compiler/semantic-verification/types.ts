@@ -282,6 +282,149 @@ export interface SourceInventoryItem {
   scaleStatus?: "NONE" | "RESOLVED" | "UNRESOLVED";
   /** F-3 (AMOUNT items only): currency code from the symbol / ISO code / currency word ("USD"), or null when the source states none. Never converted. */
   currency?: string | null;
+  /** F-4: where this item's text came from - PRIMARY_LOCAL (the candidate's own operative window, the default) or AUTHENTICATED_RETRIEVED (an out-of-window source the verifier itself re-resolved and authenticated - see retrieved-evidence.ts). Undefined on pre-F-4 inventories = PRIMARY_LOCAL. */
+  provenanceClass?: EvidenceProvenanceClass;
+  /** F-4 (AUTHENTICATED_RETRIEVED items only): the AuthenticatedSourceEvidence.evidenceId this item was inventoried from. */
+  evidenceId?: string | null;
+  /** F-4 (AUTHENTICATED_RETRIEVED items only): absolute char offset of this item within the source document, when the evidence has a document span (charStart is relative to the evidence text). */
+  documentCharStart?: number | null;
+}
+
+// ---------------------------------------------------------------------------
+// F-4 (Phase 3 Chewy remediation) - authenticated retrieved-source evidence.
+// The compiler may retrieve source outside the candidate's operative window
+// (a definition, a cross-referenced section). That text becomes verifier
+// evidence ONLY after the verifier re-resolves the same request itself
+// against its own allowed inputs (structural index, operative state,
+// package topology) and every authentication check passes. A compiler
+// retrieval record (ToolCallLogEntry.retrievedSource) is a CLAIM to be
+// checked - never a source of text. See retrieved-evidence.ts.
+// ---------------------------------------------------------------------------
+
+export type EvidenceProvenanceClass = "PRIMARY_LOCAL" | "AUTHENTICATED_RETRIEVED";
+
+export type AuthenticationCheckCode =
+  /** the resolved document belongs to this candidate's own instrument package */
+  | "A_DOCUMENT_IN_PACKAGE"
+  /** the request resolves to exactly one real definition/section with text */
+  | "B_SPAN_RESOLVES"
+  /** the text is byte-identical to the document slice at the resolved span (or to the operative state's own recorded current text) */
+  | "C_RAW_TEXT_MATCH"
+  /** the independently computed content hash equals the compiler-recorded hash (when a record exists) */
+  | "D_HASH_MATCH"
+  /** the text is confirmed current operative truth (CURRENT - never superseded/conflicted/partial/historical) */
+  | "E_OPERATIVE_VERSION"
+  /** the compiler's recorded document/node identity (when present) is the same source the verifier resolved - not an unrelated document */
+  | "F_NOT_UNRELATED_DOCUMENT"
+  /** the resolved span lies within the document's bounds */
+  | "G_SPAN_IN_BOUNDS";
+
+export interface AuthenticationCheck {
+  code: AuthenticationCheckCode;
+  passed: boolean;
+  detail: string;
+}
+
+export type RetrievalLinkageOrigin = "COMPILER_TOOL_CALL" | "IR_DEFINITION_TERM" | "IR_PROVENANCE_CITATION";
+
+/** How this evidence is linked to the unit under verification - the retrieval chain, auditable end to end. */
+export interface RetrievalLinkage {
+  origin: RetrievalLinkageOrigin;
+  /** e.g. `toolCallLog[0] getDefinition {"term":"X"}`, `definitions[2].termName`, `definitions[2].calculationExpression.operands[0].provenance.sourceCitation`. */
+  detail: string;
+  /** Present only for COMPILER_TOOL_CALL linkage when the compiler wrote a RetrievedSourceRecord for that call. */
+  compilerRecordedContentHash: string | null;
+}
+
+export type AuthenticatedEvidenceRole =
+  /** the IR contains an IRDefinition for this exact term - its figures are compared in BOTH directions against that definition's own expression */
+  | "REPRESENTED_DEFINITION"
+  /** retrieved/cited but not compiled as a definition of its own - admitted for support of IR values explicitly scoped to it, never a source of missing-figure findings */
+  | "REFERENCED_ONLY";
+
+export interface AuthenticatedSourceEvidence {
+  /** Content-derived: hash of document id + span/node + content hash + version. */
+  evidenceId: string;
+  provenanceClass: "AUTHENTICATED_RETRIEVED";
+  requestKind: "DEFINITION" | "PROVISION";
+  /** The term / section reference as requested (first linkage's spelling). */
+  requestKey: string;
+  /** Normalized identity used for scoping (lowercased, whitespace-collapsed term; or "section"/"§"-stripped, whitespace-free section ref). */
+  scopeKey: string;
+  documentId: string;
+  /** BASE_DOCUMENT = sliced from the indexed document text at [charStart, charEnd); AMENDED_OPERATIVE = an amendment's recorded current text from Phase 2G operative state (no base-document span). */
+  documentVersion: "BASE_DOCUMENT" | "AMENDED_OPERATIVE";
+  /** The Phase 2G evidence status this text carries (always CURRENT for an AUTHENTICATED record - anything else is rejected under check E). */
+  operativeEvidenceStatus: string;
+  sourceNodeId: string | null;
+  sourceNodeKey: string | null;
+  charStart: number | null;
+  charEnd: number | null;
+  rawText: string;
+  contentHash: string;
+  retrievalReason: string;
+  relationshipToUnit: string;
+  role: AuthenticatedEvidenceRole;
+  /** IRDefinition.definitionId(s) whose termName is this evidence's term (REPRESENTED_DEFINITION only). */
+  representedDefinitionIds: string[];
+  /** True when this evidence's span lies inside the candidate's own operative window - its figures are already PRIMARY_LOCAL, so it is recorded for provenance but contributes no retrieved inventory items. */
+  duplicatesLocalWindow: boolean;
+  /** Always VERIFIER_INDEPENDENT_RESOLUTION - the text was produced by the verifier's own resolution, never copied from a compiler record. */
+  provenanceOrigin: "VERIFIER_INDEPENDENT_RESOLUTION";
+  /** Whether a compiler RetrievedSourceRecord existed for this request and whether it matched byte-for-byte (null when no record - a legacy log or an IR-derived request). */
+  compilerRecord: { present: boolean; matched: boolean | null; toolCallIndexes: number[] };
+  linkage: RetrievalLinkage[];
+  authenticationStatus: "AUTHENTICATED";
+  checks: AuthenticationCheck[];
+}
+
+/** A retrieval request that failed authentication. Never admitted as evidence; when the compiler itself claimed the retrieval, it is also surfaced as a review item (PROVENANCE_MISMATCH). */
+export interface RejectedRetrievalClaim {
+  requestKind: "DEFINITION" | "PROVISION";
+  requestKey: string;
+  scopeKey: string;
+  /** True when a compiler tool call claimed to have retrieved this - a rejected compiler claim is a trust event; an IR-derived request that merely failed to resolve is informational. */
+  claimedByCompiler: boolean;
+  documentId: string | null;
+  reason: string;
+  linkage: RetrievalLinkage[];
+  authenticationStatus: "REJECTED";
+  checks: AuthenticationCheck[];
+}
+
+export interface AdmissibleEvidenceSet {
+  /** Content hash of the candidate's own operative window text (PRIMARY_LOCAL). */
+  localSourceHash: string;
+  /** Document ids the verifier allowed retrieval from - this instrument's package only (package topology is an allowed input). */
+  packageDocumentIds: string[];
+  authenticated: AuthenticatedSourceEvidence[];
+  rejected: RejectedRetrievalClaim[];
+  /** Identity of the whole evidence set (local hash + every authenticated evidence's document/span/hash + algorithm version) - changes whenever the admissible evidence changes, so no cache/freeze keyed on it can serve a result computed over a different evidence set. */
+  evidenceSetHash: string;
+  algorithmVersion: string;
+}
+
+/** The retrieved-evidence numeric inventory handed to reconciliation - one entry per non-duplicate authenticated evidence, numeric items only (aggregate structural signals stay PRIMARY_LOCAL). */
+export interface RetrievedEvidenceInventoryEntry {
+  evidenceId: string;
+  requestKind: "DEFINITION" | "PROVISION";
+  requestKey: string;
+  scopeKey: string;
+  role: AuthenticatedEvidenceRole;
+  representedDefinitionIds: string[];
+  /** True when the reverse comparison (figures in this authenticated text absent from the represented IR definition) is enabled: REPRESENTED_DEFINITION with a non-null calculationExpression. */
+  reverseComparable: boolean;
+  documentId: string;
+  sourceNodeId: string | null;
+  charStart: number | null;
+  charEnd: number | null;
+  contentHash: string;
+  items: SourceInventoryItem[];
+}
+
+export interface RetrievedEvidenceInventory {
+  entries: RetrievedEvidenceInventoryEntry[];
+  rejectedCompilerClaims: RejectedRetrievalClaim[];
 }
 
 export interface SourceInventory {
@@ -330,6 +473,8 @@ export interface IrInventoryItem {
   isAlternativeWithinSelection: boolean;
   sourceCitation: string | null;
   sourceExcerpt: string | null;
+  /** F-4: the termName of the IRDefinition this item belongs to (null for rule items). Used ONLY to scope authenticated retrieved evidence for that same term to this definition's own values - never for global numeric pooling. */
+  ownerTermName?: string | null;
 }
 
 export interface IrInventory {
@@ -353,6 +498,8 @@ export interface ReconciliationItem {
   /** Set for ACCOUNTED_FOR/POSSIBLY_ACCOUNTED_FOR/IR_ONLY - the IR item(s) matched. */
   irItems: IrInventoryItem[];
   reason: string;
+  /** F-4: set whenever authenticated retrieved evidence (not the local window) decided this item - the evidence's identity, so the match/mismatch is auditable to a document, node, span and content hash. */
+  evidence?: { provenanceClass: "AUTHENTICATED_RETRIEVED"; evidenceId: string; requestKind: "DEFINITION" | "PROVISION"; requestKey: string; documentId: string; sourceNodeId: string | null; charStart: number | null; charEnd: number | null; contentHash: string };
 }
 
 export interface ReconciliationResult {
@@ -389,6 +536,10 @@ export interface SemanticVerificationResult {
    * finding or a correctness judgment on its own.
    */
   conditionSuspicion: ConditionSuspicionResult | null;
+  /** F-4: every authenticated retrieved-source evidence this verification admitted (with its retrieval chain and checks) and every rejected claim - the verifier's evidence set is auditable, never implicit. Absent on pre-F-4 results. */
+  admissibleEvidence?: AdmissibleEvidenceSet;
+  /** F-4: AdmissibleEvidenceSet.evidenceSetHash, lifted for identity/freeze consumers. */
+  evidenceSetHash?: string;
   verifierAlgorithmVersion: string;
   verifiedAt: string;
 }

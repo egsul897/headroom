@@ -1,0 +1,50 @@
+{
+ "artifact": "F-4 test and quality-gate results (working tree = starting SHA + uncommitted F-4 changes; 0 model calls)",
+ "startingSha": "5e171383e1ec6e9505ea6812fd3d3ddf0768c696",
+ "newTestFile": {
+  "path": "tests/contract-model/f4-authenticated-retrieved-evidence.test.ts",
+  "tests": 30,
+  "passed": 30,
+  "failed": 0,
+  "sections": {
+   "\u00a713 synthetic A-F (+A end-to-end, D')": 8,
+   "\u00a712 adversarial A-G (+A', E')": 9,
+   "\u00a718 package isolation": 3,
+   "\u00a717 verifier independence": 3,
+   "\u00a719 identity": 1,
+   "\u00a725 compiler evidence record": 5,
+   "definition evidence bound": 1
+  }
+ },
+ "verifierAndCertificationSuites": {
+  "glob": "tests/contract-model/semantic-verification-*.test.ts, f3-verifier-scale-normalization, f4-authenticated-retrieved-evidence, verify-whitespace-tolerance, adversarial-verification, tests/certification/**",
+  "files": "32 passed | 11 failed (43)",
+  "tests": "539 passed | 24 failed | 125 skipped (688)",
+  "failedTestsIdenticalToF3Baseline": true,
+  "failureCause": "every failed file/test needs a Postgres at localhost:5432 (PrismaClientInitializationError 'Can't reach database server'), identical set to the F-3 post-fix baseline (34 FAIL lines, byte-identical)",
+  "f3ScaleNormalizationTests": "40 passed (unchanged)",
+  "independenceTest": "passed - retrieved-evidence.ts imports only amendment/operative-state, hashing, structural-index types, semantic/types (types only) and this module's own inventory"
+ },
+ "compilerAndAccountabilitySuites": {
+  "glob": "tests/contract-model/semantic-accountability/**, semantic-compiler/**, f5-*.test.ts, f5-3b-*.test.ts, semantic-tools-*.test.ts, part-b-recert-blocker2-6-tools-adversarial",
+  "files": "23 passed | 3 failed (26)",
+  "tests": "517 passed | 18 failed (535)",
+  "failedTestsIdenticalToPreExistingBaseline": true,
+  "note": "the 18 failures are the pre-existing Pass-A coverage-gap expectations (fail-v4 baseline from F-5.3B), untouched by F-4; F-5.3B ensemble-compatibility (11) and support-trust (10) tests pass"
+ },
+ "typecheck": {
+  "command": "npx tsc --noEmit -p .",
+  "errors": 6,
+  "allPreExisting": true,
+  "location": "tests/foundation-audit (pre-existing; 0 errors outside it)"
+ },
+ "eslint": {
+  "files": "lib/contract-model/compiler/semantic-verification/**, semantic/tools.ts, semantic/types.ts, hashing.ts, the new test file, scripts/f4-*.ts",
+  "errors": 0,
+  "warnings": 0
+ },
+ "secretScan": {
+  "pattern": "the AI Gateway key prefix (the literal is deliberately not written into any artifact)",
+  "matches": 0
+ }
+}

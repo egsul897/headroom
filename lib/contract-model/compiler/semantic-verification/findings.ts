@@ -28,9 +28,14 @@ import type { ReconciliationItem, ReconciliationResult, SemanticVerificationFind
 function mapClassificationToFindingType(item: ReconciliationItem): SemanticVerificationFindingType {
   if (item.classification === "IR_ONLY") return "UNSUPPORTED_IR_ADDITION";
   if (item.classification === "NOT_ACCOUNTED_FOR") {
+    // F-4: a figure present in the authenticated text of a definition the IR claims to represent, but absent from
+    // that definition's own expression, is a misrepresented definition - not a missing basket of the section.
+    if (item.sourceItem?.provenanceClass === "AUTHENTICATED_RETRIEVED") return "MISSING_DEFINITION_EFFECT";
     return item.sourceItem?.kind === "RATIO" ? "MISSING_RULE" : "MISSING_BASKET";
   }
   if (item.classification === "AMBIGUOUS") {
+    // F-4: a compiler retrieval claim that failed authentication - the provenance the IR rests on is not the source.
+    if (item.reason.includes("could not be authenticated")) return "PROVENANCE_MISMATCH";
     if (item.reason.includes("missing rule/basket")) return "MISSING_RULE";
     if (item.reason.includes("missing condition/exception")) return "MISSING_CONDITION";
     if (item.reason.includes("missing shared cap")) return "MISSING_SHARED_CAP";

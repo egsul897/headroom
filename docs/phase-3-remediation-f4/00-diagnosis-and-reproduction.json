@@ -1,0 +1,252 @@
+{
+ "artifact": "F-4 diagnosis + reproduction through starting-SHA code over frozen Chewy 6.08 artifacts (0 model calls)",
+ "gitSha": "5e171383e1ec6e9505ea6812fd3d3ddf0768c696",
+ "inputs": {
+  "unitSha256": "fc147145c2db7df77bfb7122b8442d3fe21f5645b5c4782b791ffa942c8b750c",
+  "documentSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+  "windowSha256": "98b4d151d733483b6e63d1bfce14b3bbfe79d46d1583498442eb73c7a22a51a9",
+  "windowChars": 38529
+ },
+ "reproducedPostF3State": {
+  "deterministicFindings": 18,
+  "material": 16,
+  "irOnly": [
+   {
+    "kind": "AMOUNT",
+    "value": 324000000,
+    "irPath": "definitions[2].calculationExpression.operands[0]"
+   },
+   {
+    "kind": "PERCENT",
+    "value": 0.45,
+    "irPath": "definitions[2].calculationExpression.operands[1].operands[0]"
+   }
+  ]
+ },
+ "retrievedDefinition": {
+  "term": "Threshold Amount",
+  "resolution": {
+   "outcome": "FOUND",
+   "status": "CURRENT",
+   "source": "base-document",
+   "isCurrentTruth": true,
+   "documentId": "doc-a"
+  },
+  "located": {
+   "documentId": "doc-a",
+   "exactTerm": "Threshold Amount",
+   "sourceNodeId": "structural-node:b51b74180792bda67d86f589",
+   "sourceNodeKey": "doc-a::1.01(51)(c)(a)(4)(b)(c)",
+   "charStart": 350042,
+   "charEnd": 350203,
+   "textChars": 161,
+   "textSha256": "6c7b20f45ab0fc5d6cd62bf3886abf21df99fed5b6424adfa38b22382738e7f5",
+   "textHead": "“ Threshold Amount ” means the greater of (a) $324.0 million and (b) 45% of Consolidated EBITDA on a Pro Forma Basis as of the applicable date of determination. "
+  },
+  "outsideVerifierLocalWindow": true,
+  "numericValuesInDefinition": [
+   {
+    "kind": "AMOUNT",
+    "rawText": "$324.0 million",
+    "numericValue": 324000000,
+    "currency": "USD",
+    "charStartInDefinition": 46
+   },
+   {
+    "kind": "PERCENT",
+    "rawText": "45%",
+    "numericValue": 0.45,
+    "currency": null,
+    "charStartInDefinition": 69
+   }
+  ],
+  "irExcerptClaim": {
+   "documentId": "doc-a",
+   "sourceNodeKey": null,
+   "sourceCitation": "Definition of \"Threshold Amount\" (retrieved via tool)",
+   "excerpt": "the greater of (a) $324.0 million and (b) 45% of Consolidated EBITDA on a Pro Forma Basis"
+  },
+  "irExcerptMatchesLocatedTextAfterWhitespaceNormalization": true
+ },
+ "f4Findings": [
+  {
+   "findingId": "844f0a36f675e721815f0b9249d7c8967f7d342e398a4dd309025cf0eba5aca7",
+   "severity": "MATERIAL",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "irPath": "definitions[2].calculationExpression.operands[0]",
+   "irKind": "AMOUNT",
+   "irValue": 324000000,
+   "irCurrency": "USD",
+   "sourceTerm": "Threshold Amount",
+   "supportingSourceText": "$324.0 million",
+   "supportingSourceInDefinition": {
+    "kind": "AMOUNT",
+    "rawText": "$324.0 million",
+    "numericValue": 324000000,
+    "currency": "USD",
+    "charStartInDefinition": 46
+   },
+   "documentId": "doc-a",
+   "documentVersion": "base document (never amended; operativeState null in the frozen run)",
+   "sourceNodeId": "structural-node:b51b74180792bda67d86f589",
+   "sourceNodeKey": "doc-a::1.01(51)(c)(a)(4)(b)(c)",
+   "definitionSpan": [
+    350042,
+    350203
+   ],
+   "definitionTextSha256": "6c7b20f45ab0fc5d6cd62bf3886abf21df99fed5b6424adfa38b22382738e7f5",
+   "outsideVerifierLocalWindow": true,
+   "verifierWindow": [
+    659042,
+    697571
+   ],
+   "compilerRetrieval": {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Threshold Amount"
+    },
+    "outputSummary": "definition \"Threshold Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 161,
+    "note": "resolveOperativeDefinitionEvidence -> base-document branch -> index.getDefinitionFullText; the tool returned the text to the model"
+   },
+   "provenanceSurvivingToday": {
+    "toolCallLog": "outputSummary + charsReturned only - no raw text, no documentId, no node, no span, no hash (ToolCallLogEntry doc: 'never the full raw text')",
+    "irProvenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "Definition of \"Threshold Amount\" (retrieved via tool)",
+     "excerpt": "the greater of (a) $324.0 million and (b) 45% of Consolidated EBITDA on a Pro Forma Basis"
+    },
+    "note": "the IR provenance is a compiler-written excerpt with sourceNodeKey null and a free-text citation - a compiler claim, not an authenticated location"
+   },
+   "whyVerifierCannotAuthenticateToday": "verify.ts builds the source inventory from compilerInput.operativeSourceText only (the 6.08 window); it never resolves the terms the IR depends on against its own allowed input (toolAccess.structuralIndex / operativeState), and nothing in its input carries an authenticated retrieved-source record - so the definition's figures exist nowhere in its evidence set",
+   "resultingFinding": "MATERIAL UNSUPPORTED_IR_ADDITION: compiled IR AMOUNT value 324000000 at definitions[2].calculationExpression.operands[0] has no matching source-side figure"
+  },
+  {
+   "findingId": "c75b8e97b3d7ff939b81acf03721dcd51688f4e77ce62e7774537af30ca40241",
+   "severity": "MATERIAL",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "irPath": "definitions[2].calculationExpression.operands[1].operands[0]",
+   "irKind": "PERCENT",
+   "irValue": 0.45,
+   "irCurrency": null,
+   "sourceTerm": "Threshold Amount",
+   "supportingSourceText": "45%",
+   "supportingSourceInDefinition": {
+    "kind": "PERCENT",
+    "rawText": "45%",
+    "numericValue": 0.45,
+    "currency": null,
+    "charStartInDefinition": 69
+   },
+   "documentId": "doc-a",
+   "documentVersion": "base document (never amended; operativeState null in the frozen run)",
+   "sourceNodeId": "structural-node:b51b74180792bda67d86f589",
+   "sourceNodeKey": "doc-a::1.01(51)(c)(a)(4)(b)(c)",
+   "definitionSpan": [
+    350042,
+    350203
+   ],
+   "definitionTextSha256": "6c7b20f45ab0fc5d6cd62bf3886abf21df99fed5b6424adfa38b22382738e7f5",
+   "outsideVerifierLocalWindow": true,
+   "verifierWindow": [
+    659042,
+    697571
+   ],
+   "compilerRetrieval": {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Threshold Amount"
+    },
+    "outputSummary": "definition \"Threshold Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 161,
+    "note": "resolveOperativeDefinitionEvidence -> base-document branch -> index.getDefinitionFullText; the tool returned the text to the model"
+   },
+   "provenanceSurvivingToday": {
+    "toolCallLog": "outputSummary + charsReturned only - no raw text, no documentId, no node, no span, no hash (ToolCallLogEntry doc: 'never the full raw text')",
+    "irProvenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "Definition of \"Threshold Amount\" (retrieved via tool)",
+     "excerpt": "the greater of (a) $324.0 million and (b) 45% of Consolidated EBITDA on a Pro Forma Basis"
+    },
+    "note": "the IR provenance is a compiler-written excerpt with sourceNodeKey null and a free-text citation - a compiler claim, not an authenticated location"
+   },
+   "whyVerifierCannotAuthenticateToday": "verify.ts builds the source inventory from compilerInput.operativeSourceText only (the 6.08 window); it never resolves the terms the IR depends on against its own allowed input (toolAccess.structuralIndex / operativeState), and nothing in its input carries an authenticated retrieved-source record - so the definition's figures exist nowhere in its evidence set",
+   "resultingFinding": "MATERIAL UNSUPPORTED_IR_ADDITION: compiled IR PERCENT value 0.45 at definitions[2].calculationExpression.operands[1].operands[0] has no matching source-side figure"
+  }
+ ],
+ "earliestDefect": {
+  "classification": "A. RETRIEVED_SOURCE_PROVENANCE_NOT_RECORDED",
+  "module": "lib/contract-model/compiler/semantic/tools.ts :: getDefinition.execute -> ToolCallLogger.run (ToolCallLogEntry)",
+  "detail": "the retrieval resolves the authentic text (resolveOperativeDefinitionEvidence) but records only outputSummary/charsReturned; documentId, node, span, raw text and content hash are discarded, and the IR keeps only a compiler-written excerpt with sourceNodeKey null. Downstream, C. VERIFIER_INPUT_EXCLUDES_AUTHENTICATED_RETRIEVED_SOURCE (verify.ts inventories compilerInput.operativeSourceText only) is the consequence: even with a provenance record the verifier had no path to admit authenticated outside-window source."
+ },
+ "toolLog": [
+  {
+   "toolName": "getDefinition",
+   "input": {
+    "term": "Threshold Amount"
+   },
+   "outputSummary": "definition \"Threshold Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+   "charsReturned": 161,
+   "timestamp": "2026-09-03T18:23:01.437Z",
+   "evidenceUnresolved": false,
+   "evidenceTruncated": false
+  },
+  {
+   "toolName": "getDefinition",
+   "input": {
+    "term": "Available Investment Capacity Amount"
+   },
+   "outputSummary": "definition \"Available Investment Capacity Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+   "charsReturned": 402,
+   "timestamp": "2026-09-03T18:23:01.438Z",
+   "evidenceUnresolved": false,
+   "evidenceTruncated": false
+  },
+  {
+   "toolName": "getDefinition",
+   "input": {
+    "term": "Available RP Capacity Amount"
+   },
+   "outputSummary": "definition \"Available RP Capacity Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+   "charsReturned": 1507,
+   "timestamp": "2026-09-03T18:23:01.438Z",
+   "evidenceUnresolved": false,
+   "evidenceTruncated": false
+  },
+  {
+   "toolName": "getReferencedProvision",
+   "input": {
+    "ref": "Section 6.01(b)"
+   },
+   "outputSummary": "resolved reference \"Section 6.01(b)\" -> 6.01(b) [UNIQUE] (CURRENT_OPERATIVE)",
+   "charsReturned": 66,
+   "timestamp": "2026-09-03T18:23:01.438Z",
+   "evidenceUnresolved": false,
+   "evidenceTruncated": false
+  },
+  {
+   "toolName": "getReferencedProvision",
+   "input": {
+    "ref": "Section 5.18(b)"
+   },
+   "outputSummary": "resolved reference \"Section 5.18(b)\" -> 5.18(b) [UNIQUE] (CURRENT_OPERATIVE)",
+   "charsReturned": 80,
+   "timestamp": "2026-09-03T18:23:20.029Z",
+   "evidenceUnresolved": false,
+   "evidenceTruncated": false
+  },
+  {
+   "toolName": "getReferencedProvision",
+   "input": {
+    "ref": "Section 2.09(b)"
+   },
+   "outputSummary": "resolved reference \"Section 2.09(b)\" -> 2.09(b) [UNIQUE] (CURRENT_OPERATIVE)",
+   "charsReturned": 1085,
+   "timestamp": "2026-09-03T18:23:20.030Z",
+   "evidenceUnresolved": false,
+   "evidenceTruncated": false
+  }
+ ]
+}

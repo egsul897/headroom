@@ -12,7 +12,8 @@
  * value/text-containment/count comparison that would behave identically on
  * a package this module has never seen.
  */
-import type { IrInventory, IrInventoryItem, ReconciliationItem, ReconciliationResult, SourceInventory, SourceInventoryItem } from "./types";
+import type { IrInventory, IrInventoryItem, ReconciliationItem, ReconciliationResult, RetrievedEvidenceInventory, RetrievedEvidenceInventoryEntry, SourceInventory, SourceInventoryItem } from "./types";
+import { citationNamesDefinition, citationNamesSection, normalizeTermScopeKey } from "./retrieved-evidence";
 
 const NUMERIC_TOLERANCE_RELATIVE = 1e-6;
 
@@ -71,6 +72,67 @@ function reconcileNumericItems(sourceItems: SourceInventoryItem[], irItems: IrIn
   }
 
   return { items, claimedIrItemIds };
+}
+
+/**
+ * F-4 - cross-source collision safety (mission §11): an authenticated retrieved figure may support an IR value ONLY
+ * when that value is explicitly scoped to the evidence - the IR item belongs to the IRDefinition of that very term
+ * (ownerTermName), or its own provenance citation names that definition ("Definition of X"), or, for a retrieved
+ * section, its citation is that section or one of its sub-clauses. Nothing else: a same-magnitude figure in an
+ * unrelated retrieved definition never "accounts for" an IR value (no global numeric pooling), and no term or
+ * section is special-cased.
+ */
+function irItemScopedToEvidence(ir: IrInventoryItem, ev: RetrievedEvidenceInventoryEntry): boolean {
+  if (ev.requestKind === "DEFINITION") {
+    if (ir.ownerTermName && normalizeTermScopeKey(ir.ownerTermName) === ev.scopeKey) return true;
+    if (ir.sourceCitation && citationNamesDefinition(ir.sourceCitation, ev.scopeKey)) return true;
+    return false;
+  }
+  return ir.sourceCitation !== null && citationNamesSection(ir.sourceCitation, ev.scopeKey);
+}
+
+function evidenceRef(ev: RetrievedEvidenceInventoryEntry): NonNullable<ReconciliationItem["evidence"]> {
+  return { provenanceClass: "AUTHENTICATED_RETRIEVED", evidenceId: ev.evidenceId, requestKind: ev.requestKind, requestKey: ev.requestKey, documentId: ev.documentId, sourceNodeId: ev.sourceNodeId, charStart: ev.charStart, charEnd: ev.charEnd, contentHash: ev.contentHash };
+}
+
+function describeEvidence(ev: RetrievedEvidenceInventoryEntry): string {
+  const where = ev.charStart !== null && ev.charEnd !== null ? `span [${ev.charStart}, ${ev.charEnd})` : "amendment-recorded current text";
+  return `${ev.requestKind === "DEFINITION" ? `definition of "${ev.requestKey}"` : `section ${ev.requestKey}`} - authenticated retrieved source (document ${ev.documentId}, node ${ev.sourceNodeId ?? "(none)"}, ${where}, sha256 ${ev.contentHash.slice(0, 12)}...)`;
+}
+
+/**
+ * F-4 - reconciliation against AUTHENTICATED retrieved evidence, after the local window has had first claim.
+ * Forward: a retrieved figure that matches an IR value scoped to it ACCOUNTS FOR that value (the IR_ONLY
+ * false-discrepancy this fix closes). Reverse (REPRESENTED_DEFINITION with an expression only, and only for text
+ * outside the local window): a figure in the authentic definition text with no matching value anywhere in that
+ * definition's own IR is NOT_ACCOUNTED_FOR - the verifier compares the IR against the raw source in both
+ * directions, never trusting the compiler's excerpt of it. REFERENCED_ONLY evidence supports; it never accuses.
+ */
+function reconcileRetrievedEvidence(retrieved: RetrievedEvidenceInventory, irItems: IrInventoryItem[], claimedIrItemIds: Set<string>): ReconciliationItem[] {
+  const out: ReconciliationItem[] = [];
+  for (const ev of retrieved.entries) {
+    const scopedIr = irItems.filter((ir) => irItemScopedToEvidence(ir, ev));
+    for (const sourceItem of ev.items) {
+      const irKind = NUMERIC_KIND_MAP[sourceItem.kind];
+      if (!irKind) continue;
+      if (sourceItem.numericValue === null) {
+        if (sourceItem.kind === "AMOUNT" && sourceItem.scaleStatus === "UNRESOLVED" && ev.reverseComparable) out.push({ classification: "AMBIGUOUS", sourceItem, irItems: [], reason: `source AMOUNT "${sourceItem.rawText}" in the ${describeEvidence(ev)} carries a scale token this grammar does not resolve (${sourceItem.scaleToken ?? "?"}) - magnitude withheld, review required`, evidence: evidenceRef(ev) });
+        continue;
+      }
+      const matches = scopedIr.filter((ir) => ir.kind === irKind && ir.numericValue !== null && numbersMatch(ir.numericValue, sourceItem.numericValue!) && (irKind !== "AMOUNT" || currenciesCompatible(sourceItem, ir)));
+      const provenance = sourceItem.kind === "AMOUNT" ? ` (canonical ${sourceItem.numericValue}${sourceItem.currency ? ` ${sourceItem.currency}` : ""}${sourceItem.scaleStatus === "RESOLVED" ? ` = ${sourceItem.parsedAmount} x ${sourceItem.scaleMultiplier} "${sourceItem.scaleToken}"` : ""})` : "";
+      if (matches.length > 0) {
+        for (const m of matches) claimedIrItemIds.add(m.itemId);
+        out.push({ classification: "ACCOUNTED_FOR", sourceItem, irItems: matches, reason: `source ${sourceItem.kind} ${sourceItem.numericValue}${provenance} from "${sourceItem.rawText}" in the ${describeEvidence(ev)} matches ${matches.length} compiled IR ${irKind} node(s) scoped to it`, evidence: evidenceRef(ev) });
+      } else if (ev.reverseComparable) {
+        out.push({ classification: "NOT_ACCOUNTED_FOR", sourceItem, irItems: [], reason: `source ${sourceItem.kind} ${sourceItem.numericValue} (from "${sourceItem.rawText}")${provenance} in the ${describeEvidence(ev)} does not appear as a ${irKind} value anywhere in the compiled IR definition(s) ${ev.representedDefinitionIds.join(", ")} that represent this term`, evidence: evidenceRef(ev) });
+      }
+    }
+  }
+  for (const claim of retrieved.rejectedCompilerClaims) {
+    out.push({ classification: "AMBIGUOUS", sourceItem: null, irItems: [], reason: `compiler-claimed retrieved source (${claim.requestKind.toLowerCase()} "${claim.requestKey}") could not be authenticated - ${claim.reason} - unauthenticated retrieved text is never admitted as evidence; every IR value that depends on it remains unsupported and requires review` });
+  }
+  return out;
 }
 
 /** Every IR numeric item never claimed by a source match above is a candidate unsupported addition (task §3's own "unsupported additions" attack class) - reported as IR_ONLY, never auto-declared fabricated (a legitimately-derived intermediate value, e.g. a computed sub-total, can legitimately have no single matching source figure). */
@@ -185,13 +247,17 @@ function buildAggregateSignals(source: SourceInventory, ir: IrInventory): Reconc
   return out;
 }
 
-export function reconcileInventories(source: SourceInventory, ir: IrInventory): ReconciliationResult {
+export function reconcileInventories(source: SourceInventory, ir: IrInventory, retrieved: RetrievedEvidenceInventory | null = null): ReconciliationResult {
   const { items: numericItems, claimedIrItemIds } = reconcileNumericItems(source.items, ir.items);
+  // F-4: authenticated retrieved evidence is reconciled AFTER the local window (which always has first claim) and
+  // BEFORE the IR_ONLY sweep, so a value the IR correctly took from an authenticated definition is never reported
+  // as unsupported. Aggregate structural signals below stay PRIMARY_LOCAL-only.
+  const retrievedItems = retrieved ? reconcileRetrievedEvidence(retrieved, ir.items, claimedIrItemIds) : [];
   const irOnlyItems = findIrOnlyNumericItems(ir.items, claimedIrItemIds);
   const metricItems = reconcileMetricMentions(source.items, ir.items);
   const aggregateItems = buildAggregateSignals(source, ir);
 
-  const items = [...numericItems, ...irOnlyItems, ...metricItems, ...aggregateItems];
+  const items = [...numericItems, ...retrievedItems, ...irOnlyItems, ...metricItems, ...aggregateItems];
   const materialUnresolvedCount = items.filter((i) => i.classification === "NOT_ACCOUNTED_FOR" || i.classification === "IR_ONLY" || i.classification === "AMBIGUOUS").length;
 
   return { candidateRef: source.candidateRef, items, materialUnresolvedCount };

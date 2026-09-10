@@ -77,6 +77,44 @@ export interface ToolBudget {
 export const DEFAULT_TOOL_BUDGET: ToolBudget = { maxToolCalls: 8, maxRecursionDepth: 3, maxAdditionalSourceChars: 20_000 };
 
 /** One real, source-backed tool invocation, logged for provenance/audit (task §7/§34) - never silently discarded. */
+/**
+ * F-4 (Phase 3 Chewy remediation) - the AUTHENTICABLE record of what a
+ * source-reading evidence tool actually returned, written by
+ * semantic/tools.ts at the moment of retrieval and carried verbatim on the
+ * ToolCallLogEntry. EVIDENCE ONLY: it names WHERE the text came from
+ * (document, physical node, span, content hash) and carries the raw text
+ * untruncated - it never carries any compiler interpretation of that text.
+ * The independent verifier (semantic-verification/retrieved-evidence.ts)
+ * never trusts this record as source truth: it re-resolves the same
+ * request against its own allowed inputs (structural index, operative
+ * state, package topology) and uses this record only to check that what
+ * the compiler was shown is exactly the authentic text it found itself
+ * (raw text and hash must match; a mismatch is a rejected claim, never a
+ * fallback to compiler metadata).
+ */
+export interface RetrievedSourceRecord {
+  requestKind: "DEFINITION" | "PROVISION";
+  /** The term or section reference exactly as the model requested it. */
+  requestKey: string;
+  documentId: string;
+  /** Physical occurrence identity of the node the text was read from (the definition's enclosing node, or the resolved section node); null when the text is an amendment's recorded current text with no single base-document node. */
+  sourceNodeId: string | null;
+  /** @deprecated legacy label-shaped key - display only. */
+  sourceNodeKey: string | null;
+  /** Absolute char span within the document's text when the text was sliced from the base document; null when it is amendment-recorded current text. */
+  charStart: number | null;
+  charEnd: number | null;
+  /** The FULL text the tool resolved, before the MAX_TEXT_RESULT_CHARS truncation applied to what the model sees. */
+  rawText: string;
+  /** sha256 of rawText (computeSourceContentHash, compiler/hashing.ts). */
+  contentHash: string;
+  /** Which text this is: base-document text (sliced from the indexed document) or an amendment's resolved current text (operative state). */
+  textOrigin: "BASE_DOCUMENT_TEXT" | "AMENDED_CURRENT_TEXT" | "UNRESOLVED_AMENDED_TEXT" | "HISTORICAL_BASE_TEXT";
+  /** The evidence status the tool itself disclosed for this text (resolveOperativeDefinitionEvidence's DefinitionEvidenceStatus, or the node supersession status). */
+  evidenceStatus: string;
+  isCurrentTruth: boolean;
+}
+
 export interface ToolCallLogEntry {
   toolName: string;
   input: unknown;
@@ -98,6 +136,8 @@ export interface ToolCallLogEntry {
   evidenceUnresolved?: boolean;
   /** POST-3F.2 remediation (Unit A3) - mirrors ToolExecutionOutcome.evidenceTruncated in semantic/tools.ts verbatim; see that field's own header comment for the full contract. */
   evidenceTruncated?: boolean;
+  /** F-4 - the authenticable retrieved-source record (see RetrievedSourceRecord) for a source-reading tool call that returned real text; undefined for a refusal, for a non-text tool, and for every entry logged before F-4 (a legacy log the verifier handles by independent re-resolution alone). */
+  retrievedSource?: RetrievedSourceRecord;
 }
 
 // ---------------------------------------------------------------------------

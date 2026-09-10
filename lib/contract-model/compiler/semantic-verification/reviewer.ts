@@ -19,7 +19,7 @@ import { buildVerifierFewShotExamplesBlock, buildVerifierSystemPrompt } from "./
 import { computeSemanticVerificationFindingId } from "./identity";
 import { SubmitVerificationFindingsSchema, type WireVerificationFinding } from "./wire-schema";
 import { SEMANTIC_VERIFIER_ALGORITHM_VERSION, SEMANTIC_VERIFIER_PROMPT_VERSION } from "./types";
-import type { ReconciliationResult, SemanticVerificationFinding, SemanticVerificationFindingType, SemanticVerificationSeverity, VerificationInput } from "./types";
+import type { AdmissibleEvidenceSet, ReconciliationResult, SemanticVerificationFinding, SemanticVerificationFindingType, SemanticVerificationSeverity, VerificationInput } from "./types";
 import type { ConditionSuspicionResult } from "./condition-suspicion-classifier";
 import type { AnalyzerCallTelemetry } from "../../analyzer/telemetry";
 
@@ -86,7 +86,41 @@ function summarizeConditionSuspicionForPrompt(conditionSuspicion: ConditionSuspi
   return [`status: ${conditionSuspicion.status}`, ...conditionSuspicion.evidence.map((e) => `- [${e.category}] "${e.sourceSpan}" - ${e.description}`)].join("\n");
 }
 
-function buildUserContent(input: VerificationInput, reconciliation: ReconciliationResult, conditionSuspicion: ConditionSuspicionResult | null): string {
+/** Per-evidence ceiling for the reviewer prompt (matches the compiler tools' own 4000-char text ceiling); the deterministic layer always sees the full text - this only bounds the prompt. */
+const MAX_EVIDENCE_PROMPT_CHARS = 4000;
+
+/**
+ * F-4 - the reviewer's "AUTHENTICATED RETRIEVED SOURCE" section. Built ONLY from AuthenticatedSourceEvidence
+ * (text this verifier resolved and authenticated itself, with document / node / span / hash) - never from a
+ * compiler RetrievedSourceRecord's rawText, a tool-call outputSummary, or an IR provenance excerpt. Rejected
+ * compiler claims are listed by request only (no text is admitted for them).
+ */
+function summarizeAuthenticatedEvidenceForPrompt(evidence: AdmissibleEvidenceSet | null): string {
+  if (!evidence) return "(no retrieved-source evidence was resolved for this candidate)";
+  const admitted = evidence.authenticated.filter((e) => !e.duplicatesLocalWindow);
+  const lines: string[] = [];
+  if (admitted.length === 0) lines.push("(none - every retrieval request either duplicated the operative window above or was rejected)");
+  for (const e of admitted) {
+    const where = e.charStart !== null && e.charEnd !== null ? `chars [${e.charStart}, ${e.charEnd})` : "amendment-recorded current text";
+    const text = e.rawText.length > MAX_EVIDENCE_PROMPT_CHARS ? `${e.rawText.slice(0, MAX_EVIDENCE_PROMPT_CHARS)}\n... (evidence text continues - ${e.rawText.length} chars in total; the deterministic pass compared the full text)` : e.rawText;
+    lines.push(`--- ${e.requestKind === "DEFINITION" ? `Definition of "${e.requestKey}"` : `Section ${e.requestKey}`} [document ${e.documentId}, ${e.documentVersion}, node ${e.sourceNodeId ?? "(none)"}, ${where}, sha256 ${e.contentHash}] (${e.role}; ${e.retrievalReason}) ---`);
+    lines.push(text);
+  }
+  const rejected = evidence.rejected.filter((r) => r.claimedByCompiler);
+  if (rejected.length > 0) {
+    lines.push("");
+    lines.push("REJECTED compiler retrieval claims (NO text admitted for these - any IR value resting on them is unsupported):");
+    for (const r of rejected) lines.push(`- ${r.requestKind.toLowerCase()} "${r.requestKey}": ${r.reason}`);
+  }
+  return lines.join("\n");
+}
+
+/** Exported for tests: the exact user content the adversarial reviewer receives. */
+export function buildVerifierUserContent(input: VerificationInput, reconciliation: ReconciliationResult, conditionSuspicion: ConditionSuspicionResult | null, evidence: AdmissibleEvidenceSet | null = null): string {
+  return buildUserContent(input, reconciliation, conditionSuspicion, evidence);
+}
+
+function buildUserContent(input: VerificationInput, reconciliation: ReconciliationResult, conditionSuspicion: ConditionSuspicionResult | null, evidence: AdmissibleEvidenceSet | null = null): string {
   const { compilerInput, compilationResult } = input;
   const contextItemsSummary = compilerInput.contextBundle.items.map((i) => `- [${i.itemId}] (${i.type}, ${i.sourceCitation}): ${i.excerptText}`).join("\n") || "(none)";
   const unresolvedSummary = compilerInput.contextBundle.unresolvedDependencies.map((u) => `- ${u.dependencyType} (${u.severity}): ${u.reason}`).join("\n") || "(none)";
@@ -108,6 +142,9 @@ function buildUserContent(input: VerificationInput, reconciliation: Reconciliati
     "",
     "Unresolved dependencies Phase 2 already flagged:",
     unresolvedSummary,
+    "",
+    "AUTHENTICATED RETRIEVED SOURCE (raw text outside the operative window that THIS verifier independently re-resolved from the same instrument's documents and authenticated by document, version, span and content hash - it is real source text, on the same footing as the operative text above; it is NOT anything the proposing system wrote or summarized). Compare the proposed IR against it directly:",
+    summarizeAuthenticatedEvidenceForPrompt(evidence),
     "",
     "PROPOSED IR (what you are checking - do not trust this merely because it is well-formed JSON):",
     JSON.stringify(proposedIr, null, 2),
@@ -172,9 +209,9 @@ function normalizeWireFinding(wire: WireVerificationFinding, input: Verification
   };
 }
 
-export async function runAdversarialSemanticReview(input: VerificationInput, reconciliation: ReconciliationResult, caller: StageCaller = getStageCaller(), conditionSuspicion: ConditionSuspicionResult | null = null): Promise<SemanticReviewResult> {
+export async function runAdversarialSemanticReview(input: VerificationInput, reconciliation: ReconciliationResult, caller: StageCaller = getStageCaller(), conditionSuspicion: ConditionSuspicionResult | null = null, evidence: AdmissibleEvidenceSet | null = null): Promise<SemanticReviewResult> {
   const systemPrompt = buildVerifierSystemPrompt({ verifierAlgorithmVersion: SEMANTIC_VERIFIER_ALGORITHM_VERSION, verifierPromptVersion: SEMANTIC_VERIFIER_PROMPT_VERSION }) + "\n\n" + buildVerifierFewShotExamplesBlock();
-  const userContent = buildUserContent(input, reconciliation, conditionSuspicion);
+  const userContent = buildUserContent(input, reconciliation, conditionSuspicion, evidence);
 
   try {
     const wireResult = await caller.call(SubmitVerificationFindingsSchema, "semantic_verification", systemPrompt, userContent);

@@ -17,11 +17,12 @@ import type { NodeSupersessionIndex } from "../amendment/types";
 import { buildIrInventory } from "./ir-inventory";
 import { reconcileInventories } from "./reconciliation";
 import { buildFindingsFromReconciliation } from "./findings";
+import { buildRetrievedEvidenceInventory, collectAdmissibleEvidence } from "./retrieved-evidence";
 import { runAdversarialSemanticReview } from "./reviewer";
 import type { SemanticReviewResult } from "./reviewer";
 import { classifyConditionSuspicion, type ConditionSuspicionCache, type ConditionSuspicionResult } from "./condition-suspicion-classifier";
 import { SEMANTIC_VERIFIER_ALGORITHM_VERSION } from "./types";
-import type { IrInventory, ReconciliationResult, SemanticVerificationFinding, SemanticVerificationResult, SemanticVerificationSeverity, SemanticVerificationStatus, SourceInventory, VerificationInput } from "./types";
+import type { AdmissibleEvidenceSet, IrInventory, ReconciliationResult, SemanticVerificationFinding, SemanticVerificationResult, SemanticVerificationSeverity, SemanticVerificationStatus, SourceInventory, VerificationInput } from "./types";
 import type { StageCaller } from "../llm-caller";
 import type { SemanticCompilationResult, SemanticCompilerInput } from "../semantic/types";
 
@@ -257,11 +258,16 @@ function determineStatus(
   semanticReviewFailed: boolean,
   sourceInventory: SourceInventory,
   compilationResult: Pick<SemanticCompilationResult, "toolCallLog" | "inputHasUnresolvedOperativeEvidence" | "definitions">,
-  supersessionIndex: NodeSupersessionIndex
+  supersessionIndex: NodeSupersessionIndex,
+  admissibleEvidence: AdmissibleEvidenceSet
 ): SemanticVerificationStatus {
   if (semanticReviewInvoked && semanticReviewFailed) return "VERIFICATION_FAILED";
   if (findings.some((f) => f.severity === "MATERIAL")) return "MATERIAL_DISCREPANCY";
   if (compilerInput.contextBundle.sufficiencyState !== "SUFFICIENT") return "VERIFICATION_INCOMPLETE";
+  // F-4: a compiler retrieval claim this verifier could not authenticate (text/hash/document mismatch, stale or
+  // superseded version, unresolvable span) means the IR rests on provenance the verifier could not confirm -
+  // never VERIFIED, regardless of whether the numbers happen to reconcile.
+  if (admissibleEvidence.rejected.some((r) => r.claimedByCompiler)) return "REVIEW_REQUIRED";
   const lineage = compilerInput.operativeLineage;
   if (lineage && (lineage.operativeStatus === "OPERATIVE_STATE_CONFLICTED" || lineage.operativeStatus === "OPERATIVE_STATE_REVIEW_REQUIRED")) return "REVIEW_REQUIRED";
   // Phase 3F.1 FIX-2 - forced from EITHER source (tool-call-derived OR
@@ -312,7 +318,12 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
 
   const sourceInventory = buildSourceInventory(compilerInput.candidateRef, compilerInput.operativeSourceText, compilerInput.sourceDocumentId, compilerInput.sourceSectionRef ?? "(no section ref)", null, structuralNodeId, supersessionIndex);
   const irInventory = buildIrInventory(compilerInput.candidateRef, compilationResult.rules, compilationResult.definitions);
-  const reconciliation = reconcileInventories(sourceInventory, irInventory);
+  // F-4: the evidence set is PRIMARY_LOCAL (the window above) + every retrieved source this verifier could
+  // independently re-resolve and authenticate (retrieved-evidence.ts). Compiler retrieval records are checked
+  // against it, never read as evidence.
+  const admissibleEvidence = collectAdmissibleEvidence(input, irInventory, { supersessionIndex });
+  const retrievedInventory = buildRetrievedEvidenceInventory(compilerInput.candidateRef, admissibleEvidence, compilationResult.definitions, supersessionIndex);
+  const reconciliation = reconcileInventories(sourceInventory, irInventory, retrievedInventory);
   const deterministicFindings = buildFindingsFromReconciliation(input, reconciliation);
 
   // Phase 3F.1-terminal Architecture Decision, Part A - TWO-GATE routing
@@ -357,7 +368,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
 
   if (needsSemanticReview) {
     semanticReviewInvoked = true;
-    const review = await runAdversarialSemanticReview(input, reconciliation, options.reviewCaller, conditionSuspicion);
+    const review = await runAdversarialSemanticReview(input, reconciliation, options.reviewCaller, conditionSuspicion, admissibleEvidence);
     semanticReviewFailed = review.failed;
     allFindings = mergeFindings(deterministicFindings, review.findings);
     allFindings = downgradeUnconfirmedAmbiguousFindings(allFindings, reconciliation, review);
@@ -365,7 +376,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
 
   return {
     candidateRef: compilerInput.candidateRef,
-    status: determineStatus(compilerInput, allFindings, semanticReviewInvoked, semanticReviewFailed, sourceInventory, compilationResult, supersessionIndex),
+    status: determineStatus(compilerInput, allFindings, semanticReviewInvoked, semanticReviewFailed, sourceInventory, compilationResult, supersessionIndex, admissibleEvidence),
     findings: allFindings,
     sourceInventory,
     irInventory,
@@ -373,6 +384,8 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
     semanticReviewInvoked,
     semanticReviewSkippedReason,
     conditionSuspicion,
+    admissibleEvidence,
+    evidenceSetHash: admissibleEvidence.evidenceSetHash,
     verifierAlgorithmVersion: SEMANTIC_VERIFIER_ALGORITHM_VERSION,
     verifiedAt: new Date().toISOString(),
   };

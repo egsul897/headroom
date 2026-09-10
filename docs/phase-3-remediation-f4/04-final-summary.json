@@ -1,0 +1,275 @@
+{
+ "artifact": "F-4 final summary",
+ "mission": "HEADROOM - PHASE 3 CHEWY REMEDIATION 6 / F-4 VERIFIER AUTHENTICATED RETRIEVED-SOURCE EVIDENCE / ONE ROOT CAUSE ONLY / ZERO PAID MODEL CALLS FIRST / DO NOT RERUN CHEWY",
+ "startingSha": "5e171383e1ec6e9505ea6812fd3d3ddf0768c696",
+ "paidModelCalls": 0,
+ "costUsd": 0.0,
+ "chewyRerun": false,
+ "f7Started": false,
+ "phase4Started": false,
+ "diagnosisBeforeChange": {
+  "recordedAtSha": "5e171383e1ec6e9505ea6812fd3d3ddf0768c696",
+  "earliestDefect": "A. RETRIEVED_SOURCE_PROVENANCE_NOT_RECORDED",
+  "twoF4Findings": [
+   {
+    "findingId": "844f0a36f675e721815f0b9249d7c8967f7d342e398a4dd309025cf0eba5aca7",
+    "irPath": "definitions[2].calculationExpression.operands[0]",
+    "irValue": 324000000,
+    "sourceTerm": "Threshold Amount",
+    "definitionSpan": [
+     350042,
+     350203
+    ],
+    "definitionTextSha256": "6c7b20f45ab0fc5d6cd62bf3886abf21df99fed5b6424adfa38b22382738e7f5",
+    "outsideVerifierLocalWindow": true
+   },
+   {
+    "findingId": "c75b8e97b3d7ff939b81acf03721dcd51688f4e77ce62e7774537af30ca40241",
+    "irPath": "definitions[2].calculationExpression.operands[1].operands[0]",
+    "irValue": 0.45,
+    "sourceTerm": "Threshold Amount",
+    "definitionSpan": [
+     350042,
+     350203
+    ],
+    "definitionTextSha256": "6c7b20f45ab0fc5d6cd62bf3886abf21df99fed5b6424adfa38b22382738e7f5",
+    "outsideVerifierLocalWindow": true
+   }
+  ]
+ },
+ "chewyZeroCostReplay": {
+  "section14": [
+   {
+    "findingId": "844f0a36f675e721815f0b9249d7c8967f7d342e398a4dd309025cf0eba5aca7",
+    "irPath": "definitions[2].calculationExpression.operands[0]",
+    "classification": "F4_AUTHENTIC_EVIDENCE_FIXED",
+    "supportingSourceText": "$324.0 million"
+   },
+   {
+    "findingId": "c75b8e97b3d7ff939b81acf03721dcd51688f4e77ce62e7774537af30ca40241",
+    "irPath": "definitions[2].calculationExpression.operands[1].operands[0]",
+    "classification": "F4_AUTHENTIC_EVIDENCE_FIXED",
+    "supportingSourceText": "45%"
+   }
+  ],
+  "section15": {
+   "postF3DeterministicBefore": 18,
+   "after": 16,
+   "materialBefore": 16,
+   "materialAfter": 14,
+   "counts": {
+    "UNCHANGED": 16,
+    "REMOVED_BY_F4": 2,
+    "NEW_AFTER_F4": 0
+   },
+   "beforeFindingIdsEqualRecordedPostF3Ids": false,
+   "newFindingsIntroducedByF4": 0
+  },
+  "section16": {
+   "semanticOnlyFindings": 4,
+   "classification": "CANNOT_REPLAY_WITHOUT_MODEL (all 4, retained as recorded)",
+   "noteOnThresholdAmountSemanticFinding": "bf00d23a (MATERIAL, 'Threshold Amount definition never given in section') rests on the same absence F-4 closes - the recorded reviewer was never shown the retrieved definition; only a model call could establish whether it withdraws, and none was made"
+  },
+  "evidenceAdmitted": [
+   {
+    "requestKind": "PROVISION",
+    "requestKey": "Section 6.01(b)",
+    "role": "REFERENCED_ONLY",
+    "documentId": "doc-a",
+    "sourceNodeId": "structural-node:85ee54c312ce2a2526bc705b",
+    "span": [
+     612129,
+     612195
+    ],
+    "contentHash": "d91f08b1ff8d88f8f61008f510fdb1717708f7fcec8decc5ad0b9685f98096ea",
+    "numericItems": [],
+    "usedToSupport": [],
+    "compilerRecordPresent": false,
+    "linkage": [
+     "COMPILER_TOOL_CALL"
+    ]
+   },
+   {
+    "requestKind": "DEFINITION",
+    "requestKey": "Available Investment Capacity Amount",
+    "role": "REPRESENTED_DEFINITION",
+    "documentId": "doc-a",
+    "sourceNodeId": "structural-node:fa9e7b56834cd21fd722335e",
+    "span": [
+     35389,
+     35791
+    ],
+    "contentHash": "94ddc8e8e731d98ce725ef88ab9b87e8403ae31d31cc4fd4b7a6e38efc06eb68",
+    "numericItems": [],
+    "usedToSupport": [],
+    "compilerRecordPresent": false,
+    "linkage": [
+     "COMPILER_TOOL_CALL",
+     "IR_DEFINITION_TERM"
+    ]
+   },
+   {
+    "requestKind": "PROVISION",
+    "requestKey": "Section 2.09(b)",
+    "role": "REFERENCED_ONLY",
+    "documentId": "doc-a",
+    "sourceNodeId": "structural-node:a69f9debf57e39ab35019414",
+    "span": [
+     430523,
+     431608
+    ],
+    "contentHash": "3498ab88c20879529bddeeecc247a6022227a18b0a7b7f7c40520ad9d2a38fcf",
+    "numericItems": [
+     {
+      "kind": "PERCENT",
+      "rawText": "100%",
+      "numericValue": 1,
+      "currency": null,
+      "documentCharStart": 431284
+     }
+    ],
+    "usedToSupport": [],
+    "compilerRecordPresent": false,
+    "linkage": [
+     "COMPILER_TOOL_CALL"
+    ]
+   },
+   {
+    "requestKind": "DEFINITION",
+    "requestKey": "Available RP Capacity Amount",
+    "role": "REPRESENTED_DEFINITION",
+    "documentId": "doc-a",
+    "sourceNodeId": "structural-node:fa9e7b56834cd21fd722335e",
+    "span": [
+     35791,
+     37298
+    ],
+    "contentHash": "ea211990a4826b340da917150a49a32021fd1f6616cea45f8c5efd29a1e023c6",
+    "numericItems": [],
+    "usedToSupport": [],
+    "compilerRecordPresent": false,
+    "linkage": [
+     "COMPILER_TOOL_CALL",
+     "IR_DEFINITION_TERM"
+    ]
+   },
+   {
+    "requestKind": "PROVISION",
+    "requestKey": "Section 5.18(b)",
+    "role": "REFERENCED_ONLY",
+    "documentId": "doc-a",
+    "sourceNodeId": "structural-node:883974aa395dc34db1d1364f",
+    "span": [
+     594906,
+     594986
+    ],
+    "contentHash": "f9136ddaecd6bdfef2aa8a592f9d25f8eaf77afa5dcc0def5d60cc0b8e6b0d70",
+    "numericItems": [],
+    "usedToSupport": [],
+    "compilerRecordPresent": false,
+    "linkage": [
+     "COMPILER_TOOL_CALL"
+    ]
+   },
+   {
+    "requestKind": "DEFINITION",
+    "requestKey": "Threshold Amount",
+    "role": "REPRESENTED_DEFINITION",
+    "documentId": "doc-a",
+    "sourceNodeId": "structural-node:b51b74180792bda67d86f589",
+    "span": [
+     350042,
+     350203
+    ],
+    "contentHash": "6c7b20f45ab0fc5d6cd62bf3886abf21df99fed5b6424adfa38b22382738e7f5",
+    "numericItems": [
+     {
+      "kind": "AMOUNT",
+      "rawText": "$324.0 million",
+      "numericValue": 324000000,
+      "currency": "USD",
+      "documentCharStart": 350088
+     },
+     {
+      "kind": "PERCENT",
+      "rawText": "45%",
+      "numericValue": 0.45,
+      "currency": null,
+      "documentCharStart": 350111
+     }
+    ],
+    "usedToSupport": [
+     [
+      "definitions[2].calculationExpression.operands[0]"
+     ],
+     [
+      "definitions[2].calculationExpression.operands[1].operands[0]"
+     ]
+    ],
+    "compilerRecordPresent": false,
+    "linkage": [
+     "COMPILER_TOOL_CALL",
+     "IR_DEFINITION_TERM",
+     "IR_PROVENANCE_CITATION",
+     "IR_PROVENANCE_CITATION"
+    ]
+   }
+  ],
+  "irOnlyAfter": 0,
+  "evidenceSetHash": "4170e8ed117f54c52eab86df33eb0e428aa842ece8659a92ce0714a6fc1acc7b",
+  "rejectedRequests": [
+   {
+    "requestKey": "Restricted Payments",
+    "claimedByCompiler": false,
+    "reason": "no defined term matching \"Restricted Payments\" found in this instrument's documents"
+   },
+   {
+    "requestKey": "Restricted Debt Payments",
+    "claimedByCompiler": false,
+    "reason": "no defined term matching \"Restricted Debt Payments\" found in this instrument's documents"
+   },
+   {
+    "requestKey": "Available Amount",
+    "claimedByCompiler": false,
+    "reason": "no defined term matching \"Available Amount\" found in this instrument's documents"
+   }
+  ],
+  "chewyMaterialDeterministicTrajectory": {
+   "frozenRun": 25,
+   "postF3": 16,
+   "postF4": 14
+  }
+ },
+ "closureGate": {
+  "1_diagnosisRecordedBeforeChange": true,
+  "2_earliestDefectClassified": "A (consequence C)",
+  "3_authenticatedEvidenceRecordFields": true,
+  "4_checksAtoG": true,
+  "5_failureRejectsNeverFallsBack": true,
+  "6_amendmentPrecedenceReused": "resolveOperativeDefinitionEvidence / resolveOperativeSectionEvidence; stale-source adversarial tests \u00a712 C/D and \u00a713 C",
+  "7_evidenceSetLocalPlusAuthenticated": true,
+  "8_reviewerNeverSeesCompilerClaims": "test \u00a717 (tampered record text and outputSummary absent from prompt)",
+  "9_deterministicReconciliationConsumesEvidence": true,
+  "10_collisionSafety": "test \u00a712 E/E'; no global pooling; no term special case",
+  "11_provenanceChainAuditable": "linkage[] + checks[] on every evidence and rejection; admissibleEvidence on the result",
+  "12_adversarialTestsAtoF": true,
+  "13_syntheticTestsAtoF": true,
+  "14_chewyReplayTwoFindings": "both F4_AUTHENTIC_EVIDENCE_FIXED",
+  "15_allPostF3DeterministicReplayed": "18 -> 16 (2 removed, 0 new, 16 unchanged)",
+  "16_semanticOnlyRetained": "4 CANNOT_REPLAY_WITHOUT_MODEL",
+  "17_independenceTests": true,
+  "18_packageIsolation": true,
+  "19_identityChangesWithEvidence": true,
+  "20_provenanceOutput": true,
+  "21_trustInvariants": true,
+  "22_onlyAllowedAreasChanged": true,
+  "23_forbiddenAreasUntouched": "git diff empty over F-1/F-2/F-3/F-5/F-6/F-7, discovery, coverage, precedent, orchestrator",
+  "24_zeroPaidCalls": true
+ },
+ "residualRisks": [
+  "the reverse comparison (figures in an authenticated definition missing from the IR definition) is gated to REPRESENTED_DEFINITION evidence with a non-null calculationExpression and to text outside the local window; the index's 'to the next definition' slice is bounded to the enclosing section, but a definition legitimately spanning past its section end (unusual drafting) would be admitted only up to that end - falling back to the pre-F-4 behaviour (IR_ONLY) for the remainder, never to a false negative",
+  "an inline definition the structural detector never indexes (e.g. Chewy's 'Restricted Payments', declared inside 6.08 itself) cannot be re-resolved; such IR-derived requests are recorded as rejected without a finding, and the pre-existing hasStaleReferencedDefinition gate still routes the candidate to REVIEW_REQUIRED",
+  "whether the recorded Chewy SEMANTIC_ONLY finding on the Threshold Amount definition is withdrawn by a reviewer that now sees the authenticated definition is a model-call question (not made here)"
+ ],
+ "verdict": "F4_CLOSED"
+}

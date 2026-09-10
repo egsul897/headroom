@@ -139,6 +139,10 @@ export function buildSourceInventory(candidateRef: string, operativeSourceText: 
         charStart: hit.charStart,
         charEnd: hit.charEnd,
         ...(parsed ? { parsedAmount: parsed.parsedAmount, scaleToken: parsed.scaleToken, scaleMultiplier: parsed.scaleMultiplier, scaleStatus: parsed.scaleStatus, currency: parsed.currency } : {}),
+        // F-4: everything this function inventories is the text it was handed. verify.ts hands it the candidate's own
+        // operative window (PRIMARY_LOCAL); retrieved-evidence.ts re-tags items it builds from authenticated
+        // retrieved text. The tag is provenance, never a matching input.
+        provenanceClass: "PRIMARY_LOCAL",
       });
     }
   }

@@ -17,6 +17,8 @@ interface WalkCtx {
   candidateRef: string;
   ruleOrDefinitionId: string;
   items: IrInventoryItem[];
+  /** F-4: the owning IRDefinition's termName (null inside a rule) - carried onto every item for evidence scoping. */
+  ownerTermName: string | null;
 }
 
 function pushItem(ctx: WalkCtx, kind: IrInventoryItemKind, irPath: string, numericValue: number | null, textValue: string | null, isAlternative: boolean, sourceCitation: string | null, sourceExcerpt: string | null, currency: string | null = null): void {
@@ -31,6 +33,7 @@ function pushItem(ctx: WalkCtx, kind: IrInventoryItemKind, irPath: string, numer
     isAlternativeWithinSelection: isAlternative,
     sourceCitation,
     sourceExcerpt,
+    ownerTermName: ctx.ownerTermName,
   });
 }
 
@@ -169,7 +172,7 @@ function walkException(ctx: WalkCtx, exception: IRException, path: string): void
 }
 
 function walkRule(candidateRef: string, rule: IRRule, rulePath: string): IrInventoryItem[] {
-  const ctx: WalkCtx = { candidateRef, ruleOrDefinitionId: rule.ruleId, items: [] };
+  const ctx: WalkCtx = { candidateRef, ruleOrDefinitionId: rule.ruleId, items: [], ownerTermName: null };
   const ruleCitation = rule.provenance?.sourceCitation ?? null;
   const ruleExcerpt = rule.provenance?.excerpt ?? null;
 
@@ -197,7 +200,7 @@ function walkRule(candidateRef: string, rule: IRRule, rulePath: string): IrInven
 }
 
 function walkDefinition(candidateRef: string, definition: IRDefinition, defPath: string): IrInventoryItem[] {
-  const ctx: WalkCtx = { candidateRef, ruleOrDefinitionId: definition.definitionId, items: [] };
+  const ctx: WalkCtx = { candidateRef, ruleOrDefinitionId: definition.definitionId, items: [], ownerTermName: definition.termName };
   definition.dependsOnTerms.forEach((term, i) => pushItem(ctx, "DEPENDENCY", `${defPath}.dependsOnTerms[${i}]`, null, `DEFINED_TERM:${term}`, false, null, null));
   if (definition.calculationExpression) walkExpression(ctx, definition.calculationExpression, `${defPath}.calculationExpression`, false);
   return ctx.items;
