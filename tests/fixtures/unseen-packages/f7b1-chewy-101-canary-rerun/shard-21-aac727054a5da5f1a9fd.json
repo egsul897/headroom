@@ -1,0 +1,2049 @@
+{
+ "record": {
+  "stage": 1,
+  "attempt": 1,
+  "shardId": "shard:aac727054a5da5f1a9fd",
+  "shardHash": "9943af75025bd8550567628dd359394b6aba3cbadb767a1f228a30638fef3078",
+  "ordinal": 21,
+  "ownedUnits": 16,
+  "sourceChars": 7577,
+  "contextEntries": 1,
+  "contextChars": 225,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 0,
+  "ownedMaterialItems": 0,
+  "estimatedFirstTurnInputTokens": 22825,
+  "preCallEstimate": {
+   "inputTokens": 75095,
+   "outputTokens": 41500,
+   "usd": 0.5651900000000001
+  },
+  "actual": {
+   "inputTokens": 104723,
+   "outputTokens": 12723,
+   "turns": 4,
+   "latencyMs": 107643,
+   "costUsd": 0.336676,
+   "attemptCount": 4,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "toolCalls": 9,
+  "toolCallNames": [
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getDefinition",
+   "getChildren",
+   "getChildren",
+   "getSourceSpan",
+   "getSourceSpan",
+   "getSourceSpan"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 21,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 0,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "valuesRepresented": 0,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {}
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "LCT Election",
+   "LCT Test Date",
+   "Loan Modification Offer",
+   "Market Convention Rate",
+   "Master Agreement"
+  ],
+  "unresolvedIssues": [
+   "[definition[d3]] Section 1.08(a) was retrieved but its lead-in and first sub-clause (i) address ratio-calculation timing conventions for LCTs generally; the specific operative definition of 'LCT Election' itself sits in a further sub-clause not reached before tool budget was exhausted",
+   "[definition[d4]] same gap as LCT Election - the specific defining sub-clause for LCT Test Date was not reached before tool budget was exhausted",
+   "[definition[d19].MULTIPLY[0]] a share-count quantity, not a MONEY/NUMBER value stated in the source text (it is a variable determined at the time of the IPO, not a fixed number)",
+   "[definition[d19].MULTIPLY[1]] a per-share price variable determined at the time of the IPO, not a fixed number stated in the source text",
+   "[definition[d19]] MULTIPLY operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "This provision (§1.01) is a definitions article; no independently operative permission/prohibition rules exist here, so no WireRule or WireSharedCapacity outputs were produced.",
+   "21 distinct defined terms were extracted from the supplied excerpt: Junior Lien Intercreditor Agreement, Latest Maturity Date, LCT Election, LCT Test Date, Lead Arrangers, Lenders, Letter of Intent Transactions, Liabilities, Lien, Limited Condition Transaction, Limited Originator Recourse, Loan Document Obligations, Loan Documents, Loan Modification Agreement, Loan Modification Offer, Loan Parties, Loans, Management Investors, Market Capitalization, Market Convention Rate, and Master Agreement.",
+   "LCT Election and LCT Test Date are stub cross-references to Section 1.08(a); the referenced section's lead-in and first sub-clause (i) were retrieved but did not contain the specific operative defining text for these two terms, and tool budget was exhausted before the correct sub-clause could be located - both are marked MISSING_CONTEXT rather than guessed.",
+   "Loan Modification Offer and Market Convention Rate were both stub cross-references (to Section 2.22(a) and Section 2.12(b) respectively) that WERE successfully resolved by retrieving the referenced provisions, yielding usable substantive text.",
+   "Master Agreement's stub cross-reference ('has the meaning assigned in the definition of Swap Agreement') was resolved by retrieving the Swap Agreement definition.",
+   "Market Capitalization's formula (fully-diluted share count x IPO price per share) is structurally captured but both inputs are transaction-time variables with no fixed value in this text, so it is marked PARTIAL.",
+   "Numerous dependent defined terms referenced within these definitions (e.g. Collateral Agent, Senior Representatives, Term Lenders, Revolving Lenders, Parent Entity, Standard Securitization Undertakings, Permitted Amendments, etc.) are consistent with the package's own list of UNRESOLVED_DEFINED_TERM dependencies (not declared elsewhere in the package); this does not affect the sufficiency of the definitions actually being compiled here since their own text is fully quoted, but full recursive resolution of the dependency chain was not attempted given tool-budget constraints and the specific-reason requirement.",
+   "The Junior Lien Intercreditor Agreement definition references Exhibit E-3, which is flagged elsewhere in the package as a MISSING_SCHEDULE (no Exhibit E node exists) and no INTERCREDITOR_AGREEMENT-type document exists in the package; this affects only the template form, not the substantive meaning captured in the definition, so sufficiency was kept COMPLETE with reasons noted.",
+   "No FROZEN SEMANTIC INVENTORY item IDs were supplied in this task's context (the inventory report describes an unresolved coverage gap but lists no consumable itemIds), so no inventoryItemIds could be attached to any node and no inventoryDispositions were produced."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:aac727054a5da5f1a9fd",
+  "shardHash": "9943af75025bd8550567628dd359394b6aba3cbadb767a1f228a30638fef3078",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:e7433b6114d731f669403d6c",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Junior Lien Intercreditor Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Intercreditor Agreement",
+      "Collateral Agent",
+      "Senior Representatives",
+      "Collateral",
+      "Secured Obligations"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition fully quoted; references Exhibit E-3 (form not present in package per known MISSING_SCHEDULE dependency) but that only affects the template exhibit, not the substantive meaning of who the parties are and the lien priority described"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "an Intercreditor Agreement, substantially in the form of Exhibit E-3, among the Collateral Agent and the Senior Representatives for one or more classes of obligations to be secured junior relative to the Liens on the Collateral securing the Secured Obligations."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:5beb484c20eda70ef88ef04d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Latest Maturity Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Revolving Loan",
+      "Term Loan",
+      "Term Commitment",
+      "Initial Term Loans",
+      "Incremental Term Loan",
+      "Incremental Revolving Facility",
+      "Other Term Loan"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the latest maturity or expiration date applicable to any Revolving Loan, Term Loan or Term Commitment hereunder at such time, including the latest maturity or expiration date of the Initial Term Loans, any Incremental Term Loan, Incremental Revolving Facility or Other Term Loan, in each case as extended in accordance with this Agreement from time to time."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:5c7af3dfa55af7b84ddfcdd1",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "LCT Election",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01 (\"has the meaning assigned to such term in Section 1.08(a)\"); §1.08(a)",
+      "semanticDescription": "term meaning assigned by cross-reference to Section 1.08(a)",
+      "reason": "Section 1.08(a) was retrieved but its lead-in and first sub-clause (i) address ratio-calculation timing conventions for LCTs generally; the specific operative definition of 'LCT Election' itself sits in a further sub-clause not reached before tool budget was exhausted",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:63be3d596a96796de235bb7d"
+     },
+     "dependsOnTerms": [
+      "Limited Condition Transaction"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced Section 1.08(a) retrieved but the actual defining sub-clause was not reached before tool budget exhaustion",
+      "Section 1.08(a) was retrieved but its lead-in and first sub-clause (i) address ratio-calculation timing conventions for LCTs generally; the specific operative definition of 'LCT Election' itself sits in a further sub-clause not reached before tool budget was exhausted"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §1.08(a)",
+      "excerpt": "has the meaning assigned to such term in Section 1.08(a)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:2ac3b35c1855b77da33186ba",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "LCT Test Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01 (\"has the meaning assigned to such term in Section 1.08(a)\"); §1.08(a)",
+      "semanticDescription": "term meaning assigned by cross-reference to Section 1.08(a)",
+      "reason": "same gap as LCT Election - the specific defining sub-clause for LCT Test Date was not reached before tool budget was exhausted",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:eaace53d013f3fc45334786b"
+     },
+     "dependsOnTerms": [
+      "Limited Condition Transaction"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced Section 1.08(a) retrieved but the actual defining sub-clause was not reached before tool budget exhaustion",
+      "same gap as LCT Election - the specific defining sub-clause for LCT Test Date was not reached before tool budget was exhausted"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §1.08(a)",
+      "excerpt": "has the meaning assigned to such term in Section 1.08(a)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e3d772feb815e9c8a661eea6",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Lead Arrangers",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "JPMCB, Wells Fargo Securities, LLC, Citigroup Global Markets Inc., Morgan Stanley Senior Funding, Inc., BofA Securities, Inc., RBC Capital Markets, and Barclays Bank PLC."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d5461f61087ca1c9c8abef12",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Lenders",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Term Lenders",
+      "Revolving Lenders",
+      "Assignment and Assumption",
+      "Incremental Facility Amendment",
+      "Refinancing Amendment"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) the Term Lenders, (b) the Revolving Lenders and (c) any other Person that shall have become a party hereto pursuant to an Assignment and Assumption, an Incremental Facility Amendment or a Refinancing Amendment, in each case other than any such Person that ceases to be a party hereto pursuant to an Assignment and Assumption."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:30bbb9e019eaf15c1caac315",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Letter of Intent Transactions",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any prospective transaction subject to a definitive agreement or signed letter of intent, in each case, to the extent such transaction remains unclosed and the associated definitive agreement or signed letter of intent remains unterminated as of such date of determination."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:817a510cb884739535385d58",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Liabilities",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Borrowers",
+      "Effective Date",
+      "Transactions"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the recorded liabilities (including contingent liabilities that would be recorded in accordance with GAAP) of the Borrowers and their respective Subsidiaries taken as a whole, as of the Effective Date after giving effect to the consummation of the Transactions, determined in accordance with GAAP consistently applied."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3d3e69edd89e4ccab542bfba",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Lien",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any mortgage, lien (statutory or otherwise), pledge, charge, security interest, preference, priority or encumbrance of any kind in respect of such asset...; provided that in no event shall an operating lease be deemed to constitute a Lien."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:cfec1a9b0237df6baac0a316",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Limited Condition Transaction",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Party",
+      "Investment",
+      "Division",
+      "Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(i) any acquisition or Investment... whose consummation is not conditioned upon the availability of, or on obtaining, third party financing, (ii) any prepayment, repurchase, refinancing, repayment, redemption, purchase, defeasement or other payment in respect of Indebtedness... with respect to which an irrevocable notice of repayment... has been delivered or (iii) any dividends or distributions on, or redemptions of equity, in each case whether or not any declaration in advance thereof is provided."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:83ddf462de1280a83706fe4f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Limited Originator Recourse",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Standard Securitization Undertakings",
+      "Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "a letter of credit, cash collateral account or other such credit enhancement issued in connection with the incurrence of Indebtedness to satisfy Standard Securitization Undertakings."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:c2e1e9c9df67edc863db8868",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Loan Document Obligations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Borrowers",
+      "Loans",
+      "Loan Documents",
+      "Loan Party"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) the due and punctual payment by the Borrowers of (i) the principal of and interest ... on the Loans... and (ii) all other monetary obligations of the Borrowers under or pursuant to this Agreement and each of the other Loan Documents..., (b) the due and punctual payment and performance of all other obligations of the Borrowers under or pursuant to each of the Loan Documents and (c) the due and punctual payment and performance of all the obligations of each other Loan Party under or pursuant to this Agreement and each of the other Loan Documents..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:bb3d278b85b89aa7dc911789",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Loan Documents",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Fee Letter",
+      "Incremental Facility Amendment",
+      "Refinancing Amendment",
+      "Loan Modification Agreement",
+      "Guarantee Agreement",
+      "Collateral Agreement",
+      "Intercreditor Agreements",
+      "Security Documents"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "this Agreement, the Fee Letter, any Incremental Facility Amendment, any Refinancing Amendment, any Loan Modification Agreement, the Guarantee Agreement, the Collateral Agreement, the Intercreditor Agreements, the other Security Documents and, except for purposes of Section 9.02, any promissory notes delivered pursuant to Section 2.07(f)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3f9275ecf768b639c86fdef6",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Loan Modification Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Accepting Lenders",
+      "Permitted Amendments",
+      "Borrowers",
+      "Administrative Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "a Loan Modification Agreement, among the Borrowers, the Administrative Agent and one or more Accepting Lenders, effecting one or more Permitted Amendments and such other amendments hereto and to the other Loan Documents as are contemplated by Section 2.22."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:6b035bfb270f4974caba33da",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Loan Modification Offer",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Permitted Amendments",
+      "Lenders"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference to Section 2.22(a) resolved; substantive text of the offer mechanic obtained"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §2.22(a)",
+      "excerpt": "make one or more offers (each, a \"Loan Modification Offer\") to all the Lenders of one or more Classes (each Class subject to such a Loan Modification Offer, an \"Affected Class\") to effect one or more Permitted Amendments relating to such Affected Class."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:115a0613071b36f3079451ca",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Loan Parties",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Borrowers",
+      "Subsidiary Loan Parties"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "Borrowers and the Subsidiary Loan Parties."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:21ed3dcbcec0dbefadbd1efb",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Term Loans",
+      "Revolving Loans"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the Term Loans and/or the Revolving Loans, as the context may require."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:9281f1e94efaac705b6c6a05",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Management Investors",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Parent Entity",
+      "Investors",
+      "Permitted Transferees",
+      "Borrowers"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) the current and/or former directors, partners, members, officers and employees of any Parent Entity, the Borrowers and/or any of their respective Subsidiaries who are ... Investors, (b) the Permitted Transferees of any of the individuals identified in clause (a), (c), trusts, partnerships or limited liability companies for the benefit of any of the individuals identified in the foregoing clause (a) or (b) and (d), heirs, executors, estates, successors and legal representatives of the individuals identified in the foregoing clauses (a) and (b)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:30f0f72c6028cb269464abb0",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Market Capitalization",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "(no evidence captured)",
+      "semanticDescription": "unrecognized or malformed expression (kind=\"MULTIPLY\")",
+      "reason": "MULTIPLY operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "attemptedStructure": {
+       "kind": "MULTIPLY",
+       "type": "NUMBER",
+       "exprId": "ir-expr:b185ecdacf0c32e0e7c1bdc8",
+       "operands": [
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01",
+         "semanticDescription": "total number of shares of common Equity Interests of a Borrower (or its Parent Entity) on a fully diluted basis immediately following consummation of the first public offering of common equity or common stock after the Effective Date",
+         "reason": "a share-count quantity, not a MONEY/NUMBER value stated in the source text (it is a variable determined at the time of the IPO, not a fixed number)",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:e89d353bb8859b8ba8189beb"
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01",
+         "semanticDescription": "price to public per share of such common equity or common stock in such public offering",
+         "reason": "a per-share price variable determined at the time of the IPO, not a fixed number stated in the source text",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:cd7fcc24850b0322a820e4a4"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "exprId": "ir-expr:e58564ff093c1f1bd262e4b1"
+     },
+     "dependsOnTerms": [
+      "Equity Interests",
+      "Parent Entity",
+      "Effective Date"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The formula's structure (share count x price per share) is fully captured, but both inputs are transaction-time variables not resolvable to fixed values from this definitions text alone",
+      "a share-count quantity, not a MONEY/NUMBER value stated in the source text (it is a variable determined at the time of the IPO, not a fixed number)",
+      "a per-share price variable determined at the time of the IPO, not a fixed number stated in the source text",
+      "MULTIPLY operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "an amount equal to (i) the total number of shares of common Equity Interests of a Borrower (or its Parent Entity) on a fully diluted basis immediately following consummation of the first public offering of common equity or common stock of a Borrower (or any Parent Entity) after the Effective Date multiplied by (ii) the price to public per share of such common equity or common stock in such public offering."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f66144025ff07100d9466ec8",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Market Convention Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Administrative Agent",
+      "Term SOFR Rate",
+      "Term CORRA",
+      "Applicable Rate"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference to Section 2.12(b)(i) resolved; substantive defining text obtained"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §2.12(b)(i)",
+      "excerpt": "generally accepted as the then-prevailing market convention for determining a rate of interest for syndicated leveraged loans of this type in the United States at such time... (the \"Market Convention Rate\")"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:2d8e6486301281cb1ceff918",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Master Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Swap Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Meaning assigned within the definition of 'Swap Agreement', which was retrieved and quoted"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; definition of \"Swap Agreement\"",
+      "excerpt": "any such master agreement, together with any related schedules, a \"Master Agreement\""
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d3]] Section 1.08(a) was retrieved but its lead-in and first sub-clause (i) address ratio-calculation timing conventions for LCTs generally; the specific operative definition of 'LCT Election' itself sits in a further sub-clause not reached before tool budget was exhausted",
+   "[definition[d4]] same gap as LCT Election - the specific defining sub-clause for LCT Test Date was not reached before tool budget was exhausted",
+   "[definition[d19].MULTIPLY[0]] a share-count quantity, not a MONEY/NUMBER value stated in the source text (it is a variable determined at the time of the IPO, not a fixed number)",
+   "[definition[d19].MULTIPLY[1]] a per-share price variable determined at the time of the IPO, not a fixed number stated in the source text",
+   "[definition[d19]] MULTIPLY operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "This provision (§1.01) is a definitions article; no independently operative permission/prohibition rules exist here, so no WireRule or WireSharedCapacity outputs were produced.",
+   "21 distinct defined terms were extracted from the supplied excerpt: Junior Lien Intercreditor Agreement, Latest Maturity Date, LCT Election, LCT Test Date, Lead Arrangers, Lenders, Letter of Intent Transactions, Liabilities, Lien, Limited Condition Transaction, Limited Originator Recourse, Loan Document Obligations, Loan Documents, Loan Modification Agreement, Loan Modification Offer, Loan Parties, Loans, Management Investors, Market Capitalization, Market Convention Rate, and Master Agreement.",
+   "LCT Election and LCT Test Date are stub cross-references to Section 1.08(a); the referenced section's lead-in and first sub-clause (i) were retrieved but did not contain the specific operative defining text for these two terms, and tool budget was exhausted before the correct sub-clause could be located - both are marked MISSING_CONTEXT rather than guessed.",
+   "Loan Modification Offer and Market Convention Rate were both stub cross-references (to Section 2.22(a) and Section 2.12(b) respectively) that WERE successfully resolved by retrieving the referenced provisions, yielding usable substantive text.",
+   "Master Agreement's stub cross-reference ('has the meaning assigned in the definition of Swap Agreement') was resolved by retrieving the Swap Agreement definition.",
+   "Market Capitalization's formula (fully-diluted share count x IPO price per share) is structurally captured but both inputs are transaction-time variables with no fixed value in this text, so it is marked PARTIAL.",
+   "Numerous dependent defined terms referenced within these definitions (e.g. Collateral Agent, Senior Representatives, Term Lenders, Revolving Lenders, Parent Entity, Standard Securitization Undertakings, Permitted Amendments, etc.) are consistent with the package's own list of UNRESOLVED_DEFINED_TERM dependencies (not declared elsewhere in the package); this does not affect the sufficiency of the definitions actually being compiled here since their own text is fully quoted, but full recursive resolution of the dependency chain was not attempted given tool-budget constraints and the specific-reason requirement.",
+   "The Junior Lien Intercreditor Agreement definition references Exhibit E-3, which is flagged elsewhere in the package as a MISSING_SCHEDULE (no Exhibit E node exists) and no INTERCREDITOR_AGREEMENT-type document exists in the package; this affects only the template form, not the substantive meaning captured in the definition, so sufficiency was kept COMPLETE with reasons noted.",
+   "No FROZEN SEMANTIC INVENTORY item IDs were supplied in this task's context (the inventory report describes an unresolved coverage gap but lists no consumable itemIds), so no inventoryItemIds could be attached to any node and no inventoryDispositions were produced."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 104723,
+   "outputTokens": 12723,
+   "costUsd": 0.336676
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:e7433b6114d731f669403d6c",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Junior Lien Intercreditor Agreement",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Intercreditor Agreement",
+     "Collateral Agent",
+     "Senior Representatives",
+     "Collateral",
+     "Secured Obligations"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition fully quoted; references Exhibit E-3 (form not present in package per known MISSING_SCHEDULE dependency) but that only affects the template exhibit, not the substantive meaning of who the parties are and the lien priority described"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "an Intercreditor Agreement, substantially in the form of Exhibit E-3, among the Collateral Agent and the Senior Representatives for one or more classes of obligations to be secured junior relative to the Liens on the Collateral securing the Secured Obligations."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:5beb484c20eda70ef88ef04d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Latest Maturity Date",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Revolving Loan",
+     "Term Loan",
+     "Term Commitment",
+     "Initial Term Loans",
+     "Incremental Term Loan",
+     "Incremental Revolving Facility",
+     "Other Term Loan"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the latest maturity or expiration date applicable to any Revolving Loan, Term Loan or Term Commitment hereunder at such time, including the latest maturity or expiration date of the Initial Term Loans, any Incremental Term Loan, Incremental Revolving Facility or Other Term Loan, in each case as extended in accordance with this Agreement from time to time."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:5c7af3dfa55af7b84ddfcdd1",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "LCT Election",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01 (\"has the meaning assigned to such term in Section 1.08(a)\"); §1.08(a)",
+     "semanticDescription": "term meaning assigned by cross-reference to Section 1.08(a)",
+     "reason": "Section 1.08(a) was retrieved but its lead-in and first sub-clause (i) address ratio-calculation timing conventions for LCTs generally; the specific operative definition of 'LCT Election' itself sits in a further sub-clause not reached before tool budget was exhausted",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:63be3d596a96796de235bb7d"
+    },
+    "dependsOnTerms": [
+     "Limited Condition Transaction"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Cross-referenced Section 1.08(a) retrieved but the actual defining sub-clause was not reached before tool budget exhaustion",
+     "Section 1.08(a) was retrieved but its lead-in and first sub-clause (i) address ratio-calculation timing conventions for LCTs generally; the specific operative definition of 'LCT Election' itself sits in a further sub-clause not reached before tool budget was exhausted"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §1.08(a)",
+     "excerpt": "has the meaning assigned to such term in Section 1.08(a)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:2ac3b35c1855b77da33186ba",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "LCT Test Date",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01 (\"has the meaning assigned to such term in Section 1.08(a)\"); §1.08(a)",
+     "semanticDescription": "term meaning assigned by cross-reference to Section 1.08(a)",
+     "reason": "same gap as LCT Election - the specific defining sub-clause for LCT Test Date was not reached before tool budget was exhausted",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:eaace53d013f3fc45334786b"
+    },
+    "dependsOnTerms": [
+     "Limited Condition Transaction"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Cross-referenced Section 1.08(a) retrieved but the actual defining sub-clause was not reached before tool budget exhaustion",
+     "same gap as LCT Election - the specific defining sub-clause for LCT Test Date was not reached before tool budget was exhausted"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §1.08(a)",
+     "excerpt": "has the meaning assigned to such term in Section 1.08(a)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e3d772feb815e9c8a661eea6",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Lead Arrangers",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "JPMCB, Wells Fargo Securities, LLC, Citigroup Global Markets Inc., Morgan Stanley Senior Funding, Inc., BofA Securities, Inc., RBC Capital Markets, and Barclays Bank PLC."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d5461f61087ca1c9c8abef12",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Lenders",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Term Lenders",
+     "Revolving Lenders",
+     "Assignment and Assumption",
+     "Incremental Facility Amendment",
+     "Refinancing Amendment"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) the Term Lenders, (b) the Revolving Lenders and (c) any other Person that shall have become a party hereto pursuant to an Assignment and Assumption, an Incremental Facility Amendment or a Refinancing Amendment, in each case other than any such Person that ceases to be a party hereto pursuant to an Assignment and Assumption."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:30bbb9e019eaf15c1caac315",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Letter of Intent Transactions",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any prospective transaction subject to a definitive agreement or signed letter of intent, in each case, to the extent such transaction remains unclosed and the associated definitive agreement or signed letter of intent remains unterminated as of such date of determination."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:817a510cb884739535385d58",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Liabilities",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Borrowers",
+     "Effective Date",
+     "Transactions"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the recorded liabilities (including contingent liabilities that would be recorded in accordance with GAAP) of the Borrowers and their respective Subsidiaries taken as a whole, as of the Effective Date after giving effect to the consummation of the Transactions, determined in accordance with GAAP consistently applied."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3d3e69edd89e4ccab542bfba",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Lien",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any mortgage, lien (statutory or otherwise), pledge, charge, security interest, preference, priority or encumbrance of any kind in respect of such asset...; provided that in no event shall an operating lease be deemed to constitute a Lien."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:cfec1a9b0237df6baac0a316",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Limited Condition Transaction",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Restricted Party",
+     "Investment",
+     "Division",
+     "Indebtedness"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(i) any acquisition or Investment... whose consummation is not conditioned upon the availability of, or on obtaining, third party financing, (ii) any prepayment, repurchase, refinancing, repayment, redemption, purchase, defeasement or other payment in respect of Indebtedness... with respect to which an irrevocable notice of repayment... has been delivered or (iii) any dividends or distributions on, or redemptions of equity, in each case whether or not any declaration in advance thereof is provided."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:83ddf462de1280a83706fe4f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Limited Originator Recourse",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Standard Securitization Undertakings",
+     "Indebtedness"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "a letter of credit, cash collateral account or other such credit enhancement issued in connection with the incurrence of Indebtedness to satisfy Standard Securitization Undertakings."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:c2e1e9c9df67edc863db8868",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Loan Document Obligations",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Borrowers",
+     "Loans",
+     "Loan Documents",
+     "Loan Party"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) the due and punctual payment by the Borrowers of (i) the principal of and interest ... on the Loans... and (ii) all other monetary obligations of the Borrowers under or pursuant to this Agreement and each of the other Loan Documents..., (b) the due and punctual payment and performance of all other obligations of the Borrowers under or pursuant to each of the Loan Documents and (c) the due and punctual payment and performance of all the obligations of each other Loan Party under or pursuant to this Agreement and each of the other Loan Documents..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:bb3d278b85b89aa7dc911789",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Loan Documents",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Fee Letter",
+     "Incremental Facility Amendment",
+     "Refinancing Amendment",
+     "Loan Modification Agreement",
+     "Guarantee Agreement",
+     "Collateral Agreement",
+     "Intercreditor Agreements",
+     "Security Documents"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "this Agreement, the Fee Letter, any Incremental Facility Amendment, any Refinancing Amendment, any Loan Modification Agreement, the Guarantee Agreement, the Collateral Agreement, the Intercreditor Agreements, the other Security Documents and, except for purposes of Section 9.02, any promissory notes delivered pursuant to Section 2.07(f)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3f9275ecf768b639c86fdef6",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Loan Modification Agreement",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Accepting Lenders",
+     "Permitted Amendments",
+     "Borrowers",
+     "Administrative Agent"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "a Loan Modification Agreement, among the Borrowers, the Administrative Agent and one or more Accepting Lenders, effecting one or more Permitted Amendments and such other amendments hereto and to the other Loan Documents as are contemplated by Section 2.22."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:6b035bfb270f4974caba33da",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Loan Modification Offer",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Permitted Amendments",
+     "Lenders"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Cross-reference to Section 2.22(a) resolved; substantive text of the offer mechanic obtained"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §2.22(a)",
+     "excerpt": "make one or more offers (each, a \"Loan Modification Offer\") to all the Lenders of one or more Classes (each Class subject to such a Loan Modification Offer, an \"Affected Class\") to effect one or more Permitted Amendments relating to such Affected Class."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:115a0613071b36f3079451ca",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Loan Parties",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Borrowers",
+     "Subsidiary Loan Parties"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "Borrowers and the Subsidiary Loan Parties."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:21ed3dcbcec0dbefadbd1efb",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Loans",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Term Loans",
+     "Revolving Loans"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the Term Loans and/or the Revolving Loans, as the context may require."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:9281f1e94efaac705b6c6a05",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Management Investors",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Parent Entity",
+     "Investors",
+     "Permitted Transferees",
+     "Borrowers"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) the current and/or former directors, partners, members, officers and employees of any Parent Entity, the Borrowers and/or any of their respective Subsidiaries who are ... Investors, (b) the Permitted Transferees of any of the individuals identified in clause (a), (c), trusts, partnerships or limited liability companies for the benefit of any of the individuals identified in the foregoing clause (a) or (b) and (d), heirs, executors, estates, successors and legal representatives of the individuals identified in the foregoing clauses (a) and (b)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:30f0f72c6028cb269464abb0",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Market Capitalization",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "(no evidence captured)",
+     "semanticDescription": "unrecognized or malformed expression (kind=\"MULTIPLY\")",
+     "reason": "MULTIPLY operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "attemptedStructure": {
+      "kind": "MULTIPLY",
+      "type": "NUMBER",
+      "exprId": "ir-expr:b185ecdacf0c32e0e7c1bdc8",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01",
+        "semanticDescription": "total number of shares of common Equity Interests of a Borrower (or its Parent Entity) on a fully diluted basis immediately following consummation of the first public offering of common equity or common stock after the Effective Date",
+        "reason": "a share-count quantity, not a MONEY/NUMBER value stated in the source text (it is a variable determined at the time of the IPO, not a fixed number)",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:e89d353bb8859b8ba8189beb"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01",
+        "semanticDescription": "price to public per share of such common equity or common stock in such public offering",
+        "reason": "a per-share price variable determined at the time of the IPO, not a fixed number stated in the source text",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:cd7fcc24850b0322a820e4a4"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "exprId": "ir-expr:e58564ff093c1f1bd262e4b1"
+    },
+    "dependsOnTerms": [
+     "Equity Interests",
+     "Parent Entity",
+     "Effective Date"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The formula's structure (share count x price per share) is fully captured, but both inputs are transaction-time variables not resolvable to fixed values from this definitions text alone",
+     "a share-count quantity, not a MONEY/NUMBER value stated in the source text (it is a variable determined at the time of the IPO, not a fixed number)",
+     "a per-share price variable determined at the time of the IPO, not a fixed number stated in the source text",
+     "MULTIPLY operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "an amount equal to (i) the total number of shares of common Equity Interests of a Borrower (or its Parent Entity) on a fully diluted basis immediately following consummation of the first public offering of common equity or common stock of a Borrower (or any Parent Entity) after the Effective Date multiplied by (ii) the price to public per share of such common equity or common stock in such public offering."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f66144025ff07100d9466ec8",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Market Convention Rate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Administrative Agent",
+     "Term SOFR Rate",
+     "Term CORRA",
+     "Applicable Rate"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Cross-reference to Section 2.12(b)(i) resolved; substantive defining text obtained"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §2.12(b)(i)",
+     "excerpt": "generally accepted as the then-prevailing market convention for determining a rate of interest for syndicated leveraged loans of this type in the United States at such time... (the \"Market Convention Rate\")"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:2d8e6486301281cb1ceff918",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Master Agreement",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Swap Agreement"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Meaning assigned within the definition of 'Swap Agreement', which was retrieved and quoted"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; definition of \"Swap Agreement\"",
+     "excerpt": "any such master agreement, together with any related schedules, a \"Master Agreement\""
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [],
+  "unresolvedIssues": [
+   "[definition[d3]] Section 1.08(a) was retrieved but its lead-in and first sub-clause (i) address ratio-calculation timing conventions for LCTs generally; the specific operative definition of 'LCT Election' itself sits in a further sub-clause not reached before tool budget was exhausted",
+   "[definition[d4]] same gap as LCT Election - the specific defining sub-clause for LCT Test Date was not reached before tool budget was exhausted",
+   "[definition[d19].MULTIPLY[0]] a share-count quantity, not a MONEY/NUMBER value stated in the source text (it is a variable determined at the time of the IPO, not a fixed number)",
+   "[definition[d19].MULTIPLY[1]] a per-share price variable determined at the time of the IPO, not a fixed number stated in the source text",
+   "[definition[d19]] MULTIPLY operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "This provision (§1.01) is a definitions article; no independently operative permission/prohibition rules exist here, so no WireRule or WireSharedCapacity outputs were produced.",
+   "21 distinct defined terms were extracted from the supplied excerpt: Junior Lien Intercreditor Agreement, Latest Maturity Date, LCT Election, LCT Test Date, Lead Arrangers, Lenders, Letter of Intent Transactions, Liabilities, Lien, Limited Condition Transaction, Limited Originator Recourse, Loan Document Obligations, Loan Documents, Loan Modification Agreement, Loan Modification Offer, Loan Parties, Loans, Management Investors, Market Capitalization, Market Convention Rate, and Master Agreement.",
+   "LCT Election and LCT Test Date are stub cross-references to Section 1.08(a); the referenced section's lead-in and first sub-clause (i) were retrieved but did not contain the specific operative defining text for these two terms, and tool budget was exhausted before the correct sub-clause could be located - both are marked MISSING_CONTEXT rather than guessed.",
+   "Loan Modification Offer and Market Convention Rate were both stub cross-references (to Section 2.22(a) and Section 2.12(b) respectively) that WERE successfully resolved by retrieving the referenced provisions, yielding usable substantive text.",
+   "Master Agreement's stub cross-reference ('has the meaning assigned in the definition of Swap Agreement') was resolved by retrieving the Swap Agreement definition.",
+   "Market Capitalization's formula (fully-diluted share count x IPO price per share) is structurally captured but both inputs are transaction-time variables with no fixed value in this text, so it is marked PARTIAL.",
+   "Numerous dependent defined terms referenced within these definitions (e.g. Collateral Agent, Senior Representatives, Term Lenders, Revolving Lenders, Parent Entity, Standard Securitization Undertakings, Permitted Amendments, etc.) are consistent with the package's own list of UNRESOLVED_DEFINED_TERM dependencies (not declared elsewhere in the package); this does not affect the sufficiency of the definitions actually being compiled here since their own text is fully quoted, but full recursive resolution of the dependency chain was not attempted given tool-budget constraints and the specific-reason requirement.",
+   "The Junior Lien Intercreditor Agreement definition references Exhibit E-3, which is flagged elsewhere in the package as a MISSING_SCHEDULE (no Exhibit E node exists) and no INTERCREDITOR_AGREEMENT-type document exists in the package; this affects only the template form, not the substantive meaning captured in the definition, so sufficiency was kept COMPLETE with reasons noted.",
+   "No FROZEN SEMANTIC INVENTORY item IDs were supplied in this task's context (the inventory report describes an unresolved coverage gap but lists no consumable itemIds), so no inventoryItemIds could be attached to any node and no inventoryDispositions were produced."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 1.08(a)"
+    },
+    "outputSummary": "resolved reference \"Section 1.08(a)\" -> 1.08(a) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 122,
+    "timestamp": "2026-09-14T15:29:41.157Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 1.08(a)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:f4fd3aa398dc5785e7bcd803",
+     "sourceNodeKey": "doc-a::1.08(a)",
+     "charStart": 376455,
+     "charEnd": 376577,
+     "rawText": "(a) In connection with any action being taken solely in connection with a Limited\nCondition Transaction, for purposes of:\n",
+     "contentHash": "1ba253775d753e70724444c8b6418a6826fe01b7de828a64b7a5351c59fb6980",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.22(a)"
+    },
+    "outputSummary": "resolved reference \"Section 2.22(a)\" -> 2.22(a) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 426,
+    "timestamp": "2026-09-14T15:29:41.157Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 2.22(a)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:cc10186afdb2005fbee7eb69",
+     "sourceNodeKey": "doc-a::2.22(a)",
+     "charStart": 523164,
+     "charEnd": 523590,
+     "rawText": "(a) At any time after the Effective Date, the Initial Borrower may on one or more occasions, by written notice to the Administrative Agent,\nmake one or more offers (each, a “ Loan Modification Offer ”) to all the Lenders of one or more Classes (each Class subject to such a Loan Modification Offer, an “ Affected Class ”) to effect one or more\nPermitted Amendments relating to such Affected Class. Such notice shall set forth ",
+     "contentHash": "39e2e4c91107a3d15eb58f6be8e1c3e4e54f8a9054df6ecc3b2b57f97999ea11",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.12(b)"
+    },
+    "outputSummary": "resolved reference \"Section 2.12(b)\" -> 2.12(b) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 797,
+    "timestamp": "2026-09-14T15:29:41.157Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 2.12(b)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:660bb093c5247f58fdb560b0",
+     "sourceNodeKey": "doc-a::2.12(b)",
+     "charStart": 455315,
+     "charEnd": 456112,
+     "rawText": "(b) Notwithstanding the foregoing, if the Administrative Agent or the Initial Borrower reasonably determines in good faith,\nwith consent by the other not to be unreasonably withheld, that the circumstances described in clause (a)(i) of this Section 2.12 have arisen (other than with respect to the Term SOFR Rate or Term CORRA) (and such circumstances are unlikely to\nbe temporary), then, in each case, reasonably promptly after such determination or receipt by the Administrative Agent of such notice, the Administrative Agent and the Borrowers may amend this Agreement solely for the purpose of replacing the\nAlternative Currency Term Benchmark Rate with an alternate benchmark rate (including any mathematical or other adjustments to the benchmark (if any) incorporated therein) that is either ",
+     "contentHash": "9537508943b801118622b0c3d84f164d7fa1d179607028ebf9f6fe60d55a725a",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Swap Agreement"
+    },
+    "outputSummary": "definition \"Swap Agreement\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 1305,
+    "timestamp": "2026-09-14T15:29:41.157Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Swap Agreement",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:cd324d3e7484f2374b985be6",
+     "sourceNodeKey": "doc-a::1.01(51)(c)(a)(4)(b)(b)",
+     "charStart": 342235,
+     "charEnd": 343540,
+     "rawText": "“ Swap Agreement ” means (a) any and all rate swap transactions, basis swaps, credit derivative\ntransactions, forward rate transactions, commodity swaps, commodity options, forward commodity contracts, equity or equity index swaps or options, bond or bond price or bond index swaps or options or forward bond or forward bond price or forward\nbond index transactions, interest rate options, forward foreign exchange transactions, cap transactions, floor transactions, collar transactions, currency swap transactions, cross-currency rate swap transactions, currency options, spot contracts, or\nany other similar transactions or any combination of any of the foregoing (including any options to enter into any of the foregoing), whether or not any such transaction is governed by or subject to any master agreement, and (b) any and all\ntransactions of any kind, and the related confirmations, which are subject to the terms and conditions of, or governed by, any form of master agreement published by the International Swaps and Derivatives Association, Inc., any International Foreign\nExchange Master Agreement, or any other master agreement (any such master agreement, together with any related schedules, a “ Master Agreement ”), including any such obligations or liabilities under any Master Agreement.\n\n",
+     "contentHash": "6d94bde89e29eceb1e32aa6daddc84f21ad429b20eac5665534fb17b7a78d797",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getChildren",
+    "input": {
+     "nodeId": "structural-node:f4fd3aa398dc5785e7bcd803"
+    },
+    "outputSummary": "3 child clause(s) of 1.08(a) (parent UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 65,
+    "timestamp": "2026-09-14T15:29:49.992Z",
+    "evidenceUnresolved": true
+   },
+   {
+    "toolName": "getChildren",
+    "input": {
+     "nodeId": "structural-node:660bb093c5247f58fdb560b0"
+    },
+    "outputSummary": "2 child clause(s) of 2.12(b) (parent UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 65,
+    "timestamp": "2026-09-14T15:29:49.992Z",
+    "evidenceUnresolved": true
+   },
+   {
+    "toolName": "getSourceSpan",
+    "input": {
+     "nodeId": "structural-node:7af887022f2ad99eb1ccf701"
+    },
+    "outputSummary": "source span for 1.08(a)(i) (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 214,
+    "timestamp": "2026-09-14T15:29:57.739Z",
+    "evidenceTruncated": false
+   },
+   {
+    "toolName": "getSourceSpan",
+    "input": {
+     "nodeId": "structural-node:5246acc8f67e5fbe85695976"
+    },
+    "outputSummary": "source span for 2.12(b)(i) (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 946,
+    "timestamp": "2026-09-14T15:29:57.739Z",
+    "evidenceTruncated": false
+   },
+   {
+    "toolName": "getSourceSpan",
+    "input": {
+     "nodeId": "structural-node:1fe3cd0597063e970a16034a"
+    },
+    "outputSummary": "refused: tool-call budget exhausted (8 calls already used this attempt) - no further evidence requests will be served; compile with what you have or mark the affected component MISSING_CONTEXT",
+    "charsReturned": 0,
+    "timestamp": "2026-09-14T15:29:57.739Z"
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "Junior Lien Intercreditor Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Intercreditor Agreement",
+      "Collateral Agent",
+      "Senior Representatives",
+      "Collateral",
+      "Secured Obligations"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition fully quoted; references Exhibit E-3 (form not present in package per known MISSING_SCHEDULE dependency) but that only affects the template exhibit, not the substantive meaning of who the parties are and the lien priority described"
+     ],
+     "citation": "§1.01",
+     "excerpt": "an Intercreditor Agreement, substantially in the form of Exhibit E-3, among the Collateral Agent and the Senior Representatives for one or more classes of obligations to be secured junior relative to the Liens on the Collateral securing the Secured Obligations."
+    },
+    {
+     "localRef": "d2",
+     "termName": "Latest Maturity Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Revolving Loan",
+      "Term Loan",
+      "Term Commitment",
+      "Initial Term Loans",
+      "Incremental Term Loan",
+      "Incremental Revolving Facility",
+      "Other Term Loan"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "the latest maturity or expiration date applicable to any Revolving Loan, Term Loan or Term Commitment hereunder at such time, including the latest maturity or expiration date of the Initial Term Loans, any Incremental Term Loan, Incremental Revolving Facility or Other Term Loan, in each case as extended in accordance with this Agreement from time to time."
+    },
+    {
+     "localRef": "d3",
+     "termName": "LCT Election",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "term meaning assigned by cross-reference to Section 1.08(a)",
+      "reason": "Section 1.08(a) was retrieved but its lead-in and first sub-clause (i) address ratio-calculation timing conventions for LCTs generally; the specific operative definition of 'LCT Election' itself sits in a further sub-clause not reached before tool budget was exhausted",
+      "sourceEvidence": "§1.01 (\"has the meaning assigned to such term in Section 1.08(a)\"); §1.08(a)"
+     },
+     "dependsOnTerms": [
+      "Limited Condition Transaction"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced Section 1.08(a) retrieved but the actual defining sub-clause was not reached before tool budget exhaustion"
+     ],
+     "citation": "§1.01; §1.08(a)",
+     "excerpt": "has the meaning assigned to such term in Section 1.08(a)."
+    },
+    {
+     "localRef": "d4",
+     "termName": "LCT Test Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "term meaning assigned by cross-reference to Section 1.08(a)",
+      "reason": "same gap as LCT Election - the specific defining sub-clause for LCT Test Date was not reached before tool budget was exhausted",
+      "sourceEvidence": "§1.01 (\"has the meaning assigned to such term in Section 1.08(a)\"); §1.08(a)"
+     },
+     "dependsOnTerms": [
+      "Limited Condition Transaction"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced Section 1.08(a) retrieved but the actual defining sub-clause was not reached before tool budget exhaustion"
+     ],
+     "citation": "§1.01; §1.08(a)",
+     "excerpt": "has the meaning assigned to such term in Section 1.08(a)."
+    },
+    {
+     "localRef": "d5",
+     "termName": "Lead Arrangers",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "JPMCB, Wells Fargo Securities, LLC, Citigroup Global Markets Inc., Morgan Stanley Senior Funding, Inc., BofA Securities, Inc., RBC Capital Markets, and Barclays Bank PLC."
+    },
+    {
+     "localRef": "d6",
+     "termName": "Lenders",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Term Lenders",
+      "Revolving Lenders",
+      "Assignment and Assumption",
+      "Incremental Facility Amendment",
+      "Refinancing Amendment"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "(a) the Term Lenders, (b) the Revolving Lenders and (c) any other Person that shall have become a party hereto pursuant to an Assignment and Assumption, an Incremental Facility Amendment or a Refinancing Amendment, in each case other than any such Person that ceases to be a party hereto pursuant to an Assignment and Assumption."
+    },
+    {
+     "localRef": "d7",
+     "termName": "Letter of Intent Transactions",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "any prospective transaction subject to a definitive agreement or signed letter of intent, in each case, to the extent such transaction remains unclosed and the associated definitive agreement or signed letter of intent remains unterminated as of such date of determination."
+    },
+    {
+     "localRef": "d8",
+     "termName": "Liabilities",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Borrowers",
+      "Effective Date",
+      "Transactions"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "the recorded liabilities (including contingent liabilities that would be recorded in accordance with GAAP) of the Borrowers and their respective Subsidiaries taken as a whole, as of the Effective Date after giving effect to the consummation of the Transactions, determined in accordance with GAAP consistently applied."
+    },
+    {
+     "localRef": "d9",
+     "termName": "Lien",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "any mortgage, lien (statutory or otherwise), pledge, charge, security interest, preference, priority or encumbrance of any kind in respect of such asset...; provided that in no event shall an operating lease be deemed to constitute a Lien."
+    },
+    {
+     "localRef": "d10",
+     "termName": "Limited Condition Transaction",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Party",
+      "Investment",
+      "Division",
+      "Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "(i) any acquisition or Investment... whose consummation is not conditioned upon the availability of, or on obtaining, third party financing, (ii) any prepayment, repurchase, refinancing, repayment, redemption, purchase, defeasement or other payment in respect of Indebtedness... with respect to which an irrevocable notice of repayment... has been delivered or (iii) any dividends or distributions on, or redemptions of equity, in each case whether or not any declaration in advance thereof is provided."
+    },
+    {
+     "localRef": "d11",
+     "termName": "Limited Originator Recourse",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Standard Securitization Undertakings",
+      "Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "a letter of credit, cash collateral account or other such credit enhancement issued in connection with the incurrence of Indebtedness to satisfy Standard Securitization Undertakings."
+    },
+    {
+     "localRef": "d12",
+     "termName": "Loan Document Obligations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Borrowers",
+      "Loans",
+      "Loan Documents",
+      "Loan Party"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "(a) the due and punctual payment by the Borrowers of (i) the principal of and interest ... on the Loans... and (ii) all other monetary obligations of the Borrowers under or pursuant to this Agreement and each of the other Loan Documents..., (b) the due and punctual payment and performance of all other obligations of the Borrowers under or pursuant to each of the Loan Documents and (c) the due and punctual payment and performance of all the obligations of each other Loan Party under or pursuant to this Agreement and each of the other Loan Documents..."
+    },
+    {
+     "localRef": "d13",
+     "termName": "Loan Documents",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Fee Letter",
+      "Incremental Facility Amendment",
+      "Refinancing Amendment",
+      "Loan Modification Agreement",
+      "Guarantee Agreement",
+      "Collateral Agreement",
+      "Intercreditor Agreements",
+      "Security Documents"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "this Agreement, the Fee Letter, any Incremental Facility Amendment, any Refinancing Amendment, any Loan Modification Agreement, the Guarantee Agreement, the Collateral Agreement, the Intercreditor Agreements, the other Security Documents and, except for purposes of Section 9.02, any promissory notes delivered pursuant to Section 2.07(f)."
+    },
+    {
+     "localRef": "d14",
+     "termName": "Loan Modification Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Accepting Lenders",
+      "Permitted Amendments",
+      "Borrowers",
+      "Administrative Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "a Loan Modification Agreement, among the Borrowers, the Administrative Agent and one or more Accepting Lenders, effecting one or more Permitted Amendments and such other amendments hereto and to the other Loan Documents as are contemplated by Section 2.22."
+    },
+    {
+     "localRef": "d15",
+     "termName": "Loan Modification Offer",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Permitted Amendments",
+      "Lenders"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference to Section 2.22(a) resolved; substantive text of the offer mechanic obtained"
+     ],
+     "citation": "§1.01; §2.22(a)",
+     "excerpt": "make one or more offers (each, a \"Loan Modification Offer\") to all the Lenders of one or more Classes (each Class subject to such a Loan Modification Offer, an \"Affected Class\") to effect one or more Permitted Amendments relating to such Affected Class."
+    },
+    {
+     "localRef": "d16",
+     "termName": "Loan Parties",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Borrowers",
+      "Subsidiary Loan Parties"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "Borrowers and the Subsidiary Loan Parties."
+    },
+    {
+     "localRef": "d17",
+     "termName": "Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Term Loans",
+      "Revolving Loans"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "the Term Loans and/or the Revolving Loans, as the context may require."
+    },
+    {
+     "localRef": "d18",
+     "termName": "Management Investors",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Parent Entity",
+      "Investors",
+      "Permitted Transferees",
+      "Borrowers"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "(a) the current and/or former directors, partners, members, officers and employees of any Parent Entity, the Borrowers and/or any of their respective Subsidiaries who are ... Investors, (b) the Permitted Transferees of any of the individuals identified in clause (a), (c), trusts, partnerships or limited liability companies for the benefit of any of the individuals identified in the foregoing clause (a) or (b) and (d), heirs, executors, estates, successors and legal representatives of the individuals identified in the foregoing clauses (a) and (b)."
+    },
+    {
+     "localRef": "d19",
+     "termName": "Market Capitalization",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MULTIPLY",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "total number of shares of common Equity Interests of a Borrower (or its Parent Entity) on a fully diluted basis immediately following consummation of the first public offering of common equity or common stock after the Effective Date",
+        "reason": "a share-count quantity, not a MONEY/NUMBER value stated in the source text (it is a variable determined at the time of the IPO, not a fixed number)",
+        "sourceEvidence": "§1.01"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "price to public per share of such common equity or common stock in such public offering",
+        "reason": "a per-share price variable determined at the time of the IPO, not a fixed number stated in the source text",
+        "sourceEvidence": "§1.01"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Equity Interests",
+      "Parent Entity",
+      "Effective Date"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The formula's structure (share count x price per share) is fully captured, but both inputs are transaction-time variables not resolvable to fixed values from this definitions text alone"
+     ],
+     "citation": "§1.01",
+     "excerpt": "an amount equal to (i) the total number of shares of common Equity Interests of a Borrower (or its Parent Entity) on a fully diluted basis immediately following consummation of the first public offering of common equity or common stock of a Borrower (or any Parent Entity) after the Effective Date multiplied by (ii) the price to public per share of such common equity or common stock in such public offering."
+    },
+    {
+     "localRef": "d20",
+     "termName": "Market Convention Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Administrative Agent",
+      "Term SOFR Rate",
+      "Term CORRA",
+      "Applicable Rate"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference to Section 2.12(b)(i) resolved; substantive defining text obtained"
+     ],
+     "citation": "§1.01; §2.12(b)(i)",
+     "excerpt": "generally accepted as the then-prevailing market convention for determining a rate of interest for syndicated leveraged loans of this type in the United States at such time... (the \"Market Convention Rate\")"
+    },
+    {
+     "localRef": "d21",
+     "termName": "Master Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Swap Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Meaning assigned within the definition of 'Swap Agreement', which was retrieved and quoted"
+     ],
+     "citation": "§1.01; definition of \"Swap Agreement\"",
+     "excerpt": "any such master agreement, together with any related schedules, a \"Master Agreement\""
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "irExtensionCandidates": [],
+   "inventoryDispositions": [],
+   "overallNotes": [
+    "This provision (§1.01) is a definitions article; no independently operative permission/prohibition rules exist here, so no WireRule or WireSharedCapacity outputs were produced.",
+    "21 distinct defined terms were extracted from the supplied excerpt: Junior Lien Intercreditor Agreement, Latest Maturity Date, LCT Election, LCT Test Date, Lead Arrangers, Lenders, Letter of Intent Transactions, Liabilities, Lien, Limited Condition Transaction, Limited Originator Recourse, Loan Document Obligations, Loan Documents, Loan Modification Agreement, Loan Modification Offer, Loan Parties, Loans, Management Investors, Market Capitalization, Market Convention Rate, and Master Agreement.",
+    "LCT Election and LCT Test Date are stub cross-references to Section 1.08(a); the referenced section's lead-in and first sub-clause (i) were retrieved but did not contain the specific operative defining text for these two terms, and tool budget was exhausted before the correct sub-clause could be located - both are marked MISSING_CONTEXT rather than guessed.",
+    "Loan Modification Offer and Market Convention Rate were both stub cross-references (to Section 2.22(a) and Section 2.12(b) respectively) that WERE successfully resolved by retrieving the referenced provisions, yielding usable substantive text.",
+    "Master Agreement's stub cross-reference ('has the meaning assigned in the definition of Swap Agreement') was resolved by retrieving the Swap Agreement definition.",
+    "Market Capitalization's formula (fully-diluted share count x IPO price per share) is structurally captured but both inputs are transaction-time variables with no fixed value in this text, so it is marked PARTIAL.",
+    "Numerous dependent defined terms referenced within these definitions (e.g. Collateral Agent, Senior Representatives, Term Lenders, Revolving Lenders, Parent Entity, Standard Securitization Undertakings, Permitted Amendments, etc.) are consistent with the package's own list of UNRESOLVED_DEFINED_TERM dependencies (not declared elsewhere in the package); this does not affect the sufficiency of the definitions actually being compiled here since their own text is fully quoted, but full recursive resolution of the dependency chain was not attempted given tool-budget constraints and the specific-reason requirement.",
+    "The Junior Lien Intercreditor Agreement definition references Exhibit E-3, which is flagged elsewhere in the package as a MISSING_SCHEDULE (no Exhibit E node exists) and no INTERCREDITOR_AGREEMENT-type document exists in the package; this affects only the template form, not the substantive meaning captured in the definition, so sufficiency was kept COMPLETE with reasons noted.",
+    "No FROZEN SEMANTIC INVENTORY item IDs were supplied in this task's context (the inventory report describes an unresolved coverage gap but lists no consumable itemIds), so no inventoryItemIds could be attached to any node and no inventoryDispositions were produced."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T15:31:16.647Z",
+   "inputTokens": 104723,
+   "outputTokens": 12723,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 4,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 107640,
+   "calculatedCostUsd": 0.336676
+  },
+  "cacheKey": "9f6a7eac86f245e4c2b5ad10aefbaab678dcd161379117454bc05f002ce03951",
+  "compiledAt": "2026-09-14T15:31:16.647Z"
+ },
+ "shardInputSummary": {
+  "candidateRef": "phase-3-validation:chwy:1.01#shard:aac727054a5da5f1a9fd",
+  "operativeChars": 7577,
+  "ownedInventoryItems": 0,
+  "contextRegions": 1,
+  "bundleItems": 0,
+  "unresolvedDependencies": 41
+ },
+ "attemptsSoFar": 1
+}
