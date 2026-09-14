@@ -1,0 +1,24 @@
+{
+ "artifact": "F-7B.3 §26 - deterministic invalidation simulation, zero paid calls",
+ "at": "2026-09-14T18:21:31.204Z",
+ "planHash": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+ "totalShards": 36,
+ "oneSourceByteChange": {
+  "mutatedRegionOffset": 149102,
+  "mutatedInsideShard": "shard:d3aac7c869cff4602343",
+  "mutatedInsideUnit": "operative:DEFINITION:def:excess cash flow",
+  "invalidatedShards": 1,
+  "reusableShards": 35,
+  "invalidatedShardIds": [
+   "shard:d3aac7c869cff4602343"
+  ],
+  "ownerInvalidated": true,
+  "note": "Only shards whose own primary text or read-only context covers the mutated byte change hash; every other shard's result stays reusable by hash."
+ },
+ "frozenInventoryHashChange": {
+  "invalidatedShards": 36,
+  "reusableShards": 0,
+  "allInvalidated": true,
+  "note": "The frozen inventory identity is part of every shard hash, so a Pass A change invalidates every shard - no partial reuse."
+ }
+}

@@ -40,7 +40,8 @@ const frozen = freezeAndPlan();
 const { plan } = frozen;
 const stage1 = loadFrozenStage1(); const stage2 = loadStage2();
 const evidence = plan.shards.flatMap((s) => { const e = stage1.get(s.shardId) ?? stage2.get(s.shardId); return e ? [{ shard: s, e }] : []; });
-if (evidence.length !== 15) { console.error(`F7B_3B_BASELINE_INVALID: expected 15 frozen shard results, found ${evidence.length}`); process.exit(3); }
+const EXPECT = Number(process.env.F7B3B_EXPECT_SHARDS ?? "15");
+if (evidence.length !== EXPECT) { console.error(`F7B_3B_BASELINE_INVALID: expected ${EXPECT} frozen shard results, found ${evidence.length}`); process.exit(3); }
 const results: ShardExecutionResult[] = evidence.map((x) => x.e.result);
 const stitched = stitchAll(frozen, results) as StitchedCompilation & { definitionConflicts?: unknown[] };
 

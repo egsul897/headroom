@@ -1,0 +1,215 @@
+{
+ "artifact": "F-7B.3C \u00a729 Wave-B closure gate",
+ "at": "2026-09-14T18:22:46.083607Z",
+ "points": [
+  {
+   "n": 1,
+   "criterion": "all 10 Wave-B shards have terminal results",
+   "pass": true
+  },
+  {
+   "n": 2,
+   "criterion": "all 15 prior paid results reused unchanged",
+   "pass": true
+  },
+  {
+   "n": 3,
+   "criterion": "prior shard rerun count = 0",
+   "pass": true
+  },
+  {
+   "n": 4,
+   "criterion": "frozen plan unchanged",
+   "pass": true
+  },
+  {
+   "n": 5,
+   "criterion": "new Wave-B cost <= $10.50",
+   "pass": true
+  },
+  {
+   "n": 6,
+   "criterion": "dangerous silent omissions = 0",
+   "pass": true
+  },
+  {
+   "n": 7,
+   "criterion": "false completeness = 0",
+   "pass": true
+  },
+  {
+   "n": 8,
+   "criterion": "source-unverifiable authoritative IR = 0",
+   "pass": true
+  },
+  {
+   "n": 9,
+   "criterion": "contextual ownership-credit violations = 0",
+   "pass": true
+  },
+  {
+   "n": 10,
+   "criterion": "silent incompatible merges = 0",
+   "pass": true
+  },
+  {
+   "n": 11,
+   "criterion": "owned values lost = 0 (corrected F-7B.3B metric)",
+   "pass": true
+  },
+  {
+   "n": 12,
+   "criterion": "owned lineage lost = 0 (corrected F-7B.3B metric)",
+   "pass": true
+  },
+  {
+   "n": 13,
+   "criterion": "new dangling references = 0",
+   "pass": true
+  },
+  {
+   "n": 14,
+   "criterion": "definition conflicts fully preserved and review-visible",
+   "pass": true
+  },
+  {
+   "n": 15,
+   "criterion": "conflict variants earn no Pass-C represented credit",
+   "pass": true
+  },
+  {
+   "n": 16,
+   "criterion": "owner-shard semantic recovery operationally viable",
+   "pass": true
+  },
+  {
+   "n": 17,
+   "criterion": "no systematic schema/provider/protocol defect",
+   "pass": true
+  },
+  {
+   "n": 18,
+   "criterion": "window concentration remains bounded",
+   "pass": true
+  }
+ ],
+ "passed": 18,
+ "total": 18,
+ "metricNote": {
+  "issue": "The pre-registered F-7B scorer used by the wave runner predates F-7B.3B and does not know about definitionConflicts, so it still reports owned values lost 2 and owned lineage lost 6 by comparing canonical IR before and after only.",
+  "resolution": "\u00a714 and \u00a715 require the corrected F-7B.3B metric: canonicalize digest ids, scope to owned, compare distinct ids, and count first-class conflict evidence as surviving. Under that metric both losses are 0, computed over all 25 shards in 13-25shard-conflict-and-loss-audit.json. Both figures are reported; neither was altered after seeing results."
+ },
+ "waveB": {
+  "shards": 10,
+  "costUsd": 3.8842,
+  "capUsd": 10.5,
+  "meanShardCost": 0.3884,
+  "medianShardCost": 0.3661,
+  "maxShardCost": 0.6173,
+  "retryCost": 0.0,
+  "turns": 23,
+  "medianAggregateInput": 59263,
+  "p95AggregateInput": 104848,
+  "totalInput": 719821,
+  "medianAggregateOutput": 22480,
+  "p95AggregateOutput": 32133,
+  "totalOutput": 244454,
+  "maxSingleTurnInput": 45175,
+  "maxSingleTurnOutput": 28186,
+  "outputTruncations": 0,
+  "peakInputReductionVsMonolithic": 0.8553
+ },
+ "twentyFiveShardStitch": {
+  "shardStatuses": {
+   "SHARD_MISSING_CONTEXT": 13,
+   "SHARD_COMPLETE": 12
+  },
+  "notExecuted": 11,
+  "stitched": {
+   "status": "PARTIAL",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "SHARD_INCOMPLETE",
+    "OPERATIVE_STATE_UNRESOLVED",
+    "TRUNCATED_EVIDENCE_USED",
+    "DEFINITION_COMPLETENESS_SUSPECT",
+    "PROVIDER_FAILURE",
+    "SHARD_CONFLICT",
+    "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+   ],
+   "rules": 11,
+   "definitions": 316,
+   "sharedCapacities": 0,
+   "contextualEmissions": 17,
+   "collisionsByKind": {
+    "CONTEXTUAL_UNOWNED_DEFINITION": 17,
+    "DEFINITION_CONFLICT": 2
+   },
+   "unresolvedOwnedItems": 74
+  },
+  "proofCounts": {
+   "PLANNER_DEFINITION_UNIT": 237,
+   "OWNED_INVENTORY_LINEAGE": 42,
+   "UNIQUE_PRIMARY_SOURCE_DECLARATION": 77,
+   "NONE": 0
+  },
+  "accountability": {
+   "executedShards": 25,
+   "executedShardMaterialOwned": 93,
+   "executedRepresented": 53,
+   "executedIntentionallyNonComputational": 1,
+   "executedUnsupported": 21,
+   "executedAmbiguous": 0,
+   "executedMissing": 18,
+   "executedAccountabilityRate": 0.8065,
+   "materialTotal": 108,
+   "globalPassC": {
+    "inventoried": 109,
+    "material": 108,
+    "represented": 63,
+    "intentionallyNonComputational": 1,
+    "unsupported": 21,
+    "ambiguous": 0,
+    "missingFromComposition": 24,
+    "materialMissingFromComposition": 23,
+    "criticalMissingFromComposition": 6,
+    "materialQuantitativeValues": 142,
+    "materialQuantitativeValuesMissing": 25,
+    "uninventoriedValues": 95,
+    "unaccountedSource": 721,
+    "danglingLineageReferences": 0,
+    "canonicalizedLineageReferences": 0
+   },
+   "semanticallyComplete": false
+  }
+ },
+ "conflicts": {
+  "definitionIdsWithMultipleDistinctEmissions": 6,
+  "names": [
+   "Acquired Entity or Business",
+   "Annual Threshold",
+   "Approved Bank",
+   "Converted Restricted Subsidiary",
+   "Converted Unrestricted Subsidiary",
+   "Expected Run Rate Benefit"
+  ],
+  "ownerVersusOwnerConflicts": 2,
+  "note": "the other four had one unattributed side, already excluded by the contextual path, so no conflict collision fires"
+ },
+ "invalidation": {
+  "oneSourceByte": "1 shard invalidated, 35 reusable",
+  "inventoryHashChange": "all 36 invalidated",
+  "conflictMetadataAltersShardHashes": false
+ },
+ "updatedWaveCEstimate": {
+  "wave": "C",
+  "shards": 11,
+  "renderedTokens": 262252,
+  "atWaveMeanRateUsd": 4.0487,
+  "atWaveWorstRateUsd": 6.2192,
+  "conservativeUsd": 7.774
+ },
+ "verdict": "F7B_WAVE_B_PASSED_READY_FOR_WAVE_C",
+ "waveCExecuted": false,
+ "productionActivationPerformed": false
+}
