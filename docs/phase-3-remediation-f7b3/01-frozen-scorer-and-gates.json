@@ -1,0 +1,87 @@
+{
+ "artifact": "F-7B.3 §4/§5 - pre-registered final scorer and F-7 canary success gates (frozen before any paid call)",
+ "at": "2026-09-14T16:25:04.521Z",
+ "gitSha": "1660817cef85ebe70888185b0248e56d1297616d",
+ "scorer": {
+  "A": "shard execution state - terminal status of all 36 shards (COMPLETE / MISSING_CONTEXT / PARTIAL / REVIEW_REQUIRED / PROVIDER_FAILURE / SCHEMA_FAILURE), retries, reused-vs-executed",
+  "B": "material inventory accountability - global Pass C over the full 108-item frozen inventory: represented, each explicit disposition, missing",
+  "C": "quantitative-value preservation - owned values represented vs missing, and values lost by stitching (must be 0)",
+  "D": "source-backed definition attribution - proof class of every retained authoritative definition; NONE must be 0",
+  "E": "inventory lineage - lineage claimed by owner shard, claims on unowned items stripped, lineage lost by stitching",
+  "F": "dependency resolution - resolved and unresolved cross-shard dependencies, dangling references",
+  "G": "stitching collisions - count by kind, and which require review",
+  "H": "unresolved context - context entries, truncation, unresolved cross-shard references, MISSING_CONTEXT disclosures",
+  "I": "unsupported semantics - UNSUPPORTED nodes and dispositions",
+  "J": "dangerous silent omissions - a material item absent from the IR with no disclosure anywhere",
+  "K": "false completeness - any claim of completeness not supported by global Pass C",
+  "L": "source-unverifiable IR - retained authoritative definitions with no proof class",
+  "M": "contextual ownership credit - accountability credit earned from read-only context",
+  "N": "dangling references - references introduced by stitching that resolve to nothing",
+  "O": "window and cost behaviour - per-turn and per-shard input/output concentration, truncations, spend"
+ },
+ "gates": {
+  "trust": [
+   "dangerous silent omissions = 0",
+   "false completeness = 0",
+   "source-unverifiable authoritative IR = 0",
+   "contextual ownership-credit violations = 0",
+   "incompatible duplicates silently merged = 0",
+   "failed shards hidden = 0",
+   "missing material items hidden = 0"
+  ],
+  "ownership": [
+   "every material inventory item ends as REPRESENTED, a valid explicit disposition, or explicitly MISSING / UNSUPPORTED / AMBIGUOUS",
+   "no silent drop"
+  ],
+  "stitching": [
+   "zero owned quantitative values lost by stitching",
+   "zero owned lineage silently lost",
+   "zero dangling references introduced by stitching",
+   "definition attribution follows the F-7B.2 proof classes",
+   "conflicts remain review-visible"
+  ],
+  "window": [
+   "no normal shard recreates the historical ~312k-token one-turn input",
+   "no normal shard approaches the 128k output ceiling pathologically",
+   "oversized units disclosed separately"
+  ],
+  "globalAuthority": "global Pass C over the full frozen inventory is the only candidate completeness authority"
+ },
+ "waveKillGate": [
+  "zero dangerous silent omissions",
+  "zero false completeness",
+  "zero source-unverifiable authoritative IR",
+  "zero contextual ownership-credit violations",
+  "no systematic MODEL_SCHEMA_FAILURE",
+  "no new transport or protocol defect",
+  "no evidence source anchoring is systematically wrong",
+  "no dangling references introduced by stitching",
+  "successful shard outputs remain isolated and reusable",
+  "cost trajectory still supports completion under the cap"
+ ],
+ "notFailingTheGate": [
+  "ordinary REVIEW_REQUIRED",
+  "ordinary MISSING_CONTEXT"
+ ],
+ "retryPolicy": {
+  "allowed": [
+   "SHARD_PROVIDER_FAILURE"
+  ],
+  "maxRetriesPerShard": 1,
+  "forbidden": [
+   "REVIEW_REQUIRED",
+   "MISSING_CONTEXT",
+   "UNSUPPORTED",
+   "schema-valid incomplete result",
+   "inventory omission",
+   "ordinary model semantic weakness"
+  ]
+ },
+ "capUsd": 20,
+ "waveStructure": {
+  "A": "first 10 remaining shards in frozen plan ordinal order",
+  "B": "next 10",
+  "C": "final 11",
+  "note": "a spend and trust checkpoint only - never a reordering or a reselection"
+ }
+}
