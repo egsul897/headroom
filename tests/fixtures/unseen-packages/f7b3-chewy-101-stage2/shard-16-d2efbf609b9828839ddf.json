@@ -1,0 +1,931 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:d2efbf609b9828839ddf",
+  "shardHash": "28047c2b5b76287a19e71956238a1da948848c873fb944f36fe5f26ddfd7ae05",
+  "ordinal": 16,
+  "ownedUnits": 4,
+  "sourceChars": 11247,
+  "contextEntries": 3,
+  "contextChars": 788,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 1,
+  "ownedMaterialItems": 1,
+  "estimatedFirstTurnInputTokens": 24278,
+  "preCallEstimate": {
+   "inputTokens": 79875,
+   "outputTokens": 11500,
+   "usd": 0.27475
+  },
+  "actual": {
+   "inputTokens": 64144,
+   "outputTokens": 19555,
+   "turns": 2,
+   "latencyMs": 189795,
+   "costUsd": 0.323838,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_COMPLETE",
+  "failureReasons": [
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "toolCalls": 2,
+  "toolCallNames": [
+   "getDefinition",
+   "getDefinition"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 4,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 1,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "valuesRepresented": 2,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "REPRESENTED": 1
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [],
+  "unresolvedIssues": [
+   "This submission compiles the four independently defined terms found in the supplied §1.01 excerpt: 'Excluded Assets', 'Excluded Contribution', 'Excluded Revolving Loans', and 'Excluded Subsidiary'. No independently operative WireRule (permission/prohibition/ratio test) exists in this source - it is a pure definitions section - so the rules array is empty by design, not by omission.",
+   "The single Frozen Semantic Inventory item (CRITICAL threshold in 'Excluded Assets' clause (i)) is consumed on the 'Excluded Assets' WireDefinition and represented as an explicit ADD/SUBTRACT/MULTIPLY/PERCENT expression tree using the CFC and FSHCO definitions resolved from the provided context regions.",
+   "Cross-references to Section 6.01, Section 6.08(a), and Section 6.08(a)(3) were left unexpanded because they are informational (identifying where a defined amount is used/excluded elsewhere) rather than determinative of the defined terms' own operative meaning, and Phase 2 already reported them as out-of-scope for source-context expansion.",
+   "Two specific cross-referenced terms material to 'Excluded Subsidiary' were affirmatively investigated via tools: 'Collateral and Guarantee Requirement' (resolved, confirming the substance of clause (i)'s reference) and 'Discretionary Guarantor' (confirmed genuinely absent from the entire instrument package, not merely unretrieved) - both outcomes are reflected in that definition's sufficiencyReasons rather than assumed."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:d2efbf609b9828839ddf",
+  "shardHash": "28047c2b5b76287a19e71956238a1da948848c873fb944f36fe5f26ddfd7ae05",
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:59a131febb1cba2629e81709",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Excluded Assets",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "ADD",
+      "type": "MONEY",
+      "exprId": "ir-expr:44aab1b17bef304c0a646d71",
+      "operands": [
+       {
+        "kind": "SUBTRACT",
+        "type": "MONEY",
+        "exprId": "ir-expr:4a29165a02f8ca33354186df",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "Outstanding Voting Equity Interests of First-Tier CFC or FSHCO",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:7c7b53787460a5238337b21b"
+        },
+        "right": {
+         "kind": "MULTIPLY",
+         "type": "MONEY",
+         "exprId": "ir-expr:91cca0775c0353b62318e44e",
+         "operands": [
+          {
+           "kind": "PERCENT",
+           "type": "PERCENT",
+           "value": 0.65,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(i)",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:aa28ae250556af017b766a17"
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "Outstanding Voting Equity Interests of First-Tier CFC or FSHCO",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:7c7b53787460a5238337b21b"
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(i)",
+          "excerpt": null
+         }
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(i)",
+         "excerpt": null
+        }
+       },
+       {
+        "kind": "SUBTRACT",
+        "type": "MONEY",
+        "exprId": "ir-expr:76db142eaffdaff5ca31f930",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "Outstanding Non-Voting Equity Interests of First-Tier CFC or FSHCO",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:585fddb18f3ed2b182c4af57"
+        },
+        "right": {
+         "kind": "MULTIPLY",
+         "type": "MONEY",
+         "exprId": "ir-expr:8969296e5114aa5371750ff4",
+         "operands": [
+          {
+           "kind": "PERCENT",
+           "type": "PERCENT",
+           "value": 1,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(i)",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:fa1ca58a1aab665ae6776fb7"
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "Outstanding Non-Voting Equity Interests of First-Tier CFC or FSHCO",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:585fddb18f3ed2b182c4af57"
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(i)",
+          "excerpt": null
+         }
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(i)",
+         "excerpt": null
+        }
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(i)",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "CFC",
+      "FSHCO",
+      "Equity Interests",
+      "Receivables Subsidiary",
+      "Permitted Receivables Financing",
+      "Unrestricted Subsidiary",
+      "Cash Equivalents",
+      "Requirements of Law"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Clause (i)'s quantitative 65% voting / 100% non-voting equity threshold (the sole CRITICAL inventory item for this definition) is modeled as an explicit computation using CFC/FSHCO definitions resolved from the record.",
+      "Clauses (a)-(h) and (j)-(t) of the definition are qualitative, category-based collateral exclusions (real property, restricted licenses/contracts, margin stock, tax-cost or perfection-cost exclusions, receivables financing carve-outs, escrowed bond proceeds, deposit/cash accounts, etc.) that are eligibility/membership tests rather than calculations; they are preserved verbatim via citation/excerpt but not reduced to individual computational nodes, since the IR's arithmetic/comparison primitives do not fit a pure category-membership test.",
+      "Clause (q) cross-references Section 6.01 only to describe which escrowed indebtedness proceeds qualify; not required to represent this definition's own criteria, and Section 6.01 was not expanded (out of scope per source-context budget)."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Excluded Assets\" means ... (a) any interest in real property ... (i) any of the Equity Interests in excess of 65% of the outstanding voting Equity Interests and 100% of the outstanding non-voting Equity Interests of (A) any first-tier Foreign Subsidiary that is a CFC or (B) any first-tier FSHCO (unless it would be an Excluded Asset under another clause of this definition) ... (t) any other goods, intangibles, instruments, investment property, chattel paper, documents of title or money to the extent that the cost of obtaining a security interest ... is excessive in relation to the benefit to the Lenders ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "bf087a69a8fd07a277893a35"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:24c09a1fbd21f5699a1c98b3",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Excluded Contribution",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Unrestricted Subsidiary",
+      "Restricted Subsidiary",
+      "Capital Stock",
+      "Disqualified Stock",
+      "Designated Preferred Stock",
+      "Consolidated Net Income",
+      "Parent Entity"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The full qualifying-source list (equity contributions; dividends/distributions/fees/payments from Unrestricted Subsidiaries, joint ventures, or non-Restricted-Subsidiary Investments; and certain qualifying Capital Stock sales), the designation requirement by the Initial Borrower, and the proviso excluding clause (2) amounts from 'Consolidated Net Income' are all given in full self-contained text.",
+      "The cross-reference to Section 6.08(a)(3) only identifies where such amounts are excluded from a calculation; it is not required to determine what qualifies as an Excluded Contribution and was not expanded (out of scope per source-context budget)."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Excluded Contribution\" means net cash proceeds ... received by the Initial Borrower after the Effective Date from: (1) contributions to its common equity capital; (2) dividends, distributions, fees and other payments from any Unrestricted Subsidiaries or joint ventures or Investments in entities that are not Restricted Subsidiaries; and (3) the sale ... of Capital Stock ... in each case designated as Excluded Contributions by the Initial Borrower, which are excluded from the calculation set forth in Section 6.08(a)(3) hereof; provided that any such dividends, distributions, fees or other payments so designated pursuant to clause (2) ... shall be excluded from the definition of 'Consolidated Net Income'."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:0de1eac47e117eb423383cc1",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Excluded Revolving Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "ABL Loans",
+      "Effective Date"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Clause (i) is expressly '[reserved]' (no content to represent); clauses (ii) and (iii) are fully self-contained descriptions of revolving/ABL loans incurred post-Effective Date for working capital, or incurred concurrently with or as part of a related series of transactions."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Excluded Revolving Loans\" means as of any date of determination (i) [reserved], (ii) the aggregate principal amount of any revolving loans (including any ABL Loans) incurred after the Effective Date to fund working capital and (iii) the aggregate principal amount of any revolving loans (including any ABL Loans) that are incurred substantially concurrently or ... related to a series of transactions ... with the transaction for which such determination is being made."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f113f7e600e83b068096802f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Excluded Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Unrestricted Subsidiary",
+      "Immaterial Subsidiary",
+      "Foreign Subsidiary",
+      "FSHCO",
+      "CFC",
+      "Domestic Subsidiary",
+      "Collateral and Guarantee Requirement",
+      "Receivables Subsidiary",
+      "Permitted Acquisition"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Clauses (a)-(h) and (j)-(l) are fully self-contained disjunctive membership tests (non-wholly-owned status, scheduled subsidiaries, Unrestricted/Immaterial Subsidiary status, legal/contractual guarantee prohibitions with a carve-out for prohibitions incurred in contemplation of acquisition, Foreign Subsidiary/FSHCO/CFC-related Domestic Subsidiary status, Receivables Subsidiaries, not-for-profit/captive-insurance/broker-dealer/special-purpose subsidiaries, and newly formed acquisition vehicles holding no material assets).",
+      "Clause (i) cross-references 'clause (i) of the last paragraph of the definition of the term \"Collateral and Guarantee Requirement\"'; that definition was retrieved and clause (i) of its concluding paragraph is the cost-versus-benefit exception excusing pledges/guarantees where cost is excessive relative to Lender benefit - this confirms the cross-reference's substance, though the 'Collateral and Guarantee Requirement' definition text itself was truncated at retrieval and is not separately re-modeled here.",
+      "The trailing proviso disqualifies any such Subsidiary from Excluded Subsidiary status during any period it is a 'Discretionary Guarantor', but 'Discretionary Guarantor' is not defined anywhere in this instrument's documents (confirmed via direct lookup - no matching definition found), so the precise scope/trigger of that proviso cannot be represented and is flagged as a genuine gap rather than guessed."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Excluded Subsidiary\" means (a) any Subsidiary that is not a wholly owned subsidiary of the Initial Borrower ... (i) any other Subsidiary not required to become a Loan Party pursuant to clause (i) of the last paragraph of the definition of the term \"Collateral and Guarantee Requirement,\" ... provided, that any Subsidiary described above shall be deemed not to be an Excluded Subsidiary during any period when such Subsidiary is a Discretionary Guarantor (other than for purposes of determining whether such Subsidiary is required to remain as a Subsidiary Loan Party ...)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "unresolvedIssues": [
+   "This submission compiles the four independently defined terms found in the supplied §1.01 excerpt: 'Excluded Assets', 'Excluded Contribution', 'Excluded Revolving Loans', and 'Excluded Subsidiary'. No independently operative WireRule (permission/prohibition/ratio test) exists in this source - it is a pure definitions section - so the rules array is empty by design, not by omission.",
+   "The single Frozen Semantic Inventory item (CRITICAL threshold in 'Excluded Assets' clause (i)) is consumed on the 'Excluded Assets' WireDefinition and represented as an explicit ADD/SUBTRACT/MULTIPLY/PERCENT expression tree using the CFC and FSHCO definitions resolved from the provided context regions.",
+   "Cross-references to Section 6.01, Section 6.08(a), and Section 6.08(a)(3) were left unexpanded because they are informational (identifying where a defined amount is used/excluded elsewhere) rather than determinative of the defined terms' own operative meaning, and Phase 2 already reported them as out-of-scope for source-context expansion.",
+   "Two specific cross-referenced terms material to 'Excluded Subsidiary' were affirmatively investigated via tools: 'Collateral and Guarantee Requirement' (resolved, confirming the substance of clause (i)'s reference) and 'Discretionary Guarantor' (confirmed genuinely absent from the entire instrument package, not merely unretrieved) - both outcomes are reflected in that definition's sufficiencyReasons rather than assumed."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 64144,
+   "outputTokens": 19555,
+   "costUsd": 0.323838
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:59a131febb1cba2629e81709",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Excluded Assets",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "ADD",
+     "type": "MONEY",
+     "exprId": "ir-expr:44aab1b17bef304c0a646d71",
+     "operands": [
+      {
+       "kind": "SUBTRACT",
+       "type": "MONEY",
+       "exprId": "ir-expr:4a29165a02f8ca33354186df",
+       "left": {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "Outstanding Voting Equity Interests of First-Tier CFC or FSHCO",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:7c7b53787460a5238337b21b"
+       },
+       "right": {
+        "kind": "MULTIPLY",
+        "type": "MONEY",
+        "exprId": "ir-expr:91cca0775c0353b62318e44e",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "type": "PERCENT",
+          "value": 0.65,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(i)",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:aa28ae250556af017b766a17"
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "Outstanding Voting Equity Interests of First-Tier CFC or FSHCO",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:7c7b53787460a5238337b21b"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(i)",
+         "excerpt": null
+        }
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(i)",
+        "excerpt": null
+       }
+      },
+      {
+       "kind": "SUBTRACT",
+       "type": "MONEY",
+       "exprId": "ir-expr:76db142eaffdaff5ca31f930",
+       "left": {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "Outstanding Non-Voting Equity Interests of First-Tier CFC or FSHCO",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:585fddb18f3ed2b182c4af57"
+       },
+       "right": {
+        "kind": "MULTIPLY",
+        "type": "MONEY",
+        "exprId": "ir-expr:8969296e5114aa5371750ff4",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "type": "PERCENT",
+          "value": 1,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(i)",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:fa1ca58a1aab665ae6776fb7"
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "Outstanding Non-Voting Equity Interests of First-Tier CFC or FSHCO",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:585fddb18f3ed2b182c4af57"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(i)",
+         "excerpt": null
+        }
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(i)",
+        "excerpt": null
+       }
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(i)",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "CFC",
+     "FSHCO",
+     "Equity Interests",
+     "Receivables Subsidiary",
+     "Permitted Receivables Financing",
+     "Unrestricted Subsidiary",
+     "Cash Equivalents",
+     "Requirements of Law"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Clause (i)'s quantitative 65% voting / 100% non-voting equity threshold (the sole CRITICAL inventory item for this definition) is modeled as an explicit computation using CFC/FSHCO definitions resolved from the record.",
+     "Clauses (a)-(h) and (j)-(t) of the definition are qualitative, category-based collateral exclusions (real property, restricted licenses/contracts, margin stock, tax-cost or perfection-cost exclusions, receivables financing carve-outs, escrowed bond proceeds, deposit/cash accounts, etc.) that are eligibility/membership tests rather than calculations; they are preserved verbatim via citation/excerpt but not reduced to individual computational nodes, since the IR's arithmetic/comparison primitives do not fit a pure category-membership test.",
+     "Clause (q) cross-references Section 6.01 only to describe which escrowed indebtedness proceeds qualify; not required to represent this definition's own criteria, and Section 6.01 was not expanded (out of scope per source-context budget)."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Excluded Assets\" means ... (a) any interest in real property ... (i) any of the Equity Interests in excess of 65% of the outstanding voting Equity Interests and 100% of the outstanding non-voting Equity Interests of (A) any first-tier Foreign Subsidiary that is a CFC or (B) any first-tier FSHCO (unless it would be an Excluded Asset under another clause of this definition) ... (t) any other goods, intangibles, instruments, investment property, chattel paper, documents of title or money to the extent that the cost of obtaining a security interest ... is excessive in relation to the benefit to the Lenders ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "bf087a69a8fd07a277893a35"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:24c09a1fbd21f5699a1c98b3",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Excluded Contribution",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Unrestricted Subsidiary",
+     "Restricted Subsidiary",
+     "Capital Stock",
+     "Disqualified Stock",
+     "Designated Preferred Stock",
+     "Consolidated Net Income",
+     "Parent Entity"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The full qualifying-source list (equity contributions; dividends/distributions/fees/payments from Unrestricted Subsidiaries, joint ventures, or non-Restricted-Subsidiary Investments; and certain qualifying Capital Stock sales), the designation requirement by the Initial Borrower, and the proviso excluding clause (2) amounts from 'Consolidated Net Income' are all given in full self-contained text.",
+     "The cross-reference to Section 6.08(a)(3) only identifies where such amounts are excluded from a calculation; it is not required to determine what qualifies as an Excluded Contribution and was not expanded (out of scope per source-context budget)."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Excluded Contribution\" means net cash proceeds ... received by the Initial Borrower after the Effective Date from: (1) contributions to its common equity capital; (2) dividends, distributions, fees and other payments from any Unrestricted Subsidiaries or joint ventures or Investments in entities that are not Restricted Subsidiaries; and (3) the sale ... of Capital Stock ... in each case designated as Excluded Contributions by the Initial Borrower, which are excluded from the calculation set forth in Section 6.08(a)(3) hereof; provided that any such dividends, distributions, fees or other payments so designated pursuant to clause (2) ... shall be excluded from the definition of 'Consolidated Net Income'."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:0de1eac47e117eb423383cc1",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Excluded Revolving Loans",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "ABL Loans",
+     "Effective Date"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Clause (i) is expressly '[reserved]' (no content to represent); clauses (ii) and (iii) are fully self-contained descriptions of revolving/ABL loans incurred post-Effective Date for working capital, or incurred concurrently with or as part of a related series of transactions."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Excluded Revolving Loans\" means as of any date of determination (i) [reserved], (ii) the aggregate principal amount of any revolving loans (including any ABL Loans) incurred after the Effective Date to fund working capital and (iii) the aggregate principal amount of any revolving loans (including any ABL Loans) that are incurred substantially concurrently or ... related to a series of transactions ... with the transaction for which such determination is being made."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f113f7e600e83b068096802f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Excluded Subsidiary",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Unrestricted Subsidiary",
+     "Immaterial Subsidiary",
+     "Foreign Subsidiary",
+     "FSHCO",
+     "CFC",
+     "Domestic Subsidiary",
+     "Collateral and Guarantee Requirement",
+     "Receivables Subsidiary",
+     "Permitted Acquisition"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Clauses (a)-(h) and (j)-(l) are fully self-contained disjunctive membership tests (non-wholly-owned status, scheduled subsidiaries, Unrestricted/Immaterial Subsidiary status, legal/contractual guarantee prohibitions with a carve-out for prohibitions incurred in contemplation of acquisition, Foreign Subsidiary/FSHCO/CFC-related Domestic Subsidiary status, Receivables Subsidiaries, not-for-profit/captive-insurance/broker-dealer/special-purpose subsidiaries, and newly formed acquisition vehicles holding no material assets).",
+     "Clause (i) cross-references 'clause (i) of the last paragraph of the definition of the term \"Collateral and Guarantee Requirement\"'; that definition was retrieved and clause (i) of its concluding paragraph is the cost-versus-benefit exception excusing pledges/guarantees where cost is excessive relative to Lender benefit - this confirms the cross-reference's substance, though the 'Collateral and Guarantee Requirement' definition text itself was truncated at retrieval and is not separately re-modeled here.",
+     "The trailing proviso disqualifies any such Subsidiary from Excluded Subsidiary status during any period it is a 'Discretionary Guarantor', but 'Discretionary Guarantor' is not defined anywhere in this instrument's documents (confirmed via direct lookup - no matching definition found), so the precise scope/trigger of that proviso cannot be represented and is flagged as a genuine gap rather than guessed."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Excluded Subsidiary\" means (a) any Subsidiary that is not a wholly owned subsidiary of the Initial Borrower ... (i) any other Subsidiary not required to become a Loan Party pursuant to clause (i) of the last paragraph of the definition of the term \"Collateral and Guarantee Requirement,\" ... provided, that any Subsidiary described above shall be deemed not to be an Excluded Subsidiary during any period when such Subsidiary is a Discretionary Guarantor (other than for purposes of determining whether such Subsidiary is required to remain as a Subsidiary Loan Party ...)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01 'Excluded Assets' clauses (a)-(h), (j)-(t)",
+    "semanticRequirement": "A way to represent a long disjunctive list of qualitative, non-numeric asset-category membership/eligibility tests (e.g. 'any interest in real property', 'margin stock', 'commercial tort claims ... except to the extent perfectable by UCC filing') as first-class structured logic rather than only as citation/excerpt text.",
+    "whyExistingPrimitivesFail": "AND/OR/NOT/COMPARE are built for boolean propositions over numeric or defined-term comparisons, not for enumerable category-membership predicates over asset types with their own nested carve-outs (e.g. 'except to the extent a security interest therein can be perfected by filing a UCC financing statement'); forcing each into COMPARE/UNSUPPORTED per clause would fragment one cohesive definition into dozens of disconnected UNSUPPORTED leaves without meaningfully improving fidelity.",
+    "candidateGeneralizedPrimitive": "A CATEGORY_MEMBERSHIP or ENUMERATED_CARVEOUT node type: (setName/categoryDescription, exceptions[]) that can be OR-combined, purpose-built for exclusion/inclusion lists that are legally operative but not arithmetic."
+   }
+  ],
+  "unresolvedIssues": [
+   "This submission compiles the four independently defined terms found in the supplied §1.01 excerpt: 'Excluded Assets', 'Excluded Contribution', 'Excluded Revolving Loans', and 'Excluded Subsidiary'. No independently operative WireRule (permission/prohibition/ratio test) exists in this source - it is a pure definitions section - so the rules array is empty by design, not by omission.",
+   "The single Frozen Semantic Inventory item (CRITICAL threshold in 'Excluded Assets' clause (i)) is consumed on the 'Excluded Assets' WireDefinition and represented as an explicit ADD/SUBTRACT/MULTIPLY/PERCENT expression tree using the CFC and FSHCO definitions resolved from the provided context regions.",
+   "Cross-references to Section 6.01, Section 6.08(a), and Section 6.08(a)(3) were left unexpanded because they are informational (identifying where a defined amount is used/excluded elsewhere) rather than determinative of the defined terms' own operative meaning, and Phase 2 already reported them as out-of-scope for source-context expansion.",
+   "Two specific cross-referenced terms material to 'Excluded Subsidiary' were affirmatively investigated via tools: 'Collateral and Guarantee Requirement' (resolved, confirming the substance of clause (i)'s reference) and 'Discretionary Guarantor' (confirmed genuinely absent from the entire instrument package, not merely unretrieved) - both outcomes are reflected in that definition's sufficiencyReasons rather than assumed."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Collateral and Guarantee Requirement"
+    },
+    "outputSummary": "definition \"Collateral and Guarantee Requirement\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 4059,
+    "timestamp": "2026-09-14T18:01:41.431Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": true,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Collateral and Guarantee Requirement",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:7fe4e2ca21ed245e41b8d8d9",
+     "sourceNodeKey": "doc-a::1.01(2)(c)",
+     "charStart": 70923,
+     "charEnd": 78364,
+     "rawText": "“ Collateral and Guarantee Requirement ” means, at any time, subject to any applicable limitations set forth in this\nAgreement or the other Loan Documents, the requirement that:\n\n(a)\nthe Administrative Agent shall have received from (i) the Loan Parties, the Security Documents and the\nGuarantee Agreement required pursuant to Section 4.01(a)(ii) in the case of any Person that becomes a Subsidiary Loan Party after the Effective Date (including by ceasing to be an Excluded Subsidiary, provided that, notwithstanding anything to\nthe contrary, any Person that is required to become a Subsidiary Loan Party as a result of ceasing to be an Excluded Subsidiary shall not be required to become a Subsidiary Loan Party on or prior to the date that is ninety (90) days (or such\nlonger period as the Administrative Agent shall reasonably agree) after the date on which the Initial Borrower becomes aware that such Subsidiary has ceased to be an Excluded Subsidiary), a supplement to the Collateral Agreement, in the form\nspecified therein, duly executed and delivered on behalf of such Person, in each case under this clause (a) together with, in the case of any such Loan Documents executed and delivered after the Effective Date, documents and, to the extent\nreasonably requested by Administrative Agent, opinions of the type referred to in Section 4.01(a)(iv);\n\n(b)\nall outstanding Equity Interests of the Restricted Parties (other than any Equity Interests constituting\nExcluded Assets or Equity Interests of Immaterial Subsidiaries) owned by any Loan Party shall be pledged pursuant to the Collateral Agreement (and, subject to the ABL Intercreditor Agreement and any other applicable Customary Intercreditor Agreement\nin effect, the Collateral Agent shall have received certificates or other instruments representing all such Equity Interests (if any originals exist), together with undated stock powers or other instruments of transfer with respect thereto endorsed\nin blank); and\n\n-15-\n\n(c)\nif any Indebtedness for borrowed money of the Borrowers or any Subsidiary in a principal amount of\n$112.0 million or more is owing by such obligor to any Loan Party, such Indebtedness shall be evidenced by a promissory note, such promissory note shall have been pledged pursuant to the Collateral Agreement (and, subject to the ABL\nIntercreditor Agreement and any applicable Customary Intercreditor Agreement in effect, the Collateral Agent shall have received all such promissory notes, together with undated instruments of transfer with respect thereto endorsed in blank).\n\nNotwithstanding the foregoing provisions of this definition or anything in this Agreement or any other Loan Document to the contrary,\n(i) the foregoing provisions of this definition shall not require the creation or perfection of pledges of or security interests in, or the obtaining of title insurance, surveys, legal opinions or other deliverables with respect to, particular\nassets of the Loan Parties, or the provision of Guarantees by any Subsidiary, if, and for so long as and to the extent that the cost (as reasonably agreed by the Initial Borrower in good faith in consultation with the Administrative Agent) of\ncreating or perfecting such pledges or security interests in such assets, or obtaining such title insurance, surveys, legal opinions or other deliverables in respect of such assets, or providing such Guarantees (taking into account any material\nadverse Tax consequences (including the imposition of withholding or other material Taxes)), shall be excessive in view of the benefits to be obtained by the Lenders therefrom (or the relevant assets or actions shall be limited in a manner\nreasonably agreed by the Administrative Agent and the Initial Borrower in order to reduce such cost), (ii) Liens required to be granted from time to time pursuant to the term “Collateral and Guarantee Requirement” shall be subject to\nexceptions and limitations set forth in the Security Documents, (iii) in no event shall control agreements or other control or similar arrangements be required with respect to deposit accounts, securities accounts, commodities accounts or other\nassets specifically requiring perfection by control agreements (other than any such control agreement or other control or similar agreements as required by an ABL Facility and only for so long as such ABL Facility is in effect), (iv) no perfection\nactions shall be required with respect to Vehicles and other assets subject to certificates of title, (v) no perfection shall be required with respect to promissory notes evidencing debt for borrowed money in a principal amount of less than\n$112.0 million (other than the filing of UCC financing statements), (vi) no actions in any non-U.S. jurisdiction or required by the laws of any non-U.S.\njurisdiction shall be required to be taken to create any security interests in assets of the Loan Parties (including any Equity Interests of Foreign Subsidiaries and any Foreign Intellectual Property) or to perfect or make enforceable any security\ninterests in any such assets, (vii) no actions shall be required to perfect a security interest in letter of credit rights, letters of credit, commercial tort claims or chattel paper (other than the filing of UCC financing statements), (viii)\nno delivery of share certificates evidencing Equity Interests in Immaterial Subsidiaries shall be required, (ix) in no event shall the Collateral include any Excluded Assets, (x) in no event shall any landlord waivers, estoppels,\ncollateral access agreements or bailee letters or other actions, including with respect to the creation or perfection of security interests with respect to such real property, be required with respect to real property and (xi) for the avoidance\nof doubt, the Loan Parties will not be required, and the Administrative Agent is not authorized, to take any actions to perfect the Collateral other than (A) filing UCC financing statements in the appropriate jurisdictions, (B) making\ncustomary filings in the United States Patent and Trademark Office with respect to any material U.S. registered or issued patents, trademarks, industrial designs and any applications therefor and the United States Copyright Office of the Library of\nCongress with respect to material copyright registrations in the U.S. and (C) delivery of certificated Equity Interests and debt instruments, in each case, to the extent required under the Collateral Agreement. The Administrative Agent may\ngrant extensions of time for the creation and perfection of security interests in or the obtaining of title insurance, surveys, legal opinions or other deliverables with respect to particular assets or the provision of any Guarantee by any\nSubsidiary (including extensions beyond the Effective Date or in connection with assets acquired, or Subsidiaries formed or acquired, after the Effective Date) in its reasonable discretion. Notwithstanding anything herein to the contrary, at the\nInitial Borrower’s sole election, the Initial Borrower may elect to (i) add any Discretionary Guarantor in accordance with Section 9.23, (ii) pledge assets that otherwise constitute Excluded Assets to the Secured Parties as\nCollateral hereunder and/or (iii) take any other actions reasonably required to accomplish the foregoing, including any such action not otherwise required to satisfy the Collateral and Guarantee Requirement hereunder or any other Loan Document.\n\n",
+     "contentHash": "3b1d0ff1e3b9f2ba00da869f54fd05d96e8c029b8e9be52c8d420e3ed257546f",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Discretionary Guarantor"
+    },
+    "outputSummary": "refused: no defined term matching \"Discretionary Guarantor\" found in this instrument's documents",
+    "charsReturned": 87,
+    "timestamp": "2026-09-14T18:01:41.432Z"
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d-excluded-assets",
+     "termName": "Excluded Assets",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "ADD",
+      "operands": [
+       {
+        "kind": "SUBTRACT",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "Outstanding Voting Equity Interests of First-Tier CFC or FSHCO"
+        },
+        "right": {
+         "kind": "MULTIPLY",
+         "operands": [
+          {
+           "kind": "PERCENT",
+           "value": 0.65,
+           "citation": "§1.01(i)"
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "metricName": "Outstanding Voting Equity Interests of First-Tier CFC or FSHCO"
+          }
+         ],
+         "citation": "§1.01(i)"
+        },
+        "citation": "§1.01(i)"
+       },
+       {
+        "kind": "SUBTRACT",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "Outstanding Non-Voting Equity Interests of First-Tier CFC or FSHCO"
+        },
+        "right": {
+         "kind": "MULTIPLY",
+         "operands": [
+          {
+           "kind": "PERCENT",
+           "value": 1,
+           "citation": "§1.01(i)"
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "metricName": "Outstanding Non-Voting Equity Interests of First-Tier CFC or FSHCO"
+          }
+         ],
+         "citation": "§1.01(i)"
+        },
+        "citation": "§1.01(i)"
+       }
+      ],
+      "citation": "§1.01(i)"
+     },
+     "dependsOnTerms": [
+      "CFC",
+      "FSHCO",
+      "Equity Interests",
+      "Receivables Subsidiary",
+      "Permitted Receivables Financing",
+      "Unrestricted Subsidiary",
+      "Cash Equivalents",
+      "Requirements of Law"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Clause (i)'s quantitative 65% voting / 100% non-voting equity threshold (the sole CRITICAL inventory item for this definition) is modeled as an explicit computation using CFC/FSHCO definitions resolved from the record.",
+      "Clauses (a)-(h) and (j)-(t) of the definition are qualitative, category-based collateral exclusions (real property, restricted licenses/contracts, margin stock, tax-cost or perfection-cost exclusions, receivables financing carve-outs, escrowed bond proceeds, deposit/cash accounts, etc.) that are eligibility/membership tests rather than calculations; they are preserved verbatim via citation/excerpt but not reduced to individual computational nodes, since the IR's arithmetic/comparison primitives do not fit a pure category-membership test.",
+      "Clause (q) cross-references Section 6.01 only to describe which escrowed indebtedness proceeds qualify; not required to represent this definition's own criteria, and Section 6.01 was not expanded (out of scope per source-context budget)."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Excluded Assets\" means ... (a) any interest in real property ... (i) any of the Equity Interests in excess of 65% of the outstanding voting Equity Interests and 100% of the outstanding non-voting Equity Interests of (A) any first-tier Foreign Subsidiary that is a CFC or (B) any first-tier FSHCO (unless it would be an Excluded Asset under another clause of this definition) ... (t) any other goods, intangibles, instruments, investment property, chattel paper, documents of title or money to the extent that the cost of obtaining a security interest ... is excessive in relation to the benefit to the Lenders ...",
+     "inventoryItemIds": [
+      "bf087a69a8fd07a277893a35"
+     ]
+    },
+    {
+     "localRef": "d-excluded-contribution",
+     "termName": "Excluded Contribution",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Unrestricted Subsidiary",
+      "Restricted Subsidiary",
+      "Capital Stock",
+      "Disqualified Stock",
+      "Designated Preferred Stock",
+      "Consolidated Net Income",
+      "Parent Entity"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The full qualifying-source list (equity contributions; dividends/distributions/fees/payments from Unrestricted Subsidiaries, joint ventures, or non-Restricted-Subsidiary Investments; and certain qualifying Capital Stock sales), the designation requirement by the Initial Borrower, and the proviso excluding clause (2) amounts from 'Consolidated Net Income' are all given in full self-contained text.",
+      "The cross-reference to Section 6.08(a)(3) only identifies where such amounts are excluded from a calculation; it is not required to determine what qualifies as an Excluded Contribution and was not expanded (out of scope per source-context budget)."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Excluded Contribution\" means net cash proceeds ... received by the Initial Borrower after the Effective Date from: (1) contributions to its common equity capital; (2) dividends, distributions, fees and other payments from any Unrestricted Subsidiaries or joint ventures or Investments in entities that are not Restricted Subsidiaries; and (3) the sale ... of Capital Stock ... in each case designated as Excluded Contributions by the Initial Borrower, which are excluded from the calculation set forth in Section 6.08(a)(3) hereof; provided that any such dividends, distributions, fees or other payments so designated pursuant to clause (2) ... shall be excluded from the definition of 'Consolidated Net Income'."
+    },
+    {
+     "localRef": "d-excluded-revolving-loans",
+     "termName": "Excluded Revolving Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "ABL Loans",
+      "Effective Date"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Clause (i) is expressly '[reserved]' (no content to represent); clauses (ii) and (iii) are fully self-contained descriptions of revolving/ABL loans incurred post-Effective Date for working capital, or incurred concurrently with or as part of a related series of transactions."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Excluded Revolving Loans\" means as of any date of determination (i) [reserved], (ii) the aggregate principal amount of any revolving loans (including any ABL Loans) incurred after the Effective Date to fund working capital and (iii) the aggregate principal amount of any revolving loans (including any ABL Loans) that are incurred substantially concurrently or ... related to a series of transactions ... with the transaction for which such determination is being made."
+    },
+    {
+     "localRef": "d-excluded-subsidiary",
+     "termName": "Excluded Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Unrestricted Subsidiary",
+      "Immaterial Subsidiary",
+      "Foreign Subsidiary",
+      "FSHCO",
+      "CFC",
+      "Domestic Subsidiary",
+      "Collateral and Guarantee Requirement",
+      "Receivables Subsidiary",
+      "Permitted Acquisition"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Clauses (a)-(h) and (j)-(l) are fully self-contained disjunctive membership tests (non-wholly-owned status, scheduled subsidiaries, Unrestricted/Immaterial Subsidiary status, legal/contractual guarantee prohibitions with a carve-out for prohibitions incurred in contemplation of acquisition, Foreign Subsidiary/FSHCO/CFC-related Domestic Subsidiary status, Receivables Subsidiaries, not-for-profit/captive-insurance/broker-dealer/special-purpose subsidiaries, and newly formed acquisition vehicles holding no material assets).",
+      "Clause (i) cross-references 'clause (i) of the last paragraph of the definition of the term \"Collateral and Guarantee Requirement\"'; that definition was retrieved and clause (i) of its concluding paragraph is the cost-versus-benefit exception excusing pledges/guarantees where cost is excessive relative to Lender benefit - this confirms the cross-reference's substance, though the 'Collateral and Guarantee Requirement' definition text itself was truncated at retrieval and is not separately re-modeled here.",
+      "The trailing proviso disqualifies any such Subsidiary from Excluded Subsidiary status during any period it is a 'Discretionary Guarantor', but 'Discretionary Guarantor' is not defined anywhere in this instrument's documents (confirmed via direct lookup - no matching definition found), so the precise scope/trigger of that proviso cannot be represented and is flagged as a genuine gap rather than guessed."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Excluded Subsidiary\" means (a) any Subsidiary that is not a wholly owned subsidiary of the Initial Borrower ... (i) any other Subsidiary not required to become a Loan Party pursuant to clause (i) of the last paragraph of the definition of the term \"Collateral and Guarantee Requirement,\" ... provided, that any Subsidiary described above shall be deemed not to be an Excluded Subsidiary during any period when such Subsidiary is a Discretionary Guarantor (other than for purposes of determining whether such Subsidiary is required to remain as a Subsidiary Loan Party ...)."
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "inventoryDispositions": [],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01 'Excluded Assets' clauses (a)-(h), (j)-(t)",
+     "semanticRequirement": "A way to represent a long disjunctive list of qualitative, non-numeric asset-category membership/eligibility tests (e.g. 'any interest in real property', 'margin stock', 'commercial tort claims ... except to the extent perfectable by UCC filing') as first-class structured logic rather than only as citation/excerpt text.",
+     "whyExistingPrimitivesFail": "AND/OR/NOT/COMPARE are built for boolean propositions over numeric or defined-term comparisons, not for enumerable category-membership predicates over asset types with their own nested carve-outs (e.g. 'except to the extent a security interest therein can be perfected by filing a UCC financing statement'); forcing each into COMPARE/UNSUPPORTED per clause would fragment one cohesive definition into dozens of disconnected UNSUPPORTED leaves without meaningfully improving fidelity.",
+     "candidateGeneralizedPrimitive": "A CATEGORY_MEMBERSHIP or ENUMERATED_CARVEOUT node type: (setName/categoryDescription, exceptions[]) that can be OR-combined, purpose-built for exclusion/inclusion lists that are legally operative but not arithmetic."
+    }
+   ],
+   "overallNotes": [
+    "This submission compiles the four independently defined terms found in the supplied §1.01 excerpt: 'Excluded Assets', 'Excluded Contribution', 'Excluded Revolving Loans', and 'Excluded Subsidiary'. No independently operative WireRule (permission/prohibition/ratio test) exists in this source - it is a pure definitions section - so the rules array is empty by design, not by omission.",
+    "The single Frozen Semantic Inventory item (CRITICAL threshold in 'Excluded Assets' clause (i)) is consumed on the 'Excluded Assets' WireDefinition and represented as an explicit ADD/SUBTRACT/MULTIPLY/PERCENT expression tree using the CFC and FSHCO definitions resolved from the provided context regions.",
+    "Cross-references to Section 6.01, Section 6.08(a), and Section 6.08(a)(3) were left unexpanded because they are informational (identifying where a defined amount is used/excluded elsewhere) rather than determinative of the defined terms' own operative meaning, and Phase 2 already reported them as out-of-scope for source-context expansion.",
+    "Two specific cross-referenced terms material to 'Excluded Subsidiary' were affirmatively investigated via tools: 'Collateral and Guarantee Requirement' (resolved, confirming the substance of clause (i)'s reference) and 'Discretionary Guarantor' (confirmed genuinely absent from the entire instrument package, not merely unretrieved) - both outcomes are reflected in that definition's sufficiencyReasons rather than assumed."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T18:02:27.985Z",
+   "inputTokens": 64144,
+   "outputTokens": 19555,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 189792,
+   "calculatedCostUsd": 0.323838
+  },
+  "cacheKey": "4e17029f0ddd79728f0aa858fe57246bbf55d4fcc9a570d27f1c24380cbd2728",
+  "compiledAt": "2026-09-14T18:02:27.985Z"
+ },
+ "wave": "B",
+ "attemptsSoFar": 1
+}

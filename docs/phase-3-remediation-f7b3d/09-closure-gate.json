@@ -1,0 +1,368 @@
+{
+ "artifact": "F-7B.3D §20 scorer-alignment closure gate",
+ "at": "2026-09-14T18:42:41.530Z",
+ "points": [
+  {
+   "n": 1,
+   "criterion": "legacy mismatch reproduced before change",
+   "pass": true,
+   "evidence": {
+    "values": 2,
+    "lineageOccurrences": 6,
+    "sourceUnverifiable": 77,
+    "measuredAt": "9c97a544634b98eecbd0c5da627ff0f1d59ce24e"
+   }
+  },
+  {
+   "n": 2,
+   "criterion": "scorer understands definitionConflicts",
+   "pass": true,
+   "evidence": {
+    "referencesConflictEvidence": true,
+    "conflicts": 2
+   }
+  },
+  {
+   "n": 3,
+   "criterion": "all three definition proof classes recognized",
+   "pass": true,
+   "evidence": {
+    "PLANNER_DEFINITION_UNIT": 237,
+    "OWNED_INVENTORY_LINEAGE": 42,
+    "UNIQUE_PRIMARY_SOURCE_DECLARATION": 77,
+    "NONE": 0,
+    "proofClassesDeclared": [
+     "PLANNER_DEFINITION_UNIT",
+     "OWNED_INVENTORY_LINEAGE",
+     "UNIQUE_PRIMARY_SOURCE_DECLARATION"
+    ],
+    "shardFirstUnitIsNotAProofClass": true
+   }
+  },
+  {
+   "n": 4,
+   "criterion": "lineage ids canonicalized before comparison",
+   "pass": true,
+   "evidence": {
+    "canonicalizedDigestIds": 59
+   }
+  },
+  {
+   "n": 5,
+   "criterion": "primary lineage metric uses distinct owned ids",
+   "pass": true,
+   "evidence": {
+    "expected": 92,
+    "preserved": 92,
+    "lost": 0
+   }
+  },
+  {
+   "n": 6,
+   "criterion": "occurrence count kept diagnostic only",
+   "pass": true,
+   "evidence": {
+    "occurrencesDiagnostic": 6,
+    "distinctLost": 0
+   }
+  },
+  {
+   "n": 7,
+   "criterion": "owned values lost = 0 on frozen 25",
+   "pass": true,
+   "evidence": {
+    "valuesLost": 0,
+    "preservedOnlyByConflictEvidence": 2
+   }
+  },
+  {
+   "n": 8,
+   "criterion": "owned distinct lineage lost = 0 on frozen 25",
+   "pass": true,
+   "evidence": {
+    "distinctLost": 0,
+    "preservedOnlyByConflictEvidence": 3
+   }
+  },
+  {
+   "n": 9,
+   "criterion": "source-unverifiable authoritative IR = 0",
+   "pass": true,
+   "evidence": {
+    "sourceUnverifiable": 0,
+    "objectsKept": 327
+   }
+  },
+  {
+   "n": 10,
+   "criterion": "contextual evidence cannot satisfy owned preservation",
+   "pass": true,
+   "evidence": {
+    "contextualOwnershipCredit": 0,
+    "valueDispositions": {
+     "OWNED_PRESERVED": 43,
+     "OWNED_PRESERVED_IN_CONFLICT_EVIDENCE": 2,
+     "CONTEXTUAL_EXCLUDED": 0,
+     "OWNED_LOST": 0
+    },
+    "lineageDispositions": {
+     "OWNED_PRESERVED": 89,
+     "OWNED_PRESERVED_IN_CONFLICT_EVIDENCE": 3,
+     "CONTEXTUAL_EXCLUDED": 0,
+     "OWNED_LOST": 0
+    },
+    "distinguishedInScorer": true,
+    "assertedInTests": true
+   }
+  },
+  {
+   "n": 11,
+   "criterion": "conflict evidence earns no Pass-C credit",
+   "pass": true,
+   "evidence": {
+    "globalRepresented": 63,
+    "executedRepresented": 53
+   }
+  },
+  {
+   "n": 12,
+   "criterion": "accountability unchanged",
+   "pass": true,
+   "evidence": {
+    "owned": 93,
+    "represented": 53,
+    "nonComputational": 1,
+    "unsupported": 21,
+    "ambiguous": 0,
+    "missing": 18,
+    "rate": 0.8065
+   }
+  },
+  {
+   "n": 13,
+   "criterion": "conflict count and variants unchanged",
+   "pass": true,
+   "evidence": {
+    "count": 2,
+    "variants": 4,
+    "requiringReview": 2,
+    "names": [
+     "Annual Threshold",
+     "Approved Bank"
+    ],
+    "values": [
+     "MONEY:100000000",
+     "MONEY:216000000",
+     "MONEY:250000000",
+     "PERCENT:0.3"
+    ],
+    "canonicalSufficiency": [
+     {
+      "termName": "Annual Threshold",
+      "sufficiency": "AMBIGUOUS"
+     },
+     {
+      "termName": "Approved Bank",
+      "sufficiency": "AMBIGUOUS"
+     }
+    ]
+   }
+  },
+  {
+   "n": 14,
+   "criterion": "Pass C unchanged",
+   "pass": true,
+   "evidence": {
+    "represented": 63,
+    "unsupportedPlusNonComputational": 22,
+    "materialMissing": 23
+   }
+  },
+  {
+   "n": 15,
+   "criterion": "no production semantic behavior changed",
+   "pass": true,
+   "evidence": {
+    "touched": [
+     "scripts/f7b-score.ts",
+     "docs/phase-3-remediation-f7b3d/00-scorer-disagreement.json",
+     "docs/phase-3-remediation-f7b3d/03-authoritative-scorer-replay.json",
+     "docs/phase-3-remediation-f7b3d/09-closure-gate.json",
+     "scripts/f7b3d-gate.ts",
+     "scripts/f7b3d-replay.ts",
+     "scripts/f7b3d-reproduce.ts",
+     "tests/contract-model/f7b3d-scorer-alignment.test.ts"
+    ]
+   }
+  },
+  {
+   "n": 16,
+   "criterion": "paid calls = 0",
+   "pass": true,
+   "evidence": {
+    "modelCalls": 0
+   }
+  },
+  {
+   "n": 17,
+   "criterion": "cost = $0",
+   "pass": true,
+   "evidence": {
+    "costUsd": 0
+   }
+  }
+ ],
+ "passed": 17,
+ "total": 17,
+ "rootCause": {
+  "module": "scripts/f7b-score.ts",
+  "classifications": [
+   "STALE_TRUST_SCORER_PRE_CONFLICT_EVIDENCE",
+   "STALE_TRUST_SCORER_PRE_SOURCE_ANCHOR_PROOF"
+  ],
+  "functions": {
+   "B value preservation": "compared canonical arrays only, so a value held in first-class conflict evidence read as lost",
+   "C lineage preservation": "compared raw occurrence counts across two id spaces, so digest-form citations read as losses and one item cited many times inflated the count",
+   "H source verifiability": "knew only two proof classes, so 77 anchored definitions were false positives"
+  }
+ },
+ "before": {
+  "ownedValuesLost": 2,
+  "valuesLostList": [
+   "MONEY:100000000",
+   "MONEY:250000000"
+  ],
+  "ownedLineageOccurrencesLost": 6,
+  "sourceUnverifiable": 77,
+  "certifiedSideAudit": "owned values lost 0, distinct owned lineage lost 0"
+ },
+ "after": {
+  "trust": {
+   "dangerousSilentOmissions": 0,
+   "falseCompleteness": 0,
+   "contextualOwnershipCredit": 0,
+   "sourceUnverifiableIrSurviving": 0,
+   "conflictingDuplicateSilentlyMerged": 0,
+   "valuesLostByStitching": 0,
+   "ownedLineageDistinctLost": 0,
+   "ownedLineageOccurrencesLostDiagnostic": 6,
+   "danglingReferencesCausedByStitching": 0,
+   "danglingLineageAfterPassC": 0,
+   "danglingRuleReferencesSurviving": 0,
+   "danglingRuleReferencesConvertedExplicitly": 0,
+   "failedShardHidden": 0,
+   "missingMaterialOwnedItemHidden": 0
+  },
+  "proofClassCounts": {
+   "PLANNER_DEFINITION_UNIT": 237,
+   "OWNED_INVENTORY_LINEAGE": 42,
+   "UNIQUE_PRIMARY_SOURCE_DECLARATION": 77,
+   "NONE": 0
+  },
+  "lineage": {
+   "lineageRefsBefore": 154,
+   "lineageRefsAfter": 148,
+   "ownedLineageDistinctExpected": 92,
+   "ownedLineageDistinctPreserved": 92,
+   "ownedLineageDistinctLost": 0,
+   "ownedLineageDistinctLostList": [],
+   "ownedLineageDistinctPreservedOnlyByConflictEvidence": 3,
+   "ownedLineageOccurrencesExpected": 154,
+   "ownedLineageOccurrencesPreserved": 154,
+   "ownedLineageOccurrencesLostDiagnostic": 6,
+   "dispositions": {
+    "OWNED_PRESERVED": 89,
+    "OWNED_PRESERVED_IN_CONFLICT_EVIDENCE": 3,
+    "CONTEXTUAL_EXCLUDED": 0,
+    "OWNED_LOST": 0
+   },
+   "canonicalizedDigestIds": 59,
+   "strippedClaimsOnUnownedItems": 0,
+   "strippedOnItemsOwnedBySomeShard": 0,
+   "strippedOnUnknownIds": 0,
+   "danglingLineageAfter": 0,
+   "lineageRefsInDroppedEmissions": 0,
+   "unknownLineageIdsBefore": 0
+  },
+  "values": {
+   "valueOccurrencesBefore": 78,
+   "valueOccurrencesAfter": 74,
+   "distinctValuesBefore": 45,
+   "distinctValuesAfter": 43,
+   "valuesOnlyInDroppedContextualEmissions": 0,
+   "valuesInConflictEvidence": 4,
+   "valuesPreservedOnlyByConflictEvidence": 2,
+   "valuesLostByStitching": 0,
+   "valuesLostList": [],
+   "valuesLostBeforeConflictEvidenceDiagnostic": 2,
+   "dispositions": {
+    "OWNED_PRESERVED": 43,
+    "OWNED_PRESERVED_IN_CONFLICT_EVIDENCE": 2,
+    "CONTEXTUAL_EXCLUDED": 0,
+    "OWNED_LOST": 0
+   },
+   "duplicatesCollapsed": 0,
+   "multisetOccurrencesRemoved": 4
+  }
+ },
+ "accountabilityUnchanged": {
+  "executedShardMaterialOwned": 93,
+  "executedRepresented": 53,
+  "executedIntentionallyNonComputational": 1,
+  "executedUnsupported": 21,
+  "executedAmbiguous": 0,
+  "executedMissing": 18,
+  "executedAccountabilityRate": 0.8065,
+  "globalPassC": {
+   "inventoried": 109,
+   "material": 108,
+   "represented": 63,
+   "intentionallyNonComputational": 1,
+   "unsupported": 21,
+   "ambiguous": 0,
+   "missingFromComposition": 24,
+   "materialMissingFromComposition": 23,
+   "criticalMissingFromComposition": 6,
+   "materialQuantitativeValues": 142,
+   "materialQuantitativeValuesMissing": 25,
+   "uninventoriedValues": 95,
+   "unaccountedSource": 721,
+   "danglingLineageReferences": 0,
+   "canonicalizedLineageReferences": 0
+  },
+  "semanticallyComplete": false
+ },
+ "conflicts": {
+  "count": 2,
+  "variants": 4,
+  "requiringReview": 2,
+  "names": [
+   "Annual Threshold",
+   "Approved Bank"
+  ],
+  "values": [
+   "MONEY:100000000",
+   "MONEY:216000000",
+   "MONEY:250000000",
+   "PERCENT:0.3"
+  ],
+  "canonicalSufficiency": [
+   {
+    "termName": "Annual Threshold",
+    "sufficiency": "AMBIGUOUS"
+   },
+   {
+    "termName": "Approved Bank",
+    "sufficiency": "AMBIGUOUS"
+   }
+  ]
+ },
+ "moneyPreserved": {
+  "MONEY:100000000": true,
+  "MONEY:250000000": true
+ },
+ "singleAuthoritativeOutput": "scripts/f7b-score.ts now produces the current architecture's trust figures directly. Future Wave-C and 36-shard gates no longer need a side audit; the F-7B.3C artifacts remain historical and were not rewritten.",
+ "verdict": "F7_SCORER_ALIGNED_READY_FOR_WAVE_C",
+ "waveCExecuted": false,
+ "productionActivationPerformed": false
+}

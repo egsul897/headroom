@@ -1,0 +1,2894 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:e3ddb1887d6b8499929a",
+  "shardHash": "5abb0fef127e861eb31ccdac3a9b3f638d515658777915f9cbde032e5a1ce30f",
+  "ordinal": 11,
+  "ownedUnits": 13,
+  "sourceChars": 11506,
+  "contextEntries": 2,
+  "contextChars": 1262,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 3,
+  "ownedMaterialItems": 3,
+  "estimatedFirstTurnInputTokens": 25206,
+  "preCallEstimate": {
+   "inputTokens": 82928,
+   "outputTokens": 34000,
+   "usd": 0.5058560000000001
+  },
+  "actual": {
+   "inputTokens": 104848,
+   "outputTokens": 27092,
+   "turns": 3,
+   "latencyMs": 238471,
+   "costUsd": 0.48061600000000004,
+   "attemptCount": 3,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "toolCalls": 5,
+  "toolCallNames": [
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getDefinition",
+   "getDefinition",
+   "getChildren"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 20,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 0,
+   "dispositioned": 3,
+   "missingMaterial": 0,
+   "valuesRepresented": 0,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "UNSUPPORTED": 3
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Contract Consideration",
+   "Controlling",
+   "Controlled",
+   "Converted Restricted Subsidiary",
+   "Converted Unrestricted Subsidiary",
+   "Covered Party",
+   "Cured Default"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].SUBTRACT.left.SUM[0]] this is a filtered subset of the Consolidated Total Debt metric, not a separately stated dollar amount or independent metric reference",
+   "[definition[d1].SUBTRACT.left.SUM[1]] filtered subset defined by subordination and Lien/Collateral-coverage conditions, not a separately stated amount",
+   "[definition[d1].SUBTRACT.left] SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d1].SUBTRACT.right] cross-references the cash/Cash Equivalents netting mechanic embedded in the Consolidated Total Debt definition rather than stating an independent figure",
+   "[definition[d1]] SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d2].SUBTRACT.left.SUM[0]] a qualitative class of Indebtedness, not a single stated figure",
+   "[definition[d2].SUBTRACT.left.SUM[1]] a day-count-gated qualifying condition for inclusion, not a discrete stated amount",
+   "[definition[d2].SUBTRACT.left.SUM[2]] a day-count-gated qualifying condition for inclusion, not a discrete stated amount",
+   "[definition[d2].SUBTRACT.left.SUM[3]] a compound proviso list of named exclusions/carvebacks, not reducible to a single arithmetic value",
+   "[definition[d2].SUBTRACT.left] SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d2].SUBTRACT.right] depends on the undefined-in-scope term 'Restricted' and on GAAP balance-sheet classification of Cash Equivalents, not a stated figure",
+   "[definition[d2]] SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d3].SUBTRACT.left] depends on GAAP balance-sheet captions not independently stated as figures in this text",
+   "[definition[d3].SUBTRACT.right] a compound nine-item exclusion list applied to a GAAP balance-sheet caption, not reducible to a stated figure",
+   "[definition[d3]] SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d5]] the Excess Cash Flow definition was retrieved but the specific sub-definition of 'Contract Consideration' fell outside the returned (truncated) span",
+   "[definition[d10]] the Consolidated EBITDA definition was retrieved but the specific sub-definition of 'Converted Restricted Subsidiary' fell outside the returned (truncated) span",
+   "[definition[d11]] the Consolidated EBITDA definition was retrieved but the specific sub-definition of 'Converted Unrestricted Subsidiary' fell outside the returned (truncated) span",
+   "[definition[d16].AND[0]] an eligibility cap comparing the new Indebtedness amount against the Refinanced Debt amount, which requires a specific transaction's principal amount not supplied as a value here",
+   "[definition[d16].AND[1]] a qualitative maturity/WAL comparison test, not reducible to arithmetic primitives without transaction-specific inputs",
+   "[definition[d16].AND[2]] a qualitative guarantor-scope restriction",
+   "[definition[d16].AND[3]] a qualitative security/priority restriction dependent on undefined-in-scope terms (Secured Obligations, Intercreditor Agreement)",
+   "[definition[d16].AND[4]] a subjective reasonableness standard, not a computable value",
+   "[definition[d16]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d17]] Section 7.01's chapeau was retrieved and only introduces the Events of Default list across 14 sub-clauses (7.01(a)-(n)); the specific sub-clause defining 'Cured Default' was not identified within the available tool budget",
+   "This §1.01 excerpt contains 20 independently declared defined terms; all 20 are extracted as separate WireDefinitions per the multiple-definitions rule.",
+   "Three CRITICAL/MATERIAL frozen inventory items (5-Business-Day LC drawing threshold, 10-Business-Day note-obligation threshold, and the LC/bank-guarantee exclusion carveback) are all consumed on nested UNSUPPORTED operand nodes within the Consolidated Total Debt definition's calculationExpression.",
+   "Section 9.22 was retrieved and fully resolves 'Covered Party'. Section 7.01's chapeau was retrieved but only introduces a 14-clause Events of Default list; the specific cure sub-clause defining 'Cured Default' was not further pinpointed within budget, so that term remains MISSING_CONTEXT. 'Excess Cash Flow' and 'Consolidated EBITDA' were retrieved but truncated before reaching the specific sub-definitions of 'Contract Consideration', 'Converted Restricted Subsidiary' and 'Converted Unrestricted Subsidiary', so those three remain MISSING_CONTEXT.",
+   "The CFR citations in 'Covered Entity' and the unresolved-elsewhere terms (Investor, Borrowers, Restricted Parties, Cash Equivalents, GAAP, Loans, Incremental Loan, Collateral, ABL Obligations, Secured Obligations, Intercreditor Agreement, Loan Party, Restricted Subsidiary, Maturity Exception Facility, Weighted Average Life to Maturity, Refinanced Debt, Hedging Obligations, Cash Management Obligations, Permitted Receivables Financing, Funded Debt, ABL Loans, Capitalized Lease Obligation, Consolidated Net Income, Unrestricted Subsidiary, Supported QFC) are carried as dependsOnTerms rather than resolved, consistent with Phase 2's own confirmation that these are not declared elsewhere in the package."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:e3ddb1887d6b8499929a",
+  "shardHash": "5abb0fef127e861eb31ccdac3a9b3f638d515658777915f9cbde032e5a1ce30f",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:3d42cf36a5713c080bde38e5",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Consolidated Senior Secured Debt",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "(no evidence captured)",
+      "semanticDescription": "unrecognized or malformed expression (kind=\"SUBTRACT\")",
+      "reason": "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "attemptedStructure": {
+       "kind": "SUBTRACT",
+       "type": "NUMBER",
+       "exprId": "ir-expr:33f03c331599a46ce5ba250e",
+       "left": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "(no evidence captured)",
+        "semanticDescription": "unrecognized or malformed expression (kind=\"SUM\")",
+        "reason": "SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "attemptedStructure": {
+         "kind": "SUM",
+         "type": "NUMBER",
+         "exprId": "ir-expr:b13af0222b73b7b93dd65f85",
+         "operands": [
+          {
+           "kind": "UNSUPPORTED",
+           "type": null,
+           "sourceEvidence": "§1.01: \"...Consolidated Total Debt (a) consisting of the Loans (including any Incremental Loan)...\"",
+           "semanticDescription": "the portion of Consolidated Total Debt consisting of the Loans (including any Incremental Loan)",
+           "reason": "this is a filtered subset of the Consolidated Total Debt metric, not a separately stated dollar amount or independent metric reference",
+           "requiredReview": true,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:78c1a483f10bf0e68732a14d"
+          },
+          {
+           "kind": "UNSUPPORTED",
+           "type": null,
+           "sourceEvidence": "§1.01: \"...(b) that is not subordinated in right of payment to the Loan Document Obligations and is secured by Liens on all or a material portion of the Collateral (including...the ABL Obligations)\"",
+           "semanticDescription": "the portion of Consolidated Total Debt that is not subordinated in right of payment to the Loan Document Obligations and is secured by Liens on all or a material portion of the Collateral (including the ABL Obligations)",
+           "reason": "filtered subset defined by subordination and Lien/Collateral-coverage conditions, not a separately stated amount",
+           "requiredReview": true,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:99db943e61e6f014e8ce0a14"
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        },
+        "exprId": "ir-expr:460c348574142d96f6e0bdc5"
+       },
+       "right": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01: \"...reduced, without duplication, by the amount of cash and Cash Equivalents reducing Consolidated Total Debt as of the relevant date of determination.\"",
+        "semanticDescription": "amount of cash and Cash Equivalents reducing Consolidated Total Debt as of the relevant date of determination",
+        "reason": "cross-references the cash/Cash Equivalents netting mechanic embedded in the Consolidated Total Debt definition rather than stating an independent figure",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:cbf97a72478603e6c37998b4"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "exprId": "ir-expr:31806e59622146519b8546e1"
+     },
+     "dependsOnTerms": [
+      "Consolidated Total Debt",
+      "Loans",
+      "Incremental Loan",
+      "Collateral",
+      "ABL Obligations",
+      "Cash Equivalents",
+      "Loan Document Obligations"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "the SUM/SUBTRACT arithmetic shape (sum of two Consolidated Total Debt subsets, minus cash netting) is faithfully preserved",
+      "each subset is itself defined by qualifying conditions (identity as Loans; subordination/security status) rather than a discrete stated amount, so each is represented as UNSUPPORTED rather than guessed as a value",
+      "this is a filtered subset of the Consolidated Total Debt metric, not a separately stated dollar amount or independent metric reference",
+      "filtered subset defined by subordination and Lien/Collateral-coverage conditions, not a separately stated amount",
+      "SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+      "cross-references the cash/Cash Equivalents netting mechanic embedded in the Consolidated Total Debt definition rather than stating an independent figure",
+      "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the sum, without duplication, of the amount of Consolidated Total Debt (a) consisting of the Loans...and (b) that is not subordinated...and is secured by Liens on all or a material portion of the Collateral..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:4ec4f9600f1a21a6075b4b64",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Consolidated Total Debt",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "(no evidence captured)",
+      "semanticDescription": "unrecognized or malformed expression (kind=\"SUBTRACT\")",
+      "reason": "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "attemptedStructure": {
+       "kind": "SUBTRACT",
+       "type": "NUMBER",
+       "exprId": "ir-expr:612a7b7ce8f289a51f371f80",
+       "left": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "(no evidence captured)",
+        "semanticDescription": "unrecognized or malformed expression (kind=\"SUM\")",
+        "reason": "SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "attemptedStructure": {
+         "kind": "SUM",
+         "type": "NUMBER",
+         "exprId": "ir-expr:40900fcbe142c1035f3ad8db",
+         "operands": [
+          {
+           "kind": "UNSUPPORTED",
+           "type": null,
+           "sourceEvidence": "§1.01: \"the outstanding principal amount of all third-party Indebtedness for borrowed money (including purchase money Indebtedness)...\"",
+           "semanticDescription": "outstanding principal amount of all third-party Indebtedness for borrowed money (including purchase money Indebtedness) of the Restricted Parties, GAAP consolidated basis, excluding acquisition-method/pushdown accounting discounting effects",
+           "reason": "a qualitative class of Indebtedness, not a single stated figure",
+           "requiredReview": true,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:f13b8f7fd5f19b8719eb8430"
+          },
+          {
+           "kind": "UNSUPPORTED",
+           "type": null,
+           "sourceEvidence": "§1.01: \"unreimbursed drawings under letters of credit that are outstanding more than five (5) Business Days after the date such amount is drawn (to the extent not cash collateralized)\"",
+           "semanticDescription": "unreimbursed drawings under letters of credit that are outstanding more than five (5) Business Days after the date drawn (to the extent not cash collateralized)",
+           "reason": "a day-count-gated qualifying condition for inclusion, not a discrete stated amount",
+           "requiredReview": true,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:55e3b4667baa2372f6a3d7d4",
+           "inventoryItemIds": [
+            "inv-item:4fbeb76b3ff7e0e7bf4f9f18"
+           ]
+          },
+          {
+           "kind": "UNSUPPORTED",
+           "type": null,
+           "sourceEvidence": "§1.01: \"third-party Indebtedness obligations evidenced by notes or similar instruments...to the extent not paid within ten (10) Business Days of becoming due (unless subject to a good faith dispute)\"",
+           "semanticDescription": "third-party Indebtedness obligations evidenced by notes or similar instruments (excluding surety/performance bonds) to the extent not paid within ten (10) Business Days of becoming due (unless subject to good faith dispute)",
+           "reason": "a day-count-gated qualifying condition for inclusion, not a discrete stated amount",
+           "requiredReview": true,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:b634e2f269895385672ff035",
+           "inventoryItemIds": [
+            "inv-item:9f956507175088716bed50e3"
+           ]
+          },
+          {
+           "kind": "UNSUPPORTED",
+           "type": null,
+           "sourceEvidence": "§1.01: \"provided that Consolidated Total Debt will not include Indebtedness in respect of (a)...(g)...except to the extent of unreimbursed obligations in respect of drawn letters of credit...or bank guarantees that are not reimbursed within five (5) Business Days after such amount is drawn...\"",
+           "semanticDescription": "exclusions (a)-(g) from Consolidated Total Debt: Permitted Receivables Financing; letters of credit/bank guarantees except unreimbursed drawn amounts not reimbursed within five (5) Business Days (including undrawn ABL Letters of Credit); Hedging Obligations; performance/surety bonds; Cash Management Obligations; certain lease obligations; and lease obligations covered by an irrevocable satisfaction deposit",
+           "reason": "a compound proviso list of named exclusions/carvebacks, not reducible to a single arithmetic value",
+           "requiredReview": true,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:bcd4a5dab7411db2312b7f12",
+           "inventoryItemIds": [
+            "inv-item:508f9c3cece4ebb6c6fed189"
+           ]
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        },
+        "exprId": "ir-expr:6e9f6021d64562292b115c5b"
+       },
+       "right": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01: \"minus (ii) the aggregate amount of cash and Cash Equivalents on the consolidated balance sheet of the Restricted Parties on such date that is not Restricted\"",
+        "semanticDescription": "aggregate amount of cash and Cash Equivalents on the consolidated balance sheet of the Restricted Parties that is not Restricted",
+        "reason": "depends on the undefined-in-scope term 'Restricted' and on GAAP balance-sheet classification of Cash Equivalents, not a stated figure",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:572001516fc1f1e691051148"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "exprId": "ir-expr:2aaadb69be1baf6ea0f3c693"
+     },
+     "dependsOnTerms": [
+      "Restricted Parties",
+      "Cash Equivalents",
+      "Permitted Receivables Financing",
+      "Hedging Obligations",
+      "Cash Management Obligations",
+      "ABL Credit Agreement",
+      "GAAP"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "top-level SUBTRACT structure (gross qualifying debt minus unrestricted cash/Cash Equivalents) is faithfully preserved",
+      "each qualifying-debt category and each exclusion is a compound eligibility/day-count condition rather than a discrete amount, so represented as UNSUPPORTED nodes carrying the relevant inventory items",
+      "the anti-double-counting clarification ('counted only once...guarantees...disregarded') is purely descriptive and not separately modeled",
+      "a qualitative class of Indebtedness, not a single stated figure",
+      "a day-count-gated qualifying condition for inclusion, not a discrete stated amount",
+      "a day-count-gated qualifying condition for inclusion, not a discrete stated amount",
+      "a compound proviso list of named exclusions/carvebacks, not reducible to a single arithmetic value",
+      "SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+      "depends on the undefined-in-scope term 'Restricted' and on GAAP balance-sheet classification of Cash Equivalents, not a stated figure",
+      "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means...(i) the outstanding principal amount of all third-party Indebtedness for borrowed money...minus (ii) the aggregate amount of cash and Cash Equivalents...that is not Restricted"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:87f78893565584549efb3b2f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Consolidated Working Capital",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "(no evidence captured)",
+      "semanticDescription": "unrecognized or malformed expression (kind=\"SUBTRACT\")",
+      "reason": "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "attemptedStructure": {
+       "kind": "SUBTRACT",
+       "type": "NUMBER",
+       "exprId": "ir-expr:3127f6c4f4b64b1872e2dda3",
+       "left": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01: \"the sum of all amounts (other than cash and Cash Equivalents) that would...be set forth opposite the caption ‘total current assets’...excluding the current portion of current and deferred income taxes\"",
+        "semanticDescription": "sum of all amounts (other than cash and Cash Equivalents) set forth opposite 'total current assets' (or like caption) on the Restricted Parties' consolidated GAAP balance sheet, excluding the current portion of current/deferred income taxes",
+        "reason": "depends on GAAP balance-sheet captions not independently stated as figures in this text",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:9307f914ddd02ad1fe8fb346"
+       },
+       "right": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01: \"the sum of all amounts...set forth opposite the caption ‘total current liabilities’...including deferred revenue but excluding, without duplication, (i)...(ix)...\"",
+        "semanticDescription": "sum of all amounts set forth opposite 'total current liabilities' (or like caption), including deferred revenue but excluding nine enumerated categories (current portion of Funded Debt, Loans/ABL Loans/LC obligations, current interest, current/deferred income taxes, restructuring accruals, current Capitalized Lease Obligations, earmarked deferred revenue, unpaid earn-outs, other long-term liabilities)",
+        "reason": "a compound nine-item exclusion list applied to a GAAP balance-sheet caption, not reducible to a stated figure",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:aa79aa1e73b8f245a2e907fe"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "exprId": "ir-expr:3278469c1dedd3229f445980"
+     },
+     "dependsOnTerms": [
+      "Cash Equivalents",
+      "Funded Debt",
+      "Loans",
+      "ABL Loans",
+      "Capitalized Lease Obligation",
+      "Consolidated Net Income",
+      "Unrestricted Subsidiary",
+      "Excess Cash Flow"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "the top-level excess-of (current assets minus current liabilities) structure is preserved",
+      "each side is a compound GAAP-caption/exclusion-list definition not reducible to arithmetic primitives",
+      "the special Excess Cash Flow measurement-window and exclusion provisos (acquisitions/dispositions/Unrestricted Subsidiary designations measured to first anniversary; exclusions (A)-(B)(I)-(III)) are real but purely descriptive scoping rules for a different calculation and are not separately modeled as a value",
+      "depends on GAAP balance-sheet captions not independently stated as figures in this text",
+      "a compound nine-item exclusion list applied to a GAAP balance-sheet caption, not reducible to a stated figure",
+      "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, at any date, the excess of (a) the sum of all amounts...'total current assets'...over (b) the sum of all amounts...'total current liabilities'..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:9573de5871f389ab75c448ad",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Contingent Obligations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully quoted qualitative definition of guaranty-type contingent obligations; no numeric or arithmetic component"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means...any obligation of such Person guaranteeing any leases, dividends or other obligations that do not constitute Indebtedness...of any other Person..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:37ae4d5430a0229a186d0486",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Contract Consideration",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in the definition of ‘Excess Cash Flow.’\"",
+      "semanticDescription": "meaning assigned within the definition of 'Excess Cash Flow'",
+      "reason": "the Excess Cash Flow definition was retrieved but the specific sub-definition of 'Contract Consideration' fell outside the returned (truncated) span",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:dc09624ae18909b8e34ea1f2"
+     },
+     "dependsOnTerms": [
+      "Excess Cash Flow"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "term is defined purely by cross-reference into 'Excess Cash Flow'; that definition was retrieved but truncated before reaching the specific sub-clause defining 'Contract Consideration'",
+      "the Excess Cash Flow definition was retrieved but the specific sub-definition of 'Contract Consideration' fell outside the returned (truncated) span"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in the definition of “Excess Cash Flow.”"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:02ae53bafae184024591cc06",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Control",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully quoted qualitative definition; no numeric component"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the possession, directly or indirectly, of the power to direct or cause the direction of the management or policies...of a Person..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:c8f646371464f290ced957be",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Controlling",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Control"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "a one-line correlative-meaning pointer to 'Control', fully quoted"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "have meanings correlative thereto."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:a018575380f9c3197b54335f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Controlled",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Control"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "a one-line correlative-meaning pointer to 'Control', fully quoted"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "have meanings correlative thereto."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:77bf561b9539d77f62eaf4e2",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Controlled Investment Affiliate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Investor",
+      "Borrowers",
+      "Control"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully quoted qualitative definition; the referenced terms 'Investor' and 'Borrowers' are used only descriptively and do not change the definition's own (non-numeric) structure"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, as to any Person, any other Person, other than any Investor, which directly or indirectly controls, is controlled by, or is under common control with such Person and is organized...primarily for making direct or indirect equity or debt investments in the Borrowers..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:97aad43ed7abc5a72387d9f7",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Converted Restricted Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in the definition of ‘Consolidated EBITDA.’\"",
+      "semanticDescription": "meaning assigned within the definition of 'Consolidated EBITDA'",
+      "reason": "the Consolidated EBITDA definition was retrieved but the specific sub-definition of 'Converted Restricted Subsidiary' fell outside the returned (truncated) span",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:7795d837bc2c68fc611f0789"
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "term is defined purely by cross-reference into 'Consolidated EBITDA'; that definition was retrieved but truncated before reaching this sub-clause",
+      "the Consolidated EBITDA definition was retrieved but the specific sub-definition of 'Converted Restricted Subsidiary' fell outside the returned (truncated) span"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in the definition of “Consolidated EBITDA.”"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:1ea4783d1f26d9eee4f889c8",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Converted Unrestricted Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in the definition of ‘Consolidated EBITDA.’\"",
+      "semanticDescription": "meaning assigned within the definition of 'Consolidated EBITDA'",
+      "reason": "the Consolidated EBITDA definition was retrieved but the specific sub-definition of 'Converted Unrestricted Subsidiary' fell outside the returned (truncated) span",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:b738f26fb5ccd19fa193f072"
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "term is defined purely by cross-reference into 'Consolidated EBITDA'; that definition was retrieved but truncated before reaching this sub-clause",
+      "the Consolidated EBITDA definition was retrieved but the specific sub-definition of 'Converted Unrestricted Subsidiary' fell outside the returned (truncated) span"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in the definition of “Consolidated EBITDA.”"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:a77280e88c23620ce3a0fd1b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "CORRA",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully quoted qualitative definition of a published benchmark rate; no arithmetic component"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the Canadian Overnight Repo Rate Average administered and published by the Bank of Canada (or any successor administrator)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:346d6973be42e5f24186ab50",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "CORRA Administrator",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully quoted qualitative definition; no arithmetic component"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the Bank of Canada (or any successor administrator)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:51ab8ef9014fd28be63cf55f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Covered Entity",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully quoted three-prong definition referencing external federal regulations (12 C.F.R. §§252.82(b), 47.3(b), 382.2(b)); those are external regulatory citations, not internal cross-references, so their non-resolution within this instrument's package does not create a gap in this definition's own text"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means any of the following: (a) a ‘covered entity’...12 C.F.R. § 252.82(b); (b) a ‘covered bank’...12 C.F.R. § 47.3(b); or (c) a ‘covered FSI’...12 C.F.R. § 382.2(b)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:c8da068ccb8713983c913cf9",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Covered Party",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Covered Entity",
+      "Supported QFC"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "cross-reference to Section 9.22 was resolved via getReferencedProvision; Section 9.22 confirms the meaning is 'a Covered Entity that is party to a Supported QFC'"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §9.22",
+      "excerpt": "has the meaning assigned to such term in Section 9.22 (resolved: \"a Covered Entity that is party to a Supported QFC (each, a ‘Covered Party’)\")."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:8590ef150eb0c335bc2f37e5",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Credit Agreement Refinancing Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AND",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:5b449f3f0f53357492e3b98b",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01(a): \"is in an original aggregate principal amount...not greater than the aggregate principal amount...of the Refinanced Debt...plus any premium, accrued interest and fees and expenses...\"",
+        "semanticDescription": "condition (a): original aggregate principal amount (or accreted value) not greater than that of the Refinanced Debt (plus unutilized commitments/undrawn LCs), plus premium/accrued interest/fees and expenses",
+        "reason": "an eligibility cap comparing the new Indebtedness amount against the Refinanced Debt amount, which requires a specific transaction's principal amount not supplied as a value here",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:cd02a08c3225eee7184f6241"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01(b): \"does not (i) mature earlier than or have a Weighted Average Life to Maturity shorter than the Refinanced Debt or (ii) have mandatory redemption features...\"",
+        "semanticDescription": "condition (b): maturity/Weighted Average Life to Maturity not shorter than the Refinanced Debt, and no disqualifying mandatory redemption features (subject to Customary Exceptions and the Maturity Exception Facility carve-out)",
+        "reason": "a qualitative maturity/WAL comparison test, not reducible to arithmetic primitives without transaction-specific inputs",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:9e3e29d86c3df73f32048ad3"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01(c): \"shall not be guaranteed by any Restricted Subsidiary that is not a Loan Party\"",
+        "semanticDescription": "condition (c): shall not be guaranteed by any Restricted Subsidiary that is not a Loan Party",
+        "reason": "a qualitative guarantor-scope restriction",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:0f329c953243e22e49601b04"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01(d): \"is not secured by any Collateral that is not securing the Secured Obligations, (ii) is secured on a pari passu basis...(iii) is subject to the relevant Intercreditor Agreement(s)\"",
+        "semanticDescription": "condition (d): secured Credit Agreement Refinancing Indebtedness may not be secured by Collateral not securing the Secured Obligations, must be pari passu or junior to the Secured Obligations, and must be subject to the relevant Intercreditor Agreement(s)",
+        "reason": "a qualitative security/priority restriction dependent on undefined-in-scope terms (Secured Obligations, Intercreditor Agreement)",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:8e42948af9871f952f66d773"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01(e): \"otherwise has terms and conditions that shall be reasonably satisfactory to the Borrowers and the lenders...\"",
+        "semanticDescription": "condition (e): otherwise has terms and conditions reasonably satisfactory to the Borrowers and the lenders providing such Indebtedness",
+        "reason": "a subjective reasonableness standard, not a computable value",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:68090cf27748ba1036e04380"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Refinanced Debt",
+      "Weighted Average Life to Maturity",
+      "Customary Exceptions",
+      "Maturity Exception Facility",
+      "Restricted Subsidiary",
+      "Loan Party",
+      "Collateral",
+      "Secured Obligations",
+      "Intercreditor Agreement",
+      "Borrowers"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "the five-condition conjunctive (AND) eligibility structure of the definition is preserved",
+      "each individual condition is a qualitative/transaction-specific eligibility test not reducible to the arithmetic primitives without further transaction inputs, so each is UNSUPPORTED",
+      "an eligibility cap comparing the new Indebtedness amount against the Refinanced Debt amount, which requires a specific transaction's principal amount not supplied as a value here",
+      "a qualitative maturity/WAL comparison test, not reducible to arithmetic primitives without transaction-specific inputs",
+      "a qualitative guarantor-scope restriction",
+      "a qualitative security/priority restriction dependent on undefined-in-scope terms (Secured Obligations, Intercreditor Agreement)",
+      "a subjective reasonableness standard, not a computable value",
+      "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means Indebtedness issued...in exchange for, or to extend, renew, replace or refinance...existing Loans...provided that such...Indebtedness: (a)...(e)..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f56b3acde2791df20aca458b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Cured Default",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 7.01.\"",
+      "semanticDescription": "meaning assigned within Section 7.01 (Events of Default)",
+      "reason": "Section 7.01's chapeau was retrieved and only introduces the Events of Default list across 14 sub-clauses (7.01(a)-(n)); the specific sub-clause defining 'Cured Default' was not identified within the available tool budget",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:862c066d80e8e63ee68ebd01"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "cross-reference target (Section 7.01) was retrieved but only its chapeau/lead-in was returned; the specific cure-related sub-clause among its 14 children was not further retrieved",
+      "Section 7.01's chapeau was retrieved and only introduces the Events of Default list across 14 sub-clauses (7.01(a)-(n)); the specific sub-clause defining 'Cured Default' was not identified within the available tool budget"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §7.01",
+      "excerpt": "has the meaning assigned to such term in Section 7.01."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3f23ef4de264bd7cb94a3d32",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Customary Bridge Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Weighted Average Life to Maturity"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully quoted qualitative definition with a one-year maturity cap and two WAL/maturity comparison provisos; no dollar amount or metric formula involved"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means customary bridge loans with a maturity date of no longer than one (1) year; provided that (a)...(b)..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:767755a07cb8affb8527d018",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Customary Escrow Provisions",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully quoted one-line qualitative definition"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means customary redemption terms in connection with escrow arrangements."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:5c54c1987da13d37043a9117",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Customary Exceptions",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Customary Escrow Provisions"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully quoted qualitative definition; composed of a descriptive list (a) plus a cross-reference to the sibling term 'Customary Escrow Provisions' (b), which is also compiled in this same batch"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means (a) customary asset sale, insurance, casualty and condemnation proceeds events, excess cash flow sweeps, change-of-control offers, initial public offering or events of default and/or (b) Customary Escrow Provisions."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].SUBTRACT.left.SUM[0]] this is a filtered subset of the Consolidated Total Debt metric, not a separately stated dollar amount or independent metric reference",
+   "[definition[d1].SUBTRACT.left.SUM[1]] filtered subset defined by subordination and Lien/Collateral-coverage conditions, not a separately stated amount",
+   "[definition[d1].SUBTRACT.left] SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d1].SUBTRACT.right] cross-references the cash/Cash Equivalents netting mechanic embedded in the Consolidated Total Debt definition rather than stating an independent figure",
+   "[definition[d1]] SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d2].SUBTRACT.left.SUM[0]] a qualitative class of Indebtedness, not a single stated figure",
+   "[definition[d2].SUBTRACT.left.SUM[1]] a day-count-gated qualifying condition for inclusion, not a discrete stated amount",
+   "[definition[d2].SUBTRACT.left.SUM[2]] a day-count-gated qualifying condition for inclusion, not a discrete stated amount",
+   "[definition[d2].SUBTRACT.left.SUM[3]] a compound proviso list of named exclusions/carvebacks, not reducible to a single arithmetic value",
+   "[definition[d2].SUBTRACT.left] SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d2].SUBTRACT.right] depends on the undefined-in-scope term 'Restricted' and on GAAP balance-sheet classification of Cash Equivalents, not a stated figure",
+   "[definition[d2]] SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d3].SUBTRACT.left] depends on GAAP balance-sheet captions not independently stated as figures in this text",
+   "[definition[d3].SUBTRACT.right] a compound nine-item exclusion list applied to a GAAP balance-sheet caption, not reducible to a stated figure",
+   "[definition[d3]] SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d5]] the Excess Cash Flow definition was retrieved but the specific sub-definition of 'Contract Consideration' fell outside the returned (truncated) span",
+   "[definition[d10]] the Consolidated EBITDA definition was retrieved but the specific sub-definition of 'Converted Restricted Subsidiary' fell outside the returned (truncated) span",
+   "[definition[d11]] the Consolidated EBITDA definition was retrieved but the specific sub-definition of 'Converted Unrestricted Subsidiary' fell outside the returned (truncated) span",
+   "[definition[d16].AND[0]] an eligibility cap comparing the new Indebtedness amount against the Refinanced Debt amount, which requires a specific transaction's principal amount not supplied as a value here",
+   "[definition[d16].AND[1]] a qualitative maturity/WAL comparison test, not reducible to arithmetic primitives without transaction-specific inputs",
+   "[definition[d16].AND[2]] a qualitative guarantor-scope restriction",
+   "[definition[d16].AND[3]] a qualitative security/priority restriction dependent on undefined-in-scope terms (Secured Obligations, Intercreditor Agreement)",
+   "[definition[d16].AND[4]] a subjective reasonableness standard, not a computable value",
+   "[definition[d16]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d17]] Section 7.01's chapeau was retrieved and only introduces the Events of Default list across 14 sub-clauses (7.01(a)-(n)); the specific sub-clause defining 'Cured Default' was not identified within the available tool budget",
+   "This §1.01 excerpt contains 20 independently declared defined terms; all 20 are extracted as separate WireDefinitions per the multiple-definitions rule.",
+   "Three CRITICAL/MATERIAL frozen inventory items (5-Business-Day LC drawing threshold, 10-Business-Day note-obligation threshold, and the LC/bank-guarantee exclusion carveback) are all consumed on nested UNSUPPORTED operand nodes within the Consolidated Total Debt definition's calculationExpression.",
+   "Section 9.22 was retrieved and fully resolves 'Covered Party'. Section 7.01's chapeau was retrieved but only introduces a 14-clause Events of Default list; the specific cure sub-clause defining 'Cured Default' was not further pinpointed within budget, so that term remains MISSING_CONTEXT. 'Excess Cash Flow' and 'Consolidated EBITDA' were retrieved but truncated before reaching the specific sub-definitions of 'Contract Consideration', 'Converted Restricted Subsidiary' and 'Converted Unrestricted Subsidiary', so those three remain MISSING_CONTEXT.",
+   "The CFR citations in 'Covered Entity' and the unresolved-elsewhere terms (Investor, Borrowers, Restricted Parties, Cash Equivalents, GAAP, Loans, Incremental Loan, Collateral, ABL Obligations, Secured Obligations, Intercreditor Agreement, Loan Party, Restricted Subsidiary, Maturity Exception Facility, Weighted Average Life to Maturity, Refinanced Debt, Hedging Obligations, Cash Management Obligations, Permitted Receivables Financing, Funded Debt, ABL Loans, Capitalized Lease Obligation, Consolidated Net Income, Unrestricted Subsidiary, Supported QFC) are carried as dependsOnTerms rather than resolved, consistent with Phase 2's own confirmation that these are not declared elsewhere in the package."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 104848,
+   "outputTokens": 27092,
+   "costUsd": 0.48061600000000004
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:3d42cf36a5713c080bde38e5",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Consolidated Senior Secured Debt",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "(no evidence captured)",
+     "semanticDescription": "unrecognized or malformed expression (kind=\"SUBTRACT\")",
+     "reason": "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "attemptedStructure": {
+      "kind": "SUBTRACT",
+      "type": "NUMBER",
+      "exprId": "ir-expr:33f03c331599a46ce5ba250e",
+      "left": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "(no evidence captured)",
+       "semanticDescription": "unrecognized or malformed expression (kind=\"SUM\")",
+       "reason": "SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "attemptedStructure": {
+        "kind": "SUM",
+        "type": "NUMBER",
+        "exprId": "ir-expr:b13af0222b73b7b93dd65f85",
+        "operands": [
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01: \"...Consolidated Total Debt (a) consisting of the Loans (including any Incremental Loan)...\"",
+          "semanticDescription": "the portion of Consolidated Total Debt consisting of the Loans (including any Incremental Loan)",
+          "reason": "this is a filtered subset of the Consolidated Total Debt metric, not a separately stated dollar amount or independent metric reference",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:78c1a483f10bf0e68732a14d"
+         },
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01: \"...(b) that is not subordinated in right of payment to the Loan Document Obligations and is secured by Liens on all or a material portion of the Collateral (including...the ABL Obligations)\"",
+          "semanticDescription": "the portion of Consolidated Total Debt that is not subordinated in right of payment to the Loan Document Obligations and is secured by Liens on all or a material portion of the Collateral (including the ABL Obligations)",
+          "reason": "filtered subset defined by subordination and Lien/Collateral-coverage conditions, not a separately stated amount",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:99db943e61e6f014e8ce0a14"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "exprId": "ir-expr:460c348574142d96f6e0bdc5"
+      },
+      "right": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01: \"...reduced, without duplication, by the amount of cash and Cash Equivalents reducing Consolidated Total Debt as of the relevant date of determination.\"",
+       "semanticDescription": "amount of cash and Cash Equivalents reducing Consolidated Total Debt as of the relevant date of determination",
+       "reason": "cross-references the cash/Cash Equivalents netting mechanic embedded in the Consolidated Total Debt definition rather than stating an independent figure",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:cbf97a72478603e6c37998b4"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "exprId": "ir-expr:31806e59622146519b8546e1"
+    },
+    "dependsOnTerms": [
+     "Consolidated Total Debt",
+     "Loans",
+     "Incremental Loan",
+     "Collateral",
+     "ABL Obligations",
+     "Cash Equivalents",
+     "Loan Document Obligations"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "the SUM/SUBTRACT arithmetic shape (sum of two Consolidated Total Debt subsets, minus cash netting) is faithfully preserved",
+     "each subset is itself defined by qualifying conditions (identity as Loans; subordination/security status) rather than a discrete stated amount, so each is represented as UNSUPPORTED rather than guessed as a value",
+     "this is a filtered subset of the Consolidated Total Debt metric, not a separately stated dollar amount or independent metric reference",
+     "filtered subset defined by subordination and Lien/Collateral-coverage conditions, not a separately stated amount",
+     "SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+     "cross-references the cash/Cash Equivalents netting mechanic embedded in the Consolidated Total Debt definition rather than stating an independent figure",
+     "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the sum, without duplication, of the amount of Consolidated Total Debt (a) consisting of the Loans...and (b) that is not subordinated...and is secured by Liens on all or a material portion of the Collateral..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:4ec4f9600f1a21a6075b4b64",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Consolidated Total Debt",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "(no evidence captured)",
+     "semanticDescription": "unrecognized or malformed expression (kind=\"SUBTRACT\")",
+     "reason": "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "attemptedStructure": {
+      "kind": "SUBTRACT",
+      "type": "NUMBER",
+      "exprId": "ir-expr:612a7b7ce8f289a51f371f80",
+      "left": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "(no evidence captured)",
+       "semanticDescription": "unrecognized or malformed expression (kind=\"SUM\")",
+       "reason": "SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "attemptedStructure": {
+        "kind": "SUM",
+        "type": "NUMBER",
+        "exprId": "ir-expr:40900fcbe142c1035f3ad8db",
+        "operands": [
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01: \"the outstanding principal amount of all third-party Indebtedness for borrowed money (including purchase money Indebtedness)...\"",
+          "semanticDescription": "outstanding principal amount of all third-party Indebtedness for borrowed money (including purchase money Indebtedness) of the Restricted Parties, GAAP consolidated basis, excluding acquisition-method/pushdown accounting discounting effects",
+          "reason": "a qualitative class of Indebtedness, not a single stated figure",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:f13b8f7fd5f19b8719eb8430"
+         },
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01: \"unreimbursed drawings under letters of credit that are outstanding more than five (5) Business Days after the date such amount is drawn (to the extent not cash collateralized)\"",
+          "semanticDescription": "unreimbursed drawings under letters of credit that are outstanding more than five (5) Business Days after the date drawn (to the extent not cash collateralized)",
+          "reason": "a day-count-gated qualifying condition for inclusion, not a discrete stated amount",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:55e3b4667baa2372f6a3d7d4",
+          "inventoryItemIds": [
+           "inv-item:4fbeb76b3ff7e0e7bf4f9f18"
+          ]
+         },
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01: \"third-party Indebtedness obligations evidenced by notes or similar instruments...to the extent not paid within ten (10) Business Days of becoming due (unless subject to a good faith dispute)\"",
+          "semanticDescription": "third-party Indebtedness obligations evidenced by notes or similar instruments (excluding surety/performance bonds) to the extent not paid within ten (10) Business Days of becoming due (unless subject to good faith dispute)",
+          "reason": "a day-count-gated qualifying condition for inclusion, not a discrete stated amount",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:b634e2f269895385672ff035",
+          "inventoryItemIds": [
+           "inv-item:9f956507175088716bed50e3"
+          ]
+         },
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01: \"provided that Consolidated Total Debt will not include Indebtedness in respect of (a)...(g)...except to the extent of unreimbursed obligations in respect of drawn letters of credit...or bank guarantees that are not reimbursed within five (5) Business Days after such amount is drawn...\"",
+          "semanticDescription": "exclusions (a)-(g) from Consolidated Total Debt: Permitted Receivables Financing; letters of credit/bank guarantees except unreimbursed drawn amounts not reimbursed within five (5) Business Days (including undrawn ABL Letters of Credit); Hedging Obligations; performance/surety bonds; Cash Management Obligations; certain lease obligations; and lease obligations covered by an irrevocable satisfaction deposit",
+          "reason": "a compound proviso list of named exclusions/carvebacks, not reducible to a single arithmetic value",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:bcd4a5dab7411db2312b7f12",
+          "inventoryItemIds": [
+           "inv-item:508f9c3cece4ebb6c6fed189"
+          ]
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "exprId": "ir-expr:6e9f6021d64562292b115c5b"
+      },
+      "right": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01: \"minus (ii) the aggregate amount of cash and Cash Equivalents on the consolidated balance sheet of the Restricted Parties on such date that is not Restricted\"",
+       "semanticDescription": "aggregate amount of cash and Cash Equivalents on the consolidated balance sheet of the Restricted Parties that is not Restricted",
+       "reason": "depends on the undefined-in-scope term 'Restricted' and on GAAP balance-sheet classification of Cash Equivalents, not a stated figure",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:572001516fc1f1e691051148"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "exprId": "ir-expr:2aaadb69be1baf6ea0f3c693"
+    },
+    "dependsOnTerms": [
+     "Restricted Parties",
+     "Cash Equivalents",
+     "Permitted Receivables Financing",
+     "Hedging Obligations",
+     "Cash Management Obligations",
+     "ABL Credit Agreement",
+     "GAAP"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "top-level SUBTRACT structure (gross qualifying debt minus unrestricted cash/Cash Equivalents) is faithfully preserved",
+     "each qualifying-debt category and each exclusion is a compound eligibility/day-count condition rather than a discrete amount, so represented as UNSUPPORTED nodes carrying the relevant inventory items",
+     "the anti-double-counting clarification ('counted only once...guarantees...disregarded') is purely descriptive and not separately modeled",
+     "a qualitative class of Indebtedness, not a single stated figure",
+     "a day-count-gated qualifying condition for inclusion, not a discrete stated amount",
+     "a day-count-gated qualifying condition for inclusion, not a discrete stated amount",
+     "a compound proviso list of named exclusions/carvebacks, not reducible to a single arithmetic value",
+     "SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+     "depends on the undefined-in-scope term 'Restricted' and on GAAP balance-sheet classification of Cash Equivalents, not a stated figure",
+     "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means...(i) the outstanding principal amount of all third-party Indebtedness for borrowed money...minus (ii) the aggregate amount of cash and Cash Equivalents...that is not Restricted"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:87f78893565584549efb3b2f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Consolidated Working Capital",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "(no evidence captured)",
+     "semanticDescription": "unrecognized or malformed expression (kind=\"SUBTRACT\")",
+     "reason": "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "attemptedStructure": {
+      "kind": "SUBTRACT",
+      "type": "NUMBER",
+      "exprId": "ir-expr:3127f6c4f4b64b1872e2dda3",
+      "left": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01: \"the sum of all amounts (other than cash and Cash Equivalents) that would...be set forth opposite the caption ‘total current assets’...excluding the current portion of current and deferred income taxes\"",
+       "semanticDescription": "sum of all amounts (other than cash and Cash Equivalents) set forth opposite 'total current assets' (or like caption) on the Restricted Parties' consolidated GAAP balance sheet, excluding the current portion of current/deferred income taxes",
+       "reason": "depends on GAAP balance-sheet captions not independently stated as figures in this text",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:9307f914ddd02ad1fe8fb346"
+      },
+      "right": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01: \"the sum of all amounts...set forth opposite the caption ‘total current liabilities’...including deferred revenue but excluding, without duplication, (i)...(ix)...\"",
+       "semanticDescription": "sum of all amounts set forth opposite 'total current liabilities' (or like caption), including deferred revenue but excluding nine enumerated categories (current portion of Funded Debt, Loans/ABL Loans/LC obligations, current interest, current/deferred income taxes, restructuring accruals, current Capitalized Lease Obligations, earmarked deferred revenue, unpaid earn-outs, other long-term liabilities)",
+       "reason": "a compound nine-item exclusion list applied to a GAAP balance-sheet caption, not reducible to a stated figure",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:aa79aa1e73b8f245a2e907fe"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "exprId": "ir-expr:3278469c1dedd3229f445980"
+    },
+    "dependsOnTerms": [
+     "Cash Equivalents",
+     "Funded Debt",
+     "Loans",
+     "ABL Loans",
+     "Capitalized Lease Obligation",
+     "Consolidated Net Income",
+     "Unrestricted Subsidiary",
+     "Excess Cash Flow"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "the top-level excess-of (current assets minus current liabilities) structure is preserved",
+     "each side is a compound GAAP-caption/exclusion-list definition not reducible to arithmetic primitives",
+     "the special Excess Cash Flow measurement-window and exclusion provisos (acquisitions/dispositions/Unrestricted Subsidiary designations measured to first anniversary; exclusions (A)-(B)(I)-(III)) are real but purely descriptive scoping rules for a different calculation and are not separately modeled as a value",
+     "depends on GAAP balance-sheet captions not independently stated as figures in this text",
+     "a compound nine-item exclusion list applied to a GAAP balance-sheet caption, not reducible to a stated figure",
+     "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, at any date, the excess of (a) the sum of all amounts...'total current assets'...over (b) the sum of all amounts...'total current liabilities'..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:9573de5871f389ab75c448ad",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Contingent Obligations",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Indebtedness"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "fully quoted qualitative definition of guaranty-type contingent obligations; no numeric or arithmetic component"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means...any obligation of such Person guaranteeing any leases, dividends or other obligations that do not constitute Indebtedness...of any other Person..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:37ae4d5430a0229a186d0486",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Contract Consideration",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning assigned to such term in the definition of ‘Excess Cash Flow.’\"",
+     "semanticDescription": "meaning assigned within the definition of 'Excess Cash Flow'",
+     "reason": "the Excess Cash Flow definition was retrieved but the specific sub-definition of 'Contract Consideration' fell outside the returned (truncated) span",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:dc09624ae18909b8e34ea1f2"
+    },
+    "dependsOnTerms": [
+     "Excess Cash Flow"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "term is defined purely by cross-reference into 'Excess Cash Flow'; that definition was retrieved but truncated before reaching the specific sub-clause defining 'Contract Consideration'",
+     "the Excess Cash Flow definition was retrieved but the specific sub-definition of 'Contract Consideration' fell outside the returned (truncated) span"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of “Excess Cash Flow.”"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:02ae53bafae184024591cc06",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Control",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "fully quoted qualitative definition; no numeric component"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the possession, directly or indirectly, of the power to direct or cause the direction of the management or policies...of a Person..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:c8f646371464f290ced957be",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Controlling",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Control"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "a one-line correlative-meaning pointer to 'Control', fully quoted"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "have meanings correlative thereto."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:a018575380f9c3197b54335f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Controlled",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Control"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "a one-line correlative-meaning pointer to 'Control', fully quoted"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "have meanings correlative thereto."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:77bf561b9539d77f62eaf4e2",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Controlled Investment Affiliate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Investor",
+     "Borrowers",
+     "Control"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "fully quoted qualitative definition; the referenced terms 'Investor' and 'Borrowers' are used only descriptively and do not change the definition's own (non-numeric) structure"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, as to any Person, any other Person, other than any Investor, which directly or indirectly controls, is controlled by, or is under common control with such Person and is organized...primarily for making direct or indirect equity or debt investments in the Borrowers..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:97aad43ed7abc5a72387d9f7",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Converted Restricted Subsidiary",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning assigned to such term in the definition of ‘Consolidated EBITDA.’\"",
+     "semanticDescription": "meaning assigned within the definition of 'Consolidated EBITDA'",
+     "reason": "the Consolidated EBITDA definition was retrieved but the specific sub-definition of 'Converted Restricted Subsidiary' fell outside the returned (truncated) span",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:7795d837bc2c68fc611f0789"
+    },
+    "dependsOnTerms": [
+     "Consolidated EBITDA"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "term is defined purely by cross-reference into 'Consolidated EBITDA'; that definition was retrieved but truncated before reaching this sub-clause",
+     "the Consolidated EBITDA definition was retrieved but the specific sub-definition of 'Converted Restricted Subsidiary' fell outside the returned (truncated) span"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of “Consolidated EBITDA.”"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:1ea4783d1f26d9eee4f889c8",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Converted Unrestricted Subsidiary",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning assigned to such term in the definition of ‘Consolidated EBITDA.’\"",
+     "semanticDescription": "meaning assigned within the definition of 'Consolidated EBITDA'",
+     "reason": "the Consolidated EBITDA definition was retrieved but the specific sub-definition of 'Converted Unrestricted Subsidiary' fell outside the returned (truncated) span",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:b738f26fb5ccd19fa193f072"
+    },
+    "dependsOnTerms": [
+     "Consolidated EBITDA"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "term is defined purely by cross-reference into 'Consolidated EBITDA'; that definition was retrieved but truncated before reaching this sub-clause",
+     "the Consolidated EBITDA definition was retrieved but the specific sub-definition of 'Converted Unrestricted Subsidiary' fell outside the returned (truncated) span"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of “Consolidated EBITDA.”"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:a77280e88c23620ce3a0fd1b",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "CORRA",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "fully quoted qualitative definition of a published benchmark rate; no arithmetic component"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the Canadian Overnight Repo Rate Average administered and published by the Bank of Canada (or any successor administrator)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:346d6973be42e5f24186ab50",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "CORRA Administrator",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "fully quoted qualitative definition; no arithmetic component"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the Bank of Canada (or any successor administrator)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:51ab8ef9014fd28be63cf55f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Covered Entity",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "fully quoted three-prong definition referencing external federal regulations (12 C.F.R. §§252.82(b), 47.3(b), 382.2(b)); those are external regulatory citations, not internal cross-references, so their non-resolution within this instrument's package does not create a gap in this definition's own text"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means any of the following: (a) a ‘covered entity’...12 C.F.R. § 252.82(b); (b) a ‘covered bank’...12 C.F.R. § 47.3(b); or (c) a ‘covered FSI’...12 C.F.R. § 382.2(b)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:c8da068ccb8713983c913cf9",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Covered Party",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Covered Entity",
+     "Supported QFC"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "cross-reference to Section 9.22 was resolved via getReferencedProvision; Section 9.22 confirms the meaning is 'a Covered Entity that is party to a Supported QFC'"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §9.22",
+     "excerpt": "has the meaning assigned to such term in Section 9.22 (resolved: \"a Covered Entity that is party to a Supported QFC (each, a ‘Covered Party’)\")."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:8590ef150eb0c335bc2f37e5",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Credit Agreement Refinancing Indebtedness",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "AND",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:5b449f3f0f53357492e3b98b",
+     "operands": [
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01(a): \"is in an original aggregate principal amount...not greater than the aggregate principal amount...of the Refinanced Debt...plus any premium, accrued interest and fees and expenses...\"",
+       "semanticDescription": "condition (a): original aggregate principal amount (or accreted value) not greater than that of the Refinanced Debt (plus unutilized commitments/undrawn LCs), plus premium/accrued interest/fees and expenses",
+       "reason": "an eligibility cap comparing the new Indebtedness amount against the Refinanced Debt amount, which requires a specific transaction's principal amount not supplied as a value here",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:cd02a08c3225eee7184f6241"
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01(b): \"does not (i) mature earlier than or have a Weighted Average Life to Maturity shorter than the Refinanced Debt or (ii) have mandatory redemption features...\"",
+       "semanticDescription": "condition (b): maturity/Weighted Average Life to Maturity not shorter than the Refinanced Debt, and no disqualifying mandatory redemption features (subject to Customary Exceptions and the Maturity Exception Facility carve-out)",
+       "reason": "a qualitative maturity/WAL comparison test, not reducible to arithmetic primitives without transaction-specific inputs",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:9e3e29d86c3df73f32048ad3"
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01(c): \"shall not be guaranteed by any Restricted Subsidiary that is not a Loan Party\"",
+       "semanticDescription": "condition (c): shall not be guaranteed by any Restricted Subsidiary that is not a Loan Party",
+       "reason": "a qualitative guarantor-scope restriction",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:0f329c953243e22e49601b04"
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01(d): \"is not secured by any Collateral that is not securing the Secured Obligations, (ii) is secured on a pari passu basis...(iii) is subject to the relevant Intercreditor Agreement(s)\"",
+       "semanticDescription": "condition (d): secured Credit Agreement Refinancing Indebtedness may not be secured by Collateral not securing the Secured Obligations, must be pari passu or junior to the Secured Obligations, and must be subject to the relevant Intercreditor Agreement(s)",
+       "reason": "a qualitative security/priority restriction dependent on undefined-in-scope terms (Secured Obligations, Intercreditor Agreement)",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:8e42948af9871f952f66d773"
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01(e): \"otherwise has terms and conditions that shall be reasonably satisfactory to the Borrowers and the lenders...\"",
+       "semanticDescription": "condition (e): otherwise has terms and conditions reasonably satisfactory to the Borrowers and the lenders providing such Indebtedness",
+       "reason": "a subjective reasonableness standard, not a computable value",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:68090cf27748ba1036e04380"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Refinanced Debt",
+     "Weighted Average Life to Maturity",
+     "Customary Exceptions",
+     "Maturity Exception Facility",
+     "Restricted Subsidiary",
+     "Loan Party",
+     "Collateral",
+     "Secured Obligations",
+     "Intercreditor Agreement",
+     "Borrowers"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "the five-condition conjunctive (AND) eligibility structure of the definition is preserved",
+     "each individual condition is a qualitative/transaction-specific eligibility test not reducible to the arithmetic primitives without further transaction inputs, so each is UNSUPPORTED",
+     "an eligibility cap comparing the new Indebtedness amount against the Refinanced Debt amount, which requires a specific transaction's principal amount not supplied as a value here",
+     "a qualitative maturity/WAL comparison test, not reducible to arithmetic primitives without transaction-specific inputs",
+     "a qualitative guarantor-scope restriction",
+     "a qualitative security/priority restriction dependent on undefined-in-scope terms (Secured Obligations, Intercreditor Agreement)",
+     "a subjective reasonableness standard, not a computable value",
+     "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means Indebtedness issued...in exchange for, or to extend, renew, replace or refinance...existing Loans...provided that such...Indebtedness: (a)...(e)..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f56b3acde2791df20aca458b",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Cured Default",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 7.01.\"",
+     "semanticDescription": "meaning assigned within Section 7.01 (Events of Default)",
+     "reason": "Section 7.01's chapeau was retrieved and only introduces the Events of Default list across 14 sub-clauses (7.01(a)-(n)); the specific sub-clause defining 'Cured Default' was not identified within the available tool budget",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:862c066d80e8e63ee68ebd01"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "cross-reference target (Section 7.01) was retrieved but only its chapeau/lead-in was returned; the specific cure-related sub-clause among its 14 children was not further retrieved",
+     "Section 7.01's chapeau was retrieved and only introduces the Events of Default list across 14 sub-clauses (7.01(a)-(n)); the specific sub-clause defining 'Cured Default' was not identified within the available tool budget"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §7.01",
+     "excerpt": "has the meaning assigned to such term in Section 7.01."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3f23ef4de264bd7cb94a3d32",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Customary Bridge Loans",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Weighted Average Life to Maturity"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "fully quoted qualitative definition with a one-year maturity cap and two WAL/maturity comparison provisos; no dollar amount or metric formula involved"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means customary bridge loans with a maturity date of no longer than one (1) year; provided that (a)...(b)..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:767755a07cb8affb8527d018",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Customary Escrow Provisions",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "fully quoted one-line qualitative definition"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means customary redemption terms in connection with escrow arrangements."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:5c54c1987da13d37043a9117",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Customary Exceptions",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Customary Escrow Provisions"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "fully quoted qualitative definition; composed of a descriptive list (a) plus a cross-reference to the sibling term 'Customary Escrow Provisions' (b), which is also compiled in this same batch"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means (a) customary asset sale, insurance, casualty and condemnation proceeds events, excess cash flow sweeps, change-of-control offers, initial public offering or events of default and/or (b) Customary Escrow Provisions."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01 definitions of Consolidated Senior Secured Debt and Consolidated Total Debt (e.g. 'Consolidated Total Debt (a) consisting of the Loans...and (b) that is not subordinated...and is secured by Liens...')",
+    "semanticRequirement": "A way to express 'the subset of metric M whose members satisfy qualifying condition C' (a filtered/conditional aggregation over an underlying metric's constituent items), distinct from a plain METRIC_REFERENCE to the whole metric and distinct from a boolean gate on the metric's total value.",
+    "whyExistingPrimitivesFail": "METRIC_REFERENCE only names a whole metric; SUM/ADD only combine already-resolved values; COMPARE/IF only gate on a computed value. None of these can express 'take only the portion of Consolidated Total Debt that is Loans-classified and secured/non-subordinated' without either mis-stating it as the full metric or falling back to UNSUPPORTED.",
+    "candidateGeneralizedPrimitive": "FILTERED_METRIC_COMPONENT(baseMetric, qualifyingCondition) - a node representing a conditionally-scoped subset of a named metric's constituents, usable wherever a MONEY-typed operand is expected."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].SUBTRACT.left.SUM[0]] this is a filtered subset of the Consolidated Total Debt metric, not a separately stated dollar amount or independent metric reference",
+   "[definition[d1].SUBTRACT.left.SUM[1]] filtered subset defined by subordination and Lien/Collateral-coverage conditions, not a separately stated amount",
+   "[definition[d1].SUBTRACT.left] SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d1].SUBTRACT.right] cross-references the cash/Cash Equivalents netting mechanic embedded in the Consolidated Total Debt definition rather than stating an independent figure",
+   "[definition[d1]] SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d2].SUBTRACT.left.SUM[0]] a qualitative class of Indebtedness, not a single stated figure",
+   "[definition[d2].SUBTRACT.left.SUM[1]] a day-count-gated qualifying condition for inclusion, not a discrete stated amount",
+   "[definition[d2].SUBTRACT.left.SUM[2]] a day-count-gated qualifying condition for inclusion, not a discrete stated amount",
+   "[definition[d2].SUBTRACT.left.SUM[3]] a compound proviso list of named exclusions/carvebacks, not reducible to a single arithmetic value",
+   "[definition[d2].SUBTRACT.left] SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d2].SUBTRACT.right] depends on the undefined-in-scope term 'Restricted' and on GAAP balance-sheet classification of Cash Equivalents, not a stated figure",
+   "[definition[d2]] SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d3].SUBTRACT.left] depends on GAAP balance-sheet captions not independently stated as figures in this text",
+   "[definition[d3].SUBTRACT.right] a compound nine-item exclusion list applied to a GAAP balance-sheet caption, not reducible to a stated figure",
+   "[definition[d3]] SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d5]] the Excess Cash Flow definition was retrieved but the specific sub-definition of 'Contract Consideration' fell outside the returned (truncated) span",
+   "[definition[d10]] the Consolidated EBITDA definition was retrieved but the specific sub-definition of 'Converted Restricted Subsidiary' fell outside the returned (truncated) span",
+   "[definition[d11]] the Consolidated EBITDA definition was retrieved but the specific sub-definition of 'Converted Unrestricted Subsidiary' fell outside the returned (truncated) span",
+   "[definition[d16].AND[0]] an eligibility cap comparing the new Indebtedness amount against the Refinanced Debt amount, which requires a specific transaction's principal amount not supplied as a value here",
+   "[definition[d16].AND[1]] a qualitative maturity/WAL comparison test, not reducible to arithmetic primitives without transaction-specific inputs",
+   "[definition[d16].AND[2]] a qualitative guarantor-scope restriction",
+   "[definition[d16].AND[3]] a qualitative security/priority restriction dependent on undefined-in-scope terms (Secured Obligations, Intercreditor Agreement)",
+   "[definition[d16].AND[4]] a subjective reasonableness standard, not a computable value",
+   "[definition[d16]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d17]] Section 7.01's chapeau was retrieved and only introduces the Events of Default list across 14 sub-clauses (7.01(a)-(n)); the specific sub-clause defining 'Cured Default' was not identified within the available tool budget",
+   "This §1.01 excerpt contains 20 independently declared defined terms; all 20 are extracted as separate WireDefinitions per the multiple-definitions rule.",
+   "Three CRITICAL/MATERIAL frozen inventory items (5-Business-Day LC drawing threshold, 10-Business-Day note-obligation threshold, and the LC/bank-guarantee exclusion carveback) are all consumed on nested UNSUPPORTED operand nodes within the Consolidated Total Debt definition's calculationExpression.",
+   "Section 9.22 was retrieved and fully resolves 'Covered Party'. Section 7.01's chapeau was retrieved but only introduces a 14-clause Events of Default list; the specific cure sub-clause defining 'Cured Default' was not further pinpointed within budget, so that term remains MISSING_CONTEXT. 'Excess Cash Flow' and 'Consolidated EBITDA' were retrieved but truncated before reaching the specific sub-definitions of 'Contract Consideration', 'Converted Restricted Subsidiary' and 'Converted Unrestricted Subsidiary', so those three remain MISSING_CONTEXT.",
+   "The CFR citations in 'Covered Entity' and the unresolved-elsewhere terms (Investor, Borrowers, Restricted Parties, Cash Equivalents, GAAP, Loans, Incremental Loan, Collateral, ABL Obligations, Secured Obligations, Intercreditor Agreement, Loan Party, Restricted Subsidiary, Maturity Exception Facility, Weighted Average Life to Maturity, Refinanced Debt, Hedging Obligations, Cash Management Obligations, Permitted Receivables Financing, Funded Debt, ABL Loans, Capitalized Lease Obligation, Consolidated Net Income, Unrestricted Subsidiary, Supported QFC) are carried as dependsOnTerms rather than resolved, consistent with Phase 2's own confirmation that these are not declared elsewhere in the package."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 9.22"
+    },
+    "outputSummary": "resolved reference \"Section 9.22\" -> 9.22 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 2509,
+    "timestamp": "2026-09-14T17:45:26.929Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 9.22",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:bbf01c0035d8db5b4012a733",
+     "sourceNodeKey": "doc-a::9.22",
+     "charStart": 855796,
+     "charEnd": 858305,
+     "rawText": "Section 9.22\nAcknowledgement Regarding Any Supported QFCs . To the extent that the Loan Documents provide support, through a guarantee or otherwise, for Swap Agreements or any other agreement or instrument that is a QFC (such support, “ QFC Credit\nSupport ,” and each such QFC, a “ Supported QFC ”), the parties acknowledge and agree as follows with respect to the resolution power of the Federal Deposit Insurance Corporation under the Federal Deposit Insurance Act and\nTitle II of the Dodd-Frank Wall Street Reform and Consumer Protection Act (together with the regulations promulgated thereunder, the “ U.S. Special Resolution Regimes ”) in respect of such Supported QFC and QFC Credit Support (with\nthe provisions below applicable notwithstanding that the Loan Documents and any Supported QFC may in fact be stated to be governed by the laws of the State of New York and/or of the United States or any other state of the United States):\n\nIn the event a Covered Entity that is party to a Supported QFC (each, a “ Covered Party ”) becomes subject to a proceeding\nunder a U.S. Special Resolution Regime, the transfer of such Supported QFC and the benefit of such QFC Credit Support (and any interest and obligation in or under such Supported QFC and such QFC Credit Support, and any rights in property securing\nsuch Supported QFC or such QFC Credit Support) from such Covered Party will be effective to the same extent as the transfer would be effective under the U.S. Special Resolution Regime if the Supported QFC and such QFC Credit Support (and any such\ninterest, obligation and rights in property) were governed by the laws of the United States or a state of the United States. In the event a Covered Party or a BHC Act Affiliate of a Covered Party becomes subject to a proceeding under a U.S. Special\nResolution Regime, Default Rights under the Loan Documents that might otherwise apply to such Supported QFC or any QFC Credit Support that may be exercised against such Covered Party are permitted to be exercised to no greater extent than such\nDefault Rights could be exercised under the U.S. Special Resolution Regime if the Supported QFC and the Loan Documents were governed by the laws of the United States or a state of the United States. Without limitation of the foregoing, it is\nunderstood and agreed that rights and remedies of the parties with respect to a Defaulting Lender shall in no event affect the rights of any Covered Party with respect to a Supported QFC or any QFC Credit Support.\n\n",
+     "contentHash": "77f06ae129b5981561f8dd65ad14e7837aa4430faeedc5d12b3b9a880d54f602",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 7.01"
+    },
+    "outputSummary": "resolved reference \"Section 7.01\" -> 7.01 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 119,
+    "timestamp": "2026-09-14T17:45:26.930Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 7.01",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:6c66f90381a0d62178336141",
+     "sourceNodeKey": "doc-a::7.01",
+     "charStart": 697603,
+     "charEnd": 697722,
+     "rawText": "Section 7.01 Events of Default . If any of the following events (any such event, an “ Event of Default ”) shall\noccur:\n",
+     "contentHash": "d64d3fad2e7e03cc4ea37ab35e2894b3eeea4cf31d177d7cde500c7b97808dbc",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Excess Cash Flow"
+    },
+    "outputSummary": "definition \"Excess Cash Flow\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 4059,
+    "timestamp": "2026-09-14T17:45:26.931Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": true,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Excess Cash Flow",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:acb75029bbddbc2fd12cd29c",
+     "sourceNodeKey": "doc-a::1.01(2)(v)(III)(c)(f)",
+     "charStart": 153704,
+     "charEnd": 162461,
+     "rawText": "“ Excess Cash Flow ” means, for any Calculation Period, an amount equal to the excess of:\n\n(a)\nthe sum, without duplication, of:\n\n(i)\nConsolidated Net Income for the applicable fiscal year;\n\n(ii)\nan amount equal to the amount of all non-cash charges to the extent\ndeducted in arriving at such Consolidated Net Income ( provided , in each case, that if any non-cash charge represents an accrual or reserve for cash items in any future period, the cash payment in\nrespect thereof in such future period shall be subtracted from Excess Cash Flow in such future period);\n\n(iii)\ndecreases in Consolidated Working Capital, long-term receivables and long-term prepaid assets and increases in\nlong-term deferred revenue for the applicable fiscal year;\n\n(iv)\nan amount equal to the aggregate net non-cash loss on dispositions by\nthe Restricted Parties during the applicable fiscal year (other than dispositions in the ordinary course of business) to the extent deducted in arriving at such Consolidated Net Income; and\n\n(v)\ncash receipts in respect of Swap Agreements to the extent not otherwise included in calculating Consolidated\nNet Income;\n\nover:\n\n(b)\nthe sum, without duplication, of:\n\n(i)\nan amount equal to the amount of all non-cash credits included in\narriving at such Consolidated Net Income (including any amounts included in Consolidated Net Income pursuant to the last sentence of the definition of “Consolidated Net Income” to the extent such amounts are due but not received during\nsuch period) and cash charges included in clauses (a) through (p) of the definition of “Consolidated Net Income” (other than cash charges in respect of Transaction Expenses paid on or about the Effective Date to the extent financed\nwith the proceeds of Indebtedness incurred on the Effective Date or an equity investment on the Effective Date);\n\n(ii)\nwithout duplication of amounts deducted pursuant to clause (x) below in prior fiscal years, the amount of\nCapital Expenditures made in cash or accrued during such Calculation Period, to the extent that such Capital Expenditures were not financed with Funded Debt (other than revolving debt) of the Restricted Parties;\n\n(iii)\n(x) the aggregate amount of all principal payments of Indebtedness except to the extent financed with the\nproceeds of Funded Debt (other than revolving debt) of a Restricted Party, including (A) the principal component of payments in respect of Capitalized Leases, (B) the amount of any prepayment of Loans and of other Indebtedness to the\nextent secured on a pari passu or junior basis to the Loan Document Obligations, (C) the amount of any Restricted Debt Payments, (D) the amount of any prepayment of Indebtedness to the extent secured by assets not constituting\nCollateral and (E) the amount of any prepayment of unsecured Indebtedness of a Non-Loan Party Subsidiary (and, in the case of any prepayments of revolving loans and swingline loans made during such\nperiod, only to the extent there is an equivalent permanent reduction in commitments thereunder and such permanent reduction does not reduce the amount of the repayment of Loans described in Section 2.09(c)), and (y) the aggregate amount\nof any premium, make-whole or penalty payments actually paid in cash by the Restricted Parties during such Calculation Period that are required to be made in connection with any prepayment of Indebtedness;\n\n-33-\n\n(iv)\nan amount equal to the aggregate net non-cash gain on dispositions by\nthe Restricted Parties during such Calculation Period (other than dispositions in the ordinary course of business) to the extent included in arriving at such Consolidated Net Income;\n\n(v)\nincreases in Consolidated Working Capital and long-term receivables and long-term prepaid assets and decreases\nin long-term deferred revenue for such fiscal year;\n\n(vi)\ncash payments by the Restricted Parties during such Calculation Period in respect of purchase price holdbacks,\nearnout obligations and long-term liabilities of the Restricted Parties other than Indebtedness to the extent such payments are not expensed during such Calculation Period or are not deducted in calculating Consolidated Net Income, except to the\nextent financed with the proceeds of Funded Debt (other than revolving debt) of any Restricted Party;\n\n(vii)\nwithout duplication of amounts deducted pursuant to clause (x) below in prior Calculation Periods, the\namount of Investments (other than Investments in Cash Equivalents) and acquisitions not prohibited by this Agreement to the extent that such Investments and acquisitions were not financed with the proceeds of Funded Debt (other than revolving debt)\nof the Restricted Parties;\n\n(viii)\nthe amount of dividends and distributions paid in cash during such Calculation Period not prohibited by this\nAgreement to the extent that such dividends and distributions were not financed with Funded Debt (other than revolving debt) of the Restricted Parties;\n\n(ix)\nthe aggregate amount of expenditures actually made by the Restricted Parties in cash during such fiscal year\n(including expenditures for the payment of financing fees and restructuring charges and expenditures for similar initiatives) to the extent that such expenditures are not expensed during such period or are not deducted in calculating Consolidated\nNet Income, to the extent that such expenditure was financed with internally generated cash flow of the Restricted Parties;\n\n(x)\nwithout duplication of amounts deducted from Excess Cash Flow in prior Calculation Periods, (1) the\naggregate consideration required to be paid in cash by any Restricted Party pursuant to binding contracts, commitments, letters of intent or purchase orders (the “ Contract Consideration ”), in each case, entered into prior to or\nduring such Calculation Period and (2) the aggregate amount of cash that is planned, budgeted or reasonably expected to be paid in respect of planned cash expenditures by any Restricted Party (the “ Planned Expenditures ”), in\nthe case of each of clauses (1) and (2), relating to Permitted Acquisitions, other Investments (other than Investments in Cash Equivalents), deferred payments in connection therewith, restructuring initiatives or capital expenditures (including\nCapitalized Software Expenditures or other purchases of Intellectual Property) and Restricted Payments (limited, in the case of a return on capital, to Restricted Payments declared, but not paid, during such Calculation Period and including other\nRestricted Payments to be made for the purpose of funding, selling, general and administrative expenses, taxes and similar items), Restricted Debt Payments and all other permitted cash expenditures to be consummated or made during a subsequent\nCalculation Period; provided that to the extent the aggregate amount actually utilized to finance such Permitted Acquisitions, Investments, deferred payments in connection therewith, restructuring initiatives, capital expenditures, Restricted\nDebt Payments or other permitted cash expenditures or Restricted Payments during such subsequent Excess Cash Flow Period is less than the Contract Consideration and Planned Expenditures, the amount of such shortfall shall be added to the calculation\nof Excess Cash Flow at the end of such subsequent Excess Cash Flow Period;\n\n(xi)\nthe amount of taxes (and any Tax Distributions) (including penalties and interest) paid in cash and/or tax\nreserves set aside or payable (without duplication) in such fiscal year, including for the avoidance of doubt, any income, withholdings and other taxes payable as a result of the distribution or deemed distribution of such proceeds to a Restricted\nParty, transfer taxes, deed or mortgage\n\n-34-\n\nrecording taxes and Taxes that would be payable in connection with any repatriation of such proceeds, any repatriation costs (including taxes) associated with receipt or distribution by the\napplicable taxpayer of such proceeds, and transfer taxes, deed or mortgage recording taxes and Taxes that would be payable in connection with any repatriation of such proceeds that are paid, payable or set aside in such period, to the extent the\naggregate of all such amounts described in this clause exceeds the amount of tax expense deducted in determining Consolidated Net Income for such fiscal year; and\n\n(xii)\ncash expenditures in respect of Swap Agreements to the extent not deducted in calculating Consolidated Net\nIncome.\n\nNotwithstanding anything set forth herein to the contrary, if the calculation of Excess Cash Flow pursuant to the definition\nhereof is less than zero (0) in any such year, such excess amount shall be applied to reduce the calculation of Excess Cash Flow in the subsequent period to reduce the prepayment pursuant to Section 2.09(c) in such period.\n\n",
+     "contentHash": "a4b910b529db64c64bd222827a8fe609b5e8e368e0253355755aa8ce80fc6bcb",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Consolidated EBITDA"
+    },
+    "outputSummary": "definition \"Consolidated EBITDA\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 4059,
+    "timestamp": "2026-09-14T17:45:26.932Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": true,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Consolidated EBITDA",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:ead7956708294784f939f12c",
+     "sourceNodeKey": "doc-a::1.01(2)(i)(A)(b)",
+     "charStart": 79182,
+     "charEnd": 99357,
+     "rawText": "“ Consolidated EBITDA ” means, for any\nTest Period, with respect to any Person for any period, the Consolidated Net Income of such Person and its Restricted Subsidiaries for such Test Period plus:\n\n(a)\nwithout duplication, including without duplication of any exclusion in Consolidated Net Income, the sum of the\nfollowing amounts for such period, in each case, at the election of the Initial Borrower:\n\n(i)\nconsolidated interest expense of such Person for such period, including (A) payments made or losses\nincurred in respect of hedging obligations or other derivative instruments entered into for the purpose of hedging interest rate risk, (B) bank and letter of credit fees and costs of surety bonds in connection with financing activities,\n(C) amortization and write-offs of deferred financing fees, debt issuance costs, commissions, fees and expenses and expensing of bridge, commitment or financing fees and (D) items excluded from the definition of “Consolidated\nInterest Expense” pursuant to clauses (i) through (xii) thereof;\n\n(ii)\ntaxes based on gross receipts, income, profits, revenue or capital, federal, foreign, state, provincial and\nterritorial income, franchise, excise, value added or similar taxes based on income, profits, revenue or capital and foreign withholding taxes, of such Person paid or accrued during such period (including in respect of repatriated funds), including\n(A) penalties, additions to tax and interest relating to such taxes or arising from any tax examinations and (B) Tax Distributions made to any direct or indirect holders of equity interests of such Person in respect of any such taxes;\n\n(iii)\namortization of such Person for such period (including amortization of goodwill, Capitalized Software\nExpenditures, internal labor costs and amortization of deferred financing fees, OID or costs);\n\n(iv)\ndepreciation expense of such Person for such period;\n\n(v)\nnon-cash items of such Person for such period; provided that if\nany such non-cash item represents an accrual or reserve for potential cash items in any future period, (A) the Initial Borrower may determine not to add back such\nnon-cash item in the current period and (B) to the extent the Initial Borrower decides to add back such non-cash expense or charge in the current period, the cash\npayment in respect thereof in such future period will be subtracted from Consolidated EBITDA in such future period to such extent;\n\n(vi)\ncharges and expenses incurred in connection with litigation (including threatened litigation), any\ninvestigation or proceeding (or any threatened investigation or proceeding) by a regulatory, governmental or law enforcement body (including any attorney general);\n\n(vii)\nitems (A) covered by a binding indemnification, reimbursement, guaranty, purchase price adjustment or\nrefunding obligation or insurance, (B) paid or payable (directly or indirectly) by a third party (except to the extent such payment gives rise to reimbursement obligations) or with the proceeds of a contribution to equity capital of such Person\nor (C) such Person is directly or indirectly reimbursed for such item by a third party;\n\n(viii)\n(A) the amount of management, monitoring, consulting and advisory fees (including termination fees),\nindemnities and expenses paid, payable or accrued in such period by such Person to any Investor (or their management companies), (B) the amount of payments made to option, phantom\n\n-17-\n\nequity or profits interest holders of any Parent Entity or any of its direct or indirect parent companies in connection with, or as a result of, any distribution being made to shareholders of\nsuch Person or any Parent Entity, which payments are being made to compensate such option, phantom equity or profits interest holders as though they were shareholders at the time of, and entitled to share in, such distribution, including any cash\nconsideration for any repurchase of equity, in each case to the extent permitted in this Agreement and (C) the amount of fees, expenses and indemnities paid to directors, including of any Parent Entity;\n\n(ix)\n[reserved];\n\n(x)\nexpenses, revenue and lost profits of such Person for such period with respect to liability or casualty events\nor business interruption, in each case, to the extent covered by insurance;\n\n(xi)\nthe amount of any income attributable to noncontrolling or minority interests of third parties in any non-wholly owned Subsidiary deducted excluding cash distributions in respect thereof;\n\n(xii)\nall charges, losses, costs, expenses, accruals or reserves in connection with or related to (A) the\nrollover, acceleration or payout of equity interests held by officers or employees and (B) payments made to holders of options, phantom equity, profits interests or other derivative equity interests of such Person or any direct or indirect\nparent thereof in connection with, or as a result of, any distribution being made to equity holders of such Person or any direct or indirect parent thereof, including (x) payments made to compensate such holders as though they were equity\nholders at the time of, and entitled to share in, such distribution, and (y) all dividend equivalent rights owed pursuant to any compensation or equity arrangement;\n\n(xiii)\n(A) fees, expenses or charges relating to curtailments or modifications to pension and post-retirement employee\nbenefit plans, costs or expenses (including any payroll taxes) incurred pursuant to any management equity plan, profits interest, severance agreement or stock option plan or any other management or employee benefit plan or agreement or any stock\nsubscription, stockholders or partnership agreement and any payments in the nature of compensation or expense reimbursement made to independent board members and (B) any net pension or other post-retirement benefit costs representing\namortization of unrecognized prior service costs, actuarial losses, including amortization of such amounts arising in prior periods, amortization of the unrecognized net obligation (and loss or cost), and any other items of a similar nature, in\naccordance with GAAP;\n\n(xiv)\nlosses, fees or discounts on a sale, conveyance, contribution or other transfer of receivables, securitization\nassets and related assets in connection with a securitization or other receivables financing or factoring transaction not prohibited hereunder;\n\n(xv)\nstart-up charges and expenses and de novo losses, including, without\nlimitation, any losses with respect to any new location opening, new project, new market or new service offerings or vertical offerings, which accrued during the first thirty-six (36) months after opening\nsuch new location, new project, new market or initially offering such new service offerings or vertical offerings and pre-opening charges, expenses, losses and start-up\ncosts and any other charges, expenses, losses and start-up costs related to the acquisition, opening, organizing and entering into of any new contracts, new market, facilities or other projects and all other\nlocation-specific costs incurred prior to the first (1st) day the new facilities or new projects are determined to be open for business (as determined by the Initial Borrower) and costs associated with upgrading, remodeling or construction of new\nfacilities, locations or other projects or entering into of new contracts, initial testing and registration costs in new markets, the cost of feasibility studies, travel costs for employees engaged in activities relating to any or all of the\nforegoing, or entering into of new contracts and the allocation of general and administrative support in connection with any or all of the foregoing;\n\n(xvi)\nall losses (A) upon any sale, abandonment or other disposition of any asset of the Restricted Parties\n(including pursuant to any Sale and Lease-Back Transaction) that is not sold, abandoned or otherwise disposed in the ordinary course of business (as determined in good faith by the Initial Borrower) and (B) from operations or assets expected to\nbe disposed of, abandoned and/or discontinued within twelve (12) months after the end of the relevant period;\n\n-18-\n\n(xvii)\n(A) earn-out and contingent consideration obligations (including to the\nextent accounted for as bonuses, compensation or otherwise) and adjustments thereof and purchase price adjustments, in each case in connection with acquisitions; and (B) amount paid to any equity holder (other than a Loan Party) of a Qualified\nRestricted Subsidiary in the form of compensation from the proceeds of any disposition;\n\n(xviii)\nnet realized losses from Swap Agreements or embedded derivatives that require similar accounting treatment in\naccordance with GAAP;\n\n(xix)\nany expenses, fees, charges or losses (other than expenses, fees, charges or losses covered by clauses\n(xii) and (xiii)) related to any equity offering or issuance, Investment (including compensation expense directly related thereto), acquisition, disposition, conveyance, Refinancing or recapitalization permitted hereunder or the incurrence of\nIndebtedness permitted to be incurred hereunder (in each case, including any such transaction consummated prior to the Effective Date and any such transaction undertaken but not completed and/or not successful), including (A) such fees,\nexpenses or charges related to this Agreement and any other Loan Document, (B) such fees, expenses or charges related to the Transactions and (C) such fees, expenses or charges related to any amendment or other modification, including any\nrefinancing of the Loans or any Indebtedness permitted by Section 6.01;\n\n(xx)\nrealized foreign exchange losses resulting from the impact of foreign currency changes on the valuation of\nassets or liabilities on the balance sheet of any Restricted Party;\n\n(xxi)\nany cost and expense in relation with the standing up of a business (including, without limitation, duplicative\ncosts, costs related to any transition services agreement (or similar agreement howsoever described) and employee compensation costs for carve-out related roles); and\n\n(xxii)\n“bad debt” expense related to revenue earned prior to the Effective Date or any Permitted\nAcquisition or Investment;\n\nplus\n\n(b)\nat the election of the Initial Borrower, without duplication, (i) the amount of “run rate”\nsynergies, cost savings, operating expense reductions, operating improvements, business optimization, revenue enhancements, revenue synergies, pricing initiatives, restructuring initiatives and other similar initiatives expected by the Initial\nBorrower in good faith to result from actions taken, committed to be taken or expected to be taken (in the good faith determination of the Initial Borrower) (collectively, the “ Expected Run Rate Benefit ”), including any synergies,\ncost savings, operating improvements, operating expense reductions, business optimization, revenue enhancements, pricing initiatives, restructuring initiatives and other similar initiatives related to (x) the Transactions (including prior to\nthe Effective Date) and (y) acquisitions, dispositions and other specified transactions, restructurings, cost savings initiatives and other initiatives, or actions or in connection with, or incurred by or on behalf of, any joint venture of any\nRestricted Party (whether accounted for on the financial statements of any such joint venture or the Initial Borrower) (which amounts will be determined by the Initial Borrower in good faith, added to Consolidated EBITDA until fully realized and\ncalculated on a Pro Forma Basis as though amounts had been realized on the first (1st) day of the period for which Consolidated EBITDA is being determined and as if such amounts were realized during the entirety of such period), net of the\namount of actual benefits realized during such period from such actions; provided that the amounts added back pursuant to this clause (b)(i)(y) are expected by the Initial Borrower in good faith to result from actions taken, committed to be\ntaken or planned to be taken (in the good faith determination of the Initial Borrower) within thirty-six (36) months after the end of the relevant period in which any change that is expected to result in\nsuch Expected Run Rate Benefit occurs; (ii) pro forma adjustments for the aggregate amount of annualized Consolidated Net Income and Consolidated EBITDA that is projected by the Initial Borrower to result from (x) new customer contracts or\nthird-party contracts (or\n\n-19-\n\namendments thereto) entered into or booked during such period, (y) increased pricing, volume or scope of products or services provided in existing contracts or (z) the entry into new\nmarkets, locations, facilities or units (or the acquisition thereof) (in each case of clauses (ii)(x) through (z), calculated on a Pro Forma Basis as though such Consolidated EBITDA had been realized on the first day of such period and as if such\namounts were realized during the entirety of such period); (iii) cash receipts (or any netting arrangements resulting in reduced cash expenditures) not included in the calculation of Consolidated Net Income in any period to the extent non-cash gains relating to such income were deducted in the calculation of Consolidated EBITDA pursuant to paragraph (c) below for any previous period and not added back or was realized in a prior period; and\n(iv) addbacks and adjustments (including pro forma adjustments) (a) of the type contained in any quality of earnings table or report or any client information memorandum or similar diligence items delivered to the Administrative Agent\nconducted by financial advisors (which are either nationally recognized or reasonably acceptable to the Administrative Agent (it being understood and agreed that any of the “Big Four” accounting firms are acceptable)) or\n(b) determined on a basis consistent with Article 11 of Regulation S-X promulgated under the Exchange Act and as interpreted by the staff of the SEC (or any successor agency); and (v) all addbacks\nand adjustments (including pro forma adjustments) of the type or similar to those set forth in the Model or any client information memorandum or lender presentation furnished by (or on behalf of) the Borrower to the Term Agent in connection with\nsyndication of the Initial Term Loans (in each case, as may be updated prior to the Effective Date in the reasonable discretion of the Lead Arrangers);\n\nplus\n\n(c)\nat the election of the Initial Borrower, the pro forma result projected by the Initial Borrower to result in\nconnection with any acquisitions and investments (including any acquisition or investment subject to a letter of intent or definitive acquisition agreement and including the effect of any expected debt financing in connection therewith), business\nexpansion, capital expenditure or other projects and dispositions of business entities or properties or assets constituting a division or line of business of any business entity or any joint venture of any Restricted Party (whether accounted for on\nthe financial statements of any such joint venture or the Initial Borrower) or any other transaction (including purchases and dispositions of Intellectual Property if pro forma treatment is elected by the Initial Borrower at its discretion) and, for\nany facility, site or project that is yet to be completed or operating for business for a period of thirty-six (36) months or less (including, for the avoidance of doubt, any facility, site or project\nthat has been completed during the previous thirty-six (36) months) as of the end of the relevant applicable period, pro forma effect shall be given so that the Consolidated EBITDA of such facility, site\nor project reflects the expected mature earnings profile of such facility, site or project as determined by the Initial Borrower in good faith to reflect a full twelve (12) months of earnings (net of the amount of actual benefits realized\nduring such period from such actions);\n\nminus\n\n(d)\nwithout duplication:\n\n(i)\nany non-cash items increasing Consolidated Net Income of such Person\nfor such period, excluding any gains that represent the reversal of any accrual of, or cash reserve for, anticipated cash charges in any prior period (other than such cash charges that have been added back to Consolidated Net Income in calculating\nConsolidated EBITDA in accordance with this definition);\n\n(ii)\nthe amount of any loss attributable to noncontrolling or minority interests of third parties in any non-wholly owned subsidiary;\n\n(iii)\nrealized foreign exchange income or gains resulting from the impact of foreign currency changes on the\nvaluation of assets or liabilities on the balance sheet of any Restricted Party; and\n\n(iv)\nnet realized gains from Swap Agreements or embedded derivatives that require similar accounting treatment,\n\nin each case, as determined on a consolidated basis for the Restricted Parties in accordance with GAAP; provided that,\n\n-20-\n\n(I) there shall be included in determining Consolidated EBITDA for any period, without\nduplication, the Acquired EBITDA of any Person, property, business or asset acquired by any Restricted Parties during such period (other than any Unrestricted Subsidiary) whether such acquisition occurred before or after the Effective Date to the\nextent not subsequently sold, transferred or otherwise disposed of (but not including the Acquired EBITDA of any related Person, property, business or assets to the extent not so acquired) (each such Person, property, business or asset acquired,\nincluding pursuant to the Transactions or pursuant to a transaction consummated prior to the Effective Date, and not subsequently so disposed of, an “ Acquired Entity or Business ”), and the Acquired EBITDA of any Unrestricted\nSubsidiary that is converted into a Restricted Subsidiary during such period (each, a “ Converted Restricted Subsidiary ”), in each case based on the Acquired EBITDA of such Pro Forma Entity for such period (including the portion\nthereof occurring prior to such acquisition or conversion) determined on a historical Pro Forma Basis; and\n(II) there shall be\n(A) excluded in determining Consolidated EBITDA for any period the Disposed EBITDA of any Person, property, business or asset (other than any Unrestricted Subsidiary) sold, transferred or otherwise disposed of, closed or classified as\ndiscontinued operations by any Restricted Party during such period (but if such operations are classified as discontinued due to the fact that they are subject to an agreement to dispose of such operations, at the option of the Borrowers, only when\nand to the extent such operations are actually disposed of) (each such Person, property, business or asset so sold, transferred or otherwise disposed of, closed or classified, a “ Sold Entity or Business ”), and the Disposed EBITDA\nof any Restricted Subsidiary that is converted into an Unrestricted Subsidiary during such period (each, a “ Converted Unrestricted Subsidiary ”), in each case based on the Disposed EBITDA of such Sold Entity or Business or\nConverted Unrestricted Subsidiary for such period (including the portion thereof occurring prior to such sale, transfer, disposition, closure, classification or conversion) determined on a historical Pro Forma Basis and (B) included in\ndetermining Consolidated EBITDA for any period in which a Sold Entity or Business is disposed, an adjustment equal to the Pro Forma Disposal Adjustment with respect to such Sold Entity or Business (including the portion thereof occurring prior to\nsuch disposal) as specified in the Pro Forma Disposal Adjustment certificate delivered to the Administrative Agent.\nNotwithstanding the\nforegoing, for purposes of calculating the availability under any basket, ratio or other financial metric under this Agreement or compliance with any provision of this Agreement, at the election of the Initial Borrower, the aggregate amount of\nConsolidated EBITDA (subject to any applicable caps and limitations set forth herein) projected by the Initial Borrower to be attributable to Letter of Intent Transactions may be included in the calculation of Consolidated EBITDA to the extent such\ntransactions remain unclosed and unterminated during such period.\n",
+     "contentHash": "66762e7cdd751b2370838af8468c951b0230dd9bd42d30d8d2240265462084b1",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getChildren",
+    "input": {
+     "nodeId": "structural-node:6c66f90381a0d62178336141"
+    },
+    "outputSummary": "14 child clause(s) of 7.01 (parent UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 63,
+    "timestamp": "2026-09-14T17:45:38.220Z",
+    "evidenceUnresolved": true
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "Consolidated Senior Secured Debt",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUBTRACT",
+      "left": {
+       "kind": "SUM",
+       "operands": [
+        {
+         "kind": "UNSUPPORTED",
+         "semanticDescription": "the portion of Consolidated Total Debt consisting of the Loans (including any Incremental Loan)",
+         "reason": "this is a filtered subset of the Consolidated Total Debt metric, not a separately stated dollar amount or independent metric reference",
+         "sourceEvidence": "§1.01: \"...Consolidated Total Debt (a) consisting of the Loans (including any Incremental Loan)...\""
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "semanticDescription": "the portion of Consolidated Total Debt that is not subordinated in right of payment to the Loan Document Obligations and is secured by Liens on all or a material portion of the Collateral (including the ABL Obligations)",
+         "reason": "filtered subset defined by subordination and Lien/Collateral-coverage conditions, not a separately stated amount",
+         "sourceEvidence": "§1.01: \"...(b) that is not subordinated in right of payment to the Loan Document Obligations and is secured by Liens on all or a material portion of the Collateral (including...the ABL Obligations)\""
+        }
+       ],
+       "citation": "§1.01"
+      },
+      "right": {
+       "kind": "UNSUPPORTED",
+       "semanticDescription": "amount of cash and Cash Equivalents reducing Consolidated Total Debt as of the relevant date of determination",
+       "reason": "cross-references the cash/Cash Equivalents netting mechanic embedded in the Consolidated Total Debt definition rather than stating an independent figure",
+       "sourceEvidence": "§1.01: \"...reduced, without duplication, by the amount of cash and Cash Equivalents reducing Consolidated Total Debt as of the relevant date of determination.\""
+      },
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Consolidated Total Debt",
+      "Loans",
+      "Incremental Loan",
+      "Collateral",
+      "ABL Obligations",
+      "Cash Equivalents",
+      "Loan Document Obligations"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "the SUM/SUBTRACT arithmetic shape (sum of two Consolidated Total Debt subsets, minus cash netting) is faithfully preserved",
+      "each subset is itself defined by qualifying conditions (identity as Loans; subordination/security status) rather than a discrete stated amount, so each is represented as UNSUPPORTED rather than guessed as a value"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means the sum, without duplication, of the amount of Consolidated Total Debt (a) consisting of the Loans...and (b) that is not subordinated...and is secured by Liens on all or a material portion of the Collateral..."
+    },
+    {
+     "localRef": "d2",
+     "termName": "Consolidated Total Debt",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUBTRACT",
+      "left": {
+       "kind": "SUM",
+       "operands": [
+        {
+         "kind": "UNSUPPORTED",
+         "semanticDescription": "outstanding principal amount of all third-party Indebtedness for borrowed money (including purchase money Indebtedness) of the Restricted Parties, GAAP consolidated basis, excluding acquisition-method/pushdown accounting discounting effects",
+         "reason": "a qualitative class of Indebtedness, not a single stated figure",
+         "sourceEvidence": "§1.01: \"the outstanding principal amount of all third-party Indebtedness for borrowed money (including purchase money Indebtedness)...\""
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "semanticDescription": "unreimbursed drawings under letters of credit that are outstanding more than five (5) Business Days after the date drawn (to the extent not cash collateralized)",
+         "reason": "a day-count-gated qualifying condition for inclusion, not a discrete stated amount",
+         "sourceEvidence": "§1.01: \"unreimbursed drawings under letters of credit that are outstanding more than five (5) Business Days after the date such amount is drawn (to the extent not cash collateralized)\"",
+         "inventoryItemIds": [
+          "inv-item:4fbeb76b3ff7e0e7bf4f9f18"
+         ]
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "semanticDescription": "third-party Indebtedness obligations evidenced by notes or similar instruments (excluding surety/performance bonds) to the extent not paid within ten (10) Business Days of becoming due (unless subject to good faith dispute)",
+         "reason": "a day-count-gated qualifying condition for inclusion, not a discrete stated amount",
+         "sourceEvidence": "§1.01: \"third-party Indebtedness obligations evidenced by notes or similar instruments...to the extent not paid within ten (10) Business Days of becoming due (unless subject to a good faith dispute)\"",
+         "inventoryItemIds": [
+          "inv-item:9f956507175088716bed50e3"
+         ]
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "semanticDescription": "exclusions (a)-(g) from Consolidated Total Debt: Permitted Receivables Financing; letters of credit/bank guarantees except unreimbursed drawn amounts not reimbursed within five (5) Business Days (including undrawn ABL Letters of Credit); Hedging Obligations; performance/surety bonds; Cash Management Obligations; certain lease obligations; and lease obligations covered by an irrevocable satisfaction deposit",
+         "reason": "a compound proviso list of named exclusions/carvebacks, not reducible to a single arithmetic value",
+         "sourceEvidence": "§1.01: \"provided that Consolidated Total Debt will not include Indebtedness in respect of (a)...(g)...except to the extent of unreimbursed obligations in respect of drawn letters of credit...or bank guarantees that are not reimbursed within five (5) Business Days after such amount is drawn...\"",
+         "inventoryItemIds": [
+          "inv-item:508f9c3cece4ebb6c6fed189"
+         ]
+        }
+       ],
+       "citation": "§1.01"
+      },
+      "right": {
+       "kind": "UNSUPPORTED",
+       "semanticDescription": "aggregate amount of cash and Cash Equivalents on the consolidated balance sheet of the Restricted Parties that is not Restricted",
+       "reason": "depends on the undefined-in-scope term 'Restricted' and on GAAP balance-sheet classification of Cash Equivalents, not a stated figure",
+       "sourceEvidence": "§1.01: \"minus (ii) the aggregate amount of cash and Cash Equivalents on the consolidated balance sheet of the Restricted Parties on such date that is not Restricted\""
+      },
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Restricted Parties",
+      "Cash Equivalents",
+      "Permitted Receivables Financing",
+      "Hedging Obligations",
+      "Cash Management Obligations",
+      "ABL Credit Agreement",
+      "GAAP"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "top-level SUBTRACT structure (gross qualifying debt minus unrestricted cash/Cash Equivalents) is faithfully preserved",
+      "each qualifying-debt category and each exclusion is a compound eligibility/day-count condition rather than a discrete amount, so represented as UNSUPPORTED nodes carrying the relevant inventory items",
+      "the anti-double-counting clarification ('counted only once...guarantees...disregarded') is purely descriptive and not separately modeled"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means...(i) the outstanding principal amount of all third-party Indebtedness for borrowed money...minus (ii) the aggregate amount of cash and Cash Equivalents...that is not Restricted"
+    },
+    {
+     "localRef": "d3",
+     "termName": "Consolidated Working Capital",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUBTRACT",
+      "left": {
+       "kind": "UNSUPPORTED",
+       "semanticDescription": "sum of all amounts (other than cash and Cash Equivalents) set forth opposite 'total current assets' (or like caption) on the Restricted Parties' consolidated GAAP balance sheet, excluding the current portion of current/deferred income taxes",
+       "reason": "depends on GAAP balance-sheet captions not independently stated as figures in this text",
+       "sourceEvidence": "§1.01: \"the sum of all amounts (other than cash and Cash Equivalents) that would...be set forth opposite the caption ‘total current assets’...excluding the current portion of current and deferred income taxes\""
+      },
+      "right": {
+       "kind": "UNSUPPORTED",
+       "semanticDescription": "sum of all amounts set forth opposite 'total current liabilities' (or like caption), including deferred revenue but excluding nine enumerated categories (current portion of Funded Debt, Loans/ABL Loans/LC obligations, current interest, current/deferred income taxes, restructuring accruals, current Capitalized Lease Obligations, earmarked deferred revenue, unpaid earn-outs, other long-term liabilities)",
+       "reason": "a compound nine-item exclusion list applied to a GAAP balance-sheet caption, not reducible to a stated figure",
+       "sourceEvidence": "§1.01: \"the sum of all amounts...set forth opposite the caption ‘total current liabilities’...including deferred revenue but excluding, without duplication, (i)...(ix)...\""
+      },
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Cash Equivalents",
+      "Funded Debt",
+      "Loans",
+      "ABL Loans",
+      "Capitalized Lease Obligation",
+      "Consolidated Net Income",
+      "Unrestricted Subsidiary",
+      "Excess Cash Flow"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "the top-level excess-of (current assets minus current liabilities) structure is preserved",
+      "each side is a compound GAAP-caption/exclusion-list definition not reducible to arithmetic primitives",
+      "the special Excess Cash Flow measurement-window and exclusion provisos (acquisitions/dispositions/Unrestricted Subsidiary designations measured to first anniversary; exclusions (A)-(B)(I)-(III)) are real but purely descriptive scoping rules for a different calculation and are not separately modeled as a value"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, at any date, the excess of (a) the sum of all amounts...'total current assets'...over (b) the sum of all amounts...'total current liabilities'..."
+    },
+    {
+     "localRef": "d4",
+     "termName": "Contingent Obligations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully quoted qualitative definition of guaranty-type contingent obligations; no numeric or arithmetic component"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means...any obligation of such Person guaranteeing any leases, dividends or other obligations that do not constitute Indebtedness...of any other Person..."
+    },
+    {
+     "localRef": "d5",
+     "termName": "Contract Consideration",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "meaning assigned within the definition of 'Excess Cash Flow'",
+      "reason": "the Excess Cash Flow definition was retrieved but the specific sub-definition of 'Contract Consideration' fell outside the returned (truncated) span",
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in the definition of ‘Excess Cash Flow.’\""
+     },
+     "dependsOnTerms": [
+      "Excess Cash Flow"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "term is defined purely by cross-reference into 'Excess Cash Flow'; that definition was retrieved but truncated before reaching the specific sub-clause defining 'Contract Consideration'"
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of “Excess Cash Flow.”"
+    },
+    {
+     "localRef": "d6",
+     "termName": "Control",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully quoted qualitative definition; no numeric component"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means the possession, directly or indirectly, of the power to direct or cause the direction of the management or policies...of a Person..."
+    },
+    {
+     "localRef": "d7",
+     "termName": "Controlling",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Control"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "a one-line correlative-meaning pointer to 'Control', fully quoted"
+     ],
+     "citation": "§1.01",
+     "excerpt": "have meanings correlative thereto."
+    },
+    {
+     "localRef": "d8",
+     "termName": "Controlled",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Control"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "a one-line correlative-meaning pointer to 'Control', fully quoted"
+     ],
+     "citation": "§1.01",
+     "excerpt": "have meanings correlative thereto."
+    },
+    {
+     "localRef": "d9",
+     "termName": "Controlled Investment Affiliate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Investor",
+      "Borrowers",
+      "Control"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully quoted qualitative definition; the referenced terms 'Investor' and 'Borrowers' are used only descriptively and do not change the definition's own (non-numeric) structure"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, as to any Person, any other Person, other than any Investor, which directly or indirectly controls, is controlled by, or is under common control with such Person and is organized...primarily for making direct or indirect equity or debt investments in the Borrowers..."
+    },
+    {
+     "localRef": "d10",
+     "termName": "Converted Restricted Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "meaning assigned within the definition of 'Consolidated EBITDA'",
+      "reason": "the Consolidated EBITDA definition was retrieved but the specific sub-definition of 'Converted Restricted Subsidiary' fell outside the returned (truncated) span",
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in the definition of ‘Consolidated EBITDA.’\""
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "term is defined purely by cross-reference into 'Consolidated EBITDA'; that definition was retrieved but truncated before reaching this sub-clause"
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of “Consolidated EBITDA.”"
+    },
+    {
+     "localRef": "d11",
+     "termName": "Converted Unrestricted Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "meaning assigned within the definition of 'Consolidated EBITDA'",
+      "reason": "the Consolidated EBITDA definition was retrieved but the specific sub-definition of 'Converted Unrestricted Subsidiary' fell outside the returned (truncated) span",
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in the definition of ‘Consolidated EBITDA.’\""
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "term is defined purely by cross-reference into 'Consolidated EBITDA'; that definition was retrieved but truncated before reaching this sub-clause"
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of “Consolidated EBITDA.”"
+    },
+    {
+     "localRef": "d12",
+     "termName": "CORRA",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully quoted qualitative definition of a published benchmark rate; no arithmetic component"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means the Canadian Overnight Repo Rate Average administered and published by the Bank of Canada (or any successor administrator)."
+    },
+    {
+     "localRef": "d13",
+     "termName": "CORRA Administrator",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully quoted qualitative definition; no arithmetic component"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means the Bank of Canada (or any successor administrator)."
+    },
+    {
+     "localRef": "d14",
+     "termName": "Covered Entity",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully quoted three-prong definition referencing external federal regulations (12 C.F.R. §§252.82(b), 47.3(b), 382.2(b)); those are external regulatory citations, not internal cross-references, so their non-resolution within this instrument's package does not create a gap in this definition's own text"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means any of the following: (a) a ‘covered entity’...12 C.F.R. § 252.82(b); (b) a ‘covered bank’...12 C.F.R. § 47.3(b); or (c) a ‘covered FSI’...12 C.F.R. § 382.2(b)."
+    },
+    {
+     "localRef": "d15",
+     "termName": "Covered Party",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Covered Entity",
+      "Supported QFC"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "cross-reference to Section 9.22 was resolved via getReferencedProvision; Section 9.22 confirms the meaning is 'a Covered Entity that is party to a Supported QFC'"
+     ],
+     "citation": "§1.01; §9.22",
+     "excerpt": "has the meaning assigned to such term in Section 9.22 (resolved: \"a Covered Entity that is party to a Supported QFC (each, a ‘Covered Party’)\")."
+    },
+    {
+     "localRef": "d16",
+     "termName": "Credit Agreement Refinancing Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AND",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "condition (a): original aggregate principal amount (or accreted value) not greater than that of the Refinanced Debt (plus unutilized commitments/undrawn LCs), plus premium/accrued interest/fees and expenses",
+        "reason": "an eligibility cap comparing the new Indebtedness amount against the Refinanced Debt amount, which requires a specific transaction's principal amount not supplied as a value here",
+        "sourceEvidence": "§1.01(a): \"is in an original aggregate principal amount...not greater than the aggregate principal amount...of the Refinanced Debt...plus any premium, accrued interest and fees and expenses...\""
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "condition (b): maturity/Weighted Average Life to Maturity not shorter than the Refinanced Debt, and no disqualifying mandatory redemption features (subject to Customary Exceptions and the Maturity Exception Facility carve-out)",
+        "reason": "a qualitative maturity/WAL comparison test, not reducible to arithmetic primitives without transaction-specific inputs",
+        "sourceEvidence": "§1.01(b): \"does not (i) mature earlier than or have a Weighted Average Life to Maturity shorter than the Refinanced Debt or (ii) have mandatory redemption features...\""
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "condition (c): shall not be guaranteed by any Restricted Subsidiary that is not a Loan Party",
+        "reason": "a qualitative guarantor-scope restriction",
+        "sourceEvidence": "§1.01(c): \"shall not be guaranteed by any Restricted Subsidiary that is not a Loan Party\""
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "condition (d): secured Credit Agreement Refinancing Indebtedness may not be secured by Collateral not securing the Secured Obligations, must be pari passu or junior to the Secured Obligations, and must be subject to the relevant Intercreditor Agreement(s)",
+        "reason": "a qualitative security/priority restriction dependent on undefined-in-scope terms (Secured Obligations, Intercreditor Agreement)",
+        "sourceEvidence": "§1.01(d): \"is not secured by any Collateral that is not securing the Secured Obligations, (ii) is secured on a pari passu basis...(iii) is subject to the relevant Intercreditor Agreement(s)\""
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "condition (e): otherwise has terms and conditions reasonably satisfactory to the Borrowers and the lenders providing such Indebtedness",
+        "reason": "a subjective reasonableness standard, not a computable value",
+        "sourceEvidence": "§1.01(e): \"otherwise has terms and conditions that shall be reasonably satisfactory to the Borrowers and the lenders...\""
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Refinanced Debt",
+      "Weighted Average Life to Maturity",
+      "Customary Exceptions",
+      "Maturity Exception Facility",
+      "Restricted Subsidiary",
+      "Loan Party",
+      "Collateral",
+      "Secured Obligations",
+      "Intercreditor Agreement",
+      "Borrowers"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "the five-condition conjunctive (AND) eligibility structure of the definition is preserved",
+      "each individual condition is a qualitative/transaction-specific eligibility test not reducible to the arithmetic primitives without further transaction inputs, so each is UNSUPPORTED"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means Indebtedness issued...in exchange for, or to extend, renew, replace or refinance...existing Loans...provided that such...Indebtedness: (a)...(e)..."
+    },
+    {
+     "localRef": "d17",
+     "termName": "Cured Default",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "meaning assigned within Section 7.01 (Events of Default)",
+      "reason": "Section 7.01's chapeau was retrieved and only introduces the Events of Default list across 14 sub-clauses (7.01(a)-(n)); the specific sub-clause defining 'Cured Default' was not identified within the available tool budget",
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 7.01.\""
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "cross-reference target (Section 7.01) was retrieved but only its chapeau/lead-in was returned; the specific cure-related sub-clause among its 14 children was not further retrieved"
+     ],
+     "citation": "§1.01; §7.01",
+     "excerpt": "has the meaning assigned to such term in Section 7.01."
+    },
+    {
+     "localRef": "d18",
+     "termName": "Customary Bridge Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Weighted Average Life to Maturity"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully quoted qualitative definition with a one-year maturity cap and two WAL/maturity comparison provisos; no dollar amount or metric formula involved"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means customary bridge loans with a maturity date of no longer than one (1) year; provided that (a)...(b)..."
+    },
+    {
+     "localRef": "d19",
+     "termName": "Customary Escrow Provisions",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully quoted one-line qualitative definition"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means customary redemption terms in connection with escrow arrangements."
+    },
+    {
+     "localRef": "d20",
+     "termName": "Customary Exceptions",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Customary Escrow Provisions"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully quoted qualitative definition; composed of a descriptive list (a) plus a cross-reference to the sibling term 'Customary Escrow Provisions' (b), which is also compiled in this same batch"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means (a) customary asset sale, insurance, casualty and condemnation proceeds events, excess cash flow sweeps, change-of-control offers, initial public offering or events of default and/or (b) Customary Escrow Provisions."
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "inventoryDispositions": [],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01 definitions of Consolidated Senior Secured Debt and Consolidated Total Debt (e.g. 'Consolidated Total Debt (a) consisting of the Loans...and (b) that is not subordinated...and is secured by Liens...')",
+     "semanticRequirement": "A way to express 'the subset of metric M whose members satisfy qualifying condition C' (a filtered/conditional aggregation over an underlying metric's constituent items), distinct from a plain METRIC_REFERENCE to the whole metric and distinct from a boolean gate on the metric's total value.",
+     "whyExistingPrimitivesFail": "METRIC_REFERENCE only names a whole metric; SUM/ADD only combine already-resolved values; COMPARE/IF only gate on a computed value. None of these can express 'take only the portion of Consolidated Total Debt that is Loans-classified and secured/non-subordinated' without either mis-stating it as the full metric or falling back to UNSUPPORTED.",
+     "candidateGeneralizedPrimitive": "FILTERED_METRIC_COMPONENT(baseMetric, qualifyingCondition) - a node representing a conditionally-scoped subset of a named metric's constituents, usable wherever a MONEY-typed operand is expected."
+    }
+   ],
+   "overallNotes": [
+    "This §1.01 excerpt contains 20 independently declared defined terms; all 20 are extracted as separate WireDefinitions per the multiple-definitions rule.",
+    "Three CRITICAL/MATERIAL frozen inventory items (5-Business-Day LC drawing threshold, 10-Business-Day note-obligation threshold, and the LC/bank-guarantee exclusion carveback) are all consumed on nested UNSUPPORTED operand nodes within the Consolidated Total Debt definition's calculationExpression.",
+    "Section 9.22 was retrieved and fully resolves 'Covered Party'. Section 7.01's chapeau was retrieved but only introduces a 14-clause Events of Default list; the specific cure sub-clause defining 'Cured Default' was not further pinpointed within budget, so that term remains MISSING_CONTEXT. 'Excess Cash Flow' and 'Consolidated EBITDA' were retrieved but truncated before reaching the specific sub-definitions of 'Contract Consideration', 'Converted Restricted Subsidiary' and 'Converted Unrestricted Subsidiary', so those three remain MISSING_CONTEXT.",
+    "The CFR citations in 'Covered Entity' and the unresolved-elsewhere terms (Investor, Borrowers, Restricted Parties, Cash Equivalents, GAAP, Loans, Incremental Loan, Collateral, ABL Obligations, Secured Obligations, Intercreditor Agreement, Loan Party, Restricted Subsidiary, Maturity Exception Facility, Weighted Average Life to Maturity, Refinanced Debt, Hedging Obligations, Cash Management Obligations, Permitted Receivables Financing, Funded Debt, ABL Loans, Capitalized Lease Obligation, Consolidated Net Income, Unrestricted Subsidiary, Supported QFC) are carried as dependsOnTerms rather than resolved, consistent with Phase 2's own confirmation that these are not declared elsewhere in the package."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T17:47:55.385Z",
+   "inputTokens": 104848,
+   "outputTokens": 27092,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 3,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 238462,
+   "calculatedCostUsd": 0.48061600000000004
+  },
+  "cacheKey": "9133c3db5e1db3d6771f7cf7c554e47a1aa7de4bed3f6803c054a9e44264e140",
+  "compiledAt": "2026-09-14T17:47:55.385Z"
+ },
+ "wave": "B",
+ "attemptsSoFar": 1
+}

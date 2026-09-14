@@ -1,0 +1,626 @@
+{
+ "artifact": "F-7B.3C §1/§2/§3/§7 - baseline, frozen-15 verification, Wave-B manifest and pre-run cost estimate (zero paid calls)",
+ "at": "2026-09-14T17:42:59.332Z",
+ "startingSha": "aef7a00b5f48697239863df1712f6290e1df6bc6",
+ "gitSha": "aef7a00b5f48697239863df1712f6290e1df6bc6",
+ "checks": {
+  "startingSha": {
+   "expected": "aef7a00b5f48697239863df1712f6290e1df6bc6",
+   "actual": "aef7a00b5f48697239863df1712f6290e1df6bc6",
+   "pass": true
+  },
+  "planHash": {
+   "expected": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+   "actual": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+   "pass": true
+  },
+  "shardCount": {
+   "actual": 36,
+   "pass": true
+  },
+  "ownership": {
+   "actual": {
+    "materialItems": 108,
+    "ownedOnce": 108,
+    "unowned": 0,
+    "multiplyOwned": 0
+   },
+   "pass": true
+  },
+  "frozenInventory": {
+   "actual": {
+    "frozenContentHash": "9e5ec23580d3bbf3b5a69fdd932b6874caec1a14c0e3ef1e6e203dda07258e34",
+    "items": 109,
+    "material": 108,
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+    "algorithmVersion": "semantic-accountability.v3"
+   },
+   "pass": true
+  },
+  "sourceContext": {
+   "actual": {
+    "state": "COMPLETE_LOCAL_SOURCE",
+    "regionCharStart": 8980,
+    "regionCharEnd": 362503,
+    "regionChars": 353523,
+    "regionSha256": "b7e3f0214f7b2fe353b401e312816877c415795dfc7c8c22d09804d50b2b604c",
+    "unresolvedReferences": 144
+   },
+   "pass": true
+  },
+  "budget": {
+   "actual": {
+    "targetPrimaryChars": 12000,
+    "maxPrimaryChars": 24000,
+    "maxContextChars": 10000,
+    "maxContextEntryChars": 1800,
+    "maxUnitsPerShard": 16
+   },
+   "pass": true
+  },
+  "modelProvider": {
+   "model": "anthropic/claude-sonnet-5",
+   "provider": "vercel-ai-gateway",
+   "pass": true
+  },
+  "generation": {
+   "planner": "semantic-compilation-shards.v1",
+   "prompt": "semantic-accountability-compiler-prompt.v4",
+   "algorithm": "semantic-accountability-compiler.v4",
+   "toolPolicy": "phase-3b1-tool-policy.v2",
+   "pass": true
+  },
+  "manifestShardHashesUnchanged": {
+   "pass": true
+  }
+ },
+ "baselineValid": true,
+ "identity": {
+  "gitSha": "aef7a00b5f48697239863df1712f6290e1df6bc6",
+  "documentSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+  "unitFixtureSha256": "a9221844bc412fe55a7be082a5ec06ceccbd211710d34da4e0ba2168296b5f35",
+  "candidateRef": "phase-3-validation:chwy:1.01",
+  "companyId": "phase-3-validation-chwy",
+  "instrumentKey": "chwy-2026-revolving-credit-instrument",
+  "structuralIndexIdentity": {
+   "anchorNodeId": "structural-node:8b885cd23dfbee72c58ad5da",
+   "definitionsInUnit": 379,
+   "unitsSha256": "5c7f6c4a12148611c7113cc12651e5c07348569a4cbf1279338af88316780fe8"
+  },
+  "sourceContextIdentity": {
+   "state": "COMPLETE_LOCAL_SOURCE",
+   "regionCharStart": 8980,
+   "regionCharEnd": 362503,
+   "regionChars": 353523,
+   "regionSha256": "b7e3f0214f7b2fe353b401e312816877c415795dfc7c8c22d09804d50b2b604c",
+   "unresolvedReferences": 144
+  },
+  "frozenInventory": {
+   "frozenContentHash": "9e5ec23580d3bbf3b5a69fdd932b6874caec1a14c0e3ef1e6e203dda07258e34",
+   "items": 109,
+   "material": 108,
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "algorithmVersion": "semantic-accountability.v3"
+  },
+  "shardPlannerAlgorithmVersion": "semantic-compilation-shards.v1",
+  "compilerPromptVersion": "semantic-accountability-compiler-prompt.v4",
+  "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+  "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+  "irSchemaVersion": "headroom-covenant-ir.v1",
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "budget": {
+   "targetPrimaryChars": 12000,
+   "maxPrimaryChars": 24000,
+   "maxContextChars": 10000,
+   "maxContextEntryChars": 1800,
+   "maxUnitsPerShard": 16
+  }
+ },
+ "frozenFifteen": {
+  "count": 15,
+  "allHashesMatchPlan": true,
+  "compositionHashesMatchF7B3B": true,
+  "conflictEvidencePreservedByCurrentStitcher": true,
+  "definitionConflicts": [
+   {
+    "termName": "Annual Threshold",
+    "variants": 2,
+    "requiresReview": true
+   },
+   {
+    "termName": "Approved Bank",
+    "variants": 2,
+    "requiresReview": true
+   }
+  ],
+  "shards": [
+   {
+    "shardId": "shard:2866a115c3a6d5cc2089",
+    "shardHash": "761693f3812b6d466cf90519f5fe515843bb68e3ea8e4ab7e5a760ba40d5b85a",
+    "ordinal": 0,
+    "stage": 2,
+    "source": "WAVE_A",
+    "status": "SHARD_MISSING_CONTEXT",
+    "definitions": 26,
+    "compositionHash": "a3ce96aa95c5e0499672b2bcac7e71220ee6c97f78168d9ac4e9ae17f5da069c",
+    "hashMatchesPlan": true
+   },
+   {
+    "shardId": "shard:b934f8ceb0d79b5cfe57",
+    "shardHash": "a517905c1e378aff65e60c3ee6022befd80a20511f1c4617e936f80611eb6ce6",
+    "ordinal": 1,
+    "stage": 2,
+    "source": "WAVE_A",
+    "status": "SHARD_COMPLETE",
+    "definitions": 23,
+    "compositionHash": "8e299e904d84854daa071de8f5eecd31426549dcc7ccef94c370984e3de62e71",
+    "hashMatchesPlan": true
+   },
+   {
+    "shardId": "shard:1c29e71eef1717d4f9e1",
+    "shardHash": "85cd3fe537a3657f61009c524910ba6bac773fc01343a89fdfc31b58025d6f06",
+    "ordinal": 2,
+    "stage": 1,
+    "source": "STAGE_1",
+    "status": "SHARD_MISSING_CONTEXT",
+    "definitions": 6,
+    "compositionHash": "709c1e7012e7232c6629ebab204c331e49ff260a34c82740d89b0efaa9119006",
+    "hashMatchesPlan": true
+   },
+   {
+    "shardId": "shard:4c30ced71fe038991b4b",
+    "shardHash": "ec01142d97abc7e224d2afd46f64343a9692f6d4fd22bfb8561060f9388dcfb8",
+    "ordinal": 3,
+    "stage": 2,
+    "source": "WAVE_A",
+    "status": "SHARD_COMPLETE",
+    "definitions": 10,
+    "compositionHash": "7acc651f4a28b0dfa58dde3ead20aa56518179d5a387a2aba3cb5ed8ebe67651",
+    "hashMatchesPlan": true
+   },
+   {
+    "shardId": "shard:9dae67b10a1cb8ab8e61",
+    "shardHash": "482d471bf9fe47f279ff4e4b51c1533fa549e9c4f8e000c1fb46e1a5a1d1a2c7",
+    "ordinal": 4,
+    "stage": 2,
+    "source": "WAVE_A",
+    "status": "SHARD_MISSING_CONTEXT",
+    "definitions": 20,
+    "compositionHash": "abc3c106e4257c073b9fdfcf6a1dce35ca9d75068e58353b4e08c1fbe52a6325",
+    "hashMatchesPlan": true
+   },
+   {
+    "shardId": "shard:c68b6e6e275414f90c39",
+    "shardHash": "de7b889487ab225e5d7f253498249cc6440e3a2e2f248e63b5585f4bb905e90c",
+    "ordinal": 5,
+    "stage": 2,
+    "source": "WAVE_A",
+    "status": "SHARD_COMPLETE",
+    "definitions": 7,
+    "compositionHash": "1ca420ceb4815202c992e7bcd06883e1a26944c2376941cd2bd14dea65276f4a",
+    "hashMatchesPlan": true
+   },
+   {
+    "shardId": "shard:ec1aea485db261059c14",
+    "shardHash": "34dbec9a9ca679af4271beef75f259e723cbfc5656749e58724a67ea523dbb0c",
+    "ordinal": 6,
+    "stage": 2,
+    "source": "WAVE_A",
+    "status": "SHARD_COMPLETE",
+    "definitions": 8,
+    "compositionHash": "6bc49e14c0e8b26372911e58fac418d369586b8ead2cffce84f1608726b05b1f",
+    "hashMatchesPlan": true
+   },
+   {
+    "shardId": "shard:5f63d11e8ce53e883d6a",
+    "shardHash": "04b49f6f59cb8dad0b489729ee201aa3d0b74e593c6538c67c843a84bf3eb77d",
+    "ordinal": 7,
+    "stage": 2,
+    "source": "WAVE_A",
+    "status": "SHARD_MISSING_CONTEXT",
+    "definitions": 5,
+    "compositionHash": "fed7f380dad2ce3ff699de59388030ee4d5697d53686fac37925fff2c88b1d64",
+    "hashMatchesPlan": true
+   },
+   {
+    "shardId": "shard:87f08272567db019c17b",
+    "shardHash": "539e715598ac4b8f6b4e992b4414a3af27583e1f8b08be0c0fdf32d41b74113e",
+    "ordinal": 8,
+    "stage": 2,
+    "source": "WAVE_A",
+    "status": "SHARD_COMPLETE",
+    "definitions": 6,
+    "compositionHash": "e1dacbdd0d779d7a22038d4653e20fb22b699c187f7a0bea25ec94eb92cd67c5",
+    "hashMatchesPlan": true
+   },
+   {
+    "shardId": "shard:fc841e0f175ddcab1ccd",
+    "shardHash": "48fc56978d7c7d7117cdc2b6f4795304ec702f3235bca199a4bf7be889943581",
+    "ordinal": 9,
+    "stage": 2,
+    "source": "WAVE_A",
+    "status": "SHARD_COMPLETE",
+    "definitions": 2,
+    "compositionHash": "93532f0c32dc81b018555c8e1ab49b33fe5b8f2780bc46c887c429325c7bd5d6",
+    "hashMatchesPlan": true
+   },
+   {
+    "shardId": "shard:86eec078e4ee957898ac",
+    "shardHash": "44699221ab9197fea3a6efc01ca08530a352675313de3e47cc32c4d42be892d3",
+    "ordinal": 10,
+    "stage": 2,
+    "source": "WAVE_A",
+    "status": "SHARD_COMPLETE",
+    "definitions": 1,
+    "compositionHash": "39a16bb3fdc4367eb6bc60cc1ebe5c579b8284a9197abbde15288a19d08f2f06",
+    "hashMatchesPlan": true
+   },
+   {
+    "shardId": "shard:bf3da01cb454860cdf5f",
+    "shardHash": "681651c0752343da54ae800cd818a0c263f2a2782d6e1cab8cc313f76cca0702",
+    "ordinal": 17,
+    "stage": 1,
+    "source": "STAGE_1",
+    "status": "SHARD_MISSING_CONTEXT",
+    "definitions": 22,
+    "compositionHash": "b32818b73d750cd37739b8d65e37d7431b6db923137dfc58997d65cda2dacc71",
+    "hashMatchesPlan": true
+   },
+   {
+    "shardId": "shard:aac727054a5da5f1a9fd",
+    "shardHash": "9943af75025bd8550567628dd359394b6aba3cbadb767a1f228a30638fef3078",
+    "ordinal": 21,
+    "stage": 1,
+    "source": "STAGE_1",
+    "status": "SHARD_MISSING_CONTEXT",
+    "definitions": 21,
+    "compositionHash": "1050e68882df93a6a1b9c5dabe939e1c18f65bbdb4899071c0bb09e894267acb",
+    "hashMatchesPlan": true
+   },
+   {
+    "shardId": "shard:4f06625557e9aecbbb7a",
+    "shardHash": "f1b437e22ee07474adbce6cb0f9ab25ceb36ca10847253c797fce0f3af206cf5",
+    "ordinal": 26,
+    "stage": 1,
+    "source": "STAGE_1",
+    "status": "SHARD_MISSING_CONTEXT",
+    "definitions": 2,
+    "compositionHash": "a43e5b1f9056cf8eb0b13dd08c92ba5cbadd2a2cec6f1b11a8cebd423d232b12",
+    "hashMatchesPlan": true
+   },
+   {
+    "shardId": "shard:3e3910ea2efd9edd45a3",
+    "shardHash": "183134ad7785f161b0d350297d89603860aada6016bbf04609fc1dd0c172957f",
+    "ordinal": 27,
+    "stage": 1,
+    "source": "STAGE_1",
+    "status": "SHARD_MISSING_CONTEXT",
+    "definitions": 23,
+    "compositionHash": "e23fe87a1835657fccb37439104dd0109375ed9638f15437dd4d3c307043a5eb",
+    "hashMatchesPlan": true
+   }
+  ]
+ },
+ "waveB": {
+  "count": 10,
+  "membershipConsistentWithPlanOrder": true,
+  "renderedFirstTurnTotal": 251594,
+  "shards": [
+   {
+    "ordinal": 11,
+    "shardId": "shard:e3ddb1887d6b8499929a",
+    "shardHash": "5abb0fef127e861eb31ccdac3a9b3f638d515658777915f9cbde032e5a1ce30f",
+    "sourceChars": 11506,
+    "estimatedFirstTurnInputTokens": 25206,
+    "ownedUnits": 13,
+    "ownedItems": 3,
+    "ownedMaterialItems": 3,
+    "quantitativeItems": 3,
+    "contextEntries": 2,
+    "contextChars": 1262,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "estimatedOutputTokens": 34000,
+    "estimatedUsd": 0.8971,
+    "wave": "B",
+    "renderedNow": 25206
+   },
+   {
+    "ordinal": 12,
+    "shardId": "shard:e43dc65668a775eaca1a",
+    "shardHash": "fd9bcb3a167dc1aac0228b103b6394eb382c4eeb534cbe7065f5970fcdf825b4",
+    "sourceChars": 11131,
+    "estimatedFirstTurnInputTokens": 24913,
+    "ownedUnits": 11,
+    "ownedItems": 3,
+    "ownedMaterialItems": 3,
+    "quantitativeItems": 3,
+    "contextEntries": 1,
+    "contextChars": 225,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "estimatedOutputTokens": 29000,
+    "estimatedUsd": 0.8866,
+    "wave": "B",
+    "renderedNow": 24913
+   },
+   {
+    "ordinal": 13,
+    "shardId": "shard:4d114bdf00429cf670f8",
+    "shardHash": "6b1825dc93b8db34bcf18b9867cf036f9608d258a7df96e4f99ae30ab53f7af1",
+    "sourceChars": 11800,
+    "estimatedFirstTurnInputTokens": 26886,
+    "ownedUnits": 13,
+    "ownedItems": 7,
+    "ownedMaterialItems": 7,
+    "quantitativeItems": 7,
+    "contextEntries": 5,
+    "contextChars": 2356,
+    "unresolvedContext": 2,
+    "oversized": false,
+    "estimatedOutputTokens": 34000,
+    "estimatedUsd": 0.9569,
+    "wave": "B",
+    "renderedNow": 26886
+   },
+   {
+    "ordinal": 14,
+    "shardId": "shard:845680480624a0f129ec",
+    "shardHash": "ae0cb8ac5ac6fa925034c4b2b909622cff5716d6abc1e15c550d0a595820a5ee",
+    "sourceChars": 5139,
+    "estimatedFirstTurnInputTokens": 20673,
+    "ownedUnits": 9,
+    "ownedItems": 1,
+    "ownedMaterialItems": 1,
+    "quantitativeItems": 1,
+    "contextEntries": 1,
+    "contextChars": 225,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "estimatedOutputTokens": 24000,
+    "estimatedUsd": 0.7357,
+    "wave": "B",
+    "renderedNow": 20673
+   },
+   {
+    "ordinal": 15,
+    "shardId": "shard:d3aac7c869cff4602343",
+    "shardHash": "23480ebdb0988850c2b9d04b4f6446160246ef07f812710c98eee8444a5064fb",
+    "sourceChars": 10173,
+    "estimatedFirstTurnInputTokens": 24105,
+    "ownedUnits": 4,
+    "ownedItems": 1,
+    "ownedMaterialItems": 1,
+    "quantitativeItems": 1,
+    "contextEntries": 2,
+    "contextChars": 2025,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "estimatedOutputTokens": 11500,
+    "estimatedUsd": 0.8579,
+    "wave": "B",
+    "renderedNow": 24105
+   },
+   {
+    "ordinal": 16,
+    "shardId": "shard:d2efbf609b9828839ddf",
+    "shardHash": "28047c2b5b76287a19e71956238a1da948848c873fb944f36fe5f26ddfd7ae05",
+    "sourceChars": 11247,
+    "estimatedFirstTurnInputTokens": 24278,
+    "ownedUnits": 4,
+    "ownedItems": 1,
+    "ownedMaterialItems": 1,
+    "quantitativeItems": 1,
+    "contextEntries": 3,
+    "contextChars": 788,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "estimatedOutputTokens": 11500,
+    "estimatedUsd": 0.864,
+    "wave": "B",
+    "renderedNow": 24278
+   },
+   {
+    "ordinal": 18,
+    "shardId": "shard:a8646966da2484b40b97",
+    "shardHash": "53b8d2efe4987c7441520de6acaddc2a3c11e6b0105658f183209dd5ce646150",
+    "sourceChars": 10363,
+    "estimatedFirstTurnInputTokens": 24603,
+    "ownedUnits": 16,
+    "ownedItems": 2,
+    "ownedMaterialItems": 2,
+    "quantitativeItems": 0,
+    "contextEntries": 2,
+    "contextChars": 1532,
+    "unresolvedContext": 1,
+    "oversized": false,
+    "estimatedOutputTokens": 41500,
+    "estimatedUsd": 0.8756,
+    "wave": "B",
+    "renderedNow": 24603
+   },
+   {
+    "ordinal": 19,
+    "shardId": "shard:30d337feeef5ba80d66b",
+    "shardHash": "7082b8c10ea569669d6a9cffd1e0441cbaaf75ebba85cecf1438122fde05296e",
+    "sourceChars": 10017,
+    "estimatedFirstTurnInputTokens": 26029,
+    "ownedUnits": 16,
+    "ownedItems": 5,
+    "ownedMaterialItems": 5,
+    "quantitativeItems": 5,
+    "contextEntries": 2,
+    "contextChars": 264,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "estimatedOutputTokens": 41500,
+    "estimatedUsd": 0.9264,
+    "wave": "B",
+    "renderedNow": 26029
+   },
+   {
+    "ordinal": 20,
+    "shardId": "shard:a45ccfe3d94f990e5348",
+    "shardHash": "5e5ca3d1c2758efb0410d916ef84535e2f133be04f81d112f5483326550e0556",
+    "sourceChars": 11995,
+    "estimatedFirstTurnInputTokens": 27567,
+    "ownedUnits": 13,
+    "ownedItems": 4,
+    "ownedMaterialItems": 4,
+    "quantitativeItems": 3,
+    "contextEntries": 4,
+    "contextChars": 3828,
+    "unresolvedContext": 1,
+    "oversized": false,
+    "estimatedOutputTokens": 34000,
+    "estimatedUsd": 0.9811,
+    "wave": "B",
+    "renderedNow": 27567
+   },
+   {
+    "ordinal": 22,
+    "shardId": "shard:f3eb63624b7f5a5c3cca",
+    "shardHash": "9917d21e61733319db3c8f1beed79a78ab44f1e440ced3ee8dfafda4d0cc5a40",
+    "sourceChars": 10945,
+    "estimatedFirstTurnInputTokens": 27334,
+    "ownedUnits": 16,
+    "ownedItems": 3,
+    "ownedMaterialItems": 3,
+    "quantitativeItems": 3,
+    "contextEntries": 4,
+    "contextChars": 4153,
+    "unresolvedContext": 0,
+    "oversized": false,
+    "estimatedOutputTokens": 41500,
+    "estimatedUsd": 0.9728,
+    "wave": "B",
+    "renderedNow": 27334
+   }
+  ]
+ },
+ "costPrecheck": {
+  "basis": "dollars per rendered first-turn token from all 15 paid shards (5 Stage-1 + 10 Wave A)",
+  "paidSamples": 15,
+  "perShardRates": [
+   {
+    "shardId": "shard:1c29e71eef1717d4f9e1",
+    "source": "STAGE_1",
+    "costUsd": 0.701648,
+    "renderedTokens": 29510,
+    "rate": 0.00002377661809556083
+   },
+   {
+    "shardId": "shard:bf3da01cb454860cdf5f",
+    "source": "STAGE_1",
+    "costUsd": 0.464402,
+    "renderedTokens": 29330,
+    "rate": 0.000015833685646096145
+   },
+   {
+    "shardId": "shard:aac727054a5da5f1a9fd",
+    "source": "STAGE_1",
+    "costUsd": 0.336676,
+    "renderedTokens": 22825,
+    "rate": 0.000014750317634173054
+   },
+   {
+    "shardId": "shard:4f06625557e9aecbbb7a",
+    "source": "STAGE_1",
+    "costUsd": 0.47572200000000003,
+    "renderedTokens": 34344,
+    "rate": 0.00001385167714884696
+   },
+   {
+    "shardId": "shard:3e3910ea2efd9edd45a3",
+    "source": "STAGE_1",
+    "costUsd": 0.7412080000000001,
+    "renderedTokens": 26033,
+    "rate": 0.000028471862635885225
+   },
+   {
+    "shardId": "shard:2866a115c3a6d5cc2089",
+    "source": "WAVE_A",
+    "costUsd": 0.41790800000000006,
+    "renderedTokens": 24837,
+    "rate": 0.00001682602568748239
+   },
+   {
+    "shardId": "shard:b934f8ceb0d79b5cfe57",
+    "source": "WAVE_A",
+    "costUsd": 0.528918,
+    "renderedTokens": 25495,
+    "rate": 0.00002074595018631104
+   },
+   {
+    "shardId": "shard:4c30ced71fe038991b4b",
+    "source": "WAVE_A",
+    "costUsd": 0.44979800000000003,
+    "renderedTokens": 25012,
+    "rate": 0.00001798328802174956
+   },
+   {
+    "shardId": "shard:9dae67b10a1cb8ab8e61",
+    "source": "WAVE_A",
+    "costUsd": 0.45136200000000004,
+    "renderedTokens": 24241,
+    "rate": 0.0000186197764118642
+   },
+   {
+    "shardId": "shard:c68b6e6e275414f90c39",
+    "source": "WAVE_A",
+    "costUsd": 0.28977800000000004,
+    "renderedTokens": 22963,
+    "rate": 0.000012619344162348127
+   },
+   {
+    "shardId": "shard:ec1aea485db261059c14",
+    "source": "WAVE_A",
+    "costUsd": 0.14336000000000002,
+    "renderedTokens": 21942,
+    "rate": 0.000006533588551636132
+   },
+   {
+    "shardId": "shard:5f63d11e8ce53e883d6a",
+    "source": "WAVE_A",
+    "costUsd": 0.288266,
+    "renderedTokens": 24634,
+    "rate": 0.000011701956645287003
+   },
+   {
+    "shardId": "shard:87f08272567db019c17b",
+    "source": "WAVE_A",
+    "costUsd": 0.38587800000000005,
+    "renderedTokens": 28538,
+    "rate": 0.00001352155021375009
+   },
+   {
+    "shardId": "shard:fc841e0f175ddcab1ccd",
+    "source": "WAVE_A",
+    "costUsd": 0.26368400000000003,
+    "renderedTokens": 18865,
+    "rate": 0.000013977418499867482
+   },
+   {
+    "shardId": "shard:86eec078e4ee957898ac",
+    "source": "WAVE_A",
+    "costUsd": 0.163946,
+    "renderedTokens": 23688,
+    "rate": 0.000006921057075312395
+   }
+  ],
+  "meanRate": 0.00001596453171557356,
+  "medianRate": 0.000014750317634173054,
+  "worstRate": 0.000028471862635885225,
+  "safetyFactor": 1.25,
+  "meanRateEstimateUsd": 4.0166,
+  "medianRateEstimateUsd": 3.7111,
+  "worstRateEstimateUsd": 7.1633,
+  "conservativeEstimateUsd": 8.9542,
+  "capUsd": 10.5,
+  "fitsCap": true,
+  "gatewayBalanceUsd": 20.352738,
+  "fitsBalance": true
+ },
+ "verdict": "PROCEED"
+}

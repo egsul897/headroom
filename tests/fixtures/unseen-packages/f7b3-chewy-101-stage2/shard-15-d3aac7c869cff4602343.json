@@ -1,0 +1,1105 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:d3aac7c869cff4602343",
+  "shardHash": "23480ebdb0988850c2b9d04b4f6446160246ef07f812710c98eee8444a5064fb",
+  "ordinal": 15,
+  "ownedUnits": 4,
+  "sourceChars": 10173,
+  "contextEntries": 2,
+  "contextChars": 2025,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 1,
+  "ownedMaterialItems": 1,
+  "estimatedFirstTurnInputTokens": 24105,
+  "preCallEstimate": {
+   "inputTokens": 79306,
+   "outputTokens": 11500,
+   "usd": 0.273612
+  },
+  "actual": {
+   "inputTokens": 23944,
+   "outputTokens": 19009,
+   "turns": 1,
+   "latencyMs": 166519,
+   "costUsd": 0.23797800000000002,
+   "attemptCount": 1,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_COMPLETE",
+  "failureReasons": [],
+  "toolCalls": 0,
+  "toolCallNames": [],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 4,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 0,
+   "dispositioned": 0,
+   "missingMaterial": 1,
+   "valuesRepresented": 0,
+   "valuesMissing": 1,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "MISSING_FROM_COMPOSITION": 1
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [],
+  "unresolvedIssues": [
+   "[definition[d1].SUBTRACT.right.SUM[2]] multi-branch clause (x)/(y) with five lettered sub-categories (A)-(E) referencing several distinct defined terms; collapsing into a single value node would lose material structure that a downstream reviewer would need",
+   "[definition[d1].SUBTRACT.right.SUM[9]] creates two inline-defined terms (Contract Consideration, Planned Expenditures) and a cross-period contingent shortfall-adjustment mechanic that cannot be reduced to a static single-period arithmetic operand",
+   "[definition[d1].SUBTRACT.right] SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1]] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "This source region contains four independently defined terms in Section 1.01: 'Excess Cash Flow', 'Excess Cash Flow Interim Period', 'Excess Cash Flow Period', and 'Exchange Act'. All four are emitted as separate WireDefinitions.",
+   "'Excess Cash Flow' is a large multi-clause formula (5 addition items, 12 subtraction items) with several genuinely cross-period contingent mechanics (the (a)(ii) clawback, the (b)(x) Contract Consideration/Planned Expenditures shortfall carry-forward, and the trailing negative-result carry-forward to the subsequent period). These are flagged via UNSUPPORTED nodes / sufficiencyReasons rather than forced into a static single-period arithmetic tree, per the safety principle of preferring an honest PARTIAL over a confidently wrong COMPLETE.",
+   "Section 2.09(c) (the mandatory prepayment provision that Excess Cash Flow feeds into) and Section 5.01(a)/(b) (financial statement delivery timing referenced by 'Excess Cash Flow Interim Period') are cited but not independently re-fetched, because neither is needed to represent the meaning of the definitions being compiled here — they are the downstream/contextual provisions that CONSUME these definitions, not part of the definitions' own operative content.",
+   "Numerous defined terms used within the Excess Cash Flow formula (Consolidated Net Income, Consolidated Working Capital, Swap Agreements, Restricted Parties, Funded Debt, Capitalized Leases, Restricted Debt Payments, Collateral, Non-Loan Party Subsidiary, Investments, Cash Equivalents, Permitted Acquisitions, Restricted Payments, Tax Distributions, Contract Consideration, Planned Expenditures, etc.) are recorded as dependsOnTerms but not recursively resolved, consistent with compiling only the provision at hand."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:d3aac7c869cff4602343",
+  "shardHash": "23480ebdb0988850c2b9d04b4f6446160246ef07f812710c98eee8444a5064fb",
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:c1c781a33f7b0cad50e17902",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Excess Cash Flow",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUBTRACT",
+      "type": "MONEY",
+      "exprId": "ir-expr:5d7f861ffb0b9fc3b3ae961f",
+      "left": {
+       "kind": "SUM",
+       "type": "MONEY",
+       "exprId": "ir-expr:c8f0dc794a75f9771bf2fc8c",
+       "operands": [
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "Consolidated Net Income for the applicable fiscal year",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:a376512b776acde3d36917bf"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "non-cash charges deducted in arriving at Consolidated Net Income (subject to a future-period clawback if the charge represents an accrual/reserve for a future cash item)",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:abc17b4fb8c9acb4dc7ecc83"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "decreases in Consolidated Working Capital, long-term receivables and long-term prepaid assets and increases in long-term deferred revenue",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:492286cf8eccf342998945c4"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "aggregate net non-cash loss on dispositions by Restricted Parties (excluding ordinary course dispositions) deducted in arriving at Consolidated Net Income",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:5c6718ca94b0c018d7f25d22"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "cash receipts in respect of Swap Agreements not otherwise included in Consolidated Net Income",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:3582bfbd41a7b55bc6a4c5a9"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(a)",
+        "excerpt": null
+       }
+      },
+      "right": {
+       "kind": "SUM",
+       "type": "MONEY",
+       "exprId": "ir-expr:ad1db261274f4ab6f42a0e51",
+       "operands": [
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "non-cash credits included in arriving at Consolidated Net Income plus certain cash charges under clauses (a)-(p) of the Consolidated Net Income definition (excluding specified Transaction Expenses)",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:7fb8c409578823d7ca1acc01"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "Capital Expenditures made in cash or accrued during the Calculation Period, not financed with Funded Debt (other than revolving debt)",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:7d204e25b285be84a7a5b17b"
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01(b)(iii)",
+         "semanticDescription": "aggregate principal payments/prepayments of Indebtedness (excluding those financed with qualifying Funded Debt), including Capitalized Lease principal, pari passu/junior secured prepayments, Restricted Debt Payments, prepayments of Indebtedness secured by non-Collateral assets, prepayments of unsecured Indebtedness of a Non-Loan Party Subsidiary, plus related premium/make-whole/penalty payments",
+         "reason": "multi-branch clause (x)/(y) with five lettered sub-categories (A)-(E) referencing several distinct defined terms; collapsing into a single value node would lose material structure that a downstream reviewer would need",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(b)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:f0cae6626206c80fb09f9f36"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "aggregate net non-cash gain on dispositions by Restricted Parties (excluding ordinary course dispositions) included in arriving at Consolidated Net Income",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:7e2e877238a478d108fa53ac"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "increases in Consolidated Working Capital and long-term receivables and long-term prepaid assets and decreases in long-term deferred revenue",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:155892db978f8d9208ed326c"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "cash payments in respect of purchase price holdbacks, earnout obligations and long-term liabilities (other than Indebtedness) not expensed/deducted in calculating Consolidated Net Income, except to the extent financed with Funded Debt",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:f76c90d46cb73d53ecad9b41"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "amount of Investments (other than Cash Equivalents) and acquisitions not prohibited by this Agreement, not financed with Funded Debt",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:da636859d8138d62e8af2aef"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "dividends and distributions paid in cash, not prohibited by this Agreement, not financed with Funded Debt",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:2ff54f911f19a2585e1ece19"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "cash expenditures not expensed/deducted in calculating Consolidated Net Income, to the extent financed with internally generated cash flow",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:bf6fff33a6023499c7a72220"
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01(b)(x)",
+         "semanticDescription": "aggregate Contract Consideration and Planned Expenditures relating to Permitted Acquisitions, other Investments, deferred payments, restructuring initiatives, capital expenditures and Restricted Payments to be consummated in a subsequent Calculation Period, subject to a shortfall add-back to Excess Cash Flow if actual utilization in the subsequent period is less than the amount deducted",
+         "reason": "creates two inline-defined terms (Contract Consideration, Planned Expenditures) and a cross-period contingent shortfall-adjustment mechanic that cannot be reduced to a static single-period arithmetic operand",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(b)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:0e6c901a3c3f44ae82589500"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "taxes (and Tax Distributions, including penalties/interest) paid in cash and/or tax reserves set aside/payable, to the extent the aggregate exceeds the tax expense deducted in determining Consolidated Net Income",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:a9887e1c1d92f4ea4773a869"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "cash expenditures in respect of Swap Agreements not deducted in calculating Consolidated Net Income",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:d5dbda5c0c497305963ddd1f"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(b)",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Consolidated Net Income",
+      "Consolidated Working Capital",
+      "Swap Agreements",
+      "Restricted Parties",
+      "Funded Debt",
+      "Capitalized Leases",
+      "Loan Document Obligations",
+      "Restricted Debt Payments",
+      "Collateral",
+      "Non-Loan Party Subsidiary",
+      "Loans",
+      "Investments",
+      "Cash Equivalents",
+      "Permitted Acquisitions",
+      "Restricted Payments",
+      "Tax Distributions",
+      "Contract Consideration",
+      "Planned Expenditures",
+      "Excess Cash Flow Period",
+      "Calculation Period",
+      "Transaction Expenses",
+      "Indebtedness"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Three components ((b)(iii) principal-payment/prepayment/premium mechanics, (b)(x) Contract Consideration/Planned Expenditures shortfall carry-forward, and (a)(ii)'s future-period clawback proviso) involve cross-period or multi-branch mechanics that cannot be faithfully reduced to static single-period arithmetic operands and are either UNSUPPORTED or noted as embedded provisos rather than separately modeled.",
+      "The trailing paragraph providing that a negative Excess Cash Flow result carries forward to reduce the subsequent period's calculation (and the associated Section 2.09(c) prepayment) is a separate cross-period mechanic not encoded within this single-period additive formula; it is preserved only as a citation/note, not as a computational node.",
+      "Numerous dependent defined terms (e.g., Consolidated Net Income, Restricted Parties, Funded Debt) are referenced but not independently refetched/resolved, as they are not needed to represent this definition's own additive structure.",
+      "multi-branch clause (x)/(y) with five lettered sub-categories (A)-(E) referencing several distinct defined terms; collapsing into a single value node would lose material structure that a downstream reviewer would need",
+      "creates two inline-defined terms (Contract Consideration, Planned Expenditures) and a cross-period contingent shortfall-adjustment mechanic that cannot be reduced to a static single-period arithmetic operand",
+      "SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+      "SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Excess Cash Flow\" means, for any Calculation Period, an amount equal to the excess of (a) the sum ... over (b) the sum ...; ...if the calculation of Excess Cash Flow ... is less than zero (0) in any such year, such excess amount shall be applied to reduce the calculation of Excess Cash Flow in the subsequent period to reduce the prepayment pursuant to Section 2.09(c) in such period."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:ec290a690efc49bcde8e12f1",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Excess Cash Flow Interim Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Excess Cash Flow Period",
+      "Effective Date"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive time-period definition; no dollar/percentage mechanic to model, fully captured by the excerpt."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, (a) during any Excess Cash Flow Period, any one (1)-, two (2)- or three (3)-fiscal quarter period (i) commencing at the end of the immediately preceding Excess Cash Flow Period and (ii) ending on the last day of the most recently ended fiscal quarter ... for which financial statements have been delivered pursuant to Section 5.01(a) or (b) ... or, if earlier, are internally available, and (b) during the period from the Effective Date until the beginning of the first Excess Cash Flow Period, any period commencing on the first day of the fiscal quarter in which the Effective Date occurs and ending on the last day of the most recently ended fiscal quarter for which financial statements ... have been delivered or, if earlier, are internally available."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:bb41010b104c595efbf0a710"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:686eaa107c2f4f5b3d87e10e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Excess Cash Flow Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Excess Cash Flow"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive definition (the fiscal year used for the Excess Cash Flow / Section 2.09(c) calculation) with a no-duplication proviso; fully captured in the excerpt, no numeric mechanic to model."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the fiscal year for which Excess Cash Flow and/or any prepayment pursuant to Section 2.09(c) is calculated; provided, any calculation of Excess Cash Flow and/or any prepayment pursuant to Section 2.09(c) shall be made without duplication of any credits or deductions made in any prior or subsequent Excess Cash Flow Period."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:8b819868a6501f7b95fd600a",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Exchange Act",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple reference definition to an external statute; no calculation mechanic involved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the United States Securities Exchange Act of 1934, as amended from time to time."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [],
+  "unresolvedIssues": [
+   "[definition[d1].SUBTRACT.right.SUM[2]] multi-branch clause (x)/(y) with five lettered sub-categories (A)-(E) referencing several distinct defined terms; collapsing into a single value node would lose material structure that a downstream reviewer would need",
+   "[definition[d1].SUBTRACT.right.SUM[9]] creates two inline-defined terms (Contract Consideration, Planned Expenditures) and a cross-period contingent shortfall-adjustment mechanic that cannot be reduced to a static single-period arithmetic operand",
+   "[definition[d1].SUBTRACT.right] SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1]] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "This source region contains four independently defined terms in Section 1.01: 'Excess Cash Flow', 'Excess Cash Flow Interim Period', 'Excess Cash Flow Period', and 'Exchange Act'. All four are emitted as separate WireDefinitions.",
+   "'Excess Cash Flow' is a large multi-clause formula (5 addition items, 12 subtraction items) with several genuinely cross-period contingent mechanics (the (a)(ii) clawback, the (b)(x) Contract Consideration/Planned Expenditures shortfall carry-forward, and the trailing negative-result carry-forward to the subsequent period). These are flagged via UNSUPPORTED nodes / sufficiencyReasons rather than forced into a static single-period arithmetic tree, per the safety principle of preferring an honest PARTIAL over a confidently wrong COMPLETE.",
+   "Section 2.09(c) (the mandatory prepayment provision that Excess Cash Flow feeds into) and Section 5.01(a)/(b) (financial statement delivery timing referenced by 'Excess Cash Flow Interim Period') are cited but not independently re-fetched, because neither is needed to represent the meaning of the definitions being compiled here — they are the downstream/contextual provisions that CONSUME these definitions, not part of the definitions' own operative content.",
+   "Numerous defined terms used within the Excess Cash Flow formula (Consolidated Net Income, Consolidated Working Capital, Swap Agreements, Restricted Parties, Funded Debt, Capitalized Leases, Restricted Debt Payments, Collateral, Non-Loan Party Subsidiary, Investments, Cash Equivalents, Permitted Acquisitions, Restricted Payments, Tax Distributions, Contract Consideration, Planned Expenditures, etc.) are recorded as dependsOnTerms but not recursively resolved, consistent with compiling only the provision at hand."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 23944,
+   "outputTokens": 19009,
+   "costUsd": 0.23797800000000002
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:c1c781a33f7b0cad50e17902",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Excess Cash Flow",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "SUBTRACT",
+     "type": "MONEY",
+     "exprId": "ir-expr:5d7f861ffb0b9fc3b3ae961f",
+     "left": {
+      "kind": "SUM",
+      "type": "MONEY",
+      "exprId": "ir-expr:c8f0dc794a75f9771bf2fc8c",
+      "operands": [
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "Consolidated Net Income for the applicable fiscal year",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:a376512b776acde3d36917bf"
+       },
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "non-cash charges deducted in arriving at Consolidated Net Income (subject to a future-period clawback if the charge represents an accrual/reserve for a future cash item)",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:abc17b4fb8c9acb4dc7ecc83"
+       },
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "decreases in Consolidated Working Capital, long-term receivables and long-term prepaid assets and increases in long-term deferred revenue",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:492286cf8eccf342998945c4"
+       },
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "aggregate net non-cash loss on dispositions by Restricted Parties (excluding ordinary course dispositions) deducted in arriving at Consolidated Net Income",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:5c6718ca94b0c018d7f25d22"
+       },
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "cash receipts in respect of Swap Agreements not otherwise included in Consolidated Net Income",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:3582bfbd41a7b55bc6a4c5a9"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(a)",
+       "excerpt": null
+      }
+     },
+     "right": {
+      "kind": "SUM",
+      "type": "MONEY",
+      "exprId": "ir-expr:ad1db261274f4ab6f42a0e51",
+      "operands": [
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "non-cash credits included in arriving at Consolidated Net Income plus certain cash charges under clauses (a)-(p) of the Consolidated Net Income definition (excluding specified Transaction Expenses)",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:7fb8c409578823d7ca1acc01"
+       },
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "Capital Expenditures made in cash or accrued during the Calculation Period, not financed with Funded Debt (other than revolving debt)",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:7d204e25b285be84a7a5b17b"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01(b)(iii)",
+        "semanticDescription": "aggregate principal payments/prepayments of Indebtedness (excluding those financed with qualifying Funded Debt), including Capitalized Lease principal, pari passu/junior secured prepayments, Restricted Debt Payments, prepayments of Indebtedness secured by non-Collateral assets, prepayments of unsecured Indebtedness of a Non-Loan Party Subsidiary, plus related premium/make-whole/penalty payments",
+        "reason": "multi-branch clause (x)/(y) with five lettered sub-categories (A)-(E) referencing several distinct defined terms; collapsing into a single value node would lose material structure that a downstream reviewer would need",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(b)",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:f0cae6626206c80fb09f9f36"
+       },
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "aggregate net non-cash gain on dispositions by Restricted Parties (excluding ordinary course dispositions) included in arriving at Consolidated Net Income",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:7e2e877238a478d108fa53ac"
+       },
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "increases in Consolidated Working Capital and long-term receivables and long-term prepaid assets and decreases in long-term deferred revenue",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:155892db978f8d9208ed326c"
+       },
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "cash payments in respect of purchase price holdbacks, earnout obligations and long-term liabilities (other than Indebtedness) not expensed/deducted in calculating Consolidated Net Income, except to the extent financed with Funded Debt",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:f76c90d46cb73d53ecad9b41"
+       },
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "amount of Investments (other than Cash Equivalents) and acquisitions not prohibited by this Agreement, not financed with Funded Debt",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:da636859d8138d62e8af2aef"
+       },
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "dividends and distributions paid in cash, not prohibited by this Agreement, not financed with Funded Debt",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:2ff54f911f19a2585e1ece19"
+       },
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "cash expenditures not expensed/deducted in calculating Consolidated Net Income, to the extent financed with internally generated cash flow",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:bf6fff33a6023499c7a72220"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01(b)(x)",
+        "semanticDescription": "aggregate Contract Consideration and Planned Expenditures relating to Permitted Acquisitions, other Investments, deferred payments, restructuring initiatives, capital expenditures and Restricted Payments to be consummated in a subsequent Calculation Period, subject to a shortfall add-back to Excess Cash Flow if actual utilization in the subsequent period is less than the amount deducted",
+        "reason": "creates two inline-defined terms (Contract Consideration, Planned Expenditures) and a cross-period contingent shortfall-adjustment mechanic that cannot be reduced to a static single-period arithmetic operand",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(b)",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:0e6c901a3c3f44ae82589500"
+       },
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "taxes (and Tax Distributions, including penalties/interest) paid in cash and/or tax reserves set aside/payable, to the extent the aggregate exceeds the tax expense deducted in determining Consolidated Net Income",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:a9887e1c1d92f4ea4773a869"
+       },
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "cash expenditures in respect of Swap Agreements not deducted in calculating Consolidated Net Income",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:d5dbda5c0c497305963ddd1f"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(b)",
+       "excerpt": null
+      }
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Consolidated Net Income",
+     "Consolidated Working Capital",
+     "Swap Agreements",
+     "Restricted Parties",
+     "Funded Debt",
+     "Capitalized Leases",
+     "Loan Document Obligations",
+     "Restricted Debt Payments",
+     "Collateral",
+     "Non-Loan Party Subsidiary",
+     "Loans",
+     "Investments",
+     "Cash Equivalents",
+     "Permitted Acquisitions",
+     "Restricted Payments",
+     "Tax Distributions",
+     "Contract Consideration",
+     "Planned Expenditures",
+     "Excess Cash Flow Period",
+     "Calculation Period",
+     "Transaction Expenses",
+     "Indebtedness"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Three components ((b)(iii) principal-payment/prepayment/premium mechanics, (b)(x) Contract Consideration/Planned Expenditures shortfall carry-forward, and (a)(ii)'s future-period clawback proviso) involve cross-period or multi-branch mechanics that cannot be faithfully reduced to static single-period arithmetic operands and are either UNSUPPORTED or noted as embedded provisos rather than separately modeled.",
+     "The trailing paragraph providing that a negative Excess Cash Flow result carries forward to reduce the subsequent period's calculation (and the associated Section 2.09(c) prepayment) is a separate cross-period mechanic not encoded within this single-period additive formula; it is preserved only as a citation/note, not as a computational node.",
+     "Numerous dependent defined terms (e.g., Consolidated Net Income, Restricted Parties, Funded Debt) are referenced but not independently refetched/resolved, as they are not needed to represent this definition's own additive structure.",
+     "multi-branch clause (x)/(y) with five lettered sub-categories (A)-(E) referencing several distinct defined terms; collapsing into a single value node would lose material structure that a downstream reviewer would need",
+     "creates two inline-defined terms (Contract Consideration, Planned Expenditures) and a cross-period contingent shortfall-adjustment mechanic that cannot be reduced to a static single-period arithmetic operand",
+     "SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+     "SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Excess Cash Flow\" means, for any Calculation Period, an amount equal to the excess of (a) the sum ... over (b) the sum ...; ...if the calculation of Excess Cash Flow ... is less than zero (0) in any such year, such excess amount shall be applied to reduce the calculation of Excess Cash Flow in the subsequent period to reduce the prepayment pursuant to Section 2.09(c) in such period."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:ec290a690efc49bcde8e12f1",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Excess Cash Flow Interim Period",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Excess Cash Flow Period",
+     "Effective Date"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive time-period definition; no dollar/percentage mechanic to model, fully captured by the excerpt."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, (a) during any Excess Cash Flow Period, any one (1)-, two (2)- or three (3)-fiscal quarter period (i) commencing at the end of the immediately preceding Excess Cash Flow Period and (ii) ending on the last day of the most recently ended fiscal quarter ... for which financial statements have been delivered pursuant to Section 5.01(a) or (b) ... or, if earlier, are internally available, and (b) during the period from the Effective Date until the beginning of the first Excess Cash Flow Period, any period commencing on the first day of the fiscal quarter in which the Effective Date occurs and ending on the last day of the most recently ended fiscal quarter for which financial statements ... have been delivered or, if earlier, are internally available."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:bb41010b104c595efbf0a710"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:686eaa107c2f4f5b3d87e10e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Excess Cash Flow Period",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Excess Cash Flow"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Descriptive definition (the fiscal year used for the Excess Cash Flow / Section 2.09(c) calculation) with a no-duplication proviso; fully captured in the excerpt, no numeric mechanic to model."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the fiscal year for which Excess Cash Flow and/or any prepayment pursuant to Section 2.09(c) is calculated; provided, any calculation of Excess Cash Flow and/or any prepayment pursuant to Section 2.09(c) shall be made without duplication of any credits or deductions made in any prior or subsequent Excess Cash Flow Period."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:8b819868a6501f7b95fd600a",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Exchange Act",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple reference definition to an external statute; no calculation mechanic involved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the United States Securities Exchange Act of 1934, as amended from time to time."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01(a)(ii) [future-period clawback for non-cash charge accruals], §1.01(b)(x) [Contract Consideration/Planned Expenditures shortfall add-back in a subsequent Calculation Period], and the trailing paragraph of the Excess Cash Flow definition [negative-result carry-forward to the subsequent period's calculation]",
+    "semanticRequirement": "A way to express that a value computed (or a deduction taken) in Period N conditionally creates an offsetting adjustment to the SAME metric's calculation in a DIFFERENT, later period (Period N+1, N+2, ...), rather than only within a single period's static formula.",
+    "whyExistingPrimitivesFail": "SUM/ADD/SUBTRACT/SCHEDULE/EVENT_ACTIVE all operate on values within one evaluation; none of them can express 'if actual utilization in the next period is less than the amount deducted this period, add the shortfall back to next period's calculation of this same metric' or 'a negative result this period reduces this period's own metric in the NEXT period.' This is a genuinely recurring cross-period true-up/carry-forward shape in Excess Cash Flow-style definitions, not merely a hard-to-parse formula.",
+    "candidateGeneralizedPrimitive": "A CROSS_PERIOD_ADJUSTMENT (or CARRY_FORWARD) node type taking (sourcePeriodExpression, targetPeriodOffset/description, triggerCondition, adjustmentExpression) that can be referenced from the later period's own calculationExpression."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].SUBTRACT.right.SUM[2]] multi-branch clause (x)/(y) with five lettered sub-categories (A)-(E) referencing several distinct defined terms; collapsing into a single value node would lose material structure that a downstream reviewer would need",
+   "[definition[d1].SUBTRACT.right.SUM[9]] creates two inline-defined terms (Contract Consideration, Planned Expenditures) and a cross-period contingent shortfall-adjustment mechanic that cannot be reduced to a static single-period arithmetic operand",
+   "[definition[d1].SUBTRACT.right] SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1]] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "This source region contains four independently defined terms in Section 1.01: 'Excess Cash Flow', 'Excess Cash Flow Interim Period', 'Excess Cash Flow Period', and 'Exchange Act'. All four are emitted as separate WireDefinitions.",
+   "'Excess Cash Flow' is a large multi-clause formula (5 addition items, 12 subtraction items) with several genuinely cross-period contingent mechanics (the (a)(ii) clawback, the (b)(x) Contract Consideration/Planned Expenditures shortfall carry-forward, and the trailing negative-result carry-forward to the subsequent period). These are flagged via UNSUPPORTED nodes / sufficiencyReasons rather than forced into a static single-period arithmetic tree, per the safety principle of preferring an honest PARTIAL over a confidently wrong COMPLETE.",
+   "Section 2.09(c) (the mandatory prepayment provision that Excess Cash Flow feeds into) and Section 5.01(a)/(b) (financial statement delivery timing referenced by 'Excess Cash Flow Interim Period') are cited but not independently re-fetched, because neither is needed to represent the meaning of the definitions being compiled here — they are the downstream/contextual provisions that CONSUME these definitions, not part of the definitions' own operative content.",
+   "Numerous defined terms used within the Excess Cash Flow formula (Consolidated Net Income, Consolidated Working Capital, Swap Agreements, Restricted Parties, Funded Debt, Capitalized Leases, Restricted Debt Payments, Collateral, Non-Loan Party Subsidiary, Investments, Cash Equivalents, Permitted Acquisitions, Restricted Payments, Tax Distributions, Contract Consideration, Planned Expenditures, etc.) are recorded as dependsOnTerms but not recursively resolved, consistent with compiling only the provision at hand."
+  ],
+  "toolCallLog": [],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "Excess Cash Flow",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUBTRACT",
+      "citation": "§1.01",
+      "left": {
+       "kind": "SUM",
+       "citation": "§1.01(a)",
+       "operands": [
+        {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "Consolidated Net Income for the applicable fiscal year",
+         "citation": "§1.01(a)(i)"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "non-cash charges deducted in arriving at Consolidated Net Income (subject to a future-period clawback if the charge represents an accrual/reserve for a future cash item)",
+         "citation": "§1.01(a)(ii)"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "decreases in Consolidated Working Capital, long-term receivables and long-term prepaid assets and increases in long-term deferred revenue",
+         "citation": "§1.01(a)(iii)"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "aggregate net non-cash loss on dispositions by Restricted Parties (excluding ordinary course dispositions) deducted in arriving at Consolidated Net Income",
+         "citation": "§1.01(a)(iv)"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "cash receipts in respect of Swap Agreements not otherwise included in Consolidated Net Income",
+         "citation": "§1.01(a)(v)"
+        }
+       ]
+      },
+      "right": {
+       "kind": "SUM",
+       "citation": "§1.01(b)",
+       "operands": [
+        {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "non-cash credits included in arriving at Consolidated Net Income plus certain cash charges under clauses (a)-(p) of the Consolidated Net Income definition (excluding specified Transaction Expenses)",
+         "citation": "§1.01(b)(i)"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "Capital Expenditures made in cash or accrued during the Calculation Period, not financed with Funded Debt (other than revolving debt)",
+         "citation": "§1.01(b)(ii)"
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "semanticDescription": "aggregate principal payments/prepayments of Indebtedness (excluding those financed with qualifying Funded Debt), including Capitalized Lease principal, pari passu/junior secured prepayments, Restricted Debt Payments, prepayments of Indebtedness secured by non-Collateral assets, prepayments of unsecured Indebtedness of a Non-Loan Party Subsidiary, plus related premium/make-whole/penalty payments",
+         "reason": "multi-branch clause (x)/(y) with five lettered sub-categories (A)-(E) referencing several distinct defined terms; collapsing into a single value node would lose material structure that a downstream reviewer would need",
+         "sourceEvidence": "§1.01(b)(iii)"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "aggregate net non-cash gain on dispositions by Restricted Parties (excluding ordinary course dispositions) included in arriving at Consolidated Net Income",
+         "citation": "§1.01(b)(iv)"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "increases in Consolidated Working Capital and long-term receivables and long-term prepaid assets and decreases in long-term deferred revenue",
+         "citation": "§1.01(b)(v)"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "cash payments in respect of purchase price holdbacks, earnout obligations and long-term liabilities (other than Indebtedness) not expensed/deducted in calculating Consolidated Net Income, except to the extent financed with Funded Debt",
+         "citation": "§1.01(b)(vi)"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "amount of Investments (other than Cash Equivalents) and acquisitions not prohibited by this Agreement, not financed with Funded Debt",
+         "citation": "§1.01(b)(vii)"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "dividends and distributions paid in cash, not prohibited by this Agreement, not financed with Funded Debt",
+         "citation": "§1.01(b)(viii)"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "cash expenditures not expensed/deducted in calculating Consolidated Net Income, to the extent financed with internally generated cash flow",
+         "citation": "§1.01(b)(ix)"
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "semanticDescription": "aggregate Contract Consideration and Planned Expenditures relating to Permitted Acquisitions, other Investments, deferred payments, restructuring initiatives, capital expenditures and Restricted Payments to be consummated in a subsequent Calculation Period, subject to a shortfall add-back to Excess Cash Flow if actual utilization in the subsequent period is less than the amount deducted",
+         "reason": "creates two inline-defined terms (Contract Consideration, Planned Expenditures) and a cross-period contingent shortfall-adjustment mechanic that cannot be reduced to a static single-period arithmetic operand",
+         "sourceEvidence": "§1.01(b)(x)"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "taxes (and Tax Distributions, including penalties/interest) paid in cash and/or tax reserves set aside/payable, to the extent the aggregate exceeds the tax expense deducted in determining Consolidated Net Income",
+         "citation": "§1.01(b)(xi)"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "cash expenditures in respect of Swap Agreements not deducted in calculating Consolidated Net Income",
+         "citation": "§1.01(b)(xii)"
+        }
+       ]
+      }
+     },
+     "dependsOnTerms": [
+      "Consolidated Net Income",
+      "Consolidated Working Capital",
+      "Swap Agreements",
+      "Restricted Parties",
+      "Funded Debt",
+      "Capitalized Leases",
+      "Loan Document Obligations",
+      "Restricted Debt Payments",
+      "Collateral",
+      "Non-Loan Party Subsidiary",
+      "Loans",
+      "Investments",
+      "Cash Equivalents",
+      "Permitted Acquisitions",
+      "Restricted Payments",
+      "Tax Distributions",
+      "Contract Consideration",
+      "Planned Expenditures",
+      "Excess Cash Flow Period",
+      "Calculation Period",
+      "Transaction Expenses",
+      "Indebtedness"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Three components ((b)(iii) principal-payment/prepayment/premium mechanics, (b)(x) Contract Consideration/Planned Expenditures shortfall carry-forward, and (a)(ii)'s future-period clawback proviso) involve cross-period or multi-branch mechanics that cannot be faithfully reduced to static single-period arithmetic operands and are either UNSUPPORTED or noted as embedded provisos rather than separately modeled.",
+      "The trailing paragraph providing that a negative Excess Cash Flow result carries forward to reduce the subsequent period's calculation (and the associated Section 2.09(c) prepayment) is a separate cross-period mechanic not encoded within this single-period additive formula; it is preserved only as a citation/note, not as a computational node.",
+      "Numerous dependent defined terms (e.g., Consolidated Net Income, Restricted Parties, Funded Debt) are referenced but not independently refetched/resolved, as they are not needed to represent this definition's own additive structure."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Excess Cash Flow\" means, for any Calculation Period, an amount equal to the excess of (a) the sum ... over (b) the sum ...; ...if the calculation of Excess Cash Flow ... is less than zero (0) in any such year, such excess amount shall be applied to reduce the calculation of Excess Cash Flow in the subsequent period to reduce the prepayment pursuant to Section 2.09(c) in such period."
+    },
+    {
+     "localRef": "d2",
+     "termName": "Excess Cash Flow Interim Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Excess Cash Flow Period",
+      "Effective Date"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive time-period definition; no dollar/percentage mechanic to model, fully captured by the excerpt."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, (a) during any Excess Cash Flow Period, any one (1)-, two (2)- or three (3)-fiscal quarter period (i) commencing at the end of the immediately preceding Excess Cash Flow Period and (ii) ending on the last day of the most recently ended fiscal quarter ... for which financial statements have been delivered pursuant to Section 5.01(a) or (b) ... or, if earlier, are internally available, and (b) during the period from the Effective Date until the beginning of the first Excess Cash Flow Period, any period commencing on the first day of the fiscal quarter in which the Effective Date occurs and ending on the last day of the most recently ended fiscal quarter for which financial statements ... have been delivered or, if earlier, are internally available.",
+     "inventoryItemIds": [
+      "inv-item:bb41010b104c595efbf0a710"
+     ]
+    },
+    {
+     "localRef": "d3",
+     "termName": "Excess Cash Flow Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Excess Cash Flow"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive definition (the fiscal year used for the Excess Cash Flow / Section 2.09(c) calculation) with a no-duplication proviso; fully captured in the excerpt, no numeric mechanic to model."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means the fiscal year for which Excess Cash Flow and/or any prepayment pursuant to Section 2.09(c) is calculated; provided, any calculation of Excess Cash Flow and/or any prepayment pursuant to Section 2.09(c) shall be made without duplication of any credits or deductions made in any prior or subsequent Excess Cash Flow Period."
+    },
+    {
+     "localRef": "d4",
+     "termName": "Exchange Act",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple reference definition to an external statute; no calculation mechanic involved."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means the United States Securities Exchange Act of 1934, as amended from time to time."
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01(a)(ii) [future-period clawback for non-cash charge accruals], §1.01(b)(x) [Contract Consideration/Planned Expenditures shortfall add-back in a subsequent Calculation Period], and the trailing paragraph of the Excess Cash Flow definition [negative-result carry-forward to the subsequent period's calculation]",
+     "semanticRequirement": "A way to express that a value computed (or a deduction taken) in Period N conditionally creates an offsetting adjustment to the SAME metric's calculation in a DIFFERENT, later period (Period N+1, N+2, ...), rather than only within a single period's static formula.",
+     "whyExistingPrimitivesFail": "SUM/ADD/SUBTRACT/SCHEDULE/EVENT_ACTIVE all operate on values within one evaluation; none of them can express 'if actual utilization in the next period is less than the amount deducted this period, add the shortfall back to next period's calculation of this same metric' or 'a negative result this period reduces this period's own metric in the NEXT period.' This is a genuinely recurring cross-period true-up/carry-forward shape in Excess Cash Flow-style definitions, not merely a hard-to-parse formula.",
+     "candidateGeneralizedPrimitive": "A CROSS_PERIOD_ADJUSTMENT (or CARRY_FORWARD) node type taking (sourcePeriodExpression, targetPeriodOffset/description, triggerCondition, adjustmentExpression) that can be referenced from the later period's own calculationExpression."
+    }
+   ],
+   "overallNotes": [
+    "This source region contains four independently defined terms in Section 1.01: 'Excess Cash Flow', 'Excess Cash Flow Interim Period', 'Excess Cash Flow Period', and 'Exchange Act'. All four are emitted as separate WireDefinitions.",
+    "'Excess Cash Flow' is a large multi-clause formula (5 addition items, 12 subtraction items) with several genuinely cross-period contingent mechanics (the (a)(ii) clawback, the (b)(x) Contract Consideration/Planned Expenditures shortfall carry-forward, and the trailing negative-result carry-forward to the subsequent period). These are flagged via UNSUPPORTED nodes / sufficiencyReasons rather than forced into a static single-period arithmetic tree, per the safety principle of preferring an honest PARTIAL over a confidently wrong COMPLETE.",
+    "Section 2.09(c) (the mandatory prepayment provision that Excess Cash Flow feeds into) and Section 5.01(a)/(b) (financial statement delivery timing referenced by 'Excess Cash Flow Interim Period') are cited but not independently re-fetched, because neither is needed to represent the meaning of the definitions being compiled here — they are the downstream/contextual provisions that CONSUME these definitions, not part of the definitions' own operative content.",
+    "Numerous defined terms used within the Excess Cash Flow formula (Consolidated Net Income, Consolidated Working Capital, Swap Agreements, Restricted Parties, Funded Debt, Capitalized Leases, Restricted Debt Payments, Collateral, Non-Loan Party Subsidiary, Investments, Cash Equivalents, Permitted Acquisitions, Restricted Payments, Tax Distributions, Contract Consideration, Planned Expenditures, etc.) are recorded as dependsOnTerms but not recursively resolved, consistent with compiling only the provision at hand."
+   ],
+   "inventoryDispositions": []
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T17:59:18.186Z",
+   "inputTokens": 23944,
+   "outputTokens": 19009,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 1,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 166514,
+   "calculatedCostUsd": 0.23797800000000002
+  },
+  "cacheKey": "a29e1cb3380c9474df58c5170c52648210f8eb3b5cb50f0cd43d8dcb88e0b07a",
+  "compiledAt": "2026-09-14T17:59:18.186Z"
+ },
+ "wave": "B",
+ "attemptsSoFar": 1
+}

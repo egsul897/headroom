@@ -23,7 +23,7 @@ import { normalizeDefinedTermRef } from "../amendment/operative-state";
 import { reconcileInventoryWithComposition } from "../semantic-accountability/reconciliation";
 import { buildOwnedDeclarationIndex, locateDefinitionDeclaration, ownedUnitSources, type DefinitionSourceAnchor, type OwnedDeclarationIndex } from "./definition-source-anchor";
 import type { FrozenSemanticInventory, SourceContextState } from "../semantic-accountability/types";
-import type { CompilationShard, ShardCollision, ShardComposition, ShardExecutionResult, ShardPlan, ShardStatus, StitchedCandidateStatus, StitchedCompilation } from "./shard-types";
+import type { CompilationShard, DefinitionConflictEvidence, DefinitionConflictVariant, ShardCollision, ShardComposition, ShardExecutionResult, ShardPlan, ShardStatus, StitchedCandidateStatus, StitchedCompilation } from "./shard-types";
 import type { SemanticCompilerFailureReason } from "./types";
 
 export interface StitchInput {
@@ -112,6 +112,30 @@ function canonicalizeCompositionIds(comp: ShardComposition, knownIds: Set<string
 }
 
 /** Strips lineage claims naming items the shard does not own, everywhere in the object (deep, in place on a clone). */
+/**
+ * F-7B.3B - deterministic extraction over a preserved conflict variant. It reuses the same generic "walk every nested
+ * object" traversal the rest of this file already relies on, so a value or lineage reference is found wherever the
+ * model happened to nest it: top-level, inside a calculation expression, or inside an attempted structure.
+ */
+function conflictVariantCensus(def: unknown): { values: string[]; lineage: string[] } {
+  const values: string[] = [];
+  const lineage: string[] = [];
+  const walk = (x: unknown): void => {
+    if (!x || typeof x !== "object") return;
+    if (Array.isArray(x)) { x.forEach(walk); return; }
+    const r = x as Record<string, unknown>;
+    if (typeof r.kind === "string" && QUANTITATIVE_EXPR_KINDS.has(r.kind)) {
+      const amount = r.amount ?? r.value ?? r.ratio ?? r.percent;
+      if (amount !== undefined && amount !== null) values.push(`${r.kind}:${String(amount)}`);
+    }
+    if (Array.isArray(r.inventoryItemIds)) lineage.push(...(r.inventoryItemIds as string[]));
+    for (const v of Object.values(r)) if (v && typeof v === "object") walk(v);
+  };
+  walk(def);
+  return { values: [...new Set(values)].sort(), lineage: [...new Set(lineage)].sort() };
+}
+const QUANTITATIVE_EXPR_KINDS = new Set(["MONEY", "PERCENT", "RATIO", "NUMBER"]);
+
 function scopeLineage<T extends object>(obj: T, owned: Set<string>, onStrip: (irPath: string, itemId: string) => void, basePath: string): T {
   const clone = JSON.parse(JSON.stringify(obj)) as T;
   const visit = (node: Record<string, unknown>, path: string) => {
@@ -222,6 +246,10 @@ export function stitchShardResults(input: StitchInput): StitchedCompilation {
   const unresolvedIssues: string[] = [];
   const regionTextById = new Map((input.sourceRegions ?? []).map((r) => [r.regionId, r.text] as const));
   const definitionSourceAnchors: DefinitionSourceAnchor[] = [];
+  /** F-7B.3B: every OWNED accepted definition emission, in plan order, so a conflict can be preserved whole later.
+   *  Contextual, ambiguous and non-owner emissions never reach here - they return earlier - so this can never become a
+   *  backdoor around source attribution (§13). */
+  const ownedDefinitionEmissions: { definitionId: string; termName: string; shardId: string; unitKey: string | null; attributionMethod: string; sourceAnchor: DefinitionSourceAnchor | null; definition: IRDefinition; contentHash: string }[] = [];
   const definitionAttribution: StitchedCompilation["definitionAttribution"] = [];
 
   interface Owned<T> { obj: T; shard: CompilationShard; unitKey: string; oldId: string; sourceOffset: number; emissionIndex: number }
@@ -288,6 +316,9 @@ export function stitchShardResults(input: StitchInput): StitchedCompilation {
         return;
       }
       if (att.anchor) definitionSourceAnchors.push(att.anchor);
+      // Record the emission BEFORE any conflict downgrade, so the preserved variant is the owner shard's own content
+      // rather than a shell that a later conflict mutated.
+      ownedDefinitionEmissions.push({ definitionId: def.definitionId, termName: def.termName, shardId: shard.shardId, unitKey: att.unitKey, attributionMethod: att.method, sourceAnchor: att.anchor ?? null, definition: scoped, contentHash: contentIdentityIgnoringIds(scoped) });
       const existing = ownedDefs.get(def.definitionId);
       if (existing) {
         const same = contentIdentityIgnoringIds(existing.obj) === contentIdentityIgnoringIds(scoped);
@@ -445,5 +476,39 @@ export function stitchShardResults(input: StitchInput): StitchedCompilation {
   for (const u of unresolvedOwnedItems) unresolvedIssues.push(`[shard-stitch] owned material item ${u.inventoryItemId} unresolved: its shard ${u.shardId} ended ${u.shardStatus}`);
   for (const r of accountability.reasons) unresolvedIssues.push(`[accountability] ${r}`);
 
-  return { candidateRef, planHash: plan.planHash, status, failureReasons, rules: stitchedRules, definitions: stitchedDefs, sharedCapacities: stitchedCaps, inventoryDispositions: dispositions, contextualEmissions, collisions, definitionSourceAnchors, definitionAttribution, idMap, shards: shardSummaries, unresolvedOwnedItems, accountability, canonicalizedLineageReferences, unresolvedIssues };
+  // ---- F-7B.3B: preserve every semantically distinct representation of a conflicted definition ----------------
+  // Two or more owner shards disagreeing is a real conflict, not a resolvable merge. The stitcher keeps one canonical
+  // copy in `definitions` for downstream code that expects one object per definitionId, marks it AMBIGUOUS, and files
+  // every distinct representation here intact. Nothing is chosen as correct, nothing is merged, and Pass C never reads
+  // this - it reconciles the canonical arrays only - so preserved evidence cannot manufacture completeness.
+  const emissionsByDefinition = new Map<string, typeof ownedDefinitionEmissions>();
+  for (const e of ownedDefinitionEmissions) emissionsByDefinition.set(e.definitionId, [...(emissionsByDefinition.get(e.definitionId) ?? []), e]);
+  const definitionConflicts: DefinitionConflictEvidence[] = [];
+  for (const [definitionId, emissions] of emissionsByDefinition) {
+    if (new Set(emissions.map((e) => e.contentHash)).size < 2) continue; // identical re-emissions are a duplicate, not a conflict
+    const byHash = new Map<string, typeof emissions>();
+    for (const e of emissions) byHash.set(e.contentHash, [...(byHash.get(e.contentHash) ?? []), e]); // insertion order = plan order
+    const variants: DefinitionConflictVariant[] = [...byHash.entries()].map(([contentHash, group]) => {
+      const c = conflictVariantCensus(group[0]!.definition);
+      return {
+        contentHash,
+        emissions: group.map((g) => ({ shardId: g.shardId, unitKey: g.unitKey, attributionMethod: g.attributionMethod, sourceAnchor: g.sourceAnchor })),
+        definition: group[0]!.definition,
+        inventoryItemIds: c.lineage,
+        quantitativeValues: c.values,
+      };
+    });
+    definitionConflicts.push({
+      definitionId,
+      termName: emissions[0]!.termName,
+      normalizedTermName: normalizeDefinedTermRef(emissions[0]!.termName),
+      variants,
+      ownedInventoryItemIds: [...new Set(variants.flatMap((v) => v.inventoryItemIds))].sort(),
+      quantitativeValues: [...new Set(variants.flatMap((v) => v.quantitativeValues))].sort(),
+      canonicalVariantContentHash: variants[0]!.contentHash,
+      requiresReview: true,
+    });
+  }
+
+  return { candidateRef, planHash: plan.planHash, status, failureReasons, rules: stitchedRules, definitions: stitchedDefs, sharedCapacities: stitchedCaps, inventoryDispositions: dispositions, contextualEmissions, collisions, definitionSourceAnchors, definitionAttribution, definitionConflicts, idMap, shards: shardSummaries, unresolvedOwnedItems, accountability, canonicalizedLineageReferences, unresolvedIssues };
 }

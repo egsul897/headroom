@@ -1,0 +1,2797 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:f3eb63624b7f5a5c3cca",
+  "shardHash": "9917d21e61733319db3c8f1beed79a78ab44f1e440ced3ee8dfafda4d0cc5a40",
+  "ordinal": 22,
+  "ownedUnits": 16,
+  "sourceChars": 10945,
+  "contextEntries": 4,
+  "contextChars": 4153,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 3,
+  "ownedMaterialItems": 3,
+  "estimatedFirstTurnInputTokens": 27334,
+  "preCallEstimate": {
+   "inputTokens": 89929,
+   "outputTokens": 41500,
+   "usd": 0.594858
+  },
+  "actual": {
+   "inputTokens": 59263,
+   "outputTokens": 28321,
+   "turns": 2,
+   "latencyMs": 250582,
+   "costUsd": 0.401736,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "DEFINITION_COMPLETENESS_SUSPECT"
+  ],
+  "toolCalls": 2,
+  "toolCallNames": [
+   "getDefinition",
+   "getDefinition"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 22,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 3,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "valuesRepresented": 3,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "REPRESENTED": 3
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Maximum Rate",
+   "Moody's",
+   "Net Proceeds",
+   "Net Short Lender",
+   "Non-Accepting Lender",
+   "Non-Consenting Lender",
+   "Notice Period"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].OR[0]] a legal-permissibility test dependent on the state of the entire Agreement at the time of the acquisition, not an independently expressible numeric/boolean primitive",
+   "[definition[d1]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d5].AND[0].OR[1]] a discretionary election by the Initial Borrower, not a numeric or comparable formula",
+   "[definition[d5].AND[0]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d5]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12].IF.then.SUBTRACT.right] qualitative, multi-part deduction categories with no stated fixed amounts; cannot be reduced to a concrete arithmetic expression without fabricating figures",
+   "[definition[d12].IF.then] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12].IF.else.SUBTRACT.right] qualitative deduction categories with no stated fixed amounts",
+   "[definition[d12].IF.else] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "This submission covers the full batch of defined terms appearing in the supplied §1.01 excerpt (Material Acquisition through NYFRB) - 22 distinct terms, each emitted as its own WireDefinition per the multiple-definitions rule.",
+   "No independently operative WireRule exists in this excerpt - it is a pure definitions section; rules[] is intentionally empty.",
+   "No shared aggregate cap appears among these terms; sharedCapacities[] is intentionally empty.",
+   "Tool calls were limited to two genuinely justified lookups: 'Threshold Amount' (material to the Material Indebtedness numeric threshold) and 'Excluded Subsidiary' (material to the Material Subsidiary carve-out) - both resolved and used as DEFINED_TERM_REFERENCE dependencies rather than inlined, since neither term is itself part of this §1.01 excerpt.",
+   "Multiple cross-references (Sections 2.12, 2.12(b), 2.22, 2.22(c), 5.01, 5.01(a) [already provided], 6.01, 6.01(b)(32), 6.08, 6.08(a), 6.08(a)(3), 9.02, 9.02(c), 9.02(h), 9.17) were already flagged OUT_OF_SCOPE by Phase 2's deterministic retrieval (context budget exhausted) and were not re-requested per the no-duplicate-request rule; affected definitions (Maximum Rate, Net Short Lender, Non-Accepting Lender, Non-Consenting Lender, Notice Period, Not Otherwise Applied) are marked MISSING_CONTEXT accordingly.",
+   "All three FROZEN SEMANTIC INVENTORY items (Material Acquisition $200mm threshold, Material Subsidiary 7.5% test, Multiemployer Plan six-plan-year lookback) are CONSUMED on the specific value-carrying expression nodes within their respective definitions."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:f3eb63624b7f5a5c3cca",
+  "shardHash": "9917d21e61733319db3c8f1beed79a78ab44f1e440ced3ee8dfafda4d0cc5a40",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:ae449038d36adf7d2162ad16",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Material Acquisition",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "OR",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:a672719e22f11da6d0b6d606",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01: \"not permitted by the terms of this Agreement immediately prior to the consummation of such acquisition\"",
+        "semanticDescription": "acquisition or series of related acquisitions that is not permitted by the terms of this Agreement immediately prior to consummation",
+        "reason": "a legal-permissibility test dependent on the state of the entire Agreement at the time of the acquisition, not an independently expressible numeric/boolean primitive",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:a5632b54269dd93855bf8f88"
+       },
+       {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:3e3d8b781a5a8f376a02e1d3",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "MONEY",
+         "inputName": "Aggregate consideration for the acquisition or series of related acquisitions (including aggregate principal amount of Indebtedness assumed)",
+         "exprId": "ir-expr:99cf332c6867bc0ea5ebb2ae"
+        },
+        "operator": "GTE",
+        "right": {
+         "kind": "MONEY",
+         "type": "MONEY",
+         "amount": 200000000,
+         "currency": "USD",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:83bacf2a65fce08b17f05b91",
+         "inventoryItemIds": [
+          "inv-item:700a0f2cf304c96a7da8800b"
+         ]
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "inventoryItemIds": [
+         "inv-item:700a0f2cf304c96a7da8800b"
+        ]
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Clause (a) 'not permitted by terms of this Agreement' is a legal-permissibility test not reducible to a compilable primitive; clause (b)'s $200 million consideration threshold is fully represented.",
+      "a legal-permissibility test dependent on the state of the entire Agreement at the time of the acquisition, not an independently expressible numeric/boolean primitive",
+      "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any acquisition or series of related acquisitions by any Restricted Party that are either (a) not permitted by the terms of this Agreement immediately prior to the consummation of such acquisition or (b) involve aggregate consideration (including the aggregate principal amount of any Indebtedness assumed in connection with such acquisition) of at least $200 million."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:1bac3b664a2b01104013f179",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Material Adverse Effect",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Parties",
+      "Administrative Agent",
+      "Lenders",
+      "Loan Documents"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely qualitative standard; fully quoted, no numeric or cross-reference gap."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any event, circumstance or condition that has had, or could reasonably be expected to have a material and adverse effect on (i) the business or financial condition ... or (ii) the rights and remedies of the Administrative Agent and the Lenders under the Loan Documents, taken as a whole."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:b44766ff1d478e50ef80eb97",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Material Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AND",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:475acce76a04f3703b40b223",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:85044f6f5405f0fb830d515a",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "MONEY",
+         "inputName": "Aggregate principal amount of Indebtedness (excluding Loan Document Obligations and intercompany indebtedness) or Swap Agreement obligations, of an individual Loan Party",
+         "exprId": "ir-expr:91370e30a80cfb9f76bd3f63"
+        },
+        "operator": "GT",
+        "right": {
+         "kind": "DEFINED_TERM_REFERENCE",
+         "type": "MONEY",
+         "termName": "Threshold Amount",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:899db2156dcaf99428f65af5"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       {
+        "kind": "NOT",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:815bb0d7fb8d1c912e428399",
+        "operand": {
+         "kind": "DEFINED_TERM_REFERENCE",
+         "type": "BOOLEAN",
+         "termName": "Permitted Receivables Financing",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:501eabcab40afce4b74cf3fe"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Threshold Amount",
+      "Permitted Receivables Financing",
+      "Loan Document Obligations",
+      "Swap Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Threshold test structure fully captured; 'Threshold Amount' and 'Permitted Receivables Financing' are legitimately represented as DEFINED_TERM_REFERENCE cross-references rather than inline gaps (Threshold Amount confirmed to be 'greater of $324.0 million and 45% of Consolidated EBITDA on a Pro Forma Basis' via lookup, but not itself part of this source unit so not separately restated)."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "Indebtedness (other than the Loan Document Obligations or any intercompany indebtedness), or obligations in respect of one or more Swap Agreements, of any Loan Party individually in an aggregate principal amount exceeding the Threshold Amount; provided that in no event shall any Permitted Receivables Financing be considered Material Indebtedness for any purpose."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:6f4dbe96b57908a079b3f294",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Material Intellectual Property",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Intellectual Property",
+      "Loan Parties",
+      "Material Adverse Effect"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Qualitative standard with a good-faith conclusive determination mechanism; fully quoted."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "Intellectual Property owned by, and used in the ongoing business of, the Loan Parties the loss of which would reasonably be expected to result in a Material Adverse Effect, taken as a whole (as determined by the Initial Borrower in good faith, which determination shall be conclusive)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:1899bf2d5aa9ac97e31d1417",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Material Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AND",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:77dcee103fecab35173f3c52",
+      "operands": [
+       {
+        "kind": "OR",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:d222822c21527811db40367d",
+        "operands": [
+         {
+          "kind": "COMPARE",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:ba4b78b1c9eabe80e0ea2684",
+          "left": {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "Material Subsidiary EBITDA (unconsolidated basis, excluding pro forma adjustments, otherwise calculated on the same basis as Consolidated EBITDA)",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:452d9b632b9db72d4d33b5f4"
+          },
+          "operator": "GTE",
+          "right": {
+           "kind": "MULTIPLY",
+           "type": "MONEY",
+           "exprId": "ir-expr:45bcafdeacd83552e6bfce68",
+           "operands": [
+            {
+             "kind": "PERCENT",
+             "type": "PERCENT",
+             "value": 0.075,
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01",
+              "excerpt": null
+             },
+             "exprId": "ir-expr:cbe0a599e99e757f70d733e8",
+             "inventoryItemIds": [
+              "inv-item:cf0edb1b0c543eb786c2df44"
+             ]
+            },
+            {
+             "kind": "METRIC_REFERENCE",
+             "type": "MONEY",
+             "metricName": "Consolidated EBITDA",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+            }
+           ],
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           }
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "inventoryItemIds": [
+           "inv-item:cf0edb1b0c543eb786c2df44"
+          ]
+         },
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01: \"or that is designated by the Initial Borrower as a Material Subsidiary\"",
+          "semanticDescription": "designation by the Initial Borrower as a Material Subsidiary",
+          "reason": "a discretionary election by the Initial Borrower, not a numeric or comparable formula",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:88e34a7a572408d1095295a2"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       {
+        "kind": "NOT",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:2864373f359d20a9c711d705",
+        "operand": {
+         "kind": "DEFINED_TERM_REFERENCE",
+         "type": "BOOLEAN",
+         "termName": "Excluded Subsidiary",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:0dc33c3e7256bf17b6451cd8"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Excluded Subsidiary",
+      "Restricted Subsidiary",
+      "Section 5.01(a)"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The alternative 'designated by the Initial Borrower' basis is a discretionary election not reducible to a formula; the 7.5%-of-Consolidated-EBITDA test and the Excluded Subsidiary carve-out are fully represented.",
+      "a discretionary election by the Initial Borrower, not a numeric or comparable formula",
+      "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "each wholly owned Restricted Subsidiary that has earnings before interest, tax, depreciation and amortization ... of 7.5% or more of Consolidated EBITDA ... or that is designated by the Initial Borrower as a Material Subsidiary, in each case, to the extent not otherwise constituting an Excluded Subsidiary."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:fa7ef928667acb4cf5c17143",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Maturity Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Initial Term Maturity Date",
+      "Incremental Revolving Commitments",
+      "Incremental Term Loans",
+      "Incremental Facility Amendment",
+      "Other Commitments",
+      "Other Loans",
+      "Refinancing Amendment",
+      "Business Day"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Maps facility type to a date defined in other terms/instruments (Initial Term Maturity Date, Incremental Facility Amendment, Refinancing Amendment) not resolvable from the supplied source; the Business Day roll-back mechanic is stated but its trigger definition ('Business Day') is likewise external."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) with respect to the Initial Term Loans, the Initial Term Maturity Date, (b) ... the final maturity date as specified in the applicable Incremental Facility Amendment and (c) ... the final maturity date as specified in the applicable Refinancing Amendment; provided, in each case, that if such day is not a Business Day, the applicable Maturity Date shall be the Business Day immediately preceding such day."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:779fa3042e2539881d7e1e21",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Maturity Exception Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Inside Maturity Basket",
+      "Customary Bridge Loans",
+      "Permitted Acquisition"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Defined by reference to other defined terms (Inside Maturity Basket, Customary Bridge Loans, Permitted Acquisition) not included in the supplied source."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any Facility (w) incurred in reliance on the Inside Maturity Basket, (x) constituting Customary Bridge Loans or customary prepayment terms in connection with escrow arrangements, (y) established or incurred in connection with a Permitted Acquisition or any other Investment not prohibited by the terms of this Agreement, new project, refinancing or any similar transaction or (z) that is in the form of a term loan \"A\"."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:9457bb2b53860aff713fcf19",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Maximum Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Section 9.17"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition is entirely delegated to Section 9.17, which was out of scope of the retrieved context (budget exhausted before expansion)."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 9.17."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:cd0a9309749b014baa8da2aa",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Model",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Lead Arrangers",
+      "Initial Term Loans",
+      "Initial Borrower"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully descriptive; no numeric content."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "that certain financial model delivered to the Lead Arrangers in connection with syndication of the Initial Term Loans (together with any updates or modifications thereto reasonably agreed between the Initial Borrower and the Lead Arrangers)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:0327c3be912696518e5590cf",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Moody's",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully descriptive named-entity definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "Moody's Investors Service, Inc. and any successor to its rating agency business."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:8a433a90e28ca59ce6f3cde3",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Multiemployer Plan",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DURING_PERIOD",
+      "type": "MONEY",
+      "exprId": "ir-expr:7cd50a855f17ea8ae7d7e7cb",
+      "value": {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "MONEY",
+       "termName": "multiemployer plan (as defined in Section 4001(a)(3) of ERISA)",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:1ad457686f26b232a73afd79"
+      },
+      "periodDescription": "then making contributions, or accruing an obligation to make contributions, or has within the last six (6) plan years made contributions, including by any Person which ceased to be an ERISA Affiliate during such six (6)-year period",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "inventoryItemIds": [
+       "inv-item:28e4901aa97afc67fabcd173"
+      ]
+     },
+     "dependsOnTerms": [
+      "ERISA Affiliate"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Six-plan-year lookback (including former ERISA Affiliates) fully represented via the period-scoping node; 'ERISA Affiliate' resolved from supplied context."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "a multiemployer plan as defined in Section 4001(a)(3) of ERISA to which any Loan Party or any ERISA Affiliate is then making contributions, or accruing an obligation to make contributions, or has within the last six (6) plan years made contributions, including, for these purposes, any Person which ceased to be an ERISA Affiliate during such six (6)-year period."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:214f8dac88f3815ca399898e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Net Proceeds",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "IF",
+      "type": "MONEY",
+      "exprId": "ir-expr:011b6ddb1fe3b0d9e9d8f344",
+      "condition": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "BOOLEAN",
+       "inputName": "Transaction is an Asset Sale (vs. an issuance/incurrence of Indebtedness)",
+       "exprId": "ir-expr:cb4f7e73b803b082a0c57a13"
+      },
+      "then": {
+       "kind": "SUBTRACT",
+       "type": "MONEY",
+       "exprId": "ir-expr:04bdd98dfb783fb11fb902ad",
+       "left": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "Cash/Cash Equivalent proceeds received by a Loan Party from an Asset Sale (including deferred payments, but only as and when received, excluding interest)",
+        "exprId": "ir-expr:8e56dec461480086042573de"
+       },
+       "right": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01, Net Proceeds clause (a)(i)-(viii)",
+        "semanticDescription": "aggregate of clauses (i)-(viii) netting deductions: transaction fees/expenses, funded indemnity escrows (with reduction true-up), mandatory secured-debt repayments, minority-interest allocation, retained liabilities, taxes/Tax Distributions/contingent-liability reserves (with reduction true-up), GAAP reserves (with reversal true-up), and customer deposit repayments",
+        "reason": "qualitative, multi-part deduction categories with no stated fixed amounts; cannot be reduced to a concrete arithmetic expression without fabricating figures",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:430428b677bd903d1a170f76"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "else": {
+       "kind": "SUBTRACT",
+       "type": "MONEY",
+       "exprId": "ir-expr:7ee2c5f506e14b19adc6a51a",
+       "left": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "Cash proceeds received by a Restricted Party from issuance or incurrence of Indebtedness",
+        "exprId": "ir-expr:b6270677ddc0a2e2c324b205"
+       },
+       "right": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01, Net Proceeds clause (b)",
+        "semanticDescription": "aggregate of reasonable out-of-pocket fees/expenses (legal, consultant, banking, accounting, underwriting) and taxes reasonably estimated to be payable (including Tax Distributions) and other customary costs actually incurred",
+        "reason": "qualitative deduction categories with no stated fixed amounts",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:cb49f097aba8af98f55dc9ed"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Asset Sale",
+      "Cash Equivalents",
+      "Tax Distributions",
+      "Hedging Obligations"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The gross-proceeds-minus-deductions structure and its two alternative triggering scenarios (Asset Sale vs. Indebtedness issuance) are captured; the specific netting deduction categories are qualitative/non-numeric and represented as UNSUPPORTED rather than fabricated figures.",
+      "qualitative, multi-part deduction categories with no stated fixed amounts; cannot be reduced to a concrete arithmetic expression without fabricating figures",
+      "SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+      "qualitative deduction categories with no stated fixed amounts",
+      "SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+      "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) in connection with any Asset Sale, the proceeds thereof received by any Loan Party ... net of the sum of (i)-(viii) ...; and (b) in connection with any issuance or incurrence of any Indebtedness, the cash proceeds received ... net of ... fees ... and taxes ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:88e698452617f5cbdda60362",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Net Short Lender",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Section 9.02(h)"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition entirely delegated to Section 9.02(h), which was out of scope of retrieved context (budget exhausted)."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 9.02(h)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:69d42551d120e5bb7cf55baf",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Non-Accepting Lender",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Section 2.22(c)"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition entirely delegated to Section 2.22(c), which was out of scope of retrieved context (budget exhausted)."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 2.22(c)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:6aa5b3513102c3007ecd21d2",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Non-Cash Compensation Expense",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Parent Entities"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully descriptive/qualitative list of equity-based and non-cash compensation items; no numeric threshold to represent."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any equity-based or non-cash compensation or similar charges or expenses or reduction of revenue and costs including any such expense, charge or cost arising from the issuance of stock-based awards ... and any cash awards granted ... in replacement for forfeited equity awards."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:0c8555c09ca015b674504db4",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Non-Consenting Lender",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Section 9.02(c)"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition entirely delegated to Section 9.02(c), which was out of scope of retrieved context (budget exhausted)."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 9.02(c)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:57e5488c161d15b7ad0a8e8f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Non-Loan Party Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Subsidiary",
+      "Loan Party",
+      "Initial Borrower"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple negative-scope definition fully quoted; both dependent terms (Restricted Subsidiary, Loan Party) are structural entity-scope terms referenced but not needed numerically."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any Restricted Subsidiary of the Initial Borrower that is not a Loan Party."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:8053a2f6c1c323d5c0f32914",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Not Otherwise Applied",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Available Amount",
+      "Section 6.01(b)(32)",
+      "Permitted Liens",
+      "Section 6.08(a)(3)"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Defined negatively by reference to three specific prior-usage provisions (Section 6.01(b)(32), clause (46)(ii) of the 'Permitted Liens' definition, and Section 6.08(a)(3)), all of which were out of scope of retrieved context (budget exhausted); cannot confirm the full set of prior-usage exclusions without them."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "with reference to the Available Amount, that was not previously applied pursuant to Section 6.01(b)(32), clause (46)(ii) of the definition of \"Permitted Liens\" or Section 6.08(a)(3)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:afd9c077eedd8351250762c3",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Notice of Additional Guarantor",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Exhibit O"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully descriptive cross-reference to a form exhibit; no numeric/economic content depends on the exhibit's contents for this definition's own meaning."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "a Notice of Additional Guarantor, in substantially the form of Exhibit O hereto."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:5c178b1ef4b2a22d073d570f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Notice Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Section 2.12(b)"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition entirely delegated to Section 2.12(b), which was out of scope of retrieved context (budget exhausted)."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 2.12(b)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3b6a0248f806e6c85ea67b23",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Numerical Permission",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "First Lien Leverage Ratio",
+      "Total Leverage Ratio",
+      "Interest Coverage Ratio"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definitional/classificatory term (a category label for other fixed-amount-referenced metrics), not itself a computable formula; fully quoted."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any financial ratios, basket, threshold, tests or other metrics (including Consolidated EBITDA, the First Lien Leverage Ratio, the Total Leverage Ratio and the Interest Coverage Ratio and any financial definition or component thereof) that is determined by reference to a fixed amount."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:0c64b057d99f89913b58651c",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "NYFRB",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully descriptive named-entity definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the Federal Reserve Bank of New York."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "DEFINITION_COMPLETENESS_SUSPECT"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].OR[0]] a legal-permissibility test dependent on the state of the entire Agreement at the time of the acquisition, not an independently expressible numeric/boolean primitive",
+   "[definition[d1]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d5].AND[0].OR[1]] a discretionary election by the Initial Borrower, not a numeric or comparable formula",
+   "[definition[d5].AND[0]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d5]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12].IF.then.SUBTRACT.right] qualitative, multi-part deduction categories with no stated fixed amounts; cannot be reduced to a concrete arithmetic expression without fabricating figures",
+   "[definition[d12].IF.then] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12].IF.else.SUBTRACT.right] qualitative deduction categories with no stated fixed amounts",
+   "[definition[d12].IF.else] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "This submission covers the full batch of defined terms appearing in the supplied §1.01 excerpt (Material Acquisition through NYFRB) - 22 distinct terms, each emitted as its own WireDefinition per the multiple-definitions rule.",
+   "No independently operative WireRule exists in this excerpt - it is a pure definitions section; rules[] is intentionally empty.",
+   "No shared aggregate cap appears among these terms; sharedCapacities[] is intentionally empty.",
+   "Tool calls were limited to two genuinely justified lookups: 'Threshold Amount' (material to the Material Indebtedness numeric threshold) and 'Excluded Subsidiary' (material to the Material Subsidiary carve-out) - both resolved and used as DEFINED_TERM_REFERENCE dependencies rather than inlined, since neither term is itself part of this §1.01 excerpt.",
+   "Multiple cross-references (Sections 2.12, 2.12(b), 2.22, 2.22(c), 5.01, 5.01(a) [already provided], 6.01, 6.01(b)(32), 6.08, 6.08(a), 6.08(a)(3), 9.02, 9.02(c), 9.02(h), 9.17) were already flagged OUT_OF_SCOPE by Phase 2's deterministic retrieval (context budget exhausted) and were not re-requested per the no-duplicate-request rule; affected definitions (Maximum Rate, Net Short Lender, Non-Accepting Lender, Non-Consenting Lender, Notice Period, Not Otherwise Applied) are marked MISSING_CONTEXT accordingly.",
+   "All three FROZEN SEMANTIC INVENTORY items (Material Acquisition $200mm threshold, Material Subsidiary 7.5% test, Multiemployer Plan six-plan-year lookback) are CONSUMED on the specific value-carrying expression nodes within their respective definitions."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 59263,
+   "outputTokens": 28321,
+   "costUsd": 0.401736
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "DEFINITION_COMPLETENESS_SUSPECT"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:ae449038d36adf7d2162ad16",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Material Acquisition",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "OR",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:a672719e22f11da6d0b6d606",
+     "operands": [
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01: \"not permitted by the terms of this Agreement immediately prior to the consummation of such acquisition\"",
+       "semanticDescription": "acquisition or series of related acquisitions that is not permitted by the terms of this Agreement immediately prior to consummation",
+       "reason": "a legal-permissibility test dependent on the state of the entire Agreement at the time of the acquisition, not an independently expressible numeric/boolean primitive",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:a5632b54269dd93855bf8f88"
+      },
+      {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:3e3d8b781a5a8f376a02e1d3",
+       "left": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "Aggregate consideration for the acquisition or series of related acquisitions (including aggregate principal amount of Indebtedness assumed)",
+        "exprId": "ir-expr:99cf332c6867bc0ea5ebb2ae"
+       },
+       "operator": "GTE",
+       "right": {
+        "kind": "MONEY",
+        "type": "MONEY",
+        "amount": 200000000,
+        "currency": "USD",
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:83bacf2a65fce08b17f05b91",
+        "inventoryItemIds": [
+         "inv-item:700a0f2cf304c96a7da8800b"
+        ]
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:700a0f2cf304c96a7da8800b"
+       ]
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Clause (a) 'not permitted by terms of this Agreement' is a legal-permissibility test not reducible to a compilable primitive; clause (b)'s $200 million consideration threshold is fully represented.",
+     "a legal-permissibility test dependent on the state of the entire Agreement at the time of the acquisition, not an independently expressible numeric/boolean primitive",
+     "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any acquisition or series of related acquisitions by any Restricted Party that are either (a) not permitted by the terms of this Agreement immediately prior to the consummation of such acquisition or (b) involve aggregate consideration (including the aggregate principal amount of any Indebtedness assumed in connection with such acquisition) of at least $200 million."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:1bac3b664a2b01104013f179",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Material Adverse Effect",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Restricted Parties",
+     "Administrative Agent",
+     "Lenders",
+     "Loan Documents"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely qualitative standard; fully quoted, no numeric or cross-reference gap."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any event, circumstance or condition that has had, or could reasonably be expected to have a material and adverse effect on (i) the business or financial condition ... or (ii) the rights and remedies of the Administrative Agent and the Lenders under the Loan Documents, taken as a whole."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:b44766ff1d478e50ef80eb97",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Material Indebtedness",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "AND",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:475acce76a04f3703b40b223",
+     "operands": [
+      {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:85044f6f5405f0fb830d515a",
+       "left": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "Aggregate principal amount of Indebtedness (excluding Loan Document Obligations and intercompany indebtedness) or Swap Agreement obligations, of an individual Loan Party",
+        "exprId": "ir-expr:91370e30a80cfb9f76bd3f63"
+       },
+       "operator": "GT",
+       "right": {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "MONEY",
+        "termName": "Threshold Amount",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:899db2156dcaf99428f65af5"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      {
+       "kind": "NOT",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:815bb0d7fb8d1c912e428399",
+       "operand": {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "BOOLEAN",
+        "termName": "Permitted Receivables Financing",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:501eabcab40afce4b74cf3fe"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Threshold Amount",
+     "Permitted Receivables Financing",
+     "Loan Document Obligations",
+     "Swap Agreement"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Threshold test structure fully captured; 'Threshold Amount' and 'Permitted Receivables Financing' are legitimately represented as DEFINED_TERM_REFERENCE cross-references rather than inline gaps (Threshold Amount confirmed to be 'greater of $324.0 million and 45% of Consolidated EBITDA on a Pro Forma Basis' via lookup, but not itself part of this source unit so not separately restated)."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "Indebtedness (other than the Loan Document Obligations or any intercompany indebtedness), or obligations in respect of one or more Swap Agreements, of any Loan Party individually in an aggregate principal amount exceeding the Threshold Amount; provided that in no event shall any Permitted Receivables Financing be considered Material Indebtedness for any purpose."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:6f4dbe96b57908a079b3f294",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Material Intellectual Property",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Intellectual Property",
+     "Loan Parties",
+     "Material Adverse Effect"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Qualitative standard with a good-faith conclusive determination mechanism; fully quoted."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "Intellectual Property owned by, and used in the ongoing business of, the Loan Parties the loss of which would reasonably be expected to result in a Material Adverse Effect, taken as a whole (as determined by the Initial Borrower in good faith, which determination shall be conclusive)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:1899bf2d5aa9ac97e31d1417",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Material Subsidiary",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "AND",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:77dcee103fecab35173f3c52",
+     "operands": [
+      {
+       "kind": "OR",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:d222822c21527811db40367d",
+       "operands": [
+        {
+         "kind": "COMPARE",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:ba4b78b1c9eabe80e0ea2684",
+         "left": {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "Material Subsidiary EBITDA (unconsolidated basis, excluding pro forma adjustments, otherwise calculated on the same basis as Consolidated EBITDA)",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:452d9b632b9db72d4d33b5f4"
+         },
+         "operator": "GTE",
+         "right": {
+          "kind": "MULTIPLY",
+          "type": "MONEY",
+          "exprId": "ir-expr:45bcafdeacd83552e6bfce68",
+          "operands": [
+           {
+            "kind": "PERCENT",
+            "type": "PERCENT",
+            "value": 0.075,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:cbe0a599e99e757f70d733e8",
+            "inventoryItemIds": [
+             "inv-item:cf0edb1b0c543eb786c2df44"
+            ]
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Consolidated EBITDA",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          }
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "inventoryItemIds": [
+          "inv-item:cf0edb1b0c543eb786c2df44"
+         ]
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01: \"or that is designated by the Initial Borrower as a Material Subsidiary\"",
+         "semanticDescription": "designation by the Initial Borrower as a Material Subsidiary",
+         "reason": "a discretionary election by the Initial Borrower, not a numeric or comparable formula",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:88e34a7a572408d1095295a2"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      {
+       "kind": "NOT",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:2864373f359d20a9c711d705",
+       "operand": {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "BOOLEAN",
+        "termName": "Excluded Subsidiary",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:0dc33c3e7256bf17b6451cd8"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Consolidated EBITDA",
+     "Excluded Subsidiary",
+     "Restricted Subsidiary",
+     "Section 5.01(a)"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The alternative 'designated by the Initial Borrower' basis is a discretionary election not reducible to a formula; the 7.5%-of-Consolidated-EBITDA test and the Excluded Subsidiary carve-out are fully represented.",
+     "a discretionary election by the Initial Borrower, not a numeric or comparable formula",
+     "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+     "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "each wholly owned Restricted Subsidiary that has earnings before interest, tax, depreciation and amortization ... of 7.5% or more of Consolidated EBITDA ... or that is designated by the Initial Borrower as a Material Subsidiary, in each case, to the extent not otherwise constituting an Excluded Subsidiary."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:fa7ef928667acb4cf5c17143",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Maturity Date",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Initial Term Maturity Date",
+     "Incremental Revolving Commitments",
+     "Incremental Term Loans",
+     "Incremental Facility Amendment",
+     "Other Commitments",
+     "Other Loans",
+     "Refinancing Amendment",
+     "Business Day"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Maps facility type to a date defined in other terms/instruments (Initial Term Maturity Date, Incremental Facility Amendment, Refinancing Amendment) not resolvable from the supplied source; the Business Day roll-back mechanic is stated but its trigger definition ('Business Day') is likewise external."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) with respect to the Initial Term Loans, the Initial Term Maturity Date, (b) ... the final maturity date as specified in the applicable Incremental Facility Amendment and (c) ... the final maturity date as specified in the applicable Refinancing Amendment; provided, in each case, that if such day is not a Business Day, the applicable Maturity Date shall be the Business Day immediately preceding such day."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:779fa3042e2539881d7e1e21",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Maturity Exception Facility",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Inside Maturity Basket",
+     "Customary Bridge Loans",
+     "Permitted Acquisition"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Defined by reference to other defined terms (Inside Maturity Basket, Customary Bridge Loans, Permitted Acquisition) not included in the supplied source."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any Facility (w) incurred in reliance on the Inside Maturity Basket, (x) constituting Customary Bridge Loans or customary prepayment terms in connection with escrow arrangements, (y) established or incurred in connection with a Permitted Acquisition or any other Investment not prohibited by the terms of this Agreement, new project, refinancing or any similar transaction or (z) that is in the form of a term loan \"A\"."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:9457bb2b53860aff713fcf19",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Maximum Rate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Section 9.17"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Definition is entirely delegated to Section 9.17, which was out of scope of the retrieved context (budget exhausted before expansion)."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.17."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:cd0a9309749b014baa8da2aa",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Model",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Lead Arrangers",
+     "Initial Term Loans",
+     "Initial Borrower"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully descriptive; no numeric content."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "that certain financial model delivered to the Lead Arrangers in connection with syndication of the Initial Term Loans (together with any updates or modifications thereto reasonably agreed between the Initial Borrower and the Lead Arrangers)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:0327c3be912696518e5590cf",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Moody's",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully descriptive named-entity definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "Moody's Investors Service, Inc. and any successor to its rating agency business."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:8a433a90e28ca59ce6f3cde3",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Multiemployer Plan",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "DURING_PERIOD",
+     "type": "MONEY",
+     "exprId": "ir-expr:7cd50a855f17ea8ae7d7e7cb",
+     "value": {
+      "kind": "DEFINED_TERM_REFERENCE",
+      "type": "MONEY",
+      "termName": "multiemployer plan (as defined in Section 4001(a)(3) of ERISA)",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:1ad457686f26b232a73afd79"
+     },
+     "periodDescription": "then making contributions, or accruing an obligation to make contributions, or has within the last six (6) plan years made contributions, including by any Person which ceased to be an ERISA Affiliate during such six (6)-year period",
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "inventoryItemIds": [
+      "inv-item:28e4901aa97afc67fabcd173"
+     ]
+    },
+    "dependsOnTerms": [
+     "ERISA Affiliate"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Six-plan-year lookback (including former ERISA Affiliates) fully represented via the period-scoping node; 'ERISA Affiliate' resolved from supplied context."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "a multiemployer plan as defined in Section 4001(a)(3) of ERISA to which any Loan Party or any ERISA Affiliate is then making contributions, or accruing an obligation to make contributions, or has within the last six (6) plan years made contributions, including, for these purposes, any Person which ceased to be an ERISA Affiliate during such six (6)-year period."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:214f8dac88f3815ca399898e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Net Proceeds",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "IF",
+     "type": "MONEY",
+     "exprId": "ir-expr:011b6ddb1fe3b0d9e9d8f344",
+     "condition": {
+      "kind": "TRANSACTION_INPUT_REFERENCE",
+      "type": "BOOLEAN",
+      "inputName": "Transaction is an Asset Sale (vs. an issuance/incurrence of Indebtedness)",
+      "exprId": "ir-expr:cb4f7e73b803b082a0c57a13"
+     },
+     "then": {
+      "kind": "SUBTRACT",
+      "type": "MONEY",
+      "exprId": "ir-expr:04bdd98dfb783fb11fb902ad",
+      "left": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "MONEY",
+       "inputName": "Cash/Cash Equivalent proceeds received by a Loan Party from an Asset Sale (including deferred payments, but only as and when received, excluding interest)",
+       "exprId": "ir-expr:8e56dec461480086042573de"
+      },
+      "right": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01, Net Proceeds clause (a)(i)-(viii)",
+       "semanticDescription": "aggregate of clauses (i)-(viii) netting deductions: transaction fees/expenses, funded indemnity escrows (with reduction true-up), mandatory secured-debt repayments, minority-interest allocation, retained liabilities, taxes/Tax Distributions/contingent-liability reserves (with reduction true-up), GAAP reserves (with reversal true-up), and customer deposit repayments",
+       "reason": "qualitative, multi-part deduction categories with no stated fixed amounts; cannot be reduced to a concrete arithmetic expression without fabricating figures",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:430428b677bd903d1a170f76"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "else": {
+      "kind": "SUBTRACT",
+      "type": "MONEY",
+      "exprId": "ir-expr:7ee2c5f506e14b19adc6a51a",
+      "left": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "MONEY",
+       "inputName": "Cash proceeds received by a Restricted Party from issuance or incurrence of Indebtedness",
+       "exprId": "ir-expr:b6270677ddc0a2e2c324b205"
+      },
+      "right": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01, Net Proceeds clause (b)",
+       "semanticDescription": "aggregate of reasonable out-of-pocket fees/expenses (legal, consultant, banking, accounting, underwriting) and taxes reasonably estimated to be payable (including Tax Distributions) and other customary costs actually incurred",
+       "reason": "qualitative deduction categories with no stated fixed amounts",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:cb49f097aba8af98f55dc9ed"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Asset Sale",
+     "Cash Equivalents",
+     "Tax Distributions",
+     "Hedging Obligations"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The gross-proceeds-minus-deductions structure and its two alternative triggering scenarios (Asset Sale vs. Indebtedness issuance) are captured; the specific netting deduction categories are qualitative/non-numeric and represented as UNSUPPORTED rather than fabricated figures.",
+     "qualitative, multi-part deduction categories with no stated fixed amounts; cannot be reduced to a concrete arithmetic expression without fabricating figures",
+     "SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+     "qualitative deduction categories with no stated fixed amounts",
+     "SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+     "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) in connection with any Asset Sale, the proceeds thereof received by any Loan Party ... net of the sum of (i)-(viii) ...; and (b) in connection with any issuance or incurrence of any Indebtedness, the cash proceeds received ... net of ... fees ... and taxes ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:88e698452617f5cbdda60362",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Net Short Lender",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Section 9.02(h)"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Definition entirely delegated to Section 9.02(h), which was out of scope of retrieved context (budget exhausted)."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.02(h)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:69d42551d120e5bb7cf55baf",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Non-Accepting Lender",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Section 2.22(c)"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Definition entirely delegated to Section 2.22(c), which was out of scope of retrieved context (budget exhausted)."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 2.22(c)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:6aa5b3513102c3007ecd21d2",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Non-Cash Compensation Expense",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Parent Entities"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully descriptive/qualitative list of equity-based and non-cash compensation items; no numeric threshold to represent."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any equity-based or non-cash compensation or similar charges or expenses or reduction of revenue and costs including any such expense, charge or cost arising from the issuance of stock-based awards ... and any cash awards granted ... in replacement for forfeited equity awards."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:0c8555c09ca015b674504db4",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Non-Consenting Lender",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Section 9.02(c)"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Definition entirely delegated to Section 9.02(c), which was out of scope of retrieved context (budget exhausted)."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.02(c)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:57e5488c161d15b7ad0a8e8f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Non-Loan Party Subsidiary",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Restricted Subsidiary",
+     "Loan Party",
+     "Initial Borrower"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple negative-scope definition fully quoted; both dependent terms (Restricted Subsidiary, Loan Party) are structural entity-scope terms referenced but not needed numerically."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any Restricted Subsidiary of the Initial Borrower that is not a Loan Party."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:8053a2f6c1c323d5c0f32914",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Not Otherwise Applied",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Available Amount",
+     "Section 6.01(b)(32)",
+     "Permitted Liens",
+     "Section 6.08(a)(3)"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Defined negatively by reference to three specific prior-usage provisions (Section 6.01(b)(32), clause (46)(ii) of the 'Permitted Liens' definition, and Section 6.08(a)(3)), all of which were out of scope of retrieved context (budget exhausted); cannot confirm the full set of prior-usage exclusions without them."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "with reference to the Available Amount, that was not previously applied pursuant to Section 6.01(b)(32), clause (46)(ii) of the definition of \"Permitted Liens\" or Section 6.08(a)(3)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:afd9c077eedd8351250762c3",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Notice of Additional Guarantor",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Exhibit O"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully descriptive cross-reference to a form exhibit; no numeric/economic content depends on the exhibit's contents for this definition's own meaning."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "a Notice of Additional Guarantor, in substantially the form of Exhibit O hereto."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:5c178b1ef4b2a22d073d570f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Notice Period",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Section 2.12(b)"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Definition entirely delegated to Section 2.12(b), which was out of scope of retrieved context (budget exhausted)."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 2.12(b)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3b6a0248f806e6c85ea67b23",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Numerical Permission",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Consolidated EBITDA",
+     "First Lien Leverage Ratio",
+     "Total Leverage Ratio",
+     "Interest Coverage Ratio"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definitional/classificatory term (a category label for other fixed-amount-referenced metrics), not itself a computable formula; fully quoted."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any financial ratios, basket, threshold, tests or other metrics (including Consolidated EBITDA, the First Lien Leverage Ratio, the Total Leverage Ratio and the Interest Coverage Ratio and any financial definition or component thereof) that is determined by reference to a fixed amount."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:0c64b057d99f89913b58651c",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "NYFRB",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully descriptive named-entity definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the Federal Reserve Bank of New York."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01 Material Acquisition clause (a) ('not permitted by the terms of this Agreement immediately prior to the consummation of such acquisition') and Material Subsidiary ('designated by the Initial Borrower as a Material Subsidiary')",
+    "semanticRequirement": "A boolean primitive representing 'is this action/status currently permitted or elected under the whole agreement/by management discretion', distinct from a COMPARE against a stated numeric/ratio threshold.",
+    "whyExistingPrimitivesFail": "COMPARE/AND/OR/NOT operate over typed values (MONEY/NUMBER/RATIO/etc.) or nested booleans built from those; there is no primitive for a whole-of-agreement permissibility state or a free-standing discretionary-election flag that carries no independent numeric content.",
+    "candidateGeneralizedPrimitive": "AGREEMENT_STATE_REFERENCE or DISCRETIONARY_ELECTION node type representing a boolean fact determined outside any single arithmetic/comparison expression (e.g. 'is currently permitted', 'has been designated by [Person]')."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].OR[0]] a legal-permissibility test dependent on the state of the entire Agreement at the time of the acquisition, not an independently expressible numeric/boolean primitive",
+   "[definition[d1]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d5].AND[0].OR[1]] a discretionary election by the Initial Borrower, not a numeric or comparable formula",
+   "[definition[d5].AND[0]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d5]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12].IF.then.SUBTRACT.right] qualitative, multi-part deduction categories with no stated fixed amounts; cannot be reduced to a concrete arithmetic expression without fabricating figures",
+   "[definition[d12].IF.then] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12].IF.else.SUBTRACT.right] qualitative deduction categories with no stated fixed amounts",
+   "[definition[d12].IF.else] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "This submission covers the full batch of defined terms appearing in the supplied §1.01 excerpt (Material Acquisition through NYFRB) - 22 distinct terms, each emitted as its own WireDefinition per the multiple-definitions rule.",
+   "No independently operative WireRule exists in this excerpt - it is a pure definitions section; rules[] is intentionally empty.",
+   "No shared aggregate cap appears among these terms; sharedCapacities[] is intentionally empty.",
+   "Tool calls were limited to two genuinely justified lookups: 'Threshold Amount' (material to the Material Indebtedness numeric threshold) and 'Excluded Subsidiary' (material to the Material Subsidiary carve-out) - both resolved and used as DEFINED_TERM_REFERENCE dependencies rather than inlined, since neither term is itself part of this §1.01 excerpt.",
+   "Multiple cross-references (Sections 2.12, 2.12(b), 2.22, 2.22(c), 5.01, 5.01(a) [already provided], 6.01, 6.01(b)(32), 6.08, 6.08(a), 6.08(a)(3), 9.02, 9.02(c), 9.02(h), 9.17) were already flagged OUT_OF_SCOPE by Phase 2's deterministic retrieval (context budget exhausted) and were not re-requested per the no-duplicate-request rule; affected definitions (Maximum Rate, Net Short Lender, Non-Accepting Lender, Non-Consenting Lender, Notice Period, Not Otherwise Applied) are marked MISSING_CONTEXT accordingly.",
+   "All three FROZEN SEMANTIC INVENTORY items (Material Acquisition $200mm threshold, Material Subsidiary 7.5% test, Multiemployer Plan six-plan-year lookback) are CONSUMED on the specific value-carrying expression nodes within their respective definitions."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Threshold Amount"
+    },
+    "outputSummary": "definition \"Threshold Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 161,
+    "timestamp": "2026-09-14T18:17:16.085Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Threshold Amount",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:b51b74180792bda67d86f589",
+     "sourceNodeKey": "doc-a::1.01(51)(c)(a)(4)(b)(c)",
+     "charStart": 350042,
+     "charEnd": 350203,
+     "rawText": "“ Threshold Amount ” means the greater of (a) $324.0 million and (b) 45% of\nConsolidated EBITDA on a Pro Forma Basis as of the applicable date of determination.\n",
+     "contentHash": "6c7b20f45ab0fc5d6cd62bf3886abf21df99fed5b6424adfa38b22382738e7f5",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Excluded Subsidiary"
+    },
+    "outputSummary": "definition \"Excluded Subsidiary\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 2208,
+    "timestamp": "2026-09-14T18:17:16.085Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Excluded Subsidiary",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:93590de7e2b29538b4162196",
+     "sourceNodeKey": "doc-a::1.01(3)(i)",
+     "charStart": 172916,
+     "charEnd": 175124,
+     "rawText": "“ Excluded Subsidiary ” means (a) any Subsidiary that is not a wholly owned subsidiary of the Initial Borrower,\n(b) each Subsidiary listed on Schedule 1.01(a) , (c) each Unrestricted Subsidiary, (d) each Immaterial Subsidiary, (e) any Subsidiary that is prohibited by (i) applicable Requirements of Law or (ii) any contractual\nobligation existing on the Effective Date or on the date any such Subsidiary is acquired (so long as in respect of any such contractual prohibition such prohibition is not incurred in contemplation of such acquisition), in each case from\nguaranteeing the Secured Obligations (but only for so long as such restriction is continuing) or which would require governmental (including regulatory) or other third-party consent, approval, license or authorization to provide a Guarantee, or for\nwhich the provision of a Guarantee would result in a material adverse tax consequence (including as a result of the operation of Section 956 of the Code or any similar law or regulation in any applicable jurisdiction) to the Borrower, its\nrespective Subsidiaries or their Affiliates (as reasonably determined by the Initial Borrower in good faith), (f) any Foreign Subsidiary, (g) any FSHCO, (h) any direct or indirect Domestic Subsidiary of a Foreign Subsidiary that is a CFC,\n(i) any other Subsidiary not required to become a Loan Party pursuant to clause (i) of the last paragraph of the definition of the term “Collateral and Guarantee Requirement,” (j) each Receivables Subsidiary, (k) any not-for-profit Subsidiaries, captive insurance companies, broker-dealer or other special purpose subsidiaries designated by the Initial Borrower from time to time and\n(l) any Subsidiary established for the purpose of consummating a Permitted Acquisition or other acquisition permitted hereunder to the extent that such Subsidiary does not hold material assets during such period; provided , that any\nSubsidiary described above shall be deemed not to be an Excluded Subsidiary during any period when such Subsidiary is a Discretionary Guarantor (other than for purposes of determining whether such Subsidiary is required to remain as a Subsidiary\nLoan Party pursuant to the terms of this Agreement).\n",
+     "contentHash": "d981587743721d0a20df39ecc1974b30fcabc2b6292a98eaefcc9c1503027063",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": {
+   "fired": true,
+   "detectedSourceTermLabels": [
+    "Material Acquisition",
+    "Material Adverse Effect",
+    "Material Indebtedness",
+    "Material Intellectual Property",
+    "Material Subsidiary",
+    "Maturity Date",
+    "Maturity Exception Facility",
+    "Model",
+    "Moody ’ s",
+    "Multiemployer Plan",
+    "Non-Cash Compensation Expense",
+    "Non-Loan Party Subsidiary",
+    "Not Otherwise Applied",
+    "Notice of Additional Guarantor",
+    "Numerical Permission",
+    "NYFRB"
+   ],
+   "compiledTermLabels": [
+    "Material Acquisition",
+    "Material Adverse Effect",
+    "Material Indebtedness",
+    "Material Intellectual Property",
+    "Material Subsidiary",
+    "Maturity Date",
+    "Maturity Exception Facility",
+    "Maximum Rate",
+    "Model",
+    "Moody's",
+    "Multiemployer Plan",
+    "Net Proceeds",
+    "Net Short Lender",
+    "Non-Accepting Lender",
+    "Non-Cash Compensation Expense",
+    "Non-Consenting Lender",
+    "Non-Loan Party Subsidiary",
+    "Not Otherwise Applied",
+    "Notice of Additional Guarantor",
+    "Notice Period",
+    "Numerical Permission",
+    "NYFRB"
+   ],
+   "missingTermLabels": [
+    "Moody ’ s"
+   ],
+   "reason": "Deterministic completeness check found 1 quoted defined-term citation(s) in the supplied source (matching the '\"Term\" means'/'\"Term\" shall mean' pattern) that do not appear among the 22 compiled definition(s): \"Moody ’ s\". This is a structural detection only - it does not assert what these terms mean or why they were omitted."
+  },
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "Material Acquisition",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "OR",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "acquisition or series of related acquisitions that is not permitted by the terms of this Agreement immediately prior to consummation",
+        "reason": "a legal-permissibility test dependent on the state of the entire Agreement at the time of the acquisition, not an independently expressible numeric/boolean primitive",
+        "sourceEvidence": "§1.01: \"not permitted by the terms of this Agreement immediately prior to the consummation of such acquisition\""
+       },
+       {
+        "kind": "COMPARE",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "inputName": "Aggregate consideration for the acquisition or series of related acquisitions (including aggregate principal amount of Indebtedness assumed)",
+         "valueType": "MONEY"
+        },
+        "operator": "GTE",
+        "right": {
+         "kind": "MONEY",
+         "amount": 200000000,
+         "currency": "USD",
+         "citation": "§1.01",
+         "inventoryItemIds": [
+          "inv-item:700a0f2cf304c96a7da8800b"
+         ]
+        },
+        "citation": "§1.01",
+        "inventoryItemIds": [
+         "inv-item:700a0f2cf304c96a7da8800b"
+        ]
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Clause (a) 'not permitted by terms of this Agreement' is a legal-permissibility test not reducible to a compilable primitive; clause (b)'s $200 million consideration threshold is fully represented."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any acquisition or series of related acquisitions by any Restricted Party that are either (a) not permitted by the terms of this Agreement immediately prior to the consummation of such acquisition or (b) involve aggregate consideration (including the aggregate principal amount of any Indebtedness assumed in connection with such acquisition) of at least $200 million."
+    },
+    {
+     "localRef": "d2",
+     "termName": "Material Adverse Effect",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Parties",
+      "Administrative Agent",
+      "Lenders",
+      "Loan Documents"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely qualitative standard; fully quoted, no numeric or cross-reference gap."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any event, circumstance or condition that has had, or could reasonably be expected to have a material and adverse effect on (i) the business or financial condition ... or (ii) the rights and remedies of the Administrative Agent and the Lenders under the Loan Documents, taken as a whole."
+    },
+    {
+     "localRef": "d3",
+     "termName": "Material Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AND",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "inputName": "Aggregate principal amount of Indebtedness (excluding Loan Document Obligations and intercompany indebtedness) or Swap Agreement obligations, of an individual Loan Party",
+         "valueType": "MONEY"
+        },
+        "operator": "GT",
+        "right": {
+         "kind": "DEFINED_TERM_REFERENCE",
+         "termName": "Threshold Amount",
+         "valueType": "MONEY"
+        },
+        "citation": "§1.01"
+       },
+       {
+        "kind": "NOT",
+        "operand": {
+         "kind": "DEFINED_TERM_REFERENCE",
+         "termName": "Permitted Receivables Financing"
+        },
+        "citation": "§1.01"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Threshold Amount",
+      "Permitted Receivables Financing",
+      "Loan Document Obligations",
+      "Swap Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Threshold test structure fully captured; 'Threshold Amount' and 'Permitted Receivables Financing' are legitimately represented as DEFINED_TERM_REFERENCE cross-references rather than inline gaps (Threshold Amount confirmed to be 'greater of $324.0 million and 45% of Consolidated EBITDA on a Pro Forma Basis' via lookup, but not itself part of this source unit so not separately restated)."
+     ],
+     "citation": "§1.01",
+     "excerpt": "Indebtedness (other than the Loan Document Obligations or any intercompany indebtedness), or obligations in respect of one or more Swap Agreements, of any Loan Party individually in an aggregate principal amount exceeding the Threshold Amount; provided that in no event shall any Permitted Receivables Financing be considered Material Indebtedness for any purpose."
+    },
+    {
+     "localRef": "d4",
+     "termName": "Material Intellectual Property",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Intellectual Property",
+      "Loan Parties",
+      "Material Adverse Effect"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Qualitative standard with a good-faith conclusive determination mechanism; fully quoted."
+     ],
+     "citation": "§1.01",
+     "excerpt": "Intellectual Property owned by, and used in the ongoing business of, the Loan Parties the loss of which would reasonably be expected to result in a Material Adverse Effect, taken as a whole (as determined by the Initial Borrower in good faith, which determination shall be conclusive)."
+    },
+    {
+     "localRef": "d5",
+     "termName": "Material Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AND",
+      "operands": [
+       {
+        "kind": "OR",
+        "operands": [
+         {
+          "kind": "COMPARE",
+          "left": {
+           "kind": "METRIC_REFERENCE",
+           "metricName": "Material Subsidiary EBITDA (unconsolidated basis, excluding pro forma adjustments, otherwise calculated on the same basis as Consolidated EBITDA)",
+           "valueType": "MONEY"
+          },
+          "operator": "GTE",
+          "right": {
+           "kind": "MULTIPLY",
+           "operands": [
+            {
+             "kind": "PERCENT",
+             "value": 0.075,
+             "citation": "§1.01",
+             "inventoryItemIds": [
+              "inv-item:cf0edb1b0c543eb786c2df44"
+             ]
+            },
+            {
+             "kind": "METRIC_REFERENCE",
+             "metricName": "Consolidated EBITDA",
+             "valueType": "MONEY"
+            }
+           ],
+           "citation": "§1.01"
+          },
+          "citation": "§1.01",
+          "inventoryItemIds": [
+           "inv-item:cf0edb1b0c543eb786c2df44"
+          ]
+         },
+         {
+          "kind": "UNSUPPORTED",
+          "semanticDescription": "designation by the Initial Borrower as a Material Subsidiary",
+          "reason": "a discretionary election by the Initial Borrower, not a numeric or comparable formula",
+          "sourceEvidence": "§1.01: \"or that is designated by the Initial Borrower as a Material Subsidiary\""
+         }
+        ],
+        "citation": "§1.01"
+       },
+       {
+        "kind": "NOT",
+        "operand": {
+         "kind": "DEFINED_TERM_REFERENCE",
+         "termName": "Excluded Subsidiary"
+        },
+        "citation": "§1.01"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Excluded Subsidiary",
+      "Restricted Subsidiary",
+      "Section 5.01(a)"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The alternative 'designated by the Initial Borrower' basis is a discretionary election not reducible to a formula; the 7.5%-of-Consolidated-EBITDA test and the Excluded Subsidiary carve-out are fully represented."
+     ],
+     "citation": "§1.01",
+     "excerpt": "each wholly owned Restricted Subsidiary that has earnings before interest, tax, depreciation and amortization ... of 7.5% or more of Consolidated EBITDA ... or that is designated by the Initial Borrower as a Material Subsidiary, in each case, to the extent not otherwise constituting an Excluded Subsidiary."
+    },
+    {
+     "localRef": "d6",
+     "termName": "Maturity Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Initial Term Maturity Date",
+      "Incremental Revolving Commitments",
+      "Incremental Term Loans",
+      "Incremental Facility Amendment",
+      "Other Commitments",
+      "Other Loans",
+      "Refinancing Amendment",
+      "Business Day"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Maps facility type to a date defined in other terms/instruments (Initial Term Maturity Date, Incremental Facility Amendment, Refinancing Amendment) not resolvable from the supplied source; the Business Day roll-back mechanic is stated but its trigger definition ('Business Day') is likewise external."
+     ],
+     "citation": "§1.01",
+     "excerpt": "(a) with respect to the Initial Term Loans, the Initial Term Maturity Date, (b) ... the final maturity date as specified in the applicable Incremental Facility Amendment and (c) ... the final maturity date as specified in the applicable Refinancing Amendment; provided, in each case, that if such day is not a Business Day, the applicable Maturity Date shall be the Business Day immediately preceding such day."
+    },
+    {
+     "localRef": "d7",
+     "termName": "Maturity Exception Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Inside Maturity Basket",
+      "Customary Bridge Loans",
+      "Permitted Acquisition"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Defined by reference to other defined terms (Inside Maturity Basket, Customary Bridge Loans, Permitted Acquisition) not included in the supplied source."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any Facility (w) incurred in reliance on the Inside Maturity Basket, (x) constituting Customary Bridge Loans or customary prepayment terms in connection with escrow arrangements, (y) established or incurred in connection with a Permitted Acquisition or any other Investment not prohibited by the terms of this Agreement, new project, refinancing or any similar transaction or (z) that is in the form of a term loan \"A\"."
+    },
+    {
+     "localRef": "d8",
+     "termName": "Maximum Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Section 9.17"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition is entirely delegated to Section 9.17, which was out of scope of the retrieved context (budget exhausted before expansion)."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.17."
+    },
+    {
+     "localRef": "d9",
+     "termName": "Model",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Lead Arrangers",
+      "Initial Term Loans",
+      "Initial Borrower"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully descriptive; no numeric content."
+     ],
+     "citation": "§1.01",
+     "excerpt": "that certain financial model delivered to the Lead Arrangers in connection with syndication of the Initial Term Loans (together with any updates or modifications thereto reasonably agreed between the Initial Borrower and the Lead Arrangers)."
+    },
+    {
+     "localRef": "d10",
+     "termName": "Moody's",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully descriptive named-entity definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "Moody's Investors Service, Inc. and any successor to its rating agency business."
+    },
+    {
+     "localRef": "d11",
+     "termName": "Multiemployer Plan",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DURING_PERIOD",
+      "operand": {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "termName": "multiemployer plan (as defined in Section 4001(a)(3) of ERISA)"
+      },
+      "periodDescription": "then making contributions, or accruing an obligation to make contributions, or has within the last six (6) plan years made contributions, including by any Person which ceased to be an ERISA Affiliate during such six (6)-year period",
+      "citation": "§1.01",
+      "inventoryItemIds": [
+       "inv-item:28e4901aa97afc67fabcd173"
+      ]
+     },
+     "dependsOnTerms": [
+      "ERISA Affiliate"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Six-plan-year lookback (including former ERISA Affiliates) fully represented via the period-scoping node; 'ERISA Affiliate' resolved from supplied context."
+     ],
+     "citation": "§1.01",
+     "excerpt": "a multiemployer plan as defined in Section 4001(a)(3) of ERISA to which any Loan Party or any ERISA Affiliate is then making contributions, or accruing an obligation to make contributions, or has within the last six (6) plan years made contributions, including, for these purposes, any Person which ceased to be an ERISA Affiliate during such six (6)-year period."
+    },
+    {
+     "localRef": "d12",
+     "termName": "Net Proceeds",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "IF",
+      "condition": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "inputName": "Transaction is an Asset Sale (vs. an issuance/incurrence of Indebtedness)"
+      },
+      "then": {
+       "kind": "SUBTRACT",
+       "left": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "inputName": "Cash/Cash Equivalent proceeds received by a Loan Party from an Asset Sale (including deferred payments, but only as and when received, excluding interest)",
+        "valueType": "MONEY"
+       },
+       "right": {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "aggregate of clauses (i)-(viii) netting deductions: transaction fees/expenses, funded indemnity escrows (with reduction true-up), mandatory secured-debt repayments, minority-interest allocation, retained liabilities, taxes/Tax Distributions/contingent-liability reserves (with reduction true-up), GAAP reserves (with reversal true-up), and customer deposit repayments",
+        "reason": "qualitative, multi-part deduction categories with no stated fixed amounts; cannot be reduced to a concrete arithmetic expression without fabricating figures",
+        "sourceEvidence": "§1.01, Net Proceeds clause (a)(i)-(viii)"
+       },
+       "citation": "§1.01"
+      },
+      "else": {
+       "kind": "SUBTRACT",
+       "left": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "inputName": "Cash proceeds received by a Restricted Party from issuance or incurrence of Indebtedness",
+        "valueType": "MONEY"
+       },
+       "right": {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "aggregate of reasonable out-of-pocket fees/expenses (legal, consultant, banking, accounting, underwriting) and taxes reasonably estimated to be payable (including Tax Distributions) and other customary costs actually incurred",
+        "reason": "qualitative deduction categories with no stated fixed amounts",
+        "sourceEvidence": "§1.01, Net Proceeds clause (b)"
+       },
+       "citation": "§1.01"
+      },
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Asset Sale",
+      "Cash Equivalents",
+      "Tax Distributions",
+      "Hedging Obligations"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The gross-proceeds-minus-deductions structure and its two alternative triggering scenarios (Asset Sale vs. Indebtedness issuance) are captured; the specific netting deduction categories are qualitative/non-numeric and represented as UNSUPPORTED rather than fabricated figures."
+     ],
+     "citation": "§1.01",
+     "excerpt": "(a) in connection with any Asset Sale, the proceeds thereof received by any Loan Party ... net of the sum of (i)-(viii) ...; and (b) in connection with any issuance or incurrence of any Indebtedness, the cash proceeds received ... net of ... fees ... and taxes ..."
+    },
+    {
+     "localRef": "d13",
+     "termName": "Net Short Lender",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Section 9.02(h)"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition entirely delegated to Section 9.02(h), which was out of scope of retrieved context (budget exhausted)."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.02(h)."
+    },
+    {
+     "localRef": "d14",
+     "termName": "Non-Accepting Lender",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Section 2.22(c)"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition entirely delegated to Section 2.22(c), which was out of scope of retrieved context (budget exhausted)."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 2.22(c)."
+    },
+    {
+     "localRef": "d15",
+     "termName": "Non-Cash Compensation Expense",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Parent Entities"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully descriptive/qualitative list of equity-based and non-cash compensation items; no numeric threshold to represent."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any equity-based or non-cash compensation or similar charges or expenses or reduction of revenue and costs including any such expense, charge or cost arising from the issuance of stock-based awards ... and any cash awards granted ... in replacement for forfeited equity awards."
+    },
+    {
+     "localRef": "d16",
+     "termName": "Non-Consenting Lender",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Section 9.02(c)"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition entirely delegated to Section 9.02(c), which was out of scope of retrieved context (budget exhausted)."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.02(c)."
+    },
+    {
+     "localRef": "d17",
+     "termName": "Non-Loan Party Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Subsidiary",
+      "Loan Party",
+      "Initial Borrower"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple negative-scope definition fully quoted; both dependent terms (Restricted Subsidiary, Loan Party) are structural entity-scope terms referenced but not needed numerically."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any Restricted Subsidiary of the Initial Borrower that is not a Loan Party."
+    },
+    {
+     "localRef": "d18",
+     "termName": "Not Otherwise Applied",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Available Amount",
+      "Section 6.01(b)(32)",
+      "Permitted Liens",
+      "Section 6.08(a)(3)"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Defined negatively by reference to three specific prior-usage provisions (Section 6.01(b)(32), clause (46)(ii) of the 'Permitted Liens' definition, and Section 6.08(a)(3)), all of which were out of scope of retrieved context (budget exhausted); cannot confirm the full set of prior-usage exclusions without them."
+     ],
+     "citation": "§1.01",
+     "excerpt": "with reference to the Available Amount, that was not previously applied pursuant to Section 6.01(b)(32), clause (46)(ii) of the definition of \"Permitted Liens\" or Section 6.08(a)(3)."
+    },
+    {
+     "localRef": "d19",
+     "termName": "Notice of Additional Guarantor",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Exhibit O"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully descriptive cross-reference to a form exhibit; no numeric/economic content depends on the exhibit's contents for this definition's own meaning."
+     ],
+     "citation": "§1.01",
+     "excerpt": "a Notice of Additional Guarantor, in substantially the form of Exhibit O hereto."
+    },
+    {
+     "localRef": "d20",
+     "termName": "Notice Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Section 2.12(b)"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition entirely delegated to Section 2.12(b), which was out of scope of retrieved context (budget exhausted)."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 2.12(b)."
+    },
+    {
+     "localRef": "d21",
+     "termName": "Numerical Permission",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "First Lien Leverage Ratio",
+      "Total Leverage Ratio",
+      "Interest Coverage Ratio"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definitional/classificatory term (a category label for other fixed-amount-referenced metrics), not itself a computable formula; fully quoted."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any financial ratios, basket, threshold, tests or other metrics (including Consolidated EBITDA, the First Lien Leverage Ratio, the Total Leverage Ratio and the Interest Coverage Ratio and any financial definition or component thereof) that is determined by reference to a fixed amount."
+    },
+    {
+     "localRef": "d22",
+     "termName": "NYFRB",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully descriptive named-entity definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the Federal Reserve Bank of New York."
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "inventoryDispositions": [],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01 Material Acquisition clause (a) ('not permitted by the terms of this Agreement immediately prior to the consummation of such acquisition') and Material Subsidiary ('designated by the Initial Borrower as a Material Subsidiary')",
+     "semanticRequirement": "A boolean primitive representing 'is this action/status currently permitted or elected under the whole agreement/by management discretion', distinct from a COMPARE against a stated numeric/ratio threshold.",
+     "whyExistingPrimitivesFail": "COMPARE/AND/OR/NOT operate over typed values (MONEY/NUMBER/RATIO/etc.) or nested booleans built from those; there is no primitive for a whole-of-agreement permissibility state or a free-standing discretionary-election flag that carries no independent numeric content.",
+     "candidateGeneralizedPrimitive": "AGREEMENT_STATE_REFERENCE or DISCRETIONARY_ELECTION node type representing a boolean fact determined outside any single arithmetic/comparison expression (e.g. 'is currently permitted', 'has been designated by [Person]')."
+    }
+   ],
+   "overallNotes": [
+    "This submission covers the full batch of defined terms appearing in the supplied §1.01 excerpt (Material Acquisition through NYFRB) - 22 distinct terms, each emitted as its own WireDefinition per the multiple-definitions rule.",
+    "No independently operative WireRule exists in this excerpt - it is a pure definitions section; rules[] is intentionally empty.",
+    "No shared aggregate cap appears among these terms; sharedCapacities[] is intentionally empty.",
+    "Tool calls were limited to two genuinely justified lookups: 'Threshold Amount' (material to the Material Indebtedness numeric threshold) and 'Excluded Subsidiary' (material to the Material Subsidiary carve-out) - both resolved and used as DEFINED_TERM_REFERENCE dependencies rather than inlined, since neither term is itself part of this §1.01 excerpt.",
+    "Multiple cross-references (Sections 2.12, 2.12(b), 2.22, 2.22(c), 5.01, 5.01(a) [already provided], 6.01, 6.01(b)(32), 6.08, 6.08(a), 6.08(a)(3), 9.02, 9.02(c), 9.02(h), 9.17) were already flagged OUT_OF_SCOPE by Phase 2's deterministic retrieval (context budget exhausted) and were not re-requested per the no-duplicate-request rule; affected definitions (Maximum Rate, Net Short Lender, Non-Accepting Lender, Non-Consenting Lender, Notice Period, Not Otherwise Applied) are marked MISSING_CONTEXT accordingly.",
+    "All three FROZEN SEMANTIC INVENTORY items (Material Acquisition $200mm threshold, Material Subsidiary 7.5% test, Multiemployer Plan six-plan-year lookback) are CONSUMED on the specific value-carrying expression nodes within their respective definitions."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T18:20:43.466Z",
+   "inputTokens": 59263,
+   "outputTokens": 28321,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 250570,
+   "calculatedCostUsd": 0.401736
+  },
+  "cacheKey": "74b767cef815d525092b2267f57e636bfa56abf8806dd8be5770440f1261f3b9",
+  "compiledAt": "2026-09-14T18:20:43.466Z"
+ },
+ "wave": "B",
+ "attemptsSoFar": 1
+}

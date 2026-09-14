@@ -1,0 +1,1985 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:4d114bdf00429cf670f8",
+  "shardHash": "6b1825dc93b8db34bcf18b9867cf036f9608d258a7df96e4f99ae30ab53f7af1",
+  "ordinal": 13,
+  "ownedUnits": 13,
+  "sourceChars": 11800,
+  "contextEntries": 5,
+  "contextChars": 2356,
+  "unresolvedContext": 2,
+  "oversized": false,
+  "ownedItems": 7,
+  "ownedMaterialItems": 7,
+  "estimatedFirstTurnInputTokens": 26886,
+  "preCallEstimate": {
+   "inputTokens": 88455,
+   "outputTokens": 34000,
+   "usd": 0.51691
+  },
+  "actual": {
+   "inputTokens": 27029,
+   "outputTokens": 22480,
+   "turns": 1,
+   "latencyMs": 206397,
+   "costUsd": 0.27885800000000005,
+   "attemptCount": 1,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_COMPLETE",
+  "failureReasons": [],
+  "toolCalls": 0,
+  "toolCallNames": [],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 13,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 5,
+   "dispositioned": 1,
+   "missingMaterial": 1,
+   "valuesRepresented": 8,
+   "valuesMissing": 1,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "REPRESENTED": 5,
+    "MISSING_FROM_COMPOSITION": 1,
+    "UNSUPPORTED": 1
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [],
+  "unresolvedIssues": [
+   "[definition[d3]] The threshold date depends on transaction-specific dates (Loans' maturity date; date Loans cease to be outstanding) that are not covenant-level literals, and the overall test is a categorical eligibility determination rather than a monetary/ratio formula expressible via the arithmetic/comparison primitives.",
+   "[definition[d11].IF.condition] factual characteristic of the specific Indebtedness being tested, not a covenant-level boolean test derivable from the definitions text",
+   "[definition[d11].IF.else] The formula is not a flat arithmetic sum: it embeds multiple conditional carve-outs (floor-disregard when benchmark exceeds floor; full benchmark exclusion on currency mismatch; deemed cash-payment election for PIK-eligible debt) that materially change which components are added, so a plain ADD/MAX composition would misstate the actual mechanic. The 4-year amortization assumption itself is preserved here as the one concrete, citable numeric convention.",
+   "[definition[d11]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "This submission compiles the definitions section §1.01 excerpt spanning 'Disposition Percentage' through 'EMU Legislation'. No independently operative permission/prohibition rules appear in this excerpt; all output is WireDefinition entries.",
+   "Disposition Percentage and ECF Percentage supply tiered-percentage formulas that are consumed by mandatory prepayment mechanics in Sections 2.09(b) and 2.09(c) respectively, both of which are outside this submission's scope (context regions for those sections were reviewed only to confirm how the percentages are used, per tool policy - no economics were compiled from them).",
+   "Several purely categorical/eligibility definitions (Disqualified Lenders, Disqualified Stock's core eligibility test, EEA-related terms, Eligible Assignee, Domestic Subsidiary, EMU Legislation) have no computable numeric formula; they are represented with a null calculationExpression and a faithful excerpt, consistent with the treatment of purely descriptive terms.",
+   "All 7 frozen inventory items were consumed via inventoryItemIds on the definitions that carry their values (Effective Date; Disposition Percentage x3; ECF Percentage default; Disqualified Stock 91-day period; Effective Yield 4-year amortization convention). Additional detected values not covered by inventory items (ECF Percentage's 25.0%/0.0% tiers and their 2.50:1.00/2.00:1.00 ratio thresholds) are nonetheless fully represented in ECF Percentage's calculationExpression."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:4d114bdf00429cf670f8",
+  "shardHash": "6b1825dc93b8db34bcf18b9867cf036f9608d258a7df96e4f99ae30ab53f7af1",
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:1f565331544596ea0f99dfc0",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Disposition Percentage",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "IF",
+      "type": "PERCENT",
+      "exprId": "ir-expr:8d2b456b0114618c37c0095d",
+      "condition": {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:5df8434733080917c8d5bcb9",
+       "left": {
+        "kind": "METRIC_REFERENCE",
+        "type": "RATIO",
+        "metricName": "First Lien Leverage Ratio",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+       },
+       "operator": "LTE",
+       "right": {
+        "kind": "RATIO",
+        "type": "RATIO",
+        "value": 2,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:0d7d39f5d4209738aee8fca6"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "then": {
+       "kind": "PERCENT",
+       "type": "PERCENT",
+       "value": 0,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:1af56cb36f2e70927f67e005"
+      },
+      "else": {
+       "kind": "IF",
+       "type": "PERCENT",
+       "exprId": "ir-expr:1b2ad134ff6e2bf265d182ea",
+       "condition": {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:abb20df6c1b354c0c103152b",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "type": "RATIO",
+         "metricName": "First Lien Leverage Ratio",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+        },
+        "operator": "LTE",
+        "right": {
+         "kind": "RATIO",
+         "type": "RATIO",
+         "value": 2.5,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:5389ef05df5130bfe346ea15"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "then": {
+        "kind": "PERCENT",
+        "type": "PERCENT",
+        "value": 0.5,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:c0b633a7664f9b87a597ac8e"
+       },
+       "else": {
+        "kind": "PERCENT",
+        "type": "PERCENT",
+        "value": 1,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:660871a88c04cd222cf1e1ae"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "First Lien Leverage Ratio",
+      "Pro Forma Basis",
+      "Net Proceeds",
+      "Asset Sale"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Tiered percentage (100%/50%/0%) fully captured via nested comparisons against First Lien Leverage Ratio thresholds of 2.50:1.00 and 2.00:1.00.",
+      "Procedural provisos (A) (pro forma/inclusion-of-anticipated-proceeds convention for the ratio calculation) and (B) (once-only testing election within a stated window) are timing/testing mechanics, not separate value tiers, and are not separately modeled as IR nodes; they qualify HOW/WHEN the ratio in the condition is computed, not the percentage values themselves.",
+      "Underlying 'Net Proceeds' term and Sections 2.09(b)/6.05(a)(2)(ii) that this percentage feeds into are outside this submission's scope."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "Disposition Percentage ... 100.0%; provided that the Disposition Percentage (i) shall be 50.0% if the First Lien Leverage Ratio ... is less than or equal to 2.50:1.00 and greater than 2.00:1.00, and (ii) shall be 0.0% if ... less than or equal to 2.00:1.00"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "bcb1952482c40eeb345a112d",
+      "cf64fc7643adb7f35f917e96",
+      "6cd88efec2c0749c0e0c0a84"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:9d01d0f240c7b01c5cb3c4b1",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Disqualified Lenders",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Person",
+      "Restricted Parties",
+      "Sponsors",
+      "Initial Borrower",
+      "Lead Arrangers",
+      "Initial Term Loans",
+      "Net Short Lender",
+      "Administrative Agent",
+      "Effective Date",
+      "Affiliate"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely categorical/eligibility definition (list of excluded person-categories plus retroactivity and notice provisos); no numeric formula or threshold to represent."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "Disqualified Lenders means, on any date: (a) known or reasonably identifiable competitors ...; (b) private equity/mezzanine/venture capital persons identified to the Lead Arrangers ...; (c) affiliates of (a)/(b) (with bona fide debt fund carve-out) ...; (d) Net Short Lenders; and (e) persons identified in writing by the Initial Borrower or Sponsors; provided that no retroactive disqualification and notice must be delivered by email to specified addresses."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:86434cdc686caa51e69f5d4a",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Disqualified Stock",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01 Disqualified Stock",
+      "semanticDescription": "Categorical eligibility test: Capital Stock is Disqualified Stock if it matures/is mandatorily redeemable/is redeemable at holder's option (subject to change-of-control/asset-sale/casualty carve-outs) prior to a threshold date equal to 91 days after the earlier of the Loans' maturity date or the date the Loans are no longer outstanding, subject to employee-plan provisos.",
+      "reason": "The threshold date depends on transaction-specific dates (Loans' maturity date; date Loans cease to be outstanding) that are not covenant-level literals, and the overall test is a categorical eligibility determination rather than a monetary/ratio formula expressible via the arithmetic/comparison primitives.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:11ff280674ad8d962b759888"
+     },
+     "dependsOnTerms": [
+      "Capital Stock",
+      "Restricted Parties",
+      "Parent Entities"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The 91-day threshold and its 'earlier of maturity / no longer outstanding' reference point are captured evidentially but not reduced to a computable expression given transaction-specific date inputs; the two employee-plan carve-out provisos are likewise categorical exceptions not reduced to boolean logic here.",
+      "The threshold date depends on transaction-specific dates (Loans' maturity date; date Loans cease to be outstanding) that are not covenant-level literals, and the overall test is a categorical eligibility determination rather than a monetary/ratio formula expressible via the arithmetic/comparison primitives."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "matures or is mandatorily redeemable ... or is redeemable at the option of the holder thereof ... in each case prior to the date ninety-one (91) days after the earlier of the maturity date of the Loans or the date the Loans are no longer outstanding"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:c1c8a595684f249679fa648c",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Dollar Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Alternative Currency"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definitional convention (USD Loans measured at outstanding principal; Alternative Currency Loans converted per Section 1.06(a)/2.25) is descriptive, not itself a computable formula; the referenced conversion mechanics sections are outside this submission's scope."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) with respect to any Loan denominated in U.S. Dollars, the principal amount thereof then outstanding ...; and (b) with respect to any Loan denominated in an Alternative Currency, the principal amount thereof then outstanding in the relevant Alternative Currency, converted to U.S. Dollars in accordance with Section 1.06(a) and Section 2.25."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:617758f7638fc7ac4aca8785",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Domestic Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Subsidiary",
+      "Foreign Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple exclusionary categorical definition; no numeric content."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "Domestic Subsidiary means any Subsidiary that is not a Foreign Subsidiary."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e5a455bd37c9374163499fc4",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "ECF Percentage",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "IF",
+      "type": "PERCENT",
+      "exprId": "ir-expr:aee6cd0c2ed9f02c578fc9e4",
+      "condition": {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:5df8434733080917c8d5bcb9",
+       "left": {
+        "kind": "METRIC_REFERENCE",
+        "type": "RATIO",
+        "metricName": "First Lien Leverage Ratio",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+       },
+       "operator": "LTE",
+       "right": {
+        "kind": "RATIO",
+        "type": "RATIO",
+        "value": 2,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:0d7d39f5d4209738aee8fca6"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "then": {
+       "kind": "PERCENT",
+       "type": "PERCENT",
+       "value": 0,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:1af56cb36f2e70927f67e005"
+      },
+      "else": {
+       "kind": "IF",
+       "type": "PERCENT",
+       "exprId": "ir-expr:f0206b266a9b6080978dac68",
+       "condition": {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:abb20df6c1b354c0c103152b",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "type": "RATIO",
+         "metricName": "First Lien Leverage Ratio",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+        },
+        "operator": "LTE",
+        "right": {
+         "kind": "RATIO",
+         "type": "RATIO",
+         "value": 2.5,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:5389ef05df5130bfe346ea15"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "then": {
+        "kind": "PERCENT",
+        "type": "PERCENT",
+        "value": 0.25,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:d35a8d133371c1d53e7a85c6"
+       },
+       "else": {
+        "kind": "PERCENT",
+        "type": "PERCENT",
+        "value": 0.5,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:c0b633a7664f9b87a597ac8e"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "First Lien Leverage Ratio",
+      "Excess Cash Flow Period",
+      "Excess Cash Flow",
+      "Pro Forma Basis",
+      "Other Applicable Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Tiered percentage (50%/25%/0%) fully captured via nested comparisons against First Lien Leverage Ratio thresholds of 2.50:1.00 and 2.00:1.00, measured as of the last day of the Excess Cash Flow Period.",
+      "Pro forma calculation convention (giving effect to contemplated mandatory/voluntary prepayments) and the Section 2.09(c) recalculation election are testing mechanics not separately modeled as distinct value tiers.",
+      "The Excess Cash Flow amount this percentage multiplies (used in Section 2.09(c) mandatory prepayment) is outside this submission's scope."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "ECF Percentage means with respect to any Excess Cash Flow Period, 50.0%; provided that (i) ... 25.0% if the First Lien Leverage Ratio ... is less than or equal to 2.50:1.00 and greater than 2.00:1.00, and (ii) ... 0.0% if ... less than or equal to 2.00:1.00."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "4afd9623a2233cadc64b7996"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:bd1fe84b60a9807dd7a5fbff",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "EEA Financial Institution",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "EEA Member Country",
+      "EEA Resolution Authority"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical institutional definition; no numeric content."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "EEA Financial Institution means (a) any credit institution or investment firm established in any EEA Member Country ...; (b) any entity ... which is a parent of an institution described in clause (a) ...; or (c) any financial institution ... which is a subsidiary of an institution described in clause (a) or (b) ... and is subject to consolidated supervision with its parent."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:8ab279442498b2f8ca149b5d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "EEA Member Country",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple enumerated list of jurisdictions; no numeric content."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "EEA Member Country means any of the member states of the European Union, Iceland, Liechtenstein and Norway."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:50e113c401a4be6a129e08e8",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "EEA Resolution Authority",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "EEA Member Country",
+      "EEA Financial Institution"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical institutional definition; no numeric content."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "EEA Resolution Authority means any public administrative authority ... of any EEA Member Country ... having responsibility for the resolution of any EEA Financial Institution."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d7d170984a78c04fb7a5f099",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Effective Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DATE_LITERAL",
+      "type": "DATE",
+      "isoDate": "2026-06-23",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:bb796a71835cdef50862dd6c"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fixed calendar date, fully represented."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "Effective Date means June 23, 2026."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "38a65560393a491613f95a11"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:f24ae39b5f76801b10a2f7bc",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Effective Yield",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "IF",
+      "type": "MONEY",
+      "exprId": "ir-expr:d952fc05edcc3952b096c07c",
+      "condition": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01 Effective Yield, clauses (a)/(b)",
+       "semanticDescription": "whether the subject Indebtedness is fixed-rate or floating-rate",
+       "reason": "factual characteristic of the specific Indebtedness being tested, not a covenant-level boolean test derivable from the definitions text",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:6a9273a423b3e630e215dae6"
+      },
+      "then": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "MONEY",
+       "inputName": "stated rate of interest of the subject fixed-rate Indebtedness",
+       "exprId": "ir-expr:dae869747929fff11d860f97"
+      },
+      "else": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01 Effective Yield, clause (b) and provisos (A)-(D)",
+       "semanticDescription": "Floating-rate Effective Yield: sum of (i) the higher of the 1-month Term SOFR Rate and the Indebtedness's own floor, plus (ii) the applicable interest rate margin, plus original issue discount/upfront fees equated to interest assuming an assumed four (4)-year life to maturity and without present-value discount (excluding non-ratable/structuring/commitment-type fees) - subject to further provisos disregarding the floor when the benchmark exceeds it, excluding the benchmark component entirely when the Indebtedness's currency differs from that of the Initial Term Loans, and deeming any PIK interest option to be paid in cash.",
+       "reason": "The formula is not a flat arithmetic sum: it embeds multiple conditional carve-outs (floor-disregard when benchmark exceeds floor; full benchmark exclusion on currency mismatch; deemed cash-payment election for PIK-eligible debt) that materially change which components are added, so a plain ADD/MAX composition would misstate the actual mechanic. The 4-year amortization assumption itself is preserved here as the one concrete, citable numeric convention.",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:abade13b3c3c370a39835930"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Term SOFR Rate",
+      "Initial Term Loans"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Fixed-rate branch (stated rate of interest) is fully captured.",
+      "Floating-rate branch is genuinely multi-conditional (floor mechanics, currency-mismatch carve-out, PIK deemed-cash election) and is represented via UNSUPPORTED rather than a potentially misleading flat arithmetic composition; the four-year OID/upfront-fee amortization convention is preserved as the specific numeric item within that UNSUPPORTED node.",
+      "factual characteristic of the specific Indebtedness being tested, not a covenant-level boolean test derivable from the definitions text",
+      "The formula is not a flat arithmetic sum: it embeds multiple conditional carve-outs (floor-disregard when benchmark exceeds floor; full benchmark exclusion on currency mismatch; deemed cash-payment election for PIK-eligible debt) that materially change which components are added, so a plain ADD/MAX composition would misstate the actual mechanic. The 4-year amortization assumption itself is preserved here as the one concrete, citable numeric convention.",
+      "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "with original issue discount or upfront fees being equated to interest based on an assumed four (4)-year life to maturity and without any present-value discount"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "75bcc64a8677204937a6aab3"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:1280f6b461a59ede15977b70",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Eligible Assignee",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Lender",
+      "Affiliate",
+      "Approved Fund",
+      "Defaulting Lender",
+      "Disqualified Lenders",
+      "Borrowers",
+      "Revolving Facility"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical eligibility definition (inclusions (a)-(d) and exclusions (i)-(iv)); no numeric content."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "Eligible Assignee means (a) a Lender, (b) an Affiliate of a Lender, (c) an Approved Fund and (d) any other Person, other than, in each case, (i) a natural person, (ii) a Defaulting Lender, (iii) a Disqualified Lender or (iv) solely in the case of any Revolving Facility, the Borrowers or any of their Affiliates."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:65393967d33f3790a66bdd8f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "EMU Legislation",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple descriptive definition; no numeric content."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "EMU Legislation means the legislative measures of the European Council for the introduction of, changeover to or operation of a single or unified European currency."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [],
+  "unresolvedIssues": [
+   "[definition[d3]] The threshold date depends on transaction-specific dates (Loans' maturity date; date Loans cease to be outstanding) that are not covenant-level literals, and the overall test is a categorical eligibility determination rather than a monetary/ratio formula expressible via the arithmetic/comparison primitives.",
+   "[definition[d11].IF.condition] factual characteristic of the specific Indebtedness being tested, not a covenant-level boolean test derivable from the definitions text",
+   "[definition[d11].IF.else] The formula is not a flat arithmetic sum: it embeds multiple conditional carve-outs (floor-disregard when benchmark exceeds floor; full benchmark exclusion on currency mismatch; deemed cash-payment election for PIK-eligible debt) that materially change which components are added, so a plain ADD/MAX composition would misstate the actual mechanic. The 4-year amortization assumption itself is preserved here as the one concrete, citable numeric convention.",
+   "[definition[d11]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "This submission compiles the definitions section §1.01 excerpt spanning 'Disposition Percentage' through 'EMU Legislation'. No independently operative permission/prohibition rules appear in this excerpt; all output is WireDefinition entries.",
+   "Disposition Percentage and ECF Percentage supply tiered-percentage formulas that are consumed by mandatory prepayment mechanics in Sections 2.09(b) and 2.09(c) respectively, both of which are outside this submission's scope (context regions for those sections were reviewed only to confirm how the percentages are used, per tool policy - no economics were compiled from them).",
+   "Several purely categorical/eligibility definitions (Disqualified Lenders, Disqualified Stock's core eligibility test, EEA-related terms, Eligible Assignee, Domestic Subsidiary, EMU Legislation) have no computable numeric formula; they are represented with a null calculationExpression and a faithful excerpt, consistent with the treatment of purely descriptive terms.",
+   "All 7 frozen inventory items were consumed via inventoryItemIds on the definitions that carry their values (Effective Date; Disposition Percentage x3; ECF Percentage default; Disqualified Stock 91-day period; Effective Yield 4-year amortization convention). Additional detected values not covered by inventory items (ECF Percentage's 25.0%/0.0% tiers and their 2.50:1.00/2.00:1.00 ratio thresholds) are nonetheless fully represented in ECF Percentage's calculationExpression."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 27029,
+   "outputTokens": 22480,
+   "costUsd": 0.27885800000000005
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:1f565331544596ea0f99dfc0",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Disposition Percentage",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "IF",
+     "type": "PERCENT",
+     "exprId": "ir-expr:8d2b456b0114618c37c0095d",
+     "condition": {
+      "kind": "COMPARE",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:5df8434733080917c8d5bcb9",
+      "left": {
+       "kind": "METRIC_REFERENCE",
+       "type": "RATIO",
+       "metricName": "First Lien Leverage Ratio",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+      },
+      "operator": "LTE",
+      "right": {
+       "kind": "RATIO",
+       "type": "RATIO",
+       "value": 2,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:0d7d39f5d4209738aee8fca6"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "then": {
+      "kind": "PERCENT",
+      "type": "PERCENT",
+      "value": 0,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:1af56cb36f2e70927f67e005"
+     },
+     "else": {
+      "kind": "IF",
+      "type": "PERCENT",
+      "exprId": "ir-expr:1b2ad134ff6e2bf265d182ea",
+      "condition": {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:abb20df6c1b354c0c103152b",
+       "left": {
+        "kind": "METRIC_REFERENCE",
+        "type": "RATIO",
+        "metricName": "First Lien Leverage Ratio",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+       },
+       "operator": "LTE",
+       "right": {
+        "kind": "RATIO",
+        "type": "RATIO",
+        "value": 2.5,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:5389ef05df5130bfe346ea15"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "then": {
+       "kind": "PERCENT",
+       "type": "PERCENT",
+       "value": 0.5,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:c0b633a7664f9b87a597ac8e"
+      },
+      "else": {
+       "kind": "PERCENT",
+       "type": "PERCENT",
+       "value": 1,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:660871a88c04cd222cf1e1ae"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "First Lien Leverage Ratio",
+     "Pro Forma Basis",
+     "Net Proceeds",
+     "Asset Sale"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Tiered percentage (100%/50%/0%) fully captured via nested comparisons against First Lien Leverage Ratio thresholds of 2.50:1.00 and 2.00:1.00.",
+     "Procedural provisos (A) (pro forma/inclusion-of-anticipated-proceeds convention for the ratio calculation) and (B) (once-only testing election within a stated window) are timing/testing mechanics, not separate value tiers, and are not separately modeled as IR nodes; they qualify HOW/WHEN the ratio in the condition is computed, not the percentage values themselves.",
+     "Underlying 'Net Proceeds' term and Sections 2.09(b)/6.05(a)(2)(ii) that this percentage feeds into are outside this submission's scope."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "Disposition Percentage ... 100.0%; provided that the Disposition Percentage (i) shall be 50.0% if the First Lien Leverage Ratio ... is less than or equal to 2.50:1.00 and greater than 2.00:1.00, and (ii) shall be 0.0% if ... less than or equal to 2.00:1.00"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "bcb1952482c40eeb345a112d",
+     "cf64fc7643adb7f35f917e96",
+     "6cd88efec2c0749c0e0c0a84"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:9d01d0f240c7b01c5cb3c4b1",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Disqualified Lenders",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Person",
+     "Restricted Parties",
+     "Sponsors",
+     "Initial Borrower",
+     "Lead Arrangers",
+     "Initial Term Loans",
+     "Net Short Lender",
+     "Administrative Agent",
+     "Effective Date",
+     "Affiliate"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely categorical/eligibility definition (list of excluded person-categories plus retroactivity and notice provisos); no numeric formula or threshold to represent."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "Disqualified Lenders means, on any date: (a) known or reasonably identifiable competitors ...; (b) private equity/mezzanine/venture capital persons identified to the Lead Arrangers ...; (c) affiliates of (a)/(b) (with bona fide debt fund carve-out) ...; (d) Net Short Lenders; and (e) persons identified in writing by the Initial Borrower or Sponsors; provided that no retroactive disqualification and notice must be delivered by email to specified addresses."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:86434cdc686caa51e69f5d4a",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Disqualified Stock",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01 Disqualified Stock",
+     "semanticDescription": "Categorical eligibility test: Capital Stock is Disqualified Stock if it matures/is mandatorily redeemable/is redeemable at holder's option (subject to change-of-control/asset-sale/casualty carve-outs) prior to a threshold date equal to 91 days after the earlier of the Loans' maturity date or the date the Loans are no longer outstanding, subject to employee-plan provisos.",
+     "reason": "The threshold date depends on transaction-specific dates (Loans' maturity date; date Loans cease to be outstanding) that are not covenant-level literals, and the overall test is a categorical eligibility determination rather than a monetary/ratio formula expressible via the arithmetic/comparison primitives.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:11ff280674ad8d962b759888"
+    },
+    "dependsOnTerms": [
+     "Capital Stock",
+     "Restricted Parties",
+     "Parent Entities"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The 91-day threshold and its 'earlier of maturity / no longer outstanding' reference point are captured evidentially but not reduced to a computable expression given transaction-specific date inputs; the two employee-plan carve-out provisos are likewise categorical exceptions not reduced to boolean logic here.",
+     "The threshold date depends on transaction-specific dates (Loans' maturity date; date Loans cease to be outstanding) that are not covenant-level literals, and the overall test is a categorical eligibility determination rather than a monetary/ratio formula expressible via the arithmetic/comparison primitives."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "matures or is mandatorily redeemable ... or is redeemable at the option of the holder thereof ... in each case prior to the date ninety-one (91) days after the earlier of the maturity date of the Loans or the date the Loans are no longer outstanding"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:c1c8a595684f249679fa648c",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Dollar Amount",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Alternative Currency"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definitional convention (USD Loans measured at outstanding principal; Alternative Currency Loans converted per Section 1.06(a)/2.25) is descriptive, not itself a computable formula; the referenced conversion mechanics sections are outside this submission's scope."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) with respect to any Loan denominated in U.S. Dollars, the principal amount thereof then outstanding ...; and (b) with respect to any Loan denominated in an Alternative Currency, the principal amount thereof then outstanding in the relevant Alternative Currency, converted to U.S. Dollars in accordance with Section 1.06(a) and Section 2.25."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:617758f7638fc7ac4aca8785",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Domestic Subsidiary",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Subsidiary",
+     "Foreign Subsidiary"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple exclusionary categorical definition; no numeric content."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "Domestic Subsidiary means any Subsidiary that is not a Foreign Subsidiary."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e5a455bd37c9374163499fc4",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "ECF Percentage",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "IF",
+     "type": "PERCENT",
+     "exprId": "ir-expr:aee6cd0c2ed9f02c578fc9e4",
+     "condition": {
+      "kind": "COMPARE",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:5df8434733080917c8d5bcb9",
+      "left": {
+       "kind": "METRIC_REFERENCE",
+       "type": "RATIO",
+       "metricName": "First Lien Leverage Ratio",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+      },
+      "operator": "LTE",
+      "right": {
+       "kind": "RATIO",
+       "type": "RATIO",
+       "value": 2,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:0d7d39f5d4209738aee8fca6"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "then": {
+      "kind": "PERCENT",
+      "type": "PERCENT",
+      "value": 0,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:1af56cb36f2e70927f67e005"
+     },
+     "else": {
+      "kind": "IF",
+      "type": "PERCENT",
+      "exprId": "ir-expr:f0206b266a9b6080978dac68",
+      "condition": {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:abb20df6c1b354c0c103152b",
+       "left": {
+        "kind": "METRIC_REFERENCE",
+        "type": "RATIO",
+        "metricName": "First Lien Leverage Ratio",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+       },
+       "operator": "LTE",
+       "right": {
+        "kind": "RATIO",
+        "type": "RATIO",
+        "value": 2.5,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:5389ef05df5130bfe346ea15"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "then": {
+       "kind": "PERCENT",
+       "type": "PERCENT",
+       "value": 0.25,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:d35a8d133371c1d53e7a85c6"
+      },
+      "else": {
+       "kind": "PERCENT",
+       "type": "PERCENT",
+       "value": 0.5,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:c0b633a7664f9b87a597ac8e"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "First Lien Leverage Ratio",
+     "Excess Cash Flow Period",
+     "Excess Cash Flow",
+     "Pro Forma Basis",
+     "Other Applicable Indebtedness"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Tiered percentage (50%/25%/0%) fully captured via nested comparisons against First Lien Leverage Ratio thresholds of 2.50:1.00 and 2.00:1.00, measured as of the last day of the Excess Cash Flow Period.",
+     "Pro forma calculation convention (giving effect to contemplated mandatory/voluntary prepayments) and the Section 2.09(c) recalculation election are testing mechanics not separately modeled as distinct value tiers.",
+     "The Excess Cash Flow amount this percentage multiplies (used in Section 2.09(c) mandatory prepayment) is outside this submission's scope."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "ECF Percentage means with respect to any Excess Cash Flow Period, 50.0%; provided that (i) ... 25.0% if the First Lien Leverage Ratio ... is less than or equal to 2.50:1.00 and greater than 2.00:1.00, and (ii) ... 0.0% if ... less than or equal to 2.00:1.00."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "4afd9623a2233cadc64b7996"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:bd1fe84b60a9807dd7a5fbff",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "EEA Financial Institution",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "EEA Member Country",
+     "EEA Resolution Authority"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Categorical institutional definition; no numeric content."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "EEA Financial Institution means (a) any credit institution or investment firm established in any EEA Member Country ...; (b) any entity ... which is a parent of an institution described in clause (a) ...; or (c) any financial institution ... which is a subsidiary of an institution described in clause (a) or (b) ... and is subject to consolidated supervision with its parent."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:8ab279442498b2f8ca149b5d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "EEA Member Country",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple enumerated list of jurisdictions; no numeric content."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "EEA Member Country means any of the member states of the European Union, Iceland, Liechtenstein and Norway."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:50e113c401a4be6a129e08e8",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "EEA Resolution Authority",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "EEA Member Country",
+     "EEA Financial Institution"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Categorical institutional definition; no numeric content."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "EEA Resolution Authority means any public administrative authority ... of any EEA Member Country ... having responsibility for the resolution of any EEA Financial Institution."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d7d170984a78c04fb7a5f099",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Effective Date",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "DATE_LITERAL",
+     "type": "DATE",
+     "isoDate": "2026-06-23",
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:bb796a71835cdef50862dd6c"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fixed calendar date, fully represented."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "Effective Date means June 23, 2026."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "38a65560393a491613f95a11"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:f24ae39b5f76801b10a2f7bc",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Effective Yield",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "IF",
+     "type": "MONEY",
+     "exprId": "ir-expr:d952fc05edcc3952b096c07c",
+     "condition": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01 Effective Yield, clauses (a)/(b)",
+      "semanticDescription": "whether the subject Indebtedness is fixed-rate or floating-rate",
+      "reason": "factual characteristic of the specific Indebtedness being tested, not a covenant-level boolean test derivable from the definitions text",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:6a9273a423b3e630e215dae6"
+     },
+     "then": {
+      "kind": "TRANSACTION_INPUT_REFERENCE",
+      "type": "MONEY",
+      "inputName": "stated rate of interest of the subject fixed-rate Indebtedness",
+      "exprId": "ir-expr:dae869747929fff11d860f97"
+     },
+     "else": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01 Effective Yield, clause (b) and provisos (A)-(D)",
+      "semanticDescription": "Floating-rate Effective Yield: sum of (i) the higher of the 1-month Term SOFR Rate and the Indebtedness's own floor, plus (ii) the applicable interest rate margin, plus original issue discount/upfront fees equated to interest assuming an assumed four (4)-year life to maturity and without present-value discount (excluding non-ratable/structuring/commitment-type fees) - subject to further provisos disregarding the floor when the benchmark exceeds it, excluding the benchmark component entirely when the Indebtedness's currency differs from that of the Initial Term Loans, and deeming any PIK interest option to be paid in cash.",
+      "reason": "The formula is not a flat arithmetic sum: it embeds multiple conditional carve-outs (floor-disregard when benchmark exceeds floor; full benchmark exclusion on currency mismatch; deemed cash-payment election for PIK-eligible debt) that materially change which components are added, so a plain ADD/MAX composition would misstate the actual mechanic. The 4-year amortization assumption itself is preserved here as the one concrete, citable numeric convention.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:abade13b3c3c370a39835930"
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Term SOFR Rate",
+     "Initial Term Loans"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Fixed-rate branch (stated rate of interest) is fully captured.",
+     "Floating-rate branch is genuinely multi-conditional (floor mechanics, currency-mismatch carve-out, PIK deemed-cash election) and is represented via UNSUPPORTED rather than a potentially misleading flat arithmetic composition; the four-year OID/upfront-fee amortization convention is preserved as the specific numeric item within that UNSUPPORTED node.",
+     "factual characteristic of the specific Indebtedness being tested, not a covenant-level boolean test derivable from the definitions text",
+     "The formula is not a flat arithmetic sum: it embeds multiple conditional carve-outs (floor-disregard when benchmark exceeds floor; full benchmark exclusion on currency mismatch; deemed cash-payment election for PIK-eligible debt) that materially change which components are added, so a plain ADD/MAX composition would misstate the actual mechanic. The 4-year amortization assumption itself is preserved here as the one concrete, citable numeric convention.",
+     "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "with original issue discount or upfront fees being equated to interest based on an assumed four (4)-year life to maturity and without any present-value discount"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "75bcc64a8677204937a6aab3"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:1280f6b461a59ede15977b70",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Eligible Assignee",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Lender",
+     "Affiliate",
+     "Approved Fund",
+     "Defaulting Lender",
+     "Disqualified Lenders",
+     "Borrowers",
+     "Revolving Facility"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Categorical eligibility definition (inclusions (a)-(d) and exclusions (i)-(iv)); no numeric content."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "Eligible Assignee means (a) a Lender, (b) an Affiliate of a Lender, (c) an Approved Fund and (d) any other Person, other than, in each case, (i) a natural person, (ii) a Defaulting Lender, (iii) a Disqualified Lender or (iv) solely in the case of any Revolving Facility, the Borrowers or any of their Affiliates."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:65393967d33f3790a66bdd8f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "EMU Legislation",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple descriptive definition; no numeric content."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "EMU Legislation means the legislative measures of the European Council for the introduction of, changeover to or operation of a single or unified European currency."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [],
+  "unresolvedIssues": [
+   "[definition[d3]] The threshold date depends on transaction-specific dates (Loans' maturity date; date Loans cease to be outstanding) that are not covenant-level literals, and the overall test is a categorical eligibility determination rather than a monetary/ratio formula expressible via the arithmetic/comparison primitives.",
+   "[definition[d11].IF.condition] factual characteristic of the specific Indebtedness being tested, not a covenant-level boolean test derivable from the definitions text",
+   "[definition[d11].IF.else] The formula is not a flat arithmetic sum: it embeds multiple conditional carve-outs (floor-disregard when benchmark exceeds floor; full benchmark exclusion on currency mismatch; deemed cash-payment election for PIK-eligible debt) that materially change which components are added, so a plain ADD/MAX composition would misstate the actual mechanic. The 4-year amortization assumption itself is preserved here as the one concrete, citable numeric convention.",
+   "[definition[d11]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "This submission compiles the definitions section §1.01 excerpt spanning 'Disposition Percentage' through 'EMU Legislation'. No independently operative permission/prohibition rules appear in this excerpt; all output is WireDefinition entries.",
+   "Disposition Percentage and ECF Percentage supply tiered-percentage formulas that are consumed by mandatory prepayment mechanics in Sections 2.09(b) and 2.09(c) respectively, both of which are outside this submission's scope (context regions for those sections were reviewed only to confirm how the percentages are used, per tool policy - no economics were compiled from them).",
+   "Several purely categorical/eligibility definitions (Disqualified Lenders, Disqualified Stock's core eligibility test, EEA-related terms, Eligible Assignee, Domestic Subsidiary, EMU Legislation) have no computable numeric formula; they are represented with a null calculationExpression and a faithful excerpt, consistent with the treatment of purely descriptive terms.",
+   "All 7 frozen inventory items were consumed via inventoryItemIds on the definitions that carry their values (Effective Date; Disposition Percentage x3; ECF Percentage default; Disqualified Stock 91-day period; Effective Yield 4-year amortization convention). Additional detected values not covered by inventory items (ECF Percentage's 25.0%/0.0% tiers and their 2.50:1.00/2.00:1.00 ratio thresholds) are nonetheless fully represented in ECF Percentage's calculationExpression."
+  ],
+  "toolCallLog": [],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "Disposition Percentage",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "IF",
+      "condition": {
+       "kind": "COMPARE",
+       "left": {
+        "kind": "METRIC_REFERENCE",
+        "metricName": "First Lien Leverage Ratio",
+        "valueType": "RATIO"
+       },
+       "operator": "LTE",
+       "right": {
+        "kind": "RATIO",
+        "value": 2
+       },
+       "citation": "§1.01"
+      },
+      "then": {
+       "kind": "PERCENT",
+       "value": 0,
+       "citation": "§1.01"
+      },
+      "else": {
+       "kind": "IF",
+       "condition": {
+        "kind": "COMPARE",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "First Lien Leverage Ratio",
+         "valueType": "RATIO"
+        },
+        "operator": "LTE",
+        "right": {
+         "kind": "RATIO",
+         "value": 2.5
+        },
+        "citation": "§1.01"
+       },
+       "then": {
+        "kind": "PERCENT",
+        "value": 0.5,
+        "citation": "§1.01"
+       },
+       "else": {
+        "kind": "PERCENT",
+        "value": 1,
+        "citation": "§1.01"
+       },
+       "citation": "§1.01"
+      },
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "First Lien Leverage Ratio",
+      "Pro Forma Basis",
+      "Net Proceeds",
+      "Asset Sale"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Tiered percentage (100%/50%/0%) fully captured via nested comparisons against First Lien Leverage Ratio thresholds of 2.50:1.00 and 2.00:1.00.",
+      "Procedural provisos (A) (pro forma/inclusion-of-anticipated-proceeds convention for the ratio calculation) and (B) (once-only testing election within a stated window) are timing/testing mechanics, not separate value tiers, and are not separately modeled as IR nodes; they qualify HOW/WHEN the ratio in the condition is computed, not the percentage values themselves.",
+      "Underlying 'Net Proceeds' term and Sections 2.09(b)/6.05(a)(2)(ii) that this percentage feeds into are outside this submission's scope."
+     ],
+     "citation": "§1.01",
+     "excerpt": "Disposition Percentage ... 100.0%; provided that the Disposition Percentage (i) shall be 50.0% if the First Lien Leverage Ratio ... is less than or equal to 2.50:1.00 and greater than 2.00:1.00, and (ii) shall be 0.0% if ... less than or equal to 2.00:1.00",
+     "inventoryItemIds": [
+      "bcb1952482c40eeb345a112d",
+      "cf64fc7643adb7f35f917e96",
+      "6cd88efec2c0749c0e0c0a84"
+     ]
+    },
+    {
+     "localRef": "d2",
+     "termName": "Disqualified Lenders",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Person",
+      "Restricted Parties",
+      "Sponsors",
+      "Initial Borrower",
+      "Lead Arrangers",
+      "Initial Term Loans",
+      "Net Short Lender",
+      "Administrative Agent",
+      "Effective Date",
+      "Affiliate"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely categorical/eligibility definition (list of excluded person-categories plus retroactivity and notice provisos); no numeric formula or threshold to represent."
+     ],
+     "citation": "§1.01",
+     "excerpt": "Disqualified Lenders means, on any date: (a) known or reasonably identifiable competitors ...; (b) private equity/mezzanine/venture capital persons identified to the Lead Arrangers ...; (c) affiliates of (a)/(b) (with bona fide debt fund carve-out) ...; (d) Net Short Lenders; and (e) persons identified in writing by the Initial Borrower or Sponsors; provided that no retroactive disqualification and notice must be delivered by email to specified addresses."
+    },
+    {
+     "localRef": "d3",
+     "termName": "Disqualified Stock",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Categorical eligibility test: Capital Stock is Disqualified Stock if it matures/is mandatorily redeemable/is redeemable at holder's option (subject to change-of-control/asset-sale/casualty carve-outs) prior to a threshold date equal to 91 days after the earlier of the Loans' maturity date or the date the Loans are no longer outstanding, subject to employee-plan provisos.",
+      "reason": "The threshold date depends on transaction-specific dates (Loans' maturity date; date Loans cease to be outstanding) that are not covenant-level literals, and the overall test is a categorical eligibility determination rather than a monetary/ratio formula expressible via the arithmetic/comparison primitives.",
+      "sourceEvidence": "§1.01 Disqualified Stock"
+     },
+     "dependsOnTerms": [
+      "Capital Stock",
+      "Restricted Parties",
+      "Parent Entities"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The 91-day threshold and its 'earlier of maturity / no longer outstanding' reference point are captured evidentially but not reduced to a computable expression given transaction-specific date inputs; the two employee-plan carve-out provisos are likewise categorical exceptions not reduced to boolean logic here."
+     ],
+     "citation": "§1.01",
+     "excerpt": "matures or is mandatorily redeemable ... or is redeemable at the option of the holder thereof ... in each case prior to the date ninety-one (91) days after the earlier of the maturity date of the Loans or the date the Loans are no longer outstanding"
+    },
+    {
+     "localRef": "d4",
+     "termName": "Dollar Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Alternative Currency"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definitional convention (USD Loans measured at outstanding principal; Alternative Currency Loans converted per Section 1.06(a)/2.25) is descriptive, not itself a computable formula; the referenced conversion mechanics sections are outside this submission's scope."
+     ],
+     "citation": "§1.01",
+     "excerpt": "(a) with respect to any Loan denominated in U.S. Dollars, the principal amount thereof then outstanding ...; and (b) with respect to any Loan denominated in an Alternative Currency, the principal amount thereof then outstanding in the relevant Alternative Currency, converted to U.S. Dollars in accordance with Section 1.06(a) and Section 2.25."
+    },
+    {
+     "localRef": "d5",
+     "termName": "Domestic Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Subsidiary",
+      "Foreign Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple exclusionary categorical definition; no numeric content."
+     ],
+     "citation": "§1.01",
+     "excerpt": "Domestic Subsidiary means any Subsidiary that is not a Foreign Subsidiary."
+    },
+    {
+     "localRef": "d6",
+     "termName": "ECF Percentage",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "IF",
+      "condition": {
+       "kind": "COMPARE",
+       "left": {
+        "kind": "METRIC_REFERENCE",
+        "metricName": "First Lien Leverage Ratio",
+        "valueType": "RATIO"
+       },
+       "operator": "LTE",
+       "right": {
+        "kind": "RATIO",
+        "value": 2
+       },
+       "citation": "§1.01"
+      },
+      "then": {
+       "kind": "PERCENT",
+       "value": 0,
+       "citation": "§1.01"
+      },
+      "else": {
+       "kind": "IF",
+       "condition": {
+        "kind": "COMPARE",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "First Lien Leverage Ratio",
+         "valueType": "RATIO"
+        },
+        "operator": "LTE",
+        "right": {
+         "kind": "RATIO",
+         "value": 2.5
+        },
+        "citation": "§1.01"
+       },
+       "then": {
+        "kind": "PERCENT",
+        "value": 0.25,
+        "citation": "§1.01"
+       },
+       "else": {
+        "kind": "PERCENT",
+        "value": 0.5,
+        "citation": "§1.01"
+       },
+       "citation": "§1.01"
+      },
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "First Lien Leverage Ratio",
+      "Excess Cash Flow Period",
+      "Excess Cash Flow",
+      "Pro Forma Basis",
+      "Other Applicable Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Tiered percentage (50%/25%/0%) fully captured via nested comparisons against First Lien Leverage Ratio thresholds of 2.50:1.00 and 2.00:1.00, measured as of the last day of the Excess Cash Flow Period.",
+      "Pro forma calculation convention (giving effect to contemplated mandatory/voluntary prepayments) and the Section 2.09(c) recalculation election are testing mechanics not separately modeled as distinct value tiers.",
+      "The Excess Cash Flow amount this percentage multiplies (used in Section 2.09(c) mandatory prepayment) is outside this submission's scope."
+     ],
+     "citation": "§1.01",
+     "excerpt": "ECF Percentage means with respect to any Excess Cash Flow Period, 50.0%; provided that (i) ... 25.0% if the First Lien Leverage Ratio ... is less than or equal to 2.50:1.00 and greater than 2.00:1.00, and (ii) ... 0.0% if ... less than or equal to 2.00:1.00.",
+     "inventoryItemIds": [
+      "4afd9623a2233cadc64b7996"
+     ]
+    },
+    {
+     "localRef": "d7",
+     "termName": "EEA Financial Institution",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "EEA Member Country",
+      "EEA Resolution Authority"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical institutional definition; no numeric content."
+     ],
+     "citation": "§1.01",
+     "excerpt": "EEA Financial Institution means (a) any credit institution or investment firm established in any EEA Member Country ...; (b) any entity ... which is a parent of an institution described in clause (a) ...; or (c) any financial institution ... which is a subsidiary of an institution described in clause (a) or (b) ... and is subject to consolidated supervision with its parent."
+    },
+    {
+     "localRef": "d8",
+     "termName": "EEA Member Country",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple enumerated list of jurisdictions; no numeric content."
+     ],
+     "citation": "§1.01",
+     "excerpt": "EEA Member Country means any of the member states of the European Union, Iceland, Liechtenstein and Norway."
+    },
+    {
+     "localRef": "d9",
+     "termName": "EEA Resolution Authority",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "EEA Member Country",
+      "EEA Financial Institution"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical institutional definition; no numeric content."
+     ],
+     "citation": "§1.01",
+     "excerpt": "EEA Resolution Authority means any public administrative authority ... of any EEA Member Country ... having responsibility for the resolution of any EEA Financial Institution."
+    },
+    {
+     "localRef": "d10",
+     "termName": "Effective Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DATE_LITERAL",
+      "isoDate": "2026-06-23",
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fixed calendar date, fully represented."
+     ],
+     "citation": "§1.01",
+     "excerpt": "Effective Date means June 23, 2026.",
+     "inventoryItemIds": [
+      "38a65560393a491613f95a11"
+     ]
+    },
+    {
+     "localRef": "d11",
+     "termName": "Effective Yield",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "IF",
+      "condition": {
+       "kind": "UNSUPPORTED",
+       "semanticDescription": "whether the subject Indebtedness is fixed-rate or floating-rate",
+       "reason": "factual characteristic of the specific Indebtedness being tested, not a covenant-level boolean test derivable from the definitions text",
+       "sourceEvidence": "§1.01 Effective Yield, clauses (a)/(b)"
+      },
+      "then": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "inputName": "stated rate of interest of the subject fixed-rate Indebtedness",
+       "citation": "§1.01"
+      },
+      "else": {
+       "kind": "UNSUPPORTED",
+       "semanticDescription": "Floating-rate Effective Yield: sum of (i) the higher of the 1-month Term SOFR Rate and the Indebtedness's own floor, plus (ii) the applicable interest rate margin, plus original issue discount/upfront fees equated to interest assuming an assumed four (4)-year life to maturity and without present-value discount (excluding non-ratable/structuring/commitment-type fees) - subject to further provisos disregarding the floor when the benchmark exceeds it, excluding the benchmark component entirely when the Indebtedness's currency differs from that of the Initial Term Loans, and deeming any PIK interest option to be paid in cash.",
+       "reason": "The formula is not a flat arithmetic sum: it embeds multiple conditional carve-outs (floor-disregard when benchmark exceeds floor; full benchmark exclusion on currency mismatch; deemed cash-payment election for PIK-eligible debt) that materially change which components are added, so a plain ADD/MAX composition would misstate the actual mechanic. The 4-year amortization assumption itself is preserved here as the one concrete, citable numeric convention.",
+       "sourceEvidence": "§1.01 Effective Yield, clause (b) and provisos (A)-(D)"
+      },
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Term SOFR Rate",
+      "Initial Term Loans"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Fixed-rate branch (stated rate of interest) is fully captured.",
+      "Floating-rate branch is genuinely multi-conditional (floor mechanics, currency-mismatch carve-out, PIK deemed-cash election) and is represented via UNSUPPORTED rather than a potentially misleading flat arithmetic composition; the four-year OID/upfront-fee amortization convention is preserved as the specific numeric item within that UNSUPPORTED node."
+     ],
+     "citation": "§1.01",
+     "excerpt": "with original issue discount or upfront fees being equated to interest based on an assumed four (4)-year life to maturity and without any present-value discount",
+     "inventoryItemIds": [
+      "75bcc64a8677204937a6aab3"
+     ]
+    },
+    {
+     "localRef": "d12",
+     "termName": "Eligible Assignee",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Lender",
+      "Affiliate",
+      "Approved Fund",
+      "Defaulting Lender",
+      "Disqualified Lenders",
+      "Borrowers",
+      "Revolving Facility"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical eligibility definition (inclusions (a)-(d) and exclusions (i)-(iv)); no numeric content."
+     ],
+     "citation": "§1.01",
+     "excerpt": "Eligible Assignee means (a) a Lender, (b) an Affiliate of a Lender, (c) an Approved Fund and (d) any other Person, other than, in each case, (i) a natural person, (ii) a Defaulting Lender, (iii) a Disqualified Lender or (iv) solely in the case of any Revolving Facility, the Borrowers or any of their Affiliates."
+    },
+    {
+     "localRef": "d13",
+     "termName": "EMU Legislation",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple descriptive definition; no numeric content."
+     ],
+     "citation": "§1.01",
+     "excerpt": "EMU Legislation means the legislative measures of the European Council for the introduction of, changeover to or operation of a single or unified European currency."
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "inventoryDispositions": [],
+   "irExtensionCandidates": [],
+   "overallNotes": [
+    "This submission compiles the definitions section §1.01 excerpt spanning 'Disposition Percentage' through 'EMU Legislation'. No independently operative permission/prohibition rules appear in this excerpt; all output is WireDefinition entries.",
+    "Disposition Percentage and ECF Percentage supply tiered-percentage formulas that are consumed by mandatory prepayment mechanics in Sections 2.09(b) and 2.09(c) respectively, both of which are outside this submission's scope (context regions for those sections were reviewed only to confirm how the percentages are used, per tool policy - no economics were compiled from them).",
+    "Several purely categorical/eligibility definitions (Disqualified Lenders, Disqualified Stock's core eligibility test, EEA-related terms, Eligible Assignee, Domestic Subsidiary, EMU Legislation) have no computable numeric formula; they are represented with a null calculationExpression and a faithful excerpt, consistent with the treatment of purely descriptive terms.",
+    "All 7 frozen inventory items were consumed via inventoryItemIds on the definitions that carry their values (Effective Date; Disposition Percentage x3; ECF Percentage default; Disqualified Stock 91-day period; Effective Yield 4-year amortization convention). Additional detected values not covered by inventory items (ECF Percentage's 25.0%/0.0% tiers and their 2.50:1.00/2.00:1.00 ratio thresholds) are nonetheless fully represented in ECF Percentage's calculationExpression."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T17:54:36.495Z",
+   "inputTokens": 27029,
+   "outputTokens": 22480,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 1,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 206390,
+   "calculatedCostUsd": 0.27885800000000005
+  },
+  "cacheKey": "7a3a4708e0654bc714d3d08b8195db4da81eee3793263d3bdb411b4e0cc2a192",
+  "compiledAt": "2026-09-14T17:54:36.495Z"
+ },
+ "wave": "B",
+ "attemptsSoFar": 1
+}

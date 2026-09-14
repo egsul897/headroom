@@ -1,0 +1,1042 @@
+{
+ "artifact": "F-7B.3B §18 offline re-stitch with conflict-variant preservation - 0 model calls, $0",
+ "mode": "after",
+ "gitSha": "8ac5b5343c49891ec29416abf8cf7260dd3fc288",
+ "at": "2026-09-14T18:21:07.061Z",
+ "planHash": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+ "planHashMatchesBaseline": true,
+ "frozenShards": [
+  {
+   "ordinal": 0,
+   "shardId": "shard:2866a115c3a6d5cc2089",
+   "shardHash": "761693f3812b6d466cf90519f5fe515843bb68e3ea8e4ab7e5a760ba40d5b85a",
+   "status": "SHARD_MISSING_CONTEXT",
+   "stage": 2,
+   "definitions": 26,
+   "compositionHash": "a3ce96aa95c5e0499672b2bcac7e71220ee6c97f78168d9ac4e9ae17f5da069c"
+  },
+  {
+   "ordinal": 1,
+   "shardId": "shard:b934f8ceb0d79b5cfe57",
+   "shardHash": "a517905c1e378aff65e60c3ee6022befd80a20511f1c4617e936f80611eb6ce6",
+   "status": "SHARD_COMPLETE",
+   "stage": 2,
+   "definitions": 23,
+   "compositionHash": "8e299e904d84854daa071de8f5eecd31426549dcc7ccef94c370984e3de62e71"
+  },
+  {
+   "ordinal": 2,
+   "shardId": "shard:1c29e71eef1717d4f9e1",
+   "shardHash": "85cd3fe537a3657f61009c524910ba6bac773fc01343a89fdfc31b58025d6f06",
+   "status": "SHARD_MISSING_CONTEXT",
+   "stage": 1,
+   "definitions": 6,
+   "compositionHash": "709c1e7012e7232c6629ebab204c331e49ff260a34c82740d89b0efaa9119006"
+  },
+  {
+   "ordinal": 3,
+   "shardId": "shard:4c30ced71fe038991b4b",
+   "shardHash": "ec01142d97abc7e224d2afd46f64343a9692f6d4fd22bfb8561060f9388dcfb8",
+   "status": "SHARD_COMPLETE",
+   "stage": 2,
+   "definitions": 10,
+   "compositionHash": "7acc651f4a28b0dfa58dde3ead20aa56518179d5a387a2aba3cb5ed8ebe67651"
+  },
+  {
+   "ordinal": 4,
+   "shardId": "shard:9dae67b10a1cb8ab8e61",
+   "shardHash": "482d471bf9fe47f279ff4e4b51c1533fa549e9c4f8e000c1fb46e1a5a1d1a2c7",
+   "status": "SHARD_MISSING_CONTEXT",
+   "stage": 2,
+   "definitions": 20,
+   "compositionHash": "abc3c106e4257c073b9fdfcf6a1dce35ca9d75068e58353b4e08c1fbe52a6325"
+  },
+  {
+   "ordinal": 5,
+   "shardId": "shard:c68b6e6e275414f90c39",
+   "shardHash": "de7b889487ab225e5d7f253498249cc6440e3a2e2f248e63b5585f4bb905e90c",
+   "status": "SHARD_COMPLETE",
+   "stage": 2,
+   "definitions": 7,
+   "compositionHash": "1ca420ceb4815202c992e7bcd06883e1a26944c2376941cd2bd14dea65276f4a"
+  },
+  {
+   "ordinal": 6,
+   "shardId": "shard:ec1aea485db261059c14",
+   "shardHash": "34dbec9a9ca679af4271beef75f259e723cbfc5656749e58724a67ea523dbb0c",
+   "status": "SHARD_COMPLETE",
+   "stage": 2,
+   "definitions": 8,
+   "compositionHash": "6bc49e14c0e8b26372911e58fac418d369586b8ead2cffce84f1608726b05b1f"
+  },
+  {
+   "ordinal": 7,
+   "shardId": "shard:5f63d11e8ce53e883d6a",
+   "shardHash": "04b49f6f59cb8dad0b489729ee201aa3d0b74e593c6538c67c843a84bf3eb77d",
+   "status": "SHARD_MISSING_CONTEXT",
+   "stage": 2,
+   "definitions": 5,
+   "compositionHash": "fed7f380dad2ce3ff699de59388030ee4d5697d53686fac37925fff2c88b1d64"
+  },
+  {
+   "ordinal": 8,
+   "shardId": "shard:87f08272567db019c17b",
+   "shardHash": "539e715598ac4b8f6b4e992b4414a3af27583e1f8b08be0c0fdf32d41b74113e",
+   "status": "SHARD_COMPLETE",
+   "stage": 2,
+   "definitions": 6,
+   "compositionHash": "e1dacbdd0d779d7a22038d4653e20fb22b699c187f7a0bea25ec94eb92cd67c5"
+  },
+  {
+   "ordinal": 9,
+   "shardId": "shard:fc841e0f175ddcab1ccd",
+   "shardHash": "48fc56978d7c7d7117cdc2b6f4795304ec702f3235bca199a4bf7be889943581",
+   "status": "SHARD_COMPLETE",
+   "stage": 2,
+   "definitions": 2,
+   "compositionHash": "93532f0c32dc81b018555c8e1ab49b33fe5b8f2780bc46c887c429325c7bd5d6"
+  },
+  {
+   "ordinal": 10,
+   "shardId": "shard:86eec078e4ee957898ac",
+   "shardHash": "44699221ab9197fea3a6efc01ca08530a352675313de3e47cc32c4d42be892d3",
+   "status": "SHARD_COMPLETE",
+   "stage": 2,
+   "definitions": 1,
+   "compositionHash": "39a16bb3fdc4367eb6bc60cc1ebe5c579b8284a9197abbde15288a19d08f2f06"
+  },
+  {
+   "ordinal": 11,
+   "shardId": "shard:e3ddb1887d6b8499929a",
+   "shardHash": "5abb0fef127e861eb31ccdac3a9b3f638d515658777915f9cbde032e5a1ce30f",
+   "status": "SHARD_MISSING_CONTEXT",
+   "stage": 2,
+   "definitions": 20,
+   "compositionHash": "53e0593aee1f7a9e10950f14571dfe592071a28bb99d8e91be6381511df58160"
+  },
+  {
+   "ordinal": 12,
+   "shardId": "shard:e43dc65668a775eaca1a",
+   "shardHash": "fd9bcb3a167dc1aac0228b103b6394eb382c4eeb534cbe7065f5970fcdf825b4",
+   "status": "SHARD_MISSING_CONTEXT",
+   "stage": 2,
+   "definitions": 14,
+   "compositionHash": "6a2837926cc3fa5358bae66146466686fbb7dfe10cf6f0ba27d6a863f71cd40d"
+  },
+  {
+   "ordinal": 13,
+   "shardId": "shard:4d114bdf00429cf670f8",
+   "shardHash": "6b1825dc93b8db34bcf18b9867cf036f9608d258a7df96e4f99ae30ab53f7af1",
+   "status": "SHARD_COMPLETE",
+   "stage": 2,
+   "definitions": 13,
+   "compositionHash": "4af059652952012ce7ce09c0079a1e779f347e473422413b6cca2ce98901dd6a"
+  },
+  {
+   "ordinal": 14,
+   "shardId": "shard:845680480624a0f129ec",
+   "shardHash": "ae0cb8ac5ac6fa925034c4b2b909622cff5716d6abc1e15c550d0a595820a5ee",
+   "status": "SHARD_COMPLETE",
+   "stage": 2,
+   "definitions": 10,
+   "compositionHash": "fc35914064088be26d6a585be7f8cc6ce81157c5b23ce87536e906dba15663e4"
+  },
+  {
+   "ordinal": 15,
+   "shardId": "shard:d3aac7c869cff4602343",
+   "shardHash": "23480ebdb0988850c2b9d04b4f6446160246ef07f812710c98eee8444a5064fb",
+   "status": "SHARD_COMPLETE",
+   "stage": 2,
+   "definitions": 4,
+   "compositionHash": "fae56612479be278345324ab3f6ac49aa57c1792b20661cc1a52edae535d8810"
+  },
+  {
+   "ordinal": 16,
+   "shardId": "shard:d2efbf609b9828839ddf",
+   "shardHash": "28047c2b5b76287a19e71956238a1da948848c873fb944f36fe5f26ddfd7ae05",
+   "status": "SHARD_COMPLETE",
+   "stage": 2,
+   "definitions": 4,
+   "compositionHash": "d737299fcc74f6178252786c9832a8e88ff6c95595e24a85eaf193353019d177"
+  },
+  {
+   "ordinal": 17,
+   "shardId": "shard:bf3da01cb454860cdf5f",
+   "shardHash": "681651c0752343da54ae800cd818a0c263f2a2782d6e1cab8cc313f76cca0702",
+   "status": "SHARD_MISSING_CONTEXT",
+   "stage": 1,
+   "definitions": 22,
+   "compositionHash": "b32818b73d750cd37739b8d65e37d7431b6db923137dfc58997d65cda2dacc71"
+  },
+  {
+   "ordinal": 18,
+   "shardId": "shard:a8646966da2484b40b97",
+   "shardHash": "53b8d2efe4987c7441520de6acaddc2a3c11e6b0105658f183209dd5ce646150",
+   "status": "SHARD_COMPLETE",
+   "stage": 2,
+   "definitions": 21,
+   "compositionHash": "9484d2e337436deeaf950c85d8a19ac4cf6bc4012a1068de238af75b0638fa96"
+  },
+  {
+   "ordinal": 19,
+   "shardId": "shard:30d337feeef5ba80d66b",
+   "shardHash": "7082b8c10ea569669d6a9cffd1e0441cbaaf75ebba85cecf1438122fde05296e",
+   "status": "SHARD_MISSING_CONTEXT",
+   "stage": 2,
+   "definitions": 28,
+   "compositionHash": "b0719910137e3e2cac4282492f9c861b5635ce7a0b3b20898f3f293c1f57e909"
+  },
+  {
+   "ordinal": 20,
+   "shardId": "shard:a45ccfe3d94f990e5348",
+   "shardHash": "5e5ca3d1c2758efb0410d916ef84535e2f133be04f81d112f5483326550e0556",
+   "status": "SHARD_MISSING_CONTEXT",
+   "stage": 2,
+   "definitions": 17,
+   "compositionHash": "49c6af48e4b87d3b766610ca0db44a3b20731e4a4d9a28e360610987f8733ad9"
+  },
+  {
+   "ordinal": 21,
+   "shardId": "shard:aac727054a5da5f1a9fd",
+   "shardHash": "9943af75025bd8550567628dd359394b6aba3cbadb767a1f228a30638fef3078",
+   "status": "SHARD_MISSING_CONTEXT",
+   "stage": 1,
+   "definitions": 21,
+   "compositionHash": "1050e68882df93a6a1b9c5dabe939e1c18f65bbdb4899071c0bb09e894267acb"
+  },
+  {
+   "ordinal": 22,
+   "shardId": "shard:f3eb63624b7f5a5c3cca",
+   "shardHash": "9917d21e61733319db3c8f1beed79a78ab44f1e440ced3ee8dfafda4d0cc5a40",
+   "status": "SHARD_MISSING_CONTEXT",
+   "stage": 2,
+   "definitions": 22,
+   "compositionHash": "35c8ff2b7a2102bb7aa5e2653491566707b10da766a1422b80c7a107550d6818"
+  },
+  {
+   "ordinal": 26,
+   "shardId": "shard:4f06625557e9aecbbb7a",
+   "shardHash": "f1b437e22ee07474adbce6cb0f9ab25ceb36ca10847253c797fce0f3af206cf5",
+   "status": "SHARD_MISSING_CONTEXT",
+   "stage": 1,
+   "definitions": 2,
+   "compositionHash": "a43e5b1f9056cf8eb0b13dd08c92ba5cbadd2a2cec6f1b11a8cebd423d232b12"
+  },
+  {
+   "ordinal": 27,
+   "shardId": "shard:3e3910ea2efd9edd45a3",
+   "shardHash": "183134ad7785f161b0d350297d89603860aada6016bbf04609fc1dd0c172957f",
+   "status": "SHARD_MISSING_CONTEXT",
+   "stage": 1,
+   "definitions": 23,
+   "compositionHash": "e23fe87a1835657fccb37439104dd0109375ed9638f15437dd4d3c307043a5eb"
+  }
+ ],
+ "frozenShardCount": 25,
+ "definitionConflicts": {
+  "count": 6,
+  "names": [
+   "Acquired Entity or Business",
+   "Annual Threshold",
+   "Approved Bank",
+   "Converted Restricted Subsidiary",
+   "Converted Unrestricted Subsidiary",
+   "Expected Run Rate Benefit"
+  ],
+  "detail": [
+   {
+    "definitionId": "ir-definition:cabede04ee733c794fe2f8e3",
+    "termName": "Acquired Entity or Business",
+    "emissions": [
+     {
+      "shardId": "shard:2866a115c3a6d5cc2089",
+      "shardOrdinal": 0,
+      "emissionIndex": 15,
+      "contentHash": "a4f95265b03a9e559b325dfa1898ac28ac5fc5055205693abee67383488cd2ca",
+      "attributionMethod": "PRIMARY_SOURCE_DECLARATION",
+      "attributedUnit": "operative:DEFINITION:def:acquired ebitda",
+      "hasSourceAnchor": true,
+      "lineage": [],
+      "lineageCount": 0,
+      "values": [],
+      "quantitativeCount": 0,
+      "sufficiency": "MISSING_CONTEXT",
+      "hasCalculationExpression": true,
+      "dependsOnTerms": [
+       "Consolidated EBITDA"
+      ]
+     },
+     {
+      "shardId": "shard:87f08272567db019c17b",
+      "shardOrdinal": 8,
+      "emissionIndex": 2,
+      "contentHash": "87d74becf666a95f1429e0e2c14422a250cde5e336374748b1d3031573e28de4",
+      "attributionMethod": "UNATTRIBUTED",
+      "attributedUnit": null,
+      "hasSourceAnchor": false,
+      "lineage": [],
+      "lineageCount": 0,
+      "values": [],
+      "quantitativeCount": 0,
+      "sufficiency": "COMPLETE",
+      "hasCalculationExpression": false,
+      "dependsOnTerms": [
+       "Acquired EBITDA",
+       "Restricted Parties",
+       "Unrestricted Subsidiary",
+       "Transactions",
+       "Effective Date"
+      ]
+     }
+    ],
+    "distinctVariants": 2
+   },
+   {
+    "definitionId": "ir-definition:9798cd4753246e6ba790c06e",
+    "termName": "Annual Threshold",
+    "emissions": [
+     {
+      "shardId": "shard:b934f8ceb0d79b5cfe57",
+      "shardOrdinal": 1,
+      "emissionIndex": 14,
+      "contentHash": "6d587be55d9f09d5bd9ca5325b3fcd133449e46896e0bbcf651a6a1c899c5bf2",
+      "attributionMethod": "PRIMARY_SOURCE_DECLARATION",
+      "attributedUnit": "operative:DEFINITION:def:alternative currency term benchmark rate",
+      "hasSourceAnchor": true,
+      "lineage": [],
+      "lineageCount": 0,
+      "values": [],
+      "quantitativeCount": 0,
+      "sufficiency": "COMPLETE",
+      "hasCalculationExpression": false,
+      "dependsOnTerms": [
+       "Prepayment Event"
+      ]
+     },
+     {
+      "shardId": "shard:3e3910ea2efd9edd45a3",
+      "shardOrdinal": 27,
+      "emissionIndex": 11,
+      "contentHash": "b3f65ea30f4b0fa6eee541770611789bc45479d08da1961419082172d16fadb6",
+      "attributionMethod": "LINEAGE_MAJORITY",
+      "attributedUnit": "operative:DEFINITION:def:prepayment event",
+      "hasSourceAnchor": false,
+      "lineage": [
+       "inv-item:435bebbab162719b57e8df07"
+      ],
+      "lineageCount": 2,
+      "values": [
+       "MONEY:216000000",
+       "PERCENT:0.3"
+      ],
+      "quantitativeCount": 2,
+      "sufficiency": "PARTIAL",
+      "hasCalculationExpression": true,
+      "dependsOnTerms": [
+       "Consolidated EBITDA",
+       "Test Period",
+       "Pro Forma Basis"
+      ]
+     }
+    ],
+    "distinctVariants": 2
+   },
+   {
+    "definitionId": "ir-definition:c1fdd29c59289405ecdc449c",
+    "termName": "Approved Bank",
+    "emissions": [
+     {
+      "shardId": "shard:b934f8ceb0d79b5cfe57",
+      "shardOrdinal": 1,
+      "emissionIndex": 19,
+      "contentHash": "0a9fa43edb96396e5332b7c176a7ad222e60a030569bb7e438b0127f59d40d11",
+      "attributionMethod": "PRIMARY_SOURCE_DECLARATION",
+      "attributedUnit": "operative:DEFINITION:def:applicable rate",
+      "hasSourceAnchor": true,
+      "lineage": [],
+      "lineageCount": 0,
+      "values": [],
+      "quantitativeCount": 0,
+      "sufficiency": "COMPLETE",
+      "hasCalculationExpression": false,
+      "dependsOnTerms": [
+       "Cash Equivalents"
+      ]
+     },
+     {
+      "shardId": "shard:c68b6e6e275414f90c39",
+      "shardOrdinal": 5,
+      "emissionIndex": 1,
+      "contentHash": "532632bbe78c957a8dccebe3d1e8efe8e657339b0956d864f9def196a1bef5dd",
+      "attributionMethod": "LINEAGE_MAJORITY",
+      "attributedUnit": "operative:DEFINITION:def:cash equivalents",
+      "hasSourceAnchor": false,
+      "lineage": [
+       "inv-item:c2d70438daa8f136d0f51bee",
+       "inv-item:ef6290ba17af109cb88f0cd8"
+      ],
+      "lineageCount": 4,
+      "values": [
+       "MONEY:100000000",
+       "MONEY:250000000"
+      ],
+      "quantitativeCount": 2,
+      "sufficiency": "COMPLETE",
+      "hasCalculationExpression": true,
+      "dependsOnTerms": []
+     }
+    ],
+    "distinctVariants": 2
+   },
+   {
+    "definitionId": "ir-definition:97aad43ed7abc5a72387d9f7",
+    "termName": "Converted Restricted Subsidiary",
+    "emissions": [
+     {
+      "shardId": "shard:87f08272567db019c17b",
+      "shardOrdinal": 8,
+      "emissionIndex": 3,
+      "contentHash": "57a6c602df418542e51da40bf3bdd6718e36aa5ee1df89277ca26a4969f3fca2",
+      "attributionMethod": "UNATTRIBUTED",
+      "attributedUnit": null,
+      "hasSourceAnchor": false,
+      "lineage": [],
+      "lineageCount": 0,
+      "values": [],
+      "quantitativeCount": 0,
+      "sufficiency": "COMPLETE",
+      "hasCalculationExpression": false,
+      "dependsOnTerms": [
+       "Unrestricted Subsidiary",
+       "Restricted Subsidiary",
+       "Acquired EBITDA"
+      ]
+     },
+     {
+      "shardId": "shard:e3ddb1887d6b8499929a",
+      "shardOrdinal": 11,
+      "emissionIndex": 9,
+      "contentHash": "56ada9fb513136c4449f5d08c6643e071123eb2d1b22a82f001bafb3a383e78d",
+      "attributionMethod": "PRIMARY_SOURCE_DECLARATION",
+      "attributedUnit": "operative:DEFINITION:def:controlled investment affiliate",
+      "hasSourceAnchor": true,
+      "lineage": [],
+      "lineageCount": 0,
+      "values": [],
+      "quantitativeCount": 0,
+      "sufficiency": "MISSING_CONTEXT",
+      "hasCalculationExpression": true,
+      "dependsOnTerms": [
+       "Consolidated EBITDA"
+      ]
+     }
+    ],
+    "distinctVariants": 2
+   },
+   {
+    "definitionId": "ir-definition:1ea4783d1f26d9eee4f889c8",
+    "termName": "Converted Unrestricted Subsidiary",
+    "emissions": [
+     {
+      "shardId": "shard:87f08272567db019c17b",
+      "shardOrdinal": 8,
+      "emissionIndex": 5,
+      "contentHash": "4053d173fe4b7fe0fe5063836ef1bf3b3795ad4dea7e4ecb63659fc9091acc50",
+      "attributionMethod": "UNATTRIBUTED",
+      "attributedUnit": null,
+      "hasSourceAnchor": false,
+      "lineage": [],
+      "lineageCount": 0,
+      "values": [],
+      "quantitativeCount": 0,
+      "sufficiency": "COMPLETE",
+      "hasCalculationExpression": false,
+      "dependsOnTerms": [
+       "Restricted Subsidiary",
+       "Unrestricted Subsidiary",
+       "Disposed EBITDA"
+      ]
+     },
+     {
+      "shardId": "shard:e3ddb1887d6b8499929a",
+      "shardOrdinal": 11,
+      "emissionIndex": 10,
+      "contentHash": "787a57767e67a133e6eb51ff6f7b0049a379ab150f2299c805f865f6007c6ee4",
+      "attributionMethod": "PRIMARY_SOURCE_DECLARATION",
+      "attributedUnit": "operative:DEFINITION:def:controlled investment affiliate",
+      "hasSourceAnchor": true,
+      "lineage": [],
+      "lineageCount": 0,
+      "values": [],
+      "quantitativeCount": 0,
+      "sufficiency": "MISSING_CONTEXT",
+      "hasCalculationExpression": true,
+      "dependsOnTerms": [
+       "Consolidated EBITDA"
+      ]
+     }
+    ],
+    "distinctVariants": 2
+   },
+   {
+    "definitionId": "ir-definition:95805ecfce2a93042a976c6c",
+    "termName": "Expected Run Rate Benefit",
+    "emissions": [
+     {
+      "shardId": "shard:87f08272567db019c17b",
+      "shardOrdinal": 8,
+      "emissionIndex": 1,
+      "contentHash": "15465ab1ede3bffd7d2581c6544385a98efb8cabde4d9943ba2c48a17a13d42c",
+      "attributionMethod": "UNATTRIBUTED",
+      "attributedUnit": null,
+      "hasSourceAnchor": false,
+      "lineage": [],
+      "lineageCount": 0,
+      "values": [],
+      "quantitativeCount": 0,
+      "sufficiency": "COMPLETE",
+      "hasCalculationExpression": false,
+      "dependsOnTerms": [
+       "Initial Borrower",
+       "Transactions",
+       "Restricted Party"
+      ]
+     },
+     {
+      "shardId": "shard:bf3da01cb454860cdf5f",
+      "shardOrdinal": 17,
+      "emissionIndex": 5,
+      "contentHash": "ad86156b28ec1e1ae55e0cc4c4b337c6f3cb9e35538555267c6d09147a9ac111",
+      "attributionMethod": "PRIMARY_SOURCE_DECLARATION",
+      "attributedUnit": "operative:DEFINITION:def:existing indebtedness",
+      "hasSourceAnchor": true,
+      "lineage": [],
+      "lineageCount": 0,
+      "values": [],
+      "quantitativeCount": 0,
+      "sufficiency": "MISSING_CONTEXT",
+      "hasCalculationExpression": false,
+      "dependsOnTerms": [
+       "Consolidated EBITDA"
+      ]
+     }
+    ],
+    "distinctVariants": 2
+   }
+  ]
+ },
+ "conflictEvidencePreserved": {
+  "present": true,
+  "records": 2,
+  "payload": [
+   {
+    "definitionId": "ir-definition:9798cd4753246e6ba790c06e",
+    "termName": "Annual Threshold",
+    "normalizedTermName": "annual threshold",
+    "variants": [
+     {
+      "contentHash": "ir-content:2a145917bbbc06a9582e63d7",
+      "emissions": [
+       {
+        "shardId": "shard:b934f8ceb0d79b5cfe57",
+        "unitKey": "operative:DEFINITION:def:alternative currency term benchmark rate",
+        "attributionMethod": "PRIMARY_SOURCE_DECLARATION",
+        "sourceAnchor": {
+         "documentId": "doc-a",
+         "regionId": "operative",
+         "unitKey": "operative:DEFINITION:def:alternative currency term benchmark rate",
+         "charStart": 1241,
+         "charEnd": 1277,
+         "absCharStart": 21348,
+         "absCharEnd": 21384,
+         "termName": "Annual Threshold",
+         "normalizedTermName": "annual threshold",
+         "declarationExcerpt": "“ Annual Threshold ” has the meaning assigned to such term in the definition of “Prepayment Event.”\n\n“ Applicable Account ” means, with respect to any payment to be made to the Administrative Agent he",
+         "declarationTextHash": "bb176b4de5ad3ddbe1db6de8e997c0cd9a0253b2cb843e184da5056f4686d921",
+         "method": "UNIQUE_PRIMARY_SOURCE_DECLARATION"
+        }
+       }
+      ],
+      "definition": {
+       "definitionId": "ir-definition:9798cd4753246e6ba790c06e",
+       "irSchemaVersion": "headroom-covenant-ir.v1",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "sourceDocumentId": "doc-a",
+       "termName": "Annual Threshold",
+       "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+       "calculationExpression": null,
+       "dependsOnTerms": [
+        "Prepayment Event"
+       ],
+       "sufficiency": "COMPLETE",
+       "sufficiencyReasons": [
+        "Pure pointer to the definition of \"Prepayment Event\"; pointer fully captured."
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": "has the meaning assigned to such term in the definition of \"Prepayment Event.\""
+       },
+       "compilerVersion": "semantic-accountability-compiler.v4",
+       "sourceContentVersion": null
+      },
+      "inventoryItemIds": [],
+      "quantitativeValues": []
+     },
+     {
+      "contentHash": "ir-content:908e204ef02baffad9d3b84e",
+      "emissions": [
+       {
+        "shardId": "shard:3e3910ea2efd9edd45a3",
+        "unitKey": "operative:DEFINITION:def:prepayment event",
+        "attributionMethod": "LINEAGE_MAJORITY",
+        "sourceAnchor": null
+       }
+      ],
+      "definition": {
+       "definitionId": "ir-definition:9798cd4753246e6ba790c06e",
+       "irSchemaVersion": "headroom-covenant-ir.v1",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "sourceDocumentId": "doc-a",
+       "termName": "Annual Threshold",
+       "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+       "calculationExpression": {
+        "kind": "ADD",
+        "type": "MONEY",
+        "exprId": "ir-expr:4045bce8bb08831958104ab5",
+        "operands": [
+         {
+          "kind": "MAX",
+          "type": "MONEY",
+          "exprId": "ir-expr:726398bc84cb39fe012b0c55",
+          "operands": [
+           {
+            "kind": "MONEY",
+            "type": "MONEY",
+            "amount": 216000000,
+            "currency": "USD",
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:0afa9b66228e20a922c1c1e4"
+           },
+           {
+            "kind": "MULTIPLY",
+            "type": "MONEY",
+            "exprId": "ir-expr:46585e5991a19f64edbcfe33",
+            "operands": [
+             {
+              "kind": "PERCENT",
+              "type": "PERCENT",
+              "value": 0.3,
+              "provenance": {
+               "documentId": "doc-a",
+               "sourceNodeKey": null,
+               "sourceCitation": "§1.01",
+               "excerpt": null
+              },
+              "exprId": "ir-expr:ea1bb0310fef35c0138de81c"
+             },
+             {
+              "kind": "METRIC_REFERENCE",
+              "type": "MONEY",
+              "metricName": "Consolidated EBITDA",
+              "companyId": "phase-3-validation-chwy",
+              "instrumentKey": "chwy-2026-revolving-credit-instrument",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+             }
+            ],
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01",
+             "excerpt": null
+            }
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "inventoryItemIds": [
+           "inv-item:435bebbab162719b57e8df07"
+          ]
+         },
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01",
+          "semanticDescription": "unused portion of the Annual Threshold carried forward from prior fiscal years",
+          "reason": "Carryforward amount depends on prior-year utilization history not present in the supplied evidence.",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:007511e56bc973143d90a25f"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "dependsOnTerms": [
+        "Consolidated EBITDA",
+        "Test Period",
+        "Pro Forma Basis"
+       ],
+       "sufficiency": "PARTIAL",
+       "sufficiencyReasons": [
+        "Base annual-aggregate threshold (greater of $216.0 million and 30% of Consolidated EBITDA on a Pro Forma Basis) is fully represented; the carryforward-of-unused-amount mechanic is UNSUPPORTED for lack of prior-year utilization data.",
+        "Carryforward amount depends on prior-year utilization history not present in the supplied evidence.",
+        "ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": "dispositions resulting in aggregate Net Proceeds not exceeding the greater of $216.0 million and 30% of Consolidated EBITDA (calculated on a Pro Forma Basis) for the most recently ended Test Period in the case of transactions in the aggregate in any fiscal year (the \"Annual Threshold\") (with only the amount in excess ... required to be offered to be prepaid and any portion ... not utilized in any given fiscal year may be carried forward ...)"
+       },
+       "compilerVersion": "semantic-accountability-compiler.v4",
+       "sourceContentVersion": null,
+       "inventoryItemIds": [
+        "inv-item:435bebbab162719b57e8df07"
+       ]
+      },
+      "inventoryItemIds": [
+       "inv-item:435bebbab162719b57e8df07"
+      ],
+      "quantitativeValues": [
+       "MONEY:216000000",
+       "PERCENT:0.3"
+      ]
+     }
+    ],
+    "ownedInventoryItemIds": [
+     "inv-item:435bebbab162719b57e8df07"
+    ],
+    "quantitativeValues": [
+     "MONEY:216000000",
+     "PERCENT:0.3"
+    ],
+    "canonicalVariantContentHash": "ir-content:2a145917bbbc06a9582e63d7",
+    "requiresReview": true
+   },
+   {
+    "definitionId": "ir-definition:c1fdd29c59289405ecdc449c",
+    "termName": "Approved Bank",
+    "normalizedTermName": "approved bank",
+    "variants": [
+     {
+      "contentHash": "ir-content:26edb79f7ecc21e7799ddd09",
+      "emissions": [
+       {
+        "shardId": "shard:b934f8ceb0d79b5cfe57",
+        "unitKey": "operative:DEFINITION:def:applicable rate",
+        "attributionMethod": "PRIMARY_SOURCE_DECLARATION",
+        "sourceAnchor": {
+         "documentId": "doc-a",
+         "regionId": "operative",
+         "unitKey": "operative:DEFINITION:def:applicable rate",
+         "charStart": 327,
+         "charEnd": 360,
+         "absCharStart": 22210,
+         "absCharEnd": 22243,
+         "termName": "Approved Bank",
+         "normalizedTermName": "approved bank",
+         "declarationExcerpt": "“ Approved Bank ” has the meaning\nassigned to such term in the definition of the term “Cash Equivalents.”\n“ Approved Electronic Communications ” means each\nnotice, demand, communication, information, ",
+         "declarationTextHash": "a68337fea75e2842a5cb5498c2a43dc21a3b479eefada3c352140ab733c55df2",
+         "method": "UNIQUE_PRIMARY_SOURCE_DECLARATION"
+        }
+       }
+      ],
+      "definition": {
+       "definitionId": "ir-definition:c1fdd29c59289405ecdc449c",
+       "irSchemaVersion": "headroom-covenant-ir.v1",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "sourceDocumentId": "doc-a",
+       "termName": "Approved Bank",
+       "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+       "calculationExpression": null,
+       "dependsOnTerms": [
+        "Cash Equivalents"
+       ],
+       "sufficiency": "COMPLETE",
+       "sufficiencyReasons": [
+        "Pure pointer to the definition of \"Cash Equivalents\"; pointer fully captured."
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": "has the meaning assigned to such term in the definition of the term \"Cash Equivalents.\""
+       },
+       "compilerVersion": "semantic-accountability-compiler.v4",
+       "sourceContentVersion": null
+      },
+      "inventoryItemIds": [],
+      "quantitativeValues": []
+     },
+     {
+      "contentHash": "ir-content:7552ddf7bea483495838bc75",
+      "emissions": [
+       {
+        "shardId": "shard:c68b6e6e275414f90c39",
+        "unitKey": "operative:DEFINITION:def:cash equivalents",
+        "attributionMethod": "LINEAGE_MAJORITY",
+        "sourceAnchor": null
+       }
+      ],
+      "definition": {
+       "definitionId": "ir-definition:c1fdd29c59289405ecdc449c",
+       "irSchemaVersion": "headroom-covenant-ir.v1",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "sourceDocumentId": "doc-a",
+       "termName": "Approved Bank",
+       "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+       "calculationExpression": {
+        "kind": "IF",
+        "type": "MONEY",
+        "exprId": "ir-expr:ba0f8a0b7d13bfa740984481",
+        "condition": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "BOOLEAN",
+         "inputName": "CounterpartyBank_IsUSBank",
+         "exprId": "ir-expr:3ef5ef0e734d3d72c0a10574"
+        },
+        "then": {
+         "kind": "MONEY",
+         "type": "MONEY",
+         "amount": 250000000,
+         "currency": "USD",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "capital and surplus of not less than $250.0 million in the case of U.S. banks"
+         },
+         "exprId": "ir-expr:2677fe8a094eafbad182d4cd",
+         "inventoryItemIds": [
+          "inv-item:ef6290ba17af109cb88f0cd8"
+         ]
+        },
+        "else": {
+         "kind": "MONEY",
+         "type": "MONEY",
+         "amount": 100000000,
+         "currency": "USD",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "$100.0 million (or the U.S. Dollars equivalent as of the date of determination) in the case of non-U.S. banks"
+         },
+         "exprId": "ir-expr:76c5bb537f58f17ced87cb68",
+         "inventoryItemIds": [
+          "inv-item:c2d70438daa8f136d0f51bee"
+         ]
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "dependsOnTerms": [],
+       "sufficiency": "COMPLETE",
+       "sufficiencyReasons": [
+        "'Approved Bank' is expressly defined inline within the Cash Equivalents definition (clause (4) parenthetical) and both the U.S.-bank and non-U.S.-bank capital-and-surplus minimums are stated explicitly and fully captured as literal thresholds"
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": "any domestic or foreign commercial bank having capital and surplus of not less than $250.0 million in the case of U.S. banks and $100.0 million (or the U.S. Dollars equivalent as of the date of determination) in the case of non-U.S. banks (any such bank being an \"Approved Bank\")"
+       },
+       "compilerVersion": "semantic-accountability-compiler.v4",
+       "sourceContentVersion": null,
+       "inventoryItemIds": [
+        "inv-item:ef6290ba17af109cb88f0cd8",
+        "inv-item:c2d70438daa8f136d0f51bee"
+       ]
+      },
+      "inventoryItemIds": [
+       "inv-item:c2d70438daa8f136d0f51bee",
+       "inv-item:ef6290ba17af109cb88f0cd8"
+      ],
+      "quantitativeValues": [
+       "MONEY:100000000",
+       "MONEY:250000000"
+      ]
+     }
+    ],
+    "ownedInventoryItemIds": [
+     "inv-item:c2d70438daa8f136d0f51bee",
+     "inv-item:ef6290ba17af109cb88f0cd8"
+    ],
+    "quantitativeValues": [
+     "MONEY:100000000",
+     "MONEY:250000000"
+    ],
+    "canonicalVariantContentHash": "ir-content:26edb79f7ecc21e7799ddd09",
+    "requiresReview": true
+   }
+  ]
+ },
+ "lossMetrics": {
+  "definition": "owned emissions minus (canonical stitched IR union first-class conflict evidence union validly excluded)",
+  "ownedDistinctValuesBefore": 42,
+  "ownedDistinctLineageBefore": 86,
+  "valuesInCanonical": 43,
+  "valuesInConflictEvidence": 4,
+  "lineageInCanonical": 89,
+  "lineageInConflictEvidence": 3,
+  "lineageValidlyStripped": 0,
+  "ownedValuesLostByStitching": 0,
+  "ownedValuesLostList": [],
+  "ownedLineageLostByStitching": 0,
+  "ownedLineageLostList": []
+ },
+ "stitched": {
+  "status": "PARTIAL",
+  "rules": 11,
+  "definitions": 316,
+  "sharedCapacities": 0,
+  "contextualEmissions": 17,
+  "collisionsByKind": {
+   "CONTEXTUAL_UNOWNED_DEFINITION": 17,
+   "DEFINITION_CONFLICT": 2
+  },
+  "requiresReview": 19
+ },
+ "conflictCollisions": [
+  {
+   "objectId": "ir-definition:c1fdd29c59289405ecdc449c",
+   "shardId": "shard:c68b6e6e275414f90c39",
+   "ownerShardId": "shard:b934f8ceb0d79b5cfe57",
+   "requiresReview": true
+  },
+  {
+   "objectId": "ir-definition:9798cd4753246e6ba790c06e",
+   "shardId": "shard:3e3910ea2efd9edd45a3",
+   "ownerShardId": "shard:b934f8ceb0d79b5cfe57",
+   "requiresReview": true
+  }
+ ],
+ "conflictedDefinitionsInCanonical": [
+  {
+   "definitionId": "ir-definition:cabede04ee733c794fe2f8e3",
+   "termName": "Acquired Entity or Business",
+   "retained": true,
+   "sufficiency": "MISSING_CONTEXT",
+   "sufficiencyReasons": [
+    "Substantive meaning lives entirely in the 'Consolidated EBITDA' definition, which could not be retrieved within the available tool budget.",
+    "The 'Consolidated EBITDA' definition was not included in the supplied §1.01 excerpt and this session's tool-call budget was exhausted before it could be retrieved."
+   ]
+  },
+  {
+   "definitionId": "ir-definition:9798cd4753246e6ba790c06e",
+   "termName": "Annual Threshold",
+   "retained": true,
+   "sufficiency": "AMBIGUOUS",
+   "sufficiencyReasons": [
+    "Pure pointer to the definition of \"Prepayment Event\"; pointer fully captured.",
+    "F-7A stitcher: a second shard (shard:3e3910ea2efd9edd45a3) emitted an incompatible representation of this definition - conflict requires review"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:c1fdd29c59289405ecdc449c",
+   "termName": "Approved Bank",
+   "retained": true,
+   "sufficiency": "AMBIGUOUS",
+   "sufficiencyReasons": [
+    "Pure pointer to the definition of \"Cash Equivalents\"; pointer fully captured.",
+    "F-7A stitcher: a second shard (shard:c68b6e6e275414f90c39) emitted an incompatible representation of this definition - conflict requires review"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:97aad43ed7abc5a72387d9f7",
+   "termName": "Converted Restricted Subsidiary",
+   "retained": true,
+   "sufficiency": "MISSING_CONTEXT",
+   "sufficiencyReasons": [
+    "term is defined purely by cross-reference into 'Consolidated EBITDA'; that definition was retrieved but truncated before reaching this sub-clause",
+    "the Consolidated EBITDA definition was retrieved but the specific sub-definition of 'Converted Restricted Subsidiary' fell outside the returned (truncated) span"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:1ea4783d1f26d9eee4f889c8",
+   "termName": "Converted Unrestricted Subsidiary",
+   "retained": true,
+   "sufficiency": "MISSING_CONTEXT",
+   "sufficiencyReasons": [
+    "term is defined purely by cross-reference into 'Consolidated EBITDA'; that definition was retrieved but truncated before reaching this sub-clause",
+    "the Consolidated EBITDA definition was retrieved but the specific sub-definition of 'Converted Unrestricted Subsidiary' fell outside the returned (truncated) span"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:95805ecfce2a93042a976c6c",
+   "termName": "Expected Run Rate Benefit",
+   "retained": true,
+   "sufficiency": "MISSING_CONTEXT",
+   "sufficiencyReasons": [
+    "Term is defined entirely by cross-reference into the body of the 'Consolidated EBITDA' definition. getDefinition('Expected Run Rate Benefit') found no standalone definition, and getDefinition('Consolidated EBITDA') returned only a truncated head portion of that (very long) definition that did not reach the 'Expected Run Rate Benefit' passage (a separate context region for Consolidated EBITDA was also truncated at budget). Substantive meaning not retrievable within tool/context budget."
+   ]
+  }
+ ],
+ "proofCounts": {
+  "PLANNER_DEFINITION_UNIT": 237,
+  "OWNED_INVENTORY_LINEAGE": 42,
+  "UNIQUE_PRIMARY_SOURCE_DECLARATION": 77,
+  "NONE": 0
+ },
+ "accountability": {
+  "executedShards": 25,
+  "executedShardMaterialOwned": 93,
+  "executedRepresented": 53,
+  "executedIntentionallyNonComputational": 1,
+  "executedUnsupported": 21,
+  "executedAmbiguous": 0,
+  "executedMissing": 18,
+  "executedAccountabilityRate": 0.8065,
+  "materialTotal": 108,
+  "globalPassC": {
+   "inventoried": 109,
+   "material": 108,
+   "represented": 63,
+   "intentionallyNonComputational": 1,
+   "unsupported": 21,
+   "ambiguous": 0,
+   "missingFromComposition": 24,
+   "materialMissingFromComposition": 23,
+   "criticalMissingFromComposition": 6,
+   "materialQuantitativeValues": 142,
+   "materialQuantitativeValuesMissing": 25,
+   "uninventoriedValues": 95,
+   "unaccountedSource": 721,
+   "danglingLineageReferences": 0,
+   "canonicalizedLineageReferences": 0
+  },
+  "semanticallyComplete": false
+ },
+ "danglingLineageReferences": 0,
+ "paidCalls": 0,
+ "costUsd": 0
+}
