@@ -1,0 +1,1044 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:c68b6e6e275414f90c39",
+  "shardHash": "de7b889487ab225e5d7f253498249cc6440e3a2e2f248e63b5585f4bb905e90c",
+  "ordinal": 5,
+  "ownedUnits": 6,
+  "sourceChars": 8855,
+  "contextEntries": 1,
+  "contextChars": 225,
+  "unresolvedContext": 1,
+  "oversized": false,
+  "ownedItems": 6,
+  "ownedMaterialItems": 6,
+  "estimatedFirstTurnInputTokens": 22963,
+  "preCallEstimate": {
+   "inputTokens": 75549,
+   "outputTokens": 16500,
+   "usd": 0.316098
+  },
+  "actual": {
+   "inputTokens": 22929,
+   "outputTokens": 24392,
+   "turns": 1,
+   "latencyMs": 231065,
+   "costUsd": 0.28977800000000004,
+   "attemptCount": 1,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_COMPLETE",
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "toolCalls": 0,
+  "toolCallNames": [],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 7,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 2,
+   "dispositioned": 4,
+   "missingMaterial": 0,
+   "valuesRepresented": 2,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "REPRESENTED": 2,
+    "UNSUPPORTED": 4
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Approved Bank"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].OR[0]] These are qualitative, rating/currency/obligor-type categorical qualifications carrying no distinct numeric threshold identified in the frozen inventory; representing 10+ heterogeneous categorical alternatives faithfully would require an ENUM/MEMBERSHIP primitive the IR does not provide",
+   "[definition[d1].OR[1]] Categorical instrument-type qualification, not itself a computable arithmetic formula",
+   "[definition[d1].OR[2]] Categorical instrument-type qualification, not itself a computable arithmetic formula",
+   "[definition[d1].OR[4].DURING_PERIOD.value] Categorical currency-type qualification, not itself a computable numeric value",
+   "[definition[d1].OR[4]] DURING_PERIOD value type could not be determined: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d1]] OR operands do not type-check together under the IR's own composition rules: OR operands must all be BOOLEAN",
+   "This region is a definitions-only excerpt (Section 1.01); no independently operative permission/prohibition rules were found, so the rules and sharedCapacities arrays are empty.",
+   "Six distinct defined terms were extracted from the supplied source: Cash Equivalents, Approved Bank (extracted as its own term because it is expressly defined inline within the Cash Equivalents clause (4) parenthetical, not merely cross-referenced), Cash Management Obligations, Cash Management Services, Central Bank Rate, CFC, and Change in Law.",
+   "The 'Approved Bank' cross-reference flagged by the pipeline as OUT_OF_SCOPE ('no detected definition ... in document doc-a') refers to the absence of a standalone alphabetized 'Approved Bank' entry; the term is nonetheless substantively defined inline in this very provision, and that inline definition was compiled with full fidelity as its own WireDefinition (d2).",
+   "The 'Section 2.13' cross-reference in the Change in Law definition could not be expanded (source-context budget exhausted) but is illustrative/non-material to the definition's own meaning and does not affect its sufficiency rating.",
+   "The $250.0 million value flagged by deterministic scanning as uncovered by any frozen-inventory item is in fact the same U.S.-bank Approved Bank threshold covered by inv-item ef6290ba17af109cb88f0cd8; it is represented as a literal MONEY node in the extracted 'Approved Bank' definition (d2) rather than duplicated on the Cash Equivalents definition, to preserve honest value-correspondence between inventory items and the nodes that actually carry their values.",
+   "The Cash Equivalents definition is fundamentally an enumerated, disjunctive categorical list (13 numbered clauses plus extension/proviso paragraphs) rather than an arithmetic formula; it is represented as an OR of operands, most of which are UNSUPPORTED citation-bearing placeholders for purely qualitative category descriptions, while every frozen-inventory quantitative threshold (maturity limits, the 90% investment-fund threshold, and the 10-Business-Day conversion window) is attached to its own cited operand node so that its value is faithfully represented and traceable."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": true,
+   "decodedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "overallNotes"
+   ],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": true,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "string",
+      "originalStringSha256": "78f6430cc7e3410fa391d57f6d26e62de0ae55fccfb387fe0c5b1bc216d40c3e",
+      "originalStringLength": 11165,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 7,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "string",
+      "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "originalStringLength": 2,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 0,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "string",
+      "originalStringSha256": "8acb2d032eae15d6513d820278b624f826eacd926dd8b986174c95d2c38b6fb6",
+      "originalStringLength": 1407,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 1,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "absent",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "absent - left absent for the schema's own default/optional handling"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "string",
+      "originalStringSha256": "7667304ddd4b7913a0e1508c8fd77d57690757a95cfbdef1ada6970cbf1e51a3",
+      "originalStringLength": 2199,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 6,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:c68b6e6e275414f90c39",
+  "shardHash": "de7b889487ab225e5d7f253498249cc6440e3a2e2f248e63b5585f4bb905e90c",
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:97adecedee875ef8944d6095",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Cash Equivalents",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "(no evidence captured)",
+      "semanticDescription": "unrecognized or malformed expression (kind=\"OR\")",
+      "reason": "OR operands do not type-check together under the IR's own composition rules: OR operands must all be BOOLEAN",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "attemptedStructure": {
+       "kind": "OR",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:be4135a481d0968e707b1315",
+       "operands": [
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01, Cash Equivalents clauses (1),(2),(5)-(10),(12),(13) and following paragraphs",
+         "semanticDescription": "Catch-all for the remaining enumerated Cash Equivalents categories: US/Canadian dollars and other listed foreign currencies (cl.1-2); repurchase obligations (cl.5); rated commercial paper/notes (cl.6); rated money-market/short-term securities (cl.7); rated government/municipal obligations (cl.8); rated Indebtedness/Preferred Stock (cl.9); comparable foreign-subsidiary investments (cl.12); SEC-registered/administered money-market current-asset investments (cl.13); plus the foreign-obligor/foreign-subsidiary extension paragraphs and the GAAP-override paragraph",
+         "reason": "These are qualitative, rating/currency/obligor-type categorical qualifications carrying no distinct numeric threshold identified in the frozen inventory; representing 10+ heterogeneous categorical alternatives faithfully would require an ENUM/MEMBERSHIP primitive the IR does not provide",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:65acceab76ed9a0c1d2c56ad"
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01 clause (3): 'with maturities of twenty-four (24) months or less from the date of acquisition'",
+         "semanticDescription": "Government/EU-member-state securities with maturities of twenty-four (24) months or less from acquisition",
+         "reason": "Categorical instrument-type qualification, not itself a computable arithmetic formula",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:37bda52e766460f0acfe3639",
+         "inventoryItemIds": [
+          "ba7383560e2c813dfc980543"
+         ]
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01 clause (4): 'certificates of deposit, time deposits and eurodollar time deposits with maturities of one (1) year or less from the date of acquisition ... bankers' acceptances with maturities not exceeding one (1) year'",
+         "semanticDescription": "Certificates of deposit, time deposits and eurodollar time deposits with maturities of one (1) year or less, and bankers' acceptances not exceeding one (1) year, held with an Approved Bank",
+         "reason": "Categorical instrument-type qualification, not itself a computable arithmetic formula",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:516036e903de46d4030bc86b",
+         "inventoryItemIds": [
+          "067b0e5b8c71122b70e681f1"
+         ]
+        },
+        {
+         "kind": "PERCENT",
+         "type": "PERCENT",
+         "value": 0.9,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 clause (11)",
+          "excerpt": "investments funds investing at least 90% of their assets in securities of the types described in clauses (1) through (10) above"
+         },
+         "exprId": "ir-expr:fc260ff5fc545287bceff127",
+         "inventoryItemIds": [
+          "83b525efbf2987a57fcafd95"
+         ]
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "(no evidence captured)",
+         "semanticDescription": "unrecognized or malformed expression (kind=\"DURING_PERIOD\")",
+         "reason": "DURING_PERIOD value type could not be determined: no operand carries a determinable type (every operand is itself unsupported)",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "attemptedStructure": {
+          "kind": "DURING_PERIOD",
+          "type": "RATIO",
+          "exprId": "ir-expr:331f81f90dc7e9428ca91006",
+          "value": {
+           "kind": "UNSUPPORTED",
+           "type": null,
+           "sourceEvidence": "§1.01 (non-listed-currency proviso)",
+           "semanticDescription": "Amounts denominated in currencies other than those listed in clauses (1)-(2)",
+           "reason": "Categorical currency-type qualification, not itself a computable numeric value",
+           "requiredReview": true,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:c457b12e1671bac2feb81a79"
+          },
+          "periodDescription": "such amounts are converted into any currency listed in clauses (1) and (2) as promptly as practicable and in any event within ten (10) Business Days following receipt",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          }
+         },
+         "exprId": "ir-expr:05bd45f64ff89ec3c244d604",
+         "inventoryItemIds": [
+          "b0222599546fcdec46da748e"
+         ]
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "exprId": "ir-expr:5abaaf5c973235a5ba93cd6b"
+     },
+     "dependsOnTerms": [
+      "Approved Bank",
+      "Restricted Party",
+      "Restricted Subsidiary",
+      "Foreign Subsidiary",
+      "Investment Grade Rating",
+      "Business Day",
+      "Moody's",
+      "S&P",
+      "Investments"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The definition is an enumerated, disjunctive categorical list of ~13 permitted instrument/currency types rather than a computable formula; the IR's arithmetic/comparison primitives cannot faithfully express multi-branch categorical set-membership without an ENUM/MEMBERSHIP primitive, so most categories are represented as cited UNSUPPORTED operands within an OR",
+      "All frozen-inventory quantitative thresholds within this definition (24-month and 1-year maturity limits, 90% fund threshold, 10-Business-Day conversion window) are individually cited and attached to their respective operand; the two Approved Bank capital/surplus thresholds are modeled with full fidelity in the separately extracted 'Approved Bank' definition",
+      "These are qualitative, rating/currency/obligor-type categorical qualifications carrying no distinct numeric threshold identified in the frozen inventory; representing 10+ heterogeneous categorical alternatives faithfully would require an ENUM/MEMBERSHIP primitive the IR does not provide",
+      "Categorical instrument-type qualification, not itself a computable arithmetic formula",
+      "Categorical instrument-type qualification, not itself a computable arithmetic formula",
+      "Categorical currency-type qualification, not itself a computable numeric value",
+      "DURING_PERIOD value type could not be determined: no operand carries a determinable type (every operand is itself unsupported)",
+      "OR operands do not type-check together under the IR's own composition rules: OR operands must all be BOOLEAN"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Cash Equivalents\" means: (1) United States dollars or Canadian dollars; ... (13) investments, classified in accordance with GAAP as current assets, in money market investment programs..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "ba7383560e2c813dfc980543",
+      "067b0e5b8c71122b70e681f1",
+      "83b525efbf2987a57fcafd95",
+      "b0222599546fcdec46da748e"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:c1fdd29c59289405ecdc449c",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Approved Bank",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "IF",
+      "type": "MONEY",
+      "exprId": "ir-expr:ba0f8a0b7d13bfa740984481",
+      "condition": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "BOOLEAN",
+       "inputName": "CounterpartyBank_IsUSBank",
+       "exprId": "ir-expr:3ef5ef0e734d3d72c0a10574"
+      },
+      "then": {
+       "kind": "MONEY",
+       "type": "MONEY",
+       "amount": 250000000,
+       "currency": "USD",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": "capital and surplus of not less than $250.0 million in the case of U.S. banks"
+       },
+       "exprId": "ir-expr:2677fe8a094eafbad182d4cd",
+       "inventoryItemIds": [
+        "ef6290ba17af109cb88f0cd8"
+       ]
+      },
+      "else": {
+       "kind": "MONEY",
+       "type": "MONEY",
+       "amount": 100000000,
+       "currency": "USD",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": "$100.0 million (or the U.S. Dollars equivalent as of the date of determination) in the case of non-U.S. banks"
+       },
+       "exprId": "ir-expr:76c5bb537f58f17ced87cb68",
+       "inventoryItemIds": [
+        "c2d70438daa8f136d0f51bee"
+       ]
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "'Approved Bank' is expressly defined inline within the Cash Equivalents definition (clause (4) parenthetical) and both the U.S.-bank and non-U.S.-bank capital-and-surplus minimums are stated explicitly and fully captured as literal thresholds"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any domestic or foreign commercial bank having capital and surplus of not less than $250.0 million in the case of U.S. banks and $100.0 million (or the U.S. Dollars equivalent as of the date of determination) in the case of non-U.S. banks (any such bank being an \"Approved Bank\")"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "ef6290ba17af109cb88f0cd8",
+      "c2d70438daa8f136d0f51bee"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:9c3f0e6f7247b8980dda7272",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Cash Management Obligations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Party",
+      "Cash Management Services"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive, non-quantitative categorical definition; fully captured by the excerpt with no numeric or formulaic economics to model"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means (1) obligations of any Restricted Party in respect of any overdraft and related liabilities arising from treasury, depository, cash pooling arrangements and cash management or treasury services or any automated clearing house transfers of funds, (2) other obligations in respect of netting services, employee credit or purchase card programs and similar arrangements or (3) obligations in respect of any other Cash Management Services or any other bank products or other services related, ancillary or complementary to the foregoing"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:405076f208f6fd21883e997a",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Cash Management Services",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive, non-quantitative categorical definition; fully captured by the excerpt"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means any of the following: ACH transactions, treasury, bank products, services and/or cash management services, including, without limitation, controlled disbursement services, working capital lines, lines of credit, overdraft facilities, foreign exchange facilities deposit and other accounts and merchant services"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:9ed33e80a60ff75f0ab6c050",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Central Bank Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully descriptive reference to an externally published rate; no internal numeric threshold to model"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, the Bank of England (or any successor thereto)'s \"Bank Rate\" as published by the Bank of England (or any successor thereto) from time to time"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f67ac7b7571f5ae17be85585",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "CFC",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Code"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference definition to a statutory term (Section 957 of the Code); fully captured descriptively, no numeric economics"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means a \"controlled foreign corporation\" within the meaning of Section 957 of the Code"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:c7980bebd32d34c99b5f2192",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Change in Law",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Governmental Authority",
+      "Effective Date",
+      "Administrative Agent",
+      "Lender",
+      "Borrowers",
+      "Subsidiaries"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition is a categorical/conditional description (adoption or change of law, or issuance of a request/guideline/directive, plus a deeming proviso for Dodd-Frank and Basel III rules applied in a manner comparable to similarly situated borrowers) with no numeric threshold to model; fully captured descriptively",
+      "The illustrative closing cross-reference to Section 2.13 is non-material to the definition's own meaning (it merely notes one place the term is used) and was not independently resolved (out of scope due to source-context budget); this does not affect the definition's own sufficiency"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means (a) the adoption of any rule, regulation, treaty or other law after the Effective Date, (b) any change in any rule, regulation, treaty or other law or in the administration, interpretation or application thereof by any Governmental Authority after the Effective Date or (c) the making or issuance of any request, guideline or directive... provided that... (i) any requests, rules, guidelines or directives under the Dodd-Frank Wall Street Reform and Consumer Protection Act of 2010... and (ii) any requests, rules, guidelines or directives promulgated by... Basel III, shall in each case be deemed to be a \"Change in Law\"... but only to the extent such rules... are applied to the Borrowers and their respective Subsidiaries... in substantially the same manner as applied to other similarly situated borrowers..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].OR[0]] These are qualitative, rating/currency/obligor-type categorical qualifications carrying no distinct numeric threshold identified in the frozen inventory; representing 10+ heterogeneous categorical alternatives faithfully would require an ENUM/MEMBERSHIP primitive the IR does not provide",
+   "[definition[d1].OR[1]] Categorical instrument-type qualification, not itself a computable arithmetic formula",
+   "[definition[d1].OR[2]] Categorical instrument-type qualification, not itself a computable arithmetic formula",
+   "[definition[d1].OR[4].DURING_PERIOD.value] Categorical currency-type qualification, not itself a computable numeric value",
+   "[definition[d1].OR[4]] DURING_PERIOD value type could not be determined: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d1]] OR operands do not type-check together under the IR's own composition rules: OR operands must all be BOOLEAN",
+   "This region is a definitions-only excerpt (Section 1.01); no independently operative permission/prohibition rules were found, so the rules and sharedCapacities arrays are empty.",
+   "Six distinct defined terms were extracted from the supplied source: Cash Equivalents, Approved Bank (extracted as its own term because it is expressly defined inline within the Cash Equivalents clause (4) parenthetical, not merely cross-referenced), Cash Management Obligations, Cash Management Services, Central Bank Rate, CFC, and Change in Law.",
+   "The 'Approved Bank' cross-reference flagged by the pipeline as OUT_OF_SCOPE ('no detected definition ... in document doc-a') refers to the absence of a standalone alphabetized 'Approved Bank' entry; the term is nonetheless substantively defined inline in this very provision, and that inline definition was compiled with full fidelity as its own WireDefinition (d2).",
+   "The 'Section 2.13' cross-reference in the Change in Law definition could not be expanded (source-context budget exhausted) but is illustrative/non-material to the definition's own meaning and does not affect its sufficiency rating.",
+   "The $250.0 million value flagged by deterministic scanning as uncovered by any frozen-inventory item is in fact the same U.S.-bank Approved Bank threshold covered by inv-item ef6290ba17af109cb88f0cd8; it is represented as a literal MONEY node in the extracted 'Approved Bank' definition (d2) rather than duplicated on the Cash Equivalents definition, to preserve honest value-correspondence between inventory items and the nodes that actually carry their values.",
+   "The Cash Equivalents definition is fundamentally an enumerated, disjunctive categorical list (13 numbered clauses plus extension/proviso paragraphs) rather than an arithmetic formula; it is represented as an OR of operands, most of which are UNSUPPORTED citation-bearing placeholders for purely qualitative category descriptions, while every frozen-inventory quantitative threshold (maturity limits, the 90% investment-fund threshold, and the 10-Business-Day conversion window) is attached to its own cited operand node so that its value is faithfully represented and traceable."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 22929,
+   "outputTokens": 24392,
+   "costUsd": 0.28977800000000004
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:97adecedee875ef8944d6095",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Cash Equivalents",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "(no evidence captured)",
+     "semanticDescription": "unrecognized or malformed expression (kind=\"OR\")",
+     "reason": "OR operands do not type-check together under the IR's own composition rules: OR operands must all be BOOLEAN",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "attemptedStructure": {
+      "kind": "OR",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:be4135a481d0968e707b1315",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01, Cash Equivalents clauses (1),(2),(5)-(10),(12),(13) and following paragraphs",
+        "semanticDescription": "Catch-all for the remaining enumerated Cash Equivalents categories: US/Canadian dollars and other listed foreign currencies (cl.1-2); repurchase obligations (cl.5); rated commercial paper/notes (cl.6); rated money-market/short-term securities (cl.7); rated government/municipal obligations (cl.8); rated Indebtedness/Preferred Stock (cl.9); comparable foreign-subsidiary investments (cl.12); SEC-registered/administered money-market current-asset investments (cl.13); plus the foreign-obligor/foreign-subsidiary extension paragraphs and the GAAP-override paragraph",
+        "reason": "These are qualitative, rating/currency/obligor-type categorical qualifications carrying no distinct numeric threshold identified in the frozen inventory; representing 10+ heterogeneous categorical alternatives faithfully would require an ENUM/MEMBERSHIP primitive the IR does not provide",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:65acceab76ed9a0c1d2c56ad"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 clause (3): 'with maturities of twenty-four (24) months or less from the date of acquisition'",
+        "semanticDescription": "Government/EU-member-state securities with maturities of twenty-four (24) months or less from acquisition",
+        "reason": "Categorical instrument-type qualification, not itself a computable arithmetic formula",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:37bda52e766460f0acfe3639",
+        "inventoryItemIds": [
+         "ba7383560e2c813dfc980543"
+        ]
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 clause (4): 'certificates of deposit, time deposits and eurodollar time deposits with maturities of one (1) year or less from the date of acquisition ... bankers' acceptances with maturities not exceeding one (1) year'",
+        "semanticDescription": "Certificates of deposit, time deposits and eurodollar time deposits with maturities of one (1) year or less, and bankers' acceptances not exceeding one (1) year, held with an Approved Bank",
+        "reason": "Categorical instrument-type qualification, not itself a computable arithmetic formula",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:516036e903de46d4030bc86b",
+        "inventoryItemIds": [
+         "067b0e5b8c71122b70e681f1"
+        ]
+       },
+       {
+        "kind": "PERCENT",
+        "type": "PERCENT",
+        "value": 0.9,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 clause (11)",
+         "excerpt": "investments funds investing at least 90% of their assets in securities of the types described in clauses (1) through (10) above"
+        },
+        "exprId": "ir-expr:fc260ff5fc545287bceff127",
+        "inventoryItemIds": [
+         "83b525efbf2987a57fcafd95"
+        ]
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "(no evidence captured)",
+        "semanticDescription": "unrecognized or malformed expression (kind=\"DURING_PERIOD\")",
+        "reason": "DURING_PERIOD value type could not be determined: no operand carries a determinable type (every operand is itself unsupported)",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "attemptedStructure": {
+         "kind": "DURING_PERIOD",
+         "type": "RATIO",
+         "exprId": "ir-expr:331f81f90dc7e9428ca91006",
+         "value": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01 (non-listed-currency proviso)",
+          "semanticDescription": "Amounts denominated in currencies other than those listed in clauses (1)-(2)",
+          "reason": "Categorical currency-type qualification, not itself a computable numeric value",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:c457b12e1671bac2feb81a79"
+         },
+         "periodDescription": "such amounts are converted into any currency listed in clauses (1) and (2) as promptly as practicable and in any event within ten (10) Business Days following receipt",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        },
+        "exprId": "ir-expr:05bd45f64ff89ec3c244d604",
+        "inventoryItemIds": [
+         "b0222599546fcdec46da748e"
+        ]
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "exprId": "ir-expr:5abaaf5c973235a5ba93cd6b"
+    },
+    "dependsOnTerms": [
+     "Approved Bank",
+     "Restricted Party",
+     "Restricted Subsidiary",
+     "Foreign Subsidiary",
+     "Investment Grade Rating",
+     "Business Day",
+     "Moody's",
+     "S&P",
+     "Investments"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The definition is an enumerated, disjunctive categorical list of ~13 permitted instrument/currency types rather than a computable formula; the IR's arithmetic/comparison primitives cannot faithfully express multi-branch categorical set-membership without an ENUM/MEMBERSHIP primitive, so most categories are represented as cited UNSUPPORTED operands within an OR",
+     "All frozen-inventory quantitative thresholds within this definition (24-month and 1-year maturity limits, 90% fund threshold, 10-Business-Day conversion window) are individually cited and attached to their respective operand; the two Approved Bank capital/surplus thresholds are modeled with full fidelity in the separately extracted 'Approved Bank' definition",
+     "These are qualitative, rating/currency/obligor-type categorical qualifications carrying no distinct numeric threshold identified in the frozen inventory; representing 10+ heterogeneous categorical alternatives faithfully would require an ENUM/MEMBERSHIP primitive the IR does not provide",
+     "Categorical instrument-type qualification, not itself a computable arithmetic formula",
+     "Categorical instrument-type qualification, not itself a computable arithmetic formula",
+     "Categorical currency-type qualification, not itself a computable numeric value",
+     "DURING_PERIOD value type could not be determined: no operand carries a determinable type (every operand is itself unsupported)",
+     "OR operands do not type-check together under the IR's own composition rules: OR operands must all be BOOLEAN"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Cash Equivalents\" means: (1) United States dollars or Canadian dollars; ... (13) investments, classified in accordance with GAAP as current assets, in money market investment programs..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "ba7383560e2c813dfc980543",
+     "067b0e5b8c71122b70e681f1",
+     "83b525efbf2987a57fcafd95",
+     "b0222599546fcdec46da748e"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:c1fdd29c59289405ecdc449c",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Approved Bank",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "IF",
+     "type": "MONEY",
+     "exprId": "ir-expr:ba0f8a0b7d13bfa740984481",
+     "condition": {
+      "kind": "TRANSACTION_INPUT_REFERENCE",
+      "type": "BOOLEAN",
+      "inputName": "CounterpartyBank_IsUSBank",
+      "exprId": "ir-expr:3ef5ef0e734d3d72c0a10574"
+     },
+     "then": {
+      "kind": "MONEY",
+      "type": "MONEY",
+      "amount": 250000000,
+      "currency": "USD",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": "capital and surplus of not less than $250.0 million in the case of U.S. banks"
+      },
+      "exprId": "ir-expr:2677fe8a094eafbad182d4cd",
+      "inventoryItemIds": [
+       "ef6290ba17af109cb88f0cd8"
+      ]
+     },
+     "else": {
+      "kind": "MONEY",
+      "type": "MONEY",
+      "amount": 100000000,
+      "currency": "USD",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": "$100.0 million (or the U.S. Dollars equivalent as of the date of determination) in the case of non-U.S. banks"
+      },
+      "exprId": "ir-expr:76c5bb537f58f17ced87cb68",
+      "inventoryItemIds": [
+       "c2d70438daa8f136d0f51bee"
+      ]
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "'Approved Bank' is expressly defined inline within the Cash Equivalents definition (clause (4) parenthetical) and both the U.S.-bank and non-U.S.-bank capital-and-surplus minimums are stated explicitly and fully captured as literal thresholds"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any domestic or foreign commercial bank having capital and surplus of not less than $250.0 million in the case of U.S. banks and $100.0 million (or the U.S. Dollars equivalent as of the date of determination) in the case of non-U.S. banks (any such bank being an \"Approved Bank\")"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "ef6290ba17af109cb88f0cd8",
+     "c2d70438daa8f136d0f51bee"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:9c3f0e6f7247b8980dda7272",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Cash Management Obligations",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Restricted Party",
+     "Cash Management Services"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive, non-quantitative categorical definition; fully captured by the excerpt with no numeric or formulaic economics to model"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means (1) obligations of any Restricted Party in respect of any overdraft and related liabilities arising from treasury, depository, cash pooling arrangements and cash management or treasury services or any automated clearing house transfers of funds, (2) other obligations in respect of netting services, employee credit or purchase card programs and similar arrangements or (3) obligations in respect of any other Cash Management Services or any other bank products or other services related, ancillary or complementary to the foregoing"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:405076f208f6fd21883e997a",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Cash Management Services",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive, non-quantitative categorical definition; fully captured by the excerpt"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means any of the following: ACH transactions, treasury, bank products, services and/or cash management services, including, without limitation, controlled disbursement services, working capital lines, lines of credit, overdraft facilities, foreign exchange facilities deposit and other accounts and merchant services"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:9ed33e80a60ff75f0ab6c050",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Central Bank Rate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully descriptive reference to an externally published rate; no internal numeric threshold to model"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, the Bank of England (or any successor thereto)'s \"Bank Rate\" as published by the Bank of England (or any successor thereto) from time to time"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f67ac7b7571f5ae17be85585",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "CFC",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Code"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Cross-reference definition to a statutory term (Section 957 of the Code); fully captured descriptively, no numeric economics"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means a \"controlled foreign corporation\" within the meaning of Section 957 of the Code"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:c7980bebd32d34c99b5f2192",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Change in Law",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Governmental Authority",
+     "Effective Date",
+     "Administrative Agent",
+     "Lender",
+     "Borrowers",
+     "Subsidiaries"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition is a categorical/conditional description (adoption or change of law, or issuance of a request/guideline/directive, plus a deeming proviso for Dodd-Frank and Basel III rules applied in a manner comparable to similarly situated borrowers) with no numeric threshold to model; fully captured descriptively",
+     "The illustrative closing cross-reference to Section 2.13 is non-material to the definition's own meaning (it merely notes one place the term is used) and was not independently resolved (out of scope due to source-context budget); this does not affect the definition's own sufficiency"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means (a) the adoption of any rule, regulation, treaty or other law after the Effective Date, (b) any change in any rule, regulation, treaty or other law or in the administration, interpretation or application thereof by any Governmental Authority after the Effective Date or (c) the making or issuance of any request, guideline or directive... provided that... (i) any requests, rules, guidelines or directives under the Dodd-Frank Wall Street Reform and Consumer Protection Act of 2010... and (ii) any requests, rules, guidelines or directives promulgated by... Basel III, shall in each case be deemed to be a \"Change in Law\"... but only to the extent such rules... are applied to the Borrowers and their respective Subsidiaries... in substantially the same manner as applied to other similarly situated borrowers..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01 'Cash Equivalents' definition, clauses (1)-(13) plus the foreign-obligor/foreign-subsidiary and non-listed-currency provisos",
+    "semanticRequirement": "A defined term that qualifies if the subject item matches ANY of many heterogeneous, non-boolean-typed instrument/category descriptions (currency identity, issuer/guarantor identity, maturity, credit rating tier, percentage-of-assets composition, obligor jurisdiction), several of which nest their own numeric qualifiers of different types",
+    "whyExistingPrimitivesFail": "OR/AND expect boolean-evaluable operands; COMPARE/IF require both sides to share one value type; there is no primitive for 'the instrument's type is one of {government security, CD, repo, commercial paper, rated note, money-market fund interest, foreign-subsidiary equivalent, ...}' where each branch is gated by a different kind of qualifier (currency list membership, rating tier, maturity length, asset-composition percentage) without forcing an artificial OR of ill-fitting UNSUPPORTED/literal nodes",
+    "candidateGeneralizedPrimitive": "CATEGORY_MEMBERSHIP(candidates: [{label, description, qualifierExpression}]) - an enumerated, multi-branch categorical qualification node distinct from boolean OR, allowing each branch to carry its own typed qualifier(s) and citation without requiring uniform boolean typing across branches"
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].OR[0]] These are qualitative, rating/currency/obligor-type categorical qualifications carrying no distinct numeric threshold identified in the frozen inventory; representing 10+ heterogeneous categorical alternatives faithfully would require an ENUM/MEMBERSHIP primitive the IR does not provide",
+   "[definition[d1].OR[1]] Categorical instrument-type qualification, not itself a computable arithmetic formula",
+   "[definition[d1].OR[2]] Categorical instrument-type qualification, not itself a computable arithmetic formula",
+   "[definition[d1].OR[4].DURING_PERIOD.value] Categorical currency-type qualification, not itself a computable numeric value",
+   "[definition[d1].OR[4]] DURING_PERIOD value type could not be determined: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d1]] OR operands do not type-check together under the IR's own composition rules: OR operands must all be BOOLEAN",
+   "This region is a definitions-only excerpt (Section 1.01); no independently operative permission/prohibition rules were found, so the rules and sharedCapacities arrays are empty.",
+   "Six distinct defined terms were extracted from the supplied source: Cash Equivalents, Approved Bank (extracted as its own term because it is expressly defined inline within the Cash Equivalents clause (4) parenthetical, not merely cross-referenced), Cash Management Obligations, Cash Management Services, Central Bank Rate, CFC, and Change in Law.",
+   "The 'Approved Bank' cross-reference flagged by the pipeline as OUT_OF_SCOPE ('no detected definition ... in document doc-a') refers to the absence of a standalone alphabetized 'Approved Bank' entry; the term is nonetheless substantively defined inline in this very provision, and that inline definition was compiled with full fidelity as its own WireDefinition (d2).",
+   "The 'Section 2.13' cross-reference in the Change in Law definition could not be expanded (source-context budget exhausted) but is illustrative/non-material to the definition's own meaning and does not affect its sufficiency rating.",
+   "The $250.0 million value flagged by deterministic scanning as uncovered by any frozen-inventory item is in fact the same U.S.-bank Approved Bank threshold covered by inv-item ef6290ba17af109cb88f0cd8; it is represented as a literal MONEY node in the extracted 'Approved Bank' definition (d2) rather than duplicated on the Cash Equivalents definition, to preserve honest value-correspondence between inventory items and the nodes that actually carry their values.",
+   "The Cash Equivalents definition is fundamentally an enumerated, disjunctive categorical list (13 numbered clauses plus extension/proviso paragraphs) rather than an arithmetic formula; it is represented as an OR of operands, most of which are UNSUPPORTED citation-bearing placeholders for purely qualitative category descriptions, while every frozen-inventory quantitative threshold (maturity limits, the 90% investment-fund threshold, and the 10-Business-Day conversion window) is attached to its own cited operand node so that its value is faithfully represented and traceable."
+  ],
+  "toolCallLog": [],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": "[\n  {\n    \"localRef\": \"d1\",\n    \"termName\": \"Cash Equivalents\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"OR\",\n      \"citation\": \"§1.01\",\n      \"operands\": [\n        {\n          \"kind\": \"UNSUPPORTED\",\n          \"semanticDescription\": \"Catch-all for the remaining enumerated Cash Equivalents categories: US/Canadian dollars and other listed foreign currencies (cl.1-2); repurchase obligations (cl.5); rated commercial paper/notes (cl.6); rated money-market/short-term securities (cl.7); rated government/municipal obligations (cl.8); rated Indebtedness/Preferred Stock (cl.9); comparable foreign-subsidiary investments (cl.12); SEC-registered/administered money-market current-asset investments (cl.13); plus the foreign-obligor/foreign-subsidiary extension paragraphs and the GAAP-override paragraph\",\n          \"reason\": \"These are qualitative, rating/currency/obligor-type categorical qualifications carrying no distinct numeric threshold identified in the frozen inventory; representing 10+ heterogeneous categorical alternatives faithfully would require an ENUM/MEMBERSHIP primitive the IR does not provide\",\n          \"sourceEvidence\": \"§1.01, Cash Equivalents clauses (1),(2),(5)-(10),(12),(13) and following paragraphs\"\n        },\n        {\n          \"kind\": \"UNSUPPORTED\",\n          \"semanticDescription\": \"Government/EU-member-state securities with maturities of twenty-four (24) months or less from acquisition\",\n          \"reason\": \"Categorical instrument-type qualification, not itself a computable arithmetic formula\",\n          \"sourceEvidence\": \"§1.01 clause (3): 'with maturities of twenty-four (24) months or less from the date of acquisition'\",\n          \"inventoryItemIds\": [\"ba7383560e2c813dfc980543\"]\n        },\n        {\n          \"kind\": \"UNSUPPORTED\",\n          \"semanticDescription\": \"Certificates of deposit, time deposits and eurodollar time deposits with maturities of one (1) year or less, and bankers' acceptances not exceeding one (1) year, held with an Approved Bank\",\n          \"reason\": \"Categorical instrument-type qualification, not itself a computable arithmetic formula\",\n          \"sourceEvidence\": \"§1.01 clause (4): 'certificates of deposit, time deposits and eurodollar time deposits with maturities of one (1) year or less from the date of acquisition ... bankers' acceptances with maturities not exceeding one (1) year'\",\n          \"inventoryItemIds\": [\"067b0e5b8c71122b70e681f1\"]\n        },\n        {\n          \"kind\": \"PERCENT\",\n          \"value\": 0.9,\n          \"citation\": \"§1.01 clause (11)\",\n          \"excerpt\": \"investments funds investing at least 90% of their assets in securities of the types described in clauses (1) through (10) above\",\n          \"inventoryItemIds\": [\"83b525efbf2987a57fcafd95\"]\n        },\n        {\n          \"kind\": \"DURING_PERIOD\",\n          \"operand\": {\n            \"kind\": \"UNSUPPORTED\",\n            \"semanticDescription\": \"Amounts denominated in currencies other than those listed in clauses (1)-(2)\",\n            \"reason\": \"Categorical currency-type qualification, not itself a computable numeric value\",\n            \"sourceEvidence\": \"§1.01 (non-listed-currency proviso)\"\n          },\n          \"periodDescription\": \"such amounts are converted into any currency listed in clauses (1) and (2) as promptly as practicable and in any event within ten (10) Business Days following receipt\",\n          \"citation\": \"§1.01\",\n          \"inventoryItemIds\": [\"b0222599546fcdec46da748e\"]\n        }\n      ]\n    },\n    \"dependsOnTerms\": [\"Approved Bank\", \"Restricted Party\", \"Restricted Subsidiary\", \"Foreign Subsidiary\", \"Investment Grade Rating\", \"Business Day\", \"Moody's\", \"S&P\", \"Investments\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\n      \"The definition is an enumerated, disjunctive categorical list of ~13 permitted instrument/currency types rather than a computable formula; the IR's arithmetic/comparison primitives cannot faithfully express multi-branch categorical set-membership without an ENUM/MEMBERSHIP primitive, so most categories are represented as cited UNSUPPORTED operands within an OR\",\n      \"All frozen-inventory quantitative thresholds within this definition (24-month and 1-year maturity limits, 90% fund threshold, 10-Business-Day conversion window) are individually cited and attached to their respective operand; the two Approved Bank capital/surplus thresholds are modeled with full fidelity in the separately extracted 'Approved Bank' definition\"\n    ],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"\\\"Cash Equivalents\\\" means: (1) United States dollars or Canadian dollars; ... (13) investments, classified in accordance with GAAP as current assets, in money market investment programs...\",\n    \"inventoryItemIds\": [\"ba7383560e2c813dfc980543\", \"067b0e5b8c71122b70e681f1\", \"83b525efbf2987a57fcafd95\", \"b0222599546fcdec46da748e\"]\n  },\n  {\n    \"localRef\": \"d2\",\n    \"termName\": \"Approved Bank\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"IF\",\n      \"citation\": \"§1.01\",\n      \"condition\": { \"kind\": \"TRANSACTION_INPUT_REFERENCE\", \"inputName\": \"CounterpartyBank_IsUSBank\" },\n      \"then\": {\n        \"kind\": \"MONEY\",\n        \"amount\": 250000000,\n        \"currency\": \"USD\",\n        \"citation\": \"§1.01\",\n        \"excerpt\": \"capital and surplus of not less than $250.0 million in the case of U.S. banks\",\n        \"inventoryItemIds\": [\"ef6290ba17af109cb88f0cd8\"]\n      },\n      \"else\": {\n        \"kind\": \"MONEY\",\n        \"amount\": 100000000,\n        \"currency\": \"USD\",\n        \"citation\": \"§1.01\",\n        \"excerpt\": \"$100.0 million (or the U.S. Dollars equivalent as of the date of determination) in the case of non-U.S. banks\",\n        \"inventoryItemIds\": [\"c2d70438daa8f136d0f51bee\"]\n      }\n    },\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\n      \"'Approved Bank' is expressly defined inline within the Cash Equivalents definition (clause (4) parenthetical) and both the U.S.-bank and non-U.S.-bank capital-and-surplus minimums are stated explicitly and fully captured as literal thresholds\"\n    ],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"any domestic or foreign commercial bank having capital and surplus of not less than $250.0 million in the case of U.S. banks and $100.0 million (or the U.S. Dollars equivalent as of the date of determination) in the case of non-U.S. banks (any such bank being an \\\"Approved Bank\\\")\",\n    \"inventoryItemIds\": [\"ef6290ba17af109cb88f0cd8\", \"c2d70438daa8f136d0f51bee\"]\n  },\n  {\n    \"localRef\": \"d3\",\n    \"termName\": \"Cash Management Obligations\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Restricted Party\", \"Cash Management Services\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Purely descriptive, non-quantitative categorical definition; fully captured by the excerpt with no numeric or formulaic economics to model\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means (1) obligations of any Restricted Party in respect of any overdraft and related liabilities arising from treasury, depository, cash pooling arrangements and cash management or treasury services or any automated clearing house transfers of funds, (2) other obligations in respect of netting services, employee credit or purchase card programs and similar arrangements or (3) obligations in respect of any other Cash Management Services or any other bank products or other services related, ancillary or complementary to the foregoing\"\n  },\n  {\n    \"localRef\": \"d4\",\n    \"termName\": \"Cash Management Services\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Purely descriptive, non-quantitative categorical definition; fully captured by the excerpt\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means any of the following: ACH transactions, treasury, bank products, services and/or cash management services, including, without limitation, controlled disbursement services, working capital lines, lines of credit, overdraft facilities, foreign exchange facilities deposit and other accounts and merchant services\"\n  },\n  {\n    \"localRef\": \"d5\",\n    \"termName\": \"Central Bank Rate\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Fully descriptive reference to an externally published rate; no internal numeric threshold to model\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means, the Bank of England (or any successor thereto)'s \\\"Bank Rate\\\" as published by the Bank of England (or any successor thereto) from time to time\"\n  },\n  {\n    \"localRef\": \"d6\",\n    \"termName\": \"CFC\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Code\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Cross-reference definition to a statutory term (Section 957 of the Code); fully captured descriptively, no numeric economics\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means a \\\"controlled foreign corporation\\\" within the meaning of Section 957 of the Code\"\n  },\n  {\n    \"localRef\": \"d7\",\n    \"termName\": \"Change in Law\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Governmental Authority\", \"Effective Date\", \"Administrative Agent\", \"Lender\", \"Borrowers\", \"Subsidiaries\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\n      \"Definition is a categorical/conditional description (adoption or change of law, or issuance of a request/guideline/directive, plus a deeming proviso for Dodd-Frank and Basel III rules applied in a manner comparable to similarly situated borrowers) with no numeric threshold to model; fully captured descriptively\",\n      \"The illustrative closing cross-reference to Section 2.13 is non-material to the definition's own meaning (it merely notes one place the term is used) and was not independently resolved (out of scope due to source-context budget); this does not affect the definition's own sufficiency\"\n    ],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means (a) the adoption of any rule, regulation, treaty or other law after the Effective Date, (b) any change in any rule, regulation, treaty or other law or in the administration, interpretation or application thereof by any Governmental Authority after the Effective Date or (c) the making or issuance of any request, guideline or directive... provided that... (i) any requests, rules, guidelines or directives under the Dodd-Frank Wall Street Reform and Consumer Protection Act of 2010... and (ii) any requests, rules, guidelines or directives promulgated by... Basel III, shall in each case be deemed to be a \\\"Change in Law\\\"... but only to the extent such rules... are applied to the Borrowers and their respective Subsidiaries... in substantially the same manner as applied to other similarly situated borrowers...\"\n  }\n]",
+   "rules": [],
+   "sharedCapacities": "[]",
+   "irExtensionCandidates": "[\n  {\n    \"sourceEvidence\": \"§1.01 'Cash Equivalents' definition, clauses (1)-(13) plus the foreign-obligor/foreign-subsidiary and non-listed-currency provisos\",\n    \"semanticRequirement\": \"A defined term that qualifies if the subject item matches ANY of many heterogeneous, non-boolean-typed instrument/category descriptions (currency identity, issuer/guarantor identity, maturity, credit rating tier, percentage-of-assets composition, obligor jurisdiction), several of which nest their own numeric qualifiers of different types\",\n    \"whyExistingPrimitivesFail\": \"OR/AND expect boolean-evaluable operands; COMPARE/IF require both sides to share one value type; there is no primitive for 'the instrument's type is one of {government security, CD, repo, commercial paper, rated note, money-market fund interest, foreign-subsidiary equivalent, ...}' where each branch is gated by a different kind of qualifier (currency list membership, rating tier, maturity length, asset-composition percentage) without forcing an artificial OR of ill-fitting UNSUPPORTED/literal nodes\",\n    \"candidateGeneralizedPrimitive\": \"CATEGORY_MEMBERSHIP(candidates: [{label, description, qualifierExpression}]) - an enumerated, multi-branch categorical qualification node distinct from boolean OR, allowing each branch to carry its own typed qualifier(s) and citation without requiring uniform boolean typing across branches\"\n  }\n]",
+   "overallNotes": "[\n  \"This region is a definitions-only excerpt (Section 1.01); no independently operative permission/prohibition rules were found, so the rules and sharedCapacities arrays are empty.\",\n  \"Six distinct defined terms were extracted from the supplied source: Cash Equivalents, Approved Bank (extracted as its own term because it is expressly defined inline within the Cash Equivalents clause (4) parenthetical, not merely cross-referenced), Cash Management Obligations, Cash Management Services, Central Bank Rate, CFC, and Change in Law.\",\n  \"The 'Approved Bank' cross-reference flagged by the pipeline as OUT_OF_SCOPE ('no detected definition ... in document doc-a') refers to the absence of a standalone alphabetized 'Approved Bank' entry; the term is nonetheless substantively defined inline in this very provision, and that inline definition was compiled with full fidelity as its own WireDefinition (d2).\",\n  \"The 'Section 2.13' cross-reference in the Change in Law definition could not be expanded (source-context budget exhausted) but is illustrative/non-material to the definition's own meaning and does not affect its sufficiency rating.\",\n  \"The $250.0 million value flagged by deterministic scanning as uncovered by any frozen-inventory item is in fact the same U.S.-bank Approved Bank threshold covered by inv-item ef6290ba17af109cb88f0cd8; it is represented as a literal MONEY node in the extracted 'Approved Bank' definition (d2) rather than duplicated on the Cash Equivalents definition, to preserve honest value-correspondence between inventory items and the nodes that actually carry their values.\",\n  \"The Cash Equivalents definition is fundamentally an enumerated, disjunctive categorical list (13 numbered clauses plus extension/proviso paragraphs) rather than an arithmetic formula; it is represented as an OR of operands, most of which are UNSUPPORTED citation-bearing placeholders for purely qualitative category descriptions, while every frozen-inventory quantitative threshold (maturity limits, the 90% investment-fund threshold, and the 10-Business-Day conversion window) is attached to its own cited operand node so that its value is faithfully represented and traceable.\"\n]"
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T17:02:07.974Z",
+   "inputTokens": 22929,
+   "outputTokens": 24392,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 1,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 231060,
+   "calculatedCostUsd": 0.28977800000000004
+  },
+  "cacheKey": "800bd761cb1402f48a2add88457cb393de9666ea9d7734da43de3081202500e0",
+  "compiledAt": "2026-09-14T17:02:07.974Z"
+ },
+ "wave": "A",
+ "attemptsSoFar": 1
+}
