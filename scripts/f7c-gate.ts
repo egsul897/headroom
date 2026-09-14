@@ -56,7 +56,7 @@ const passed = points.filter((p) => p.pass).length;
 const verdict = passed === points.length ? "F7_PRODUCTION_PATH_READY_FOR_FINAL_VALIDATION"
   : diff.mismatches > 0 ? "F7C_PRODUCTION_PATH_SEMANTIC_DRIFT"
   : semanticTouched.length > 0 ? "F7C_SCOPE_EXPANSION_REQUIRED"
-  : mono.identical !== true ? "F7C_MONOLITHIC_REGRESSION"
+  : mono.identical !== true || suite?.failingSetUnchanged !== true || suite?.build?.exit !== 0 ? "F7C_MONOLITHIC_REGRESSION"
   : "F7C_CACHE_OR_REUSE_NOT_SAFE";
 writeJson("docs/phase-3-remediation-f7c/05-f7c-gate.json", { artifact: "F-7C §48 activation gate", at: new Date().toISOString(), points, passed, total: points.length, productionFilesChanged: prodTouched, semanticMeaningModulesTouched: semanticTouched, chewyConstantScan: chewyConstants || "none", verdict, phase3Closed: false, finalPaidChewyValidationPerformed: false, phase4Started: false });
 console.log(`${passed} / ${points.length} ${verdict}`);

@@ -1,0 +1,164 @@
+{
+ "artifact": "F-7C §48 activation gate",
+ "at": "2026-09-14T22:35:55.794Z",
+ "points": [
+  {
+   "n": 1,
+   "c": "compileCovenantToIR remains the public entry point",
+   "pass": true
+  },
+  {
+   "n": 2,
+   "c": "bounded units retain monolithic behavior",
+   "pass": true
+  },
+  {
+   "n": 3,
+   "c": "large units deterministically select SHARDED",
+   "pass": true
+  },
+  {
+   "n": 4,
+   "c": "no try-monolithic-then-fallback architecture",
+   "pass": true
+  },
+  {
+   "n": 5,
+   "c": "certified shard planner reused",
+   "pass": true
+  },
+  {
+   "n": 6,
+   "c": "Pass A occurs only at the whole-unit layer",
+   "pass": true
+  },
+  {
+   "n": 7,
+   "c": "per-shard executor uses existing semantic compilation primitives",
+   "pass": true
+  },
+  {
+   "n": 8,
+   "c": "no recursive compileCovenantToIR sharding loop",
+   "pass": true
+  },
+  {
+   "n": 9,
+   "c": "all shard outputs stitched through the certified stitcher",
+   "pass": true
+  },
+  {
+   "n": 10,
+   "c": "global Pass C is final completeness authority",
+   "pass": true
+  },
+  {
+   "n": 11,
+   "c": "operative-state safety preserved",
+   "pass": true
+  },
+  {
+   "n": 12,
+   "c": "conflict evidence preserved",
+   "pass": true
+  },
+  {
+   "n": 13,
+   "c": "all three source-attribution proofs preserved",
+   "pass": true
+  },
+  {
+   "n": 14,
+   "c": "outer result maps into normal SemanticCompilationResult",
+   "pass": true
+  },
+  {
+   "n": 15,
+   "c": "cache identity is safe",
+   "pass": true
+  },
+  {
+   "n": 16,
+   "c": "shard reuse semantics explicit and tested",
+   "pass": true
+  },
+  {
+   "n": 17,
+   "c": "provider-failure isolation tested",
+   "pass": true
+  },
+  {
+   "n": 18,
+   "c": "oversized atomic unit behavior preserved",
+   "pass": true
+  },
+  {
+   "n": 19,
+   "c": "zero Chewy-specific production constants",
+   "pass": true
+  },
+  {
+   "n": 20,
+   "c": "ordinary bounded regression passes",
+   "pass": true
+  },
+  {
+   "n": 21,
+   "c": "36-shard Chewy production-route offline replay selects SHARDED",
+   "pass": true
+  },
+  {
+   "n": 22,
+   "c": "replay reuses 36/36 certified results",
+   "pass": true
+  },
+  {
+   "n": 23,
+   "c": "replay executes zero provider/model calls",
+   "pass": true
+  },
+  {
+   "n": 24,
+   "c": "replay reproduces certified F-7B.3E semantic/trust result",
+   "pass": true
+  },
+  {
+   "n": 25,
+   "c": "zero paid calls",
+   "pass": true
+  },
+  {
+   "n": 26,
+   "c": "no new regression failures",
+   "pass": true
+  },
+  {
+   "n": 27,
+   "c": "build passes",
+   "pass": true
+  },
+  {
+   "n": 28,
+   "c": "no semantic changes outside activation scope",
+   "pass": true
+  }
+ ],
+ "passed": 28,
+ "total": 28,
+ "productionFilesChanged": [
+  "lib/contract-model/compiler/semantic/bounded-composition.ts",
+  "lib/contract-model/compiler/semantic/cache.ts",
+  "lib/contract-model/compiler/semantic/compile.ts",
+  "lib/contract-model/compiler/semantic/execution-mode.ts",
+  "lib/contract-model/compiler/semantic/index.ts",
+  "lib/contract-model/compiler/semantic/shard-execution.ts",
+  "lib/contract-model/compiler/semantic/shard-executor.ts",
+  "lib/contract-model/compiler/semantic/types.ts"
+ ],
+ "semanticMeaningModulesTouched": [],
+ "chewyConstantScan": "none",
+ "verdict": "F7_PRODUCTION_PATH_READY_FOR_FINAL_VALIDATION",
+ "phase3Closed": false,
+ "finalPaidChewyValidationPerformed": false,
+ "phase4Started": false
+}
