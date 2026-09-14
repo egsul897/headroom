@@ -1,0 +1,153 @@
+{
+ "artifact": "F-7B \u00a73/\u00a74 PRE-REGISTERED scorer, gates and metrics - frozen BEFORE any model call (scorer code: scripts/f7b-score.ts; runner: scripts/f7b-run-stage.ts)",
+ "gitSha": "8b6bd445ae56bb6d66406706d76b45a83ac690be",
+ "startingSha": "8b6bd445ae56bb6d66406706d76b45a83ac690be",
+ "planHash": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+ "frozenIdentity": {
+  "gitSha": "8b6bd445ae56bb6d66406706d76b45a83ac690be",
+  "documentSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+  "unitFixtureSha256": "a9221844bc412fe55a7be082a5ec06ceccbd211710d34da4e0ba2168296b5f35",
+  "candidateRef": "phase-3-validation:chwy:1.01",
+  "companyId": "phase-3-validation-chwy",
+  "instrumentKey": "chwy-2026-revolving-credit-instrument",
+  "structuralIndexIdentity": {
+   "anchorNodeId": "structural-node:8b885cd23dfbee72c58ad5da",
+   "definitionsInUnit": 379,
+   "unitsSha256": "5c7f6c4a12148611c7113cc12651e5c07348569a4cbf1279338af88316780fe8"
+  },
+  "sourceContextIdentity": {
+   "state": "COMPLETE_LOCAL_SOURCE",
+   "regionCharStart": 8980,
+   "regionCharEnd": 362503,
+   "regionChars": 353523,
+   "regionSha256": "b7e3f0214f7b2fe353b401e312816877c415795dfc7c8c22d09804d50b2b604c",
+   "unresolvedReferences": 144
+  },
+  "frozenInventory": {
+   "frozenContentHash": "9e5ec23580d3bbf3b5a69fdd932b6874caec1a14c0e3ef1e6e203dda07258e34",
+   "items": 109,
+   "material": 108,
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "algorithmVersion": "semantic-accountability.v3"
+  },
+  "shardPlannerAlgorithmVersion": "semantic-compilation-shards.v1",
+  "compilerPromptVersion": "semantic-accountability-compiler-prompt.v4",
+  "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+  "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+  "irSchemaVersion": "headroom-covenant-ir.v1",
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "budget": {
+   "targetPrimaryChars": 12000,
+   "maxPrimaryChars": 24000,
+   "maxContextChars": 10000,
+   "maxContextEntryChars": 1800,
+   "maxUnitsPerShard": 16
+  }
+ },
+ "scorer": {
+  "A_ownedInventoryAccountability": "global Pass C (reconcileInventoryWithComposition over the FULL frozen 1.01 inventory vs the stitched IR) is the only authority. Material = CRITICAL|MATERIAL (108). Reported: represented, dispositioned (any non-REPRESENTED non-MISSING disposition), MISSING_FROM_COMPOSITION, split by owner-shard status; materialAccountabilityRate = (represented + dispositioned) / 108.",
+  "B_valuePreservation": "distinct MONEY/PERCENT/RATIO/NUMBER literals in the union of every kept shard composition vs the stitched IR; a distinct value absent after stitching that is not carried solely by a dropped contextual emission is a stitching loss (must be 0).",
+  "C_lineagePreservation": "inventoryItemIds occurrences before/after; digest-form ids canonicalized; claims on items owned by another shard are stripped and counted (never credited); Pass C dangling lineage after stitching must be 0.",
+  "D_definitionCoverage": "per frozen DEFINITION unit (379): COMPILED (a stitched definition object with that term) | ITEMS_REPRESENTED_WITHOUT_DEFINITION_OBJECT | DISPOSITIONED_NON_COMPUTATIONAL (all its material items dispositioned) | NO_INVENTORY_ITEMS_NO_IR (Pass A inventoried nothing material for it) | MISSING_MATERIAL | OWNER_SHARD_NOT_COMPLETE; conflicts = DEFINITION_CONFLICT collisions.",
+  "E_dependencyResolution": "definition dependsOnTerms resolved to a stitched definition, to a frozen source unit only, or unresolved; cross-shard = term owned by another shard; rule dependsOn resolved vs unresolvedDependencies; MISSING_CONTEXT dispositions/sufficiency; context truncation per shard.",
+  "F_shardFailureBehavior": "status per shard incl. NOT_EXECUTED; retries; stitched status must not be COMPLETED while any shard is not SHARD_COMPLETE; unresolvedOwnedItems listed.",
+  "G_stitchCollisions": "count by ShardCollisionKind.",
+  "H_sourceProvenance": "a kept definition whose term is not a frozen DEFINITION unit and carries no inventory lineage, or a kept rule with no lineage whose sourceSectionRef is outside 1.01, is source-unverifiable (must be 0 surviving).",
+  "I_unsupportedPartial": "UNSUPPORTED expression nodes, sufficiency distributions, partial/missing-context/schema-failure shards, OUTPUT_TRUNCATED shards.",
+  "J_falseCompleteness": "stitched COMPLETED with any non-complete shard / material missing / !semanticallyComplete; a shard compile status COMPLETED with owned material missing; dangerous silent omission = a material item absent from Pass C or owned by a non-producing shard yet not listed unresolved; hidden failed shards; contextual ownership credit = any stitched object's lineage naming an item whose owner is a different shard than the emitting shard.",
+  "K_humanReference": "the 14 frozen human reference items (docs/phase-3-validation/04) whose span starts inside the 1.01 region; $X.XM / Y% / Z.ZZx literals in their descriptions are matched deterministically against the stitched IR's value literals; reported per item with the owner shard and its status. Diagnostic (no threshold): the frozen inventory itself disclosed INVENTORY_COVERAGE_GAP (95 uninventoried values), so an unmatched reference value may be a Pass A gap, not a sharding defect."
+ },
+ "costEstimator": {
+  "model": "anthropic/claude-sonnet-5",
+  "rateCard": {
+   "inputPerMTokUsd": 2,
+   "outputPerMTokUsd": 10
+  },
+  "inputTokens": "TURN_FACTOR 3.29 x rendered first-turn tokens (recorded 6.08: 314,844 all-turn / 95,786 first-turn)",
+  "outputTokens": "F-7A planner estimate 1,500 + 2,500 x owned units (above the recorded 1,535 output tokens per emitted object)",
+  "perTurnGuard": "before EVERY turn: cost(rendered turn chars x 0.3957 tokens/char, shard output estimate) must fit the remaining stage/mission cap, else the turn is refused and the shard ends as a provider failure; previously completed shards stay frozen",
+  "perShardGuard": "before EVERY shard: the pre-call estimate must fit the remaining cap, else the shard is not started and the canary is reported cost-bounded"
+ },
+ "windowEnvelope": {
+  "normalShardMaxSingleTurnInputTokens": 60000,
+  "nearCeilingOutputTokens": 100000,
+  "maxTokensSetting": 128000,
+  "rationale": "rendered first turns max 30,016 for normal shards (34,344 oversized); 60k allows F-1 continuation growth while staying < 20% of the monolithic 312,143; the oversized shard is reported separately and never pooled."
+ },
+ "stage1": {
+  "selectedShardIds": [
+   "shard:4f06625557e9aecbbb7a",
+   "shard:1c29e71eef1717d4f9e1",
+   "shard:3e3910ea2efd9edd45a3",
+   "shard:aac727054a5da5f1a9fd",
+   "shard:bf3da01cb454860cdf5f"
+  ],
+  "criteria": [
+   "D oversized atomic-definition shard",
+   "B highest owned-material-item count (ties: lowest ordinal)",
+   "C highest dependency-context entry count (ties: lowest ordinal)",
+   "E highest owned quantitative-value count (ties: lowest ordinal)",
+   "F highest foreign-term reference count (6.08 minority-lineage risk shape; ties: lowest ordinal)",
+   "A ordinary definition shard: closest to median source chars and median material items, with >=1 material item (ties: lowest ordinal)",
+   "G full-size (max units) shard owning ZERO material items - the textual/non-computational path where the compiler must disposition or emit nothing rather than invent IR (ties: lowest ordinal)",
+   "H densest full-size shard: highest owned-material-item count among max-unit shards (ties: lowest ordinal)"
+  ],
+  "trancheEstimateUsd": 2.3096,
+  "capUsd": 3.0,
+  "gate": [
+   "1 no dangerous silent omission (=0)",
+   "2 no false completeness (=0)",
+   "3 zero shard-harness/protocol defect (no SHARD_SCHEMA_FAILURE, MODEL_SCHEMA_FAILURE or TRANSPORT_OR_INTERNAL_ERROR)",
+   "4 successful shards retain output (raw submission retained + evidence file)",
+   "5 contextual ownership credit = 0",
+   "6 no production invariant violated (ownership 108/108 once; stitched status never COMPLETED on a partial run; unowned lineage claims stripped)",
+   "7 ordinary shards inside the envelope (largest single turn < 60,000 input tokens, no OUTPUT_TRUNCATED)",
+   "8 oversized shard SHARD_COMPLETE/SHARD_PARTIAL or explicitly non-complete in the stitched shard table",
+   "9 no MISSING_CONTEXT shard and no MISSING_CONTEXT sufficiency object",
+   "10 owned material recovery reported as the exact fraction (accounted material / owned material); pass = > 0 accounted and not all missing; the judgment 'architecture breakage vs disclosed model incompleteness' is made on the per-shard breakdown, with no post-hoc numeric threshold"
+  ],
+  "retryPolicy": "one retry, SHARD_PROVIDER_FAILURE only, cost guard still binding"
+ },
+ "stage2": {
+  "estimator": "per remaining shard: pre-registered estimate x WORST observed Stage 1 actual/estimate ratio x 1.25 safety; if the sum exceeds (15.00 - spent) -> F7B_COST_BOUND_BEFORE_COMPLETION with zero Stage 2 calls",
+  "perShardGuard": "same estimate must fit the remaining mission cap before EACH shard, else stop (cost-bounded incomplete canary; completed shards frozen)",
+  "retryPolicy": "reuse Stage 1 SHARD_COMPLETE results by shardHash; every remaining shard exactly once; one retry on SHARD_PROVIDER_FAILURE only; never retry PARTIAL / MISSING_CONTEXT / schema-valid unsupported / disclosed incompleteness"
+ },
+ "successGates": {
+  "trust": [
+   "dangerous silent omission = 0",
+   "false completeness = 0",
+   "failed/partial shards explicit (stitched.shards + unresolvedOwnedItems)",
+   "source-unverifiable IR surviving = 0",
+   "contextual ownership credit = 0",
+   "conflicts explicit (DEFINITION_CONFLICT keeps owner copy as AMBIGUOUS + review; never merged)"
+  ],
+  "ownership": [
+   "every material item owned exactly once (plan.ownershipProof)",
+   "every material item REPRESENTED | dispositioned | MISSING_FROM_COMPOSITION in Pass C (no fourth state)",
+   "zero silently dropped owned material items (J)"
+  ],
+  "stitching": [
+   "values lost by stitching = 0 (B)",
+   "dangling references caused by stitching = 0 (Pass C dangling lineage + surviving dangling rule refs)",
+   "no incompatible duplicate silently merged (DEFINITION_CONFLICT count == conflicts flagged AMBIGUOUS)",
+   "globally stable ids (F-7A \u00a710 tests; stitched ids derive from owner unit + source order)",
+   "successful shard results survive unrelated shard failure/retry (reuse by shardHash; F-7A \u00a719 E/F tests)"
+  ],
+  "window": [
+   "no normal shard's single turn >= 60,000 input tokens",
+   "oversized shard reported separately",
+   "no monolithic 1.01 input (max single turn << 312,143)"
+  ],
+  "semanticQuality": "accountable semantic coverage of the stitched result vs the frozen Pass A inventory (A) and the 14 frozen human reference items in 1.01 (K), plus deterministic source values (B); no historical IR baseline exists for 1.01 (the monolithic compile returned nothing) and none is invented."
+ },
+ "verdictMapping": {
+  "F7_CLOSED": "all 16 closure-gate points (mission \u00a725) met",
+  "F7_CANARY_PASSED_ACTIVATION_PENDING": "canary passed but production activation would need semantic change",
+  "F7_NEEDS_ARCHITECTURAL_ITERATION": "owner shards systematically fail to recover owned semantics or Stage 1 reveals an architectural defect",
+  "F7_NOT_SAFE": "any trust gate violated",
+  "F7B_ENVIRONMENT_BLOCKED": "provider/environment blocks execution or Stage 1 tranche cannot fit $3",
+  "F7B_COST_BOUND_BEFORE_COMPLETION": "Stage 1 passed but the frozen plan cannot complete under $15"
+ }
+}

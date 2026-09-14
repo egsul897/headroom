@@ -1,0 +1,137 @@
+{
+ "artifact": "F-7B §1 freeze + §7 Stage 1 precheck (0 model calls)",
+ "at": "2026-09-14T12:35:10.838Z",
+ "gitSha": "8b6bd445ae56bb6d66406706d76b45a83ac690be",
+ "startingSha": "8b6bd445ae56bb6d66406706d76b45a83ac690be",
+ "identity": {
+  "gitSha": "8b6bd445ae56bb6d66406706d76b45a83ac690be",
+  "documentSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+  "unitFixtureSha256": "a9221844bc412fe55a7be082a5ec06ceccbd211710d34da4e0ba2168296b5f35",
+  "candidateRef": "phase-3-validation:chwy:1.01",
+  "companyId": "phase-3-validation-chwy",
+  "instrumentKey": "chwy-2026-revolving-credit-instrument",
+  "structuralIndexIdentity": {
+   "anchorNodeId": "structural-node:8b885cd23dfbee72c58ad5da",
+   "definitionsInUnit": 379,
+   "unitsSha256": "5c7f6c4a12148611c7113cc12651e5c07348569a4cbf1279338af88316780fe8"
+  },
+  "sourceContextIdentity": {
+   "state": "COMPLETE_LOCAL_SOURCE",
+   "regionCharStart": 8980,
+   "regionCharEnd": 362503,
+   "regionChars": 353523,
+   "regionSha256": "b7e3f0214f7b2fe353b401e312816877c415795dfc7c8c22d09804d50b2b604c",
+   "unresolvedReferences": 144
+  },
+  "frozenInventory": {
+   "frozenContentHash": "9e5ec23580d3bbf3b5a69fdd932b6874caec1a14c0e3ef1e6e203dda07258e34",
+   "items": 109,
+   "material": 108,
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "algorithmVersion": "semantic-accountability.v3"
+  },
+  "shardPlannerAlgorithmVersion": "semantic-compilation-shards.v1",
+  "compilerPromptVersion": "semantic-accountability-compiler-prompt.v4",
+  "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+  "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+  "irSchemaVersion": "headroom-covenant-ir.v1",
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "budget": {
+   "targetPrimaryChars": 12000,
+   "maxPrimaryChars": 24000,
+   "maxContextChars": 10000,
+   "maxContextEntryChars": 1800,
+   "maxUnitsPerShard": 16
+  }
+ },
+ "baseline": {
+  "planHash": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+  "shardCount": 36,
+  "materialItems": 108,
+  "ownedOnce": 108,
+  "unowned": 0,
+  "multiplyOwned": 0,
+  "maxRenderedInputTokens": 34344,
+  "plannerMaxInputTokens": 30562,
+  "oversizedShards": 1
+ },
+ "reproduction": {
+  "shaMatchesStarting": true,
+  "planHash": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+  "planHashMatches": true,
+  "shardCount": 36,
+  "shardCountMatches": true,
+  "ownership": {
+   "materialItems": 108,
+   "ownedOnce": 108,
+   "unowned": 0,
+   "multiplyOwned": 0
+  },
+  "ownershipMatches": true,
+  "plannerMaxInputTokens": 30562,
+  "plannerMaxMatches": true,
+  "maxRenderedInputTokens": 34344,
+  "maxRenderedMatches": true,
+  "oversizedShards": 1,
+  "oversizedMatches": true,
+  "unplacedItems": 0
+ },
+ "baselineReproduced": true,
+ "verdictIfNotReproduced": null,
+ "renderedFirstTurn": {
+  "maxTokens": 34344,
+  "medianTokens": 24837,
+  "p95Tokens": 30016,
+  "totalTokens": 896103,
+  "historicalMonolithicFirstTurnTokens": 312143
+ },
+ "preRegisteredCostEstimator": {
+  "model": "anthropic/claude-sonnet-5",
+  "rateCard": {
+   "inputPerMTokUsd": 2,
+   "outputPerMTokUsd": 10
+  },
+  "inputTokens": "TURN_FACTOR 3.29 x rendered first-turn tokens (recorded 6.08: 314,844 all-turn / 95,786 first-turn)",
+  "outputTokens": "F-7A planner estimate 1,500 + 2,500 x owned units (above the recorded 1,535 output tokens per emitted object)",
+  "perTurnGuard": "before EVERY turn: cost(rendered turn chars x 0.3957 tokens/char, shard output estimate) must fit the remaining stage/mission cap, else the turn is refused and the shard ends as a provider failure; previously completed shards stay frozen",
+  "perShardGuard": "before EVERY shard: the pre-call estimate must fit the remaining cap, else the shard is not started and the canary is reported cost-bounded"
+ },
+ "caps": {
+  "stage1CapUsd": 3,
+  "missionCapUsd": 15
+ },
+ "stage1": {
+  "selectedShardIds": [
+   "shard:4f06625557e9aecbbb7a",
+   "shard:1c29e71eef1717d4f9e1",
+   "shard:3e3910ea2efd9edd45a3",
+   "shard:aac727054a5da5f1a9fd",
+   "shard:bf3da01cb454860cdf5f"
+  ],
+  "trancheEstimateUsd": 2.3096,
+  "fitsStage1Cap": true,
+  "verdictIfNotFit": null
+ },
+ "fullPlanPreRegisteredEstimateUsd": 15.9114,
+ "gateway": {
+  "keyPresent": true,
+  "credits": {
+   "balance": "29.087466",
+   "total_used": "185.912534"
+  },
+  "balanceCoversMissionCap": true
+ },
+ "historicalMonolithic": {
+  "firstTurnInputTokens": 312143,
+  "outputTokens": 60318,
+  "costUsd": 1.227466,
+  "unitCostInclPassA": 2.04469,
+  "status": "FAILED / PROVIDER_FAILURE"
+ },
+ "outputEstimateSanity": {
+  "plannerMaxOutputTokens": 41500,
+  "maxTokensSetting": 128000,
+  "monolithicImpliedOutputTokens": 949000
+ }
+}
