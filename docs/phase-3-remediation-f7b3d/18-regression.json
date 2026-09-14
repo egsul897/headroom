@@ -1,0 +1,17 @@
+{
+ "artifact": "F-7B.3D §18 - regression evidence: the scorer change moves no test and no production behaviour",
+ "method": "The full vitest suite was run twice: once in a detached git worktree at the starting SHA, once in the working tree with the scorer change applied. Failing FILE SETS were diffed, not just counted.",
+ "baselineSha": "9c97a544634b98eecbd0c5da627ff0f1d59ce24e",
+ "fullSuite": {
+  "baseline": { "testFilesFailed": 107, "testsFailed": 162, "testsPassed": 3113, "testsSkipped": 524 },
+  "afterChange": { "testFilesFailed": 107, "testsFailed": 162, "testsPassed": 3126, "testsSkipped": 524 },
+  "failingFileSetDiff": { "onlyBaseline": [], "onlyAfterChange": [], "identical": true },
+  "note": "The 162 pre-existing failures are unchanged in count and in identity; they are database-dependent suites that fail the same way at the starting SHA. The +13 passing tests are exactly the new tests/contract-model/f7b3d-scorer-alignment.test.ts cases A-J."
+ },
+ "newTests": { "file": "tests/contract-model/f7b3d-scorer-alignment.test.ts", "tests": 13, "passed": 13 },
+ "typecheck": { "command": "npx tsc --noEmit -p tsconfig.json", "nonFoundationAuditErrors": 0 },
+ "lint": { "command": "npx eslint on the five changed/added files", "exit": 0 },
+ "productionScope": { "command": "git diff --name-only HEAD | grep -E '^(lib|app|components)/'", "matches": 0, "conclusion": "no production semantic module was touched; the change is confined to the scorer, its tests and the zero-cost harness" },
+ "modelCalls": 0,
+ "costUsd": 0
+}

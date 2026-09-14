@@ -1,0 +1,143 @@
+{
+ "artifact": "F-7B.3D §13 - the updated authoritative F-7 scorer over the same 25 frozen real shards (0 model calls, $0)",
+ "at": "2026-09-14T18:42:40.285Z",
+ "gitSha": "9c97a544634b98eecbd0c5da627ff0f1d59ce24e",
+ "planHash": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+ "planHashMatchesBaseline": true,
+ "frozenShardCount": 25,
+ "trust": {
+  "dangerousSilentOmissions": 0,
+  "falseCompleteness": 0,
+  "contextualOwnershipCredit": 0,
+  "sourceUnverifiableIrSurviving": 0,
+  "conflictingDuplicateSilentlyMerged": 0,
+  "valuesLostByStitching": 0,
+  "ownedLineageDistinctLost": 0,
+  "ownedLineageOccurrencesLostDiagnostic": 6,
+  "danglingReferencesCausedByStitching": 0,
+  "danglingLineageAfterPassC": 0,
+  "danglingRuleReferencesSurviving": 0,
+  "danglingRuleReferencesConvertedExplicitly": 0,
+  "failedShardHidden": 0,
+  "missingMaterialOwnedItemHidden": 0
+ },
+ "valuePreservation": {
+  "valueOccurrencesBefore": 78,
+  "valueOccurrencesAfter": 74,
+  "distinctValuesBefore": 45,
+  "distinctValuesAfter": 43,
+  "valuesOnlyInDroppedContextualEmissions": 0,
+  "valuesInConflictEvidence": 4,
+  "valuesPreservedOnlyByConflictEvidence": 2,
+  "valuesLostByStitching": 0,
+  "valuesLostList": [],
+  "valuesLostBeforeConflictEvidenceDiagnostic": 2,
+  "dispositions": {
+   "OWNED_PRESERVED": 43,
+   "OWNED_PRESERVED_IN_CONFLICT_EVIDENCE": 2,
+   "CONTEXTUAL_EXCLUDED": 0,
+   "OWNED_LOST": 0
+  },
+  "duplicatesCollapsed": 0,
+  "multisetOccurrencesRemoved": 4
+ },
+ "lineagePreservation": {
+  "lineageRefsBefore": 154,
+  "lineageRefsAfter": 148,
+  "ownedLineageDistinctExpected": 92,
+  "ownedLineageDistinctPreserved": 92,
+  "ownedLineageDistinctLost": 0,
+  "ownedLineageDistinctLostList": [],
+  "ownedLineageDistinctPreservedOnlyByConflictEvidence": 3,
+  "ownedLineageOccurrencesExpected": 154,
+  "ownedLineageOccurrencesPreserved": 154,
+  "ownedLineageOccurrencesLostDiagnostic": 6,
+  "dispositions": {
+   "OWNED_PRESERVED": 89,
+   "OWNED_PRESERVED_IN_CONFLICT_EVIDENCE": 3,
+   "CONTEXTUAL_EXCLUDED": 0,
+   "OWNED_LOST": 0
+  },
+  "canonicalizedDigestIds": 59,
+  "strippedClaimsOnUnownedItems": 0,
+  "strippedOnItemsOwnedBySomeShard": 0,
+  "strippedOnUnknownIds": 0,
+  "danglingLineageAfter": 0,
+  "lineageRefsInDroppedEmissions": 0,
+  "unknownLineageIdsBefore": 0
+ },
+ "sourceVerifiability": {
+  "objectsKept": 327,
+  "sourceUnverifiableSurviving": 0,
+  "list": [],
+  "definitionsWithLineage": 42,
+  "proofClassCounts": {
+   "PLANNER_DEFINITION_UNIT": 237,
+   "OWNED_INVENTORY_LINEAGE": 42,
+   "UNIQUE_PRIMARY_SOURCE_DECLARATION": 77,
+   "NONE": 0
+  },
+  "definitionConflicts": 2,
+  "conflictVariants": 4,
+  "conflictsRequiringReview": 2
+ },
+ "conflicts": {
+  "count": 2,
+  "variants": 4,
+  "requiringReview": 2,
+  "names": [
+   "Annual Threshold",
+   "Approved Bank"
+  ],
+  "values": [
+   "MONEY:100000000",
+   "MONEY:216000000",
+   "MONEY:250000000",
+   "PERCENT:0.3"
+  ],
+  "canonicalSufficiency": [
+   {
+    "termName": "Annual Threshold",
+    "sufficiency": "AMBIGUOUS"
+   },
+   {
+    "termName": "Approved Bank",
+    "sufficiency": "AMBIGUOUS"
+   }
+  ]
+ },
+ "moneyPreserved": {
+  "MONEY:100000000": true,
+  "MONEY:250000000": true
+ },
+ "accountability": {
+  "executedShardMaterialOwned": 93,
+  "executedRepresented": 53,
+  "executedIntentionallyNonComputational": 1,
+  "executedUnsupported": 21,
+  "executedAmbiguous": 0,
+  "executedMissing": 18,
+  "executedAccountabilityRate": 0.8065,
+  "globalPassC": {
+   "inventoried": 109,
+   "material": 108,
+   "represented": 63,
+   "intentionallyNonComputational": 1,
+   "unsupported": 21,
+   "ambiguous": 0,
+   "missingFromComposition": 24,
+   "materialMissingFromComposition": 23,
+   "criticalMissingFromComposition": 6,
+   "materialQuantitativeValues": 142,
+   "materialQuantitativeValuesMissing": 25,
+   "uninventoriedValues": 95,
+   "unaccountedSource": 721,
+   "danglingLineageReferences": 0,
+   "canonicalizedLineageReferences": 0
+  },
+  "semanticallyComplete": false
+ },
+ "contextualEmissions": 17,
+ "paidCalls": 0,
+ "costUsd": 0
+}

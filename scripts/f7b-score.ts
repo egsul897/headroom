@@ -9,7 +9,9 @@ import type { ShardExecutionResult, ShardPlan, StitchedCompilation } from "../li
 import type { IRDefinition, IRRule, IRSharedCapacity } from "../lib/contract-model/ir/types";
 import type { Frozen, ShardRecord } from "./f7b-lib";
 
-export interface Census { rules: number; definitions: number; sharedCapacities: number; exprNodes: number; unsupportedNodes: number; values: string[]; lineageRefs: number; distinctLineageItems: number; dependencyEdges: number; unresolvedDependencies: number; ruleReferences: number }
+export interface Census { rules: number; definitions: number; sharedCapacities: number; exprNodes: number; unsupportedNodes: number; values: string[]; lineageRefs: number; distinctLineageItems: number; dependencyEdges: number; unresolvedDependencies: number; ruleReferences: number;
+  /** F-7B.3D: the raw lineage ids as cited, so a caller can canonicalize before comparing id spaces. */
+  lineageIds: string[] }
 export function census(c: { rules: IRRule[]; definitions: IRDefinition[]; sharedCapacities: IRSharedCapacity[] }): Census {
   let nodes = 0; const values: string[] = []; const lineage: string[] = []; let deps = 0; let unresolvedDeps = 0; const ruleRefs: string[] = []; let unsupported = 0;
   const walk = (x: unknown): void => {
@@ -23,7 +25,7 @@ export function census(c: { rules: IRRule[]; definitions: IRDefinition[]; shared
   for (const r of c.rules) { walk(r); deps += r.dependsOn.length; unresolvedDeps += (r.unresolvedDependencies ?? []).length; }
   for (const d of c.definitions) walk(d);
   for (const s of c.sharedCapacities) walk(s);
-  return { rules: c.rules.length, definitions: c.definitions.length, sharedCapacities: c.sharedCapacities.length, exprNodes: nodes, unsupportedNodes: unsupported, values: values.sort(), lineageRefs: lineage.length, distinctLineageItems: new Set(lineage).size, dependencyEdges: deps, unresolvedDependencies: unresolvedDeps, ruleReferences: ruleRefs.length };
+  return { rules: c.rules.length, definitions: c.definitions.length, sharedCapacities: c.sharedCapacities.length, exprNodes: nodes, unsupportedNodes: unsupported, values: values.sort(), lineageRefs: lineage.length, distinctLineageItems: new Set(lineage).size, dependencyEdges: deps, unresolvedDependencies: unresolvedDeps, ruleReferences: ruleRefs.length, lineageIds: lineage };
 }
 const multisetDiff = (a: string[], b: string[]): string[] => { const m = new Map<string, number>(); for (const x of b) m.set(x, (m.get(x) ?? 0) + 1); const out: string[] = []; for (const x of a) { const n = m.get(x) ?? 0; if (n > 0) m.set(x, n - 1); else out.push(x); } return out; };
 const digestOf = (id: string): string => { const i = id.indexOf(":"); return (i >= 0 ? id.slice(i + 1) : id).toLowerCase(); };
@@ -80,12 +82,66 @@ export function scoreCanary(frozen: Frozen, results: ShardExecutionResult[], rec
   const distinctBefore = [...new Set(before.values)], distinctAfter = new Set(after.values), distinctDropped = new Set(droppedCensus.values);
   const valuesLostByStitching = distinctBefore.filter((v) => !distinctAfter.has(v) && !distinctDropped.has(v));
   const valuesOnlyInDroppedEmissions = distinctBefore.filter((v) => !distinctAfter.has(v) && distinctDropped.has(v));
-  const B = { valueOccurrencesBefore: before.values.length, valueOccurrencesAfter: after.values.length, distinctValuesBefore: distinctBefore.length, distinctValuesAfter: distinctAfter.size, valuesOnlyInDroppedContextualEmissions: valuesOnlyInDroppedEmissions.length, valuesLostByStitching: valuesLostByStitching.length, valuesLostList: valuesLostByStitching.slice(0, 20), duplicatesCollapsed: droppedObjects.duplicatesCollapsed, multisetOccurrencesRemoved: multisetDiff(before.values, after.values).length };
+  // F-7B.3D: a source-backed amount also survives when it is held in FIRST-CLASS conflict evidence. F-7B.3B made the
+  // losing side of a definition conflict a retained, reviewable artifact rather than something discarded, so a scorer
+  // that inspects only the canonical arrays under-reports preservation. Preserved is not resolved: the conflict stays
+  // unresolved and review-required, and none of this reaches Pass C.
+  const conflictCensus = census({ rules: [], definitions: (stitched.definitionConflicts ?? []).flatMap((c) => c.variants.map((v) => v.definition)), sharedCapacities: [] });
+  const distinctConflict = new Set(conflictCensus.values);
+  const valuesLostAfterConflictEvidence = valuesLostByStitching.filter((v) => !distinctConflict.has(v));
+  // F-7B.3D §9: every distinct pre-stitch value gets ONE explicit disposition, so contextual evidence can never be
+  // mistaken for owned preservation. CONTEXTUAL_EXCLUDED is its own class - an emission the stitcher dropped because the
+  // shard did not own it is neither owned preservation nor an owned loss.
+  const tally = (xs: string[]): Record<string, number> => xs.reduce<Record<string, number>>((a, x) => { a[x] = (a[x] ?? 0) + 1; return a; }, { OWNED_PRESERVED: 0, OWNED_PRESERVED_IN_CONFLICT_EVIDENCE: 0, CONTEXTUAL_EXCLUDED: 0, OWNED_LOST: 0 });
+  const valueDisposition = (v: string): string => distinctAfter.has(v) ? "OWNED_PRESERVED" : distinctDropped.has(v) ? "CONTEXTUAL_EXCLUDED" : distinctConflict.has(v) ? "OWNED_PRESERVED_IN_CONFLICT_EVIDENCE" : "OWNED_LOST";
+  const valueDispositions = tally(distinctBefore.map(valueDisposition));
+  const B = { valueOccurrencesBefore: before.values.length, valueOccurrencesAfter: after.values.length, distinctValuesBefore: distinctBefore.length, distinctValuesAfter: distinctAfter.size, valuesOnlyInDroppedContextualEmissions: valuesOnlyInDroppedEmissions.length, valuesInConflictEvidence: distinctConflict.size, valuesPreservedOnlyByConflictEvidence: valuesLostByStitching.filter((v) => distinctConflict.has(v)).length, valuesLostByStitching: valuesLostAfterConflictEvidence.length, valuesLostList: valuesLostAfterConflictEvidence.slice(0, 20), valuesLostBeforeConflictEvidenceDiagnostic: valuesLostByStitching.length, dispositions: valueDispositions, duplicatesCollapsed: droppedObjects.duplicatesCollapsed, multisetOccurrencesRemoved: multisetDiff(before.values, after.values).length };
 
   // ---- C. lineage preservation
+  // F-7B.3D: the gate is DISTINCT OWNED inventory ids, compared in ONE id space. The model may cite an item by its bare
+  // digest while the stitcher and Pass C use the full `inv-item:<digest>` form, so raw-versus-canonical comparison
+  // invents losses that never happened. Occurrence counts stay as diagnostics; they are not the gate, because one owned
+  // item cited five times and kept once is not four losses.
   const knownIds = new Set(inv.items.map((i) => i.inventoryItemId)); const knownDigests = new Set(inv.items.map((i) => digestOf(i.inventoryItemId)));
+  const digestIndex = new Map(inv.items.map((i) => [digestOf(i.inventoryItemId), i.inventoryItemId]));
+  const canon = (raw: string): string => (knownIds.has(raw) ? raw : digestIndex.get(digestOf(raw)) ?? raw);
   const stripped = stitched.collisions.filter((c) => c.kind === "LINEAGE_CLAIM_ON_UNOWNED_ITEM");
-  const C = { lineageRefsBefore: before.lineageRefs, lineageRefsAfter: after.lineageRefs, canonicalizedDigestIds: stitched.canonicalizedLineageReferences, strippedClaimsOnUnownedItems: stripped.length, strippedOnItemsOwnedBySomeShard: stripped.filter((c) => c.ownerShardId !== null).length, strippedOnUnknownIds: stripped.filter((c) => c.ownerShardId === null).length, danglingLineageAfter: acc.counts.danglingLineageReferences, lineageRefsInDroppedEmissions: droppedCensus.lineageRefs, unknownLineageIdsBefore: (() => { let n = 0; const walk = (x: unknown): void => { if (!x || typeof x !== "object") return; if (Array.isArray(x)) { x.forEach(walk); return; } const o = x as Record<string, unknown>; if (Array.isArray(o.inventoryItemIds)) for (const id of o.inventoryItemIds as string[]) if (!knownIds.has(id) && !knownDigests.has(digestOf(id))) n++; for (const v of Object.values(o)) if (v && typeof v === "object") walk(v); }; kept.forEach((r) => walk(r.composition)); return n; })() };
+  const strippedIds = new Set(stripped.map((c) => c.itemId).filter((x): x is string => Boolean(x)).map(canon));
+  const ownedItemsOfShard = new Map(plan.shards.map((sh) => [sh.shardId, new Set(sh.ownedItemIds)]));
+  // expected owned lineage = what each OWNER shard cited about items it actually owns, in canonical form
+  const ownedLineageOccurrences: string[] = [];
+  for (const r of kept) {
+    const owned = ownedItemsOfShard.get(r.shardId) ?? new Set<string>();
+    const cited = census({ rules: r.composition!.rules, definitions: r.composition!.definitions, sharedCapacities: r.composition!.sharedCapacities }).lineageIds;
+    for (const id of cited) { const c = canon(id); if (owned.has(c)) ownedLineageOccurrences.push(c); }
+  }
+  const expectedDistinct = new Set(ownedLineageOccurrences);
+  const preservedIds = new Set<string>([
+    ...after.lineageIds.map(canon),
+    ...conflictCensus.lineageIds.map(canon),
+  ]);
+  const lineageDistinctLost = [...expectedDistinct].filter((id) => !preservedIds.has(id) && !strippedIds.has(id));
+  // F-7B.3D §9: the same explicit disposition for every distinct owned lineage id.
+  const afterCanon = new Set(after.lineageIds.map(canon));
+  const conflictCanon = new Set(conflictCensus.lineageIds.map(canon));
+  const lineageDisposition = (id: string): string => afterCanon.has(id) ? "OWNED_PRESERVED" : strippedIds.has(id) ? "CONTEXTUAL_EXCLUDED" : conflictCanon.has(id) ? "OWNED_PRESERVED_IN_CONFLICT_EVIDENCE" : "OWNED_LOST";
+  const lineageDispositions = tally([...expectedDistinct].map(lineageDisposition));
+  const C = {
+    lineageRefsBefore: before.lineageRefs, lineageRefsAfter: after.lineageRefs,
+    ownedLineageDistinctExpected: expectedDistinct.size,
+    ownedLineageDistinctPreserved: [...expectedDistinct].filter((id) => preservedIds.has(id)).length,
+    ownedLineageDistinctLost: lineageDistinctLost.length,
+    ownedLineageDistinctLostList: lineageDistinctLost.slice(0, 20),
+    ownedLineageDistinctPreservedOnlyByConflictEvidence: [...expectedDistinct].filter((id) => !after.lineageIds.map(canon).includes(id) && conflictCensus.lineageIds.map(canon).includes(id)).length,
+    ownedLineageOccurrencesExpected: ownedLineageOccurrences.length,
+    ownedLineageOccurrencesPreserved: ownedLineageOccurrences.filter((id) => preservedIds.has(id)).length,
+    ownedLineageOccurrencesLostDiagnostic: before.lineageRefs - after.lineageRefs,
+    dispositions: lineageDispositions,
+    canonicalizedDigestIds: stitched.canonicalizedLineageReferences,
+    strippedClaimsOnUnownedItems: stripped.length, strippedOnItemsOwnedBySomeShard: stripped.filter((c) => c.ownerShardId !== null).length, strippedOnUnknownIds: stripped.filter((c) => c.ownerShardId === null).length,
+    danglingLineageAfter: acc.counts.danglingLineageReferences, lineageRefsInDroppedEmissions: droppedCensus.lineageRefs,
+    unknownLineageIdsBefore: (() => { let n = 0; const walk = (x: unknown): void => { if (!x || typeof x !== "object") return; if (Array.isArray(x)) { x.forEach(walk); return; } const o = x as Record<string, unknown>; if (Array.isArray(o.inventoryItemIds)) for (const id of o.inventoryItemIds as string[]) if (!knownIds.has(id) && !knownDigests.has(digestOf(id))) n++; for (const v of Object.values(o)) if (v && typeof v === "object") walk(v); }; kept.forEach((r) => walk(r.composition)); return n; })(),
+  };
 
   // ---- D. definition coverage per DEFINITION unit
   const defUnits = plan.units.filter((u) => u.kind === "DEFINITION");
@@ -139,10 +195,31 @@ export function scoreCanary(frozen: Frozen, results: ShardExecutionResult[], rec
 
   // ---- H. source provenance: every kept object must be anchored to the frozen source (a DEFINITION unit term, lineage to a known item, or the 1.01 section for rules)
   const unverifiable: { kind: string; id: string; term?: string; reason: string }[] = [];
-  for (const d of stitched.definitions) { const hasLineage = (d.inventoryItemIds ?? []).length > 0 || census({ rules: [], definitions: [d], sharedCapacities: [] }).lineageRefs > 0; if (!stitchedTermsInUnits(d.termName) && !hasLineage) unverifiable.push({ kind: "DEFINITION", id: d.definitionId, term: d.termName, reason: "term is not a frozen DEFINITION unit and the object carries no inventory lineage" }); }
+  // F-7B.3D: definition attribution has THREE authoritative proof classes since F-7B.2. A definition anchored to a unique
+  // declaration in its owner shard's own primary source is source-verified even though it is neither a planner
+  // DEFINITION unit nor lineage-bearing. Scoring it unverifiable was a false positive of the pre-F-7B.2 scorer, not a
+  // real finding. SHARD_FIRST_UNIT is deliberately NOT a proof class: shard position is not evidence.
+  const anchoredDefinitionIds = new Set((stitched.definitionAttribution ?? []).filter((a) => a.anchor).map((a) => a.objectId));
+  for (const d of stitched.definitions) {
+    const hasLineage = (d.inventoryItemIds ?? []).length > 0 || census({ rules: [], definitions: [d], sharedCapacities: [] }).lineageRefs > 0;
+    const proofs: string[] = [];
+    if (stitchedTermsInUnits(d.termName)) proofs.push("PLANNER_DEFINITION_UNIT");
+    if (hasLineage) proofs.push("OWNED_INVENTORY_LINEAGE");
+    if (anchoredDefinitionIds.has(d.definitionId)) proofs.push("UNIQUE_PRIMARY_SOURCE_DECLARATION");
+    if (proofs.length === 0) unverifiable.push({ kind: "DEFINITION", id: d.definitionId, term: d.termName, reason: "no planner DEFINITION unit, no owned inventory lineage and no unique primary-source declaration" });
+  }
   function stitchedTermsInUnits(t: string): boolean { return defUnits.some((u) => u.normalizedTermName === normalizeDefinedTermRef(t)); }
   for (const r of stitched.rules) { const hasLineage = census({ rules: [r], definitions: [], sharedCapacities: [] }).lineageRefs > 0; const inSection = (r.sourceSectionRef ?? "").replace(/^\s*(?:sections?|§+)\s*/i, "").startsWith("1.01"); if (!hasLineage && !inSection) unverifiable.push({ kind: "RULE", id: r.ruleId, reason: `no inventory lineage and sourceSectionRef ${r.sourceSectionRef} is outside the frozen unit` }); }
-  const H = { objectsKept: stitched.definitions.length + stitched.rules.length + stitched.sharedCapacities.length, sourceUnverifiableSurviving: unverifiable.length, list: unverifiable.slice(0, 30), definitionsWithLineage: stitched.definitions.filter((d) => census({ rules: [], definitions: [d], sharedCapacities: [] }).lineageRefs > 0).length };
+  const proofClassCounts = { PLANNER_DEFINITION_UNIT: 0, OWNED_INVENTORY_LINEAGE: 0, UNIQUE_PRIMARY_SOURCE_DECLARATION: 0, NONE: 0 };
+  for (const d of stitched.definitions) {
+    const hasLineage = census({ rules: [], definitions: [d], sharedCapacities: [] }).lineageRefs > 0;
+    let n = 0;
+    if (stitchedTermsInUnits(d.termName)) { proofClassCounts.PLANNER_DEFINITION_UNIT++; n++; }
+    if (hasLineage) { proofClassCounts.OWNED_INVENTORY_LINEAGE++; n++; }
+    if (anchoredDefinitionIds.has(d.definitionId)) { proofClassCounts.UNIQUE_PRIMARY_SOURCE_DECLARATION++; n++; }
+    if (n === 0) proofClassCounts.NONE++;
+  }
+  const H = { objectsKept: stitched.definitions.length + stitched.rules.length + stitched.sharedCapacities.length, sourceUnverifiableSurviving: unverifiable.length, list: unverifiable.slice(0, 30), definitionsWithLineage: stitched.definitions.filter((d) => census({ rules: [], definitions: [d], sharedCapacities: [] }).lineageRefs > 0).length, proofClassCounts, definitionConflicts: (stitched.definitionConflicts ?? []).length, conflictVariants: (stitched.definitionConflicts ?? []).reduce((a, c) => a + c.variants.length, 0), conflictsRequiringReview: (stitched.definitionConflicts ?? []).filter((c) => c.requiresReview).length };
 
   // ---- I. unsupported / partial semantics
   const I = { unsupportedNodes: after.unsupportedNodes, exprNodes: after.exprNodes, definitionSufficiency: D.sufficiency, ruleSufficiency: Object.fromEntries([...new Set(stitched.rules.map((r) => r.sufficiency))].map((s) => [s, stitched.rules.filter((r) => r.sufficiency === s).length])), shardsPartial: results.filter((r) => r.status === "SHARD_PARTIAL").length, shardsMissingContext: results.filter((r) => r.status === "SHARD_MISSING_CONTEXT").length, shardsSchemaFailure: results.filter((r) => r.status === "SHARD_SCHEMA_FAILURE").length, outputTruncatedShards: records.filter((r) => r.failureReasons.includes("OUTPUT_TRUNCATED")).map((r) => r.shardId) };
@@ -196,6 +273,6 @@ export function scoreCanary(frozen: Frozen, results: ShardExecutionResult[], rec
   const refWalk = (x: unknown): void => { if (!x || typeof x !== "object") return; if (Array.isArray(x)) { x.forEach(refWalk); return; } const o = x as Record<string, unknown>; if (o.kind === "RULE_REFERENCE" && typeof o.ruleId === "string" && !stitchedRuleIds.has(o.ruleId) && externalIds.has(o.ruleId)) danglingRuleRefs++; for (const v of Object.values(o)) if (v && typeof v === "object") refWalk(v); };
   refWalk(stitched.rules); refWalk(stitched.definitions); refWalk(stitched.sharedCapacities);
   for (const r of stitched.rules) for (const d of r.dependsOn) if (!stitchedRuleIds.has(d.targetRuleId) && externalIds.has(d.targetRuleId)) danglingRuleRefs++;
-  const trust = { dangerousSilentOmissions: J.dangerousSilentOmissions, falseCompleteness: J.falseCompleteness, contextualOwnershipCredit: J.contextualOwnershipCredit, sourceUnverifiableIrSurviving: H.sourceUnverifiableSurviving, conflictingDuplicateSilentlyMerged: J.conflictSilentMerge, valuesLostByStitching: B.valuesLostByStitching, danglingReferencesCausedByStitching: acc.counts.danglingLineageReferences + danglingRuleRefs, danglingLineageAfterPassC: acc.counts.danglingLineageReferences, danglingRuleReferencesSurviving: danglingRuleRefs, danglingRuleReferencesConvertedExplicitly: stitched.collisions.filter((c) => c.kind === "DANGLING_RULE_REFERENCE").length, failedShardHidden: J.hiddenFailedShards, missingMaterialOwnedItemHidden: J.dangerousSilentOmissions };
+  const trust = { dangerousSilentOmissions: J.dangerousSilentOmissions, falseCompleteness: J.falseCompleteness, contextualOwnershipCredit: J.contextualOwnershipCredit, sourceUnverifiableIrSurviving: H.sourceUnverifiableSurviving, conflictingDuplicateSilentlyMerged: J.conflictSilentMerge, valuesLostByStitching: B.valuesLostByStitching, ownedLineageDistinctLost: C.ownedLineageDistinctLost, ownedLineageOccurrencesLostDiagnostic: C.ownedLineageOccurrencesLostDiagnostic, danglingReferencesCausedByStitching: acc.counts.danglingLineageReferences + danglingRuleRefs, danglingLineageAfterPassC: acc.counts.danglingLineageReferences, danglingRuleReferencesSurviving: danglingRuleRefs, danglingRuleReferencesConvertedExplicitly: stitched.collisions.filter((c) => c.kind === "DANGLING_RULE_REFERENCE").length, failedShardHidden: J.hiddenFailedShards, missingMaterialOwnedItemHidden: J.dangerousSilentOmissions };
   return { A, B, C, D, E, F, G, H, I, J, K, Ksummary, W, trust, perUnitDefinitionCoverage: perUnit };
 }
