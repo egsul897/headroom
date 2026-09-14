@@ -1,0 +1,3178 @@
+{
+ "record": {
+  "stage": 1,
+  "attempt": 1,
+  "shardId": "shard:3e3910ea2efd9edd45a3",
+  "shardHash": "183134ad7785f161b0d350297d89603860aada6016bbf04609fc1dd0c172957f",
+  "ordinal": 27,
+  "ownedUnits": 16,
+  "sourceChars": 10103,
+  "contextEntries": 3,
+  "contextChars": 2796,
+  "unresolvedContext": 2,
+  "oversized": false,
+  "ownedItems": 3,
+  "ownedMaterialItems": 3,
+  "estimatedFirstTurnInputTokens": 26033,
+  "preCallEstimate": {
+   "inputTokens": 85649,
+   "outputTokens": 41500,
+   "usd": 0.586298
+  },
+  "actual": {
+   "inputTokens": 182224,
+   "outputTokens": 37676,
+   "turns": 5,
+   "latencyMs": 346087,
+   "costUsd": 0.7412080000000001,
+   "attemptCount": 5,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "toolCalls": 10,
+  "toolCallNames": [
+   "getReferencedProvision",
+   "getDefinition",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getChildren",
+   "getOperativeProvision",
+   "getReferencedProvision",
+   "getDefinition"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 23,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 3,
+  "ownedAccountability": {
+   "represented": 3,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "valuesRepresented": 4,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "REPRESENTED": 3
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Planned Expenditures",
+   "Platform",
+   "Transaction Threshold",
+   "Annual Threshold",
+   "Pro Forma Basis",
+   "Pro Forma Compliance",
+   "Proposed Change"
+  ],
+  "unresolvedIssues": [
+   "[definition[d6]] getDefinition('Excess Cash Flow') was requested and returned only a truncated excerpt that did not reach the specific clause defining 'Planned Expenditures'; a narrower-span retrieval was not possible before tool-call budget exhaustion.",
+   "[definition[d7]] Section 5.01 and its sub-clause 5.01(g) were retrieved but only contained the reporting-covenant lead-in/trailing proviso text; the specific sentence defining 'Platform' was not reached before truncation.",
+   "[definition[d10].OR[0]] Whether a given disposition is an 'Asset Sale of Collateral' under Section 6.05(a)(2)(ii) or an equity issuance is a fact-specific characterization, not an arithmetic/comparison primitive. The dollar/percentage thresholds themselves are separately and fully modeled in the 'Transaction Threshold' and 'Annual Threshold' definitions.",
+   "[definition[d10].OR[1]] Sections 6.01 and 9.02 were requested but only their headings were retrievable within tool budget (substantive sub-clause text not resolved); 'Credit Agreement Refinancing Indebtedness' is used but not defined in the supplied source.",
+   "[definition[d10]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d11].ADD[1]] Carryforward amount depends on prior-year utilization history not present in the supplied evidence.",
+   "[definition[d11]] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12].ADD[1]] Carryforward amount depends on prior-year utilization history not present in the supplied evidence.",
+   "[definition[d12]] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d16].ADD[0]] The Consolidated EBITDA definition was supplied only as a truncated head/tail excerpt; the specific proviso language was not within the retrieved span.",
+   "[definition[d16].ADD[1]] Defined by cross-reference to Section 1.08(d); a getReferencedProvision request for Section 1.08(d) failed due to tool-call budget exhaustion.",
+   "[definition[d16]] ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d18]] 'Disposed EBITDA' is a dependent defined term not included in the supplied source; a getDefinition('Disposed EBITDA') request was made but failed due to tool-call budget exhaustion. The adjustment amount itself is also a good-faith management projection, not a fixed formula.",
+   "This source span is a Definitions-article excerpt (§1.01) containing ~24 independently meaningful defined terms (including the inline-named 'Transaction Threshold' and 'Annual Threshold' embedded within 'Prepayment Event', and the trio 'Pro Forma Basis'/'Pro Forma Compliance'/'Pro Forma Effect' defined together); no independently operative permission/prohibition rules were found in the text, so the rules array is empty.",
+   "Several definitions ('Planned Expenditures', 'Platform', 'Pro Forma Adjustment' (partially), 'Pro Forma Disposal Adjustment') depend on cross-referenced text (Excess Cash Flow, Section 5.01, Section 1.08(d), 'Disposed EBITDA') that could not be fully retrieved before tool-call budget exhaustion; these are marked MISSING_CONTEXT rather than guessed.",
+   "All three FROZEN SEMANTIC INVENTORY items (Transaction Threshold exception, Annual Threshold exception, Post-Transaction Period) are consumed on the nodes that actually carry their values, per the accountability obligation; the $216.0M/30% values additionally flagged by the deterministic value-detector are represented as explicit MONEY/PERCENT literal nodes within the 'Annual Threshold' MAX expression."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:3e3910ea2efd9edd45a3",
+  "shardHash": "183134ad7785f161b0d350297d89603860aada6016bbf04609fc1dd0c172957f",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:ffcf0bfdaaabb96a7c3261ff",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Permitted Receivables Financings",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Receivables Non-Recourse Facility",
+      "Receivables Recourse Facility"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition is a fully-stated collective reference to two other defined facility types; no independent computation is required to represent it."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, collectively, any (i) Receivables Non-Recourse Facility and (ii) a Receivables Recourse Facility."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:73477679448aee5e587a5e48",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Permitted Tax Restructuring",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Collateral",
+      "Effective Date"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Qualitative, good-faith materiality test fully stated in the source text; not a computed value."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any reorganizations, restructurings and other activities related to Tax planning and Tax reorganization ... so long as such Permitted Tax Restructuring does not materially impair the value of the Collateral, when taken as a whole (as determined by the Initial Borrower in good faith)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e58d79e188032d89e5108058",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Permitted Transferees",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Affiliate",
+      "Equity Interests"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully-stated qualitative class of persons; no computation involved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) such Person's Immediate Family Members ... and (b) without duplication ... such Person's heirs, legatees, executors and/or administrators upon the death of such Person..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:917288e4ab71baf56c8fe7ed",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Person",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Governmental Authority"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Standard enumerated definition, fully stated."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means any natural person, corporation, limited liability company, trust, joint venture, association, company, partnership, Governmental Authority or other entity."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:640b77cfbf4aa7534c1b28ca",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Plan",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Multiemployer Plan",
+      "ERISA Affiliate",
+      "Loan Party"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Qualitative ERISA-status definition fully stated; no numeric or formula component."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any employee pension benefit plan (other than a Multiemployer Plan) subject to ... Title IV of ERISA or Section 412 of the Code or Section 302 of ERISA..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:4274dcffde56bf5288936638",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Planned Expenditures",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01, cross-referencing the definition of 'Excess Cash Flow'",
+      "semanticDescription": "Meaning assigned within the definition of 'Excess Cash Flow'",
+      "reason": "getDefinition('Excess Cash Flow') was requested and returned only a truncated excerpt that did not reach the specific clause defining 'Planned Expenditures'; a narrower-span retrieval was not possible before tool-call budget exhaustion.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:4cbf39975cf62e9817481037"
+     },
+     "dependsOnTerms": [
+      "Excess Cash Flow"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "The cross-referenced clause within 'Excess Cash Flow' that actually defines 'Planned Expenditures' was not reachable within the retrieved (truncated) excerpt or remaining tool budget.",
+      "getDefinition('Excess Cash Flow') was requested and returned only a truncated excerpt that did not reach the specific clause defining 'Planned Expenditures'; a narrower-span retrieval was not possible before tool-call budget exhaustion."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in the definition of \"Excess Cash Flow.\""
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:2066fb262b4b94de81f3cba9",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Platform",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01, cross-referencing Section 5.01 (see also Section 5.01(g))",
+      "semanticDescription": "Meaning assigned in Section 5.01",
+      "reason": "Section 5.01 and its sub-clause 5.01(g) were retrieved but only contained the reporting-covenant lead-in/trailing proviso text; the specific sentence defining 'Platform' was not reached before truncation.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:0ce7aa58117440c1be272f1a"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Retrieved Section 5.01/5.01(g) text did not contain the actual defining sentence for 'Platform' before truncation; no further tool budget remained.",
+      "Section 5.01 and its sub-clause 5.01(g) were retrieved but only contained the reporting-covenant lead-in/trailing proviso text; the specific sentence defining 'Platform' was not reached before truncation."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 5.01."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:187499755889327baa9b8ae2",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Post-Transaction Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Specified Transaction"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Period boundary fully stated by reference to consummation date and the 12th full fiscal quarter thereafter; no missing components."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the period beginning on the date on which such Specified Transaction is consummated and ending on the last day of the twelfth (12th) full consecutive fiscal quarter of the Borrowers immediately following the date on which such Specified Transaction is consummated."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:ba01eab3fa76c9aad024202a"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:affbf4f285fefb92035ce9ee",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Preferred Stock",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Equity Interest"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully-stated qualitative definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any Equity Interest with preferential rights of payment of dividends or upon liquidation, dissolution, or winding up."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e09f44f57ea500b3a6b60c6f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Prepayment Event",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "OR",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:e71a65c574bce7f994907d3a",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01(a) (Prepayment Event, clause (a))",
+        "semanticDescription": "Asset Sale Prepayment Event: any Asset Sale of Collateral by a Loan Party consummated solely pursuant to Section 6.05(a)(2)(ii), other than (i) issuances of Equity Interests, (ii) dispositions within the Transaction Threshold on a per-transaction/series basis, and (iii) dispositions within the Annual Threshold in the aggregate for the fiscal year (only the excess over such thresholds must be offered to be prepaid; unused amounts carry forward to future fiscal years).",
+        "reason": "Whether a given disposition is an 'Asset Sale of Collateral' under Section 6.05(a)(2)(ii) or an equity issuance is a fact-specific characterization, not an arithmetic/comparison primitive. The dollar/percentage thresholds themselves are separately and fully modeled in the 'Transaction Threshold' and 'Annual Threshold' definitions.",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:877e906edea42d4d89fd2dda"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01(b) (Prepayment Event, clause (b))",
+        "semanticDescription": "the incurrence by the Borrowers or any other Restricted Party of any Indebtedness, other than Indebtedness permitted under Section 6.01 (other than Credit Agreement Refinancing Indebtedness) or permitted by the Required Lenders pursuant to Section 9.02",
+        "reason": "Sections 6.01 and 9.02 were requested but only their headings were retrievable within tool budget (substantive sub-clause text not resolved); 'Credit Agreement Refinancing Indebtedness' is used but not defined in the supplied source.",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:f6a5f34090628168222dbbc0"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Transaction Threshold",
+      "Annual Threshold",
+      "Asset Sale",
+      "Collateral",
+      "Equity Interests",
+      "Credit Agreement Refinancing Indebtedness",
+      "Restricted Party"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Clause (a)'s Asset-Sale trigger and equity-issuance carve-out are event-occurrence characterizations not reducible to IR arithmetic primitives; the Transaction Threshold/Annual Threshold dollar figures ARE fully modeled as separate definitions.",
+      "Clause (b)'s exceptions reference Sections 6.01 and 9.02, whose substantive text could not be retrieved within tool budget, and 'Credit Agreement Refinancing Indebtedness' is undefined in the supplied source.",
+      "Whether a given disposition is an 'Asset Sale of Collateral' under Section 6.05(a)(2)(ii) or an equity issuance is a fact-specific characterization, not an arithmetic/comparison primitive. The dollar/percentage thresholds themselves are separately and fully modeled in the 'Transaction Threshold' and 'Annual Threshold' definitions.",
+      "Sections 6.01 and 9.02 were requested but only their headings were retrievable within tool budget (substantive sub-clause text not resolved); 'Credit Agreement Refinancing Indebtedness' is used but not defined in the supplied source.",
+      "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) any Asset Sale of Collateral ... pursuant to Section 6.05(a)(2)(ii) ... (each such event, an \"Asset Sale Prepayment Event\"); or (b) the incurrence by the Borrowers or any other Restricted Party of any Indebtedness, other than Indebtedness permitted under Section 6.01 ... or permitted by the Required Lenders pursuant to Section 9.02."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:8be13f21436e11a0a4c6cc64",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Transaction Threshold",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "ADD",
+      "type": "MONEY",
+      "exprId": "ir-expr:0e43db9836accad621b8b302",
+      "operands": [
+       {
+        "kind": "MAX",
+        "type": "MONEY",
+        "exprId": "ir-expr:42e23587ee05d551dc2e4f7e",
+        "operands": [
+         {
+          "kind": "MONEY",
+          "type": "MONEY",
+          "amount": 144000000,
+          "currency": "USD",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:adfce0a1652a4c94965726fd"
+         },
+         {
+          "kind": "MULTIPLY",
+          "type": "MONEY",
+          "exprId": "ir-expr:e8e104b27267f15136f0730b",
+          "operands": [
+           {
+            "kind": "PERCENT",
+            "type": "PERCENT",
+            "value": 0.2,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:b35be193f9ec860ffd5e19a3"
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Consolidated EBITDA",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          }
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "inventoryItemIds": [
+         "inv-item:2096052f696a830b72bcf305"
+        ]
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01",
+        "semanticDescription": "unused portion of the Transaction Threshold carried forward from prior fiscal years",
+        "reason": "Carryforward amount depends on prior-year utilization history not present in the supplied evidence.",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:b0ea0bf6ed8b2a3210287536"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Test Period",
+      "Pro Forma Basis"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Base per-transaction/series threshold (greater of $144.0 million and 20% of Consolidated EBITDA on a Pro Forma Basis) is fully represented; the carryforward-of-unused-amount mechanic is UNSUPPORTED for lack of prior-year utilization data.",
+      "Carryforward amount depends on prior-year utilization history not present in the supplied evidence.",
+      "ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "dispositions resulting in aggregate Net Proceeds not exceeding the greater of $144.0 million and 20% of Consolidated EBITDA (calculated on a Pro Forma Basis) for the most recently ended Test Period in the case of any single transaction or series of related transactions (the \"Transaction Threshold\")"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:2096052f696a830b72bcf305"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:9798cd4753246e6ba790c06e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Annual Threshold",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "ADD",
+      "type": "MONEY",
+      "exprId": "ir-expr:4045bce8bb08831958104ab5",
+      "operands": [
+       {
+        "kind": "MAX",
+        "type": "MONEY",
+        "exprId": "ir-expr:726398bc84cb39fe012b0c55",
+        "operands": [
+         {
+          "kind": "MONEY",
+          "type": "MONEY",
+          "amount": 216000000,
+          "currency": "USD",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:0afa9b66228e20a922c1c1e4"
+         },
+         {
+          "kind": "MULTIPLY",
+          "type": "MONEY",
+          "exprId": "ir-expr:46585e5991a19f64edbcfe33",
+          "operands": [
+           {
+            "kind": "PERCENT",
+            "type": "PERCENT",
+            "value": 0.3,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:ea1bb0310fef35c0138de81c"
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Consolidated EBITDA",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          }
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "inventoryItemIds": [
+         "inv-item:435bebbab162719b57e8df07"
+        ]
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01",
+        "semanticDescription": "unused portion of the Annual Threshold carried forward from prior fiscal years",
+        "reason": "Carryforward amount depends on prior-year utilization history not present in the supplied evidence.",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:007511e56bc973143d90a25f"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Test Period",
+      "Pro Forma Basis"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Base annual-aggregate threshold (greater of $216.0 million and 30% of Consolidated EBITDA on a Pro Forma Basis) is fully represented; the carryforward-of-unused-amount mechanic is UNSUPPORTED for lack of prior-year utilization data.",
+      "Carryforward amount depends on prior-year utilization history not present in the supplied evidence.",
+      "ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "dispositions resulting in aggregate Net Proceeds not exceeding the greater of $216.0 million and 30% of Consolidated EBITDA (calculated on a Pro Forma Basis) for the most recently ended Test Period in the case of transactions in the aggregate in any fiscal year (the \"Annual Threshold\") (with only the amount in excess ... required to be offered to be prepaid and any portion ... not utilized in any given fiscal year may be carried forward ...)"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:435bebbab162719b57e8df07"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:33a98352214571cf356f47dd",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Prepayment Notice",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully-stated cross-reference to a notice form; not a computed value."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "a notice of prepayment of Loans pursuant to Section 2.09(e), substantially in the form of Exhibit J."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f19abadf325487e1e4b64848",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Present Fair Saleable Value",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully-stated qualitative valuation standard; no formula given in the source."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the amount that could be obtained by an independent willing seller from an independent willing buyer if the assets ... are sold with reasonable promptness in an arm's-length transaction under present conditions..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:aee7ec5d0c50ac9d74e5ff1e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Prime Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully-stated external-index rate mechanism (Wall Street Journal / Federal Reserve H.15 fallback); not a formula over agreement-defined metrics."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the rate of interest last quoted by The Wall Street Journal as the \"Prime Rate\" ... or, if ... ceases to quote such rate, the highest per annum interest rate published by the Federal Reserve Board..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:344a1b360d5a77587392e755",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Pro Forma Adjustment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "(no evidence captured)",
+      "semanticDescription": "unrecognized or malformed expression (kind=\"ADD\")",
+      "reason": "ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "attemptedStructure": {
+       "kind": "ADD",
+       "type": "NUMBER",
+       "exprId": "ir-expr:41e409286e3d1319902276f1",
+       "operands": [
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01, definition of 'Consolidated EBITDA' (truncated)",
+         "semanticDescription": "adjustment to Consolidated EBITDA made in accordance with the proviso to the definition of 'Consolidated EBITDA'",
+         "reason": "The Consolidated EBITDA definition was supplied only as a truncated head/tail excerpt; the specific proviso language was not within the retrieved span.",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:16ae77805e83db0bc5eed92a"
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01, cross-referencing Section 1.08(d)",
+         "semanticDescription": "Specified Transaction Adjustments",
+         "reason": "Defined by cross-reference to Section 1.08(d); a getReferencedProvision request for Section 1.08(d) failed due to tool-call budget exhaustion.",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:de4600ba1664c966e4bd881b"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "exprId": "ir-expr:28da8b3f636ea813759e809b"
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Specified Transaction Adjustments"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Both components depend on text not fully retrievable: the Consolidated EBITDA proviso was only available as a truncated excerpt, and Section 1.08(d) (defining 'Specified Transaction Adjustments') could not be fetched before tool-call budget exhaustion.",
+      "The Consolidated EBITDA definition was supplied only as a truncated head/tail excerpt; the specific proviso language was not within the retrieved span.",
+      "Defined by cross-reference to Section 1.08(d); a getReferencedProvision request for Section 1.08(d) failed due to tool-call budget exhaustion.",
+      "ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any adjustment to Consolidated EBITDA made in accordance with the proviso to the definition of that term, together with any adjustments made pursuant to the definition of \"Consolidated EBITDA\" and Specified Transaction Adjustments."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:62709cad4fa79ab52dcec105",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Pro Forma Basis",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Pro Forma Adjustment",
+      "Specified Transaction",
+      "Specified Transaction Adjustments",
+      "Disqualified Stock",
+      "Preferred Stock",
+      "Test Period"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The methodology text itself (co-defined together with 'Pro Forma Compliance' and 'Pro Forma Effect') is fully stated in the source and is procedural/descriptive rather than a fixed formula; numeric application depends on 'Pro Forma Adjustment', which is separately flagged MISSING_CONTEXT."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, with respect to compliance with any test, financial ratio or covenant hereunder required ... to be made on a Pro Forma Basis, that (a) ... the Pro Forma Adjustment shall have been made and (b) all Specified Transactions ... shall be deemed to have occurred as of the first (1st) day of the applicable period of measurement..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:eceffd99a11b2262303229a8",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Pro Forma Compliance",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DEFINED_TERM_REFERENCE",
+      "type": "MONEY",
+      "termName": "Pro Forma Basis",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:eae84d35ad0bebeed85f8829"
+     },
+     "dependsOnTerms": [
+      "Pro Forma Basis"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Co-defined synonymously with 'Pro Forma Basis' in the same sentence of §1.01; shares its full methodology."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Pro Forma Basis,\" \"Pro Forma Compliance\" and \"Pro Forma Effect\" means, with respect to compliance with any test, financial ratio or covenant hereunder..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:51e16c199d6674e8a1870da2",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Pro Forma Effect",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DEFINED_TERM_REFERENCE",
+      "type": "MONEY",
+      "termName": "Pro Forma Basis",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:eae84d35ad0bebeed85f8829"
+     },
+     "dependsOnTerms": [
+      "Pro Forma Basis"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Co-defined synonymously with 'Pro Forma Basis' in the same sentence of §1.01; shares its full methodology."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Pro Forma Basis,\" \"Pro Forma Compliance\" and \"Pro Forma Effect\" means, with respect to compliance with any test, financial ratio or covenant hereunder..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:4e918cb351f3c5536b47ef08",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Pro Forma Disposal Adjustment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01",
+      "semanticDescription": "the pro forma increase or decrease in Consolidated EBITDA projected by the Initial Borrower in good faith as a result of contractual arrangements with a Sold Entity or Business, measured as incremental to the Disposed EBITDA of such Sold Entity or Business for the most recent four-quarter period prior to disposal",
+      "reason": "'Disposed EBITDA' is a dependent defined term not included in the supplied source; a getDefinition('Disposed EBITDA') request was made but failed due to tool-call budget exhaustion. The adjustment amount itself is also a good-faith management projection, not a fixed formula.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:9470348bb3b05a0517123abc"
+     },
+     "dependsOnTerms": [
+      "Post-Transaction Period",
+      "Sold Entity or Business",
+      "Disposed EBITDA",
+      "Consolidated EBITDA"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "'Disposed EBITDA' is used but not defined in the supplied source, and a retrieval attempt failed due to tool-call budget exhaustion.",
+      "'Disposed EBITDA' is a dependent defined term not included in the supplied source; a getDefinition('Disposed EBITDA') request was made but failed due to tool-call budget exhaustion. The adjustment amount itself is also a good-faith management projection, not a fixed formula."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the pro forma increase or decrease in Consolidated EBITDA projected by the Initial Borrower in good faith as a result of contractual arrangements ... which represent an increase or decrease in Consolidated EBITDA which is incremental to the Disposed EBITDA of such Sold Entity or Business..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:8490568b53c4f6cc36d751b7",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Pro Forma Entity",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Acquired Entity or Business",
+      "Converted Restricted Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition fully stated as a categorical union of two other defined terms; no independent computation required."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means any Acquired Entity or Business or any Converted Restricted Subsidiary."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:40b23c0ef9115ccb8a970e73",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Pro Rata Share",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "IF",
+      "type": "NUMBER",
+      "exprId": "ir-expr:bd3de5adbded73fd0766e56c",
+      "condition": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "BOOLEAN",
+       "inputName": "whether the applicable Revolving Commitments for such Revolving Facility have terminated or expired",
+       "exprId": "ir-expr:21dff1bf410780af2510281b"
+      },
+      "then": {
+       "kind": "DIVIDE",
+       "type": "NUMBER",
+       "exprId": "ir-expr:bebfb190a8b9f3dac07caebf",
+       "numerator": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "such Revolving Lender's share of the aggregate Revolving Exposure under such Revolving Facility",
+        "exprId": "ir-expr:58130928d14a0eced583c3e7"
+       },
+       "denominator": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "aggregate Revolving Exposure under such Revolving Facility",
+        "exprId": "ir-expr:075eb64049bd2dcba2e367bf"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "else": {
+       "kind": "DIVIDE",
+       "type": "NUMBER",
+       "exprId": "ir-expr:d580171e48f59429414cc795",
+       "numerator": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "Dollar Amount of such Revolving Lender's Revolving Commitments and, if applicable and without duplication, Revolving Loans under the applicable Revolving Facility",
+        "exprId": "ir-expr:9b9583a75c9d6eef627b8aa6"
+       },
+       "denominator": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "Dollar Amount of the aggregate Revolving Commitments and, if applicable and without duplication, Revolving Loans under such Revolving Facility",
+        "exprId": "ir-expr:f36ae68787ab4254b5a0424f"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Revolving Lender",
+      "Dollar Amount",
+      "Revolving Commitments",
+      "Revolving Loans",
+      "Revolving Exposure",
+      "Revolving Facility"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Formula and its termination/expiration proviso are both fully stated in the source text."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "a fraction (expressed as a percentage, carried out to the ninth decimal place), the numerator of which is the Dollar Amount of the Revolving Commitments and ... Revolving Loans ... and the denominator ... (if the applicable Revolving Commitments ... have terminated or expired, the Pro Rata Share shall be determined based upon such Revolving Lender's share of the aggregate Revolving Exposure...)"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:5267f0ef6d80deaf4ad11d84",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Proposed Change",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Required Lenders",
+      "Required Revolving Lenders",
+      "Non-Consenting Lender"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference resolved via getReferencedProvision to Section 9.02(c), which fully defines the term inline; note that Section 9.02(c)'s own current-operative/supersession status was returned as UNKNOWN (not independently verified) by the retrieval tool, though §1.01 itself carries no recorded amendment history."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01, resolved via §9.02(c)",
+      "excerpt": "In connection with any proposed amendment, modification, waiver or termination (a \"Proposed Change\") requiring the consent of all Lenders or all directly and adversely affected Lenders..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": [
+    {
+     "inventoryItemId": "inv-item:2096052f696a830b72bcf305",
+     "disposition": "UNSUPPORTED",
+     "note": "Base threshold value (greater of $144.0M and 20% of Consolidated EBITDA) is CONSUMED/represented on the MAX node in the 'Transaction Threshold' definition (d11); the item is dispositioned here only to flag that the carryforward-of-unused-amount aspect referenced alongside it remains UNSUPPORTED."
+    },
+    {
+     "inventoryItemId": "inv-item:435bebbab162719b57e8df07",
+     "disposition": "UNSUPPORTED",
+     "note": "Base threshold value (greater of $216.0M and 30% of Consolidated EBITDA) is CONSUMED/represented on the MAX node in the 'Annual Threshold' definition (d12); the item is dispositioned here only to flag that the carryforward-of-unused-amount aspect referenced alongside it remains UNSUPPORTED."
+    },
+    {
+     "inventoryItemId": "inv-item:ba01eab3fa76c9aad024202a",
+     "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+     "note": "Consumed at the 'Post-Transaction Period' definition (d8) top level; it is a period-boundary description, not a formula, so it carries no separate calculationExpression node."
+    }
+   ]
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d6]] getDefinition('Excess Cash Flow') was requested and returned only a truncated excerpt that did not reach the specific clause defining 'Planned Expenditures'; a narrower-span retrieval was not possible before tool-call budget exhaustion.",
+   "[definition[d7]] Section 5.01 and its sub-clause 5.01(g) were retrieved but only contained the reporting-covenant lead-in/trailing proviso text; the specific sentence defining 'Platform' was not reached before truncation.",
+   "[definition[d10].OR[0]] Whether a given disposition is an 'Asset Sale of Collateral' under Section 6.05(a)(2)(ii) or an equity issuance is a fact-specific characterization, not an arithmetic/comparison primitive. The dollar/percentage thresholds themselves are separately and fully modeled in the 'Transaction Threshold' and 'Annual Threshold' definitions.",
+   "[definition[d10].OR[1]] Sections 6.01 and 9.02 were requested but only their headings were retrievable within tool budget (substantive sub-clause text not resolved); 'Credit Agreement Refinancing Indebtedness' is used but not defined in the supplied source.",
+   "[definition[d10]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d11].ADD[1]] Carryforward amount depends on prior-year utilization history not present in the supplied evidence.",
+   "[definition[d11]] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12].ADD[1]] Carryforward amount depends on prior-year utilization history not present in the supplied evidence.",
+   "[definition[d12]] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d16].ADD[0]] The Consolidated EBITDA definition was supplied only as a truncated head/tail excerpt; the specific proviso language was not within the retrieved span.",
+   "[definition[d16].ADD[1]] Defined by cross-reference to Section 1.08(d); a getReferencedProvision request for Section 1.08(d) failed due to tool-call budget exhaustion.",
+   "[definition[d16]] ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d18]] 'Disposed EBITDA' is a dependent defined term not included in the supplied source; a getDefinition('Disposed EBITDA') request was made but failed due to tool-call budget exhaustion. The adjustment amount itself is also a good-faith management projection, not a fixed formula.",
+   "This source span is a Definitions-article excerpt (§1.01) containing ~24 independently meaningful defined terms (including the inline-named 'Transaction Threshold' and 'Annual Threshold' embedded within 'Prepayment Event', and the trio 'Pro Forma Basis'/'Pro Forma Compliance'/'Pro Forma Effect' defined together); no independently operative permission/prohibition rules were found in the text, so the rules array is empty.",
+   "Several definitions ('Planned Expenditures', 'Platform', 'Pro Forma Adjustment' (partially), 'Pro Forma Disposal Adjustment') depend on cross-referenced text (Excess Cash Flow, Section 5.01, Section 1.08(d), 'Disposed EBITDA') that could not be fully retrieved before tool-call budget exhaustion; these are marked MISSING_CONTEXT rather than guessed.",
+   "All three FROZEN SEMANTIC INVENTORY items (Transaction Threshold exception, Annual Threshold exception, Post-Transaction Period) are consumed on the nodes that actually carry their values, per the accountability obligation; the $216.0M/30% values additionally flagged by the deterministic value-detector are represented as explicit MONEY/PERCENT literal nodes within the 'Annual Threshold' MAX expression."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 182224,
+   "outputTokens": 37676,
+   "costUsd": 0.7412080000000001
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:ffcf0bfdaaabb96a7c3261ff",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Permitted Receivables Financings",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Receivables Non-Recourse Facility",
+     "Receivables Recourse Facility"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition is a fully-stated collective reference to two other defined facility types; no independent computation is required to represent it."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, collectively, any (i) Receivables Non-Recourse Facility and (ii) a Receivables Recourse Facility."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:73477679448aee5e587a5e48",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Permitted Tax Restructuring",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Collateral",
+     "Effective Date"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Qualitative, good-faith materiality test fully stated in the source text; not a computed value."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any reorganizations, restructurings and other activities related to Tax planning and Tax reorganization ... so long as such Permitted Tax Restructuring does not materially impair the value of the Collateral, when taken as a whole (as determined by the Initial Borrower in good faith)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e58d79e188032d89e5108058",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Permitted Transferees",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Affiliate",
+     "Equity Interests"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully-stated qualitative class of persons; no computation involved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) such Person's Immediate Family Members ... and (b) without duplication ... such Person's heirs, legatees, executors and/or administrators upon the death of such Person..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:917288e4ab71baf56c8fe7ed",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Person",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Governmental Authority"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Standard enumerated definition, fully stated."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means any natural person, corporation, limited liability company, trust, joint venture, association, company, partnership, Governmental Authority or other entity."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:640b77cfbf4aa7534c1b28ca",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Plan",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Multiemployer Plan",
+     "ERISA Affiliate",
+     "Loan Party"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Qualitative ERISA-status definition fully stated; no numeric or formula component."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any employee pension benefit plan (other than a Multiemployer Plan) subject to ... Title IV of ERISA or Section 412 of the Code or Section 302 of ERISA..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:4274dcffde56bf5288936638",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Planned Expenditures",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01, cross-referencing the definition of 'Excess Cash Flow'",
+     "semanticDescription": "Meaning assigned within the definition of 'Excess Cash Flow'",
+     "reason": "getDefinition('Excess Cash Flow') was requested and returned only a truncated excerpt that did not reach the specific clause defining 'Planned Expenditures'; a narrower-span retrieval was not possible before tool-call budget exhaustion.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:4cbf39975cf62e9817481037"
+    },
+    "dependsOnTerms": [
+     "Excess Cash Flow"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "The cross-referenced clause within 'Excess Cash Flow' that actually defines 'Planned Expenditures' was not reachable within the retrieved (truncated) excerpt or remaining tool budget.",
+     "getDefinition('Excess Cash Flow') was requested and returned only a truncated excerpt that did not reach the specific clause defining 'Planned Expenditures'; a narrower-span retrieval was not possible before tool-call budget exhaustion."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of \"Excess Cash Flow.\""
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:2066fb262b4b94de81f3cba9",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Platform",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01, cross-referencing Section 5.01 (see also Section 5.01(g))",
+     "semanticDescription": "Meaning assigned in Section 5.01",
+     "reason": "Section 5.01 and its sub-clause 5.01(g) were retrieved but only contained the reporting-covenant lead-in/trailing proviso text; the specific sentence defining 'Platform' was not reached before truncation.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:0ce7aa58117440c1be272f1a"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Retrieved Section 5.01/5.01(g) text did not contain the actual defining sentence for 'Platform' before truncation; no further tool budget remained.",
+     "Section 5.01 and its sub-clause 5.01(g) were retrieved but only contained the reporting-covenant lead-in/trailing proviso text; the specific sentence defining 'Platform' was not reached before truncation."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 5.01."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:187499755889327baa9b8ae2",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Post-Transaction Period",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Specified Transaction"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Period boundary fully stated by reference to consummation date and the 12th full fiscal quarter thereafter; no missing components."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the period beginning on the date on which such Specified Transaction is consummated and ending on the last day of the twelfth (12th) full consecutive fiscal quarter of the Borrowers immediately following the date on which such Specified Transaction is consummated."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:ba01eab3fa76c9aad024202a"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:affbf4f285fefb92035ce9ee",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Preferred Stock",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Equity Interest"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully-stated qualitative definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any Equity Interest with preferential rights of payment of dividends or upon liquidation, dissolution, or winding up."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e09f44f57ea500b3a6b60c6f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Prepayment Event",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "OR",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:e71a65c574bce7f994907d3a",
+     "operands": [
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01(a) (Prepayment Event, clause (a))",
+       "semanticDescription": "Asset Sale Prepayment Event: any Asset Sale of Collateral by a Loan Party consummated solely pursuant to Section 6.05(a)(2)(ii), other than (i) issuances of Equity Interests, (ii) dispositions within the Transaction Threshold on a per-transaction/series basis, and (iii) dispositions within the Annual Threshold in the aggregate for the fiscal year (only the excess over such thresholds must be offered to be prepaid; unused amounts carry forward to future fiscal years).",
+       "reason": "Whether a given disposition is an 'Asset Sale of Collateral' under Section 6.05(a)(2)(ii) or an equity issuance is a fact-specific characterization, not an arithmetic/comparison primitive. The dollar/percentage thresholds themselves are separately and fully modeled in the 'Transaction Threshold' and 'Annual Threshold' definitions.",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:877e906edea42d4d89fd2dda"
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01(b) (Prepayment Event, clause (b))",
+       "semanticDescription": "the incurrence by the Borrowers or any other Restricted Party of any Indebtedness, other than Indebtedness permitted under Section 6.01 (other than Credit Agreement Refinancing Indebtedness) or permitted by the Required Lenders pursuant to Section 9.02",
+       "reason": "Sections 6.01 and 9.02 were requested but only their headings were retrievable within tool budget (substantive sub-clause text not resolved); 'Credit Agreement Refinancing Indebtedness' is used but not defined in the supplied source.",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:f6a5f34090628168222dbbc0"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Transaction Threshold",
+     "Annual Threshold",
+     "Asset Sale",
+     "Collateral",
+     "Equity Interests",
+     "Credit Agreement Refinancing Indebtedness",
+     "Restricted Party"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Clause (a)'s Asset-Sale trigger and equity-issuance carve-out are event-occurrence characterizations not reducible to IR arithmetic primitives; the Transaction Threshold/Annual Threshold dollar figures ARE fully modeled as separate definitions.",
+     "Clause (b)'s exceptions reference Sections 6.01 and 9.02, whose substantive text could not be retrieved within tool budget, and 'Credit Agreement Refinancing Indebtedness' is undefined in the supplied source.",
+     "Whether a given disposition is an 'Asset Sale of Collateral' under Section 6.05(a)(2)(ii) or an equity issuance is a fact-specific characterization, not an arithmetic/comparison primitive. The dollar/percentage thresholds themselves are separately and fully modeled in the 'Transaction Threshold' and 'Annual Threshold' definitions.",
+     "Sections 6.01 and 9.02 were requested but only their headings were retrievable within tool budget (substantive sub-clause text not resolved); 'Credit Agreement Refinancing Indebtedness' is used but not defined in the supplied source.",
+     "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) any Asset Sale of Collateral ... pursuant to Section 6.05(a)(2)(ii) ... (each such event, an \"Asset Sale Prepayment Event\"); or (b) the incurrence by the Borrowers or any other Restricted Party of any Indebtedness, other than Indebtedness permitted under Section 6.01 ... or permitted by the Required Lenders pursuant to Section 9.02."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:8be13f21436e11a0a4c6cc64",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Transaction Threshold",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "ADD",
+     "type": "MONEY",
+     "exprId": "ir-expr:0e43db9836accad621b8b302",
+     "operands": [
+      {
+       "kind": "MAX",
+       "type": "MONEY",
+       "exprId": "ir-expr:42e23587ee05d551dc2e4f7e",
+       "operands": [
+        {
+         "kind": "MONEY",
+         "type": "MONEY",
+         "amount": 144000000,
+         "currency": "USD",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:adfce0a1652a4c94965726fd"
+        },
+        {
+         "kind": "MULTIPLY",
+         "type": "MONEY",
+         "exprId": "ir-expr:e8e104b27267f15136f0730b",
+         "operands": [
+          {
+           "kind": "PERCENT",
+           "type": "PERCENT",
+           "value": 0.2,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:b35be193f9ec860ffd5e19a3"
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "Consolidated EBITDA",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:2096052f696a830b72bcf305"
+       ]
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01",
+       "semanticDescription": "unused portion of the Transaction Threshold carried forward from prior fiscal years",
+       "reason": "Carryforward amount depends on prior-year utilization history not present in the supplied evidence.",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:b0ea0bf6ed8b2a3210287536"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Consolidated EBITDA",
+     "Test Period",
+     "Pro Forma Basis"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Base per-transaction/series threshold (greater of $144.0 million and 20% of Consolidated EBITDA on a Pro Forma Basis) is fully represented; the carryforward-of-unused-amount mechanic is UNSUPPORTED for lack of prior-year utilization data.",
+     "Carryforward amount depends on prior-year utilization history not present in the supplied evidence.",
+     "ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "dispositions resulting in aggregate Net Proceeds not exceeding the greater of $144.0 million and 20% of Consolidated EBITDA (calculated on a Pro Forma Basis) for the most recently ended Test Period in the case of any single transaction or series of related transactions (the \"Transaction Threshold\")"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:2096052f696a830b72bcf305"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:9798cd4753246e6ba790c06e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Annual Threshold",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "ADD",
+     "type": "MONEY",
+     "exprId": "ir-expr:4045bce8bb08831958104ab5",
+     "operands": [
+      {
+       "kind": "MAX",
+       "type": "MONEY",
+       "exprId": "ir-expr:726398bc84cb39fe012b0c55",
+       "operands": [
+        {
+         "kind": "MONEY",
+         "type": "MONEY",
+         "amount": 216000000,
+         "currency": "USD",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:0afa9b66228e20a922c1c1e4"
+        },
+        {
+         "kind": "MULTIPLY",
+         "type": "MONEY",
+         "exprId": "ir-expr:46585e5991a19f64edbcfe33",
+         "operands": [
+          {
+           "kind": "PERCENT",
+           "type": "PERCENT",
+           "value": 0.3,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:ea1bb0310fef35c0138de81c"
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "Consolidated EBITDA",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:435bebbab162719b57e8df07"
+       ]
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01",
+       "semanticDescription": "unused portion of the Annual Threshold carried forward from prior fiscal years",
+       "reason": "Carryforward amount depends on prior-year utilization history not present in the supplied evidence.",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:007511e56bc973143d90a25f"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Consolidated EBITDA",
+     "Test Period",
+     "Pro Forma Basis"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Base annual-aggregate threshold (greater of $216.0 million and 30% of Consolidated EBITDA on a Pro Forma Basis) is fully represented; the carryforward-of-unused-amount mechanic is UNSUPPORTED for lack of prior-year utilization data.",
+     "Carryforward amount depends on prior-year utilization history not present in the supplied evidence.",
+     "ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "dispositions resulting in aggregate Net Proceeds not exceeding the greater of $216.0 million and 30% of Consolidated EBITDA (calculated on a Pro Forma Basis) for the most recently ended Test Period in the case of transactions in the aggregate in any fiscal year (the \"Annual Threshold\") (with only the amount in excess ... required to be offered to be prepaid and any portion ... not utilized in any given fiscal year may be carried forward ...)"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:435bebbab162719b57e8df07"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:33a98352214571cf356f47dd",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Prepayment Notice",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully-stated cross-reference to a notice form; not a computed value."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "a notice of prepayment of Loans pursuant to Section 2.09(e), substantially in the form of Exhibit J."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f19abadf325487e1e4b64848",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Present Fair Saleable Value",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully-stated qualitative valuation standard; no formula given in the source."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the amount that could be obtained by an independent willing seller from an independent willing buyer if the assets ... are sold with reasonable promptness in an arm's-length transaction under present conditions..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:aee7ec5d0c50ac9d74e5ff1e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Prime Rate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully-stated external-index rate mechanism (Wall Street Journal / Federal Reserve H.15 fallback); not a formula over agreement-defined metrics."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the rate of interest last quoted by The Wall Street Journal as the \"Prime Rate\" ... or, if ... ceases to quote such rate, the highest per annum interest rate published by the Federal Reserve Board..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:344a1b360d5a77587392e755",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Pro Forma Adjustment",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "(no evidence captured)",
+     "semanticDescription": "unrecognized or malformed expression (kind=\"ADD\")",
+     "reason": "ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "attemptedStructure": {
+      "kind": "ADD",
+      "type": "NUMBER",
+      "exprId": "ir-expr:41e409286e3d1319902276f1",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01, definition of 'Consolidated EBITDA' (truncated)",
+        "semanticDescription": "adjustment to Consolidated EBITDA made in accordance with the proviso to the definition of 'Consolidated EBITDA'",
+        "reason": "The Consolidated EBITDA definition was supplied only as a truncated head/tail excerpt; the specific proviso language was not within the retrieved span.",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:16ae77805e83db0bc5eed92a"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01, cross-referencing Section 1.08(d)",
+        "semanticDescription": "Specified Transaction Adjustments",
+        "reason": "Defined by cross-reference to Section 1.08(d); a getReferencedProvision request for Section 1.08(d) failed due to tool-call budget exhaustion.",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:de4600ba1664c966e4bd881b"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "exprId": "ir-expr:28da8b3f636ea813759e809b"
+    },
+    "dependsOnTerms": [
+     "Consolidated EBITDA",
+     "Specified Transaction Adjustments"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Both components depend on text not fully retrievable: the Consolidated EBITDA proviso was only available as a truncated excerpt, and Section 1.08(d) (defining 'Specified Transaction Adjustments') could not be fetched before tool-call budget exhaustion.",
+     "The Consolidated EBITDA definition was supplied only as a truncated head/tail excerpt; the specific proviso language was not within the retrieved span.",
+     "Defined by cross-reference to Section 1.08(d); a getReferencedProvision request for Section 1.08(d) failed due to tool-call budget exhaustion.",
+     "ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any adjustment to Consolidated EBITDA made in accordance with the proviso to the definition of that term, together with any adjustments made pursuant to the definition of \"Consolidated EBITDA\" and Specified Transaction Adjustments."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:62709cad4fa79ab52dcec105",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Pro Forma Basis",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Pro Forma Adjustment",
+     "Specified Transaction",
+     "Specified Transaction Adjustments",
+     "Disqualified Stock",
+     "Preferred Stock",
+     "Test Period"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The methodology text itself (co-defined together with 'Pro Forma Compliance' and 'Pro Forma Effect') is fully stated in the source and is procedural/descriptive rather than a fixed formula; numeric application depends on 'Pro Forma Adjustment', which is separately flagged MISSING_CONTEXT."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, with respect to compliance with any test, financial ratio or covenant hereunder required ... to be made on a Pro Forma Basis, that (a) ... the Pro Forma Adjustment shall have been made and (b) all Specified Transactions ... shall be deemed to have occurred as of the first (1st) day of the applicable period of measurement..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:eceffd99a11b2262303229a8",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Pro Forma Compliance",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "DEFINED_TERM_REFERENCE",
+     "type": "MONEY",
+     "termName": "Pro Forma Basis",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "resolvedDefinitionId": null,
+     "exprId": "ir-expr:eae84d35ad0bebeed85f8829"
+    },
+    "dependsOnTerms": [
+     "Pro Forma Basis"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Co-defined synonymously with 'Pro Forma Basis' in the same sentence of §1.01; shares its full methodology."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Pro Forma Basis,\" \"Pro Forma Compliance\" and \"Pro Forma Effect\" means, with respect to compliance with any test, financial ratio or covenant hereunder..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:51e16c199d6674e8a1870da2",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Pro Forma Effect",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "DEFINED_TERM_REFERENCE",
+     "type": "MONEY",
+     "termName": "Pro Forma Basis",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "resolvedDefinitionId": null,
+     "exprId": "ir-expr:eae84d35ad0bebeed85f8829"
+    },
+    "dependsOnTerms": [
+     "Pro Forma Basis"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Co-defined synonymously with 'Pro Forma Basis' in the same sentence of §1.01; shares its full methodology."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Pro Forma Basis,\" \"Pro Forma Compliance\" and \"Pro Forma Effect\" means, with respect to compliance with any test, financial ratio or covenant hereunder..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:4e918cb351f3c5536b47ef08",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Pro Forma Disposal Adjustment",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01",
+     "semanticDescription": "the pro forma increase or decrease in Consolidated EBITDA projected by the Initial Borrower in good faith as a result of contractual arrangements with a Sold Entity or Business, measured as incremental to the Disposed EBITDA of such Sold Entity or Business for the most recent four-quarter period prior to disposal",
+     "reason": "'Disposed EBITDA' is a dependent defined term not included in the supplied source; a getDefinition('Disposed EBITDA') request was made but failed due to tool-call budget exhaustion. The adjustment amount itself is also a good-faith management projection, not a fixed formula.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:9470348bb3b05a0517123abc"
+    },
+    "dependsOnTerms": [
+     "Post-Transaction Period",
+     "Sold Entity or Business",
+     "Disposed EBITDA",
+     "Consolidated EBITDA"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "'Disposed EBITDA' is used but not defined in the supplied source, and a retrieval attempt failed due to tool-call budget exhaustion.",
+     "'Disposed EBITDA' is a dependent defined term not included in the supplied source; a getDefinition('Disposed EBITDA') request was made but failed due to tool-call budget exhaustion. The adjustment amount itself is also a good-faith management projection, not a fixed formula."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the pro forma increase or decrease in Consolidated EBITDA projected by the Initial Borrower in good faith as a result of contractual arrangements ... which represent an increase or decrease in Consolidated EBITDA which is incremental to the Disposed EBITDA of such Sold Entity or Business..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:8490568b53c4f6cc36d751b7",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Pro Forma Entity",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Acquired Entity or Business",
+     "Converted Restricted Subsidiary"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition fully stated as a categorical union of two other defined terms; no independent computation required."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means any Acquired Entity or Business or any Converted Restricted Subsidiary."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:40b23c0ef9115ccb8a970e73",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Pro Rata Share",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "IF",
+     "type": "NUMBER",
+     "exprId": "ir-expr:bd3de5adbded73fd0766e56c",
+     "condition": {
+      "kind": "TRANSACTION_INPUT_REFERENCE",
+      "type": "BOOLEAN",
+      "inputName": "whether the applicable Revolving Commitments for such Revolving Facility have terminated or expired",
+      "exprId": "ir-expr:21dff1bf410780af2510281b"
+     },
+     "then": {
+      "kind": "DIVIDE",
+      "type": "NUMBER",
+      "exprId": "ir-expr:bebfb190a8b9f3dac07caebf",
+      "numerator": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "MONEY",
+       "inputName": "such Revolving Lender's share of the aggregate Revolving Exposure under such Revolving Facility",
+       "exprId": "ir-expr:58130928d14a0eced583c3e7"
+      },
+      "denominator": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "MONEY",
+       "inputName": "aggregate Revolving Exposure under such Revolving Facility",
+       "exprId": "ir-expr:075eb64049bd2dcba2e367bf"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "else": {
+      "kind": "DIVIDE",
+      "type": "NUMBER",
+      "exprId": "ir-expr:d580171e48f59429414cc795",
+      "numerator": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "MONEY",
+       "inputName": "Dollar Amount of such Revolving Lender's Revolving Commitments and, if applicable and without duplication, Revolving Loans under the applicable Revolving Facility",
+       "exprId": "ir-expr:9b9583a75c9d6eef627b8aa6"
+      },
+      "denominator": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "MONEY",
+       "inputName": "Dollar Amount of the aggregate Revolving Commitments and, if applicable and without duplication, Revolving Loans under such Revolving Facility",
+       "exprId": "ir-expr:f36ae68787ab4254b5a0424f"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Revolving Lender",
+     "Dollar Amount",
+     "Revolving Commitments",
+     "Revolving Loans",
+     "Revolving Exposure",
+     "Revolving Facility"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Formula and its termination/expiration proviso are both fully stated in the source text."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "a fraction (expressed as a percentage, carried out to the ninth decimal place), the numerator of which is the Dollar Amount of the Revolving Commitments and ... Revolving Loans ... and the denominator ... (if the applicable Revolving Commitments ... have terminated or expired, the Pro Rata Share shall be determined based upon such Revolving Lender's share of the aggregate Revolving Exposure...)"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:5267f0ef6d80deaf4ad11d84",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Proposed Change",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Required Lenders",
+     "Required Revolving Lenders",
+     "Non-Consenting Lender"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Cross-reference resolved via getReferencedProvision to Section 9.02(c), which fully defines the term inline; note that Section 9.02(c)'s own current-operative/supersession status was returned as UNKNOWN (not independently verified) by the retrieval tool, though §1.01 itself carries no recorded amendment history."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01, resolved via §9.02(c)",
+     "excerpt": "In connection with any proposed amendment, modification, waiver or termination (a \"Proposed Change\") requiring the consent of all Lenders or all directly and adversely affected Lenders..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01, 'Prepayment Event' (Transaction Threshold / Annual Threshold): 'any portion of the Transaction Threshold or Annual Threshold not utilized in any given fiscal year may be carried forward to increase the applicable ... Threshold for any subsequent fiscal year'",
+    "semanticRequirement": "A recurring basket-carryforward mechanic where unused capacity from a prior measurement period increases the ceiling available in a later period, requiring a running historical ledger of period-by-period utilization rather than a single static formula.",
+    "whyExistingPrimitivesFail": "ADD/MAX/SCHEDULE can express a static or dated threshold but none of them can express a value that depends on the cumulative unused history of prior periods without an explicit stateful accumulator/ledger primitive.",
+    "candidateGeneralizedPrimitive": "A CARRYFORWARD_LEDGER node (base cap, period description, and a rule for how unused amounts roll into subsequent periods) that composes with MAX/ADD the way LEDGER_USAGE_REFERENCE composes with shared caps."
+   },
+   {
+    "sourceEvidence": "§1.01, 'Prepayment Event' clause (a): 'any Asset Sale of Collateral ... other than (i) the issuance ... of Equity Interests, (ii) dispositions [within thresholds] ...'",
+    "semanticRequirement": "A boolean characterization of whether a particular real-world transaction falls within a fact-specific legal category (e.g. 'is this disposition an Asset Sale of Collateral under Section 6.05(a)(2)(ii)?', 'is this an issuance of Equity Interests?') as opposed to a comparison of two known numeric/ratio values.",
+    "whyExistingPrimitivesFail": "COMPARE/AND/OR/NOT operate on already-resolved boolean or numeric inputs; EVENT_ACTIVE is designed for a temporary override window keyed to a trigger, not for characterizing whether an arbitrary transaction fits a defined category. There is no primitive for an unresolved fact-pattern classification.",
+    "candidateGeneralizedPrimitive": "A TRANSACTION_CHARACTERIZATION node (category description + citation) that yields a boolean usable inside AND/OR/COMPARE, explicitly flagged as requiring case-level adjudication rather than computable from stated values."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d6]] getDefinition('Excess Cash Flow') was requested and returned only a truncated excerpt that did not reach the specific clause defining 'Planned Expenditures'; a narrower-span retrieval was not possible before tool-call budget exhaustion.",
+   "[definition[d7]] Section 5.01 and its sub-clause 5.01(g) were retrieved but only contained the reporting-covenant lead-in/trailing proviso text; the specific sentence defining 'Platform' was not reached before truncation.",
+   "[definition[d10].OR[0]] Whether a given disposition is an 'Asset Sale of Collateral' under Section 6.05(a)(2)(ii) or an equity issuance is a fact-specific characterization, not an arithmetic/comparison primitive. The dollar/percentage thresholds themselves are separately and fully modeled in the 'Transaction Threshold' and 'Annual Threshold' definitions.",
+   "[definition[d10].OR[1]] Sections 6.01 and 9.02 were requested but only their headings were retrievable within tool budget (substantive sub-clause text not resolved); 'Credit Agreement Refinancing Indebtedness' is used but not defined in the supplied source.",
+   "[definition[d10]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d11].ADD[1]] Carryforward amount depends on prior-year utilization history not present in the supplied evidence.",
+   "[definition[d11]] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12].ADD[1]] Carryforward amount depends on prior-year utilization history not present in the supplied evidence.",
+   "[definition[d12]] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d16].ADD[0]] The Consolidated EBITDA definition was supplied only as a truncated head/tail excerpt; the specific proviso language was not within the retrieved span.",
+   "[definition[d16].ADD[1]] Defined by cross-reference to Section 1.08(d); a getReferencedProvision request for Section 1.08(d) failed due to tool-call budget exhaustion.",
+   "[definition[d16]] ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d18]] 'Disposed EBITDA' is a dependent defined term not included in the supplied source; a getDefinition('Disposed EBITDA') request was made but failed due to tool-call budget exhaustion. The adjustment amount itself is also a good-faith management projection, not a fixed formula.",
+   "This source span is a Definitions-article excerpt (§1.01) containing ~24 independently meaningful defined terms (including the inline-named 'Transaction Threshold' and 'Annual Threshold' embedded within 'Prepayment Event', and the trio 'Pro Forma Basis'/'Pro Forma Compliance'/'Pro Forma Effect' defined together); no independently operative permission/prohibition rules were found in the text, so the rules array is empty.",
+   "Several definitions ('Planned Expenditures', 'Platform', 'Pro Forma Adjustment' (partially), 'Pro Forma Disposal Adjustment') depend on cross-referenced text (Excess Cash Flow, Section 5.01, Section 1.08(d), 'Disposed EBITDA') that could not be fully retrieved before tool-call budget exhaustion; these are marked MISSING_CONTEXT rather than guessed.",
+   "All three FROZEN SEMANTIC INVENTORY items (Transaction Threshold exception, Annual Threshold exception, Post-Transaction Period) are consumed on the nodes that actually carry their values, per the accountability obligation; the $216.0M/30% values additionally flagged by the deterministic value-detector are represented as explicit MONEY/PERCENT literal nodes within the 'Annual Threshold' MAX expression."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 5.01"
+    },
+    "outputSummary": "resolved reference \"Section 5.01\" -> 5.01 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 188,
+    "timestamp": "2026-09-14T15:36:54.136Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 5.01",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:65ab3a0a1f9dc108193f45ca",
+     "sourceNodeKey": "doc-a::5.01",
+     "charStart": 561978,
+     "charEnd": 562166,
+     "rawText": "Section 5.01 Financial Statements and Other Information . The Initial Borrower will furnish to the Administrative Agent (for\ndistribution to each Lender through the Administrative Agent):\n",
+     "contentHash": "6af63dd432be6a3d4b16e966391d333dc8df66bdf478e8cf863dfc88b4ea8367",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Excess Cash Flow"
+    },
+    "outputSummary": "definition \"Excess Cash Flow\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 4059,
+    "timestamp": "2026-09-14T15:36:54.137Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": true,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Excess Cash Flow",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:acb75029bbddbc2fd12cd29c",
+     "sourceNodeKey": "doc-a::1.01(2)(v)(III)(c)(f)",
+     "charStart": 153704,
+     "charEnd": 162461,
+     "rawText": "“ Excess Cash Flow ” means, for any Calculation Period, an amount equal to the excess of:\n\n(a)\nthe sum, without duplication, of:\n\n(i)\nConsolidated Net Income for the applicable fiscal year;\n\n(ii)\nan amount equal to the amount of all non-cash charges to the extent\ndeducted in arriving at such Consolidated Net Income ( provided , in each case, that if any non-cash charge represents an accrual or reserve for cash items in any future period, the cash payment in\nrespect thereof in such future period shall be subtracted from Excess Cash Flow in such future period);\n\n(iii)\ndecreases in Consolidated Working Capital, long-term receivables and long-term prepaid assets and increases in\nlong-term deferred revenue for the applicable fiscal year;\n\n(iv)\nan amount equal to the aggregate net non-cash loss on dispositions by\nthe Restricted Parties during the applicable fiscal year (other than dispositions in the ordinary course of business) to the extent deducted in arriving at such Consolidated Net Income; and\n\n(v)\ncash receipts in respect of Swap Agreements to the extent not otherwise included in calculating Consolidated\nNet Income;\n\nover:\n\n(b)\nthe sum, without duplication, of:\n\n(i)\nan amount equal to the amount of all non-cash credits included in\narriving at such Consolidated Net Income (including any amounts included in Consolidated Net Income pursuant to the last sentence of the definition of “Consolidated Net Income” to the extent such amounts are due but not received during\nsuch period) and cash charges included in clauses (a) through (p) of the definition of “Consolidated Net Income” (other than cash charges in respect of Transaction Expenses paid on or about the Effective Date to the extent financed\nwith the proceeds of Indebtedness incurred on the Effective Date or an equity investment on the Effective Date);\n\n(ii)\nwithout duplication of amounts deducted pursuant to clause (x) below in prior fiscal years, the amount of\nCapital Expenditures made in cash or accrued during such Calculation Period, to the extent that such Capital Expenditures were not financed with Funded Debt (other than revolving debt) of the Restricted Parties;\n\n(iii)\n(x) the aggregate amount of all principal payments of Indebtedness except to the extent financed with the\nproceeds of Funded Debt (other than revolving debt) of a Restricted Party, including (A) the principal component of payments in respect of Capitalized Leases, (B) the amount of any prepayment of Loans and of other Indebtedness to the\nextent secured on a pari passu or junior basis to the Loan Document Obligations, (C) the amount of any Restricted Debt Payments, (D) the amount of any prepayment of Indebtedness to the extent secured by assets not constituting\nCollateral and (E) the amount of any prepayment of unsecured Indebtedness of a Non-Loan Party Subsidiary (and, in the case of any prepayments of revolving loans and swingline loans made during such\nperiod, only to the extent there is an equivalent permanent reduction in commitments thereunder and such permanent reduction does not reduce the amount of the repayment of Loans described in Section 2.09(c)), and (y) the aggregate amount\nof any premium, make-whole or penalty payments actually paid in cash by the Restricted Parties during such Calculation Period that are required to be made in connection with any prepayment of Indebtedness;\n\n-33-\n\n(iv)\nan amount equal to the aggregate net non-cash gain on dispositions by\nthe Restricted Parties during such Calculation Period (other than dispositions in the ordinary course of business) to the extent included in arriving at such Consolidated Net Income;\n\n(v)\nincreases in Consolidated Working Capital and long-term receivables and long-term prepaid assets and decreases\nin long-term deferred revenue for such fiscal year;\n\n(vi)\ncash payments by the Restricted Parties during such Calculation Period in respect of purchase price holdbacks,\nearnout obligations and long-term liabilities of the Restricted Parties other than Indebtedness to the extent such payments are not expensed during such Calculation Period or are not deducted in calculating Consolidated Net Income, except to the\nextent financed with the proceeds of Funded Debt (other than revolving debt) of any Restricted Party;\n\n(vii)\nwithout duplication of amounts deducted pursuant to clause (x) below in prior Calculation Periods, the\namount of Investments (other than Investments in Cash Equivalents) and acquisitions not prohibited by this Agreement to the extent that such Investments and acquisitions were not financed with the proceeds of Funded Debt (other than revolving debt)\nof the Restricted Parties;\n\n(viii)\nthe amount of dividends and distributions paid in cash during such Calculation Period not prohibited by this\nAgreement to the extent that such dividends and distributions were not financed with Funded Debt (other than revolving debt) of the Restricted Parties;\n\n(ix)\nthe aggregate amount of expenditures actually made by the Restricted Parties in cash during such fiscal year\n(including expenditures for the payment of financing fees and restructuring charges and expenditures for similar initiatives) to the extent that such expenditures are not expensed during such period or are not deducted in calculating Consolidated\nNet Income, to the extent that such expenditure was financed with internally generated cash flow of the Restricted Parties;\n\n(x)\nwithout duplication of amounts deducted from Excess Cash Flow in prior Calculation Periods, (1) the\naggregate consideration required to be paid in cash by any Restricted Party pursuant to binding contracts, commitments, letters of intent or purchase orders (the “ Contract Consideration ”), in each case, entered into prior to or\nduring such Calculation Period and (2) the aggregate amount of cash that is planned, budgeted or reasonably expected to be paid in respect of planned cash expenditures by any Restricted Party (the “ Planned Expenditures ”), in\nthe case of each of clauses (1) and (2), relating to Permitted Acquisitions, other Investments (other than Investments in Cash Equivalents), deferred payments in connection therewith, restructuring initiatives or capital expenditures (including\nCapitalized Software Expenditures or other purchases of Intellectual Property) and Restricted Payments (limited, in the case of a return on capital, to Restricted Payments declared, but not paid, during such Calculation Period and including other\nRestricted Payments to be made for the purpose of funding, selling, general and administrative expenses, taxes and similar items), Restricted Debt Payments and all other permitted cash expenditures to be consummated or made during a subsequent\nCalculation Period; provided that to the extent the aggregate amount actually utilized to finance such Permitted Acquisitions, Investments, deferred payments in connection therewith, restructuring initiatives, capital expenditures, Restricted\nDebt Payments or other permitted cash expenditures or Restricted Payments during such subsequent Excess Cash Flow Period is less than the Contract Consideration and Planned Expenditures, the amount of such shortfall shall be added to the calculation\nof Excess Cash Flow at the end of such subsequent Excess Cash Flow Period;\n\n(xi)\nthe amount of taxes (and any Tax Distributions) (including penalties and interest) paid in cash and/or tax\nreserves set aside or payable (without duplication) in such fiscal year, including for the avoidance of doubt, any income, withholdings and other taxes payable as a result of the distribution or deemed distribution of such proceeds to a Restricted\nParty, transfer taxes, deed or mortgage\n\n-34-\n\nrecording taxes and Taxes that would be payable in connection with any repatriation of such proceeds, any repatriation costs (including taxes) associated with receipt or distribution by the\napplicable taxpayer of such proceeds, and transfer taxes, deed or mortgage recording taxes and Taxes that would be payable in connection with any repatriation of such proceeds that are paid, payable or set aside in such period, to the extent the\naggregate of all such amounts described in this clause exceeds the amount of tax expense deducted in determining Consolidated Net Income for such fiscal year; and\n\n(xii)\ncash expenditures in respect of Swap Agreements to the extent not deducted in calculating Consolidated Net\nIncome.\n\nNotwithstanding anything set forth herein to the contrary, if the calculation of Excess Cash Flow pursuant to the definition\nhereof is less than zero (0) in any such year, such excess amount shall be applied to reduce the calculation of Excess Cash Flow in the subsequent period to reduce the prepayment pursuant to Section 2.09(c) in such period.\n\n",
+     "contentHash": "a4b910b529db64c64bd222827a8fe609b5e8e368e0253355755aa8ce80fc6bcb",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 9.02(c)"
+    },
+    "outputSummary": "resolved reference \"Section 9.02(c)\" -> 9.02(c) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 1689,
+    "timestamp": "2026-09-14T15:36:54.137Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 9.02(c)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:998e9ba7f1275a7b8cfb79a1",
+     "sourceNodeKey": "doc-a::9.02(c)",
+     "charStart": 763305,
+     "charEnd": 764994,
+     "rawText": "(c) upon notice thereof by the Initial Borrower to the Administrative Agent with respect to the inclusion of any previously absent\nfinancial maintenance covenant or any other covenant, this Agreement shall be amended by an agreement in writing entered into by the Borrowers and the Administrative Agent without the need to obtain the consent of any Lender to include such covenant\non the date of the incurrence of the applicable Indebtedness to the extent required by the terms of such definition or section.\n(c) In\nconnection with any proposed amendment, modification, waiver or termination (a “ Proposed Change ”) requiring the consent of all Lenders or all directly and adversely affected Lenders, if the consent of the Required Lenders or\nRequired Revolving Lenders, as applicable, to such Proposed Change is obtained, but the consent to such Proposed Change of other Lenders whose consent is required is not obtained (any such Lender whose consent\n\n-163-\n\nis not obtained as described in paragraph (b) of this Section 9.02 being referred to as a “ Non-Consenting Lender ”), then, so\nlong as the Lender that is acting as an Administrative Agent is not a Non-Consenting Lender, the Initial Borrower may, at its sole expense and effort, upon notice to such\nNon-Consenting Lender and the Administrative Agent, require such Non-Consenting Lender to assign and delegate, without recourse (in accordance with and subject to the\nrestrictions contained in Section 9.04), all its interests, rights and obligations under this Agreement to an Eligible Assignee that shall assume such obligations (which Eligible Assignee may be another Lender, if a Lender accepts such\nassignment); provided that ",
+     "contentHash": "e35a6a4b55016eb89b5c77dda937ae8dc963da8af1c7961f8568ef02b1bb9a67",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 6.05(a)(2)(ii)"
+    },
+    "outputSummary": "resolved reference \"Section 6.05(a)(2)(ii)\" -> 6.05(a)(2) [RESOLVED_VIA_ENCLOSING_NODE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 1248,
+    "timestamp": "2026-09-14T15:36:54.137Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 6.05(a)(2)(ii)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:561a0c54037a3ff01f78ea14",
+     "sourceNodeKey": "doc-a::6.05(a)(2)",
+     "charStart": 651130,
+     "charEnd": 652378,
+     "rawText": "(2)\nexcept in the case of a Permitted Asset Swap, (i) with respect to any Asset Sales individually in excess of the greater of (x) $144.0 million and (y) 20% of Consolidated EBITDA for the most recently ended Test Period at the time of\ncontractually agreeing to such Asset Sale, at least 50% of the consideration (as determined at the time of contractually agreeing to such Asset Sale) for such Asset Sale, together with all other Asset Sales since the Effective Date (on a cumulative\nbasis), received by the applicable Restricted Party, as the case may be, is in the form of cash or Cash Equivalents, and (ii) with respect to any Asset Sales individually in excess of the greater of (x) $216.0 million and (y) 30% of\nConsolidated EBITDA for the most recently ended Test Period at the time of contractually agreeing to such Asset Sale, at least 75% of the consideration (as determined by the Initial Borrower at the time of contractually agreeing to such Asset Sale)\nfor such Asset Sale, together with all other Asset Sales since the Effective Date (on a cumulative basis), received by the applicable Restricted Party (or held in escrow pending release), as the case may be, is in the form of cash or Cash\nEquivalents; provided that the amount of:\n",
+     "contentHash": "894a99375baf1b23a4948b1bb39068ccbae84da91e9347d454ab5af7f631d56c",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 6.01"
+    },
+    "outputSummary": "resolved reference \"Section 6.01\" -> 6.01 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 113,
+    "timestamp": "2026-09-14T15:36:54.137Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 6.01",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:4feea9391572c23efd068db4",
+     "sourceNodeKey": "doc-a::6.01",
+     "charStart": 608901,
+     "charEnd": 609014,
+     "rawText": "Section 6.01 Limitation on Incurrence of Indebtedness and Issuance of Disqualified Stock and Preferred Stoc k .\n\n",
+     "contentHash": "5d1d120e02bbf656fd3b4148825e4ed5be11d3a250e8860f6134c7f0db6ca4fa",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 9.02"
+    },
+    "outputSummary": "resolved reference \"Section 9.02\" -> 9.02 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 36,
+    "timestamp": "2026-09-14T15:36:54.137Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 9.02",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:a86966f10290859648a66dd0",
+     "sourceNodeKey": "doc-a::9.02",
+     "charStart": 749426,
+     "charEnd": 749462,
+     "rawText": "Section 9.02 Waivers; Amendments .\n\n",
+     "contentHash": "d5bce60a6e4c2c5f39e64e8674a5eec50ec60eea4cd346a7b5de3b6b46f42c57",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getChildren",
+    "input": {
+     "nodeId": "structural-node:65ab3a0a1f9dc108193f45ca"
+    },
+    "outputSummary": "7 child clause(s) of 5.01 (parent UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 62,
+    "timestamp": "2026-09-14T15:37:05.052Z",
+    "evidenceUnresolved": true
+   },
+   {
+    "toolName": "getOperativeProvision",
+    "input": {
+     "sectionRef": "5.01(g)"
+    },
+    "outputSummary": "base-document provision 5.01(g) (never individually amended, UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 482,
+    "timestamp": "2026-09-14T15:37:09.971Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "5.01(g)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:323e4e6585dd177442e55035",
+     "sourceNodeKey": "doc-a::5.01(g)",
+     "charStart": 567917,
+     "charEnd": 568399,
+     "rawText": "(g) reasonably promptly following any request therefor, such other information regarding the operations, business affairs and financial\ncondition of any Restricted Party as the Administrative Agent on its own behalf or on behalf of any Lender may reasonably request in writing.\n\nNotwithstanding the foregoing, the obligations in paragraphs (a) and (b) of this Section 5.01 may be satisfied with respect to\nfinancial information of the Borrowers and their Subsidiaries by furnishing ",
+     "contentHash": "40d0188310e6a9a97cde68f9607d2f15ba3d2bd90cbe54ed2595018488737845",
+     "textOrigin": "HISTORICAL_BASE_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 1.08(d)"
+    },
+    "outputSummary": "refused: tool-call budget exhausted (8 calls already used this attempt) - no further evidence requests will be served; compile with what you have or mark the affected component MISSING_CONTEXT",
+    "charsReturned": 0,
+    "timestamp": "2026-09-14T15:39:17.918Z"
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Disposed EBITDA"
+    },
+    "outputSummary": "refused: tool-call budget exhausted (8 calls already used this attempt) - no further evidence requests will be served; compile with what you have or mark the affected component MISSING_CONTEXT",
+    "charsReturned": 0,
+    "timestamp": "2026-09-14T15:39:17.918Z"
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "Permitted Receivables Financings",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Receivables Non-Recourse Facility",
+      "Receivables Recourse Facility"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition is a fully-stated collective reference to two other defined facility types; no independent computation is required to represent it."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, collectively, any (i) Receivables Non-Recourse Facility and (ii) a Receivables Recourse Facility.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d2",
+     "termName": "Permitted Tax Restructuring",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Collateral",
+      "Effective Date"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Qualitative, good-faith materiality test fully stated in the source text; not a computed value."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any reorganizations, restructurings and other activities related to Tax planning and Tax reorganization ... so long as such Permitted Tax Restructuring does not materially impair the value of the Collateral, when taken as a whole (as determined by the Initial Borrower in good faith).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d3",
+     "termName": "Permitted Transferees",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Affiliate",
+      "Equity Interests"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully-stated qualitative class of persons; no computation involved."
+     ],
+     "citation": "§1.01",
+     "excerpt": "(a) such Person's Immediate Family Members ... and (b) without duplication ... such Person's heirs, legatees, executors and/or administrators upon the death of such Person...",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d4",
+     "termName": "Person",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Governmental Authority"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Standard enumerated definition, fully stated."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means any natural person, corporation, limited liability company, trust, joint venture, association, company, partnership, Governmental Authority or other entity.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d5",
+     "termName": "Plan",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Multiemployer Plan",
+      "ERISA Affiliate",
+      "Loan Party"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Qualitative ERISA-status definition fully stated; no numeric or formula component."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any employee pension benefit plan (other than a Multiemployer Plan) subject to ... Title IV of ERISA or Section 412 of the Code or Section 302 of ERISA...",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d6",
+     "termName": "Planned Expenditures",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Meaning assigned within the definition of 'Excess Cash Flow'",
+      "reason": "getDefinition('Excess Cash Flow') was requested and returned only a truncated excerpt that did not reach the specific clause defining 'Planned Expenditures'; a narrower-span retrieval was not possible before tool-call budget exhaustion.",
+      "sourceEvidence": "§1.01, cross-referencing the definition of 'Excess Cash Flow'"
+     },
+     "dependsOnTerms": [
+      "Excess Cash Flow"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "The cross-referenced clause within 'Excess Cash Flow' that actually defines 'Planned Expenditures' was not reachable within the retrieved (truncated) excerpt or remaining tool budget."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of \"Excess Cash Flow.\"",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d7",
+     "termName": "Platform",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Meaning assigned in Section 5.01",
+      "reason": "Section 5.01 and its sub-clause 5.01(g) were retrieved but only contained the reporting-covenant lead-in/trailing proviso text; the specific sentence defining 'Platform' was not reached before truncation.",
+      "sourceEvidence": "§1.01, cross-referencing Section 5.01 (see also Section 5.01(g))"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Retrieved Section 5.01/5.01(g) text did not contain the actual defining sentence for 'Platform' before truncation; no further tool budget remained."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 5.01.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d8",
+     "termName": "Post-Transaction Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Specified Transaction"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Period boundary fully stated by reference to consummation date and the 12th full fiscal quarter thereafter; no missing components."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the period beginning on the date on which such Specified Transaction is consummated and ending on the last day of the twelfth (12th) full consecutive fiscal quarter of the Borrowers immediately following the date on which such Specified Transaction is consummated.",
+     "inventoryItemIds": [
+      "inv-item:ba01eab3fa76c9aad024202a"
+     ]
+    },
+    {
+     "localRef": "d9",
+     "termName": "Preferred Stock",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Equity Interest"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully-stated qualitative definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any Equity Interest with preferential rights of payment of dividends or upon liquidation, dissolution, or winding up.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d10",
+     "termName": "Prepayment Event",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "OR",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "Asset Sale Prepayment Event: any Asset Sale of Collateral by a Loan Party consummated solely pursuant to Section 6.05(a)(2)(ii), other than (i) issuances of Equity Interests, (ii) dispositions within the Transaction Threshold on a per-transaction/series basis, and (iii) dispositions within the Annual Threshold in the aggregate for the fiscal year (only the excess over such thresholds must be offered to be prepaid; unused amounts carry forward to future fiscal years).",
+        "reason": "Whether a given disposition is an 'Asset Sale of Collateral' under Section 6.05(a)(2)(ii) or an equity issuance is a fact-specific characterization, not an arithmetic/comparison primitive. The dollar/percentage thresholds themselves are separately and fully modeled in the 'Transaction Threshold' and 'Annual Threshold' definitions.",
+        "sourceEvidence": "§1.01(a) (Prepayment Event, clause (a))"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "the incurrence by the Borrowers or any other Restricted Party of any Indebtedness, other than Indebtedness permitted under Section 6.01 (other than Credit Agreement Refinancing Indebtedness) or permitted by the Required Lenders pursuant to Section 9.02",
+        "reason": "Sections 6.01 and 9.02 were requested but only their headings were retrievable within tool budget (substantive sub-clause text not resolved); 'Credit Agreement Refinancing Indebtedness' is used but not defined in the supplied source.",
+        "sourceEvidence": "§1.01(b) (Prepayment Event, clause (b))"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Transaction Threshold",
+      "Annual Threshold",
+      "Asset Sale",
+      "Collateral",
+      "Equity Interests",
+      "Credit Agreement Refinancing Indebtedness",
+      "Restricted Party"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Clause (a)'s Asset-Sale trigger and equity-issuance carve-out are event-occurrence characterizations not reducible to IR arithmetic primitives; the Transaction Threshold/Annual Threshold dollar figures ARE fully modeled as separate definitions.",
+      "Clause (b)'s exceptions reference Sections 6.01 and 9.02, whose substantive text could not be retrieved within tool budget, and 'Credit Agreement Refinancing Indebtedness' is undefined in the supplied source."
+     ],
+     "citation": "§1.01",
+     "excerpt": "(a) any Asset Sale of Collateral ... pursuant to Section 6.05(a)(2)(ii) ... (each such event, an \"Asset Sale Prepayment Event\"); or (b) the incurrence by the Borrowers or any other Restricted Party of any Indebtedness, other than Indebtedness permitted under Section 6.01 ... or permitted by the Required Lenders pursuant to Section 9.02.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d11",
+     "termName": "Transaction Threshold",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "ADD",
+      "operands": [
+       {
+        "kind": "MAX",
+        "operands": [
+         {
+          "kind": "MONEY",
+          "amount": 144000000,
+          "currency": "USD",
+          "citation": "§1.01"
+         },
+         {
+          "kind": "MULTIPLY",
+          "operands": [
+           {
+            "kind": "PERCENT",
+            "value": 0.2,
+            "citation": "§1.01"
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "metricName": "Consolidated EBITDA"
+           }
+          ],
+          "citation": "§1.01"
+         }
+        ],
+        "citation": "§1.01",
+        "inventoryItemIds": [
+         "inv-item:2096052f696a830b72bcf305"
+        ]
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "unused portion of the Transaction Threshold carried forward from prior fiscal years",
+        "reason": "Carryforward amount depends on prior-year utilization history not present in the supplied evidence.",
+        "sourceEvidence": "§1.01"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Test Period",
+      "Pro Forma Basis"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Base per-transaction/series threshold (greater of $144.0 million and 20% of Consolidated EBITDA on a Pro Forma Basis) is fully represented; the carryforward-of-unused-amount mechanic is UNSUPPORTED for lack of prior-year utilization data."
+     ],
+     "citation": "§1.01",
+     "excerpt": "dispositions resulting in aggregate Net Proceeds not exceeding the greater of $144.0 million and 20% of Consolidated EBITDA (calculated on a Pro Forma Basis) for the most recently ended Test Period in the case of any single transaction or series of related transactions (the \"Transaction Threshold\")",
+     "inventoryItemIds": [
+      "inv-item:2096052f696a830b72bcf305"
+     ]
+    },
+    {
+     "localRef": "d12",
+     "termName": "Annual Threshold",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "ADD",
+      "operands": [
+       {
+        "kind": "MAX",
+        "operands": [
+         {
+          "kind": "MONEY",
+          "amount": 216000000,
+          "currency": "USD",
+          "citation": "§1.01"
+         },
+         {
+          "kind": "MULTIPLY",
+          "operands": [
+           {
+            "kind": "PERCENT",
+            "value": 0.3,
+            "citation": "§1.01"
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "metricName": "Consolidated EBITDA"
+           }
+          ],
+          "citation": "§1.01"
+         }
+        ],
+        "citation": "§1.01",
+        "inventoryItemIds": [
+         "inv-item:435bebbab162719b57e8df07"
+        ]
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "unused portion of the Annual Threshold carried forward from prior fiscal years",
+        "reason": "Carryforward amount depends on prior-year utilization history not present in the supplied evidence.",
+        "sourceEvidence": "§1.01"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Test Period",
+      "Pro Forma Basis"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Base annual-aggregate threshold (greater of $216.0 million and 30% of Consolidated EBITDA on a Pro Forma Basis) is fully represented; the carryforward-of-unused-amount mechanic is UNSUPPORTED for lack of prior-year utilization data."
+     ],
+     "citation": "§1.01",
+     "excerpt": "dispositions resulting in aggregate Net Proceeds not exceeding the greater of $216.0 million and 30% of Consolidated EBITDA (calculated on a Pro Forma Basis) for the most recently ended Test Period in the case of transactions in the aggregate in any fiscal year (the \"Annual Threshold\") (with only the amount in excess ... required to be offered to be prepaid and any portion ... not utilized in any given fiscal year may be carried forward ...)",
+     "inventoryItemIds": [
+      "inv-item:435bebbab162719b57e8df07"
+     ]
+    },
+    {
+     "localRef": "d13",
+     "termName": "Prepayment Notice",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully-stated cross-reference to a notice form; not a computed value."
+     ],
+     "citation": "§1.01",
+     "excerpt": "a notice of prepayment of Loans pursuant to Section 2.09(e), substantially in the form of Exhibit J.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d14",
+     "termName": "Present Fair Saleable Value",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully-stated qualitative valuation standard; no formula given in the source."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the amount that could be obtained by an independent willing seller from an independent willing buyer if the assets ... are sold with reasonable promptness in an arm's-length transaction under present conditions...",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d15",
+     "termName": "Prime Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully-stated external-index rate mechanism (Wall Street Journal / Federal Reserve H.15 fallback); not a formula over agreement-defined metrics."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the rate of interest last quoted by The Wall Street Journal as the \"Prime Rate\" ... or, if ... ceases to quote such rate, the highest per annum interest rate published by the Federal Reserve Board...",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d16",
+     "termName": "Pro Forma Adjustment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "ADD",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "adjustment to Consolidated EBITDA made in accordance with the proviso to the definition of 'Consolidated EBITDA'",
+        "reason": "The Consolidated EBITDA definition was supplied only as a truncated head/tail excerpt; the specific proviso language was not within the retrieved span.",
+        "sourceEvidence": "§1.01, definition of 'Consolidated EBITDA' (truncated)"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "Specified Transaction Adjustments",
+        "reason": "Defined by cross-reference to Section 1.08(d); a getReferencedProvision request for Section 1.08(d) failed due to tool-call budget exhaustion.",
+        "sourceEvidence": "§1.01, cross-referencing Section 1.08(d)"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Specified Transaction Adjustments"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Both components depend on text not fully retrievable: the Consolidated EBITDA proviso was only available as a truncated excerpt, and Section 1.08(d) (defining 'Specified Transaction Adjustments') could not be fetched before tool-call budget exhaustion."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any adjustment to Consolidated EBITDA made in accordance with the proviso to the definition of that term, together with any adjustments made pursuant to the definition of \"Consolidated EBITDA\" and Specified Transaction Adjustments.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d17",
+     "termName": "Pro Forma Basis",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Pro Forma Adjustment",
+      "Specified Transaction",
+      "Specified Transaction Adjustments",
+      "Disqualified Stock",
+      "Preferred Stock",
+      "Test Period"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The methodology text itself (co-defined together with 'Pro Forma Compliance' and 'Pro Forma Effect') is fully stated in the source and is procedural/descriptive rather than a fixed formula; numeric application depends on 'Pro Forma Adjustment', which is separately flagged MISSING_CONTEXT."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, with respect to compliance with any test, financial ratio or covenant hereunder required ... to be made on a Pro Forma Basis, that (a) ... the Pro Forma Adjustment shall have been made and (b) all Specified Transactions ... shall be deemed to have occurred as of the first (1st) day of the applicable period of measurement...",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d17b",
+     "termName": "Pro Forma Compliance",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DEFINED_TERM_REFERENCE",
+      "termName": "Pro Forma Basis",
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Pro Forma Basis"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Co-defined synonymously with 'Pro Forma Basis' in the same sentence of §1.01; shares its full methodology."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Pro Forma Basis,\" \"Pro Forma Compliance\" and \"Pro Forma Effect\" means, with respect to compliance with any test, financial ratio or covenant hereunder...",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d17c",
+     "termName": "Pro Forma Effect",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DEFINED_TERM_REFERENCE",
+      "termName": "Pro Forma Basis",
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Pro Forma Basis"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Co-defined synonymously with 'Pro Forma Basis' in the same sentence of §1.01; shares its full methodology."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Pro Forma Basis,\" \"Pro Forma Compliance\" and \"Pro Forma Effect\" means, with respect to compliance with any test, financial ratio or covenant hereunder...",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d18",
+     "termName": "Pro Forma Disposal Adjustment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "the pro forma increase or decrease in Consolidated EBITDA projected by the Initial Borrower in good faith as a result of contractual arrangements with a Sold Entity or Business, measured as incremental to the Disposed EBITDA of such Sold Entity or Business for the most recent four-quarter period prior to disposal",
+      "reason": "'Disposed EBITDA' is a dependent defined term not included in the supplied source; a getDefinition('Disposed EBITDA') request was made but failed due to tool-call budget exhaustion. The adjustment amount itself is also a good-faith management projection, not a fixed formula.",
+      "sourceEvidence": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Post-Transaction Period",
+      "Sold Entity or Business",
+      "Disposed EBITDA",
+      "Consolidated EBITDA"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "'Disposed EBITDA' is used but not defined in the supplied source, and a retrieval attempt failed due to tool-call budget exhaustion."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the pro forma increase or decrease in Consolidated EBITDA projected by the Initial Borrower in good faith as a result of contractual arrangements ... which represent an increase or decrease in Consolidated EBITDA which is incremental to the Disposed EBITDA of such Sold Entity or Business...",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d19",
+     "termName": "Pro Forma Entity",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Acquired Entity or Business",
+      "Converted Restricted Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition fully stated as a categorical union of two other defined terms; no independent computation required."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means any Acquired Entity or Business or any Converted Restricted Subsidiary.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d20",
+     "termName": "Pro Rata Share",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "IF",
+      "condition": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "inputName": "whether the applicable Revolving Commitments for such Revolving Facility have terminated or expired"
+      },
+      "then": {
+       "kind": "DIVIDE",
+       "numerator": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "inputName": "such Revolving Lender's share of the aggregate Revolving Exposure under such Revolving Facility"
+       },
+       "denominator": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "inputName": "aggregate Revolving Exposure under such Revolving Facility"
+       },
+       "citation": "§1.01"
+      },
+      "else": {
+       "kind": "DIVIDE",
+       "numerator": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "inputName": "Dollar Amount of such Revolving Lender's Revolving Commitments and, if applicable and without duplication, Revolving Loans under the applicable Revolving Facility"
+       },
+       "denominator": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "inputName": "Dollar Amount of the aggregate Revolving Commitments and, if applicable and without duplication, Revolving Loans under such Revolving Facility"
+       },
+       "citation": "§1.01"
+      },
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Revolving Lender",
+      "Dollar Amount",
+      "Revolving Commitments",
+      "Revolving Loans",
+      "Revolving Exposure",
+      "Revolving Facility"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Formula and its termination/expiration proviso are both fully stated in the source text."
+     ],
+     "citation": "§1.01",
+     "excerpt": "a fraction (expressed as a percentage, carried out to the ninth decimal place), the numerator of which is the Dollar Amount of the Revolving Commitments and ... Revolving Loans ... and the denominator ... (if the applicable Revolving Commitments ... have terminated or expired, the Pro Rata Share shall be determined based upon such Revolving Lender's share of the aggregate Revolving Exposure...)",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d21",
+     "termName": "Proposed Change",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Required Lenders",
+      "Required Revolving Lenders",
+      "Non-Consenting Lender"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference resolved via getReferencedProvision to Section 9.02(c), which fully defines the term inline; note that Section 9.02(c)'s own current-operative/supersession status was returned as UNKNOWN (not independently verified) by the retrieval tool, though §1.01 itself carries no recorded amendment history."
+     ],
+     "citation": "§1.01, resolved via §9.02(c)",
+     "excerpt": "In connection with any proposed amendment, modification, waiver or termination (a \"Proposed Change\") requiring the consent of all Lenders or all directly and adversely affected Lenders...",
+     "inventoryItemIds": []
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "inventoryDispositions": [
+    {
+     "inventoryItemId": "inv-item:2096052f696a830b72bcf305",
+     "disposition": "UNSUPPORTED",
+     "note": "Base threshold value (greater of $144.0M and 20% of Consolidated EBITDA) is CONSUMED/represented on the MAX node in the 'Transaction Threshold' definition (d11); the item is dispositioned here only to flag that the carryforward-of-unused-amount aspect referenced alongside it remains UNSUPPORTED."
+    },
+    {
+     "inventoryItemId": "inv-item:435bebbab162719b57e8df07",
+     "disposition": "UNSUPPORTED",
+     "note": "Base threshold value (greater of $216.0M and 30% of Consolidated EBITDA) is CONSUMED/represented on the MAX node in the 'Annual Threshold' definition (d12); the item is dispositioned here only to flag that the carryforward-of-unused-amount aspect referenced alongside it remains UNSUPPORTED."
+    },
+    {
+     "inventoryItemId": "inv-item:ba01eab3fa76c9aad024202a",
+     "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+     "note": "Consumed at the 'Post-Transaction Period' definition (d8) top level; it is a period-boundary description, not a formula, so it carries no separate calculationExpression node."
+    }
+   ],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01, 'Prepayment Event' (Transaction Threshold / Annual Threshold): 'any portion of the Transaction Threshold or Annual Threshold not utilized in any given fiscal year may be carried forward to increase the applicable ... Threshold for any subsequent fiscal year'",
+     "semanticRequirement": "A recurring basket-carryforward mechanic where unused capacity from a prior measurement period increases the ceiling available in a later period, requiring a running historical ledger of period-by-period utilization rather than a single static formula.",
+     "whyExistingPrimitivesFail": "ADD/MAX/SCHEDULE can express a static or dated threshold but none of them can express a value that depends on the cumulative unused history of prior periods without an explicit stateful accumulator/ledger primitive.",
+     "candidateGeneralizedPrimitive": "A CARRYFORWARD_LEDGER node (base cap, period description, and a rule for how unused amounts roll into subsequent periods) that composes with MAX/ADD the way LEDGER_USAGE_REFERENCE composes with shared caps."
+    },
+    {
+     "sourceEvidence": "§1.01, 'Prepayment Event' clause (a): 'any Asset Sale of Collateral ... other than (i) the issuance ... of Equity Interests, (ii) dispositions [within thresholds] ...'",
+     "semanticRequirement": "A boolean characterization of whether a particular real-world transaction falls within a fact-specific legal category (e.g. 'is this disposition an Asset Sale of Collateral under Section 6.05(a)(2)(ii)?', 'is this an issuance of Equity Interests?') as opposed to a comparison of two known numeric/ratio values.",
+     "whyExistingPrimitivesFail": "COMPARE/AND/OR/NOT operate on already-resolved boolean or numeric inputs; EVENT_ACTIVE is designed for a temporary override window keyed to a trigger, not for characterizing whether an arbitrary transaction fits a defined category. There is no primitive for an unresolved fact-pattern classification.",
+     "candidateGeneralizedPrimitive": "A TRANSACTION_CHARACTERIZATION node (category description + citation) that yields a boolean usable inside AND/OR/COMPARE, explicitly flagged as requiring case-level adjudication rather than computable from stated values."
+    }
+   ],
+   "overallNotes": [
+    "This source span is a Definitions-article excerpt (§1.01) containing ~24 independently meaningful defined terms (including the inline-named 'Transaction Threshold' and 'Annual Threshold' embedded within 'Prepayment Event', and the trio 'Pro Forma Basis'/'Pro Forma Compliance'/'Pro Forma Effect' defined together); no independently operative permission/prohibition rules were found in the text, so the rules array is empty.",
+    "Several definitions ('Planned Expenditures', 'Platform', 'Pro Forma Adjustment' (partially), 'Pro Forma Disposal Adjustment') depend on cross-referenced text (Excess Cash Flow, Section 5.01, Section 1.08(d), 'Disposed EBITDA') that could not be fully retrieved before tool-call budget exhaustion; these are marked MISSING_CONTEXT rather than guessed.",
+    "All three FROZEN SEMANTIC INVENTORY items (Transaction Threshold exception, Annual Threshold exception, Post-Transaction Period) are consumed on the nodes that actually carry their values, per the accountability obligation; the $216.0M/30% values additionally flagged by the deterministic value-detector are represented as explicit MONEY/PERCENT literal nodes within the 'Annual Threshold' MAX expression."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T15:41:56.996Z",
+   "inputTokens": 182224,
+   "outputTokens": 37676,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 5,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 346080,
+   "calculatedCostUsd": 0.7412080000000001
+  },
+  "cacheKey": "e6bdbae3bf4eedf151e6c0200b28870950e870f5bf7b7e08adb6e906253b622b",
+  "compiledAt": "2026-09-14T15:41:56.996Z"
+ },
+ "shardInputSummary": {
+  "candidateRef": "phase-3-validation:chwy:1.01#shard:3e3910ea2efd9edd45a3",
+  "operativeChars": 10103,
+  "ownedInventoryItems": 3,
+  "contextRegions": 3,
+  "bundleItems": 0,
+  "unresolvedDependencies": 40
+ },
+ "attemptsSoFar": 1
+}

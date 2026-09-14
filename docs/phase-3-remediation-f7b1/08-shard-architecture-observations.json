@@ -1,0 +1,469 @@
+{
+ "artifact": "F-7B.1 §23 shard-architecture observations (Stage 1 only; 31 shards unexecuted)",
+ "ownerShardSemanticRecovery": {
+  "ownedMaterialTotal": 28,
+  "representedFromPerShard": 23,
+  "dispositionedAllItemsPerShard": 3,
+  "missingPerShard": 2,
+  "globalPassCOverAll108": {
+   "represented": 37,
+   "dispositioned": 3,
+   "missing": 68,
+   "total": 108,
+   "note": "108 - the 31 shards outside Stage 1 are NOT executed, so their 80 material items are MISSING by construction"
+  },
+  "stage1Accounted": 26,
+  "stage1AccountabilityRate": 0.9286,
+  "originalF7BStage1": {
+   "represented": 0,
+   "dispositioned": 0,
+   "missing": 28,
+   "rate": 0
+  }
+ },
+ "crossShardContextAdequacy": {
+  "shardsGivenContext": 5,
+  "missingContextShards": 5,
+  "missingContextObjects": 13,
+  "missingContextDispositions": 0,
+  "unresolvedContextEntries": 6
+ },
+ "lineageClaimsOnUnownedItems": 0,
+ "strippedByStitcher": 0,
+ "definitionsEmittedOutsideOwnerUnits": {
+  "total": 22,
+  "nestedInOwnShardText": 20,
+  "anotherShardsUnit": 0,
+  "definedElsewhereInDocument": 2,
+  "notFoundAsQuotedTerm": 0,
+  "list": [
+   {
+    "shardId": "shard:1c29e71eef1717d4f9e1",
+    "term": "Asset Sale Prepayment Event",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:1c29e71eef1717d4f9e1",
+    "term": "Asset Sale Proceeds Application Period",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:1c29e71eef1717d4f9e1",
+    "term": "Available Amount",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:bf3da01cb454860cdf5f",
+    "term": "Existing Liens",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:bf3da01cb454860cdf5f",
+    "term": "Expected Run Rate Benefit",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:bf3da01cb454860cdf5f",
+    "term": "FCPA",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:bf3da01cb454860cdf5f",
+    "term": "FILO Tranche",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:bf3da01cb454860cdf5f",
+    "term": "First Commitment Application Period",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:bf3da01cb454860cdf5f",
+    "term": "Fixed Amounts",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:aac727054a5da5f1a9fd",
+    "term": "LCT Election",
+    "nestedInOwnShardText": false,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": true,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:aac727054a5da5f1a9fd",
+    "term": "LCT Test Date",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:aac727054a5da5f1a9fd",
+    "term": "Loan Modification Offer",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:aac727054a5da5f1a9fd",
+    "term": "Market Convention Rate",
+    "nestedInOwnShardText": false,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": true,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:aac727054a5da5f1a9fd",
+    "term": "Master Agreement",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:4f06625557e9aecbbb7a",
+    "term": "Permitted Ratio Debt",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:3e3910ea2efd9edd45a3",
+    "term": "Planned Expenditures",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:3e3910ea2efd9edd45a3",
+    "term": "Platform",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:3e3910ea2efd9edd45a3",
+    "term": "Transaction Threshold",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:3e3910ea2efd9edd45a3",
+    "term": "Annual Threshold",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:3e3910ea2efd9edd45a3",
+    "term": "Pro Forma Basis",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:3e3910ea2efd9edd45a3",
+    "term": "Pro Forma Compliance",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   },
+   {
+    "shardId": "shard:3e3910ea2efd9edd45a3",
+    "term": "Proposed Change",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   }
+  ]
+ },
+ "stitchCollisions": {},
+ "contextualEmissions": 0,
+ "globalPassC": {
+  "materialTotal": 108,
+  "materialRepresented": 37,
+  "materialDispositioned": 3,
+  "materialMissing": 68,
+  "materialAccountabilityRate": 0.3704,
+  "materialMissingOwnedByCompleteShards": 0,
+  "materialMissingOwnedByFailedShards": 68,
+  "allItemsByDisposition": {
+   "MISSING_FROM_COMPOSITION": 69,
+   "REPRESENTED": 37,
+   "INTENTIONALLY_NON_COMPUTATIONAL": 1,
+   "UNSUPPORTED": 2
+  },
+  "passC": {
+   "inventoried": 109,
+   "material": 108,
+   "represented": 37,
+   "intentionallyNonComputational": 1,
+   "unsupported": 2,
+   "ambiguous": 0,
+   "missingFromComposition": 69,
+   "materialMissingFromComposition": 68,
+   "criticalMissingFromComposition": 19,
+   "materialQuantitativeValues": 142,
+   "materialQuantitativeValuesMissing": 73,
+   "uninventoriedValues": 95,
+   "unaccountedSource": 721,
+   "danglingLineageReferences": 0,
+   "canonicalizedLineageReferences": 0
+  },
+  "semanticallyComplete": false,
+  "unresolvedOwnedItems": 108
+ },
+ "trust": {
+  "dangerousSilentOmissions": 0,
+  "falseCompleteness": 0,
+  "contextualOwnershipCredit": 0,
+  "sourceUnverifiableIrSurviving": 20,
+  "conflictingDuplicateSilentlyMerged": 0,
+  "valuesLostByStitching": 0,
+  "danglingReferencesCausedByStitching": 0,
+  "danglingLineageAfterPassC": 0,
+  "danglingRuleReferencesSurviving": 0,
+  "danglingRuleReferencesConvertedExplicitly": 0,
+  "failedShardHidden": 0,
+  "missingMaterialOwnedItemHidden": 0
+ },
+ "sourceUnverifiable": {
+  "objectsKept": 85,
+  "sourceUnverifiableSurviving": 20,
+  "list": [
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:d875620e56d7b253b5b82df4",
+    "term": "Asset Sale Prepayment Event",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:5a31cbec2744f0a4e1d6fb79",
+    "term": "Asset Sale Proceeds Application Period",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:f38b8cdf03116d39cafef787",
+    "term": "Available Amount",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:77cf7b5a7cbcf9a949bc66b5",
+    "term": "Existing Liens",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:95805ecfce2a93042a976c6c",
+    "term": "Expected Run Rate Benefit",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:589ca941cb5041b8866373c2",
+    "term": "FCPA",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:f8386dd900b91af62350241d",
+    "term": "FILO Tranche",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:d469fa7d04a4df46bd2c0005",
+    "term": "First Commitment Application Period",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:054ed0eca2391ebf0a07c6d6",
+    "term": "Fixed Amounts",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:5c7af3dfa55af7b84ddfcdd1",
+    "term": "LCT Election",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:2ac3b35c1855b77da33186ba",
+    "term": "LCT Test Date",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:6b035bfb270f4974caba33da",
+    "term": "Loan Modification Offer",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:f66144025ff07100d9466ec8",
+    "term": "Market Convention Rate",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:2d8e6486301281cb1ceff918",
+    "term": "Master Agreement",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:c26e0c4c8420d4856d061e91",
+    "term": "Permitted Ratio Debt",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:4274dcffde56bf5288936638",
+    "term": "Planned Expenditures",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:2066fb262b4b94de81f3cba9",
+    "term": "Platform",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:62709cad4fa79ab52dcec105",
+    "term": "Pro Forma Basis",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:eceffd99a11b2262303229a8",
+    "term": "Pro Forma Compliance",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   },
+   {
+    "kind": "DEFINITION",
+    "id": "ir-definition:5267f0ef6d80deaf4ad11d84",
+    "term": "Proposed Change",
+    "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+   }
+  ],
+  "definitionsWithLineage": 8
+ },
+ "oversizedShard": {
+  "shardId": "shard:4f06625557e9aecbbb7a",
+  "shardHash": "f1b437e22ee07474adbce6cb0f9ab25ceb36ca10847253c797fce0f3af206cf5",
+  "ordinal": 26,
+  "oversized": true,
+  "turns": 2,
+  "inputTokens": 75051,
+  "outputTokens": 32562,
+  "maxSingleTurnInputTokens": 41722,
+  "maxSingleTurnOutputTokens": 24896,
+  "latencyMs": 294248,
+  "costUsd": 0.4757,
+  "toolCalls": 2,
+  "toolCallNames": [
+   "getDefinition",
+   "getDefinition"
+  ],
+  "transportDecodingFired": false,
+  "decodedFields": [],
+  "schemaResult": "ACCEPTED",
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "ownedItems": 6,
+  "ownedMaterialItems": 6,
+  "represented": 5,
+  "dispositioned": 0,
+  "missingMaterial": 1,
+  "byDisposition": {
+   "MISSING_FROM_COMPOSITION": 1,
+   "REPRESENTED": 5
+  },
+  "valuesRepresented": 8,
+  "valuesMissing": 1,
+  "danglingLineage": 0,
+  "lineageClaimsOnUnownedItems": 0,
+  "rules": 11,
+  "definitions": 2,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "definitionsOutsideOwnedUnits": [
+   {
+    "term": "Permitted Ratio Debt",
+    "nestedInOwnShardText": true,
+    "isAnotherShardsUnit": false,
+    "definedElsewhereInDocument": false,
+    "notFoundAsQuotedTerm": false
+   }
+  ],
+  "unresolvedContext": 1,
+  "contextEntries": 7
+ },
+ "unsupported": {
+  "unsupportedNodes": 30,
+  "exprNodes": 201,
+  "definitionSufficiency": {
+   "PARTIAL": 9,
+   "COMPLETE": 54,
+   "MISSING_CONTEXT": 11
+  },
+  "ruleSufficiency": {
+   "COMPLETE": 6,
+   "PARTIAL": 3,
+   "MISSING_CONTEXT": 2
+  },
+  "shardsPartial": 0,
+  "shardsMissingContext": 5,
+  "shardsSchemaFailure": 0,
+  "outputTruncatedShards": []
+ },
+ "systematicUnderContext": "evidence present - see missingContext fields"
+}

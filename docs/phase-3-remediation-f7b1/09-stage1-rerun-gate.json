@@ -1,0 +1,215 @@
+{
+ "artifact": "F-7B.1 §24 Stage-1 rerun gate",
+ "gitSha": "903d24dc1de2bd5c8682798828845c3952ba6b36",
+ "gate": [
+  {
+   "n": 1,
+   "req": "no protocol/wire failure repeats systematically",
+   "value": {
+    "schemaFailures": 0,
+    "accepted": 5,
+    "decodingFired": 0
+   },
+   "pass": true
+  },
+  {
+   "n": 2,
+   "req": "at least some real owned semantics accepted",
+   "value": {
+    "stage1Accounted": 26,
+    "of": 28
+   },
+   "pass": true
+  },
+  {
+   "n": 3,
+   "req": "no dangerous silent omission",
+   "value": 0,
+   "pass": true
+  },
+  {
+   "n": 4,
+   "req": "no false completeness",
+   "value": 0,
+   "pass": true
+  },
+  {
+   "n": 5,
+   "req": "zero contextual ownership-credit violations",
+   "value": 0,
+   "pass": true
+  },
+  {
+   "n": 6,
+   "req": "no source-unverifiable IR survives",
+   "value": {
+    "count": 20,
+    "list": [
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:d875620e56d7b253b5b82df4",
+      "term": "Asset Sale Prepayment Event",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:5a31cbec2744f0a4e1d6fb79",
+      "term": "Asset Sale Proceeds Application Period",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:f38b8cdf03116d39cafef787",
+      "term": "Available Amount",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:77cf7b5a7cbcf9a949bc66b5",
+      "term": "Existing Liens",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:95805ecfce2a93042a976c6c",
+      "term": "Expected Run Rate Benefit",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:589ca941cb5041b8866373c2",
+      "term": "FCPA",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:f8386dd900b91af62350241d",
+      "term": "FILO Tranche",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:d469fa7d04a4df46bd2c0005",
+      "term": "First Commitment Application Period",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:054ed0eca2391ebf0a07c6d6",
+      "term": "Fixed Amounts",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:5c7af3dfa55af7b84ddfcdd1",
+      "term": "LCT Election",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:2ac3b35c1855b77da33186ba",
+      "term": "LCT Test Date",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:6b035bfb270f4974caba33da",
+      "term": "Loan Modification Offer",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:f66144025ff07100d9466ec8",
+      "term": "Market Convention Rate",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:2d8e6486301281cb1ceff918",
+      "term": "Master Agreement",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:c26e0c4c8420d4856d061e91",
+      "term": "Permitted Ratio Debt",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:4274dcffde56bf5288936638",
+      "term": "Planned Expenditures",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:2066fb262b4b94de81f3cba9",
+      "term": "Platform",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:62709cad4fa79ab52dcec105",
+      "term": "Pro Forma Basis",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:eceffd99a11b2262303229a8",
+      "term": "Pro Forma Compliance",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     },
+     {
+      "kind": "DEFINITION",
+      "id": "ir-definition:5267f0ef6d80deaf4ad11d84",
+      "term": "Proposed Change",
+      "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+     }
+    ]
+   },
+   "pass": false
+  },
+  {
+   "n": 7,
+   "req": "no incompatible output silently merged",
+   "value": 0,
+   "pass": true
+  },
+  {
+   "n": 8,
+   "req": "oversized definition remains operationally bounded",
+   "value": {
+    "status": "SHARD_MISSING_CONTEXT",
+    "maxTurnIn": 41722,
+    "out": 32562,
+    "truncated": false
+   },
+   "pass": true
+  },
+  {
+   "n": 9,
+   "req": "planner/stitcher architecture unchanged",
+   "value": [
+    "lib/contract-model/compiler/semantic/caller.ts",
+    ".../compiler/semantic/transport-normalization.ts"
+   ],
+   "pass": true
+  },
+  {
+   "n": 10,
+   "req": "results justify spending on the remaining 31 shards (judgment on 1-9 plus accountability rate; no post-hoc threshold)",
+   "value": {
+    "stage1AccountabilityRate": 0.9286,
+    "missing": 2
+   },
+   "pass": true
+  }
+ ],
+ "allPass": false,
+ "trustViolated": true,
+ "verdict": "F7_NOT_SAFE",
+ "productionFilesTouched": [
+  "lib/contract-model/compiler/semantic/caller.ts",
+  ".../compiler/semantic/transport-normalization.ts"
+ ]
+}
