@@ -33,7 +33,10 @@ export interface DetectedDefinition {
   definitionExcerpt: string;
 }
 
-const QUOTE = String.raw`(?:&#14[7-8];|&#822[01];|&ldquo;|&rdquo;|["“”])`;
+/** The three real quote encodings this module generalizes across. Exported (F-7B.2) so the definition-source-anchor
+ * attribution helper reuses this exact alternation instead of restating a second quote grammar. Value unchanged. */
+export const DEFINITION_TERM_QUOTE = String.raw`(?:&#14[7-8];|&#822[01];|&ldquo;|&rdquo;|["“”])`;
+const QUOTE = DEFINITION_TERM_QUOTE;
 const DEFINITION_DECLARATION = new RegExp(`${QUOTE}\\s*([^"“”&]{1,100}?)\\s*${QUOTE}\\s*(?:means|shall mean|shall have the meaning)`, "gi");
 
 /**

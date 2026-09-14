@@ -21,6 +21,7 @@ import { computeContentIdentity, computeRuleId, computeSharedCapId } from "../..
 import type { IRCapacityExpression, IRDefinition, IRExpression, IRRule, IRSharedCapacity } from "../../ir/types";
 import { normalizeDefinedTermRef } from "../amendment/operative-state";
 import { reconcileInventoryWithComposition } from "../semantic-accountability/reconciliation";
+import { buildOwnedDeclarationIndex, locateDefinitionDeclaration, ownedUnitSources, type DefinitionSourceAnchor, type OwnedDeclarationIndex } from "./definition-source-anchor";
 import type { FrozenSemanticInventory, SourceContextState } from "../semantic-accountability/types";
 import type { CompilationShard, ShardCollision, ShardComposition, ShardExecutionResult, ShardPlan, ShardStatus, StitchedCandidateStatus, StitchedCompilation } from "./shard-types";
 import type { SemanticCompilerFailureReason } from "./types";
@@ -33,6 +34,13 @@ export interface StitchInput {
   companyId: string;
   instrumentKey: string;
   candidateRef: string;
+  /**
+   * F-7B.2 (additive): the resolved source-context regions, so a definition that matches no planner DEFINITION unit and
+   * carries no owned lineage can still be attributed when the emitting shard's OWN primary source uniquely declares it.
+   * Omitted: that third proof class is simply unavailable and such a definition is recorded as unattributed and dropped
+   * (never attributed by shard-position fallback).
+   */
+  sourceRegions?: { regionId: string; text: string }[];
 }
 
 // ---------------------------------------------------------------------------
@@ -135,7 +143,7 @@ function normalizeSectionRef(ref: string): string {
   return ref.replace(/^\s*(?:sections?|sec\.?|§+)\s*/i, "").replace(/\s+/g, "").toLowerCase();
 }
 
-interface Attribution { unitKey: string | null; method: "DEFINITION_TERM" | "LINEAGE_MAJORITY" | "SECTION_REF" | "SHARD_FIRST_UNIT" | "UNATTRIBUTED"; }
+interface Attribution { unitKey: string | null; method: "DEFINITION_TERM" | "LINEAGE_MAJORITY" | "SECTION_REF" | "SHARD_FIRST_UNIT" | "PRIMARY_SOURCE_DECLARATION" | "AMBIGUOUS_PRIMARY_SOURCE" | "UNATTRIBUTED"; anchor?: DefinitionSourceAnchor; conflictWithUnitKey?: string | null; ambiguousCandidates?: { unitKey: string; charStart: number; charEnd: number }[] }
 
 function attributeByLineage(plan: ShardPlan, ids: string[]): string | null {
   const counts = new Map<string, number>();
@@ -159,13 +167,31 @@ function attributeRule(plan: ShardPlan, shard: CompilationShard, rule: IRRule): 
   return shard.ownedUnitKeys.length > 0 ? { unitKey: shard.ownedUnitKeys[0]!, method: "SHARD_FIRST_UNIT" } : { unitKey: null, method: "UNATTRIBUTED" };
 }
 
-function attributeDefinition(plan: ShardPlan, shard: CompilationShard, def: IRDefinition): Attribution {
+/**
+ * F-7B.2 - a model-emitted definition enters authoritative IR ONLY through an affirmative source-ownership proof, in
+ * this deterministic precedence:
+ *   1 DEFINITION_TERM            exact normalized-term match to a planner DEFINITION unit;
+ *   2 LINEAGE_MAJORITY           its own inventory lineage resolves to a source unit;
+ *   3 PRIMARY_SOURCE_DECLARATION the emitting shard's OWN primary source uniquely declares the term (nested definition);
+ *   4 UNATTRIBUTED               no proof - the definition is never authoritative (recorded, never silently dropped).
+ * The pre-F-7B.2 SHARD_FIRST_UNIT fallback is gone for definitions: shard position is not evidence of ownership.
+ * A term unit and a lineage unit that disagree are an explicit conflict (the stronger term-unit proof is used, the
+ * disagreement is recorded and forces review) - never a silent pick.
+ */
+function attributeDefinition(plan: ShardPlan, shard: CompilationShard, def: IRDefinition, declarationIndex: OwnedDeclarationIndex): Attribution {
   const key = normalizeDefinedTermRef(def.termName);
   const termUnit = plan.units.find((u) => u.kind === "DEFINITION" && u.normalizedTermName === key);
-  if (termUnit) return { unitKey: termUnit.unitKey, method: "DEFINITION_TERM" };
   const byLineage = attributeByLineage(plan, lineageIdsOfDefinition(def));
-  if (byLineage) return { unitKey: byLineage, method: "LINEAGE_MAJORITY" };
-  return shard.ownedUnitKeys.length > 0 ? { unitKey: shard.ownedUnitKeys[0]!, method: "SHARD_FIRST_UNIT" } : { unitKey: null, method: "UNATTRIBUTED" };
+  if (termUnit) return { unitKey: termUnit.unitKey, method: "DEFINITION_TERM", conflictWithUnitKey: byLineage && byLineage !== termUnit.unitKey ? byLineage : null };
+  if (byLineage) return { unitKey: byLineage, method: "LINEAGE_MAJORITY", conflictWithUnitKey: null };
+  const located = locateDefinitionDeclaration(def.termName, declarationIndex);
+  if (located.status === "ANCHORED") {
+    const anchor = located.anchor;
+    // The index only ever contains this shard's owned units, so an anchor is by construction primary owned source.
+    return { unitKey: anchor.unitKey, method: "PRIMARY_SOURCE_DECLARATION", anchor, conflictWithUnitKey: null };
+  }
+  if (located.status === "AMBIGUOUS") return { unitKey: null, method: "AMBIGUOUS_PRIMARY_SOURCE", ambiguousCandidates: located.candidates };
+  return { unitKey: null, method: "UNATTRIBUTED" };
 }
 
 function contentIdentityIgnoringIds(obj: IRRule | IRDefinition | IRSharedCapacity): string {
@@ -194,6 +220,9 @@ export function stitchShardResults(input: StitchInput): StitchedCompilation {
   const contextualEmissions: StitchedCompilation["contextualEmissions"] = [];
   const idMap: Record<string, string> = {};
   const unresolvedIssues: string[] = [];
+  const regionTextById = new Map((input.sourceRegions ?? []).map((r) => [r.regionId, r.text] as const));
+  const definitionSourceAnchors: DefinitionSourceAnchor[] = [];
+  const definitionAttribution: StitchedCompilation["definitionAttribution"] = [];
 
   interface Owned<T> { obj: T; shard: CompilationShard; unitKey: string; oldId: string; sourceOffset: number; emissionIndex: number }
   const ownedRules: Owned<IRRule>[] = [];
@@ -217,6 +246,9 @@ export function stitchShardResults(input: StitchInput): StitchedCompilation {
       collisions.push({ kind: "LINEAGE_CLAIM_ON_UNOWNED_ITEM", shardId: shard.shardId, ownerShardId: plan.itemOwnerShard[itemId] ?? null, objectId, irPath, itemId, requiresReview: false, detail: `${kind} ${objectId} claimed lineage on ${itemId}, which is owned by ${plan.itemOwnerShard[itemId] ? `shard ${plan.itemOwnerShard[itemId]}` : "no shard (unknown item)"} - stripped; read-only context earns no accountability credit` });
     };
     const shardUnits = new Set(shard.ownedUnitKeys);
+    // F-7B.2: the shard's OWN primary source, scanned once with the existing structural definition grammar. Read-only
+    // cross-shard context is deliberately not part of this index - retrieved text can never confer ownership.
+    const declarationIndex: OwnedDeclarationIndex = regionTextById.size > 0 ? buildOwnedDeclarationIndex(ownedUnitSources(plan.units, shard.ownedUnitKeys, (regionId) => regionTextById.get(regionId) ?? null)) : new Map();
 
     result.composition.rules.forEach((rule, i) => {
       const scoped = scopeLineage(rule, ownedSet, strip("RULE", rule.ruleId), `shard[${shard.shardId}].rules[${i}]`);
@@ -231,12 +263,31 @@ export function stitchShardResults(input: StitchInput): StitchedCompilation {
 
     result.composition.definitions.forEach((def, i) => {
       const scoped = scopeLineage(def, ownedSet, strip("DEFINITION", def.definitionId), `shard[${shard.shardId}].definitions[${i}]`);
-      const att = attributeDefinition(plan, shard, def);
-      if (!att.unitKey || !shardUnits.has(att.unitKey)) {
-        contextualEmissions.push({ shardId: shard.shardId, kind: "DEFINITION", objectId: def.definitionId, ownerShardId: att.unitKey ? plan.unitOwnerShard[att.unitKey] ?? null : null });
-        collisions.push({ kind: "DEFINITION_EMITTED_BY_NON_OWNER", shardId: shard.shardId, ownerShardId: att.unitKey ? plan.unitOwnerShard[att.unitKey] ?? null : null, objectId: def.definitionId, irPath: `shard[${shard.shardId}].definitions[${i}]`, itemId: null, requiresReview: true, detail: `definition "${def.termName}" is owned by unit ${att.unitKey ?? "(none)"} (${att.method}) in another shard - this copy is contextual, kept out of the stitched IR and never credited` });
+      const att = attributeDefinition(plan, shard, def, declarationIndex);
+      const irPath = `shard[${shard.shardId}].definitions[${i}]`;
+      definitionAttribution.push({ shardId: shard.shardId, objectId: def.definitionId, termName: def.termName, method: att.method, unitKey: att.unitKey, ownerShardId: att.unitKey ? plan.unitOwnerShard[att.unitKey] ?? null : null, retained: Boolean(att.unitKey && shardUnits.has(att.unitKey)), anchor: att.anchor ?? null });
+      if (att.method === "AMBIGUOUS_PRIMARY_SOURCE") {
+        // Two or more declarations of the same term inside owned source: never resolved by first textual match.
+        contextualEmissions.push({ shardId: shard.shardId, kind: "DEFINITION", objectId: def.definitionId, ownerShardId: null });
+        collisions.push({ kind: "DEFINITION_ATTRIBUTION_AMBIGUOUS", shardId: shard.shardId, ownerShardId: null, objectId: def.definitionId, irPath, itemId: null, requiresReview: true, detail: `definition "${def.termName}" is declared ${att.ambiguousCandidates?.length ?? 0} times inside this shard's owned source (${(att.ambiguousCandidates ?? []).map((c) => `${c.unitKey}@${c.charStart}`).join(", ")}) - ownership cannot be resolved deterministically, so the emission is kept OUT of the stitched IR and never credited` });
         return;
       }
+      if (!att.unitKey) {
+        // No planner unit, no owned lineage, no declaration in owned primary source: the model saw it in read-only
+        // cross-shard context or tool-retrieved text. Retrieved evidence is source truth (F-4), never shard ownership.
+        contextualEmissions.push({ shardId: shard.shardId, kind: "DEFINITION", objectId: def.definitionId, ownerShardId: null });
+        collisions.push({ kind: "CONTEXTUAL_UNOWNED_DEFINITION", shardId: shard.shardId, ownerShardId: null, objectId: def.definitionId, irPath, itemId: null, requiresReview: true, detail: `definition "${def.termName}" matches no planner DEFINITION unit, carries no owned inventory lineage, and is not declared in this shard's own primary source - it can only have come from read-only context or tool-retrieved text, so it is kept OUT of the stitched IR and never credited (F-7B.2: shard position is not evidence of ownership)` });
+        return;
+      }
+      if (att.conflictWithUnitKey) {
+        collisions.push({ kind: "DEFINITION_ATTRIBUTION_CONFLICT", shardId: shard.shardId, ownerShardId: plan.unitOwnerShard[att.conflictWithUnitKey] ?? null, objectId: def.definitionId, irPath, itemId: null, requiresReview: true, detail: `definition "${def.termName}": the planner DEFINITION unit (${att.unitKey}) and its own inventory lineage (${att.conflictWithUnitKey}) disagree about the owning unit - the term-unit proof is used and the disagreement is surfaced for review, never silently reconciled` });
+      }
+      if (!shardUnits.has(att.unitKey)) {
+        contextualEmissions.push({ shardId: shard.shardId, kind: "DEFINITION", objectId: def.definitionId, ownerShardId: plan.unitOwnerShard[att.unitKey] ?? null });
+        collisions.push({ kind: "DEFINITION_EMITTED_BY_NON_OWNER", shardId: shard.shardId, ownerShardId: plan.unitOwnerShard[att.unitKey] ?? null, objectId: def.definitionId, irPath, itemId: null, requiresReview: true, detail: `definition "${def.termName}" is owned by unit ${att.unitKey} (${att.method}) in another shard - this copy is contextual, kept out of the stitched IR and never credited` });
+        return;
+      }
+      if (att.anchor) definitionSourceAnchors.push(att.anchor);
       const existing = ownedDefs.get(def.definitionId);
       if (existing) {
         const same = contentIdentityIgnoringIds(existing.obj) === contentIdentityIgnoringIds(scoped);
@@ -394,5 +445,5 @@ export function stitchShardResults(input: StitchInput): StitchedCompilation {
   for (const u of unresolvedOwnedItems) unresolvedIssues.push(`[shard-stitch] owned material item ${u.inventoryItemId} unresolved: its shard ${u.shardId} ended ${u.shardStatus}`);
   for (const r of accountability.reasons) unresolvedIssues.push(`[accountability] ${r}`);
 
-  return { candidateRef, planHash: plan.planHash, status, failureReasons, rules: stitchedRules, definitions: stitchedDefs, sharedCapacities: stitchedCaps, inventoryDispositions: dispositions, contextualEmissions, collisions, idMap, shards: shardSummaries, unresolvedOwnedItems, accountability, canonicalizedLineageReferences, unresolvedIssues };
+  return { candidateRef, planHash: plan.planHash, status, failureReasons, rules: stitchedRules, definitions: stitchedDefs, sharedCapacities: stitchedCaps, inventoryDispositions: dispositions, contextualEmissions, collisions, definitionSourceAnchors, definitionAttribution, idMap, shards: shardSummaries, unresolvedOwnedItems, accountability, canonicalizedLineageReferences, unresolvedIssues };
 }

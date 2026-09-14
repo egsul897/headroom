@@ -13,3 +13,4 @@ export * from "./shard-types";
 export * from "./shard-planner";
 export * from "./shard-stitcher";
 export * from "./shard-execution";
+export * from "./definition-source-anchor";

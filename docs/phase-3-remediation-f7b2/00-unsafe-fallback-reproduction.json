@@ -1,0 +1,2342 @@
+{
+ "artifact": "F-7B.2 §2 reproduction of the unsafe SHARD_FIRST_UNIT fallback (starting-SHA stitcher, replayed in a git worktree) - 0 model calls",
+ "mode": "before",
+ "gitSha": "d9949102b6da7806428cdc79a60da42c4fe76016",
+ "at": "2026-09-14T16:00:42.114Z",
+ "planHash": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+ "shardIds": [
+  "shard:1c29e71eef1717d4f9e1",
+  "shard:bf3da01cb454860cdf5f",
+  "shard:aac727054a5da5f1a9fd",
+  "shard:4f06625557e9aecbbb7a",
+  "shard:3e3910ea2efd9edd45a3"
+ ],
+ "shardHashes": [
+  "85cd3fe537a3657f61009c524910ba6bac773fc01343a89fdfc31b58025d6f06",
+  "681651c0752343da54ae800cd818a0c263f2a2782d6e1cab8cc313f76cca0702",
+  "9943af75025bd8550567628dd359394b6aba3cbadb767a1f228a30638fef3078",
+  "f1b437e22ee07474adbce6cb0f9ab25ceb36ca10847253c797fce0f3af206cf5",
+  "183134ad7785f161b0d350297d89603860aada6016bbf04609fc1dd0c172957f"
+ ],
+ "emittedDefinitions": 74,
+ "retainedDefinitions": 74,
+ "sourceUnverifiableAuthoritativeDefinitions": 20,
+ "sourceUnverifiableList": [
+  {
+   "definitionId": "ir-definition:d875620e56d7b253b5b82df4",
+   "termName": "Asset Sale Prepayment Event"
+  },
+  {
+   "definitionId": "ir-definition:5a31cbec2744f0a4e1d6fb79",
+   "termName": "Asset Sale Proceeds Application Period"
+  },
+  {
+   "definitionId": "ir-definition:f38b8cdf03116d39cafef787",
+   "termName": "Available Amount"
+  },
+  {
+   "definitionId": "ir-definition:77cf7b5a7cbcf9a949bc66b5",
+   "termName": "Existing Liens"
+  },
+  {
+   "definitionId": "ir-definition:95805ecfce2a93042a976c6c",
+   "termName": "Expected Run Rate Benefit"
+  },
+  {
+   "definitionId": "ir-definition:589ca941cb5041b8866373c2",
+   "termName": "FCPA"
+  },
+  {
+   "definitionId": "ir-definition:f8386dd900b91af62350241d",
+   "termName": "FILO Tranche"
+  },
+  {
+   "definitionId": "ir-definition:d469fa7d04a4df46bd2c0005",
+   "termName": "First Commitment Application Period"
+  },
+  {
+   "definitionId": "ir-definition:054ed0eca2391ebf0a07c6d6",
+   "termName": "Fixed Amounts"
+  },
+  {
+   "definitionId": "ir-definition:5c7af3dfa55af7b84ddfcdd1",
+   "termName": "LCT Election"
+  },
+  {
+   "definitionId": "ir-definition:2ac3b35c1855b77da33186ba",
+   "termName": "LCT Test Date"
+  },
+  {
+   "definitionId": "ir-definition:6b035bfb270f4974caba33da",
+   "termName": "Loan Modification Offer"
+  },
+  {
+   "definitionId": "ir-definition:f66144025ff07100d9466ec8",
+   "termName": "Market Convention Rate"
+  },
+  {
+   "definitionId": "ir-definition:2d8e6486301281cb1ceff918",
+   "termName": "Master Agreement"
+  },
+  {
+   "definitionId": "ir-definition:c26e0c4c8420d4856d061e91",
+   "termName": "Permitted Ratio Debt"
+  },
+  {
+   "definitionId": "ir-definition:4274dcffde56bf5288936638",
+   "termName": "Planned Expenditures"
+  },
+  {
+   "definitionId": "ir-definition:2066fb262b4b94de81f3cba9",
+   "termName": "Platform"
+  },
+  {
+   "definitionId": "ir-definition:62709cad4fa79ab52dcec105",
+   "termName": "Pro Forma Basis"
+  },
+  {
+   "definitionId": "ir-definition:eceffd99a11b2262303229a8",
+   "termName": "Pro Forma Compliance"
+  },
+  {
+   "definitionId": "ir-definition:5267f0ef6d80deaf4ad11d84",
+   "termName": "Proposed Change"
+  }
+ ],
+ "proofClassCounts": {
+  "PLANNER_DEFINITION_UNIT": 52,
+  "OWNED_INVENTORY_LINEAGE": 8,
+  "UNIQUE_PRIMARY_SOURCE_DECLARATION": 0,
+  "NONE": 20
+ },
+ "definitionProofs": [
+  {
+   "definitionId": "ir-definition:7816a4c1b9dbf24aa30579c7",
+   "termName": "Asset Sale",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT",
+    "OWNED_INVENTORY_LINEAGE"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:d875620e56d7b253b5b82df4",
+   "termName": "Asset Sale Prepayment Event",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:5a31cbec2744f0a4e1d6fb79",
+   "termName": "Asset Sale Proceeds Application Period",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:f38b8cdf03116d39cafef787",
+   "termName": "Available Amount",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:913aea472bc054a25d1323c3",
+   "termName": "Assignment and Assumption",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:d3098664453fbfb14eba9d7f",
+   "termName": "Available Investment Capacity Amount",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT",
+    "OWNED_INVENTORY_LINEAGE"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:289744e1e4aa484e6458b429",
+   "termName": "Excluded Swap Obligation",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:77cf7b5a7cbcf9a949bc66b5",
+   "termName": "Existing Liens",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:95805ecfce2a93042a976c6c",
+   "termName": "Expected Run Rate Benefit",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:589ca941cb5041b8866373c2",
+   "termName": "FCPA",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:f8386dd900b91af62350241d",
+   "termName": "FILO Tranche",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:d469fa7d04a4df46bd2c0005",
+   "termName": "First Commitment Application Period",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:054ed0eca2391ebf0a07c6d6",
+   "termName": "Fixed Amounts",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:9d7953bf868b5d0a25e60c55",
+   "termName": "Excluded Taxes",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:8c5989df966b022df12d7d77",
+   "termName": "Excluded Term Loans",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT",
+    "OWNED_INVENTORY_LINEAGE"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:37d8d0ac873e99690569ca4e",
+   "termName": "Existing Indebtedness",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:cb472a18ebd6a999908e5e30",
+   "termName": "Extension Amount",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:9cb762d644892ccbc0afb691",
+   "termName": "Facility",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:d80e625ac60a9120384d3422",
+   "termName": "Fair Market Value",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:69cc5456a976356922e79fe9",
+   "termName": "Fair Value",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:d91bcd4418e88db374762991",
+   "termName": "FATCA",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:971e610a146d93935c3bbfeb",
+   "termName": "Federal Funds Effective Rate",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:19555afe30f3d2c3d0f7f62a",
+   "termName": "Fee Letter",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT",
+    "OWNED_INVENTORY_LINEAGE"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:ffa2f908dad12b1384aefa65",
+   "termName": "Financial Officer",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:6bb2f5d608e6716c2c8feffb",
+   "termName": "First Lien Intercreditor Agreement",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:89e83fd9016e066e4bbba9d7",
+   "termName": "First Lien Leverage Ratio",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:cb41297fc53052896c764a8d",
+   "termName": "Fixed Charges",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:f1861139cbbbb349d818f1da",
+   "termName": "Fixed Incremental Amount",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT",
+    "OWNED_INVENTORY_LINEAGE"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:e7433b6114d731f669403d6c",
+   "termName": "Junior Lien Intercreditor Agreement",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:5c7af3dfa55af7b84ddfcdd1",
+   "termName": "LCT Election",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:2ac3b35c1855b77da33186ba",
+   "termName": "LCT Test Date",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:6b035bfb270f4974caba33da",
+   "termName": "Loan Modification Offer",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:f66144025ff07100d9466ec8",
+   "termName": "Market Convention Rate",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:2d8e6486301281cb1ceff918",
+   "termName": "Master Agreement",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:5beb484c20eda70ef88ef04d",
+   "termName": "Latest Maturity Date",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:e3d772feb815e9c8a661eea6",
+   "termName": "Lead Arrangers",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:d5461f61087ca1c9c8abef12",
+   "termName": "Lenders",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:30bbb9e019eaf15c1caac315",
+   "termName": "Letter of Intent Transactions",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:817a510cb884739535385d58",
+   "termName": "Liabilities",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:3d3e69edd89e4ccab542bfba",
+   "termName": "Lien",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:cfec1a9b0237df6baac0a316",
+   "termName": "Limited Condition Transaction",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:83ddf462de1280a83706fe4f",
+   "termName": "Limited Originator Recourse",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:c2e1e9c9df67edc863db8868",
+   "termName": "Loan Document Obligations",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:bb3d278b85b89aa7dc911789",
+   "termName": "Loan Documents",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:3f9275ecf768b639c86fdef6",
+   "termName": "Loan Modification Agreement",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:115a0613071b36f3079451ca",
+   "termName": "Loan Parties",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:21ed3dcbcec0dbefadbd1efb",
+   "termName": "Loans",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:9281f1e94efaac705b6c6a05",
+   "termName": "Management Investors",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:30f0f72c6028cb269464abb0",
+   "termName": "Market Capitalization",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:59d6e486b0774661993e44d0",
+   "termName": "Permitted Liens",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:c26e0c4c8420d4856d061e91",
+   "termName": "Permitted Ratio Debt",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:ffcf0bfdaaabb96a7c3261ff",
+   "termName": "Permitted Receivables Financings",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:4274dcffde56bf5288936638",
+   "termName": "Planned Expenditures",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:2066fb262b4b94de81f3cba9",
+   "termName": "Platform",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:62709cad4fa79ab52dcec105",
+   "termName": "Pro Forma Basis",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:eceffd99a11b2262303229a8",
+   "termName": "Pro Forma Compliance",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:5267f0ef6d80deaf4ad11d84",
+   "termName": "Proposed Change",
+   "proofClasses": []
+  },
+  {
+   "definitionId": "ir-definition:73477679448aee5e587a5e48",
+   "termName": "Permitted Tax Restructuring",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:e58d79e188032d89e5108058",
+   "termName": "Permitted Transferees",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:917288e4ab71baf56c8fe7ed",
+   "termName": "Person",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:640b77cfbf4aa7534c1b28ca",
+   "termName": "Plan",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:187499755889327baa9b8ae2",
+   "termName": "Post-Transaction Period",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT",
+    "OWNED_INVENTORY_LINEAGE"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:affbf4f285fefb92035ce9ee",
+   "termName": "Preferred Stock",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:e09f44f57ea500b3a6b60c6f",
+   "termName": "Prepayment Event",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:8be13f21436e11a0a4c6cc64",
+   "termName": "Transaction Threshold",
+   "proofClasses": [
+    "OWNED_INVENTORY_LINEAGE"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:9798cd4753246e6ba790c06e",
+   "termName": "Annual Threshold",
+   "proofClasses": [
+    "OWNED_INVENTORY_LINEAGE"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:33a98352214571cf356f47dd",
+   "termName": "Prepayment Notice",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:f19abadf325487e1e4b64848",
+   "termName": "Present Fair Saleable Value",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:aee7ec5d0c50ac9d74e5ff1e",
+   "termName": "Prime Rate",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:344a1b360d5a77587392e755",
+   "termName": "Pro Forma Adjustment",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:51e16c199d6674e8a1870da2",
+   "termName": "Pro Forma Effect",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:4e918cb351f3c5536b47ef08",
+   "termName": "Pro Forma Disposal Adjustment",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:8490568b53c4f6cc36d751b7",
+   "termName": "Pro Forma Entity",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  },
+  {
+   "definitionId": "ir-definition:40b23c0ef9115ccb8a970e73",
+   "termName": "Pro Rata Share",
+   "proofClasses": [
+    "PLANNER_DEFINITION_UNIT"
+   ]
+  }
+ ],
+ "collisions": {},
+ "collisionDetail": [],
+ "contextualEmissions": [],
+ "status": "PARTIAL",
+ "failureReasons": [
+  "PROVIDER_FAILURE",
+  "SHARD_INCOMPLETE",
+  "MISSING_CONTEXT",
+  "OPERATIVE_STATE_UNRESOLVED",
+  "TRUNCATED_EVIDENCE_USED",
+  "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+ ],
+ "census": {
+  "rules": 11,
+  "definitions": 74,
+  "sharedCapacities": 0,
+  "exprNodes": 201,
+  "unsupportedNodes": 30,
+  "values": [
+   "MONEY:108000000",
+   "MONEY:144000000",
+   "MONEY:144000000",
+   "MONEY:1440000000",
+   "MONEY:216000000",
+   "MONEY:216000000",
+   "MONEY:36000000",
+   "MONEY:360000000",
+   "MONEY:540000000",
+   "MONEY:720000000",
+   "MONEY:720000000",
+   "NUMBER:30",
+   "NUMBER:30",
+   "PERCENT:0.05",
+   "PERCENT:0.15",
+   "PERCENT:0.2",
+   "PERCENT:0.2",
+   "PERCENT:0.3",
+   "PERCENT:0.3",
+   "PERCENT:0.5",
+   "PERCENT:0.75",
+   "PERCENT:1",
+   "PERCENT:1",
+   "PERCENT:2",
+   "RATIO:0",
+   "RATIO:1.75",
+   "RATIO:1.75",
+   "RATIO:1.75",
+   "RATIO:2",
+   "RATIO:2",
+   "RATIO:3",
+   "RATIO:4"
+  ],
+  "distinctValues": [
+   "MONEY:108000000",
+   "MONEY:144000000",
+   "MONEY:1440000000",
+   "MONEY:216000000",
+   "MONEY:36000000",
+   "MONEY:360000000",
+   "MONEY:540000000",
+   "MONEY:720000000",
+   "NUMBER:30",
+   "PERCENT:0.05",
+   "PERCENT:0.15",
+   "PERCENT:0.2",
+   "PERCENT:0.3",
+   "PERCENT:0.5",
+   "PERCENT:0.75",
+   "PERCENT:1",
+   "PERCENT:2",
+   "RATIO:0",
+   "RATIO:1.75",
+   "RATIO:2",
+   "RATIO:3",
+   "RATIO:4"
+  ],
+  "lineageRefs": 53,
+  "distinctLineageItems": [
+   "inv-item:039a4062eeadde709d445ab2",
+   "inv-item:0b92716dbe2d2e42555bf6ea",
+   "inv-item:139265f3eef57f0e3038aa70",
+   "inv-item:2096052f696a830b72bcf305",
+   "inv-item:35c05a2ca9eb56a348d86140",
+   "inv-item:3a78fe5b5a1e4208a5236ac1",
+   "inv-item:3d6848f080a00529c6cd5931",
+   "inv-item:42c037b1d716e8d759f1af1b",
+   "inv-item:435bebbab162719b57e8df07",
+   "inv-item:48d84e6f6c1e29b3a13334a0",
+   "inv-item:5281d5a9dec8ef6bab146dcf",
+   "inv-item:5fd357ec4014b3d504eaaf6b",
+   "inv-item:5fe0262251331def71b6c2ac",
+   "inv-item:685b10fc530db466e82be9e6",
+   "inv-item:7fbbd03edaed55220dea29fe",
+   "inv-item:8b28d97d989435401a6d146f",
+   "inv-item:975d416ed9f098988605b883",
+   "inv-item:9e86ceeb6f2f72225585dbba",
+   "inv-item:ba01eab3fa76c9aad024202a",
+   "inv-item:c081b7907f1d12ed28484634",
+   "inv-item:c321c001b3a38b2e086a75a2",
+   "inv-item:cff6aba64520d09fac7ca41f",
+   "inv-item:dc9d7a4454fd3d2ca39d94d9",
+   "inv-item:dea92930d39a32acc3fe1e6b",
+   "inv-item:e0247f2436dfe133ca048078",
+   "inv-item:eb4c99643218b586dfccf301",
+   "inv-item:edfec62d509cb6078460fe25"
+  ],
+  "dependencyEdges": 0,
+  "unresolvedDependencies": 15,
+  "ruleReferences": [],
+  "definedTermReferences": [
+   "available rp capacity amount",
+   "general lien basket reallocated amount",
+   "available rp capacity amount",
+   "pro forma basis",
+   "pro forma basis"
+  ]
+ },
+ "inputCensus": {
+  "rules": 11,
+  "definitions": 74,
+  "sharedCapacities": 0,
+  "exprNodes": 201,
+  "unsupportedNodes": 30,
+  "values": [
+   "MONEY:108000000",
+   "MONEY:144000000",
+   "MONEY:144000000",
+   "MONEY:1440000000",
+   "MONEY:216000000",
+   "MONEY:216000000",
+   "MONEY:36000000",
+   "MONEY:360000000",
+   "MONEY:540000000",
+   "MONEY:720000000",
+   "MONEY:720000000",
+   "NUMBER:30",
+   "NUMBER:30",
+   "PERCENT:0.05",
+   "PERCENT:0.15",
+   "PERCENT:0.2",
+   "PERCENT:0.2",
+   "PERCENT:0.3",
+   "PERCENT:0.3",
+   "PERCENT:0.5",
+   "PERCENT:0.75",
+   "PERCENT:1",
+   "PERCENT:1",
+   "PERCENT:2",
+   "RATIO:0",
+   "RATIO:1.75",
+   "RATIO:1.75",
+   "RATIO:1.75",
+   "RATIO:2",
+   "RATIO:2",
+   "RATIO:3",
+   "RATIO:4"
+  ],
+  "distinctValues": [
+   "MONEY:108000000",
+   "MONEY:144000000",
+   "MONEY:1440000000",
+   "MONEY:216000000",
+   "MONEY:36000000",
+   "MONEY:360000000",
+   "MONEY:540000000",
+   "MONEY:720000000",
+   "NUMBER:30",
+   "PERCENT:0.05",
+   "PERCENT:0.15",
+   "PERCENT:0.2",
+   "PERCENT:0.3",
+   "PERCENT:0.5",
+   "PERCENT:0.75",
+   "PERCENT:1",
+   "PERCENT:2",
+   "RATIO:0",
+   "RATIO:1.75",
+   "RATIO:2",
+   "RATIO:3",
+   "RATIO:4"
+  ],
+  "lineageRefs": 53,
+  "distinctLineageItems": [
+   "3a78fe5b5a1e4208a5236ac1",
+   "7fbbd03edaed55220dea29fe",
+   "8b28d97d989435401a6d146f",
+   "975d416ed9f098988605b883",
+   "9e86ceeb6f2f72225585dbba",
+   "cff6aba64520d09fac7ca41f",
+   "dc9d7a4454fd3d2ca39d94d9",
+   "eb4c99643218b586dfccf301",
+   "inv-item:039a4062eeadde709d445ab2",
+   "inv-item:0b92716dbe2d2e42555bf6ea",
+   "inv-item:139265f3eef57f0e3038aa70",
+   "inv-item:2096052f696a830b72bcf305",
+   "inv-item:35c05a2ca9eb56a348d86140",
+   "inv-item:3d6848f080a00529c6cd5931",
+   "inv-item:42c037b1d716e8d759f1af1b",
+   "inv-item:435bebbab162719b57e8df07",
+   "inv-item:48d84e6f6c1e29b3a13334a0",
+   "inv-item:5281d5a9dec8ef6bab146dcf",
+   "inv-item:5fd357ec4014b3d504eaaf6b",
+   "inv-item:5fe0262251331def71b6c2ac",
+   "inv-item:685b10fc530db466e82be9e6",
+   "inv-item:ba01eab3fa76c9aad024202a",
+   "inv-item:c081b7907f1d12ed28484634",
+   "inv-item:c321c001b3a38b2e086a75a2",
+   "inv-item:dea92930d39a32acc3fe1e6b",
+   "inv-item:e0247f2436dfe133ca048078",
+   "inv-item:edfec62d509cb6078460fe25"
+  ],
+  "dependencyEdges": 0,
+  "unresolvedDependencies": 15,
+  "ruleReferences": [],
+  "definedTermReferences": [
+   "available rp capacity amount",
+   "general lien basket reallocated amount",
+   "available rp capacity amount",
+   "pro forma basis",
+   "pro forma basis"
+  ]
+ },
+ "accountability": {
+  "passC": {
+   "inventoried": 109,
+   "material": 108,
+   "represented": 37,
+   "intentionallyNonComputational": 1,
+   "unsupported": 2,
+   "ambiguous": 0,
+   "missingFromComposition": 69,
+   "materialMissingFromComposition": 68,
+   "criticalMissingFromComposition": 19,
+   "materialQuantitativeValues": 142,
+   "materialQuantitativeValuesMissing": 73,
+   "uninventoriedValues": 95,
+   "unaccountedSource": 721,
+   "danglingLineageReferences": 0,
+   "canonicalizedLineageReferences": 0
+  },
+  "semanticallyComplete": false,
+  "materialTotalAll": 108,
+  "materialRepresentedAll": 37,
+  "materialDispositionedAll": 3,
+  "materialMissingAll": 68,
+  "stage1OwnedMaterialTotal": 28,
+  "stage1Represented": 23,
+  "stage1Dispositioned": 3,
+  "stage1Missing": 2
+ },
+ "definitionSourceAnchors": [],
+ "definitionAttribution": [],
+ "perDefinition": [
+  {
+   "termName": "Asset Sale",
+   "normalizedTerm": "asset sale",
+   "definitionId": "ir-definition:7816a4c1b9dbf24aa30579c7",
+   "emittingShard": "shard:1c29e71eef1717d4f9e1",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:asset sale",
+   "plannerUnitOwnerShard": "shard:1c29e71eef1717d4f9e1",
+   "lineageIds": 24,
+   "lineageOwnerUnits": [
+    "operative:DEFINITION:def:asset sale"
+   ],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Asset Sale Prepayment Event",
+   "normalizedTerm": "asset sale prepayment event",
+   "definitionId": "ir-definition:d875620e56d7b253b5b82df4",
+   "emittingShard": "shard:1c29e71eef1717d4f9e1",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Asset Sale Proceeds Application Period",
+   "normalizedTerm": "asset sale proceeds application period",
+   "definitionId": "ir-definition:5a31cbec2744f0a4e1d6fb79",
+   "emittingShard": "shard:1c29e71eef1717d4f9e1",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Assignment and Assumption",
+   "normalizedTerm": "assignment and assumption",
+   "definitionId": "ir-definition:913aea472bc054a25d1323c3",
+   "emittingShard": "shard:1c29e71eef1717d4f9e1",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:assignment and assumption",
+   "plannerUnitOwnerShard": "shard:1c29e71eef1717d4f9e1",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Available Amount",
+   "normalizedTerm": "available amount",
+   "definitionId": "ir-definition:f38b8cdf03116d39cafef787",
+   "emittingShard": "shard:1c29e71eef1717d4f9e1",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Available Investment Capacity Amount",
+   "normalizedTerm": "available investment capacity amount",
+   "definitionId": "ir-definition:d3098664453fbfb14eba9d7f",
+   "emittingShard": "shard:1c29e71eef1717d4f9e1",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:available investment capacity amount",
+   "plannerUnitOwnerShard": "shard:1c29e71eef1717d4f9e1",
+   "lineageIds": 1,
+   "lineageOwnerUnits": [
+    "operative:DEFINITION:def:available investment capacity amount"
+   ],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Excluded Swap Obligation",
+   "normalizedTerm": "excluded swap obligation",
+   "definitionId": "ir-definition:289744e1e4aa484e6458b429",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:excluded swap obligation",
+   "plannerUnitOwnerShard": "shard:bf3da01cb454860cdf5f",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Excluded Taxes",
+   "normalizedTerm": "excluded taxes",
+   "definitionId": "ir-definition:9d7953bf868b5d0a25e60c55",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:excluded taxes",
+   "plannerUnitOwnerShard": "shard:bf3da01cb454860cdf5f",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Excluded Term Loans",
+   "normalizedTerm": "excluded term loans",
+   "definitionId": "ir-definition:8c5989df966b022df12d7d77",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:excluded term loans",
+   "plannerUnitOwnerShard": "shard:bf3da01cb454860cdf5f",
+   "lineageIds": 4,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Existing Indebtedness",
+   "normalizedTerm": "existing indebtedness",
+   "definitionId": "ir-definition:37d8d0ac873e99690569ca4e",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:existing indebtedness",
+   "plannerUnitOwnerShard": "shard:bf3da01cb454860cdf5f",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": false,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": true,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Existing Liens",
+   "normalizedTerm": "existing liens",
+   "definitionId": "ir-definition:77cf7b5a7cbcf9a949bc66b5",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Expected Run Rate Benefit",
+   "normalizedTerm": "expected run rate benefit",
+   "definitionId": "ir-definition:95805ecfce2a93042a976c6c",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Extension Amount",
+   "normalizedTerm": "extension amount",
+   "definitionId": "ir-definition:cb472a18ebd6a999908e5e30",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:extension amount",
+   "plannerUnitOwnerShard": "shard:bf3da01cb454860cdf5f",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Facility",
+   "normalizedTerm": "facility",
+   "definitionId": "ir-definition:9cb762d644892ccbc0afb691",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:facility",
+   "plannerUnitOwnerShard": "shard:bf3da01cb454860cdf5f",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Fair Market Value",
+   "normalizedTerm": "fair market value",
+   "definitionId": "ir-definition:d80e625ac60a9120384d3422",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:fair market value",
+   "plannerUnitOwnerShard": "shard:bf3da01cb454860cdf5f",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Fair Value",
+   "normalizedTerm": "fair value",
+   "definitionId": "ir-definition:69cc5456a976356922e79fe9",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:fair value",
+   "plannerUnitOwnerShard": "shard:bf3da01cb454860cdf5f",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "FATCA",
+   "normalizedTerm": "fatca",
+   "definitionId": "ir-definition:d91bcd4418e88db374762991",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:fatca",
+   "plannerUnitOwnerShard": "shard:bf3da01cb454860cdf5f",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "FCPA",
+   "normalizedTerm": "fcpa",
+   "definitionId": "ir-definition:589ca941cb5041b8866373c2",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Federal Funds Effective Rate",
+   "normalizedTerm": "federal funds effective rate",
+   "definitionId": "ir-definition:971e610a146d93935c3bbfeb",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:federal funds effective rate",
+   "plannerUnitOwnerShard": "shard:bf3da01cb454860cdf5f",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Fee Letter",
+   "normalizedTerm": "fee letter",
+   "definitionId": "ir-definition:19555afe30f3d2c3d0f7f62a",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:fee letter",
+   "plannerUnitOwnerShard": "shard:bf3da01cb454860cdf5f",
+   "lineageIds": 1,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "FILO Tranche",
+   "normalizedTerm": "filo tranche",
+   "definitionId": "ir-definition:f8386dd900b91af62350241d",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Financial Officer",
+   "normalizedTerm": "financial officer",
+   "definitionId": "ir-definition:ffa2f908dad12b1384aefa65",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:financial officer",
+   "plannerUnitOwnerShard": "shard:bf3da01cb454860cdf5f",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "First Commitment Application Period",
+   "normalizedTerm": "first commitment application period",
+   "definitionId": "ir-definition:d469fa7d04a4df46bd2c0005",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "First Lien Intercreditor Agreement",
+   "normalizedTerm": "first lien intercreditor agreement",
+   "definitionId": "ir-definition:6bb2f5d608e6716c2c8feffb",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:first lien intercreditor agreement",
+   "plannerUnitOwnerShard": "shard:bf3da01cb454860cdf5f",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "First Lien Leverage Ratio",
+   "normalizedTerm": "first lien leverage ratio",
+   "definitionId": "ir-definition:89e83fd9016e066e4bbba9d7",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:first lien leverage ratio",
+   "plannerUnitOwnerShard": "shard:bf3da01cb454860cdf5f",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Fixed Amounts",
+   "normalizedTerm": "fixed amounts",
+   "definitionId": "ir-definition:054ed0eca2391ebf0a07c6d6",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Fixed Charges",
+   "normalizedTerm": "fixed charges",
+   "definitionId": "ir-definition:cb41297fc53052896c764a8d",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:fixed charges",
+   "plannerUnitOwnerShard": "shard:bf3da01cb454860cdf5f",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Fixed Incremental Amount",
+   "normalizedTerm": "fixed incremental amount",
+   "definitionId": "ir-definition:f1861139cbbbb349d818f1da",
+   "emittingShard": "shard:bf3da01cb454860cdf5f",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:fixed incremental amount",
+   "plannerUnitOwnerShard": "shard:bf3da01cb454860cdf5f",
+   "lineageIds": 11,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Junior Lien Intercreditor Agreement",
+   "normalizedTerm": "junior lien intercreditor agreement",
+   "definitionId": "ir-definition:e7433b6114d731f669403d6c",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:junior lien intercreditor agreement",
+   "plannerUnitOwnerShard": "shard:aac727054a5da5f1a9fd",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": false,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": true,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Latest Maturity Date",
+   "normalizedTerm": "latest maturity date",
+   "definitionId": "ir-definition:5beb484c20eda70ef88ef04d",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:latest maturity date",
+   "plannerUnitOwnerShard": "shard:aac727054a5da5f1a9fd",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "LCT Election",
+   "normalizedTerm": "lct election",
+   "definitionId": "ir-definition:5c7af3dfa55af7b84ddfcdd1",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": false,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": true,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "LCT Test Date",
+   "normalizedTerm": "lct test date",
+   "definitionId": "ir-definition:2ac3b35c1855b77da33186ba",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Lead Arrangers",
+   "normalizedTerm": "lead arrangers",
+   "definitionId": "ir-definition:e3d772feb815e9c8a661eea6",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:lead arrangers",
+   "plannerUnitOwnerShard": "shard:aac727054a5da5f1a9fd",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Lenders",
+   "normalizedTerm": "lenders",
+   "definitionId": "ir-definition:d5461f61087ca1c9c8abef12",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:lenders",
+   "plannerUnitOwnerShard": "shard:aac727054a5da5f1a9fd",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Letter of Intent Transactions",
+   "normalizedTerm": "letter of intent transactions",
+   "definitionId": "ir-definition:30bbb9e019eaf15c1caac315",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:letter of intent transactions",
+   "plannerUnitOwnerShard": "shard:aac727054a5da5f1a9fd",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Liabilities",
+   "normalizedTerm": "liabilities",
+   "definitionId": "ir-definition:817a510cb884739535385d58",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:liabilities",
+   "plannerUnitOwnerShard": "shard:aac727054a5da5f1a9fd",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Lien",
+   "normalizedTerm": "lien",
+   "definitionId": "ir-definition:3d3e69edd89e4ccab542bfba",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:lien",
+   "plannerUnitOwnerShard": "shard:aac727054a5da5f1a9fd",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Limited Condition Transaction",
+   "normalizedTerm": "limited condition transaction",
+   "definitionId": "ir-definition:cfec1a9b0237df6baac0a316",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:limited condition transaction",
+   "plannerUnitOwnerShard": "shard:aac727054a5da5f1a9fd",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": false,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": true,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Limited Originator Recourse",
+   "normalizedTerm": "limited originator recourse",
+   "definitionId": "ir-definition:83ddf462de1280a83706fe4f",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:limited originator recourse",
+   "plannerUnitOwnerShard": "shard:aac727054a5da5f1a9fd",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Loan Document Obligations",
+   "normalizedTerm": "loan document obligations",
+   "definitionId": "ir-definition:c2e1e9c9df67edc863db8868",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:loan document obligations",
+   "plannerUnitOwnerShard": "shard:aac727054a5da5f1a9fd",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Loan Documents",
+   "normalizedTerm": "loan documents",
+   "definitionId": "ir-definition:bb3d278b85b89aa7dc911789",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:loan documents",
+   "plannerUnitOwnerShard": "shard:aac727054a5da5f1a9fd",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Loan Modification Agreement",
+   "normalizedTerm": "loan modification agreement",
+   "definitionId": "ir-definition:3f9275ecf768b639c86fdef6",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:loan modification agreement",
+   "plannerUnitOwnerShard": "shard:aac727054a5da5f1a9fd",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Loan Modification Offer",
+   "normalizedTerm": "loan modification offer",
+   "definitionId": "ir-definition:6b035bfb270f4974caba33da",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Loan Parties",
+   "normalizedTerm": "loan parties",
+   "definitionId": "ir-definition:115a0613071b36f3079451ca",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:loan parties",
+   "plannerUnitOwnerShard": "shard:aac727054a5da5f1a9fd",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Loans",
+   "normalizedTerm": "loans",
+   "definitionId": "ir-definition:21ed3dcbcec0dbefadbd1efb",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:loans",
+   "plannerUnitOwnerShard": "shard:aac727054a5da5f1a9fd",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Management Investors",
+   "normalizedTerm": "management investors",
+   "definitionId": "ir-definition:9281f1e94efaac705b6c6a05",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:management investors",
+   "plannerUnitOwnerShard": "shard:aac727054a5da5f1a9fd",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Market Capitalization",
+   "normalizedTerm": "market capitalization",
+   "definitionId": "ir-definition:30f0f72c6028cb269464abb0",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:market capitalization",
+   "plannerUnitOwnerShard": "shard:aac727054a5da5f1a9fd",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Market Convention Rate",
+   "normalizedTerm": "market convention rate",
+   "definitionId": "ir-definition:f66144025ff07100d9466ec8",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": false,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": true,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Master Agreement",
+   "normalizedTerm": "master agreement",
+   "definitionId": "ir-definition:2d8e6486301281cb1ceff918",
+   "emittingShard": "shard:aac727054a5da5f1a9fd",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Permitted Liens",
+   "normalizedTerm": "permitted liens",
+   "definitionId": "ir-definition:59d6e486b0774661993e44d0",
+   "emittingShard": "shard:4f06625557e9aecbbb7a",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:permitted liens",
+   "plannerUnitOwnerShard": "shard:4f06625557e9aecbbb7a",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Permitted Ratio Debt",
+   "normalizedTerm": "permitted ratio debt",
+   "definitionId": "ir-definition:c26e0c4c8420d4856d061e91",
+   "emittingShard": "shard:4f06625557e9aecbbb7a",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Permitted Receivables Financings",
+   "normalizedTerm": "permitted receivables financings",
+   "definitionId": "ir-definition:ffcf0bfdaaabb96a7c3261ff",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:permitted receivables financings",
+   "plannerUnitOwnerShard": "shard:3e3910ea2efd9edd45a3",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Permitted Tax Restructuring",
+   "normalizedTerm": "permitted tax restructuring",
+   "definitionId": "ir-definition:73477679448aee5e587a5e48",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:permitted tax restructuring",
+   "plannerUnitOwnerShard": "shard:3e3910ea2efd9edd45a3",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Permitted Transferees",
+   "normalizedTerm": "permitted transferees",
+   "definitionId": "ir-definition:e58d79e188032d89e5108058",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:permitted transferees",
+   "plannerUnitOwnerShard": "shard:3e3910ea2efd9edd45a3",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Person",
+   "normalizedTerm": "person",
+   "definitionId": "ir-definition:917288e4ab71baf56c8fe7ed",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:person",
+   "plannerUnitOwnerShard": "shard:3e3910ea2efd9edd45a3",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Plan",
+   "normalizedTerm": "plan",
+   "definitionId": "ir-definition:640b77cfbf4aa7534c1b28ca",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:plan",
+   "plannerUnitOwnerShard": "shard:3e3910ea2efd9edd45a3",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Planned Expenditures",
+   "normalizedTerm": "planned expenditures",
+   "definitionId": "ir-definition:4274dcffde56bf5288936638",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Platform",
+   "normalizedTerm": "platform",
+   "definitionId": "ir-definition:2066fb262b4b94de81f3cba9",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Post-Transaction Period",
+   "normalizedTerm": "post-transaction period",
+   "definitionId": "ir-definition:187499755889327baa9b8ae2",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:post-transaction period",
+   "plannerUnitOwnerShard": "shard:3e3910ea2efd9edd45a3",
+   "lineageIds": 1,
+   "lineageOwnerUnits": [
+    "operative:DEFINITION:def:post-transaction period"
+   ],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Preferred Stock",
+   "normalizedTerm": "preferred stock",
+   "definitionId": "ir-definition:affbf4f285fefb92035ce9ee",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:preferred stock",
+   "plannerUnitOwnerShard": "shard:3e3910ea2efd9edd45a3",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Prepayment Event",
+   "normalizedTerm": "prepayment event",
+   "definitionId": "ir-definition:e09f44f57ea500b3a6b60c6f",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:prepayment event",
+   "plannerUnitOwnerShard": "shard:3e3910ea2efd9edd45a3",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Transaction Threshold",
+   "normalizedTerm": "transaction threshold",
+   "definitionId": "ir-definition:8be13f21436e11a0a4c6cc64",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 2,
+   "lineageOwnerUnits": [
+    "operative:DEFINITION:def:prepayment event"
+   ],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Annual Threshold",
+   "normalizedTerm": "annual threshold",
+   "definitionId": "ir-definition:9798cd4753246e6ba790c06e",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 2,
+   "lineageOwnerUnits": [
+    "operative:DEFINITION:def:prepayment event"
+   ],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Prepayment Notice",
+   "normalizedTerm": "prepayment notice",
+   "definitionId": "ir-definition:33a98352214571cf356f47dd",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:prepayment notice",
+   "plannerUnitOwnerShard": "shard:3e3910ea2efd9edd45a3",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Present Fair Saleable Value",
+   "normalizedTerm": "present fair saleable value",
+   "definitionId": "ir-definition:f19abadf325487e1e4b64848",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:present fair saleable value",
+   "plannerUnitOwnerShard": "shard:3e3910ea2efd9edd45a3",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Prime Rate",
+   "normalizedTerm": "prime rate",
+   "definitionId": "ir-definition:aee7ec5d0c50ac9d74e5ff1e",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:prime rate",
+   "plannerUnitOwnerShard": "shard:3e3910ea2efd9edd45a3",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Pro Forma Adjustment",
+   "normalizedTerm": "pro forma adjustment",
+   "definitionId": "ir-definition:344a1b360d5a77587392e755",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:pro forma adjustment",
+   "plannerUnitOwnerShard": "shard:3e3910ea2efd9edd45a3",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Pro Forma Basis",
+   "normalizedTerm": "pro forma basis",
+   "definitionId": "ir-definition:62709cad4fa79ab52dcec105",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Pro Forma Compliance",
+   "normalizedTerm": "pro forma compliance",
+   "definitionId": "ir-definition:eceffd99a11b2262303229a8",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Pro Forma Effect",
+   "normalizedTerm": "pro forma effect",
+   "definitionId": "ir-definition:51e16c199d6674e8a1870da2",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:pro forma effect",
+   "plannerUnitOwnerShard": "shard:3e3910ea2efd9edd45a3",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Pro Forma Disposal Adjustment",
+   "normalizedTerm": "pro forma disposal adjustment",
+   "definitionId": "ir-definition:4e918cb351f3c5536b47ef08",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:pro forma disposal adjustment",
+   "plannerUnitOwnerShard": "shard:3e3910ea2efd9edd45a3",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Pro Forma Entity",
+   "normalizedTerm": "pro forma entity",
+   "definitionId": "ir-definition:8490568b53c4f6cc36d751b7",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:pro forma entity",
+   "plannerUnitOwnerShard": "shard:3e3910ea2efd9edd45a3",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Pro Rata Share",
+   "normalizedTerm": "pro rata share",
+   "definitionId": "ir-definition:40b23c0ef9115ccb8a970e73",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": true,
+   "plannerUnitKey": "operative:DEFINITION:def:pro rata share",
+   "plannerUnitOwnerShard": "shard:3e3910ea2efd9edd45a3",
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": true,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  },
+  {
+   "termName": "Proposed Change",
+   "normalizedTerm": "proposed change",
+   "definitionId": "ir-definition:5267f0ef6d80deaf4ad11d84",
+   "emittingShard": "shard:3e3910ea2efd9edd45a3",
+   "plannerDefinitionUnitMatch": false,
+   "plannerUnitKey": null,
+   "plannerUnitOwnerShard": null,
+   "lineageIds": 0,
+   "lineageOwnerUnits": [],
+   "attributionMethod": "(pre-F-7B.2 stitcher: no audit field)",
+   "attributedUnit": null,
+   "attributedUnitDeclaresTerm": false,
+   "termOccursInOwnedPrimarySource": true,
+   "declaredInOwnedPrimarySource": false,
+   "termOccursOnlyInReadOnlyContext": false,
+   "termOccursElsewhereInDocument": false,
+   "survivesStitching": true,
+   "anchor": null
+  }
+ ]
+}

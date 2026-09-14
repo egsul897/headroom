@@ -211,7 +211,13 @@ export interface ShardExecutionResult {
   telemetry: { inputTokens: number | null; outputTokens: number | null; costUsd: number | null } | null;
 }
 
-export type ShardCollisionKind = "DEFINITION_EMITTED_BY_NON_OWNER" | "DEFINITION_DUPLICATE_CONSISTENT" | "DEFINITION_CONFLICT" | "RULE_EMITTED_OUT_OF_SCOPE" | "RULE_DUPLICATE_CONSISTENT" | "RULE_POSSIBLE_DUPLICATE" | "SHARED_CAP_EMITTED_OUT_OF_SCOPE" | "LINEAGE_CLAIM_ON_UNOWNED_ITEM" | "DISPOSITION_ON_UNOWNED_ITEM" | "DANGLING_RULE_REFERENCE";
+export type ShardCollisionKind = "DEFINITION_EMITTED_BY_NON_OWNER" | "DEFINITION_DUPLICATE_CONSISTENT" | "DEFINITION_CONFLICT" | "RULE_EMITTED_OUT_OF_SCOPE" | "RULE_DUPLICATE_CONSISTENT" | "RULE_POSSIBLE_DUPLICATE" | "SHARED_CAP_EMITTED_OUT_OF_SCOPE" | "LINEAGE_CLAIM_ON_UNOWNED_ITEM" | "DISPOSITION_ON_UNOWNED_ITEM" | "DANGLING_RULE_REFERENCE"
+  /** F-7B.2: emitted definition with no planner unit, no owned lineage and no declaration in the shard's own primary source - read-only/retrieved-only, never authoritative. */
+  | "CONTEXTUAL_UNOWNED_DEFINITION"
+  /** F-7B.2: the term is declared more than once inside owned primary source - ownership not deterministically resolvable. */
+  | "DEFINITION_ATTRIBUTION_AMBIGUOUS"
+  /** F-7B.2: the planner DEFINITION unit and the object's own lineage disagree about the owning unit. */
+  | "DEFINITION_ATTRIBUTION_CONFLICT";
 
 export interface ShardCollision {
   kind: ShardCollisionKind;
@@ -240,6 +246,10 @@ export interface StitchedCompilation {
   /** Emissions kept OUT of the stitched IR because their semantics are owned elsewhere (never credited), for review. */
   contextualEmissions: { shardId: string; kind: "RULE" | "DEFINITION" | "SHARED_CAP"; objectId: string; ownerShardId: string | null }[];
   collisions: ShardCollision[];
+  /** F-7B.2 (additive audit): the primary-source declaration anchor of every definition retained through proof class 3. */
+  definitionSourceAnchors: import("./definition-source-anchor").DefinitionSourceAnchor[];
+  /** F-7B.2 (additive audit): how EVERY emitted definition was attributed, including the ones dropped as unowned. */
+  definitionAttribution: { shardId: string; objectId: string; termName: string; method: string; unitKey: string | null; ownerShardId: string | null; retained: boolean; anchor: import("./definition-source-anchor").DefinitionSourceAnchor | null }[];
   /** old (shard-local) id -> stitched id, for rules and shared capacities. */
   idMap: Record<string, string>;
   shards: { shardId: string; shardHash: string; status: ShardStatus; ownedMaterialItems: number; rules: number; definitions: number; sharedCapacities: number; failureReasons: SemanticCompilerFailureReason[] }[];
