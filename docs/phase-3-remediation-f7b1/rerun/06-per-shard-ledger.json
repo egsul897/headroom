@@ -1,8 +1,8 @@
 {
  "missionCapUsd": 3.25,
  "stage1CapUsd": 3.25,
- "spentUsd": 0.8300700000000001,
- "stage1SpentUsd": 0.8300700000000001,
+ "spentUsd": 1.22429,
+ "stage1SpentUsd": 1.22429,
  "calls": [
   {
    "n": 1,
@@ -73,6 +73,48 @@
    "costUsd": 0.12842199999999998,
    "estimatedBeforeTurnUsd": 0.47395800000000005,
    "at": "2026-09-14T15:26:52.722Z"
+  },
+  {
+   "n": 6,
+   "stage": 1,
+   "shardId": "shard:bf3da01cb454860cdf5f",
+   "turn": 2,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 37052,
+   "outputTokens": 821,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.082314,
+   "estimatedBeforeTurnUsd": 0.49449600000000005,
+   "at": "2026-09-14T15:27:02.745Z"
+  },
+  {
+   "n": 7,
+   "stage": 1,
+   "shardId": "shard:bf3da01cb454860cdf5f",
+   "turn": 3,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 39328,
+   "outputTokens": 17501,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.253666,
+   "estimatedBeforeTurnUsd": 0.500704,
+   "at": "2026-09-14T15:29:28.994Z"
+  },
+  {
+   "n": 8,
+   "stage": 1,
+   "shardId": "shard:aac727054a5da5f1a9fd",
+   "turn": 1,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 23040,
+   "outputTokens": 1216,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.05824,
+   "estimatedBeforeTurnUsd": 0.46083,
+   "at": "2026-09-14T15:29:41.156Z"
   }
  ],
  "refusals": []
