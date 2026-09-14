@@ -1,0 +1,2129 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:2866a115c3a6d5cc2089",
+  "shardHash": "761693f3812b6d466cf90519f5fe515843bb68e3ea8e4ab7e5a760ba40d5b85a",
+  "ordinal": 0,
+  "ownedUnits": 16,
+  "sourceChars": 7965,
+  "contextEntries": 0,
+  "contextChars": 0,
+  "unresolvedContext": 3,
+  "oversized": false,
+  "ownedItems": 4,
+  "ownedMaterialItems": 4,
+  "estimatedFirstTurnInputTokens": 24837,
+  "preCallEstimate": {
+   "inputTokens": 81714,
+   "outputTokens": 39000,
+   "usd": 0.553428
+  },
+  "actual": {
+   "inputTokens": 58249,
+   "outputTokens": 30141,
+   "turns": 2,
+   "latencyMs": 266730,
+   "costUsd": 0.41790800000000006,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "toolCalls": 9,
+  "toolCallNames": [
+   "getInstrumentDocuments",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 26,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 2,
+   "dispositioned": 0,
+   "missingMaterial": 2,
+   "valuesRepresented": 0,
+   "valuesMissing": 5,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "MISSING_FROM_COMPOSITION": 2,
+    "REPRESENTED": 2
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "ABL Administrative Agent",
+   "ABL Cure Amount",
+   "ABR",
+   "Acceptable Commitment",
+   "Accepting Lenders",
+   "Accounting Changes",
+   "Acquired Entity or Business",
+   "Additional Borrower",
+   "Additional Borrower Effective Date",
+   "Affected Class",
+   "Affiliate Transaction"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1]] The ABL Credit Agreement is not included in this document package (confirmed via getInstrumentDocuments, which lists only this document); its own definition of 'Administrative Agent' cannot be retrieved.",
+   "[definition[d3]] The ABL Credit Agreement is not included in this document package; its definition of 'Cure Amount' cannot be retrieved.",
+   "[definition[d6]] The ABL Credit Agreement is not included in this document package; its definition of 'Lenders' cannot be retrieved.",
+   "[definition[d8]] The ABL Credit Agreement is not included in this document package; its definition of 'Loans' cannot be retrieved.",
+   "[definition[d10]] The ABL Intercreditor Agreement is not included in this document package; its definition of 'ABL Priority Collateral' cannot be retrieved.",
+   "[definition[d13]] Section 2.22(a) was retrieved, but the returned text only reaches the 'Loan Modification Offer' and 'Affected Class' definitions before cutting off ('Such notice shall set forth ...'); the actual defining sentence for 'Accepting Lenders' is further along in that subsection and was not returned. Re-requesting the identical reference is not permitted under the no-duplicate-request policy.",
+   "[definition[d15]] No IR primitive expresses an entity-scope substitution applied across an entire referenced metric definition (recomputing 'Consolidated EBITDA' with 'Restricted Parties' replaced by a different entity set); the full 'Consolidated EBITDA' definition was also not requested as it is not itself the subject of this compilation.",
+   "[definition[d16]] The 'Consolidated EBITDA' definition was not included in the supplied §1.01 excerpt and this session's tool-call budget was exhausted before it could be retrieved.",
+   "[definition[d26]] getReferencedProvision was attempted for Section 5.18(a) but failed because this session's tool-call budget was exhausted before it could be served.",
+   "Source is the definitions section §1.01 of the credit agreement, spanning terms alphabetically from 'ABL Administrative Agent' through 'Affiliate Transaction' (26 distinct defined terms) - each extracted as its own WireDefinition per the multiple-definitions requirement.",
+   "No independently operative WireRule was identified in this excerpt: §1.01 is purely definitional; embedded operative mechanics found only by following cross-references (e.g. the Net Proceeds reinvestment mechanic in §6.05(b)(2) underlying 'Acceptable Commitment') belong to those other sections, not to §1.01 itself, and were used here only to complete the cross-referenced definition's text.",
+   "Several terms ('ABL Administrative Agent', 'ABL Cure Amount', 'ABL Lenders', 'ABL Loans', 'ABL Priority Collateral') are pure pointer-definitions into external agreements (the ABL Credit Agreement / ABL Intercreditor Agreement) that are confirmed absent from this instrument's document package (getInstrumentDocuments returned only this document) - each is marked PARTIAL with an UNSUPPORTED calculationExpression rather than guessed.",
+   "Two terms ('Acquired Entity or Business', 'Affiliate Transaction') and one ('Accepting Lenders') remain MISSING_CONTEXT after real retrieval attempts: Section 5.18(a) could not be fetched before the tool budget was exhausted, the 'Consolidated EBITDA' definition was never requested (out of scope of this compilation and budget-constrained), and the Section 2.22(a) retrieval succeeded but its returned text stopped short of the actual 'Accepting Lenders' defining sentence.",
+   "The 'Administrative Agent' extension clause referencing 'Article VIII' and 'Section 9.03' is flagged PARTIAL because Phase 2 identified genuine AMBIGUOUS_TARGET collisions (multiple physical locations sharing those labels) - not guessed or forced to a single reading."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": true,
+   "decodedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "overallNotes"
+   ],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": true,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "string",
+      "originalStringSha256": "80ff58bb79226dfad5ac77950b58a59d616db959df5cf515caa29fcba9384ebe",
+      "originalStringLength": 24093,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 26,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "string",
+      "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "originalStringLength": 2,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 0,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "string",
+      "originalStringSha256": "31ba2f5432a5539fbe3ba46601690bd0e384a2587ccb61b0a7b1ba80d70b3168",
+      "originalStringLength": 1290,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 1,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "absent",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "absent - left absent for the schema's own default/optional handling"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "string",
+      "originalStringSha256": "8f31efe163ff79ab0ca0e7ab0d5f130a837432b86dd51baf69b3c4a30d830746",
+      "originalStringLength": 1858,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 5,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:2866a115c3a6d5cc2089",
+  "shardHash": "761693f3812b6d466cf90519f5fe515843bb68e3ea8e4ab7e5a760ba40d5b85a",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:54c46307498743194f14c834",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "ABL Administrative Agent",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning given to the term “Administrative Agent” in the ABL Credit Agreement.\"",
+      "semanticDescription": "Term defined solely by cross-reference to the meaning of 'Administrative Agent' as used in the ABL Credit Agreement, an external financing agreement.",
+      "reason": "The ABL Credit Agreement is not included in this document package (confirmed via getInstrumentDocuments, which lists only this document); its own definition of 'Administrative Agent' cannot be retrieved.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:434eb78735765dab645a6445"
+     },
+     "dependsOnTerms": [
+      "ABL Credit Agreement"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Pointer definition text fully captured, but its ultimate substantive meaning depends on an external, unavailable document (ABL Credit Agreement).",
+      "The ABL Credit Agreement is not included in this document package (confirmed via getInstrumentDocuments, which lists only this document); its own definition of 'Administrative Agent' cannot be retrieved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning given to the term “Administrative Agent” in the ABL Credit Agreement."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:17a3317ef340a28b90b8724e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "ABL Credit Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained definition drafted inline, including named parties and the dated history of the base agreement and its three amendments."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the Credit Agreement dated as of June 18, 2019 (as amended by Amendment No. 1 to Credit Agreement, dated as of August 27, 2021, Amendment No. 2 to Credit Agreement, dated as of January 26, 2023 and Amendment No. 3 to Credit Agreement, dated as of April 1, 2025) among, inter alios, the Initial Borrower, Wells Fargo Bank, National Association, as administrative and collateral agent..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "8a953f95ff6074675676bca4"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:2aa7c785e29ee9b95844798b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "ABL Cure Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning given to the term “Cure Amount” in the ABL Credit Agreement.\"",
+      "semanticDescription": "Term defined solely by cross-reference to the meaning of 'Cure Amount' as used in the ABL Credit Agreement, an external financing agreement.",
+      "reason": "The ABL Credit Agreement is not included in this document package; its definition of 'Cure Amount' cannot be retrieved.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:2e444f08322d6bdcb559e52d"
+     },
+     "dependsOnTerms": [
+      "ABL Credit Agreement"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Pointer definition text fully captured, but its ultimate substantive meaning depends on an external, unavailable document.",
+      "The ABL Credit Agreement is not included in this document package; its definition of 'Cure Amount' cannot be retrieved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning given to the term “Cure Amount” in the ABL Credit Agreement."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:2b2e8a017b65292ddd816826",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "ABL Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "ABL Credit Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained definition drafted inline."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the senior secured revolving loan facility under the ABL Credit Agreement or any amendment, supplement, modification, substitution, replacement, restatement or refinancing thereof, in whole or in part, from time to time."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:58a28cec996b4e1ab080e523",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "ABL Intercreditor Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "ABL Priority Collateral"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Core definition (an Intercreditor Agreement among the Collateral Agent and Senior Representatives, including the specific agreement dated June 23, 2026) is fully drafted inline.",
+      "The referenced form 'Exhibit E-1' is not present among this document's own structural nodes (MISSING_SCHEDULE), so the template form itself cannot be verified."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means an Intercreditor Agreement, substantially in the form of Exhibit E-1, among the Collateral Agent and the Senior Representatives for one or more classes of obligations... including that certain ABL Intercreditor Agreement dated as of June 23, 2026..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "8957e8458cb9520914b3c3a5"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:0199319b4273bdc843de21dc",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "ABL Lenders",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"shall have the meaning given to the term “Lenders” in the ABL Credit Agreement.\"",
+      "semanticDescription": "Term defined solely by cross-reference to the meaning of 'Lenders' as used in the ABL Credit Agreement, an external financing agreement.",
+      "reason": "The ABL Credit Agreement is not included in this document package; its definition of 'Lenders' cannot be retrieved.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:77b1f70bc915fc68f0eac773"
+     },
+     "dependsOnTerms": [
+      "ABL Credit Agreement"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Pointer definition text fully captured, but its ultimate substantive meaning depends on an external, unavailable document.",
+      "The ABL Credit Agreement is not included in this document package; its definition of 'Lenders' cannot be retrieved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "shall have the meaning given to the term “Lenders” in the ABL Credit Agreement."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:fd2f4587e8bbfabac9f6c18b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "ABL Loan Documents",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "ABL Credit Agreement",
+      "ABL Intercreditor Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained collective definition drafted inline (the ABL Credit Agreement plus related security/intercreditor/guarantee documents)."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, collectively, (i) the ABL Credit Agreement and (ii) the security documents, intercreditor agreements (including the ABL Intercreditor Agreement), guarantees, joinders and other agreements or instruments executed in connection with the ABL Credit Agreement..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:5bf2c52fd3653216abbb5eaf",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "ABL Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"shall have the meaning given to the term “Loans” in the ABL Credit Agreement.\"",
+      "semanticDescription": "Term defined solely by cross-reference to the meaning of 'Loans' as used in the ABL Credit Agreement, an external financing agreement.",
+      "reason": "The ABL Credit Agreement is not included in this document package; its definition of 'Loans' cannot be retrieved.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:320c4b9df20f8ba7005835a5"
+     },
+     "dependsOnTerms": [
+      "ABL Credit Agreement"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Pointer definition text fully captured, but its ultimate substantive meaning depends on an external, unavailable document.",
+      "The ABL Credit Agreement is not included in this document package; its definition of 'Loans' cannot be retrieved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "shall have the meaning given to the term “Loans” in the ABL Credit Agreement."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:1f2803be9f1bf717d3f2985e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "ABL Obligations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "ABL Loan Documents",
+      "Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained definition drafted inline covering Indebtedness and other obligations outstanding under the ABL Loan Documents, including post-petition interest/fees and secured swap/cash management obligations."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means all Indebtedness and other obligations of the Borrowers and any other Loan Parties outstanding under or pursuant to the ABL Loan Documents, together with guarantees thereof that are secured..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:339b599de9235ae3a68d61b9",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "ABL Priority Collateral",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"shall mean “ABL Priority Collateral” (as defined in the ABL Intercreditor Agreement).\"",
+      "semanticDescription": "Term defined solely by cross-reference to the meaning of 'ABL Priority Collateral' as used in the ABL Intercreditor Agreement.",
+      "reason": "The ABL Intercreditor Agreement is not included in this document package; its definition of 'ABL Priority Collateral' cannot be retrieved.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:91671b25e6d8fb1184a629da"
+     },
+     "dependsOnTerms": [
+      "ABL Intercreditor Agreement"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Pointer definition text fully captured, but its ultimate substantive meaning depends on the ABL Intercreditor Agreement, which is not part of this document package.",
+      "The ABL Intercreditor Agreement is not included in this document package; its definition of 'ABL Priority Collateral' cannot be retrieved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "shall mean “ABL Priority Collateral” (as defined in the ABL Intercreditor Agreement)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "b6398b40817eb1345662b64b"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:9fdd17c7d9e5073b1eab2e17",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "ABR",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Alternate Base Rate"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained definition drafted inline."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "when used in reference to any Loan or Borrowing, refers to whether such Loan, or the Loans comprising such Borrowing, are bearing interest at a rate determined by reference to the Alternate Base Rate."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e380a98c8181318523c6a717",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Acceptable Commitment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Net Proceeds",
+      "Asset Sale Proceeds Application Period",
+      "Loan Party"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "§1.01 points to Section 6.05(b)(2), which was retrieved and contains the full substantive definition: a binding commitment or letter of intent to apply Net Proceeds within a stated timeframe, entered into with the requisite good-faith expectation."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §6.05(b)(2)",
+      "excerpt": "a binding commitment or letter of intent shall be treated as a permitted application of the Net Proceeds from the date of such commitment or letter of intent so long as the applicable Loan Party enters into such commitment or letter of intent with the good faith expectation that such Net Proceeds shall be applied to satisfy such commitment or letter of intent within one hundred eighty (180) days of the expiration of the Asset Sale Proceeds Application Period (an “Acceptable Commitment”)..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:b4887d40148daf5c03d8ee41",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Accepting Lenders",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 2.22(a).\"",
+      "semanticDescription": "Term defined by cross-reference to Section 2.22(a).",
+      "reason": "Section 2.22(a) was retrieved, but the returned text only reaches the 'Loan Modification Offer' and 'Affected Class' definitions before cutting off ('Such notice shall set forth ...'); the actual defining sentence for 'Accepting Lenders' is further along in that subsection and was not returned. Re-requesting the identical reference is not permitted under the no-duplicate-request policy.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:5ed7c82893a8860690be89fe"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced section retrieved but did not include the actual defining text for this specific term.",
+      "Section 2.22(a) was retrieved, but the returned text only reaches the 'Loan Modification Offer' and 'Affected Class' definitions before cutting off ('Such notice shall set forth ...'); the actual defining sentence for 'Accepting Lenders' is further along in that subsection and was not returned. Re-requesting the identical reference is not permitted under the no-duplicate-request policy."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §2.22(a)",
+      "excerpt": "has the meaning assigned to such term in Section 2.22(a)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:ca5c625f9cd9f7aa2144bae5",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Accounting Changes",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Total Leverage Ratio",
+      "Senior Secured Leverage Ratio",
+      "First Lien Leverage Ratio"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "§1.01 points to Section 1.04(d), which was retrieved and contains the full substantive definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §1.04(d)",
+      "excerpt": "In the event that the Borrower elects to prepare its financial statements in accordance with IFRS and such election results in a change in the method of calculation of financial covenants, standards or terms (collectively, the “Accounting Changes”) in this Agreement..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:08a0bddc4c073b1f9774f051",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Acquired EBITDA",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"the amount for such period of Consolidated EBITDA of such Pro Forma Entity (determined as if references to the Restricted Parties in the definition of the term ‘Consolidated EBITDA’ ... were references to such Pro Forma Entity and its Subsidiaries which will become Restricted Subsidiaries)...\"",
+      "semanticDescription": "Consolidated EBITDA of a Pro Forma Entity, recomputed as if references to 'Restricted Parties' throughout the Consolidated EBITDA definition (and its component definitions) instead referred to that Pro Forma Entity and its Subsidiaries that will become Restricted Subsidiaries.",
+      "reason": "No IR primitive expresses an entity-scope substitution applied across an entire referenced metric definition (recomputing 'Consolidated EBITDA' with 'Restricted Parties' replaced by a different entity set); the full 'Consolidated EBITDA' definition was also not requested as it is not itself the subject of this compilation.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:9f0881eda09d5b279ae41510"
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Pro Forma Entity",
+      "Restricted Parties",
+      "Restricted Subsidiaries"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Textual meaning fully captured in the excerpt; the entity-substitution computation mechanic itself cannot be represented with the available node types.",
+      "No IR primitive expresses an entity-scope substitution applied across an entire referenced metric definition (recomputing 'Consolidated EBITDA' with 'Restricted Parties' replaced by a different entity set); the full 'Consolidated EBITDA' definition was also not requested as it is not itself the subject of this compilation."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, with respect to any Pro Forma Entity for any period, the amount for such period of Consolidated EBITDA of such Pro Forma Entity (determined as if references to the Restricted Parties in the definition of the term “Consolidated EBITDA” ... were references to such Pro Forma Entity and its Subsidiaries which will become Restricted Subsidiaries), all as determined on a consolidated basis for such Pro Forma Entity."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:cabede04ee733c794fe2f8e3",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Acquired Entity or Business",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in the definition of ‘Consolidated EBITDA.’\"",
+      "semanticDescription": "Term defined solely by cross-reference to the definition of 'Consolidated EBITDA'.",
+      "reason": "The 'Consolidated EBITDA' definition was not included in the supplied §1.01 excerpt and this session's tool-call budget was exhausted before it could be retrieved.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:6c11428599b222bfc9575ff7"
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Substantive meaning lives entirely in the 'Consolidated EBITDA' definition, which could not be retrieved within the available tool budget.",
+      "The 'Consolidated EBITDA' definition was not included in the supplied §1.01 excerpt and this session's tool-call budget was exhausted before it could be retrieved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in the definition of “Consolidated EBITDA.”"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:0f128bd5d36866b6b4ca588e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Acquired Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Subsidiary",
+      "Lien"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained two-prong definition drafted inline."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, with respect to any specified Person: (1) Indebtedness of any other Person existing at the time such other Person is merged, consolidated or amalgamated with or into or became a Restricted Subsidiary of such specified Person...; and (2) Indebtedness secured by a Lien encumbering any asset acquired by such specified Person."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:0aa9e20146127e520435fc62",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Additional Borrower",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Qualified Jurisdiction",
+      "Restricted Subsidiary",
+      "Loan Party"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "§1.01 points to Section 2.27(a), which was retrieved and contains the full substantive definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §2.27(a)",
+      "excerpt": "cause any wholly owned Restricted Subsidiary organized in a Qualified Jurisdiction on or after the Effective Date by written election to the Administrative Agent to become a borrower (each such Loan Party, an “Additional Borrower”) under each or any of the Facilities hereunder on a joint and several basis..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d2a59c039f54318bcd9a918b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Additional Borrower Effective Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Additional Borrower"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "§1.01 points to Section 2.27(a), which was retrieved and contains the full substantive definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §2.27(a)",
+      "excerpt": "(such date, the “Additional Borrower Effective Date”)"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e49b4552a2c16a049d2975e2",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Additional Lender",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Incremental Revolving Commitment",
+      "Incremental Term Commitment",
+      "Incremental Loan",
+      "Credit Agreement Refinancing Indebtedness",
+      "Lender",
+      "Affiliate",
+      "Approved Fund",
+      "Administrative Agent",
+      "Initial Borrower"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition and its consent provisos are fully drafted inline in §1.01; cross-referenced Sections 2.18 ('Increased Loans and Commitments'), 2.19 ('Refinancing Amendments') and 9.04(b) govern only the procedural mechanics of the underlying amendment/assignment, not this term's own meaning, and were confirmed via retrieval to be the correctly-titled procedural sections."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, at any time, any bank or other financial institution... that agrees to provide any portion of any (a) Incremental Revolving Commitment, Incremental Term Commitment or Incremental Loan pursuant to an Incremental Facility Amendment in accordance with Section 2.18 or (b) Credit Agreement Refinancing Indebtedness pursuant to a Refinancing Amendment in accordance with Section 2.19; provided that..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:0cdc2c863c7f79bddf8fe299",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Administrative Agent",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Collateral Agent"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Core definition (JPMorgan Chase Bank, N.A. as administrative agent) is fully captured.",
+      "The extension clause's cross-references to 'Article VIII' and 'Section 9.03' each match multiple physical locations in the document (AMBIGUOUS_TARGET), and 'Collateral Agent' is itself undefined in the supplied evidence, so the precise scope of the inclusion proviso cannot be confidently resolved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means JPMorgan Chase Bank, N.A. in its capacity as administrative agent hereunder and under the other Loan Documents... Unless the context otherwise required, reference to the term “Administrative Agent” in Article VIII and Section 9.03 shall include the Collateral Agent."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "f2fbeda4d086b76bb0a52659"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:f624ead556b6015c7dbd7c03",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Administrative Questionnaire",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Administrative Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained definition drafted inline."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means an administrative questionnaire in a form supplied by the Administrative Agent."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:5db18e34da9bba26186d30dd",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Affected Class",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Loan Modification Offer",
+      "Class",
+      "Lenders",
+      "Permitted Amendments"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "§1.01 points to Section 2.22(a), which was retrieved and its returned text fully captures this specific term's definition ('each Class subject to such a Loan Modification Offer, an “Affected Class”')."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §2.22(a)",
+      "excerpt": "make one or more offers (each, a “Loan Modification Offer”) to all the Lenders of one or more Classes (each Class subject to such a Loan Modification Offer, an “Affected Class”) to effect one or more Permitted Amendments relating to such Affected Class."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:ffd5d6472de21be80916445c",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Affected Financial Institution",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "EEA Financial Institution",
+      "UK Financial Institution"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained definition drafted inline as an alternation of two other defined terms; the definition's own text does not require resolving those terms' full content."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means (a) any EEA Financial Institution or (b) any UK Financial Institution."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:2a2c6133d7363d696e7bd5d0",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Affiliate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Control",
+      "Restricted Party",
+      "Sponsor"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained definition drafted inline, including the express carve-out for unrelated Sponsor portfolio operating companies."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, with respect to a specified Person, another Person that directly or indirectly Controls or is Controlled by or is under common Control with the Person specified. No Person shall be an “Affiliate” of a Restricted Party solely because it is an unrelated portfolio operating company of a Sponsor."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:4b0937b78b09a58bedeacb85",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Affiliate Transaction",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 5.18(a).\"",
+      "semanticDescription": "Term defined by cross-reference to Section 5.18(a).",
+      "reason": "getReferencedProvision was attempted for Section 5.18(a) but failed because this session's tool-call budget was exhausted before it could be served.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:ddb88a0716e81ca55e9d6739"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Substantive meaning lives entirely in Section 5.18(a), which could not be retrieved within the available tool budget.",
+      "getReferencedProvision was attempted for Section 5.18(a) but failed because this session's tool-call budget was exhausted before it could be served."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §5.18(a)",
+      "excerpt": "has the meaning assigned to such term in Section 5.18(a)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1]] The ABL Credit Agreement is not included in this document package (confirmed via getInstrumentDocuments, which lists only this document); its own definition of 'Administrative Agent' cannot be retrieved.",
+   "[definition[d3]] The ABL Credit Agreement is not included in this document package; its definition of 'Cure Amount' cannot be retrieved.",
+   "[definition[d6]] The ABL Credit Agreement is not included in this document package; its definition of 'Lenders' cannot be retrieved.",
+   "[definition[d8]] The ABL Credit Agreement is not included in this document package; its definition of 'Loans' cannot be retrieved.",
+   "[definition[d10]] The ABL Intercreditor Agreement is not included in this document package; its definition of 'ABL Priority Collateral' cannot be retrieved.",
+   "[definition[d13]] Section 2.22(a) was retrieved, but the returned text only reaches the 'Loan Modification Offer' and 'Affected Class' definitions before cutting off ('Such notice shall set forth ...'); the actual defining sentence for 'Accepting Lenders' is further along in that subsection and was not returned. Re-requesting the identical reference is not permitted under the no-duplicate-request policy.",
+   "[definition[d15]] No IR primitive expresses an entity-scope substitution applied across an entire referenced metric definition (recomputing 'Consolidated EBITDA' with 'Restricted Parties' replaced by a different entity set); the full 'Consolidated EBITDA' definition was also not requested as it is not itself the subject of this compilation.",
+   "[definition[d16]] The 'Consolidated EBITDA' definition was not included in the supplied §1.01 excerpt and this session's tool-call budget was exhausted before it could be retrieved.",
+   "[definition[d26]] getReferencedProvision was attempted for Section 5.18(a) but failed because this session's tool-call budget was exhausted before it could be served.",
+   "Source is the definitions section §1.01 of the credit agreement, spanning terms alphabetically from 'ABL Administrative Agent' through 'Affiliate Transaction' (26 distinct defined terms) - each extracted as its own WireDefinition per the multiple-definitions requirement.",
+   "No independently operative WireRule was identified in this excerpt: §1.01 is purely definitional; embedded operative mechanics found only by following cross-references (e.g. the Net Proceeds reinvestment mechanic in §6.05(b)(2) underlying 'Acceptable Commitment') belong to those other sections, not to §1.01 itself, and were used here only to complete the cross-referenced definition's text.",
+   "Several terms ('ABL Administrative Agent', 'ABL Cure Amount', 'ABL Lenders', 'ABL Loans', 'ABL Priority Collateral') are pure pointer-definitions into external agreements (the ABL Credit Agreement / ABL Intercreditor Agreement) that are confirmed absent from this instrument's document package (getInstrumentDocuments returned only this document) - each is marked PARTIAL with an UNSUPPORTED calculationExpression rather than guessed.",
+   "Two terms ('Acquired Entity or Business', 'Affiliate Transaction') and one ('Accepting Lenders') remain MISSING_CONTEXT after real retrieval attempts: Section 5.18(a) could not be fetched before the tool budget was exhausted, the 'Consolidated EBITDA' definition was never requested (out of scope of this compilation and budget-constrained), and the Section 2.22(a) retrieval succeeded but its returned text stopped short of the actual 'Accepting Lenders' defining sentence.",
+   "The 'Administrative Agent' extension clause referencing 'Article VIII' and 'Section 9.03' is flagged PARTIAL because Phase 2 identified genuine AMBIGUOUS_TARGET collisions (multiple physical locations sharing those labels) - not guessed or forced to a single reading."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 58249,
+   "outputTokens": 30141,
+   "costUsd": 0.41790800000000006
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:54c46307498743194f14c834",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "ABL Administrative Agent",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning given to the term “Administrative Agent” in the ABL Credit Agreement.\"",
+     "semanticDescription": "Term defined solely by cross-reference to the meaning of 'Administrative Agent' as used in the ABL Credit Agreement, an external financing agreement.",
+     "reason": "The ABL Credit Agreement is not included in this document package (confirmed via getInstrumentDocuments, which lists only this document); its own definition of 'Administrative Agent' cannot be retrieved.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:434eb78735765dab645a6445"
+    },
+    "dependsOnTerms": [
+     "ABL Credit Agreement"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Pointer definition text fully captured, but its ultimate substantive meaning depends on an external, unavailable document (ABL Credit Agreement).",
+     "The ABL Credit Agreement is not included in this document package (confirmed via getInstrumentDocuments, which lists only this document); its own definition of 'Administrative Agent' cannot be retrieved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning given to the term “Administrative Agent” in the ABL Credit Agreement."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:17a3317ef340a28b90b8724e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "ABL Credit Agreement",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained definition drafted inline, including named parties and the dated history of the base agreement and its three amendments."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the Credit Agreement dated as of June 18, 2019 (as amended by Amendment No. 1 to Credit Agreement, dated as of August 27, 2021, Amendment No. 2 to Credit Agreement, dated as of January 26, 2023 and Amendment No. 3 to Credit Agreement, dated as of April 1, 2025) among, inter alios, the Initial Borrower, Wells Fargo Bank, National Association, as administrative and collateral agent..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "8a953f95ff6074675676bca4"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:2aa7c785e29ee9b95844798b",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "ABL Cure Amount",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning given to the term “Cure Amount” in the ABL Credit Agreement.\"",
+     "semanticDescription": "Term defined solely by cross-reference to the meaning of 'Cure Amount' as used in the ABL Credit Agreement, an external financing agreement.",
+     "reason": "The ABL Credit Agreement is not included in this document package; its definition of 'Cure Amount' cannot be retrieved.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:2e444f08322d6bdcb559e52d"
+    },
+    "dependsOnTerms": [
+     "ABL Credit Agreement"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Pointer definition text fully captured, but its ultimate substantive meaning depends on an external, unavailable document.",
+     "The ABL Credit Agreement is not included in this document package; its definition of 'Cure Amount' cannot be retrieved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning given to the term “Cure Amount” in the ABL Credit Agreement."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:2b2e8a017b65292ddd816826",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "ABL Facility",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "ABL Credit Agreement"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained definition drafted inline."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the senior secured revolving loan facility under the ABL Credit Agreement or any amendment, supplement, modification, substitution, replacement, restatement or refinancing thereof, in whole or in part, from time to time."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:58a28cec996b4e1ab080e523",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "ABL Intercreditor Agreement",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "ABL Priority Collateral"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Core definition (an Intercreditor Agreement among the Collateral Agent and Senior Representatives, including the specific agreement dated June 23, 2026) is fully drafted inline.",
+     "The referenced form 'Exhibit E-1' is not present among this document's own structural nodes (MISSING_SCHEDULE), so the template form itself cannot be verified."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means an Intercreditor Agreement, substantially in the form of Exhibit E-1, among the Collateral Agent and the Senior Representatives for one or more classes of obligations... including that certain ABL Intercreditor Agreement dated as of June 23, 2026..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "8957e8458cb9520914b3c3a5"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:0199319b4273bdc843de21dc",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "ABL Lenders",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"shall have the meaning given to the term “Lenders” in the ABL Credit Agreement.\"",
+     "semanticDescription": "Term defined solely by cross-reference to the meaning of 'Lenders' as used in the ABL Credit Agreement, an external financing agreement.",
+     "reason": "The ABL Credit Agreement is not included in this document package; its definition of 'Lenders' cannot be retrieved.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:77b1f70bc915fc68f0eac773"
+    },
+    "dependsOnTerms": [
+     "ABL Credit Agreement"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Pointer definition text fully captured, but its ultimate substantive meaning depends on an external, unavailable document.",
+     "The ABL Credit Agreement is not included in this document package; its definition of 'Lenders' cannot be retrieved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "shall have the meaning given to the term “Lenders” in the ABL Credit Agreement."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:fd2f4587e8bbfabac9f6c18b",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "ABL Loan Documents",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "ABL Credit Agreement",
+     "ABL Intercreditor Agreement"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained collective definition drafted inline (the ABL Credit Agreement plus related security/intercreditor/guarantee documents)."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, collectively, (i) the ABL Credit Agreement and (ii) the security documents, intercreditor agreements (including the ABL Intercreditor Agreement), guarantees, joinders and other agreements or instruments executed in connection with the ABL Credit Agreement..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:5bf2c52fd3653216abbb5eaf",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "ABL Loans",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"shall have the meaning given to the term “Loans” in the ABL Credit Agreement.\"",
+     "semanticDescription": "Term defined solely by cross-reference to the meaning of 'Loans' as used in the ABL Credit Agreement, an external financing agreement.",
+     "reason": "The ABL Credit Agreement is not included in this document package; its definition of 'Loans' cannot be retrieved.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:320c4b9df20f8ba7005835a5"
+    },
+    "dependsOnTerms": [
+     "ABL Credit Agreement"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Pointer definition text fully captured, but its ultimate substantive meaning depends on an external, unavailable document.",
+     "The ABL Credit Agreement is not included in this document package; its definition of 'Loans' cannot be retrieved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "shall have the meaning given to the term “Loans” in the ABL Credit Agreement."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:1f2803be9f1bf717d3f2985e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "ABL Obligations",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "ABL Loan Documents",
+     "Indebtedness"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained definition drafted inline covering Indebtedness and other obligations outstanding under the ABL Loan Documents, including post-petition interest/fees and secured swap/cash management obligations."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means all Indebtedness and other obligations of the Borrowers and any other Loan Parties outstanding under or pursuant to the ABL Loan Documents, together with guarantees thereof that are secured..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:339b599de9235ae3a68d61b9",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "ABL Priority Collateral",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"shall mean “ABL Priority Collateral” (as defined in the ABL Intercreditor Agreement).\"",
+     "semanticDescription": "Term defined solely by cross-reference to the meaning of 'ABL Priority Collateral' as used in the ABL Intercreditor Agreement.",
+     "reason": "The ABL Intercreditor Agreement is not included in this document package; its definition of 'ABL Priority Collateral' cannot be retrieved.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:91671b25e6d8fb1184a629da"
+    },
+    "dependsOnTerms": [
+     "ABL Intercreditor Agreement"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Pointer definition text fully captured, but its ultimate substantive meaning depends on the ABL Intercreditor Agreement, which is not part of this document package.",
+     "The ABL Intercreditor Agreement is not included in this document package; its definition of 'ABL Priority Collateral' cannot be retrieved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "shall mean “ABL Priority Collateral” (as defined in the ABL Intercreditor Agreement)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "b6398b40817eb1345662b64b"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:9fdd17c7d9e5073b1eab2e17",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "ABR",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Alternate Base Rate"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained definition drafted inline."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "when used in reference to any Loan or Borrowing, refers to whether such Loan, or the Loans comprising such Borrowing, are bearing interest at a rate determined by reference to the Alternate Base Rate."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e380a98c8181318523c6a717",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Acceptable Commitment",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Net Proceeds",
+     "Asset Sale Proceeds Application Period",
+     "Loan Party"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "§1.01 points to Section 6.05(b)(2), which was retrieved and contains the full substantive definition: a binding commitment or letter of intent to apply Net Proceeds within a stated timeframe, entered into with the requisite good-faith expectation."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §6.05(b)(2)",
+     "excerpt": "a binding commitment or letter of intent shall be treated as a permitted application of the Net Proceeds from the date of such commitment or letter of intent so long as the applicable Loan Party enters into such commitment or letter of intent with the good faith expectation that such Net Proceeds shall be applied to satisfy such commitment or letter of intent within one hundred eighty (180) days of the expiration of the Asset Sale Proceeds Application Period (an “Acceptable Commitment”)..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:b4887d40148daf5c03d8ee41",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Accepting Lenders",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 2.22(a).\"",
+     "semanticDescription": "Term defined by cross-reference to Section 2.22(a).",
+     "reason": "Section 2.22(a) was retrieved, but the returned text only reaches the 'Loan Modification Offer' and 'Affected Class' definitions before cutting off ('Such notice shall set forth ...'); the actual defining sentence for 'Accepting Lenders' is further along in that subsection and was not returned. Re-requesting the identical reference is not permitted under the no-duplicate-request policy.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:5ed7c82893a8860690be89fe"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Cross-referenced section retrieved but did not include the actual defining text for this specific term.",
+     "Section 2.22(a) was retrieved, but the returned text only reaches the 'Loan Modification Offer' and 'Affected Class' definitions before cutting off ('Such notice shall set forth ...'); the actual defining sentence for 'Accepting Lenders' is further along in that subsection and was not returned. Re-requesting the identical reference is not permitted under the no-duplicate-request policy."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §2.22(a)",
+     "excerpt": "has the meaning assigned to such term in Section 2.22(a)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:ca5c625f9cd9f7aa2144bae5",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Accounting Changes",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Total Leverage Ratio",
+     "Senior Secured Leverage Ratio",
+     "First Lien Leverage Ratio"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "§1.01 points to Section 1.04(d), which was retrieved and contains the full substantive definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §1.04(d)",
+     "excerpt": "In the event that the Borrower elects to prepare its financial statements in accordance with IFRS and such election results in a change in the method of calculation of financial covenants, standards or terms (collectively, the “Accounting Changes”) in this Agreement..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:08a0bddc4c073b1f9774f051",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Acquired EBITDA",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"the amount for such period of Consolidated EBITDA of such Pro Forma Entity (determined as if references to the Restricted Parties in the definition of the term ‘Consolidated EBITDA’ ... were references to such Pro Forma Entity and its Subsidiaries which will become Restricted Subsidiaries)...\"",
+     "semanticDescription": "Consolidated EBITDA of a Pro Forma Entity, recomputed as if references to 'Restricted Parties' throughout the Consolidated EBITDA definition (and its component definitions) instead referred to that Pro Forma Entity and its Subsidiaries that will become Restricted Subsidiaries.",
+     "reason": "No IR primitive expresses an entity-scope substitution applied across an entire referenced metric definition (recomputing 'Consolidated EBITDA' with 'Restricted Parties' replaced by a different entity set); the full 'Consolidated EBITDA' definition was also not requested as it is not itself the subject of this compilation.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:9f0881eda09d5b279ae41510"
+    },
+    "dependsOnTerms": [
+     "Consolidated EBITDA",
+     "Pro Forma Entity",
+     "Restricted Parties",
+     "Restricted Subsidiaries"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Textual meaning fully captured in the excerpt; the entity-substitution computation mechanic itself cannot be represented with the available node types.",
+     "No IR primitive expresses an entity-scope substitution applied across an entire referenced metric definition (recomputing 'Consolidated EBITDA' with 'Restricted Parties' replaced by a different entity set); the full 'Consolidated EBITDA' definition was also not requested as it is not itself the subject of this compilation."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, with respect to any Pro Forma Entity for any period, the amount for such period of Consolidated EBITDA of such Pro Forma Entity (determined as if references to the Restricted Parties in the definition of the term “Consolidated EBITDA” ... were references to such Pro Forma Entity and its Subsidiaries which will become Restricted Subsidiaries), all as determined on a consolidated basis for such Pro Forma Entity."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:cabede04ee733c794fe2f8e3",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Acquired Entity or Business",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning assigned to such term in the definition of ‘Consolidated EBITDA.’\"",
+     "semanticDescription": "Term defined solely by cross-reference to the definition of 'Consolidated EBITDA'.",
+     "reason": "The 'Consolidated EBITDA' definition was not included in the supplied §1.01 excerpt and this session's tool-call budget was exhausted before it could be retrieved.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:6c11428599b222bfc9575ff7"
+    },
+    "dependsOnTerms": [
+     "Consolidated EBITDA"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Substantive meaning lives entirely in the 'Consolidated EBITDA' definition, which could not be retrieved within the available tool budget.",
+     "The 'Consolidated EBITDA' definition was not included in the supplied §1.01 excerpt and this session's tool-call budget was exhausted before it could be retrieved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of “Consolidated EBITDA.”"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:0f128bd5d36866b6b4ca588e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Acquired Indebtedness",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Restricted Subsidiary",
+     "Lien"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained two-prong definition drafted inline."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, with respect to any specified Person: (1) Indebtedness of any other Person existing at the time such other Person is merged, consolidated or amalgamated with or into or became a Restricted Subsidiary of such specified Person...; and (2) Indebtedness secured by a Lien encumbering any asset acquired by such specified Person."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:0aa9e20146127e520435fc62",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Additional Borrower",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Qualified Jurisdiction",
+     "Restricted Subsidiary",
+     "Loan Party"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "§1.01 points to Section 2.27(a), which was retrieved and contains the full substantive definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §2.27(a)",
+     "excerpt": "cause any wholly owned Restricted Subsidiary organized in a Qualified Jurisdiction on or after the Effective Date by written election to the Administrative Agent to become a borrower (each such Loan Party, an “Additional Borrower”) under each or any of the Facilities hereunder on a joint and several basis..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d2a59c039f54318bcd9a918b",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Additional Borrower Effective Date",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Additional Borrower"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "§1.01 points to Section 2.27(a), which was retrieved and contains the full substantive definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §2.27(a)",
+     "excerpt": "(such date, the “Additional Borrower Effective Date”)"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e49b4552a2c16a049d2975e2",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Additional Lender",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Incremental Revolving Commitment",
+     "Incremental Term Commitment",
+     "Incremental Loan",
+     "Credit Agreement Refinancing Indebtedness",
+     "Lender",
+     "Affiliate",
+     "Approved Fund",
+     "Administrative Agent",
+     "Initial Borrower"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition and its consent provisos are fully drafted inline in §1.01; cross-referenced Sections 2.18 ('Increased Loans and Commitments'), 2.19 ('Refinancing Amendments') and 9.04(b) govern only the procedural mechanics of the underlying amendment/assignment, not this term's own meaning, and were confirmed via retrieval to be the correctly-titled procedural sections."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, at any time, any bank or other financial institution... that agrees to provide any portion of any (a) Incremental Revolving Commitment, Incremental Term Commitment or Incremental Loan pursuant to an Incremental Facility Amendment in accordance with Section 2.18 or (b) Credit Agreement Refinancing Indebtedness pursuant to a Refinancing Amendment in accordance with Section 2.19; provided that..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:0cdc2c863c7f79bddf8fe299",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Administrative Agent",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Collateral Agent"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Core definition (JPMorgan Chase Bank, N.A. as administrative agent) is fully captured.",
+     "The extension clause's cross-references to 'Article VIII' and 'Section 9.03' each match multiple physical locations in the document (AMBIGUOUS_TARGET), and 'Collateral Agent' is itself undefined in the supplied evidence, so the precise scope of the inclusion proviso cannot be confidently resolved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means JPMorgan Chase Bank, N.A. in its capacity as administrative agent hereunder and under the other Loan Documents... Unless the context otherwise required, reference to the term “Administrative Agent” in Article VIII and Section 9.03 shall include the Collateral Agent."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "f2fbeda4d086b76bb0a52659"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:f624ead556b6015c7dbd7c03",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Administrative Questionnaire",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Administrative Agent"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained definition drafted inline."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means an administrative questionnaire in a form supplied by the Administrative Agent."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:5db18e34da9bba26186d30dd",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Affected Class",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Loan Modification Offer",
+     "Class",
+     "Lenders",
+     "Permitted Amendments"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "§1.01 points to Section 2.22(a), which was retrieved and its returned text fully captures this specific term's definition ('each Class subject to such a Loan Modification Offer, an “Affected Class”')."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §2.22(a)",
+     "excerpt": "make one or more offers (each, a “Loan Modification Offer”) to all the Lenders of one or more Classes (each Class subject to such a Loan Modification Offer, an “Affected Class”) to effect one or more Permitted Amendments relating to such Affected Class."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:ffd5d6472de21be80916445c",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Affected Financial Institution",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "EEA Financial Institution",
+     "UK Financial Institution"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained definition drafted inline as an alternation of two other defined terms; the definition's own text does not require resolving those terms' full content."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means (a) any EEA Financial Institution or (b) any UK Financial Institution."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:2a2c6133d7363d696e7bd5d0",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Affiliate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Control",
+     "Restricted Party",
+     "Sponsor"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained definition drafted inline, including the express carve-out for unrelated Sponsor portfolio operating companies."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, with respect to a specified Person, another Person that directly or indirectly Controls or is Controlled by or is under common Control with the Person specified. No Person shall be an “Affiliate” of a Restricted Party solely because it is an unrelated portfolio operating company of a Sponsor."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:4b0937b78b09a58bedeacb85",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Affiliate Transaction",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 5.18(a).\"",
+     "semanticDescription": "Term defined by cross-reference to Section 5.18(a).",
+     "reason": "getReferencedProvision was attempted for Section 5.18(a) but failed because this session's tool-call budget was exhausted before it could be served.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:ddb88a0716e81ca55e9d6739"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Substantive meaning lives entirely in Section 5.18(a), which could not be retrieved within the available tool budget.",
+     "getReferencedProvision was attempted for Section 5.18(a) but failed because this session's tool-call budget was exhausted before it could be served."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §5.18(a)",
+     "excerpt": "has the meaning assigned to such term in Section 5.18(a)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01, 'Acquired EBITDA': \"determined as if references to the Restricted Parties in the definition of the term ‘Consolidated EBITDA’ (and in the component financial definitions used therein) were references to such Pro Forma Entity and its Subsidiaries which will become Restricted Subsidiaries\"",
+    "semanticRequirement": "A recurring drafting pattern where a new defined metric is computed by taking an existing complex metric definition (and all of its nested component definitions) and substituting one entity-scope reference for another throughout, rather than by a simple arithmetic combination of the existing metric's output.",
+    "whyExistingPrimitivesFail": "METRIC_REFERENCE only names a metric and cannot carry an instruction to recompute that metric's own internal definition with a different entity scope; there is no 'entity-substituted recomputation' primitive, and forcing this into MULTIPLY/ADD/etc. would misrepresent the mechanic as a simple combination rather than a redefinition.",
+    "candidateGeneralizedPrimitive": "A METRIC_RECOMPUTE_WITH_SUBSTITUTION node taking a base metricName, a substitution mapping (e.g. entityScope original -> replacement), to be resolved against the base metric's own dependency graph."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d1]] The ABL Credit Agreement is not included in this document package (confirmed via getInstrumentDocuments, which lists only this document); its own definition of 'Administrative Agent' cannot be retrieved.",
+   "[definition[d3]] The ABL Credit Agreement is not included in this document package; its definition of 'Cure Amount' cannot be retrieved.",
+   "[definition[d6]] The ABL Credit Agreement is not included in this document package; its definition of 'Lenders' cannot be retrieved.",
+   "[definition[d8]] The ABL Credit Agreement is not included in this document package; its definition of 'Loans' cannot be retrieved.",
+   "[definition[d10]] The ABL Intercreditor Agreement is not included in this document package; its definition of 'ABL Priority Collateral' cannot be retrieved.",
+   "[definition[d13]] Section 2.22(a) was retrieved, but the returned text only reaches the 'Loan Modification Offer' and 'Affected Class' definitions before cutting off ('Such notice shall set forth ...'); the actual defining sentence for 'Accepting Lenders' is further along in that subsection and was not returned. Re-requesting the identical reference is not permitted under the no-duplicate-request policy.",
+   "[definition[d15]] No IR primitive expresses an entity-scope substitution applied across an entire referenced metric definition (recomputing 'Consolidated EBITDA' with 'Restricted Parties' replaced by a different entity set); the full 'Consolidated EBITDA' definition was also not requested as it is not itself the subject of this compilation.",
+   "[definition[d16]] The 'Consolidated EBITDA' definition was not included in the supplied §1.01 excerpt and this session's tool-call budget was exhausted before it could be retrieved.",
+   "[definition[d26]] getReferencedProvision was attempted for Section 5.18(a) but failed because this session's tool-call budget was exhausted before it could be served.",
+   "Source is the definitions section §1.01 of the credit agreement, spanning terms alphabetically from 'ABL Administrative Agent' through 'Affiliate Transaction' (26 distinct defined terms) - each extracted as its own WireDefinition per the multiple-definitions requirement.",
+   "No independently operative WireRule was identified in this excerpt: §1.01 is purely definitional; embedded operative mechanics found only by following cross-references (e.g. the Net Proceeds reinvestment mechanic in §6.05(b)(2) underlying 'Acceptable Commitment') belong to those other sections, not to §1.01 itself, and were used here only to complete the cross-referenced definition's text.",
+   "Several terms ('ABL Administrative Agent', 'ABL Cure Amount', 'ABL Lenders', 'ABL Loans', 'ABL Priority Collateral') are pure pointer-definitions into external agreements (the ABL Credit Agreement / ABL Intercreditor Agreement) that are confirmed absent from this instrument's document package (getInstrumentDocuments returned only this document) - each is marked PARTIAL with an UNSUPPORTED calculationExpression rather than guessed.",
+   "Two terms ('Acquired Entity or Business', 'Affiliate Transaction') and one ('Accepting Lenders') remain MISSING_CONTEXT after real retrieval attempts: Section 5.18(a) could not be fetched before the tool budget was exhausted, the 'Consolidated EBITDA' definition was never requested (out of scope of this compilation and budget-constrained), and the Section 2.22(a) retrieval succeeded but its returned text stopped short of the actual 'Accepting Lenders' defining sentence.",
+   "The 'Administrative Agent' extension clause referencing 'Article VIII' and 'Section 9.03' is flagged PARTIAL because Phase 2 identified genuine AMBIGUOUS_TARGET collisions (multiple physical locations sharing those labels) - not guessed or forced to a single reading."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getInstrumentDocuments",
+    "input": {},
+    "outputSummary": "1 document(s) in this instrument",
+    "charsReturned": 32,
+    "timestamp": "2026-09-14T16:40:29.185Z"
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 6.05(b)(2)"
+    },
+    "outputSummary": "resolved reference \"Section 6.05(b)(2)\" -> 6.05(b)(2) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 2377,
+    "timestamp": "2026-09-14T16:40:29.185Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 6.05(b)(2)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:3d5c234ba4aa2a318eb5eb69",
+     "sourceNodeKey": "doc-a::6.05(b)(2)",
+     "charStart": 655083,
+     "charEnd": 657460,
+     "rawText": "(2) to make any acquisitions or other investments in any one or more businesses, capital expenditures, capitalized software\nexpenditures and working capital, or other investment or reinvestments in the business or assets (including, without limitation, working capital and prepayment of indebtedness of any Non-Loan Party Subsidiary)\nof the Borrowers or any of their Subsidiaries; provided that, in the case of this Section 6.05(b)(2), a binding commitment or letter of intent shall be treated as a permitted application of the Net Proceeds from the date of such\ncommitment or letter of intent so long as the applicable Loan Party enters into such commitment or letter of intent with the good faith expectation that such Net Proceeds shall be applied to satisfy such commitment or letter of intent within one\nhundred eighty (180) days of the expiration of the Asset Sale Proceeds Application Period (an “ Acceptable Commitment ”) and such Net Proceeds are actually applied in such manner within one hundred eighty (180) days of the\nexpiration of the Asset Sale Proceeds Application Period (the period from the consummation of the Asset Sale to such date, the “ First Commitment Application Period ”), and, in the event any Acceptable Commitment is later cancelled\nor terminated for any reason after the expiration of the Asset Sale Proceeds Application Period and before the Net Proceeds are applied in connection therewith, then such Net Proceeds shall be subject to the prepayment requirements set forth in\nSection 6.05(b)(1) above unless the applicable Loan Party reasonably expects to enter into another Acceptable Commitment prior to the expiration of the First Commitment Application Period (a “ Second Commitment Application\nPeriod ”) and such Net Proceeds are actually applied in such manner prior to one hundred twenty (120) days from the expiration of the First Commitment Application Period; provided , further , that if any Second Commitment\nApplication Period is later cancelled or terminated for any reason before such Net Proceeds are applied or if such Second Commitment Application Period is not entered into prior to the expiration of the First Commitment Application Period, then such\nNet Proceeds shall be subject to the prepayment requirements set forth in Section 6.05(b)(1) above to the extent the Asset Sale Proceeds Application Period has expired; or\n\n",
+     "contentHash": "25498cd6f923d6b1207ada75b6ce23caddc1b01ccd51d644d14de3833ba90415",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.22(a)"
+    },
+    "outputSummary": "resolved reference \"Section 2.22(a)\" -> 2.22(a) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 426,
+    "timestamp": "2026-09-14T16:40:29.186Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 2.22(a)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:cc10186afdb2005fbee7eb69",
+     "sourceNodeKey": "doc-a::2.22(a)",
+     "charStart": 523164,
+     "charEnd": 523590,
+     "rawText": "(a) At any time after the Effective Date, the Initial Borrower may on one or more occasions, by written notice to the Administrative Agent,\nmake one or more offers (each, a “ Loan Modification Offer ”) to all the Lenders of one or more Classes (each Class subject to such a Loan Modification Offer, an “ Affected Class ”) to effect one or more\nPermitted Amendments relating to such Affected Class. Such notice shall set forth ",
+     "contentHash": "39e2e4c91107a3d15eb58f6be8e1c3e4e54f8a9054df6ecc3b2b57f97999ea11",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 1.04(d)"
+    },
+    "outputSummary": "resolved reference \"Section 1.04(d)\" -> 1.04(d) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 1308,
+    "timestamp": "2026-09-14T16:40:29.187Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 1.04(d)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:76fcad9459dd1d3421c62fe1",
+     "sourceNodeKey": "doc-a::1.04(d)",
+     "charStart": 369306,
+     "charEnd": 370614,
+     "rawText": "(d) In the event that the Borrower elects to prepare its\nfinancial statements in accordance with IFRS and such election results in a change in the method of calculation of financial covenants, standards or terms (collectively, the “ Accounting Changes ”) in this Agreement, the Borrower\nand the Administrative Agent agree to enter into good faith negotiations in order to amend such provisions of this Agreement (including the levels applicable herein to any computation of the Total Leverage Ratio, the Senior Secured Leverage Ratio,\nand the First Lien Leverage Ratio) so as to reflect equitably the Accounting Changes with the desired result that the criteria for evaluating the Borrower’s financial condition shall be substantially the same after such change as if such\nchange had not been made. Until such time as such an amendment shall have been executed and delivered by the Borrower, the Administrative Agent and the Required Lenders, all financial covenants, standards and terms in this Agreement shall continue\nto be calculated or construed in accordance with GAAP (as determined in good faith by a Responsible Officer of the Borrower) (it being agreed that the reconciliation between GAAP and IFRS used in such determination shall be made available to\nLenders) as if such change had not occurred.\n",
+     "contentHash": "cf156d359c5b6dabc0339b795089777f1ee4bf11b74f57611e5b105c9db63d6a",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.27(a)"
+    },
+    "outputSummary": "resolved reference \"Section 2.27(a)\" -> 2.27(a) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 591,
+    "timestamp": "2026-09-14T16:40:29.187Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 2.27(a)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:119a0b4e7b0982e23e7f000f",
+     "sourceNodeKey": "doc-a::2.27(a)",
+     "charStart": 530373,
+     "charEnd": 530964,
+     "rawText": "(a) The Initial Borrower may, upon ten (10) Business Days’ prior written notice to the\nAdministrative Agent (or such shorter period as reasonably agreed by the Administrative Agent), cause any wholly owned Restricted Subsidiary organized in a Qualified Jurisdiction on or after the Effective Date by written election to the\nAdministrative Agent to become a borrower (each such Loan Party, an “Additional Borrower”) under each or any of the Facilities hereunder on a joint and several basis (such date, the “Additional Borrower Effective Date”) and\nshall deliver to the Administrative Agent:\n",
+     "contentHash": "25caf1212178fc516708dae4f5b217a88df31988d283c4df09facd017be2f5f8",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.18"
+    },
+    "outputSummary": "resolved reference \"Section 2.18\" -> 2.18 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 47,
+    "timestamp": "2026-09-14T16:40:29.187Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 2.18",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:222fc4644c331e99b9038761",
+     "sourceNodeKey": "doc-a::2.18",
+     "charStart": 496896,
+     "charEnd": 496943,
+     "rawText": "Section 2.18 Increased\nLoans and Commitments .\n",
+     "contentHash": "aa17fcd80f5eef0a9eea2fcf0c91b8145466aa41021bd227980481560d780afe",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.19"
+    },
+    "outputSummary": "resolved reference \"Section 2.19\" -> 2.19 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 39,
+    "timestamp": "2026-09-14T16:40:29.187Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 2.19",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:878e41f39998a4bdbd2ffce3",
+     "sourceNodeKey": "doc-a::2.19",
+     "charStart": 510874,
+     "charEnd": 510913,
+     "rawText": "Section 2.19 Refinancing Amendments .\n\n",
+     "contentHash": "5330a62a477bcd3c101b7a3dc2380b1d4a9b453ab01e8fcdd7ce8459f3a447d3",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 9.04(b)"
+    },
+    "outputSummary": "resolved reference \"Section 9.04(b)\" -> 9.04(b) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 4,
+    "timestamp": "2026-09-14T16:40:29.187Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 9.04(b)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:f3267645d43dfa6d6db9bc52",
+     "sourceNodeKey": "doc-a::9.04(b)",
+     "charStart": 785710,
+     "charEnd": 785714,
+     "rawText": "(b)\n",
+     "contentHash": "b48b4e97c13693626ffd159db548df9bd60649b8bb8be5ce4c2b229e77fbbaeb",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 5.18(a)"
+    },
+    "outputSummary": "refused: tool-call budget exhausted (8 calls already used this attempt) - no further evidence requests will be served; compile with what you have or mark the affected component MISSING_CONTEXT",
+    "charsReturned": 0,
+    "timestamp": "2026-09-14T16:40:29.187Z"
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": "[\n  {\n    \"localRef\": \"d1\",\n    \"termName\": \"ABL Administrative Agent\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"UNSUPPORTED\",\n      \"semanticDescription\": \"Term defined solely by cross-reference to the meaning of 'Administrative Agent' as used in the ABL Credit Agreement, an external financing agreement.\",\n      \"reason\": \"The ABL Credit Agreement is not included in this document package (confirmed via getInstrumentDocuments, which lists only this document); its own definition of 'Administrative Agent' cannot be retrieved.\",\n      \"sourceEvidence\": \"§1.01: \\\"has the meaning given to the term \\u201cAdministrative Agent\\u201d in the ABL Credit Agreement.\\\"\"\n    },\n    \"dependsOnTerms\": [\"ABL Credit Agreement\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\"Pointer definition text fully captured, but its ultimate substantive meaning depends on an external, unavailable document (ABL Credit Agreement).\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"has the meaning given to the term \\u201cAdministrative Agent\\u201d in the ABL Credit Agreement.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d2\",\n    \"termName\": \"ABL Credit Agreement\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Fully self-contained definition drafted inline, including named parties and the dated history of the base agreement and its three amendments.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"the Credit Agreement dated as of June 18, 2019 (as amended by Amendment No. 1 to Credit Agreement, dated as of August 27, 2021, Amendment No. 2 to Credit Agreement, dated as of January 26, 2023 and Amendment No. 3 to Credit Agreement, dated as of April 1, 2025) among, inter alios, the Initial Borrower, Wells Fargo Bank, National Association, as administrative and collateral agent...\",\n    \"inventoryItemIds\": [\"8a953f95ff6074675676bca4\"]\n  },\n  {\n    \"localRef\": \"d3\",\n    \"termName\": \"ABL Cure Amount\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"UNSUPPORTED\",\n      \"semanticDescription\": \"Term defined solely by cross-reference to the meaning of 'Cure Amount' as used in the ABL Credit Agreement, an external financing agreement.\",\n      \"reason\": \"The ABL Credit Agreement is not included in this document package; its definition of 'Cure Amount' cannot be retrieved.\",\n      \"sourceEvidence\": \"§1.01: \\\"has the meaning given to the term \\u201cCure Amount\\u201d in the ABL Credit Agreement.\\\"\"\n    },\n    \"dependsOnTerms\": [\"ABL Credit Agreement\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\"Pointer definition text fully captured, but its ultimate substantive meaning depends on an external, unavailable document.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"has the meaning given to the term \\u201cCure Amount\\u201d in the ABL Credit Agreement.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d4\",\n    \"termName\": \"ABL Facility\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"ABL Credit Agreement\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Fully self-contained definition drafted inline.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means the senior secured revolving loan facility under the ABL Credit Agreement or any amendment, supplement, modification, substitution, replacement, restatement or refinancing thereof, in whole or in part, from time to time.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d5\",\n    \"termName\": \"ABL Intercreditor Agreement\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"ABL Priority Collateral\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\"Core definition (an Intercreditor Agreement among the Collateral Agent and Senior Representatives, including the specific agreement dated June 23, 2026) is fully drafted inline.\", \"The referenced form 'Exhibit E-1' is not present among this document's own structural nodes (MISSING_SCHEDULE), so the template form itself cannot be verified.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means an Intercreditor Agreement, substantially in the form of Exhibit E-1, among the Collateral Agent and the Senior Representatives for one or more classes of obligations... including that certain ABL Intercreditor Agreement dated as of June 23, 2026...\",\n    \"inventoryItemIds\": [\"8957e8458cb9520914b3c3a5\"]\n  },\n  {\n    \"localRef\": \"d6\",\n    \"termName\": \"ABL Lenders\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"UNSUPPORTED\",\n      \"semanticDescription\": \"Term defined solely by cross-reference to the meaning of 'Lenders' as used in the ABL Credit Agreement, an external financing agreement.\",\n      \"reason\": \"The ABL Credit Agreement is not included in this document package; its definition of 'Lenders' cannot be retrieved.\",\n      \"sourceEvidence\": \"§1.01: \\\"shall have the meaning given to the term \\u201cLenders\\u201d in the ABL Credit Agreement.\\\"\"\n    },\n    \"dependsOnTerms\": [\"ABL Credit Agreement\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\"Pointer definition text fully captured, but its ultimate substantive meaning depends on an external, unavailable document.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"shall have the meaning given to the term \\u201cLenders\\u201d in the ABL Credit Agreement.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d7\",\n    \"termName\": \"ABL Loan Documents\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"ABL Credit Agreement\", \"ABL Intercreditor Agreement\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Fully self-contained collective definition drafted inline (the ABL Credit Agreement plus related security/intercreditor/guarantee documents).\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means, collectively, (i) the ABL Credit Agreement and (ii) the security documents, intercreditor agreements (including the ABL Intercreditor Agreement), guarantees, joinders and other agreements or instruments executed in connection with the ABL Credit Agreement...\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d8\",\n    \"termName\": \"ABL Loans\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"UNSUPPORTED\",\n      \"semanticDescription\": \"Term defined solely by cross-reference to the meaning of 'Loans' as used in the ABL Credit Agreement, an external financing agreement.\",\n      \"reason\": \"The ABL Credit Agreement is not included in this document package; its definition of 'Loans' cannot be retrieved.\",\n      \"sourceEvidence\": \"§1.01: \\\"shall have the meaning given to the term \\u201cLoans\\u201d in the ABL Credit Agreement.\\\"\"\n    },\n    \"dependsOnTerms\": [\"ABL Credit Agreement\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\"Pointer definition text fully captured, but its ultimate substantive meaning depends on an external, unavailable document.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"shall have the meaning given to the term \\u201cLoans\\u201d in the ABL Credit Agreement.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d9\",\n    \"termName\": \"ABL Obligations\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"ABL Loan Documents\", \"Indebtedness\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Fully self-contained definition drafted inline covering Indebtedness and other obligations outstanding under the ABL Loan Documents, including post-petition interest/fees and secured swap/cash management obligations.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means all Indebtedness and other obligations of the Borrowers and any other Loan Parties outstanding under or pursuant to the ABL Loan Documents, together with guarantees thereof that are secured...\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d10\",\n    \"termName\": \"ABL Priority Collateral\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"UNSUPPORTED\",\n      \"semanticDescription\": \"Term defined solely by cross-reference to the meaning of 'ABL Priority Collateral' as used in the ABL Intercreditor Agreement.\",\n      \"reason\": \"The ABL Intercreditor Agreement is not included in this document package; its definition of 'ABL Priority Collateral' cannot be retrieved.\",\n      \"sourceEvidence\": \"§1.01: \\\"shall mean \\u201cABL Priority Collateral\\u201d (as defined in the ABL Intercreditor Agreement).\\\"\"\n    },\n    \"dependsOnTerms\": [\"ABL Intercreditor Agreement\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\"Pointer definition text fully captured, but its ultimate substantive meaning depends on the ABL Intercreditor Agreement, which is not part of this document package.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"shall mean \\u201cABL Priority Collateral\\u201d (as defined in the ABL Intercreditor Agreement).\",\n    \"inventoryItemIds\": [\"b6398b40817eb1345662b64b\"]\n  },\n  {\n    \"localRef\": \"d11\",\n    \"termName\": \"ABR\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Alternate Base Rate\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Fully self-contained definition drafted inline.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"when used in reference to any Loan or Borrowing, refers to whether such Loan, or the Loans comprising such Borrowing, are bearing interest at a rate determined by reference to the Alternate Base Rate.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d12\",\n    \"termName\": \"Acceptable Commitment\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Net Proceeds\", \"Asset Sale Proceeds Application Period\", \"Loan Party\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"§1.01 points to Section 6.05(b)(2), which was retrieved and contains the full substantive definition: a binding commitment or letter of intent to apply Net Proceeds within a stated timeframe, entered into with the requisite good-faith expectation.\"],\n    \"citation\": \"§1.01; §6.05(b)(2)\",\n    \"excerpt\": \"a binding commitment or letter of intent shall be treated as a permitted application of the Net Proceeds from the date of such commitment or letter of intent so long as the applicable Loan Party enters into such commitment or letter of intent with the good faith expectation that such Net Proceeds shall be applied to satisfy such commitment or letter of intent within one hundred eighty (180) days of the expiration of the Asset Sale Proceeds Application Period (an \\u201cAcceptable Commitment\\u201d)...\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d13\",\n    \"termName\": \"Accepting Lenders\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"UNSUPPORTED\",\n      \"semanticDescription\": \"Term defined by cross-reference to Section 2.22(a).\",\n      \"reason\": \"Section 2.22(a) was retrieved, but the returned text only reaches the 'Loan Modification Offer' and 'Affected Class' definitions before cutting off ('Such notice shall set forth ...'); the actual defining sentence for 'Accepting Lenders' is further along in that subsection and was not returned. Re-requesting the identical reference is not permitted under the no-duplicate-request policy.\",\n      \"sourceEvidence\": \"§1.01: \\\"has the meaning assigned to such term in Section 2.22(a).\\\"\"\n    },\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"MISSING_CONTEXT\",\n    \"sufficiencyReasons\": [\"Cross-referenced section retrieved but did not include the actual defining text for this specific term.\"],\n    \"citation\": \"§1.01; §2.22(a)\",\n    \"excerpt\": \"has the meaning assigned to such term in Section 2.22(a).\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d14\",\n    \"termName\": \"Accounting Changes\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Total Leverage Ratio\", \"Senior Secured Leverage Ratio\", \"First Lien Leverage Ratio\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"§1.01 points to Section 1.04(d), which was retrieved and contains the full substantive definition.\"],\n    \"citation\": \"§1.01; §1.04(d)\",\n    \"excerpt\": \"In the event that the Borrower elects to prepare its financial statements in accordance with IFRS and such election results in a change in the method of calculation of financial covenants, standards or terms (collectively, the \\u201cAccounting Changes\\u201d) in this Agreement...\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d15\",\n    \"termName\": \"Acquired EBITDA\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"UNSUPPORTED\",\n      \"semanticDescription\": \"Consolidated EBITDA of a Pro Forma Entity, recomputed as if references to 'Restricted Parties' throughout the Consolidated EBITDA definition (and its component definitions) instead referred to that Pro Forma Entity and its Subsidiaries that will become Restricted Subsidiaries.\",\n      \"reason\": \"No IR primitive expresses an entity-scope substitution applied across an entire referenced metric definition (recomputing 'Consolidated EBITDA' with 'Restricted Parties' replaced by a different entity set); the full 'Consolidated EBITDA' definition was also not requested as it is not itself the subject of this compilation.\",\n      \"sourceEvidence\": \"§1.01: \\\"the amount for such period of Consolidated EBITDA of such Pro Forma Entity (determined as if references to the Restricted Parties in the definition of the term \\u2018Consolidated EBITDA\\u2019 ... were references to such Pro Forma Entity and its Subsidiaries which will become Restricted Subsidiaries)...\\\"\"\n    },\n    \"dependsOnTerms\": [\"Consolidated EBITDA\", \"Pro Forma Entity\", \"Restricted Parties\", \"Restricted Subsidiaries\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\"Textual meaning fully captured in the excerpt; the entity-substitution computation mechanic itself cannot be represented with the available node types.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means, with respect to any Pro Forma Entity for any period, the amount for such period of Consolidated EBITDA of such Pro Forma Entity (determined as if references to the Restricted Parties in the definition of the term \\u201cConsolidated EBITDA\\u201d ... were references to such Pro Forma Entity and its Subsidiaries which will become Restricted Subsidiaries), all as determined on a consolidated basis for such Pro Forma Entity.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d16\",\n    \"termName\": \"Acquired Entity or Business\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"UNSUPPORTED\",\n      \"semanticDescription\": \"Term defined solely by cross-reference to the definition of 'Consolidated EBITDA'.\",\n      \"reason\": \"The 'Consolidated EBITDA' definition was not included in the supplied §1.01 excerpt and this session's tool-call budget was exhausted before it could be retrieved.\",\n      \"sourceEvidence\": \"§1.01: \\\"has the meaning assigned to such term in the definition of \\u2018Consolidated EBITDA.\\u2019\\\"\"\n    },\n    \"dependsOnTerms\": [\"Consolidated EBITDA\"],\n    \"sufficiency\": \"MISSING_CONTEXT\",\n    \"sufficiencyReasons\": [\"Substantive meaning lives entirely in the 'Consolidated EBITDA' definition, which could not be retrieved within the available tool budget.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"has the meaning assigned to such term in the definition of \\u201cConsolidated EBITDA.\\u201d\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d17\",\n    \"termName\": \"Acquired Indebtedness\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Restricted Subsidiary\", \"Lien\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Fully self-contained two-prong definition drafted inline.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means, with respect to any specified Person: (1) Indebtedness of any other Person existing at the time such other Person is merged, consolidated or amalgamated with or into or became a Restricted Subsidiary of such specified Person...; and (2) Indebtedness secured by a Lien encumbering any asset acquired by such specified Person.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d18\",\n    \"termName\": \"Additional Borrower\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Qualified Jurisdiction\", \"Restricted Subsidiary\", \"Loan Party\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"§1.01 points to Section 2.27(a), which was retrieved and contains the full substantive definition.\"],\n    \"citation\": \"§1.01; §2.27(a)\",\n    \"excerpt\": \"cause any wholly owned Restricted Subsidiary organized in a Qualified Jurisdiction on or after the Effective Date by written election to the Administrative Agent to become a borrower (each such Loan Party, an \\u201cAdditional Borrower\\u201d) under each or any of the Facilities hereunder on a joint and several basis...\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d19\",\n    \"termName\": \"Additional Borrower Effective Date\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Additional Borrower\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"§1.01 points to Section 2.27(a), which was retrieved and contains the full substantive definition.\"],\n    \"citation\": \"§1.01; §2.27(a)\",\n    \"excerpt\": \"(such date, the \\u201cAdditional Borrower Effective Date\\u201d)\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d20\",\n    \"termName\": \"Additional Lender\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Incremental Revolving Commitment\", \"Incremental Term Commitment\", \"Incremental Loan\", \"Credit Agreement Refinancing Indebtedness\", \"Lender\", \"Affiliate\", \"Approved Fund\", \"Administrative Agent\", \"Initial Borrower\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Definition and its consent provisos are fully drafted inline in §1.01; cross-referenced Sections 2.18 ('Increased Loans and Commitments'), 2.19 ('Refinancing Amendments') and 9.04(b) govern only the procedural mechanics of the underlying amendment/assignment, not this term's own meaning, and were confirmed via retrieval to be the correctly-titled procedural sections.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means, at any time, any bank or other financial institution... that agrees to provide any portion of any (a) Incremental Revolving Commitment, Incremental Term Commitment or Incremental Loan pursuant to an Incremental Facility Amendment in accordance with Section 2.18 or (b) Credit Agreement Refinancing Indebtedness pursuant to a Refinancing Amendment in accordance with Section 2.19; provided that...\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d21\",\n    \"termName\": \"Administrative Agent\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Collateral Agent\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\"Core definition (JPMorgan Chase Bank, N.A. as administrative agent) is fully captured.\", \"The extension clause's cross-references to 'Article VIII' and 'Section 9.03' each match multiple physical locations in the document (AMBIGUOUS_TARGET), and 'Collateral Agent' is itself undefined in the supplied evidence, so the precise scope of the inclusion proviso cannot be confidently resolved.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means JPMorgan Chase Bank, N.A. in its capacity as administrative agent hereunder and under the other Loan Documents... Unless the context otherwise required, reference to the term \\u201cAdministrative Agent\\u201d in Article VIII and Section 9.03 shall include the Collateral Agent.\",\n    \"inventoryItemIds\": [\"f2fbeda4d086b76bb0a52659\"]\n  },\n  {\n    \"localRef\": \"d22\",\n    \"termName\": \"Administrative Questionnaire\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Administrative Agent\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Fully self-contained definition drafted inline.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means an administrative questionnaire in a form supplied by the Administrative Agent.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d23\",\n    \"termName\": \"Affected Class\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Loan Modification Offer\", \"Class\", \"Lenders\", \"Permitted Amendments\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"§1.01 points to Section 2.22(a), which was retrieved and its returned text fully captures this specific term's definition ('each Class subject to such a Loan Modification Offer, an \\u201cAffected Class\\u201d').\"],\n    \"citation\": \"§1.01; §2.22(a)\",\n    \"excerpt\": \"make one or more offers (each, a \\u201cLoan Modification Offer\\u201d) to all the Lenders of one or more Classes (each Class subject to such a Loan Modification Offer, an \\u201cAffected Class\\u201d) to effect one or more Permitted Amendments relating to such Affected Class.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d24\",\n    \"termName\": \"Affected Financial Institution\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"EEA Financial Institution\", \"UK Financial Institution\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Fully self-contained definition drafted inline as an alternation of two other defined terms; the definition's own text does not require resolving those terms' full content.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means (a) any EEA Financial Institution or (b) any UK Financial Institution.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d25\",\n    \"termName\": \"Affiliate\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Control\", \"Restricted Party\", \"Sponsor\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Fully self-contained definition drafted inline, including the express carve-out for unrelated Sponsor portfolio operating companies.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means, with respect to a specified Person, another Person that directly or indirectly Controls or is Controlled by or is under common Control with the Person specified. No Person shall be an \\u201cAffiliate\\u201d of a Restricted Party solely because it is an unrelated portfolio operating company of a Sponsor.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d26\",\n    \"termName\": \"Affiliate Transaction\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"UNSUPPORTED\",\n      \"semanticDescription\": \"Term defined by cross-reference to Section 5.18(a).\",\n      \"reason\": \"getReferencedProvision was attempted for Section 5.18(a) but failed because this session's tool-call budget was exhausted before it could be served.\",\n      \"sourceEvidence\": \"§1.01: \\\"has the meaning assigned to such term in Section 5.18(a).\\\"\"\n    },\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"MISSING_CONTEXT\",\n    \"sufficiencyReasons\": [\"Substantive meaning lives entirely in Section 5.18(a), which could not be retrieved within the available tool budget.\"],\n    \"citation\": \"§1.01; §5.18(a)\",\n    \"excerpt\": \"has the meaning assigned to such term in Section 5.18(a).\",\n    \"inventoryItemIds\": []\n  }\n]",
+   "rules": [],
+   "sharedCapacities": "[]",
+   "irExtensionCandidates": "[\n  {\n    \"sourceEvidence\": \"§1.01, 'Acquired EBITDA': \\\"determined as if references to the Restricted Parties in the definition of the term \\u2018Consolidated EBITDA\\u2019 (and in the component financial definitions used therein) were references to such Pro Forma Entity and its Subsidiaries which will become Restricted Subsidiaries\\\"\",\n    \"semanticRequirement\": \"A recurring drafting pattern where a new defined metric is computed by taking an existing complex metric definition (and all of its nested component definitions) and substituting one entity-scope reference for another throughout, rather than by a simple arithmetic combination of the existing metric's output.\",\n    \"whyExistingPrimitivesFail\": \"METRIC_REFERENCE only names a metric and cannot carry an instruction to recompute that metric's own internal definition with a different entity scope; there is no 'entity-substituted recomputation' primitive, and forcing this into MULTIPLY/ADD/etc. would misrepresent the mechanic as a simple combination rather than a redefinition.\",\n    \"candidateGeneralizedPrimitive\": \"A METRIC_RECOMPUTE_WITH_SUBSTITUTION node taking a base metricName, a substitution mapping (e.g. entityScope original -> replacement), to be resolved against the base metric's own dependency graph.\"\n  }\n]",
+   "overallNotes": "[\"Source is the definitions section §1.01 of the credit agreement, spanning terms alphabetically from 'ABL Administrative Agent' through 'Affiliate Transaction' (26 distinct defined terms) - each extracted as its own WireDefinition per the multiple-definitions requirement.\", \"No independently operative WireRule was identified in this excerpt: §1.01 is purely definitional; embedded operative mechanics found only by following cross-references (e.g. the Net Proceeds reinvestment mechanic in §6.05(b)(2) underlying 'Acceptable Commitment') belong to those other sections, not to §1.01 itself, and were used here only to complete the cross-referenced definition's text.\", \"Several terms ('ABL Administrative Agent', 'ABL Cure Amount', 'ABL Lenders', 'ABL Loans', 'ABL Priority Collateral') are pure pointer-definitions into external agreements (the ABL Credit Agreement / ABL Intercreditor Agreement) that are confirmed absent from this instrument's document package (getInstrumentDocuments returned only this document) - each is marked PARTIAL with an UNSUPPORTED calculationExpression rather than guessed.\", \"Two terms ('Acquired Entity or Business', 'Affiliate Transaction') and one ('Accepting Lenders') remain MISSING_CONTEXT after real retrieval attempts: Section 5.18(a) could not be fetched before the tool budget was exhausted, the 'Consolidated EBITDA' definition was never requested (out of scope of this compilation and budget-constrained), and the Section 2.22(a) retrieval succeeded but its returned text stopped short of the actual 'Accepting Lenders' defining sentence.\", \"The 'Administrative Agent' extension clause referencing 'Article VIII' and 'Section 9.03' is flagged PARTIAL because Phase 2 identified genuine AMBIGUOUS_TARGET collisions (multiple physical locations sharing those labels) - not guessed or forced to a single reading.\"]"
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T16:44:16.570Z",
+   "inputTokens": 58249,
+   "outputTokens": 30141,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 266713,
+   "calculatedCostUsd": 0.417908
+  },
+  "cacheKey": "fb91b3d271e07e53117754037200d23b33cb7a3724c81dbf82c72237f938effa",
+  "compiledAt": "2026-09-14T16:44:16.570Z"
+ },
+ "wave": "A",
+ "attemptsSoFar": 1
+}
