@@ -1,0 +1,3123 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:30d337feeef5ba80d66b",
+  "shardHash": "7082b8c10ea569669d6a9cffd1e0441cbaaf75ebba85cecf1438122fde05296e",
+  "ordinal": 19,
+  "ownedUnits": 16,
+  "sourceChars": 10017,
+  "contextEntries": 2,
+  "contextChars": 264,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 5,
+  "ownedMaterialItems": 5,
+  "estimatedFirstTurnInputTokens": 26029,
+  "preCallEstimate": {
+   "inputTokens": 85636,
+   "outputTokens": 41500,
+   "usd": 0.586272
+  },
+  "actual": {
+   "inputTokens": 131180,
+   "outputTokens": 35491,
+   "turns": 4,
+   "latencyMs": 319756,
+   "costUsd": 0.61727,
+   "attemptCount": 4,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "toolCalls": 13,
+  "toolCallNames": [
+   "getDefinition",
+   "getDefinition",
+   "getDefinition",
+   "getDefinition",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 28,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 1,
+   "dispositioned": 0,
+   "missingMaterial": 4,
+   "valuesRepresented": 2,
+   "valuesMissing": 4,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "REPRESENTED": 1,
+    "MISSING_FROM_COMPOSITION": 4
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Impacted Loans",
+   "Increased Amount",
+   "Incremental Borrower",
+   "Incremental Facility Amendment",
+   "Incremental Revolving Facility",
+   "Incremental Revolving Increase",
+   "Incremental Term Loan",
+   "Incurrence-Based Amounts",
+   "Indemnitee",
+   "Information",
+   "Initial Borrower",
+   "Initial Lien"
+  ],
+  "unresolvedIssues": [
+   "[definition[d2]] Section 2.12(a)(ii) was out of scope (source-context budget exhausted) and could not be retrieved via getReferencedProvision (tool-call budget exhausted before this reference could be attempted)",
+   "[definition[d3]] getReferencedProvision('Section 6.02') was attempted and returned only the Section 6.02 lead-in (Limitation on Liens chapeau, defining 'Initial Lien'), not the specific 'Increased Amount' definition, which evidently sits in a sub-clause not retrieved before tool budget was exhausted",
+   "[definition[d6]] this is a multi-part eligibility/proviso definition, not a computable value; condition (d) depends on 'the relevant Intercreditor Agreement(s)', a document type confirmed absent from this package (REFERENCED_DOCUMENT_ABSENT), and condition (b) depends on Incremental Cap, itself a sum of amounts not resolvable to a static figure",
+   "[definition[d8]] Section 2.18(e)(i) was out of scope for the source-context bundle and the getReferencedProvision attempt for it failed because the tool-call budget was exhausted",
+   "[definition[d11]] getReferencedProvision(Section 2.18(a)) returned only the general Notice/eligibility lead-in text and was truncated before reaching the specific clause defining 'Incremental Revolving Facility'",
+   "[definition[d12]] the retrieved Section 2.18(a) excerpt was truncated before reaching the clause that would define this specific term",
+   "[definition[d16]] the retrieved Section 2.18(a) excerpt was truncated before reaching the clause that would define this specific term",
+   "[definition[d17]] getReferencedProvision(Section 1.08(f)) was attempted and returned only an empty/placeholder clause label '(f)' with no substantive text",
+   "[definition[d18]] this is a multi-branch categorical/eligibility definition (what counts as debt), not a computable arithmetic formula; several dependent defined terms used within it (Capitalized Lease Obligations, Swap Obligations, Unrestricted Subsidiary, Parent Entity, Qualified Restricted Subsidiary, Ordinary Course Non-Recourse Third Party Financing Transactions) were not resolved within tool/context budget",
+   "[definition[d19]] the entire substantive scope of this definition turns on the undefined (in the supplied excerpt) term 'Excluded Taxes', which materially narrows what counts as 'Indemnified Taxes'; not resolvable within tool/context budget",
+   "[definition[d20]] getReferencedProvision(Section 9.03(b)) could not be attempted because the tool-call budget was exhausted",
+   "[definition[d22]] getReferencedProvision(Section 9.12(a)) could not be attempted because the tool-call budget was exhausted",
+   "[definition[d23]] the preamble text is outside the supplied source, and the proviso's Article cross-references (Article III/IV/V/VI/VII/IX) are each reported ambiguous (multiple same-numbered Articles exist) and were not resolved",
+   "Source text is a contiguous slice of the Section 1.01 Defined Terms alphabetical list (Immediate Family Members through Initial Term Maturity Date); 27 distinct defined terms were identified and each was emitted as an independent WireDefinition per the multiple-definitions extraction requirement.",
+   "No independently operative WireRule (permission/prohibition) exists within this slice - Section 1.01 is purely definitional; the substantive Incremental Facility permission mechanics live in Section 2.18 and Article VI baskets, which are out of scope of this submission and are only referenced via dependsOnTerms/citations.",
+   "Of the many 'has the meaning assigned to such term in Section X' cross-references, several were successfully resolved this pass (Incremental Borrower via §2.18(a); Initial Lien via §6.02; the Incremental Equivalent Debt condition via §2.18(b)) before the tool-call budget (8 calls) was exhausted; the remainder are marked MISSING_CONTEXT/PARTIAL with the specific unresolved reference cited, per the retrieval-before-giving-up requirement.",
+   "The two deterministically-detected day-count values ('sixty (60) days' and the '(364)' portion of 'three hundred sixty-four (364) days') outside the frozen inventory are the same magnitudes already captured by inventory items inv-item:c01880c80f5b6269542aae3f and inv-item:0ae4b1ab0b1d99bdd8194472 respectively (consumed on the 'Indebtedness' definition) - no separate action was needed.",
+   "All 5 CRITICAL/MATERIAL frozen-inventory items were consumed: inv-item:8cfa44ae06b19e4ccb8d9436 and inv-item:5f20e4b9abfc727cbdc7d913 on 'Initial Term Commitment' and 'Initial Term Maturity Date' respectively (both carrying the literal values directly), and the three EXCEPTION items (earn-out 30-day cure, asset-retirement/pension 60-day cure, intercompany 364-day short-term exclusion) on the 'Indebtedness' definition, whose categorical (non-formulaic) nature is reflected in its PARTIAL sufficiency and UNSUPPORTED calculationExpression wrapper."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:30d337feeef5ba80d66b",
+  "shardHash": "7082b8c10ea569669d6a9cffd1e0441cbaaf75ebba85cecf1438122fde05296e",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:ec1a1057377f7aa961fcecb6",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Immediate Family Members",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully descriptive, closed-list definition; no computation or cross-reference required."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "such individual's child, stepchild, grandchild or more remote linear descendant, parent, stepparent, grandparent, spouse, former spouse, widows, widowers, estates, qualified domestic partner, sibling, mother-in-law, father-in-law, son-in-law, daughter-in-law ... and any trust, partnership or other bona fide estate-planning vehicle the only beneficiaries of which are any of the foregoing ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:47e4698c4b459c5e79253b35",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Impacted Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 2.12(a)(ii)\"",
+      "semanticDescription": "Term whose entire meaning is deferred to Section 2.12(a)(ii)",
+      "reason": "Section 2.12(a)(ii) was out of scope (source-context budget exhausted) and could not be retrieved via getReferencedProvision (tool-call budget exhausted before this reference could be attempted)",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:4a65713f83a8b95b28adb591"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Meaning is wholly deferred to Section 2.12(a)(ii), which could not be retrieved within tool/context budget.",
+      "Section 2.12(a)(ii) was out of scope (source-context budget exhausted) and could not be retrieved via getReferencedProvision (tool-call budget exhausted before this reference could be attempted)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 2.12(a)(ii)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:003fd94745c41a6d1828ae2b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Increased Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 6.02\"",
+      "semanticDescription": "Term whose entire meaning is deferred to Section 6.02",
+      "reason": "getReferencedProvision('Section 6.02') was attempted and returned only the Section 6.02 lead-in (Limitation on Liens chapeau, defining 'Initial Lien'), not the specific 'Increased Amount' definition, which evidently sits in a sub-clause not retrieved before tool budget was exhausted",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:55964b05c441c4271230ea74"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Attempted retrieval of Section 6.02 did not surface the specific 'Increased Amount' text; tool budget exhausted before a more targeted sub-clause could be fetched.",
+      "getReferencedProvision('Section 6.02') was attempted and returned only the Section 6.02 lead-in (Limitation on Liens chapeau, defining 'Initial Lien'), not the specific 'Increased Amount' definition, which evidently sits in a sub-clause not retrieved before tool budget was exhausted"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 6.02."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:2575f54a1bc8d9fbac05771a",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Incremental Borrower",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Loan Party",
+      "Initial Borrower",
+      "Administrative Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Retrieved and confirmed via getReferencedProvision(Section 2.18(a)): the entity or entities (Borrowers or any Loan Party) that may request an Incremental Facility."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §2.18(a)",
+      "excerpt": "the Borrowers or any Loan Party (any such entity or entities, the \"Incremental Borrower\"), may, by notice from the Initial Borrower to the Administrative Agent ..., request to effect [an Incremental Facility]"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:1b5de860701796d8c22b08e5",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Incremental Cap",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUM",
+      "type": "MONEY",
+      "exprId": "ir-expr:31480b3e03b812653b77da63",
+      "operands": [
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "MONEY",
+        "termName": "Fixed Incremental Amount",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:0e4a48262704a0f55719a1d1"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "MONEY",
+        "termName": "Voluntary Prepayment Incremental Amount",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:d905409c8112e3d13502648b"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "MONEY",
+        "termName": "Ratio Incremental Amount",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:d77bc2162d6faaf4676a11fe"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "MONEY",
+        "termName": "Extension Amount",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:8419683f520b431cb6d70415"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Fixed Incremental Amount",
+      "Voluntary Prepayment Incremental Amount",
+      "Ratio Incremental Amount",
+      "Extension Amount"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The section's own text is a straightforward four-part additive formula; each component term was confirmed to exist and be independently defined elsewhere in the document via getDefinition, so the SUM structure is faithfully represented as references (their own internal, non-static formulas are outside the scope of this definition's text and are not restated here)."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Incremental Cap\" means, as of any date of determination: (a) the Fixed Incremental Amount; plus (b) the Voluntary Prepayment Incremental Amount; plus (c) the Ratio Incremental Amount; plus (d) the Extension Amount."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:a28c17bfb201e2648f9423ee",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Incremental Equivalent Debt",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01 (Incremental Equivalent Debt); §2.18(b): \"no Event of Default shall have occurred and be continuing ... or shall result therefrom\"",
+      "semanticDescription": "Categorical/proviso-based eligibility definition: Indebtedness of a Restricted Party consisting of secured/unsecured bonds, notes, debentures or loans, conditioned on (a) compliance with the Section 2.18(b) Incremental Loan condition (no continuing Event of Default, subject to Section 1.08, with a carve-out for Permitted Acquisitions/Investments limited to no Specified Event of Default), (b) aggregate par principal amount not exceeding the Incremental Cap, (c) pricing/terms set by Initial Borrower or applicable lenders, and (d) security/intercreditor limitations tied to an Intercreditor Agreement",
+      "reason": "this is a multi-part eligibility/proviso definition, not a computable value; condition (d) depends on 'the relevant Intercreditor Agreement(s)', a document type confirmed absent from this package (REFERENCED_DOCUMENT_ABSENT), and condition (b) depends on Incremental Cap, itself a sum of amounts not resolvable to a static figure",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:72220628c1397b75776ed871"
+     },
+     "dependsOnTerms": [
+      "Indebtedness",
+      "Restricted Party",
+      "Incremental Loan",
+      "Incremental Cap",
+      "Loan Party",
+      "Secured Obligations",
+      "Intercreditor Agreement",
+      "Initial Borrower"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Condition (a) resolved via Section 2.18(b); condition (d) depends on an Intercreditor Agreement document absent from the package; condition (b)'s Incremental Cap is itself a non-static aggregate.",
+      "this is a multi-part eligibility/proviso definition, not a computable value; condition (d) depends on 'the relevant Intercreditor Agreement(s)', a document type confirmed absent from this package (REFERENCED_DOCUMENT_ABSENT), and condition (b) depends on Incremental Cap, itself a sum of amounts not resolvable to a static figure"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means Indebtedness of any Restricted Party consisting of secured or unsecured bonds, notes, debentures, or loans; provided that: (a) the condition set forth in Section 2.18(b) shall have been complied with...; (b) ... does not exceed that amount which may be incurred within the Incremental Cap; (c) ...; and (d) ... is subject to the relevant Intercreditor Agreement(s)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e82e75823c1094091e6ad717",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Incremental Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Incremental Revolving Facility",
+      "Incremental Term Facility"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple disjunctive definition fully stated in the source text."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means each and any Incremental Revolving Facility and Incremental Term Facility."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:4ed50ac81126cfb9a55ce81d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Incremental Facility Amendment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 2.18(e)(i)\"",
+      "semanticDescription": "Term whose entire meaning is deferred to Section 2.18(e)(i)",
+      "reason": "Section 2.18(e)(i) was out of scope for the source-context bundle and the getReferencedProvision attempt for it failed because the tool-call budget was exhausted",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:78bcc65e5e0aca16959af08f"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Meaning wholly deferred to Section 2.18(e)(i), unresolved after budget exhaustion.",
+      "Section 2.18(e)(i) was out of scope for the source-context bundle and the getReferencedProvision attempt for it failed because the tool-call budget was exhausted"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 2.18(e)(i)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:7532d7a4d34ed8765d5a39de",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Incremental Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Incremental Term Loan",
+      "Incremental Revolving Facility",
+      "Incremental Revolving Increase"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple disjunctive definition fully stated in the source text."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means Incremental Term Loans and Loans under any Incremental Revolving Facility or Incremental Revolving Increase."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:b949fabac1f06691e3afdbb0",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Incremental Revolving Commitment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Incremental Revolving Facility"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully stated, self-contained definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means a commitment in respect of an Incremental Revolving Facility."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d767d11da2e44d306ffb97af",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Incremental Revolving Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 2.18(a), together with any Incremental Revolving Increase thereof, and the extensions of credit thereunder.\"",
+      "semanticDescription": "Core meaning deferred to Section 2.18(a) (not captured in the truncated excerpt retrieved), plus an additional stated scope: 'together with any Incremental Revolving Increase thereof, and the extensions of credit thereunder'",
+      "reason": "getReferencedProvision(Section 2.18(a)) returned only the general Notice/eligibility lead-in text and was truncated before reaching the specific clause defining 'Incremental Revolving Facility'",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:0d492c1ea94a3c444315126f"
+     },
+     "dependsOnTerms": [
+      "Incremental Revolving Increase"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The additive scope ('together with...extensions of credit thereunder') is captured, but the core meaning deferred to Section 2.18(a) was not reached in the retrieved (truncated) excerpt.",
+      "getReferencedProvision(Section 2.18(a)) returned only the general Notice/eligibility lead-in text and was truncated before reaching the specific clause defining 'Incremental Revolving Facility'"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 2.18(a), together with any Incremental Revolving Increase thereof, and the extensions of credit thereunder."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:637ad2125373482176cc5b32",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Incremental Revolving Increase",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 2.18(a).\"",
+      "semanticDescription": "Term whose entire meaning is deferred to Section 2.18(a)",
+      "reason": "the retrieved Section 2.18(a) excerpt was truncated before reaching the clause that would define this specific term",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:d869c2d60efe994ca458856b"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Meaning wholly deferred to a portion of Section 2.18(a) not reached by the retrieved excerpt.",
+      "the retrieved Section 2.18(a) excerpt was truncated before reaching the clause that would define this specific term"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 2.18(a)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:499a9c3bff5c68e366407e0c",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Incremental Revolving Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Incremental Revolving Facility",
+      "Incremental Revolving Increase"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple disjunctive definition fully stated in the source text."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means Loans under any Incremental Revolving Facility or Incremental Revolving Increase."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:8949d1b85d2e2635a457c1e6",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Incremental Term Commitment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Incremental Term Loan"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully stated, self-contained definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means a commitment in respect of Incremental Term Loans."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:9ac4c9bee42363448773c7c6",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Incremental Term Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Incremental Term Commitment",
+      "Incremental Term Loan",
+      "Incremental Facility Amendment"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully stated definition; dependent terms not needed to represent this term's own stated scope faithfully."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means each and any facility comprised of Incremental Term Commitments and related Incremental Term Loans created pursuant to an Incremental Facility Amendment, together with any refinancing thereof."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e57ddd0cf344abbc0d9013f6",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Incremental Term Loan",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 2.18(a).\"",
+      "semanticDescription": "Term whose entire meaning is deferred to Section 2.18(a)",
+      "reason": "the retrieved Section 2.18(a) excerpt was truncated before reaching the clause that would define this specific term",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:d869c2d60efe994ca458856b"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Meaning wholly deferred to a portion of Section 2.18(a) not reached by the retrieved excerpt.",
+      "the retrieved Section 2.18(a) excerpt was truncated before reaching the clause that would define this specific term"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 2.18(a)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:a21012e7bfb9f3efbebfe920",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Incurrence-Based Amounts",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 1.08(f).\"",
+      "semanticDescription": "Term whose entire meaning is deferred to Section 1.08(f)",
+      "reason": "getReferencedProvision(Section 1.08(f)) was attempted and returned only an empty/placeholder clause label '(f)' with no substantive text",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:40d90b51b91c77109992e5b0"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Retrieval of Section 1.08(f) yielded no substantive content.",
+      "getReferencedProvision(Section 1.08(f)) was attempted and returned only an empty/placeholder clause label '(f)' with no substantive text"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 1.08(f)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:cb23c2cafb4a85e387204c50",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01 (Indebtedness), clauses (a)-(c) and provisos (A)-(F)",
+      "semanticDescription": "Categorical inclusion/exclusion test for what constitutes 'Indebtedness' of a Person: (a) borrowed-money-type obligations (bonds/notes/debentures, LC/BA reimbursement, Capitalized Lease Obligations, deferred purchase price) subject to trade-payable/Swap Obligation exclusions and a 30-day earn-out cure rule, (b) guarantees of clause (a)-type obligations, (c) Lien-secured obligations of others (capped at the lesser of FMV, secured amount, or lien-agreement amount) - further subject to enumerated carve-outs (A)-(F) including a 60-day asset-retirement/pension cure rule, an intercompany 364-day short-term debt exclusion, and a Qualified Restricted Subsidiary recourse-only limitation",
+      "reason": "this is a multi-branch categorical/eligibility definition (what counts as debt), not a computable arithmetic formula; several dependent defined terms used within it (Capitalized Lease Obligations, Swap Obligations, Unrestricted Subsidiary, Parent Entity, Qualified Restricted Subsidiary, Ordinary Course Non-Recourse Third Party Financing Transactions) were not resolved within tool/context budget",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:a103eee06e4d30ebb606a701"
+     },
+     "dependsOnTerms": [
+      "Capitalized Lease Obligations",
+      "Swap Obligations",
+      "Unrestricted Subsidiary",
+      "Parent Entity",
+      "Qualified Restricted Subsidiary",
+      "Ordinary Course Non-Recourse Third Party Financing Transactions",
+      "GAAP"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Core inclusion/exclusion structure and all stated day-count thresholds (30/60/364 days) are captured in the excerpt and consumed via inventory item references.",
+      "Several dependent defined terms integral to the exclusions (e.g., 'Ordinary Course Non-Recourse Third Party Financing Transactions', 'Qualified Restricted Subsidiary') were not resolved within the available tool/context budget.",
+      "this is a multi-branch categorical/eligibility definition (what counts as debt), not a computable arithmetic formula; several dependent defined terms used within it (Capitalized Lease Obligations, Swap Obligations, Unrestricted Subsidiary, Parent Entity, Qualified Restricted Subsidiary, Ordinary Course Non-Recourse Third Party Financing Transactions) were not resolved within tool/context budget"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, with respect to any Person, without duplication: (a) any indebtedness ... except (i) trade payables ... or (ii) any earn-out obligations until, after thirty (30) days of becoming due and payable, has not been paid ...; (b) guarantee obligations ...; (c) obligations of another Person secured by a Lien ...; provided that Indebtedness will be deemed not to include: (A)-(F) ... asset retirement obligations and other pension related obligations ... that are not overdue by more than sixty (60) days ...; ... intercompany loans, advances or other Indebtedness having a term not exceeding three hundred sixty-four (364) days ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:40586a6671306826e608f73d",
+      "inv-item:c01880c80f5b6269542aae3f",
+      "inv-item:0ae4b1ab0b1d99bdd8194472"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:2b1a03d659edd32a4f44ca3d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Indemnified Taxes",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"means all Taxes, other than Excluded Taxes, imposed on or with respect to any payment made by or on account of any obligation of any Loan Party under any Loan Document.\"",
+      "semanticDescription": "All Taxes other than Excluded Taxes, imposed on payments under any Loan Document obligation of a Loan Party",
+      "reason": "the entire substantive scope of this definition turns on the undefined (in the supplied excerpt) term 'Excluded Taxes', which materially narrows what counts as 'Indemnified Taxes'; not resolvable within tool/context budget",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:bd55046421fc0f5389c8c09b"
+     },
+     "dependsOnTerms": [
+      "Taxes",
+      "Excluded Taxes",
+      "Loan Party",
+      "Loan Document"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "'Excluded Taxes' (the sole exclusion) is not defined in the supplied source and was not independently resolved.",
+      "the entire substantive scope of this definition turns on the undefined (in the supplied excerpt) term 'Excluded Taxes', which materially narrows what counts as 'Indemnified Taxes'; not resolvable within tool/context budget"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means all Taxes, other than Excluded Taxes, imposed on or with respect to any payment made by or on account of any obligation of any Loan Party under any Loan Document."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:c95f78314c58f739779218a7",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Indemnitee",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 9.03(b).\"",
+      "semanticDescription": "Term whose entire meaning is deferred to Section 9.03(b)",
+      "reason": "getReferencedProvision(Section 9.03(b)) could not be attempted because the tool-call budget was exhausted",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:65e5a81c00328ca7b67cff20"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Meaning wholly deferred to Section 9.03(b), unresolved due to tool-budget exhaustion.",
+      "getReferencedProvision(Section 9.03(b)) could not be attempted because the tool-call budget was exhausted"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 9.03(b)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:30b7f06a4556abc00408b237",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Independent Financial Advisor",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Initial Borrower"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully stated, self-contained qualitative definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means an accounting, appraisal, investment banking firm or consultant of nationally recognized standing that is, in the good faith judgment of the Initial Borrower, qualified to perform the task for which it has been engaged."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e0ece1e4c72320de4729f71d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Information",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 9.12(a).\"",
+      "semanticDescription": "Term whose entire meaning is deferred to Section 9.12(a)",
+      "reason": "getReferencedProvision(Section 9.12(a)) could not be attempted because the tool-call budget was exhausted",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:762cb9fe19782c31a3e104de"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Meaning wholly deferred to Section 9.12(a), unresolved due to tool-budget exhaustion.",
+      "getReferencedProvision(Section 9.12(a)) could not be attempted because the tool-call budget was exhausted"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 9.12(a)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:2d563dcf9558cdc2be29bcef",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Initial Borrower",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in the preamble hereto; provided that, to the extent the Initial Borrower resigns as a Borrower in accordance with Section 2.28, Chewy, Inc. shall remain the Initial Borrower for purposes of Section 2.26 ..., Section 2.29, Article III, Article IV, Article V, Article VI, Article VII and Article IX.\"",
+      "semanticDescription": "Core meaning deferred to the Agreement's preamble (not part of the supplied source), plus a resignation proviso keeping Chewy, Inc. as 'Initial Borrower' for specified purposes even after resignation under Section 2.28",
+      "reason": "the preamble text is outside the supplied source, and the proviso's Article cross-references (Article III/IV/V/VI/VII/IX) are each reported ambiguous (multiple same-numbered Articles exist) and were not resolved",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:9e4d9b7542f057ea66532b1a"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Preamble (core definition) not in supplied source; multiple Article cross-references are ambiguous per context report and unresolved.",
+      "the preamble text is outside the supplied source, and the proviso's Article cross-references (Article III/IV/V/VI/VII/IX) are each reported ambiguous (multiple same-numbered Articles exist) and were not resolved"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in the preamble hereto; provided that ... Chewy, Inc. shall remain the Initial Borrower for purposes of Section 2.26 ..., Section 2.29, Article III, Article IV, Article V, Article VI, Article VII and Article IX."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f731ac11089fa62cd759fd5d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Initial Lien",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Permitted Liens",
+      "Indebtedness",
+      "Restricted Party"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Retrieved and confirmed via getReferencedProvision(Section 6.02): a Lien (except Permitted Liens) securing Indebtedness on a Restricted Party's asset/property."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §6.02",
+      "excerpt": "any Lien (except Permitted Liens) (each, an \"Initial Lien\") that secures obligations under any Indebtedness, on any asset or property of any Restricted Party"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:0021467d901df055edf8235f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Initial Term Commitment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MONEY",
+      "type": "MONEY",
+      "amount": 600000000,
+      "currency": "USD",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:361ee545e4ffb3510f432bc8"
+     },
+     "dependsOnTerms": [
+      "Term Lender",
+      "Initial Term Loan",
+      "Effective Date",
+      "Assignment and Assumption"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Stated total commitment amount is explicit and unambiguous as of the Effective Date."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "As of the Effective Date, the total Initial Term Commitment is $600.0 million."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:8cfa44ae06b19e4ccb8d9436"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:9bf7a408ae850bac33077f9e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Initial Term Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Initial Term Commitment",
+      "Initial Term Loans"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully stated, self-contained definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the facility comprised of the Initial Term Commitments and the Initial Term Loans, together with any refinancing thereof."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:fd50d4966771d7dd22d90e93",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Initial Term Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Loans"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The definition itself (not a deferred 'has the meaning assigned' construction) is fully and self-sufficiently stated as 'Loans made pursuant to Section 2.01(b)'; the mechanics of Section 2.01(b) are not needed to represent this term's own stated scope."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means Loans made pursuant to Section 2.01(b)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:cb5acd4f12f6c6b37abbacd0",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Initial Term Maturity Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DATE_LITERAL",
+      "type": "DATE",
+      "isoDate": "2033-06-23",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:d29418066d103e0c15b5f024"
+     },
+     "dependsOnTerms": [
+      "Effective Date"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Explicit date stated directly in the text, corroborated as the seventh anniversary of the Effective Date (June 23, 2026, per §1.01 definition of Effective Date)."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means June 23, 2033, the seventh (7th) anniversary of the Effective Date."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:5f20e4b9abfc727cbdc7d913"
+     ]
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d2]] Section 2.12(a)(ii) was out of scope (source-context budget exhausted) and could not be retrieved via getReferencedProvision (tool-call budget exhausted before this reference could be attempted)",
+   "[definition[d3]] getReferencedProvision('Section 6.02') was attempted and returned only the Section 6.02 lead-in (Limitation on Liens chapeau, defining 'Initial Lien'), not the specific 'Increased Amount' definition, which evidently sits in a sub-clause not retrieved before tool budget was exhausted",
+   "[definition[d6]] this is a multi-part eligibility/proviso definition, not a computable value; condition (d) depends on 'the relevant Intercreditor Agreement(s)', a document type confirmed absent from this package (REFERENCED_DOCUMENT_ABSENT), and condition (b) depends on Incremental Cap, itself a sum of amounts not resolvable to a static figure",
+   "[definition[d8]] Section 2.18(e)(i) was out of scope for the source-context bundle and the getReferencedProvision attempt for it failed because the tool-call budget was exhausted",
+   "[definition[d11]] getReferencedProvision(Section 2.18(a)) returned only the general Notice/eligibility lead-in text and was truncated before reaching the specific clause defining 'Incremental Revolving Facility'",
+   "[definition[d12]] the retrieved Section 2.18(a) excerpt was truncated before reaching the clause that would define this specific term",
+   "[definition[d16]] the retrieved Section 2.18(a) excerpt was truncated before reaching the clause that would define this specific term",
+   "[definition[d17]] getReferencedProvision(Section 1.08(f)) was attempted and returned only an empty/placeholder clause label '(f)' with no substantive text",
+   "[definition[d18]] this is a multi-branch categorical/eligibility definition (what counts as debt), not a computable arithmetic formula; several dependent defined terms used within it (Capitalized Lease Obligations, Swap Obligations, Unrestricted Subsidiary, Parent Entity, Qualified Restricted Subsidiary, Ordinary Course Non-Recourse Third Party Financing Transactions) were not resolved within tool/context budget",
+   "[definition[d19]] the entire substantive scope of this definition turns on the undefined (in the supplied excerpt) term 'Excluded Taxes', which materially narrows what counts as 'Indemnified Taxes'; not resolvable within tool/context budget",
+   "[definition[d20]] getReferencedProvision(Section 9.03(b)) could not be attempted because the tool-call budget was exhausted",
+   "[definition[d22]] getReferencedProvision(Section 9.12(a)) could not be attempted because the tool-call budget was exhausted",
+   "[definition[d23]] the preamble text is outside the supplied source, and the proviso's Article cross-references (Article III/IV/V/VI/VII/IX) are each reported ambiguous (multiple same-numbered Articles exist) and were not resolved",
+   "Source text is a contiguous slice of the Section 1.01 Defined Terms alphabetical list (Immediate Family Members through Initial Term Maturity Date); 27 distinct defined terms were identified and each was emitted as an independent WireDefinition per the multiple-definitions extraction requirement.",
+   "No independently operative WireRule (permission/prohibition) exists within this slice - Section 1.01 is purely definitional; the substantive Incremental Facility permission mechanics live in Section 2.18 and Article VI baskets, which are out of scope of this submission and are only referenced via dependsOnTerms/citations.",
+   "Of the many 'has the meaning assigned to such term in Section X' cross-references, several were successfully resolved this pass (Incremental Borrower via §2.18(a); Initial Lien via §6.02; the Incremental Equivalent Debt condition via §2.18(b)) before the tool-call budget (8 calls) was exhausted; the remainder are marked MISSING_CONTEXT/PARTIAL with the specific unresolved reference cited, per the retrieval-before-giving-up requirement.",
+   "The two deterministically-detected day-count values ('sixty (60) days' and the '(364)' portion of 'three hundred sixty-four (364) days') outside the frozen inventory are the same magnitudes already captured by inventory items inv-item:c01880c80f5b6269542aae3f and inv-item:0ae4b1ab0b1d99bdd8194472 respectively (consumed on the 'Indebtedness' definition) - no separate action was needed.",
+   "All 5 CRITICAL/MATERIAL frozen-inventory items were consumed: inv-item:8cfa44ae06b19e4ccb8d9436 and inv-item:5f20e4b9abfc727cbdc7d913 on 'Initial Term Commitment' and 'Initial Term Maturity Date' respectively (both carrying the literal values directly), and the three EXCEPTION items (earn-out 30-day cure, asset-retirement/pension 60-day cure, intercompany 364-day short-term exclusion) on the 'Indebtedness' definition, whose categorical (non-formulaic) nature is reflected in its PARTIAL sufficiency and UNSUPPORTED calculationExpression wrapper."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 131180,
+   "outputTokens": 35491,
+   "costUsd": 0.61727
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:ec1a1057377f7aa961fcecb6",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Immediate Family Members",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully descriptive, closed-list definition; no computation or cross-reference required."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "such individual's child, stepchild, grandchild or more remote linear descendant, parent, stepparent, grandparent, spouse, former spouse, widows, widowers, estates, qualified domestic partner, sibling, mother-in-law, father-in-law, son-in-law, daughter-in-law ... and any trust, partnership or other bona fide estate-planning vehicle the only beneficiaries of which are any of the foregoing ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:47e4698c4b459c5e79253b35",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Impacted Loans",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 2.12(a)(ii)\"",
+     "semanticDescription": "Term whose entire meaning is deferred to Section 2.12(a)(ii)",
+     "reason": "Section 2.12(a)(ii) was out of scope (source-context budget exhausted) and could not be retrieved via getReferencedProvision (tool-call budget exhausted before this reference could be attempted)",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:4a65713f83a8b95b28adb591"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Meaning is wholly deferred to Section 2.12(a)(ii), which could not be retrieved within tool/context budget.",
+     "Section 2.12(a)(ii) was out of scope (source-context budget exhausted) and could not be retrieved via getReferencedProvision (tool-call budget exhausted before this reference could be attempted)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 2.12(a)(ii)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:003fd94745c41a6d1828ae2b",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Increased Amount",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 6.02\"",
+     "semanticDescription": "Term whose entire meaning is deferred to Section 6.02",
+     "reason": "getReferencedProvision('Section 6.02') was attempted and returned only the Section 6.02 lead-in (Limitation on Liens chapeau, defining 'Initial Lien'), not the specific 'Increased Amount' definition, which evidently sits in a sub-clause not retrieved before tool budget was exhausted",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:55964b05c441c4271230ea74"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Attempted retrieval of Section 6.02 did not surface the specific 'Increased Amount' text; tool budget exhausted before a more targeted sub-clause could be fetched.",
+     "getReferencedProvision('Section 6.02') was attempted and returned only the Section 6.02 lead-in (Limitation on Liens chapeau, defining 'Initial Lien'), not the specific 'Increased Amount' definition, which evidently sits in a sub-clause not retrieved before tool budget was exhausted"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 6.02."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:2575f54a1bc8d9fbac05771a",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Incremental Borrower",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Loan Party",
+     "Initial Borrower",
+     "Administrative Agent"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Retrieved and confirmed via getReferencedProvision(Section 2.18(a)): the entity or entities (Borrowers or any Loan Party) that may request an Incremental Facility."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §2.18(a)",
+     "excerpt": "the Borrowers or any Loan Party (any such entity or entities, the \"Incremental Borrower\"), may, by notice from the Initial Borrower to the Administrative Agent ..., request to effect [an Incremental Facility]"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:1b5de860701796d8c22b08e5",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Incremental Cap",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "SUM",
+     "type": "MONEY",
+     "exprId": "ir-expr:31480b3e03b812653b77da63",
+     "operands": [
+      {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "MONEY",
+       "termName": "Fixed Incremental Amount",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:0e4a48262704a0f55719a1d1"
+      },
+      {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "MONEY",
+       "termName": "Voluntary Prepayment Incremental Amount",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:d905409c8112e3d13502648b"
+      },
+      {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "MONEY",
+       "termName": "Ratio Incremental Amount",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:d77bc2162d6faaf4676a11fe"
+      },
+      {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "MONEY",
+       "termName": "Extension Amount",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:8419683f520b431cb6d70415"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Fixed Incremental Amount",
+     "Voluntary Prepayment Incremental Amount",
+     "Ratio Incremental Amount",
+     "Extension Amount"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The section's own text is a straightforward four-part additive formula; each component term was confirmed to exist and be independently defined elsewhere in the document via getDefinition, so the SUM structure is faithfully represented as references (their own internal, non-static formulas are outside the scope of this definition's text and are not restated here)."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Incremental Cap\" means, as of any date of determination: (a) the Fixed Incremental Amount; plus (b) the Voluntary Prepayment Incremental Amount; plus (c) the Ratio Incremental Amount; plus (d) the Extension Amount."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:a28c17bfb201e2648f9423ee",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Incremental Equivalent Debt",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01 (Incremental Equivalent Debt); §2.18(b): \"no Event of Default shall have occurred and be continuing ... or shall result therefrom\"",
+     "semanticDescription": "Categorical/proviso-based eligibility definition: Indebtedness of a Restricted Party consisting of secured/unsecured bonds, notes, debentures or loans, conditioned on (a) compliance with the Section 2.18(b) Incremental Loan condition (no continuing Event of Default, subject to Section 1.08, with a carve-out for Permitted Acquisitions/Investments limited to no Specified Event of Default), (b) aggregate par principal amount not exceeding the Incremental Cap, (c) pricing/terms set by Initial Borrower or applicable lenders, and (d) security/intercreditor limitations tied to an Intercreditor Agreement",
+     "reason": "this is a multi-part eligibility/proviso definition, not a computable value; condition (d) depends on 'the relevant Intercreditor Agreement(s)', a document type confirmed absent from this package (REFERENCED_DOCUMENT_ABSENT), and condition (b) depends on Incremental Cap, itself a sum of amounts not resolvable to a static figure",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:72220628c1397b75776ed871"
+    },
+    "dependsOnTerms": [
+     "Indebtedness",
+     "Restricted Party",
+     "Incremental Loan",
+     "Incremental Cap",
+     "Loan Party",
+     "Secured Obligations",
+     "Intercreditor Agreement",
+     "Initial Borrower"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Condition (a) resolved via Section 2.18(b); condition (d) depends on an Intercreditor Agreement document absent from the package; condition (b)'s Incremental Cap is itself a non-static aggregate.",
+     "this is a multi-part eligibility/proviso definition, not a computable value; condition (d) depends on 'the relevant Intercreditor Agreement(s)', a document type confirmed absent from this package (REFERENCED_DOCUMENT_ABSENT), and condition (b) depends on Incremental Cap, itself a sum of amounts not resolvable to a static figure"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means Indebtedness of any Restricted Party consisting of secured or unsecured bonds, notes, debentures, or loans; provided that: (a) the condition set forth in Section 2.18(b) shall have been complied with...; (b) ... does not exceed that amount which may be incurred within the Incremental Cap; (c) ...; and (d) ... is subject to the relevant Intercreditor Agreement(s)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e82e75823c1094091e6ad717",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Incremental Facility",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Incremental Revolving Facility",
+     "Incremental Term Facility"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple disjunctive definition fully stated in the source text."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means each and any Incremental Revolving Facility and Incremental Term Facility."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:4ed50ac81126cfb9a55ce81d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Incremental Facility Amendment",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 2.18(e)(i)\"",
+     "semanticDescription": "Term whose entire meaning is deferred to Section 2.18(e)(i)",
+     "reason": "Section 2.18(e)(i) was out of scope for the source-context bundle and the getReferencedProvision attempt for it failed because the tool-call budget was exhausted",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:78bcc65e5e0aca16959af08f"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Meaning wholly deferred to Section 2.18(e)(i), unresolved after budget exhaustion.",
+     "Section 2.18(e)(i) was out of scope for the source-context bundle and the getReferencedProvision attempt for it failed because the tool-call budget was exhausted"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 2.18(e)(i)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:7532d7a4d34ed8765d5a39de",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Incremental Loans",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Incremental Term Loan",
+     "Incremental Revolving Facility",
+     "Incremental Revolving Increase"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple disjunctive definition fully stated in the source text."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means Incremental Term Loans and Loans under any Incremental Revolving Facility or Incremental Revolving Increase."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:b949fabac1f06691e3afdbb0",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Incremental Revolving Commitment",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Incremental Revolving Facility"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully stated, self-contained definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means a commitment in respect of an Incremental Revolving Facility."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d767d11da2e44d306ffb97af",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Incremental Revolving Facility",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 2.18(a), together with any Incremental Revolving Increase thereof, and the extensions of credit thereunder.\"",
+     "semanticDescription": "Core meaning deferred to Section 2.18(a) (not captured in the truncated excerpt retrieved), plus an additional stated scope: 'together with any Incremental Revolving Increase thereof, and the extensions of credit thereunder'",
+     "reason": "getReferencedProvision(Section 2.18(a)) returned only the general Notice/eligibility lead-in text and was truncated before reaching the specific clause defining 'Incremental Revolving Facility'",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:0d492c1ea94a3c444315126f"
+    },
+    "dependsOnTerms": [
+     "Incremental Revolving Increase"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The additive scope ('together with...extensions of credit thereunder') is captured, but the core meaning deferred to Section 2.18(a) was not reached in the retrieved (truncated) excerpt.",
+     "getReferencedProvision(Section 2.18(a)) returned only the general Notice/eligibility lead-in text and was truncated before reaching the specific clause defining 'Incremental Revolving Facility'"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 2.18(a), together with any Incremental Revolving Increase thereof, and the extensions of credit thereunder."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:637ad2125373482176cc5b32",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Incremental Revolving Increase",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 2.18(a).\"",
+     "semanticDescription": "Term whose entire meaning is deferred to Section 2.18(a)",
+     "reason": "the retrieved Section 2.18(a) excerpt was truncated before reaching the clause that would define this specific term",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:d869c2d60efe994ca458856b"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Meaning wholly deferred to a portion of Section 2.18(a) not reached by the retrieved excerpt.",
+     "the retrieved Section 2.18(a) excerpt was truncated before reaching the clause that would define this specific term"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 2.18(a)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:499a9c3bff5c68e366407e0c",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Incremental Revolving Loans",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Incremental Revolving Facility",
+     "Incremental Revolving Increase"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple disjunctive definition fully stated in the source text."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means Loans under any Incremental Revolving Facility or Incremental Revolving Increase."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:8949d1b85d2e2635a457c1e6",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Incremental Term Commitment",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Incremental Term Loan"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully stated, self-contained definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means a commitment in respect of Incremental Term Loans."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:9ac4c9bee42363448773c7c6",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Incremental Term Facility",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Incremental Term Commitment",
+     "Incremental Term Loan",
+     "Incremental Facility Amendment"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully stated definition; dependent terms not needed to represent this term's own stated scope faithfully."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means each and any facility comprised of Incremental Term Commitments and related Incremental Term Loans created pursuant to an Incremental Facility Amendment, together with any refinancing thereof."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e57ddd0cf344abbc0d9013f6",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Incremental Term Loan",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 2.18(a).\"",
+     "semanticDescription": "Term whose entire meaning is deferred to Section 2.18(a)",
+     "reason": "the retrieved Section 2.18(a) excerpt was truncated before reaching the clause that would define this specific term",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:d869c2d60efe994ca458856b"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Meaning wholly deferred to a portion of Section 2.18(a) not reached by the retrieved excerpt.",
+     "the retrieved Section 2.18(a) excerpt was truncated before reaching the clause that would define this specific term"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 2.18(a)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:a21012e7bfb9f3efbebfe920",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Incurrence-Based Amounts",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 1.08(f).\"",
+     "semanticDescription": "Term whose entire meaning is deferred to Section 1.08(f)",
+     "reason": "getReferencedProvision(Section 1.08(f)) was attempted and returned only an empty/placeholder clause label '(f)' with no substantive text",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:40d90b51b91c77109992e5b0"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Retrieval of Section 1.08(f) yielded no substantive content.",
+     "getReferencedProvision(Section 1.08(f)) was attempted and returned only an empty/placeholder clause label '(f)' with no substantive text"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 1.08(f)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:cb23c2cafb4a85e387204c50",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Indebtedness",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01 (Indebtedness), clauses (a)-(c) and provisos (A)-(F)",
+     "semanticDescription": "Categorical inclusion/exclusion test for what constitutes 'Indebtedness' of a Person: (a) borrowed-money-type obligations (bonds/notes/debentures, LC/BA reimbursement, Capitalized Lease Obligations, deferred purchase price) subject to trade-payable/Swap Obligation exclusions and a 30-day earn-out cure rule, (b) guarantees of clause (a)-type obligations, (c) Lien-secured obligations of others (capped at the lesser of FMV, secured amount, or lien-agreement amount) - further subject to enumerated carve-outs (A)-(F) including a 60-day asset-retirement/pension cure rule, an intercompany 364-day short-term debt exclusion, and a Qualified Restricted Subsidiary recourse-only limitation",
+     "reason": "this is a multi-branch categorical/eligibility definition (what counts as debt), not a computable arithmetic formula; several dependent defined terms used within it (Capitalized Lease Obligations, Swap Obligations, Unrestricted Subsidiary, Parent Entity, Qualified Restricted Subsidiary, Ordinary Course Non-Recourse Third Party Financing Transactions) were not resolved within tool/context budget",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:a103eee06e4d30ebb606a701"
+    },
+    "dependsOnTerms": [
+     "Capitalized Lease Obligations",
+     "Swap Obligations",
+     "Unrestricted Subsidiary",
+     "Parent Entity",
+     "Qualified Restricted Subsidiary",
+     "Ordinary Course Non-Recourse Third Party Financing Transactions",
+     "GAAP"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Core inclusion/exclusion structure and all stated day-count thresholds (30/60/364 days) are captured in the excerpt and consumed via inventory item references.",
+     "Several dependent defined terms integral to the exclusions (e.g., 'Ordinary Course Non-Recourse Third Party Financing Transactions', 'Qualified Restricted Subsidiary') were not resolved within the available tool/context budget.",
+     "this is a multi-branch categorical/eligibility definition (what counts as debt), not a computable arithmetic formula; several dependent defined terms used within it (Capitalized Lease Obligations, Swap Obligations, Unrestricted Subsidiary, Parent Entity, Qualified Restricted Subsidiary, Ordinary Course Non-Recourse Third Party Financing Transactions) were not resolved within tool/context budget"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, with respect to any Person, without duplication: (a) any indebtedness ... except (i) trade payables ... or (ii) any earn-out obligations until, after thirty (30) days of becoming due and payable, has not been paid ...; (b) guarantee obligations ...; (c) obligations of another Person secured by a Lien ...; provided that Indebtedness will be deemed not to include: (A)-(F) ... asset retirement obligations and other pension related obligations ... that are not overdue by more than sixty (60) days ...; ... intercompany loans, advances or other Indebtedness having a term not exceeding three hundred sixty-four (364) days ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:40586a6671306826e608f73d",
+     "inv-item:c01880c80f5b6269542aae3f",
+     "inv-item:0ae4b1ab0b1d99bdd8194472"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:2b1a03d659edd32a4f44ca3d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Indemnified Taxes",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"means all Taxes, other than Excluded Taxes, imposed on or with respect to any payment made by or on account of any obligation of any Loan Party under any Loan Document.\"",
+     "semanticDescription": "All Taxes other than Excluded Taxes, imposed on payments under any Loan Document obligation of a Loan Party",
+     "reason": "the entire substantive scope of this definition turns on the undefined (in the supplied excerpt) term 'Excluded Taxes', which materially narrows what counts as 'Indemnified Taxes'; not resolvable within tool/context budget",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:bd55046421fc0f5389c8c09b"
+    },
+    "dependsOnTerms": [
+     "Taxes",
+     "Excluded Taxes",
+     "Loan Party",
+     "Loan Document"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "'Excluded Taxes' (the sole exclusion) is not defined in the supplied source and was not independently resolved.",
+     "the entire substantive scope of this definition turns on the undefined (in the supplied excerpt) term 'Excluded Taxes', which materially narrows what counts as 'Indemnified Taxes'; not resolvable within tool/context budget"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means all Taxes, other than Excluded Taxes, imposed on or with respect to any payment made by or on account of any obligation of any Loan Party under any Loan Document."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:c95f78314c58f739779218a7",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Indemnitee",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 9.03(b).\"",
+     "semanticDescription": "Term whose entire meaning is deferred to Section 9.03(b)",
+     "reason": "getReferencedProvision(Section 9.03(b)) could not be attempted because the tool-call budget was exhausted",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:65e5a81c00328ca7b67cff20"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Meaning wholly deferred to Section 9.03(b), unresolved due to tool-budget exhaustion.",
+     "getReferencedProvision(Section 9.03(b)) could not be attempted because the tool-call budget was exhausted"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.03(b)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:30b7f06a4556abc00408b237",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Independent Financial Advisor",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Initial Borrower"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully stated, self-contained qualitative definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means an accounting, appraisal, investment banking firm or consultant of nationally recognized standing that is, in the good faith judgment of the Initial Borrower, qualified to perform the task for which it has been engaged."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e0ece1e4c72320de4729f71d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Information",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 9.12(a).\"",
+     "semanticDescription": "Term whose entire meaning is deferred to Section 9.12(a)",
+     "reason": "getReferencedProvision(Section 9.12(a)) could not be attempted because the tool-call budget was exhausted",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:762cb9fe19782c31a3e104de"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Meaning wholly deferred to Section 9.12(a), unresolved due to tool-budget exhaustion.",
+     "getReferencedProvision(Section 9.12(a)) could not be attempted because the tool-call budget was exhausted"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.12(a)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:2d563dcf9558cdc2be29bcef",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Initial Borrower",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning assigned to such term in the preamble hereto; provided that, to the extent the Initial Borrower resigns as a Borrower in accordance with Section 2.28, Chewy, Inc. shall remain the Initial Borrower for purposes of Section 2.26 ..., Section 2.29, Article III, Article IV, Article V, Article VI, Article VII and Article IX.\"",
+     "semanticDescription": "Core meaning deferred to the Agreement's preamble (not part of the supplied source), plus a resignation proviso keeping Chewy, Inc. as 'Initial Borrower' for specified purposes even after resignation under Section 2.28",
+     "reason": "the preamble text is outside the supplied source, and the proviso's Article cross-references (Article III/IV/V/VI/VII/IX) are each reported ambiguous (multiple same-numbered Articles exist) and were not resolved",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:9e4d9b7542f057ea66532b1a"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Preamble (core definition) not in supplied source; multiple Article cross-references are ambiguous per context report and unresolved.",
+     "the preamble text is outside the supplied source, and the proviso's Article cross-references (Article III/IV/V/VI/VII/IX) are each reported ambiguous (multiple same-numbered Articles exist) and were not resolved"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the preamble hereto; provided that ... Chewy, Inc. shall remain the Initial Borrower for purposes of Section 2.26 ..., Section 2.29, Article III, Article IV, Article V, Article VI, Article VII and Article IX."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f731ac11089fa62cd759fd5d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Initial Lien",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Permitted Liens",
+     "Indebtedness",
+     "Restricted Party"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Retrieved and confirmed via getReferencedProvision(Section 6.02): a Lien (except Permitted Liens) securing Indebtedness on a Restricted Party's asset/property."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §6.02",
+     "excerpt": "any Lien (except Permitted Liens) (each, an \"Initial Lien\") that secures obligations under any Indebtedness, on any asset or property of any Restricted Party"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:0021467d901df055edf8235f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Initial Term Commitment",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "MONEY",
+     "type": "MONEY",
+     "amount": 600000000,
+     "currency": "USD",
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:361ee545e4ffb3510f432bc8"
+    },
+    "dependsOnTerms": [
+     "Term Lender",
+     "Initial Term Loan",
+     "Effective Date",
+     "Assignment and Assumption"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Stated total commitment amount is explicit and unambiguous as of the Effective Date."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "As of the Effective Date, the total Initial Term Commitment is $600.0 million."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:8cfa44ae06b19e4ccb8d9436"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:9bf7a408ae850bac33077f9e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Initial Term Facility",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Initial Term Commitment",
+     "Initial Term Loans"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully stated, self-contained definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the facility comprised of the Initial Term Commitments and the Initial Term Loans, together with any refinancing thereof."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:fd50d4966771d7dd22d90e93",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Initial Term Loans",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Loans"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The definition itself (not a deferred 'has the meaning assigned' construction) is fully and self-sufficiently stated as 'Loans made pursuant to Section 2.01(b)'; the mechanics of Section 2.01(b) are not needed to represent this term's own stated scope."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means Loans made pursuant to Section 2.01(b)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:cb5acd4f12f6c6b37abbacd0",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Initial Term Maturity Date",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "DATE_LITERAL",
+     "type": "DATE",
+     "isoDate": "2033-06-23",
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:d29418066d103e0c15b5f024"
+    },
+    "dependsOnTerms": [
+     "Effective Date"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Explicit date stated directly in the text, corroborated as the seventh anniversary of the Effective Date (June 23, 2026, per §1.01 definition of Effective Date)."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means June 23, 2033, the seventh (7th) anniversary of the Effective Date."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:5f20e4b9abfc727cbdc7d913"
+    ]
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01 'Indebtedness' definition (clauses (a)-(c) plus provisos (A)-(F)) and similar multi-branch categorical definitions",
+    "semanticRequirement": "A way to represent a term defined as a categorical inclusion/exclusion test over obligation TYPES (e.g., 'counts as Indebtedness unless it falls within excluded category X, Y, or Z, each with its own qualifying sub-conditions like day-count cure periods'), as distinct from a numeric formula or a boolean gating test on a metric.",
+    "whyExistingPrimitivesFail": "AND/OR/NOT/COMPARE operate on boolean truth values of stated propositions about known inputs, and ADD/SUBTRACT/MAX/MIN operate on numeric amounts; neither cleanly models 'is this specific obligation a member of the defined category Indebtedness', which is a classification/set-membership determination over unenumerated real-world facts rather than a value computation.",
+    "candidateGeneralizedPrimitive": "A CATEGORY_DEFINITION or SET_MEMBERSHIP_TEST node with an inclusion list and an exclusion list of qualitative sub-rules (each itself an expression), used purely for classification definitions rather than value/boolean computation."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d2]] Section 2.12(a)(ii) was out of scope (source-context budget exhausted) and could not be retrieved via getReferencedProvision (tool-call budget exhausted before this reference could be attempted)",
+   "[definition[d3]] getReferencedProvision('Section 6.02') was attempted and returned only the Section 6.02 lead-in (Limitation on Liens chapeau, defining 'Initial Lien'), not the specific 'Increased Amount' definition, which evidently sits in a sub-clause not retrieved before tool budget was exhausted",
+   "[definition[d6]] this is a multi-part eligibility/proviso definition, not a computable value; condition (d) depends on 'the relevant Intercreditor Agreement(s)', a document type confirmed absent from this package (REFERENCED_DOCUMENT_ABSENT), and condition (b) depends on Incremental Cap, itself a sum of amounts not resolvable to a static figure",
+   "[definition[d8]] Section 2.18(e)(i) was out of scope for the source-context bundle and the getReferencedProvision attempt for it failed because the tool-call budget was exhausted",
+   "[definition[d11]] getReferencedProvision(Section 2.18(a)) returned only the general Notice/eligibility lead-in text and was truncated before reaching the specific clause defining 'Incremental Revolving Facility'",
+   "[definition[d12]] the retrieved Section 2.18(a) excerpt was truncated before reaching the clause that would define this specific term",
+   "[definition[d16]] the retrieved Section 2.18(a) excerpt was truncated before reaching the clause that would define this specific term",
+   "[definition[d17]] getReferencedProvision(Section 1.08(f)) was attempted and returned only an empty/placeholder clause label '(f)' with no substantive text",
+   "[definition[d18]] this is a multi-branch categorical/eligibility definition (what counts as debt), not a computable arithmetic formula; several dependent defined terms used within it (Capitalized Lease Obligations, Swap Obligations, Unrestricted Subsidiary, Parent Entity, Qualified Restricted Subsidiary, Ordinary Course Non-Recourse Third Party Financing Transactions) were not resolved within tool/context budget",
+   "[definition[d19]] the entire substantive scope of this definition turns on the undefined (in the supplied excerpt) term 'Excluded Taxes', which materially narrows what counts as 'Indemnified Taxes'; not resolvable within tool/context budget",
+   "[definition[d20]] getReferencedProvision(Section 9.03(b)) could not be attempted because the tool-call budget was exhausted",
+   "[definition[d22]] getReferencedProvision(Section 9.12(a)) could not be attempted because the tool-call budget was exhausted",
+   "[definition[d23]] the preamble text is outside the supplied source, and the proviso's Article cross-references (Article III/IV/V/VI/VII/IX) are each reported ambiguous (multiple same-numbered Articles exist) and were not resolved",
+   "Source text is a contiguous slice of the Section 1.01 Defined Terms alphabetical list (Immediate Family Members through Initial Term Maturity Date); 27 distinct defined terms were identified and each was emitted as an independent WireDefinition per the multiple-definitions extraction requirement.",
+   "No independently operative WireRule (permission/prohibition) exists within this slice - Section 1.01 is purely definitional; the substantive Incremental Facility permission mechanics live in Section 2.18 and Article VI baskets, which are out of scope of this submission and are only referenced via dependsOnTerms/citations.",
+   "Of the many 'has the meaning assigned to such term in Section X' cross-references, several were successfully resolved this pass (Incremental Borrower via §2.18(a); Initial Lien via §6.02; the Incremental Equivalent Debt condition via §2.18(b)) before the tool-call budget (8 calls) was exhausted; the remainder are marked MISSING_CONTEXT/PARTIAL with the specific unresolved reference cited, per the retrieval-before-giving-up requirement.",
+   "The two deterministically-detected day-count values ('sixty (60) days' and the '(364)' portion of 'three hundred sixty-four (364) days') outside the frozen inventory are the same magnitudes already captured by inventory items inv-item:c01880c80f5b6269542aae3f and inv-item:0ae4b1ab0b1d99bdd8194472 respectively (consumed on the 'Indebtedness' definition) - no separate action was needed.",
+   "All 5 CRITICAL/MATERIAL frozen-inventory items were consumed: inv-item:8cfa44ae06b19e4ccb8d9436 and inv-item:5f20e4b9abfc727cbdc7d913 on 'Initial Term Commitment' and 'Initial Term Maturity Date' respectively (both carrying the literal values directly), and the three EXCEPTION items (earn-out 30-day cure, asset-retirement/pension 60-day cure, intercompany 364-day short-term exclusion) on the 'Indebtedness' definition, whose categorical (non-formulaic) nature is reflected in its PARTIAL sufficiency and UNSUPPORTED calculationExpression wrapper."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Fixed Incremental Amount"
+    },
+    "outputSummary": "definition \"Fixed Incremental Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 948,
+    "timestamp": "2026-09-14T18:07:44.086Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Fixed Incremental Amount",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:0b0e9396a2678108c548ce81",
+     "sourceNodeKey": "doc-a::1.01(3)(i)(b)(ii)(i)(ii)",
+     "charStart": 184409,
+     "charEnd": 185357,
+     "rawText": "“ Fixed\nIncremental Amount ” means, at any date, the sum of (a) the greater of (i) $720.0 million and (ii) an amount equal to 100% of Consolidated EBITDA on a Pro Forma Basis for the most recently completed four (4) consecutive\nfiscal quarters of the Borrowers for which financial statements have been delivered as of such date of determination, plus (b) any unused amounts under Section 6.01(b)(12)(b), plus (c) any unused amounts under the General Lien Basket\nReallocated Amount, plus (d) any unused amounts under the Available RP Capacity Amount minus (e) without duplication, the sum of the aggregate principal amount of all (i) Incremental Facilities, (ii) Incremental Equivalent Debt\nand (iii) Indebtedness incurred in reliance on Section 6.01(b)(1)(Z) or (14)(e)(2), in each case, that were incurred prior to such date of determination in reliance on the Fixed Incremental Amount (in each case, to the extent not\nsubsequently reclassified).\n",
+     "contentHash": "7e658b50461e1ed66bd26b29d4a247c955ef07d9af4c0aa737d68b5b8b72a23a",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Voluntary Prepayment Incremental Amount"
+    },
+    "outputSummary": "definition \"Voluntary Prepayment Incremental Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 1009,
+    "timestamp": "2026-09-14T18:07:44.087Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Voluntary Prepayment Incremental Amount",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:1ad2de74903958ab3bb17b7c",
+     "sourceNodeKey": "doc-a::1.01(51)(c)(b)(2)(2)(b)",
+     "charStart": 358778,
+     "charEnd": 359787,
+     "rawText": "“ Voluntary Prepayment Incremental Amount ” means the sum of the aggregate principal amount of voluntary prepayments, redemptions and\nrepurchases and debt buybacks, payments utilizing the provision of Section 2.17 or Section 2.22 and other permanent reductions of Term Loans (including any Credit Agreement Refinancing Indebtedness or Refinancing Term Loans) (in each case,\nto be calculated based on the aggregate principal amount of debt purchased and/or retired in connection with such buyback), loans under any Revolving Facility (with a corresponding permanent commitment reduction), Incremental Equivalent Debt, other\nobligations secured on a pari passu or senior basis with any Revolving Facility and Term Loans, any Incremental Equivalent Debt, and other obligations secured on a pari passu , senior or junior basis with the Term Loans, except to the\nextent funded with long-term debt (other than revolving debt or intercompany debt or proceeds of the applicable Incremental Facility being incurred).\n\n",
+     "contentHash": "e1ff042d1ff41583b6e2a996bc400bf2defb6d31cc856cdb4fe391b78583ee11",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Ratio Incremental Amount"
+    },
+    "outputSummary": "definition \"Ratio Incremental Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 2071,
+    "timestamp": "2026-09-14T18:07:44.088Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Ratio Incremental Amount",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:e7e8523e1808b04329942bd5",
+     "sourceNodeKey": "doc-a::1.01(51)(ii)(b)(a)(ii)",
+     "charStart": 302826,
+     "charEnd": 304897,
+     "rawText": "“ Ratio Incremental Amount ” means, at any date, an aggregate principal amount that, after giving to the issuance,\nincurrence or assumption, thereof on a Pro Forma Basis, in accordance with Section 1.08 , so long as:\n\n(a)\nwith respect to any Indebtedness that is secured by all or a material portion of the Collateral on a pari\npassu basis with the Secured Obligations, on a Pro Forma Basis the First Lien Leverage Ratio for the applicable Test Period does not exceed the greater of (1) 2.00:1.00 or (2) the First Lien Leverage Ratio immediately prior to such\nissuance, incurrence or assumption of such Indebtedness;\n\n(b)\nwith respect to any Indebtedness that is secured by all or a material portion of the Collateral on a Junior\nLien Priority basis, on a Pro Forma Basis, at the Initial Borrower’s sole discretion, either (1) the Senior Secured Leverage Ratio for the applicable Test Period does not exceed the greater of (x) 3.00:1.00 and (y) the Senior Secured\nLeverage Ratio immediately prior to such issuance, incurrence or assumption of such Indebtedness or (2) the Interest Coverage Ratio is greater than or equal to the lesser of (x) 1.75:1.00 for the applicable Test Period and (y) the Interest\nCoverage Ratio immediately prior to such issuance, incurrence or assumption of such Indebtedness; and\n\n(c)\nwith respect to any Indebtedness that is unsecured, secured by Liens on assets not constituting all or a\nmaterial portion of the Collateral or secured by Liens on the Collateral that rank on a junior priority basis to any second lien priority Indebtedness, on a Pro Forma Basis, at the Initial Borrower’s sole discretion, either (1) the Total\nLeverage Ratio for the applicable Test Period does not exceed the greater of (x) 4.00:1.00 and (y) the Total Leverage Ratio immediately prior to such issuance, incurrence or assumption of such Indebtedness or (2) the Interest Coverage\nRatio is greater than or equal to the lesser of (x) 1.75:1.00 and (y) the Interest Coverage Ratio immediately prior to such issuance, incurrence or assumption of such Indebtedness.\n\n",
+     "contentHash": "4079602d0e88ca08d89ec1a9028e882c2f408aede4ddec09370569cdb5aa66b5",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Extension Amount"
+    },
+    "outputSummary": "definition \"Extension Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 601,
+    "timestamp": "2026-09-14T18:07:44.088Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Extension Amount",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:0b0e9396a2678108c548ce81",
+     "sourceNodeKey": "doc-a::1.01(3)(i)(b)(ii)(i)(ii)",
+     "charStart": 179541,
+     "charEnd": 180142,
+     "rawText": "“ Extension Amount ” means (a) in the case of an Incremental Facility that serves to effectively extend the maturity of the Term Loans\nand/or any other Incremental Facility, an amount equal to the portion of the Term Facility and/or other Incremental Facility, as applicable, to be replaced with such Incremental Facility or (b) in the case of an Incremental Facility that\neffectively replaces any commitment or loan under any Facility terminated under any Permitted Amendment or otherwise the provisions of Section 2.17, an amount equal to the portion of the relevant terminated commitment or loan.\n\n",
+     "contentHash": "59b41182eb40ce2eca054befbd90893086c632f0a09b578e98727694ab660d28",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.18(a)"
+    },
+    "outputSummary": "resolved reference \"Section 2.18(a)\" -> 2.18(a) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 394,
+    "timestamp": "2026-09-14T18:08:13.516Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 2.18(a)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:4503a112882309a77707892c",
+     "sourceNodeKey": "doc-a::2.18(a)",
+     "charStart": 496943,
+     "charEnd": 497337,
+     "rawText": "(a) Notice . At any time and from time to time after the Effective Date, subject to the terms and\nconditions set forth herein, the Borrowers or any Loan Party (any such entity or entities, the “ Incremental Borrower ”), may, by notice from the Initial Borrower to the Administrative Agent (which the Administrative Agent shall\npromptly make available to each of the Lenders), request to effect ",
+     "contentHash": "f7d1359cca958cfb0c811a911cd5dc4f85908e51a830df5843e1374824317907",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 6.02"
+    },
+    "outputSummary": "resolved reference \"Section 6.02\" -> 6.02 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 302,
+    "timestamp": "2026-09-14T18:08:13.517Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 6.02",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:b193e84f2ca3958d26a0ba49",
+     "sourceNodeKey": "doc-a::6.02",
+     "charStart": 642524,
+     "charEnd": 642826,
+     "rawText": "Section 6.02 Limitation on Liens . The Borrowers shall not,\nand shall not permit any Restricted Subsidiary to create, incur or assume any Lien (except Permitted Liens) (each, an “ Initial Lien ”) that secures obligations under any Indebtedness, on any asset or property of any Restricted\nParty unless:\n",
+     "contentHash": "158179bff35d61b014f39d7e9ecb30b35fe382874e8ceebf882f62eea1e183d3",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 1.08(f)"
+    },
+    "outputSummary": "resolved reference \"Section 1.08(f)\" -> 1.08(f) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 4,
+    "timestamp": "2026-09-14T18:08:13.517Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 1.08(f)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:4769fe34429021eab497c82b",
+     "sourceNodeKey": "doc-a::1.08(f)",
+     "charStart": 387511,
+     "charEnd": 387515,
+     "rawText": "(f) ",
+     "contentHash": "c7f988d52e41c01caf912edd76d65f130e3ffb2c672f13e89544c625e3763877",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.18(b)"
+    },
+    "outputSummary": "resolved reference \"Section 2.18(b)\" -> 2.18(b) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 572,
+    "timestamp": "2026-09-14T18:08:28.879Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 2.18(b)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:51027aabe1097d4d0fe14dc4",
+     "sourceNodeKey": "doc-a::2.18(b)",
+     "charStart": 498027,
+     "charEnd": 498599,
+     "rawText": "(b) Conditions . The availability of an\nIncremental Facility under this Agreement will be subject only to the following condition: subject, for the avoidance of doubt, to Section 1.08, measured on the date of the initial borrowing under (or receipt of commitments with respect to)\nsuch Incremental Facility, no Event of Default shall have occurred and be continuing (except in connection with a Permitted Acquisition or any other Investment not prohibited by the terms of this Agreement, which shall be subject to no Specified\nEvent of Default) or shall result therefrom.\n",
+     "contentHash": "f43051f888cb4729023291925ca0648b80a9ea98c14562f6201dd6f581a3ac10",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.01(b)"
+    },
+    "outputSummary": "refused: tool-call budget exhausted (8 calls already used this attempt) - no further evidence requests will be served; compile with what you have or mark the affected component MISSING_CONTEXT",
+    "charsReturned": 0,
+    "timestamp": "2026-09-14T18:08:28.879Z"
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.12(a)(ii)"
+    },
+    "outputSummary": "refused: tool-call budget exhausted (8 calls already used this attempt) - no further evidence requests will be served; compile with what you have or mark the affected component MISSING_CONTEXT",
+    "charsReturned": 0,
+    "timestamp": "2026-09-14T18:08:28.879Z"
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 9.03(b)"
+    },
+    "outputSummary": "refused: tool-call budget exhausted (8 calls already used this attempt) - no further evidence requests will be served; compile with what you have or mark the affected component MISSING_CONTEXT",
+    "charsReturned": 0,
+    "timestamp": "2026-09-14T18:08:28.879Z"
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 9.12(a)"
+    },
+    "outputSummary": "refused: tool-call budget exhausted (8 calls already used this attempt) - no further evidence requests will be served; compile with what you have or mark the affected component MISSING_CONTEXT",
+    "charsReturned": 0,
+    "timestamp": "2026-09-14T18:08:28.879Z"
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.18(e)(i)"
+    },
+    "outputSummary": "refused: tool-call budget exhausted (8 calls already used this attempt) - no further evidence requests will be served; compile with what you have or mark the affected component MISSING_CONTEXT",
+    "charsReturned": 0,
+    "timestamp": "2026-09-14T18:08:28.879Z"
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "rules": [],
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "Immediate Family Members",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully descriptive, closed-list definition; no computation or cross-reference required."
+     ],
+     "citation": "§1.01",
+     "excerpt": "such individual's child, stepchild, grandchild or more remote linear descendant, parent, stepparent, grandparent, spouse, former spouse, widows, widowers, estates, qualified domestic partner, sibling, mother-in-law, father-in-law, son-in-law, daughter-in-law ... and any trust, partnership or other bona fide estate-planning vehicle the only beneficiaries of which are any of the foregoing ...",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d2",
+     "termName": "Impacted Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Term whose entire meaning is deferred to Section 2.12(a)(ii)",
+      "reason": "Section 2.12(a)(ii) was out of scope (source-context budget exhausted) and could not be retrieved via getReferencedProvision (tool-call budget exhausted before this reference could be attempted)",
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 2.12(a)(ii)\""
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Meaning is wholly deferred to Section 2.12(a)(ii), which could not be retrieved within tool/context budget."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 2.12(a)(ii).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d3",
+     "termName": "Increased Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Term whose entire meaning is deferred to Section 6.02",
+      "reason": "getReferencedProvision('Section 6.02') was attempted and returned only the Section 6.02 lead-in (Limitation on Liens chapeau, defining 'Initial Lien'), not the specific 'Increased Amount' definition, which evidently sits in a sub-clause not retrieved before tool budget was exhausted",
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 6.02\""
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Attempted retrieval of Section 6.02 did not surface the specific 'Increased Amount' text; tool budget exhausted before a more targeted sub-clause could be fetched."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 6.02.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d4",
+     "termName": "Incremental Borrower",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Loan Party",
+      "Initial Borrower",
+      "Administrative Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Retrieved and confirmed via getReferencedProvision(Section 2.18(a)): the entity or entities (Borrowers or any Loan Party) that may request an Incremental Facility."
+     ],
+     "citation": "§1.01; §2.18(a)",
+     "excerpt": "the Borrowers or any Loan Party (any such entity or entities, the \"Incremental Borrower\"), may, by notice from the Initial Borrower to the Administrative Agent ..., request to effect [an Incremental Facility]",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d5",
+     "termName": "Incremental Cap",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUM",
+      "operands": [
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "termName": "Fixed Incremental Amount",
+        "citation": "§1.01(Incremental Cap)(a)"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "termName": "Voluntary Prepayment Incremental Amount",
+        "citation": "§1.01(Incremental Cap)(b)"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "termName": "Ratio Incremental Amount",
+        "citation": "§1.01(Incremental Cap)(c)"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "termName": "Extension Amount",
+        "citation": "§1.01(Incremental Cap)(d)"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Fixed Incremental Amount",
+      "Voluntary Prepayment Incremental Amount",
+      "Ratio Incremental Amount",
+      "Extension Amount"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The section's own text is a straightforward four-part additive formula; each component term was confirmed to exist and be independently defined elsewhere in the document via getDefinition, so the SUM structure is faithfully represented as references (their own internal, non-static formulas are outside the scope of this definition's text and are not restated here)."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Incremental Cap\" means, as of any date of determination: (a) the Fixed Incremental Amount; plus (b) the Voluntary Prepayment Incremental Amount; plus (c) the Ratio Incremental Amount; plus (d) the Extension Amount.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d6",
+     "termName": "Incremental Equivalent Debt",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Categorical/proviso-based eligibility definition: Indebtedness of a Restricted Party consisting of secured/unsecured bonds, notes, debentures or loans, conditioned on (a) compliance with the Section 2.18(b) Incremental Loan condition (no continuing Event of Default, subject to Section 1.08, with a carve-out for Permitted Acquisitions/Investments limited to no Specified Event of Default), (b) aggregate par principal amount not exceeding the Incremental Cap, (c) pricing/terms set by Initial Borrower or applicable lenders, and (d) security/intercreditor limitations tied to an Intercreditor Agreement",
+      "reason": "this is a multi-part eligibility/proviso definition, not a computable value; condition (d) depends on 'the relevant Intercreditor Agreement(s)', a document type confirmed absent from this package (REFERENCED_DOCUMENT_ABSENT), and condition (b) depends on Incremental Cap, itself a sum of amounts not resolvable to a static figure",
+      "sourceEvidence": "§1.01 (Incremental Equivalent Debt); §2.18(b): \"no Event of Default shall have occurred and be continuing ... or shall result therefrom\""
+     },
+     "dependsOnTerms": [
+      "Indebtedness",
+      "Restricted Party",
+      "Incremental Loan",
+      "Incremental Cap",
+      "Loan Party",
+      "Secured Obligations",
+      "Intercreditor Agreement",
+      "Initial Borrower"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Condition (a) resolved via Section 2.18(b); condition (d) depends on an Intercreditor Agreement document absent from the package; condition (b)'s Incremental Cap is itself a non-static aggregate."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means Indebtedness of any Restricted Party consisting of secured or unsecured bonds, notes, debentures, or loans; provided that: (a) the condition set forth in Section 2.18(b) shall have been complied with...; (b) ... does not exceed that amount which may be incurred within the Incremental Cap; (c) ...; and (d) ... is subject to the relevant Intercreditor Agreement(s).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d7",
+     "termName": "Incremental Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Incremental Revolving Facility",
+      "Incremental Term Facility"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple disjunctive definition fully stated in the source text."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means each and any Incremental Revolving Facility and Incremental Term Facility.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d8",
+     "termName": "Incremental Facility Amendment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Term whose entire meaning is deferred to Section 2.18(e)(i)",
+      "reason": "Section 2.18(e)(i) was out of scope for the source-context bundle and the getReferencedProvision attempt for it failed because the tool-call budget was exhausted",
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 2.18(e)(i)\""
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Meaning wholly deferred to Section 2.18(e)(i), unresolved after budget exhaustion."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 2.18(e)(i).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d9",
+     "termName": "Incremental Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Incremental Term Loan",
+      "Incremental Revolving Facility",
+      "Incremental Revolving Increase"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple disjunctive definition fully stated in the source text."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means Incremental Term Loans and Loans under any Incremental Revolving Facility or Incremental Revolving Increase.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d10",
+     "termName": "Incremental Revolving Commitment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Incremental Revolving Facility"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully stated, self-contained definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means a commitment in respect of an Incremental Revolving Facility.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d11",
+     "termName": "Incremental Revolving Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Core meaning deferred to Section 2.18(a) (not captured in the truncated excerpt retrieved), plus an additional stated scope: 'together with any Incremental Revolving Increase thereof, and the extensions of credit thereunder'",
+      "reason": "getReferencedProvision(Section 2.18(a)) returned only the general Notice/eligibility lead-in text and was truncated before reaching the specific clause defining 'Incremental Revolving Facility'",
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 2.18(a), together with any Incremental Revolving Increase thereof, and the extensions of credit thereunder.\""
+     },
+     "dependsOnTerms": [
+      "Incremental Revolving Increase"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The additive scope ('together with...extensions of credit thereunder') is captured, but the core meaning deferred to Section 2.18(a) was not reached in the retrieved (truncated) excerpt."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 2.18(a), together with any Incremental Revolving Increase thereof, and the extensions of credit thereunder.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d12",
+     "termName": "Incremental Revolving Increase",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Term whose entire meaning is deferred to Section 2.18(a)",
+      "reason": "the retrieved Section 2.18(a) excerpt was truncated before reaching the clause that would define this specific term",
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 2.18(a).\""
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Meaning wholly deferred to a portion of Section 2.18(a) not reached by the retrieved excerpt."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 2.18(a).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d13",
+     "termName": "Incremental Revolving Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Incremental Revolving Facility",
+      "Incremental Revolving Increase"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple disjunctive definition fully stated in the source text."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means Loans under any Incremental Revolving Facility or Incremental Revolving Increase.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d14",
+     "termName": "Incremental Term Commitment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Incremental Term Loan"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully stated, self-contained definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means a commitment in respect of Incremental Term Loans.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d15",
+     "termName": "Incremental Term Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Incremental Term Commitment",
+      "Incremental Term Loan",
+      "Incremental Facility Amendment"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully stated definition; dependent terms not needed to represent this term's own stated scope faithfully."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means each and any facility comprised of Incremental Term Commitments and related Incremental Term Loans created pursuant to an Incremental Facility Amendment, together with any refinancing thereof.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d16",
+     "termName": "Incremental Term Loan",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Term whose entire meaning is deferred to Section 2.18(a)",
+      "reason": "the retrieved Section 2.18(a) excerpt was truncated before reaching the clause that would define this specific term",
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 2.18(a).\""
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Meaning wholly deferred to a portion of Section 2.18(a) not reached by the retrieved excerpt."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 2.18(a).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d17",
+     "termName": "Incurrence-Based Amounts",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Term whose entire meaning is deferred to Section 1.08(f)",
+      "reason": "getReferencedProvision(Section 1.08(f)) was attempted and returned only an empty/placeholder clause label '(f)' with no substantive text",
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 1.08(f).\""
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Retrieval of Section 1.08(f) yielded no substantive content."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 1.08(f).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d18",
+     "termName": "Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Categorical inclusion/exclusion test for what constitutes 'Indebtedness' of a Person: (a) borrowed-money-type obligations (bonds/notes/debentures, LC/BA reimbursement, Capitalized Lease Obligations, deferred purchase price) subject to trade-payable/Swap Obligation exclusions and a 30-day earn-out cure rule, (b) guarantees of clause (a)-type obligations, (c) Lien-secured obligations of others (capped at the lesser of FMV, secured amount, or lien-agreement amount) - further subject to enumerated carve-outs (A)-(F) including a 60-day asset-retirement/pension cure rule, an intercompany 364-day short-term debt exclusion, and a Qualified Restricted Subsidiary recourse-only limitation",
+      "reason": "this is a multi-branch categorical/eligibility definition (what counts as debt), not a computable arithmetic formula; several dependent defined terms used within it (Capitalized Lease Obligations, Swap Obligations, Unrestricted Subsidiary, Parent Entity, Qualified Restricted Subsidiary, Ordinary Course Non-Recourse Third Party Financing Transactions) were not resolved within tool/context budget",
+      "sourceEvidence": "§1.01 (Indebtedness), clauses (a)-(c) and provisos (A)-(F)"
+     },
+     "dependsOnTerms": [
+      "Capitalized Lease Obligations",
+      "Swap Obligations",
+      "Unrestricted Subsidiary",
+      "Parent Entity",
+      "Qualified Restricted Subsidiary",
+      "Ordinary Course Non-Recourse Third Party Financing Transactions",
+      "GAAP"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Core inclusion/exclusion structure and all stated day-count thresholds (30/60/364 days) are captured in the excerpt and consumed via inventory item references.",
+      "Several dependent defined terms integral to the exclusions (e.g., 'Ordinary Course Non-Recourse Third Party Financing Transactions', 'Qualified Restricted Subsidiary') were not resolved within the available tool/context budget."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, with respect to any Person, without duplication: (a) any indebtedness ... except (i) trade payables ... or (ii) any earn-out obligations until, after thirty (30) days of becoming due and payable, has not been paid ...; (b) guarantee obligations ...; (c) obligations of another Person secured by a Lien ...; provided that Indebtedness will be deemed not to include: (A)-(F) ... asset retirement obligations and other pension related obligations ... that are not overdue by more than sixty (60) days ...; ... intercompany loans, advances or other Indebtedness having a term not exceeding three hundred sixty-four (364) days ...",
+     "inventoryItemIds": [
+      "inv-item:40586a6671306826e608f73d",
+      "inv-item:c01880c80f5b6269542aae3f",
+      "inv-item:0ae4b1ab0b1d99bdd8194472"
+     ]
+    },
+    {
+     "localRef": "d19",
+     "termName": "Indemnified Taxes",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "All Taxes other than Excluded Taxes, imposed on payments under any Loan Document obligation of a Loan Party",
+      "reason": "the entire substantive scope of this definition turns on the undefined (in the supplied excerpt) term 'Excluded Taxes', which materially narrows what counts as 'Indemnified Taxes'; not resolvable within tool/context budget",
+      "sourceEvidence": "§1.01: \"means all Taxes, other than Excluded Taxes, imposed on or with respect to any payment made by or on account of any obligation of any Loan Party under any Loan Document.\""
+     },
+     "dependsOnTerms": [
+      "Taxes",
+      "Excluded Taxes",
+      "Loan Party",
+      "Loan Document"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "'Excluded Taxes' (the sole exclusion) is not defined in the supplied source and was not independently resolved."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means all Taxes, other than Excluded Taxes, imposed on or with respect to any payment made by or on account of any obligation of any Loan Party under any Loan Document.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d20",
+     "termName": "Indemnitee",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Term whose entire meaning is deferred to Section 9.03(b)",
+      "reason": "getReferencedProvision(Section 9.03(b)) could not be attempted because the tool-call budget was exhausted",
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 9.03(b).\""
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Meaning wholly deferred to Section 9.03(b), unresolved due to tool-budget exhaustion."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.03(b).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d21",
+     "termName": "Independent Financial Advisor",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Initial Borrower"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully stated, self-contained qualitative definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means an accounting, appraisal, investment banking firm or consultant of nationally recognized standing that is, in the good faith judgment of the Initial Borrower, qualified to perform the task for which it has been engaged.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d22",
+     "termName": "Information",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Term whose entire meaning is deferred to Section 9.12(a)",
+      "reason": "getReferencedProvision(Section 9.12(a)) could not be attempted because the tool-call budget was exhausted",
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in Section 9.12(a).\""
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Meaning wholly deferred to Section 9.12(a), unresolved due to tool-budget exhaustion."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.12(a).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d23",
+     "termName": "Initial Borrower",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Core meaning deferred to the Agreement's preamble (not part of the supplied source), plus a resignation proviso keeping Chewy, Inc. as 'Initial Borrower' for specified purposes even after resignation under Section 2.28",
+      "reason": "the preamble text is outside the supplied source, and the proviso's Article cross-references (Article III/IV/V/VI/VII/IX) are each reported ambiguous (multiple same-numbered Articles exist) and were not resolved",
+      "sourceEvidence": "§1.01: \"has the meaning assigned to such term in the preamble hereto; provided that, to the extent the Initial Borrower resigns as a Borrower in accordance with Section 2.28, Chewy, Inc. shall remain the Initial Borrower for purposes of Section 2.26 ..., Section 2.29, Article III, Article IV, Article V, Article VI, Article VII and Article IX.\""
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Preamble (core definition) not in supplied source; multiple Article cross-references are ambiguous per context report and unresolved."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the preamble hereto; provided that ... Chewy, Inc. shall remain the Initial Borrower for purposes of Section 2.26 ..., Section 2.29, Article III, Article IV, Article V, Article VI, Article VII and Article IX.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d24",
+     "termName": "Initial Lien",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Permitted Liens",
+      "Indebtedness",
+      "Restricted Party"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Retrieved and confirmed via getReferencedProvision(Section 6.02): a Lien (except Permitted Liens) securing Indebtedness on a Restricted Party's asset/property."
+     ],
+     "citation": "§1.01; §6.02",
+     "excerpt": "any Lien (except Permitted Liens) (each, an \"Initial Lien\") that secures obligations under any Indebtedness, on any asset or property of any Restricted Party",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d25",
+     "termName": "Initial Term Commitment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MONEY",
+      "amount": 600000000,
+      "currency": "USD",
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Term Lender",
+      "Initial Term Loan",
+      "Effective Date",
+      "Assignment and Assumption"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Stated total commitment amount is explicit and unambiguous as of the Effective Date."
+     ],
+     "citation": "§1.01",
+     "excerpt": "As of the Effective Date, the total Initial Term Commitment is $600.0 million.",
+     "inventoryItemIds": [
+      "inv-item:8cfa44ae06b19e4ccb8d9436"
+     ]
+    },
+    {
+     "localRef": "d26",
+     "termName": "Initial Term Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Initial Term Commitment",
+      "Initial Term Loans"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully stated, self-contained definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means the facility comprised of the Initial Term Commitments and the Initial Term Loans, together with any refinancing thereof.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d27",
+     "termName": "Initial Term Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Loans"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The definition itself (not a deferred 'has the meaning assigned' construction) is fully and self-sufficiently stated as 'Loans made pursuant to Section 2.01(b)'; the mechanics of Section 2.01(b) are not needed to represent this term's own stated scope."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means Loans made pursuant to Section 2.01(b).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d28",
+     "termName": "Initial Term Maturity Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DATE_LITERAL",
+      "isoDate": "2033-06-23",
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Effective Date"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Explicit date stated directly in the text, corroborated as the seventh anniversary of the Effective Date (June 23, 2026, per §1.01 definition of Effective Date)."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means June 23, 2033, the seventh (7th) anniversary of the Effective Date.",
+     "inventoryItemIds": [
+      "inv-item:5f20e4b9abfc727cbdc7d913"
+     ]
+    }
+   ],
+   "sharedCapacities": [],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01 'Indebtedness' definition (clauses (a)-(c) plus provisos (A)-(F)) and similar multi-branch categorical definitions",
+     "semanticRequirement": "A way to represent a term defined as a categorical inclusion/exclusion test over obligation TYPES (e.g., 'counts as Indebtedness unless it falls within excluded category X, Y, or Z, each with its own qualifying sub-conditions like day-count cure periods'), as distinct from a numeric formula or a boolean gating test on a metric.",
+     "whyExistingPrimitivesFail": "AND/OR/NOT/COMPARE operate on boolean truth values of stated propositions about known inputs, and ADD/SUBTRACT/MAX/MIN operate on numeric amounts; neither cleanly models 'is this specific obligation a member of the defined category Indebtedness', which is a classification/set-membership determination over unenumerated real-world facts rather than a value computation.",
+     "candidateGeneralizedPrimitive": "A CATEGORY_DEFINITION or SET_MEMBERSHIP_TEST node with an inclusion list and an exclusion list of qualitative sub-rules (each itself an expression), used purely for classification definitions rather than value/boolean computation."
+    }
+   ],
+   "inventoryDispositions": [],
+   "overallNotes": [
+    "Source text is a contiguous slice of the Section 1.01 Defined Terms alphabetical list (Immediate Family Members through Initial Term Maturity Date); 27 distinct defined terms were identified and each was emitted as an independent WireDefinition per the multiple-definitions extraction requirement.",
+    "No independently operative WireRule (permission/prohibition) exists within this slice - Section 1.01 is purely definitional; the substantive Incremental Facility permission mechanics live in Section 2.18 and Article VI baskets, which are out of scope of this submission and are only referenced via dependsOnTerms/citations.",
+    "Of the many 'has the meaning assigned to such term in Section X' cross-references, several were successfully resolved this pass (Incremental Borrower via §2.18(a); Initial Lien via §6.02; the Incremental Equivalent Debt condition via §2.18(b)) before the tool-call budget (8 calls) was exhausted; the remainder are marked MISSING_CONTEXT/PARTIAL with the specific unresolved reference cited, per the retrieval-before-giving-up requirement.",
+    "The two deterministically-detected day-count values ('sixty (60) days' and the '(364)' portion of 'three hundred sixty-four (364) days') outside the frozen inventory are the same magnitudes already captured by inventory items inv-item:c01880c80f5b6269542aae3f and inv-item:0ae4b1ab0b1d99bdd8194472 respectively (consumed on the 'Indebtedness' definition) - no separate action was needed.",
+    "All 5 CRITICAL/MATERIAL frozen-inventory items were consumed: inv-item:8cfa44ae06b19e4ccb8d9436 and inv-item:5f20e4b9abfc727cbdc7d913 on 'Initial Term Commitment' and 'Initial Term Maturity Date' respectively (both carrying the literal values directly), and the three EXCEPTION items (earn-out 30-day cure, asset-retirement/pension 60-day cure, intercompany 364-day short-term exclusion) on the 'Indebtedness' definition, whose categorical (non-formulaic) nature is reflected in its PARTIAL sufficiency and UNSUPPORTED calculationExpression wrapper."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T18:12:33.813Z",
+   "inputTokens": 131180,
+   "outputTokens": 35491,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 4,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 319730,
+   "calculatedCostUsd": 0.61727
+  },
+  "cacheKey": "3c1db4344ae3bd955b0365a81050886356d1f9d24df21d793114f1ea84c1d397",
+  "compiledAt": "2026-09-14T18:12:33.813Z"
+ },
+ "wave": "B",
+ "attemptsSoFar": 1
+}
