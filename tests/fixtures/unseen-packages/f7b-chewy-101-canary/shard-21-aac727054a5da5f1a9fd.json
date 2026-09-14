@@ -1,0 +1,267 @@
+{
+ "record": {
+  "stage": 1,
+  "attempt": 1,
+  "shardId": "shard:aac727054a5da5f1a9fd",
+  "shardHash": "9943af75025bd8550567628dd359394b6aba3cbadb767a1f228a30638fef3078",
+  "ordinal": 21,
+  "ownedUnits": 16,
+  "sourceChars": 7577,
+  "contextEntries": 1,
+  "contextChars": 225,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 0,
+  "ownedMaterialItems": 0,
+  "estimatedFirstTurnInputTokens": 22825,
+  "preCallEstimate": {
+   "inputTokens": 75095,
+   "outputTokens": 41500,
+   "usd": 0.5651900000000001
+  },
+  "actual": {
+   "inputTokens": 77736,
+   "outputTokens": 15323,
+   "turns": 3,
+   "latencyMs": 134665,
+   "costUsd": 0.308702,
+   "attemptCount": 3,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "FAILED",
+  "shardStatus": "SHARD_SCHEMA_FAILURE",
+  "failureReasons": [
+   "MODEL_SCHEMA_FAILURE"
+  ],
+  "toolCalls": 6,
+  "toolCallNames": [
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getDefinition",
+   "getChildren",
+   "getChildren"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 0,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 0,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "valuesRepresented": 0,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {}
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [],
+  "unresolvedIssues": [
+   "submit_compilation input failed schema validation: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"definitions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"sharedCapacities\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"irExtensionCandidates\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"inventoryDispositions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"overallNotes\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  }\n]"
+  ],
+  "errorSummary": null
+ },
+ "result": {
+  "shardId": "shard:aac727054a5da5f1a9fd",
+  "shardHash": "9943af75025bd8550567628dd359394b6aba3cbadb767a1f228a30638fef3078",
+  "status": "SHARD_SCHEMA_FAILURE",
+  "composition": null,
+  "failureReasons": [
+   "MODEL_SCHEMA_FAILURE"
+  ],
+  "unresolvedIssues": [
+   "submit_compilation input failed schema validation: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"definitions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"sharedCapacities\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"irExtensionCandidates\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"inventoryDispositions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"overallNotes\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  }\n]"
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 77736,
+   "outputTokens": 15323,
+   "costUsd": 0.308702
+  }
+ },
+ "compile": {
+  "status": "FAILED",
+  "failureReasons": [
+   "MODEL_SCHEMA_FAILURE"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [],
+  "unresolvedIssues": [
+   "submit_compilation input failed schema validation: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"definitions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"sharedCapacities\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"irExtensionCandidates\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"inventoryDispositions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"overallNotes\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  }\n]"
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 1.08(a)"
+    },
+    "outputSummary": "resolved reference \"Section 1.08(a)\" -> 1.08(a) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 122,
+    "timestamp": "2026-09-14T12:48:50.968Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 1.08(a)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:f4fd3aa398dc5785e7bcd803",
+     "sourceNodeKey": "doc-a::1.08(a)",
+     "charStart": 376455,
+     "charEnd": 376577,
+     "rawText": "(a) In connection with any action being taken solely in connection with a Limited\nCondition Transaction, for purposes of:\n",
+     "contentHash": "1ba253775d753e70724444c8b6418a6826fe01b7de828a64b7a5351c59fb6980",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.22(a)"
+    },
+    "outputSummary": "resolved reference \"Section 2.22(a)\" -> 2.22(a) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 426,
+    "timestamp": "2026-09-14T12:48:50.968Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 2.22(a)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:cc10186afdb2005fbee7eb69",
+     "sourceNodeKey": "doc-a::2.22(a)",
+     "charStart": 523164,
+     "charEnd": 523590,
+     "rawText": "(a) At any time after the Effective Date, the Initial Borrower may on one or more occasions, by written notice to the Administrative Agent,\nmake one or more offers (each, a “ Loan Modification Offer ”) to all the Lenders of one or more Classes (each Class subject to such a Loan Modification Offer, an “ Affected Class ”) to effect one or more\nPermitted Amendments relating to such Affected Class. Such notice shall set forth ",
+     "contentHash": "39e2e4c91107a3d15eb58f6be8e1c3e4e54f8a9054df6ecc3b2b57f97999ea11",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.12(b)"
+    },
+    "outputSummary": "resolved reference \"Section 2.12(b)\" -> 2.12(b) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 797,
+    "timestamp": "2026-09-14T12:48:50.968Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 2.12(b)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:660bb093c5247f58fdb560b0",
+     "sourceNodeKey": "doc-a::2.12(b)",
+     "charStart": 455315,
+     "charEnd": 456112,
+     "rawText": "(b) Notwithstanding the foregoing, if the Administrative Agent or the Initial Borrower reasonably determines in good faith,\nwith consent by the other not to be unreasonably withheld, that the circumstances described in clause (a)(i) of this Section 2.12 have arisen (other than with respect to the Term SOFR Rate or Term CORRA) (and such circumstances are unlikely to\nbe temporary), then, in each case, reasonably promptly after such determination or receipt by the Administrative Agent of such notice, the Administrative Agent and the Borrowers may amend this Agreement solely for the purpose of replacing the\nAlternative Currency Term Benchmark Rate with an alternate benchmark rate (including any mathematical or other adjustments to the benchmark (if any) incorporated therein) that is either ",
+     "contentHash": "9537508943b801118622b0c3d84f164d7fa1d179607028ebf9f6fe60d55a725a",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Swap Agreement"
+    },
+    "outputSummary": "definition \"Swap Agreement\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 1305,
+    "timestamp": "2026-09-14T12:48:50.968Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Swap Agreement",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:cd324d3e7484f2374b985be6",
+     "sourceNodeKey": "doc-a::1.01(51)(c)(a)(4)(b)(b)",
+     "charStart": 342235,
+     "charEnd": 343540,
+     "rawText": "“ Swap Agreement ” means (a) any and all rate swap transactions, basis swaps, credit derivative\ntransactions, forward rate transactions, commodity swaps, commodity options, forward commodity contracts, equity or equity index swaps or options, bond or bond price or bond index swaps or options or forward bond or forward bond price or forward\nbond index transactions, interest rate options, forward foreign exchange transactions, cap transactions, floor transactions, collar transactions, currency swap transactions, cross-currency rate swap transactions, currency options, spot contracts, or\nany other similar transactions or any combination of any of the foregoing (including any options to enter into any of the foregoing), whether or not any such transaction is governed by or subject to any master agreement, and (b) any and all\ntransactions of any kind, and the related confirmations, which are subject to the terms and conditions of, or governed by, any form of master agreement published by the International Swaps and Derivatives Association, Inc., any International Foreign\nExchange Master Agreement, or any other master agreement (any such master agreement, together with any related schedules, a “ Master Agreement ”), including any such obligations or liabilities under any Master Agreement.\n\n",
+     "contentHash": "6d94bde89e29eceb1e32aa6daddc84f21ad429b20eac5665534fb17b7a78d797",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getChildren",
+    "input": {
+     "nodeId": "structural-node:f4fd3aa398dc5785e7bcd803"
+    },
+    "outputSummary": "3 child clause(s) of 1.08(a) (parent UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 65,
+    "timestamp": "2026-09-14T12:49:02.548Z",
+    "evidenceUnresolved": true
+   },
+   {
+    "toolName": "getChildren",
+    "input": {
+     "nodeId": "structural-node:660bb093c5247f58fdb560b0"
+    },
+    "outputSummary": "2 child clause(s) of 2.12(b) (parent UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 65,
+    "timestamp": "2026-09-14T12:49:02.548Z",
+    "evidenceUnresolved": true
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": "[\n{\n  \"localRef\": \"d1\",\n  \"termName\": \"Junior Lien Intercreditor Agreement\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Collateral Agent\",\"Senior Representatives\",\"Secured Obligations\",\"Collateral\"],\n  \"sufficiency\": \"PARTIAL\",\n  \"sufficiencyReasons\": [\n    \"Definition text itself is fully quoted and non-computational, but it incorporates by reference the form of Exhibit E-3, which does not exist as a structural node in this package (known MISSING_SCHEDULE dependency).\",\n    \"No document of type INTERCREDITOR_AGREEMENT exists in the package (known REFERENCED_DOCUMENT_ABSENT dependency), so the actual substantive terms of any such agreement cannot be verified.\"\n  ],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"Junior Lien Intercreditor Agreement\\\" means an Intercreditor Agreement, substantially in the form of Exhibit E-3, among the Collateral Agent and the Senior Representatives for one or more classes of obligations to be secured junior relative to the Liens on the Collateral securing the Secured Obligations.\"\n},\n{\n  \"localRef\": \"d2\",\n  \"termName\": \"Latest Maturity Date\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Revolving Loan\",\"Term Loan\",\"Term Commitment\",\"Initial Term Loans\",\"Incremental Term Loan\",\"Incremental Revolving Facility\",\"Other Term Loan\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"Latest Maturity Date\\\" means, at any date of determination, the latest maturity or expiration date applicable to any Revolving Loan, Term Loan or Term Commitment hereunder at such time, including the latest maturity or expiration date of the Initial Term Loans, any Incremental Term Loan, Incremental Revolving Facility or Other Term Loan, in each case as extended in accordance with this Agreement from time to time.\"\n},\n{\n  \"localRef\": \"d3\",\n  \"termName\": \"LCT Election\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": {\n    \"kind\": \"UNSUPPORTED\",\n    \"semanticDescription\": \"Pointer definition: 'has the meaning assigned to such term in Section 1.08(a)'\",\n    \"reason\": \"Section 1.08(a) was retrieved but its own text is only the chapeau ('In connection with any action being taken solely in connection with a Limited Condition Transaction, for purposes of:') introducing sub-clauses (a)(i)-(iii); the actual substantive text defining 'LCT Election' lives inside those deeper sub-clauses, which were not part of the supplied evidence and require further drill-down beyond this section's own definitions text.\",\n    \"sourceEvidence\": \"§1.01 (\\\"LCT Election\\\" has the meaning assigned to such term in Section 1.08(a)); §1.08(a) chapeau retrieved\"\n  },\n  \"dependsOnTerms\": [\"Limited Condition Transaction\"],\n  \"sufficiency\": \"MISSING_CONTEXT\",\n  \"sufficiencyReasons\": [\"Substantive meaning defined only inside Section 1.08(a)(i)-(iii), not resolved from supplied evidence.\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"LCT Election\\\" has the meaning assigned to such term in Section 1.08(a).\"\n},\n{\n  \"localRef\": \"d4\",\n  \"termName\": \"LCT Test Date\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": {\n    \"kind\": \"UNSUPPORTED\",\n    \"semanticDescription\": \"Pointer definition: 'has the meaning assigned to such term in Section 1.08(a)'\",\n    \"reason\": \"Same gap as LCT Election - Section 1.08(a)'s retrieved text is only the chapeau; the substantive text is in its un-retrieved sub-clauses (a)(i)-(iii).\",\n    \"sourceEvidence\": \"§1.01 (\\\"LCT Test Date\\\" has the meaning assigned to such term in Section 1.08(a)); §1.08(a) chapeau retrieved\"\n  },\n  \"dependsOnTerms\": [\"Limited Condition Transaction\"],\n  \"sufficiency\": \"MISSING_CONTEXT\",\n  \"sufficiencyReasons\": [\"Substantive meaning defined only inside Section 1.08(a)(i)-(iii), not resolved from supplied evidence.\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"LCT Test Date\\\" has the meaning assigned to such term in Section 1.08(a).\"\n},\n{\n  \"localRef\": \"d5\",\n  \"termName\": \"Lead Arrangers\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"Lead Arrangers\\\" means JPMCB, Wells Fargo Securities, LLC, Citigroup Global Markets Inc., Morgan Stanley Senior Funding, Inc., BofA Securities, Inc., RBC Capital Markets, and Barclays Bank PLC.\"\n},\n{\n  \"localRef\": \"d6\",\n  \"termName\": \"Lenders\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Term Lenders\",\"Revolving Lenders\",\"Assignment and Assumption\",\"Incremental Facility Amendment\",\"Refinancing Amendment\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"Lenders\\\" means (a) the Term Lenders, (b) the Revolving Lenders and (c) any other Person that shall have become a party hereto pursuant to an Assignment and Assumption, an Incremental Facility Amendment or a Refinancing Amendment, in each case other than any such Person that ceases to be a party hereto pursuant to an Assignment and Assumption.\"\n},\n{\n  \"localRef\": \"d7\",\n  \"termName\": \"Letter of Intent Transactions\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"Letter of Intent Transactions\\\" means any prospective transaction subject to a definitive agreement or signed letter of intent, in each case, to the extent such transaction remains unclosed and the associated definitive agreement or signed letter of intent remains unterminated as of such date of determination.\"\n},\n{\n  \"localRef\": \"d8\",\n  \"termName\": \"Liabilities\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Effective Date\",\"Transactions\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"Liabilities\\\" means the recorded liabilities (including contingent liabilities that would be recorded in accordance with GAAP) of the Borrowers and their respective Subsidiaries taken as a whole, as of the Effective Date after giving effect to the consummation of the Transactions, determined in accordance with GAAP consistently applied.\"\n},\n{\n  \"localRef\": \"d9\",\n  \"termName\": \"Lien\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"Lien\\\" means, with respect to any asset, any mortgage, lien (statutory or otherwise), pledge, charge, security interest, preference, priority or encumbrance of any kind in respect of such asset... provided that in no event shall an operating lease be deemed to constitute a Lien.\"\n},\n{\n  \"localRef\": \"d10\",\n  \"termName\": \"Limited Condition Transaction\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Restricted Party\",\"Division\",\"Indebtedness\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"Limited Condition Transaction\\\" shall mean the collective reference to (i) any acquisition or Investment... (ii) any prepayment, repurchase, refinancing, repayment, redemption, purchase, defeasement or other payment in respect of Indebtedness... (iii) any dividends or distributions on, or redemptions of equity...\"\n},\n{\n  \"localRef\": \"d11\",\n  \"termName\": \"Limited Originator Recourse\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Standard Securitization Undertakings\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"Limited Originator Recourse\\\" means a letter of credit, cash collateral account or other such credit enhancement issued in connection with the incurrence of Indebtedness to satisfy Standard Securitization Undertakings.\"\n},\n{\n  \"localRef\": \"d12\",\n  \"termName\": \"Loan Document Obligations\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Loans\",\"Loan Documents\",\"Loan Parties\",\"Borrowers\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"Loan Document Obligations\\\" means (a) the due and punctual payment by the Borrowers of (i) the principal of and interest... on the Loans... and (ii) all other monetary obligations of the Borrowers... (b) the due and punctual payment and performance of all other obligations of the Borrowers... and (c) the due and punctual payment and performance of all the obligations of each other Loan Party...\"\n},\n{\n  \"localRef\": \"d13\",\n  \"termName\": \"Loan Documents\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Fee Letter\",\"Incremental Facility Amendment\",\"Refinancing Amendment\",\"Loan Modification Agreement\",\"Guarantee Agreement\",\"Collateral Agreement\",\"Intercreditor Agreements\",\"Security Documents\"],\n  \"sufficiency\": \"PARTIAL\",\n  \"sufficiencyReasons\": [\n    \"The carve-out 'except for purposes of Section 9.02, any promissory notes delivered pursuant to Section 2.07(f)' references two sections not resolvable within this compilation's budget (both flagged OUT_OF_SCOPE due to source-context budget exhaustion); the scope-limiting effect of that carve-out on Section 9.02 specifically is preserved as an unresolved cross-unit dependency rather than assumed.\"\n  ],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"Loan Documents\\\" means this Agreement, the Fee Letter, any Incremental Facility Amendment, any Refinancing Amendment, any Loan Modification Agreement, the Guarantee Agreement, the Collateral Agreement, the Intercreditor Agreements, the other Security Documents and, except for purposes of Section 9.02, any promissory notes delivered pursuant to Section 2.07(f).\"\n},\n{\n  \"localRef\": \"d14\",\n  \"termName\": \"Loan Modification Agreement\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Accepting Lenders\",\"Permitted Amendments\"],\n  \"sufficiency\": \"PARTIAL\",\n  \"sufficiencyReasons\": [\"References 'such other amendments... as are contemplated by Section 2.22', which is referenced but was only partially retrievable (2.22(a) chapeau); full scope of 'contemplated by Section 2.22' not independently verified.\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"Loan Modification Agreement\\\" means a Loan Modification Agreement, among the Borrowers, the Administrative Agent and one or more Accepting Lenders, effecting one or more Permitted Amendments and such other amendments hereto and to the other Loan Documents as are contemplated by Section 2.22.\"\n},\n{\n  \"localRef\": \"d15\",\n  \"termName\": \"Loan Modification Offer\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Loan Modification Agreement\",\"Permitted Amendments\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [\"Pointer resolved via getReferencedProvision to Section 2.22(a), which itself supplies the operative substance of the term.\"],\n  \"citation\": \"§1.01; §2.22(a)\",\n  \"excerpt\": \"\\\"Loan Modification Offer\\\" has the meaning assigned to such term in Section 2.22(a). [§2.22(a): '...make one or more offers (each, a \\\"Loan Modification Offer\\\") to all the Lenders of one or more Classes... to effect one or more Permitted Amendments relating to such Affected Class.']\"\n},\n{\n  \"localRef\": \"d16\",\n  \"termName\": \"Loan Parties\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Borrowers\",\"Subsidiary Loan Parties\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"Loan Parties\\\" means Borrowers and the Subsidiary Loan Parties.\"\n},\n{\n  \"localRef\": \"d17\",\n  \"termName\": \"Loans\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Term Loans\",\"Revolving Loans\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"Loans\\\" means the Term Loans and/or the Revolving Loans, as the context may require.\"\n},\n{\n  \"localRef\": \"d18\",\n  \"termName\": \"Management Investors\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Parent Entity\",\"Investors\",\"Permitted Transferees\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"Management Investors\\\" means (a) the current and/or former directors, partners, members, officers and employees of any Parent Entity, the Borrowers and/or any of their respective Subsidiaries who are... Investors, (b) the Permitted Transferees of any of the individuals identified in clause (a), (c) trusts, partnerships or limited liability companies for the benefit of any of the individuals identified in the foregoing clause (a) or (b) and (d) heirs, executors, estates, successors and legal representatives of the individuals identified in the foregoing clauses (a) and (b).\"\n},\n{\n  \"localRef\": \"d19\",\n  \"termName\": \"Market Capitalization\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": {\n    \"kind\": \"MULTIPLY\",\n    \"operands\": [\n      {\n        \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n        \"inputName\": \"Total number of shares of common Equity Interests of a Borrower (or its Parent Entity) on a fully diluted basis immediately following consummation of the first public offering after the Effective Date\",\n        \"citation\": \"§1.01\"\n      },\n      {\n        \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n        \"inputName\": \"Price to public per share of common equity or common stock in such public offering\",\n        \"citation\": \"§1.01\"\n      }\n    ],\n    \"citation\": \"§1.01\"\n  },\n  \"dependsOnTerms\": [\"Equity Interests\",\"Parent Entity\",\"Effective Date\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"Market Capitalization\\\" means an amount equal to (i) the total number of shares of common Equity Interests of a Borrower (or its Parent Entity) on a fully diluted basis immediately following consummation of the first public offering of common equity or common stock of a Borrower (or any Parent Entity) after the Effective Date multiplied by (ii) the price to public per share of such common equity or common stock in such public offering.\"\n},\n{\n  \"localRef\": \"d20\",\n  \"termName\": \"Market Convention Rate\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": {\n    \"kind\": \"UNSUPPORTED\",\n    \"semanticDescription\": \"Pointer definition: 'has the meaning assigned to such term in Section 2.12(b)'\",\n    \"reason\": \"Section 2.12(b) was retrieved but its text (dealing with benchmark replacement mechanics) is truncated mid-sentence ('...an alternate benchmark rate ... that is either ') before reaching the point that actually defines 'Market Convention Rate'; the substantive definition sits in unretrieved sub-clauses 2.12(b)(i)/(ii).\",\n    \"sourceEvidence\": \"§1.01 (\\\"Market Convention Rate\\\" has the meaning assigned to such term in Section 2.12(b)); §2.12(b) retrieved but truncated before the defining language\"\n  },\n  \"dependsOnTerms\": [\"Alternative Currency Term Benchmark Rate\"],\n  \"sufficiency\": \"MISSING_CONTEXT\",\n  \"sufficiencyReasons\": [\"Substantive meaning defined only inside Section 2.12(b)(i)/(ii), not resolved from supplied evidence.\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"Market Convention Rate\\\" has the meaning assigned to such term in Section 2.12(b).\"\n},\n{\n  \"localRef\": \"d21\",\n  \"termName\": \"Master Agreement\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Swap Agreement\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [\"Pointer resolved via getDefinition('Swap Agreement'), which contains the operative parenthetical creating the defined term.\"],\n  \"citation\": \"§1.01; definition of \\\"Swap Agreement\\\"\",\n  \"excerpt\": \"\\\"Master Agreement\\\" has the meaning assigned to such term in the definition of \\\"Swap Agreement.\\\" [from \\\"Swap Agreement\\\": '...any form of master agreement published by the International Swaps and Derivatives Association, Inc., any International Foreign Exchange Master Agreement, or any other master agreement (any such master agreement, together with any related schedules, a \\\"Master Agreement\\\")...']\"\n}\n]",
+   "rules": [],
+   "sharedCapacities": "[]",
+   "irExtensionCandidates": "[]",
+   "inventoryDispositions": "[]",
+   "overallNotes": "[\n\"This submission covers Section 1.01 defined terms from 'Junior Lien Intercreditor Agreement' through 'Master Agreement' - a pure alphabetical definitions batch, not a quantitative covenant; accordingly no WireRule or WireSharedCapacity outputs were produced, only WireDefinition entries (one per distinct term, per the multiple-definitions extraction requirement).\",\n\"The FROZEN SEMANTIC INVENTORY reported an INVENTORY_COVERAGE_GAP (109 items accepted, large unaccounted source stretches, and a failed gap re-inventory call) without ever surfacing concrete inventoryItemIds to this compiler; consequently no inventoryItemIds could be attached to any node and inventoryDispositions is empty - this gap itself is flagged here rather than silently ignored.\",\n\"Three terms remain MISSING_CONTEXT after genuine tool attempts: 'LCT Election' and 'LCT Test Date' (Section 1.08(a) resolved only to its chapeau, not the defining sub-clauses (a)(i)-(iii)), and 'Market Convention Rate' (Section 2.12(b) resolved but truncated before reaching the defining language, with the substance apparently in sub-clauses (b)(i)/(ii)).\",\n\"'Junior Lien Intercreditor Agreement' is marked PARTIAL because it incorporates by reference Exhibit E-3 (no such EXHIBIT node exists in the package - known MISSING_SCHEDULE dependency) and contemplates an Intercreditor Agreement document type that is entirely absent from the package (known REFERENCED_DOCUMENT_ABSENT dependency).\",\n\"'Loan Documents' is marked PARTIAL solely because of its internal carve-out referencing Section 9.02 and Section 2.07(f), both OUT_OF_SCOPE due to source-context budget exhaustion; the core enumeration of Loan Documents itself is otherwise complete.\",\n\"'Loan Modification Offer' and 'Master Agreement' were successfully upgraded from bare pointers to COMPLETE by following the retrieval-before-giving-up policy: getReferencedProvision resolved Section 2.22(a)'s own defining text, and getDefinition resolved 'Swap Agreement' which itself contains the operative Master Agreement parenthetical.\",\n\"'Market Capitalization' is the only term in this batch with real arithmetic (shares outstanding x offering price per share); both factors are transaction-specific facts not fixed contractual metrics, so they were modeled as TRANSACTION_INPUT_REFERENCE nodes multiplied together, per the schema's guidance for values that are inputs at the time of a specific transaction rather than named financial metrics.\"\n]"
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T12:50:42.829Z",
+   "inputTokens": 77736,
+   "outputTokens": 15323,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 3,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 134662,
+   "calculatedCostUsd": 0.30870200000000003
+  },
+  "cacheKey": "9f6a7eac86f245e4c2b5ad10aefbaab678dcd161379117454bc05f002ce03951",
+  "compiledAt": "2026-09-14T12:50:42.829Z"
+ },
+ "shardInputSummary": {
+  "candidateRef": "phase-3-validation:chwy:1.01#shard:aac727054a5da5f1a9fd",
+  "operativeChars": 7577,
+  "ownedInventoryItems": 0,
+  "contextRegions": 1,
+  "bundleItems": 0,
+  "unresolvedDependencies": 41
+ },
+ "attemptsSoFar": 1
+}
