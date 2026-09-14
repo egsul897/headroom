@@ -1,0 +1,1386 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:845680480624a0f129ec",
+  "shardHash": "ae0cb8ac5ac6fa925034c4b2b909622cff5716d6abc1e15c550d0a595820a5ee",
+  "ordinal": 14,
+  "ownedUnits": 9,
+  "sourceChars": 5139,
+  "contextEntries": 1,
+  "contextChars": 225,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 1,
+  "ownedMaterialItems": 1,
+  "estimatedFirstTurnInputTokens": 20673,
+  "preCallEstimate": {
+   "inputTokens": 68015,
+   "outputTokens": 24000,
+   "usd": 0.37603
+  },
+  "actual": {
+   "inputTokens": 46328,
+   "outputTokens": 12344,
+   "turns": 2,
+   "latencyMs": 115163,
+   "costUsd": 0.216096,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_COMPLETE",
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "toolCalls": 2,
+  "toolCallNames": [
+   "getDefinition",
+   "getReferencedProvision"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 10,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 0,
+   "dispositioned": 1,
+   "missingMaterial": 0,
+   "valuesRepresented": 0,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "UNSUPPORTED": 1
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Event of Default"
+  ],
+  "unresolvedIssues": [
+   "[definition[d6].OR[0].AND[0]] statutory cross-reference to funding/reportable-event tests; not a numeric or boolean primitive expressible with the IR's arithmetic/comparison nodes",
+   "[definition[d6].OR[0].AND[1].NOT.operand] procedural notice-period carve-out; a descriptive qualifier, not a computable financial mechanic",
+   "[definition[d6].OR[0].AND[1]] NOT keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d6].OR[0]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d6].OR[1]] statutory cross-reference, descriptive trigger not expressible as an arithmetic/comparison primitive",
+   "[definition[d6].OR[2]] statutory cross-reference, descriptive trigger",
+   "[definition[d6].OR[3]] descriptive procedural trigger, not a computable mechanic",
+   "[definition[d6].OR[4]] statutory cross-reference, descriptive trigger",
+   "[definition[d6].OR[5]] statutory cross-reference, descriptive trigger",
+   "[definition[d6]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "This unit is a straight defined-terms glossary excerpt (§1.01) containing ten independent definitions; no independently operative quantitative covenant rule (permission/prohibition/ratio test) appears in the supplied text, so no WireRule or WireSharedCapacity outputs were produced.",
+   "Most definitions are purely descriptive/statutory and non-computational; calculationExpression is left null for these with the full descriptive text preserved in excerpt, per the 'non-computational' treatment for definitions that are not formulas.",
+   "The single frozen inventory item (30-day notice-period exclusion within ERISA Event clause (a)) is consumed on both the ERISA Event definition and the specific NOT/UNSUPPORTED nodes that carry its meaning.",
+   "'Event of Default' is a pure cross-reference to Section 7.01; getReferencedProvision was used and returned only the chapeau ('If any of the following events... shall occur'), confirming the target but not expanding the enumerated list, which is out of scope for this definitions-only compilation and is noted rather than guessed.",
+   "getDefinition('Event of Default') returned no separate instrument-level defined-term record, consistent with its meaning being wholly supplied by Section 7.01's operative text rather than a separate §1.01 formula."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:845680480624a0f129ec",
+  "shardHash": "ae0cb8ac5ac6fa925034c4b2b909622cff5716d6abc1e15c550d0a595820a5ee",
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:17974b3b4b8b6ee96409a80a",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Environmental Laws",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Requirements of Law",
+      "Governmental Authority",
+      "Hazardous Material",
+      "Release"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive, non-computational definition fully captured from source text; carve-out for SARS-CoV-2/COVID-19 matters is an express exclusion within the definition itself."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means applicable common law and all applicable and legally binding treaties, rules, regulations... relating to the protection of the environment... For the avoidance of doubt, \"Environmental Laws\" shall not include matters concerning SARS-CoV-2 or COVID-19..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f6643db8e331bbd07864b5c7",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Environmental Liability",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Environmental Law",
+      "Hazardous Materials",
+      "Release",
+      "Borrowers"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive enumeration of liability categories (a)-(e); no numeric/formula content to represent as arithmetic primitives."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means any liability, obligation, loss, claim, action, order or cost... resulting from or based upon (a) any violation of any Environmental Law... (e) any contract, agreement or other consensual arrangement..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f3a7719c009ba36c14394408",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Equity Interests",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Capital Stock"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition is a categorical inclusion/exclusion of instrument types (Capital Stock and rights to acquire it, excluding convertible debt securities), not a quantitative formula; fully captured from source text."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means Capital Stock and all warrants, options or other rights to acquire Capital Stock, but excluding any debt security that is convertible into, or exchangeable for, Capital Stock."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e2cb0fb4c15b12a2723968e5",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "ERISA",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple statutory-reference definition, fully captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the Employee Retirement Income Security Act of 1974, as amended from time to time."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:1e480ea0c7fab8bb9b3d8140",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "ERISA Affiliate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Loan Party",
+      "Code"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition turns on statutory single-employer aggregation tests under Code §414(b)/(c) and, for limited purposes, Code §414/ERISA §302; fully captured descriptively, no numeric mechanic to model."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means any trade or business (whether or not incorporated) that, together with any Loan Party, is treated as a single employer under Section 414(b) or 414(c) of the Code or, solely for purposes of Section 302 of ERISA and Section 412 of the Code, is treated as a single employer under Section 414 of the Code."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:1a6cc7a8b9e4aeabdd8f8419",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "ERISA Event",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "OR",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:612b06f0dfd73b3c425670f1",
+      "operands": [
+       {
+        "kind": "AND",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:e959ab7ec80a03c6cbdb15a2",
+        "operands": [
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01 ERISA Event clause (a)",
+          "semanticDescription": "failure by any Plan to satisfy minimum funding standards under Code §412/430 or ERISA §302, or any other 'reportable event' under ERISA §4043(c) or its regulations",
+          "reason": "statutory cross-reference to funding/reportable-event tests; not a numeric or boolean primitive expressible with the IR's arithmetic/comparison nodes",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:b79e815427321a902bd719c4"
+         },
+         {
+          "kind": "NOT",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:9904b0ba9e96e09ae82f9468",
+          "operand": {
+           "kind": "UNSUPPORTED",
+           "type": null,
+           "sourceEvidence": "§1.01: \"other than an event for which the thirty (30)-day notice period is waived\"",
+           "semanticDescription": "exclusion for a reportable event for which the thirty (30)-day ERISA notice period has been waived",
+           "reason": "procedural notice-period carve-out; a descriptive qualifier, not a computable financial mechanic",
+           "requiredReview": true,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:3de68222aa05e5fcd5ab74f6",
+           "inventoryItemIds": [
+            "inv-item:de43820c718c23723b0ad061"
+           ]
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "inventoryItemIds": [
+           "inv-item:de43820c718c23723b0ad061"
+          ]
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 ERISA Event clause (b)",
+        "semanticDescription": "determination that any Plan is, or is expected to be, in 'at-risk' status under ERISA §303(i)(4) or Code §430(i)(4)",
+        "reason": "statutory cross-reference, descriptive trigger not expressible as an arithmetic/comparison primitive",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:13b2205ede50c5f380572de1"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 ERISA Event clause (c)",
+        "semanticDescription": "incurrence by a Loan Party or ERISA Affiliate of liability under Title IV of ERISA upon termination of any Plan",
+        "reason": "statutory cross-reference, descriptive trigger",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:d6e5dd3ad6a3052f9b5abbf1"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 ERISA Event clause (d)",
+        "semanticDescription": "receipt of PBGC/plan administrator notice of intent to terminate a Plan or appoint a trustee",
+        "reason": "descriptive procedural trigger, not a computable mechanic",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:d7292367ac8595d12280f1ee"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 ERISA Event clause (e)",
+        "semanticDescription": "incurrence of liability from withdrawal or partial withdrawal from any Plan or Multiemployer Plan, including Section 4062(e) ERISA liability",
+        "reason": "statutory cross-reference, descriptive trigger",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:4939f5d430f19790065f8f95"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 ERISA Event clause (f)",
+        "semanticDescription": "receipt of notice of Withdrawal Liability or determination that a Multiemployer Plan is insolvent, endangered, or in critical status",
+        "reason": "statutory cross-reference, descriptive trigger",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:69531ddbdc400f1d70deae5b"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Plan",
+      "Multiemployer Plan",
+      "Loan Party",
+      "ERISA Affiliate",
+      "Withdrawal Liability",
+      "PBGC"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Overall OR/AND/NOT logical structure of the six enumerated triggering events, and the clause (a) notice-waiver exclusion, is faithfully preserved.",
+      "Each individual triggering event is itself a dense statutory cross-reference (ERISA/Code sections) that cannot be faithfully reduced to the IR's arithmetic/comparison primitives, so each is represented as an UNSUPPORTED leaf while the logical skeleton is retained.",
+      "statutory cross-reference to funding/reportable-event tests; not a numeric or boolean primitive expressible with the IR's arithmetic/comparison nodes",
+      "procedural notice-period carve-out; a descriptive qualifier, not a computable financial mechanic",
+      "NOT keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "statutory cross-reference, descriptive trigger not expressible as an arithmetic/comparison primitive",
+      "statutory cross-reference, descriptive trigger",
+      "descriptive procedural trigger, not a computable mechanic",
+      "statutory cross-reference, descriptive trigger",
+      "statutory cross-reference, descriptive trigger",
+      "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means (a) any failure by any Plan to satisfy the minimum funding standards... (other than an event for which the thirty (30)-day notice period is waived); (b) a determination that any Plan is... 'at-risk'...; (f) the receipt... of any notice concerning the imposition of Withdrawal Liability..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:7c9110db9046a88126dc2b81",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "EU Bail-In Legislation Schedule",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple reference to an externally published schedule, as amended from time to time; fully captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the EU Bail-In Legislation Schedule published by the Loan Market Association (or any successor person), as in effect from time to time."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:0b0a022848db1ecd4e6c7950",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "EURIBOR Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Interest Period",
+      "Administrative Agent",
+      "Initial Borrower",
+      "TARGET Day"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition describes a benchmark screen-rate lookup mechanism and its fallback (Administrative Agent may specify another page/service); this is a rate-determination mechanism rather than a covenant formula, and is fully captured descriptively; no numeric threshold or percentage is stated to model arithmetically."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the euro interbank offered rate administered by the European Money Markets Institute... as of 11:00 a.m., Brussels time, two (2) TARGET Days prior to the commencement of such Interest Period, or (ii) if such rate is not available... the Administrative Agent may specify another page or service..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:24a19de7b199fa4cbda6ddb3",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "euro",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "EMU Legislation"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple descriptive currency definition, fully captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the single currency of the European Union as constituted by the Treaty on European Union and as referred to in the EMU Legislation."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:1f4b203a3671bdc3d4c04a25",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Event of Default",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The operative text of this definition is solely a pointer ('has the meaning assigned to such term in Section 7.01'); that pointer itself is fully and unambiguously captured.",
+      "Section 7.01's chapeau was retrieved and confirms it is the enumerated Events of Default provision, but its own operative-state (supersession) was not resolvable ('UNKNOWN_SUPERSESSION_STATUS') and its child enumeration was not expanded within this compilation's scope; the substantive list of default events is out of scope for this definitions-only unit and is preserved as an unresolved cross-unit dependency rather than guessed."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 7.01."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d6].OR[0].AND[0]] statutory cross-reference to funding/reportable-event tests; not a numeric or boolean primitive expressible with the IR's arithmetic/comparison nodes",
+   "[definition[d6].OR[0].AND[1].NOT.operand] procedural notice-period carve-out; a descriptive qualifier, not a computable financial mechanic",
+   "[definition[d6].OR[0].AND[1]] NOT keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d6].OR[0]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d6].OR[1]] statutory cross-reference, descriptive trigger not expressible as an arithmetic/comparison primitive",
+   "[definition[d6].OR[2]] statutory cross-reference, descriptive trigger",
+   "[definition[d6].OR[3]] descriptive procedural trigger, not a computable mechanic",
+   "[definition[d6].OR[4]] statutory cross-reference, descriptive trigger",
+   "[definition[d6].OR[5]] statutory cross-reference, descriptive trigger",
+   "[definition[d6]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "This unit is a straight defined-terms glossary excerpt (§1.01) containing ten independent definitions; no independently operative quantitative covenant rule (permission/prohibition/ratio test) appears in the supplied text, so no WireRule or WireSharedCapacity outputs were produced.",
+   "Most definitions are purely descriptive/statutory and non-computational; calculationExpression is left null for these with the full descriptive text preserved in excerpt, per the 'non-computational' treatment for definitions that are not formulas.",
+   "The single frozen inventory item (30-day notice-period exclusion within ERISA Event clause (a)) is consumed on both the ERISA Event definition and the specific NOT/UNSUPPORTED nodes that carry its meaning.",
+   "'Event of Default' is a pure cross-reference to Section 7.01; getReferencedProvision was used and returned only the chapeau ('If any of the following events... shall occur'), confirming the target but not expanding the enumerated list, which is out of scope for this definitions-only compilation and is noted rather than guessed.",
+   "getDefinition('Event of Default') returned no separate instrument-level defined-term record, consistent with its meaning being wholly supplied by Section 7.01's operative text rather than a separate §1.01 formula."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 46328,
+   "outputTokens": 12344,
+   "costUsd": 0.216096
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:17974b3b4b8b6ee96409a80a",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Environmental Laws",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Requirements of Law",
+     "Governmental Authority",
+     "Hazardous Material",
+     "Release"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Descriptive, non-computational definition fully captured from source text; carve-out for SARS-CoV-2/COVID-19 matters is an express exclusion within the definition itself."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means applicable common law and all applicable and legally binding treaties, rules, regulations... relating to the protection of the environment... For the avoidance of doubt, \"Environmental Laws\" shall not include matters concerning SARS-CoV-2 or COVID-19..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f6643db8e331bbd07864b5c7",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Environmental Liability",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Environmental Law",
+     "Hazardous Materials",
+     "Release",
+     "Borrowers"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Descriptive enumeration of liability categories (a)-(e); no numeric/formula content to represent as arithmetic primitives."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means any liability, obligation, loss, claim, action, order or cost... resulting from or based upon (a) any violation of any Environmental Law... (e) any contract, agreement or other consensual arrangement..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f3a7719c009ba36c14394408",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Equity Interests",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Capital Stock"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition is a categorical inclusion/exclusion of instrument types (Capital Stock and rights to acquire it, excluding convertible debt securities), not a quantitative formula; fully captured from source text."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means Capital Stock and all warrants, options or other rights to acquire Capital Stock, but excluding any debt security that is convertible into, or exchangeable for, Capital Stock."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e2cb0fb4c15b12a2723968e5",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "ERISA",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple statutory-reference definition, fully captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the Employee Retirement Income Security Act of 1974, as amended from time to time."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:1e480ea0c7fab8bb9b3d8140",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "ERISA Affiliate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Loan Party",
+     "Code"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition turns on statutory single-employer aggregation tests under Code §414(b)/(c) and, for limited purposes, Code §414/ERISA §302; fully captured descriptively, no numeric mechanic to model."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means any trade or business (whether or not incorporated) that, together with any Loan Party, is treated as a single employer under Section 414(b) or 414(c) of the Code or, solely for purposes of Section 302 of ERISA and Section 412 of the Code, is treated as a single employer under Section 414 of the Code."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:1a6cc7a8b9e4aeabdd8f8419",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "ERISA Event",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "OR",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:612b06f0dfd73b3c425670f1",
+     "operands": [
+      {
+       "kind": "AND",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:e959ab7ec80a03c6cbdb15a2",
+       "operands": [
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01 ERISA Event clause (a)",
+         "semanticDescription": "failure by any Plan to satisfy minimum funding standards under Code §412/430 or ERISA §302, or any other 'reportable event' under ERISA §4043(c) or its regulations",
+         "reason": "statutory cross-reference to funding/reportable-event tests; not a numeric or boolean primitive expressible with the IR's arithmetic/comparison nodes",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:b79e815427321a902bd719c4"
+        },
+        {
+         "kind": "NOT",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:9904b0ba9e96e09ae82f9468",
+         "operand": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01: \"other than an event for which the thirty (30)-day notice period is waived\"",
+          "semanticDescription": "exclusion for a reportable event for which the thirty (30)-day ERISA notice period has been waived",
+          "reason": "procedural notice-period carve-out; a descriptive qualifier, not a computable financial mechanic",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:3de68222aa05e5fcd5ab74f6",
+          "inventoryItemIds": [
+           "inv-item:de43820c718c23723b0ad061"
+          ]
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "inventoryItemIds": [
+          "inv-item:de43820c718c23723b0ad061"
+         ]
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01 ERISA Event clause (b)",
+       "semanticDescription": "determination that any Plan is, or is expected to be, in 'at-risk' status under ERISA §303(i)(4) or Code §430(i)(4)",
+       "reason": "statutory cross-reference, descriptive trigger not expressible as an arithmetic/comparison primitive",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:13b2205ede50c5f380572de1"
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01 ERISA Event clause (c)",
+       "semanticDescription": "incurrence by a Loan Party or ERISA Affiliate of liability under Title IV of ERISA upon termination of any Plan",
+       "reason": "statutory cross-reference, descriptive trigger",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:d6e5dd3ad6a3052f9b5abbf1"
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01 ERISA Event clause (d)",
+       "semanticDescription": "receipt of PBGC/plan administrator notice of intent to terminate a Plan or appoint a trustee",
+       "reason": "descriptive procedural trigger, not a computable mechanic",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:d7292367ac8595d12280f1ee"
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01 ERISA Event clause (e)",
+       "semanticDescription": "incurrence of liability from withdrawal or partial withdrawal from any Plan or Multiemployer Plan, including Section 4062(e) ERISA liability",
+       "reason": "statutory cross-reference, descriptive trigger",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:4939f5d430f19790065f8f95"
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01 ERISA Event clause (f)",
+       "semanticDescription": "receipt of notice of Withdrawal Liability or determination that a Multiemployer Plan is insolvent, endangered, or in critical status",
+       "reason": "statutory cross-reference, descriptive trigger",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:69531ddbdc400f1d70deae5b"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Plan",
+     "Multiemployer Plan",
+     "Loan Party",
+     "ERISA Affiliate",
+     "Withdrawal Liability",
+     "PBGC"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Overall OR/AND/NOT logical structure of the six enumerated triggering events, and the clause (a) notice-waiver exclusion, is faithfully preserved.",
+     "Each individual triggering event is itself a dense statutory cross-reference (ERISA/Code sections) that cannot be faithfully reduced to the IR's arithmetic/comparison primitives, so each is represented as an UNSUPPORTED leaf while the logical skeleton is retained.",
+     "statutory cross-reference to funding/reportable-event tests; not a numeric or boolean primitive expressible with the IR's arithmetic/comparison nodes",
+     "procedural notice-period carve-out; a descriptive qualifier, not a computable financial mechanic",
+     "NOT keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+     "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+     "statutory cross-reference, descriptive trigger not expressible as an arithmetic/comparison primitive",
+     "statutory cross-reference, descriptive trigger",
+     "descriptive procedural trigger, not a computable mechanic",
+     "statutory cross-reference, descriptive trigger",
+     "statutory cross-reference, descriptive trigger",
+     "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means (a) any failure by any Plan to satisfy the minimum funding standards... (other than an event for which the thirty (30)-day notice period is waived); (b) a determination that any Plan is... 'at-risk'...; (f) the receipt... of any notice concerning the imposition of Withdrawal Liability..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:7c9110db9046a88126dc2b81",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "EU Bail-In Legislation Schedule",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple reference to an externally published schedule, as amended from time to time; fully captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the EU Bail-In Legislation Schedule published by the Loan Market Association (or any successor person), as in effect from time to time."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:0b0a022848db1ecd4e6c7950",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "EURIBOR Rate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Interest Period",
+     "Administrative Agent",
+     "Initial Borrower",
+     "TARGET Day"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition describes a benchmark screen-rate lookup mechanism and its fallback (Administrative Agent may specify another page/service); this is a rate-determination mechanism rather than a covenant formula, and is fully captured descriptively; no numeric threshold or percentage is stated to model arithmetically."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the euro interbank offered rate administered by the European Money Markets Institute... as of 11:00 a.m., Brussels time, two (2) TARGET Days prior to the commencement of such Interest Period, or (ii) if such rate is not available... the Administrative Agent may specify another page or service..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:24a19de7b199fa4cbda6ddb3",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "euro",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "EMU Legislation"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple descriptive currency definition, fully captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the single currency of the European Union as constituted by the Treaty on European Union and as referred to in the EMU Legislation."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:1f4b203a3671bdc3d4c04a25",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Event of Default",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The operative text of this definition is solely a pointer ('has the meaning assigned to such term in Section 7.01'); that pointer itself is fully and unambiguously captured.",
+     "Section 7.01's chapeau was retrieved and confirms it is the enumerated Events of Default provision, but its own operative-state (supersession) was not resolvable ('UNKNOWN_SUPERSESSION_STATUS') and its child enumeration was not expanded within this compilation's scope; the substantive list of default events is out of scope for this definitions-only unit and is preserved as an unresolved cross-unit dependency rather than guessed."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 7.01."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01 ERISA Event definition (a)-(f), each clause a dense cross-reference to specific ERISA/Code sections describing plan-funding and pension-liability trigger events",
+    "semanticRequirement": "A way to represent a defined term that is itself a disjunction of several statutorily-defined trigger events, each identified primarily by external statutory citation (e.g. 'Section 4043(c) of ERISA') rather than by an internal quantitative test",
+    "whyExistingPrimitivesFail": "The IR's arithmetic/comparison primitives (COMPARE, ADD, MAX, etc.) presume a numeric or boolean test constructed from values available in the instrument; they cannot faithfully encode 'as defined by reference to an external statutory provision' without either fabricating a false boolean test or collapsing distinct statutory triggers into an opaque blob",
+    "candidateGeneralizedPrimitive": "A STATUTORY_REFERENCE leaf node (citation to an external statute/regulation section, with a short description) that can be combined with AND/OR/NOT like any other boolean-valued expression, distinct from UNSUPPORTED in that it signals 'faithfully identified but deliberately not further modeled' rather than 'could not identify'"
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d6].OR[0].AND[0]] statutory cross-reference to funding/reportable-event tests; not a numeric or boolean primitive expressible with the IR's arithmetic/comparison nodes",
+   "[definition[d6].OR[0].AND[1].NOT.operand] procedural notice-period carve-out; a descriptive qualifier, not a computable financial mechanic",
+   "[definition[d6].OR[0].AND[1]] NOT keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d6].OR[0]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d6].OR[1]] statutory cross-reference, descriptive trigger not expressible as an arithmetic/comparison primitive",
+   "[definition[d6].OR[2]] statutory cross-reference, descriptive trigger",
+   "[definition[d6].OR[3]] descriptive procedural trigger, not a computable mechanic",
+   "[definition[d6].OR[4]] statutory cross-reference, descriptive trigger",
+   "[definition[d6].OR[5]] statutory cross-reference, descriptive trigger",
+   "[definition[d6]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "This unit is a straight defined-terms glossary excerpt (§1.01) containing ten independent definitions; no independently operative quantitative covenant rule (permission/prohibition/ratio test) appears in the supplied text, so no WireRule or WireSharedCapacity outputs were produced.",
+   "Most definitions are purely descriptive/statutory and non-computational; calculationExpression is left null for these with the full descriptive text preserved in excerpt, per the 'non-computational' treatment for definitions that are not formulas.",
+   "The single frozen inventory item (30-day notice-period exclusion within ERISA Event clause (a)) is consumed on both the ERISA Event definition and the specific NOT/UNSUPPORTED nodes that carry its meaning.",
+   "'Event of Default' is a pure cross-reference to Section 7.01; getReferencedProvision was used and returned only the chapeau ('If any of the following events... shall occur'), confirming the target but not expanding the enumerated list, which is out of scope for this definitions-only compilation and is noted rather than guessed.",
+   "getDefinition('Event of Default') returned no separate instrument-level defined-term record, consistent with its meaning being wholly supplied by Section 7.01's operative text rather than a separate §1.01 formula."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Event of Default"
+    },
+    "outputSummary": "refused: no defined term matching \"Event of Default\" found in this instrument's documents",
+    "charsReturned": 80,
+    "timestamp": "2026-09-14T17:55:18.503Z"
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 7.01"
+    },
+    "outputSummary": "resolved reference \"Section 7.01\" -> 7.01 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 119,
+    "timestamp": "2026-09-14T17:55:18.503Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 7.01",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:6c66f90381a0d62178336141",
+     "sourceNodeKey": "doc-a::7.01",
+     "charStart": 697603,
+     "charEnd": 697722,
+     "rawText": "Section 7.01 Events of Default . If any of the following events (any such event, an “ Event of Default ”) shall\noccur:\n",
+     "contentHash": "d64d3fad2e7e03cc4ea37ab35e2894b3eeea4cf31d177d7cde500c7b97808dbc",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "Environmental Laws",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Requirements of Law",
+      "Governmental Authority",
+      "Hazardous Material",
+      "Release"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive, non-computational definition fully captured from source text; carve-out for SARS-CoV-2/COVID-19 matters is an express exclusion within the definition itself."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means applicable common law and all applicable and legally binding treaties, rules, regulations... relating to the protection of the environment... For the avoidance of doubt, \"Environmental Laws\" shall not include matters concerning SARS-CoV-2 or COVID-19..."
+    },
+    {
+     "localRef": "d2",
+     "termName": "Environmental Liability",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Environmental Law",
+      "Hazardous Materials",
+      "Release",
+      "Borrowers"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive enumeration of liability categories (a)-(e); no numeric/formula content to represent as arithmetic primitives."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means any liability, obligation, loss, claim, action, order or cost... resulting from or based upon (a) any violation of any Environmental Law... (e) any contract, agreement or other consensual arrangement..."
+    },
+    {
+     "localRef": "d3",
+     "termName": "Equity Interests",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Capital Stock"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition is a categorical inclusion/exclusion of instrument types (Capital Stock and rights to acquire it, excluding convertible debt securities), not a quantitative formula; fully captured from source text."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means Capital Stock and all warrants, options or other rights to acquire Capital Stock, but excluding any debt security that is convertible into, or exchangeable for, Capital Stock."
+    },
+    {
+     "localRef": "d4",
+     "termName": "ERISA",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple statutory-reference definition, fully captured."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means the Employee Retirement Income Security Act of 1974, as amended from time to time."
+    },
+    {
+     "localRef": "d5",
+     "termName": "ERISA Affiliate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Loan Party",
+      "Code"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition turns on statutory single-employer aggregation tests under Code §414(b)/(c) and, for limited purposes, Code §414/ERISA §302; fully captured descriptively, no numeric mechanic to model."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means any trade or business (whether or not incorporated) that, together with any Loan Party, is treated as a single employer under Section 414(b) or 414(c) of the Code or, solely for purposes of Section 302 of ERISA and Section 412 of the Code, is treated as a single employer under Section 414 of the Code."
+    },
+    {
+     "localRef": "d6",
+     "termName": "ERISA Event",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "OR",
+      "citation": "§1.01",
+      "operands": [
+       {
+        "kind": "AND",
+        "citation": "§1.01",
+        "operands": [
+         {
+          "kind": "UNSUPPORTED",
+          "semanticDescription": "failure by any Plan to satisfy minimum funding standards under Code §412/430 or ERISA §302, or any other 'reportable event' under ERISA §4043(c) or its regulations",
+          "reason": "statutory cross-reference to funding/reportable-event tests; not a numeric or boolean primitive expressible with the IR's arithmetic/comparison nodes",
+          "sourceEvidence": "§1.01 ERISA Event clause (a)"
+         },
+         {
+          "kind": "NOT",
+          "citation": "§1.01",
+          "inventoryItemIds": [
+           "inv-item:de43820c718c23723b0ad061"
+          ],
+          "operand": {
+           "kind": "UNSUPPORTED",
+           "semanticDescription": "exclusion for a reportable event for which the thirty (30)-day ERISA notice period has been waived",
+           "reason": "procedural notice-period carve-out; a descriptive qualifier, not a computable financial mechanic",
+           "sourceEvidence": "§1.01: \"other than an event for which the thirty (30)-day notice period is waived\"",
+           "inventoryItemIds": [
+            "inv-item:de43820c718c23723b0ad061"
+           ]
+          }
+         }
+        ]
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "determination that any Plan is, or is expected to be, in 'at-risk' status under ERISA §303(i)(4) or Code §430(i)(4)",
+        "reason": "statutory cross-reference, descriptive trigger not expressible as an arithmetic/comparison primitive",
+        "sourceEvidence": "§1.01 ERISA Event clause (b)"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "incurrence by a Loan Party or ERISA Affiliate of liability under Title IV of ERISA upon termination of any Plan",
+        "reason": "statutory cross-reference, descriptive trigger",
+        "sourceEvidence": "§1.01 ERISA Event clause (c)"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "receipt of PBGC/plan administrator notice of intent to terminate a Plan or appoint a trustee",
+        "reason": "descriptive procedural trigger, not a computable mechanic",
+        "sourceEvidence": "§1.01 ERISA Event clause (d)"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "incurrence of liability from withdrawal or partial withdrawal from any Plan or Multiemployer Plan, including Section 4062(e) ERISA liability",
+        "reason": "statutory cross-reference, descriptive trigger",
+        "sourceEvidence": "§1.01 ERISA Event clause (e)"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "receipt of notice of Withdrawal Liability or determination that a Multiemployer Plan is insolvent, endangered, or in critical status",
+        "reason": "statutory cross-reference, descriptive trigger",
+        "sourceEvidence": "§1.01 ERISA Event clause (f)"
+       }
+      ]
+     },
+     "dependsOnTerms": [
+      "Plan",
+      "Multiemployer Plan",
+      "Loan Party",
+      "ERISA Affiliate",
+      "Withdrawal Liability",
+      "PBGC"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Overall OR/AND/NOT logical structure of the six enumerated triggering events, and the clause (a) notice-waiver exclusion, is faithfully preserved.",
+      "Each individual triggering event is itself a dense statutory cross-reference (ERISA/Code sections) that cannot be faithfully reduced to the IR's arithmetic/comparison primitives, so each is represented as an UNSUPPORTED leaf while the logical skeleton is retained."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means (a) any failure by any Plan to satisfy the minimum funding standards... (other than an event for which the thirty (30)-day notice period is waived); (b) a determination that any Plan is... 'at-risk'...; (f) the receipt... of any notice concerning the imposition of Withdrawal Liability..."
+    },
+    {
+     "localRef": "d7",
+     "termName": "EU Bail-In Legislation Schedule",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple reference to an externally published schedule, as amended from time to time; fully captured."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means the EU Bail-In Legislation Schedule published by the Loan Market Association (or any successor person), as in effect from time to time."
+    },
+    {
+     "localRef": "d8",
+     "termName": "EURIBOR Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Interest Period",
+      "Administrative Agent",
+      "Initial Borrower",
+      "TARGET Day"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition describes a benchmark screen-rate lookup mechanism and its fallback (Administrative Agent may specify another page/service); this is a rate-determination mechanism rather than a covenant formula, and is fully captured descriptively; no numeric threshold or percentage is stated to model arithmetically."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means the euro interbank offered rate administered by the European Money Markets Institute... as of 11:00 a.m., Brussels time, two (2) TARGET Days prior to the commencement of such Interest Period, or (ii) if such rate is not available... the Administrative Agent may specify another page or service..."
+    },
+    {
+     "localRef": "d9",
+     "termName": "euro",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "EMU Legislation"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple descriptive currency definition, fully captured."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means the single currency of the European Union as constituted by the Treaty on European Union and as referred to in the EMU Legislation."
+    },
+    {
+     "localRef": "d10",
+     "termName": "Event of Default",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The operative text of this definition is solely a pointer ('has the meaning assigned to such term in Section 7.01'); that pointer itself is fully and unambiguously captured.",
+      "Section 7.01's chapeau was retrieved and confirms it is the enumerated Events of Default provision, but its own operative-state (supersession) was not resolvable ('UNKNOWN_SUPERSESSION_STATUS') and its child enumeration was not expanded within this compilation's scope; the substantive list of default events is out of scope for this definitions-only unit and is preserved as an unresolved cross-unit dependency rather than guessed."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 7.01."
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "inventoryDispositions": [],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01 ERISA Event definition (a)-(f), each clause a dense cross-reference to specific ERISA/Code sections describing plan-funding and pension-liability trigger events",
+     "semanticRequirement": "A way to represent a defined term that is itself a disjunction of several statutorily-defined trigger events, each identified primarily by external statutory citation (e.g. 'Section 4043(c) of ERISA') rather than by an internal quantitative test",
+     "whyExistingPrimitivesFail": "The IR's arithmetic/comparison primitives (COMPARE, ADD, MAX, etc.) presume a numeric or boolean test constructed from values available in the instrument; they cannot faithfully encode 'as defined by reference to an external statutory provision' without either fabricating a false boolean test or collapsing distinct statutory triggers into an opaque blob",
+     "candidateGeneralizedPrimitive": "A STATUTORY_REFERENCE leaf node (citation to an external statute/regulation section, with a short description) that can be combined with AND/OR/NOT like any other boolean-valued expression, distinct from UNSUPPORTED in that it signals 'faithfully identified but deliberately not further modeled' rather than 'could not identify'"
+    }
+   ],
+   "overallNotes": [
+    "This unit is a straight defined-terms glossary excerpt (§1.01) containing ten independent definitions; no independently operative quantitative covenant rule (permission/prohibition/ratio test) appears in the supplied text, so no WireRule or WireSharedCapacity outputs were produced.",
+    "Most definitions are purely descriptive/statutory and non-computational; calculationExpression is left null for these with the full descriptive text preserved in excerpt, per the 'non-computational' treatment for definitions that are not formulas.",
+    "The single frozen inventory item (30-day notice-period exclusion within ERISA Event clause (a)) is consumed on both the ERISA Event definition and the specific NOT/UNSUPPORTED nodes that carry its meaning.",
+    "'Event of Default' is a pure cross-reference to Section 7.01; getReferencedProvision was used and returned only the chapeau ('If any of the following events... shall occur'), confirming the target but not expanding the enumerated list, which is out of scope for this definitions-only compilation and is noted rather than guessed.",
+    "getDefinition('Event of Default') returned no separate instrument-level defined-term record, consistent with its meaning being wholly supplied by Section 7.01's operative text rather than a separate §1.01 formula."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T17:56:31.665Z",
+   "inputTokens": 46328,
+   "outputTokens": 12344,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 115161,
+   "calculatedCostUsd": 0.216096
+  },
+  "cacheKey": "18e8c2bb7bfa34fef38a106171ee969f0317f215c9281f91d08f655378e410be",
+  "compiledAt": "2026-09-14T17:56:31.666Z"
+ },
+ "wave": "B",
+ "attemptsSoFar": 1
+}
