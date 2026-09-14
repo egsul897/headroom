@@ -1,0 +1,2173 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:e43dc65668a775eaca1a",
+  "shardHash": "fd9bcb3a167dc1aac0228b103b6394eb382c4eeb534cbe7065f5970fcdf825b4",
+  "ordinal": 12,
+  "ownedUnits": 11,
+  "sourceChars": 11131,
+  "contextEntries": 1,
+  "contextChars": 225,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 3,
+  "ownedMaterialItems": 3,
+  "estimatedFirstTurnInputTokens": 24913,
+  "preCallEstimate": {
+   "inputTokens": 81964,
+   "outputTokens": 29000,
+   "usd": 0.453928
+  },
+  "actual": {
+   "inputTokens": 58726,
+   "outputTokens": 21301,
+   "turns": 2,
+   "latencyMs": 194696,
+   "costUsd": 0.33046200000000003,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "toolCalls": 2,
+  "toolCallNames": [
+   "getReferencedProvision",
+   "getReferencedProvision"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 14,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 3,
+  "ownedAccountability": {
+   "represented": 0,
+   "dispositioned": 0,
+   "missingMaterial": 3,
+   "valuesRepresented": 3,
+   "valuesMissing": 3,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "MISSING_FROM_COMPOSITION": 3
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Default Right",
+   "Designated Affiliate",
+   "Discretionary Guarantor"
+  ],
+  "unresolvedIssues": [
+   "[definition[d2].MAX[0]] a dated, multi-branch published-rate fallback cascade with an embedded 3-day usage cap is not representable with the available arithmetic/comparison primitives without fabricating rate values not given in evidence",
+   "[definition[d2]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+   "[definition[d5].OR[5].OR[1]] depends on cross-referenced Section 7.01(h)/(i), which was out of scope (source-context budget exhausted before expansion)",
+   "[definition[d5].OR[5]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d5]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9]] getReferencedProvision was used to retrieve Section 9.02(h); the returned text was truncated mid-sentence ('in connection with any determination as to whether the requisite Lenders have ...') and does not reach the actual definitional content of the term, and its supersession status is UNKNOWN_SUPERSESSION_STATUS",
+   "This source region is a definitions article (§1.01) containing 14 independently meaningful defined terms; each was emitted as its own WireDefinition per the multiple-definitions rule, rather than merging or selecting only the most salient ones.",
+   "No independently operative WireRule was identified in this excerpt - all content is definitional; the only quantitative/conditional mechanics found (Defaulting Lender's funding-failure timing tests, Daily Simple RFR's rate floor/fallback, Customary Intercreditor Agreement's posting/deemed-consent day counts) were represented within the relevant definition's calculationExpression rather than as freestanding rules.",
+   "Cross-references to Section 6.08, 6.08(a), 6.08(a)(3), 7.01, 7.01(h), Section 9.02, Section 6.05, and Section 9.23(a) (enumeration portion) could not be expanded due to source-context budget exhaustion in Phase 2's region retrieval; getReferencedProvision was affirmatively used in this session for Section 9.02(h) and Section 9.23(a) per the mandatory retrieval-before-giving-up rule, and the results (truncated / unconfirmed supersession status) are reflected in the affected definitions' sufficiency ratings.",
+   "The 'clause (a)' cross-reference ambiguity flagged by Phase 2 (multiple colliding occurrences) was not independently re-resolved because it did not bear on any economics compiled here.",
+   "Two IR extension candidates were logged for genuinely recurring shapes (rate fallback waterfalls; scoped metric substitution) that the current primitive set cannot faithfully express without fabrication."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:e43dc65668a775eaca1a",
+  "shardHash": "fd9bcb3a167dc1aac0228b103b6394eb382c4eeb534cbe7065f5970fcdf825b4",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:0b4ae144a12295e236477fce",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Customary Intercreditor Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Term Priority Collateral",
+      "ABL Priority Collateral",
+      "Secured Obligations",
+      "ABL Obligations",
+      "First Lien Intercreditor Agreement",
+      "ABL Intercreditor Agreement",
+      "Junior Lien Intercreditor Agreement",
+      "Administrative Agent",
+      "Required Lenders",
+      "Initial Borrower",
+      "Collateral"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full qualitative definition text supplied and reproduced; this is a qualitative/procedural definition (which of two forms of intercreditor agreement qualifies, plus a lender-notice/deemed-consent mechanic) rather than a computable formula, so calculationExpression is null per the non-formula definition pattern.",
+      "The two procedural day-counts (5 Business Days' advance posting; 3 Business Days to object) are preserved in the excerpt text; they gate lender deemed-consent, not a covenant capacity, so no separate boolean/COMPARE tree was forced."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means (a) ... an intercreditor agreement substantially in the form of ... or (b) ... junior to the Liens on the Collateral securing the Secured Obligations ... such changes or agreement ... shall be posted to the Lenders not less than five (5) Business Days before execution ... and, if the Required Lenders shall not have objected ... within three (3) Business Days after posting, then the Required Lenders shall be deemed to have ... consented"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:915e21cc47ca4d91e6fc63e9",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Daily Simple RFR",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "(no evidence captured)",
+      "semanticDescription": "unrecognized or malformed expression (kind=\"MAX\")",
+      "reason": "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "attemptedStructure": {
+       "kind": "MAX",
+       "type": "NUMBER",
+       "exprId": "ir-expr:83f6bac3ff2fb704224f8a6c",
+       "operands": [
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01, definition of 'Daily Simple RFR', clauses (a)(x)-(a)(z)",
+         "semanticDescription": "Multi-tier SONIA lookback/fallback waterfall: SONIA on the RFR Lookback Day, else SONIA on the first preceding RFR Business Day for which SONIA was published (capped at 3 consecutive days of use), else the Central Bank Rate for the Lookback Day, else the most recent Central Bank Rate within 5 RFR Business Days",
+         "reason": "a dated, multi-branch published-rate fallback cascade with an embedded 3-day usage cap is not representable with the available arithmetic/comparison primitives without fabricating rate values not given in evidence",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:a52e33444682c3e9365c7a9f"
+        },
+        {
+         "kind": "PERCENT",
+         "type": "PERCENT",
+         "value": 0,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:1af56cb36f2e70927f67e005"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "exprId": "ir-expr:a83eca1d03b190e2dde3a8a8"
+     },
+     "dependsOnTerms": [
+      "SONIA",
+      "RFR Business Day",
+      "RFR Interest Day",
+      "RFR Lookback Day",
+      "Central Bank Rate",
+      "SONIA Administrator's Website"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The 0% floor (clause (b)) is faithfully captured as a MAX operand.",
+      "The SONIA/Central Bank Rate fallback cascade (clause (a)) is a genuine formula component but its multi-tier, time-bounded lookup logic cannot be faithfully represented by existing primitives and is marked UNSUPPORTED rather than forced into an ill-fitting COMPARE/IF tree.",
+      "a dated, multi-branch published-rate fallback cascade with an embedded 3-day usage cap is not representable with the available arithmetic/comparison primitives without fabricating rate values not given in evidence",
+      "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:7f7813325e943598ebcb1aa9",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Default",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Event of Default"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained qualitative definition; depends only on 'Event of Default', which is a cross-reference to another defined term rather than a numeric input."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means any event or condition that constitutes an Event of Default or that upon notice, lapse of time or both would, unless cured or waived, becomes an Event of Default."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:2090a20edf1bc612fe43b0cc",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Default Right",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition is fully stated by cross-reference to specific external regulatory provisions (12 C.F.R. §§ 252.81, 47.2, 382.1); no document-internal computation is involved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to that term in, and shall be interpreted in accordance with, 12 C.F.R. §§ 252.81, 47.2 or 382.1, as applicable."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:182239e79500d390d7f22ce4",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Defaulting Lender",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "OR",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:01e8ddac337f549ee9d1ef9e",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:7173008556786dd9d8836db4",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "NUMBER",
+         "inputName": "Business Days elapsed since Term Loan funding was required to be made by the Lender",
+         "exprId": "ir-expr:f7c86519b3b63f2d4aaa86e3"
+        },
+        "operator": "GT",
+        "right": {
+         "kind": "NUMBER",
+         "type": "NUMBER",
+         "value": 1,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(a)(i)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:8d3dac339576bc9b4a947145"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(a)(i)",
+         "excerpt": null
+        },
+        "inventoryItemIds": [
+         "inv-item:dd1733449170b90cdeffc810"
+        ]
+       },
+       {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:5b2c7f447b70cbcda1a13db5",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "NUMBER",
+         "inputName": "Business Days elapsed since Revolving Loan funding was required to be made by the Lender",
+         "exprId": "ir-expr:5e6bdf62edf7c6d0c7d7e68b"
+        },
+        "operator": "GT",
+        "right": {
+         "kind": "NUMBER",
+         "type": "NUMBER",
+         "value": 2,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(a)(ii)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:e8a499c2bd03dd4e41e9a288"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(a)(ii)",
+         "excerpt": null
+        },
+        "inventoryItemIds": [
+         "inv-item:29c5fc302c916f0ffe29d047"
+        ]
+       },
+       {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "BOOLEAN",
+        "inputName": "Lender has notified the Initial Borrower, Administrative Agent or any Lender in writing (or made a public statement) that it does not intend to comply with its funding obligations",
+        "exprId": "ir-expr:736c953a7841c9514bf633e5"
+       },
+       {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:c10706ae2934868be4386841",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "NUMBER",
+         "inputName": "Business Days elapsed since the Administrative Agent's request for confirmation of compliance",
+         "exprId": "ir-expr:d69f3260c7ddcc99617105b6"
+        },
+        "operator": "GT",
+        "right": {
+         "kind": "NUMBER",
+         "type": "NUMBER",
+         "value": 3,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(c)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:6ba1063650af8f80c3344af5"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(c)",
+         "excerpt": null
+        }
+       },
+       {
+        "kind": "AND",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:b55554a161b4b27ae82e1798",
+        "operands": [
+         {
+          "kind": "COMPARE",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:15b57eb4a9a5a28b4d1abd45",
+          "left": {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "type": "NUMBER",
+           "inputName": "Business Days elapsed since any other amount required to be paid hereunder became due",
+           "exprId": "ir-expr:0eb24f6773acb82d28f4239e"
+          },
+          "operator": "GT",
+          "right": {
+           "kind": "NUMBER",
+           "type": "NUMBER",
+           "value": 2,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(d)",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:8cd055a663e6b0bbd9b88888"
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(d)",
+           "excerpt": null
+          }
+         },
+         {
+          "kind": "NOT",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:0520bc5f9c2dab7d8ade52d6",
+          "operand": {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "type": "BOOLEAN",
+           "inputName": "the unpaid amount is the subject of a good faith dispute or has been subsequently cured",
+           "exprId": "ir-expr:36420deb15752d1bd479b991"
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(d)",
+           "excerpt": null
+          }
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(d)",
+         "excerpt": null
+        },
+        "inventoryItemIds": [
+         "inv-item:788f5f8206fb51b86ddd877b"
+        ]
+       },
+       {
+        "kind": "OR",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:19ff5231aa7abe40e167f67c",
+        "operands": [
+         {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "BOOLEAN",
+          "inputName": "the Lender or its parent company has become or is insolvent",
+          "exprId": "ir-expr:12e9b2f8ac61550b507a0850"
+         },
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01(e)(ii)",
+          "semanticDescription": "Lender or parent company has become subject of a bankruptcy/insolvency proceeding or an action of the type described in Section 7.01(h) or (i), or has had a receiver/conservator/trustee/administrator/assignee/custodian appointed, or has taken action indicating consent/acquiescence to such",
+          "reason": "depends on cross-referenced Section 7.01(h)/(i), which was out of scope (source-context budget exhausted before expansion)",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(e)",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:b1d5e09749736c1e2917117e"
+         },
+         {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "BOOLEAN",
+          "inputName": "the Lender or its direct/indirect parent company has become subject of a Bail-In Action",
+          "exprId": "ir-expr:aaa4368ff8808ef7f05819d0"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(e)",
+         "excerpt": null
+        }
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Business Day",
+      "Term Loans",
+      "Revolving Loans",
+      "Administrative Agent",
+      "Bail-In Action"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Clauses (a)(i), (a)(ii) and (d), which carry the three MATERIAL inventory conditions, are faithfully represented as timing COMPAREs consuming their respective inventory items.",
+      "Clause (e)(ii) depends on cross-referenced Section 7.01(h)/(i), which could not be retrieved (out of scope/budget exhausted), so that sub-branch is UNSUPPORTED while the rest of the OR tree is preserved.",
+      "Clauses (b) and (c)/(e)(i)/(e)(iii) are qualitative/behavioral triggers represented via TRANSACTION_INPUT_REFERENCE since they are factual determinations rather than numeric formulas.",
+      "depends on cross-referenced Section 7.01(h)/(i), which was out of scope (source-context budget exhausted before expansion)",
+      "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:c767b8e18de05f95e92caf06",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Delaware Divided LLC",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Delaware LLC",
+      "Delaware LLC Division"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained cross-reference definition to two sibling terms both defined in the same section."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means any Delaware LLC which has been formed upon the consummation of a Delaware LLC Division."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e50f785acb16a2bbc7fe691b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Delaware LLC",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained qualitative definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means any limited liability company organized or formed under the laws of the State of Delaware."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f99cd37fe6c46228ea335049",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Delaware LLC Division",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Delaware LLC"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained; refers to an external statute (Delaware LLC Act Section 18-217) which is descriptive context, not a covenant-internal dependency."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the statutory division of any Delaware LLC into two (2) or more Delaware LLCs pursuant to Section 18-217 of the Delaware Limited Liability Company Act."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:9b56490b9119957dadee3c94",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Designated Affiliate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01 (definition of 'Designated Affiliate'); §9.02(h) (referenced, truncated)",
+      "semanticDescription": "the substantive meaning of 'Designated Affiliate' as set forth in Section 9.02(h)",
+      "reason": "getReferencedProvision was used to retrieve Section 9.02(h); the returned text was truncated mid-sentence ('in connection with any determination as to whether the requisite Lenders have ...') and does not reach the actual definitional content of the term, and its supersession status is UNKNOWN_SUPERSESSION_STATUS",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:5fe6139e9bffbd91d354b289"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "The defining text lives entirely in cross-referenced Section 9.02(h); the referenced-provision retrieval tool was used but returned only a truncated fragment that does not disclose the term's actual meaning, and its current operative status is unconfirmed.",
+      "getReferencedProvision was used to retrieve Section 9.02(h); the returned text was truncated mid-sentence ('in connection with any determination as to whether the requisite Lenders have ...') and does not reach the actual definitional content of the term, and its supersession status is UNKNOWN_SUPERSESSION_STATUS"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term set forth in Section 9.02(h)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:aa436faea0bd7e4dc772b6ec",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Designated Non-cash Consideration",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUBTRACT",
+      "type": "MONEY",
+      "exprId": "ir-expr:133bb85e906e22b9f8917c58",
+      "left": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "MONEY",
+       "inputName": "Fair Market Value of non-cash consideration received by a Restricted Party in the Asset Sale, as designated as Designated Non-cash Consideration by the Initial Borrower",
+       "exprId": "ir-expr:9e2f212ac7763ed8b211277c"
+      },
+      "right": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "MONEY",
+       "inputName": "cash or Cash Equivalents received in connection with a subsequent sale, redemption or repurchase of, or collection or payment on, such Designated Non-cash Consideration",
+       "exprId": "ir-expr:8075fd1f689ca123f5107f7e"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Fair Market Value",
+      "Restricted Party",
+      "Asset Sale",
+      "Cash Equivalents"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The definition's own formula (FMV of designated non-cash consideration, reduced by subsequently received cash/Cash Equivalents) is fully captured; both operands are inherently transaction-specific inputs, faithfully modeled as TRANSACTION_INPUT_REFERENCE rather than fabricated values.",
+      "The outstanding-amount reduction rule (ceasing to be outstanding once paid/redeemed/retired/sold per Section 6.05) is a status/derecognition rule, not part of the SUBTRACT formula itself; Section 6.05 was out of scope but does not change the formula already captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the Fair Market Value of non-cash consideration received ... less the amount of cash or Cash Equivalents received in connection with a subsequent sale, redemption or repurchase of or collection or payment on such Designated Non-cash Consideration."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:eb69c1d577600574005334c2",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Designated Preferred Stock",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Preferred Stock",
+      "Disqualified Stock",
+      "Restricted Party",
+      "Parent Entity"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The definition's own qualitative criteria (Preferred Stock other than Disqualified Stock, issued for cash other than to a Restricted Party or ESOP, designated on issuance) are fully stated.",
+      "The reference to Section 6.08(a)(3) only describes where the resulting cash proceeds are later excluded from a separate calculation; it does not change this term's own meaning, and that section was out of scope (budget exhausted) but is not needed to represent this definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means Preferred Stock of any Restricted Party or any Parent Entity (in each case other than Disqualified Stock) that is issued for cash ... and is so designated as Designated Preferred Stock ... the cash proceeds of which are excluded from the calculation set forth in Section 6.08(a)(3) hereof."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:5b2fe31a20d518ee5e3d5d6d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Discretionary Guarantor",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Party",
+      "Excluded Subsidiary",
+      "Administrative Agent",
+      "Loan Party"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "getReferencedProvision was used to retrieve Section 9.23(a); it confirms the core mechanic (Initial Borrower may elect to add an Excluded Subsidiary or other Person satisfactory to the Administrative Agent as an additional guarantor/Loan Party, termed a 'Discretionary Guarantor') but the retrieved text is truncated at 'as follows:' before the enumerated election procedure, and its supersession status is UNKNOWN_SUPERSESSION_STATUS, so the full mechanic cannot be confirmed current or complete."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term set forth in Section 9.23(a). [§9.23(a), referenced: '...the Initial Borrower may elect to add any Restricted Party that is an Excluded Subsidiary or any other Person reasonably satisfactory to the Administrative Agent to be added as an additional guarantor and a Loan Party (a \"Discretionary Guarantor\") as follows:']"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d8df26cb298bef49fd8b10f2",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Disinterested Director",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Affiliate Transaction",
+      "Board of Directors",
+      "Capital Stock",
+      "Parent Entity"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained qualitative definition, including its own carve-out (holding Capital Stock/options does not itself create a disqualifying financial interest)."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, with respect to any Affiliate Transaction, a member of the Board of Directors ... having no material direct or indirect financial interest ... A member ... shall be deemed not to have such a financial interest by reason of such member's holding Capital Stock ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:a783e39975060e533ab9efe4",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Disposed EBITDA",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DEFINED_TERM_REFERENCE",
+      "type": "MONEY",
+      "termName": "Consolidated EBITDA",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:c1d09b8c99be38b2371477a4"
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Sold Entity or Business",
+      "Converted Unrestricted Subsidiary"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The base metric (Consolidated EBITDA) is correctly referenced, but the definition's actual mechanic is a term-substitution rule (computing Consolidated EBITDA 'as if' references to the Restricted Parties were references to the Sold Entity/Business or Converted Unrestricted Subsidiary and its subsidiaries) that the available node types cannot express - a DEFINED_TERM_REFERENCE alone cannot carry that substitution semantics, so this is only a partial representation."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means ... the amount for such period of Consolidated EBITDA of such Sold Entity or Business or Converted Unrestricted Subsidiary (determined as if references to the Restricted Parties in the definition of the term 'Consolidated EBITDA' ... were references to such Sold Entity or Business ...)"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": [
+    {
+     "inventoryItemId": "inv-item:dd1733449170b90cdeffc810",
+     "disposition": "CONSUMED",
+     "note": "Consumed by the (a)(i) COMPARE operand in the Defaulting Lender OR-tree (1 Business Day Term Loan funding failure)."
+    },
+    {
+     "inventoryItemId": "inv-item:29c5fc302c916f0ffe29d047",
+     "disposition": "CONSUMED",
+     "note": "Consumed by the (a)(ii) COMPARE operand in the Defaulting Lender OR-tree (2 Business Days Revolving Loan funding failure)."
+    },
+    {
+     "inventoryItemId": "inv-item:788f5f8206fb51b86ddd877b",
+     "disposition": "CONSUMED",
+     "note": "Consumed by the (d) AND/COMPARE/NOT operand in the Defaulting Lender OR-tree (2 Business Days pay-over failure, absent good faith dispute/cure)."
+    }
+   ]
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d2].MAX[0]] a dated, multi-branch published-rate fallback cascade with an embedded 3-day usage cap is not representable with the available arithmetic/comparison primitives without fabricating rate values not given in evidence",
+   "[definition[d2]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+   "[definition[d5].OR[5].OR[1]] depends on cross-referenced Section 7.01(h)/(i), which was out of scope (source-context budget exhausted before expansion)",
+   "[definition[d5].OR[5]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d5]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9]] getReferencedProvision was used to retrieve Section 9.02(h); the returned text was truncated mid-sentence ('in connection with any determination as to whether the requisite Lenders have ...') and does not reach the actual definitional content of the term, and its supersession status is UNKNOWN_SUPERSESSION_STATUS",
+   "This source region is a definitions article (§1.01) containing 14 independently meaningful defined terms; each was emitted as its own WireDefinition per the multiple-definitions rule, rather than merging or selecting only the most salient ones.",
+   "No independently operative WireRule was identified in this excerpt - all content is definitional; the only quantitative/conditional mechanics found (Defaulting Lender's funding-failure timing tests, Daily Simple RFR's rate floor/fallback, Customary Intercreditor Agreement's posting/deemed-consent day counts) were represented within the relevant definition's calculationExpression rather than as freestanding rules.",
+   "Cross-references to Section 6.08, 6.08(a), 6.08(a)(3), 7.01, 7.01(h), Section 9.02, Section 6.05, and Section 9.23(a) (enumeration portion) could not be expanded due to source-context budget exhaustion in Phase 2's region retrieval; getReferencedProvision was affirmatively used in this session for Section 9.02(h) and Section 9.23(a) per the mandatory retrieval-before-giving-up rule, and the results (truncated / unconfirmed supersession status) are reflected in the affected definitions' sufficiency ratings.",
+   "The 'clause (a)' cross-reference ambiguity flagged by Phase 2 (multiple colliding occurrences) was not independently re-resolved because it did not bear on any economics compiled here.",
+   "Two IR extension candidates were logged for genuinely recurring shapes (rate fallback waterfalls; scoped metric substitution) that the current primitive set cannot faithfully express without fabrication."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 58726,
+   "outputTokens": 21301,
+   "costUsd": 0.33046200000000003
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:0b4ae144a12295e236477fce",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Customary Intercreditor Agreement",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Term Priority Collateral",
+     "ABL Priority Collateral",
+     "Secured Obligations",
+     "ABL Obligations",
+     "First Lien Intercreditor Agreement",
+     "ABL Intercreditor Agreement",
+     "Junior Lien Intercreditor Agreement",
+     "Administrative Agent",
+     "Required Lenders",
+     "Initial Borrower",
+     "Collateral"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Full qualitative definition text supplied and reproduced; this is a qualitative/procedural definition (which of two forms of intercreditor agreement qualifies, plus a lender-notice/deemed-consent mechanic) rather than a computable formula, so calculationExpression is null per the non-formula definition pattern.",
+     "The two procedural day-counts (5 Business Days' advance posting; 3 Business Days to object) are preserved in the excerpt text; they gate lender deemed-consent, not a covenant capacity, so no separate boolean/COMPARE tree was forced."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means (a) ... an intercreditor agreement substantially in the form of ... or (b) ... junior to the Liens on the Collateral securing the Secured Obligations ... such changes or agreement ... shall be posted to the Lenders not less than five (5) Business Days before execution ... and, if the Required Lenders shall not have objected ... within three (3) Business Days after posting, then the Required Lenders shall be deemed to have ... consented"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:915e21cc47ca4d91e6fc63e9",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Daily Simple RFR",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "(no evidence captured)",
+     "semanticDescription": "unrecognized or malformed expression (kind=\"MAX\")",
+     "reason": "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "attemptedStructure": {
+      "kind": "MAX",
+      "type": "NUMBER",
+      "exprId": "ir-expr:83f6bac3ff2fb704224f8a6c",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01, definition of 'Daily Simple RFR', clauses (a)(x)-(a)(z)",
+        "semanticDescription": "Multi-tier SONIA lookback/fallback waterfall: SONIA on the RFR Lookback Day, else SONIA on the first preceding RFR Business Day for which SONIA was published (capped at 3 consecutive days of use), else the Central Bank Rate for the Lookback Day, else the most recent Central Bank Rate within 5 RFR Business Days",
+        "reason": "a dated, multi-branch published-rate fallback cascade with an embedded 3-day usage cap is not representable with the available arithmetic/comparison primitives without fabricating rate values not given in evidence",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:a52e33444682c3e9365c7a9f"
+       },
+       {
+        "kind": "PERCENT",
+        "type": "PERCENT",
+        "value": 0,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:1af56cb36f2e70927f67e005"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "exprId": "ir-expr:a83eca1d03b190e2dde3a8a8"
+    },
+    "dependsOnTerms": [
+     "SONIA",
+     "RFR Business Day",
+     "RFR Interest Day",
+     "RFR Lookback Day",
+     "Central Bank Rate",
+     "SONIA Administrator's Website"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The 0% floor (clause (b)) is faithfully captured as a MAX operand.",
+     "The SONIA/Central Bank Rate fallback cascade (clause (a)) is a genuine formula component but its multi-tier, time-bounded lookup logic cannot be faithfully represented by existing primitives and is marked UNSUPPORTED rather than forced into an ill-fitting COMPARE/IF tree.",
+     "a dated, multi-branch published-rate fallback cascade with an embedded 3-day usage cap is not representable with the available arithmetic/comparison primitives without fabricating rate values not given in evidence",
+     "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": null
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:7f7813325e943598ebcb1aa9",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Default",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Event of Default"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained qualitative definition; depends only on 'Event of Default', which is a cross-reference to another defined term rather than a numeric input."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means any event or condition that constitutes an Event of Default or that upon notice, lapse of time or both would, unless cured or waived, becomes an Event of Default."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:2090a20edf1bc612fe43b0cc",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Default Right",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition is fully stated by cross-reference to specific external regulatory provisions (12 C.F.R. §§ 252.81, 47.2, 382.1); no document-internal computation is involved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to that term in, and shall be interpreted in accordance with, 12 C.F.R. §§ 252.81, 47.2 or 382.1, as applicable."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:182239e79500d390d7f22ce4",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Defaulting Lender",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "OR",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:01e8ddac337f549ee9d1ef9e",
+     "operands": [
+      {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:7173008556786dd9d8836db4",
+       "left": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "NUMBER",
+        "inputName": "Business Days elapsed since Term Loan funding was required to be made by the Lender",
+        "exprId": "ir-expr:f7c86519b3b63f2d4aaa86e3"
+       },
+       "operator": "GT",
+       "right": {
+        "kind": "NUMBER",
+        "type": "NUMBER",
+        "value": 1,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(a)(i)",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:8d3dac339576bc9b4a947145"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(a)(i)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:dd1733449170b90cdeffc810"
+       ]
+      },
+      {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:5b2c7f447b70cbcda1a13db5",
+       "left": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "NUMBER",
+        "inputName": "Business Days elapsed since Revolving Loan funding was required to be made by the Lender",
+        "exprId": "ir-expr:5e6bdf62edf7c6d0c7d7e68b"
+       },
+       "operator": "GT",
+       "right": {
+        "kind": "NUMBER",
+        "type": "NUMBER",
+        "value": 2,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(a)(ii)",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:e8a499c2bd03dd4e41e9a288"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(a)(ii)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:29c5fc302c916f0ffe29d047"
+       ]
+      },
+      {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "BOOLEAN",
+       "inputName": "Lender has notified the Initial Borrower, Administrative Agent or any Lender in writing (or made a public statement) that it does not intend to comply with its funding obligations",
+       "exprId": "ir-expr:736c953a7841c9514bf633e5"
+      },
+      {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:c10706ae2934868be4386841",
+       "left": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "NUMBER",
+        "inputName": "Business Days elapsed since the Administrative Agent's request for confirmation of compliance",
+        "exprId": "ir-expr:d69f3260c7ddcc99617105b6"
+       },
+       "operator": "GT",
+       "right": {
+        "kind": "NUMBER",
+        "type": "NUMBER",
+        "value": 3,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(c)",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:6ba1063650af8f80c3344af5"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(c)",
+        "excerpt": null
+       }
+      },
+      {
+       "kind": "AND",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:b55554a161b4b27ae82e1798",
+       "operands": [
+        {
+         "kind": "COMPARE",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:15b57eb4a9a5a28b4d1abd45",
+         "left": {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "NUMBER",
+          "inputName": "Business Days elapsed since any other amount required to be paid hereunder became due",
+          "exprId": "ir-expr:0eb24f6773acb82d28f4239e"
+         },
+         "operator": "GT",
+         "right": {
+          "kind": "NUMBER",
+          "type": "NUMBER",
+          "value": 2,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(d)",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:8cd055a663e6b0bbd9b88888"
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(d)",
+          "excerpt": null
+         }
+        },
+        {
+         "kind": "NOT",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:0520bc5f9c2dab7d8ade52d6",
+         "operand": {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "BOOLEAN",
+          "inputName": "the unpaid amount is the subject of a good faith dispute or has been subsequently cured",
+          "exprId": "ir-expr:36420deb15752d1bd479b991"
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(d)",
+          "excerpt": null
+         }
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(d)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:788f5f8206fb51b86ddd877b"
+       ]
+      },
+      {
+       "kind": "OR",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:19ff5231aa7abe40e167f67c",
+       "operands": [
+        {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "BOOLEAN",
+         "inputName": "the Lender or its parent company has become or is insolvent",
+         "exprId": "ir-expr:12e9b2f8ac61550b507a0850"
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01(e)(ii)",
+         "semanticDescription": "Lender or parent company has become subject of a bankruptcy/insolvency proceeding or an action of the type described in Section 7.01(h) or (i), or has had a receiver/conservator/trustee/administrator/assignee/custodian appointed, or has taken action indicating consent/acquiescence to such",
+         "reason": "depends on cross-referenced Section 7.01(h)/(i), which was out of scope (source-context budget exhausted before expansion)",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(e)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:b1d5e09749736c1e2917117e"
+        },
+        {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "BOOLEAN",
+         "inputName": "the Lender or its direct/indirect parent company has become subject of a Bail-In Action",
+         "exprId": "ir-expr:aaa4368ff8808ef7f05819d0"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(e)",
+        "excerpt": null
+       }
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Business Day",
+     "Term Loans",
+     "Revolving Loans",
+     "Administrative Agent",
+     "Bail-In Action"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Clauses (a)(i), (a)(ii) and (d), which carry the three MATERIAL inventory conditions, are faithfully represented as timing COMPAREs consuming their respective inventory items.",
+     "Clause (e)(ii) depends on cross-referenced Section 7.01(h)/(i), which could not be retrieved (out of scope/budget exhausted), so that sub-branch is UNSUPPORTED while the rest of the OR tree is preserved.",
+     "Clauses (b) and (c)/(e)(i)/(e)(iii) are qualitative/behavioral triggers represented via TRANSACTION_INPUT_REFERENCE since they are factual determinations rather than numeric formulas.",
+     "depends on cross-referenced Section 7.01(h)/(i), which was out of scope (source-context budget exhausted before expansion)",
+     "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+     "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": null
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:c767b8e18de05f95e92caf06",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Delaware Divided LLC",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Delaware LLC",
+     "Delaware LLC Division"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained cross-reference definition to two sibling terms both defined in the same section."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means any Delaware LLC which has been formed upon the consummation of a Delaware LLC Division."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e50f785acb16a2bbc7fe691b",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Delaware LLC",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained qualitative definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means any limited liability company organized or formed under the laws of the State of Delaware."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f99cd37fe6c46228ea335049",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Delaware LLC Division",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Delaware LLC"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained; refers to an external statute (Delaware LLC Act Section 18-217) which is descriptive context, not a covenant-internal dependency."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the statutory division of any Delaware LLC into two (2) or more Delaware LLCs pursuant to Section 18-217 of the Delaware Limited Liability Company Act."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:9b56490b9119957dadee3c94",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Designated Affiliate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01 (definition of 'Designated Affiliate'); §9.02(h) (referenced, truncated)",
+     "semanticDescription": "the substantive meaning of 'Designated Affiliate' as set forth in Section 9.02(h)",
+     "reason": "getReferencedProvision was used to retrieve Section 9.02(h); the returned text was truncated mid-sentence ('in connection with any determination as to whether the requisite Lenders have ...') and does not reach the actual definitional content of the term, and its supersession status is UNKNOWN_SUPERSESSION_STATUS",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:5fe6139e9bffbd91d354b289"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "The defining text lives entirely in cross-referenced Section 9.02(h); the referenced-provision retrieval tool was used but returned only a truncated fragment that does not disclose the term's actual meaning, and its current operative status is unconfirmed.",
+     "getReferencedProvision was used to retrieve Section 9.02(h); the returned text was truncated mid-sentence ('in connection with any determination as to whether the requisite Lenders have ...') and does not reach the actual definitional content of the term, and its supersession status is UNKNOWN_SUPERSESSION_STATUS"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term set forth in Section 9.02(h)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:aa436faea0bd7e4dc772b6ec",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Designated Non-cash Consideration",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "SUBTRACT",
+     "type": "MONEY",
+     "exprId": "ir-expr:133bb85e906e22b9f8917c58",
+     "left": {
+      "kind": "TRANSACTION_INPUT_REFERENCE",
+      "type": "MONEY",
+      "inputName": "Fair Market Value of non-cash consideration received by a Restricted Party in the Asset Sale, as designated as Designated Non-cash Consideration by the Initial Borrower",
+      "exprId": "ir-expr:9e2f212ac7763ed8b211277c"
+     },
+     "right": {
+      "kind": "TRANSACTION_INPUT_REFERENCE",
+      "type": "MONEY",
+      "inputName": "cash or Cash Equivalents received in connection with a subsequent sale, redemption or repurchase of, or collection or payment on, such Designated Non-cash Consideration",
+      "exprId": "ir-expr:8075fd1f689ca123f5107f7e"
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Fair Market Value",
+     "Restricted Party",
+     "Asset Sale",
+     "Cash Equivalents"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The definition's own formula (FMV of designated non-cash consideration, reduced by subsequently received cash/Cash Equivalents) is fully captured; both operands are inherently transaction-specific inputs, faithfully modeled as TRANSACTION_INPUT_REFERENCE rather than fabricated values.",
+     "The outstanding-amount reduction rule (ceasing to be outstanding once paid/redeemed/retired/sold per Section 6.05) is a status/derecognition rule, not part of the SUBTRACT formula itself; Section 6.05 was out of scope but does not change the formula already captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the Fair Market Value of non-cash consideration received ... less the amount of cash or Cash Equivalents received in connection with a subsequent sale, redemption or repurchase of or collection or payment on such Designated Non-cash Consideration."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:eb69c1d577600574005334c2",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Designated Preferred Stock",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Preferred Stock",
+     "Disqualified Stock",
+     "Restricted Party",
+     "Parent Entity"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The definition's own qualitative criteria (Preferred Stock other than Disqualified Stock, issued for cash other than to a Restricted Party or ESOP, designated on issuance) are fully stated.",
+     "The reference to Section 6.08(a)(3) only describes where the resulting cash proceeds are later excluded from a separate calculation; it does not change this term's own meaning, and that section was out of scope (budget exhausted) but is not needed to represent this definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means Preferred Stock of any Restricted Party or any Parent Entity (in each case other than Disqualified Stock) that is issued for cash ... and is so designated as Designated Preferred Stock ... the cash proceeds of which are excluded from the calculation set forth in Section 6.08(a)(3) hereof."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:5b2fe31a20d518ee5e3d5d6d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Discretionary Guarantor",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Restricted Party",
+     "Excluded Subsidiary",
+     "Administrative Agent",
+     "Loan Party"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "getReferencedProvision was used to retrieve Section 9.23(a); it confirms the core mechanic (Initial Borrower may elect to add an Excluded Subsidiary or other Person satisfactory to the Administrative Agent as an additional guarantor/Loan Party, termed a 'Discretionary Guarantor') but the retrieved text is truncated at 'as follows:' before the enumerated election procedure, and its supersession status is UNKNOWN_SUPERSESSION_STATUS, so the full mechanic cannot be confirmed current or complete."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term set forth in Section 9.23(a). [§9.23(a), referenced: '...the Initial Borrower may elect to add any Restricted Party that is an Excluded Subsidiary or any other Person reasonably satisfactory to the Administrative Agent to be added as an additional guarantor and a Loan Party (a \"Discretionary Guarantor\") as follows:']"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d8df26cb298bef49fd8b10f2",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Disinterested Director",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Affiliate Transaction",
+     "Board of Directors",
+     "Capital Stock",
+     "Parent Entity"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained qualitative definition, including its own carve-out (holding Capital Stock/options does not itself create a disqualifying financial interest)."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, with respect to any Affiliate Transaction, a member of the Board of Directors ... having no material direct or indirect financial interest ... A member ... shall be deemed not to have such a financial interest by reason of such member's holding Capital Stock ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:a783e39975060e533ab9efe4",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Disposed EBITDA",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "DEFINED_TERM_REFERENCE",
+     "type": "MONEY",
+     "termName": "Consolidated EBITDA",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "resolvedDefinitionId": null,
+     "exprId": "ir-expr:c1d09b8c99be38b2371477a4"
+    },
+    "dependsOnTerms": [
+     "Consolidated EBITDA",
+     "Sold Entity or Business",
+     "Converted Unrestricted Subsidiary"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The base metric (Consolidated EBITDA) is correctly referenced, but the definition's actual mechanic is a term-substitution rule (computing Consolidated EBITDA 'as if' references to the Restricted Parties were references to the Sold Entity/Business or Converted Unrestricted Subsidiary and its subsidiaries) that the available node types cannot express - a DEFINED_TERM_REFERENCE alone cannot carry that substitution semantics, so this is only a partial representation."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means ... the amount for such period of Consolidated EBITDA of such Sold Entity or Business or Converted Unrestricted Subsidiary (determined as if references to the Restricted Parties in the definition of the term 'Consolidated EBITDA' ... were references to such Sold Entity or Business ...)"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01, definition of 'Daily Simple RFR', clauses (a)(x)-(a)(z)",
+    "semanticRequirement": "Represent a multi-tier, dated published-rate fallback waterfall (primary rate on a lookback day; if unpublished, most recent prior published rate capped at N consecutive uses; if still unavailable, a substitute central-bank rate; if that too is unavailable, the most recent such rate within a further lookback window)",
+    "whyExistingPrimitivesFail": "SCHEDULE handles date-ranged fixed values and IF/COMPARE handle single-branch boolean gating, but neither models a chained 'try rate A, else try rate B capped at K consecutive occurrences, else try rate C, else try rate C from an earlier date' cascade with published-availability as the branching condition rather than a comparable value",
+    "candidateGeneralizedPrimitive": "a RATE_FALLBACK_CASCADE node taking an ordered list of (source, availability-condition, usage-cap) tuples and a terminal default"
+   },
+   {
+    "sourceEvidence": "§1.01, definition of 'Disposed EBITDA'",
+    "semanticRequirement": "Express a metric definition that is computed by substituting the entity-scope of another defined term (Consolidated EBITDA) - i.e. re-running that term's own formula with a different underlying entity population",
+    "whyExistingPrimitivesFail": "DEFINED_TERM_REFERENCE/METRIC_REFERENCE can point to the base term but cannot carry a parameterized 'recompute this metric with entity scope X substituted for entity scope Y' instruction; there is no scoped re-evaluation primitive",
+    "candidateGeneralizedPrimitive": "a SCOPED_METRIC_SUBSTITUTION node taking a base metric reference plus an entity-scope override to apply when re-evaluating it"
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d2].MAX[0]] a dated, multi-branch published-rate fallback cascade with an embedded 3-day usage cap is not representable with the available arithmetic/comparison primitives without fabricating rate values not given in evidence",
+   "[definition[d2]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+   "[definition[d5].OR[5].OR[1]] depends on cross-referenced Section 7.01(h)/(i), which was out of scope (source-context budget exhausted before expansion)",
+   "[definition[d5].OR[5]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d5]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9]] getReferencedProvision was used to retrieve Section 9.02(h); the returned text was truncated mid-sentence ('in connection with any determination as to whether the requisite Lenders have ...') and does not reach the actual definitional content of the term, and its supersession status is UNKNOWN_SUPERSESSION_STATUS",
+   "This source region is a definitions article (§1.01) containing 14 independently meaningful defined terms; each was emitted as its own WireDefinition per the multiple-definitions rule, rather than merging or selecting only the most salient ones.",
+   "No independently operative WireRule was identified in this excerpt - all content is definitional; the only quantitative/conditional mechanics found (Defaulting Lender's funding-failure timing tests, Daily Simple RFR's rate floor/fallback, Customary Intercreditor Agreement's posting/deemed-consent day counts) were represented within the relevant definition's calculationExpression rather than as freestanding rules.",
+   "Cross-references to Section 6.08, 6.08(a), 6.08(a)(3), 7.01, 7.01(h), Section 9.02, Section 6.05, and Section 9.23(a) (enumeration portion) could not be expanded due to source-context budget exhaustion in Phase 2's region retrieval; getReferencedProvision was affirmatively used in this session for Section 9.02(h) and Section 9.23(a) per the mandatory retrieval-before-giving-up rule, and the results (truncated / unconfirmed supersession status) are reflected in the affected definitions' sufficiency ratings.",
+   "The 'clause (a)' cross-reference ambiguity flagged by Phase 2 (multiple colliding occurrences) was not independently re-resolved because it did not bear on any economics compiled here.",
+   "Two IR extension candidates were logged for genuinely recurring shapes (rate fallback waterfalls; scoped metric substitution) that the current primitive set cannot faithfully express without fabrication."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 9.02(h)"
+    },
+    "outputSummary": "resolved reference \"Section 9.02(h)\" -> 9.02(h) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 131,
+    "timestamp": "2026-09-14T17:49:19.624Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 9.02(h)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:18c169f2e0ffe6ce70013592",
+     "sourceNodeKey": "doc-a::9.02(h)",
+     "charStart": 769592,
+     "charEnd": 769723,
+     "rawText": "(h) Notwithstanding anything to the contrary herein, in connection with any determination as\nto whether the requisite Lenders have ",
+     "contentHash": "ca8344a09b64391529f7deffecb2a7a586a92297ef5d316b8d1e595d046360e3",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 9.23(a)"
+    },
+    "outputSummary": "resolved reference \"Section 9.23(a)\" -> 9.23(a) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 303,
+    "timestamp": "2026-09-14T17:49:19.624Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 9.23(a)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:0993c2d5335672d2a0613a98",
+     "sourceNodeKey": "doc-a::9.23(a)",
+     "charStart": 858346,
+     "charEnd": 858649,
+     "rawText": "(a) At any time after the Effective Date, the Initial Borrower may elect to add any Restricted Party that is an Excluded Subsidiary or any\nother Person reasonably satisfactory to the Administrative Agent to be added as an additional guarantor and a Loan Party (a “Discretionary Guarantor”) as follows:\n\n",
+     "contentHash": "648805b48907faa79127b3bda725bfb78ddd1325fffefd936937113ad494ae86",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "Customary Intercreditor Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Term Priority Collateral",
+      "ABL Priority Collateral",
+      "Secured Obligations",
+      "ABL Obligations",
+      "First Lien Intercreditor Agreement",
+      "ABL Intercreditor Agreement",
+      "Junior Lien Intercreditor Agreement",
+      "Administrative Agent",
+      "Required Lenders",
+      "Initial Borrower",
+      "Collateral"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full qualitative definition text supplied and reproduced; this is a qualitative/procedural definition (which of two forms of intercreditor agreement qualifies, plus a lender-notice/deemed-consent mechanic) rather than a computable formula, so calculationExpression is null per the non-formula definition pattern.",
+      "The two procedural day-counts (5 Business Days' advance posting; 3 Business Days to object) are preserved in the excerpt text; they gate lender deemed-consent, not a covenant capacity, so no separate boolean/COMPARE tree was forced."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means (a) ... an intercreditor agreement substantially in the form of ... or (b) ... junior to the Liens on the Collateral securing the Secured Obligations ... such changes or agreement ... shall be posted to the Lenders not less than five (5) Business Days before execution ... and, if the Required Lenders shall not have objected ... within three (3) Business Days after posting, then the Required Lenders shall be deemed to have ... consented"
+    },
+    {
+     "localRef": "d2",
+     "termName": "Daily Simple RFR",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MAX",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "Multi-tier SONIA lookback/fallback waterfall: SONIA on the RFR Lookback Day, else SONIA on the first preceding RFR Business Day for which SONIA was published (capped at 3 consecutive days of use), else the Central Bank Rate for the Lookback Day, else the most recent Central Bank Rate within 5 RFR Business Days",
+        "reason": "a dated, multi-branch published-rate fallback cascade with an embedded 3-day usage cap is not representable with the available arithmetic/comparison primitives without fabricating rate values not given in evidence",
+        "sourceEvidence": "§1.01, definition of 'Daily Simple RFR', clauses (a)(x)-(a)(z)"
+       },
+       {
+        "kind": "PERCENT",
+        "value": 0,
+        "citation": "§1.01"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "SONIA",
+      "RFR Business Day",
+      "RFR Interest Day",
+      "RFR Lookback Day",
+      "Central Bank Rate",
+      "SONIA Administrator's Website"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The 0% floor (clause (b)) is faithfully captured as a MAX operand.",
+      "The SONIA/Central Bank Rate fallback cascade (clause (a)) is a genuine formula component but its multi-tier, time-bounded lookup logic cannot be faithfully represented by existing primitives and is marked UNSUPPORTED rather than forced into an ill-fitting COMPARE/IF tree."
+     ],
+     "citation": "§1.01"
+    },
+    {
+     "localRef": "d3",
+     "termName": "Default",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Event of Default"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained qualitative definition; depends only on 'Event of Default', which is a cross-reference to another defined term rather than a numeric input."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means any event or condition that constitutes an Event of Default or that upon notice, lapse of time or both would, unless cured or waived, becomes an Event of Default."
+    },
+    {
+     "localRef": "d4",
+     "termName": "Default Right",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition is fully stated by cross-reference to specific external regulatory provisions (12 C.F.R. §§ 252.81, 47.2, 382.1); no document-internal computation is involved."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to that term in, and shall be interpreted in accordance with, 12 C.F.R. §§ 252.81, 47.2 or 382.1, as applicable."
+    },
+    {
+     "localRef": "d5",
+     "termName": "Defaulting Lender",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "OR",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "inputName": "Business Days elapsed since Term Loan funding was required to be made by the Lender"
+        },
+        "operator": "GT",
+        "right": {
+         "kind": "NUMBER",
+         "value": 1
+        },
+        "citation": "§1.01(a)(i)",
+        "inventoryItemIds": [
+         "inv-item:dd1733449170b90cdeffc810"
+        ]
+       },
+       {
+        "kind": "COMPARE",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "inputName": "Business Days elapsed since Revolving Loan funding was required to be made by the Lender"
+        },
+        "operator": "GT",
+        "right": {
+         "kind": "NUMBER",
+         "value": 2
+        },
+        "citation": "§1.01(a)(ii)",
+        "inventoryItemIds": [
+         "inv-item:29c5fc302c916f0ffe29d047"
+        ]
+       },
+       {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "inputName": "Lender has notified the Initial Borrower, Administrative Agent or any Lender in writing (or made a public statement) that it does not intend to comply with its funding obligations",
+        "citation": "§1.01(b)"
+       },
+       {
+        "kind": "COMPARE",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "inputName": "Business Days elapsed since the Administrative Agent's request for confirmation of compliance"
+        },
+        "operator": "GT",
+        "right": {
+         "kind": "NUMBER",
+         "value": 3
+        },
+        "citation": "§1.01(c)"
+       },
+       {
+        "kind": "AND",
+        "operands": [
+         {
+          "kind": "COMPARE",
+          "left": {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "inputName": "Business Days elapsed since any other amount required to be paid hereunder became due"
+          },
+          "operator": "GT",
+          "right": {
+           "kind": "NUMBER",
+           "value": 2
+          },
+          "citation": "§1.01(d)"
+         },
+         {
+          "kind": "NOT",
+          "operand": {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "inputName": "the unpaid amount is the subject of a good faith dispute or has been subsequently cured"
+          },
+          "citation": "§1.01(d)"
+         }
+        ],
+        "citation": "§1.01(d)",
+        "inventoryItemIds": [
+         "inv-item:788f5f8206fb51b86ddd877b"
+        ]
+       },
+       {
+        "kind": "OR",
+        "operands": [
+         {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "inputName": "the Lender or its parent company has become or is insolvent"
+         },
+         {
+          "kind": "UNSUPPORTED",
+          "semanticDescription": "Lender or parent company has become subject of a bankruptcy/insolvency proceeding or an action of the type described in Section 7.01(h) or (i), or has had a receiver/conservator/trustee/administrator/assignee/custodian appointed, or has taken action indicating consent/acquiescence to such",
+          "reason": "depends on cross-referenced Section 7.01(h)/(i), which was out of scope (source-context budget exhausted before expansion)",
+          "sourceEvidence": "§1.01(e)(ii)"
+         },
+         {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "inputName": "the Lender or its direct/indirect parent company has become subject of a Bail-In Action"
+         }
+        ],
+        "citation": "§1.01(e)"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Business Day",
+      "Term Loans",
+      "Revolving Loans",
+      "Administrative Agent",
+      "Bail-In Action"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Clauses (a)(i), (a)(ii) and (d), which carry the three MATERIAL inventory conditions, are faithfully represented as timing COMPAREs consuming their respective inventory items.",
+      "Clause (e)(ii) depends on cross-referenced Section 7.01(h)/(i), which could not be retrieved (out of scope/budget exhausted), so that sub-branch is UNSUPPORTED while the rest of the OR tree is preserved.",
+      "Clauses (b) and (c)/(e)(i)/(e)(iii) are qualitative/behavioral triggers represented via TRANSACTION_INPUT_REFERENCE since they are factual determinations rather than numeric formulas."
+     ],
+     "citation": "§1.01"
+    },
+    {
+     "localRef": "d6",
+     "termName": "Delaware Divided LLC",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Delaware LLC",
+      "Delaware LLC Division"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained cross-reference definition to two sibling terms both defined in the same section."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means any Delaware LLC which has been formed upon the consummation of a Delaware LLC Division."
+    },
+    {
+     "localRef": "d7",
+     "termName": "Delaware LLC",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained qualitative definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means any limited liability company organized or formed under the laws of the State of Delaware."
+    },
+    {
+     "localRef": "d8",
+     "termName": "Delaware LLC Division",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Delaware LLC"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained; refers to an external statute (Delaware LLC Act Section 18-217) which is descriptive context, not a covenant-internal dependency."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means the statutory division of any Delaware LLC into two (2) or more Delaware LLCs pursuant to Section 18-217 of the Delaware Limited Liability Company Act."
+    },
+    {
+     "localRef": "d9",
+     "termName": "Designated Affiliate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "the substantive meaning of 'Designated Affiliate' as set forth in Section 9.02(h)",
+      "reason": "getReferencedProvision was used to retrieve Section 9.02(h); the returned text was truncated mid-sentence ('in connection with any determination as to whether the requisite Lenders have ...') and does not reach the actual definitional content of the term, and its supersession status is UNKNOWN_SUPERSESSION_STATUS",
+      "sourceEvidence": "§1.01 (definition of 'Designated Affiliate'); §9.02(h) (referenced, truncated)"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "The defining text lives entirely in cross-referenced Section 9.02(h); the referenced-provision retrieval tool was used but returned only a truncated fragment that does not disclose the term's actual meaning, and its current operative status is unconfirmed."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term set forth in Section 9.02(h)."
+    },
+    {
+     "localRef": "d10",
+     "termName": "Designated Non-cash Consideration",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUBTRACT",
+      "left": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "inputName": "Fair Market Value of non-cash consideration received by a Restricted Party in the Asset Sale, as designated as Designated Non-cash Consideration by the Initial Borrower"
+      },
+      "right": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "inputName": "cash or Cash Equivalents received in connection with a subsequent sale, redemption or repurchase of, or collection or payment on, such Designated Non-cash Consideration"
+      },
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Fair Market Value",
+      "Restricted Party",
+      "Asset Sale",
+      "Cash Equivalents"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The definition's own formula (FMV of designated non-cash consideration, reduced by subsequently received cash/Cash Equivalents) is fully captured; both operands are inherently transaction-specific inputs, faithfully modeled as TRANSACTION_INPUT_REFERENCE rather than fabricated values.",
+      "The outstanding-amount reduction rule (ceasing to be outstanding once paid/redeemed/retired/sold per Section 6.05) is a status/derecognition rule, not part of the SUBTRACT formula itself; Section 6.05 was out of scope but does not change the formula already captured."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means the Fair Market Value of non-cash consideration received ... less the amount of cash or Cash Equivalents received in connection with a subsequent sale, redemption or repurchase of or collection or payment on such Designated Non-cash Consideration."
+    },
+    {
+     "localRef": "d11",
+     "termName": "Designated Preferred Stock",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Preferred Stock",
+      "Disqualified Stock",
+      "Restricted Party",
+      "Parent Entity"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The definition's own qualitative criteria (Preferred Stock other than Disqualified Stock, issued for cash other than to a Restricted Party or ESOP, designated on issuance) are fully stated.",
+      "The reference to Section 6.08(a)(3) only describes where the resulting cash proceeds are later excluded from a separate calculation; it does not change this term's own meaning, and that section was out of scope (budget exhausted) but is not needed to represent this definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means Preferred Stock of any Restricted Party or any Parent Entity (in each case other than Disqualified Stock) that is issued for cash ... and is so designated as Designated Preferred Stock ... the cash proceeds of which are excluded from the calculation set forth in Section 6.08(a)(3) hereof."
+    },
+    {
+     "localRef": "d12",
+     "termName": "Discretionary Guarantor",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Party",
+      "Excluded Subsidiary",
+      "Administrative Agent",
+      "Loan Party"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "getReferencedProvision was used to retrieve Section 9.23(a); it confirms the core mechanic (Initial Borrower may elect to add an Excluded Subsidiary or other Person satisfactory to the Administrative Agent as an additional guarantor/Loan Party, termed a 'Discretionary Guarantor') but the retrieved text is truncated at 'as follows:' before the enumerated election procedure, and its supersession status is UNKNOWN_SUPERSESSION_STATUS, so the full mechanic cannot be confirmed current or complete."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term set forth in Section 9.23(a). [§9.23(a), referenced: '...the Initial Borrower may elect to add any Restricted Party that is an Excluded Subsidiary or any other Person reasonably satisfactory to the Administrative Agent to be added as an additional guarantor and a Loan Party (a \"Discretionary Guarantor\") as follows:']"
+    },
+    {
+     "localRef": "d13",
+     "termName": "Disinterested Director",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Affiliate Transaction",
+      "Board of Directors",
+      "Capital Stock",
+      "Parent Entity"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained qualitative definition, including its own carve-out (holding Capital Stock/options does not itself create a disqualifying financial interest)."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, with respect to any Affiliate Transaction, a member of the Board of Directors ... having no material direct or indirect financial interest ... A member ... shall be deemed not to have such a financial interest by reason of such member's holding Capital Stock ..."
+    },
+    {
+     "localRef": "d14",
+     "termName": "Disposed EBITDA",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DEFINED_TERM_REFERENCE",
+      "termName": "Consolidated EBITDA",
+      "valueType": "MONEY",
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Sold Entity or Business",
+      "Converted Unrestricted Subsidiary"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The base metric (Consolidated EBITDA) is correctly referenced, but the definition's actual mechanic is a term-substitution rule (computing Consolidated EBITDA 'as if' references to the Restricted Parties were references to the Sold Entity/Business or Converted Unrestricted Subsidiary and its subsidiaries) that the available node types cannot express - a DEFINED_TERM_REFERENCE alone cannot carry that substitution semantics, so this is only a partial representation."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means ... the amount for such period of Consolidated EBITDA of such Sold Entity or Business or Converted Unrestricted Subsidiary (determined as if references to the Restricted Parties in the definition of the term 'Consolidated EBITDA' ... were references to such Sold Entity or Business ...)"
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "inventoryDispositions": [
+    {
+     "inventoryItemId": "inv-item:dd1733449170b90cdeffc810",
+     "disposition": "CONSUMED",
+     "note": "Consumed by the (a)(i) COMPARE operand in the Defaulting Lender OR-tree (1 Business Day Term Loan funding failure)."
+    },
+    {
+     "inventoryItemId": "inv-item:29c5fc302c916f0ffe29d047",
+     "disposition": "CONSUMED",
+     "note": "Consumed by the (a)(ii) COMPARE operand in the Defaulting Lender OR-tree (2 Business Days Revolving Loan funding failure)."
+    },
+    {
+     "inventoryItemId": "inv-item:788f5f8206fb51b86ddd877b",
+     "disposition": "CONSUMED",
+     "note": "Consumed by the (d) AND/COMPARE/NOT operand in the Defaulting Lender OR-tree (2 Business Days pay-over failure, absent good faith dispute/cure)."
+    }
+   ],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01, definition of 'Daily Simple RFR', clauses (a)(x)-(a)(z)",
+     "semanticRequirement": "Represent a multi-tier, dated published-rate fallback waterfall (primary rate on a lookback day; if unpublished, most recent prior published rate capped at N consecutive uses; if still unavailable, a substitute central-bank rate; if that too is unavailable, the most recent such rate within a further lookback window)",
+     "whyExistingPrimitivesFail": "SCHEDULE handles date-ranged fixed values and IF/COMPARE handle single-branch boolean gating, but neither models a chained 'try rate A, else try rate B capped at K consecutive occurrences, else try rate C, else try rate C from an earlier date' cascade with published-availability as the branching condition rather than a comparable value",
+     "candidateGeneralizedPrimitive": "a RATE_FALLBACK_CASCADE node taking an ordered list of (source, availability-condition, usage-cap) tuples and a terminal default"
+    },
+    {
+     "sourceEvidence": "§1.01, definition of 'Disposed EBITDA'",
+     "semanticRequirement": "Express a metric definition that is computed by substituting the entity-scope of another defined term (Consolidated EBITDA) - i.e. re-running that term's own formula with a different underlying entity population",
+     "whyExistingPrimitivesFail": "DEFINED_TERM_REFERENCE/METRIC_REFERENCE can point to the base term but cannot carry a parameterized 'recompute this metric with entity scope X substituted for entity scope Y' instruction; there is no scoped re-evaluation primitive",
+     "candidateGeneralizedPrimitive": "a SCOPED_METRIC_SUBSTITUTION node taking a base metric reference plus an entity-scope override to apply when re-evaluating it"
+    }
+   ],
+   "overallNotes": [
+    "This source region is a definitions article (§1.01) containing 14 independently meaningful defined terms; each was emitted as its own WireDefinition per the multiple-definitions rule, rather than merging or selecting only the most salient ones.",
+    "No independently operative WireRule was identified in this excerpt - all content is definitional; the only quantitative/conditional mechanics found (Defaulting Lender's funding-failure timing tests, Daily Simple RFR's rate floor/fallback, Customary Intercreditor Agreement's posting/deemed-consent day counts) were represented within the relevant definition's calculationExpression rather than as freestanding rules.",
+    "Cross-references to Section 6.08, 6.08(a), 6.08(a)(3), 7.01, 7.01(h), Section 9.02, Section 6.05, and Section 9.23(a) (enumeration portion) could not be expanded due to source-context budget exhaustion in Phase 2's region retrieval; getReferencedProvision was affirmatively used in this session for Section 9.02(h) and Section 9.23(a) per the mandatory retrieval-before-giving-up rule, and the results (truncated / unconfirmed supersession status) are reflected in the affected definitions' sufficiency ratings.",
+    "The 'clause (a)' cross-reference ambiguity flagged by Phase 2 (multiple colliding occurrences) was not independently re-resolved because it did not bear on any economics compiled here.",
+    "Two IR extension candidates were logged for genuinely recurring shapes (rate fallback waterfalls; scoped metric substitution) that the current primitive set cannot faithfully express without fabrication."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T17:51:10.093Z",
+   "inputTokens": 58726,
+   "outputTokens": 21301,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 194690,
+   "calculatedCostUsd": 0.33046200000000003
+  },
+  "cacheKey": "8466f494fb3a35b4e72cc4e256f0fd3b072a39ec00760c36c72f2668ab55c967",
+  "compiledAt": "2026-09-14T17:51:10.093Z"
+ },
+ "wave": "B",
+ "attemptsSoFar": 1
+}
