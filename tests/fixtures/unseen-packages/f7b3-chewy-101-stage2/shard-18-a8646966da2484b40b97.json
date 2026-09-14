@@ -1,0 +1,2157 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:a8646966da2484b40b97",
+  "shardHash": "53b8d2efe4987c7441520de6acaddc2a3c11e6b0105658f183209dd5ce646150",
+  "ordinal": 18,
+  "ownedUnits": 16,
+  "sourceChars": 10363,
+  "contextEntries": 2,
+  "contextChars": 1532,
+  "unresolvedContext": 1,
+  "oversized": false,
+  "ownedItems": 2,
+  "ownedMaterialItems": 2,
+  "estimatedFirstTurnInputTokens": 24603,
+  "preCallEstimate": {
+   "inputTokens": 80944,
+   "outputTokens": 41500,
+   "usd": 0.5768880000000001
+  },
+  "actual": {
+   "inputTokens": 102932,
+   "outputTokens": 32133,
+   "turns": 3,
+   "latencyMs": 286078,
+   "costUsd": 0.5271939999999999,
+   "attemptCount": 3,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_COMPLETE",
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "toolCalls": 8,
+  "toolCallNames": [
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getDefinition",
+   "getDefinition",
+   "getDefinition",
+   "getDefinition"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 21,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 2,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "valuesRepresented": 0,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "REPRESENTED": 2
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Foreign Prepayment Event",
+   "Accounting Change",
+   "General Basket Amount",
+   "Granting Lender",
+   "Guarantee"
+  ],
+  "unresolvedIssues": [
+   "This submission compiles §1.01's alphabetical run of defined terms from 'Foreign Intellectual Property' through 'Immaterial Subsidiary' (21 distinct terms, including 'Accounting Change' which is defined inline within the 'GAAP' definition). No independently operative rules/baskets exist in this span - it is a pure definitions section - so the rules array is empty.",
+   "Three cross-references ('Section 2.09(f)' for Foreign Prepayment Event, 'Section 9.04(e)' for Granting Lender, 'Section 2.28' for Guarantors) were successfully resolved via getReferencedProvision, upgrading those definitions to COMPLETE with confirmed target text.",
+   "Section 1.04(c) was resolved for Funded Debt and confirms only a consolidation-basis carve-out, not a change to the category itself.",
+   "Two pointer definitions ('General Basket Amount' -> definition of 'Permitted Investments'; 'General Lien Basket' -> clause (21) of 'Permitted Liens') were investigated via getDefinition, but both targets returned truncated text that did not reach the specific referenced sub-provision, so those two definitions are marked PARTIAL rather than COMPLETE.",
+   "getDefinition('Fixed Incremental Amount') confirms a genuine circular/shared-capacity relationship with 'General Lien Basket Reallocated Amount' (Fixed Incremental Amount's own formula adds back unused amounts under the General Lien Basket Reallocated Amount) - flagged for downstream review but not itself part of this term's own operative text.",
+   "The frozen semantic inventory's two MATERIAL items (GAAP/IFRS election irrevocability; election to treat an Accounting Change as having or not having occurred) are both consumed on nested BOOLEAN_LITERAL nodes within the 'GAAP' definition's calculationExpression.",
+   "The system-flagged ambiguous 'clause (a)' cross-references and the OUT_OF_SCOPE budget-exhausted references (Section 9.04, 2.09(f)-adjacent context, 1.04(c), 9.04(e), 2.28) noted in the task were independently re-attempted here via getReferencedProvision/getDefinition where a specific reason existed; several were successfully resolved as noted above."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:a8646966da2484b40b97",
+  "shardHash": "53b8d2efe4987c7441520de6acaddc2a3c11e6b0105658f183209dd5ce646150",
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:a24816c40e171292beb99bc9",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Foreign Intellectual Property",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive scope definition of IP rights arising under non-U.S. law; fully captured by excerpt, no computation involved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any right, title or interest in or to any copyrights... or any other intellectual property governed by or arising or existing under... the laws of any jurisdictions other than the United States of America or any state thereof."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:a5256642762b682c91b0bc11",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Foreign Prepayment Event",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Foreign Subsidiary",
+      "Prepayment Event",
+      "Net Proceeds"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference to Section 2.09(f) resolved via tool; actual defined event text retrieved and confirmed."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §2.09(f)",
+      "excerpt": "the Net Proceeds of any Prepayment Event set forth in clause (a) of the definition thereof by a Foreign Subsidiary giving rise to a prepayment pursuant to Section 2.09(b) (a \"Foreign Prepayment Event\")"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d15b7f7063a1889f9b1fa30d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Foreign Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any Subsidiary that is organized under the laws of a jurisdiction other than the United States of America, any State thereof or the District of Columbia."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d190167b7dcd4498df1ed37b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Form Intercreditor Agreements",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "ABL Intercreditor Agreement",
+      "First Lien Intercreditor Agreement",
+      "Junior Lien Intercreditor Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive list of alternative forms; the identity of the named intercreditor agreements is not needed to represent this term's own meaning."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) an intercreditor agreement substantially in the form of the ABL Intercreditor Agreement, (b) ... First Lien Intercreditor Agreement and/or (c) ... Junior Lien Intercreditor Agreement, as applicable."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:2cd86d0411bee95d26e280e6",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "FSHCO",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Domestic Subsidiary",
+      "Equity Interests",
+      "Indebtedness",
+      "Foreign Subsidiary",
+      "CFC"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive holding-company classification, fully captured by excerpt."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any direct or indirect Domestic Subsidiary of the Borrowers that has no material assets other than (a) Equity Interests and/or Indebtedness ... in one or more direct or indirect Foreign Subsidiaries that are CFCs or (b) Equity Interests in a Domestic Subsidiary that holds no material assets other than those described in clause (a)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:168024e501e330a7ee9086c8",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Fund",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Person"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any Person (other than a natural person) that is engaged in making, purchasing, holding or otherwise investing in commercial loans and similar extensions of credit in the ordinary course of its activities."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3becd019db379a3d958aec87",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Funded Debt",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Indebtedness",
+      "Restricted Parties",
+      "Loans"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive category of long-term/renewable Indebtedness; cross-reference to Section 1.04(c) resolved and confirmed to be a consolidation-basis rule that does not change the substance of what qualifies as Funded Debt."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §1.04(c)",
+      "excerpt": "all Indebtedness of the Restricted Parties for borrowed money (determined on a consolidated basis in accordance with Section 1.04(c)) that matures more than one (1) year ... including Indebtedness in respect of the Loans."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:83a2570233e1c65378f231d2",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "GAAP",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AND",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:a8d8884aaa38ef00e08cffd7",
+      "operands": [
+       {
+        "kind": "BOOLEAN_LITERAL",
+        "type": "BOOLEAN",
+        "value": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": "any such election, once made, shall be irrevocable"
+        },
+        "exprId": "ir-expr:8adce9501cb8d664f0160f9a",
+        "inventoryItemIds": [
+         "inv-item:23f90acf7c993b980bc60f5f"
+        ]
+       },
+       {
+        "kind": "BOOLEAN_LITERAL",
+        "type": "BOOLEAN",
+        "value": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": "then the Initial Borrower may elect that such standards, terms or measures shall be calculated as if such Accounting Change had or had not occurred"
+        },
+        "exprId": "ir-expr:8adce9501cb8d664f0160f9a",
+        "inventoryItemIds": [
+         "inv-item:75a16a473ef4b2ce533ed8ec"
+        ]
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "IFRS",
+      "Accounting Change",
+      "Capitalized Lease Obligations"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "GAAP is an accounting-standard definition, not a monetary formula; its two material embedded mechanics (irrevocability of a GAAP-to-IFRS election, and the Initial Borrower's election right on an Accounting Change) are represented as boolean facts carrying the relevant inventory items and citations. The safe-harbor provisos regarding prior actions and the Section 1.04(d) true-up mechanism are descriptive/non-computational and are captured via excerpt/cross-reference rather than a formula."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "provided that all terms of an accounting or financial nature ... shall be construed ... in effect from time to time. At any time after the Effective Date, the Initial Borrower may elect to apply IFRS ... provided that any such election, once made, shall be irrevocable ... If there occurs a change in IFRS or GAAP ... (an \"Accounting Change\"), then the Initial Borrower may elect that such standards, terms or measures shall be calculated as if such Accounting Change had or had not occurred."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:0dab2f36762e69324502ac48",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Accounting Change",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "GAAP",
+      "IFRS"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Inline defined term within the GAAP definition; fully captured by excerpt."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "a change in IFRS or GAAP, as the case may be, [that] would cause a change in the method of calculation of any standards, terms or measures (including all computations of amounts and ratios) used in this Agreement (an \"Accounting Change\")"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:dfcc6cc1ab52499045a98ca7",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "General Basket Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DEFINED_TERM_REFERENCE",
+      "type": "MONEY",
+      "termName": "Permitted Investments",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:ca827003fcd4ed6633dda035"
+     },
+     "dependsOnTerms": [
+      "Permitted Investments"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The term's meaning is expressly delegated to the 'Permitted Investments' definition; getDefinition('Permitted Investments') was retrieved but returned truncated text that did not reach the specific 'General Basket Amount' sub-provision, so the substantive quantum could not be confirmed."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in the definition of \"Permitted Investments.\""
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:007ed00ae6858fe553b0e0b1",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "General Lien Basket",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DEFINED_TERM_REFERENCE",
+      "type": "MONEY",
+      "termName": "Permitted Liens",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:b6ace47842bb6e1a48f88e67"
+     },
+     "dependsOnTerms": [
+      "Permitted Liens"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The term is a pointer to clause (21) of the 'Permitted Liens' definition; getDefinition('Permitted Liens') was retrieved but returned truncated text ending at clause (5), so clause (21)'s content could not be confirmed."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "shall mean clause (21) of the definition of \"Permitted Liens\"."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:237aff4d7c91122aabd9a9b0",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "General Lien Basket Reallocated Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "General Lien Basket",
+      "Fixed Incremental Amount",
+      "Secured Obligations",
+      "Collateral"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Describes an optional reallocation right (relative to then-available General Lien Basket capacity), not a fixed formula, so it is captured descriptively. Confirmed via getDefinition('Fixed Incremental Amount') that Fixed Incremental Amount's own formula in turn adds back 'any unused amounts under the General Lien Basket Reallocated Amount' - a real circular/shared-capacity relationship between these two terms, noted for review but not itself quantifiable from this term's own text."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any amount then available to be incurred under the General Lien Basket that, at the option of the Initial Borrower, has been reallocated from the General Lien Basket to the Fixed Incremental Amount (provided that ... such reallocated amount may be used to incur additional Indebtedness that is secured by the Collateral on a pari passu basis or junior basis with the Secured Obligations)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:0d1d9bb6e2a981204f65bc6e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Governmental Authority",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the government of the United States of America, the government of Canada ... and any agency, authority, instrumentality, regulatory body, court, central bank or other entity exercising executive, legislative, judicial, taxing, regulatory or administrative powers ... (including any supranational bodies such as the European Union or the European Central Bank)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:13940f48685df07854252199",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Granting Lender",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Lender",
+      "SPV"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference to Section 9.04(e) resolved via tool; confirmed actual defining text."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §9.04(e)",
+      "excerpt": "any Lender (a \"Granting Lender\") may grant to a special purpose funding vehicle (an \"SPV\") ... the option to provide to the Borrowers all or any part of any Loan that such Granting Lender would otherwise be obligated to make ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:60be86bc2dbcd9ab10920bd2",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Guarantee",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "IF",
+      "type": "MONEY",
+      "exprId": "ir-expr:0366a0a4abbc58882880aa9e",
+      "condition": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "BOOLEAN",
+       "inputName": "Whether the amount of the related primary obligation is stated or determinable",
+       "exprId": "ir-expr:8c84170e2242c91c339bf3f0"
+      },
+      "then": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "MONEY",
+       "inputName": "Stated or determinable amount of the related primary obligation (or portion thereof) in respect of which the Guarantee is made",
+       "exprId": "ir-expr:e1d5e95f9c5d191f8230f5ea"
+      },
+      "else": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "MONEY",
+       "inputName": "Maximum reasonably anticipated liability in respect of the Guarantee, as determined in good faith by a Financial Officer",
+       "exprId": "ir-expr:a784b298cc895dc2fed95e11"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Indebtedness",
+      "Financial Officer",
+      "Effective Date"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Both the qualitative scope of what constitutes a Guarantee (with its carve-out for ordinary-course endorsements/customary indemnities) and the valuation mechanic for the amount of a Guarantee are captured; the valuation mechanic's qualitative inputs (whether an amount is 'stated or determinable', and the good-faith maximum-anticipated-liability figure) are represented as transaction inputs since they are case-specific facts, not fixed contractual values."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any obligation ... guaranteeing or having the economic effect of guaranteeing any Indebtedness ... provided that the term Guarantee shall not include endorsements for collection or deposit in the ordinary course of business or customary and reasonable indemnity obligations ... The amount of any Guarantee shall be deemed to be an amount equal to the stated or determinable amount of the related primary obligation ... or, if not stated or determinable, the maximum reasonably anticipated liability ... as determined in good faith by a Financial Officer."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:9d6621aa48b3a3d14ddb5d6d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Guarantee Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Loan Parties",
+      "Administrative Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition referencing an exhibit form; exhibit content not needed to represent the defined term itself."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the guarantee agreement by and among the Loan Parties and the Administrative Agent, substantially in the form of Exhibit C."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:290071a5a223ca4e63b72b21",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Guarantors",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Subsidiary Loan Parties",
+      "Initial Borrower"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference to Section 2.28 resolved via tool and confirmed to be the Borrower-resignation provision; the conditional inclusion of the Initial Borrower is fully captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §2.28",
+      "excerpt": "collectively, the Subsidiary Loan Parties, and, to the extent the Initial Borrower has resigned as a Borrower in accordance with Section 2.28, the Initial Borrower."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:892e8efbaf3ad3500902c608",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Hazardous Materials",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Environmental Law"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "all explosive, radioactive, hazardous or toxic substances, wastes or other pollutants or contaminants ... regulated as \"hazardous\" or \"toxic\" or as a \"contaminant\" ... pursuant to any Environmental Law."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:b1227d788a79689221a9271d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Hedging Obligations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the obligations of such Person under any interest rate swap agreement ... providing for the transfer or mitigation of interest rate, commodity price or currency risks either generally or under specific contingencies."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:39d3620da3728d092d648667",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "IFRS",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the international financial reporting standards and interpretations issued by the International Accounting Standards Board, as in effect from time to time."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e9e4d6cb3e1bab36c3d1a4fe",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Immaterial Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "NOT",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:9f83f2fc8c233a1ac497b296",
+      "operand": {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "BOOLEAN",
+       "termName": "Material Subsidiary",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:7c2ba9b04af76a87798f227e"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Material Subsidiary",
+      "Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Negation of 'Material Subsidiary'; confirmed the referenced term exists and its own definition via getDefinition('Material Subsidiary')."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any Subsidiary that is not a Material Subsidiary."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "unresolvedIssues": [
+   "This submission compiles §1.01's alphabetical run of defined terms from 'Foreign Intellectual Property' through 'Immaterial Subsidiary' (21 distinct terms, including 'Accounting Change' which is defined inline within the 'GAAP' definition). No independently operative rules/baskets exist in this span - it is a pure definitions section - so the rules array is empty.",
+   "Three cross-references ('Section 2.09(f)' for Foreign Prepayment Event, 'Section 9.04(e)' for Granting Lender, 'Section 2.28' for Guarantors) were successfully resolved via getReferencedProvision, upgrading those definitions to COMPLETE with confirmed target text.",
+   "Section 1.04(c) was resolved for Funded Debt and confirms only a consolidation-basis carve-out, not a change to the category itself.",
+   "Two pointer definitions ('General Basket Amount' -> definition of 'Permitted Investments'; 'General Lien Basket' -> clause (21) of 'Permitted Liens') were investigated via getDefinition, but both targets returned truncated text that did not reach the specific referenced sub-provision, so those two definitions are marked PARTIAL rather than COMPLETE.",
+   "getDefinition('Fixed Incremental Amount') confirms a genuine circular/shared-capacity relationship with 'General Lien Basket Reallocated Amount' (Fixed Incremental Amount's own formula adds back unused amounts under the General Lien Basket Reallocated Amount) - flagged for downstream review but not itself part of this term's own operative text.",
+   "The frozen semantic inventory's two MATERIAL items (GAAP/IFRS election irrevocability; election to treat an Accounting Change as having or not having occurred) are both consumed on nested BOOLEAN_LITERAL nodes within the 'GAAP' definition's calculationExpression.",
+   "The system-flagged ambiguous 'clause (a)' cross-references and the OUT_OF_SCOPE budget-exhausted references (Section 9.04, 2.09(f)-adjacent context, 1.04(c), 9.04(e), 2.28) noted in the task were independently re-attempted here via getReferencedProvision/getDefinition where a specific reason existed; several were successfully resolved as noted above."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 102932,
+   "outputTokens": 32133,
+   "costUsd": 0.5271939999999999
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:a24816c40e171292beb99bc9",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Foreign Intellectual Property",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive scope definition of IP rights arising under non-U.S. law; fully captured by excerpt, no computation involved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any right, title or interest in or to any copyrights... or any other intellectual property governed by or arising or existing under... the laws of any jurisdictions other than the United States of America or any state thereof."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:a5256642762b682c91b0bc11",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Foreign Prepayment Event",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Foreign Subsidiary",
+     "Prepayment Event",
+     "Net Proceeds"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Cross-reference to Section 2.09(f) resolved via tool; actual defined event text retrieved and confirmed."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §2.09(f)",
+     "excerpt": "the Net Proceeds of any Prepayment Event set forth in clause (a) of the definition thereof by a Foreign Subsidiary giving rise to a prepayment pursuant to Section 2.09(b) (a \"Foreign Prepayment Event\")"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d15b7f7063a1889f9b1fa30d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Foreign Subsidiary",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Subsidiary"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Self-contained descriptive definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any Subsidiary that is organized under the laws of a jurisdiction other than the United States of America, any State thereof or the District of Columbia."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d190167b7dcd4498df1ed37b",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Form Intercreditor Agreements",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "ABL Intercreditor Agreement",
+     "First Lien Intercreditor Agreement",
+     "Junior Lien Intercreditor Agreement"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Descriptive list of alternative forms; the identity of the named intercreditor agreements is not needed to represent this term's own meaning."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) an intercreditor agreement substantially in the form of the ABL Intercreditor Agreement, (b) ... First Lien Intercreditor Agreement and/or (c) ... Junior Lien Intercreditor Agreement, as applicable."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:2cd86d0411bee95d26e280e6",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "FSHCO",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Domestic Subsidiary",
+     "Equity Interests",
+     "Indebtedness",
+     "Foreign Subsidiary",
+     "CFC"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Descriptive holding-company classification, fully captured by excerpt."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any direct or indirect Domestic Subsidiary of the Borrowers that has no material assets other than (a) Equity Interests and/or Indebtedness ... in one or more direct or indirect Foreign Subsidiaries that are CFCs or (b) Equity Interests in a Domestic Subsidiary that holds no material assets other than those described in clause (a)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:168024e501e330a7ee9086c8",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Fund",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Person"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Self-contained descriptive definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any Person (other than a natural person) that is engaged in making, purchasing, holding or otherwise investing in commercial loans and similar extensions of credit in the ordinary course of its activities."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3becd019db379a3d958aec87",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Funded Debt",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Indebtedness",
+     "Restricted Parties",
+     "Loans"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Descriptive category of long-term/renewable Indebtedness; cross-reference to Section 1.04(c) resolved and confirmed to be a consolidation-basis rule that does not change the substance of what qualifies as Funded Debt."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §1.04(c)",
+     "excerpt": "all Indebtedness of the Restricted Parties for borrowed money (determined on a consolidated basis in accordance with Section 1.04(c)) that matures more than one (1) year ... including Indebtedness in respect of the Loans."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:83a2570233e1c65378f231d2",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "GAAP",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "AND",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:a8d8884aaa38ef00e08cffd7",
+     "operands": [
+      {
+       "kind": "BOOLEAN_LITERAL",
+       "type": "BOOLEAN",
+       "value": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": "any such election, once made, shall be irrevocable"
+       },
+       "exprId": "ir-expr:8adce9501cb8d664f0160f9a",
+       "inventoryItemIds": [
+        "inv-item:23f90acf7c993b980bc60f5f"
+       ]
+      },
+      {
+       "kind": "BOOLEAN_LITERAL",
+       "type": "BOOLEAN",
+       "value": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": "then the Initial Borrower may elect that such standards, terms or measures shall be calculated as if such Accounting Change had or had not occurred"
+       },
+       "exprId": "ir-expr:8adce9501cb8d664f0160f9a",
+       "inventoryItemIds": [
+        "inv-item:75a16a473ef4b2ce533ed8ec"
+       ]
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "IFRS",
+     "Accounting Change",
+     "Capitalized Lease Obligations"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "GAAP is an accounting-standard definition, not a monetary formula; its two material embedded mechanics (irrevocability of a GAAP-to-IFRS election, and the Initial Borrower's election right on an Accounting Change) are represented as boolean facts carrying the relevant inventory items and citations. The safe-harbor provisos regarding prior actions and the Section 1.04(d) true-up mechanism are descriptive/non-computational and are captured via excerpt/cross-reference rather than a formula."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "provided that all terms of an accounting or financial nature ... shall be construed ... in effect from time to time. At any time after the Effective Date, the Initial Borrower may elect to apply IFRS ... provided that any such election, once made, shall be irrevocable ... If there occurs a change in IFRS or GAAP ... (an \"Accounting Change\"), then the Initial Borrower may elect that such standards, terms or measures shall be calculated as if such Accounting Change had or had not occurred."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:0dab2f36762e69324502ac48",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Accounting Change",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "GAAP",
+     "IFRS"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Inline defined term within the GAAP definition; fully captured by excerpt."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "a change in IFRS or GAAP, as the case may be, [that] would cause a change in the method of calculation of any standards, terms or measures (including all computations of amounts and ratios) used in this Agreement (an \"Accounting Change\")"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:dfcc6cc1ab52499045a98ca7",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "General Basket Amount",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "DEFINED_TERM_REFERENCE",
+     "type": "MONEY",
+     "termName": "Permitted Investments",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "resolvedDefinitionId": null,
+     "exprId": "ir-expr:ca827003fcd4ed6633dda035"
+    },
+    "dependsOnTerms": [
+     "Permitted Investments"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The term's meaning is expressly delegated to the 'Permitted Investments' definition; getDefinition('Permitted Investments') was retrieved but returned truncated text that did not reach the specific 'General Basket Amount' sub-provision, so the substantive quantum could not be confirmed."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of \"Permitted Investments.\""
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:007ed00ae6858fe553b0e0b1",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "General Lien Basket",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "DEFINED_TERM_REFERENCE",
+     "type": "MONEY",
+     "termName": "Permitted Liens",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "resolvedDefinitionId": null,
+     "exprId": "ir-expr:b6ace47842bb6e1a48f88e67"
+    },
+    "dependsOnTerms": [
+     "Permitted Liens"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The term is a pointer to clause (21) of the 'Permitted Liens' definition; getDefinition('Permitted Liens') was retrieved but returned truncated text ending at clause (5), so clause (21)'s content could not be confirmed."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "shall mean clause (21) of the definition of \"Permitted Liens\"."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:237aff4d7c91122aabd9a9b0",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "General Lien Basket Reallocated Amount",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "General Lien Basket",
+     "Fixed Incremental Amount",
+     "Secured Obligations",
+     "Collateral"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Describes an optional reallocation right (relative to then-available General Lien Basket capacity), not a fixed formula, so it is captured descriptively. Confirmed via getDefinition('Fixed Incremental Amount') that Fixed Incremental Amount's own formula in turn adds back 'any unused amounts under the General Lien Basket Reallocated Amount' - a real circular/shared-capacity relationship between these two terms, noted for review but not itself quantifiable from this term's own text."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any amount then available to be incurred under the General Lien Basket that, at the option of the Initial Borrower, has been reallocated from the General Lien Basket to the Fixed Incremental Amount (provided that ... such reallocated amount may be used to incur additional Indebtedness that is secured by the Collateral on a pari passu basis or junior basis with the Secured Obligations)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:0d1d9bb6e2a981204f65bc6e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Governmental Authority",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Self-contained descriptive definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the government of the United States of America, the government of Canada ... and any agency, authority, instrumentality, regulatory body, court, central bank or other entity exercising executive, legislative, judicial, taxing, regulatory or administrative powers ... (including any supranational bodies such as the European Union or the European Central Bank)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:13940f48685df07854252199",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Granting Lender",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Lender",
+     "SPV"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Cross-reference to Section 9.04(e) resolved via tool; confirmed actual defining text."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §9.04(e)",
+     "excerpt": "any Lender (a \"Granting Lender\") may grant to a special purpose funding vehicle (an \"SPV\") ... the option to provide to the Borrowers all or any part of any Loan that such Granting Lender would otherwise be obligated to make ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:60be86bc2dbcd9ab10920bd2",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Guarantee",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "IF",
+     "type": "MONEY",
+     "exprId": "ir-expr:0366a0a4abbc58882880aa9e",
+     "condition": {
+      "kind": "TRANSACTION_INPUT_REFERENCE",
+      "type": "BOOLEAN",
+      "inputName": "Whether the amount of the related primary obligation is stated or determinable",
+      "exprId": "ir-expr:8c84170e2242c91c339bf3f0"
+     },
+     "then": {
+      "kind": "TRANSACTION_INPUT_REFERENCE",
+      "type": "MONEY",
+      "inputName": "Stated or determinable amount of the related primary obligation (or portion thereof) in respect of which the Guarantee is made",
+      "exprId": "ir-expr:e1d5e95f9c5d191f8230f5ea"
+     },
+     "else": {
+      "kind": "TRANSACTION_INPUT_REFERENCE",
+      "type": "MONEY",
+      "inputName": "Maximum reasonably anticipated liability in respect of the Guarantee, as determined in good faith by a Financial Officer",
+      "exprId": "ir-expr:a784b298cc895dc2fed95e11"
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Indebtedness",
+     "Financial Officer",
+     "Effective Date"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Both the qualitative scope of what constitutes a Guarantee (with its carve-out for ordinary-course endorsements/customary indemnities) and the valuation mechanic for the amount of a Guarantee are captured; the valuation mechanic's qualitative inputs (whether an amount is 'stated or determinable', and the good-faith maximum-anticipated-liability figure) are represented as transaction inputs since they are case-specific facts, not fixed contractual values."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any obligation ... guaranteeing or having the economic effect of guaranteeing any Indebtedness ... provided that the term Guarantee shall not include endorsements for collection or deposit in the ordinary course of business or customary and reasonable indemnity obligations ... The amount of any Guarantee shall be deemed to be an amount equal to the stated or determinable amount of the related primary obligation ... or, if not stated or determinable, the maximum reasonably anticipated liability ... as determined in good faith by a Financial Officer."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:9d6621aa48b3a3d14ddb5d6d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Guarantee Agreement",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Loan Parties",
+     "Administrative Agent"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Self-contained descriptive definition referencing an exhibit form; exhibit content not needed to represent the defined term itself."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the guarantee agreement by and among the Loan Parties and the Administrative Agent, substantially in the form of Exhibit C."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:290071a5a223ca4e63b72b21",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Guarantors",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Subsidiary Loan Parties",
+     "Initial Borrower"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Cross-reference to Section 2.28 resolved via tool and confirmed to be the Borrower-resignation provision; the conditional inclusion of the Initial Borrower is fully captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §2.28",
+     "excerpt": "collectively, the Subsidiary Loan Parties, and, to the extent the Initial Borrower has resigned as a Borrower in accordance with Section 2.28, the Initial Borrower."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:892e8efbaf3ad3500902c608",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Hazardous Materials",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Environmental Law"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Self-contained descriptive definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "all explosive, radioactive, hazardous or toxic substances, wastes or other pollutants or contaminants ... regulated as \"hazardous\" or \"toxic\" or as a \"contaminant\" ... pursuant to any Environmental Law."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:b1227d788a79689221a9271d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Hedging Obligations",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Self-contained descriptive definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the obligations of such Person under any interest rate swap agreement ... providing for the transfer or mitigation of interest rate, commodity price or currency risks either generally or under specific contingencies."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:39d3620da3728d092d648667",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "IFRS",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Self-contained descriptive definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the international financial reporting standards and interpretations issued by the International Accounting Standards Board, as in effect from time to time."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e9e4d6cb3e1bab36c3d1a4fe",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Immaterial Subsidiary",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "NOT",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:9f83f2fc8c233a1ac497b296",
+     "operand": {
+      "kind": "DEFINED_TERM_REFERENCE",
+      "type": "BOOLEAN",
+      "termName": "Material Subsidiary",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:7c2ba9b04af76a87798f227e"
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Material Subsidiary",
+     "Subsidiary"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Negation of 'Material Subsidiary'; confirmed the referenced term exists and its own definition via getDefinition('Material Subsidiary')."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any Subsidiary that is not a Material Subsidiary."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01 'General Lien Basket' ('shall mean clause (21) of the definition of \"Permitted Liens\"') and 'General Basket Amount' ('has the meaning assigned to such term in the definition of \"Permitted Investments\"')",
+    "semanticRequirement": "A defined term whose meaning is delegated not to another defined term as a whole, but to a specific numbered sub-clause within another term's definition (e.g. 'clause (21) of the definition of X').",
+    "whyExistingPrimitivesFail": "DEFINED_TERM_REFERENCE can only point at a whole defined term by name; it has no way to address a specific sub-clause/paragraph locator within that term's definition, so the pointer's precision (which specific clause) is lost.",
+    "candidateGeneralizedPrimitive": "A DEFINED_TERM_CLAUSE_REFERENCE (termName, clauseLocator) node, or an optional clauseLocator field on DEFINED_TERM_REFERENCE."
+   }
+  ],
+  "unresolvedIssues": [
+   "This submission compiles §1.01's alphabetical run of defined terms from 'Foreign Intellectual Property' through 'Immaterial Subsidiary' (21 distinct terms, including 'Accounting Change' which is defined inline within the 'GAAP' definition). No independently operative rules/baskets exist in this span - it is a pure definitions section - so the rules array is empty.",
+   "Three cross-references ('Section 2.09(f)' for Foreign Prepayment Event, 'Section 9.04(e)' for Granting Lender, 'Section 2.28' for Guarantors) were successfully resolved via getReferencedProvision, upgrading those definitions to COMPLETE with confirmed target text.",
+   "Section 1.04(c) was resolved for Funded Debt and confirms only a consolidation-basis carve-out, not a change to the category itself.",
+   "Two pointer definitions ('General Basket Amount' -> definition of 'Permitted Investments'; 'General Lien Basket' -> clause (21) of 'Permitted Liens') were investigated via getDefinition, but both targets returned truncated text that did not reach the specific referenced sub-provision, so those two definitions are marked PARTIAL rather than COMPLETE.",
+   "getDefinition('Fixed Incremental Amount') confirms a genuine circular/shared-capacity relationship with 'General Lien Basket Reallocated Amount' (Fixed Incremental Amount's own formula adds back unused amounts under the General Lien Basket Reallocated Amount) - flagged for downstream review but not itself part of this term's own operative text.",
+   "The frozen semantic inventory's two MATERIAL items (GAAP/IFRS election irrevocability; election to treat an Accounting Change as having or not having occurred) are both consumed on nested BOOLEAN_LITERAL nodes within the 'GAAP' definition's calculationExpression.",
+   "The system-flagged ambiguous 'clause (a)' cross-references and the OUT_OF_SCOPE budget-exhausted references (Section 9.04, 2.09(f)-adjacent context, 1.04(c), 9.04(e), 2.28) noted in the task were independently re-attempted here via getReferencedProvision/getDefinition where a specific reason existed; several were successfully resolved as noted above."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.09(f)"
+    },
+    "outputSummary": "resolved reference \"Section 2.09(f)\" -> 2.09(f) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 3064,
+    "timestamp": "2026-09-14T18:02:54.294Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 2.09(f)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:a2e566335bbd257820b9b610",
+     "sourceNodeKey": "doc-a::2.09(f)",
+     "charStart": 439702,
+     "charEnd": 442766,
+     "rawText": "(f) Notwithstanding any other provisions of Section 2.09(b) or (c), (A) to\nthe extent that any of or all the Net Proceeds of any Prepayment Event set forth in clause (a) of the definition thereof by a Foreign Subsidiary giving rise to a prepayment pursuant to Section 2.09(b) (a “ Foreign Prepayment\nEvent ”) or Excess Cash Flow are prohibited or delayed by any Requirement of Law from being repatriated to the Borrowers or their respective Subsidiaries, the portion of such Net Proceeds or Excess Cash Flow so affected will not be required\nto be applied to repay Loans at the times provided in Section 2.09(b) or (c), as the case may be, and such amounts may be retained by the applicable Foreign Subsidiary so long as the applicable Requirement of Law will not permit repatriation to\nthe Borrowers, and to the extent such repatriation of any of such affected Net Proceeds or Excess Cash Flow becomes permitted under the applicable Requirement of Law, such repatriation will be promptly effected and such repatriated Net Proceeds or\nExcess Cash Flow will be promptly (and in any event not later than ten (10) Business Days after such repatriation) applied (net of additional Taxes payable or reserved against as a result thereof) to the repayment of the Loans pursuant to\nSection 2.09(b) or (c), as applicable, and (B) to the extent that the Initial Borrower has determined in good faith that repatriation of any of or all the Net Proceeds of any Foreign Prepayment Event or Excess Cash Flow would have a\nmaterial adverse tax consequence (taking into account any foreign tax credit or benefit actually realized in connection with such repatriation) with respect to such Net Proceeds or Excess Cash Flow, the Net Proceeds or Excess Cash Flow so affected\nwill not be required to be applied to repay Loans at the times provided in Section 2.09(b) or (c), as the case may be, and such amounts may be retained by the applicable Foreign Subsidiary; provided that the Borrowers shall use\ncommercially reasonable efforts permitted by any local law to permit such repatriation without such material adverse tax consequences within the four hundred fifty (450)-day period described in the immediately\nsucceeding clause; provided , further , that if within four hundred fifty (450) days after the day on which the Borrowers would otherwise be obligated to make a payment under Section 2.09(b) or (c), the Initial Borrower\ndetermines in good faith that repatriation of any of or all the Net Proceeds of any Foreign Prepayment Event or Excess Cash Flow would no longer have a material adverse tax consequence (taking into account any foreign tax credit or benefit actually\nrealized in connection with such repatriation) with respect to such Net Proceeds or Excess Cash Flow, such Net Proceeds or Excess Cash Flow shall be promptly (and in any event not later than ten (10) Business Days after such repatriation)\napplied (net of additional Taxes payable or reserved against as a result thereof) to the repayment of the Loans pursuant to Section 2.09(b) or (c), as applicable.\n\n",
+     "contentHash": "28b525b9969baa0f89466bebe28daa368bbb04d9688478cb6953583bc8e81383",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 9.04(e)"
+    },
+    "outputSummary": "resolved reference \"Section 9.04(e)\" -> 9.04(e) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 473,
+    "timestamp": "2026-09-14T18:02:54.294Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 9.04(e)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:c80b0a18b72b2453fdf9bddb",
+     "sourceNodeKey": "doc-a::9.04(e)",
+     "charStart": 802176,
+     "charEnd": 802649,
+     "rawText": "(e) Notwithstanding anything to the contrary contained herein, any Lender\n(a “ Granting Lender ”) may grant to a special purpose funding vehicle (an “ SPV ”), identified as such in writing from time to time by the Granting Lender to the Administrative Agent and the Initial Borrower, the\noption to provide to the Borrowers all or any part of any Loan that such Granting Lender would otherwise be obligated to make to the Borrowers pursuant to this Agreement; provided that ",
+     "contentHash": "f3ee0187f98b07b1a1fd403516e1358e6e81ae23f5d09957f23b3bd2f0aa0a2a",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.28"
+    },
+    "outputSummary": "resolved reference \"Section 2.28\" -> 2.28 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 534,
+    "timestamp": "2026-09-14T18:02:54.294Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 2.28",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:2b6cd4968d18c8c8216a0df4",
+     "sourceNodeKey": "doc-a::2.28",
+     "charStart": 535075,
+     "charEnd": 535609,
+     "rawText": "Section 2.28 Resignation of Borrowers . At any time and from time\nto time, any Borrower may elect, with the consent of the Administrative Agent (such consent not to be unreasonably withheld, delayed or conditioned), to terminate its ability to request Borrowings hereunder and to cease to be a Borrower hereunder\nupon the occurrence of, and such resignation shall be effective upon, all of the following or such earlier time as agreed to by the Administrative Agent (in its sole discretion) and consented to by the Initial Borrower:\n\n",
+     "contentHash": "aa5f7410f93449255942fe000e788eaf2cd44f41fb1256a89e7f227ca06f15ea",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 1.04(c)"
+    },
+    "outputSummary": "resolved reference \"Section 1.04(c)\" -> 1.04(c) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 207,
+    "timestamp": "2026-09-14T18:02:54.294Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 1.04(c)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:06d401ba53b3c269aa3452b9",
+     "sourceNodeKey": "doc-a::1.04(c)",
+     "charStart": 369099,
+     "charEnd": 369306,
+     "rawText": "(c) Where reference is made to “the Restricted Parties on a consolidated basis” or similar language, such consolidation shall not\ninclude any Subsidiaries of the Borrowers other than the Restricted Parties;\n",
+     "contentHash": "f586d4820ecb9033f779af4926a57ceeed06d36d6875c46a9b393df67e07fd0b",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Permitted Investments"
+    },
+    "outputSummary": "definition \"Permitted Investments\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 4059,
+    "timestamp": "2026-09-14T18:02:54.294Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": true,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Permitted Investments",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:344b456719a30ef35e5a798a",
+     "sourceNodeKey": "doc-a::1.01(3)(ii)(a)",
+     "charStart": 248524,
+     "charEnd": 262645,
+     "rawText": "“ Permitted Investments ” means:\n\n(1) any Investment in any Restricted Party (including guarantees of obligations of Restricted Subsidiaries);\n\n(2) any Investment in cash, Cash Equivalents or Investment Grade Securities;\n\n(3) any Investment or other acquisition, by any Restricted Party, whether by purchase, merger, amalgamation or otherwise, of all or substantially all of the\nassets of, or any business line, unit or division or product line (including research and development and related assets in respect of any product) of, a Person or of a majority of the outstanding Capital Stock of any Person (and, in any event,\nincluding any Investment in (a) any Restricted Party the effect of which is to increase any Restricted Party’s equity ownership in such Restricted Party or (b) any joint venture for the purpose of increasing any Restricted\nParty’s ownership interest in such joint venture) that is engaged, directly or indirectly, in a Similar Business (or in assets of a Similar Business) if as a result of such Investment (each such transaction, a “ Permitted\nAcquisition ”);\n\n(a)\nsuch Person becomes a Restricted Subsidiary (including by redesignation of an Unrestricted Subsidiary as a\nRestricted Subsidiary or by means of a Division); or\n\n(b)\nsuch Person, in one (1) transaction or a series of related transactions, is merged, consolidated or\namalgamated with or into, or transfers or conveys (i) substantially all of its assets to, transfers or conveys assets constituting a business unit, line of business or division of such Person, or is liquidated into, any Restricted Party, (ii)\n50% or more of its Equity Interests to any Restricted Party or a Qualified Restricted Subsidiary or (iii) minority ownership interests in such Person that is engaged in a business permitted pursuant to Section 5.16;\n\nand, in each case, any Investment held by such Person; provided that such Investment was not acquired by such Person in contemplation of such\nacquisition, merger, consolidation, amalgamation, Division, transfer, conveyance or redesignation;\n(4) any Investment in securities or other assets\n(including earn-outs) not constituting cash, Cash Equivalents or Investment Grade Securities and received in connection with an Asset Sale made pursuant to Section 6.05 hereof or any other disposition of assets not constituting an Asset Sale;\n\n-54-\n\n(5) any Investment existing on the Effective Date or made pursuant to binding commitments in effect on the\nEffective Date, or an Investment consisting of any extension, modification, replacement, reinvestment or renewal of any such Investment existing on the Effective Date or binding commitment in effect on the Effective Date; provided that the\namount of any such Investment may be increased in such extension, modification, replacement, reinvestment or renewal only (a) as required by the terms of such Investment or binding commitment as in existence on the Effective Date (including as\na result of the accrual or accretion of interest or original issue discount or the issuance of pay in kind securities) or (b) as otherwise permitted under this Agreement;\n\n(6) any Investment acquired by any Restricted Party:\n\n(a)\nconsisting of extensions of credit in the nature of accounts receivable or notes receivable arising from the\ngrant of trade credit in the ordinary course of business or consistent with past practice and Investments received in satisfaction or partial satisfaction thereof from financially troubled account debtors and other credits to suppliers in the\nordinary course of business;\n\n(b)\nin exchange for any other Investment or accounts receivable, endorsements for collection or deposit held by any\nRestricted Party in connection with or as a result of a bankruptcy, workout, reorganization or recapitalization of the issuer of such other Investment or accounts receivable;\n\n(c)\nin satisfaction of judgments against other Persons; or\n\n(d)\nas a result of a foreclosure by any Restricted Party with respect to any secured Investment or other transfer\nof title with respect to any secured Investment in default; or\n\n(e)\nreceived in compromise or resolution of (a) obligations of trade creditors, suppliers or customers that\nwere incurred in the ordinary course of business of the Restricted Parties or consistent with past practice, including pursuant to any plan of reorganization or similar arrangement upon the bankruptcy or insolvency of any trade creditor, supplier or\ncustomer, or (b) litigation, arbitration or other disputes;\n\n(7) Hedging Obligations permitted under Section 6.01(b)(10)\nhereof;\n(8) any Investment in a Similar Business having an aggregate Fair Market Value, taken together with all other Investments made pursuant to this\nclause (8) that are at that time outstanding, not to exceed the sum of (i) greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of such\nInvestment plus (ii) any Investment capacity available under clauses (22) and (30) of this definition; provided , however , that if any Investment pursuant to this clause (8) is made in any Person that is not a\nRestricted Subsidiary at the date of the making of such Investment and such Person becomes a Restricted Subsidiary after such date, such investment shall thereafter be deemed to have been made pursuant to clause (1) above and shall cease to\nhave been made pursuant to this clause (8) for so long as such Person continues to be a Restricted Subsidiary;\n(9) Investments the payment for which\nconsists of Equity Interests of a Borrower or any Parent Entity (exclusive of Disqualified Stock); provided , however , that such Equity Interests shall not increase the amount available for Restricted Payments under\nSection 6.08(a)(3) hereof;\n(10) guarantees of Indebtedness to the extent such guarantees are permitted under Section 6.01 hereof; the creation\nof Liens on the assets of any Restricted Party in compliance with Section 6.02; and Restricted Payments permitted under Section 6.08 (including any transactions incurred in reliance on the Available RP Capacity Amount) (other than by\nreference to this clause (10));\n(11) any transaction to the extent it constitutes an Investment that is permitted and made in accordance with the\nprovisions of Section 5.18(b) hereof (except transactions described in Sections 5.18(b)(2), (5), (9) and (15) hereof);\n(12) Investments\nconsisting of purchases and acquisitions of inventory, supplies, material or equipment, or other similar assets, or the licensing or contribution of intellectual property pursuant to joint marketing arrangements with other Persons;\n\n-55-\n\n(13) additional Investments having an aggregate Fair Market Value, taken together with all other Investments\nmade pursuant to this clause (13) that are at that time outstanding not to exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time\nof such Investment (the greater of such amounts, the “ General Basket Amount ”); provided , however , that if any Investment pursuant to this clause (13) is made in any Person that is not a Restricted Subsidiary at\nthe date of the making of such Investment and such Person becomes a Restricted Subsidiary after such date, such Investment shall thereafter be deemed to have been made pursuant to clause (1) above and shall cease to have been made pursuant to\nthis clause (13) for so long as such Person continues to be a Restricted Subsidiary;\n(14) Investments in or by a Receivables Subsidiary, including\nthe contribution or lending of cash to a Receivables Subsidiary to finance (i) the purchase of assets or to otherwise fund required reserves and other accounts permitted or required by the arrangements governing such Permitted Receivables\nFinancing, that, in the good faith determination of the Initial Borrower, are necessary or advisable to effect any Permitted Receivables Financing or any repurchase obligation in connection therewith and (ii) distributions or payments by such\nReceivables Subsidiary of Receivables Fees;\n(15) loans and advances to, or guarantees of Indebtedness of, officers, directors, managers, employees and\nconsultants not in excess of the greater of (x) $108.0 million and (y) 15% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, outstanding at any one time, in the aggregate;\n\n(16) loans and advances to officers, directors, managers, employees and consultants for business-related travel expenses, moving or relocation expenses,\nentertainment, payroll advances and other analogous or similar expenses or payroll expenses, in each case incurred in the ordinary course of business or consistent with past practice or to fund such Person’s purchase of Equity Interests of the\nBorrowers or any Parent Entity;\n(17) advances, loans or extensions of trade credit (including the creation of receivables) or prepayments to suppliers or\nlessors or loans or advances made to distributors, and performance guarantees and Contingent Obligations incurred in the ordinary course of business or consistent with past practice of any Restricted Party;\n\n(18) intercompany current liabilities owed by Unrestricted Subsidiaries or joint ventures incurred in the ordinary course of business in connection with the\ncash management operations of the Restricted Parties and their respective Subsidiaries;\n(19) Investments in the ordinary course of business or consistent\nwith past practice consisting of Uniform Commercial Code Article 3 endorsements for collection or deposit and Article 4 customary trade arrangements with customers consistent with past practices or, the equivalent actions in any non-U.S. jurisdiction;\n(20) Investments consisting of promissory notes issued to any Restricted Party by future,\npresent or former employees, directors, officers, managers or consultants of the Borrowers or any of their respective Subsidiaries or their respective estates, spouses or former spouses to finance the purchase or redemption of Equity Interests of\nthe Borrowers or any Parent Entity thereof, to the extent the applicable Restricted Payment is permitted by Section 6.08 hereof;\n(21) repurchases of\nSenior Indebtedness of the Restricted Parties;\n(22) Investments in Unrestricted Subsidiaries having an aggregate Fair Market Value, taken together with\nall other Investments made pursuant to this clause (22) that are at the time outstanding, without giving effect to the sale of an Unrestricted Subsidiary to the extent the proceeds of such sale do not consist of cash, Cash Equivalents or\nmarketable securities, not to exceed the sum of (i) the greater of (x) (x) $360.0 million and (y) 50% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of such Investment\nplus (ii) any Investment capacity available under clauses (8) and (30) of this definition; provided , however , that any Investment pursuant to this clause (22) made in any Person that is a Unrestricted Subsidiary\nof the Borrowers at the date of the making of such Investment and such Person becomes a Restricted Subsidiary after such date, such Investment shall thereafter be deemed to have been made pursuant to clause (1) above and shall cease to have\nbeen made pursuant to this clause (22) for so long as such Person continues to be a Restricted Subsidiary;\n\n-56-\n\n(23) guarantee obligations of any Restricted Party in respect of leases or of other obligations that do not\nconstitute Indebtedness, in each case, entered into in the ordinary course of business;\n(24) guarantee obligations of any Restricted Party in connection\nwith the provision of credit card payment processing services in the ordinary course of business or consistent with past practice;\n(25) Investments by an\nUnrestricted Subsidiary entered into prior to the day such Unrestricted Subsidiary is redesignated as a Restricted Subsidiary pursuant to the definition of “Unrestricted Subsidiary”;\n\n(26) non-cash Investments in connection with tax planning and reorganization activities, and Investments in connection\nwith a Permitted Tax Restructuring or related transactions;\n(27) any other Investment; provided that on a Pro Forma Basis after giving effect to\nsuch Investment, at the election of the Initial Borrower, (i) the First Lien Leverage Ratio for the most recently ended Test Period would not exceed (A) 2.00:1.00 or (B) the First Lien Leverage Ratio as of the last day of the then most\nrecently ended Test Period or (ii) the Interest Coverage Ratio on a pro forma basis is at least equal to or greater than (A) 1.75:1.00 or (B) the Interest Coverage Ratio level as of the last day of the then most recently ended Test Period;\nprovided that this clause (ii) shall not be relied on for the purpose of incurring Indebtedness secured by a lien on all or a material portion of the Collateral on a pari passu basis with the Term Loans;\n\n(28) the Transactions;\n(29) any acquisition or Investment by\nany Non-Loan Party Subsidiary to the extent funded with the operating cash flow of Non-Loan Party Subsidiaries; and\n\n(30) any Investment in a Joint Venture having an aggregate Fair Market Value, taken together with all other Investments made pursuant to this clause\n(30) that are at that time outstanding, not to exceed the sum of (i) the greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of such\nInvestment, plus (ii) any Investment capacity available under clauses (8) and (22) of this definition; provided , however , that any Investment pursuant to this clause (30) made in any Person that is a Joint Venture\nat the date of the making of such Investment and such Person becomes a Restricted Subsidiary after such date, such Investment shall thereafter be deemed to have been made pursuant to clause (1) above and shall cease to have been made pursuant\nto this clause (30) for so long as such Person continues to be a Restricted Subsidiary.\n",
+     "contentHash": "633793c0a5032bfc93c70acedcf7059c2eae3e60839634064490e71deba9b56f",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Permitted Liens"
+    },
+    "outputSummary": "definition \"Permitted Liens\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 4059,
+    "timestamp": "2026-09-14T18:02:54.295Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": true,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Permitted Liens",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:e4dc649917cffe2cab9ae723",
+     "sourceNodeKey": "doc-a::1.01(30)(ii)",
+     "charStart": 262645,
+     "charEnd": 289340,
+     "rawText": "“ Permitted Liens ” means, with respect to\nany Person:\n(1) pledges, deposits or security by such Person under workers’ compensation laws, unemployment insurance, employers’ health tax,\npension and other social security or retirement benefit laws or similar legislation or other insurance related obligations (including, but not limited to, in respect of deductibles, self-insured retention amounts and premiums and adjustments\nthereto) or indemnification obligations of (including obligations in respect of letters of credit or bank guarantees for the benefit of) insurance carriers providing property, casualty or liability insurance, or good faith deposits in connection\nwith letters of intent, bids, tenders, contracts (other than for the payment of Indebtedness) or leases to which such Person is a party, or deposits to secure public or statutory obligations of such Person or deposits of cash or U.S. government\nbonds to secure performance, surety, stay, customs or appeal bonds to which such Person is a party, or deposits as security for contested taxes or import duties or for the payment of rent, performance and return-of-money bonds and other similar obligations (including letters of credit issued in lieu of any such bonds or to support the issuance thereof and including those to secure health, safety and\nenvironmental obligations), in each case incurred in the ordinary course of business;\n(2) Liens imposed by law or regulation relating to the construction\nor renovation of any property, such as landlords’, carriers’, warehousemen’s, materialmen’s, repairmen’s, mechanics’, contractors’, supplier of materials’, architects’ and other similar Liens, in\neach case for sums not yet overdue for a period of more than thirty (30) days or being contested in good faith by appropriate proceedings or other Liens arising out of judgments or awards against such Person with respect to which such Person\nshall then be proceeding with an appeal or other proceedings for review if adequate reserves with respect thereto are maintained on the books of such Person in accordance with GAAP or with respect to which the failure to make payment could not\nreasonably be expected to have a Material Adverse Effect;\n\n-57-\n\n(3) Liens for taxes, assessments or governmental charges not yet overdue for a period of more than thirty\n(30) days or that are being contested in good faith by appropriate proceedings diligently conducted, if adequate reserves with respect thereto are maintained on the books of such Person in accordance with GAAP or with respect to which the\nfailure to make payment could not reasonably be expected to have a Material Adverse Effect;\n(4) Liens in favor of issuers of performance, surety, bid,\nindemnity, warranty, release, appeal or similar bonds or with respect to other regulatory requirements or letters of credit or bankers’ acceptances issued, and completion guarantees provided for, in each case pursuant to the request of and for\nthe account of such Person in the ordinary course of its business;\n(5) reservations in any original grants from the Crown of land or interest therein,\nstatutory exceptions to title and reservations of mineral rights (including coal, oil and natural gas) in any grants from the Crown or from any other predecessors in title, minor survey exceptions, minor encumbrances, ground leases, easements or\nreservations of, or rights of others for, licenses, rights-of-way, servitudes, sewers, electric lines, drains, telegraph and telephone and cable television lines, gas\nand oil pipelines and other similar purposes, or zoning, building codes or other restrictions (including, without limitation, minor defects or irregularities in title and similar encumbrances) as to the use of real properties or Liens incidental to\nthe conduct of the business of such Person or to the ownership of its properties which were not incurred in connection with Indebtedness and which do not in the aggregate materially adversely affect the value of said properties or materially impair\ntheir use in the operation of the business of such Person;\n(6) Liens securing Indebtedness permitted to be incurred pursuant to Section 6.01(a) or\nSection 6.01(b)(4), (12), (14), (18), (19), (21), (26), (27) (solely with respect to the Capital Stock and assets of any Joint Ventures), (31), (32) or (33) hereof; provided that (a) in the case of Section 6.01(b)(4), such\nLiens extend only to the assets purchased with the proceeds of such Indebtedness, accessions to such assets and the proceeds and products thereof, and any lease of such assets (including accessions thereto), the proceeds and the products thereof and\ncustomary security deposits in respect thereof; provided , however , that individual financings of equipment provided by one (1) lender may be cross collateralized to other financings of equipment provided by such lender;\n(b) in the case of Section 6.01(b)(18), such Lien may not extend to any assets other than the assets owned by the Restricted Subsidiaries that are not Guarantors; (c) in the case of Section 6.01(b)(19), such Liens shall only be\npermitted if such Liens are limited to all or part of the same property or assets, including Capital Stock ( plus improvements, accessions, proceeds or dividends or distributions in respect thereof, or replacements of any thereof) acquired, or\nof any Person acquired or merged, amalgamated or consolidated with or into the Borrowers or any Restricted Subsidiary, in any transaction to which such Indebtedness relates; (d) [reserved]; (e) in the case of Section 6.01(b)(14)(y), such\nLiens extend only to the assets of such Persons that are acquired by the Borrowers or any Restricted Subsidiary or merged into, amalgamated with or consolidated with the Borrowers or a Restricted Subsidiary in accordance with\nSection 6.01(b)(14)(y) and (f) Liens incurred pursuant to Section 6.01(a) or Section 6.01(b)(4), (12), (14), (18), (19), (21), (31), (32) or (33) shall, at the election of the Initial Borrower, be permitted to be secured by\nthe Collateral on a pari passu basis or junior basis with the Secured Obligations, which (x) if secured by the Collateral on a pari passu basis or junior basis with the Secured Obligations, the Initial Borrower and the Collateral Agent\nshall enter into an applicable Customary Intercreditor Agreement (or the representative for the holders of such Indebtedness or the holders of such Indebtedness shall become a party to any then-existing applicable Intercreditor Agreement) and\n(y) in any other case, at the election of the Initial Borrower, the Collateral Agent shall enter into an applicable Intercreditor Agreement (or the representative for the holders of such Indebtedness or the holders of such Indebtedness shall\nbecome a party to any then-existing applicable Customary Intercreditor Agreement); provided , further , that without any further consent of the Lenders, the Administrative Agent and the Collateral Agent are authorized and directed to\nexecute and deliver on behalf of the Secured Parties any Customary Intercreditor Agreement contemplated by this clause;\n(7) Liens existing on the\nEffective Date;\n(8) Liens on property or shares of stock or other assets of a Person at the time such Person becomes a Restricted Subsidiary (including\ndesignating an Unrestricted Subsidiary as a Restricted Subsidiary); provided , however , such Liens are not created or incurred in connection with, or in contemplation of, such other Person becoming a Restricted Subsidiary;\nprovided , further , however , that such Liens may not extend to any other property or assets owned by any\n\n-58-\n\nRestricted Party (other than accessions to such assets or property, the proceeds or products thereof, any lease of such assets (including accessions thereto) and other than after-acquired\nproperty that is (A) affixed or incorporated into the property covered by such Lien, (B) after-acquired property subject to a Lien securing such Indebtedness, the terms of which Indebtedness require or include a pledge of after-acquired\nproperty (it being understood that such requirement shall not be permitted to apply to any property to which such requirement would not have applied but for such acquisition) and (C) the proceeds and products thereof);\n\n(9) Liens on property or other assets at the time any Restricted Party acquired the property or such other assets, including any acquisition by means of a\nmerger, amalgamation or consolidation with or into any Restricted Party; provided , however , that such Liens are not created or incurred in connection with, or in contemplation of, such acquisition, merger, amalgamation or\nconsolidation; provided , further , however , that the Liens may not extend to any other property owned by any Restricted Party;\n(10)\nLiens securing Obligations relating to Indebtedness or other obligations of a Restricted Subsidiary owing to any other Restricted Party permitted to be incurred in accordance with Section 6.01 hereof;\n\n(11) Liens (i) securing Hedging Obligations or Cash Management Services permitted under this Agreement and (ii) on any cash or Cash Equivalents\ncollateral securing obligations in respect of any of the foregoing obligations forth in the foregoing clause (i) and any other letters of credit, bank guarantees, bankers’ acceptances or similar instruments not prohibited by this\nAgreement; provided that Liens permitted pursuant to this clause (11)(ii) may be secured on a pari passu or junior with the Liens on Collateral subject to the applicable Customary Intercreditor Agreement; provided ,\nfurther , that, without any further consent of the Lenders, the Administrative Agent and the Collateral Agent are authorized and directed to execute and deliver on behalf of the Secured Parties any Customary Intercreditor Agreement contemplated\nby this clause;\n(12) Liens on specific items of inventory or other goods and proceeds of any Person securing such Person’s accounts payable or\nsimilar trade obligations in respect of bankers’ acceptances or trade letters of credit issued or created for the account of such Person to facilitate the purchase, shipment or storage of such inventory or other goods;\n\n(13) leases, subleases, licenses or sublicenses (including of intellectual property) granted to others in the ordinary course of business which do not\nmaterially interfere with the ordinary conduct of the business of any Restricted Party and do not secure any Indebtedness;\n(14) Liens arising from\nUniform Commercial Code or equivalent statute financing statement filings regarding operating leases or consignments entered into by any Restricted Party in the ordinary course of business;\n\n(15) Liens in favor of the Borrowers or any Guarantor;\n(16)\nLiens on vehicles of any Restricted Party granted in the ordinary course of business;\n(17) Liens on Receivables Assets incurred in connection with a\nPermitted Receivables Financing;\n(18) Liens to secure any modification or Refinancing (or successive Refinancing) as a whole, or in part, of any\nIndebtedness secured by any Lien referred to in clauses (6) (solely with respect to Liens securing Indebtedness permitted to be incurred pursuant to Section 6.01(a), (b)(4), (12), (14), (18), (19), (21), (26)(b)(ii), (27) (solely with respect\nto the Capital Stock and assets of any Joint Ventures), (31), (32) or (33) hereof), (7), (8), (9), (18) and (20) of this definition of “Permitted Liens”; provided that (x) such new Lien shall be limited to all or\npart of the same property that secured the original Lien ( plus accessions, additions and improvements on such property, including after-acquired property that is (i) affixed or incorporated into the property covered by such Lien, or\n(ii) after-acquired property subject to a Lien securing such Indebtedness, the terms of which Indebtedness require or include a pledge of after-acquired property (it being understood that such requirement shall not be permitted to apply to any\nproperty to which such requirement would not have applied but for such acquisition)), and (y) the Indebtedness secured by such Lien at such time is not increased to any amount greater than the sum of (A) the outstanding principal amount\nor, if greater, committed amount of the Indebtedness described under clauses (6) (with respect to Section 6.01(a) Section 6.01(b)(4), (12), (14), (18), (19), (21), (26)(b)(ii), (27) (solely with respect to the Capital Stock and assets of\nany Joint Ventures), (31), (32) or (33) hereof), (7), (8), (9), (18) and (20) at the time the original Lien became a Permitted Lien under this Agreement, and (B) an amount necessary to pay any fees and expenses, including premiums,\nand accrued and unpaid interest related to such modification or Refinancing;\n\n-59-\n\n(19) deposits made or other security provided to secure liabilities to insurance carriers under insurance or\nself-insurance arrangements in the ordinary course of business;\n(20) Liens securing Obligations in respect of any Indebtedness permitted to be incurred\npursuant to Section 6.01 hereof; provided that, with respect to Liens securing Obligations permitted under this clause (20), at the time of incurrence and after giving pro forma effect thereto, (x) with respect to any\nIndebtedness, Disqualified Stock or Preferred Stock that will be secured by all or a material portion of the Collateral on a pari passu basis with the Secured Obligations, the First Lien Leverage Ratio for the applicable Test Period does not\nexceed the greater of (A) 2.00:1.00 and (B) the First Lien Leverage Ratio immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock, (y) with respect to any Indebtedness, Disqualified Stock or\nPreferred Stock that will be secured by all or a material portion of the Collateral on a Junior Lien Priority basis, at the Initial Borrower’s sole discretion, either (i) the Senior Secured Leverage Ratio for the applicable Test Period\ndoes not exceed the greater of (A) 3.00:1.00 and (B) the Senior Secured Leverage Ratio immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock or (ii) the Interest Coverage Ratio is greater than or\nequal to the lesser of (A) 1.75:1.00 and (B) the Interest Coverage Ratio immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock or (z) with respect to any Indebtedness, Disqualified Stock or\nPreferred Stock that is secured by Liens on assets not constituting all or a material portion of the Collateral or secured by Liens on the Collateral rank on a junior priority basis to any second lien priority indebtedness on a Pro Forma Basis, at\nthe Initial Borrower’s sole discretion, either (i) the Total Leverage Ratio for the applicable Test Period does not exceed the greater of (A) 4.00:1.00 and (B) the Total Leverage Ratio immediately prior to the incurrence of such\nIndebtedness or (ii) the Interest Coverage Ratio is greater than or equal to the lesser of (A) 1.75:1.00 and (B) the Interest Coverage Ratio immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock;\nprovided , further , that (i) in the case of Section 6.01(b)(14)(y), such Liens extend only to the assets of such Persons that are acquired by any Restricted Party or merged into, amalgamated with or consolidated with any\nRestricted Party in accordance with Section 6.01(b)(14)(y) and (ii) Liens incurred pursuant to this clause shall, at the election of the Initial Borrower, be permitted to be secured by the Collateral on a pari passu basis or junior\nbasis with the Secured Obligations, which (x) if secured by the Collateral on a pari passu basis or junior basis with the Secured Obligations, the Initial Borrower and the Collateral Agent shall enter into an applicable Customary\nIntercreditor Agreement (or the representative for the holders of such Indebtedness or the holders of such Indebtedness shall become a party to any then-existing applicable Intercreditor Agreement) and (y) in any other case, at the election of\nthe Initial Borrower, the Collateral Agent shall enter into an applicable Intercreditor Agreement (or the representative for the holders of such Indebtedness or the holders of such Indebtedness shall become a party to any then-existing applicable\nCustomary Intercreditor Agreement); provided , further , that, without any further consent of the Lenders, the Collateral Agent is authorized and directed to execute and deliver on behalf of the Secured Parties any Customary\nIntercreditor Agreement contemplated by this clause;\n(21) other Liens securing obligations that any time outstanding do not exceed the greater of (x)\n$720.0 million and (y) 100% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of incurrence; provided that Liens permitted pursuant to this clause (21) may be secured by the\nCollateral on a pari passu basis or junior basis with the Liens on the Collateral securing the Secured Obligations subject to the applicable Customary Intercreditor Agreement; provided , further , that, without any further consent\nof the Lenders, the Administrative Agent and the Collateral Agent are authorized and directed to execute and deliver on behalf of the Secured Parties any Customary Intercreditor Agreement contemplated by this clause;\n\n(22) Liens securing judgments for the payment of money not constituting an Event of Default under Section 6.01(a) hereof, so long as such Liens are\nadequately bonded and any appropriate legal proceedings that may have been duly initiated for the review of such judgment have not been finally terminated or the period within which such proceedings may be initiated has not expired;\n\n(23) Liens in favor of customs and revenue authorities arising as a matter of law to secure payment of customs duties in connection with the importation of\ngoods in the ordinary course of business;\n\n-60-\n\n(24) Liens (i) of a collection bank arising under\nSection 4-210 of the Uniform Commercial Code or any comparable or successor provision on items in the course of collection, (ii) attaching to pooling, commodity trading accounts or other commodity\nbrokerage accounts incurred in the ordinary course of business and (iii) in favor of banking or other financial institutions or electronic payment service providers arising as a matter of law encumbering deposits (including the right of set-off) and which are within the general parameters customary in the banking or finance industry;\n(25) Liens deemed to\nexist in connection with Investments in repurchase agreements permitted under Section 6.01 hereof; provided that such Liens do not extend to any assets other than those that are the subject of such repurchase agreements;\n\n(26) Liens encumbering reasonable customary initial deposits and margin deposits and similar Liens attaching to commodity trading accounts or other brokerage\naccounts incurred in the ordinary course of business and not for speculative purposes;\n(27) Liens that are contractual rights of set-off (i) relating to the establishment of depository relations with banks not given in connection with the issuance of Indebtedness, (ii) relating to pooled deposit or sweep accounts of any Restricted\nParty to permit satisfaction of overdraft or similar obligations incurred in the ordinary course of business of any Restricted Party or (iii) relating to purchase orders and other agreements entered into with customers of any Restricted Party\nin the ordinary course of business;\n(28) any encumbrance or restriction (including put and call arrangements) with respect to capital stock of any joint\nventure or similar arrangement pursuant to any joint venture or similar agreement;\n(29) Liens solely on any cash earnest money deposits made by any\nRestricted Party in connection with any letter of intent or purchase agreement permitted under this Agreement;\n(30) the rights reserved or vested in any\nPerson by the terms of any lease, license, franchise, grant or permit held by any Restricted Party or by a statutory provision, to terminate any such lease, license, franchise, grant or permit, or to require annual or periodic payments as a\ncondition to the continuance thereof;\n(31) Liens arising solely from precautionary Uniform Commercial Code financing statements or similar filings;\n\n(32) security given to a public utility or any municipality or Governmental Authority when required by such utility or authority in connection with the\noperations of that Person in the ordinary course of business;\n(33) Liens securing Obligations owed by any Restricted Party to any lender, agent or\narranger under credit facilities or any Affiliate of such a lender, agent or arranger in respect of any bank products;\n(34) Liens arising out of\nconditional sale, title retention, consignment or similar arrangements for the sale or purchase of goods entered into by any Restricted Party in the ordinary course of business;\n\n(35) Liens on insurance policies and the proceeds thereof securing the financing of the premiums with respect thereto;\n\n(36) any Lien granted pursuant to a security agreement between any Restricted Party and a licensee of their intellectual property to secure the damages, if\nany, of such licensee resulting from the rejection by such Restricted Party of such licensee in a bankruptcy, reorganization or similar proceeding with respect to such Restricted Party; provided that such Liens do not cover any assets other\nthan the intellectual property subject to such license;\n(37) Liens on the Equity Interests of Unrestricted Subsidiaries that secure Indebtedness or other\nobligations of such Unrestricted Subsidiary;\n(38) Liens on property or assets used to defease or to irrevocably satisfy and discharge Indebtedness;\nprovided that such defeasance or satisfaction and discharge is not prohibited by this Agreement;\n\n-61-\n\n(39) Liens securing Indebtedness that was permitted by the terms of this Agreement to be incurred pursuant\nto Section 6.01(b)(1) hereof; provided that (i) Liens incurred pursuant to this clause on Collateral securing Indebtedness permitted to be incurred pursuant to Section 6.01(b)(1)(Y) shall be subject to applicable Customary\nIntercreditor Agreements and (ii) Liens on the Term Priority Collateral securing Indebtedness pursuant to Section 6.01(b)(1)(Y) shall rank junior to the Liens securing the Secured Obligations; provided , further , that, without\nany further consent of the Lenders, the Administrative Agent and the Collateral Agent are authorized and directed to execute and deliver on behalf of the Secured Parties any Customary Intercreditor Agreement contemplated by this clause;\n\n(40) Liens on the assets of Subsidiaries that are not Guarantors securing Indebtedness of such Subsidiaries that was permitted by the terms of this Agreement\nto be incurred;\n(41) Liens (i) on cash advances in favor of the seller of any property to be acquired in an Investment permitted under this\nAgreement to be applied against the purchase price for such Investment and (ii) incurred in connection with an agreement to sell, transfer, lease or otherwise dispose of any property in a transaction permitted under Section 6.05 hereof, in\neach case, solely to the extent such Investment or sale, disposition, transfer or lease, as the case may be, would have been permitted on the date of the creation of such Lien;\n\n(42) Liens on cash, Cash Equivalents and Permitted Investments used to satisfy or discharge Indebtedness;\n\n(43) Liens relating to future escrow arrangements securing Indebtedness;\n\n(44) Liens arising in connection with any Permitted Tax Restructuring or related transactions;\n\n(45) Liens incurred in connection with Ordinary Course Non-Recourse Third Party Financing Transactions;\n\n(46) (i) Liens in an aggregate amount not to exceed the Available RP Capacity Amount and (ii) Liens in an aggregate amount not to exceed the Available\nAmount that is Not Otherwise Applied; provided that Liens incurred pursuant to this clause (46) shall, at the election of the Initial Borrower, be permitted to be secured by the Collateral on a pari passu basis or junior basis\nwith the Secured Obligations, which if secured by the Collateral on a pari passu basis or junior basis with the Secured Obligations, the Initial Borrower and the Collateral Agent shall enter into an applicable Customary Intercreditor Agreement\n(or the representative for the holders of such Indebtedness or the holders of such Indebtedness shall become a party to any then-existing applicable Intercreditor Agreement);\n\n(47) [reserved];\n(48) Liens securing Indebtedness on assets\nnot constituting Collateral;\n(49) pledges or deposits of cash, cash equivalents or securities made pursuant to Requirements of Law or provided to a\nGovernmental Authority as required under Environmental Laws;\n(50) [reserved]; and\n\n(51) undetermined or inchoate Liens, arising or potentially arising under statutory provisions of applicable law, which have not been filed or registered\nunder applicable law or which although filed or registered, relate to obligations not yet due or delinquent for a period of time of not more than thirty (30) days or that are being contested in good faith by appropriate proceedings diligently\nconducted, if adequate reserves are maintained as per subsection (3) above.\nFor purposes of determining compliance with this definition, (x) a\nLien need not be incurred solely by reference to one category of Permitted Liens described in this definition but may be incurred under any combination of such categories (including in part under one such category and in part under any other\ncategories), (y) in the event that a Lien (or any portion thereof) meets the criteria of one or more of such categories of Permitted Liens, the Initial Borrower shall, in its sole discretion, classify or reclassify such Lien (or any portion thereof)\nin any manner that complies with this definition and (z) in the event that a portion of Indebtedness secured by a Lien could be classified as secured in part pursuant to clause (20) above (giving effect only to the incurrence of such\nportion of such Indebtedness), the Initial Borrower, in its sole discretion, may classify such portion of such Indebtedness (and any Obligations in respect thereof) as having been secured pursuant to clause (20) above and thereafter the\nremainder of the Indebtedness as having been secured pursuant to one or more of the other clauses of this definition.\n\n-62-\n\nFor purposes of this definition, the term “Indebtedness” shall be deemed to include interest on\nsuch Indebtedness.\n“ Permitted Ratio Debt ” has the meaning assigned to such term in Section 6.01(a).\n\n",
+     "contentHash": "3672e1df8d8f46c064f43218c748d9575c3c7438ce299be7d0a1c308eebd823d",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Material Subsidiary"
+    },
+    "outputSummary": "definition \"Material Subsidiary\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 794,
+    "timestamp": "2026-09-14T18:02:54.295Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Material Subsidiary",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:09b2c718a5c1ef0a6f949359",
+     "sourceNodeKey": "doc-a::1.01(3)(a)(ii)(b)(ii)",
+     "charStart": 227151,
+     "charEnd": 227945,
+     "rawText": "“ Material Subsidiary ” means each wholly owned Restricted Subsidiary that has earnings before interest, tax, depreciation and amortization\n(such numerator calculated (a) on an unconsolidated basis, (b) by excluding any pro forma adjustments, and (c) otherwise on the same basis as Consolidated EBITDA) of 7.5% or more of Consolidated EBITDA by reference to the financial\nstatements most recently delivered pursuant to Section 5.01(a) (or, prior to the first delivery of such financial statements, any internally available (and to the extent requested by the Administrative Agent, delivered to the Administrative\nAgent) financial statements) or that is designated by the Initial Borrower as a Material Subsidiary, in each case, to the extent not otherwise constituting an Excluded Subsidiary.\n\n",
+     "contentHash": "2618ab8d5e110ab800d54ad42131acf3e781c3db77ce4a0c92969a59aa11c9e6",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Fixed Incremental Amount"
+    },
+    "outputSummary": "definition \"Fixed Incremental Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 948,
+    "timestamp": "2026-09-14T18:04:51.222Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Fixed Incremental Amount",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:0b0e9396a2678108c548ce81",
+     "sourceNodeKey": "doc-a::1.01(3)(i)(b)(ii)(i)(ii)",
+     "charStart": 184409,
+     "charEnd": 185357,
+     "rawText": "“ Fixed\nIncremental Amount ” means, at any date, the sum of (a) the greater of (i) $720.0 million and (ii) an amount equal to 100% of Consolidated EBITDA on a Pro Forma Basis for the most recently completed four (4) consecutive\nfiscal quarters of the Borrowers for which financial statements have been delivered as of such date of determination, plus (b) any unused amounts under Section 6.01(b)(12)(b), plus (c) any unused amounts under the General Lien Basket\nReallocated Amount, plus (d) any unused amounts under the Available RP Capacity Amount minus (e) without duplication, the sum of the aggregate principal amount of all (i) Incremental Facilities, (ii) Incremental Equivalent Debt\nand (iii) Indebtedness incurred in reliance on Section 6.01(b)(1)(Z) or (14)(e)(2), in each case, that were incurred prior to such date of determination in reliance on the Fixed Incremental Amount (in each case, to the extent not\nsubsequently reclassified).\n",
+     "contentHash": "7e658b50461e1ed66bd26b29d4a247c955ef07d9af4c0aa737d68b5b8b72a23a",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "Foreign Intellectual Property",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive scope definition of IP rights arising under non-U.S. law; fully captured by excerpt, no computation involved."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any right, title or interest in or to any copyrights... or any other intellectual property governed by or arising or existing under... the laws of any jurisdictions other than the United States of America or any state thereof."
+    },
+    {
+     "localRef": "d2",
+     "termName": "Foreign Prepayment Event",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Foreign Subsidiary",
+      "Prepayment Event",
+      "Net Proceeds"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference to Section 2.09(f) resolved via tool; actual defined event text retrieved and confirmed."
+     ],
+     "citation": "§1.01; §2.09(f)",
+     "excerpt": "the Net Proceeds of any Prepayment Event set forth in clause (a) of the definition thereof by a Foreign Subsidiary giving rise to a prepayment pursuant to Section 2.09(b) (a \"Foreign Prepayment Event\")"
+    },
+    {
+     "localRef": "d3",
+     "termName": "Foreign Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any Subsidiary that is organized under the laws of a jurisdiction other than the United States of America, any State thereof or the District of Columbia."
+    },
+    {
+     "localRef": "d4",
+     "termName": "Form Intercreditor Agreements",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "ABL Intercreditor Agreement",
+      "First Lien Intercreditor Agreement",
+      "Junior Lien Intercreditor Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive list of alternative forms; the identity of the named intercreditor agreements is not needed to represent this term's own meaning."
+     ],
+     "citation": "§1.01",
+     "excerpt": "(a) an intercreditor agreement substantially in the form of the ABL Intercreditor Agreement, (b) ... First Lien Intercreditor Agreement and/or (c) ... Junior Lien Intercreditor Agreement, as applicable."
+    },
+    {
+     "localRef": "d5",
+     "termName": "FSHCO",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Domestic Subsidiary",
+      "Equity Interests",
+      "Indebtedness",
+      "Foreign Subsidiary",
+      "CFC"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive holding-company classification, fully captured by excerpt."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any direct or indirect Domestic Subsidiary of the Borrowers that has no material assets other than (a) Equity Interests and/or Indebtedness ... in one or more direct or indirect Foreign Subsidiaries that are CFCs or (b) Equity Interests in a Domestic Subsidiary that holds no material assets other than those described in clause (a)."
+    },
+    {
+     "localRef": "d6",
+     "termName": "Fund",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Person"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any Person (other than a natural person) that is engaged in making, purchasing, holding or otherwise investing in commercial loans and similar extensions of credit in the ordinary course of its activities."
+    },
+    {
+     "localRef": "d7",
+     "termName": "Funded Debt",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Indebtedness",
+      "Restricted Parties",
+      "Loans"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive category of long-term/renewable Indebtedness; cross-reference to Section 1.04(c) resolved and confirmed to be a consolidation-basis rule that does not change the substance of what qualifies as Funded Debt."
+     ],
+     "citation": "§1.01; §1.04(c)",
+     "excerpt": "all Indebtedness of the Restricted Parties for borrowed money (determined on a consolidated basis in accordance with Section 1.04(c)) that matures more than one (1) year ... including Indebtedness in respect of the Loans."
+    },
+    {
+     "localRef": "d8",
+     "termName": "GAAP",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AND",
+      "operands": [
+       {
+        "kind": "BOOLEAN_LITERAL",
+        "boolValue": true,
+        "citation": "§1.01",
+        "excerpt": "any such election, once made, shall be irrevocable",
+        "inventoryItemIds": [
+         "inv-item:23f90acf7c993b980bc60f5f"
+        ]
+       },
+       {
+        "kind": "BOOLEAN_LITERAL",
+        "boolValue": true,
+        "citation": "§1.01",
+        "excerpt": "then the Initial Borrower may elect that such standards, terms or measures shall be calculated as if such Accounting Change had or had not occurred",
+        "inventoryItemIds": [
+         "inv-item:75a16a473ef4b2ce533ed8ec"
+        ]
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "IFRS",
+      "Accounting Change",
+      "Capitalized Lease Obligations"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "GAAP is an accounting-standard definition, not a monetary formula; its two material embedded mechanics (irrevocability of a GAAP-to-IFRS election, and the Initial Borrower's election right on an Accounting Change) are represented as boolean facts carrying the relevant inventory items and citations. The safe-harbor provisos regarding prior actions and the Section 1.04(d) true-up mechanism are descriptive/non-computational and are captured via excerpt/cross-reference rather than a formula."
+     ],
+     "citation": "§1.01",
+     "excerpt": "provided that all terms of an accounting or financial nature ... shall be construed ... in effect from time to time. At any time after the Effective Date, the Initial Borrower may elect to apply IFRS ... provided that any such election, once made, shall be irrevocable ... If there occurs a change in IFRS or GAAP ... (an \"Accounting Change\"), then the Initial Borrower may elect that such standards, terms or measures shall be calculated as if such Accounting Change had or had not occurred."
+    },
+    {
+     "localRef": "d9",
+     "termName": "Accounting Change",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "GAAP",
+      "IFRS"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Inline defined term within the GAAP definition; fully captured by excerpt."
+     ],
+     "citation": "§1.01",
+     "excerpt": "a change in IFRS or GAAP, as the case may be, [that] would cause a change in the method of calculation of any standards, terms or measures (including all computations of amounts and ratios) used in this Agreement (an \"Accounting Change\")"
+    },
+    {
+     "localRef": "d10",
+     "termName": "General Basket Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DEFINED_TERM_REFERENCE",
+      "termName": "Permitted Investments",
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Permitted Investments"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The term's meaning is expressly delegated to the 'Permitted Investments' definition; getDefinition('Permitted Investments') was retrieved but returned truncated text that did not reach the specific 'General Basket Amount' sub-provision, so the substantive quantum could not be confirmed."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of \"Permitted Investments.\""
+    },
+    {
+     "localRef": "d11",
+     "termName": "General Lien Basket",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DEFINED_TERM_REFERENCE",
+      "termName": "Permitted Liens",
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Permitted Liens"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The term is a pointer to clause (21) of the 'Permitted Liens' definition; getDefinition('Permitted Liens') was retrieved but returned truncated text ending at clause (5), so clause (21)'s content could not be confirmed."
+     ],
+     "citation": "§1.01",
+     "excerpt": "shall mean clause (21) of the definition of \"Permitted Liens\"."
+    },
+    {
+     "localRef": "d12",
+     "termName": "General Lien Basket Reallocated Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "General Lien Basket",
+      "Fixed Incremental Amount",
+      "Secured Obligations",
+      "Collateral"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Describes an optional reallocation right (relative to then-available General Lien Basket capacity), not a fixed formula, so it is captured descriptively. Confirmed via getDefinition('Fixed Incremental Amount') that Fixed Incremental Amount's own formula in turn adds back 'any unused amounts under the General Lien Basket Reallocated Amount' - a real circular/shared-capacity relationship between these two terms, noted for review but not itself quantifiable from this term's own text."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any amount then available to be incurred under the General Lien Basket that, at the option of the Initial Borrower, has been reallocated from the General Lien Basket to the Fixed Incremental Amount (provided that ... such reallocated amount may be used to incur additional Indebtedness that is secured by the Collateral on a pari passu basis or junior basis with the Secured Obligations)."
+    },
+    {
+     "localRef": "d13",
+     "termName": "Governmental Authority",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the government of the United States of America, the government of Canada ... and any agency, authority, instrumentality, regulatory body, court, central bank or other entity exercising executive, legislative, judicial, taxing, regulatory or administrative powers ... (including any supranational bodies such as the European Union or the European Central Bank)."
+    },
+    {
+     "localRef": "d14",
+     "termName": "Granting Lender",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Lender",
+      "SPV"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference to Section 9.04(e) resolved via tool; confirmed actual defining text."
+     ],
+     "citation": "§1.01; §9.04(e)",
+     "excerpt": "any Lender (a \"Granting Lender\") may grant to a special purpose funding vehicle (an \"SPV\") ... the option to provide to the Borrowers all or any part of any Loan that such Granting Lender would otherwise be obligated to make ..."
+    },
+    {
+     "localRef": "d15",
+     "termName": "Guarantee",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "IF",
+      "condition": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "inputName": "Whether the amount of the related primary obligation is stated or determinable",
+       "citation": "§1.01"
+      },
+      "then": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "inputName": "Stated or determinable amount of the related primary obligation (or portion thereof) in respect of which the Guarantee is made",
+       "citation": "§1.01"
+      },
+      "else": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "inputName": "Maximum reasonably anticipated liability in respect of the Guarantee, as determined in good faith by a Financial Officer",
+       "citation": "§1.01"
+      },
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Indebtedness",
+      "Financial Officer",
+      "Effective Date"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Both the qualitative scope of what constitutes a Guarantee (with its carve-out for ordinary-course endorsements/customary indemnities) and the valuation mechanic for the amount of a Guarantee are captured; the valuation mechanic's qualitative inputs (whether an amount is 'stated or determinable', and the good-faith maximum-anticipated-liability figure) are represented as transaction inputs since they are case-specific facts, not fixed contractual values."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any obligation ... guaranteeing or having the economic effect of guaranteeing any Indebtedness ... provided that the term Guarantee shall not include endorsements for collection or deposit in the ordinary course of business or customary and reasonable indemnity obligations ... The amount of any Guarantee shall be deemed to be an amount equal to the stated or determinable amount of the related primary obligation ... or, if not stated or determinable, the maximum reasonably anticipated liability ... as determined in good faith by a Financial Officer."
+    },
+    {
+     "localRef": "d16",
+     "termName": "Guarantee Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Loan Parties",
+      "Administrative Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition referencing an exhibit form; exhibit content not needed to represent the defined term itself."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the guarantee agreement by and among the Loan Parties and the Administrative Agent, substantially in the form of Exhibit C."
+    },
+    {
+     "localRef": "d17",
+     "termName": "Guarantors",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Subsidiary Loan Parties",
+      "Initial Borrower"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference to Section 2.28 resolved via tool and confirmed to be the Borrower-resignation provision; the conditional inclusion of the Initial Borrower is fully captured."
+     ],
+     "citation": "§1.01; §2.28",
+     "excerpt": "collectively, the Subsidiary Loan Parties, and, to the extent the Initial Borrower has resigned as a Borrower in accordance with Section 2.28, the Initial Borrower."
+    },
+    {
+     "localRef": "d18",
+     "termName": "Hazardous Materials",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Environmental Law"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "all explosive, radioactive, hazardous or toxic substances, wastes or other pollutants or contaminants ... regulated as \"hazardous\" or \"toxic\" or as a \"contaminant\" ... pursuant to any Environmental Law."
+    },
+    {
+     "localRef": "d19",
+     "termName": "Hedging Obligations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the obligations of such Person under any interest rate swap agreement ... providing for the transfer or mitigation of interest rate, commodity price or currency risks either generally or under specific contingencies."
+    },
+    {
+     "localRef": "d20",
+     "termName": "IFRS",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the international financial reporting standards and interpretations issued by the International Accounting Standards Board, as in effect from time to time."
+    },
+    {
+     "localRef": "d21",
+     "termName": "Immaterial Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "NOT",
+      "operand": {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "termName": "Material Subsidiary",
+       "citation": "§1.01"
+      },
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Material Subsidiary",
+      "Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Negation of 'Material Subsidiary'; confirmed the referenced term exists and its own definition via getDefinition('Material Subsidiary')."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any Subsidiary that is not a Material Subsidiary."
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "inventoryDispositions": [],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01 'General Lien Basket' ('shall mean clause (21) of the definition of \"Permitted Liens\"') and 'General Basket Amount' ('has the meaning assigned to such term in the definition of \"Permitted Investments\"')",
+     "semanticRequirement": "A defined term whose meaning is delegated not to another defined term as a whole, but to a specific numbered sub-clause within another term's definition (e.g. 'clause (21) of the definition of X').",
+     "whyExistingPrimitivesFail": "DEFINED_TERM_REFERENCE can only point at a whole defined term by name; it has no way to address a specific sub-clause/paragraph locator within that term's definition, so the pointer's precision (which specific clause) is lost.",
+     "candidateGeneralizedPrimitive": "A DEFINED_TERM_CLAUSE_REFERENCE (termName, clauseLocator) node, or an optional clauseLocator field on DEFINED_TERM_REFERENCE."
+    }
+   ],
+   "overallNotes": [
+    "This submission compiles §1.01's alphabetical run of defined terms from 'Foreign Intellectual Property' through 'Immaterial Subsidiary' (21 distinct terms, including 'Accounting Change' which is defined inline within the 'GAAP' definition). No independently operative rules/baskets exist in this span - it is a pure definitions section - so the rules array is empty.",
+    "Three cross-references ('Section 2.09(f)' for Foreign Prepayment Event, 'Section 9.04(e)' for Granting Lender, 'Section 2.28' for Guarantors) were successfully resolved via getReferencedProvision, upgrading those definitions to COMPLETE with confirmed target text.",
+    "Section 1.04(c) was resolved for Funded Debt and confirms only a consolidation-basis carve-out, not a change to the category itself.",
+    "Two pointer definitions ('General Basket Amount' -> definition of 'Permitted Investments'; 'General Lien Basket' -> clause (21) of 'Permitted Liens') were investigated via getDefinition, but both targets returned truncated text that did not reach the specific referenced sub-provision, so those two definitions are marked PARTIAL rather than COMPLETE.",
+    "getDefinition('Fixed Incremental Amount') confirms a genuine circular/shared-capacity relationship with 'General Lien Basket Reallocated Amount' (Fixed Incremental Amount's own formula adds back unused amounts under the General Lien Basket Reallocated Amount) - flagged for downstream review but not itself part of this term's own operative text.",
+    "The frozen semantic inventory's two MATERIAL items (GAAP/IFRS election irrevocability; election to treat an Accounting Change as having or not having occurred) are both consumed on nested BOOLEAN_LITERAL nodes within the 'GAAP' definition's calculationExpression.",
+    "The system-flagged ambiguous 'clause (a)' cross-references and the OUT_OF_SCOPE budget-exhausted references (Section 9.04, 2.09(f)-adjacent context, 1.04(c), 9.04(e), 2.28) noted in the task were independently re-attempted here via getReferencedProvision/getDefinition where a specific reason existed; several were successfully resolved as noted above."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T18:07:14.066Z",
+   "inputTokens": 102932,
+   "outputTokens": 32133,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 3,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 286074,
+   "calculatedCostUsd": 0.5271939999999999
+  },
+  "cacheKey": "740f1087d4e94b255dac2af0971421bd382c136f3a7e732c5f6b7bc60b3145d5",
+  "compiledAt": "2026-09-14T18:07:14.066Z"
+ },
+ "wave": "B",
+ "attemptsSoFar": 1
+}
