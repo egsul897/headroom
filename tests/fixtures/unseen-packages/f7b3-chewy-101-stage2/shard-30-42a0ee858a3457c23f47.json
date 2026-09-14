@@ -1,0 +1,2377 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:42a0ee858a3457c23f47",
+  "shardHash": "867efe57fd1ce295e84d6748ba9f1a9e9effa0f969d51df3468112ecd961f21a",
+  "ordinal": 30,
+  "ownedUnits": 16,
+  "sourceChars": 4565,
+  "contextEntries": 1,
+  "contextChars": 225,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 0,
+  "ownedMaterialItems": 0,
+  "estimatedFirstTurnInputTokens": 21147,
+  "preCallEstimate": {
+   "inputTokens": 69574,
+   "outputTokens": 41500,
+   "usd": 0.5541480000000001
+  },
+  "actual": {
+   "inputTokens": 78520,
+   "outputTokens": 19949,
+   "turns": 3,
+   "latencyMs": 171952,
+   "costUsd": 0.35653,
+   "attemptCount": 3,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "toolCalls": 9,
+  "toolCallNames": [
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getDefinition",
+   "getDefinition",
+   "getDefinition",
+   "getDefinition"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 22,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 0,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "valuesRepresented": 0,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {}
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Retained Declined Proceeds",
+   "RFR Interest Day",
+   "RFR Lookback Day",
+   "S&P",
+   "Sanctioned Country",
+   "Second Commitment Application Period"
+  ],
+  "unresolvedIssues": [
+   "[definition[d4].ADD[0]] requires summation across a variable/unbounded number of historical Excess Cash Flow Periods (the IR's SUM/ADD nodes take a fixed operand list, not an open-ended 'for each period' aggregation), and depends on the Section 2.09(c) ECF-Percentage prepayment mechanics only partially retrieved",
+   "[definition[d4].ADD[1]] MULTIPLY operands do not type-check together under the IR's own composition rules: MULTIPLY operands must be any number of PERCENT/NUMBER scaling factors plus at most one MONEY or RATIO operand",
+   "[definition[d4]] ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d14]] getDefinition('Daily Simple RFR') was attempted but the tool-call budget was exhausted before it could be served; the term's actual content was never retrieved",
+   "[definition[d16]] getDefinition('Daily Simple RFR') was attempted but the tool-call budget was exhausted before it could be served; the term's actual content was never retrieved",
+   "[definition[d19]] getReferencedProvision('Section 3.17(a)') was attempted and returned text, but the returned excerpt is truncated before reaching the clause that actually names/defines 'Sanctioned Country' - the defining language itself was not retrievable",
+   "Source is a contiguous run of alphabetically-ordered defined terms from the Section 1.01 glossary ('Restricted Subsidiary' through 'Second Commitment Application Period'); 22 independent WireDefinition entries were extracted, one per distinct defined term, per the multiple-definitions extraction requirement.",
+   "For terms whose entire operative meaning is 'has the meaning provided in Section X' (Retained Asset Sale Proceeds, Retained Declined Proceeds, Second Commitment Application Period), the cross-referenced sections were successfully retrieved via getReferencedProvision and are reflected as COMPLETE. For 'Sanctioned Country' the cross-referenced Section 3.17(a) was retrieved but truncated before the defining clause, so it is MISSING_CONTEXT. For 'RFR Interest Day' and 'RFR Lookback Day', the internal cross-reference to 'Daily Simple RFR' could not be retrieved because the tool-call budget was exhausted after other, higher-priority retrievals - marked MISSING_CONTEXT rather than guessed.",
+   "The Frozen Semantic Inventory for this unit reported an INVENTORY_COVERAGE_GAP with only aggregate statistics (counts and unaccounted character ranges) and did not surface individually addressable inventoryItemIds in the material supplied to this compiler, so no inventoryItemIds could be attached to nodes and inventoryDispositions is empty; the only deterministically-flagged quantitative value (MONEY $0) was located and consumed in the 'Revolving Commitment' definition (d6).",
+   "The 30 generic 'UNRESOLVED_DEFINED_TERM (LOW)' flags supplied in context correspond to numerous ordinary dependent terms used across this glossary run (e.g. Unrestricted Subsidiary, Foreign Subsidiary, SONIA, Daily Simple RFR, Incremental Revolving Facility, Other Revolving Facility, OFAC, Governmental Authority, Prepayment Event, Loan, Lender, Person, etc.) that are declared elsewhere in the instrument's own alphabetical glossary outside the text supplied to this compiler; they are listed in each definition's dependsOnTerms and did not block compiling the categorical definitions themselves, since most of these definitions are non-computational cross-references rather than formulas dependent on those terms' own numeric content.",
+   "'Retained Excess Cash Flow' (d4) is the only genuinely formulaic definition in this batch; it is PARTIAL because (i) 'Retained Excess Cash Flow Percentage' was confirmed via getDefinition to be undefined anywhere in this instrument, and (ii) clause (a)'s multi-period summation exceeds the fixed-arity SUM/ADD primitives (see irExtensionCandidates)."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:42a0ee858a3457c23f47",
+  "shardHash": "867efe57fd1ce295e84d6748ba9f1a9e9effa0f969d51df3468112ecd961f21a",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:5f44151444e221e069466be5",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Restricted Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Subsidiary",
+      "Unrestricted Subsidiary",
+      "Initial Borrower",
+      "Foreign Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical (non-numeric) defined term fully quoted, including the reclassification proviso; no formula or dollar value is involved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any direct or indirect Subsidiary of the Initial Borrower (including any Foreign Subsidiary) that is not then an Unrestricted Subsidiary; provided, however, that upon the occurrence of an Unrestricted Subsidiary ceasing to be an Unrestricted Subsidiary, such Subsidiary shall be included in the definition of \"Restricted Subsidiary.\""
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:5853df31523ed020fee30287",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Retained Asset Sale Proceeds",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Net Proceeds",
+      "Restricted Parties"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference to Section 6.05(b)(1) was resolved via getReferencedProvision; the resolved text is a categorical (retained-or-used-for-any-purpose) definition, not a numeric formula."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; Section 6.05(b)(1)",
+      "excerpt": "to the extent not required to prepay Loans or Indebtedness pursuant to Section 2.09(b), to be retained or used by the Restricted Parties for any purpose not prohibited under this Agreement (any such amounts, \"Retained Asset Sale Proceeds\")"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d150f8e1292802202307d536",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Retained Declined Proceeds",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Loans",
+      "Other Loans",
+      "Prepayment Event"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference to Section 2.09(d) was resolved via getReferencedProvision; categorical definition (amounts declined by lenders and retained), not a numeric formula."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; Section 2.09(d)",
+      "excerpt": "any amounts not required to be applied and/or declined by the Lenders may be retained by the Restricted Parties (such amounts, \"Retained Declined Proceeds\")"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:924fffef6bf72954ee28a06e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Retained Excess Cash Flow",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "(no evidence captured)",
+      "semanticDescription": "unrecognized or malformed expression (kind=\"ADD\")",
+      "reason": "ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "attemptedStructure": {
+       "kind": "ADD",
+       "type": "NUMBER",
+       "exprId": "ir-expr:35c5af249dd49a9243c7cb10",
+       "operands": [
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01 Retained Excess Cash Flow, clause (a); see Section 2.09(c): 'the Borrowers shall prepay Term Loans in an aggregate amount equal to the ECF Percentage of Excess Cash Flow for such fiscal year...'",
+         "semanticDescription": "the cumulative portion of Excess Cash Flow, for each completed Excess Cash Flow Period ending after the Closing Date and before the determination date, that was not required to be applied as a mandatory prepayment under Section 2.09(c)",
+         "reason": "requires summation across a variable/unbounded number of historical Excess Cash Flow Periods (the IR's SUM/ADD nodes take a fixed operand list, not an open-ended 'for each period' aggregation), and depends on the Section 2.09(c) ECF-Percentage prepayment mechanics only partially retrieved",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:bf844462843d0843934f63d5"
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "an amount equal to the Retained Excess Cash Flow Percentage of Excess Cash Flow of the Borrowers, for such Excess Cash Flow Interim Period",
+         "semanticDescription": "unrecognized or malformed expression (kind=\"MULTIPLY\")",
+         "reason": "MULTIPLY operands do not type-check together under the IR's own composition rules: MULTIPLY operands must be any number of PERCENT/NUMBER scaling factors plus at most one MONEY or RATIO operand",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "an amount equal to the Retained Excess Cash Flow Percentage of Excess Cash Flow of the Borrowers, for such Excess Cash Flow Interim Period"
+         },
+         "attemptedStructure": {
+          "kind": "MULTIPLY",
+          "type": "NUMBER",
+          "exprId": "ir-expr:9e2887534f93f11d7e241557",
+          "operands": [
+           {
+            "kind": "DEFINED_TERM_REFERENCE",
+            "type": "RATIO",
+            "termName": "Retained Excess Cash Flow Percentage",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:5d4ae63725b9019754f41693"
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "RATIO",
+            "metricName": "Excess Cash Flow",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:132cb071b3953c9df89e9b82"
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": "an amount equal to the Retained Excess Cash Flow Percentage of Excess Cash Flow of the Borrowers, for such Excess Cash Flow Interim Period"
+          }
+         },
+         "exprId": "ir-expr:acb95712f55e476faeffda5f"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "exprId": "ir-expr:26b6c5bd7941e790f96d4711"
+     },
+     "dependsOnTerms": [
+      "Excess Cash Flow",
+      "Excess Cash Flow Period",
+      "Excess Cash Flow Interim Period",
+      "Retained Excess Cash Flow Percentage"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Top-level ADD structure (clause (a) + clause (b)) is faithfully represented.",
+      "The term 'Retained Excess Cash Flow Percentage' used in clause (b) is confirmed, via getDefinition, NOT declared anywhere in this instrument - its own value/formula is unavailable.",
+      "Clause (a) requires an open-ended multi-period summation the current IR primitives cannot express (see irExtensionCandidates).",
+      "requires summation across a variable/unbounded number of historical Excess Cash Flow Periods (the IR's SUM/ADD nodes take a fixed operand list, not an open-ended 'for each period' aggregation), and depends on the Section 2.09(c) ECF-Percentage prepayment mechanics only partially retrieved",
+      "MULTIPLY operands do not type-check together under the IR's own composition rules: MULTIPLY operands must be any number of PERCENT/NUMBER scaling factors plus at most one MONEY or RATIO operand",
+      "ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "an amount equal to the sum of (a) the portion of the Excess Cash Flow of the Borrowers for each Excess Cash Flow Period ending after the Closing Date and prior to such date that is not required to be applied as a mandatory prepayment under Section 2.09(c) plus (b) ... an amount equal to the Retained Excess Cash Flow Percentage of Excess Cash Flow of the Borrowers, for such Excess Cash Flow Interim Period."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:8c57702bd907e8810fb43b25",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Revolving Borrowing",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Borrowing",
+      "Revolving Loan"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple cross-reference definition fully quoted."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "a Borrowing of Revolving Loans"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:83d04aef65849ccf88eef8a2",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Revolving Commitment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AS_OF",
+      "type": "MONEY",
+      "exprId": "ir-expr:f0a7e09acdf48115fb5d55a9",
+      "value": {
+       "kind": "MONEY",
+       "type": "MONEY",
+       "amount": 0,
+       "currency": "USD",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:d305058928b2b513dfde8173"
+      },
+      "asOfDate": "Effective Date",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Revolving Lender",
+      "Revolving Loan",
+      "Revolving Exposure",
+      "Incremental Facility Amendment"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The stated aggregate value as of the Effective Date ($0) is captured explicitly, which is the only concrete quantitative fact in this definition.",
+      "The adjustment mechanics (reduction under §2.06, reduction/increase under §9.04 assignments, increase under §2.18) are procedural cross-references, not additional numeric values, and are preserved in the excerpt."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "as such commitment may be (a) reduced from time to time pursuant to Section 2.06, (b) reduced or increased from time to time pursuant to assignments ... pursuant to Section 9.04 and (c) increased from time to time pursuant to Section 2.18. For the avoidance of doubt, as of the Effective Date, the aggregate amount of the Revolving Commitment is $0."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:17e510ffc6c2d54e643cff0b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Revolving Exposure",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "METRIC_REFERENCE",
+      "type": "MONEY",
+      "metricName": "Dollar Amount of outstanding principal amount of Revolving Loans",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:a068f7a6484022f92053480d"
+     },
+     "dependsOnTerms": [
+      "Dollar Amount",
+      "Revolving Loan",
+      "Revolving Lender"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Single-metric definition (Dollar Amount of outstanding principal of a Lender's Revolving Loans) fully represented; 'without duplication' qualifier is descriptive, not a separate numeric component."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the Dollar Amount of the sum of the outstanding principal amount of such Revolving Lender's Revolving Loans"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:6683429eb750a0452b6c022d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Revolving Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Incremental Revolving Facility",
+      "Incremental Revolving Increase",
+      "Other Revolving Facility"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical definition fully quoted."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "each and any Incremental Revolving Facility (together with any Incremental Revolving Increase thereto) and any Other Revolving Facility, in each case together with the extensions of credit thereunder and any refinancing thereof"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e9e71e839571b4c5a36b4ef0",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Revolving Lender",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Lender",
+      "Revolving Commitment",
+      "Revolving Exposure",
+      "Effective Date"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical, date-conditioned definition fully quoted; no numeric formula involved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "a Lender with a Revolving Commitment or, if the Revolving Commitments have terminated or expired, a Lender with Revolving Exposure"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:5c531fc2846c3c7d0079eebf",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Revolving Loan",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Revolving Lender",
+      "Incremental Facility Amendment"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical definition fully quoted."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the loans and advances made by the Revolving Lenders (in their capacity as such) pursuant to this Agreement (including pursuant to any applicable Incremental Facility Amendment)"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:03d78b530a37a4715928fbea",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "RFR",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "RFR Loan",
+      "SONIA"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple reference-rate mapping definition fully quoted."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "for any RFR Loan denominated in Sterling, SONIA"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:c39ea758e784752440c5b628",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "RFR Borrowing",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Borrowing",
+      "RFR Loan"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple cross-reference definition fully quoted."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the RFR Loans comprising such Borrowing"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:df8ce12a0489ef21239b3c88",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "RFR Business Day",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical day-count exclusion definition (Saturday/Sunday/London banking holiday) fully quoted; not a numeric value."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "for any Loan denominated in Sterling, any day except for (i) a Saturday, (ii) a Sunday or (iii) a day on which banks are closed for general business in London"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:b168fece75bdcec3c77b3b68",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "RFR Interest Day",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01 RFR Interest Day: 'has the meaning specified in the definition of \"Daily Simple RFR.\"'",
+      "semanticDescription": "RFR Interest Day's meaning, which is defined only inside the definition of 'Daily Simple RFR'",
+      "reason": "getDefinition('Daily Simple RFR') was attempted but the tool-call budget was exhausted before it could be served; the term's actual content was never retrieved",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:70c77a278e1b3c0d98d686c3"
+     },
+     "dependsOnTerms": [
+      "Daily Simple RFR"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-reference to 'Daily Simple RFR' could not be resolved within the available tool budget.",
+      "getDefinition('Daily Simple RFR') was attempted but the tool-call budget was exhausted before it could be served; the term's actual content was never retrieved"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning specified in the definition of \"Daily Simple RFR.\""
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:77901f32580ebef9aa2808ad",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "RFR Loan",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Daily Simple RFR",
+      "Loan"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical definition, including the mandatory-classification sentence for Sterling Loans, fully quoted."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "a Loan that bears interest at a rate based on the Daily Simple RFR. All Loans denominated in Sterling shall be RFR Loans."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:10a9d52ee94736c5ea891bea",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "RFR Lookback Day",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01 RFR Lookback Day: 'has the meaning assigned to such term in the definition of \"Daily Simple RFR.\"'",
+      "semanticDescription": "RFR Lookback Day's meaning, which is defined only inside the definition of 'Daily Simple RFR'",
+      "reason": "getDefinition('Daily Simple RFR') was attempted but the tool-call budget was exhausted before it could be served; the term's actual content was never retrieved",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:93cc0bfd9972dc8af1f68774"
+     },
+     "dependsOnTerms": [
+      "Daily Simple RFR"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-reference to 'Daily Simple RFR' could not be resolved within the available tool budget.",
+      "getDefinition('Daily Simple RFR') was attempted but the tool-call budget was exhausted before it could be served; the term's actual content was never retrieved"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in the definition of \"Daily Simple RFR.\""
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:a0a99b4db9194e43bbbad2fc",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "S&P",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Named-entity definition fully quoted."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "Standard & Poor's Financial Services LLC, a subsidiary of S&P Global Inc., and any successor to its rating agency business"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:fbb6708d8de04138ecd587fc",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Sale and Lease-Back Transaction",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Party"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical transaction-type definition fully quoted."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any arrangement providing for the leasing by any Restricted Party of any real property or tangible personal property, which property has been or is to be sold or transferred by such Restricted Party to a third Person in contemplation of such leasing"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:7a53947bb56aafc1b9b8ccd9",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Sanctioned Country",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01 Sanctioned Country: 'has the meaning assigned to such term in Section 3.17(a).'; Section 3.17(a) as retrieved: '...for the purpose of funding' (truncated before the defined term appears)",
+      "semanticDescription": "Sanctioned Country's actual defined meaning, which sits within Section 3.17(a)",
+      "reason": "getReferencedProvision('Section 3.17(a)') was attempted and returned text, but the returned excerpt is truncated before reaching the clause that actually names/defines 'Sanctioned Country' - the defining language itself was not retrievable",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:6788dd19783423251783b3ef"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-reference was pursued via tool but the retrieved text did not reach the actual defining language.",
+      "getReferencedProvision('Section 3.17(a)') was attempted and returned text, but the returned excerpt is truncated before reaching the clause that actually names/defines 'Sanctioned Country' - the defining language itself was not retrievable"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; Section 3.17(a)",
+      "excerpt": "has the meaning assigned to such term in Section 3.17(a)"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:ac97c0a3682e1372f1a46a2a",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Sanctions",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "OFAC"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical definition listing the sanctioning authorities fully quoted."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "economic sanctions administered or enforced by the United States Government (including sanctions enforced by OFAC or the U.S. Department of State), the United Nations Security Council, the European Union or the United Kingdom"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:8d02fa95af1876402ba62e31",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "SEC",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Governmental Authority"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Named-entity definition fully quoted."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the Securities and Exchange Commission or any Governmental Authority succeeding to any of its principal functions"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:7b5d330b29b3cb17ceba256d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Second Commitment Application Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "First Commitment Application Period",
+      "Acceptable Commitment",
+      "Asset Sale Proceeds Application Period"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference to Section 6.05(b)(2) was resolved via getReferencedProvision; the defined period (the further period, up to 120 days from expiration of the First Commitment Application Period, to enter into another Acceptable Commitment) is a time-window definition, not a monetary formula."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; Section 6.05(b)(2)",
+      "excerpt": "unless the applicable Loan Party reasonably expects to enter into another Acceptable Commitment prior to the expiration of the First Commitment Application Period (a \"Second Commitment Application Period\") and such Net Proceeds are actually applied in such manner prior to one hundred twenty (120) days from the expiration of the First Commitment Application Period"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d4].ADD[0]] requires summation across a variable/unbounded number of historical Excess Cash Flow Periods (the IR's SUM/ADD nodes take a fixed operand list, not an open-ended 'for each period' aggregation), and depends on the Section 2.09(c) ECF-Percentage prepayment mechanics only partially retrieved",
+   "[definition[d4].ADD[1]] MULTIPLY operands do not type-check together under the IR's own composition rules: MULTIPLY operands must be any number of PERCENT/NUMBER scaling factors plus at most one MONEY or RATIO operand",
+   "[definition[d4]] ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d14]] getDefinition('Daily Simple RFR') was attempted but the tool-call budget was exhausted before it could be served; the term's actual content was never retrieved",
+   "[definition[d16]] getDefinition('Daily Simple RFR') was attempted but the tool-call budget was exhausted before it could be served; the term's actual content was never retrieved",
+   "[definition[d19]] getReferencedProvision('Section 3.17(a)') was attempted and returned text, but the returned excerpt is truncated before reaching the clause that actually names/defines 'Sanctioned Country' - the defining language itself was not retrievable",
+   "Source is a contiguous run of alphabetically-ordered defined terms from the Section 1.01 glossary ('Restricted Subsidiary' through 'Second Commitment Application Period'); 22 independent WireDefinition entries were extracted, one per distinct defined term, per the multiple-definitions extraction requirement.",
+   "For terms whose entire operative meaning is 'has the meaning provided in Section X' (Retained Asset Sale Proceeds, Retained Declined Proceeds, Second Commitment Application Period), the cross-referenced sections were successfully retrieved via getReferencedProvision and are reflected as COMPLETE. For 'Sanctioned Country' the cross-referenced Section 3.17(a) was retrieved but truncated before the defining clause, so it is MISSING_CONTEXT. For 'RFR Interest Day' and 'RFR Lookback Day', the internal cross-reference to 'Daily Simple RFR' could not be retrieved because the tool-call budget was exhausted after other, higher-priority retrievals - marked MISSING_CONTEXT rather than guessed.",
+   "The Frozen Semantic Inventory for this unit reported an INVENTORY_COVERAGE_GAP with only aggregate statistics (counts and unaccounted character ranges) and did not surface individually addressable inventoryItemIds in the material supplied to this compiler, so no inventoryItemIds could be attached to nodes and inventoryDispositions is empty; the only deterministically-flagged quantitative value (MONEY $0) was located and consumed in the 'Revolving Commitment' definition (d6).",
+   "The 30 generic 'UNRESOLVED_DEFINED_TERM (LOW)' flags supplied in context correspond to numerous ordinary dependent terms used across this glossary run (e.g. Unrestricted Subsidiary, Foreign Subsidiary, SONIA, Daily Simple RFR, Incremental Revolving Facility, Other Revolving Facility, OFAC, Governmental Authority, Prepayment Event, Loan, Lender, Person, etc.) that are declared elsewhere in the instrument's own alphabetical glossary outside the text supplied to this compiler; they are listed in each definition's dependsOnTerms and did not block compiling the categorical definitions themselves, since most of these definitions are non-computational cross-references rather than formulas dependent on those terms' own numeric content.",
+   "'Retained Excess Cash Flow' (d4) is the only genuinely formulaic definition in this batch; it is PARTIAL because (i) 'Retained Excess Cash Flow Percentage' was confirmed via getDefinition to be undefined anywhere in this instrument, and (ii) clause (a)'s multi-period summation exceeds the fixed-arity SUM/ADD primitives (see irExtensionCandidates)."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 78520,
+   "outputTokens": 19949,
+   "costUsd": 0.35653
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:5f44151444e221e069466be5",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Restricted Subsidiary",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Subsidiary",
+     "Unrestricted Subsidiary",
+     "Initial Borrower",
+     "Foreign Subsidiary"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Categorical (non-numeric) defined term fully quoted, including the reclassification proviso; no formula or dollar value is involved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any direct or indirect Subsidiary of the Initial Borrower (including any Foreign Subsidiary) that is not then an Unrestricted Subsidiary; provided, however, that upon the occurrence of an Unrestricted Subsidiary ceasing to be an Unrestricted Subsidiary, such Subsidiary shall be included in the definition of \"Restricted Subsidiary.\""
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:5853df31523ed020fee30287",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Retained Asset Sale Proceeds",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Net Proceeds",
+     "Restricted Parties"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Cross-reference to Section 6.05(b)(1) was resolved via getReferencedProvision; the resolved text is a categorical (retained-or-used-for-any-purpose) definition, not a numeric formula."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; Section 6.05(b)(1)",
+     "excerpt": "to the extent not required to prepay Loans or Indebtedness pursuant to Section 2.09(b), to be retained or used by the Restricted Parties for any purpose not prohibited under this Agreement (any such amounts, \"Retained Asset Sale Proceeds\")"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d150f8e1292802202307d536",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Retained Declined Proceeds",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Loans",
+     "Other Loans",
+     "Prepayment Event"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Cross-reference to Section 2.09(d) was resolved via getReferencedProvision; categorical definition (amounts declined by lenders and retained), not a numeric formula."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; Section 2.09(d)",
+     "excerpt": "any amounts not required to be applied and/or declined by the Lenders may be retained by the Restricted Parties (such amounts, \"Retained Declined Proceeds\")"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:924fffef6bf72954ee28a06e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Retained Excess Cash Flow",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "(no evidence captured)",
+     "semanticDescription": "unrecognized or malformed expression (kind=\"ADD\")",
+     "reason": "ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "attemptedStructure": {
+      "kind": "ADD",
+      "type": "NUMBER",
+      "exprId": "ir-expr:35c5af249dd49a9243c7cb10",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 Retained Excess Cash Flow, clause (a); see Section 2.09(c): 'the Borrowers shall prepay Term Loans in an aggregate amount equal to the ECF Percentage of Excess Cash Flow for such fiscal year...'",
+        "semanticDescription": "the cumulative portion of Excess Cash Flow, for each completed Excess Cash Flow Period ending after the Closing Date and before the determination date, that was not required to be applied as a mandatory prepayment under Section 2.09(c)",
+        "reason": "requires summation across a variable/unbounded number of historical Excess Cash Flow Periods (the IR's SUM/ADD nodes take a fixed operand list, not an open-ended 'for each period' aggregation), and depends on the Section 2.09(c) ECF-Percentage prepayment mechanics only partially retrieved",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:bf844462843d0843934f63d5"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "an amount equal to the Retained Excess Cash Flow Percentage of Excess Cash Flow of the Borrowers, for such Excess Cash Flow Interim Period",
+        "semanticDescription": "unrecognized or malformed expression (kind=\"MULTIPLY\")",
+        "reason": "MULTIPLY operands do not type-check together under the IR's own composition rules: MULTIPLY operands must be any number of PERCENT/NUMBER scaling factors plus at most one MONEY or RATIO operand",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": "an amount equal to the Retained Excess Cash Flow Percentage of Excess Cash Flow of the Borrowers, for such Excess Cash Flow Interim Period"
+        },
+        "attemptedStructure": {
+         "kind": "MULTIPLY",
+         "type": "NUMBER",
+         "exprId": "ir-expr:9e2887534f93f11d7e241557",
+         "operands": [
+          {
+           "kind": "DEFINED_TERM_REFERENCE",
+           "type": "RATIO",
+           "termName": "Retained Excess Cash Flow Percentage",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:5d4ae63725b9019754f41693"
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "type": "RATIO",
+           "metricName": "Excess Cash Flow",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:132cb071b3953c9df89e9b82"
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "an amount equal to the Retained Excess Cash Flow Percentage of Excess Cash Flow of the Borrowers, for such Excess Cash Flow Interim Period"
+         }
+        },
+        "exprId": "ir-expr:acb95712f55e476faeffda5f"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "exprId": "ir-expr:26b6c5bd7941e790f96d4711"
+    },
+    "dependsOnTerms": [
+     "Excess Cash Flow",
+     "Excess Cash Flow Period",
+     "Excess Cash Flow Interim Period",
+     "Retained Excess Cash Flow Percentage"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Top-level ADD structure (clause (a) + clause (b)) is faithfully represented.",
+     "The term 'Retained Excess Cash Flow Percentage' used in clause (b) is confirmed, via getDefinition, NOT declared anywhere in this instrument - its own value/formula is unavailable.",
+     "Clause (a) requires an open-ended multi-period summation the current IR primitives cannot express (see irExtensionCandidates).",
+     "requires summation across a variable/unbounded number of historical Excess Cash Flow Periods (the IR's SUM/ADD nodes take a fixed operand list, not an open-ended 'for each period' aggregation), and depends on the Section 2.09(c) ECF-Percentage prepayment mechanics only partially retrieved",
+     "MULTIPLY operands do not type-check together under the IR's own composition rules: MULTIPLY operands must be any number of PERCENT/NUMBER scaling factors plus at most one MONEY or RATIO operand",
+     "ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "an amount equal to the sum of (a) the portion of the Excess Cash Flow of the Borrowers for each Excess Cash Flow Period ending after the Closing Date and prior to such date that is not required to be applied as a mandatory prepayment under Section 2.09(c) plus (b) ... an amount equal to the Retained Excess Cash Flow Percentage of Excess Cash Flow of the Borrowers, for such Excess Cash Flow Interim Period."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:8c57702bd907e8810fb43b25",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Revolving Borrowing",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Borrowing",
+     "Revolving Loan"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple cross-reference definition fully quoted."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "a Borrowing of Revolving Loans"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:83d04aef65849ccf88eef8a2",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Revolving Commitment",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "AS_OF",
+     "type": "MONEY",
+     "exprId": "ir-expr:f0a7e09acdf48115fb5d55a9",
+     "value": {
+      "kind": "MONEY",
+      "type": "MONEY",
+      "amount": 0,
+      "currency": "USD",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:d305058928b2b513dfde8173"
+     },
+     "asOfDate": "Effective Date",
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Revolving Lender",
+     "Revolving Loan",
+     "Revolving Exposure",
+     "Incremental Facility Amendment"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The stated aggregate value as of the Effective Date ($0) is captured explicitly, which is the only concrete quantitative fact in this definition.",
+     "The adjustment mechanics (reduction under §2.06, reduction/increase under §9.04 assignments, increase under §2.18) are procedural cross-references, not additional numeric values, and are preserved in the excerpt."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "as such commitment may be (a) reduced from time to time pursuant to Section 2.06, (b) reduced or increased from time to time pursuant to assignments ... pursuant to Section 9.04 and (c) increased from time to time pursuant to Section 2.18. For the avoidance of doubt, as of the Effective Date, the aggregate amount of the Revolving Commitment is $0."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:17e510ffc6c2d54e643cff0b",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Revolving Exposure",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "METRIC_REFERENCE",
+     "type": "MONEY",
+     "metricName": "Dollar Amount of outstanding principal amount of Revolving Loans",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "resolvedDefinitionId": null,
+     "exprId": "ir-expr:a068f7a6484022f92053480d"
+    },
+    "dependsOnTerms": [
+     "Dollar Amount",
+     "Revolving Loan",
+     "Revolving Lender"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Single-metric definition (Dollar Amount of outstanding principal of a Lender's Revolving Loans) fully represented; 'without duplication' qualifier is descriptive, not a separate numeric component."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the Dollar Amount of the sum of the outstanding principal amount of such Revolving Lender's Revolving Loans"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:6683429eb750a0452b6c022d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Revolving Facility",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Incremental Revolving Facility",
+     "Incremental Revolving Increase",
+     "Other Revolving Facility"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Categorical definition fully quoted."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "each and any Incremental Revolving Facility (together with any Incremental Revolving Increase thereto) and any Other Revolving Facility, in each case together with the extensions of credit thereunder and any refinancing thereof"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e9e71e839571b4c5a36b4ef0",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Revolving Lender",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Lender",
+     "Revolving Commitment",
+     "Revolving Exposure",
+     "Effective Date"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Categorical, date-conditioned definition fully quoted; no numeric formula involved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "a Lender with a Revolving Commitment or, if the Revolving Commitments have terminated or expired, a Lender with Revolving Exposure"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:5c531fc2846c3c7d0079eebf",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Revolving Loan",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Revolving Lender",
+     "Incremental Facility Amendment"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Categorical definition fully quoted."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the loans and advances made by the Revolving Lenders (in their capacity as such) pursuant to this Agreement (including pursuant to any applicable Incremental Facility Amendment)"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:03d78b530a37a4715928fbea",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "RFR",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "RFR Loan",
+     "SONIA"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple reference-rate mapping definition fully quoted."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "for any RFR Loan denominated in Sterling, SONIA"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:c39ea758e784752440c5b628",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "RFR Borrowing",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Borrowing",
+     "RFR Loan"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple cross-reference definition fully quoted."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the RFR Loans comprising such Borrowing"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:df8ce12a0489ef21239b3c88",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "RFR Business Day",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Categorical day-count exclusion definition (Saturday/Sunday/London banking holiday) fully quoted; not a numeric value."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "for any Loan denominated in Sterling, any day except for (i) a Saturday, (ii) a Sunday or (iii) a day on which banks are closed for general business in London"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:b168fece75bdcec3c77b3b68",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "RFR Interest Day",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01 RFR Interest Day: 'has the meaning specified in the definition of \"Daily Simple RFR.\"'",
+     "semanticDescription": "RFR Interest Day's meaning, which is defined only inside the definition of 'Daily Simple RFR'",
+     "reason": "getDefinition('Daily Simple RFR') was attempted but the tool-call budget was exhausted before it could be served; the term's actual content was never retrieved",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:70c77a278e1b3c0d98d686c3"
+    },
+    "dependsOnTerms": [
+     "Daily Simple RFR"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Cross-reference to 'Daily Simple RFR' could not be resolved within the available tool budget.",
+     "getDefinition('Daily Simple RFR') was attempted but the tool-call budget was exhausted before it could be served; the term's actual content was never retrieved"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning specified in the definition of \"Daily Simple RFR.\""
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:77901f32580ebef9aa2808ad",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "RFR Loan",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Daily Simple RFR",
+     "Loan"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Categorical definition, including the mandatory-classification sentence for Sterling Loans, fully quoted."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "a Loan that bears interest at a rate based on the Daily Simple RFR. All Loans denominated in Sterling shall be RFR Loans."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:10a9d52ee94736c5ea891bea",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "RFR Lookback Day",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01 RFR Lookback Day: 'has the meaning assigned to such term in the definition of \"Daily Simple RFR.\"'",
+     "semanticDescription": "RFR Lookback Day's meaning, which is defined only inside the definition of 'Daily Simple RFR'",
+     "reason": "getDefinition('Daily Simple RFR') was attempted but the tool-call budget was exhausted before it could be served; the term's actual content was never retrieved",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:93cc0bfd9972dc8af1f68774"
+    },
+    "dependsOnTerms": [
+     "Daily Simple RFR"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Cross-reference to 'Daily Simple RFR' could not be resolved within the available tool budget.",
+     "getDefinition('Daily Simple RFR') was attempted but the tool-call budget was exhausted before it could be served; the term's actual content was never retrieved"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of \"Daily Simple RFR.\""
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:a0a99b4db9194e43bbbad2fc",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "S&P",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Named-entity definition fully quoted."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "Standard & Poor's Financial Services LLC, a subsidiary of S&P Global Inc., and any successor to its rating agency business"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:fbb6708d8de04138ecd587fc",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Sale and Lease-Back Transaction",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Restricted Party"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Categorical transaction-type definition fully quoted."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any arrangement providing for the leasing by any Restricted Party of any real property or tangible personal property, which property has been or is to be sold or transferred by such Restricted Party to a third Person in contemplation of such leasing"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:7a53947bb56aafc1b9b8ccd9",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Sanctioned Country",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01 Sanctioned Country: 'has the meaning assigned to such term in Section 3.17(a).'; Section 3.17(a) as retrieved: '...for the purpose of funding' (truncated before the defined term appears)",
+     "semanticDescription": "Sanctioned Country's actual defined meaning, which sits within Section 3.17(a)",
+     "reason": "getReferencedProvision('Section 3.17(a)') was attempted and returned text, but the returned excerpt is truncated before reaching the clause that actually names/defines 'Sanctioned Country' - the defining language itself was not retrievable",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:6788dd19783423251783b3ef"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Cross-reference was pursued via tool but the retrieved text did not reach the actual defining language.",
+     "getReferencedProvision('Section 3.17(a)') was attempted and returned text, but the returned excerpt is truncated before reaching the clause that actually names/defines 'Sanctioned Country' - the defining language itself was not retrievable"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; Section 3.17(a)",
+     "excerpt": "has the meaning assigned to such term in Section 3.17(a)"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:ac97c0a3682e1372f1a46a2a",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Sanctions",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "OFAC"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Categorical definition listing the sanctioning authorities fully quoted."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "economic sanctions administered or enforced by the United States Government (including sanctions enforced by OFAC or the U.S. Department of State), the United Nations Security Council, the European Union or the United Kingdom"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:8d02fa95af1876402ba62e31",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "SEC",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Governmental Authority"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Named-entity definition fully quoted."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the Securities and Exchange Commission or any Governmental Authority succeeding to any of its principal functions"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:7b5d330b29b3cb17ceba256d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Second Commitment Application Period",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "First Commitment Application Period",
+     "Acceptable Commitment",
+     "Asset Sale Proceeds Application Period"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Cross-reference to Section 6.05(b)(2) was resolved via getReferencedProvision; the defined period (the further period, up to 120 days from expiration of the First Commitment Application Period, to enter into another Acceptable Commitment) is a time-window definition, not a monetary formula."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; Section 6.05(b)(2)",
+     "excerpt": "unless the applicable Loan Party reasonably expects to enter into another Acceptable Commitment prior to the expiration of the First Commitment Application Period (a \"Second Commitment Application Period\") and such Net Proceeds are actually applied in such manner prior to one hundred twenty (120) days from the expiration of the First Commitment Application Period"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01 'Retained Excess Cash Flow', clause (a): 'the portion of the Excess Cash Flow of the Borrowers for each Excess Cash Flow Period ending after the Closing Date and prior to such date that is not required to be applied as a mandatory prepayment under Section 2.09(c)'",
+    "semanticRequirement": "A construct that sums a per-period computed amount across every period in an open-ended, date-bounded historical range (e.g. 'each Excess Cash Flow Period ending after the Closing Date and prior to the determination date') where the number of periods is not fixed at drafting time and grows as time passes.",
+    "whyExistingPrimitivesFail": "SUM/ADD require an explicit, fixed operands array; there is no primitive for 'apply this per-period formula to every period in [dynamic range] and sum the results,' so the aggregation itself (as opposed to any single period's amount) cannot be represented without either fabricating a fixed operand list or discarding the range semantics.",
+    "candidateGeneralizedPrimitive": "A PERIODIC_SUM node: {kind: 'PERIODIC_SUM', perPeriodExpression, periodSeriesDescription, fromBound, toBound} that sums perPeriodExpression evaluated once per period in the described series between the bounds, without requiring the caller to enumerate periods."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d4].ADD[0]] requires summation across a variable/unbounded number of historical Excess Cash Flow Periods (the IR's SUM/ADD nodes take a fixed operand list, not an open-ended 'for each period' aggregation), and depends on the Section 2.09(c) ECF-Percentage prepayment mechanics only partially retrieved",
+   "[definition[d4].ADD[1]] MULTIPLY operands do not type-check together under the IR's own composition rules: MULTIPLY operands must be any number of PERCENT/NUMBER scaling factors plus at most one MONEY or RATIO operand",
+   "[definition[d4]] ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d14]] getDefinition('Daily Simple RFR') was attempted but the tool-call budget was exhausted before it could be served; the term's actual content was never retrieved",
+   "[definition[d16]] getDefinition('Daily Simple RFR') was attempted but the tool-call budget was exhausted before it could be served; the term's actual content was never retrieved",
+   "[definition[d19]] getReferencedProvision('Section 3.17(a)') was attempted and returned text, but the returned excerpt is truncated before reaching the clause that actually names/defines 'Sanctioned Country' - the defining language itself was not retrievable",
+   "Source is a contiguous run of alphabetically-ordered defined terms from the Section 1.01 glossary ('Restricted Subsidiary' through 'Second Commitment Application Period'); 22 independent WireDefinition entries were extracted, one per distinct defined term, per the multiple-definitions extraction requirement.",
+   "For terms whose entire operative meaning is 'has the meaning provided in Section X' (Retained Asset Sale Proceeds, Retained Declined Proceeds, Second Commitment Application Period), the cross-referenced sections were successfully retrieved via getReferencedProvision and are reflected as COMPLETE. For 'Sanctioned Country' the cross-referenced Section 3.17(a) was retrieved but truncated before the defining clause, so it is MISSING_CONTEXT. For 'RFR Interest Day' and 'RFR Lookback Day', the internal cross-reference to 'Daily Simple RFR' could not be retrieved because the tool-call budget was exhausted after other, higher-priority retrievals - marked MISSING_CONTEXT rather than guessed.",
+   "The Frozen Semantic Inventory for this unit reported an INVENTORY_COVERAGE_GAP with only aggregate statistics (counts and unaccounted character ranges) and did not surface individually addressable inventoryItemIds in the material supplied to this compiler, so no inventoryItemIds could be attached to nodes and inventoryDispositions is empty; the only deterministically-flagged quantitative value (MONEY $0) was located and consumed in the 'Revolving Commitment' definition (d6).",
+   "The 30 generic 'UNRESOLVED_DEFINED_TERM (LOW)' flags supplied in context correspond to numerous ordinary dependent terms used across this glossary run (e.g. Unrestricted Subsidiary, Foreign Subsidiary, SONIA, Daily Simple RFR, Incremental Revolving Facility, Other Revolving Facility, OFAC, Governmental Authority, Prepayment Event, Loan, Lender, Person, etc.) that are declared elsewhere in the instrument's own alphabetical glossary outside the text supplied to this compiler; they are listed in each definition's dependsOnTerms and did not block compiling the categorical definitions themselves, since most of these definitions are non-computational cross-references rather than formulas dependent on those terms' own numeric content.",
+   "'Retained Excess Cash Flow' (d4) is the only genuinely formulaic definition in this batch; it is PARTIAL because (i) 'Retained Excess Cash Flow Percentage' was confirmed via getDefinition to be undefined anywhere in this instrument, and (ii) clause (a)'s multi-period summation exceeds the fixed-arity SUM/ADD primitives (see irExtensionCandidates)."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 6.05(b)(1)"
+    },
+    "outputSummary": "resolved reference \"Section 6.05(b)(1)\" -> 6.05(b)(1) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 329,
+    "timestamp": "2026-09-14T21:44:31.688Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 6.05(b)(1)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:ea8630b1e3874bbc7359c1c3",
+     "sourceNodeKey": "doc-a::6.05(b)(1)",
+     "charStart": 654754,
+     "charEnd": 655083,
+     "rawText": "(1) (x) to prepay Loans or Indebtedness in accordance with Section 2.09(b) or (y) to the extent not required to\nprepay Loans or Indebtedness pursuant to Section 2.09(b), to be retained or used by the Restricted Parties for any purpose not prohibited under this Agreement (any such amounts, “ Retained Asset Sale Proceeds ”); or\n\n",
+     "contentHash": "78f0d527d6e036604d65d9cb44d11cdddf50956433ca6851be5c66c1e879f6c2",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.09(d)"
+    },
+    "outputSummary": "resolved reference \"Section 2.09(d)\" -> 2.09(d) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 1977,
+    "timestamp": "2026-09-14T21:44:31.688Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 2.09(d)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:e640dfa63326653b28f0a567",
+     "sourceNodeKey": "doc-a::2.09(d)",
+     "charStart": 434969,
+     "charEnd": 436946,
+     "rawText": "(d) Prior to any optional or mandatory prepayment of Borrowings hereunder, the Initial Borrower shall select the Borrowing or Borrowings to be\nprepaid and shall specify such selection in the notice of such prepayment pursuant to paragraph (e) of this Section 2.09. In the event of any mandatory prepayment of Term Loans made at a time when more than one (1) Class of Term\nLoans remain outstanding, the Initial Borrower shall select the Term Loans to be prepaid so that the aggregate amount of such prepayment is allocated between such Classes of Term Loans (and, to the extent provided in the Refinancing Amendment for\nany Class of Other Loans, the Borrowings of such Class) pro rata based on the aggregate principal amount of outstanding Borrowings of each such Class (except for any mandatory prepayments with the Net Proceeds of Credit Agreement Refinancing\nIndebtedness for a particular Class and except to the extent that the Lenders of a particular Class have agreed to less than pro rata treatment); provided that any Lender (and, to the extent provided in the Refinancing Amendment for\nany Class of Other Loans, any Lender that holds Other Loans of such Class) may elect, by notice to the Administrative Agent in writing (via hand delivery, facsimile or electronic delivery) at least three (3) Business Days prior to the\nprepayment date, to decline the entirety of any prepayment of its Loans or Other Loans of any such Class pursuant to this Section 2.09 (other than an optional prepayment pursuant to paragraph (a)(i) of this Section 2.09 or a mandatory\nprepayment as a result of the Prepayment Event set forth in clause (b) of the definition thereof, which may not be declined) and any amounts not required to be applied and/or declined by the Lenders may be retained by the Restricted Parties\n(such amounts, “ Retained Declined Proceeds ”). Optional prepayments of Borrowings shall be allocated among the Classes of Borrowings as directed by the Initial Borrower.\n\n",
+     "contentHash": "86cd2f4de615c52a6d6a0ede42c939b78439c40b5fec07c2bf93bdc5a4247c16",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 6.05(b)(2)"
+    },
+    "outputSummary": "resolved reference \"Section 6.05(b)(2)\" -> 6.05(b)(2) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 2377,
+    "timestamp": "2026-09-14T21:44:31.689Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 6.05(b)(2)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:3d5c234ba4aa2a318eb5eb69",
+     "sourceNodeKey": "doc-a::6.05(b)(2)",
+     "charStart": 655083,
+     "charEnd": 657460,
+     "rawText": "(2) to make any acquisitions or other investments in any one or more businesses, capital expenditures, capitalized software\nexpenditures and working capital, or other investment or reinvestments in the business or assets (including, without limitation, working capital and prepayment of indebtedness of any Non-Loan Party Subsidiary)\nof the Borrowers or any of their Subsidiaries; provided that, in the case of this Section 6.05(b)(2), a binding commitment or letter of intent shall be treated as a permitted application of the Net Proceeds from the date of such\ncommitment or letter of intent so long as the applicable Loan Party enters into such commitment or letter of intent with the good faith expectation that such Net Proceeds shall be applied to satisfy such commitment or letter of intent within one\nhundred eighty (180) days of the expiration of the Asset Sale Proceeds Application Period (an “ Acceptable Commitment ”) and such Net Proceeds are actually applied in such manner within one hundred eighty (180) days of the\nexpiration of the Asset Sale Proceeds Application Period (the period from the consummation of the Asset Sale to such date, the “ First Commitment Application Period ”), and, in the event any Acceptable Commitment is later cancelled\nor terminated for any reason after the expiration of the Asset Sale Proceeds Application Period and before the Net Proceeds are applied in connection therewith, then such Net Proceeds shall be subject to the prepayment requirements set forth in\nSection 6.05(b)(1) above unless the applicable Loan Party reasonably expects to enter into another Acceptable Commitment prior to the expiration of the First Commitment Application Period (a “ Second Commitment Application\nPeriod ”) and such Net Proceeds are actually applied in such manner prior to one hundred twenty (120) days from the expiration of the First Commitment Application Period; provided , further , that if any Second Commitment\nApplication Period is later cancelled or terminated for any reason before such Net Proceeds are applied or if such Second Commitment Application Period is not entered into prior to the expiration of the First Commitment Application Period, then such\nNet Proceeds shall be subject to the prepayment requirements set forth in Section 6.05(b)(1) above to the extent the Asset Sale Proceeds Application Period has expired; or\n\n",
+     "contentHash": "25498cd6f923d6b1207ada75b6ce23caddc1b01ccd51d644d14de3833ba90415",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 3.17(a)"
+    },
+    "outputSummary": "resolved reference \"Section 3.17(a)\" -> 3.17(a) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 238,
+    "timestamp": "2026-09-14T21:44:31.689Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 3.17(a)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:9db38272d441ffa6ddd78c9d",
+     "sourceNodeKey": "doc-a::3.17(a)",
+     "charStart": 550024,
+     "charEnd": 550262,
+     "rawText": "(a) The Borrowers will not, directly or knowingly indirectly, use the proceeds of the Loans and Letters of Credit, or\nlend, contribute or otherwise make available such proceeds to any Subsidiary or other Person for the purpose of funding ",
+     "contentHash": "4f1de1c31fbe126fad492343cdc5fa1fd5a9fb6d3042df3dd4d2e1d6b35c83e5",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.09(c)"
+    },
+    "outputSummary": "resolved reference \"Section 2.09(c)\" -> 2.09(c) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 383,
+    "timestamp": "2026-09-14T21:44:31.689Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 2.09(c)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:3b75ec0cd7e5a5eafb1f18a0",
+     "sourceNodeKey": "doc-a::2.09(c)",
+     "charStart": 431608,
+     "charEnd": 431991,
+     "rawText": "(c) Following the end of each fiscal year of the Borrowers, commencing with the first (1st) full fiscal year ending after the Effective Date,\nthe Borrowers shall prepay Term Loans in an aggregate amount equal to the ECF Percentage of Excess Cash Flow for such fiscal year; provided that, at the Initial Borrower’s option, such amount shall be reduced on a dollar-for-dollar basis by ",
+     "contentHash": "c80a44821ae55f4913958cafcf5c497b19c98c3dd1efd47871b8000cc8f97e7e",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Retained Excess Cash Flow Percentage"
+    },
+    "outputSummary": "refused: no defined term matching \"Retained Excess Cash Flow Percentage\" found in this instrument's documents",
+    "charsReturned": 100,
+    "timestamp": "2026-09-14T21:44:39.417Z"
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Excess Cash Flow Period"
+    },
+    "outputSummary": "definition \"Excess Cash Flow Period\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 359,
+    "timestamp": "2026-09-14T21:44:39.417Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Excess Cash Flow Period",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:e96cfb9284a189d6e58047d6",
+     "sourceNodeKey": "doc-a::1.01(2)(v)(III)(c)(b)(xii)",
+     "charStart": 163414,
+     "charEnd": 163773,
+     "rawText": "“ Excess Cash Flow Period ” means\nthe fiscal year for which Excess Cash Flow and/or any prepayment pursuant to Section 2.09(c) is calculated; provided , any calculation of Excess Cash Flow and/or any prepayment pursuant to Section 2.09(c) shall be made without\nduplication of any credits or deductions made in any prior or subsequent Excess Cash Flow Period.\n",
+     "contentHash": "0a8af9fdb2f05584d5ed66e04ee97e06d9fe1e947f9083d53697ae5b3d14f69b",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Excess Cash Flow Interim Period"
+    },
+    "outputSummary": "definition \"Excess Cash Flow Interim Period\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 953,
+    "timestamp": "2026-09-14T21:44:39.418Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Excess Cash Flow Interim Period",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:e96cfb9284a189d6e58047d6",
+     "sourceNodeKey": "doc-a::1.01(2)(v)(III)(c)(b)(xii)",
+     "charStart": 162461,
+     "charEnd": 163414,
+     "rawText": "“ Excess Cash Flow Interim Period ” means, (a) during any Excess Cash Flow Period, any one (1)-, two (2)- or three (3)-fiscal quarter\nperiod (i) commencing at the end of the immediately preceding Excess Cash Flow Period and (ii) ending on the last day of the most recently ended fiscal quarter (other than the last day of the fiscal year) during such Excess Cash Flow\nPeriod for which financial statements have been delivered pursuant to Section 5.01(a) or (b), as applicable or, if earlier, are internally available, and (b) during the period from the Effective Date until the beginning of the first Excess\nCash Flow Period, any period commencing on the first (1st) day of the fiscal quarter in which the Effective Date occurs and ending on the last day of the most recently ended fiscal quarter for which financial statements of the type required by\nSections 5.01(a) or (b), as applicable have been delivered or, if earlier, are internally available.\n",
+     "contentHash": "f5511c1e3493e71e38fc6405a180c5a329d3632ea61244163496ab1e5c01ed37",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Daily Simple RFR"
+    },
+    "outputSummary": "refused: tool-call budget exhausted (8 calls already used this attempt) - no further evidence requests will be served; compile with what you have or mark the affected component MISSING_CONTEXT",
+    "charsReturned": 0,
+    "timestamp": "2026-09-14T21:44:39.418Z"
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "Restricted Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Subsidiary",
+      "Unrestricted Subsidiary",
+      "Initial Borrower",
+      "Foreign Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical (non-numeric) defined term fully quoted, including the reclassification proviso; no formula or dollar value is involved."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any direct or indirect Subsidiary of the Initial Borrower (including any Foreign Subsidiary) that is not then an Unrestricted Subsidiary; provided, however, that upon the occurrence of an Unrestricted Subsidiary ceasing to be an Unrestricted Subsidiary, such Subsidiary shall be included in the definition of \"Restricted Subsidiary.\""
+    },
+    {
+     "localRef": "d2",
+     "termName": "Retained Asset Sale Proceeds",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Net Proceeds",
+      "Restricted Parties"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference to Section 6.05(b)(1) was resolved via getReferencedProvision; the resolved text is a categorical (retained-or-used-for-any-purpose) definition, not a numeric formula."
+     ],
+     "citation": "§1.01; Section 6.05(b)(1)",
+     "excerpt": "to the extent not required to prepay Loans or Indebtedness pursuant to Section 2.09(b), to be retained or used by the Restricted Parties for any purpose not prohibited under this Agreement (any such amounts, \"Retained Asset Sale Proceeds\")"
+    },
+    {
+     "localRef": "d3",
+     "termName": "Retained Declined Proceeds",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Loans",
+      "Other Loans",
+      "Prepayment Event"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference to Section 2.09(d) was resolved via getReferencedProvision; categorical definition (amounts declined by lenders and retained), not a numeric formula."
+     ],
+     "citation": "§1.01; Section 2.09(d)",
+     "excerpt": "any amounts not required to be applied and/or declined by the Lenders may be retained by the Restricted Parties (such amounts, \"Retained Declined Proceeds\")"
+    },
+    {
+     "localRef": "d4",
+     "termName": "Retained Excess Cash Flow",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "ADD",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "the cumulative portion of Excess Cash Flow, for each completed Excess Cash Flow Period ending after the Closing Date and before the determination date, that was not required to be applied as a mandatory prepayment under Section 2.09(c)",
+        "reason": "requires summation across a variable/unbounded number of historical Excess Cash Flow Periods (the IR's SUM/ADD nodes take a fixed operand list, not an open-ended 'for each period' aggregation), and depends on the Section 2.09(c) ECF-Percentage prepayment mechanics only partially retrieved",
+        "sourceEvidence": "§1.01 Retained Excess Cash Flow, clause (a); see Section 2.09(c): 'the Borrowers shall prepay Term Loans in an aggregate amount equal to the ECF Percentage of Excess Cash Flow for such fiscal year...'"
+       },
+       {
+        "kind": "MULTIPLY",
+        "operands": [
+         {
+          "kind": "DEFINED_TERM_REFERENCE",
+          "termName": "Retained Excess Cash Flow Percentage",
+          "valueType": "RATIO"
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "metricName": "Excess Cash Flow"
+         }
+        ],
+        "citation": "§1.01",
+        "excerpt": "an amount equal to the Retained Excess Cash Flow Percentage of Excess Cash Flow of the Borrowers, for such Excess Cash Flow Interim Period"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Excess Cash Flow",
+      "Excess Cash Flow Period",
+      "Excess Cash Flow Interim Period",
+      "Retained Excess Cash Flow Percentage"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Top-level ADD structure (clause (a) + clause (b)) is faithfully represented.",
+      "The term 'Retained Excess Cash Flow Percentage' used in clause (b) is confirmed, via getDefinition, NOT declared anywhere in this instrument - its own value/formula is unavailable.",
+      "Clause (a) requires an open-ended multi-period summation the current IR primitives cannot express (see irExtensionCandidates)."
+     ],
+     "citation": "§1.01",
+     "excerpt": "an amount equal to the sum of (a) the portion of the Excess Cash Flow of the Borrowers for each Excess Cash Flow Period ending after the Closing Date and prior to such date that is not required to be applied as a mandatory prepayment under Section 2.09(c) plus (b) ... an amount equal to the Retained Excess Cash Flow Percentage of Excess Cash Flow of the Borrowers, for such Excess Cash Flow Interim Period."
+    },
+    {
+     "localRef": "d5",
+     "termName": "Revolving Borrowing",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Borrowing",
+      "Revolving Loan"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple cross-reference definition fully quoted."
+     ],
+     "citation": "§1.01",
+     "excerpt": "a Borrowing of Revolving Loans"
+    },
+    {
+     "localRef": "d6",
+     "termName": "Revolving Commitment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AS_OF",
+      "operand": {
+       "kind": "MONEY",
+       "amount": 0,
+       "currency": "USD",
+       "citation": "§1.01"
+      },
+      "asOfDate": "Effective Date",
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Revolving Lender",
+      "Revolving Loan",
+      "Revolving Exposure",
+      "Incremental Facility Amendment"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The stated aggregate value as of the Effective Date ($0) is captured explicitly, which is the only concrete quantitative fact in this definition.",
+      "The adjustment mechanics (reduction under §2.06, reduction/increase under §9.04 assignments, increase under §2.18) are procedural cross-references, not additional numeric values, and are preserved in the excerpt."
+     ],
+     "citation": "§1.01",
+     "excerpt": "as such commitment may be (a) reduced from time to time pursuant to Section 2.06, (b) reduced or increased from time to time pursuant to assignments ... pursuant to Section 9.04 and (c) increased from time to time pursuant to Section 2.18. For the avoidance of doubt, as of the Effective Date, the aggregate amount of the Revolving Commitment is $0."
+    },
+    {
+     "localRef": "d7",
+     "termName": "Revolving Exposure",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "METRIC_REFERENCE",
+      "metricName": "Dollar Amount of outstanding principal amount of Revolving Loans",
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Dollar Amount",
+      "Revolving Loan",
+      "Revolving Lender"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Single-metric definition (Dollar Amount of outstanding principal of a Lender's Revolving Loans) fully represented; 'without duplication' qualifier is descriptive, not a separate numeric component."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the Dollar Amount of the sum of the outstanding principal amount of such Revolving Lender's Revolving Loans"
+    },
+    {
+     "localRef": "d8",
+     "termName": "Revolving Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Incremental Revolving Facility",
+      "Incremental Revolving Increase",
+      "Other Revolving Facility"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical definition fully quoted."
+     ],
+     "citation": "§1.01",
+     "excerpt": "each and any Incremental Revolving Facility (together with any Incremental Revolving Increase thereto) and any Other Revolving Facility, in each case together with the extensions of credit thereunder and any refinancing thereof"
+    },
+    {
+     "localRef": "d9",
+     "termName": "Revolving Lender",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Lender",
+      "Revolving Commitment",
+      "Revolving Exposure",
+      "Effective Date"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical, date-conditioned definition fully quoted; no numeric formula involved."
+     ],
+     "citation": "§1.01",
+     "excerpt": "a Lender with a Revolving Commitment or, if the Revolving Commitments have terminated or expired, a Lender with Revolving Exposure"
+    },
+    {
+     "localRef": "d10",
+     "termName": "Revolving Loan",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Revolving Lender",
+      "Incremental Facility Amendment"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical definition fully quoted."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the loans and advances made by the Revolving Lenders (in their capacity as such) pursuant to this Agreement (including pursuant to any applicable Incremental Facility Amendment)"
+    },
+    {
+     "localRef": "d11",
+     "termName": "RFR",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "RFR Loan",
+      "SONIA"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple reference-rate mapping definition fully quoted."
+     ],
+     "citation": "§1.01",
+     "excerpt": "for any RFR Loan denominated in Sterling, SONIA"
+    },
+    {
+     "localRef": "d12",
+     "termName": "RFR Borrowing",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Borrowing",
+      "RFR Loan"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple cross-reference definition fully quoted."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the RFR Loans comprising such Borrowing"
+    },
+    {
+     "localRef": "d13",
+     "termName": "RFR Business Day",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical day-count exclusion definition (Saturday/Sunday/London banking holiday) fully quoted; not a numeric value."
+     ],
+     "citation": "§1.01",
+     "excerpt": "for any Loan denominated in Sterling, any day except for (i) a Saturday, (ii) a Sunday or (iii) a day on which banks are closed for general business in London"
+    },
+    {
+     "localRef": "d14",
+     "termName": "RFR Interest Day",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "RFR Interest Day's meaning, which is defined only inside the definition of 'Daily Simple RFR'",
+      "reason": "getDefinition('Daily Simple RFR') was attempted but the tool-call budget was exhausted before it could be served; the term's actual content was never retrieved",
+      "sourceEvidence": "§1.01 RFR Interest Day: 'has the meaning specified in the definition of \"Daily Simple RFR.\"'"
+     },
+     "dependsOnTerms": [
+      "Daily Simple RFR"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-reference to 'Daily Simple RFR' could not be resolved within the available tool budget."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning specified in the definition of \"Daily Simple RFR.\""
+    },
+    {
+     "localRef": "d15",
+     "termName": "RFR Loan",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Daily Simple RFR",
+      "Loan"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical definition, including the mandatory-classification sentence for Sterling Loans, fully quoted."
+     ],
+     "citation": "§1.01",
+     "excerpt": "a Loan that bears interest at a rate based on the Daily Simple RFR. All Loans denominated in Sterling shall be RFR Loans."
+    },
+    {
+     "localRef": "d16",
+     "termName": "RFR Lookback Day",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "RFR Lookback Day's meaning, which is defined only inside the definition of 'Daily Simple RFR'",
+      "reason": "getDefinition('Daily Simple RFR') was attempted but the tool-call budget was exhausted before it could be served; the term's actual content was never retrieved",
+      "sourceEvidence": "§1.01 RFR Lookback Day: 'has the meaning assigned to such term in the definition of \"Daily Simple RFR.\"'"
+     },
+     "dependsOnTerms": [
+      "Daily Simple RFR"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-reference to 'Daily Simple RFR' could not be resolved within the available tool budget."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of \"Daily Simple RFR.\""
+    },
+    {
+     "localRef": "d17",
+     "termName": "S&P",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Named-entity definition fully quoted."
+     ],
+     "citation": "§1.01",
+     "excerpt": "Standard & Poor's Financial Services LLC, a subsidiary of S&P Global Inc., and any successor to its rating agency business"
+    },
+    {
+     "localRef": "d18",
+     "termName": "Sale and Lease-Back Transaction",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Party"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical transaction-type definition fully quoted."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any arrangement providing for the leasing by any Restricted Party of any real property or tangible personal property, which property has been or is to be sold or transferred by such Restricted Party to a third Person in contemplation of such leasing"
+    },
+    {
+     "localRef": "d19",
+     "termName": "Sanctioned Country",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Sanctioned Country's actual defined meaning, which sits within Section 3.17(a)",
+      "reason": "getReferencedProvision('Section 3.17(a)') was attempted and returned text, but the returned excerpt is truncated before reaching the clause that actually names/defines 'Sanctioned Country' - the defining language itself was not retrievable",
+      "sourceEvidence": "§1.01 Sanctioned Country: 'has the meaning assigned to such term in Section 3.17(a).'; Section 3.17(a) as retrieved: '...for the purpose of funding' (truncated before the defined term appears)"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-reference was pursued via tool but the retrieved text did not reach the actual defining language."
+     ],
+     "citation": "§1.01; Section 3.17(a)",
+     "excerpt": "has the meaning assigned to such term in Section 3.17(a)"
+    },
+    {
+     "localRef": "d20",
+     "termName": "Sanctions",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "OFAC"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical definition listing the sanctioning authorities fully quoted."
+     ],
+     "citation": "§1.01",
+     "excerpt": "economic sanctions administered or enforced by the United States Government (including sanctions enforced by OFAC or the U.S. Department of State), the United Nations Security Council, the European Union or the United Kingdom"
+    },
+    {
+     "localRef": "d21",
+     "termName": "SEC",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Governmental Authority"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Named-entity definition fully quoted."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the Securities and Exchange Commission or any Governmental Authority succeeding to any of its principal functions"
+    },
+    {
+     "localRef": "d22",
+     "termName": "Second Commitment Application Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "First Commitment Application Period",
+      "Acceptable Commitment",
+      "Asset Sale Proceeds Application Period"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cross-reference to Section 6.05(b)(2) was resolved via getReferencedProvision; the defined period (the further period, up to 120 days from expiration of the First Commitment Application Period, to enter into another Acceptable Commitment) is a time-window definition, not a monetary formula."
+     ],
+     "citation": "§1.01; Section 6.05(b)(2)",
+     "excerpt": "unless the applicable Loan Party reasonably expects to enter into another Acceptable Commitment prior to the expiration of the First Commitment Application Period (a \"Second Commitment Application Period\") and such Net Proceeds are actually applied in such manner prior to one hundred twenty (120) days from the expiration of the First Commitment Application Period"
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01 'Retained Excess Cash Flow', clause (a): 'the portion of the Excess Cash Flow of the Borrowers for each Excess Cash Flow Period ending after the Closing Date and prior to such date that is not required to be applied as a mandatory prepayment under Section 2.09(c)'",
+     "semanticRequirement": "A construct that sums a per-period computed amount across every period in an open-ended, date-bounded historical range (e.g. 'each Excess Cash Flow Period ending after the Closing Date and prior to the determination date') where the number of periods is not fixed at drafting time and grows as time passes.",
+     "whyExistingPrimitivesFail": "SUM/ADD require an explicit, fixed operands array; there is no primitive for 'apply this per-period formula to every period in [dynamic range] and sum the results,' so the aggregation itself (as opposed to any single period's amount) cannot be represented without either fabricating a fixed operand list or discarding the range semantics.",
+     "candidateGeneralizedPrimitive": "A PERIODIC_SUM node: {kind: 'PERIODIC_SUM', perPeriodExpression, periodSeriesDescription, fromBound, toBound} that sums perPeriodExpression evaluated once per period in the described series between the bounds, without requiring the caller to enumerate periods."
+    }
+   ],
+   "inventoryDispositions": [],
+   "overallNotes": [
+    "Source is a contiguous run of alphabetically-ordered defined terms from the Section 1.01 glossary ('Restricted Subsidiary' through 'Second Commitment Application Period'); 22 independent WireDefinition entries were extracted, one per distinct defined term, per the multiple-definitions extraction requirement.",
+    "For terms whose entire operative meaning is 'has the meaning provided in Section X' (Retained Asset Sale Proceeds, Retained Declined Proceeds, Second Commitment Application Period), the cross-referenced sections were successfully retrieved via getReferencedProvision and are reflected as COMPLETE. For 'Sanctioned Country' the cross-referenced Section 3.17(a) was retrieved but truncated before the defining clause, so it is MISSING_CONTEXT. For 'RFR Interest Day' and 'RFR Lookback Day', the internal cross-reference to 'Daily Simple RFR' could not be retrieved because the tool-call budget was exhausted after other, higher-priority retrievals - marked MISSING_CONTEXT rather than guessed.",
+    "The Frozen Semantic Inventory for this unit reported an INVENTORY_COVERAGE_GAP with only aggregate statistics (counts and unaccounted character ranges) and did not surface individually addressable inventoryItemIds in the material supplied to this compiler, so no inventoryItemIds could be attached to nodes and inventoryDispositions is empty; the only deterministically-flagged quantitative value (MONEY $0) was located and consumed in the 'Revolving Commitment' definition (d6).",
+    "The 30 generic 'UNRESOLVED_DEFINED_TERM (LOW)' flags supplied in context correspond to numerous ordinary dependent terms used across this glossary run (e.g. Unrestricted Subsidiary, Foreign Subsidiary, SONIA, Daily Simple RFR, Incremental Revolving Facility, Other Revolving Facility, OFAC, Governmental Authority, Prepayment Event, Loan, Lender, Person, etc.) that are declared elsewhere in the instrument's own alphabetical glossary outside the text supplied to this compiler; they are listed in each definition's dependsOnTerms and did not block compiling the categorical definitions themselves, since most of these definitions are non-computational cross-references rather than formulas dependent on those terms' own numeric content.",
+    "'Retained Excess Cash Flow' (d4) is the only genuinely formulaic definition in this batch; it is PARTIAL because (i) 'Retained Excess Cash Flow Percentage' was confirmed via getDefinition to be undefined anywhere in this instrument, and (ii) clause (a)'s multi-period summation exceeds the fixed-arity SUM/ADD primitives (see irExtensionCandidates)."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T21:46:57.066Z",
+   "inputTokens": 78520,
+   "outputTokens": 19949,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 3,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 171949,
+   "calculatedCostUsd": 0.35653
+  },
+  "cacheKey": "75a54f8df947e6d6b5e528cc851f245a9aee7e34406598e38500aa65e1cfdb4c",
+  "compiledAt": "2026-09-14T21:46:57.067Z"
+ },
+ "wave": "C",
+ "attemptsSoFar": 1
+}

@@ -25,7 +25,16 @@ const s1 = loadFrozenStage1(); const s2 = loadStage2();
 const evidence = plan.shards.flatMap((s) => { const e = s1.get(s.shardId) ?? s2.get(s.shardId); return e ? [{ shard: s, e }] : []; });
 const results: ShardExecutionResult[] = evidence.map((x) => x.e.result);
 const records: ShardRecord[] = evidence.map((x) => x.e.record);
-const waveOf = (id: string) => s1.has(id) ? "STAGE_1" : ((s2.get(id) as { wave?: string } | undefined)?.wave ?? "WAVE_A");
+// Stage-2 evidence stores the wave as a bare letter ("A"/"B"/"C"); normalize it so per-wave slices are real. An
+// unnormalized lookup silently returns empty sets for A and B, which would make the §16 comparison band meaningless.
+const waveOf = (id: string): "STAGE_1" | "WAVE_A" | "WAVE_B" | "WAVE_C" => {
+  if (s1.has(id)) return "STAGE_1";
+  const tag = (s2.get(id) as { wave?: string } | undefined)?.wave;
+  if (tag === "A" || tag === "WAVE_A") return "WAVE_A";
+  if (tag === "B" || tag === "WAVE_B") return "WAVE_B";
+  if (tag === "C" || tag === "WAVE_C") return "WAVE_C";
+  throw new Error(`unclassifiable wave tag ${String(tag)} for ${id}`);
+};
 
 // ---- §12 completeness of the real terminal set
 const execLedger = readJson<{ records: ShardRecord[]; waveCostUsd: number; gatewayBalanceBefore: number | null; gatewayBalanceAfter: number | null; retries: number; costBounded: unknown; perTurnCalls: { inputTokens: number; outputTokens: number; costUsd: number }[] }>(`${OUT}/01-wave-c-execution-ledger.json`);
@@ -85,7 +94,7 @@ const quality = {
   materialRecovery: pct(accountability.material.represented + accountability.material.dispositioned, accountability.material.total),
   quantitativeValuesTotal: acc.counts.materialQuantitativeValues, quantitativeValuesMissing: acc.counts.materialQuantitativeValuesMissing,
   quantitativeCoverage: pct(acc.counts.materialQuantitativeValues - acc.counts.materialQuantitativeValuesMissing, acc.counts.materialQuantitativeValues),
-  byWave: { STAGE_1: perWave("STAGE_1"), WAVE_A: perWave("WAVE_A"), WAVE_B: perWave("WAVE_B"), WAVE_C: perWave("C") },
+  byWave: { STAGE_1: perWave("STAGE_1"), WAVE_A: perWave("WAVE_A"), WAVE_B: perWave("WAVE_B"), WAVE_C: perWave("WAVE_C") },
   missingContextShards: results.filter((r) => r.status === "SHARD_MISSING_CONTEXT").length,
   unsupportedRate: pct(accountability.unsupported, matItems.length),
 };
@@ -228,7 +237,10 @@ const trustAllZero = Object.entries(trust).filter(([k]) => k !== "lineageOccurre
 const conflictsWellFormed = conflicts.every((c) => c.requiresReview && c.canonicalSufficiency === "AMBIGUOUS" && c.variants >= 2);
 const waveBRecovery = quality.byWave.WAVE_B.ownerRecoveryRate, waveARecovery = quality.byWave.WAVE_A.ownerRecoveryRate, s1Recovery = quality.byWave.STAGE_1.ownerRecoveryRate, waveCRecovery = quality.byWave.WAVE_C.ownerRecoveryRate;
 const recoveryBand = [s1Recovery, waveARecovery, waveBRecovery];
-const semanticViable = waveCRecovery >= Math.min(...recoveryBand) * 0.9; // Wave C must not collapse relative to the already-accepted waves; no new absolute threshold is invented
+const bandValid = recoveryBand.every((r) => r > 0) && quality.byWave.WAVE_A.shards > 0 && quality.byWave.WAVE_B.shards > 0 && quality.byWave.WAVE_C.shards > 0;
+// §16: no new absolute threshold is invented - Wave C is compared to the recovery of the three waves already accepted.
+// If the band itself is degenerate the comparison is not evidence, so it fails rather than passing vacuously.
+const semanticViable = bandValid && waveCRecovery >= Math.min(...recoveryBand) * 0.9;
 const gate = [
   { n: 1, c: "36/36 frozen shards have real terminal results", pass: completeness.pass },
   { n: 2, c: "previous 25 reused exactly", pass: completeness.priorCompositionsUnchanged },
@@ -249,7 +261,7 @@ const gate = [
   { n: 17, c: "definition conflicts preserve every owner variant", pass: conflictsWellFormed && score.B.valuesPreservedOnlyByConflictEvidence >= 0 && trust.ownedValuesLostByStitching === 0 },
   { n: 18, c: "conflicts do not earn false Pass-C credit", pass: trust.contextualOwnershipCreditViolations === 0 && trust.falseCompleteness === 0 },
   { n: 19, c: "owner-shard assumption is supported", pass: ownerShard.contextualOwnershipCreditViolations === 0 && ownerShard.ownerRecoveryRate >= 0.75 },
-  { n: 20, c: "semantic recovery is operationally viable rather than systematically poor", pass: semanticViable },
+  { n: 20, c: "semantic recovery is operationally viable rather than systematically poor", pass: semanticViable, evidence: { bandValid, band: recoveryBand, waveC: waveCRecovery, floor: bandValid ? +(Math.min(...recoveryBand) * 0.9).toFixed(4) : null } },
   { n: 21, c: "normal shard peak window is radically below monolithic execution", pass: window.peakInputReduction >= 0.8 },
   { n: 22, c: "oversized unit remains bounded or fails explicitly", pass: window.oversizedShards.every((s) => s.status !== "NOT_EXECUTED") },
   { n: 23, c: "no pathological output ceiling behavior", pass: window.maxSingleTurnOutputTokens < window.outputCeiling && window.outputTruncations === 0 },
