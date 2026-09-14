@@ -1,0 +1,181 @@
+{
+ "artifact": "F-7C.1 §23 gate",
+ "at": "2026-09-14T23:33:02.953Z",
+ "points": [
+  {
+   "n": 1,
+   "c": "same-candidate changed-source stale-resume defect reproduced before fix",
+   "pass": true,
+   "evidence": {
+    "gitSha": "2cfb6b3f8e8a99b6ff9010307726ffa8f7b6a2ac",
+    "caseB": {
+     "outcome": "COMPILED",
+     "status": "COMPLETED",
+     "failureReasons": [],
+     "mode": "SHARDED",
+     "passACalls": 0,
+     "resumedFrozenHash": "frozen:cand:1.01:40",
+     "frozenInventoryAccepted": true
+    }
+   }
+  },
+  {
+   "n": 2,
+   "c": "candidateRef alone no longer authorizes resume",
+   "pass": true
+  },
+  {
+   "n": 3,
+   "c": "document identity enforced where recorded",
+   "pass": true
+  },
+  {
+   "n": 4,
+   "c": "current sourceContextHash enforced when present",
+   "pass": true
+  },
+  {
+   "n": 5,
+   "c": "explicit sourceContextHash mismatch fails closed (no fallback to re-anchoring)",
+   "pass": true
+  },
+  {
+   "n": 6,
+   "c": "legacy no-hash inventory requires deterministic re-anchoring",
+   "pass": true
+  },
+  {
+   "n": 7,
+   "c": "legacy exact-source Chewy inventory passes re-anchoring",
+   "pass": true,
+   "evidence": {
+    "method": "VERIFIED_BY_RE_ANCHORING",
+    "candidateRef": "phase-3-validation:chwy:1.01",
+    "documentId": "doc-a",
+    "frozenContentHash": "9e5ec23580d3bbf3b5a69fdd932b6874caec1a14c0e3ef1e6e203dda07258e34",
+    "sourceContextHash": "5c7099b486e15fafb51c7b948d4cd8372ae91524e5e0a666e663ca1bd9b5c168",
+    "partitionHash": "6b204caeb4db6403d81384d57c0d67ca1fac1dae47c256c467ceb6461c8cc38c",
+    "reAnchoredChecks": 1065,
+    "verifiedAt": "2026-09-14T23:29:15.701Z"
+   }
+  },
+  {
+   "n": 8,
+   "c": "legacy changed-source inventory fails re-anchoring",
+   "pass": true
+  },
+  {
+   "n": 9,
+   "c": "frozen certified inventory remains byte-identical",
+   "pass": true,
+   "evidence": {
+    "fixtureSha256": "a9221844bc412fe55a7be082a5ec06ceccbd211710d34da4e0ba2168296b5f35",
+    "frozenContentHash": "9e5ec23580d3bbf3b5a69fdd932b6874caec1a14c0e3ef1e6e203dda07258e34"
+   }
+  },
+  {
+   "n": 10,
+   "c": "Chewy certified planHash unchanged",
+   "pass": true
+  },
+  {
+   "n": 11,
+   "c": "36-shard offline production replay still reuses 36/36",
+   "pass": true
+  },
+  {
+   "n": 12,
+   "c": "replay executes zero provider calls",
+   "pass": true
+  },
+  {
+   "n": 13,
+   "c": "replay semantics remain certified-equivalent",
+   "pass": true,
+   "evidence": {
+    "equal": 41,
+    "additive": 4
+   }
+  },
+  {
+   "n": 14,
+   "c": "source-byte mutation rejects resume",
+   "pass": true
+  },
+  {
+   "n": 15,
+   "c": "context-region mutation rejects resume",
+   "pass": true
+  },
+  {
+   "n": 16,
+   "c": "document mismatch rejects resume",
+   "pass": true
+  },
+  {
+   "n": 17,
+   "c": "candidate mismatch rejects resume",
+   "pass": true
+  },
+  {
+   "n": 18,
+   "c": "no Pass-A/sharding/Pass-C semantic changes",
+   "pass": true,
+   "evidence": {
+    "forbiddenTouched": [],
+    "changed": [
+     "lib/contract-model/compiler/semantic/compile.ts",
+     "lib/contract-model/compiler/semantic/frozen-inventory-resume.ts",
+     "lib/contract-model/compiler/semantic/index.ts",
+     "lib/contract-model/compiler/semantic/types.ts"
+    ]
+   }
+  },
+  {
+   "n": 19,
+   "c": "zero paid calls",
+   "pass": true
+  },
+  {
+   "n": 20,
+   "c": "no new regressions",
+   "pass": true,
+   "evidence": {
+    "before": {
+     "testFilesFailed": 107,
+     "testsFailed": 162,
+     "testsPassed": 3152,
+     "testsTotal": 3838
+    },
+    "after": {
+     "testFilesFailed": 107,
+     "testsFailed": 162,
+     "testsPassed": 3167,
+     "testsTotal": 3853
+    },
+    "failingFileSetDiff": {
+     "onlyBefore": [],
+     "onlyAfter": []
+    },
+    "failingTestIdentityDiff": {
+     "onlyBefore": [],
+     "onlyAfter": []
+    },
+    "missionBaseline": {
+     "failingFiles": 107,
+     "failingTests": 162
+    }
+   }
+  },
+  {
+   "n": 21,
+   "c": "build passes",
+   "pass": true
+  }
+ ],
+ "passed": 21,
+ "total": 21,
+ "verdict": "F7_PRODUCTION_PATH_READY_FOR_FINAL_VALIDATION",
+ "finalPaidChewyValidationPerformed": false,
+ "phase4Started": false
+}
