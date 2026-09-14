@@ -1,0 +1,3737 @@
+{
+ "record": {
+  "stage": 1,
+  "attempt": 1,
+  "shardId": "shard:4f06625557e9aecbbb7a",
+  "shardHash": "f1b437e22ee07474adbce6cb0f9ab25ceb36ca10847253c797fce0f3af206cf5",
+  "ordinal": 26,
+  "ownedUnits": 1,
+  "sourceChars": 26695,
+  "contextEntries": 7,
+  "contextChars": 3701,
+  "unresolvedContext": 1,
+  "oversized": true,
+  "ownedItems": 6,
+  "ownedMaterialItems": 6,
+  "estimatedFirstTurnInputTokens": 34344,
+  "preCallEstimate": {
+   "inputTokens": 112992,
+   "outputTokens": 4000,
+   "usd": 0.265984
+  },
+  "actual": {
+   "inputTokens": 75051,
+   "outputTokens": 32562,
+   "turns": 2,
+   "latencyMs": 294248,
+   "costUsd": 0.47572200000000003,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "toolCalls": 2,
+  "toolCallNames": [
+   "getDefinition",
+   "getDefinition"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 11,
+  "definitions": 2,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 5,
+   "dispositioned": 0,
+   "missingMaterial": 1,
+   "valuesRepresented": 8,
+   "valuesMissing": 1,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "MISSING_FROM_COMPOSITION": 1,
+    "REPRESENTED": 5
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Permitted Ratio Debt"
+  ],
+  "unresolvedIssues": [
+   "[rule[r1]] ruleType \"DEFINITIONAL_CARVEOUT\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+   "[rule[r_51]] ruleType \"DEFINITIONAL_CARVEOUT\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+   "[rule[r_51]] dependsOn[0].targetRef \"§1.01(3)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r2]] dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r3]] dependsOn[0].targetRef \"Junior Lien Priority\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r3]] dependsOn[1].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r4]] dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r5]] dependsOn[0].targetRef \"Consolidated EBITDA\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r6]] ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+   "[rule[r7]] the actual dollar/percentage economics of this basket are wholly defined by Section 6.01, whose text was flagged out-of-scope (context budget exhausted) for this submission",
+   "[rule[r7]] dependsOn[0].targetRef \"Section 6.01(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r7]] dependsOn[1].targetRef \"Section 6.01(b)(4)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r7]] dependsOn[2].targetRef \"Section 6.01(b)(18)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r7]] dependsOn[3].targetRef \"Section 6.01(b)(19)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r7]] dependsOn[4].targetRef \"Section 6.01(b)(14)(y)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r8]] the 'original Indebtedness amount' baseline is itself defined by reference to Section 6.01 and other Permitted Liens clauses whose full text/amounts are out of scope for this submission; no standalone numeric cap is stated",
+   "[rule[r8]] dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r9]] dependsOn[0].targetRef \"Section 6.08\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r9]] dependsOn[1].targetRef \"definition of \"Permitted Investments\"\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r10]] no defined term matching 'Available Amount' was found anywhere in this instrument's documents despite an attempted lookup; its meaning and quantum cannot be resolved from available evidence",
+   "[rule[r10]] dependsOn[0].targetRef \"Available Amount\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[definition[d1]] the defined term is an enumerated categorical list, not a single formula; its economically material sub-parts are represented as discrete rules instead",
+   "Permitted Liens (§1.01) is a single defined term structured as a 51-clause enumerated list. The large majority of its clauses (e.g. (1),(4),(5),(7)-(17),(19),(22)-(45),(47)-(50)) are purely categorical/qualitative Lien carve-outs with no dollar, percentage, or ratio mechanic, and are intentionally not each modeled as a separate WireRule - doing so would not add computable economics and risks noise rather than fidelity.",
+   "The materially quantitative or ratio-gated sub-components were each modeled as an independent WireRule: the 30-day/good-faith-contest qualification shared by clauses (2)&(3) (r1) and the parallel test in clause (51) (r_51, an additional detected value not covered by the frozen inventory but structurally identical); the three-pronged ratio test in clause (20)(x)/(y)/(z) (r2, r3, r4); the General Lien Basket in clause (21) (r5); the classification/reclassification election in the closing paragraph (r6); and the cross-reference-heavy baskets in clauses (6), (18), and (46)(i)/(ii) (r7-r10), most of which are MISSING_CONTEXT or PARTIAL because their ultimate economics depend on Section 6.01/6.08 text that was out of scope for this submission.",
+   "All 6 frozen inventory items were consumed exactly once, each on the rule that carries its actual value/meaning (r1: 30-day test; r2: First Lien Leverage Ratio 2.00x; r3: Senior Secured Leverage Ratio/Interest Coverage Ratio alternative; r4: Total Leverage Ratio/Interest Coverage Ratio alternative; r5: $720.0mm/100% EBITDA General Lien Basket; r6: reclassification election).",
+   "The term 'Junior Lien Priority' gating clause (20)(y) has no detected definition anywhere in the instrument (confirmed via the supplied cross-reference resolution notes); this is preserved as an explicit dependsOn on r3 rather than guessed at.",
+   "'Available RP Capacity Amount' (clause (46)(i)) was successfully resolved via getDefinition and shown to be a shared ceiling with Section 6.08 (Restricted Payments) and the definition of 'Permitted Investments'; because those partner provisions are not part of this submission, the sharing relationship is preserved as explicit SHARES_CAPACITY_WITH dependsOn entries on r9 rather than a freestanding WireSharedCapacity with unresolvable members.",
+   "'Available Amount' (clause (46)(ii)) was searched for via getDefinition and does not exist under that name anywhere in the instrument package; r10 is marked MISSING_CONTEXT accordingly rather than guessed."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:4f06625557e9aecbbb7a",
+  "shardHash": "f1b437e22ee07474adbce6cb0f9ab25ceb36ca10847253c797fce0f3af206cf5",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [
+    {
+     "ruleId": "ir-rule:a5e9c1f44f1bcfef77bd0246",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "1.01(2)-(3)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUALITATIVE_OBLIGATION",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": {
+       "kind": "OR",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:f6826c049f8061a0eef2c014",
+       "operands": [
+        {
+         "kind": "COMPARE",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:5de7ade9c335a77be71bb97b",
+         "left": {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "NUMBER",
+          "inputName": "number of days such sums have been overdue",
+          "exprId": "ir-expr:9399a5c5fb05ad048e027d2c"
+         },
+         "operator": "LTE",
+         "right": {
+          "kind": "NUMBER",
+          "type": "NUMBER",
+          "value": 30,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(2)",
+           "excerpt": "not yet overdue for a period of more than thirty (30) days"
+          },
+          "exprId": "ir-expr:5b88c0e12b6b11473aa24def"
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(2), §1.01(3)",
+          "excerpt": null
+         }
+        },
+        {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "BOOLEAN",
+         "inputName": "being contested in good faith by appropriate proceedings with adequate reserves maintained in accordance with GAAP",
+         "exprId": "ir-expr:793b6f506b2cbcfbc8ba9604"
+        },
+        {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "BOOLEAN",
+         "inputName": "failure to make payment could not reasonably be expected to have a Material Adverse Effect",
+         "exprId": "ir-expr:bd0a8bfeb768d0218f478f00"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(2), §1.01(3)",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(2), §1.01(3)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r1].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Liens for construction-related statutory claims (clause 2) and for taxes/assessments (clause 3) are only 'Permitted Liens' if not overdue more than 30 days, or contested in good faith with adequate GAAP reserves, or non-payment could not reasonably be expected to cause a Material Adverse Effect.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(2), §1.01(3)",
+        "excerpt": "in each case for sums not yet overdue for a period of more than thirty (30) days or being contested in good faith by appropriate proceedings"
+       },
+       "inventoryItemIds": [
+        "inv-item:3d6848f080a00529c6cd5931"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "the qualifying time/contest test is fully stated in the source text",
+      "ruleType \"DEFINITIONAL_CARVEOUT\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(2)-(3)",
+      "excerpt": "in each case for sums not yet overdue for a period of more than thirty (30) days or being contested in good faith by appropriate proceedings"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:3d6848f080a00529c6cd5931"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:1c94894fe2f9cc808ac33727",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "1.01(51)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUALITATIVE_OBLIGATION",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": {
+       "kind": "OR",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:370ab45a606af7e7a35f3c27",
+       "operands": [
+        {
+         "kind": "COMPARE",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:d299d27419b6bbb6fd17c1c7",
+         "left": {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "NUMBER",
+          "inputName": "number of days such obligation has been due or delinquent",
+          "exprId": "ir-expr:27184f5620f5ae0b7b8bf888"
+         },
+         "operator": "LTE",
+         "right": {
+          "kind": "NUMBER",
+          "type": "NUMBER",
+          "value": 30,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(51)",
+           "excerpt": "relate to obligations not yet due or delinquent for a period of time of not more than thirty (30) days"
+          },
+          "exprId": "ir-expr:372d70c37ffae81010358e25"
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(51)",
+          "excerpt": null
+         }
+        },
+        {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "BOOLEAN",
+         "inputName": "being contested in good faith by appropriate proceedings diligently conducted with adequate reserves maintained per §1.01(3)",
+         "exprId": "ir-expr:20bdd7b45f987125cf3fe9b6"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(51)",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(51)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r_51].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Undetermined/inchoate statutory Liens are Permitted Liens only if unfiled/unregistered, or if filed/registered, relate to obligations not yet due/delinquent for more than 30 days or contested in good faith with adequate reserves as per clause (3).",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(51)",
+        "excerpt": "relate to obligations not yet due or delinquent for a period of time of not more than thirty (30) days or that are being contested in good faith by appropriate proceedings diligently conducted, if adequate reserves are maintained as per subsection (3) above"
+       }
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "§1.01(3)",
+       "description": "adequate-reserves standard incorporated by cross-reference to clause (3) of this same definition",
+       "reason": "dependsOn[0].targetRef \"§1.01(3)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully self-contained 30-day/contest test, not covered by the frozen inventory item but represented as a materially parallel detected value",
+      "ruleType \"DEFINITIONAL_CARVEOUT\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "dependsOn[0].targetRef \"§1.01(3)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(51)",
+      "excerpt": "which have not been filed or registered under applicable law or which although filed or registered, relate to obligations not yet due or delinquent for a period of time of not more than thirty (30) days"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "ruleId": "ir-rule:2c466142d43a71ddc7b84813",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "1.01(20)(x)",
+     "covenantFamily": "LIENS",
+     "ruleType": "RATIO_TEST",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:e2f65b93426b3ba106f8665c",
+       "left": {
+        "kind": "METRIC_REFERENCE",
+        "type": "RATIO",
+        "metricName": "First Lien Leverage Ratio",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+       },
+       "operator": "LTE",
+       "right": {
+        "kind": "MAX",
+        "type": "RATIO",
+        "exprId": "ir-expr:13b9f7bb9a4db5348f60f3bb",
+        "operands": [
+         {
+          "kind": "RATIO",
+          "type": "RATIO",
+          "value": 2,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(20)(x)",
+           "excerpt": "does not exceed the greater of (A) 2.00:1.00"
+          },
+          "exprId": "ir-expr:8c7d066c056636578b856ddb"
+         },
+         {
+          "kind": "DURING_PERIOD",
+          "type": "RATIO",
+          "exprId": "ir-expr:70551713eb40987a5e2e2355",
+          "value": {
+           "kind": "METRIC_REFERENCE",
+           "type": "RATIO",
+           "metricName": "First Lien Leverage Ratio",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+          },
+          "periodDescription": "immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(20)(x)",
+           "excerpt": null
+          }
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(20)(x)",
+         "excerpt": null
+        }
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(20)(x)",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(20)(x)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r2].condition[0]",
+       "conditionType": "RATIO_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Applies only to Indebtedness/Disqualified Stock/Preferred Stock secured by all or a material portion of the Collateral on a pari passu basis with the Secured Obligations.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(20)(x)",
+        "excerpt": null
+       }
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01",
+       "description": "the underlying Indebtedness must be permitted to be incurred pursuant to Section 6.01, text out of scope for this submission",
+       "reason": "dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "First Lien Leverage Ratio and the 2.00:1.00 threshold and prior-ratio alternative are fully stated",
+      "dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(20)(x)",
+      "excerpt": "the First Lien Leverage Ratio for the applicable Test Period does not exceed the greater of (A) 2.00:1.00 and (B) the First Lien Leverage Ratio immediately prior to the incurrence of such Indebtedness"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:42c037b1d716e8d759f1af1b"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:798892f2c2911eed7c5134e5",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "1.01(20)(y)",
+     "covenantFamily": "LIENS",
+     "ruleType": "RATIO_TEST",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": {
+       "kind": "OR",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:4569aeab1a11d630d0383f5f",
+       "operands": [
+        {
+         "kind": "COMPARE",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:ead48fddc06308cd919b4ac5",
+         "left": {
+          "kind": "METRIC_REFERENCE",
+          "type": "RATIO",
+          "metricName": "Senior Secured Leverage Ratio",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:2fa3ec279186ee2bf73f0ff9"
+         },
+         "operator": "LTE",
+         "right": {
+          "kind": "MAX",
+          "type": "RATIO",
+          "exprId": "ir-expr:89260066639ce2b51a034b91",
+          "operands": [
+           {
+            "kind": "RATIO",
+            "type": "RATIO",
+            "value": 3,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(20)(y)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:9b440a0413640399f5a8e910"
+           },
+           {
+            "kind": "DURING_PERIOD",
+            "type": "RATIO",
+            "exprId": "ir-expr:0d6d397f924412d668fa73c6",
+            "value": {
+             "kind": "METRIC_REFERENCE",
+             "type": "RATIO",
+             "metricName": "Senior Secured Leverage Ratio",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:2fa3ec279186ee2bf73f0ff9"
+            },
+            "periodDescription": "immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock",
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(20)(y)",
+             "excerpt": null
+            }
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(20)(y)",
+           "excerpt": null
+          }
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(20)(y)",
+          "excerpt": null
+         }
+        },
+        {
+         "kind": "COMPARE",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:d9bf4d98a38a0a3161cf972a",
+         "left": {
+          "kind": "METRIC_REFERENCE",
+          "type": "RATIO",
+          "metricName": "Interest Coverage Ratio",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+         },
+         "operator": "GTE",
+         "right": {
+          "kind": "MIN",
+          "type": "RATIO",
+          "exprId": "ir-expr:3cde1815efc2f45496353076",
+          "operands": [
+           {
+            "kind": "RATIO",
+            "type": "RATIO",
+            "value": 1.75,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(20)(y)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:ae3babb861f26be84927ce97"
+           },
+           {
+            "kind": "DURING_PERIOD",
+            "type": "RATIO",
+            "exprId": "ir-expr:d2d9afc274e40ffe51940fe1",
+            "value": {
+             "kind": "METRIC_REFERENCE",
+             "type": "RATIO",
+             "metricName": "Interest Coverage Ratio",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+            },
+            "periodDescription": "immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock",
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(20)(y)",
+             "excerpt": null
+            }
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(20)(y)",
+           "excerpt": null
+          }
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(20)(y)",
+          "excerpt": null
+         }
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(20)(y)",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(20)(y)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r3].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Applies, at the Initial Borrower's sole discretion, to Indebtedness/Disqualified Stock/Preferred Stock secured by all or a material portion of the Collateral on a 'Junior Lien Priority' basis; that term is used but not defined anywhere in this instrument.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(20)(y)",
+        "excerpt": null
+       }
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Junior Lien Priority",
+       "description": "gating term 'Junior Lien Priority' is used but has no detected definition anywhere in this document",
+       "reason": "dependsOn[0].targetRef \"Junior Lien Priority\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01",
+       "description": "underlying Indebtedness must be permitted under Section 6.01, text out of scope for this submission",
+       "reason": "dependsOn[1].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "the ratio math (3.00:1.00 / 1.75:1.00 alternative test) is fully stated, but applicability turns on the undefined term 'Junior Lien Priority'",
+      "dependsOn[0].targetRef \"Junior Lien Priority\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[1].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(20)(y)",
+      "excerpt": "either (i) the Senior Secured Leverage Ratio ... does not exceed the greater of (A) 3.00:1.00 ... or (ii) the Interest Coverage Ratio is greater than or equal to the lesser of (A) 1.75:1.00"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:e0247f2436dfe133ca048078"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:6b4de9db7ce9da1e0b6f29fc",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "1.01(20)(z)",
+     "covenantFamily": "LIENS",
+     "ruleType": "RATIO_TEST",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": {
+       "kind": "OR",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:d4677dc3f91677ddb7eee969",
+       "operands": [
+        {
+         "kind": "COMPARE",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:3027ed917fd45c22fc843da4",
+         "left": {
+          "kind": "METRIC_REFERENCE",
+          "type": "RATIO",
+          "metricName": "Total Leverage Ratio",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:8557b62ae523bdf065397fae"
+         },
+         "operator": "LTE",
+         "right": {
+          "kind": "MAX",
+          "type": "RATIO",
+          "exprId": "ir-expr:46ed23a20ba839270164a081",
+          "operands": [
+           {
+            "kind": "RATIO",
+            "type": "RATIO",
+            "value": 4,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(20)(z)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:b85cd26b0daedbe799892e2b"
+           },
+           {
+            "kind": "DURING_PERIOD",
+            "type": "RATIO",
+            "exprId": "ir-expr:99d56e4282811a0826a1219d",
+            "value": {
+             "kind": "METRIC_REFERENCE",
+             "type": "RATIO",
+             "metricName": "Total Leverage Ratio",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:8557b62ae523bdf065397fae"
+            },
+            "periodDescription": "immediately prior to the incurrence of such Indebtedness",
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(20)(z)",
+             "excerpt": null
+            }
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(20)(z)",
+           "excerpt": null
+          }
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(20)(z)",
+          "excerpt": null
+         }
+        },
+        {
+         "kind": "COMPARE",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:23f5266b03f1f5c7ca2b0479",
+         "left": {
+          "kind": "METRIC_REFERENCE",
+          "type": "RATIO",
+          "metricName": "Interest Coverage Ratio",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+         },
+         "operator": "GTE",
+         "right": {
+          "kind": "MIN",
+          "type": "RATIO",
+          "exprId": "ir-expr:e8fabe38f5c9c0bbee517538",
+          "operands": [
+           {
+            "kind": "RATIO",
+            "type": "RATIO",
+            "value": 1.75,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(20)(z)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:ea7ded462342e59f819e3097"
+           },
+           {
+            "kind": "DURING_PERIOD",
+            "type": "RATIO",
+            "exprId": "ir-expr:ccd255dbd0b16d61ba6a1683",
+            "value": {
+             "kind": "METRIC_REFERENCE",
+             "type": "RATIO",
+             "metricName": "Interest Coverage Ratio",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+            },
+            "periodDescription": "immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock",
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(20)(z)",
+             "excerpt": null
+            }
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(20)(z)",
+           "excerpt": null
+          }
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(20)(z)",
+          "excerpt": null
+         }
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(20)(z)",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(20)(z)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r4].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Applies to Indebtedness/Disqualified Stock/Preferred Stock secured by Liens on assets not constituting all or a material portion of the Collateral, or secured by Liens on the Collateral ranking junior priority to second lien indebtedness, at the Initial Borrower's sole discretion.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(20)(z)",
+        "excerpt": null
+       }
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01",
+       "description": "underlying Indebtedness must be permitted under Section 6.01, text out of scope for this submission",
+       "reason": "dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "all metrics (Total Leverage Ratio, Interest Coverage Ratio) and thresholds are defined and resolvable from supplied context",
+      "dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(20)(z)",
+      "excerpt": "either (i) the Total Leverage Ratio ... does not exceed the greater of (A) 4.00:1.00 ... or (ii) the Interest Coverage Ratio is greater than or equal to the lesser of (A) 1.75:1.00"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:5fd357ec4014b3d504eaaf6b"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:5f45008a519051fe68e3f5c8",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "1.01(21)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "MAX",
+      "type": "MONEY",
+      "exprId": "ir-expr:5aefc4199e74aa61d3dcf0ab",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "type": "MONEY",
+        "amount": 720000000,
+        "currency": "USD",
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(21)",
+         "excerpt": "$720.0 million"
+        },
+        "exprId": "ir-expr:e0c5c9f0507c0b87ddc2b14e"
+       },
+       {
+        "kind": "MULTIPLY",
+        "type": "MONEY",
+        "exprId": "ir-expr:302c9ac51302b8be4b850fd9",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "type": "PERCENT",
+          "value": 1,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(21)",
+           "excerpt": "100% of Consolidated EBITDA"
+          },
+          "exprId": "ir-expr:db58a89ebb44bac2b1180bbe"
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "Consolidated EBITDA",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(21)",
+         "excerpt": null
+        }
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(21)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r5].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Consolidated EBITDA for the most recently ended Test Period is calculated on a Pro Forma Basis, at the time of incurrence.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(21)",
+        "excerpt": null
+       }
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Consolidated EBITDA",
+       "description": "capacity's second prong is a percentage of Consolidated EBITDA (definition partially truncated in supplied context, but the relevant formula prong itself is resolvable)",
+       "reason": "dependsOn[0].targetRef \"Consolidated EBITDA\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "the general lien basket (also known as the 'General Lien Basket') ceiling is fully stated as the greater of a fixed dollar amount and a percentage of Consolidated EBITDA",
+      "dependsOn[0].targetRef \"Consolidated EBITDA\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(21)",
+      "excerpt": "other Liens securing obligations that any time outstanding do not exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of incurrence"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:c321c001b3a38b2e086a75a2"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:0d8766a777ead6d48dc06932",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "1.01 (closing paragraph)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUALITATIVE_OBLIGATION",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": null,
+     "conditions": [
+      {
+       "conditionId": "rule[r6].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "A Lien need not be incurred solely by reference to one category of Permitted Liens, but may be incurred under any combination of categories, including in part under one category and in part under others.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      {
+       "conditionId": "rule[r6].condition[1]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "If a Lien (or portion) meets the criteria of more than one category, the Initial Borrower may, in its sole discretion, classify or reclassify such Lien (or portion) in any manner that complies with the definition.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      {
+       "conditionId": "rule[r6].condition[2]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "If a portion of Indebtedness secured by a Lien could be classified in part under clause (20) (giving effect only to the incurrence of that portion), the Initial Borrower may classify that portion (and related Obligations) as secured under clause (20), with the remainder classified under other clauses.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "the classification/reclassification election mechanic is fully and unambiguously stated",
+      "ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "a Lien need not be incurred solely by reference to one category of Permitted Liens described in this definition but may be incurred under any combination of such categories"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:dea92930d39a32acc3fe1e6b"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:feb68351802f36d511054720",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "1.01(6)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01(6)",
+      "semanticDescription": "Liens securing Indebtedness permitted to be incurred pursuant to Section 6.01(a) or enumerated sub-clauses of Section 6.01(b) (4,12,14,18,19,21,26,27,31,32,33), with numerous asset-scope provisos and intercreditor-agreement elections",
+      "reason": "the actual dollar/percentage economics of this basket are wholly defined by Section 6.01, whose text was flagged out-of-scope (context budget exhausted) for this submission",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:edc6cb40b11f9c124d434853"
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(a)",
+       "description": "capacity for this Lien category is defined by Indebtedness permitted under Section 6.01(a)",
+       "reason": "dependsOn[0].targetRef \"Section 6.01(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(4)",
+       "description": "capacity for this Lien category is defined by Indebtedness permitted under Section 6.01(b)(4), with asset-scope proviso (a)",
+       "reason": "dependsOn[1].targetRef \"Section 6.01(b)(4)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(18)",
+       "description": "asset-scope proviso (b) limits Liens to non-Guarantor Restricted Subsidiary assets",
+       "reason": "dependsOn[2].targetRef \"Section 6.01(b)(18)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(19)",
+       "description": "asset-scope proviso (c) limits Liens to same acquired property/Capital Stock",
+       "reason": "dependsOn[3].targetRef \"Section 6.01(b)(19)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(14)(y)",
+       "description": "asset-scope proviso (e) limits Liens to assets of acquired/merged Persons",
+       "reason": "dependsOn[4].targetRef \"Section 6.01(b)(14)(y)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Section 6.01(a)/(b) text, which defines the actual quantum of this Lien-securing basket, was not available and was explicitly flagged out-of-scope for this submission",
+      "the actual dollar/percentage economics of this basket are wholly defined by Section 6.01, whose text was flagged out-of-scope (context budget exhausted) for this submission",
+      "dependsOn[0].targetRef \"Section 6.01(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[1].targetRef \"Section 6.01(b)(4)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[2].targetRef \"Section 6.01(b)(18)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[3].targetRef \"Section 6.01(b)(19)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[4].targetRef \"Section 6.01(b)(14)(y)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(6)",
+      "excerpt": "Liens securing Indebtedness permitted to be incurred pursuant to Section 6.01(a) or Section 6.01(b)(4), (12), (14), (18), (19), (21), (26), (27) ..., (31), (32) or (33) hereof"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "ruleId": "ir-rule:91a1f90f5d752cf5000552a5",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "1.01(18)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01(18)",
+      "semanticDescription": "Anti-cash-out cap for Liens securing a modification/Refinancing of Indebtedness originally secured under clauses (6),(7),(8),(9),(18) or (20): new Lien limited to same/similar collateral, and refinanced Indebtedness may not exceed the outstanding/committed principal amount of the original Indebtedness at the time the original Lien became a Permitted Lien, plus fees/premiums/accrued interest related to the refinancing",
+      "reason": "the 'original Indebtedness amount' baseline is itself defined by reference to Section 6.01 and other Permitted Liens clauses whose full text/amounts are out of scope for this submission; no standalone numeric cap is stated",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:8227968814f80d5b698c0ddd"
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01",
+       "description": "baseline original-Indebtedness amount depends on Section 6.01 clauses referenced by (6),(7),(8),(9),(20)",
+       "reason": "dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "the qualitative cap mechanic (no increase beyond original principal plus refinancing fees/premiums/accrued interest) is stated, but the baseline amount itself is not independently quantifiable from supplied evidence",
+      "the 'original Indebtedness amount' baseline is itself defined by reference to Section 6.01 and other Permitted Liens clauses whose full text/amounts are out of scope for this submission; no standalone numeric cap is stated",
+      "dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(18)",
+      "excerpt": "the Indebtedness secured by such Lien at such time is not increased to any amount greater than the sum of (A) the outstanding principal amount or, if greater, committed amount of the Indebtedness described under clauses (6) ... and (B) an amount necessary to pay any fees and expenses, including premiums, and accrued and unpaid interest related to such modification or Refinancing"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "ruleId": "ir-rule:a681b3b91737d7f5e03f97d3",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "1.01(46)(i)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "DEFINED_TERM_REFERENCE",
+      "type": "MONEY",
+      "termName": "Available RP Capacity Amount",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:d98768d2281ab8f3c709db46"
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "SHARES_CAPACITY_WITH",
+       "targetRef": "Section 6.08",
+       "description": "the Available RP Capacity Amount is the same ceiling that also governs Restricted Payments capacity under Section 6.08; usage under clause (46)(i) reduces the shared ceiling, per the definition of 'Available RP Capacity Amount'",
+       "reason": "dependsOn[0].targetRef \"Section 6.08\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      },
+      {
+       "relationshipType": "SHARES_CAPACITY_WITH",
+       "targetRef": "definition of \"Permitted Investments\"",
+       "description": "the Available RP Capacity Amount also governs certain Permitted Investments capacity, per the definition of 'Available RP Capacity Amount'",
+       "reason": "dependsOn[1].targetRef \"definition of \"Permitted Investments\"\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "the reference itself and its shared-capacity relationship with Section 6.08/Permitted Investments is fully resolved via the 'Available RP Capacity Amount' definition, but the actual dollar quantum requires Section 6.08's own capacity mechanics, which are out of scope for this submission",
+      "dependsOn[0].targetRef \"Section 6.08\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[1].targetRef \"definition of \"Permitted Investments\"\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(46)(i)",
+      "excerpt": "Liens in an aggregate amount not to exceed the Available RP Capacity Amount"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "ruleId": "ir-rule:7acbb6ff8d7cd655697ae093",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "1.01(46)(ii)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01(46)(ii)",
+      "semanticDescription": "Liens up to the 'Available Amount' that is 'Not Otherwise Applied'",
+      "reason": "no defined term matching 'Available Amount' was found anywhere in this instrument's documents despite an attempted lookup; its meaning and quantum cannot be resolved from available evidence",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:972667f32cdf932c7e5ec22e"
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Available Amount",
+       "description": "term used but not found defined anywhere in the instrument package",
+       "reason": "dependsOn[0].targetRef \"Available Amount\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "getDefinition tool was attempted for 'Available Amount' and returned no matching defined term in the instrument",
+      "no defined term matching 'Available Amount' was found anywhere in this instrument's documents despite an attempted lookup; its meaning and quantum cannot be resolved from available evidence",
+      "dependsOn[0].targetRef \"Available Amount\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(46)(ii)",
+      "excerpt": "Liens in an aggregate amount not to exceed the Available Amount that is Not Otherwise Applied"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:59d6e486b0774661993e44d0",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Permitted Liens",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01, definition of \"Permitted Liens\", clauses (1)-(51) and closing paragraphs",
+      "semanticDescription": "A 51-category enumerated list definition of Liens that are permitted for any Person. Most categories (e.g. (1),(4),(5),(7)-(17),(19),(22)-(45),(47)-(50)) are purely categorical/qualitative carve-outs (ordinary-course deposits, statutory Liens, landlord/mechanics' Liens, Liens existing on the Effective Date, Liens in favor of the Borrowers/Guarantors, etc.) with no computable dollar/percentage/ratio mechanic and are not reducible to a single calculation expression. The materially quantitative/ratio-gated sub-components (clauses (2)&(3), (6), (18), (20)(x)/(y)/(z), (21), (46)(i)/(ii), (51), and the closing reclassification paragraph) are separately modeled as individual WireRules below rather than folded into one formula.",
+      "reason": "the defined term is an enumerated categorical list, not a single formula; its economically material sub-parts are represented as discrete rules instead",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:3c5d9832bf65d7118245415f"
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "General Lien Basket",
+      "First Lien Leverage Ratio",
+      "Senior Secured Leverage Ratio",
+      "Total Leverage Ratio",
+      "Interest Coverage Ratio",
+      "Available RP Capacity Amount",
+      "Junior Lien Priority",
+      "Indebtedness",
+      "Permitted Ratio Debt"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "the term is a large enumerated categorical list; qualitative/non-computational categories are intentionally not force-fit into a calculation expression",
+      "the quantitatively material categories are instead captured as discrete WireRules (see r1-r11) to preserve their distinct economics",
+      "the defined term is an enumerated categorical list, not a single formula; its economically material sub-parts are represented as discrete rules instead"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Permitted Liens\" means, with respect to any Person: (1) ... (51) ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:c26e0c4c8420d4856d061e91",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Permitted Ratio Debt",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "the term is defined solely by cross-reference to Section 6.01(a), whose text was not supplied and was flagged out-of-scope (budget exhausted) for this submission"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Permitted Ratio Debt\" has the meaning assigned to such term in Section 6.01(a)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "unresolvedIssues": [
+   "[rule[r1]] ruleType \"DEFINITIONAL_CARVEOUT\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+   "[rule[r_51]] ruleType \"DEFINITIONAL_CARVEOUT\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+   "[rule[r_51]] dependsOn[0].targetRef \"§1.01(3)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r2]] dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r3]] dependsOn[0].targetRef \"Junior Lien Priority\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r3]] dependsOn[1].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r4]] dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r5]] dependsOn[0].targetRef \"Consolidated EBITDA\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r6]] ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+   "[rule[r7]] the actual dollar/percentage economics of this basket are wholly defined by Section 6.01, whose text was flagged out-of-scope (context budget exhausted) for this submission",
+   "[rule[r7]] dependsOn[0].targetRef \"Section 6.01(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r7]] dependsOn[1].targetRef \"Section 6.01(b)(4)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r7]] dependsOn[2].targetRef \"Section 6.01(b)(18)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r7]] dependsOn[3].targetRef \"Section 6.01(b)(19)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r7]] dependsOn[4].targetRef \"Section 6.01(b)(14)(y)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r8]] the 'original Indebtedness amount' baseline is itself defined by reference to Section 6.01 and other Permitted Liens clauses whose full text/amounts are out of scope for this submission; no standalone numeric cap is stated",
+   "[rule[r8]] dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r9]] dependsOn[0].targetRef \"Section 6.08\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r9]] dependsOn[1].targetRef \"definition of \"Permitted Investments\"\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r10]] no defined term matching 'Available Amount' was found anywhere in this instrument's documents despite an attempted lookup; its meaning and quantum cannot be resolved from available evidence",
+   "[rule[r10]] dependsOn[0].targetRef \"Available Amount\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[definition[d1]] the defined term is an enumerated categorical list, not a single formula; its economically material sub-parts are represented as discrete rules instead",
+   "Permitted Liens (§1.01) is a single defined term structured as a 51-clause enumerated list. The large majority of its clauses (e.g. (1),(4),(5),(7)-(17),(19),(22)-(45),(47)-(50)) are purely categorical/qualitative Lien carve-outs with no dollar, percentage, or ratio mechanic, and are intentionally not each modeled as a separate WireRule - doing so would not add computable economics and risks noise rather than fidelity.",
+   "The materially quantitative or ratio-gated sub-components were each modeled as an independent WireRule: the 30-day/good-faith-contest qualification shared by clauses (2)&(3) (r1) and the parallel test in clause (51) (r_51, an additional detected value not covered by the frozen inventory but structurally identical); the three-pronged ratio test in clause (20)(x)/(y)/(z) (r2, r3, r4); the General Lien Basket in clause (21) (r5); the classification/reclassification election in the closing paragraph (r6); and the cross-reference-heavy baskets in clauses (6), (18), and (46)(i)/(ii) (r7-r10), most of which are MISSING_CONTEXT or PARTIAL because their ultimate economics depend on Section 6.01/6.08 text that was out of scope for this submission.",
+   "All 6 frozen inventory items were consumed exactly once, each on the rule that carries its actual value/meaning (r1: 30-day test; r2: First Lien Leverage Ratio 2.00x; r3: Senior Secured Leverage Ratio/Interest Coverage Ratio alternative; r4: Total Leverage Ratio/Interest Coverage Ratio alternative; r5: $720.0mm/100% EBITDA General Lien Basket; r6: reclassification election).",
+   "The term 'Junior Lien Priority' gating clause (20)(y) has no detected definition anywhere in the instrument (confirmed via the supplied cross-reference resolution notes); this is preserved as an explicit dependsOn on r3 rather than guessed at.",
+   "'Available RP Capacity Amount' (clause (46)(i)) was successfully resolved via getDefinition and shown to be a shared ceiling with Section 6.08 (Restricted Payments) and the definition of 'Permitted Investments'; because those partner provisions are not part of this submission, the sharing relationship is preserved as explicit SHARES_CAPACITY_WITH dependsOn entries on r9 rather than a freestanding WireSharedCapacity with unresolvable members.",
+   "'Available Amount' (clause (46)(ii)) was searched for via getDefinition and does not exist under that name anywhere in the instrument package; r10 is marked MISSING_CONTEXT accordingly rather than guessed."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 75051,
+   "outputTokens": 32562,
+   "costUsd": 0.47572200000000003
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "errorDetail": null,
+  "rules": [
+   {
+    "ruleId": "ir-rule:a5e9c1f44f1bcfef77bd0246",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01(2)-(3)",
+    "covenantFamily": "LIENS",
+    "ruleType": "QUALITATIVE_OBLIGATION",
+    "posture": "PERMISSION",
+    "action": "OTHER",
+    "entityScope": [],
+    "entityScopeExcluded": [],
+    "transactionScope": null,
+    "capacityExpression": {
+     "kind": "UNLIMITED_CAPACITY",
+     "type": "CAPACITY",
+     "gatedBy": {
+      "kind": "OR",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:f6826c049f8061a0eef2c014",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:5de7ade9c335a77be71bb97b",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "NUMBER",
+         "inputName": "number of days such sums have been overdue",
+         "exprId": "ir-expr:9399a5c5fb05ad048e027d2c"
+        },
+        "operator": "LTE",
+        "right": {
+         "kind": "NUMBER",
+         "type": "NUMBER",
+         "value": 30,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(2)",
+          "excerpt": "not yet overdue for a period of more than thirty (30) days"
+         },
+         "exprId": "ir-expr:5b88c0e12b6b11473aa24def"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(2), §1.01(3)",
+         "excerpt": null
+        }
+       },
+       {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "BOOLEAN",
+        "inputName": "being contested in good faith by appropriate proceedings with adequate reserves maintained in accordance with GAAP",
+        "exprId": "ir-expr:793b6f506b2cbcfbc8ba9604"
+       },
+       {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "BOOLEAN",
+        "inputName": "failure to make payment could not reasonably be expected to have a Material Adverse Effect",
+        "exprId": "ir-expr:bd0a8bfeb768d0218f478f00"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(2), §1.01(3)",
+       "excerpt": null
+      }
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(2), §1.01(3)",
+      "excerpt": null
+     }
+    },
+    "conditions": [
+     {
+      "conditionId": "rule[r1].condition[0]",
+      "conditionType": "OTHER_RULE_SATISFIED",
+      "expression": null,
+      "referencesDefinitionId": null,
+      "description": "Liens for construction-related statutory claims (clause 2) and for taxes/assessments (clause 3) are only 'Permitted Liens' if not overdue more than 30 days, or contested in good faith with adequate GAAP reserves, or non-payment could not reasonably be expected to cause a Material Adverse Effect.",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(2), §1.01(3)",
+       "excerpt": "in each case for sums not yet overdue for a period of more than thirty (30) days or being contested in good faith by appropriate proceedings"
+      },
+      "inventoryItemIds": [
+       "inv-item:3d6848f080a00529c6cd5931"
+      ]
+     }
+    ],
+    "exceptions": [],
+    "dependsOn": [],
+    "operativeLineage": null,
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "the qualifying time/contest test is fully stated in the source text",
+     "ruleType \"DEFINITIONAL_CARVEOUT\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(2)-(3)",
+     "excerpt": "in each case for sums not yet overdue for a period of more than thirty (30) days or being contested in good faith by appropriate proceedings"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:3d6848f080a00529c6cd5931"
+    ]
+   },
+   {
+    "ruleId": "ir-rule:1c94894fe2f9cc808ac33727",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01(51)",
+    "covenantFamily": "LIENS",
+    "ruleType": "QUALITATIVE_OBLIGATION",
+    "posture": "PERMISSION",
+    "action": "OTHER",
+    "entityScope": [],
+    "entityScopeExcluded": [],
+    "transactionScope": null,
+    "capacityExpression": {
+     "kind": "UNLIMITED_CAPACITY",
+     "type": "CAPACITY",
+     "gatedBy": {
+      "kind": "OR",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:370ab45a606af7e7a35f3c27",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:d299d27419b6bbb6fd17c1c7",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "NUMBER",
+         "inputName": "number of days such obligation has been due or delinquent",
+         "exprId": "ir-expr:27184f5620f5ae0b7b8bf888"
+        },
+        "operator": "LTE",
+        "right": {
+         "kind": "NUMBER",
+         "type": "NUMBER",
+         "value": 30,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(51)",
+          "excerpt": "relate to obligations not yet due or delinquent for a period of time of not more than thirty (30) days"
+         },
+         "exprId": "ir-expr:372d70c37ffae81010358e25"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(51)",
+         "excerpt": null
+        }
+       },
+       {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "BOOLEAN",
+        "inputName": "being contested in good faith by appropriate proceedings diligently conducted with adequate reserves maintained per §1.01(3)",
+        "exprId": "ir-expr:20bdd7b45f987125cf3fe9b6"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(51)",
+       "excerpt": null
+      }
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(51)",
+      "excerpt": null
+     }
+    },
+    "conditions": [
+     {
+      "conditionId": "rule[r_51].condition[0]",
+      "conditionType": "OTHER_RULE_SATISFIED",
+      "expression": null,
+      "referencesDefinitionId": null,
+      "description": "Undetermined/inchoate statutory Liens are Permitted Liens only if unfiled/unregistered, or if filed/registered, relate to obligations not yet due/delinquent for more than 30 days or contested in good faith with adequate reserves as per clause (3).",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(51)",
+       "excerpt": "relate to obligations not yet due or delinquent for a period of time of not more than thirty (30) days or that are being contested in good faith by appropriate proceedings diligently conducted, if adequate reserves are maintained as per subsection (3) above"
+      }
+     }
+    ],
+    "exceptions": [],
+    "dependsOn": [],
+    "unresolvedDependencies": [
+     {
+      "relationshipType": "REQUIRES",
+      "targetRef": "§1.01(3)",
+      "description": "adequate-reserves standard incorporated by cross-reference to clause (3) of this same definition",
+      "reason": "dependsOn[0].targetRef \"§1.01(3)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     }
+    ],
+    "operativeLineage": null,
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "fully self-contained 30-day/contest test, not covered by the frozen inventory item but represented as a materially parallel detected value",
+     "ruleType \"DEFINITIONAL_CARVEOUT\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+     "dependsOn[0].targetRef \"§1.01(3)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(51)",
+     "excerpt": "which have not been filed or registered under applicable law or which although filed or registered, relate to obligations not yet due or delinquent for a period of time of not more than thirty (30) days"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "ruleId": "ir-rule:2c466142d43a71ddc7b84813",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01(20)(x)",
+    "covenantFamily": "LIENS",
+    "ruleType": "RATIO_TEST",
+    "posture": "PERMISSION",
+    "action": "OTHER",
+    "entityScope": [],
+    "entityScopeExcluded": [],
+    "transactionScope": null,
+    "capacityExpression": {
+     "kind": "UNLIMITED_CAPACITY",
+     "type": "CAPACITY",
+     "gatedBy": {
+      "kind": "COMPARE",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:e2f65b93426b3ba106f8665c",
+      "left": {
+       "kind": "METRIC_REFERENCE",
+       "type": "RATIO",
+       "metricName": "First Lien Leverage Ratio",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+      },
+      "operator": "LTE",
+      "right": {
+       "kind": "MAX",
+       "type": "RATIO",
+       "exprId": "ir-expr:13b9f7bb9a4db5348f60f3bb",
+       "operands": [
+        {
+         "kind": "RATIO",
+         "type": "RATIO",
+         "value": 2,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(20)(x)",
+          "excerpt": "does not exceed the greater of (A) 2.00:1.00"
+         },
+         "exprId": "ir-expr:8c7d066c056636578b856ddb"
+        },
+        {
+         "kind": "DURING_PERIOD",
+         "type": "RATIO",
+         "exprId": "ir-expr:70551713eb40987a5e2e2355",
+         "value": {
+          "kind": "METRIC_REFERENCE",
+          "type": "RATIO",
+          "metricName": "First Lien Leverage Ratio",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+         },
+         "periodDescription": "immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(20)(x)",
+          "excerpt": null
+         }
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(20)(x)",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(20)(x)",
+       "excerpt": null
+      }
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(20)(x)",
+      "excerpt": null
+     }
+    },
+    "conditions": [
+     {
+      "conditionId": "rule[r2].condition[0]",
+      "conditionType": "RATIO_SATISFIED",
+      "expression": null,
+      "referencesDefinitionId": null,
+      "description": "Applies only to Indebtedness/Disqualified Stock/Preferred Stock secured by all or a material portion of the Collateral on a pari passu basis with the Secured Obligations.",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(20)(x)",
+       "excerpt": null
+      }
+     }
+    ],
+    "exceptions": [],
+    "dependsOn": [],
+    "unresolvedDependencies": [
+     {
+      "relationshipType": "REQUIRES",
+      "targetRef": "Section 6.01",
+      "description": "the underlying Indebtedness must be permitted to be incurred pursuant to Section 6.01, text out of scope for this submission",
+      "reason": "dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     }
+    ],
+    "operativeLineage": null,
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "First Lien Leverage Ratio and the 2.00:1.00 threshold and prior-ratio alternative are fully stated",
+     "dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(20)(x)",
+     "excerpt": "the First Lien Leverage Ratio for the applicable Test Period does not exceed the greater of (A) 2.00:1.00 and (B) the First Lien Leverage Ratio immediately prior to the incurrence of such Indebtedness"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:42c037b1d716e8d759f1af1b"
+    ]
+   },
+   {
+    "ruleId": "ir-rule:798892f2c2911eed7c5134e5",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01(20)(y)",
+    "covenantFamily": "LIENS",
+    "ruleType": "RATIO_TEST",
+    "posture": "PERMISSION",
+    "action": "OTHER",
+    "entityScope": [],
+    "entityScopeExcluded": [],
+    "transactionScope": null,
+    "capacityExpression": {
+     "kind": "UNLIMITED_CAPACITY",
+     "type": "CAPACITY",
+     "gatedBy": {
+      "kind": "OR",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:4569aeab1a11d630d0383f5f",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:ead48fddc06308cd919b4ac5",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "type": "RATIO",
+         "metricName": "Senior Secured Leverage Ratio",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:2fa3ec279186ee2bf73f0ff9"
+        },
+        "operator": "LTE",
+        "right": {
+         "kind": "MAX",
+         "type": "RATIO",
+         "exprId": "ir-expr:89260066639ce2b51a034b91",
+         "operands": [
+          {
+           "kind": "RATIO",
+           "type": "RATIO",
+           "value": 3,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(20)(y)",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:9b440a0413640399f5a8e910"
+          },
+          {
+           "kind": "DURING_PERIOD",
+           "type": "RATIO",
+           "exprId": "ir-expr:0d6d397f924412d668fa73c6",
+           "value": {
+            "kind": "METRIC_REFERENCE",
+            "type": "RATIO",
+            "metricName": "Senior Secured Leverage Ratio",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:2fa3ec279186ee2bf73f0ff9"
+           },
+           "periodDescription": "immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock",
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(20)(y)",
+            "excerpt": null
+           }
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(20)(y)",
+          "excerpt": null
+         }
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(20)(y)",
+         "excerpt": null
+        }
+       },
+       {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:d9bf4d98a38a0a3161cf972a",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "type": "RATIO",
+         "metricName": "Interest Coverage Ratio",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+        },
+        "operator": "GTE",
+        "right": {
+         "kind": "MIN",
+         "type": "RATIO",
+         "exprId": "ir-expr:3cde1815efc2f45496353076",
+         "operands": [
+          {
+           "kind": "RATIO",
+           "type": "RATIO",
+           "value": 1.75,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(20)(y)",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:ae3babb861f26be84927ce97"
+          },
+          {
+           "kind": "DURING_PERIOD",
+           "type": "RATIO",
+           "exprId": "ir-expr:d2d9afc274e40ffe51940fe1",
+           "value": {
+            "kind": "METRIC_REFERENCE",
+            "type": "RATIO",
+            "metricName": "Interest Coverage Ratio",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+           },
+           "periodDescription": "immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock",
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(20)(y)",
+            "excerpt": null
+           }
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(20)(y)",
+          "excerpt": null
+         }
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(20)(y)",
+         "excerpt": null
+        }
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(20)(y)",
+       "excerpt": null
+      }
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(20)(y)",
+      "excerpt": null
+     }
+    },
+    "conditions": [
+     {
+      "conditionId": "rule[r3].condition[0]",
+      "conditionType": "OTHER_RULE_SATISFIED",
+      "expression": null,
+      "referencesDefinitionId": null,
+      "description": "Applies, at the Initial Borrower's sole discretion, to Indebtedness/Disqualified Stock/Preferred Stock secured by all or a material portion of the Collateral on a 'Junior Lien Priority' basis; that term is used but not defined anywhere in this instrument.",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(20)(y)",
+       "excerpt": null
+      }
+     }
+    ],
+    "exceptions": [],
+    "dependsOn": [],
+    "unresolvedDependencies": [
+     {
+      "relationshipType": "REQUIRES",
+      "targetRef": "Junior Lien Priority",
+      "description": "gating term 'Junior Lien Priority' is used but has no detected definition anywhere in this document",
+      "reason": "dependsOn[0].targetRef \"Junior Lien Priority\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     },
+     {
+      "relationshipType": "REQUIRES",
+      "targetRef": "Section 6.01",
+      "description": "underlying Indebtedness must be permitted under Section 6.01, text out of scope for this submission",
+      "reason": "dependsOn[1].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     }
+    ],
+    "operativeLineage": null,
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "the ratio math (3.00:1.00 / 1.75:1.00 alternative test) is fully stated, but applicability turns on the undefined term 'Junior Lien Priority'",
+     "dependsOn[0].targetRef \"Junior Lien Priority\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+     "dependsOn[1].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(20)(y)",
+     "excerpt": "either (i) the Senior Secured Leverage Ratio ... does not exceed the greater of (A) 3.00:1.00 ... or (ii) the Interest Coverage Ratio is greater than or equal to the lesser of (A) 1.75:1.00"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:e0247f2436dfe133ca048078"
+    ]
+   },
+   {
+    "ruleId": "ir-rule:6b4de9db7ce9da1e0b6f29fc",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01(20)(z)",
+    "covenantFamily": "LIENS",
+    "ruleType": "RATIO_TEST",
+    "posture": "PERMISSION",
+    "action": "OTHER",
+    "entityScope": [],
+    "entityScopeExcluded": [],
+    "transactionScope": null,
+    "capacityExpression": {
+     "kind": "UNLIMITED_CAPACITY",
+     "type": "CAPACITY",
+     "gatedBy": {
+      "kind": "OR",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:d4677dc3f91677ddb7eee969",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:3027ed917fd45c22fc843da4",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "type": "RATIO",
+         "metricName": "Total Leverage Ratio",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:8557b62ae523bdf065397fae"
+        },
+        "operator": "LTE",
+        "right": {
+         "kind": "MAX",
+         "type": "RATIO",
+         "exprId": "ir-expr:46ed23a20ba839270164a081",
+         "operands": [
+          {
+           "kind": "RATIO",
+           "type": "RATIO",
+           "value": 4,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(20)(z)",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:b85cd26b0daedbe799892e2b"
+          },
+          {
+           "kind": "DURING_PERIOD",
+           "type": "RATIO",
+           "exprId": "ir-expr:99d56e4282811a0826a1219d",
+           "value": {
+            "kind": "METRIC_REFERENCE",
+            "type": "RATIO",
+            "metricName": "Total Leverage Ratio",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:8557b62ae523bdf065397fae"
+           },
+           "periodDescription": "immediately prior to the incurrence of such Indebtedness",
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(20)(z)",
+            "excerpt": null
+           }
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(20)(z)",
+          "excerpt": null
+         }
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(20)(z)",
+         "excerpt": null
+        }
+       },
+       {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:23f5266b03f1f5c7ca2b0479",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "type": "RATIO",
+         "metricName": "Interest Coverage Ratio",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+        },
+        "operator": "GTE",
+        "right": {
+         "kind": "MIN",
+         "type": "RATIO",
+         "exprId": "ir-expr:e8fabe38f5c9c0bbee517538",
+         "operands": [
+          {
+           "kind": "RATIO",
+           "type": "RATIO",
+           "value": 1.75,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(20)(z)",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:ea7ded462342e59f819e3097"
+          },
+          {
+           "kind": "DURING_PERIOD",
+           "type": "RATIO",
+           "exprId": "ir-expr:ccd255dbd0b16d61ba6a1683",
+           "value": {
+            "kind": "METRIC_REFERENCE",
+            "type": "RATIO",
+            "metricName": "Interest Coverage Ratio",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+           },
+           "periodDescription": "immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock",
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(20)(z)",
+            "excerpt": null
+           }
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(20)(z)",
+          "excerpt": null
+         }
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(20)(z)",
+         "excerpt": null
+        }
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(20)(z)",
+       "excerpt": null
+      }
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(20)(z)",
+      "excerpt": null
+     }
+    },
+    "conditions": [
+     {
+      "conditionId": "rule[r4].condition[0]",
+      "conditionType": "OTHER_RULE_SATISFIED",
+      "expression": null,
+      "referencesDefinitionId": null,
+      "description": "Applies to Indebtedness/Disqualified Stock/Preferred Stock secured by Liens on assets not constituting all or a material portion of the Collateral, or secured by Liens on the Collateral ranking junior priority to second lien indebtedness, at the Initial Borrower's sole discretion.",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(20)(z)",
+       "excerpt": null
+      }
+     }
+    ],
+    "exceptions": [],
+    "dependsOn": [],
+    "unresolvedDependencies": [
+     {
+      "relationshipType": "REQUIRES",
+      "targetRef": "Section 6.01",
+      "description": "underlying Indebtedness must be permitted under Section 6.01, text out of scope for this submission",
+      "reason": "dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     }
+    ],
+    "operativeLineage": null,
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "all metrics (Total Leverage Ratio, Interest Coverage Ratio) and thresholds are defined and resolvable from supplied context",
+     "dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(20)(z)",
+     "excerpt": "either (i) the Total Leverage Ratio ... does not exceed the greater of (A) 4.00:1.00 ... or (ii) the Interest Coverage Ratio is greater than or equal to the lesser of (A) 1.75:1.00"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:5fd357ec4014b3d504eaaf6b"
+    ]
+   },
+   {
+    "ruleId": "ir-rule:5f45008a519051fe68e3f5c8",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01(21)",
+    "covenantFamily": "LIENS",
+    "ruleType": "QUANTITATIVE_PERMISSION",
+    "posture": "PERMISSION",
+    "action": "OTHER",
+    "entityScope": [],
+    "entityScopeExcluded": [],
+    "transactionScope": null,
+    "capacityExpression": {
+     "kind": "MAX",
+     "type": "MONEY",
+     "exprId": "ir-expr:5aefc4199e74aa61d3dcf0ab",
+     "operands": [
+      {
+       "kind": "MONEY",
+       "type": "MONEY",
+       "amount": 720000000,
+       "currency": "USD",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(21)",
+        "excerpt": "$720.0 million"
+       },
+       "exprId": "ir-expr:e0c5c9f0507c0b87ddc2b14e"
+      },
+      {
+       "kind": "MULTIPLY",
+       "type": "MONEY",
+       "exprId": "ir-expr:302c9ac51302b8be4b850fd9",
+       "operands": [
+        {
+         "kind": "PERCENT",
+         "type": "PERCENT",
+         "value": 1,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(21)",
+          "excerpt": "100% of Consolidated EBITDA"
+         },
+         "exprId": "ir-expr:db58a89ebb44bac2b1180bbe"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "Consolidated EBITDA",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(21)",
+        "excerpt": null
+       }
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(21)",
+      "excerpt": null
+     }
+    },
+    "conditions": [
+     {
+      "conditionId": "rule[r5].condition[0]",
+      "conditionType": "OTHER_RULE_SATISFIED",
+      "expression": null,
+      "referencesDefinitionId": null,
+      "description": "Consolidated EBITDA for the most recently ended Test Period is calculated on a Pro Forma Basis, at the time of incurrence.",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(21)",
+       "excerpt": null
+      }
+     }
+    ],
+    "exceptions": [],
+    "dependsOn": [],
+    "unresolvedDependencies": [
+     {
+      "relationshipType": "REQUIRES",
+      "targetRef": "Consolidated EBITDA",
+      "description": "capacity's second prong is a percentage of Consolidated EBITDA (definition partially truncated in supplied context, but the relevant formula prong itself is resolvable)",
+      "reason": "dependsOn[0].targetRef \"Consolidated EBITDA\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     }
+    ],
+    "operativeLineage": null,
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "the general lien basket (also known as the 'General Lien Basket') ceiling is fully stated as the greater of a fixed dollar amount and a percentage of Consolidated EBITDA",
+     "dependsOn[0].targetRef \"Consolidated EBITDA\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(21)",
+     "excerpt": "other Liens securing obligations that any time outstanding do not exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of incurrence"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:c321c001b3a38b2e086a75a2"
+    ]
+   },
+   {
+    "ruleId": "ir-rule:0d8766a777ead6d48dc06932",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01 (closing paragraph)",
+    "covenantFamily": "LIENS",
+    "ruleType": "QUALITATIVE_OBLIGATION",
+    "posture": "PERMISSION",
+    "action": "OTHER",
+    "entityScope": [],
+    "entityScopeExcluded": [],
+    "transactionScope": null,
+    "capacityExpression": null,
+    "conditions": [
+     {
+      "conditionId": "rule[r6].condition[0]",
+      "conditionType": "OTHER_RULE_SATISFIED",
+      "expression": null,
+      "referencesDefinitionId": null,
+      "description": "A Lien need not be incurred solely by reference to one category of Permitted Liens, but may be incurred under any combination of categories, including in part under one category and in part under others.",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     {
+      "conditionId": "rule[r6].condition[1]",
+      "conditionType": "OTHER_RULE_SATISFIED",
+      "expression": null,
+      "referencesDefinitionId": null,
+      "description": "If a Lien (or portion) meets the criteria of more than one category, the Initial Borrower may, in its sole discretion, classify or reclassify such Lien (or portion) in any manner that complies with the definition.",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     {
+      "conditionId": "rule[r6].condition[2]",
+      "conditionType": "OTHER_RULE_SATISFIED",
+      "expression": null,
+      "referencesDefinitionId": null,
+      "description": "If a portion of Indebtedness secured by a Lien could be classified in part under clause (20) (giving effect only to the incurrence of that portion), the Initial Borrower may classify that portion (and related Obligations) as secured under clause (20), with the remainder classified under other clauses.",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     }
+    ],
+    "exceptions": [],
+    "dependsOn": [],
+    "operativeLineage": null,
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "the classification/reclassification election mechanic is fully and unambiguously stated",
+     "ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "a Lien need not be incurred solely by reference to one category of Permitted Liens described in this definition but may be incurred under any combination of such categories"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:dea92930d39a32acc3fe1e6b"
+    ]
+   },
+   {
+    "ruleId": "ir-rule:feb68351802f36d511054720",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01(6)",
+    "covenantFamily": "LIENS",
+    "ruleType": "QUANTITATIVE_PERMISSION",
+    "posture": "PERMISSION",
+    "action": "OTHER",
+    "entityScope": [],
+    "entityScopeExcluded": [],
+    "transactionScope": null,
+    "capacityExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01(6)",
+     "semanticDescription": "Liens securing Indebtedness permitted to be incurred pursuant to Section 6.01(a) or enumerated sub-clauses of Section 6.01(b) (4,12,14,18,19,21,26,27,31,32,33), with numerous asset-scope provisos and intercreditor-agreement elections",
+     "reason": "the actual dollar/percentage economics of this basket are wholly defined by Section 6.01, whose text was flagged out-of-scope (context budget exhausted) for this submission",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:edc6cb40b11f9c124d434853"
+    },
+    "conditions": [],
+    "exceptions": [],
+    "dependsOn": [],
+    "unresolvedDependencies": [
+     {
+      "relationshipType": "REQUIRES",
+      "targetRef": "Section 6.01(a)",
+      "description": "capacity for this Lien category is defined by Indebtedness permitted under Section 6.01(a)",
+      "reason": "dependsOn[0].targetRef \"Section 6.01(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     },
+     {
+      "relationshipType": "REQUIRES",
+      "targetRef": "Section 6.01(b)(4)",
+      "description": "capacity for this Lien category is defined by Indebtedness permitted under Section 6.01(b)(4), with asset-scope proviso (a)",
+      "reason": "dependsOn[1].targetRef \"Section 6.01(b)(4)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     },
+     {
+      "relationshipType": "REQUIRES",
+      "targetRef": "Section 6.01(b)(18)",
+      "description": "asset-scope proviso (b) limits Liens to non-Guarantor Restricted Subsidiary assets",
+      "reason": "dependsOn[2].targetRef \"Section 6.01(b)(18)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     },
+     {
+      "relationshipType": "REQUIRES",
+      "targetRef": "Section 6.01(b)(19)",
+      "description": "asset-scope proviso (c) limits Liens to same acquired property/Capital Stock",
+      "reason": "dependsOn[3].targetRef \"Section 6.01(b)(19)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     },
+     {
+      "relationshipType": "REQUIRES",
+      "targetRef": "Section 6.01(b)(14)(y)",
+      "description": "asset-scope proviso (e) limits Liens to assets of acquired/merged Persons",
+      "reason": "dependsOn[4].targetRef \"Section 6.01(b)(14)(y)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     }
+    ],
+    "operativeLineage": null,
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Section 6.01(a)/(b) text, which defines the actual quantum of this Lien-securing basket, was not available and was explicitly flagged out-of-scope for this submission",
+     "the actual dollar/percentage economics of this basket are wholly defined by Section 6.01, whose text was flagged out-of-scope (context budget exhausted) for this submission",
+     "dependsOn[0].targetRef \"Section 6.01(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+     "dependsOn[1].targetRef \"Section 6.01(b)(4)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+     "dependsOn[2].targetRef \"Section 6.01(b)(18)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+     "dependsOn[3].targetRef \"Section 6.01(b)(19)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+     "dependsOn[4].targetRef \"Section 6.01(b)(14)(y)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(6)",
+     "excerpt": "Liens securing Indebtedness permitted to be incurred pursuant to Section 6.01(a) or Section 6.01(b)(4), (12), (14), (18), (19), (21), (26), (27) ..., (31), (32) or (33) hereof"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "ruleId": "ir-rule:91a1f90f5d752cf5000552a5",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01(18)",
+    "covenantFamily": "LIENS",
+    "ruleType": "QUANTITATIVE_PERMISSION",
+    "posture": "PERMISSION",
+    "action": "OTHER",
+    "entityScope": [],
+    "entityScopeExcluded": [],
+    "transactionScope": null,
+    "capacityExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01(18)",
+     "semanticDescription": "Anti-cash-out cap for Liens securing a modification/Refinancing of Indebtedness originally secured under clauses (6),(7),(8),(9),(18) or (20): new Lien limited to same/similar collateral, and refinanced Indebtedness may not exceed the outstanding/committed principal amount of the original Indebtedness at the time the original Lien became a Permitted Lien, plus fees/premiums/accrued interest related to the refinancing",
+     "reason": "the 'original Indebtedness amount' baseline is itself defined by reference to Section 6.01 and other Permitted Liens clauses whose full text/amounts are out of scope for this submission; no standalone numeric cap is stated",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:8227968814f80d5b698c0ddd"
+    },
+    "conditions": [],
+    "exceptions": [],
+    "dependsOn": [],
+    "unresolvedDependencies": [
+     {
+      "relationshipType": "REQUIRES",
+      "targetRef": "Section 6.01",
+      "description": "baseline original-Indebtedness amount depends on Section 6.01 clauses referenced by (6),(7),(8),(9),(20)",
+      "reason": "dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     }
+    ],
+    "operativeLineage": null,
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "the qualitative cap mechanic (no increase beyond original principal plus refinancing fees/premiums/accrued interest) is stated, but the baseline amount itself is not independently quantifiable from supplied evidence",
+     "the 'original Indebtedness amount' baseline is itself defined by reference to Section 6.01 and other Permitted Liens clauses whose full text/amounts are out of scope for this submission; no standalone numeric cap is stated",
+     "dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(18)",
+     "excerpt": "the Indebtedness secured by such Lien at such time is not increased to any amount greater than the sum of (A) the outstanding principal amount or, if greater, committed amount of the Indebtedness described under clauses (6) ... and (B) an amount necessary to pay any fees and expenses, including premiums, and accrued and unpaid interest related to such modification or Refinancing"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "ruleId": "ir-rule:a681b3b91737d7f5e03f97d3",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01(46)(i)",
+    "covenantFamily": "LIENS",
+    "ruleType": "QUANTITATIVE_PERMISSION",
+    "posture": "PERMISSION",
+    "action": "OTHER",
+    "entityScope": [],
+    "entityScopeExcluded": [],
+    "transactionScope": null,
+    "capacityExpression": {
+     "kind": "DEFINED_TERM_REFERENCE",
+     "type": "MONEY",
+     "termName": "Available RP Capacity Amount",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "resolvedDefinitionId": null,
+     "exprId": "ir-expr:d98768d2281ab8f3c709db46"
+    },
+    "conditions": [],
+    "exceptions": [],
+    "dependsOn": [],
+    "unresolvedDependencies": [
+     {
+      "relationshipType": "SHARES_CAPACITY_WITH",
+      "targetRef": "Section 6.08",
+      "description": "the Available RP Capacity Amount is the same ceiling that also governs Restricted Payments capacity under Section 6.08; usage under clause (46)(i) reduces the shared ceiling, per the definition of 'Available RP Capacity Amount'",
+      "reason": "dependsOn[0].targetRef \"Section 6.08\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     },
+     {
+      "relationshipType": "SHARES_CAPACITY_WITH",
+      "targetRef": "definition of \"Permitted Investments\"",
+      "description": "the Available RP Capacity Amount also governs certain Permitted Investments capacity, per the definition of 'Available RP Capacity Amount'",
+      "reason": "dependsOn[1].targetRef \"definition of \"Permitted Investments\"\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     }
+    ],
+    "operativeLineage": null,
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "the reference itself and its shared-capacity relationship with Section 6.08/Permitted Investments is fully resolved via the 'Available RP Capacity Amount' definition, but the actual dollar quantum requires Section 6.08's own capacity mechanics, which are out of scope for this submission",
+     "dependsOn[0].targetRef \"Section 6.08\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+     "dependsOn[1].targetRef \"definition of \"Permitted Investments\"\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(46)(i)",
+     "excerpt": "Liens in an aggregate amount not to exceed the Available RP Capacity Amount"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "ruleId": "ir-rule:7acbb6ff8d7cd655697ae093",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01(46)(ii)",
+    "covenantFamily": "LIENS",
+    "ruleType": "QUANTITATIVE_PERMISSION",
+    "posture": "PERMISSION",
+    "action": "OTHER",
+    "entityScope": [],
+    "entityScopeExcluded": [],
+    "transactionScope": null,
+    "capacityExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01(46)(ii)",
+     "semanticDescription": "Liens up to the 'Available Amount' that is 'Not Otherwise Applied'",
+     "reason": "no defined term matching 'Available Amount' was found anywhere in this instrument's documents despite an attempted lookup; its meaning and quantum cannot be resolved from available evidence",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:972667f32cdf932c7e5ec22e"
+    },
+    "conditions": [],
+    "exceptions": [],
+    "dependsOn": [],
+    "unresolvedDependencies": [
+     {
+      "relationshipType": "REQUIRES",
+      "targetRef": "Available Amount",
+      "description": "term used but not found defined anywhere in the instrument package",
+      "reason": "dependsOn[0].targetRef \"Available Amount\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     }
+    ],
+    "operativeLineage": null,
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "getDefinition tool was attempted for 'Available Amount' and returned no matching defined term in the instrument",
+     "no defined term matching 'Available Amount' was found anywhere in this instrument's documents despite an attempted lookup; its meaning and quantum cannot be resolved from available evidence",
+     "dependsOn[0].targetRef \"Available Amount\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(46)(ii)",
+     "excerpt": "Liens in an aggregate amount not to exceed the Available Amount that is Not Otherwise Applied"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:59d6e486b0774661993e44d0",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Permitted Liens",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01, definition of \"Permitted Liens\", clauses (1)-(51) and closing paragraphs",
+     "semanticDescription": "A 51-category enumerated list definition of Liens that are permitted for any Person. Most categories (e.g. (1),(4),(5),(7)-(17),(19),(22)-(45),(47)-(50)) are purely categorical/qualitative carve-outs (ordinary-course deposits, statutory Liens, landlord/mechanics' Liens, Liens existing on the Effective Date, Liens in favor of the Borrowers/Guarantors, etc.) with no computable dollar/percentage/ratio mechanic and are not reducible to a single calculation expression. The materially quantitative/ratio-gated sub-components (clauses (2)&(3), (6), (18), (20)(x)/(y)/(z), (21), (46)(i)/(ii), (51), and the closing reclassification paragraph) are separately modeled as individual WireRules below rather than folded into one formula.",
+     "reason": "the defined term is an enumerated categorical list, not a single formula; its economically material sub-parts are represented as discrete rules instead",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:3c5d9832bf65d7118245415f"
+    },
+    "dependsOnTerms": [
+     "Consolidated EBITDA",
+     "General Lien Basket",
+     "First Lien Leverage Ratio",
+     "Senior Secured Leverage Ratio",
+     "Total Leverage Ratio",
+     "Interest Coverage Ratio",
+     "Available RP Capacity Amount",
+     "Junior Lien Priority",
+     "Indebtedness",
+     "Permitted Ratio Debt"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "the term is a large enumerated categorical list; qualitative/non-computational categories are intentionally not force-fit into a calculation expression",
+     "the quantitatively material categories are instead captured as discrete WireRules (see r1-r11) to preserve their distinct economics",
+     "the defined term is an enumerated categorical list, not a single formula; its economically material sub-parts are represented as discrete rules instead"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Permitted Liens\" means, with respect to any Person: (1) ... (51) ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:c26e0c4c8420d4856d061e91",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Permitted Ratio Debt",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "the term is defined solely by cross-reference to Section 6.01(a), whose text was not supplied and was flagged out-of-scope (budget exhausted) for this submission"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Permitted Ratio Debt\" has the meaning assigned to such term in Section 6.01(a)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01(2),(3),(51): 'not yet overdue for a period of more than thirty (30) days' and similar day-count grace periods appearing throughout Permitted Liens and elsewhere in the instrument",
+    "semanticRequirement": "represent a bright-line day-count grace period/threshold (e.g. '30 days overdue') as a first-class typed literal rather than an ordinary NUMBER, and represent purely qualitative gating facts (e.g. 'contested in good faith by appropriate proceedings', 'could not reasonably be expected to have a Material Adverse Effect') as a first-class boolean-input node distinct from a generic TRANSACTION_INPUT_REFERENCE",
+    "whyExistingPrimitivesFail": "the current schema has no DURATION/DAY_COUNT literal kind, forcing day counts to be modeled as a bare NUMBER (losing the semantic 'days' unit), and no dedicated QUALITATIVE_BOOLEAN_INPUT kind, forcing subjective/qualitative legal standards (good-faith contest, Material Adverse Effect materiality) to be shoehorned into TRANSACTION_INPUT_REFERENCE, which is really meant for objective deal inputs like a transaction amount",
+    "candidateGeneralizedPrimitive": "DURATION literal (value, unit e.g. DAYS) for grace periods, and a QUALITATIVE_TEST_REFERENCE node (testDescription) for subjective/qualitative legal standards used as boolean gates"
+   }
+  ],
+  "unresolvedIssues": [
+   "[rule[r1]] ruleType \"DEFINITIONAL_CARVEOUT\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+   "[rule[r_51]] ruleType \"DEFINITIONAL_CARVEOUT\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+   "[rule[r_51]] dependsOn[0].targetRef \"§1.01(3)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r2]] dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r3]] dependsOn[0].targetRef \"Junior Lien Priority\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r3]] dependsOn[1].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r4]] dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r5]] dependsOn[0].targetRef \"Consolidated EBITDA\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r6]] ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+   "[rule[r7]] the actual dollar/percentage economics of this basket are wholly defined by Section 6.01, whose text was flagged out-of-scope (context budget exhausted) for this submission",
+   "[rule[r7]] dependsOn[0].targetRef \"Section 6.01(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r7]] dependsOn[1].targetRef \"Section 6.01(b)(4)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r7]] dependsOn[2].targetRef \"Section 6.01(b)(18)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r7]] dependsOn[3].targetRef \"Section 6.01(b)(19)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r7]] dependsOn[4].targetRef \"Section 6.01(b)(14)(y)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r8]] the 'original Indebtedness amount' baseline is itself defined by reference to Section 6.01 and other Permitted Liens clauses whose full text/amounts are out of scope for this submission; no standalone numeric cap is stated",
+   "[rule[r8]] dependsOn[0].targetRef \"Section 6.01\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r9]] dependsOn[0].targetRef \"Section 6.08\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r9]] dependsOn[1].targetRef \"definition of \"Permitted Investments\"\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r10]] no defined term matching 'Available Amount' was found anywhere in this instrument's documents despite an attempted lookup; its meaning and quantum cannot be resolved from available evidence",
+   "[rule[r10]] dependsOn[0].targetRef \"Available Amount\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[definition[d1]] the defined term is an enumerated categorical list, not a single formula; its economically material sub-parts are represented as discrete rules instead",
+   "Permitted Liens (§1.01) is a single defined term structured as a 51-clause enumerated list. The large majority of its clauses (e.g. (1),(4),(5),(7)-(17),(19),(22)-(45),(47)-(50)) are purely categorical/qualitative Lien carve-outs with no dollar, percentage, or ratio mechanic, and are intentionally not each modeled as a separate WireRule - doing so would not add computable economics and risks noise rather than fidelity.",
+   "The materially quantitative or ratio-gated sub-components were each modeled as an independent WireRule: the 30-day/good-faith-contest qualification shared by clauses (2)&(3) (r1) and the parallel test in clause (51) (r_51, an additional detected value not covered by the frozen inventory but structurally identical); the three-pronged ratio test in clause (20)(x)/(y)/(z) (r2, r3, r4); the General Lien Basket in clause (21) (r5); the classification/reclassification election in the closing paragraph (r6); and the cross-reference-heavy baskets in clauses (6), (18), and (46)(i)/(ii) (r7-r10), most of which are MISSING_CONTEXT or PARTIAL because their ultimate economics depend on Section 6.01/6.08 text that was out of scope for this submission.",
+   "All 6 frozen inventory items were consumed exactly once, each on the rule that carries its actual value/meaning (r1: 30-day test; r2: First Lien Leverage Ratio 2.00x; r3: Senior Secured Leverage Ratio/Interest Coverage Ratio alternative; r4: Total Leverage Ratio/Interest Coverage Ratio alternative; r5: $720.0mm/100% EBITDA General Lien Basket; r6: reclassification election).",
+   "The term 'Junior Lien Priority' gating clause (20)(y) has no detected definition anywhere in the instrument (confirmed via the supplied cross-reference resolution notes); this is preserved as an explicit dependsOn on r3 rather than guessed at.",
+   "'Available RP Capacity Amount' (clause (46)(i)) was successfully resolved via getDefinition and shown to be a shared ceiling with Section 6.08 (Restricted Payments) and the definition of 'Permitted Investments'; because those partner provisions are not part of this submission, the sharing relationship is preserved as explicit SHARES_CAPACITY_WITH dependsOn entries on r9 rather than a freestanding WireSharedCapacity with unresolvable members.",
+   "'Available Amount' (clause (46)(ii)) was searched for via getDefinition and does not exist under that name anywhere in the instrument package; r10 is marked MISSING_CONTEXT accordingly rather than guessed."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Available RP Capacity Amount"
+    },
+    "outputSummary": "definition \"Available RP Capacity Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 1507,
+    "timestamp": "2026-09-14T15:32:38.385Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Available RP Capacity Amount",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:fa9e7b56834cd21fd722335e",
+     "sourceNodeKey": "doc-a::1.01(2)(b)(2)(ff)(b)",
+     "charStart": 35791,
+     "charEnd": 37298,
+     "rawText": "“ Available RP Capacity Amount ” means, at any time of determination (and after\ngiving effect to any reallocation or reclassification permitted hereunder), the amount of Restricted Payments that may be made at the time of determination pursuant to Section 6.08 or the definition of “Permitted Investments”;\nprovided that the capacity available to make Restricted Payments pursuant to the provisions of Section 6.08 shall be reduced (with such reduction to be classified and/or reclassified among such clauses by the Borrowers as described in\nSection 6.08), without duplication by (i) the aggregate principal amount of Indebtedness that has been incurred pursuant to and to the extent outstanding under Section 6.01(b)(31) (together with any outstanding Indebtedness under\nSection 6.01(b)(13) incurred to Refinance any Indebtedness initially incurred pursuant to Section 6.01(b)(31)) and (ii) the amount of the Available RP Capacity Amount utilized by the Restricted Parties to incur Liens pursuant to\nclause (46)(i) of the definition of “Permitted Liens” (it being agreed and understood that, to the extent any Indebtedness has reduced the Available RP Capacity Amount pursuant to the foregoing proviso, the Available RP Capacity Amount\nshall not be further reduced by the amount of any such Indebtedness that is secured by Liens pursuant to clause (46)(i) of the definition of “Permitted Liens”). The Initial Borrower may elect to allocate or reallocate from time to time\nthe Available RP Capacity Amount.\n",
+     "contentHash": "ea211990a4826b340da917150a49a32021fd1f6616cea45f8c5efd29a1e023c6",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Available Amount"
+    },
+    "outputSummary": "refused: no defined term matching \"Available Amount\" found in this instrument's documents",
+    "charsReturned": 80,
+    "timestamp": "2026-09-14T15:32:38.385Z"
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "Permitted Liens",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "A 51-category enumerated list definition of Liens that are permitted for any Person. Most categories (e.g. (1),(4),(5),(7)-(17),(19),(22)-(45),(47)-(50)) are purely categorical/qualitative carve-outs (ordinary-course deposits, statutory Liens, landlord/mechanics' Liens, Liens existing on the Effective Date, Liens in favor of the Borrowers/Guarantors, etc.) with no computable dollar/percentage/ratio mechanic and are not reducible to a single calculation expression. The materially quantitative/ratio-gated sub-components (clauses (2)&(3), (6), (18), (20)(x)/(y)/(z), (21), (46)(i)/(ii), (51), and the closing reclassification paragraph) are separately modeled as individual WireRules below rather than folded into one formula.",
+      "reason": "the defined term is an enumerated categorical list, not a single formula; its economically material sub-parts are represented as discrete rules instead",
+      "sourceEvidence": "§1.01, definition of \"Permitted Liens\", clauses (1)-(51) and closing paragraphs"
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "General Lien Basket",
+      "First Lien Leverage Ratio",
+      "Senior Secured Leverage Ratio",
+      "Total Leverage Ratio",
+      "Interest Coverage Ratio",
+      "Available RP Capacity Amount",
+      "Junior Lien Priority",
+      "Indebtedness",
+      "Permitted Ratio Debt"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "the term is a large enumerated categorical list; qualitative/non-computational categories are intentionally not force-fit into a calculation expression",
+      "the quantitatively material categories are instead captured as discrete WireRules (see r1-r11) to preserve their distinct economics"
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Permitted Liens\" means, with respect to any Person: (1) ... (51) ...",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d2",
+     "termName": "Permitted Ratio Debt",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "the term is defined solely by cross-reference to Section 6.01(a), whose text was not supplied and was flagged out-of-scope (budget exhausted) for this submission"
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Permitted Ratio Debt\" has the meaning assigned to such term in Section 6.01(a).",
+     "inventoryItemIds": []
+    }
+   ],
+   "rules": [
+    {
+     "localRef": "r1",
+     "sourceSectionRef": "1.01(2)-(3)",
+     "covenantFamily": "LIENS",
+     "ruleType": "DEFINITIONAL_CARVEOUT",
+     "posture": "PERMISSION",
+     "action": "CLASSIFY_AS_PERMITTED_LIEN",
+     "entityScope": [
+      "Restricted Party"
+     ],
+     "entityScopeExcluded": [],
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "citation": "§1.01(2), §1.01(3)",
+      "gatedBy": {
+       "kind": "OR",
+       "citation": "§1.01(2), §1.01(3)",
+       "operands": [
+        {
+         "kind": "COMPARE",
+         "operator": "LTE",
+         "left": {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "inputName": "number of days such sums have been overdue"
+         },
+         "right": {
+          "kind": "NUMBER",
+          "value": 30,
+          "citation": "§1.01(2)",
+          "excerpt": "not yet overdue for a period of more than thirty (30) days"
+         }
+        },
+        {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "inputName": "being contested in good faith by appropriate proceedings with adequate reserves maintained in accordance with GAAP",
+         "citation": "§1.01(2), §1.01(3)"
+        },
+        {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "inputName": "failure to make payment could not reasonably be expected to have a Material Adverse Effect",
+         "citation": "§1.01(2), §1.01(3)"
+        }
+       ]
+      }
+     },
+     "conditions": [
+      {
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "description": "Liens for construction-related statutory claims (clause 2) and for taxes/assessments (clause 3) are only 'Permitted Liens' if not overdue more than 30 days, or contested in good faith with adequate GAAP reserves, or non-payment could not reasonably be expected to cause a Material Adverse Effect.",
+       "citation": "§1.01(2), §1.01(3)",
+       "excerpt": "in each case for sums not yet overdue for a period of more than thirty (30) days or being contested in good faith by appropriate proceedings",
+       "inventoryItemIds": [
+        "inv-item:3d6848f080a00529c6cd5931"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "the qualifying time/contest test is fully stated in the source text"
+     ],
+     "citation": "§1.01(2)-(3)",
+     "excerpt": "in each case for sums not yet overdue for a period of more than thirty (30) days or being contested in good faith by appropriate proceedings",
+     "inventoryItemIds": [
+      "inv-item:3d6848f080a00529c6cd5931"
+     ]
+    },
+    {
+     "localRef": "r_51",
+     "sourceSectionRef": "1.01(51)",
+     "covenantFamily": "LIENS",
+     "ruleType": "DEFINITIONAL_CARVEOUT",
+     "posture": "PERMISSION",
+     "action": "CLASSIFY_AS_PERMITTED_LIEN",
+     "entityScope": [
+      "Restricted Party"
+     ],
+     "entityScopeExcluded": [],
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "citation": "§1.01(51)",
+      "gatedBy": {
+       "kind": "OR",
+       "citation": "§1.01(51)",
+       "operands": [
+        {
+         "kind": "COMPARE",
+         "operator": "LTE",
+         "left": {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "inputName": "number of days such obligation has been due or delinquent"
+         },
+         "right": {
+          "kind": "NUMBER",
+          "value": 30,
+          "citation": "§1.01(51)",
+          "excerpt": "relate to obligations not yet due or delinquent for a period of time of not more than thirty (30) days"
+         }
+        },
+        {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "inputName": "being contested in good faith by appropriate proceedings diligently conducted with adequate reserves maintained per §1.01(3)",
+         "citation": "§1.01(51)"
+        }
+       ]
+      }
+     },
+     "conditions": [
+      {
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "description": "Undetermined/inchoate statutory Liens are Permitted Liens only if unfiled/unregistered, or if filed/registered, relate to obligations not yet due/delinquent for more than 30 days or contested in good faith with adequate reserves as per clause (3).",
+       "citation": "§1.01(51)",
+       "excerpt": "relate to obligations not yet due or delinquent for a period of time of not more than thirty (30) days or that are being contested in good faith by appropriate proceedings diligently conducted, if adequate reserves are maintained as per subsection (3) above"
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "§1.01(3)",
+       "description": "adequate-reserves standard incorporated by cross-reference to clause (3) of this same definition"
+      }
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully self-contained 30-day/contest test, not covered by the frozen inventory item but represented as a materially parallel detected value"
+     ],
+     "citation": "§1.01(51)",
+     "excerpt": "which have not been filed or registered under applicable law or which although filed or registered, relate to obligations not yet due or delinquent for a period of time of not more than thirty (30) days",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "r2",
+     "sourceSectionRef": "1.01(20)(x)",
+     "covenantFamily": "LIENS",
+     "ruleType": "RATIO_TEST",
+     "posture": "PERMISSION",
+     "action": "SECURE_INDEBTEDNESS_WITH_LIEN",
+     "entityScope": [
+      "Restricted Party"
+     ],
+     "entityScopeExcluded": [],
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "citation": "§1.01(20)(x)",
+      "gatedBy": {
+       "kind": "COMPARE",
+       "operator": "LTE",
+       "citation": "§1.01(20)(x)",
+       "left": {
+        "kind": "METRIC_REFERENCE",
+        "metricName": "First Lien Leverage Ratio",
+        "valueType": "RATIO"
+       },
+       "right": {
+        "kind": "MAX",
+        "operands": [
+         {
+          "kind": "RATIO",
+          "value": 2,
+          "citation": "§1.01(20)(x)",
+          "excerpt": "does not exceed the greater of (A) 2.00:1.00"
+         },
+         {
+          "kind": "DURING_PERIOD",
+          "periodDescription": "immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock",
+          "operand": {
+           "kind": "METRIC_REFERENCE",
+           "metricName": "First Lien Leverage Ratio",
+           "valueType": "RATIO"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "conditions": [
+      {
+       "conditionType": "RATIO_SATISFIED",
+       "description": "Applies only to Indebtedness/Disqualified Stock/Preferred Stock secured by all or a material portion of the Collateral on a pari passu basis with the Secured Obligations.",
+       "citation": "§1.01(20)(x)"
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01",
+       "description": "the underlying Indebtedness must be permitted to be incurred pursuant to Section 6.01, text out of scope for this submission"
+      }
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "First Lien Leverage Ratio and the 2.00:1.00 threshold and prior-ratio alternative are fully stated"
+     ],
+     "citation": "§1.01(20)(x)",
+     "excerpt": "the First Lien Leverage Ratio for the applicable Test Period does not exceed the greater of (A) 2.00:1.00 and (B) the First Lien Leverage Ratio immediately prior to the incurrence of such Indebtedness",
+     "inventoryItemIds": [
+      "inv-item:42c037b1d716e8d759f1af1b"
+     ]
+    },
+    {
+     "localRef": "r3",
+     "sourceSectionRef": "1.01(20)(y)",
+     "covenantFamily": "LIENS",
+     "ruleType": "RATIO_TEST",
+     "posture": "PERMISSION",
+     "action": "SECURE_INDEBTEDNESS_WITH_LIEN",
+     "entityScope": [
+      "Restricted Party"
+     ],
+     "entityScopeExcluded": [],
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "citation": "§1.01(20)(y)",
+      "gatedBy": {
+       "kind": "OR",
+       "citation": "§1.01(20)(y)",
+       "operands": [
+        {
+         "kind": "COMPARE",
+         "operator": "LTE",
+         "left": {
+          "kind": "METRIC_REFERENCE",
+          "metricName": "Senior Secured Leverage Ratio",
+          "valueType": "RATIO"
+         },
+         "right": {
+          "kind": "MAX",
+          "operands": [
+           {
+            "kind": "RATIO",
+            "value": 3,
+            "citation": "§1.01(20)(y)"
+           },
+           {
+            "kind": "DURING_PERIOD",
+            "periodDescription": "immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock",
+            "operand": {
+             "kind": "METRIC_REFERENCE",
+             "metricName": "Senior Secured Leverage Ratio",
+             "valueType": "RATIO"
+            }
+           }
+          ]
+         }
+        },
+        {
+         "kind": "COMPARE",
+         "operator": "GTE",
+         "left": {
+          "kind": "METRIC_REFERENCE",
+          "metricName": "Interest Coverage Ratio",
+          "valueType": "RATIO"
+         },
+         "right": {
+          "kind": "MIN",
+          "operands": [
+           {
+            "kind": "RATIO",
+            "value": 1.75,
+            "citation": "§1.01(20)(y)"
+           },
+           {
+            "kind": "DURING_PERIOD",
+            "periodDescription": "immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock",
+            "operand": {
+             "kind": "METRIC_REFERENCE",
+             "metricName": "Interest Coverage Ratio",
+             "valueType": "RATIO"
+            }
+           }
+          ]
+         }
+        }
+       ]
+      }
+     },
+     "conditions": [
+      {
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "description": "Applies, at the Initial Borrower's sole discretion, to Indebtedness/Disqualified Stock/Preferred Stock secured by all or a material portion of the Collateral on a 'Junior Lien Priority' basis; that term is used but not defined anywhere in this instrument.",
+       "citation": "§1.01(20)(y)"
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Junior Lien Priority",
+       "description": "gating term 'Junior Lien Priority' is used but has no detected definition anywhere in this document"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01",
+       "description": "underlying Indebtedness must be permitted under Section 6.01, text out of scope for this submission"
+      }
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "the ratio math (3.00:1.00 / 1.75:1.00 alternative test) is fully stated, but applicability turns on the undefined term 'Junior Lien Priority'"
+     ],
+     "citation": "§1.01(20)(y)",
+     "excerpt": "either (i) the Senior Secured Leverage Ratio ... does not exceed the greater of (A) 3.00:1.00 ... or (ii) the Interest Coverage Ratio is greater than or equal to the lesser of (A) 1.75:1.00",
+     "inventoryItemIds": [
+      "inv-item:e0247f2436dfe133ca048078"
+     ]
+    },
+    {
+     "localRef": "r4",
+     "sourceSectionRef": "1.01(20)(z)",
+     "covenantFamily": "LIENS",
+     "ruleType": "RATIO_TEST",
+     "posture": "PERMISSION",
+     "action": "SECURE_INDEBTEDNESS_WITH_LIEN",
+     "entityScope": [
+      "Restricted Party"
+     ],
+     "entityScopeExcluded": [],
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "citation": "§1.01(20)(z)",
+      "gatedBy": {
+       "kind": "OR",
+       "citation": "§1.01(20)(z)",
+       "operands": [
+        {
+         "kind": "COMPARE",
+         "operator": "LTE",
+         "left": {
+          "kind": "METRIC_REFERENCE",
+          "metricName": "Total Leverage Ratio",
+          "valueType": "RATIO"
+         },
+         "right": {
+          "kind": "MAX",
+          "operands": [
+           {
+            "kind": "RATIO",
+            "value": 4,
+            "citation": "§1.01(20)(z)"
+           },
+           {
+            "kind": "DURING_PERIOD",
+            "periodDescription": "immediately prior to the incurrence of such Indebtedness",
+            "operand": {
+             "kind": "METRIC_REFERENCE",
+             "metricName": "Total Leverage Ratio",
+             "valueType": "RATIO"
+            }
+           }
+          ]
+         }
+        },
+        {
+         "kind": "COMPARE",
+         "operator": "GTE",
+         "left": {
+          "kind": "METRIC_REFERENCE",
+          "metricName": "Interest Coverage Ratio",
+          "valueType": "RATIO"
+         },
+         "right": {
+          "kind": "MIN",
+          "operands": [
+           {
+            "kind": "RATIO",
+            "value": 1.75,
+            "citation": "§1.01(20)(z)"
+           },
+           {
+            "kind": "DURING_PERIOD",
+            "periodDescription": "immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock",
+            "operand": {
+             "kind": "METRIC_REFERENCE",
+             "metricName": "Interest Coverage Ratio",
+             "valueType": "RATIO"
+            }
+           }
+          ]
+         }
+        }
+       ]
+      }
+     },
+     "conditions": [
+      {
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "description": "Applies to Indebtedness/Disqualified Stock/Preferred Stock secured by Liens on assets not constituting all or a material portion of the Collateral, or secured by Liens on the Collateral ranking junior priority to second lien indebtedness, at the Initial Borrower's sole discretion.",
+       "citation": "§1.01(20)(z)"
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01",
+       "description": "underlying Indebtedness must be permitted under Section 6.01, text out of scope for this submission"
+      }
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "all metrics (Total Leverage Ratio, Interest Coverage Ratio) and thresholds are defined and resolvable from supplied context"
+     ],
+     "citation": "§1.01(20)(z)",
+     "excerpt": "either (i) the Total Leverage Ratio ... does not exceed the greater of (A) 4.00:1.00 ... or (ii) the Interest Coverage Ratio is greater than or equal to the lesser of (A) 1.75:1.00",
+     "inventoryItemIds": [
+      "inv-item:5fd357ec4014b3d504eaaf6b"
+     ]
+    },
+    {
+     "localRef": "r5",
+     "sourceSectionRef": "1.01(21)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "SECURE_OBLIGATIONS_WITH_LIEN",
+     "entityScope": [
+      "Restricted Party"
+     ],
+     "entityScopeExcluded": [],
+     "capacityExpression": {
+      "kind": "MAX",
+      "citation": "§1.01(21)",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "amount": 720000000,
+        "currency": "USD",
+        "citation": "§1.01(21)",
+        "excerpt": "$720.0 million"
+       },
+       {
+        "kind": "MULTIPLY",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "value": 1,
+          "citation": "§1.01(21)",
+          "excerpt": "100% of Consolidated EBITDA"
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "metricName": "Consolidated EBITDA"
+         }
+        ]
+       }
+      ]
+     },
+     "conditions": [
+      {
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "description": "Consolidated EBITDA for the most recently ended Test Period is calculated on a Pro Forma Basis, at the time of incurrence.",
+       "citation": "§1.01(21)"
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Consolidated EBITDA",
+       "description": "capacity's second prong is a percentage of Consolidated EBITDA (definition partially truncated in supplied context, but the relevant formula prong itself is resolvable)"
+      }
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "the general lien basket (also known as the 'General Lien Basket') ceiling is fully stated as the greater of a fixed dollar amount and a percentage of Consolidated EBITDA"
+     ],
+     "citation": "§1.01(21)",
+     "excerpt": "other Liens securing obligations that any time outstanding do not exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of incurrence",
+     "inventoryItemIds": [
+      "inv-item:c321c001b3a38b2e086a75a2"
+     ]
+    },
+    {
+     "localRef": "r6",
+     "sourceSectionRef": "1.01 (closing paragraph)",
+     "covenantFamily": "LIENS",
+     "ruleType": "OTHER",
+     "posture": "PERMISSION",
+     "action": "CLASSIFY_OR_RECLASSIFY_LIEN",
+     "entityScope": [
+      "Restricted Party"
+     ],
+     "entityScopeExcluded": [],
+     "capacityExpression": null,
+     "conditions": [
+      {
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "description": "A Lien need not be incurred solely by reference to one category of Permitted Liens, but may be incurred under any combination of categories, including in part under one category and in part under others.",
+       "citation": "§1.01"
+      },
+      {
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "description": "If a Lien (or portion) meets the criteria of more than one category, the Initial Borrower may, in its sole discretion, classify or reclassify such Lien (or portion) in any manner that complies with the definition.",
+       "citation": "§1.01"
+      },
+      {
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "description": "If a portion of Indebtedness secured by a Lien could be classified in part under clause (20) (giving effect only to the incurrence of that portion), the Initial Borrower may classify that portion (and related Obligations) as secured under clause (20), with the remainder classified under other clauses.",
+       "citation": "§1.01"
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "the classification/reclassification election mechanic is fully and unambiguously stated"
+     ],
+     "citation": "§1.01",
+     "excerpt": "a Lien need not be incurred solely by reference to one category of Permitted Liens described in this definition but may be incurred under any combination of such categories",
+     "inventoryItemIds": [
+      "inv-item:dea92930d39a32acc3fe1e6b"
+     ]
+    },
+    {
+     "localRef": "r7",
+     "sourceSectionRef": "1.01(6)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "SECURE_INDEBTEDNESS_WITH_LIEN",
+     "entityScope": [
+      "Restricted Party"
+     ],
+     "entityScopeExcluded": [],
+     "capacityExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Liens securing Indebtedness permitted to be incurred pursuant to Section 6.01(a) or enumerated sub-clauses of Section 6.01(b) (4,12,14,18,19,21,26,27,31,32,33), with numerous asset-scope provisos and intercreditor-agreement elections",
+      "reason": "the actual dollar/percentage economics of this basket are wholly defined by Section 6.01, whose text was flagged out-of-scope (context budget exhausted) for this submission",
+      "sourceEvidence": "§1.01(6)"
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(a)",
+       "description": "capacity for this Lien category is defined by Indebtedness permitted under Section 6.01(a)"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(4)",
+       "description": "capacity for this Lien category is defined by Indebtedness permitted under Section 6.01(b)(4), with asset-scope proviso (a)"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(18)",
+       "description": "asset-scope proviso (b) limits Liens to non-Guarantor Restricted Subsidiary assets"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(19)",
+       "description": "asset-scope proviso (c) limits Liens to same acquired property/Capital Stock"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(14)(y)",
+       "description": "asset-scope proviso (e) limits Liens to assets of acquired/merged Persons"
+      }
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Section 6.01(a)/(b) text, which defines the actual quantum of this Lien-securing basket, was not available and was explicitly flagged out-of-scope for this submission"
+     ],
+     "citation": "§1.01(6)",
+     "excerpt": "Liens securing Indebtedness permitted to be incurred pursuant to Section 6.01(a) or Section 6.01(b)(4), (12), (14), (18), (19), (21), (26), (27) ..., (31), (32) or (33) hereof",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "r8",
+     "sourceSectionRef": "1.01(18)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "SECURE_REFINANCING_INDEBTEDNESS_WITH_LIEN",
+     "entityScope": [
+      "Restricted Party"
+     ],
+     "entityScopeExcluded": [],
+     "capacityExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Anti-cash-out cap for Liens securing a modification/Refinancing of Indebtedness originally secured under clauses (6),(7),(8),(9),(18) or (20): new Lien limited to same/similar collateral, and refinanced Indebtedness may not exceed the outstanding/committed principal amount of the original Indebtedness at the time the original Lien became a Permitted Lien, plus fees/premiums/accrued interest related to the refinancing",
+      "reason": "the 'original Indebtedness amount' baseline is itself defined by reference to Section 6.01 and other Permitted Liens clauses whose full text/amounts are out of scope for this submission; no standalone numeric cap is stated",
+      "sourceEvidence": "§1.01(18)"
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01",
+       "description": "baseline original-Indebtedness amount depends on Section 6.01 clauses referenced by (6),(7),(8),(9),(20)"
+      }
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "the qualitative cap mechanic (no increase beyond original principal plus refinancing fees/premiums/accrued interest) is stated, but the baseline amount itself is not independently quantifiable from supplied evidence"
+     ],
+     "citation": "§1.01(18)",
+     "excerpt": "the Indebtedness secured by such Lien at such time is not increased to any amount greater than the sum of (A) the outstanding principal amount or, if greater, committed amount of the Indebtedness described under clauses (6) ... and (B) an amount necessary to pay any fees and expenses, including premiums, and accrued and unpaid interest related to such modification or Refinancing",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "r9",
+     "sourceSectionRef": "1.01(46)(i)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "SECURE_OBLIGATIONS_WITH_LIEN",
+     "entityScope": [
+      "Restricted Party"
+     ],
+     "entityScopeExcluded": [],
+     "capacityExpression": {
+      "kind": "DEFINED_TERM_REFERENCE",
+      "termName": "Available RP Capacity Amount",
+      "citation": "§1.01(46)(i)"
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [
+      {
+       "relationshipType": "SHARES_CAPACITY_WITH",
+       "targetRef": "Section 6.08",
+       "description": "the Available RP Capacity Amount is the same ceiling that also governs Restricted Payments capacity under Section 6.08; usage under clause (46)(i) reduces the shared ceiling, per the definition of 'Available RP Capacity Amount'"
+      },
+      {
+       "relationshipType": "SHARES_CAPACITY_WITH",
+       "targetRef": "definition of \"Permitted Investments\"",
+       "description": "the Available RP Capacity Amount also governs certain Permitted Investments capacity, per the definition of 'Available RP Capacity Amount'"
+      }
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "the reference itself and its shared-capacity relationship with Section 6.08/Permitted Investments is fully resolved via the 'Available RP Capacity Amount' definition, but the actual dollar quantum requires Section 6.08's own capacity mechanics, which are out of scope for this submission"
+     ],
+     "citation": "§1.01(46)(i)",
+     "excerpt": "Liens in an aggregate amount not to exceed the Available RP Capacity Amount",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "r10",
+     "sourceSectionRef": "1.01(46)(ii)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "SECURE_OBLIGATIONS_WITH_LIEN",
+     "entityScope": [
+      "Restricted Party"
+     ],
+     "entityScopeExcluded": [],
+     "capacityExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Liens up to the 'Available Amount' that is 'Not Otherwise Applied'",
+      "reason": "no defined term matching 'Available Amount' was found anywhere in this instrument's documents despite an attempted lookup; its meaning and quantum cannot be resolved from available evidence",
+      "sourceEvidence": "§1.01(46)(ii)"
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Available Amount",
+       "description": "term used but not found defined anywhere in the instrument package"
+      }
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "getDefinition tool was attempted for 'Available Amount' and returned no matching defined term in the instrument"
+     ],
+     "citation": "§1.01(46)(ii)",
+     "excerpt": "Liens in an aggregate amount not to exceed the Available Amount that is Not Otherwise Applied",
+     "inventoryItemIds": []
+    }
+   ],
+   "sharedCapacities": [],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01(2),(3),(51): 'not yet overdue for a period of more than thirty (30) days' and similar day-count grace periods appearing throughout Permitted Liens and elsewhere in the instrument",
+     "semanticRequirement": "represent a bright-line day-count grace period/threshold (e.g. '30 days overdue') as a first-class typed literal rather than an ordinary NUMBER, and represent purely qualitative gating facts (e.g. 'contested in good faith by appropriate proceedings', 'could not reasonably be expected to have a Material Adverse Effect') as a first-class boolean-input node distinct from a generic TRANSACTION_INPUT_REFERENCE",
+     "whyExistingPrimitivesFail": "the current schema has no DURATION/DAY_COUNT literal kind, forcing day counts to be modeled as a bare NUMBER (losing the semantic 'days' unit), and no dedicated QUALITATIVE_BOOLEAN_INPUT kind, forcing subjective/qualitative legal standards (good-faith contest, Material Adverse Effect materiality) to be shoehorned into TRANSACTION_INPUT_REFERENCE, which is really meant for objective deal inputs like a transaction amount",
+     "candidateGeneralizedPrimitive": "DURATION literal (value, unit e.g. DAYS) for grace periods, and a QUALITATIVE_TEST_REFERENCE node (testDescription) for subjective/qualitative legal standards used as boolean gates"
+    }
+   ],
+   "inventoryDispositions": [],
+   "overallNotes": [
+    "Permitted Liens (§1.01) is a single defined term structured as a 51-clause enumerated list. The large majority of its clauses (e.g. (1),(4),(5),(7)-(17),(19),(22)-(45),(47)-(50)) are purely categorical/qualitative Lien carve-outs with no dollar, percentage, or ratio mechanic, and are intentionally not each modeled as a separate WireRule - doing so would not add computable economics and risks noise rather than fidelity.",
+    "The materially quantitative or ratio-gated sub-components were each modeled as an independent WireRule: the 30-day/good-faith-contest qualification shared by clauses (2)&(3) (r1) and the parallel test in clause (51) (r_51, an additional detected value not covered by the frozen inventory but structurally identical); the three-pronged ratio test in clause (20)(x)/(y)/(z) (r2, r3, r4); the General Lien Basket in clause (21) (r5); the classification/reclassification election in the closing paragraph (r6); and the cross-reference-heavy baskets in clauses (6), (18), and (46)(i)/(ii) (r7-r10), most of which are MISSING_CONTEXT or PARTIAL because their ultimate economics depend on Section 6.01/6.08 text that was out of scope for this submission.",
+    "All 6 frozen inventory items were consumed exactly once, each on the rule that carries its actual value/meaning (r1: 30-day test; r2: First Lien Leverage Ratio 2.00x; r3: Senior Secured Leverage Ratio/Interest Coverage Ratio alternative; r4: Total Leverage Ratio/Interest Coverage Ratio alternative; r5: $720.0mm/100% EBITDA General Lien Basket; r6: reclassification election).",
+    "The term 'Junior Lien Priority' gating clause (20)(y) has no detected definition anywhere in the instrument (confirmed via the supplied cross-reference resolution notes); this is preserved as an explicit dependsOn on r3 rather than guessed at.",
+    "'Available RP Capacity Amount' (clause (46)(i)) was successfully resolved via getDefinition and shown to be a shared ceiling with Section 6.08 (Restricted Payments) and the definition of 'Permitted Investments'; because those partner provisions are not part of this submission, the sharing relationship is preserved as explicit SHARES_CAPACITY_WITH dependsOn entries on r9 rather than a freestanding WireSharedCapacity with unresolvable members.",
+    "'Available Amount' (clause (46)(ii)) was searched for via getDefinition and does not exist under that name anywhere in the instrument package; r10 is marked MISSING_CONTEXT accordingly rather than guessed."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T15:36:10.899Z",
+   "inputTokens": 75051,
+   "outputTokens": 32562,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 294239,
+   "calculatedCostUsd": 0.475722
+  },
+  "cacheKey": "57457663960c3ca211dfc394134ce78588c9534d07c416343616d6b866ab7abd",
+  "compiledAt": "2026-09-14T15:36:10.899Z"
+ },
+ "shardInputSummary": {
+  "candidateRef": "phase-3-validation:chwy:1.01#shard:4f06625557e9aecbbb7a",
+  "operativeChars": 26695,
+  "ownedInventoryItems": 6,
+  "contextRegions": 7,
+  "bundleItems": 0,
+  "unresolvedDependencies": 37
+ },
+ "attemptsSoFar": 1
+}
