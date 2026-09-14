@@ -1,0 +1,2594 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:a45ccfe3d94f990e5348",
+  "shardHash": "5e5ca3d1c2758efb0410d916ef84535e2f133be04f81d112f5483326550e0556",
+  "ordinal": 20,
+  "ownedUnits": 13,
+  "sourceChars": 11995,
+  "contextEntries": 4,
+  "contextChars": 3828,
+  "unresolvedContext": 1,
+  "oversized": false,
+  "ownedItems": 4,
+  "ownedMaterialItems": 4,
+  "estimatedFirstTurnInputTokens": 27567,
+  "preCallEstimate": {
+   "inputTokens": 90696,
+   "outputTokens": 34000,
+   "usd": 0.5213920000000001
+  },
+  "actual": {
+   "inputTokens": 101427,
+   "outputTokens": 26728,
+   "turns": 3,
+   "latencyMs": 238988,
+   "costUsd": 0.47013400000000005,
+   "attemptCount": 3,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "DEFINITION_COMPLETENESS_SUSPECT"
+  ],
+  "toolCalls": 3,
+  "toolCallNames": [
+   "getDefinition",
+   "getDefinition",
+   "getReferencedProvision"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 17,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 2,
+   "dispositioned": 1,
+   "missingMaterial": 1,
+   "valuesRepresented": 2,
+   "valuesMissing": 2,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "REPRESENTED": 2,
+    "MISSING_FROM_COMPOSITION": 1,
+    "UNSUPPORTED": 1
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Intellectual Property",
+   "Investments (Fixed Amount basket disposition proviso)",
+   "ISDA CDS Definitions",
+   "Judgment Currency",
+   "Junior Lien Priority"
+  ],
+  "unresolvedIssues": [
+   "[definition[d7]] The IR has no duration/period literal type or business-day-calendar-adjustment primitive to represent month-based tenor elections and calendar roll conventions; this is a structural/mechanical definition, not an arithmetic formula.",
+   "[definition[d9]] This is an eligibility taxonomy, not a formula returning a dollar/ratio value; the 90%-of-assets fund-composition threshold in clause (3) is a qualifying condition on the fund itself, not tied to any modeled metric.",
+   "[definition[d10x]] The term 'Fixed Amount' is used but not defined anywhere in this document (confirmed: no detected definition), and the cross-referenced Section 1.08(f) resolves to blank/empty text (confirmed by direct retrieval) - there is no available basket/ledger definition to attach a LEDGER_USAGE_REFERENCE to.",
+   "Source is a Section 1.01 defined-terms alphabetical run (Inside Maturity Basket through Junior Lien Priority); every distinct defined term in the supplied text was extracted as its own WireDefinition, consistent with the multiple-definitions requirement - none were dropped even where non-computational.",
+   "No independently operative WireRule was emitted: nothing in this text grants/restricts a transaction directly (Inside Maturity Basket defines a basket AMOUNT but the permission to incur under it, if any, lives in a separate covenant section such as Section 6.01 not included in this submission).",
+   "Section 1.08(f) (cross-referenced by the 'Investments' Fixed Amount-basket disposition proviso) was directly retrieved via getReferencedProvision and confirmed to resolve to blank/empty text in the available source - this is a genuine source gap, not an unattempted lookup.",
+   "'Fixed Amount' is used in the 'Investments' definition but has no detected definition anywhere in the document package (already flagged by Phase 2); the corresponding proviso is dispositioned as its own MISSING_CONTEXT sub-definition (d10x) rather than silently dropped or force-fit.",
+   "'Excluded Revolving Loans' and 'Test Period', both needed to give the Interest Coverage Ratio's exclusion and period scoping their real meaning, were resolved via getDefinition and are reflected in the Interest Coverage Ratio calculationExpression and dependsOnTerms.",
+   "Several definitions (Intellectual Property, Interest Election Request, ISDA CDS Definitions, Judgment Currency) are pure pointer definitions to other sections/agreements; because the definition's own operative content IS the pointer, these are marked COMPLETE without needing the target section's substantive text, consistent with only fetching evidence needed to resolve THIS provision's own economics."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "absent",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "absent - left absent for the schema's own default/optional handling"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:a45ccfe3d94f990e5348",
+  "shardHash": "5e5ca3d1c2758efb0410d916ef84535e2f133be04f81d112f5483326550e0556",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:ea773fc8de8dac3309394b23",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Inside Maturity Basket",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MAX",
+      "type": "MONEY",
+      "exprId": "ir-expr:9a936523bb9cc32b025445be",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "type": "MONEY",
+        "amount": 1440000000,
+        "currency": "USD",
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:76b485ec0ad6383952be13a9",
+        "inventoryItemIds": [
+         "inv-item:6396192d114e08932ad98306"
+        ]
+       },
+       {
+        "kind": "MULTIPLY",
+        "type": "MONEY",
+        "exprId": "ir-expr:592e65e29309cd8aaab66bd0",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "type": "PERCENT",
+          "value": 2,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:9c2120878edd9340b99ab2c4",
+          "inventoryItemIds": [
+           "inv-item:6396192d114e08932ad98306"
+          ]
+         },
+         {
+          "kind": "DURING_PERIOD",
+          "type": "MONEY",
+          "exprId": "ir-expr:08eead3b49a78e80b469ff71",
+          "value": {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "Consolidated EBITDA",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+          },
+          "periodDescription": "most recently ended Test Period",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          }
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "inventoryItemIds": [
+       "inv-item:6396192d114e08932ad98306"
+      ]
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Test Period"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means any Incremental Term Loans or other Indebtedness in an original aggregate principal amount not to exceed the greater of $1,440.0 million and 200% of Consolidated EBITDA for the most recently ended Test Period."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:6396192d114e08932ad98306"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:848bba597b64002c47b74375",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Intellectual Property",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Collateral Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pure pointer definition to the Collateral Agreement; fully represented without needing that external document's text."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in the Collateral Agreement."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f9ff8663bfea923477d65b7a",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Intercreditor Agreements",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "OR",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:ed991af41572afd5704df18d",
+      "operands": [
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "BOOLEAN",
+        "termName": "ABL Intercreditor Agreement",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:8c7c903b0d044ad0f1b0bb0b"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "BOOLEAN",
+        "termName": "First Lien Intercreditor Agreement",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:c4adf965d27cc4f575875805"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "BOOLEAN",
+        "termName": "Junior Lien Intercreditor Agreement",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:1417fd7c61a430ae66d48924"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "BOOLEAN",
+        "termName": "Customary Intercreditor Agreement",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:0994b79bdb69f4c4df20f075"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "ABL Intercreditor Agreement",
+      "First Lien Intercreditor Agreement",
+      "Junior Lien Intercreditor Agreement",
+      "Customary Intercreditor Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means any ABL Intercreditor Agreement, any First Lien Intercreditor Agreement, any Junior Lien Intercreditor Agreement or any other Customary Intercreditor Agreement."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:8bd17062318b33c2d7f8cc55",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Interest Coverage Ratio",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DIVIDE",
+      "type": "NUMBER",
+      "exprId": "ir-expr:4c7e159e3e67251d3a73a89d",
+      "numerator": {
+       "kind": "DURING_PERIOD",
+       "type": "MONEY",
+       "exprId": "ir-expr:2c5ddc8dcad1a4a1da6d5e57",
+       "value": {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "Consolidated EBITDA",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+       },
+       "periodDescription": "such period",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "denominator": {
+       "kind": "IF",
+       "type": "MONEY",
+       "exprId": "ir-expr:f78388709dce171afa782e26",
+       "condition": {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:7e46fae27eec8926ea2700b9",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "NUMBER",
+         "inputName": "full fiscal quarters elapsed since the Effective Date as of date of determination",
+         "exprId": "ir-expr:4d207a634324a33492da9afb"
+        },
+        "operator": "LT",
+        "right": {
+         "kind": "NUMBER",
+         "type": "NUMBER",
+         "value": 4,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:eb95ac61d20e9d5be7037b7b",
+         "inventoryItemIds": [
+          "inv-item:f93a595866ffe65a56ad9a1c"
+         ]
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "then": {
+        "kind": "MULTIPLY",
+        "type": "MONEY",
+        "exprId": "ir-expr:ce37b4d2c4a1ce79f2c891fa",
+        "operands": [
+         {
+          "kind": "SUBTRACT",
+          "type": "MONEY",
+          "exprId": "ir-expr:b83750a0f27bee4dd8e33b5f",
+          "left": {
+           "kind": "DURING_PERIOD",
+           "type": "MONEY",
+           "exprId": "ir-expr:89b6c8a274b4f4be6ac78295",
+           "value": {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Consolidated Interest Expense",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:16a5c3ca869e763dd4b55664"
+           },
+           "periodDescription": "from the Effective Date to and including the date of determination",
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           }
+          },
+          "right": {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "Consolidated Interest Expense in respect of Excluded Revolving Loans",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:f92a99ff41a8a93995d478ec"
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          }
+         },
+         {
+          "kind": "DIVIDE",
+          "type": "NUMBER",
+          "exprId": "ir-expr:50cc9b9b352f8fa88fb22960",
+          "numerator": {
+           "kind": "NUMBER",
+           "type": "NUMBER",
+           "value": 365,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:4ea86b27e74ec3d85719b58d",
+           "inventoryItemIds": [
+            "inv-item:f93a595866ffe65a56ad9a1c"
+           ]
+          },
+          "denominator": {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "type": "MONEY",
+           "inputName": "number of days actually elapsed from the Effective Date to the date of determination",
+           "exprId": "ir-expr:3237223b541c17a189df36a8"
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          }
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "inventoryItemIds": [
+         "inv-item:f93a595866ffe65a56ad9a1c"
+        ]
+       },
+       "else": {
+        "kind": "SUBTRACT",
+        "type": "MONEY",
+        "exprId": "ir-expr:4c82da9e765b009667482cfc",
+        "left": {
+         "kind": "DURING_PERIOD",
+         "type": "MONEY",
+         "exprId": "ir-expr:745d18ec572209089a1e0f1b",
+         "value": {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "Consolidated Interest Expense",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:16a5c3ca869e763dd4b55664"
+         },
+         "periodDescription": "most recently ended Test Period",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        },
+        "right": {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "Consolidated Interest Expense in respect of Excluded Revolving Loans",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:f92a99ff41a8a93995d478ec"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:f93a595866ffe65a56ad9a1c"
+       ]
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Consolidated Interest Expense",
+      "Excluded Revolving Loans",
+      "Test Period"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means for any period, the ratio of (A) Consolidated EBITDA for such period to (B) Consolidated Interest Expense (other than an amount equal to Consolidated Interest Expense in respect of any Excluded Revolving Loans) for the most recently ended Test Period; provided that for the purpose of calculating the Interest Coverage Ratio for any period ending prior to the expiration of four (4) full fiscal quarters since the Effective Date, Consolidated Interest Expense ... shall be deemed to be Consolidated Interest Expense for the period from the Effective Date to and including the date of determination multiplied by a fraction equal to (x) 365 divided by (y) the number of days actually elapsed from the Effective Date to such date of determination."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:f93a595866ffe65a56ad9a1c"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:ffb5e47d55d1678c509ee13b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Interest Election Request",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pointer definition to the mechanics of Section 2.05; fully represented as a pointer without needing Section 2.05's own text."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means a request by the Initial Borrower to convert or continue a Borrowing in accordance with Section 2.05."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:67c7f019e14e228cb8e215b6",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Interest Payment Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition is a categorical schedule of dates keyed to loan type (ABR/Canadian Prime, Term Benchmark/SOFR, RFR), not a single computable value; fully captured descriptively."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, subject to Section 2.10(c), (a) with respect to any ABR Loan or Canadian Prime Rate Loan, the last day of each calendar month of March, June, September and December, (b) with respect to any Alternative Currency Term Benchmark Loan or Term SOFR Loan, the last day of the Interest Period ..., and (c) as to any RFR Loan, the last day of each Interest Period applicable to such Loan and the Maturity Date of the Facility under which such Loan was made; provided that if any Interest Period for an RFR Loan exceeds three (3) months, the respective dates that fall every three (3) months after the beginning of such Interest Period shall also be the Interest Payment Dates."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:32dc279ba111f702f2bea59e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Interest Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"ending on the numerically corresponding day in the calendar month that is one (1), three (3) or six (6) months thereafter (or, if agreed to by each Lender participating therein, twelve months or such other period...)\"",
+      "semanticDescription": "Interest Period tenor mechanics: default tenors of one, three or six months (or up to twelve months, or other agreed periods, if consented by all participating Lenders), for Term SOFR/Alternative Currency Term Benchmark Borrowings, plus business-day-adjustment, month-end, interpolation, Effective-Date-election and removed-tenor provisos (clauses (a)-(e))",
+      "reason": "The IR has no duration/period literal type or business-day-calendar-adjustment primitive to represent month-based tenor elections and calendar roll conventions; this is a structural/mechanical definition, not an arithmetic formula.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:334cf5e75c45493d730089ee"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Core tenor-length mechanic and business-day/month-end/interpolation provisos are non-arithmetic and represented via an UNSUPPORTED node rather than forced into an arithmetic primitive.",
+      "The IR has no duration/period literal type or business-day-calendar-adjustment primitive to represent month-based tenor elections and calendar roll conventions; this is a structural/mechanical definition, not an arithmetic formula."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, (i) with respect to any Term SOFR Borrowing or Alternative Currency Term Benchmark Borrowing not denominated in Canadian Dollars, the period commencing on the date of such Borrowing and ending on the numerically corresponding day in the calendar month that is one (1), three (3) or six (6) months thereafter (or, if agreed to by each Lender participating therein, twelve months or such other period less than twelve (12) months or such other period less than one (1) month...) ... [provisos (a)-(e) re business day adjustment, month-end convention, interpolation, Effective Date election, and removed tenors]"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:949cac8849742471ce079d6e"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:0771e54e0aeaeeea7ecca8fe",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Investment Grade Rating",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical rating-agency threshold definition, not an arithmetic formula; fully captured descriptively."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means a rating equal to or higher than Baa3 (or the equivalent) by Moody's, BBB- (or the equivalent) by S&P or an equivalent rating by any other rating agency."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:0a8b3921cd4b5fb042c9871c",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Investment Grade Securities",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"investments in any fund that invests at least 90% of its assets in investments of the type described in clauses (1) and (2)...\"",
+      "semanticDescription": "Four-part categorical list of qualifying securities (US government securities, Investment-Grade-Rated debt securities excluding intercompany loans, funds investing at least 90% of assets in qualifying securities of the type in clauses (1)-(2), and equivalent non-US instruments)",
+      "reason": "This is an eligibility taxonomy, not a formula returning a dollar/ratio value; the 90%-of-assets fund-composition threshold in clause (3) is a qualifying condition on the fund itself, not tied to any modeled metric.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:13fcf2f377568f42efe44b16"
+     },
+     "dependsOnTerms": [
+      "Cash Equivalents",
+      "Investment Grade Rating"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Categorical security-eligibility list including a 90% fund-composition threshold not expressible as an arithmetic/ratio formula; represented via UNSUPPORTED to avoid forcing an invalid comparison.",
+      "This is an eligibility taxonomy, not a formula returning a dollar/ratio value; the 90%-of-assets fund-composition threshold in clause (3) is a qualifying condition on the fund itself, not tied to any modeled metric."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means: (1) securities issued or directly and fully guaranteed or insured by the United States government...; (2) debt securities or debt instruments with an Investment Grade Rating, but excluding any debt securities or instruments constituting loans or advances among the issuer and its Subsidiaries; (3) investments in any fund that invests at least 90% of its assets in investments of the type described in clauses (1) and (2)...; and (4) corresponding instruments in countries other than the United States customarily utilized for high-quality investments."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:a9c91c63a8c60e20761532df",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Investments",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUBTRACT",
+      "type": "MONEY",
+      "exprId": "ir-expr:0209de87705902a00e57c185",
+      "left": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "MONEY",
+       "inputName": "original cost of the Investment",
+       "exprId": "ir-expr:6f0acf82564c05480e7a23cd"
+      },
+      "right": {
+       "kind": "ADD",
+       "type": "MONEY",
+       "exprId": "ir-expr:153384da2cd2d1193043dd89",
+       "operands": [
+        {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "MONEY",
+         "inputName": "dividends, distributions, interest payments, returns of capital or Investments received",
+         "exprId": "ir-expr:c809c40d3df3cc588da050e8"
+        },
+        {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "MONEY",
+         "inputName": "write-downs, write-offs and forgiveness adjustments",
+         "exprId": "ir-expr:acb6e503557078f19b8f132a"
+        },
+        {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "MONEY",
+         "inputName": "repayment or other amount received in cash or Cash Equivalents in respect of such Investment",
+         "exprId": "ir-expr:4f52abf3052eb52886238265"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Unrestricted Subsidiary",
+      "Restricted Subsidiary",
+      "Fair Market Value",
+      "Cash Equivalents",
+      "Fixed Amount"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Core valuation mechanic (original cost less specified reductions) is represented, but clause (x) (Fixed Amount basket usage reduced by disposition proceeds) is separately dispositioned as UNSUPPORTED because the referenced 'Fixed Amount' concept is not defined anywhere in this document and the cross-referenced Section 1.08(f) text is blank in the available source (confirmed by direct retrieval).",
+      "The Unrestricted Subsidiary designation valuation rule (clause (1) of the second paragraph) and the allocation-among-acquired-Persons rule (clause (w)) are categorical/discretionary (Initial Borrower good-faith determination) and not independently computable."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "The amount of any Investment outstanding at any time shall be the original cost of such Investment, reduced by any dividend, distribution, interest payment, return of capital or Investment ..., any adjustment for write-downs or write-offs (including as a result of forgiveness), ... repayment or other amount received in cash or Cash Equivalents by any Restricted Party in respect of such Investment."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:a47bd60711ae03f79eee9362",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Investments (Fixed Amount basket disposition proviso)",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"any Restricted Party makes an Investment pursuant to a Fixed Amount basket and subsequently disposes of such Investment, the usage of such Fixed Amount basket shall be reduced by the amount of proceeds received from such disposition\"",
+      "semanticDescription": "if a Restricted Party makes an Investment pursuant to a Fixed Amount basket and later disposes of it, usage of that Fixed Amount basket is reduced by the disposition proceeds",
+      "reason": "The term 'Fixed Amount' is used but not defined anywhere in this document (confirmed: no detected definition), and the cross-referenced Section 1.08(f) resolves to blank/empty text (confirmed by direct retrieval) - there is no available basket/ledger definition to attach a LEDGER_USAGE_REFERENCE to.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:40d8c01a6d7a8a4b7a87fdc6"
+     },
+     "dependsOnTerms": [
+      "Fixed Amount"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "'Fixed Amount' undefined in the document package; Section 1.08(f) (also referenced) is blank in the available source.",
+      "The term 'Fixed Amount' is used but not defined anywhere in this document (confirmed: no detected definition), and the cross-referenced Section 1.08(f) resolves to blank/empty text (confirmed by direct retrieval) - there is no available basket/ledger definition to attach a LEDGER_USAGE_REFERENCE to."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any Restricted Party makes an Investment pursuant to a Fixed Amount basket and subsequently disposes of such Investment, the usage of such Fixed Amount basket shall be reduced by the amount of proceeds received from such disposition"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:2a8a50bfcaab42c0f874aa77"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:0606437ff84756800356290f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Investor",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Sponsors",
+      "Effective Date"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means a holder of Equity Interests in the Initial Borrower (or any direct or indirect parent thereof) arranged and/or designated by the Sponsors on or prior to the Effective Date."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3fc5c4eba3607d5bdf385d60",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "ISDA CDS Definitions",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pointer definition to Section 9.02(h); fully represented as a pointer."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 9.02(h)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:2214dd4ee254eb701871ce58",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Joint Venture",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Party",
+      "Subsidiary",
+      "Equity Interests"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical two-prong entity classification, not an arithmetic formula; fully captured descriptively."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means (i) any Person which would constitute an \"equity method investee\" of a Restricted Party or any of their respective Subsidiaries and (ii) any Person in whom a Restricted Party or any of their respective Subsidiaries beneficially owns any Equity Interests that is not a Subsidiary."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e2e9a5537680d32b9a081382",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "JPMCB",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means JPMorgan Chase Bank, N.A."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:67b72efb1d655f6fefb5c887",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Judgment Currency",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pointer definition to Section 9.20(b); fully represented as a pointer."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 9.20(b)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:588118b03f4c60e09899d365",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Junior Lien Priority",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Lien",
+      "Collateral",
+      "Secured Obligations",
+      "ABL Obligations"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical lien-priority relationship with an express carve-out for ABL Obligations; not an arithmetic formula, fully captured descriptively."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means to be secured by a Lien that is junior in priority to the Liens on the Collateral securing the Secured Obligations; provided, that the ABL Obligations shall be deemed to not have Junior Lien Priority."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "DEFINITION_COMPLETENESS_SUSPECT"
+  ],
+  "unresolvedIssues": [
+   "[definition[d7]] The IR has no duration/period literal type or business-day-calendar-adjustment primitive to represent month-based tenor elections and calendar roll conventions; this is a structural/mechanical definition, not an arithmetic formula.",
+   "[definition[d9]] This is an eligibility taxonomy, not a formula returning a dollar/ratio value; the 90%-of-assets fund-composition threshold in clause (3) is a qualifying condition on the fund itself, not tied to any modeled metric.",
+   "[definition[d10x]] The term 'Fixed Amount' is used but not defined anywhere in this document (confirmed: no detected definition), and the cross-referenced Section 1.08(f) resolves to blank/empty text (confirmed by direct retrieval) - there is no available basket/ledger definition to attach a LEDGER_USAGE_REFERENCE to.",
+   "Source is a Section 1.01 defined-terms alphabetical run (Inside Maturity Basket through Junior Lien Priority); every distinct defined term in the supplied text was extracted as its own WireDefinition, consistent with the multiple-definitions requirement - none were dropped even where non-computational.",
+   "No independently operative WireRule was emitted: nothing in this text grants/restricts a transaction directly (Inside Maturity Basket defines a basket AMOUNT but the permission to incur under it, if any, lives in a separate covenant section such as Section 6.01 not included in this submission).",
+   "Section 1.08(f) (cross-referenced by the 'Investments' Fixed Amount-basket disposition proviso) was directly retrieved via getReferencedProvision and confirmed to resolve to blank/empty text in the available source - this is a genuine source gap, not an unattempted lookup.",
+   "'Fixed Amount' is used in the 'Investments' definition but has no detected definition anywhere in the document package (already flagged by Phase 2); the corresponding proviso is dispositioned as its own MISSING_CONTEXT sub-definition (d10x) rather than silently dropped or force-fit.",
+   "'Excluded Revolving Loans' and 'Test Period', both needed to give the Interest Coverage Ratio's exclusion and period scoping their real meaning, were resolved via getDefinition and are reflected in the Interest Coverage Ratio calculationExpression and dependsOnTerms.",
+   "Several definitions (Intellectual Property, Interest Election Request, ISDA CDS Definitions, Judgment Currency) are pure pointer definitions to other sections/agreements; because the definition's own operative content IS the pointer, these are marked COMPLETE without needing the target section's substantive text, consistent with only fetching evidence needed to resolve THIS provision's own economics."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 101427,
+   "outputTokens": 26728,
+   "costUsd": 0.47013400000000005
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "DEFINITION_COMPLETENESS_SUSPECT"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:ea773fc8de8dac3309394b23",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Inside Maturity Basket",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "MAX",
+     "type": "MONEY",
+     "exprId": "ir-expr:9a936523bb9cc32b025445be",
+     "operands": [
+      {
+       "kind": "MONEY",
+       "type": "MONEY",
+       "amount": 1440000000,
+       "currency": "USD",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:76b485ec0ad6383952be13a9",
+       "inventoryItemIds": [
+        "inv-item:6396192d114e08932ad98306"
+       ]
+      },
+      {
+       "kind": "MULTIPLY",
+       "type": "MONEY",
+       "exprId": "ir-expr:592e65e29309cd8aaab66bd0",
+       "operands": [
+        {
+         "kind": "PERCENT",
+         "type": "PERCENT",
+         "value": 2,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:9c2120878edd9340b99ab2c4",
+         "inventoryItemIds": [
+          "inv-item:6396192d114e08932ad98306"
+         ]
+        },
+        {
+         "kind": "DURING_PERIOD",
+         "type": "MONEY",
+         "exprId": "ir-expr:08eead3b49a78e80b469ff71",
+         "value": {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "Consolidated EBITDA",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+         },
+         "periodDescription": "most recently ended Test Period",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "inventoryItemIds": [
+      "inv-item:6396192d114e08932ad98306"
+     ]
+    },
+    "dependsOnTerms": [
+     "Consolidated EBITDA",
+     "Test Period"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means any Incremental Term Loans or other Indebtedness in an original aggregate principal amount not to exceed the greater of $1,440.0 million and 200% of Consolidated EBITDA for the most recently ended Test Period."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:6396192d114e08932ad98306"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:848bba597b64002c47b74375",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Intellectual Property",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Collateral Agreement"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Pure pointer definition to the Collateral Agreement; fully represented without needing that external document's text."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the Collateral Agreement."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f9ff8663bfea923477d65b7a",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Intercreditor Agreements",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "OR",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:ed991af41572afd5704df18d",
+     "operands": [
+      {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "BOOLEAN",
+       "termName": "ABL Intercreditor Agreement",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:8c7c903b0d044ad0f1b0bb0b"
+      },
+      {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "BOOLEAN",
+       "termName": "First Lien Intercreditor Agreement",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:c4adf965d27cc4f575875805"
+      },
+      {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "BOOLEAN",
+       "termName": "Junior Lien Intercreditor Agreement",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:1417fd7c61a430ae66d48924"
+      },
+      {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "BOOLEAN",
+       "termName": "Customary Intercreditor Agreement",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:0994b79bdb69f4c4df20f075"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "ABL Intercreditor Agreement",
+     "First Lien Intercreditor Agreement",
+     "Junior Lien Intercreditor Agreement",
+     "Customary Intercreditor Agreement"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means any ABL Intercreditor Agreement, any First Lien Intercreditor Agreement, any Junior Lien Intercreditor Agreement or any other Customary Intercreditor Agreement."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:8bd17062318b33c2d7f8cc55",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Interest Coverage Ratio",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "DIVIDE",
+     "type": "NUMBER",
+     "exprId": "ir-expr:4c7e159e3e67251d3a73a89d",
+     "numerator": {
+      "kind": "DURING_PERIOD",
+      "type": "MONEY",
+      "exprId": "ir-expr:2c5ddc8dcad1a4a1da6d5e57",
+      "value": {
+       "kind": "METRIC_REFERENCE",
+       "type": "MONEY",
+       "metricName": "Consolidated EBITDA",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+      },
+      "periodDescription": "such period",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "denominator": {
+      "kind": "IF",
+      "type": "MONEY",
+      "exprId": "ir-expr:f78388709dce171afa782e26",
+      "condition": {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:7e46fae27eec8926ea2700b9",
+       "left": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "NUMBER",
+        "inputName": "full fiscal quarters elapsed since the Effective Date as of date of determination",
+        "exprId": "ir-expr:4d207a634324a33492da9afb"
+       },
+       "operator": "LT",
+       "right": {
+        "kind": "NUMBER",
+        "type": "NUMBER",
+        "value": 4,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:eb95ac61d20e9d5be7037b7b",
+        "inventoryItemIds": [
+         "inv-item:f93a595866ffe65a56ad9a1c"
+        ]
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "then": {
+       "kind": "MULTIPLY",
+       "type": "MONEY",
+       "exprId": "ir-expr:ce37b4d2c4a1ce79f2c891fa",
+       "operands": [
+        {
+         "kind": "SUBTRACT",
+         "type": "MONEY",
+         "exprId": "ir-expr:b83750a0f27bee4dd8e33b5f",
+         "left": {
+          "kind": "DURING_PERIOD",
+          "type": "MONEY",
+          "exprId": "ir-expr:89b6c8a274b4f4be6ac78295",
+          "value": {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "Consolidated Interest Expense",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:16a5c3ca869e763dd4b55664"
+          },
+          "periodDescription": "from the Effective Date to and including the date of determination",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          }
+         },
+         "right": {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "Consolidated Interest Expense in respect of Excluded Revolving Loans",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:f92a99ff41a8a93995d478ec"
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        },
+        {
+         "kind": "DIVIDE",
+         "type": "NUMBER",
+         "exprId": "ir-expr:50cc9b9b352f8fa88fb22960",
+         "numerator": {
+          "kind": "NUMBER",
+          "type": "NUMBER",
+          "value": 365,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:4ea86b27e74ec3d85719b58d",
+          "inventoryItemIds": [
+           "inv-item:f93a595866ffe65a56ad9a1c"
+          ]
+         },
+         "denominator": {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "MONEY",
+          "inputName": "number of days actually elapsed from the Effective Date to the date of determination",
+          "exprId": "ir-expr:3237223b541c17a189df36a8"
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:f93a595866ffe65a56ad9a1c"
+       ]
+      },
+      "else": {
+       "kind": "SUBTRACT",
+       "type": "MONEY",
+       "exprId": "ir-expr:4c82da9e765b009667482cfc",
+       "left": {
+        "kind": "DURING_PERIOD",
+        "type": "MONEY",
+        "exprId": "ir-expr:745d18ec572209089a1e0f1b",
+        "value": {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "Consolidated Interest Expense",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:16a5c3ca869e763dd4b55664"
+        },
+        "periodDescription": "most recently ended Test Period",
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "right": {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "Consolidated Interest Expense in respect of Excluded Revolving Loans",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:f92a99ff41a8a93995d478ec"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "inventoryItemIds": [
+       "inv-item:f93a595866ffe65a56ad9a1c"
+      ]
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Consolidated EBITDA",
+     "Consolidated Interest Expense",
+     "Excluded Revolving Loans",
+     "Test Period"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means for any period, the ratio of (A) Consolidated EBITDA for such period to (B) Consolidated Interest Expense (other than an amount equal to Consolidated Interest Expense in respect of any Excluded Revolving Loans) for the most recently ended Test Period; provided that for the purpose of calculating the Interest Coverage Ratio for any period ending prior to the expiration of four (4) full fiscal quarters since the Effective Date, Consolidated Interest Expense ... shall be deemed to be Consolidated Interest Expense for the period from the Effective Date to and including the date of determination multiplied by a fraction equal to (x) 365 divided by (y) the number of days actually elapsed from the Effective Date to such date of determination."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:f93a595866ffe65a56ad9a1c"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:ffb5e47d55d1678c509ee13b",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Interest Election Request",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Pointer definition to the mechanics of Section 2.05; fully represented as a pointer without needing Section 2.05's own text."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means a request by the Initial Borrower to convert or continue a Borrowing in accordance with Section 2.05."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:67c7f019e14e228cb8e215b6",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Interest Payment Date",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition is a categorical schedule of dates keyed to loan type (ABR/Canadian Prime, Term Benchmark/SOFR, RFR), not a single computable value; fully captured descriptively."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, subject to Section 2.10(c), (a) with respect to any ABR Loan or Canadian Prime Rate Loan, the last day of each calendar month of March, June, September and December, (b) with respect to any Alternative Currency Term Benchmark Loan or Term SOFR Loan, the last day of the Interest Period ..., and (c) as to any RFR Loan, the last day of each Interest Period applicable to such Loan and the Maturity Date of the Facility under which such Loan was made; provided that if any Interest Period for an RFR Loan exceeds three (3) months, the respective dates that fall every three (3) months after the beginning of such Interest Period shall also be the Interest Payment Dates."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:32dc279ba111f702f2bea59e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Interest Period",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"ending on the numerically corresponding day in the calendar month that is one (1), three (3) or six (6) months thereafter (or, if agreed to by each Lender participating therein, twelve months or such other period...)\"",
+     "semanticDescription": "Interest Period tenor mechanics: default tenors of one, three or six months (or up to twelve months, or other agreed periods, if consented by all participating Lenders), for Term SOFR/Alternative Currency Term Benchmark Borrowings, plus business-day-adjustment, month-end, interpolation, Effective-Date-election and removed-tenor provisos (clauses (a)-(e))",
+     "reason": "The IR has no duration/period literal type or business-day-calendar-adjustment primitive to represent month-based tenor elections and calendar roll conventions; this is a structural/mechanical definition, not an arithmetic formula.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:334cf5e75c45493d730089ee"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Core tenor-length mechanic and business-day/month-end/interpolation provisos are non-arithmetic and represented via an UNSUPPORTED node rather than forced into an arithmetic primitive.",
+     "The IR has no duration/period literal type or business-day-calendar-adjustment primitive to represent month-based tenor elections and calendar roll conventions; this is a structural/mechanical definition, not an arithmetic formula."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, (i) with respect to any Term SOFR Borrowing or Alternative Currency Term Benchmark Borrowing not denominated in Canadian Dollars, the period commencing on the date of such Borrowing and ending on the numerically corresponding day in the calendar month that is one (1), three (3) or six (6) months thereafter (or, if agreed to by each Lender participating therein, twelve months or such other period less than twelve (12) months or such other period less than one (1) month...) ... [provisos (a)-(e) re business day adjustment, month-end convention, interpolation, Effective Date election, and removed tenors]"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:949cac8849742471ce079d6e"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:0771e54e0aeaeeea7ecca8fe",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Investment Grade Rating",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Categorical rating-agency threshold definition, not an arithmetic formula; fully captured descriptively."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means a rating equal to or higher than Baa3 (or the equivalent) by Moody's, BBB- (or the equivalent) by S&P or an equivalent rating by any other rating agency."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:0a8b3921cd4b5fb042c9871c",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Investment Grade Securities",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"investments in any fund that invests at least 90% of its assets in investments of the type described in clauses (1) and (2)...\"",
+     "semanticDescription": "Four-part categorical list of qualifying securities (US government securities, Investment-Grade-Rated debt securities excluding intercompany loans, funds investing at least 90% of assets in qualifying securities of the type in clauses (1)-(2), and equivalent non-US instruments)",
+     "reason": "This is an eligibility taxonomy, not a formula returning a dollar/ratio value; the 90%-of-assets fund-composition threshold in clause (3) is a qualifying condition on the fund itself, not tied to any modeled metric.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:13fcf2f377568f42efe44b16"
+    },
+    "dependsOnTerms": [
+     "Cash Equivalents",
+     "Investment Grade Rating"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Categorical security-eligibility list including a 90% fund-composition threshold not expressible as an arithmetic/ratio formula; represented via UNSUPPORTED to avoid forcing an invalid comparison.",
+     "This is an eligibility taxonomy, not a formula returning a dollar/ratio value; the 90%-of-assets fund-composition threshold in clause (3) is a qualifying condition on the fund itself, not tied to any modeled metric."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means: (1) securities issued or directly and fully guaranteed or insured by the United States government...; (2) debt securities or debt instruments with an Investment Grade Rating, but excluding any debt securities or instruments constituting loans or advances among the issuer and its Subsidiaries; (3) investments in any fund that invests at least 90% of its assets in investments of the type described in clauses (1) and (2)...; and (4) corresponding instruments in countries other than the United States customarily utilized for high-quality investments."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:a9c91c63a8c60e20761532df",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Investments",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "SUBTRACT",
+     "type": "MONEY",
+     "exprId": "ir-expr:0209de87705902a00e57c185",
+     "left": {
+      "kind": "TRANSACTION_INPUT_REFERENCE",
+      "type": "MONEY",
+      "inputName": "original cost of the Investment",
+      "exprId": "ir-expr:6f0acf82564c05480e7a23cd"
+     },
+     "right": {
+      "kind": "ADD",
+      "type": "MONEY",
+      "exprId": "ir-expr:153384da2cd2d1193043dd89",
+      "operands": [
+       {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "dividends, distributions, interest payments, returns of capital or Investments received",
+        "exprId": "ir-expr:c809c40d3df3cc588da050e8"
+       },
+       {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "write-downs, write-offs and forgiveness adjustments",
+        "exprId": "ir-expr:acb6e503557078f19b8f132a"
+       },
+       {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "repayment or other amount received in cash or Cash Equivalents in respect of such Investment",
+        "exprId": "ir-expr:4f52abf3052eb52886238265"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Unrestricted Subsidiary",
+     "Restricted Subsidiary",
+     "Fair Market Value",
+     "Cash Equivalents",
+     "Fixed Amount"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Core valuation mechanic (original cost less specified reductions) is represented, but clause (x) (Fixed Amount basket usage reduced by disposition proceeds) is separately dispositioned as UNSUPPORTED because the referenced 'Fixed Amount' concept is not defined anywhere in this document and the cross-referenced Section 1.08(f) text is blank in the available source (confirmed by direct retrieval).",
+     "The Unrestricted Subsidiary designation valuation rule (clause (1) of the second paragraph) and the allocation-among-acquired-Persons rule (clause (w)) are categorical/discretionary (Initial Borrower good-faith determination) and not independently computable."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "The amount of any Investment outstanding at any time shall be the original cost of such Investment, reduced by any dividend, distribution, interest payment, return of capital or Investment ..., any adjustment for write-downs or write-offs (including as a result of forgiveness), ... repayment or other amount received in cash or Cash Equivalents by any Restricted Party in respect of such Investment."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:a47bd60711ae03f79eee9362",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Investments (Fixed Amount basket disposition proviso)",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"any Restricted Party makes an Investment pursuant to a Fixed Amount basket and subsequently disposes of such Investment, the usage of such Fixed Amount basket shall be reduced by the amount of proceeds received from such disposition\"",
+     "semanticDescription": "if a Restricted Party makes an Investment pursuant to a Fixed Amount basket and later disposes of it, usage of that Fixed Amount basket is reduced by the disposition proceeds",
+     "reason": "The term 'Fixed Amount' is used but not defined anywhere in this document (confirmed: no detected definition), and the cross-referenced Section 1.08(f) resolves to blank/empty text (confirmed by direct retrieval) - there is no available basket/ledger definition to attach a LEDGER_USAGE_REFERENCE to.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:40d8c01a6d7a8a4b7a87fdc6"
+    },
+    "dependsOnTerms": [
+     "Fixed Amount"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "'Fixed Amount' undefined in the document package; Section 1.08(f) (also referenced) is blank in the available source.",
+     "The term 'Fixed Amount' is used but not defined anywhere in this document (confirmed: no detected definition), and the cross-referenced Section 1.08(f) resolves to blank/empty text (confirmed by direct retrieval) - there is no available basket/ledger definition to attach a LEDGER_USAGE_REFERENCE to."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any Restricted Party makes an Investment pursuant to a Fixed Amount basket and subsequently disposes of such Investment, the usage of such Fixed Amount basket shall be reduced by the amount of proceeds received from such disposition"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:2a8a50bfcaab42c0f874aa77"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:0606437ff84756800356290f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Investor",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Sponsors",
+     "Effective Date"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means a holder of Equity Interests in the Initial Borrower (or any direct or indirect parent thereof) arranged and/or designated by the Sponsors on or prior to the Effective Date."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3fc5c4eba3607d5bdf385d60",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "ISDA CDS Definitions",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Pointer definition to Section 9.02(h); fully represented as a pointer."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.02(h)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:2214dd4ee254eb701871ce58",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Joint Venture",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Restricted Party",
+     "Subsidiary",
+     "Equity Interests"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Categorical two-prong entity classification, not an arithmetic formula; fully captured descriptively."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means (i) any Person which would constitute an \"equity method investee\" of a Restricted Party or any of their respective Subsidiaries and (ii) any Person in whom a Restricted Party or any of their respective Subsidiaries beneficially owns any Equity Interests that is not a Subsidiary."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e2e9a5537680d32b9a081382",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "JPMCB",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means JPMorgan Chase Bank, N.A."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:67b72efb1d655f6fefb5c887",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Judgment Currency",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Pointer definition to Section 9.20(b); fully represented as a pointer."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.20(b)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:588118b03f4c60e09899d365",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Junior Lien Priority",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Lien",
+     "Collateral",
+     "Secured Obligations",
+     "ABL Obligations"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Categorical lien-priority relationship with an express carve-out for ABL Obligations; not an arithmetic formula, fully captured descriptively."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means to be secured by a Lien that is junior in priority to the Liens on the Collateral securing the Secured Obligations; provided, that the ABL Obligations shall be deemed to not have Junior Lien Priority."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01 'Interest Period': tenor options of one (1), three (3), six (6) or (by agreement) twelve (12) months or other sub-month/sub-year periods, with business-day-roll, month-end, and interpolation conventions.",
+    "semanticRequirement": "A duration/tenor literal (e.g. '3 months', '365 days') with associated calendar-adjustment conventions (business-day rolling, end-of-month convention, straight-line interpolation between two tenor points) that is distinct from a NUMBER or a fixed calendar DATE_LITERAL.",
+    "whyExistingPrimitivesFail": "NUMBER/RATIO/DATE_LITERAL cannot represent a recurring month-based tenor concept or the business-day/month-end roll rules without losing their operative meaning; forcing a NUMBER of days loses the calendar-relative nature of the tenor.",
+    "candidateGeneralizedPrimitive": "DURATION literal (value + unit: DAYS/MONTHS/YEARS) plus a CALENDAR_ADJUSTMENT wrapper node (convention: FOLLOWING/MODIFIED_FOLLOWING/PRECEDING, endOfMonthRule: boolean)."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d7]] The IR has no duration/period literal type or business-day-calendar-adjustment primitive to represent month-based tenor elections and calendar roll conventions; this is a structural/mechanical definition, not an arithmetic formula.",
+   "[definition[d9]] This is an eligibility taxonomy, not a formula returning a dollar/ratio value; the 90%-of-assets fund-composition threshold in clause (3) is a qualifying condition on the fund itself, not tied to any modeled metric.",
+   "[definition[d10x]] The term 'Fixed Amount' is used but not defined anywhere in this document (confirmed: no detected definition), and the cross-referenced Section 1.08(f) resolves to blank/empty text (confirmed by direct retrieval) - there is no available basket/ledger definition to attach a LEDGER_USAGE_REFERENCE to.",
+   "Source is a Section 1.01 defined-terms alphabetical run (Inside Maturity Basket through Junior Lien Priority); every distinct defined term in the supplied text was extracted as its own WireDefinition, consistent with the multiple-definitions requirement - none were dropped even where non-computational.",
+   "No independently operative WireRule was emitted: nothing in this text grants/restricts a transaction directly (Inside Maturity Basket defines a basket AMOUNT but the permission to incur under it, if any, lives in a separate covenant section such as Section 6.01 not included in this submission).",
+   "Section 1.08(f) (cross-referenced by the 'Investments' Fixed Amount-basket disposition proviso) was directly retrieved via getReferencedProvision and confirmed to resolve to blank/empty text in the available source - this is a genuine source gap, not an unattempted lookup.",
+   "'Fixed Amount' is used in the 'Investments' definition but has no detected definition anywhere in the document package (already flagged by Phase 2); the corresponding proviso is dispositioned as its own MISSING_CONTEXT sub-definition (d10x) rather than silently dropped or force-fit.",
+   "'Excluded Revolving Loans' and 'Test Period', both needed to give the Interest Coverage Ratio's exclusion and period scoping their real meaning, were resolved via getDefinition and are reflected in the Interest Coverage Ratio calculationExpression and dependsOnTerms.",
+   "Several definitions (Intellectual Property, Interest Election Request, ISDA CDS Definitions, Judgment Currency) are pure pointer definitions to other sections/agreements; because the definition's own operative content IS the pointer, these are marked COMPLETE without needing the target section's substantive text, consistent with only fetching evidence needed to resolve THIS provision's own economics."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Excluded Revolving Loans"
+    },
+    "outputSummary": "definition \"Excluded Revolving Loans\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 592,
+    "timestamp": "2026-09-14T18:13:42.366Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Excluded Revolving Loans",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:1162f07cb139f04b37b77045",
+     "sourceNodeKey": "doc-a::1.01(3)",
+     "charStart": 172324,
+     "charEnd": 172916,
+     "rawText": "“ Excluded Revolving Loans ” means as of any date of determination (i) [reserved], (ii) the\naggregate principal amount of any revolving loans (including any ABL Loans) incurred after the Effective Date to fund working capital and (iii) the aggregate principal amount of any revolving loans (including any ABL Loans) that are incurred\nsubstantially concurrently or, if not substantially concurrently, such incurrences or transactions are related to a series of transactions (as determined by the Initial Borrower in good faith) with the transaction for which such determination is\nbeing made.\n",
+     "contentHash": "764a9818e8fa4261aff5609cb179b063bf0789a4a5a2160af94d265a1884d0a0",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Test Period"
+    },
+    "outputSummary": "definition \"Test Period\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 581,
+    "timestamp": "2026-09-14T18:13:42.366Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Test Period",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:b51b74180792bda67d86f589",
+     "sourceNodeKey": "doc-a::1.01(51)(c)(a)(4)(b)(c)",
+     "charStart": 349461,
+     "charEnd": 350042,
+     "rawText": "“ Test Period ”\nmeans, at any date of determination, (a) the period of four (4) consecutive fiscal quarters of the Initial Borrower or (b) twelve (12)-month period, in the case of clauses (a) and (b), then most recently ended on or prior to such\ntime (taken as one (1) accounting period), in respect of which financial statements are, at the election of the Initial Borrower, (x) internally available (and to the extent requested by the Administrative Agent, delivered to the\nAdministrative Agent) or (y) have been delivered pursuant to Section 5.01(a) or Section 5.01(b) .\n\n-76-\n\n",
+     "contentHash": "c12af602e4659e2fa5256b14f3d88ad3944cb5bf365afbb6f8d3a06789d010db",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 1.08(f)"
+    },
+    "outputSummary": "resolved reference \"Section 1.08(f)\" -> 1.08(f) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 4,
+    "timestamp": "2026-09-14T18:14:29.933Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 1.08(f)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:4769fe34429021eab497c82b",
+     "sourceNodeKey": "doc-a::1.08(f)",
+     "charStart": 387511,
+     "charEnd": 387515,
+     "rawText": "(f) ",
+     "contentHash": "c7f988d52e41c01caf912edd76d65f130e3ffb2c672f13e89544c625e3763877",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": {
+   "fired": true,
+   "detectedSourceTermLabels": [
+    "Inside Maturity Basket",
+    "Intercreditor Agreements",
+    "Interest Coverage\nRatio",
+    "Interest Election Request",
+    "Interest Payment Date",
+    "Interest Period",
+    "Investment Grade Rating",
+    "Investment Grade Securities",
+    "Investments",
+    "Investor",
+    "Joint Venture",
+    "JPMCB",
+    "Junior Lien Priorit y"
+   ],
+   "compiledTermLabels": [
+    "Inside Maturity Basket",
+    "Intellectual Property",
+    "Intercreditor Agreements",
+    "Interest Coverage Ratio",
+    "Interest Election Request",
+    "Interest Payment Date",
+    "Interest Period",
+    "Investment Grade Rating",
+    "Investment Grade Securities",
+    "Investments",
+    "Investments (Fixed Amount basket disposition proviso)",
+    "Investor",
+    "ISDA CDS Definitions",
+    "Joint Venture",
+    "JPMCB",
+    "Judgment Currency",
+    "Junior Lien Priority"
+   ],
+   "missingTermLabels": [
+    "Junior Lien Priorit y"
+   ],
+   "reason": "Deterministic completeness check found 1 quoted defined-term citation(s) in the supplied source (matching the '\"Term\" means'/'\"Term\" shall mean' pattern) that do not appear among the 17 compiled definition(s): \"Junior Lien Priorit y\". This is a structural detection only - it does not assert what these terms mean or why they were omitted."
+  },
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "Inside Maturity Basket",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MAX",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "amount": 1440000000,
+        "currency": "USD",
+        "citation": "§1.01",
+        "inventoryItemIds": [
+         "inv-item:6396192d114e08932ad98306"
+        ]
+       },
+       {
+        "kind": "MULTIPLY",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "value": 2,
+          "citation": "§1.01",
+          "inventoryItemIds": [
+           "inv-item:6396192d114e08932ad98306"
+          ]
+         },
+         {
+          "kind": "DURING_PERIOD",
+          "operand": {
+           "kind": "METRIC_REFERENCE",
+           "metricName": "Consolidated EBITDA",
+           "valueType": "MONEY"
+          },
+          "periodDescription": "most recently ended Test Period"
+         }
+        ],
+        "citation": "§1.01"
+       }
+      ],
+      "citation": "§1.01",
+      "inventoryItemIds": [
+       "inv-item:6396192d114e08932ad98306"
+      ]
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Test Period"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "means any Incremental Term Loans or other Indebtedness in an original aggregate principal amount not to exceed the greater of $1,440.0 million and 200% of Consolidated EBITDA for the most recently ended Test Period.",
+     "inventoryItemIds": [
+      "inv-item:6396192d114e08932ad98306"
+     ]
+    },
+    {
+     "localRef": "d2",
+     "termName": "Intellectual Property",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Collateral Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pure pointer definition to the Collateral Agreement; fully represented without needing that external document's text."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the Collateral Agreement.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d3",
+     "termName": "Intercreditor Agreements",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "OR",
+      "operands": [
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "termName": "ABL Intercreditor Agreement"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "termName": "First Lien Intercreditor Agreement"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "termName": "Junior Lien Intercreditor Agreement"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "termName": "Customary Intercreditor Agreement"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "ABL Intercreditor Agreement",
+      "First Lien Intercreditor Agreement",
+      "Junior Lien Intercreditor Agreement",
+      "Customary Intercreditor Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "means any ABL Intercreditor Agreement, any First Lien Intercreditor Agreement, any Junior Lien Intercreditor Agreement or any other Customary Intercreditor Agreement.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d4",
+     "termName": "Interest Coverage Ratio",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DIVIDE",
+      "numerator": {
+       "kind": "DURING_PERIOD",
+       "operand": {
+        "kind": "METRIC_REFERENCE",
+        "metricName": "Consolidated EBITDA",
+        "valueType": "MONEY"
+       },
+       "periodDescription": "such period"
+      },
+      "denominator": {
+       "kind": "IF",
+       "condition": {
+        "kind": "COMPARE",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "inputName": "full fiscal quarters elapsed since the Effective Date as of date of determination"
+        },
+        "operator": "LT",
+        "right": {
+         "kind": "NUMBER",
+         "value": 4,
+         "citation": "§1.01",
+         "inventoryItemIds": [
+          "inv-item:f93a595866ffe65a56ad9a1c"
+         ]
+        },
+        "citation": "§1.01"
+       },
+       "then": {
+        "kind": "MULTIPLY",
+        "operands": [
+         {
+          "kind": "SUBTRACT",
+          "left": {
+           "kind": "DURING_PERIOD",
+           "operand": {
+            "kind": "METRIC_REFERENCE",
+            "metricName": "Consolidated Interest Expense",
+            "valueType": "MONEY"
+           },
+           "periodDescription": "from the Effective Date to and including the date of determination"
+          },
+          "right": {
+           "kind": "METRIC_REFERENCE",
+           "metricName": "Consolidated Interest Expense in respect of Excluded Revolving Loans",
+           "valueType": "MONEY"
+          },
+          "citation": "§1.01"
+         },
+         {
+          "kind": "DIVIDE",
+          "numerator": {
+           "kind": "NUMBER",
+           "value": 365,
+           "citation": "§1.01",
+           "inventoryItemIds": [
+            "inv-item:f93a595866ffe65a56ad9a1c"
+           ]
+          },
+          "denominator": {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "inputName": "number of days actually elapsed from the Effective Date to the date of determination"
+          },
+          "citation": "§1.01"
+         }
+        ],
+        "citation": "§1.01",
+        "inventoryItemIds": [
+         "inv-item:f93a595866ffe65a56ad9a1c"
+        ]
+       },
+       "else": {
+        "kind": "SUBTRACT",
+        "left": {
+         "kind": "DURING_PERIOD",
+         "operand": {
+          "kind": "METRIC_REFERENCE",
+          "metricName": "Consolidated Interest Expense",
+          "valueType": "MONEY"
+         },
+         "periodDescription": "most recently ended Test Period"
+        },
+        "right": {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "Consolidated Interest Expense in respect of Excluded Revolving Loans",
+         "valueType": "MONEY"
+        },
+        "citation": "§1.01"
+       },
+       "citation": "§1.01",
+       "inventoryItemIds": [
+        "inv-item:f93a595866ffe65a56ad9a1c"
+       ]
+      },
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Consolidated Interest Expense",
+      "Excluded Revolving Loans",
+      "Test Period"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "means for any period, the ratio of (A) Consolidated EBITDA for such period to (B) Consolidated Interest Expense (other than an amount equal to Consolidated Interest Expense in respect of any Excluded Revolving Loans) for the most recently ended Test Period; provided that for the purpose of calculating the Interest Coverage Ratio for any period ending prior to the expiration of four (4) full fiscal quarters since the Effective Date, Consolidated Interest Expense ... shall be deemed to be Consolidated Interest Expense for the period from the Effective Date to and including the date of determination multiplied by a fraction equal to (x) 365 divided by (y) the number of days actually elapsed from the Effective Date to such date of determination.",
+     "inventoryItemIds": [
+      "inv-item:f93a595866ffe65a56ad9a1c"
+     ]
+    },
+    {
+     "localRef": "d5",
+     "termName": "Interest Election Request",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pointer definition to the mechanics of Section 2.05; fully represented as a pointer without needing Section 2.05's own text."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means a request by the Initial Borrower to convert or continue a Borrowing in accordance with Section 2.05.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d6",
+     "termName": "Interest Payment Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition is a categorical schedule of dates keyed to loan type (ABR/Canadian Prime, Term Benchmark/SOFR, RFR), not a single computable value; fully captured descriptively."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, subject to Section 2.10(c), (a) with respect to any ABR Loan or Canadian Prime Rate Loan, the last day of each calendar month of March, June, September and December, (b) with respect to any Alternative Currency Term Benchmark Loan or Term SOFR Loan, the last day of the Interest Period ..., and (c) as to any RFR Loan, the last day of each Interest Period applicable to such Loan and the Maturity Date of the Facility under which such Loan was made; provided that if any Interest Period for an RFR Loan exceeds three (3) months, the respective dates that fall every three (3) months after the beginning of such Interest Period shall also be the Interest Payment Dates.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d7",
+     "termName": "Interest Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Interest Period tenor mechanics: default tenors of one, three or six months (or up to twelve months, or other agreed periods, if consented by all participating Lenders), for Term SOFR/Alternative Currency Term Benchmark Borrowings, plus business-day-adjustment, month-end, interpolation, Effective-Date-election and removed-tenor provisos (clauses (a)-(e))",
+      "reason": "The IR has no duration/period literal type or business-day-calendar-adjustment primitive to represent month-based tenor elections and calendar roll conventions; this is a structural/mechanical definition, not an arithmetic formula.",
+      "sourceEvidence": "§1.01: \"ending on the numerically corresponding day in the calendar month that is one (1), three (3) or six (6) months thereafter (or, if agreed to by each Lender participating therein, twelve months or such other period...)\""
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Core tenor-length mechanic and business-day/month-end/interpolation provisos are non-arithmetic and represented via an UNSUPPORTED node rather than forced into an arithmetic primitive."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, (i) with respect to any Term SOFR Borrowing or Alternative Currency Term Benchmark Borrowing not denominated in Canadian Dollars, the period commencing on the date of such Borrowing and ending on the numerically corresponding day in the calendar month that is one (1), three (3) or six (6) months thereafter (or, if agreed to by each Lender participating therein, twelve months or such other period less than twelve (12) months or such other period less than one (1) month...) ... [provisos (a)-(e) re business day adjustment, month-end convention, interpolation, Effective Date election, and removed tenors]",
+     "inventoryItemIds": [
+      "inv-item:949cac8849742471ce079d6e"
+     ]
+    },
+    {
+     "localRef": "d8",
+     "termName": "Investment Grade Rating",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical rating-agency threshold definition, not an arithmetic formula; fully captured descriptively."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means a rating equal to or higher than Baa3 (or the equivalent) by Moody's, BBB- (or the equivalent) by S&P or an equivalent rating by any other rating agency.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d9",
+     "termName": "Investment Grade Securities",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Four-part categorical list of qualifying securities (US government securities, Investment-Grade-Rated debt securities excluding intercompany loans, funds investing at least 90% of assets in qualifying securities of the type in clauses (1)-(2), and equivalent non-US instruments)",
+      "reason": "This is an eligibility taxonomy, not a formula returning a dollar/ratio value; the 90%-of-assets fund-composition threshold in clause (3) is a qualifying condition on the fund itself, not tied to any modeled metric.",
+      "sourceEvidence": "§1.01: \"investments in any fund that invests at least 90% of its assets in investments of the type described in clauses (1) and (2)...\""
+     },
+     "dependsOnTerms": [
+      "Cash Equivalents",
+      "Investment Grade Rating"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Categorical security-eligibility list including a 90% fund-composition threshold not expressible as an arithmetic/ratio formula; represented via UNSUPPORTED to avoid forcing an invalid comparison."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means: (1) securities issued or directly and fully guaranteed or insured by the United States government...; (2) debt securities or debt instruments with an Investment Grade Rating, but excluding any debt securities or instruments constituting loans or advances among the issuer and its Subsidiaries; (3) investments in any fund that invests at least 90% of its assets in investments of the type described in clauses (1) and (2)...; and (4) corresponding instruments in countries other than the United States customarily utilized for high-quality investments.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d10",
+     "termName": "Investments",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUBTRACT",
+      "left": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "inputName": "original cost of the Investment"
+      },
+      "right": {
+       "kind": "ADD",
+       "operands": [
+        {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "inputName": "dividends, distributions, interest payments, returns of capital or Investments received"
+        },
+        {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "inputName": "write-downs, write-offs and forgiveness adjustments"
+        },
+        {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "inputName": "repayment or other amount received in cash or Cash Equivalents in respect of such Investment"
+        }
+       ]
+      },
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Unrestricted Subsidiary",
+      "Restricted Subsidiary",
+      "Fair Market Value",
+      "Cash Equivalents",
+      "Fixed Amount"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Core valuation mechanic (original cost less specified reductions) is represented, but clause (x) (Fixed Amount basket usage reduced by disposition proceeds) is separately dispositioned as UNSUPPORTED because the referenced 'Fixed Amount' concept is not defined anywhere in this document and the cross-referenced Section 1.08(f) text is blank in the available source (confirmed by direct retrieval).",
+      "The Unrestricted Subsidiary designation valuation rule (clause (1) of the second paragraph) and the allocation-among-acquired-Persons rule (clause (w)) are categorical/discretionary (Initial Borrower good-faith determination) and not independently computable."
+     ],
+     "citation": "§1.01",
+     "excerpt": "The amount of any Investment outstanding at any time shall be the original cost of such Investment, reduced by any dividend, distribution, interest payment, return of capital or Investment ..., any adjustment for write-downs or write-offs (including as a result of forgiveness), ... repayment or other amount received in cash or Cash Equivalents by any Restricted Party in respect of such Investment.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d10x",
+     "termName": "Investments (Fixed Amount basket disposition proviso)",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "if a Restricted Party makes an Investment pursuant to a Fixed Amount basket and later disposes of it, usage of that Fixed Amount basket is reduced by the disposition proceeds",
+      "reason": "The term 'Fixed Amount' is used but not defined anywhere in this document (confirmed: no detected definition), and the cross-referenced Section 1.08(f) resolves to blank/empty text (confirmed by direct retrieval) - there is no available basket/ledger definition to attach a LEDGER_USAGE_REFERENCE to.",
+      "sourceEvidence": "§1.01: \"any Restricted Party makes an Investment pursuant to a Fixed Amount basket and subsequently disposes of such Investment, the usage of such Fixed Amount basket shall be reduced by the amount of proceeds received from such disposition\""
+     },
+     "dependsOnTerms": [
+      "Fixed Amount"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "'Fixed Amount' undefined in the document package; Section 1.08(f) (also referenced) is blank in the available source."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any Restricted Party makes an Investment pursuant to a Fixed Amount basket and subsequently disposes of such Investment, the usage of such Fixed Amount basket shall be reduced by the amount of proceeds received from such disposition",
+     "inventoryItemIds": [
+      "inv-item:2a8a50bfcaab42c0f874aa77"
+     ]
+    },
+    {
+     "localRef": "d11",
+     "termName": "Investor",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Sponsors",
+      "Effective Date"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "means a holder of Equity Interests in the Initial Borrower (or any direct or indirect parent thereof) arranged and/or designated by the Sponsors on or prior to the Effective Date.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d12",
+     "termName": "ISDA CDS Definitions",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pointer definition to Section 9.02(h); fully represented as a pointer."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.02(h).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d13",
+     "termName": "Joint Venture",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Party",
+      "Subsidiary",
+      "Equity Interests"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical two-prong entity classification, not an arithmetic formula; fully captured descriptively."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means (i) any Person which would constitute an \"equity method investee\" of a Restricted Party or any of their respective Subsidiaries and (ii) any Person in whom a Restricted Party or any of their respective Subsidiaries beneficially owns any Equity Interests that is not a Subsidiary.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d14",
+     "termName": "JPMCB",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "citation": "§1.01",
+     "excerpt": "means JPMorgan Chase Bank, N.A.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d15",
+     "termName": "Judgment Currency",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pointer definition to Section 9.20(b); fully represented as a pointer."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.20(b).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d16",
+     "termName": "Junior Lien Priority",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Lien",
+      "Collateral",
+      "Secured Obligations",
+      "ABL Obligations"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Categorical lien-priority relationship with an express carve-out for ABL Obligations; not an arithmetic formula, fully captured descriptively."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means to be secured by a Lien that is junior in priority to the Liens on the Collateral securing the Secured Obligations; provided, that the ABL Obligations shall be deemed to not have Junior Lien Priority.",
+     "inventoryItemIds": []
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01 'Interest Period': tenor options of one (1), three (3), six (6) or (by agreement) twelve (12) months or other sub-month/sub-year periods, with business-day-roll, month-end, and interpolation conventions.",
+     "semanticRequirement": "A duration/tenor literal (e.g. '3 months', '365 days') with associated calendar-adjustment conventions (business-day rolling, end-of-month convention, straight-line interpolation between two tenor points) that is distinct from a NUMBER or a fixed calendar DATE_LITERAL.",
+     "whyExistingPrimitivesFail": "NUMBER/RATIO/DATE_LITERAL cannot represent a recurring month-based tenor concept or the business-day/month-end roll rules without losing their operative meaning; forcing a NUMBER of days loses the calendar-relative nature of the tenor.",
+     "candidateGeneralizedPrimitive": "DURATION literal (value + unit: DAYS/MONTHS/YEARS) plus a CALENDAR_ADJUSTMENT wrapper node (convention: FOLLOWING/MODIFIED_FOLLOWING/PRECEDING, endOfMonthRule: boolean)."
+    }
+   ],
+   "overallNotes": [
+    "Source is a Section 1.01 defined-terms alphabetical run (Inside Maturity Basket through Junior Lien Priority); every distinct defined term in the supplied text was extracted as its own WireDefinition, consistent with the multiple-definitions requirement - none were dropped even where non-computational.",
+    "No independently operative WireRule was emitted: nothing in this text grants/restricts a transaction directly (Inside Maturity Basket defines a basket AMOUNT but the permission to incur under it, if any, lives in a separate covenant section such as Section 6.01 not included in this submission).",
+    "Section 1.08(f) (cross-referenced by the 'Investments' Fixed Amount-basket disposition proviso) was directly retrieved via getReferencedProvision and confirmed to resolve to blank/empty text in the available source - this is a genuine source gap, not an unattempted lookup.",
+    "'Fixed Amount' is used in the 'Investments' definition but has no detected definition anywhere in the document package (already flagged by Phase 2); the corresponding proviso is dispositioned as its own MISSING_CONTEXT sub-definition (d10x) rather than silently dropped or force-fit.",
+    "'Excluded Revolving Loans' and 'Test Period', both needed to give the Interest Coverage Ratio's exclusion and period scoping their real meaning, were resolved via getDefinition and are reflected in the Interest Coverage Ratio calculationExpression and dependsOnTerms.",
+    "Several definitions (Intellectual Property, Interest Election Request, ISDA CDS Definitions, Judgment Currency) are pure pointer definitions to other sections/agreements; because the definition's own operative content IS the pointer, these are marked COMPLETE without needing the target section's substantive text, consistent with only fetching evidence needed to resolve THIS provision's own economics."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T18:16:32.874Z",
+   "inputTokens": 101427,
+   "outputTokens": 26728,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 3,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 238976,
+   "calculatedCostUsd": 0.470134
+  },
+  "cacheKey": "70e68ecbf574bfa5207fe49ee4fab3df15fc460a8e599a10dd6dff8776e02add",
+  "compiledAt": "2026-09-14T18:16:32.875Z"
+ },
+ "wave": "B",
+ "attemptsSoFar": 1
+}
