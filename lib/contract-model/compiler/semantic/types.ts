@@ -258,6 +258,65 @@ export interface IRExtensionCandidate {
   candidateGeneralizedPrimitive: string;
 }
 
+// ---------------------------------------------------------------------------
+// F-7C - execution-mode metadata (additive). Callers never choose a mode; this
+// says which one the deterministic policy chose and, for a sharded unit, gives
+// the bounded audit trail needed to trust the result without the raw payloads.
+// ---------------------------------------------------------------------------
+
+export type SemanticExecutionModeKind = "MONOLITHIC" | "SHARDED";
+
+export interface SemanticShardExecutionSummary {
+  shardId: string;
+  shardHash: string;
+  ordinal: number;
+  status: string;
+  attempts: number;
+  reusedFromHash: boolean;
+  failureReasons: SemanticCompilerFailureReason[];
+  ownedMaterialItems: number;
+  oversized: boolean;
+  telemetry: { inputTokens: number | null; outputTokens: number | null; costUsd: number | null } | null;
+}
+
+export interface SemanticExecutionMetadata {
+  mode: SemanticExecutionModeKind;
+  /** Why the policy chose this mode (execution-mode.ts). */
+  reason: string;
+  policyVersion: string;
+  plannerAlgorithmVersion: string;
+  /** Present whenever a plan was built (accountability on), even in MONOLITHIC mode - it is the proof the unit fit one bounded shard. */
+  planHash: string | null;
+  plannedShards: number;
+  oversizedShards: number;
+  /** SHARDED only. */
+  sharded: {
+    budget: { targetPrimaryChars: number; maxPrimaryChars: number; maxContextChars: number; maxContextEntryChars: number; maxUnitsPerShard: number };
+    executed: number;
+    reused: number;
+    retries: number;
+    providerCalls: number;
+    statusCounts: Record<string, number>;
+    collisions: number;
+    collisionsByKind: Record<string, number>;
+    definitionConflicts: number;
+    conflictVariants: number;
+    contextualEmissions: number;
+    unresolvedOwnedItems: number;
+    /** The stitcher's own status/reasons before whole-unit signals were layered on - the certified stitch outcome. */
+    stitchedStatus: string;
+    stitchedFailureReasons: SemanticCompilerFailureReason[];
+    /** F-7B.3B review evidence, carried whole: every distinct owner-emitted representation of a conflicted definition. Never consulted by Pass C. */
+    definitionConflictEvidence: import("./shard-types").DefinitionConflictEvidence[];
+    unresolvedOwnedItemList: { inventoryItemId: string; shardId: string; shardStatus: string }[];
+    /** F-7B.2 proof-class census of the retained definitions. */
+    attributionProofCounts: { PLANNER_DEFINITION_UNIT: number; OWNED_INVENTORY_LINEAGE: number; UNIQUE_PRIMARY_SOURCE_DECLARATION: number; NONE: number };
+    shards: SemanticShardExecutionSummary[];
+    /** Honest telemetry note: a sharded compile is many model conversations; top-level rawModelOutput/toolCallLog are not one transcript. */
+    telemetryNote: string;
+  } | null;
+}
+
 export interface SemanticCompilationResult {
   status: SemanticCompilationStatus;
   failureReasons: SemanticCompilerFailureReason[];
@@ -325,4 +384,6 @@ export interface SemanticCompilationResult {
   /** Content-hash cache identity (task §31) - see cache.ts's own computeCacheKey. */
   cacheKey: string;
   compiledAt: string;
+  /** F-7C: which execution mode the deterministic policy selected and, for SHARDED, the bounded audit trail. Undefined on results built by pre-F-7C fixtures. */
+  execution?: SemanticExecutionMetadata | null;
 }

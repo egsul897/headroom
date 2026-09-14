@@ -1,0 +1,35 @@
+{
+ "artifact": "F-7C §2 - current bounded/monolithic compile path versus the target large-unit sharded path, and the exact branch point",
+ "startingSha": "c9b28224e118f6a5e54f99da88715da110ad7dee",
+ "currentPath": {
+  "entry": "compileCovenantToIR(input, options)  [lib/contract-model/compiler/semantic/compile.ts]",
+  "steps": [
+   "1. providerIdentity = provider::model::inventory=<mode>; cacheKey = computeCacheKey(input, providerIdentity); cache hit -> return",
+   "2. evidenceFlags from the context bundle (FIX-2)",
+   "3. accountability !== false: resolveSourceContext (once) -> Pass A: runSemanticInventory OR runDualPassSemanticInventory (once / twice) -> frozenInventory -> callerInput = input widened to the resolved operative region + sourceContext + frozenInventory",
+   "4. caller.compile(callerInput)   <- ONE model conversation for the WHOLE unit, however large",
+   "5. normalizeSubmission -> validateCompilationUnit -> failureReasons (caller failure, IR validation, MISSING_CONTEXT, CONFLICTED, UNSUPPORTED, OPERATIVE_STATE_UNRESOLVED via toolCallLog/evidenceFlags/hasStaleReferencedDefinition, TRUNCATED_EVIDENCE_USED, checkDefinitionCompleteness)",
+   "6. Pass C: reconcileInventoryWithComposition over the frozen inventory + whole-unit accountability signals (SOURCE_CONTEXT_TRUNCATED, SEMANTIC_INVENTORY_UNAVAILABLE / COVERAGE_GAP, INVENTORY_ITEM_MISSING_FROM_COMPOSITION, SEMANTIC_SUPPORT_REVIEW_REQUIRED, SEMANTIC_ACCOUNTABILITY_INCOMPLETE)",
+   "7. determineStatus -> SemanticCompilationResult -> cache.set"
+  ],
+  "shardStackToday": "shard-planner.ts / shard-execution.ts / shard-stitcher.ts exist and are certified (F-7A..F-7B.3E) but nothing in compile.ts calls them; the paid canary drove them from scripts/f7b-lib.ts, whose per-shard executor called compileCovenantToIR(shardInput, { accountability: false }) - i.e. steps 4-5 of this same function with Pass A/Pass C switched off."
+ },
+ "targetPath": {
+  "entry": "compileCovenantToIR(input, options) - unchanged public signature; callers never choose a mode",
+  "steps": [
+   "1. cacheKey = computeCacheKey(input, providerIdentity, executionIdentity) where executionIdentity = execution-policy version + planner algorithm version + shard budget (+ the frozen-inventory hash when one is resumed). A pre-activation monolithic entry can never satisfy a request the policy now routes to SHARDED.",
+   "2. evidenceFlags (unchanged)",
+   "3. resolveSourceContext once; Pass A once (or twice under DUAL_PASS_ENSEMBLE) - or resume an already-frozen inventory for this candidateRef; callerInput built exactly as today",
+   "4. plan = planCompilationShards(callerInput's sourceContext + frozenInventory + structural index, generation = compiler algorithm/prompt versions)  [certified planner, unchanged]",
+   "5. decision = selectCompilationExecutionMode(plan): MONOLITHIC iff the unit is one normal bounded shard; SHARDED iff the planner needs >1 shard or flags an oversized atomic unit. No names, no section numbers, no size constants, no try-then-fallback.",
+   "6a. MONOLITHIC: compileBoundedComposition(callerInput, input, ctx) - the SAME steps 4-7 as today, extracted verbatim into bounded-composition.ts",
+   "6b. SHARDED: executeShardPlan({ plan, executor: createBoundedShardExecutor(callerInput, plan, caller), priorResults, maxAttemptsPerShard, sourceRegions }) -> per-shard compileBoundedComposition over buildShardCompilerInput (no Pass A, no per-shard Pass C - the certified F-7B run shape) -> certified stitcher (all three attribution proofs, conflict evidence) -> GLOBAL Pass C inside the stitcher -> whole-unit signals (operative-state, source-context, inventory status, support review, whole-unit definition-completeness) -> map to SemanticCompilationResult with additive execution metadata",
+   "7. cache.set unless a transient provider failure occurred"
+  ],
+  "branchPoint": "compile.ts, immediately after callerInput is assembled (end of the accountability block) and before the first model call: the deterministic plan is built from already-resolved facts and the mode is chosen there. Nothing upstream of that point changes.",
+  "onePrimitive": "bounded-composition.ts is the single implementation of model call -> transport normalization -> normalizeSubmission -> validateCompilationUnit -> failure-reason derivation. Both the monolithic unit and every shard use it; compile.ts contains no second copy.",
+  "noRecursion": "the shard executor calls compileBoundedComposition, never compileCovenantToIR, so a shard can never re-enter mode selection."
+ },
+ "productionScope": ["semantic/compile.ts", "semantic/bounded-composition.ts (new, extracted)", "semantic/execution-mode.ts (new)", "semantic/shard-executor.ts (new)", "semantic/shard-execution.ts (reuse semantics + sourceRegions passthrough)", "semantic/types.ts (additive execution metadata)", "semantic/cache.ts (optional executionIdentity argument)", "semantic/index.ts (exports)"],
+ "untouched": ["shard-planner.ts", "shard-stitcher.ts", "definition-source-anchor.ts", "transport-normalization.ts", "caller.ts", "prompt.ts", "normalize.ts", "wire-schema.ts", "semantic-accountability/*", "semantic-verification/*"]
+}

@@ -57,7 +57,16 @@ import type { SemanticCompilationResult, SemanticCompilerInput } from "./types";
  * company X on demand") that a flat key cannot serve - worth revisiting then,
  * not preemptively built now for a need that does not yet exist.
  */
-export function computeCacheKey(input: SemanticCompilerInput, providerIdentity: string): string {
+/**
+ * F-7C (execution-policy identity): `executionIdentity` names HOW the unit is executed - the execution-mode policy
+ * version, the shard planner algorithm and the effective shard budget (execution-mode.ts's executionPolicyIdentity),
+ * plus the hash of any already-frozen inventory a caller resumed from. It is part of the key because the mode is only
+ * known after Pass A, i.e. after the cache lookup: an entry produced before activation (whole unit in one
+ * conversation) must never satisfy a request the current policy routes through the sharded path, and a later policy or
+ * budget change must invalidate sharded entries the same way. Omitted (the pre-F-7C two-argument form) the key is
+ * byte-identical to before, so every existing caller and test keeps its identity.
+ */
+export function computeCacheKey(input: SemanticCompilerInput, providerIdentity: string, executionIdentity?: string): string {
   return hashParts([
     input.companyId,
     input.instrumentKey,
@@ -72,6 +81,7 @@ export function computeCacheKey(input: SemanticCompilerInput, providerIdentity: 
     input.compilerPromptVersion,
     input.toolPolicyVersion,
     providerIdentity,
+    ...(executionIdentity ? [executionIdentity] : []),
   ]);
 }
 
