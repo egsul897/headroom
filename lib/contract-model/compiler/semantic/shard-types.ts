@@ -234,6 +234,48 @@ export interface ShardCollision {
 
 export type StitchedCandidateStatus = "COMPLETED" | "REVIEW_REQUIRED" | "PARTIAL" | "FAILED";
 
+/**
+ * F-7B.3B - one semantically distinct representation of a conflicted definition, preserved whole.
+ *
+ * Why the full object and not a summary: the discarded side of a conflict is the only place some source-backed evidence
+ * exists. In the real Chewy Wave A run the losing variant of one definition carried two MONEY literals and two owned
+ * inventory lineage references that appear nowhere else. A summary that kept only counts would still destroy them.
+ */
+export interface DefinitionConflictVariant {
+  /** Content hash of the scoped definition with volatile ids removed - the variant's semantic identity. */
+  contentHash: string;
+  /** Every owned emission that produced THIS exact content, in deterministic plan order. Identical re-emissions are
+   *  deduplicated into one variant, but no emitting shard's provenance is dropped. */
+  emissions: { shardId: string; unitKey: string | null; attributionMethod: string; sourceAnchor: import("./definition-source-anchor").DefinitionSourceAnchor | null }[];
+  /** The complete, immutable scoped IRDefinition as its owner shard emitted it. Never merged, never edited. */
+  definition: IRDefinition;
+  /** Owned inventory lineage carried by this variant (deduplicated, deterministic order). */
+  inventoryItemIds: string[];
+  /** Quantitative literals carried by this variant, as `KIND:value`. */
+  quantitativeValues: string[];
+}
+
+/**
+ * F-7B.3B - first-class review evidence for a definition that two or more OWNER shards represented differently.
+ *
+ * This preserves the conflict; it does not resolve it. No variant is marked correct, nothing is merged, and none of
+ * this feeds accountability: Pass C reconciles only the canonical `definitions` array, so preserved evidence can never
+ * manufacture REPRESENTED credit for an unresolved conflict.
+ */
+export interface DefinitionConflictEvidence {
+  definitionId: string;
+  termName: string;
+  normalizedTermName: string;
+  /** Every distinct representation, ordered by first emission in plan order. Two or more by construction. */
+  variants: DefinitionConflictVariant[];
+  /** Union across variants - what the conflict collectively cites, with no claim about which citation is right. */
+  ownedInventoryItemIds: string[];
+  quantitativeValues: string[];
+  /** The definitionId of the canonical copy kept in `definitions`; retained for compatibility, NOT a truth claim. */
+  canonicalVariantContentHash: string;
+  requiresReview: true;
+}
+
 export interface StitchedCompilation {
   candidateRef: string;
   planHash: string;
@@ -248,6 +290,9 @@ export interface StitchedCompilation {
   collisions: ShardCollision[];
   /** F-7B.2 (additive audit): the primary-source declaration anchor of every definition retained through proof class 3. */
   definitionSourceAnchors: import("./definition-source-anchor").DefinitionSourceAnchor[];
+  /** F-7B.3B (additive review evidence): every semantically distinct representation of a conflicted definition, kept
+   *  whole. Empty when no two owner shards disagreed. Never consulted by Pass C. */
+  definitionConflicts: DefinitionConflictEvidence[];
   /** F-7B.2 (additive audit): how EVERY emitted definition was attributed, including the ones dropped as unowned. */
   definitionAttribution: { shardId: string; objectId: string; termName: string; method: string; unitKey: string | null; ownerShardId: string | null; retained: boolean; anchor: import("./definition-source-anchor").DefinitionSourceAnchor | null }[];
   /** old (shard-local) id -> stitched id, for rules and shared capacities. */

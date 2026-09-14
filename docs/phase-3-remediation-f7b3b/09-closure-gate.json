@@ -1,0 +1,184 @@
+{
+ "artifact": "F-7B.3B \u00a725 closure gate",
+ "at": "2026-09-14T17:31:44.336648Z",
+ "points": [
+  {
+   "n": 1,
+   "criterion": "the original real conflicts are reproduced before any code change",
+   "pass": true
+  },
+  {
+   "n": 2,
+   "criterion": "a second or later conflict variant is never discarded",
+   "pass": true
+  },
+  {
+   "n": 3,
+   "criterion": "all conflicting owned values preserved",
+   "pass": true
+  },
+  {
+   "n": 4,
+   "criterion": "all conflicting owned lineage preserved",
+   "pass": true
+  },
+  {
+   "n": 5,
+   "criterion": "DEFINITION_CONFLICT remains explicit",
+   "pass": true
+  },
+  {
+   "n": 6,
+   "criterion": "requiresReview remains true",
+   "pass": true
+  },
+  {
+   "n": 7,
+   "criterion": "no variant is automatically chosen as legally correct",
+   "pass": true
+  },
+  {
+   "n": 8,
+   "criterion": "no false Pass C credit",
+   "pass": true
+  },
+  {
+   "n": 9,
+   "criterion": "dangerous silent omissions = 0",
+   "pass": true
+  },
+  {
+   "n": 10,
+   "criterion": "false completeness = 0",
+   "pass": true
+  },
+  {
+   "n": 11,
+   "criterion": "source-unverifiable authoritative IR = 0",
+   "pass": true
+  },
+  {
+   "n": 12,
+   "criterion": "contextual ownership credit = 0",
+   "pass": true
+  },
+  {
+   "n": 13,
+   "criterion": "new dangling refs = 0",
+   "pass": true
+  },
+  {
+   "n": 14,
+   "criterion": "the fifteen frozen paid results re-stitch successfully",
+   "pass": true
+  },
+  {
+   "n": 15,
+   "criterion": "frozen shard plan and hashes unchanged",
+   "pass": true
+  },
+  {
+   "n": 16,
+   "criterion": "model calls = 0",
+   "pass": true
+  },
+  {
+   "n": 17,
+   "criterion": "cost = $0",
+   "pass": true
+  }
+ ],
+ "passed": 17,
+ "total": 17,
+ "before": {
+  "conflictEvidenceRecords": 0,
+  "ownedValuesLost": 2,
+  "ownedValuesLostList": [
+   "MONEY:250000000",
+   "MONEY:100000000"
+  ],
+  "ownedLineageLost": 3,
+  "ownedLineageLostList": [
+   "inv-item:435bebbab162719b57e8df07",
+   "inv-item:ef6290ba17af109cb88f0cd8",
+   "inv-item:c2d70438daa8f136d0f51bee"
+  ],
+  "definitions": 170,
+  "accountability": {
+   "executedShards": 15,
+   "executedShardMaterialOwned": 63,
+   "executedRepresented": 37,
+   "executedIntentionallyNonComputational": 1,
+   "executedUnsupported": 16,
+   "executedAmbiguous": 0,
+   "executedMissing": 9,
+   "executedAccountabilityRate": 0.8571,
+   "materialTotal": 108,
+   "globalPassC": {
+    "inventoried": 109,
+    "material": 108,
+    "represented": 50,
+    "intentionallyNonComputational": 1,
+    "unsupported": 18,
+    "ambiguous": 0,
+    "missingFromComposition": 40,
+    "materialMissingFromComposition": 39,
+    "criticalMissingFromComposition": 12,
+    "materialQuantitativeValues": 142,
+    "materialQuantitativeValuesMissing": 44,
+    "uninventoriedValues": 95,
+    "unaccountedSource": 721,
+    "danglingLineageReferences": 0,
+    "canonicalizedLineageReferences": 0
+   },
+   "semanticallyComplete": false
+  }
+ },
+ "after": {
+  "conflictEvidenceRecords": 2,
+  "ownedValuesLost": 0,
+  "ownedLineageLost": 0,
+  "definitions": 170,
+  "accountability": {
+   "executedShards": 15,
+   "executedShardMaterialOwned": 63,
+   "executedRepresented": 37,
+   "executedIntentionallyNonComputational": 1,
+   "executedUnsupported": 16,
+   "executedAmbiguous": 0,
+   "executedMissing": 9,
+   "executedAccountabilityRate": 0.8571,
+   "materialTotal": 108,
+   "globalPassC": {
+    "inventoried": 109,
+    "material": 108,
+    "represented": 50,
+    "intentionallyNonComputational": 1,
+    "unsupported": 18,
+    "ambiguous": 0,
+    "missingFromComposition": 40,
+    "materialMissingFromComposition": 39,
+    "criticalMissingFromComposition": 12,
+    "materialQuantitativeValues": 142,
+    "materialQuantitativeValuesMissing": 44,
+    "uninventoriedValues": 95,
+    "unaccountedSource": 721,
+    "danglingLineageReferences": 0,
+    "canonicalizedLineageReferences": 0
+   },
+   "semanticallyComplete": false
+  }
+ },
+ "metricCorrection": {
+  "what": "The \u00a712 metric must compare like with like. A first implementation compared RAW model lineage ids against the stitcher's canonicalized ids and reported 28 losses that never happened.",
+  "fix": "The baseline now mirrors the two transforms the stitcher applies before ownership is decided: digest-form id canonicalization, then scoping to the emitting shard's own inventory items - which is exactly what \u00a712 words as the accepted scoped composition.",
+  "effect": "Reproduction fell from a spurious 28 to a real 3 distinct owned lineage ids, and the two pre-registered lost values reproduced exactly. The correction was made BEFORE the production change and applies identically to both modes."
+ },
+ "waveAGateReconciliation": {
+  "waveAReported": "owned lineage lost 6",
+  "f7b3bReports": "3 distinct owned lineage ids",
+  "why": "The Wave A scorer counted lineage reference OCCURRENCES across the whole composition (115 before, 109 after). \u00a712 pre-registers a set difference over distinct owned ids. Same defect, same two definitions, two granularities: the 6 occurrences resolve to 3 distinct owned items, 2 from Approved Bank and 1 from Annual Threshold."
+ },
+ "verdict": "F7B_WAVE_A_CONFLICT_FIXED_READY_FOR_WAVE_B",
+ "waveBExecuted": false
+}
