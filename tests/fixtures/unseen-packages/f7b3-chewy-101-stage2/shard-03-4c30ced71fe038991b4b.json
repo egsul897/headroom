@@ -1,0 +1,1260 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:4c30ced71fe038991b4b",
+  "shardHash": "ec01142d97abc7e224d2afd46f64343a9692f6d4fd22bfb8561060f9388dcfb8",
+  "ordinal": 3,
+  "ownedUnits": 11,
+  "sourceChars": 11804,
+  "contextEntries": 2,
+  "contextChars": 336,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 2,
+  "ownedMaterialItems": 1,
+  "estimatedFirstTurnInputTokens": 25012,
+  "preCallEstimate": {
+   "inputTokens": 82290,
+   "outputTokens": 29000,
+   "usd": 0.45458000000000004
+  },
+  "actual": {
+   "inputTokens": 127529,
+   "outputTokens": 19474,
+   "turns": 4,
+   "latencyMs": 187798,
+   "costUsd": 0.44979800000000003,
+   "attemptCount": 4,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_COMPLETE",
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "toolCalls": 6,
+  "toolCallNames": [
+   "getReferencedProvision",
+   "getDefinition",
+   "getDefinition",
+   "getSharedCapContext",
+   "getDefinitionDependencies",
+   "getDefinitionDependencies"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 10,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 1,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "valuesRepresented": 0,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "REPRESENTED": 1,
+    "MISSING_FROM_COMPOSITION": 1
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [],
+  "unresolvedIssues": [
+   "[definition[d1].SUBTRACT.left] Section 6.08's substantive basket/formula text was requested via getReferencedProvision but only the section heading ('Section 6.08 Limitation on Restricted Payments.') was returned with no substantive body text in scope; 'Permitted Investments' is a long qualitative list of investment categories with no single quantifiable capacity figure, so the base amount cannot be derived from the evidence available.",
+   "[definition[d1].SUBTRACT.right.ADD[0]] Section 6.01(b)(31) and 6.01(b)(13) text is out of the retrievable source-context scope (budget exhausted) and could not be resolved to a figure",
+   "[definition[d1].SUBTRACT.right.ADD[1]] this reduction is self-referential (a usage-based ledger draw against this same defined term) and clause (46)(i) of 'Permitted Liens' was not reached before the definition text was truncated in the tool result, so no fixed value or formula can be stated",
+   "[definition[d1].SUBTRACT.right] ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d1]] SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d7].MAX[0]] this is a discretionary administrative/market-convention-based selection, not derivable as a fixed value or formula from the text",
+   "[definition[d7]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+   "Source region 1.01 is a definitions block containing 10 independent defined terms; all 10 were extracted as separate WireDefinitions per the multiple-definitions rule.",
+   "Available RP Capacity Amount is the only term with real quantitative/formula structure (a base RP capacity reduced by two enumerated, without-duplication reductions); its base capacity and both reductions ultimately depend on Section 6.08, Section 6.01(b)(31)/(13), and Permitted Liens clause (46)(i), none of which were resolvable within the retrievable scope (Section 6.08 was attempted via getReferencedProvision and returned only a heading; the other references were already flagged OUT_OF_SCOPE due to source-context budget exhaustion). The SUBTRACT/ADD structure itself is nonetheless faithfully represented, with UNSUPPORTED leaves carrying the unresolved components.",
+   "The Initial Borrower's allocation/reallocation election within Available RP Capacity Amount is an operational mechanic, not a computable value, and was not separately dispositioned as it does not correspond to a frozen inventory item.",
+   "Both frozen inventory items (Bail-In Legislation's Article 55 external reference; Basel III's December 2010 publication date) were consumed directly on their respective WireDefinitions.",
+   "The two deterministically-detected 0.00% values both belong to the single zero-floor proviso in the 'Benchmark Replacement' definition ('if ... less than 0.00% ... deemed to be 0.00%') and were represented together via one MAX floor node.",
+   "Getting Section 6.08's substantive text via getReferencedProvision returned only the section heading with no body (a degenerate/heading-only companion node was excluded by the tool itself), confirming the cross-reference could not be resolved further within this session's scope."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": true,
+   "decodedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "inventoryDispositions",
+    "overallNotes"
+   ],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": true,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "string",
+      "originalStringSha256": "49ac342b15b587b6d23f39b26f2282f3ec7ae2b42afa23967de3d520c4e8008f",
+      "originalStringLength": 13201,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 10,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "string",
+      "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "originalStringLength": 2,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 0,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "string",
+      "originalStringSha256": "7523f41652ec6da55a3c727f7c1c2bfcada000ee0fa9e0bf2fd500a6cbae7f1f",
+      "originalStringLength": 1078,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 1,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "string",
+      "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "originalStringLength": 2,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 0,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "string",
+      "originalStringSha256": "9daf65398d4473b022f38c3f906d34aa1851ffeb6a92cc316f20a17f298f9aec",
+      "originalStringLength": 1815,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 6,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:4c30ced71fe038991b4b",
+  "shardHash": "ec01142d97abc7e224d2afd46f64343a9692f6d4fd22bfb8561060f9388dcfb8",
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:046cbf2174d94d7e133eadd2",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Available RP Capacity Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "(no evidence captured)",
+      "semanticDescription": "unrecognized or malformed expression (kind=\"SUBTRACT\")",
+      "reason": "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "attemptedStructure": {
+       "kind": "SUBTRACT",
+       "type": "NUMBER",
+       "exprId": "ir-expr:ada43aef42bd73082ee097be",
+       "left": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 (\"the amount of Restricted Payments that may be made at the time of determination pursuant to Section 6.08 or the definition of ‘Permitted Investments’\")",
+        "semanticDescription": "The base amount of Restricted Payments capacity available at the time of determination pursuant to Section 6.08 (Limitation on Restricted Payments) or the definition of 'Permitted Investments'",
+        "reason": "Section 6.08's substantive basket/formula text was requested via getReferencedProvision but only the section heading ('Section 6.08 Limitation on Restricted Payments.') was returned with no substantive body text in scope; 'Permitted Investments' is a long qualitative list of investment categories with no single quantifiable capacity figure, so the base amount cannot be derived from the evidence available.",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:c4642ec3e21455d7533d89d4"
+       },
+       "right": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "(no evidence captured)",
+        "semanticDescription": "unrecognized or malformed expression (kind=\"ADD\")",
+        "reason": "ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "attemptedStructure": {
+         "kind": "ADD",
+         "type": "NUMBER",
+         "exprId": "ir-expr:47419bff8517f05bc338e208",
+         "operands": [
+          {
+           "kind": "UNSUPPORTED",
+           "type": null,
+           "sourceEvidence": "§1.01 clause (i)",
+           "semanticDescription": "the aggregate principal amount of Indebtedness incurred and outstanding under Section 6.01(b)(31), together with outstanding Indebtedness under Section 6.01(b)(13) incurred to Refinance Indebtedness originally incurred under 6.01(b)(31)",
+           "reason": "Section 6.01(b)(31) and 6.01(b)(13) text is out of the retrievable source-context scope (budget exhausted) and could not be resolved to a figure",
+           "requiredReview": true,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:52a9932e61a2093b1a97f936"
+          },
+          {
+           "kind": "UNSUPPORTED",
+           "type": null,
+           "sourceEvidence": "§1.01 clause (ii)",
+           "semanticDescription": "the amount of the Available RP Capacity Amount itself that Restricted Parties have utilized to incur Liens under clause (46)(i) of the definition of 'Permitted Liens'",
+           "reason": "this reduction is self-referential (a usage-based ledger draw against this same defined term) and clause (46)(i) of 'Permitted Liens' was not reached before the definition text was truncated in the tool result, so no fixed value or formula can be stated",
+           "requiredReview": true,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:3eb8428fbeffe875f7c658c2"
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        },
+        "exprId": "ir-expr:9d63da770be5a1e86ff2dd9e"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "exprId": "ir-expr:3e94c240cd75056deab2bb8d"
+     },
+     "dependsOnTerms": [
+      "Permitted Investments",
+      "Permitted Liens",
+      "Indebtedness",
+      "Refinance"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "base capacity depends on Section 6.08's substantive Restricted Payments basket mechanics, which were attempted via getReferencedProvision but returned only a heading (no body) - out of scope",
+      "clause (i) reduction depends on Section 6.01(b)(31)/(13) Indebtedness baskets, explicitly flagged OUT_OF_SCOPE (source-context budget exhausted)",
+      "clause (ii) reduction is self-referential usage against this same term under Permitted Liens clause (46)(i), which is a running ledger draw rather than a static value, and the clause (46)(i) text itself was not reached",
+      "the double-reduction avoidance proviso (Indebtedness already reducing capacity is not double-counted against Permitted Liens clause (46)(i) usage) is captured only qualitatively, not as an executable formula",
+      "the Initial Borrower's allocation/reallocation election is an operational mechanic, not itself a quantitative component",
+      "Section 6.08's substantive basket/formula text was requested via getReferencedProvision but only the section heading ('Section 6.08 Limitation on Restricted Payments.') was returned with no substantive body text in scope; 'Permitted Investments' is a long qualitative list of investment categories with no single quantifiable capacity figure, so the base amount cannot be derived from the evidence available.",
+      "Section 6.01(b)(31) and 6.01(b)(13) text is out of the retrievable source-context scope (budget exhausted) and could not be resolved to a figure",
+      "this reduction is self-referential (a usage-based ledger draw against this same defined term) and clause (46)(i) of 'Permitted Liens' was not reached before the definition text was truncated in the tool result, so no fixed value or formula can be stated",
+      "ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+      "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the amount of Restricted Payments that may be made at the time of determination pursuant to Section 6.08 or the definition of ‘Permitted Investments’; provided that ... shall be reduced ... without duplication by (i) the aggregate principal amount of Indebtedness ... under Section 6.01(b)(31) ... and (ii) the amount of the Available RP Capacity Amount utilized ... to incur Liens pursuant to clause (46)(i) of the definition of ‘Permitted Liens’ ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:242396a3054368e06be75330",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Available Tenor",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Benchmark",
+      "Interest Period"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully descriptive, non-quantitative definition of which Benchmark tenors are usable; the excluded reference to clause (f) of Section 2.12 merely names where removal occurs and does not change this term's own meaning"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any tenor for such Benchmark ... that is or may be used for determining the length of an Interest Period ... and not including ... any tenor ... then-removed from the definition of ‘Interest Period’ pursuant to clause (f) of Section 2.12."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3072cb650966c2e20a64d86e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Bail-In Action",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Write-Down and Conversion Powers",
+      "Resolution Authority",
+      "Affected Financial Institution"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "short, fully self-contained, purely descriptive definition with no quantitative content"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the exercise of any Write-Down and Conversion Powers by the applicable Resolution Authority in respect of any liability of an Affected Financial Institution."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3399556f8e0778f5a4a32eba",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Bail-In Legislation",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "EEA Member Country"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "the EEA-country prong is defined solely by reference to Article 55 of Directive 2014/59/EU, an external instrument not resolvable from any evidence available (confirmed unresolvable cross-reference)",
+      "the UK prong (Part I of the UK Banking Act 2009 and related resolution law) is fully descriptive and captured"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) with respect to any EEA Member Country implementing Article 55 of Directive 2014/59/EU ... the implementing law ... described in the EU Bail-In Legislation Schedule and (b) with respect to the United Kingdom, Part I of the United Kingdom Banking Act 2009 (as amended from time to time) and any other law, regulation or rule applicable in the United Kingdom relating to the resolution of unsound or failing banks..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:83fff234181c1d313477265d"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:2e83bd1e0e2bc2e6eb534a28",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Basel III",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully descriptive, informational reference to named published agreements and their publication date, with no quantitative capacity component"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "those certain agreements on capital requirements, a leverage ratio and liquidity standards contained in ‘Basel III: A Global Regulatory Framework...’ ... each as published by the Basel Committee on Banking Supervision in December 2010 (as revised from time to time), and as implemented by a Lender’s primary banking regulatory authority."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:c8481fd7d7368bd1dde37b3d"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:41307be13aaf827413ee6446",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Benchmark",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Term SOFR Rate",
+      "Term CORRA",
+      "Benchmark Replacement",
+      "Benchmark Transition Event",
+      "Benchmark Replacement Date"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "the initial currency-by-currency index selection (Term SOFR Rate for USD, Term CORRA for CAD) is fully descriptive and captured",
+      "the term's value after a transition event depends on clause (c) of Section 2.12's replacement mechanics, which is out of the retrievable scope",
+      "expressing the currency-conditioned selection itself would require a categorical/enum comparison the IR's literal types (MONEY/NUMBER/RATIO/PERCENT/BOOLEAN/DATE) do not support - see irExtensionCandidates"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, initially, with respect to any Term SOFR Loan denominated in U.S. Dollars, Term SOFR Rate, and with respect to any Alternative Currency Term Benchmark Loan denominated in Canadian Dollars, Term CORRA; provided that if a Benchmark Transition Event and the related Benchmark Replacement Date have occurred ... then ‘Benchmark’ means ... the applicable Benchmark Replacement ... pursuant to clause (c) of Section 2.12."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:b52776d7b37d83e677ea4a65",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Benchmark Replacement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "(no evidence captured)",
+      "semanticDescription": "unrecognized or malformed expression (kind=\"MAX\")",
+      "reason": "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "attemptedStructure": {
+       "kind": "MAX",
+       "type": "NUMBER",
+       "exprId": "ir-expr:6c4d73f2cf3faf0e818f9898",
+       "operands": [
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01",
+         "semanticDescription": "the alternate benchmark rate selected by the Administrative Agent and the Initial Borrower to replace the then-current Benchmark, giving due consideration to Relevant Governmental Body recommendation(s) or evolving/prevailing market convention",
+         "reason": "this is a discretionary administrative/market-convention-based selection, not derivable as a fixed value or formula from the text",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:a6c95ad7e7b77ccc31249ab6"
+        },
+        {
+         "kind": "PERCENT",
+         "type": "PERCENT",
+         "value": 0,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:1af56cb36f2e70927f67e005"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "exprId": "ir-expr:f2ce0e9bf7d15fcbba8462e8"
+     },
+     "dependsOnTerms": [
+      "Benchmark",
+      "Benchmark Transition Event",
+      "Administrative Agent",
+      "Relevant Governmental Body"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "the zero-floor mechanic ('if the Benchmark Replacement would be less than 0.00%, ... deemed to be 0.00%') is fully quantifiable and represented as a MAX floor",
+      "the underlying replacement rate itself is a discretionary selection by the Administrative Agent and Initial Borrower and cannot be reduced to a fixed value or formula from the text",
+      "this is a discretionary administrative/market-convention-based selection, not derivable as a fixed value or formula from the text",
+      "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the alternate benchmark rate that has been selected by the Administrative Agent and the Initial Borrower ...; provided that, if the Benchmark Replacement would be less than 0.00%, the Benchmark Replacement will be deemed to be 0.00% for the purposes of this Agreement and the other Loan Documents."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e59c95d3494b5d1ba292ba4a",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Benchmark Replacement Conforming Changes",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Benchmark Replacement",
+      "Administrative Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully descriptive definition of administrative/technical/operational conforming changes discretion, with no quantitative capacity component"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any technical, administrative or operational changes ... that the Administrative Agent decides (in consultation with the Initial Borrower) may be appropriate to reflect the adoption and implementation of such Benchmark ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:71a1fc26c1995e13765efa35",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Benchmark Replacement Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Benchmark",
+      "Benchmark Transition Event",
+      "Available Tenor"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully self-contained, event/date-trigger definition (earliest-to-occur of two clause-based events) fully quoted; not a quantitative capacity computation"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the earliest to occur of the following events with respect to such then-current Benchmark: (1) ... the later of (a) the date of the public statement ... and (b) the date on which the administrator ... permanently or indefinitely ceases to provide all Available Tenors ...; or (2) ... the first date on which such Benchmark ... has been determined and announced ... to be no longer representative ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:93121be8f154437e253c0323",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Benchmark Transition Event",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Benchmark",
+      "Available Tenor"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "fully self-contained, event-trigger definition (three enumerated public-statement scenarios) fully quoted; not a quantitative capacity computation"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the occurrence of one or more of the following events with respect to such then-current Benchmark: (1) a public statement or publication ... announcing that such administrator has ceased or will cease to provide all Available Tenors ...; (2) a public statement ... by the regulatory supervisor ...; or (3) a public statement ... announcing that all Available Tenors ... are no longer, or ... will no longer be, representative."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].SUBTRACT.left] Section 6.08's substantive basket/formula text was requested via getReferencedProvision but only the section heading ('Section 6.08 Limitation on Restricted Payments.') was returned with no substantive body text in scope; 'Permitted Investments' is a long qualitative list of investment categories with no single quantifiable capacity figure, so the base amount cannot be derived from the evidence available.",
+   "[definition[d1].SUBTRACT.right.ADD[0]] Section 6.01(b)(31) and 6.01(b)(13) text is out of the retrievable source-context scope (budget exhausted) and could not be resolved to a figure",
+   "[definition[d1].SUBTRACT.right.ADD[1]] this reduction is self-referential (a usage-based ledger draw against this same defined term) and clause (46)(i) of 'Permitted Liens' was not reached before the definition text was truncated in the tool result, so no fixed value or formula can be stated",
+   "[definition[d1].SUBTRACT.right] ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d1]] SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d7].MAX[0]] this is a discretionary administrative/market-convention-based selection, not derivable as a fixed value or formula from the text",
+   "[definition[d7]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+   "Source region 1.01 is a definitions block containing 10 independent defined terms; all 10 were extracted as separate WireDefinitions per the multiple-definitions rule.",
+   "Available RP Capacity Amount is the only term with real quantitative/formula structure (a base RP capacity reduced by two enumerated, without-duplication reductions); its base capacity and both reductions ultimately depend on Section 6.08, Section 6.01(b)(31)/(13), and Permitted Liens clause (46)(i), none of which were resolvable within the retrievable scope (Section 6.08 was attempted via getReferencedProvision and returned only a heading; the other references were already flagged OUT_OF_SCOPE due to source-context budget exhaustion). The SUBTRACT/ADD structure itself is nonetheless faithfully represented, with UNSUPPORTED leaves carrying the unresolved components.",
+   "The Initial Borrower's allocation/reallocation election within Available RP Capacity Amount is an operational mechanic, not a computable value, and was not separately dispositioned as it does not correspond to a frozen inventory item.",
+   "Both frozen inventory items (Bail-In Legislation's Article 55 external reference; Basel III's December 2010 publication date) were consumed directly on their respective WireDefinitions.",
+   "The two deterministically-detected 0.00% values both belong to the single zero-floor proviso in the 'Benchmark Replacement' definition ('if ... less than 0.00% ... deemed to be 0.00%') and were represented together via one MAX floor node.",
+   "Getting Section 6.08's substantive text via getReferencedProvision returned only the section heading with no body (a degenerate/heading-only companion node was excluded by the tool itself), confirming the cross-reference could not be resolved further within this session's scope."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 127529,
+   "outputTokens": 19474,
+   "costUsd": 0.44979800000000003
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:046cbf2174d94d7e133eadd2",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Available RP Capacity Amount",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "(no evidence captured)",
+     "semanticDescription": "unrecognized or malformed expression (kind=\"SUBTRACT\")",
+     "reason": "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "attemptedStructure": {
+      "kind": "SUBTRACT",
+      "type": "NUMBER",
+      "exprId": "ir-expr:ada43aef42bd73082ee097be",
+      "left": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01 (\"the amount of Restricted Payments that may be made at the time of determination pursuant to Section 6.08 or the definition of ‘Permitted Investments’\")",
+       "semanticDescription": "The base amount of Restricted Payments capacity available at the time of determination pursuant to Section 6.08 (Limitation on Restricted Payments) or the definition of 'Permitted Investments'",
+       "reason": "Section 6.08's substantive basket/formula text was requested via getReferencedProvision but only the section heading ('Section 6.08 Limitation on Restricted Payments.') was returned with no substantive body text in scope; 'Permitted Investments' is a long qualitative list of investment categories with no single quantifiable capacity figure, so the base amount cannot be derived from the evidence available.",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:c4642ec3e21455d7533d89d4"
+      },
+      "right": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "(no evidence captured)",
+       "semanticDescription": "unrecognized or malformed expression (kind=\"ADD\")",
+       "reason": "ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "attemptedStructure": {
+        "kind": "ADD",
+        "type": "NUMBER",
+        "exprId": "ir-expr:47419bff8517f05bc338e208",
+        "operands": [
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01 clause (i)",
+          "semanticDescription": "the aggregate principal amount of Indebtedness incurred and outstanding under Section 6.01(b)(31), together with outstanding Indebtedness under Section 6.01(b)(13) incurred to Refinance Indebtedness originally incurred under 6.01(b)(31)",
+          "reason": "Section 6.01(b)(31) and 6.01(b)(13) text is out of the retrievable source-context scope (budget exhausted) and could not be resolved to a figure",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:52a9932e61a2093b1a97f936"
+         },
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01 clause (ii)",
+          "semanticDescription": "the amount of the Available RP Capacity Amount itself that Restricted Parties have utilized to incur Liens under clause (46)(i) of the definition of 'Permitted Liens'",
+          "reason": "this reduction is self-referential (a usage-based ledger draw against this same defined term) and clause (46)(i) of 'Permitted Liens' was not reached before the definition text was truncated in the tool result, so no fixed value or formula can be stated",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:3eb8428fbeffe875f7c658c2"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "exprId": "ir-expr:9d63da770be5a1e86ff2dd9e"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "exprId": "ir-expr:3e94c240cd75056deab2bb8d"
+    },
+    "dependsOnTerms": [
+     "Permitted Investments",
+     "Permitted Liens",
+     "Indebtedness",
+     "Refinance"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "base capacity depends on Section 6.08's substantive Restricted Payments basket mechanics, which were attempted via getReferencedProvision but returned only a heading (no body) - out of scope",
+     "clause (i) reduction depends on Section 6.01(b)(31)/(13) Indebtedness baskets, explicitly flagged OUT_OF_SCOPE (source-context budget exhausted)",
+     "clause (ii) reduction is self-referential usage against this same term under Permitted Liens clause (46)(i), which is a running ledger draw rather than a static value, and the clause (46)(i) text itself was not reached",
+     "the double-reduction avoidance proviso (Indebtedness already reducing capacity is not double-counted against Permitted Liens clause (46)(i) usage) is captured only qualitatively, not as an executable formula",
+     "the Initial Borrower's allocation/reallocation election is an operational mechanic, not itself a quantitative component",
+     "Section 6.08's substantive basket/formula text was requested via getReferencedProvision but only the section heading ('Section 6.08 Limitation on Restricted Payments.') was returned with no substantive body text in scope; 'Permitted Investments' is a long qualitative list of investment categories with no single quantifiable capacity figure, so the base amount cannot be derived from the evidence available.",
+     "Section 6.01(b)(31) and 6.01(b)(13) text is out of the retrievable source-context scope (budget exhausted) and could not be resolved to a figure",
+     "this reduction is self-referential (a usage-based ledger draw against this same defined term) and clause (46)(i) of 'Permitted Liens' was not reached before the definition text was truncated in the tool result, so no fixed value or formula can be stated",
+     "ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+     "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the amount of Restricted Payments that may be made at the time of determination pursuant to Section 6.08 or the definition of ‘Permitted Investments’; provided that ... shall be reduced ... without duplication by (i) the aggregate principal amount of Indebtedness ... under Section 6.01(b)(31) ... and (ii) the amount of the Available RP Capacity Amount utilized ... to incur Liens pursuant to clause (46)(i) of the definition of ‘Permitted Liens’ ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:242396a3054368e06be75330",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Available Tenor",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Benchmark",
+     "Interest Period"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "fully descriptive, non-quantitative definition of which Benchmark tenors are usable; the excluded reference to clause (f) of Section 2.12 merely names where removal occurs and does not change this term's own meaning"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any tenor for such Benchmark ... that is or may be used for determining the length of an Interest Period ... and not including ... any tenor ... then-removed from the definition of ‘Interest Period’ pursuant to clause (f) of Section 2.12."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3072cb650966c2e20a64d86e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Bail-In Action",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Write-Down and Conversion Powers",
+     "Resolution Authority",
+     "Affected Financial Institution"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "short, fully self-contained, purely descriptive definition with no quantitative content"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the exercise of any Write-Down and Conversion Powers by the applicable Resolution Authority in respect of any liability of an Affected Financial Institution."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3399556f8e0778f5a4a32eba",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Bail-In Legislation",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "EEA Member Country"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "the EEA-country prong is defined solely by reference to Article 55 of Directive 2014/59/EU, an external instrument not resolvable from any evidence available (confirmed unresolvable cross-reference)",
+     "the UK prong (Part I of the UK Banking Act 2009 and related resolution law) is fully descriptive and captured"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) with respect to any EEA Member Country implementing Article 55 of Directive 2014/59/EU ... the implementing law ... described in the EU Bail-In Legislation Schedule and (b) with respect to the United Kingdom, Part I of the United Kingdom Banking Act 2009 (as amended from time to time) and any other law, regulation or rule applicable in the United Kingdom relating to the resolution of unsound or failing banks..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:83fff234181c1d313477265d"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:2e83bd1e0e2bc2e6eb534a28",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Basel III",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "fully descriptive, informational reference to named published agreements and their publication date, with no quantitative capacity component"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "those certain agreements on capital requirements, a leverage ratio and liquidity standards contained in ‘Basel III: A Global Regulatory Framework...’ ... each as published by the Basel Committee on Banking Supervision in December 2010 (as revised from time to time), and as implemented by a Lender’s primary banking regulatory authority."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:c8481fd7d7368bd1dde37b3d"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:41307be13aaf827413ee6446",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Benchmark",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Term SOFR Rate",
+     "Term CORRA",
+     "Benchmark Replacement",
+     "Benchmark Transition Event",
+     "Benchmark Replacement Date"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "the initial currency-by-currency index selection (Term SOFR Rate for USD, Term CORRA for CAD) is fully descriptive and captured",
+     "the term's value after a transition event depends on clause (c) of Section 2.12's replacement mechanics, which is out of the retrievable scope",
+     "expressing the currency-conditioned selection itself would require a categorical/enum comparison the IR's literal types (MONEY/NUMBER/RATIO/PERCENT/BOOLEAN/DATE) do not support - see irExtensionCandidates"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, initially, with respect to any Term SOFR Loan denominated in U.S. Dollars, Term SOFR Rate, and with respect to any Alternative Currency Term Benchmark Loan denominated in Canadian Dollars, Term CORRA; provided that if a Benchmark Transition Event and the related Benchmark Replacement Date have occurred ... then ‘Benchmark’ means ... the applicable Benchmark Replacement ... pursuant to clause (c) of Section 2.12."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:b52776d7b37d83e677ea4a65",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Benchmark Replacement",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "(no evidence captured)",
+     "semanticDescription": "unrecognized or malformed expression (kind=\"MAX\")",
+     "reason": "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "attemptedStructure": {
+      "kind": "MAX",
+      "type": "NUMBER",
+      "exprId": "ir-expr:6c4d73f2cf3faf0e818f9898",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01",
+        "semanticDescription": "the alternate benchmark rate selected by the Administrative Agent and the Initial Borrower to replace the then-current Benchmark, giving due consideration to Relevant Governmental Body recommendation(s) or evolving/prevailing market convention",
+        "reason": "this is a discretionary administrative/market-convention-based selection, not derivable as a fixed value or formula from the text",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:a6c95ad7e7b77ccc31249ab6"
+       },
+       {
+        "kind": "PERCENT",
+        "type": "PERCENT",
+        "value": 0,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:1af56cb36f2e70927f67e005"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "exprId": "ir-expr:f2ce0e9bf7d15fcbba8462e8"
+    },
+    "dependsOnTerms": [
+     "Benchmark",
+     "Benchmark Transition Event",
+     "Administrative Agent",
+     "Relevant Governmental Body"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "the zero-floor mechanic ('if the Benchmark Replacement would be less than 0.00%, ... deemed to be 0.00%') is fully quantifiable and represented as a MAX floor",
+     "the underlying replacement rate itself is a discretionary selection by the Administrative Agent and Initial Borrower and cannot be reduced to a fixed value or formula from the text",
+     "this is a discretionary administrative/market-convention-based selection, not derivable as a fixed value or formula from the text",
+     "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the alternate benchmark rate that has been selected by the Administrative Agent and the Initial Borrower ...; provided that, if the Benchmark Replacement would be less than 0.00%, the Benchmark Replacement will be deemed to be 0.00% for the purposes of this Agreement and the other Loan Documents."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e59c95d3494b5d1ba292ba4a",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Benchmark Replacement Conforming Changes",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Benchmark Replacement",
+     "Administrative Agent"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "fully descriptive definition of administrative/technical/operational conforming changes discretion, with no quantitative capacity component"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any technical, administrative or operational changes ... that the Administrative Agent decides (in consultation with the Initial Borrower) may be appropriate to reflect the adoption and implementation of such Benchmark ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:71a1fc26c1995e13765efa35",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Benchmark Replacement Date",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Benchmark",
+     "Benchmark Transition Event",
+     "Available Tenor"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "fully self-contained, event/date-trigger definition (earliest-to-occur of two clause-based events) fully quoted; not a quantitative capacity computation"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the earliest to occur of the following events with respect to such then-current Benchmark: (1) ... the later of (a) the date of the public statement ... and (b) the date on which the administrator ... permanently or indefinitely ceases to provide all Available Tenors ...; or (2) ... the first date on which such Benchmark ... has been determined and announced ... to be no longer representative ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:93121be8f154437e253c0323",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Benchmark Transition Event",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Benchmark",
+     "Available Tenor"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "fully self-contained, event-trigger definition (three enumerated public-statement scenarios) fully quoted; not a quantitative capacity computation"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the occurrence of one or more of the following events with respect to such then-current Benchmark: (1) a public statement or publication ... announcing that such administrator has ceased or will cease to provide all Available Tenors ...; (2) a public statement ... by the regulatory supervisor ...; or (3) a public statement ... announcing that all Available Tenors ... are no longer, or ... will no longer be, representative."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01 definition of 'Benchmark': \"with respect to any Term SOFR Loan denominated in U.S. Dollars, Term SOFR Rate, and with respect to any Alternative Currency Term Benchmark Loan denominated in Canadian Dollars, Term CORRA\"",
+    "semanticRequirement": "Selecting among named alternatives (e.g. a rate index) based on a categorical/enum transaction attribute such as currency (USD vs CAD), rather than a numeric/date/boolean comparison",
+    "whyExistingPrimitivesFail": "COMPARE only supports GT/GTE/LT/LTE/EQ over MONEY/NUMBER/RATIO/PERCENT/DATE-typed operands, and there is no STRING or ENUM literal node type to represent a categorical value like a currency code for an EQ comparison, so an IF/COMPARE tree cannot faithfully express currency-conditioned selection",
+    "candidateGeneralizedPrimitive": "an ENUM_LITERAL (or CATEGORY_MATCH) node type plus allowing COMPARE's EQ operator to accept it, enabling faithful modeling of categorical selection logic (e.g. by currency, by loan type) that recurs across benchmark/rate definitions"
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].SUBTRACT.left] Section 6.08's substantive basket/formula text was requested via getReferencedProvision but only the section heading ('Section 6.08 Limitation on Restricted Payments.') was returned with no substantive body text in scope; 'Permitted Investments' is a long qualitative list of investment categories with no single quantifiable capacity figure, so the base amount cannot be derived from the evidence available.",
+   "[definition[d1].SUBTRACT.right.ADD[0]] Section 6.01(b)(31) and 6.01(b)(13) text is out of the retrievable source-context scope (budget exhausted) and could not be resolved to a figure",
+   "[definition[d1].SUBTRACT.right.ADD[1]] this reduction is self-referential (a usage-based ledger draw against this same defined term) and clause (46)(i) of 'Permitted Liens' was not reached before the definition text was truncated in the tool result, so no fixed value or formula can be stated",
+   "[definition[d1].SUBTRACT.right] ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d1]] SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d7].MAX[0]] this is a discretionary administrative/market-convention-based selection, not derivable as a fixed value or formula from the text",
+   "[definition[d7]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+   "Source region 1.01 is a definitions block containing 10 independent defined terms; all 10 were extracted as separate WireDefinitions per the multiple-definitions rule.",
+   "Available RP Capacity Amount is the only term with real quantitative/formula structure (a base RP capacity reduced by two enumerated, without-duplication reductions); its base capacity and both reductions ultimately depend on Section 6.08, Section 6.01(b)(31)/(13), and Permitted Liens clause (46)(i), none of which were resolvable within the retrievable scope (Section 6.08 was attempted via getReferencedProvision and returned only a heading; the other references were already flagged OUT_OF_SCOPE due to source-context budget exhaustion). The SUBTRACT/ADD structure itself is nonetheless faithfully represented, with UNSUPPORTED leaves carrying the unresolved components.",
+   "The Initial Borrower's allocation/reallocation election within Available RP Capacity Amount is an operational mechanic, not a computable value, and was not separately dispositioned as it does not correspond to a frozen inventory item.",
+   "Both frozen inventory items (Bail-In Legislation's Article 55 external reference; Basel III's December 2010 publication date) were consumed directly on their respective WireDefinitions.",
+   "The two deterministically-detected 0.00% values both belong to the single zero-floor proviso in the 'Benchmark Replacement' definition ('if ... less than 0.00% ... deemed to be 0.00%') and were represented together via one MAX floor node.",
+   "Getting Section 6.08's substantive text via getReferencedProvision returned only the section heading with no body (a degenerate/heading-only companion node was excluded by the tool itself), confirming the cross-reference could not be resolved further within this session's scope."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 6.08"
+    },
+    "outputSummary": "resolved reference \"Section 6.08\" -> 6.08 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 50,
+    "timestamp": "2026-09-14T16:50:39.296Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 6.08",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:e8ca06925feddf727f99129b",
+     "sourceNodeKey": "doc-a::6.08",
+     "charStart": 659042,
+     "charEnd": 659092,
+     "rawText": "Section 6.08 Limitation on Restricted Payments .\n\n",
+     "contentHash": "edf966e0c76863739b0b50ac473e4a30e814a26d8b1af538c5d69e9bc3a1cc32",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Permitted Investments"
+    },
+    "outputSummary": "definition \"Permitted Investments\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 4059,
+    "timestamp": "2026-09-14T16:50:39.297Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": true,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Permitted Investments",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:344b456719a30ef35e5a798a",
+     "sourceNodeKey": "doc-a::1.01(3)(ii)(a)",
+     "charStart": 248524,
+     "charEnd": 262645,
+     "rawText": "“ Permitted Investments ” means:\n\n(1) any Investment in any Restricted Party (including guarantees of obligations of Restricted Subsidiaries);\n\n(2) any Investment in cash, Cash Equivalents or Investment Grade Securities;\n\n(3) any Investment or other acquisition, by any Restricted Party, whether by purchase, merger, amalgamation or otherwise, of all or substantially all of the\nassets of, or any business line, unit or division or product line (including research and development and related assets in respect of any product) of, a Person or of a majority of the outstanding Capital Stock of any Person (and, in any event,\nincluding any Investment in (a) any Restricted Party the effect of which is to increase any Restricted Party’s equity ownership in such Restricted Party or (b) any joint venture for the purpose of increasing any Restricted\nParty’s ownership interest in such joint venture) that is engaged, directly or indirectly, in a Similar Business (or in assets of a Similar Business) if as a result of such Investment (each such transaction, a “ Permitted\nAcquisition ”);\n\n(a)\nsuch Person becomes a Restricted Subsidiary (including by redesignation of an Unrestricted Subsidiary as a\nRestricted Subsidiary or by means of a Division); or\n\n(b)\nsuch Person, in one (1) transaction or a series of related transactions, is merged, consolidated or\namalgamated with or into, or transfers or conveys (i) substantially all of its assets to, transfers or conveys assets constituting a business unit, line of business or division of such Person, or is liquidated into, any Restricted Party, (ii)\n50% or more of its Equity Interests to any Restricted Party or a Qualified Restricted Subsidiary or (iii) minority ownership interests in such Person that is engaged in a business permitted pursuant to Section 5.16;\n\nand, in each case, any Investment held by such Person; provided that such Investment was not acquired by such Person in contemplation of such\nacquisition, merger, consolidation, amalgamation, Division, transfer, conveyance or redesignation;\n(4) any Investment in securities or other assets\n(including earn-outs) not constituting cash, Cash Equivalents or Investment Grade Securities and received in connection with an Asset Sale made pursuant to Section 6.05 hereof or any other disposition of assets not constituting an Asset Sale;\n\n-54-\n\n(5) any Investment existing on the Effective Date or made pursuant to binding commitments in effect on the\nEffective Date, or an Investment consisting of any extension, modification, replacement, reinvestment or renewal of any such Investment existing on the Effective Date or binding commitment in effect on the Effective Date; provided that the\namount of any such Investment may be increased in such extension, modification, replacement, reinvestment or renewal only (a) as required by the terms of such Investment or binding commitment as in existence on the Effective Date (including as\na result of the accrual or accretion of interest or original issue discount or the issuance of pay in kind securities) or (b) as otherwise permitted under this Agreement;\n\n(6) any Investment acquired by any Restricted Party:\n\n(a)\nconsisting of extensions of credit in the nature of accounts receivable or notes receivable arising from the\ngrant of trade credit in the ordinary course of business or consistent with past practice and Investments received in satisfaction or partial satisfaction thereof from financially troubled account debtors and other credits to suppliers in the\nordinary course of business;\n\n(b)\nin exchange for any other Investment or accounts receivable, endorsements for collection or deposit held by any\nRestricted Party in connection with or as a result of a bankruptcy, workout, reorganization or recapitalization of the issuer of such other Investment or accounts receivable;\n\n(c)\nin satisfaction of judgments against other Persons; or\n\n(d)\nas a result of a foreclosure by any Restricted Party with respect to any secured Investment or other transfer\nof title with respect to any secured Investment in default; or\n\n(e)\nreceived in compromise or resolution of (a) obligations of trade creditors, suppliers or customers that\nwere incurred in the ordinary course of business of the Restricted Parties or consistent with past practice, including pursuant to any plan of reorganization or similar arrangement upon the bankruptcy or insolvency of any trade creditor, supplier or\ncustomer, or (b) litigation, arbitration or other disputes;\n\n(7) Hedging Obligations permitted under Section 6.01(b)(10)\nhereof;\n(8) any Investment in a Similar Business having an aggregate Fair Market Value, taken together with all other Investments made pursuant to this\nclause (8) that are at that time outstanding, not to exceed the sum of (i) greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of such\nInvestment plus (ii) any Investment capacity available under clauses (22) and (30) of this definition; provided , however , that if any Investment pursuant to this clause (8) is made in any Person that is not a\nRestricted Subsidiary at the date of the making of such Investment and such Person becomes a Restricted Subsidiary after such date, such investment shall thereafter be deemed to have been made pursuant to clause (1) above and shall cease to\nhave been made pursuant to this clause (8) for so long as such Person continues to be a Restricted Subsidiary;\n(9) Investments the payment for which\nconsists of Equity Interests of a Borrower or any Parent Entity (exclusive of Disqualified Stock); provided , however , that such Equity Interests shall not increase the amount available for Restricted Payments under\nSection 6.08(a)(3) hereof;\n(10) guarantees of Indebtedness to the extent such guarantees are permitted under Section 6.01 hereof; the creation\nof Liens on the assets of any Restricted Party in compliance with Section 6.02; and Restricted Payments permitted under Section 6.08 (including any transactions incurred in reliance on the Available RP Capacity Amount) (other than by\nreference to this clause (10));\n(11) any transaction to the extent it constitutes an Investment that is permitted and made in accordance with the\nprovisions of Section 5.18(b) hereof (except transactions described in Sections 5.18(b)(2), (5), (9) and (15) hereof);\n(12) Investments\nconsisting of purchases and acquisitions of inventory, supplies, material or equipment, or other similar assets, or the licensing or contribution of intellectual property pursuant to joint marketing arrangements with other Persons;\n\n-55-\n\n(13) additional Investments having an aggregate Fair Market Value, taken together with all other Investments\nmade pursuant to this clause (13) that are at that time outstanding not to exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time\nof such Investment (the greater of such amounts, the “ General Basket Amount ”); provided , however , that if any Investment pursuant to this clause (13) is made in any Person that is not a Restricted Subsidiary at\nthe date of the making of such Investment and such Person becomes a Restricted Subsidiary after such date, such Investment shall thereafter be deemed to have been made pursuant to clause (1) above and shall cease to have been made pursuant to\nthis clause (13) for so long as such Person continues to be a Restricted Subsidiary;\n(14) Investments in or by a Receivables Subsidiary, including\nthe contribution or lending of cash to a Receivables Subsidiary to finance (i) the purchase of assets or to otherwise fund required reserves and other accounts permitted or required by the arrangements governing such Permitted Receivables\nFinancing, that, in the good faith determination of the Initial Borrower, are necessary or advisable to effect any Permitted Receivables Financing or any repurchase obligation in connection therewith and (ii) distributions or payments by such\nReceivables Subsidiary of Receivables Fees;\n(15) loans and advances to, or guarantees of Indebtedness of, officers, directors, managers, employees and\nconsultants not in excess of the greater of (x) $108.0 million and (y) 15% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, outstanding at any one time, in the aggregate;\n\n(16) loans and advances to officers, directors, managers, employees and consultants for business-related travel expenses, moving or relocation expenses,\nentertainment, payroll advances and other analogous or similar expenses or payroll expenses, in each case incurred in the ordinary course of business or consistent with past practice or to fund such Person’s purchase of Equity Interests of the\nBorrowers or any Parent Entity;\n(17) advances, loans or extensions of trade credit (including the creation of receivables) or prepayments to suppliers or\nlessors or loans or advances made to distributors, and performance guarantees and Contingent Obligations incurred in the ordinary course of business or consistent with past practice of any Restricted Party;\n\n(18) intercompany current liabilities owed by Unrestricted Subsidiaries or joint ventures incurred in the ordinary course of business in connection with the\ncash management operations of the Restricted Parties and their respective Subsidiaries;\n(19) Investments in the ordinary course of business or consistent\nwith past practice consisting of Uniform Commercial Code Article 3 endorsements for collection or deposit and Article 4 customary trade arrangements with customers consistent with past practices or, the equivalent actions in any non-U.S. jurisdiction;\n(20) Investments consisting of promissory notes issued to any Restricted Party by future,\npresent or former employees, directors, officers, managers or consultants of the Borrowers or any of their respective Subsidiaries or their respective estates, spouses or former spouses to finance the purchase or redemption of Equity Interests of\nthe Borrowers or any Parent Entity thereof, to the extent the applicable Restricted Payment is permitted by Section 6.08 hereof;\n(21) repurchases of\nSenior Indebtedness of the Restricted Parties;\n(22) Investments in Unrestricted Subsidiaries having an aggregate Fair Market Value, taken together with\nall other Investments made pursuant to this clause (22) that are at the time outstanding, without giving effect to the sale of an Unrestricted Subsidiary to the extent the proceeds of such sale do not consist of cash, Cash Equivalents or\nmarketable securities, not to exceed the sum of (i) the greater of (x) (x) $360.0 million and (y) 50% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of such Investment\nplus (ii) any Investment capacity available under clauses (8) and (30) of this definition; provided , however , that any Investment pursuant to this clause (22) made in any Person that is a Unrestricted Subsidiary\nof the Borrowers at the date of the making of such Investment and such Person becomes a Restricted Subsidiary after such date, such Investment shall thereafter be deemed to have been made pursuant to clause (1) above and shall cease to have\nbeen made pursuant to this clause (22) for so long as such Person continues to be a Restricted Subsidiary;\n\n-56-\n\n(23) guarantee obligations of any Restricted Party in respect of leases or of other obligations that do not\nconstitute Indebtedness, in each case, entered into in the ordinary course of business;\n(24) guarantee obligations of any Restricted Party in connection\nwith the provision of credit card payment processing services in the ordinary course of business or consistent with past practice;\n(25) Investments by an\nUnrestricted Subsidiary entered into prior to the day such Unrestricted Subsidiary is redesignated as a Restricted Subsidiary pursuant to the definition of “Unrestricted Subsidiary”;\n\n(26) non-cash Investments in connection with tax planning and reorganization activities, and Investments in connection\nwith a Permitted Tax Restructuring or related transactions;\n(27) any other Investment; provided that on a Pro Forma Basis after giving effect to\nsuch Investment, at the election of the Initial Borrower, (i) the First Lien Leverage Ratio for the most recently ended Test Period would not exceed (A) 2.00:1.00 or (B) the First Lien Leverage Ratio as of the last day of the then most\nrecently ended Test Period or (ii) the Interest Coverage Ratio on a pro forma basis is at least equal to or greater than (A) 1.75:1.00 or (B) the Interest Coverage Ratio level as of the last day of the then most recently ended Test Period;\nprovided that this clause (ii) shall not be relied on for the purpose of incurring Indebtedness secured by a lien on all or a material portion of the Collateral on a pari passu basis with the Term Loans;\n\n(28) the Transactions;\n(29) any acquisition or Investment by\nany Non-Loan Party Subsidiary to the extent funded with the operating cash flow of Non-Loan Party Subsidiaries; and\n\n(30) any Investment in a Joint Venture having an aggregate Fair Market Value, taken together with all other Investments made pursuant to this clause\n(30) that are at that time outstanding, not to exceed the sum of (i) the greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of such\nInvestment, plus (ii) any Investment capacity available under clauses (8) and (22) of this definition; provided , however , that any Investment pursuant to this clause (30) made in any Person that is a Joint Venture\nat the date of the making of such Investment and such Person becomes a Restricted Subsidiary after such date, such Investment shall thereafter be deemed to have been made pursuant to clause (1) above and shall cease to have been made pursuant\nto this clause (30) for so long as such Person continues to be a Restricted Subsidiary.\n",
+     "contentHash": "633793c0a5032bfc93c70acedcf7059c2eae3e60839634064490e71deba9b56f",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Permitted Liens"
+    },
+    "outputSummary": "definition \"Permitted Liens\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 4059,
+    "timestamp": "2026-09-14T16:50:39.299Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": true,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Permitted Liens",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:e4dc649917cffe2cab9ae723",
+     "sourceNodeKey": "doc-a::1.01(30)(ii)",
+     "charStart": 262645,
+     "charEnd": 289340,
+     "rawText": "“ Permitted Liens ” means, with respect to\nany Person:\n(1) pledges, deposits or security by such Person under workers’ compensation laws, unemployment insurance, employers’ health tax,\npension and other social security or retirement benefit laws or similar legislation or other insurance related obligations (including, but not limited to, in respect of deductibles, self-insured retention amounts and premiums and adjustments\nthereto) or indemnification obligations of (including obligations in respect of letters of credit or bank guarantees for the benefit of) insurance carriers providing property, casualty or liability insurance, or good faith deposits in connection\nwith letters of intent, bids, tenders, contracts (other than for the payment of Indebtedness) or leases to which such Person is a party, or deposits to secure public or statutory obligations of such Person or deposits of cash or U.S. government\nbonds to secure performance, surety, stay, customs or appeal bonds to which such Person is a party, or deposits as security for contested taxes or import duties or for the payment of rent, performance and return-of-money bonds and other similar obligations (including letters of credit issued in lieu of any such bonds or to support the issuance thereof and including those to secure health, safety and\nenvironmental obligations), in each case incurred in the ordinary course of business;\n(2) Liens imposed by law or regulation relating to the construction\nor renovation of any property, such as landlords’, carriers’, warehousemen’s, materialmen’s, repairmen’s, mechanics’, contractors’, supplier of materials’, architects’ and other similar Liens, in\neach case for sums not yet overdue for a period of more than thirty (30) days or being contested in good faith by appropriate proceedings or other Liens arising out of judgments or awards against such Person with respect to which such Person\nshall then be proceeding with an appeal or other proceedings for review if adequate reserves with respect thereto are maintained on the books of such Person in accordance with GAAP or with respect to which the failure to make payment could not\nreasonably be expected to have a Material Adverse Effect;\n\n-57-\n\n(3) Liens for taxes, assessments or governmental charges not yet overdue for a period of more than thirty\n(30) days or that are being contested in good faith by appropriate proceedings diligently conducted, if adequate reserves with respect thereto are maintained on the books of such Person in accordance with GAAP or with respect to which the\nfailure to make payment could not reasonably be expected to have a Material Adverse Effect;\n(4) Liens in favor of issuers of performance, surety, bid,\nindemnity, warranty, release, appeal or similar bonds or with respect to other regulatory requirements or letters of credit or bankers’ acceptances issued, and completion guarantees provided for, in each case pursuant to the request of and for\nthe account of such Person in the ordinary course of its business;\n(5) reservations in any original grants from the Crown of land or interest therein,\nstatutory exceptions to title and reservations of mineral rights (including coal, oil and natural gas) in any grants from the Crown or from any other predecessors in title, minor survey exceptions, minor encumbrances, ground leases, easements or\nreservations of, or rights of others for, licenses, rights-of-way, servitudes, sewers, electric lines, drains, telegraph and telephone and cable television lines, gas\nand oil pipelines and other similar purposes, or zoning, building codes or other restrictions (including, without limitation, minor defects or irregularities in title and similar encumbrances) as to the use of real properties or Liens incidental to\nthe conduct of the business of such Person or to the ownership of its properties which were not incurred in connection with Indebtedness and which do not in the aggregate materially adversely affect the value of said properties or materially impair\ntheir use in the operation of the business of such Person;\n(6) Liens securing Indebtedness permitted to be incurred pursuant to Section 6.01(a) or\nSection 6.01(b)(4), (12), (14), (18), (19), (21), (26), (27) (solely with respect to the Capital Stock and assets of any Joint Ventures), (31), (32) or (33) hereof; provided that (a) in the case of Section 6.01(b)(4), such\nLiens extend only to the assets purchased with the proceeds of such Indebtedness, accessions to such assets and the proceeds and products thereof, and any lease of such assets (including accessions thereto), the proceeds and the products thereof and\ncustomary security deposits in respect thereof; provided , however , that individual financings of equipment provided by one (1) lender may be cross collateralized to other financings of equipment provided by such lender;\n(b) in the case of Section 6.01(b)(18), such Lien may not extend to any assets other than the assets owned by the Restricted Subsidiaries that are not Guarantors; (c) in the case of Section 6.01(b)(19), such Liens shall only be\npermitted if such Liens are limited to all or part of the same property or assets, including Capital Stock ( plus improvements, accessions, proceeds or dividends or distributions in respect thereof, or replacements of any thereof) acquired, or\nof any Person acquired or merged, amalgamated or consolidated with or into the Borrowers or any Restricted Subsidiary, in any transaction to which such Indebtedness relates; (d) [reserved]; (e) in the case of Section 6.01(b)(14)(y), such\nLiens extend only to the assets of such Persons that are acquired by the Borrowers or any Restricted Subsidiary or merged into, amalgamated with or consolidated with the Borrowers or a Restricted Subsidiary in accordance with\nSection 6.01(b)(14)(y) and (f) Liens incurred pursuant to Section 6.01(a) or Section 6.01(b)(4), (12), (14), (18), (19), (21), (31), (32) or (33) shall, at the election of the Initial Borrower, be permitted to be secured by\nthe Collateral on a pari passu basis or junior basis with the Secured Obligations, which (x) if secured by the Collateral on a pari passu basis or junior basis with the Secured Obligations, the Initial Borrower and the Collateral Agent\nshall enter into an applicable Customary Intercreditor Agreement (or the representative for the holders of such Indebtedness or the holders of such Indebtedness shall become a party to any then-existing applicable Intercreditor Agreement) and\n(y) in any other case, at the election of the Initial Borrower, the Collateral Agent shall enter into an applicable Intercreditor Agreement (or the representative for the holders of such Indebtedness or the holders of such Indebtedness shall\nbecome a party to any then-existing applicable Customary Intercreditor Agreement); provided , further , that without any further consent of the Lenders, the Administrative Agent and the Collateral Agent are authorized and directed to\nexecute and deliver on behalf of the Secured Parties any Customary Intercreditor Agreement contemplated by this clause;\n(7) Liens existing on the\nEffective Date;\n(8) Liens on property or shares of stock or other assets of a Person at the time such Person becomes a Restricted Subsidiary (including\ndesignating an Unrestricted Subsidiary as a Restricted Subsidiary); provided , however , such Liens are not created or incurred in connection with, or in contemplation of, such other Person becoming a Restricted Subsidiary;\nprovided , further , however , that such Liens may not extend to any other property or assets owned by any\n\n-58-\n\nRestricted Party (other than accessions to such assets or property, the proceeds or products thereof, any lease of such assets (including accessions thereto) and other than after-acquired\nproperty that is (A) affixed or incorporated into the property covered by such Lien, (B) after-acquired property subject to a Lien securing such Indebtedness, the terms of which Indebtedness require or include a pledge of after-acquired\nproperty (it being understood that such requirement shall not be permitted to apply to any property to which such requirement would not have applied but for such acquisition) and (C) the proceeds and products thereof);\n\n(9) Liens on property or other assets at the time any Restricted Party acquired the property or such other assets, including any acquisition by means of a\nmerger, amalgamation or consolidation with or into any Restricted Party; provided , however , that such Liens are not created or incurred in connection with, or in contemplation of, such acquisition, merger, amalgamation or\nconsolidation; provided , further , however , that the Liens may not extend to any other property owned by any Restricted Party;\n(10)\nLiens securing Obligations relating to Indebtedness or other obligations of a Restricted Subsidiary owing to any other Restricted Party permitted to be incurred in accordance with Section 6.01 hereof;\n\n(11) Liens (i) securing Hedging Obligations or Cash Management Services permitted under this Agreement and (ii) on any cash or Cash Equivalents\ncollateral securing obligations in respect of any of the foregoing obligations forth in the foregoing clause (i) and any other letters of credit, bank guarantees, bankers’ acceptances or similar instruments not prohibited by this\nAgreement; provided that Liens permitted pursuant to this clause (11)(ii) may be secured on a pari passu or junior with the Liens on Collateral subject to the applicable Customary Intercreditor Agreement; provided ,\nfurther , that, without any further consent of the Lenders, the Administrative Agent and the Collateral Agent are authorized and directed to execute and deliver on behalf of the Secured Parties any Customary Intercreditor Agreement contemplated\nby this clause;\n(12) Liens on specific items of inventory or other goods and proceeds of any Person securing such Person’s accounts payable or\nsimilar trade obligations in respect of bankers’ acceptances or trade letters of credit issued or created for the account of such Person to facilitate the purchase, shipment or storage of such inventory or other goods;\n\n(13) leases, subleases, licenses or sublicenses (including of intellectual property) granted to others in the ordinary course of business which do not\nmaterially interfere with the ordinary conduct of the business of any Restricted Party and do not secure any Indebtedness;\n(14) Liens arising from\nUniform Commercial Code or equivalent statute financing statement filings regarding operating leases or consignments entered into by any Restricted Party in the ordinary course of business;\n\n(15) Liens in favor of the Borrowers or any Guarantor;\n(16)\nLiens on vehicles of any Restricted Party granted in the ordinary course of business;\n(17) Liens on Receivables Assets incurred in connection with a\nPermitted Receivables Financing;\n(18) Liens to secure any modification or Refinancing (or successive Refinancing) as a whole, or in part, of any\nIndebtedness secured by any Lien referred to in clauses (6) (solely with respect to Liens securing Indebtedness permitted to be incurred pursuant to Section 6.01(a), (b)(4), (12), (14), (18), (19), (21), (26)(b)(ii), (27) (solely with respect\nto the Capital Stock and assets of any Joint Ventures), (31), (32) or (33) hereof), (7), (8), (9), (18) and (20) of this definition of “Permitted Liens”; provided that (x) such new Lien shall be limited to all or\npart of the same property that secured the original Lien ( plus accessions, additions and improvements on such property, including after-acquired property that is (i) affixed or incorporated into the property covered by such Lien, or\n(ii) after-acquired property subject to a Lien securing such Indebtedness, the terms of which Indebtedness require or include a pledge of after-acquired property (it being understood that such requirement shall not be permitted to apply to any\nproperty to which such requirement would not have applied but for such acquisition)), and (y) the Indebtedness secured by such Lien at such time is not increased to any amount greater than the sum of (A) the outstanding principal amount\nor, if greater, committed amount of the Indebtedness described under clauses (6) (with respect to Section 6.01(a) Section 6.01(b)(4), (12), (14), (18), (19), (21), (26)(b)(ii), (27) (solely with respect to the Capital Stock and assets of\nany Joint Ventures), (31), (32) or (33) hereof), (7), (8), (9), (18) and (20) at the time the original Lien became a Permitted Lien under this Agreement, and (B) an amount necessary to pay any fees and expenses, including premiums,\nand accrued and unpaid interest related to such modification or Refinancing;\n\n-59-\n\n(19) deposits made or other security provided to secure liabilities to insurance carriers under insurance or\nself-insurance arrangements in the ordinary course of business;\n(20) Liens securing Obligations in respect of any Indebtedness permitted to be incurred\npursuant to Section 6.01 hereof; provided that, with respect to Liens securing Obligations permitted under this clause (20), at the time of incurrence and after giving pro forma effect thereto, (x) with respect to any\nIndebtedness, Disqualified Stock or Preferred Stock that will be secured by all or a material portion of the Collateral on a pari passu basis with the Secured Obligations, the First Lien Leverage Ratio for the applicable Test Period does not\nexceed the greater of (A) 2.00:1.00 and (B) the First Lien Leverage Ratio immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock, (y) with respect to any Indebtedness, Disqualified Stock or\nPreferred Stock that will be secured by all or a material portion of the Collateral on a Junior Lien Priority basis, at the Initial Borrower’s sole discretion, either (i) the Senior Secured Leverage Ratio for the applicable Test Period\ndoes not exceed the greater of (A) 3.00:1.00 and (B) the Senior Secured Leverage Ratio immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock or (ii) the Interest Coverage Ratio is greater than or\nequal to the lesser of (A) 1.75:1.00 and (B) the Interest Coverage Ratio immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock or (z) with respect to any Indebtedness, Disqualified Stock or\nPreferred Stock that is secured by Liens on assets not constituting all or a material portion of the Collateral or secured by Liens on the Collateral rank on a junior priority basis to any second lien priority indebtedness on a Pro Forma Basis, at\nthe Initial Borrower’s sole discretion, either (i) the Total Leverage Ratio for the applicable Test Period does not exceed the greater of (A) 4.00:1.00 and (B) the Total Leverage Ratio immediately prior to the incurrence of such\nIndebtedness or (ii) the Interest Coverage Ratio is greater than or equal to the lesser of (A) 1.75:1.00 and (B) the Interest Coverage Ratio immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock;\nprovided , further , that (i) in the case of Section 6.01(b)(14)(y), such Liens extend only to the assets of such Persons that are acquired by any Restricted Party or merged into, amalgamated with or consolidated with any\nRestricted Party in accordance with Section 6.01(b)(14)(y) and (ii) Liens incurred pursuant to this clause shall, at the election of the Initial Borrower, be permitted to be secured by the Collateral on a pari passu basis or junior\nbasis with the Secured Obligations, which (x) if secured by the Collateral on a pari passu basis or junior basis with the Secured Obligations, the Initial Borrower and the Collateral Agent shall enter into an applicable Customary\nIntercreditor Agreement (or the representative for the holders of such Indebtedness or the holders of such Indebtedness shall become a party to any then-existing applicable Intercreditor Agreement) and (y) in any other case, at the election of\nthe Initial Borrower, the Collateral Agent shall enter into an applicable Intercreditor Agreement (or the representative for the holders of such Indebtedness or the holders of such Indebtedness shall become a party to any then-existing applicable\nCustomary Intercreditor Agreement); provided , further , that, without any further consent of the Lenders, the Collateral Agent is authorized and directed to execute and deliver on behalf of the Secured Parties any Customary\nIntercreditor Agreement contemplated by this clause;\n(21) other Liens securing obligations that any time outstanding do not exceed the greater of (x)\n$720.0 million and (y) 100% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of incurrence; provided that Liens permitted pursuant to this clause (21) may be secured by the\nCollateral on a pari passu basis or junior basis with the Liens on the Collateral securing the Secured Obligations subject to the applicable Customary Intercreditor Agreement; provided , further , that, without any further consent\nof the Lenders, the Administrative Agent and the Collateral Agent are authorized and directed to execute and deliver on behalf of the Secured Parties any Customary Intercreditor Agreement contemplated by this clause;\n\n(22) Liens securing judgments for the payment of money not constituting an Event of Default under Section 6.01(a) hereof, so long as such Liens are\nadequately bonded and any appropriate legal proceedings that may have been duly initiated for the review of such judgment have not been finally terminated or the period within which such proceedings may be initiated has not expired;\n\n(23) Liens in favor of customs and revenue authorities arising as a matter of law to secure payment of customs duties in connection with the importation of\ngoods in the ordinary course of business;\n\n-60-\n\n(24) Liens (i) of a collection bank arising under\nSection 4-210 of the Uniform Commercial Code or any comparable or successor provision on items in the course of collection, (ii) attaching to pooling, commodity trading accounts or other commodity\nbrokerage accounts incurred in the ordinary course of business and (iii) in favor of banking or other financial institutions or electronic payment service providers arising as a matter of law encumbering deposits (including the right of set-off) and which are within the general parameters customary in the banking or finance industry;\n(25) Liens deemed to\nexist in connection with Investments in repurchase agreements permitted under Section 6.01 hereof; provided that such Liens do not extend to any assets other than those that are the subject of such repurchase agreements;\n\n(26) Liens encumbering reasonable customary initial deposits and margin deposits and similar Liens attaching to commodity trading accounts or other brokerage\naccounts incurred in the ordinary course of business and not for speculative purposes;\n(27) Liens that are contractual rights of set-off (i) relating to the establishment of depository relations with banks not given in connection with the issuance of Indebtedness, (ii) relating to pooled deposit or sweep accounts of any Restricted\nParty to permit satisfaction of overdraft or similar obligations incurred in the ordinary course of business of any Restricted Party or (iii) relating to purchase orders and other agreements entered into with customers of any Restricted Party\nin the ordinary course of business;\n(28) any encumbrance or restriction (including put and call arrangements) with respect to capital stock of any joint\nventure or similar arrangement pursuant to any joint venture or similar agreement;\n(29) Liens solely on any cash earnest money deposits made by any\nRestricted Party in connection with any letter of intent or purchase agreement permitted under this Agreement;\n(30) the rights reserved or vested in any\nPerson by the terms of any lease, license, franchise, grant or permit held by any Restricted Party or by a statutory provision, to terminate any such lease, license, franchise, grant or permit, or to require annual or periodic payments as a\ncondition to the continuance thereof;\n(31) Liens arising solely from precautionary Uniform Commercial Code financing statements or similar filings;\n\n(32) security given to a public utility or any municipality or Governmental Authority when required by such utility or authority in connection with the\noperations of that Person in the ordinary course of business;\n(33) Liens securing Obligations owed by any Restricted Party to any lender, agent or\narranger under credit facilities or any Affiliate of such a lender, agent or arranger in respect of any bank products;\n(34) Liens arising out of\nconditional sale, title retention, consignment or similar arrangements for the sale or purchase of goods entered into by any Restricted Party in the ordinary course of business;\n\n(35) Liens on insurance policies and the proceeds thereof securing the financing of the premiums with respect thereto;\n\n(36) any Lien granted pursuant to a security agreement between any Restricted Party and a licensee of their intellectual property to secure the damages, if\nany, of such licensee resulting from the rejection by such Restricted Party of such licensee in a bankruptcy, reorganization or similar proceeding with respect to such Restricted Party; provided that such Liens do not cover any assets other\nthan the intellectual property subject to such license;\n(37) Liens on the Equity Interests of Unrestricted Subsidiaries that secure Indebtedness or other\nobligations of such Unrestricted Subsidiary;\n(38) Liens on property or assets used to defease or to irrevocably satisfy and discharge Indebtedness;\nprovided that such defeasance or satisfaction and discharge is not prohibited by this Agreement;\n\n-61-\n\n(39) Liens securing Indebtedness that was permitted by the terms of this Agreement to be incurred pursuant\nto Section 6.01(b)(1) hereof; provided that (i) Liens incurred pursuant to this clause on Collateral securing Indebtedness permitted to be incurred pursuant to Section 6.01(b)(1)(Y) shall be subject to applicable Customary\nIntercreditor Agreements and (ii) Liens on the Term Priority Collateral securing Indebtedness pursuant to Section 6.01(b)(1)(Y) shall rank junior to the Liens securing the Secured Obligations; provided , further , that, without\nany further consent of the Lenders, the Administrative Agent and the Collateral Agent are authorized and directed to execute and deliver on behalf of the Secured Parties any Customary Intercreditor Agreement contemplated by this clause;\n\n(40) Liens on the assets of Subsidiaries that are not Guarantors securing Indebtedness of such Subsidiaries that was permitted by the terms of this Agreement\nto be incurred;\n(41) Liens (i) on cash advances in favor of the seller of any property to be acquired in an Investment permitted under this\nAgreement to be applied against the purchase price for such Investment and (ii) incurred in connection with an agreement to sell, transfer, lease or otherwise dispose of any property in a transaction permitted under Section 6.05 hereof, in\neach case, solely to the extent such Investment or sale, disposition, transfer or lease, as the case may be, would have been permitted on the date of the creation of such Lien;\n\n(42) Liens on cash, Cash Equivalents and Permitted Investments used to satisfy or discharge Indebtedness;\n\n(43) Liens relating to future escrow arrangements securing Indebtedness;\n\n(44) Liens arising in connection with any Permitted Tax Restructuring or related transactions;\n\n(45) Liens incurred in connection with Ordinary Course Non-Recourse Third Party Financing Transactions;\n\n(46) (i) Liens in an aggregate amount not to exceed the Available RP Capacity Amount and (ii) Liens in an aggregate amount not to exceed the Available\nAmount that is Not Otherwise Applied; provided that Liens incurred pursuant to this clause (46) shall, at the election of the Initial Borrower, be permitted to be secured by the Collateral on a pari passu basis or junior basis\nwith the Secured Obligations, which if secured by the Collateral on a pari passu basis or junior basis with the Secured Obligations, the Initial Borrower and the Collateral Agent shall enter into an applicable Customary Intercreditor Agreement\n(or the representative for the holders of such Indebtedness or the holders of such Indebtedness shall become a party to any then-existing applicable Intercreditor Agreement);\n\n(47) [reserved];\n(48) Liens securing Indebtedness on assets\nnot constituting Collateral;\n(49) pledges or deposits of cash, cash equivalents or securities made pursuant to Requirements of Law or provided to a\nGovernmental Authority as required under Environmental Laws;\n(50) [reserved]; and\n\n(51) undetermined or inchoate Liens, arising or potentially arising under statutory provisions of applicable law, which have not been filed or registered\nunder applicable law or which although filed or registered, relate to obligations not yet due or delinquent for a period of time of not more than thirty (30) days or that are being contested in good faith by appropriate proceedings diligently\nconducted, if adequate reserves are maintained as per subsection (3) above.\nFor purposes of determining compliance with this definition, (x) a\nLien need not be incurred solely by reference to one category of Permitted Liens described in this definition but may be incurred under any combination of such categories (including in part under one such category and in part under any other\ncategories), (y) in the event that a Lien (or any portion thereof) meets the criteria of one or more of such categories of Permitted Liens, the Initial Borrower shall, in its sole discretion, classify or reclassify such Lien (or any portion thereof)\nin any manner that complies with this definition and (z) in the event that a portion of Indebtedness secured by a Lien could be classified as secured in part pursuant to clause (20) above (giving effect only to the incurrence of such\nportion of such Indebtedness), the Initial Borrower, in its sole discretion, may classify such portion of such Indebtedness (and any Obligations in respect thereof) as having been secured pursuant to clause (20) above and thereafter the\nremainder of the Indebtedness as having been secured pursuant to one or more of the other clauses of this definition.\n\n-62-\n\nFor purposes of this definition, the term “Indebtedness” shall be deemed to include interest on\nsuch Indebtedness.\n“ Permitted Ratio Debt ” has the meaning assigned to such term in Section 6.01(a).\n\n",
+     "contentHash": "3672e1df8d8f46c064f43218c748d9575c3c7438ce299be7d0a1c308eebd823d",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getSharedCapContext",
+    "input": {},
+    "outputSummary": "0 shared-cap context item(s)",
+    "charsReturned": 28,
+    "timestamp": "2026-09-14T16:51:33.481Z"
+   },
+   {
+    "toolName": "getDefinitionDependencies",
+    "input": {
+     "term": "Available RP Capacity Amount"
+    },
+    "outputSummary": "8 dependency term(s) found in \"Available RP Capacity Amount\"'s own text",
+    "charsReturned": 71,
+    "timestamp": "2026-09-14T16:51:37.233Z"
+   },
+   {
+    "toolName": "getDefinitionDependencies",
+    "input": {
+     "term": "Benchmark Replacement"
+    },
+    "outputSummary": "7 dependency term(s) found in \"Benchmark Replacement\"'s own text",
+    "charsReturned": 64,
+    "timestamp": "2026-09-14T16:51:37.235Z"
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": "[\n  {\n    \"localRef\": \"d1\",\n    \"termName\": \"Available RP Capacity Amount\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"SUBTRACT\",\n      \"left\": {\n        \"kind\": \"UNSUPPORTED\",\n        \"semanticDescription\": \"The base amount of Restricted Payments capacity available at the time of determination pursuant to Section 6.08 (Limitation on Restricted Payments) or the definition of 'Permitted Investments'\",\n        \"reason\": \"Section 6.08's substantive basket/formula text was requested via getReferencedProvision but only the section heading ('Section 6.08 Limitation on Restricted Payments.') was returned with no substantive body text in scope; 'Permitted Investments' is a long qualitative list of investment categories with no single quantifiable capacity figure, so the base amount cannot be derived from the evidence available.\",\n        \"sourceEvidence\": \"§1.01 (\\\"the amount of Restricted Payments that may be made at the time of determination pursuant to Section 6.08 or the definition of \\u2018Permitted Investments\\u2019\\\")\"\n      },\n      \"right\": {\n        \"kind\": \"ADD\",\n        \"operands\": [\n          {\n            \"kind\": \"UNSUPPORTED\",\n            \"semanticDescription\": \"the aggregate principal amount of Indebtedness incurred and outstanding under Section 6.01(b)(31), together with outstanding Indebtedness under Section 6.01(b)(13) incurred to Refinance Indebtedness originally incurred under 6.01(b)(31)\",\n            \"reason\": \"Section 6.01(b)(31) and 6.01(b)(13) text is out of the retrievable source-context scope (budget exhausted) and could not be resolved to a figure\",\n            \"sourceEvidence\": \"§1.01 clause (i)\"\n          },\n          {\n            \"kind\": \"UNSUPPORTED\",\n            \"semanticDescription\": \"the amount of the Available RP Capacity Amount itself that Restricted Parties have utilized to incur Liens under clause (46)(i) of the definition of 'Permitted Liens'\",\n            \"reason\": \"this reduction is self-referential (a usage-based ledger draw against this same defined term) and clause (46)(i) of 'Permitted Liens' was not reached before the definition text was truncated in the tool result, so no fixed value or formula can be stated\",\n            \"sourceEvidence\": \"§1.01 clause (ii)\"\n          }\n        ],\n        \"citation\": \"§1.01\"\n      },\n      \"citation\": \"§1.01\"\n    },\n    \"dependsOnTerms\": [\"Permitted Investments\", \"Permitted Liens\", \"Indebtedness\", \"Refinance\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\n      \"base capacity depends on Section 6.08's substantive Restricted Payments basket mechanics, which were attempted via getReferencedProvision but returned only a heading (no body) - out of scope\",\n      \"clause (i) reduction depends on Section 6.01(b)(31)/(13) Indebtedness baskets, explicitly flagged OUT_OF_SCOPE (source-context budget exhausted)\",\n      \"clause (ii) reduction is self-referential usage against this same term under Permitted Liens clause (46)(i), which is a running ledger draw rather than a static value, and the clause (46)(i) text itself was not reached\",\n      \"the double-reduction avoidance proviso (Indebtedness already reducing capacity is not double-counted against Permitted Liens clause (46)(i) usage) is captured only qualitatively, not as an executable formula\",\n      \"the Initial Borrower's allocation/reallocation election is an operational mechanic, not itself a quantitative component\"\n    ],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"the amount of Restricted Payments that may be made at the time of determination pursuant to Section 6.08 or the definition of \\u2018Permitted Investments\\u2019; provided that ... shall be reduced ... without duplication by (i) the aggregate principal amount of Indebtedness ... under Section 6.01(b)(31) ... and (ii) the amount of the Available RP Capacity Amount utilized ... to incur Liens pursuant to clause (46)(i) of the definition of \\u2018Permitted Liens\\u2019 ...\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d2\",\n    \"termName\": \"Available Tenor\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Benchmark\", \"Interest Period\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"fully descriptive, non-quantitative definition of which Benchmark tenors are usable; the excluded reference to clause (f) of Section 2.12 merely names where removal occurs and does not change this term's own meaning\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"any tenor for such Benchmark ... that is or may be used for determining the length of an Interest Period ... and not including ... any tenor ... then-removed from the definition of \\u2018Interest Period\\u2019 pursuant to clause (f) of Section 2.12.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d3\",\n    \"termName\": \"Bail-In Action\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Write-Down and Conversion Powers\", \"Resolution Authority\", \"Affected Financial Institution\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"short, fully self-contained, purely descriptive definition with no quantitative content\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"the exercise of any Write-Down and Conversion Powers by the applicable Resolution Authority in respect of any liability of an Affected Financial Institution.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d4\",\n    \"termName\": \"Bail-In Legislation\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"EEA Member Country\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\n      \"the EEA-country prong is defined solely by reference to Article 55 of Directive 2014/59/EU, an external instrument not resolvable from any evidence available (confirmed unresolvable cross-reference)\",\n      \"the UK prong (Part I of the UK Banking Act 2009 and related resolution law) is fully descriptive and captured\"\n    ],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"(a) with respect to any EEA Member Country implementing Article 55 of Directive 2014/59/EU ... the implementing law ... described in the EU Bail-In Legislation Schedule and (b) with respect to the United Kingdom, Part I of the United Kingdom Banking Act 2009 (as amended from time to time) and any other law, regulation or rule applicable in the United Kingdom relating to the resolution of unsound or failing banks...\",\n    \"inventoryItemIds\": [\"inv-item:83fff234181c1d313477265d\"]\n  },\n  {\n    \"localRef\": \"d5\",\n    \"termName\": \"Basel III\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"fully descriptive, informational reference to named published agreements and their publication date, with no quantitative capacity component\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"those certain agreements on capital requirements, a leverage ratio and liquidity standards contained in \\u2018Basel III: A Global Regulatory Framework...\\u2019 ... each as published by the Basel Committee on Banking Supervision in December 2010 (as revised from time to time), and as implemented by a Lender\\u2019s primary banking regulatory authority.\",\n    \"inventoryItemIds\": [\"inv-item:c8481fd7d7368bd1dde37b3d\"]\n  },\n  {\n    \"localRef\": \"d6\",\n    \"termName\": \"Benchmark\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Term SOFR Rate\", \"Term CORRA\", \"Benchmark Replacement\", \"Benchmark Transition Event\", \"Benchmark Replacement Date\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\n      \"the initial currency-by-currency index selection (Term SOFR Rate for USD, Term CORRA for CAD) is fully descriptive and captured\",\n      \"the term's value after a transition event depends on clause (c) of Section 2.12's replacement mechanics, which is out of the retrievable scope\",\n      \"expressing the currency-conditioned selection itself would require a categorical/enum comparison the IR's literal types (MONEY/NUMBER/RATIO/PERCENT/BOOLEAN/DATE) do not support - see irExtensionCandidates\"\n    ],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means, initially, with respect to any Term SOFR Loan denominated in U.S. Dollars, Term SOFR Rate, and with respect to any Alternative Currency Term Benchmark Loan denominated in Canadian Dollars, Term CORRA; provided that if a Benchmark Transition Event and the related Benchmark Replacement Date have occurred ... then \\u2018Benchmark\\u2019 means ... the applicable Benchmark Replacement ... pursuant to clause (c) of Section 2.12.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d7\",\n    \"termName\": \"Benchmark Replacement\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"MAX\",\n      \"operands\": [\n        {\n          \"kind\": \"UNSUPPORTED\",\n          \"semanticDescription\": \"the alternate benchmark rate selected by the Administrative Agent and the Initial Borrower to replace the then-current Benchmark, giving due consideration to Relevant Governmental Body recommendation(s) or evolving/prevailing market convention\",\n          \"reason\": \"this is a discretionary administrative/market-convention-based selection, not derivable as a fixed value or formula from the text\",\n          \"sourceEvidence\": \"§1.01\"\n        },\n        {\n          \"kind\": \"PERCENT\",\n          \"value\": 0.0,\n          \"citation\": \"§1.01\"\n        }\n      ],\n      \"citation\": \"§1.01\"\n    },\n    \"dependsOnTerms\": [\"Benchmark\", \"Benchmark Transition Event\", \"Administrative Agent\", \"Relevant Governmental Body\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\n      \"the zero-floor mechanic ('if the Benchmark Replacement would be less than 0.00%, ... deemed to be 0.00%') is fully quantifiable and represented as a MAX floor\",\n      \"the underlying replacement rate itself is a discretionary selection by the Administrative Agent and Initial Borrower and cannot be reduced to a fixed value or formula from the text\"\n    ],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"the alternate benchmark rate that has been selected by the Administrative Agent and the Initial Borrower ...; provided that, if the Benchmark Replacement would be less than 0.00%, the Benchmark Replacement will be deemed to be 0.00% for the purposes of this Agreement and the other Loan Documents.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d8\",\n    \"termName\": \"Benchmark Replacement Conforming Changes\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Benchmark Replacement\", \"Administrative Agent\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"fully descriptive definition of administrative/technical/operational conforming changes discretion, with no quantitative capacity component\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"any technical, administrative or operational changes ... that the Administrative Agent decides (in consultation with the Initial Borrower) may be appropriate to reflect the adoption and implementation of such Benchmark ...\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d9\",\n    \"termName\": \"Benchmark Replacement Date\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Benchmark\", \"Benchmark Transition Event\", \"Available Tenor\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"fully self-contained, event/date-trigger definition (earliest-to-occur of two clause-based events) fully quoted; not a quantitative capacity computation\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"the earliest to occur of the following events with respect to such then-current Benchmark: (1) ... the later of (a) the date of the public statement ... and (b) the date on which the administrator ... permanently or indefinitely ceases to provide all Available Tenors ...; or (2) ... the first date on which such Benchmark ... has been determined and announced ... to be no longer representative ...\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d10\",\n    \"termName\": \"Benchmark Transition Event\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Benchmark\", \"Available Tenor\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"fully self-contained, event-trigger definition (three enumerated public-statement scenarios) fully quoted; not a quantitative capacity computation\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"the occurrence of one or more of the following events with respect to such then-current Benchmark: (1) a public statement or publication ... announcing that such administrator has ceased or will cease to provide all Available Tenors ...; (2) a public statement ... by the regulatory supervisor ...; or (3) a public statement ... announcing that all Available Tenors ... are no longer, or ... will no longer be, representative.\",\n    \"inventoryItemIds\": []\n  }\n]",
+   "rules": [],
+   "sharedCapacities": "[]",
+   "irExtensionCandidates": "[\n  {\n    \"sourceEvidence\": \"§1.01 definition of 'Benchmark': \\\"with respect to any Term SOFR Loan denominated in U.S. Dollars, Term SOFR Rate, and with respect to any Alternative Currency Term Benchmark Loan denominated in Canadian Dollars, Term CORRA\\\"\",\n    \"semanticRequirement\": \"Selecting among named alternatives (e.g. a rate index) based on a categorical/enum transaction attribute such as currency (USD vs CAD), rather than a numeric/date/boolean comparison\",\n    \"whyExistingPrimitivesFail\": \"COMPARE only supports GT/GTE/LT/LTE/EQ over MONEY/NUMBER/RATIO/PERCENT/DATE-typed operands, and there is no STRING or ENUM literal node type to represent a categorical value like a currency code for an EQ comparison, so an IF/COMPARE tree cannot faithfully express currency-conditioned selection\",\n    \"candidateGeneralizedPrimitive\": \"an ENUM_LITERAL (or CATEGORY_MATCH) node type plus allowing COMPARE's EQ operator to accept it, enabling faithful modeling of categorical selection logic (e.g. by currency, by loan type) that recurs across benchmark/rate definitions\"\n  }\n]",
+   "overallNotes": "[\n  \"Source region 1.01 is a definitions block containing 10 independent defined terms; all 10 were extracted as separate WireDefinitions per the multiple-definitions rule.\",\n  \"Available RP Capacity Amount is the only term with real quantitative/formula structure (a base RP capacity reduced by two enumerated, without-duplication reductions); its base capacity and both reductions ultimately depend on Section 6.08, Section 6.01(b)(31)/(13), and Permitted Liens clause (46)(i), none of which were resolvable within the retrievable scope (Section 6.08 was attempted via getReferencedProvision and returned only a heading; the other references were already flagged OUT_OF_SCOPE due to source-context budget exhaustion). The SUBTRACT/ADD structure itself is nonetheless faithfully represented, with UNSUPPORTED leaves carrying the unresolved components.\",\n  \"The Initial Borrower's allocation/reallocation election within Available RP Capacity Amount is an operational mechanic, not a computable value, and was not separately dispositioned as it does not correspond to a frozen inventory item.\",\n  \"Both frozen inventory items (Bail-In Legislation's Article 55 external reference; Basel III's December 2010 publication date) were consumed directly on their respective WireDefinitions.\",\n  \"The two deterministically-detected 0.00% values both belong to the single zero-floor proviso in the 'Benchmark Replacement' definition ('if ... less than 0.00% ... deemed to be 0.00%') and were represented together via one MAX floor node.\",\n  \"Getting Section 6.08's substantive text via getReferencedProvision returned only the section heading with no body (a degenerate/heading-only companion node was excluded by the tool itself), confirming the cross-reference could not be resolved further within this session's scope.\"\n]",
+   "inventoryDispositions": "[]"
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T16:53:17.704Z",
+   "inputTokens": 127529,
+   "outputTokens": 19474,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 4,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 187795,
+   "calculatedCostUsd": 0.44979800000000003
+  },
+  "cacheKey": "3d4b9af0ab57e9980f50bd8a88417e8060c00a5d8aa9f75d35141b211d6e1920",
+  "compiledAt": "2026-09-14T16:53:17.704Z"
+ },
+ "wave": "A",
+ "attemptsSoFar": 1
+}
