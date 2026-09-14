@@ -31,6 +31,7 @@ import { MissingCompilerCredentialError } from "../llm-caller";
 import { buildFewShotExamplesBlock, buildSystemPrompt } from "./prompt";
 import { buildToolSet, ToolRunner } from "./tools";
 import { SubmitCompilationSchema, WireDefinitionSchema, WireRuleSchema, type SubmitCompilationInput } from "./wire-schema";
+import { normalizeSubmitCompilationTransport, type TransportNormalizationAudit } from "./transport-normalization";
 import { DEFAULT_TOOL_BUDGET, type SemanticCompilerFailureReason, type SemanticCompilerInput, type ToolCallLogEntry } from "./types";
 import { validateToolUseProtocol } from "./tool-protocol";
 import type { ItemSupport } from "../semantic-accountability/types";
@@ -124,11 +125,14 @@ export interface MinimalAnthropicClient {
 
 export interface SemanticCallerResult {
   submission: SubmitCompilationInput | null;
+  /** The provider's submit_compilation tool input exactly as received - never rewritten (F-7B.1: transport normalization is applied to a copy). */
   rawSubmission: unknown;
   toolCallLog: ToolCallLogEntry[];
   telemetry: AnalyzerCallTelemetry | null;
   failureReason: SemanticCompilerFailureReason | null;
   failureDetail: string | null;
+  /** F-7B.1 (additive): what the transport-normalization step did to the terminal submit input before the wire schema judged it; null when no submit block was received. */
+  transportNormalization?: TransportNormalizationAudit | null;
 }
 
 export interface SemanticCaller {
@@ -341,9 +345,10 @@ export class RealSemanticCaller implements SemanticCaller {
      * that failure reason attached - never discarded, never promoted: its
      * own sufficiency values are exactly what the model stated.
      */
-    let heldProvisional: { submission: SubmitCompilationInput; raw: unknown } | null = null;
+    let heldProvisional: { submission: SubmitCompilationInput; raw: unknown; audit: TransportNormalizationAudit | null } | null = null;
+    let lastTransportAudit: TransportNormalizationAudit | null = null;
     const retainingHeld = (reason: SemanticCompilerFailureReason, detail: string, telemetry: AnalyzerCallTelemetry): SemanticCallerResult | null =>
-      heldProvisional ? this.finish(heldProvisional.submission, heldProvisional.raw, toolRunner.log, telemetry, reason, `${detail} - the provisional submission received before the retrieval nudge is RETAINED with the sufficiency the model itself stated (it was never accepted as complete by this caller; this failure reason marks why the continuation ended)`) : null;
+      heldProvisional ? this.finish(heldProvisional.submission, heldProvisional.raw, toolRunner.log, telemetry, reason, `${detail} - the provisional submission received before the retrieval nudge is RETAINED with the sufficiency the model itself stated (it was never accepted as complete by this caller; this failure reason marks why the continuation ended)`, heldProvisional.audit) : null;
 
     const maxTurns = budget.maxToolCalls + MAX_TURN_OVERHEAD;
     const maxTokens = resolveMaxTokens();
@@ -379,7 +384,12 @@ export class RealSemanticCaller implements SemanticCaller {
       const toolUseBlocks = message.content.filter((b): b is Anthropic.ToolUseBlock => b.type === "tool_use");
       const submitBlock = toolUseBlocks.find((b) => b.name === SUBMIT_TOOL_NAME);
       if (submitBlock) {
-        const parsed = SubmitCompilationSchema.safeParse(submitBlock.input);
+        // F-7B.1: representational transport normalization ONLY (a top-level array field that arrived as a JSON-encoded
+        // string is decoded; nothing else changes) - the wire schema below stays the sole judge of content, and
+        // submitBlock.input is retained untouched as rawSubmission.
+        const transport = normalizeSubmitCompilationTransport(submitBlock.input);
+        lastTransportAudit = transport.audit;
+        const parsed = SubmitCompilationSchema.safeParse(transport.value);
         const telemetry = this.buildTelemetry(input.compilerPromptVersion, input.irSchemaVersion, startedAt, aggInputTokens, aggOutputTokens, aggCachedInputTokens, aggCacheCreationInputTokens, aggAttempts, aggRetryCount, aggRateLimitFailures);
         if (!parsed.success) {
           // Phase 3B.1 (task §5/§10): only attempt partial-output recovery when the provider's own
@@ -388,11 +398,11 @@ export class RealSemanticCaller implements SemanticCaller {
           if (message.stop_reason === "max_tokens") {
             const recovery = recoverPartialSubmission(submitBlock.input);
             if (recovery) {
-              return this.finish(recovery.recovered, submitBlock.input, toolRunner.log, telemetry, "OUTPUT_TRUNCATED", `response was truncated at the output-token ceiling (max_tokens=${maxTokens}); recovered ${recovery.rulesRecovered} rule(s) and ${recovery.definitionsRecovered} definition(s) as a validated prefix, dropped ${recovery.rulesDropped} rule(s) and ${recovery.definitionsDropped} definition(s) after the truncation point`);
+              return this.finish(recovery.recovered, submitBlock.input, toolRunner.log, telemetry, "OUTPUT_TRUNCATED", `response was truncated at the output-token ceiling (max_tokens=${maxTokens}); recovered ${recovery.rulesRecovered} rule(s) and ${recovery.definitionsRecovered} definition(s) as a validated prefix, dropped ${recovery.rulesDropped} rule(s) and ${recovery.definitionsDropped} definition(s) after the truncation point`, lastTransportAudit);
             }
-            return this.finish(null, submitBlock.input, toolRunner.log, telemetry, "OUTPUT_TRUNCATED", `response was truncated at the output-token ceiling (max_tokens=${maxTokens}) and no valid rule/definition prefix could be recovered`);
+            return this.finish(null, submitBlock.input, toolRunner.log, telemetry, "OUTPUT_TRUNCATED", `response was truncated at the output-token ceiling (max_tokens=${maxTokens}) and no valid rule/definition prefix could be recovered`, lastTransportAudit);
           }
-          return this.finish(null, submitBlock.input, toolRunner.log, telemetry, "MODEL_SCHEMA_FAILURE", `submit_compilation input failed schema validation: ${parsed.error.message}`);
+          return this.finish(null, submitBlock.input, toolRunner.log, telemetry, "MODEL_SCHEMA_FAILURE", `submit_compilation input failed schema validation: ${parsed.error.message}`, lastTransportAudit);
         }
 
         // Phase 3B.1 (task §12/§16) - mechanical, generic (never package/section-specific)
@@ -408,7 +418,7 @@ export class RealSemanticCaller implements SemanticCaller {
         const hasUnresolvedSufficiency = parsed.data.rules.some((r) => r.sufficiency === "UNSUPPORTED" || r.sufficiency === "MISSING_CONTEXT") || parsed.data.definitions.some((d) => d.sufficiency === "UNSUPPORTED" || d.sufficiency === "MISSING_CONTEXT");
         if (hasUnresolvedSufficiency && toolRunner.log.length === 0 && toolRunner.remainingCalls > 0 && !retrievalNudgeUsed) {
           retrievalNudgeUsed = true;
-          heldProvisional = { submission: parsed.data, raw: submitBlock.input };
+          heldProvisional = { submission: parsed.data, raw: submitBlock.input, audit: lastTransportAudit };
           messages.push({ role: "assistant", content: message.content });
           // F-1: the nudge is the tool_result of the provisional submit call; any evidence tool the model
           // requested in the same turn is served alongside it, so every tool_use in the turn is answered.
@@ -416,7 +426,7 @@ export class RealSemanticCaller implements SemanticCaller {
           continue;
         }
 
-        return this.finish(parsed.data, submitBlock.input, toolRunner.log, telemetry, null, null);
+        return this.finish(parsed.data, submitBlock.input, toolRunner.log, telemetry, null, null, lastTransportAudit);
       }
 
       if (toolUseBlocks.length > 0) {
@@ -439,8 +449,8 @@ export class RealSemanticCaller implements SemanticCaller {
     return retainingHeld("TOOL_BUDGET_EXHAUSTED", `model did not call submit_compilation within ${maxTurns} turns (tool budget ${budget.maxToolCalls})`, telemetry) ?? this.finish(null, null, toolRunner.log, telemetry, "TOOL_BUDGET_EXHAUSTED", `model did not call submit_compilation within ${maxTurns} turns (tool budget ${budget.maxToolCalls})`);
   }
 
-  private finish(submission: SubmitCompilationInput | null, rawSubmission: unknown, toolCallLog: ToolCallLogEntry[], telemetry: AnalyzerCallTelemetry, failureReason: SemanticCompilerFailureReason | null, failureDetail: string | null): SemanticCallerResult {
-    return { submission, rawSubmission, toolCallLog, telemetry, failureReason, failureDetail };
+  private finish(submission: SubmitCompilationInput | null, rawSubmission: unknown, toolCallLog: ToolCallLogEntry[], telemetry: AnalyzerCallTelemetry, failureReason: SemanticCompilerFailureReason | null, failureDetail: string | null, transportNormalization: TransportNormalizationAudit | null = null): SemanticCallerResult {
+    return { submission, rawSubmission, toolCallLog, telemetry, failureReason, failureDetail, transportNormalization };
   }
 
   private buildTelemetry(

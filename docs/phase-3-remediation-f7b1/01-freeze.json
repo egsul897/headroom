@@ -1,0 +1,92 @@
+{
+ "artifact": "F-7B.1 §1 freeze of the failed F-7B canary",
+ "startingSha": "c58acd9c9985569f24e19355e924e0338e56bcb5",
+ "gitSha": "c58acd9c9985569f24e19355e924e0338e56bcb5",
+ "shaMatches": true,
+ "productionDiffAtF7bStart": "(none)",
+ "productionDiffAtF7bStartWasZero": true,
+ "planHash": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+ "planHashMatchesF7A": true,
+ "planHashMatchesF7BFrozenPlan": true,
+ "shardHashesSha256": "656e40993d8bea5264b8cb7fbbd25d2afcb1cf7d6ef0154cfcc51975ecc76ba7",
+ "shardHashesMatchF7B": true,
+ "stage1ShardIds": [
+  "shard:4f06625557e9aecbbb7a",
+  "shard:1c29e71eef1717d4f9e1",
+  "shard:3e3910ea2efd9edd45a3",
+  "shard:aac727054a5da5f1a9fd",
+  "shard:bf3da01cb454860cdf5f"
+ ],
+ "retainedRawSubmissions": [
+  {
+   "shardId": "shard:1c29e71eef1717d4f9e1",
+   "path": "tests/fixtures/unseen-packages/f7b-chewy-101-canary/shard-02-1c29e71eef1717d4f9e1.json",
+   "rawSha256": "d41f4929a8aac27255369352d02f16c46973326e9177136d095b156cec76e01f"
+  },
+  {
+   "shardId": "shard:bf3da01cb454860cdf5f",
+   "path": "tests/fixtures/unseen-packages/f7b-chewy-101-canary/shard-17-bf3da01cb454860cdf5f.json",
+   "rawSha256": "e1c787793f6e51142ab06611d92a72ed25fc17cd4b29de0861ea0a5291a4f609"
+  },
+  {
+   "shardId": "shard:aac727054a5da5f1a9fd",
+   "path": "tests/fixtures/unseen-packages/f7b-chewy-101-canary/shard-21-aac727054a5da5f1a9fd.json",
+   "rawSha256": "e3efb3cac2b9a95e5de3c1431afd71ff8b24d49b98bf2efb07b52370fc90ab1f"
+  },
+  {
+   "shardId": "shard:4f06625557e9aecbbb7a",
+   "path": "tests/fixtures/unseen-packages/f7b-chewy-101-canary/shard-26-4f06625557e9aecbbb7a.json",
+   "rawSha256": "7decfe37182deee3ec7b2279f2a17a11bec33e8fb430895b21ceea6fa889929c"
+  },
+  {
+   "shardId": "shard:3e3910ea2efd9edd45a3",
+   "path": "tests/fixtures/unseen-packages/f7b-chewy-101-canary/shard-27-3e3910ea2efd9edd45a3.json",
+   "rawSha256": "ee0c8f0b6b6d2132ca7b1129c3688611c8e8fd0f69e971516e20fd82c739af86"
+  }
+ ],
+ "retainedCount": 5,
+ "allFiveRetained": true,
+ "scorerAndGatesSha256": "3416cc44cdbcb6acefbe2bccedfeac68ad364326f20ff05f2a74126e1e76f160",
+ "identity": {
+  "gitSha": "c58acd9c9985569f24e19355e924e0338e56bcb5",
+  "documentSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+  "unitFixtureSha256": "a9221844bc412fe55a7be082a5ec06ceccbd211710d34da4e0ba2168296b5f35",
+  "candidateRef": "phase-3-validation:chwy:1.01",
+  "companyId": "phase-3-validation-chwy",
+  "instrumentKey": "chwy-2026-revolving-credit-instrument",
+  "structuralIndexIdentity": {
+   "anchorNodeId": "structural-node:8b885cd23dfbee72c58ad5da",
+   "definitionsInUnit": 379,
+   "unitsSha256": "5c7f6c4a12148611c7113cc12651e5c07348569a4cbf1279338af88316780fe8"
+  },
+  "sourceContextIdentity": {
+   "state": "COMPLETE_LOCAL_SOURCE",
+   "regionCharStart": 8980,
+   "regionCharEnd": 362503,
+   "regionChars": 353523,
+   "regionSha256": "b7e3f0214f7b2fe353b401e312816877c415795dfc7c8c22d09804d50b2b604c",
+   "unresolvedReferences": 144
+  },
+  "frozenInventory": {
+   "frozenContentHash": "9e5ec23580d3bbf3b5a69fdd932b6874caec1a14c0e3ef1e6e203dda07258e34",
+   "items": 109,
+   "material": 108,
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "algorithmVersion": "semantic-accountability.v3"
+  },
+  "shardPlannerAlgorithmVersion": "semantic-compilation-shards.v1",
+  "compilerPromptVersion": "semantic-accountability-compiler-prompt.v4",
+  "compilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+  "toolPolicyVersion": "phase-3b1-tool-policy.v2",
+  "irSchemaVersion": "headroom-covenant-ir.v1",
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "budget": {
+   "targetPrimaryChars": 12000,
+   "maxPrimaryChars": 24000,
+   "maxContextChars": 10000,
+   "maxContextEntryChars": 1800,
+   "maxUnitsPerShard": 16
+  }
+ }
+}

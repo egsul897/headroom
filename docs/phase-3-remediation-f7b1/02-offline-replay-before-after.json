@@ -1,0 +1,575 @@
+{
+ "artifact": "F-7B.1 §12 retained-raw replay: BEFORE (starting-SHA schema) and AFTER (transport normalizer -> schema -> normalizeSubmission -> IR validation -> owned-shard reconciliation)",
+ "gitSha": "c58acd9c9985569f24e19355e924e0338e56bcb5",
+ "allFiveSchemaValidAfter": true,
+ "semanticPayloadExactEquality": true,
+ "totals": {
+  "ownedMaterialTotal": 28,
+  "represented": 13,
+  "dispositioned": 11,
+  "missing": 4,
+  "claimsOnUnowned": 0,
+  "definitionsOutside": 21
+ },
+ "perShard": [
+  {
+   "shardId": "shard:4f06625557e9aecbbb7a",
+   "decodedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "inventoryDispositions",
+    "overallNotes"
+   ],
+   "schemaValidBefore": false,
+   "schemaValidAfter": true,
+   "rules": 6,
+   "definitions": 2,
+   "sharedCapacities": 0,
+   "dispositions": 0,
+   "irExtensionCandidates": 1,
+   "irValidationOk": true,
+   "irValidationIssues": 0,
+   "normalizationWarnings": 17,
+   "ownedMaterialTotal": 6,
+   "ownedMaterialRepresented": 6,
+   "ownedMaterialDispositioned": 0,
+   "ownedMaterialMissing": 0,
+   "valuesRepresented": 9,
+   "valuesMissing": 0,
+   "byDisposition": {
+    "REPRESENTED": 6
+   },
+   "lineageClaims": 16,
+   "claimsOnUnownedInventory": 0,
+   "definitionsOutsideOwnedUnits": [
+    "Permitted Ratio Debt"
+   ],
+   "definitionsOutsideOwnedUnitsDetail": [
+    {
+     "term": "Permitted Ratio Debt",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    }
+   ],
+   "definitionsOutsideThatAreOtherShardsUnits": 0,
+   "definitionsOutsideNestedInOwnText": 1,
+   "equality": [
+    {
+     "field": "definitions",
+     "originalStringSha256": "c02e0cb0dab6dcf5ede183c25c858fa74537acc94e3c7e5c9da2f697f583a611",
+     "originalStringSha256Recomputed": "c02e0cb0dab6dcf5ede183c25c858fa74537acc94e3c7e5c9da2f697f583a611",
+     "jsonParseOfOriginalSha256": "20827145278baab8dbe19c3e52362122ae37ecfd2acc1d120968287f9cf175f1",
+     "decodedValueSha256": "20827145278baab8dbe19c3e52362122ae37ecfd2acc1d120968287f9cf175f1",
+     "equal": true,
+     "elementCount": 2,
+     "elementCountOfParse": 2
+    },
+    {
+     "field": "sharedCapacities",
+     "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "originalStringSha256Recomputed": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "jsonParseOfOriginalSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "decodedValueSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "equal": true,
+     "elementCount": 0,
+     "elementCountOfParse": 0
+    },
+    {
+     "field": "irExtensionCandidates",
+     "originalStringSha256": "25b066235aef9d2ca11c6bd0a7a8bcac78a97c9da97436dc995611016b385d7e",
+     "originalStringSha256Recomputed": "25b066235aef9d2ca11c6bd0a7a8bcac78a97c9da97436dc995611016b385d7e",
+     "jsonParseOfOriginalSha256": "4fcfe1b8c67857493e445f9aab5c361ddd6aca09c48bc76f40746b8b336ff114",
+     "decodedValueSha256": "4fcfe1b8c67857493e445f9aab5c361ddd6aca09c48bc76f40746b8b336ff114",
+     "equal": true,
+     "elementCount": 1,
+     "elementCountOfParse": 1
+    },
+    {
+     "field": "inventoryDispositions",
+     "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "originalStringSha256Recomputed": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "jsonParseOfOriginalSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "decodedValueSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "equal": true,
+     "elementCount": 0,
+     "elementCountOfParse": 0
+    },
+    {
+     "field": "overallNotes",
+     "originalStringSha256": "9f9487974ef30a0727e8fcc5a76100ba09b46c805524dae9888d42a3a9807257",
+     "originalStringSha256Recomputed": "9f9487974ef30a0727e8fcc5a76100ba09b46c805524dae9888d42a3a9807257",
+     "jsonParseOfOriginalSha256": "05763d89ef2d33379f143620acc2a695c5fbfe08b2f03eefff3b00686096928d",
+     "decodedValueSha256": "05763d89ef2d33379f143620acc2a695c5fbfe08b2f03eefff3b00686096928d",
+     "equal": true,
+     "elementCount": 4,
+     "elementCountOfParse": 4
+    }
+   ],
+   "untouchedFieldsIdentical": true,
+   "matchesF7BDiagnostic": true
+  },
+  {
+   "shardId": "shard:1c29e71eef1717d4f9e1",
+   "decodedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "inventoryDispositions",
+    "overallNotes"
+   ],
+   "schemaValidBefore": false,
+   "schemaValidAfter": true,
+   "rules": 0,
+   "definitions": 6,
+   "sharedCapacities": 0,
+   "dispositions": 11,
+   "irExtensionCandidates": 1,
+   "irValidationOk": true,
+   "irValidationIssues": 0,
+   "normalizationWarnings": 14,
+   "ownedMaterialTotal": 11,
+   "ownedMaterialRepresented": 0,
+   "ownedMaterialDispositioned": 11,
+   "ownedMaterialMissing": 0,
+   "valuesRepresented": 0,
+   "valuesMissing": 0,
+   "byDisposition": {
+    "UNSUPPORTED": 11
+   },
+   "lineageClaims": 15,
+   "claimsOnUnownedInventory": 0,
+   "definitionsOutsideOwnedUnits": [
+    "Asset Sale Prepayment Event",
+    "Asset Sale Proceeds Application Period",
+    "Available Amount"
+   ],
+   "definitionsOutsideOwnedUnitsDetail": [
+    {
+     "term": "Asset Sale Prepayment Event",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    },
+    {
+     "term": "Asset Sale Proceeds Application Period",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    },
+    {
+     "term": "Available Amount",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    }
+   ],
+   "definitionsOutsideThatAreOtherShardsUnits": 0,
+   "definitionsOutsideNestedInOwnText": 3,
+   "equality": [
+    {
+     "field": "definitions",
+     "originalStringSha256": "2604c108627d312cd665f8e75d07c9593d052c3d48057c544516094d3791d777",
+     "originalStringSha256Recomputed": "2604c108627d312cd665f8e75d07c9593d052c3d48057c544516094d3791d777",
+     "jsonParseOfOriginalSha256": "f1a68108209ac534b9bfb8c837b9b3452a11ef48fb951f9540d572055f525f51",
+     "decodedValueSha256": "f1a68108209ac534b9bfb8c837b9b3452a11ef48fb951f9540d572055f525f51",
+     "equal": true,
+     "elementCount": 6,
+     "elementCountOfParse": 6
+    },
+    {
+     "field": "sharedCapacities",
+     "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "originalStringSha256Recomputed": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "jsonParseOfOriginalSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "decodedValueSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "equal": true,
+     "elementCount": 0,
+     "elementCountOfParse": 0
+    },
+    {
+     "field": "irExtensionCandidates",
+     "originalStringSha256": "5fc7cb821edb9c60d60bb0d020ccd867baccce70129e1f26f415ca7a0d8ca1e6",
+     "originalStringSha256Recomputed": "5fc7cb821edb9c60d60bb0d020ccd867baccce70129e1f26f415ca7a0d8ca1e6",
+     "jsonParseOfOriginalSha256": "16c333cf1e0955aba888d026a42206fd6c0af17ac8355c5607cf873c54405464",
+     "decodedValueSha256": "16c333cf1e0955aba888d026a42206fd6c0af17ac8355c5607cf873c54405464",
+     "equal": true,
+     "elementCount": 1,
+     "elementCountOfParse": 1
+    },
+    {
+     "field": "inventoryDispositions",
+     "originalStringSha256": "c8fcdc0fdf356ddbb128d52a8ad6555bfd12298233f1223a2467b73206ca046a",
+     "originalStringSha256Recomputed": "c8fcdc0fdf356ddbb128d52a8ad6555bfd12298233f1223a2467b73206ca046a",
+     "jsonParseOfOriginalSha256": "d2a000c44552145bcd3d343cd59c83e65682bb0728a0e37436a5850499c097e8",
+     "decodedValueSha256": "d2a000c44552145bcd3d343cd59c83e65682bb0728a0e37436a5850499c097e8",
+     "equal": true,
+     "elementCount": 11,
+     "elementCountOfParse": 11
+    },
+    {
+     "field": "overallNotes",
+     "originalStringSha256": "7a00764485607cdbb543a5660eb6baa1199417669f55f6c50b17b88bd8c87d67",
+     "originalStringSha256Recomputed": "7a00764485607cdbb543a5660eb6baa1199417669f55f6c50b17b88bd8c87d67",
+     "jsonParseOfOriginalSha256": "e586638e9ecdb064bed5d80ed67f0f09ddd5fe8fdf934c2720f357f8a69900b2",
+     "decodedValueSha256": "e586638e9ecdb064bed5d80ed67f0f09ddd5fe8fdf934c2720f357f8a69900b2",
+     "equal": true,
+     "elementCount": 6,
+     "elementCountOfParse": 6
+    }
+   ],
+   "untouchedFieldsIdentical": true,
+   "matchesF7BDiagnostic": true
+  },
+  {
+   "shardId": "shard:3e3910ea2efd9edd45a3",
+   "decodedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "overallNotes"
+   ],
+   "schemaValidBefore": false,
+   "schemaValidAfter": true,
+   "rules": 0,
+   "definitions": 21,
+   "sharedCapacities": 0,
+   "dispositions": 0,
+   "irExtensionCandidates": 1,
+   "irValidationOk": true,
+   "irValidationIssues": 0,
+   "normalizationWarnings": 12,
+   "ownedMaterialTotal": 3,
+   "ownedMaterialRepresented": 0,
+   "ownedMaterialDispositioned": 0,
+   "ownedMaterialMissing": 3,
+   "valuesRepresented": 0,
+   "valuesMissing": 5,
+   "byDisposition": {
+    "MISSING_FROM_COMPOSITION": 3
+   },
+   "lineageClaims": 6,
+   "claimsOnUnownedInventory": 0,
+   "definitionsOutsideOwnedUnits": [
+    "Planned Expenditures",
+    "Platform",
+    "Transaction Threshold",
+    "Annual Threshold",
+    "Pro Forma Basis",
+    "Proposed Change"
+   ],
+   "definitionsOutsideOwnedUnitsDetail": [
+    {
+     "term": "Planned Expenditures",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    },
+    {
+     "term": "Platform",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    },
+    {
+     "term": "Transaction Threshold",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    },
+    {
+     "term": "Annual Threshold",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    },
+    {
+     "term": "Pro Forma Basis",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    },
+    {
+     "term": "Proposed Change",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    }
+   ],
+   "definitionsOutsideThatAreOtherShardsUnits": 0,
+   "definitionsOutsideNestedInOwnText": 6,
+   "equality": [
+    {
+     "field": "definitions",
+     "originalStringSha256": "4cfb45597bc085607e5de02556bb5959caacad77183fcc7c3b4c3cad50a071e0",
+     "originalStringSha256Recomputed": "4cfb45597bc085607e5de02556bb5959caacad77183fcc7c3b4c3cad50a071e0",
+     "jsonParseOfOriginalSha256": "1be176addd05349ad172b28a41ccbd13cbbc1d61af498de25567120557a0ca53",
+     "decodedValueSha256": "1be176addd05349ad172b28a41ccbd13cbbc1d61af498de25567120557a0ca53",
+     "equal": true,
+     "elementCount": 21,
+     "elementCountOfParse": 21
+    },
+    {
+     "field": "sharedCapacities",
+     "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "originalStringSha256Recomputed": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "jsonParseOfOriginalSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "decodedValueSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "equal": true,
+     "elementCount": 0,
+     "elementCountOfParse": 0
+    },
+    {
+     "field": "irExtensionCandidates",
+     "originalStringSha256": "cc66ed97d7c382cbb4c4aa638ea96a4f9f1f9e08c55b072564a53882bff2b779",
+     "originalStringSha256Recomputed": "cc66ed97d7c382cbb4c4aa638ea96a4f9f1f9e08c55b072564a53882bff2b779",
+     "jsonParseOfOriginalSha256": "39944e0c9bc9899d3ea9780b02676c2a0ffb02169b6a55e8abe19ef17f3030e5",
+     "decodedValueSha256": "39944e0c9bc9899d3ea9780b02676c2a0ffb02169b6a55e8abe19ef17f3030e5",
+     "equal": true,
+     "elementCount": 1,
+     "elementCountOfParse": 1
+    },
+    {
+     "field": "overallNotes",
+     "originalStringSha256": "123e83e065ba02e1f6babe1a186576e19f0a88495f6705ce6f974bc8ab4a242e",
+     "originalStringSha256Recomputed": "123e83e065ba02e1f6babe1a186576e19f0a88495f6705ce6f974bc8ab4a242e",
+     "jsonParseOfOriginalSha256": "1b519e2498c70c2aabb052f174ea8b067ddd1c98f844ea5dd3bc80e3b01c77f6",
+     "decodedValueSha256": "1b519e2498c70c2aabb052f174ea8b067ddd1c98f844ea5dd3bc80e3b01c77f6",
+     "equal": true,
+     "elementCount": 4,
+     "elementCountOfParse": 4
+    }
+   ],
+   "untouchedFieldsIdentical": true,
+   "matchesF7BDiagnostic": true
+  },
+  {
+   "shardId": "shard:aac727054a5da5f1a9fd",
+   "decodedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "inventoryDispositions",
+    "overallNotes"
+   ],
+   "schemaValidBefore": false,
+   "schemaValidAfter": true,
+   "rules": 0,
+   "definitions": 21,
+   "sharedCapacities": 0,
+   "dispositions": 0,
+   "irExtensionCandidates": 0,
+   "irValidationOk": true,
+   "irValidationIssues": 0,
+   "normalizationWarnings": 4,
+   "ownedMaterialTotal": 0,
+   "ownedMaterialRepresented": 0,
+   "ownedMaterialDispositioned": 0,
+   "ownedMaterialMissing": 0,
+   "valuesRepresented": 0,
+   "valuesMissing": 0,
+   "byDisposition": {},
+   "lineageClaims": 0,
+   "claimsOnUnownedInventory": 0,
+   "definitionsOutsideOwnedUnits": [
+    "LCT Election",
+    "LCT Test Date",
+    "Loan Modification Offer",
+    "Market Convention Rate",
+    "Master Agreement"
+   ],
+   "definitionsOutsideOwnedUnitsDetail": [
+    {
+     "term": "LCT Election",
+     "definedInsideShardPrimaryText": false,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    },
+    {
+     "term": "LCT Test Date",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    },
+    {
+     "term": "Loan Modification Offer",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    },
+    {
+     "term": "Market Convention Rate",
+     "definedInsideShardPrimaryText": false,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    },
+    {
+     "term": "Master Agreement",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    }
+   ],
+   "definitionsOutsideThatAreOtherShardsUnits": 0,
+   "definitionsOutsideNestedInOwnText": 3,
+   "equality": [
+    {
+     "field": "definitions",
+     "originalStringSha256": "d9fa2608075e73bd93bd1a7f8330bd29109a07001dcf106f05de7cfa25b3c900",
+     "originalStringSha256Recomputed": "d9fa2608075e73bd93bd1a7f8330bd29109a07001dcf106f05de7cfa25b3c900",
+     "jsonParseOfOriginalSha256": "4a6e5a64abecb05e895ad5853c490b7d7651733dba80b976c65431ea2a85a536",
+     "decodedValueSha256": "4a6e5a64abecb05e895ad5853c490b7d7651733dba80b976c65431ea2a85a536",
+     "equal": true,
+     "elementCount": 21,
+     "elementCountOfParse": 21
+    },
+    {
+     "field": "sharedCapacities",
+     "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "originalStringSha256Recomputed": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "jsonParseOfOriginalSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "decodedValueSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "equal": true,
+     "elementCount": 0,
+     "elementCountOfParse": 0
+    },
+    {
+     "field": "irExtensionCandidates",
+     "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "originalStringSha256Recomputed": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "jsonParseOfOriginalSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "decodedValueSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "equal": true,
+     "elementCount": 0,
+     "elementCountOfParse": 0
+    },
+    {
+     "field": "inventoryDispositions",
+     "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "originalStringSha256Recomputed": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "jsonParseOfOriginalSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "decodedValueSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "equal": true,
+     "elementCount": 0,
+     "elementCountOfParse": 0
+    },
+    {
+     "field": "overallNotes",
+     "originalStringSha256": "e51655377a8f1d81396e824aba6842d2fec01c5f581eff1799750242257bb921",
+     "originalStringSha256Recomputed": "e51655377a8f1d81396e824aba6842d2fec01c5f581eff1799750242257bb921",
+     "jsonParseOfOriginalSha256": "40a305be00022139298e4e6b7447eca23abe91bfefd8ea4510c2b0c1256e3530",
+     "decodedValueSha256": "40a305be00022139298e4e6b7447eca23abe91bfefd8ea4510c2b0c1256e3530",
+     "equal": true,
+     "elementCount": 7,
+     "elementCountOfParse": 7
+    }
+   ],
+   "untouchedFieldsIdentical": true,
+   "matchesF7BDiagnostic": true
+  },
+  {
+   "shardId": "shard:bf3da01cb454860cdf5f",
+   "decodedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "overallNotes"
+   ],
+   "schemaValidBefore": false,
+   "schemaValidAfter": true,
+   "rules": 0,
+   "definitions": 22,
+   "sharedCapacities": 0,
+   "dispositions": 0,
+   "irExtensionCandidates": 1,
+   "irValidationOk": true,
+   "irValidationIssues": 0,
+   "normalizationWarnings": 6,
+   "ownedMaterialTotal": 8,
+   "ownedMaterialRepresented": 7,
+   "ownedMaterialDispositioned": 0,
+   "ownedMaterialMissing": 1,
+   "valuesRepresented": 9,
+   "valuesMissing": 1,
+   "byDisposition": {
+    "REPRESENTED": 7,
+    "MISSING_FROM_COMPOSITION": 1
+   },
+   "lineageClaims": 8,
+   "claimsOnUnownedInventory": 0,
+   "definitionsOutsideOwnedUnits": [
+    "Existing Liens",
+    "Expected Run Rate Benefit",
+    "FCPA",
+    "FILO Tranche",
+    "First Commitment Application Period",
+    "Fixed Amounts"
+   ],
+   "definitionsOutsideOwnedUnitsDetail": [
+    {
+     "term": "Existing Liens",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    },
+    {
+     "term": "Expected Run Rate Benefit",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    },
+    {
+     "term": "FCPA",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    },
+    {
+     "term": "FILO Tranche",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    },
+    {
+     "term": "First Commitment Application Period",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    },
+    {
+     "term": "Fixed Amounts",
+     "definedInsideShardPrimaryText": true,
+     "isDefinitionUnitOwnedByAnotherShard": false
+    }
+   ],
+   "definitionsOutsideThatAreOtherShardsUnits": 0,
+   "definitionsOutsideNestedInOwnText": 6,
+   "equality": [
+    {
+     "field": "definitions",
+     "originalStringSha256": "43745d7a6995f36ac429fd986b5fb7397f7b198bca4bf8f0290aba51784eacc3",
+     "originalStringSha256Recomputed": "43745d7a6995f36ac429fd986b5fb7397f7b198bca4bf8f0290aba51784eacc3",
+     "jsonParseOfOriginalSha256": "2aafd3bbef7b93e03a76d99f2873adaef368788bbce7dafde89edccadd5a7abb",
+     "decodedValueSha256": "2aafd3bbef7b93e03a76d99f2873adaef368788bbce7dafde89edccadd5a7abb",
+     "equal": true,
+     "elementCount": 22,
+     "elementCountOfParse": 22
+    },
+    {
+     "field": "sharedCapacities",
+     "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "originalStringSha256Recomputed": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "jsonParseOfOriginalSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "decodedValueSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "equal": true,
+     "elementCount": 0,
+     "elementCountOfParse": 0
+    },
+    {
+     "field": "irExtensionCandidates",
+     "originalStringSha256": "71d595da717b1c6601fae82bd3bc3500a57ccc4ee581c09e83cd98ed1cf0bd74",
+     "originalStringSha256Recomputed": "71d595da717b1c6601fae82bd3bc3500a57ccc4ee581c09e83cd98ed1cf0bd74",
+     "jsonParseOfOriginalSha256": "406e24434154b5ba10ca0439d2a7d2af0bb3a29d2d2d319f2cff070f3aead33f",
+     "decodedValueSha256": "406e24434154b5ba10ca0439d2a7d2af0bb3a29d2d2d319f2cff070f3aead33f",
+     "equal": true,
+     "elementCount": 1,
+     "elementCountOfParse": 1
+    },
+    {
+     "field": "overallNotes",
+     "originalStringSha256": "53cc1225547982a6d3b724e0b92724cc6dcb741ffdc405feb50744de102f9977",
+     "originalStringSha256Recomputed": "53cc1225547982a6d3b724e0b92724cc6dcb741ffdc405feb50744de102f9977",
+     "jsonParseOfOriginalSha256": "abdbc613807cab8eea1294d08f50bf6a20baba7580d60ad5a8ea8ce6efe1217a",
+     "decodedValueSha256": "abdbc613807cab8eea1294d08f50bf6a20baba7580d60ad5a8ea8ce6efe1217a",
+     "equal": true,
+     "elementCount": 5,
+     "elementCountOfParse": 5
+    }
+   ],
+   "untouchedFieldsIdentical": true,
+   "matchesF7BDiagnostic": true
+  }
+ ],
+ "note": "offline replay of RETAINED outputs; the paid rerun (05/06) is authoritative for semantic recovery"
+}

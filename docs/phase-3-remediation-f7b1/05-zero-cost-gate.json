@@ -1,0 +1,62 @@
+{
+ "artifact": "F-7B.1 §17 zero-cost gate before the paid rerun",
+ "gitSha": "c58acd9c9985569f24e19355e924e0338e56bcb5",
+ "gate": [
+  {
+   "n": 1,
+   "req": "exact defect reproduced on all 5 retained submissions",
+   "pass": true
+  },
+  {
+   "n": 2,
+   "req": "defect is top-level transport shape only",
+   "pass": true
+  },
+  {
+   "n": 3,
+   "req": "no nested scope expansion required",
+   "pass": true
+  },
+  {
+   "n": 4,
+   "req": "all 5 normalize through the existing schema",
+   "pass": true
+  },
+  {
+   "n": 5,
+   "req": "semantic payload hashes unchanged by normalization",
+   "pass": true
+  },
+  {
+   "n": 6,
+   "req": "already-valid historical submissions unchanged",
+   "pass": true
+  },
+  {
+   "n": 7,
+   "req": "malformed / non-array strings still fail (synthetic matrix F/G/H/I/J/K)",
+   "pass": true
+  },
+  {
+   "n": 8,
+   "req": "relevant tests pass",
+   "pass": true
+  },
+  {
+   "n": 9,
+   "req": "no shard / planner / stitcher / prompt / normalization / IR change",
+   "pass": true,
+   "touched": [
+    "lib/contract-model/compiler/semantic/caller.ts",
+    "lib/contract-model/compiler/semantic/transport-normalization.ts"
+   ]
+  }
+ ],
+ "allPass": true,
+ "tests": "Test Files  6 passed (6)\n      Tests  89 passed (89)",
+ "productionFilesTouched": [
+  "lib/contract-model/compiler/semantic/caller.ts",
+  "lib/contract-model/compiler/semantic/transport-normalization.ts"
+ ],
+ "verdictIfFail": null
+}

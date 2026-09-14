@@ -1,0 +1,494 @@
+{
+ "artifact": "F-7B.1 §2/§3 root-cause reproduction + classification (0 model calls)",
+ "reproducedOnAllFive": true,
+ "classification": "A TOP_LEVEL_JSON_ARRAY_STRING_TRANSPORT_VARIANCE",
+ "earliestFailingFunction": "RealSemanticCaller.compile -> SubmitCompilationSchema.safeParse(submitBlock.input) (lib/contract-model/compiler/semantic/caller.ts, the first statement after the submit_compilation tool_use block is located)",
+ "stringificationPresentInProviderToolInput": true,
+ "evidenceForProviderOrigin": "rawSubmission on every retained result is `submitBlock.input` stored by finish() without transformation; submitBlock is the Anthropic SDK's ToolUseBlock from stream.finalMessage(); no Headroom code touches the input between receipt and safeParse (verified by reading caller.ts at the starting SHA); the strings are therefore present in the tool input as delivered by the provider. Whether the model itself emitted them or the gateway serialized them is not distinguishable from the retained evidence and does not change the remedy.",
+ "toolSchemaMismatchRuledOut": "the tool's input_schema advertised to the model is z.toJSONSchema(SubmitCompilationSchema): every affected field is declared as an array there; the returned strings contradict the advertised schema, so this is transport variance, not a schema mismatch",
+ "callerCorruptionRuledOut": "no serialization step exists between the SDK block and safeParse; the retained raw equals the SDK block",
+ "fieldsObservedStringified": [
+  "definitions",
+  "sharedCapacities",
+  "irExtensionCandidates",
+  "inventoryDispositions",
+  "overallNotes"
+ ],
+ "nestedStringificationObserved": false,
+ "perShard": [
+  {
+   "shardId": "shard:4f06625557e9aecbbb7a",
+   "rawTopLevelKeys": [
+    "definitions",
+    "rules",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "inventoryDispositions",
+    "overallNotes"
+   ],
+   "fields": [
+    {
+     "field": "rules",
+     "runtimeType": "array",
+     "isString": false,
+     "parsesAsJson": null,
+     "parsedType": null,
+     "decodedArrayLength": null,
+     "decodedElementsSatisfyWireSchema": null,
+     "invalidElements": 0
+    },
+    {
+     "field": "definitions",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 2,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    },
+    {
+     "field": "sharedCapacities",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 0,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    },
+    {
+     "field": "irExtensionCandidates",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 1,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    },
+    {
+     "field": "inventoryDispositions",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 0,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    },
+    {
+     "field": "overallNotes",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 4,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    }
+   ],
+   "stringifiedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "inventoryDispositions",
+    "overallNotes"
+   ],
+   "schemaSuccessAtStartingSha": false,
+   "schemaErrors": [
+    "definitions: Invalid input: expected array, received string",
+    "sharedCapacities: Invalid input: expected array, received string",
+    "irExtensionCandidates: Invalid input: expected array, received string",
+    "inventoryDispositions: Invalid input: expected array, received string",
+    "overallNotes: Invalid input: expected array, received string"
+   ],
+   "nestedStringification": [],
+   "originalFailure": {
+    "compileStatus": "FAILED",
+    "shardStatus": "SHARD_SCHEMA_FAILURE",
+    "failureReasons": [
+     "MODEL_SCHEMA_FAILURE"
+    ]
+   }
+  },
+  {
+   "shardId": "shard:1c29e71eef1717d4f9e1",
+   "rawTopLevelKeys": [
+    "definitions",
+    "rules",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "overallNotes",
+    "inventoryDispositions"
+   ],
+   "fields": [
+    {
+     "field": "rules",
+     "runtimeType": "array",
+     "isString": false,
+     "parsesAsJson": null,
+     "parsedType": null,
+     "decodedArrayLength": null,
+     "decodedElementsSatisfyWireSchema": null,
+     "invalidElements": 0
+    },
+    {
+     "field": "definitions",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 6,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    },
+    {
+     "field": "sharedCapacities",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 0,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    },
+    {
+     "field": "irExtensionCandidates",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 1,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    },
+    {
+     "field": "inventoryDispositions",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 11,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    },
+    {
+     "field": "overallNotes",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 6,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    }
+   ],
+   "stringifiedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "inventoryDispositions",
+    "overallNotes"
+   ],
+   "schemaSuccessAtStartingSha": false,
+   "schemaErrors": [
+    "definitions: Invalid input: expected array, received string",
+    "sharedCapacities: Invalid input: expected array, received string",
+    "irExtensionCandidates: Invalid input: expected array, received string",
+    "inventoryDispositions: Invalid input: expected array, received string",
+    "overallNotes: Invalid input: expected array, received string"
+   ],
+   "nestedStringification": [],
+   "originalFailure": {
+    "compileStatus": "FAILED",
+    "shardStatus": "SHARD_SCHEMA_FAILURE",
+    "failureReasons": [
+     "MODEL_SCHEMA_FAILURE"
+    ]
+   }
+  },
+  {
+   "shardId": "shard:3e3910ea2efd9edd45a3",
+   "rawTopLevelKeys": [
+    "definitions",
+    "rules",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "overallNotes"
+   ],
+   "fields": [
+    {
+     "field": "rules",
+     "runtimeType": "array",
+     "isString": false,
+     "parsesAsJson": null,
+     "parsedType": null,
+     "decodedArrayLength": null,
+     "decodedElementsSatisfyWireSchema": null,
+     "invalidElements": 0
+    },
+    {
+     "field": "definitions",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 21,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    },
+    {
+     "field": "sharedCapacities",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 0,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    },
+    {
+     "field": "irExtensionCandidates",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 1,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    },
+    {
+     "field": "inventoryDispositions",
+     "runtimeType": "absent",
+     "isString": false,
+     "parsesAsJson": null,
+     "parsedType": null,
+     "decodedArrayLength": null,
+     "decodedElementsSatisfyWireSchema": null,
+     "invalidElements": 0
+    },
+    {
+     "field": "overallNotes",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 4,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    }
+   ],
+   "stringifiedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "overallNotes"
+   ],
+   "schemaSuccessAtStartingSha": false,
+   "schemaErrors": [
+    "definitions: Invalid input: expected array, received string",
+    "sharedCapacities: Invalid input: expected array, received string",
+    "irExtensionCandidates: Invalid input: expected array, received string",
+    "overallNotes: Invalid input: expected array, received string"
+   ],
+   "nestedStringification": [],
+   "originalFailure": {
+    "compileStatus": "FAILED",
+    "shardStatus": "SHARD_SCHEMA_FAILURE",
+    "failureReasons": [
+     "MODEL_SCHEMA_FAILURE"
+    ]
+   }
+  },
+  {
+   "shardId": "shard:aac727054a5da5f1a9fd",
+   "rawTopLevelKeys": [
+    "definitions",
+    "rules",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "inventoryDispositions",
+    "overallNotes"
+   ],
+   "fields": [
+    {
+     "field": "rules",
+     "runtimeType": "array",
+     "isString": false,
+     "parsesAsJson": null,
+     "parsedType": null,
+     "decodedArrayLength": null,
+     "decodedElementsSatisfyWireSchema": null,
+     "invalidElements": 0
+    },
+    {
+     "field": "definitions",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 21,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    },
+    {
+     "field": "sharedCapacities",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 0,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    },
+    {
+     "field": "irExtensionCandidates",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 0,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    },
+    {
+     "field": "inventoryDispositions",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 0,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    },
+    {
+     "field": "overallNotes",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 7,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    }
+   ],
+   "stringifiedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "inventoryDispositions",
+    "overallNotes"
+   ],
+   "schemaSuccessAtStartingSha": false,
+   "schemaErrors": [
+    "definitions: Invalid input: expected array, received string",
+    "sharedCapacities: Invalid input: expected array, received string",
+    "irExtensionCandidates: Invalid input: expected array, received string",
+    "inventoryDispositions: Invalid input: expected array, received string",
+    "overallNotes: Invalid input: expected array, received string"
+   ],
+   "nestedStringification": [],
+   "originalFailure": {
+    "compileStatus": "FAILED",
+    "shardStatus": "SHARD_SCHEMA_FAILURE",
+    "failureReasons": [
+     "MODEL_SCHEMA_FAILURE"
+    ]
+   }
+  },
+  {
+   "shardId": "shard:bf3da01cb454860cdf5f",
+   "rawTopLevelKeys": [
+    "definitions",
+    "rules",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "overallNotes"
+   ],
+   "fields": [
+    {
+     "field": "rules",
+     "runtimeType": "array",
+     "isString": false,
+     "parsesAsJson": null,
+     "parsedType": null,
+     "decodedArrayLength": null,
+     "decodedElementsSatisfyWireSchema": null,
+     "invalidElements": 0
+    },
+    {
+     "field": "definitions",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 22,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    },
+    {
+     "field": "sharedCapacities",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 0,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    },
+    {
+     "field": "irExtensionCandidates",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 1,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    },
+    {
+     "field": "inventoryDispositions",
+     "runtimeType": "absent",
+     "isString": false,
+     "parsesAsJson": null,
+     "parsedType": null,
+     "decodedArrayLength": null,
+     "decodedElementsSatisfyWireSchema": null,
+     "invalidElements": 0
+    },
+    {
+     "field": "overallNotes",
+     "runtimeType": "string",
+     "isString": true,
+     "parsesAsJson": true,
+     "parsedType": "array",
+     "decodedArrayLength": 5,
+     "decodedElementsSatisfyWireSchema": true,
+     "invalidElements": 0
+    }
+   ],
+   "stringifiedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "overallNotes"
+   ],
+   "schemaSuccessAtStartingSha": false,
+   "schemaErrors": [
+    "definitions: Invalid input: expected array, received string",
+    "sharedCapacities: Invalid input: expected array, received string",
+    "irExtensionCandidates: Invalid input: expected array, received string",
+    "overallNotes: Invalid input: expected array, received string"
+   ],
+   "nestedStringification": [],
+   "originalFailure": {
+    "compileStatus": "FAILED",
+    "shardStatus": "SHARD_SCHEMA_FAILURE",
+    "failureReasons": [
+     "MODEL_SCHEMA_FAILURE"
+    ]
+   }
+  }
+ ]
+}

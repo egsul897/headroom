@@ -9,7 +9,8 @@ import { execSync } from "node:child_process";
 import type Anthropic from "@anthropic-ai/sdk";
 import { compileCovenantToIR } from "../lib/contract-model/compiler/semantic/compile";
 import { InMemorySemanticCompilationCache } from "../lib/contract-model/compiler/semantic/cache";
-import { RealSemanticCaller, type MinimalAnthropicClient } from "../lib/contract-model/compiler/semantic/caller";
+import { RealSemanticCaller, type MinimalAnthropicClient, type SemanticCaller } from "../lib/contract-model/compiler/semantic/caller";
+import type { TransportNormalizationAudit } from "../lib/contract-model/compiler/semantic/transport-normalization";
 import { buildShardCompilerInput, planCompilationShards } from "../lib/contract-model/compiler/semantic/shard-planner";
 import { classifyShardStatus } from "../lib/contract-model/compiler/semantic/shard-execution";
 import { SHARD_PLANNER_ALGORITHM_VERSION, estimateTokensFromChars, type CompilationShard, type ShardExecutionResult, type ShardPlan } from "../lib/contract-model/compiler/semantic/shard-types";
@@ -20,8 +21,8 @@ import { calculateCostUsd } from "../lib/contract-model/analyzer/telemetry";
 import { DEFAULT_GATEWAY_ANALYZER_MODEL } from "../lib/contract-model/analyzer/anthropic-analyzer";
 import { buildChewy, buildChewyCallerInput, capturingClient, CHWY_SRC, COMPANY, INSTRUMENT, type Captured } from "./f7a-lib";
 
-export const F7B_DIR = "docs/phase-3-remediation-f7b";
-export const F7B_EVIDENCE_DIR = "tests/fixtures/unseen-packages/f7b-chewy-101-canary";
+export const F7B_DIR = process.env.F7B_DIR ?? "docs/phase-3-remediation-f7b";
+export const F7B_EVIDENCE_DIR = process.env.F7B_EVIDENCE_DIR ?? "tests/fixtures/unseen-packages/f7b-chewy-101-canary";
 export const F7A_STARTING_SHA = "8b6bd445ae56bb6d66406706d76b45a83ac690be";
 export const F7A_BASELINE = { planHash: "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36", shardCount: 36, materialItems: 108, ownedOnce: 108, unowned: 0, multiplyOwned: 0, maxRenderedInputTokens: 34344, plannerMaxInputTokens: 30562, oversizedShards: 1 };
 export const F7B_BUDGET = { targetPrimaryChars: 12_000, maxPrimaryChars: 24_000, maxContextChars: 10_000, maxContextEntryChars: 1_800, maxUnitsPerShard: 16 };
@@ -29,8 +30,8 @@ export const MODEL = process.env.SEMANTIC_COMPILER_MODEL ?? DEFAULT_GATEWAY_ANAL
 export const PROVIDER = "vercel-ai-gateway";
 /** Pre-registered cost estimator (docs 00-precheck): input = TURN_FACTOR x rendered first turn (recorded Chewy 6.08: all-turn input / first-turn input = 314,844 / 95,786 = 3.29); output = the F-7A planner's per-shard estimate (1,500 + 2,500 x units), itself above the recorded 1,535 output tokens per emitted object. */
 export const TURN_FACTOR = 3.29;
-export const STAGE1_CAP_USD = 3.0;
-export const MISSION_CAP_USD = 15.0;
+export const STAGE1_CAP_USD = Number(process.env.F7B_STAGE1_CAP_USD ?? "3.0");
+export const MISSION_CAP_USD = Number(process.env.F7B_MISSION_CAP_USD ?? "15.0");
 
 export function sha256(s: string | Buffer): string { return createHash("sha256").update(s).digest("hex"); }
 export function gitSha(): string { return execSync("git rev-parse HEAD").toString().trim(); }
@@ -192,6 +193,8 @@ export interface ShardRecord {
   definitionsOutsideOwnedUnits: string[];
   unresolvedIssues: string[];
   errorSummary: string | null;
+  /** F-7B.1: what the production transport-normalization step did to the terminal submit input (null before F-7B.1 or when no submit arrived). */
+  transportNormalization: { applied: boolean; decodedFields: string[]; audit: TransportNormalizationAudit } | null;
 }
 
 export function collectLineageIds(o: unknown): string[] {
@@ -209,7 +212,10 @@ export function dispositionsFromRaw(raw: unknown): { inventoryItemId: string; di
 
 export async function executeShard(frozen: Frozen, shard: CompilationShard, stage: number, attempt: number, ledger: Ledger, real: Anthropic, renderedTokens: number): Promise<{ record: ShardRecord; result: ShardExecutionResult; compile: SemanticCompilationResult; shardInput: SemanticCompilerInput }> {
   const shardInput = buildShardCompilerInput(frozen.callerInput, frozen.plan, shard);
-  const caller = new RealSemanticCaller(PROVIDER, MODEL, guardedClient(real, ledger, stage, shard.shardId, shard.estimate.outputTokens));
+  const inner = new RealSemanticCaller(PROVIDER, MODEL, guardedClient(real, ledger, stage, shard.shardId, shard.estimate.outputTokens));
+  let transportAudit: TransportNormalizationAudit | null = null;
+  // Harness-only wrapper: captures the caller result's additive transport audit; the production caller is untouched.
+  const caller: SemanticCaller = { providerName: inner.providerName, model: inner.model, isSynthetic: inner.isSynthetic, compile: async (i) => { const r = await inner.compile(i); transportAudit = r.transportNormalization ?? null; return r; } };
   const callsBefore = ledger.calls.length;
   const started = Date.now();
   const compile = await compileCovenantToIR(shardInput, { caller, accountability: false, cache: new InMemorySemanticCompilationCache() });
@@ -239,6 +245,7 @@ export async function executeShard(frozen: Frozen, shard: CompilationShard, stag
     rules: compile.rules.length, definitions: compile.definitions.length, sharedCapacities: compile.sharedCapacities.length, dispositionsEmitted: dispositions.length,
     ownedAccountability: { represented: acc.counts.represented, dispositioned: acc.items.filter((i) => i.disposition !== "REPRESENTED" && i.disposition !== "MISSING_FROM_COMPOSITION").length, missingMaterial: acc.counts.materialMissingFromComposition, valuesRepresented: acc.items.reduce((a, i) => a + i.quantitative.filter((q) => q.disposition === "VALUE_PRESENT_IN_IR").length, 0), valuesMissing: acc.counts.materialQuantitativeValuesMissing, danglingLineage: acc.counts.danglingLineageReferences, semanticallyComplete: acc.semanticallyComplete, byDisposition },
     lineageClaimsOnUnownedItems: unownedClaims, definitionsOutsideOwnedUnits: outside, unresolvedIssues: compile.unresolvedIssues.slice(0, 40), errorSummary: compile.errorDetail ? JSON.stringify(compile.errorDetail).slice(0, 400) : (compile.telemetry?.error ? compile.telemetry.error.slice(0, 400) : null),
+    transportNormalization: transportAudit ? { applied: (transportAudit as TransportNormalizationAudit).applied, decodedFields: (transportAudit as TransportNormalizationAudit).fields.filter((f) => f.applied).map((f) => f.field), audit: transportAudit } : null,
   };
   return { record, result, compile, shardInput };
 }
