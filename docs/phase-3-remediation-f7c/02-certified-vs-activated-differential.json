@@ -1,11 +1,17 @@
 {
  "artifact": "F-7C §44 - CERTIFIED_CANARY_RESULT vs NEW_PRODUCTION_ACTIVATION_REPLAY, every trust-significant field classified",
- "at": "2026-09-14T22:23:26.290Z",
+ "at": "2026-09-14T23:29:16.086Z",
  "rows": [
   {
    "field": "executionMode",
    "certified": "SHARDED",
    "replay": "SHARDED",
+   "classification": "equal"
+  },
+  {
+   "field": "frozenInventoryResume.method",
+   "certified": "VERIFIED_BY_RE_ANCHORING",
+   "replay": "VERIFIED_BY_RE_ANCHORING",
    "classification": "equal"
   },
   {
@@ -342,7 +348,7 @@
   {
    "field": "cacheKey.includesExecutionIdentity",
    "certified": null,
-   "replay": "7b4074c71805383aaf0fb9ade26e90e62a2992aa72de61f44984cfa8a973d8e2",
+   "replay": "4e1bca29459a636716fa03783782cf267124e38d145bea454de4bde00787c286",
    "classification": "intentionally_additive",
    "note": "outer cache key now folds in the execution-policy identity and the resumed frozen-inventory hash"
   },
@@ -355,7 +361,7 @@
     "promptVersion": "semantic-accountability-compiler-prompt.v4",
     "schemaVersion": "headroom-covenant-ir.v1",
     "stage": "semantic_compile_sharded",
-    "timestamp": "2026-09-14T22:23:26.010Z",
+    "timestamp": "2026-09-14T23:29:15.806Z",
     "inputTokens": 2695669,
     "outputTokens": 850475,
     "cachedInputTokens": null,
@@ -363,14 +369,14 @@
     "attemptCount": 0,
     "retryCount": 0,
     "rateLimitFailures": 0,
-    "latencyMs": 96,
+    "latencyMs": 93,
     "calculatedCostUsd": 13.896088000000002
    },
    "classification": "intentionally_additive",
    "note": "summed across the 36 reused results; attemptCount = executed = 0"
   }
  ],
- "equal": 40,
+ "equal": 41,
  "intentionallyAdditive": 4,
  "mismatches": 0,
  "mismatchList": [],

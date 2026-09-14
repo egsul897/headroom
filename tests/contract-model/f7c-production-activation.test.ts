@@ -211,7 +211,11 @@ describe("F-7C §26 Pass A runs at the whole-unit layer only", () => {
     const r = await compileSharded(corpus, SMALL, faithful(corpus, planFor(corpus, SMALL)), { inventoryCaller: inv });
     expect(inv.calls).toBe(0);
     expect(r.frozenInventory?.frozenContentHash).toBe(corpus.frozenInventory.frozenContentHash);
-    await expect(compileCovenantToIR(inputFor(corpus, { candidateRef: "cand:other" }), baseOptions(corpus))).rejects.toThrow(/belongs to candidate/);
+    // F-7C.1: a candidate mismatch is now a structured, deterministic refusal (FROZEN_INVENTORY_SOURCE_MISMATCH), never a throw
+    const refused = await compileCovenantToIR(inputFor(corpus, { candidateRef: "cand:other" }), baseOptions(corpus));
+    expect(refused.status).toBe("FAILED");
+    expect(refused.failureReasons).toEqual(["FROZEN_INVENTORY_SOURCE_MISMATCH"]);
+    expect(inv.calls).toBe(0);
   });
 });
 

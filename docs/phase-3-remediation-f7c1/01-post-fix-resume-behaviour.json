@@ -1,0 +1,32 @@
+{
+ "artifact": "F-7C.1 §1 - same-candidate stale-source resume, reproduced provider-free BEFORE any change",
+ "at": "2026-09-14T23:25:42.705Z",
+ "gitSha": "2cfb6b3f8e8a99b6ff9010307726ffa8f7b6a2ac",
+ "candidateRef": "cand:1.01",
+ "frozenContentHash": "frozen:cand:1.01:40",
+ "frozenInventoryCarriesSourceContextHash": false,
+ "caseA_sameSource": {
+  "outcome": "COMPILED",
+  "status": "FAILED",
+  "failureReasons": [
+   "FROZEN_INVENTORY_SOURCE_MISMATCH"
+  ],
+  "mode": null,
+  "passACalls": 0,
+  "resumedFrozenHash": null,
+  "frozenInventoryAccepted": false
+ },
+ "caseB_changedSource": {
+  "outcome": "COMPILED",
+  "status": "FAILED",
+  "failureReasons": [
+   "FROZEN_INVENTORY_SOURCE_MISMATCH"
+  ],
+  "mode": null,
+  "passACalls": 0,
+  "resumedFrozenHash": null,
+  "frozenInventoryAccepted": false
+ },
+ "defectReproduced": false,
+ "verdictIfNotReproduced": "F7C_1_BASELINE_INVALID"
+}

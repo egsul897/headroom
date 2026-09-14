@@ -1,8 +1,8 @@
 {
  "artifact": "F-7C §22/§43 - the certified 36-shard Chewy 1.01 canary replayed through the activated public compileCovenantToIR (0 model calls, $0)",
- "at": "2026-09-14T22:23:26.283Z",
- "gitSha": "c9b28224e118f6a5e54f99da88715da110ad7dee",
- "elapsedMs": 114,
+ "at": "2026-09-14T23:29:16.077Z",
+ "gitSha": "2cfb6b3f8e8a99b6ff9010307726ffa8f7b6a2ac",
+ "elapsedMs": 322,
  "zeroSpendProof": {
   "semanticCallerInvocations": 0,
   "passAInvocations": 0,
@@ -13,7 +13,18 @@
   "frozenContentHash": "9e5ec23580d3bbf3b5a69fdd932b6874caec1a14c0e3ef1e6e203dda07258e34",
   "items": 109,
   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
-  "algorithmVersion": "semantic-accountability.v3"
+  "algorithmVersion": "semantic-accountability.v3",
+  "carriesSourceContextHash": false
+ },
+ "frozenInventoryResume": {
+  "method": "VERIFIED_BY_RE_ANCHORING",
+  "candidateRef": "phase-3-validation:chwy:1.01",
+  "documentId": "doc-a",
+  "frozenContentHash": "9e5ec23580d3bbf3b5a69fdd932b6874caec1a14c0e3ef1e6e203dda07258e34",
+  "sourceContextHash": "5c7099b486e15fafb51c7b948d4cd8372ae91524e5e0a666e663ca1bd9b5c168",
+  "partitionHash": "6b204caeb4db6403d81384d57c0d67ca1fac1dae47c256c467ceb6461c8cc38c",
+  "reAnchoredChecks": 1065,
+  "verifiedAt": "2026-09-14T23:29:15.701Z"
  },
  "execution": {
   "mode": "SHARDED",
@@ -23,6 +34,16 @@
   "planHash": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
   "plannedShards": 36,
   "oversizedShards": 1,
+  "frozenInventoryResume": {
+   "method": "VERIFIED_BY_RE_ANCHORING",
+   "candidateRef": "phase-3-validation:chwy:1.01",
+   "documentId": "doc-a",
+   "frozenContentHash": "9e5ec23580d3bbf3b5a69fdd932b6874caec1a14c0e3ef1e6e203dda07258e34",
+   "sourceContextHash": "5c7099b486e15fafb51c7b948d4cd8372ae91524e5e0a666e663ca1bd9b5c168",
+   "partitionHash": "6b204caeb4db6403d81384d57c0d67ca1fac1dae47c256c467ceb6461c8cc38c",
+   "reAnchoredChecks": 1065,
+   "verifiedAt": "2026-09-14T23:29:15.701Z"
+  },
   "sharded": {
    "budget": {
     "targetPrimaryChars": 12000,
@@ -709,7 +730,7 @@
    "promptVersion": "semantic-accountability-compiler-prompt.v4",
    "schemaVersion": "headroom-covenant-ir.v1",
    "stage": "semantic_compile_sharded",
-   "timestamp": "2026-09-14T22:23:26.010Z",
+   "timestamp": "2026-09-14T23:29:15.806Z",
    "inputTokens": 2695669,
    "outputTokens": 850475,
    "cachedInputTokens": null,
@@ -717,7 +738,7 @@
    "attemptCount": 0,
    "retryCount": 0,
    "rateLimitFailures": 0,
-   "latencyMs": 96,
+   "latencyMs": 93,
    "calculatedCostUsd": 13.896088000000002
   }
  },

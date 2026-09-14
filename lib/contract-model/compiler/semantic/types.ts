@@ -231,7 +231,9 @@ export type SemanticCompilerFailureReason =
   /** F-7A (bounded compilation shards): at least one shard of a sharded compilation did not end SHARD_COMPLETE (provider / schema / missing-context / partial) - the stitched candidate is PARTIAL at best and its owned material items are listed as unresolved; never COMPLETED. */
   | "SHARD_INCOMPLETE"
   /** F-7A: independently compiled shards emitted incompatible representations of the same source (or an emission owned by another shard, or a dangling cross-shard reference) - explicit review, never a silent choice. */
-  | "SHARD_CONFLICT";
+  | "SHARD_CONFLICT"
+  /** F-7C.1: a caller asked to resume a frozen Pass A inventory (CompileOptions.frozenInventory) that could not be proven to belong to the exact source context being compiled - candidate, document, recorded source-context hash or legacy re-anchoring failed. Local, deterministic, pre-model: never PROVIDER_FAILURE or MODEL_SCHEMA_FAILURE. Pass A was NOT silently rerun and the stale inventory was NOT used; the compilation is FAILED so the caller can decide. */
+  | "FROZEN_INVENTORY_SOURCE_MISMATCH";
 
 /** Phase 3F.1 §33/F6 - preserved for every FAILED result whose failureReasons includes TRANSPORT_OR_INTERNAL_ERROR (never populated for any other failure path, which already carries its own structured detail via failureReasons/unresolvedIssues). Bounded and sanitized - never a raw stack dump, never a credential/token value, per task §33's explicit "no secrets/unrestricted stack dumps" instruction. */
 export interface SemanticCompilerErrorDetail {
@@ -287,6 +289,8 @@ export interface SemanticExecutionMetadata {
   plannerAlgorithmVersion: string;
   /** Present whenever a plan was built (accountability on), even in MONOLITHIC mode - it is the proof the unit fit one bounded shard. */
   planHash: string | null;
+  /** F-7C.1: how a resumed frozen inventory was proven to belong to this exact source context; null when Pass A ran. */
+  frozenInventoryResume?: import("./frozen-inventory-resume").FrozenInventoryResumeRecord | null;
   plannedShards: number;
   oversizedShards: number;
   /** SHARDED only. */

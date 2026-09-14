@@ -34,6 +34,8 @@ import { executionPolicyIdentity, selectCompilationExecutionMode, SEMANTIC_EXECU
 import { planCompilationShards } from "./shard-planner";
 import { executeShardPlan, type ShardExecutor } from "./shard-execution";
 import { createBoundedShardExecutor } from "./shard-executor";
+import { validateFrozenInventoryResume, type FrozenInventoryResumeRecord } from "./frozen-inventory-resume";
+import { computeSourceContextHash } from "../semantic-accountability/source-identity";
 import { normalizeDefinedTermRef } from "../amendment/chain";
 import type { ShardBudget, ShardExecutionResult, ShardPlan, StitchedCompilation } from "./shard-types";
 import type { SemanticCompilationResult, SemanticCompilationStatus, SemanticCompilerFailureReason, SemanticCompilerInput, SemanticExecutionMetadata } from "./types";
@@ -182,28 +184,14 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
   // for a dual-pass request (or vice versa).
   const inventoryMode: SemanticInventoryMode | null = options.accountability !== false ? resolveSemanticInventoryMode(options.inventoryMode) : null;
   const providerIdentity = `${caller.providerName}::${caller.model}${inventoryMode ? `::inventory=${inventoryMode}` : ""}`;
-  // F-7C: how the unit is executed is part of its identity too (cache.ts explains why it must be in the key before
-  // Pass A runs). A resumed frozen inventory contributes its own hash.
-  if (options.frozenInventory && options.frozenInventory.candidateRef !== input.candidateRef) throw new Error(`compileCovenantToIR: resumed frozen inventory belongs to candidate ${options.frozenInventory.candidateRef}, not ${input.candidateRef}`);
-  const executionIdentity = `${executionPolicyIdentity(options.shardBudget)}${options.frozenInventory ? `|frozen:${options.frozenInventory.frozenContentHash}` : ""}`;
-  const cacheKey = computeCacheKey(input, providerIdentity, executionIdentity);
-
-  const cached = cache.get(cacheKey);
-  if (cached) return cached;
-
   const evidenceFlags = contextBundleEvidenceFlags(input);
 
-  // SEMANTIC ACCOUNTABILITY (mission §12 -> §3 -> §7): source-context
-  // sufficiency, then the source-only Pass A inventory, BOTH before the
-  // composition model ever runs. The inventory is frozen (content-hashed)
-  // here and handed to Pass B read-only, so Pass C's reconciliation can
-  // never be circular. Disabled only by an explicit options.accountability
-  // === false (zero-cost previews / legacy callers), never silently.
-  // F-7C: Pass A runs ONCE for the whole unit here - never per shard.
+  // F-7C.1: the CURRENT source context is resolved before the cache lookup. It is deterministic and free, and its
+  // identity (computeSourceContextHash - every region's id/document/offsets/text plus the sufficiency state, the
+  // same canonical hash Pass A records) enters the outer key, so a request whose expansion regions changed while
+  // its operative text and bundle identity did not can never be served a result compiled over the old source - and
+  // no cache hit can ever bypass the frozen-inventory compatibility gate below.
   let sourceContext: SourceContextResult | null = null;
-  let frozenInventory: FrozenSemanticInventory | null = null;
-  let inventoryPasses: SemanticCompilationResult["inventoryPasses"] = null;
-  let callerInput: SemanticCompilerInput = input;
   if (options.accountability !== false) {
     const index = input.toolAccess.structuralIndex;
     sourceContext = resolveSourceContext({
@@ -215,8 +203,56 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       documentText: index.getDocumentText(input.sourceDocumentId) ?? null,
       ...(options.sourceContextBudget ?? {}),
     });
+  }
+  // F-7C: how the unit is executed is part of its identity too (cache.ts explains why it must be in the key before
+  // Pass A runs). A resumed frozen inventory contributes its own hash; the resolved source context contributes its
+  // identity.
+  const executionIdentity = `${executionPolicyIdentity(options.shardBudget)}${sourceContext ? `|source:${computeSourceContextHash(sourceContext)}` : ""}${options.frozenInventory ? `|frozen:${options.frozenInventory.frozenContentHash}` : ""}`;
+  const cacheKey = computeCacheKey(input, providerIdentity, executionIdentity);
+
+  const cached = cache.get(cacheKey);
+  if (cached) return cached;
+
+  // SEMANTIC ACCOUNTABILITY (mission §12 -> §3 -> §7): source-context
+  // sufficiency, then the source-only Pass A inventory, BOTH before the
+  // composition model ever runs. The inventory is frozen (content-hashed)
+  // here and handed to Pass B read-only, so Pass C's reconciliation can
+  // never be circular. Disabled only by an explicit options.accountability
+  // === false (zero-cost previews / legacy callers), never silently.
+  // F-7C: Pass A runs ONCE for the whole unit here - never per shard.
+  let frozenInventory: FrozenSemanticInventory | null = null;
+  let inventoryPasses: SemanticCompilationResult["inventoryPasses"] = null;
+  let frozenInventoryResume: FrozenInventoryResumeRecord | null = null;
+  let callerInput: SemanticCompilerInput = input;
+  if (sourceContext) {
+    const index = input.toolAccess.structuralIndex;
     if (options.frozenInventory) {
-      frozenInventory = options.frozenInventory;
+      // F-7C.1: the presence of a frozen inventory is a request, not an authorization. It is resumed only once it is
+      // proven - against the source context resolved for THIS request - to belong to exactly this source. Otherwise
+      // the compilation fails here, structurally and deterministically, before any model call: Pass A is never
+      // silently rerun and the stale inventory is never used.
+      const decision = validateFrozenInventoryResume({ candidateRef: input.candidateRef, sourceDocumentId: input.sourceDocumentId, frozenInventory: options.frozenInventory, sourceContext, structuralIndex: index });
+      if (!decision.ok) {
+        return {
+          status: "FAILED",
+          failureReasons: ["FROZEN_INVENTORY_SOURCE_MISMATCH"],
+          errorDetail: null,
+          rules: [], definitions: [], sharedCapacities: [], irExtensionCandidates: [],
+          unresolvedIssues: decision.failures.map((f) => `[frozen-inventory-resume] ${f.check}: ${f.detail}`),
+          toolCallLog: [],
+          ...evidenceFlags,
+          definitionCompletenessCheck: null,
+          sourceContext, frozenInventory: null, inventoryMode, inventoryPasses: null,
+          accountability: null,
+          rawModelOutput: null,
+          provider: caller.providerName, model: caller.model,
+          telemetry: null,
+          cacheKey, compiledAt: new Date().toISOString(),
+          execution: null,
+        };
+      }
+      frozenInventory = decision.inventory;
+      frozenInventoryResume = decision.record;
     } else if (inventoryMode === "DUAL_PASS_ENSEMBLE") {
       // F-5.3B: two independent Pass A executions -> deterministic ensemble (STRICT compatibility). The second paid
       // call is made here, visibly, by the orchestration module - never inside ensemble.ts, never a third pass.
@@ -242,7 +278,7 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
     ? planCompilationShards({ candidateRef: input.candidateRef, companyId: input.companyId, instrumentKey: input.instrumentKey, documentId: input.sourceDocumentId, sourceContext, frozenInventory, structuralIndex: input.toolAccess.structuralIndex, budget: options.shardBudget, generation: { algorithmVersion: input.compilerAlgorithmVersion, promptVersion: input.compilerPromptVersion } })
     : null;
   const decision: ExecutionModeDecision = selectCompilationExecutionMode(plan);
-  const executionBase = { mode: decision.mode, reason: decision.reason, policyVersion: SEMANTIC_EXECUTION_POLICY_VERSION, plannerAlgorithmVersion: decision.plannerAlgorithmVersion, planHash: decision.planHash, plannedShards: decision.shardCount, oversizedShards: decision.oversizedShards };
+  const executionBase = { mode: decision.mode, reason: decision.reason, policyVersion: SEMANTIC_EXECUTION_POLICY_VERSION, plannerAlgorithmVersion: decision.plannerAlgorithmVersion, planHash: decision.planHash, plannedShards: decision.shardCount, oversizedShards: decision.oversizedShards, frozenInventoryResume };
 
   if (decision.mode === "MONOLITHIC" || !plan) {
     // ---- the pre-F-7 bounded path, byte-for-byte the same machinery (bounded-composition.ts).

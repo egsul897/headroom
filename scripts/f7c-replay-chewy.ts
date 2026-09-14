@@ -68,6 +68,7 @@ const throwingInventory: StageCaller = { providerName: "replay", model: "replay"
   const additive = (field: string, certified: unknown, replay: unknown, note: string) => rows.push({ field, certified, replay, classification: "intentionally_additive", note });
 
   cmp("executionMode", "SHARDED", ex.mode);
+  cmp("frozenInventoryResume.method", "VERIFIED_BY_RE_ANCHORING", ex.frozenInventoryResume?.method ?? null);
   cmp("planHash", F7A_BASELINE.planHash, ex.planHash);
   cmp("plannedShards", 36, ex.plannedShards);
   cmp("reusedShards", 36, sh.reused);
@@ -123,7 +124,9 @@ const throwingInventory: StageCaller = { providerName: "replay", model: "replay"
     artifact: "F-7C §22/§43 - the certified 36-shard Chewy 1.01 canary replayed through the activated public compileCovenantToIR (0 model calls, $0)",
     at: new Date().toISOString(), gitSha: gitSha(), elapsedMs,
     zeroSpendProof: { semanticCallerInvocations: semanticCalls, passAInvocations: inventoryCalls, shardExecutorInvocations: executorCalls, note: "every collaborator that could spend was replaced by one that throws; none was reached" },
-    resumedFrozenInventory: { frozenContentHash: fixtureInventory.frozenContentHash, items: fixtureInventory.items.length, inventoryStatus: fixtureInventory.inventoryStatus, algorithmVersion: fixtureInventory.algorithmVersion },
+    resumedFrozenInventory: { frozenContentHash: fixtureInventory.frozenContentHash, items: fixtureInventory.items.length, inventoryStatus: fixtureInventory.inventoryStatus, algorithmVersion: fixtureInventory.algorithmVersion, carriesSourceContextHash: Boolean(fixtureInventory.sourceContextHash) },
+    // F-7C.1: how the legacy (no sourceContextHash) certified inventory was proven to belong to the current Chewy source context
+    frozenInventoryResume: ex.frozenInventoryResume ?? null,
     execution: { ...ex, sharded: { ...sh, definitionConflictEvidence: `${sh.definitionConflictEvidence.length} conflicts (compared by hash above)`, shards: sh.shards.map((s) => ({ ordinal: s.ordinal, shardId: s.shardId, status: s.status, reused: s.reusedFromHash, attempts: s.attempts })) } },
     result: { status: result.status, failureReasons: result.failureReasons, rules: result.rules.length, definitions: result.definitions.length, sharedCapacities: result.sharedCapacities.length, unresolvedIssues: result.unresolvedIssues.length, toolCallLog: result.toolCallLog.length, rawModelOutput: result.rawModelOutput, definitionCompletenessCheckFired: !!result.definitionCompletenessCheck, accountabilityCounts: acc.counts, semanticallyComplete: acc.semanticallyComplete, inputHasUnresolvedOperativeEvidence: result.inputHasUnresolvedOperativeEvidence, telemetry: result.telemetry },
     scorerOverCertifiedStitch: { trust: score.trust, proofClassCounts: score.H.proofClassCounts },

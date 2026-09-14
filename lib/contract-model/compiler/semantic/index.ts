@@ -17,3 +17,4 @@ export * from "./definition-source-anchor";
 export * from "./bounded-composition";
 export * from "./execution-mode";
 export * from "./shard-executor";
+export * from "./frozen-inventory-resume";
