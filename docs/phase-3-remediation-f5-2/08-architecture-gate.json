@@ -1,0 +1,56 @@
+{
+ "hypothesisProven": {
+  "required": {
+   "everyFCaseSitsInASlotWhereTheMissingRunProducedFewerItems": ">= 90% of F cases",
+   "slotsPopulatedByBothRunsWithDifferentItemCounts": "> 0 and accounts for the F cases",
+   "noSourcePartitionFailureAndNoPostProcessingLoss": "0 cases at those stages"
+  },
+  "observed": {
+   "fCasesInSlotsWhereMissingRunProducedFewerItems": "50/50",
+   "slotsPopulatedByBothWithDifferentItemCounts": 38,
+   "sourcePartitionFailures": 0,
+   "postProcessingLosses": 0,
+   "absorbedIntoCoarserItemSharedByBothRuns": 34,
+   "leftUnaccountedAfterGapPass": 16
+  },
+  "pass": true
+ },
+ "fOmissionsCaptured": {
+  "required": ">= 0.67",
+  "conservative": 0.56,
+  "conservativeByNonBaseObligation": 16,
+  "conservativeOnlyByBaseSlot": 12,
+  "fine": 0.6,
+  "pass": false
+ },
+ "bCasesReached": {
+  "conservative": 0.4167,
+  "fine": 0.5833
+ },
+ "hCasesReached": {
+  "conservative": 0.1667,
+  "fine": 0.1667
+ },
+ "genericRules": {
+  "pass": true,
+  "evidence": "kinds = BASE_SLOT, ENUMERATED_BRANCH, COORDINATED_FRAGMENT, QUANTITATIVE_SPAN, EXPLICIT_REFERENCE, QUALIFIER_OR_PROVISO, EXCEPTION_FRAGMENT, SELECTOR_BRANCH, ARITHMETIC_OPERAND, TEMPORAL_SPAN; recognisers are enumerators, semicolons/comma-coordination, citation form, scanner values, qualifier/exception openers, selector phrases, arithmetic operators; no Chewy / 6.08 / EBITDA / basket vocabulary (grep-verified)"
+ },
+ "deterministicIdentity": {
+  "pass": true,
+  "ledgerSha256": "c79ccae955af547e13722874711213c269471886a256d296167122a0b50647f5",
+  "idInputs": "documentId, regionId, slotId, charStart, charEnd, kind, ordinal, algorithm version"
+ },
+ "falseObligationCandidates": {
+  "required": "<= 0.30 of non-BASE obligations",
+  "conservative": 0.5325,
+  "conservativeCount": 172,
+  "fine": 0.6086,
+  "fineCount": 384,
+  "pass": false
+ },
+ "trust": {
+  "pass": true,
+  "evidence": "design only creates review work: unsatisfied obligation => INVENTORY_COVERAGE_GAP; raw coverage untouched; nothing was wired into production, so no trust surface changed"
+ },
+ "overall": "F5_2_ARCHITECTURE_NOT_PROVEN"
+}

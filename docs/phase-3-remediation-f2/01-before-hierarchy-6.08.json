@@ -1,0 +1,963 @@
+{
+  "artifact": "01-before-hierarchy-6.08",
+  "source": "committed tests/fixtures/unseen-packages/phase-3-validation-chwy-run/stage1-all-nodes.json (starting SHA)",
+  "textualTruth": {
+    "6.08(a)": 659092,
+    "6.08(a) prohibited actions (i)-(iv)": "659184..662006",
+    "hanging paragraph '(the payments ... Restricted Payments), unless ...:'": 661528,
+    "6.08(a) conditions (1)-(3)": "662006..662051",
+    "Available Amount builder (a)-(i) under (3)": "662595..669729",
+    "true 6.08(b) 'The foregoing provisions of Section 6.08(a) shall not prohibit:'": 670039,
+    "6.08(b)(1)": 670108
+  },
+  "earliestDivergence": {
+    "charStart": 661773,
+    "text": "clauses (i) through (iv) above",
+    "parsedAs": "SUBCLAUSE 6.08(a)(iv)(i) - an inline cross-reference token treated as a new nested roman list"
+  },
+  "requiredBeforeEvidence": {
+    "innerLetteredItemPromotedToSubsectionLevel": [
+      {
+        "nodeType": "SUBSECTION",
+        "sectionRef": "6.08(b)",
+        "nodeId": "structural-node:c1eb440b43f7be7539099988",
+        "parentNodeId": null,
+        "charStart": 665769,
+        "charEnd": 666205,
+        "text": "(b) shall not include the proceeds from (W) Refunding Capita"
+      },
+      {
+        "nodeType": "SUBSECTION",
+        "sectionRef": "6.08(c)",
+        "nodeId": "structural-node:b5454506b587705faf0af1b7",
+        "parentNodeId": null,
+        "charStart": 666205,
+        "charEnd": 666962,
+        "text": "(c) 100% of the aggregate amount of cash and the Fair Market"
+      },
+      {
+        "nodeType": "SUBSECTION",
+        "sectionRef": "6.08(f)",
+        "nodeId": "structural-node:64ae4f0199196fd37c2abbfa",
+        "parentNodeId": null,
+        "charStart": 668977,
+        "charEnd": 669130,
+        "text": "(f) the greater of (x) $540.0 million and (y) 75% of Consoli"
+      },
+      {
+        "nodeType": "SUBSECTION",
+        "sectionRef": "6.08(h)",
+        "nodeId": "structural-node:8b6cc54c39d1cf390ea4fe2f",
+        "parentNodeId": null,
+        "charStart": 669505,
+        "charEnd": 669729,
+        "text": "(h) 100% of the aggregate amount received in cash and the Fa"
+      }
+    ],
+    "true608bNotRepresented": "no node starts at 670039; the text falls inside 6.08(i)(ii) [669913,692272)",
+    "false608i": [
+      {
+        "nodeType": "SUBSECTION",
+        "sectionRef": "6.08(i)",
+        "nodeId": "structural-node:de80410802a6da15695a45dd",
+        "parentNodeId": null,
+        "charStart": 669729,
+        "charEnd": 697571,
+        "text": "(i) the cumulative amount of (i) Liens incurred pursuant to "
+      }
+    ],
+    "downstreamFalseRefs": [
+      "6.08(i)(ii)(1)",
+      "6.08(i)(ii)(2)",
+      "6.08(i)(ii)(2)(a)",
+      "6.08(i)(ii)(3)",
+      "6.08(i)(ii)(3)(i)",
+      "6.08(i)(ii)(3)(ii)",
+      "6.08(i)(ii)(4)",
+      "6.08(i)(ii)(4)(a)",
+      "6.08(i)(ii)(4)(b)",
+      "6.08(i)(ii)(4)(c)",
+      "6.08(i)(ii)(4)(d)",
+      "6.08(i)(ii)(5)"
+    ],
+    "anchoringFailure": "recorded compiler refs 6.08(b)(1)..(27) resolve to 3/36 nodes (06a)"
+  },
+  "descendants": 96,
+  "topLevelSubsections": [
+    "6.08(a)",
+    "6.08(b)",
+    "6.08(c)",
+    "6.08(d)",
+    "6.08(e)",
+    "6.08(f)",
+    "6.08(g)",
+    "6.08(h)",
+    "6.08(i)"
+  ],
+  "nodes": [
+    {
+      "nodeType": "SUBSECTION",
+      "sectionRef": "6.08(a)",
+      "nodeId": "structural-node:af5180f13ee818c2b50146e1",
+      "parentNodeId": null,
+      "charStart": 659092,
+      "charEnd": 665769,
+      "text": "(a) The Borrowers shall not, and shall not permit any of the"
+    },
+    {
+      "nodeType": "CLAUSE",
+      "sectionRef": "6.08(a)(i)",
+      "nodeId": "structural-node:f2d177152f72d216551a41b1",
+      "parentNodeId": null,
+      "charStart": 659184,
+      "charEnd": 660373,
+      "text": "(i) declare or pay any dividend or make any payment or distr"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(a)(i)(a)",
+      "nodeId": "structural-node:ef96b538c27a2e295aa4d72a",
+      "parentNodeId": null,
+      "charStart": 659554,
+      "charEnd": 659700,
+      "text": "(a) dividends, payments or distributions by the Borrowers pa"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(a)(i)(b)",
+      "nodeId": "structural-node:1e7d7fb327e9ac76ec9d2fac",
+      "parentNodeId": null,
+      "charStart": 659700,
+      "charEnd": 660193,
+      "text": "(b) dividends, payments or distributions by a Restricted Sub"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(a)(i)(c)",
+      "nodeId": "structural-node:8f126763be24db3636c58025",
+      "parentNodeId": null,
+      "charStart": 660193,
+      "charEnd": 660373,
+      "text": "(c) dividends or distributions payable to any Parent Entity "
+    },
+    {
+      "nodeType": "CLAUSE",
+      "sectionRef": "6.08(a)(ii)",
+      "nodeId": "structural-node:3fdd06a048199c14e9b54ee8",
+      "parentNodeId": null,
+      "charStart": 660373,
+      "charEnd": 660641,
+      "text": "(ii) purchase, redeem, defease or otherwise acquire or retir"
+    },
+    {
+      "nodeType": "CLAUSE",
+      "sectionRef": "6.08(a)(iii)",
+      "nodeId": "structural-node:00092ed5126c5ee9c8ae9825",
+      "parentNodeId": null,
+      "charStart": 660641,
+      "charEnd": 661490,
+      "text": "(iii) make any principal payment on, or redeem, repurchase, "
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(a)(iii)(a)",
+      "nodeId": "structural-node:1ec41ec6fe20a49652f4d25b",
+      "parentNodeId": null,
+      "charStart": 660888,
+      "charEnd": 660995,
+      "text": "(a) Indebtedness permitted to be incurred or issued under an"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(a)(iii)(b)",
+      "nodeId": "structural-node:4bef1ff97ab13e0f12c61640",
+      "parentNodeId": null,
+      "charStart": 660995,
+      "charEnd": 661261,
+      "text": "(b) the prepayment, redemption, purchase, repurchase, defeas"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(a)(iii)(b)(1)",
+      "nodeId": "structural-node:2ed737fa32208e4104344303",
+      "parentNodeId": null,
+      "charStart": 661261,
+      "charEnd": 661383,
+      "text": "(1) year of the date of prepayment, redemption, purchase, re"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(a)(iii)(c)",
+      "nodeId": "structural-node:840aafca270a3fa1bba9ca22",
+      "parentNodeId": null,
+      "charStart": 661383,
+      "charEnd": 661490,
+      "text": "(c) Indebtedness individually having an aggregate principal "
+    },
+    {
+      "nodeType": "CLAUSE",
+      "sectionRef": "6.08(a)(iv)",
+      "nodeId": "structural-node:56f0e28eef10d9cde870742a",
+      "parentNodeId": null,
+      "charStart": 661490,
+      "charEnd": 665769,
+      "text": "(iv) make any Restricted Investment,  (the payments and othe"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(a)(iv)(i)",
+      "nodeId": "structural-node:9c7763185c2201ab11c3f977",
+      "parentNodeId": null,
+      "charStart": 661773,
+      "charEnd": 661847,
+      "text": "(i) through (iv) above (other than any exceptions thereto in"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(a)(iv)(i)(i)",
+      "nodeId": "structural-node:66c0ce2edec47da56c248523",
+      "parentNodeId": null,
+      "charStart": 661847,
+      "charEnd": 662006,
+      "text": "(i) and (iii) above) being collectively referred to as \u201c Res"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(a)(iv)(i)(i)(1)",
+      "nodeId": "structural-node:edf12909f6225db96bf84c8b",
+      "parentNodeId": null,
+      "charStart": 662006,
+      "charEnd": 662023,
+      "text": "(1) [reserved];  (2) [reserved]; and  -142-  (3) such Restri"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(a)(iv)(i)(i)(2)",
+      "nodeId": "structural-node:97ed246d2f62260bcd08c63c",
+      "parentNodeId": null,
+      "charStart": 662023,
+      "charEnd": 662051,
+      "text": "(2) [reserved]; and  -142-  (3) such Restricted Payment, tog"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(a)(iv)(i)(i)(3)",
+      "nodeId": "structural-node:51dc979288959d43ee5e9d25",
+      "parentNodeId": null,
+      "charStart": 662051,
+      "charEnd": 662519,
+      "text": "(3) such Restricted Payment, together with the aggregate amo"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(a)(iv)(i)(i)(3)(a)",
+      "nodeId": "structural-node:8cf8e8e9136f63a9131835f4",
+      "parentNodeId": null,
+      "charStart": 662519,
+      "charEnd": 664123,
+      "text": "(a) through (f) below are referred to herein as the \u201c Availa"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(a)(iv)(i)(i)(3)(b)",
+      "nodeId": "structural-node:e32e3c6e1f2b0e1b4aa20120",
+      "parentNodeId": null,
+      "charStart": 664123,
+      "charEnd": 665582,
+      "text": "(b) 100% of the aggregate net cash proceeds and the Fair Mar"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(a)(iv)(i)(ii)",
+      "nodeId": "structural-node:4bbaefe8a5158f8df5ee192a",
+      "parentNodeId": null,
+      "charStart": 665582,
+      "charEnd": 665769,
+      "text": "(ii) Indebtedness of any Restricted Party that has been conv"
+    },
+    {
+      "nodeType": "SUBSECTION",
+      "sectionRef": "6.08(b)",
+      "nodeId": "structural-node:c1eb440b43f7be7539099988",
+      "parentNodeId": null,
+      "charStart": 665769,
+      "charEnd": 666205,
+      "text": "(b) shall not include the proceeds from (W) Refunding Capita"
+    },
+    {
+      "nodeType": "SUBSECTION",
+      "sectionRef": "6.08(c)",
+      "nodeId": "structural-node:b5454506b587705faf0af1b7",
+      "parentNodeId": null,
+      "charStart": 666205,
+      "charEnd": 666962,
+      "text": "(c) 100% of the aggregate amount of cash and the Fair Market"
+    },
+    {
+      "nodeType": "CLAUSE",
+      "sectionRef": "6.08(c)(i)",
+      "nodeId": "structural-node:ca082ef607bd618885601249",
+      "parentNodeId": null,
+      "charStart": 666705,
+      "charEnd": 666962,
+      "text": "(i) have been used to incur Indebtedness or issue Disqualifi"
+    },
+    {
+      "nodeType": "SUBSECTION",
+      "sectionRef": "6.08(d)",
+      "nodeId": "structural-node:baad19feb05bc3731b53a14f",
+      "parentNodeId": null,
+      "charStart": 666962,
+      "charEnd": 668292,
+      "text": "(d) 100% of the aggregate amount received in cash and the Fa"
+    },
+    {
+      "nodeType": "CLAUSE",
+      "sectionRef": "6.08(d)(i)",
+      "nodeId": "structural-node:60ec3256dd7b4fd04bde0fdd",
+      "parentNodeId": null,
+      "charStart": 667137,
+      "charEnd": 667592,
+      "text": "(i) the sale or other disposition (other than to any Restric"
+    },
+    {
+      "nodeType": "CLAUSE",
+      "sectionRef": "6.08(d)(ii)",
+      "nodeId": "structural-node:353bf84d4d6e5f5dc483f78c",
+      "parentNodeId": null,
+      "charStart": 667592,
+      "charEnd": 667998,
+      "text": "(ii) the issuance, sale or other disposition (other than to "
+    },
+    {
+      "nodeType": "CLAUSE",
+      "sectionRef": "6.08(d)(iii)",
+      "nodeId": "structural-node:58e3a1a073ce324cb030798a",
+      "parentNodeId": null,
+      "charStart": 667998,
+      "charEnd": 668292,
+      "text": "(iii) any returns, profits, distribution and similar amounts"
+    },
+    {
+      "nodeType": "SUBSECTION",
+      "sectionRef": "6.08(e)",
+      "nodeId": "structural-node:8e03c2f7dd2b8858f51cbaea",
+      "parentNodeId": null,
+      "charStart": 668292,
+      "charEnd": 668977,
+      "text": "(e) in the case of the redesignation of an Unrestricted Subs"
+    },
+    {
+      "nodeType": "SUBSECTION",
+      "sectionRef": "6.08(f)",
+      "nodeId": "structural-node:64ae4f0199196fd37c2abbfa",
+      "parentNodeId": null,
+      "charStart": 668977,
+      "charEnd": 669130,
+      "text": "(f) the greater of (x) $540.0 million and (y) 75% of Consoli"
+    },
+    {
+      "nodeType": "SUBSECTION",
+      "sectionRef": "6.08(g)",
+      "nodeId": "structural-node:7cfac90673db7855486d0139",
+      "parentNodeId": null,
+      "charStart": 669130,
+      "charEnd": 669505,
+      "text": "(g) the aggregate amount of the sum of (i) Retained Declined"
+    },
+    {
+      "nodeType": "CLAUSE",
+      "sectionRef": "6.08(g)(i)",
+      "nodeId": "structural-node:ac36949530c6c5aa987f2e45",
+      "parentNodeId": null,
+      "charStart": 669169,
+      "charEnd": 669505,
+      "text": "(i) Retained Declined Proceeds, (ii) Retained Asset Sale Pro"
+    },
+    {
+      "nodeType": "SUBSECTION",
+      "sectionRef": "6.08(h)",
+      "nodeId": "structural-node:8b6cc54c39d1cf390ea4fe2f",
+      "parentNodeId": null,
+      "charStart": 669505,
+      "charEnd": 669729,
+      "text": "(h) 100% of the aggregate amount received in cash and the Fa"
+    },
+    {
+      "nodeType": "SUBSECTION",
+      "sectionRef": "6.08(i)",
+      "nodeId": "structural-node:de80410802a6da15695a45dd",
+      "parentNodeId": null,
+      "charStart": 669729,
+      "charEnd": 697571,
+      "text": "(i) the cumulative amount of (i) Liens incurred pursuant to "
+    },
+    {
+      "nodeType": "CLAUSE",
+      "sectionRef": "6.08(i)(i)",
+      "nodeId": "structural-node:25094c58c75bf4e12d02a04b",
+      "parentNodeId": null,
+      "charStart": 669758,
+      "charEnd": 669913,
+      "text": "(i) Liens incurred pursuant to clause (46)(ii) of the defini"
+    },
+    {
+      "nodeType": "CLAUSE",
+      "sectionRef": "6.08(i)(ii)",
+      "nodeId": "structural-node:7695b293cacfb47dd36f3507",
+      "parentNodeId": null,
+      "charStart": 669913,
+      "charEnd": 692272,
+      "text": "(ii) Indebtedness incurred pursuant to Section 6.01(b)(32) s"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(1)",
+      "nodeId": "structural-node:0c41770b5bd2ca1122b51023",
+      "parentNodeId": null,
+      "charStart": 670108,
+      "charEnd": 670628,
+      "text": "(1) the payment of any dividend or other distribution or the"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(2)",
+      "nodeId": "structural-node:5227493c3e0ebbcdb73a021b",
+      "parentNodeId": null,
+      "charStart": 670628,
+      "charEnd": 670632,
+      "text": "(2) (a) the redemption, purchase, repurchase, defeasance, di"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(2)(a)",
+      "nodeId": "structural-node:1de0742cf96461b262639db6",
+      "parentNodeId": null,
+      "charStart": 670632,
+      "charEnd": 672133,
+      "text": "(a) the redemption, purchase, repurchase, defeasance, discha"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(3)",
+      "nodeId": "structural-node:edce8a87fddd937d54f2fa31",
+      "parentNodeId": null,
+      "charStart": 672133,
+      "charEnd": 672257,
+      "text": "(3) the prepayment, discharge, exchange, redemption, defeasa"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(3)(i)",
+      "nodeId": "structural-node:8de70201986ac7bc7f3be4b6",
+      "parentNodeId": null,
+      "charStart": 672257,
+      "charEnd": 672500,
+      "text": "(i) Subordinated Indebtedness of the Borrowers or a Guaranto"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(3)(ii)",
+      "nodeId": "structural-node:ddbda051a4a70429bb8c1963",
+      "parentNodeId": null,
+      "charStart": 672500,
+      "charEnd": 672768,
+      "text": "(ii) Disqualified Stock of the Borrowers or a Guarantor made"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(4)",
+      "nodeId": "structural-node:51a74154c62b551f8612cb8e",
+      "parentNodeId": null,
+      "charStart": 672768,
+      "charEnd": 674945,
+      "text": "(4) a Restricted Payment to pay for the redemption, purchase"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(4)(a)",
+      "nodeId": "structural-node:0272a894a57c374eeebd4d84",
+      "parentNodeId": null,
+      "charStart": 674945,
+      "charEnd": 675644,
+      "text": "(a) the cash proceeds from the sale of Equity Interests (oth"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(4)(b)",
+      "nodeId": "structural-node:9b70a75b4e1615d24c7ecc56",
+      "parentNodeId": null,
+      "charStart": 675644,
+      "charEnd": 675804,
+      "text": "(b) the cash proceeds of key man life insurance policies rec"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(4)(c)",
+      "nodeId": "structural-node:074ca688bb261580e7eadca0",
+      "parentNodeId": null,
+      "charStart": 675804,
+      "charEnd": 676278,
+      "text": "(c) the amount of any bona fide cash bonuses otherwise payab"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(4)(d)",
+      "nodeId": "structural-node:896cf3aa20bb0d929c92838c",
+      "parentNodeId": null,
+      "charStart": 676278,
+      "charEnd": 677179,
+      "text": "(d) the amount of any Restricted Payments previously made wi"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(5)",
+      "nodeId": "structural-node:731d411a3e3ced045b8ff91f",
+      "parentNodeId": null,
+      "charStart": 677179,
+      "charEnd": 677507,
+      "text": "(5) the declaration and payment of dividends to holders of a"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(6)",
+      "nodeId": "structural-node:f3fd773fe77af5c036f70da8",
+      "parentNodeId": null,
+      "charStart": 677507,
+      "charEnd": 677511,
+      "text": "(6) (a) the declaration and payment of dividends to holders "
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(6)(a)",
+      "nodeId": "structural-node:6873fbf2c4136f42a688b465",
+      "parentNodeId": null,
+      "charStart": 677511,
+      "charEnd": 677776,
+      "text": "(a) the declaration and payment of dividends to holders of a"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(6)(a)(a)",
+      "nodeId": "structural-node:ab43814c39d7548f35c21d21",
+      "parentNodeId": null,
+      "charStart": 677776,
+      "charEnd": 677928,
+      "text": "(a) shall not exceed the aggregate amount of cash actually r"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(6)(a)(b)",
+      "nodeId": "structural-node:557a3a518481b888552c749a",
+      "parentNodeId": null,
+      "charStart": 677928,
+      "charEnd": 678219,
+      "text": "(b) the declaration and payment of dividends to any Parent E"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(6)(a)(c)",
+      "nodeId": "structural-node:f20affd2ca3dfa782fa6df33",
+      "parentNodeId": null,
+      "charStart": 678219,
+      "charEnd": 678412,
+      "text": "(c) the declaration and payment of dividends on Refunding Ca"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(7)",
+      "nodeId": "structural-node:64da9190b42daa31b306b948",
+      "parentNodeId": null,
+      "charStart": 678412,
+      "charEnd": 678631,
+      "text": "(7) Restricted Payments by any Restricted Subsidiary to the "
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(8)",
+      "nodeId": "structural-node:84fadda112e9061b8d7aaede",
+      "parentNodeId": null,
+      "charStart": 678631,
+      "charEnd": 679678,
+      "text": "(8) payments made or expected to be made by any Restricted P"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(9)",
+      "nodeId": "structural-node:1fccd54e6f80232caa26d3ae",
+      "parentNodeId": null,
+      "charStart": 679678,
+      "charEnd": 679682,
+      "text": "(9) (i) (a) the declaration and payment of dividends on any "
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(9)(i)",
+      "nodeId": "structural-node:3c89b8f082b8bec055edfdce",
+      "parentNodeId": null,
+      "charStart": 679682,
+      "charEnd": 679686,
+      "text": "(i) (a) the declaration and payment of dividends on any Borr"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(9)(i)(a)",
+      "nodeId": "structural-node:c16cc3b5c5734ff5394981bd",
+      "parentNodeId": null,
+      "charStart": 679686,
+      "charEnd": 680192,
+      "text": "(a) the declaration and payment of dividends on any Borrower"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(9)(i)(a)(A)",
+      "nodeId": "structural-node:1074b6933799d4ef08e4b918",
+      "parentNodeId": null,
+      "charStart": 680192,
+      "charEnd": 680573,
+      "text": "(A) 6.0% per annum of the net cash proceeds received by or c"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(9)(i)(a)(B)",
+      "nodeId": "structural-node:2f3cfcb4abe553877b8cd17d",
+      "parentNodeId": null,
+      "charStart": 680573,
+      "charEnd": 680655,
+      "text": "(B) an aggregate amount per annum not to exceed 7.0% of Mark"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(9)(i)(b)",
+      "nodeId": "structural-node:e57ef49b78e48b06bc00a45b",
+      "parentNodeId": null,
+      "charStart": 680655,
+      "charEnd": 680728,
+      "text": "(b) in lieu of all or a portion of the dividends permitted b"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(9)(i)(b)(a)",
+      "nodeId": "structural-node:806ffab9cc5a77fdd4cbfe32",
+      "parentNodeId": null,
+      "charStart": 680728,
+      "charEnd": 681385,
+      "text": "(a), any prepayment, purchase, repurchase, redemption, defea"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(9)(ii)",
+      "nodeId": "structural-node:24797228ba8db551c7c56d33",
+      "parentNodeId": null,
+      "charStart": 681385,
+      "charEnd": 681538,
+      "text": "(ii) any amounts (to the extent not reducing the amounts ava"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(10)",
+      "nodeId": "structural-node:63d99a30bf10fc764ce04d8b",
+      "parentNodeId": null,
+      "charStart": 681538,
+      "charEnd": 682174,
+      "text": "(10) of this Section 6.08(b)) that have been used to incur I"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(10)(A)",
+      "nodeId": "structural-node:6ac10dee124cd2de2c2f1915",
+      "parentNodeId": null,
+      "charStart": 682174,
+      "charEnd": 682191,
+      "text": "(A) 2.00:1.00 or (B) the First Lien Leverage Ratio as of the"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(10)(B)",
+      "nodeId": "structural-node:d8050056c9099b6a09f96442",
+      "parentNodeId": null,
+      "charStart": 682191,
+      "charEnd": 682382,
+      "text": "(B) the First Lien Leverage Ratio as of the last day of the "
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(10)(B)(A)",
+      "nodeId": "structural-node:6f7690d93171401fa4f702fb",
+      "parentNodeId": null,
+      "charStart": 682382,
+      "charEnd": 682399,
+      "text": "(A) 1.75:1.00 or (B) the Interest Coverage Ratio level as of"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(10)(B)(B)",
+      "nodeId": "structural-node:3ca9acf796788a4324215ef9",
+      "parentNodeId": null,
+      "charStart": 682399,
+      "charEnd": 682568,
+      "text": "(B) the Interest Coverage Ratio level as of the last day of "
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(11)",
+      "nodeId": "structural-node:1e06a5eb3b869fdfdd7b108d",
+      "parentNodeId": null,
+      "charStart": 682568,
+      "charEnd": 682593,
+      "text": "(11) Restricted Payments (i) in an amount that does not exce"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(11)(i)",
+      "nodeId": "structural-node:feaaf476a1673969cbe09e00",
+      "parentNodeId": null,
+      "charStart": 682593,
+      "charEnd": 682706,
+      "text": "(i) in an amount that does not exceed the amount of Excluded"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(11)(ii)",
+      "nodeId": "structural-node:17421fb509faa7d39b920cd6",
+      "parentNodeId": null,
+      "charStart": 682706,
+      "charEnd": 682930,
+      "text": "(ii) in an amount equal to the amount of Net cash proceeds f"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(12)",
+      "nodeId": "structural-node:7bc790d413cc4adaed216bc7",
+      "parentNodeId": null,
+      "charStart": 682930,
+      "charEnd": 683316,
+      "text": "(12) other Restricted Payments at any one time outstanding i"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(12)(A)",
+      "nodeId": "structural-node:4e7eb5f746c7b8efa1f11e4f",
+      "parentNodeId": null,
+      "charStart": 683316,
+      "charEnd": 683646,
+      "text": "(A) if this Section 6.08(b)(12) is utilized to make a Restri"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(12)(B)",
+      "nodeId": "structural-node:d4a1831a68bf89a36cb33b3f",
+      "parentNodeId": null,
+      "charStart": 683646,
+      "charEnd": 683770,
+      "text": "(B) on a Pro Forma Basis after giving effect to such Restric"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(13)",
+      "nodeId": "structural-node:1d683eb780378963f013f65c",
+      "parentNodeId": null,
+      "charStart": 683770,
+      "charEnd": 683822,
+      "text": "(13) distributions or payments of Receivables Fees; (14) any"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(14)",
+      "nodeId": "structural-node:009487d1280af35d8514bda7",
+      "parentNodeId": null,
+      "charStart": 683822,
+      "charEnd": 683850,
+      "text": "(14) any Restricted Payment (A) made in connection with or i"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(14)(A)",
+      "nodeId": "structural-node:09ec7a35ee795aa46761f84b",
+      "parentNodeId": null,
+      "charStart": 683850,
+      "charEnd": 684209,
+      "text": "(A) made in connection with or in order to consummate the Tr"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(14)(B)",
+      "nodeId": "structural-node:957f22bb245de5694e903693",
+      "parentNodeId": null,
+      "charStart": 684209,
+      "charEnd": 684453,
+      "text": "(B) used to fund amounts owed to Affiliates (including divid"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(15)",
+      "nodeId": "structural-node:87eb27eb9fdeaa1b1b1af7d2",
+      "parentNodeId": null,
+      "charStart": 684453,
+      "charEnd": 684872,
+      "text": "(15) hereof); (15) Restricted Debt Payments at any one time "
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(16)",
+      "nodeId": "structural-node:930959b866160ac4fe071949",
+      "parentNodeId": null,
+      "charStart": 684872,
+      "charEnd": 685340,
+      "text": "(16) the declaration and payment of dividends or distributio"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(16)(1)",
+      "nodeId": "structural-node:9f2db3ca1dea466d143ffbc2",
+      "parentNodeId": null,
+      "charStart": 685340,
+      "charEnd": 686090,
+      "text": "(1) for any taxable period for which the Borrowers and/or an"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(16)(2)",
+      "nodeId": "structural-node:378a4cc195d5fe4931f2eb66",
+      "parentNodeId": null,
+      "charStart": 686090,
+      "charEnd": 690355,
+      "text": "(2) for any taxable period in which the Borrowers and/or any"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(17)",
+      "nodeId": "structural-node:518370ad0ca2fd41d6d9dc8b",
+      "parentNodeId": null,
+      "charStart": 690355,
+      "charEnd": 690532,
+      "text": "(17) the purchase, repurchase, redemption or other acquisiti"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(17)(a)",
+      "nodeId": "structural-node:b51d31034e2b59a917536aad",
+      "parentNodeId": null,
+      "charStart": 690532,
+      "charEnd": 690848,
+      "text": "(a) paying cash in lieu of fractional shares of such Equity "
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(17)(b)",
+      "nodeId": "structural-node:2fc562b2a2ab22de0e449f11",
+      "parentNodeId": null,
+      "charStart": 690848,
+      "charEnd": 691040,
+      "text": "(b) cash payments made in accordance with any conversion req"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(18)",
+      "nodeId": "structural-node:b8cb7c9c54d8955cdd6f533c",
+      "parentNodeId": null,
+      "charStart": 691040,
+      "charEnd": 691714,
+      "text": "(18) the distribution, by dividend or otherwise, or other tr"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(19)",
+      "nodeId": "structural-node:409161c5efe324a3ed035b67",
+      "parentNodeId": null,
+      "charStart": 691714,
+      "charEnd": 692030,
+      "text": "(19) payments or distributions to satisfy dissenters\u2019 or app"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(20)",
+      "nodeId": "structural-node:d4454434ddd9fb1bfe312a98",
+      "parentNodeId": null,
+      "charStart": 692030,
+      "charEnd": 692174,
+      "text": "(20) purchases of Receivables Assets in connection with any "
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(21)",
+      "nodeId": "structural-node:b25f174fbfbd73a0b96a77f1",
+      "parentNodeId": null,
+      "charStart": 692174,
+      "charEnd": 692202,
+      "text": "(21) Restricted Payments of (i) Retained Declined Proceeds, "
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(ii)(21)(i)",
+      "nodeId": "structural-node:ffa13df48f686f8c5c5528ec",
+      "parentNodeId": null,
+      "charStart": 692202,
+      "charEnd": 692272,
+      "text": "(i) Retained Declined Proceeds, (ii) Retained Asset Sale Pro"
+    },
+    {
+      "nodeType": "CLAUSE",
+      "sectionRef": "6.08(i)(iii)",
+      "nodeId": "structural-node:deb36068abd9de010e14872a",
+      "parentNodeId": null,
+      "charStart": 692272,
+      "charEnd": 697571,
+      "text": "(iii) proceeds from dispositions or asset sales the proceeds"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(iii)(I)",
+      "nodeId": "structural-node:618c8956771625f705022088",
+      "parentNodeId": null,
+      "charStart": 693394,
+      "charEnd": 693526,
+      "text": "(I) at the election of the Initial Borrower, the First Lien "
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(iii)(I)(A)",
+      "nodeId": "structural-node:3f911b89e3e65968b131c65b",
+      "parentNodeId": null,
+      "charStart": 693526,
+      "charEnd": 693539,
+      "text": "(A) 2.00x or (B) the First Lien Leverage Ratio as of the las"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(iii)(I)(B)",
+      "nodeId": "structural-node:87be6b7a634bbc92ba4f3542",
+      "parentNodeId": null,
+      "charStart": 693539,
+      "charEnd": 693730,
+      "text": "(B) the First Lien Leverage Ratio as of the last day of the "
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(iii)(I)(B)(A)",
+      "nodeId": "structural-node:0c6a93ab24b3004e72c1ec51",
+      "parentNodeId": null,
+      "charStart": 693730,
+      "charEnd": 693747,
+      "text": "(A) 1.75:1.00 or (B) the Interest Coverage Ratio level as of"
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(iii)(I)(B)(B)",
+      "nodeId": "structural-node:b7d84e8fc42e4a5a7419e241",
+      "parentNodeId": null,
+      "charStart": 693747,
+      "charEnd": 693852,
+      "text": "(B) the Interest Coverage Ratio level as of the last day of "
+    },
+    {
+      "nodeType": "SUBCLAUSE",
+      "sectionRef": "6.08(i)(iii)(II)",
+      "nodeId": "structural-node:f6901a54f1021a61321c7a8c",
+      "parentNodeId": null,
+      "charStart": 693852,
+      "charEnd": 697571,
+      "text": "(II) there is no continuing Specified Event of Default;  (26"
+    }
+  ]
+}

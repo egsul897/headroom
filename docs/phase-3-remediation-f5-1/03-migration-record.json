@@ -1,0 +1,386 @@
+{
+ "artifact": "F-5.1 zero-cost migration of the v4 certification pair through the v5 canonical path (proxy only, never a certification)",
+ "runA": {
+  "tag": "A",
+  "itemsBefore": 379,
+  "itemsAfter": 375,
+  "mergedAway": 4,
+  "unverifiable": 0,
+  "v4ItemsMappedToV5": 379,
+  "v4ItemsLost": 0,
+  "valuesBefore": 19,
+  "valuesAfter": 19,
+  "valuesLost": [],
+  "parentLinksBefore": 301,
+  "parentLinksAfter": 299,
+  "materialityChanged": 1,
+  "legacyRoleChangedFromDeclaredPrimary": 4,
+  "functionProvenance": {
+   "deterministicTokens": 93,
+   "declaredTokens": 357,
+   "itemsWithDeterministicAddition": 84,
+   "byToken": {
+    "dependency:REFERENCE": 52,
+    "logic:ALTERNATIVE": 7,
+    "quantitative:VALUE": 19,
+    "quantitative:THRESHOLD": 5,
+    "quantitative:TIME_PERIOD": 2,
+    "logic:CONDITION": 8
+   }
+  },
+  "signatures": {
+   "dependency:REFERENCE": 23,
+   "effect:PROHIBITION": 6,
+   "logic:CONDITION": 59,
+   "logic:EXCEPTION": 47,
+   "logic:CONDITION|dependency:REFERENCE": 12,
+   "logic:EXCEPTION|dependency:REFERENCE": 6,
+   "quantitative:TIME_PERIOD": 5,
+   "quantitative:THRESHOLD|dependency:DEPENDENCY": 1,
+   "": 18,
+   "quantitative:FORMULA_COMPONENT": 50,
+   "quantitative:THRESHOLD": 7,
+   "logic:ALTERNATIVE|quantitative:FORMULA_COMPONENT": 2,
+   "logic:ALTERNATIVE|quantitative:VALUE": 18,
+   "quantitative:FORMULA_COMPONENT|quantitative:THRESHOLD": 4,
+   "quantitative:VALUE|quantitative:FORMULA_COMPONENT": 1,
+   "quantitative:FORMULA_COMPONENT|dependency:REFERENCE": 7,
+   "logic:EXCEPTION|quantitative:FORMULA_COMPONENT": 1,
+   "logic:ALTERNATIVE": 39,
+   "logic:TRIGGER": 4,
+   "dependency:REFERENCE|dependency:DEPENDENCY": 3,
+   "effect:PERMISSION": 29,
+   "logic:ALTERNATIVE|quantitative:TIME_PERIOD": 2,
+   "logic:CONDITION|logic:ALTERNATIVE|quantitative:THRESHOLD|dependency:REFERENCE": 1,
+   "effect:PERMISSION|logic:CONDITION": 2,
+   "logic:CONDITION|logic:TRIGGER": 1,
+   "effect:PERMISSION|logic:CONDITION|dependency:REFERENCE": 1,
+   "effect:PERMISSION|dependency:REFERENCE": 5,
+   "logic:CONDITION|logic:EXCEPTION": 2,
+   "dependency:DEPENDENCY": 2,
+   "logic:CONDITION|quantitative:THRESHOLD|dependency:REFERENCE": 1,
+   "quantitative:THRESHOLD|dependency:REFERENCE": 2,
+   "logic:ALTERNATIVE|quantitative:THRESHOLD": 2,
+   "logic:CONDITION|quantitative:FORMULA_COMPONENT|dependency:REFERENCE": 1,
+   "logic:ALTERNATIVE|dependency:REFERENCE": 2,
+   "logic:ALTERNATIVE|quantitative:FORMULA_COMPONENT|quantitative:THRESHOLD|dependency:REFERENCE": 1,
+   "logic:CONDITION|logic:EXCEPTION|dependency:REFERENCE": 1,
+   "logic:ALTERNATIVE|quantitative:THRESHOLD|dependency:REFERENCE": 1,
+   "dependency:SHARED_CAP": 1,
+   "dependency:REFERENCE|dependency:SHARED_CAP": 1,
+   "quantitative:VALUE": 1,
+   "effect:PROHIBITION|dependency:REFERENCE": 1,
+   "logic:RECLASSIFICATION|dependency:REFERENCE": 2
+  },
+  "merges": [
+   {
+    "v5Id": "inv-item:43012bfe4f5c0d3445f9be61",
+    "members": [
+     {
+      "v4Id": "inv-item:d442ec66c9fd9c663def07c1",
+      "role": "DEPENDENCY",
+      "span": [
+       2427,
+       2443
+      ],
+      "proposition": "This threshold test depends on the definition of 'Threshold Amount' elsewhere in the Agreement, not expanded in the provided source context."
+     },
+     {
+      "v4Id": "inv-item:54c3441a6fbc59d601d3945e",
+      "role": "THRESHOLD",
+      "span": [
+       2427,
+       2444
+      ],
+      "proposition": "The applicable threshold for this exception is the defined 'Threshold Amount'."
+     }
+    ],
+    "declaredRoles": [
+     "DEPENDENCY",
+     "THRESHOLD"
+    ],
+    "propJaccardMin": 0.22,
+    "falseMergeCandidate": true
+   },
+   {
+    "v5Id": "inv-item:01771b50bc247d7f3cde444c",
+    "members": [
+     {
+      "v4Id": "inv-item:81e1f0eeee0b0d59f8abd90d",
+      "role": "FORMULA_COMPONENT",
+      "span": [
+       5738,
+       5765
+      ],
+      "proposition": "Excluded sale sub-category (x) begins: Equity Interests sold to any [continuation not included in this batch]."
+     },
+     {
+      "v4Id": "inv-item:dc41655edfeb0dca5a805f26",
+      "role": "EXCEPTION",
+      "span": [
+       5738,
+       5765
+      ],
+      "proposition": "Alternative (x) excludes Equity Interests issued to a certain category of recipient from counting toward this Available Amount addback; the "
+     }
+    ],
+    "declaredRoles": [
+     "FORMULA_COMPONENT",
+     "EXCEPTION"
+    ],
+    "propJaccardMin": 0.17,
+    "falseMergeCandidate": false
+   },
+   {
+    "v5Id": "inv-item:be051b04ed95f5867ad2e471",
+    "members": [
+     {
+      "v4Id": "inv-item:f0e71154f4234a2a4d8e5e4f",
+      "role": "CONDITION",
+      "span": [
+       15038,
+       15101
+      ],
+      "proposition": "Unused amounts of the annual basket in any calendar year are carried over to succeeding calendar years (completed in next slot)."
+     },
+     {
+      "v4Id": "inv-item:aaf58a9cbb15e0f230ca55d6",
+      "role": "PERMISSION",
+      "span": [
+       15038,
+       15129
+      ],
+      "proposition": "Unused amounts of the annual basket increase in any calendar year may be carried forward and used in succeeding calendar years."
+     }
+    ],
+    "declaredRoles": [
+     "CONDITION",
+     "PERMISSION"
+    ],
+    "propJaccardMin": 0.52,
+    "falseMergeCandidate": false
+   },
+   {
+    "v5Id": "inv-item:41943fa129ef86834413e6d4",
+    "members": [
+     {
+      "v4Id": "inv-item:513f984cd3214d8400b3621e",
+      "role": "EXCEPTION",
+      "span": [
+       17555,
+       17618
+      ],
+      "proposition": "A further proviso addresses the treatment of cancellation of Indebtedness owing to a specified party; the substantive rule is not fully cont"
+     },
+     {
+      "v4Id": "inv-item:7393fb99c2ccfdcb49f11034",
+      "role": "CONDITION",
+      "span": [
+       17555,
+       17618
+      ],
+      "proposition": "A further proviso begins regarding cancellation of Indebtedness owing to a person; its full text and effect are not contained within this ba"
+     }
+    ],
+    "declaredRoles": [
+     "EXCEPTION",
+     "CONDITION"
+    ],
+    "propJaccardMin": 0.28,
+    "falseMergeCandidate": false
+   }
+  ],
+  "falseMergeCandidates": 1
+ },
+ "runB": {
+  "tag": "B",
+  "itemsBefore": 382,
+  "itemsAfter": 378,
+  "mergedAway": 4,
+  "unverifiable": 0,
+  "v4ItemsMappedToV5": 382,
+  "v4ItemsLost": 0,
+  "valuesBefore": 18,
+  "valuesAfter": 18,
+  "valuesLost": [],
+  "parentLinksBefore": 300,
+  "parentLinksAfter": 296,
+  "materialityChanged": 0,
+  "legacyRoleChangedFromDeclaredPrimary": 4,
+  "functionProvenance": {
+   "deterministicTokens": 86,
+   "declaredTokens": 369,
+   "itemsWithDeterministicAddition": 79,
+   "byToken": {
+    "dependency:REFERENCE": 50,
+    "logic:ALTERNATIVE": 6,
+    "quantitative:VALUE": 20,
+    "quantitative:THRESHOLD": 2,
+    "logic:CONDITION": 6,
+    "quantitative:TIME_PERIOD": 2
+   }
+  },
+  "signatures": {
+   "effect:PROHIBITION": 7,
+   "logic:CONDITION": 73,
+   "logic:EXCEPTION": 44,
+   "effect:PROHIBITION|dependency:REFERENCE": 2,
+   "logic:EXCEPTION|dependency:REFERENCE": 6,
+   "dependency:REFERENCE": 33,
+   "quantitative:TIME_PERIOD": 4,
+   "quantitative:THRESHOLD": 5,
+   "dependency:DEPENDENCY": 2,
+   "": 9,
+   "logic:CONDITION|dependency:REFERENCE": 13,
+   "logic:ALTERNATIVE|quantitative:FORMULA_COMPONENT": 2,
+   "logic:ALTERNATIVE|quantitative:VALUE": 17,
+   "logic:ALTERNATIVE|quantitative:THRESHOLD": 1,
+   "quantitative:FORMULA_COMPONENT": 72,
+   "quantitative:VALUE|quantitative:FORMULA_COMPONENT": 1,
+   "logic:EXCEPTION|logic:ALTERNATIVE": 1,
+   "logic:CONDITION|logic:EXCEPTION": 2,
+   "logic:TRIGGER": 2,
+   "quantitative:FORMULA_COMPONENT|dependency:REFERENCE": 6,
+   "dependency:REFERENCE|dependency:DEPENDENCY": 1,
+   "effect:PERMISSION|quantitative:VALUE": 1,
+   "logic:CONDITION|quantitative:VALUE": 1,
+   "effect:PERMISSION": 23,
+   "logic:ALTERNATIVE|quantitative:TIME_PERIOD": 2,
+   "logic:CONDITION|logic:ALTERNATIVE|quantitative:THRESHOLD|dependency:REFERENCE": 1,
+   "logic:CONDITION|logic:TRIGGER": 1,
+   "logic:ALTERNATIVE": 23,
+   "effect:PERMISSION|logic:CONDITION|dependency:REFERENCE": 1,
+   "effect:PERMISSION|dependency:REFERENCE": 4,
+   "logic:CONDITION|quantitative:THRESHOLD|dependency:REFERENCE": 1,
+   "effect:PERMISSION|logic:ALTERNATIVE": 1,
+   "quantitative:FORMULA_COMPONENT|quantitative:THRESHOLD": 1,
+   "quantitative:THRESHOLD|dependency:REFERENCE": 2,
+   "logic:ALTERNATIVE|quantitative:THRESHOLD|dependency:REFERENCE": 3,
+   "logic:ALTERNATIVE|dependency:REFERENCE": 2,
+   "logic:CONDITION|quantitative:THRESHOLD": 1,
+   "quantitative:VALUE": 1,
+   "dependency:REFERENCE|dependency:SHARED_CAP": 2,
+   "logic:CURE": 1,
+   "logic:RECLASSIFICATION|dependency:REFERENCE": 3
+  },
+  "merges": [
+   {
+    "v5Id": "inv-item:f4b0cc81ce4eb9eea89d3ee7",
+    "members": [
+     {
+      "v4Id": "inv-item:15e313f185478556bdd6c304",
+      "role": "OTHER",
+      "span": [
+       2813,
+       2885
+      ],
+      "proposition": "The payments/actions in clauses (i) through (iv) (excluding stated exceptions in clauses (i) and (iii)) are collectively defined as 'Restric"
+     },
+     {
+      "v4Id": "inv-item:3d45d6a1cf4e8d7df64a1cec",
+      "role": "DEPENDENCY",
+      "span": [
+       2813,
+       2885
+      ],
+      "proposition": "The just-established definition of 'Restricted Payments' governs the classification tested by the 'unless' condition that immediately follow"
+     }
+    ],
+    "declaredRoles": [
+     "OTHER",
+     "DEPENDENCY"
+    ],
+    "propJaccardMin": 0.12,
+    "falseMergeCandidate": false
+   },
+   {
+    "v5Id": "inv-item:01771b50bc247d7f3cde444c",
+    "members": [
+     {
+      "v4Id": "inv-item:02a35a26fcedfa4886756d8e",
+      "role": "ALTERNATIVE",
+      "span": [
+       5738,
+       5765
+      ],
+      "proposition": "One category of proceeds counted toward this Available Amount component is (x) Equity Interests issued to any [recipient category continuing"
+     },
+     {
+      "v4Id": "inv-item:dc41655edfeb0dca5a805f26",
+      "role": "EXCEPTION",
+      "span": [
+       5738,
+       5765
+      ],
+      "proposition": "Sub-exclusion (x) begins: Equity Interests sold to a specified party (text continues beyond this batch)."
+     }
+    ],
+    "declaredRoles": [
+     "ALTERNATIVE",
+     "EXCEPTION"
+    ],
+    "propJaccardMin": 0.15,
+    "falseMergeCandidate": false
+   },
+   {
+    "v5Id": "inv-item:41943fa129ef86834413e6d4",
+    "members": [
+     {
+      "v4Id": "inv-item:513f984cd3214d8400b3621e",
+      "role": "EXCEPTION",
+      "span": [
+       17555,
+       17618
+      ],
+      "proposition": "A further proviso begins regarding cancellation of Indebtedness owing to a specified party; the substance continues beyond this excerpt."
+     },
+     {
+      "v4Id": "inv-item:7393fb99c2ccfdcb49f11034",
+      "role": "CONDITION",
+      "span": [
+       17555,
+       17618
+      ],
+      "proposition": "A further proviso begins regarding the cancellation of Indebtedness owing to [text continues beyond this batch]; the operative effect cannot"
+     }
+    ],
+    "declaredRoles": [
+     "EXCEPTION",
+     "CONDITION"
+    ],
+    "propJaccardMin": 0.48,
+    "falseMergeCandidate": false
+   },
+   {
+    "v5Id": "inv-item:c20a954473d3aeb842b821d3",
+    "members": [
+     {
+      "v4Id": "inv-item:3e0aebb86bbf6b6cdbd7974e",
+      "role": "PERMISSION",
+      "span": [
+       19589,
+       19715
+      ],
+      "proposition": "Permits payments made or expected to be made by a Restricted Party in respect of withholding or similar taxes payable upon or in connection "
+     },
+     {
+      "v4Id": "inv-item:ec053fa3f3ba81e27a21efaa",
+      "role": "ALTERNATIVE",
+      "span": [
+       19589,
+       19715
+      ],
+      "proposition": "Branch A of (8): payments in respect of withholding taxes upon exercise/vesting of Equity Interests."
+     }
+    ],
+    "declaredRoles": [
+     "PERMISSION",
+     "ALTERNATIVE"
+    ],
+    "propJaccardMin": 0.32,
+    "falseMergeCandidate": false
+   }
+  ],
+  "falseMergeCandidates": 0
+ }
+}

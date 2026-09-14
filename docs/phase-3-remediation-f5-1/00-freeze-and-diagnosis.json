@@ -1,0 +1,194 @@
+{
+ "artifact": "F-5.1 evidence freeze + diagnosis (mission \u00a71-\u00a73)",
+ "startingSha": "97da90b5ceb6d1b5fbdc388dcaa38c5ed0e81c84",
+ "frozenEvidence": {
+  "certificationRunA": "9e82ce72147bcfe2db66cd57ed03b333827c423c",
+  "certificationRunB": "4ca94ebdbb8319b8ee0fc084a1609da042f47eb9",
+  "certificationPair": "463519e9a9ae35d56a2adb64f91494b0ed43b0df",
+  "alignmentScorer": "35a3302f72e9919a69239a202b55ba19e62257b6",
+  "referenceScorer": "330719f03533b1674249e81ce6bee84c0be01200",
+  "humanReferenceSet": "6d2274914fd97571a97b083367b0ef8409c19703",
+  "chewySource": "3768712fa316084c8bfdf7eea70b030649fb7442",
+  "frozenUnit608": "694f4c2d21e2c9cf1033f0015e228da852d02093",
+  "slotsModule": "cbaf31c5be0550a0c45c6eda8b471b20c31fafed",
+  "thresholds": {
+   "criticalMaterialSemanticStability": 0.85,
+   "semanticStability": 0.8,
+   "dangerousSilentOmissions": 0,
+   "referenceRecallDegradation": "none material"
+  },
+  "note": "none of these were modified in this mission (slots.ts, scorers, reference set, source, unit byte-identical; certification runs read-only)"
+ },
+ "roleConfusionMatrix": {
+  "alignedPairs": 337,
+  "byLevel": {
+   "L1_IDENTICAL_SLOT_SPAN": 300,
+   "L2_SLOT_OVERLAP_VALUES": 37
+  },
+  "roleConflictPairs": 90,
+  "roleConflictRate": 0.2671,
+  "identicalSlotAndSpanConflicts": 82,
+  "conflictsWithEqualValues": 88,
+  "conflictsWithEqualReferences": 67,
+  "conflictsPropositionJaccardGte05": 55,
+  "topUnorderedPairs": {
+   "ALTERNATIVE<->FORMULA_COMPONENT": 16,
+   "CONDITION<->FORMULA_COMPONENT": 12,
+   "FORMULA_COMPONENT<->OTHER": 11,
+   "CONDITION<->EXCEPTION": 5,
+   "CONDITION<->PERMISSION": 5,
+   "ALTERNATIVE<->PERMISSION": 5,
+   "ALTERNATIVE<->CONDITION": 5,
+   "CONDITION<->REFERENCE": 3,
+   "EXCEPTION<->PERMISSION": 3,
+   "CONDITION<->PROHIBITION": 2,
+   "EXCEPTION<->FORMULA_COMPONENT": 2,
+   "ALTERNATIVE<->EXCEPTION": 2
+  },
+  "investigatedPairs": {
+   "VALUE<->FORMULA_COMPONENT": 0,
+   "VALUE<->THRESHOLD": 1,
+   "FORMULA_COMPONENT<->ALTERNATIVE": 16,
+   "THRESHOLD<->CONDITION": 1,
+   "CONDITION<->TRIGGER": 1,
+   "REFERENCE<->DEPENDENCY": 2,
+   "PERMISSION<->EXCEPTION": 3,
+   "SHARED_CAP<->FORMULA_COMPONENT": 0,
+   "OTHER<->substantive": 14
+  },
+  "perRoleConflictShare": {
+   "ALTERNATIVE": 0.477,
+   "CONDITION": 0.389,
+   "CURE": 1.0,
+   "DEPENDENCY": 0.8,
+   "EXCEPTION": 0.25,
+   "FORMULA_COMPONENT": 0.512,
+   "OTHER": 0.667,
+   "PERMISSION": 0.405,
+   "PROHIBITION": 0.222,
+   "RECLASSIFICATION": 0.333,
+   "REFERENCE": 0.429,
+   "SHARED_CAP": 0.0,
+   "THRESHOLD": 0.312,
+   "TIME_PERIOD": 0.0,
+   "TRIGGER": 0.25,
+   "VALUE": 1.0
+  }
+ },
+ "adjudicationA_E": {
+  "legend": {
+   "A": "genuinely equivalent descriptions of ONE source semantic",
+   "B": "one source semantic legitimately has MULTIPLE semantic functions",
+   "C": "one run is wrong",
+   "D": "two propositions collapsed into one span",
+   "E": "scorer alignment error"
+  },
+  "byPair": {
+   "ALTERNATIVE<->FORMULA_COMPONENT": {
+    "n": 16,
+    "class": "B",
+    "finding": "a branch of a greater-of / sum IS an addend of the enclosing formula: 'the greater of (x)' selection lead-ins, '(ii) Indebtedness converted into equity' as both an alternative source and a component counted toward the Available Amount. One proposition, two genuine functions."
+   },
+   "CONDITION<->FORMULA_COMPONENT": {
+    "n": 12,
+    "class": "B",
+    "finding": "a proviso that is simultaneously a qualifier and a floor/operand: '(which amount shall be deemed to be zero for any fiscal quarter in which ... is less than zero)', '(A) if this Section 6.08(b)(12) is utilized ... the amount counted against the basket shall be'. Condition AND formula component."
+   },
+   "FORMULA_COMPONENT<->OTHER": {
+    "n": 11,
+    "class": "B/D",
+    "finding": "slot-sliced continuations of one definitional formula (the tax-group clause split across slots): one run labels each slice OTHER ('continuation'), the other inherits the parent's FORMULA_COMPONENT. Same proposition slice; the label carries no information the slot does not already carry."
+   },
+   "CONDITION<->EXCEPTION": {
+    "n": 5,
+    "class": "B",
+    "finding": "'other than Disqualified Stock' inside an equity-interests exception, 'provided, further, that ... Taxes attributable to Unrestricted Subsidiaries' - a proviso that carves out is both a condition on the parent and an exception to it."
+   },
+   "CONDITION<->PERMISSION": {
+    "n": 5,
+    "class": "B",
+    "finding": "continuation slices of a permission's scope ('Immediate Family Members or any Permitted Transferee ...', 'option plan, stock appreciation rights plan ...') - what is permitted and the condition of eligibility are the same text."
+   },
+   "ALTERNATIVE<->PERMISSION": {
+    "n": 5,
+    "class": "B",
+    "finding": "lettered sub-clauses (6)(a)/(b)/(c), (9)(i)(a): each is a branch of the clause AND the permission it grants."
+   },
+   "ALTERNATIVE<->CONDITION": {
+    "n": 5,
+    "class": "B",
+    "finding": "'(a) paying cash in lieu of fractional shares', '(b) cash payments made in accordance with any conversion request': circumstances (conditions) that are also the alternative branches of clause (17)."
+   },
+   "CONDITION<->REFERENCE": {
+    "n": 3,
+    "class": "B",
+    "finding": "'... by virtue of Section 6.08(a)(3) hereof', 'pursuant to Section 6.08(b)(12)(a) hereof': a proviso whose content is an explicit citation - condition AND reference (now deterministic: dependency:REFERENCE from the citation)."
+   },
+   "EXCEPTION<->PERMISSION": {
+    "n": 3,
+    "class": "B",
+    "finding": "'(3) the prepayment, discharge, exchange ...', '(e) fees and expenses related to ...': a lettered carve-out from the prohibition IS the permission it grants."
+   },
+   "DEPENDENCY<->REFERENCE": {
+    "n": 2,
+    "class": "A",
+    "finding": "'Fixed Charges;' / 'Section 5.18(b)': the same dependency described as a defined-term dependency or an explicit cross-reference - equivalent descriptions of one semantic (now one identity; REFERENCE deterministic from the citation)."
+   },
+   "ALTERNATIVE<->THRESHOLD": {
+    "n": 2,
+    "class": "B",
+    "finding": "'(i) the First Lien Leverage Ratio ... would not exceed': an election branch that is a ratio test - alternative AND threshold (THRESHOLD now deterministic from the comparator + stated ratio)."
+   },
+   "CONDITION<->PROHIBITION": {
+    "n": 2,
+    "class": "B",
+    "finding": "'in each case, prior to any scheduled repayment ...': the prohibition's scope clause and the condition of its application are one text."
+   },
+   "CONDITION<->TRIGGER": {
+    "n": 1,
+    "class": "B",
+    "finding": "'After the first public offering ... following the Effective Date': the temporal trigger is also the condition."
+   },
+   "THRESHOLD<->VALUE": {
+    "n": 1,
+    "class": "A",
+    "finding": "'(26) ... not to exceed the Available Investment Capacity Amount': one cap described as a threshold or as its value."
+   },
+   "VALUE<->FORMULA_COMPONENT": {
+    "n": 0,
+    "class": "-",
+    "finding": "not observed as an identical-span conflict; covered by the anti-enumeration test A."
+   },
+   "SHARED_CAP<->FORMULA_COMPONENT": {
+    "n": 0,
+    "class": "-",
+    "finding": "not observed; covered by anti-enumeration test D."
+   },
+   "OTHER<->substantive": {
+    "n": 14,
+    "class": "B/D",
+    "finding": "11 FORMULA_COMPONENT continuations + 3 singletons: OTHER carries no function; the canonical model treats it as 'no declared function' so the other run's label, or the deterministic rules, describe the slice."
+   }
+  },
+  "countsByClass": {
+   "A": 3,
+   "B": 59,
+   "B/D": 25,
+   "C": 0,
+   "D": 0,
+   "E": 0
+  },
+  "summary": "Of the 90 conflicts, 87 sit on pairs adjudicated B (one proposition, several functions) or A (equivalent descriptions); the 11 FORMULA_COMPONENT<->OTHER continuations are B/D (slot slices whose function is inherited from the parent formula - the label adds nothing the slot does not carry). No pair was adjudicated C (a run being wrong about the source), and none E (every conflict pair shares slot, span and values, so the alignment is by construction). Class D in the mission's sense (two propositions in one span) was not found among identical-span conflicts; nested distinct propositions appear only among the 37 L2 (overlapping-span) pairs and are handled by the start-anchored guard."
+ },
+ "conclusion": {
+  "scalarRoleSound": false,
+  "reason": "the roles are not mutually exclusive: ALTERNATIVE+FORMULA_COMPONENT (16), CONDITION+FORMULA_COMPONENT (12), CONDITION+EXCEPTION (5), EXCEPTION+PERMISSION (3), CONDITION+REFERENCE (3), ALTERNATIVE+THRESHOLD (2), CONDITION+TRIGGER (1), REFERENCE+DEPENDENCY (2), THRESHOLD+VALUE (1) all occur on identical source spans with identical values and references. A single-choice enum forces the model to pick one of several true functions, and the pick is not stable; keying identity on it manufactured two identities for one source semantic (D_ROLE_INSTABILITY = 158 of 253 run-only items).",
+  "answersToSection3": {
+   "ALTERNATIVE and FORMULA_COMPONENT": "yes (16 observed)",
+   "THRESHOLD and VALUE": "yes (1 observed; test A/B)",
+   "CONDITION and TRIGGER": "yes (1 observed; test E)",
+   "REFERENCE and DEPENDENCY": "yes (2 observed; test C)",
+   "FORMULA_COMPONENT and part of a SHARED_CAP": "yes by construction (a shared-cap proviso's amount is an operand of the cap; test D) - not observed as an identical-span conflict in this pair"
+  }
+ }
+}

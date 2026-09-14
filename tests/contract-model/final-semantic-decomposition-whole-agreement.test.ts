@@ -400,8 +400,10 @@ describe("Whole-agreement synthetic corpus S1-S35", () => {
     const operands: WireExpression[] = [metric("Present Component 1"), metric("Present Component 2"), { kind: "UNSUPPORTED", reason: "clause (c) was not represented in the supplied source", semanticDescription: "deliberately omitted clause" }];
     const { definitions } = compile(submission({ definitions: [def({ localRef: "d1", termName: "Deliberately Incomplete Metric", calculationExpression: { kind: "ADD", operands } })] }));
     const expr = definitions[0]!.calculationExpression!;
-    expect(expr.kind).toBe("UNSUPPORTED");
+    expect(expr.kind).toBe("ADD"); // F-6: the two present components stay live; the omitted one is an in-place UNSUPPORTED operand
+    expect(definitions[0]!.sufficiency).not.toBe("COMPLETE");
     const result = checkIntraDefinitionComponentCompleteness(expr);
+    expect(result.applicable).toBe(true);
     expect(result.unsupportedComponentCount).toBe(1);
     expect(result.wellTypedComponentCount).toBeGreaterThanOrEqual(2);
   });

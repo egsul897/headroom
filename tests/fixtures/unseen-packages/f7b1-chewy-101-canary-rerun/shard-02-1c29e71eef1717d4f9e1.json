@@ -1,0 +1,3325 @@
+{
+ "record": {
+  "stage": 1,
+  "attempt": 1,
+  "shardId": "shard:1c29e71eef1717d4f9e1",
+  "shardHash": "85cd3fe537a3657f61009c524910ba6bac773fc01343a89fdfc31b58025d6f06",
+  "ordinal": 2,
+  "ownedUnits": 3,
+  "sourceChars": 11172,
+  "contextEntries": 8,
+  "contextChars": 5735,
+  "unresolvedContext": 1,
+  "oversized": false,
+  "ownedItems": 11,
+  "ownedMaterialItems": 11,
+  "estimatedFirstTurnInputTokens": 29510,
+  "preCallEstimate": {
+   "inputTokens": 97088,
+   "outputTokens": 9000,
+   "usd": 0.284176
+  },
+  "actual": {
+   "inputTokens": 169289,
+   "outputTokens": 36307,
+   "turns": 4,
+   "latencyMs": 338024,
+   "costUsd": 0.701648,
+   "attemptCount": 4,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "toolCalls": 6,
+  "toolCallNames": [
+   "getDefinition",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getDefinition",
+   "getChildren"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 6,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 1,
+  "ownedAccountability": {
+   "represented": 9,
+   "dispositioned": 2,
+   "missingMaterial": 0,
+   "valuesRepresented": 14,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "REPRESENTED": 9,
+    "INTENTIONALLY_NON_COMPUTATIONAL": 1,
+    "UNSUPPORTED": 1
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Asset Sale Prepayment Event",
+   "Asset Sale Proceeds Application Period",
+   "Available Amount"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].AND[0]] Qualitative triggering description, not a computable financial value",
+   "[definition[d1].AND[1].NOT.operand.OR[0]] Each is a categorical/qualitative exclusion with no stated dollar or percentage threshold; not a computable financial mechanic",
+   "[definition[d1].AND[1].NOT.operand] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1].AND[1]] NOT keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d2].AND[0]] qualitative triggering condition",
+   "[definition[d2].AND[1].NOT.operand.OR[0]] qualitative exclusion",
+   "[definition[d2].AND[1].NOT.operand] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d2].AND[1]] NOT keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d2]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d5]] the referenced sub-clauses are a separate, extensive builder-basket provision not included in the supplied evidence for this compilation and not resolvable within budget",
+   "[definition[d6].SUBTRACT.left] clause (13) of 'Permitted Investments' was not retrievable - the definition's text is truncated before reaching clause (13) and no tool resolves an internal numbered clause of another definition",
+   "[definition[d6].SUBTRACT.right] represents a running usage ledger against Section 6.08(b)(26), a provision outside this submission; no shared-capacity member rule for 6.08(b)(26) is being compiled here",
+   "[definition[d6]] SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+   "This compilation covers the 'Asset Sale' definition and the sibling defined terms declared in the same §1.01 excerpt: 'Asset Sale Prepayment Event', 'Asset Sale Proceeds Application Period', 'Assignment and Assumption', 'Available Amount', and 'Available Investment Capacity Amount'.",
+   "'Asset Sale' itself is a categorical/boundary definition, not a single dollar formula; only the material quantitative carve-outs flagged in the frozen inventory (clauses (d), (x), (cc), (ee), (ff)) are represented with their thresholds - the many purely qualitative carve-outs are bundled into one UNSUPPORTED node rather than guessed at individually, since none carry a stated numeric value.",
+   "Cross-references to Sections 6.01, 6.02, 6.03, 6.08, 6.08(a), 6.08(b) (other than 6.08(a)(3) and 6.08(b)(26), which were retrieved) were out of scope per the source-context budget and are not required for the Asset Sale carve-outs' own economics (they gate eligibility of other exceptions, e.g. (b), (c), (u)), which remain UNSUPPORTED/qualitative in this compilation.",
+   "'Available Amount' (Section 6.08(a)(3)) and the 'clause (13)' component of 'Available Investment Capacity Amount' were both investigated via getReferencedProvision/getDefinition/getChildren, but each leads into a large, separate builder-basket provision whose full lettered sub-clauses were not retrievable within budget; both are marked MISSING_CONTEXT rather than guessed.",
+   "'Asset Sale Prepayment Event' and 'Asset Sale Proceeds Application Period' were successfully resolved via their cross-referenced sections/definitions and are represented with much fuller economics than the bare cross-reference in the original §1.01 excerpt."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:1c29e71eef1717d4f9e1",
+  "shardHash": "85cd3fe537a3657f61009c524910ba6bac773fc01343a89fdfc31b58025d6f06",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:7816a4c1b9dbf24aa30579c7",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Asset Sale",
+     "covenantFamily": "ASSET_SALES",
+     "calculationExpression": {
+      "kind": "AND",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:a0dc6a19befec4823965c013",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01, clauses (1)-(2) of 'Asset Sale' definition",
+        "semanticDescription": "Occurrence of a disposition of property or assets (including via Sale-and-Lease-Back Transaction) by a Borrower or Restricted Subsidiary, or an issuance/sale of Equity Interests of a Restricted Subsidiary (other than certain Preferred Stock issued under Section 6.01)",
+        "reason": "Qualitative triggering description, not a computable financial value",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:5cdd57e812d8b0704cdaf033"
+       },
+       {
+        "kind": "NOT",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:e3687f6af59b8ab900d66a0b",
+        "operand": {
+         "kind": "OR",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:8a993c26e9ce3b49de5d4b73",
+         "operands": [
+          {
+           "kind": "UNSUPPORTED",
+           "type": null,
+           "sourceEvidence": "§1.01(a),(b),(c),(e)-(w),(y),(z),(aa),(bb),(dd)",
+           "semanticDescription": "Qualitative, non-quantitative carve-outs: ordinary-course/obsolete asset dispositions; all-or-substantially-all/Change of Control dispositions; dispositions funding a Permitted Investment or Restricted Payment; intercompany transfers; like-kind/replacement-property exchanges; leases/licenses in the ordinary course; Unrestricted Subsidiary interests; casualty/condemnation/foreclosure events; asset-backed financings and Sale-and-Lease-Back transactions; receivables financings; IP licensing; current-asset/receivables dispositions; contract-right settlements; hedge/cash-management unwinds; JV buy/sell; IP lapse/abandonment; qualifying shares/equity comp plan issuances; cash/Cash Equivalents/Investment Grade Securities sales; non-core or antitrust-driven asset dispositions; Permitted Liens; Delaware Divided LLC formations; acquisition-consideration equity transfers; Excluded-Contribution-funded sales; Permitted Tax Restructurings; Ordinary Course Non-Recourse Third Party Financing Transactions; Transactions-related dispositions; and dispositions of non-Collateral assets",
+           "reason": "Each is a categorical/qualitative exclusion with no stated dollar or percentage threshold; not a computable financial mechanic",
+           "requiredReview": true,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:129cb04026f3c8ee5963c2a8"
+          },
+          {
+           "kind": "COMPARE",
+           "type": "BOOLEAN",
+           "exprId": "ir-expr:ead6160f4114ffada181f36d",
+           "left": {
+            "kind": "TRANSACTION_INPUT_REFERENCE",
+            "type": "MONEY",
+            "inputName": "Aggregate Fair Market Value of the disposition or issuance/sale (single transaction or series of related transactions)",
+            "exprId": "ir-expr:116061cfd3e6ab3d81416fb4"
+           },
+           "operator": "LT",
+           "right": {
+            "kind": "MAX",
+            "type": "MONEY",
+            "exprId": "ir-expr:8c24d9b29f637b57cc43ec8a",
+            "operands": [
+             {
+              "kind": "MONEY",
+              "type": "MONEY",
+              "amount": 108000000,
+              "currency": "USD",
+              "provenance": {
+               "documentId": "doc-a",
+               "sourceNodeKey": null,
+               "sourceCitation": "§1.01(d)",
+               "excerpt": null
+              },
+              "exprId": "ir-expr:9590fad63cb64b3d8bc3266b",
+              "inventoryItemIds": [
+               "inv-item:5281d5a9dec8ef6bab146dcf"
+              ]
+             },
+             {
+              "kind": "MULTIPLY",
+              "type": "MONEY",
+              "exprId": "ir-expr:f0681d1930fec9837e1c85e9",
+              "operands": [
+               {
+                "kind": "PERCENT",
+                "type": "PERCENT",
+                "value": 0.15,
+                "provenance": {
+                 "documentId": "doc-a",
+                 "sourceNodeKey": null,
+                 "sourceCitation": "§1.01(d)",
+                 "excerpt": null
+                },
+                "exprId": "ir-expr:18c86a0bbc3a82a49717653a",
+                "inventoryItemIds": [
+                 "inv-item:5fe0262251331def71b6c2ac"
+                ]
+               },
+               {
+                "kind": "METRIC_REFERENCE",
+                "type": "MONEY",
+                "metricName": "Consolidated EBITDA",
+                "companyId": "phase-3-validation-chwy",
+                "instrumentKey": "chwy-2026-revolving-credit-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+               }
+              ],
+              "provenance": {
+               "documentId": "doc-a",
+               "sourceNodeKey": null,
+               "sourceCitation": "§1.01(d)",
+               "excerpt": null
+              },
+              "inventoryItemIds": [
+               "inv-item:5fe0262251331def71b6c2ac"
+              ]
+             }
+            ],
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(d)",
+             "excerpt": null
+            },
+            "inventoryItemIds": [
+             "inv-item:35c05a2ca9eb56a348d86140"
+            ]
+           },
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(d)",
+            "excerpt": null
+           },
+           "inventoryItemIds": [
+            "inv-item:35c05a2ca9eb56a348d86140"
+           ]
+          },
+          {
+           "kind": "COMPARE",
+           "type": "BOOLEAN",
+           "exprId": "ir-expr:c0c8331efe8898f14839025e",
+           "left": {
+            "kind": "TRANSACTION_INPUT_REFERENCE",
+            "type": "MONEY",
+            "inputName": "Aggregate Fair Market Value of dispositions/issuances in such fiscal year",
+            "exprId": "ir-expr:60bc090cb22866fc7a5be050"
+           },
+           "operator": "LTE",
+           "right": {
+            "kind": "MAX",
+            "type": "MONEY",
+            "exprId": "ir-expr:bb2e64566d6a397d60125c18",
+            "operands": [
+             {
+              "kind": "MONEY",
+              "type": "MONEY",
+              "amount": 360000000,
+              "currency": "USD",
+              "provenance": {
+               "documentId": "doc-a",
+               "sourceNodeKey": null,
+               "sourceCitation": "§1.01(x)",
+               "excerpt": null
+              },
+              "exprId": "ir-expr:0924c66181fcd69fd36387dc",
+              "inventoryItemIds": [
+               "inv-item:48d84e6f6c1e29b3a13334a0"
+              ]
+             },
+             {
+              "kind": "MULTIPLY",
+              "type": "MONEY",
+              "exprId": "ir-expr:1ee15d66033bd71b678ea852",
+              "operands": [
+               {
+                "kind": "PERCENT",
+                "type": "PERCENT",
+                "value": 0.5,
+                "provenance": {
+                 "documentId": "doc-a",
+                 "sourceNodeKey": null,
+                 "sourceCitation": "§1.01(x)",
+                 "excerpt": null
+                },
+                "exprId": "ir-expr:a64b5ff8f37da615be77632e",
+                "inventoryItemIds": [
+                 "inv-item:685b10fc530db466e82be9e6"
+                ]
+               },
+               {
+                "kind": "METRIC_REFERENCE",
+                "type": "MONEY",
+                "metricName": "Consolidated EBITDA",
+                "companyId": "phase-3-validation-chwy",
+                "instrumentKey": "chwy-2026-revolving-credit-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+               }
+              ],
+              "provenance": {
+               "documentId": "doc-a",
+               "sourceNodeKey": null,
+               "sourceCitation": "§1.01(x)",
+               "excerpt": null
+              },
+              "inventoryItemIds": [
+               "inv-item:685b10fc530db466e82be9e6"
+              ]
+             }
+            ],
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(x)",
+             "excerpt": null
+            },
+            "inventoryItemIds": [
+             "inv-item:039a4062eeadde709d445ab2"
+            ]
+           },
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(x)",
+            "excerpt": null
+           },
+           "inventoryItemIds": [
+            "inv-item:039a4062eeadde709d445ab2"
+           ]
+          },
+          {
+           "kind": "OR",
+           "type": "BOOLEAN",
+           "exprId": "ir-expr:daa283455c5f72b5dc1edead",
+           "operands": [
+            {
+             "kind": "OR",
+             "type": "BOOLEAN",
+             "exprId": "ir-expr:f4401ea8dc713492beb99bd3",
+             "operands": [
+              {
+               "kind": "COMPARE",
+               "type": "BOOLEAN",
+               "exprId": "ir-expr:c826709d0e46ebbb868af7d2",
+               "left": {
+                "kind": "METRIC_REFERENCE",
+                "type": "RATIO",
+                "metricName": "First Lien Leverage Ratio",
+                "companyId": "phase-3-validation-chwy",
+                "instrumentKey": "chwy-2026-revolving-credit-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+               },
+               "operator": "LTE",
+               "right": {
+                "kind": "RATIO",
+                "type": "RATIO",
+                "value": 2,
+                "provenance": {
+                 "documentId": "doc-a",
+                 "sourceNodeKey": null,
+                 "sourceCitation": "§1.01(cc)(i)(A)",
+                 "excerpt": null
+                },
+                "exprId": "ir-expr:f20b8b6b8109214cda57d25f",
+                "inventoryItemIds": [
+                 "inv-item:139265f3eef57f0e3038aa70"
+                ]
+               },
+               "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§1.01(cc)(i)(A)",
+                "excerpt": null
+               }
+              },
+              {
+               "kind": "COMPARE",
+               "type": "BOOLEAN",
+               "exprId": "ir-expr:79800d4a0d49f1c1ebea1186",
+               "left": {
+                "kind": "METRIC_REFERENCE",
+                "type": "RATIO",
+                "metricName": "First Lien Leverage Ratio",
+                "companyId": "phase-3-validation-chwy",
+                "instrumentKey": "chwy-2026-revolving-credit-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+               },
+               "operator": "LTE",
+               "right": {
+                "kind": "METRIC_REFERENCE",
+                "type": "RATIO",
+                "metricName": "First Lien Leverage Ratio",
+                "companyId": "phase-3-validation-chwy",
+                "instrumentKey": "chwy-2026-revolving-credit-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+               },
+               "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§1.01(cc)(i)(B)",
+                "excerpt": null
+               }
+              }
+             ],
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(cc)(i)",
+              "excerpt": null
+             }
+            },
+            {
+             "kind": "OR",
+             "type": "BOOLEAN",
+             "exprId": "ir-expr:8f634159b4022f13aba97818",
+             "operands": [
+              {
+               "kind": "COMPARE",
+               "type": "BOOLEAN",
+               "exprId": "ir-expr:2bcb40a22847363b40fea9ac",
+               "left": {
+                "kind": "METRIC_REFERENCE",
+                "type": "RATIO",
+                "metricName": "Interest Coverage Ratio",
+                "companyId": "phase-3-validation-chwy",
+                "instrumentKey": "chwy-2026-revolving-credit-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+               },
+               "operator": "GTE",
+               "right": {
+                "kind": "RATIO",
+                "type": "RATIO",
+                "value": 1.75,
+                "provenance": {
+                 "documentId": "doc-a",
+                 "sourceNodeKey": null,
+                 "sourceCitation": "§1.01(cc)(ii)(A)",
+                 "excerpt": null
+                },
+                "exprId": "ir-expr:cabea262cbb8dd194429fddb",
+                "inventoryItemIds": [
+                 "inv-item:139265f3eef57f0e3038aa70"
+                ]
+               },
+               "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§1.01(cc)(ii)(A)",
+                "excerpt": null
+               }
+              },
+              {
+               "kind": "COMPARE",
+               "type": "BOOLEAN",
+               "exprId": "ir-expr:fcdc47b9be6c676e81e0745f",
+               "left": {
+                "kind": "METRIC_REFERENCE",
+                "type": "RATIO",
+                "metricName": "Interest Coverage Ratio",
+                "companyId": "phase-3-validation-chwy",
+                "instrumentKey": "chwy-2026-revolving-credit-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+               },
+               "operator": "GTE",
+               "right": {
+                "kind": "METRIC_REFERENCE",
+                "type": "RATIO",
+                "metricName": "Interest Coverage Ratio",
+                "companyId": "phase-3-validation-chwy",
+                "instrumentKey": "chwy-2026-revolving-credit-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+               },
+               "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§1.01(cc)(ii)(B)",
+                "excerpt": null
+               }
+              }
+             ],
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(cc)(ii)",
+              "excerpt": null
+             }
+            }
+           ],
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(cc)",
+            "excerpt": null
+           },
+           "inventoryItemIds": [
+            "inv-item:139265f3eef57f0e3038aa70"
+           ]
+          },
+          {
+           "kind": "DURING_PERIOD",
+           "type": "BOOLEAN",
+           "exprId": "ir-expr:6c5728a15db7060c08943837",
+           "value": {
+            "kind": "COMPARE",
+            "type": "BOOLEAN",
+            "exprId": "ir-expr:64e44f79c652dbcf152b9c76",
+            "left": {
+             "kind": "TRANSACTION_INPUT_REFERENCE",
+             "type": "MONEY",
+             "inputName": "Aggregate Fair Market Value of dispositions/issuances",
+             "exprId": "ir-expr:fbe4b074ef68e4f4d225ab9b"
+            },
+            "operator": "LTE",
+            "right": {
+             "kind": "MAX",
+             "type": "MONEY",
+             "exprId": "ir-expr:498c3ed43db03eb38f42255c",
+             "operands": [
+              {
+               "kind": "MONEY",
+               "type": "MONEY",
+               "amount": 540000000,
+               "currency": "USD",
+               "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§1.01(ee)",
+                "excerpt": null
+               },
+               "exprId": "ir-expr:86d17b69b83c8cd273d32b23",
+               "inventoryItemIds": [
+                "inv-item:0b92716dbe2d2e42555bf6ea"
+               ]
+              },
+              {
+               "kind": "MULTIPLY",
+               "type": "MONEY",
+               "exprId": "ir-expr:7154dad7857e19c3dae9ebca",
+               "operands": [
+                {
+                 "kind": "PERCENT",
+                 "type": "PERCENT",
+                 "value": 0.75,
+                 "provenance": {
+                  "documentId": "doc-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§1.01(ee)",
+                  "excerpt": null
+                 },
+                 "exprId": "ir-expr:baafaa531972135e78083f2e",
+                 "inventoryItemIds": [
+                  "inv-item:0b92716dbe2d2e42555bf6ea"
+                 ]
+                },
+                {
+                 "kind": "METRIC_REFERENCE",
+                 "type": "MONEY",
+                 "metricName": "Consolidated EBITDA",
+                 "companyId": "phase-3-validation-chwy",
+                 "instrumentKey": "chwy-2026-revolving-credit-instrument",
+                 "resolvedDefinitionId": null,
+                 "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+                }
+               ],
+               "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§1.01(ee)",
+                "excerpt": null
+               },
+               "inventoryItemIds": [
+                "inv-item:0b92716dbe2d2e42555bf6ea"
+               ]
+              }
+             ],
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(ee)",
+              "excerpt": null
+             },
+             "inventoryItemIds": [
+              "inv-item:0b92716dbe2d2e42555bf6ea"
+             ]
+            },
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(ee)",
+             "excerpt": null
+            },
+            "inventoryItemIds": [
+             "inv-item:0b92716dbe2d2e42555bf6ea"
+            ]
+           },
+           "periodDescription": "during the term of the Initial Term Loans",
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(ee)",
+            "excerpt": null
+           },
+           "inventoryItemIds": [
+            "inv-item:0b92716dbe2d2e42555bf6ea"
+           ]
+          },
+          {
+           "kind": "COMPARE",
+           "type": "BOOLEAN",
+           "exprId": "ir-expr:b6abf2dfb24de9930a3f218d",
+           "left": {
+            "kind": "TRANSACTION_INPUT_REFERENCE",
+            "type": "MONEY",
+            "inputName": "Fair Market Value of the business unit, division or line of business being disposed",
+            "exprId": "ir-expr:d6324b03d8eec421245b1d8d"
+           },
+           "operator": "LTE",
+           "right": {
+            "kind": "MAX",
+            "type": "MONEY",
+            "exprId": "ir-expr:116cd98a399ef85a91f6cb29",
+            "operands": [
+             {
+              "kind": "MONEY",
+              "type": "MONEY",
+              "amount": 36000000,
+              "currency": "USD",
+              "provenance": {
+               "documentId": "doc-a",
+               "sourceNodeKey": null,
+               "sourceCitation": "§1.01(ff)",
+               "excerpt": null
+              },
+              "exprId": "ir-expr:d686db8b95501f4dfa1cf05b",
+              "inventoryItemIds": [
+               "inv-item:edfec62d509cb6078460fe25"
+              ]
+             },
+             {
+              "kind": "MULTIPLY",
+              "type": "MONEY",
+              "exprId": "ir-expr:43689401ead9264104b900c4",
+              "operands": [
+               {
+                "kind": "PERCENT",
+                "type": "PERCENT",
+                "value": 0.05,
+                "provenance": {
+                 "documentId": "doc-a",
+                 "sourceNodeKey": null,
+                 "sourceCitation": "§1.01(ff)",
+                 "excerpt": null
+                },
+                "exprId": "ir-expr:0231a55a6c4db9a8ce9c1832",
+                "inventoryItemIds": [
+                 "inv-item:edfec62d509cb6078460fe25"
+                ]
+               },
+               {
+                "kind": "METRIC_REFERENCE",
+                "type": "MONEY",
+                "metricName": "Consolidated EBITDA",
+                "companyId": "phase-3-validation-chwy",
+                "instrumentKey": "chwy-2026-revolving-credit-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+               }
+              ],
+              "provenance": {
+               "documentId": "doc-a",
+               "sourceNodeKey": null,
+               "sourceCitation": "§1.01(ff)",
+               "excerpt": null
+              },
+              "inventoryItemIds": [
+               "inv-item:edfec62d509cb6078460fe25"
+              ]
+             }
+            ],
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(ff)",
+             "excerpt": null
+            },
+            "inventoryItemIds": [
+             "inv-item:edfec62d509cb6078460fe25"
+            ]
+           },
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(ff)",
+            "excerpt": null
+           },
+           "inventoryItemIds": [
+            "inv-item:edfec62d509cb6078460fe25"
+           ]
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Test Period",
+      "First Lien Leverage Ratio",
+      "Interest Coverage Ratio",
+      "Initial Term Loans",
+      "Permitted Investments",
+      "Restricted Payments",
+      "Change of Control",
+      "Sale and Lease-Back Transaction",
+      "Equity Interests",
+      "Preferred Stock",
+      "Division",
+      "Fair Market Value",
+      "Similar Business",
+      "Unrestricted Subsidiary",
+      "Receivables Assets",
+      "Permitted Receivables Financing",
+      "Excluded Contributions",
+      "Permitted Tax Restructuring",
+      "Ordinary Course Non-Recourse Third Party Financing Transactions",
+      "Transactions",
+      "Collateral"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The 25+ qualitative carve-outs (a)-(c),(e)-(w),(y),(z),(aa),(bb),(dd) are categorical exclusions with no stated dollar/percentage threshold and are represented as a single UNSUPPORTED bucket rather than guessed at.",
+      "The material quantitative de minimis (d), annual basket (x), pro forma ratio election (cc), Initial Term Loan-term basket (ee), and business-unit basket (ff) exclusions are fully represented with their thresholds.",
+      "The final paragraph's discretionary reclassification right (Initial Borrower may reclassify a transaction across Asset Sale/Restricted Payment/Permitted Investment) is a separate, non-computational election and is dispositioned rather than folded into the boundary test.",
+      "Qualitative triggering description, not a computable financial value",
+      "Each is a categorical/qualitative exclusion with no stated dollar or percentage threshold; not a computable financial mechanic",
+      "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "NOT keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Asset Sale\" means: (1) the sale, conveyance, transfer or other disposition ... of property or assets ... of a Borrower or any of its respective Restricted Subsidiaries; or (2) the issuance or sale of Equity Interests of any of the Restricted Subsidiaries ...; in each case, other than: (a) ... through (ff) ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d875620e56d7b253b5b82df4",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Asset Sale Prepayment Event",
+     "covenantFamily": "ASSET_SALES",
+     "calculationExpression": {
+      "kind": "AND",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:815859e8ece16134b13b6fca",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "Prepayment Event definition, clause (a)",
+        "semanticDescription": "Occurrence of an Asset Sale of Collateral consummated by a Loan Party solely pursuant to Section 6.05(a)(2)(ii)",
+        "reason": "qualitative triggering condition",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (definition of 'Prepayment Event'), clause (a)",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:35bd266901f6d01521151cf6"
+       },
+       {
+        "kind": "NOT",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:d0e6f02a123d6ec5cb2ed778",
+        "operand": {
+         "kind": "OR",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:a3e59877432f8e7ac4d2095d",
+         "operands": [
+          {
+           "kind": "UNSUPPORTED",
+           "type": null,
+           "sourceEvidence": "Prepayment Event definition, clause (a)(i)",
+           "semanticDescription": "issuance by a Restricted Party of Equity Interests",
+           "reason": "qualitative exclusion",
+           "requiredReview": true,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "Prepayment Event definition, clause (a)",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:58e4a2ba409056080ab88bcf"
+          },
+          {
+           "kind": "COMPARE",
+           "type": "BOOLEAN",
+           "exprId": "ir-expr:ce7e16866d652b9918f84ef2",
+           "left": {
+            "kind": "TRANSACTION_INPUT_REFERENCE",
+            "type": "MONEY",
+            "inputName": "aggregate Net Proceeds of such single transaction or series of related transactions",
+            "exprId": "ir-expr:d1db9cea0ec925959ef45885"
+           },
+           "operator": "LTE",
+           "right": {
+            "kind": "MAX",
+            "type": "MONEY",
+            "exprId": "ir-expr:69b5a1a90159df01ffbe8535",
+            "operands": [
+             {
+              "kind": "MONEY",
+              "type": "MONEY",
+              "amount": 144000000,
+              "currency": "USD",
+              "provenance": {
+               "documentId": "doc-a",
+               "sourceNodeKey": null,
+               "sourceCitation": "Prepayment Event definition, clause (a)(ii)",
+               "excerpt": null
+              },
+              "exprId": "ir-expr:210d332b3bb8fb5cea8084b4"
+             },
+             {
+              "kind": "MULTIPLY",
+              "type": "MONEY",
+              "exprId": "ir-expr:306319c346ef60014b50a117",
+              "operands": [
+               {
+                "kind": "PERCENT",
+                "type": "PERCENT",
+                "value": 0.2,
+                "provenance": {
+                 "documentId": "doc-a",
+                 "sourceNodeKey": null,
+                 "sourceCitation": "Prepayment Event definition, clause (a)(ii)",
+                 "excerpt": null
+                },
+                "exprId": "ir-expr:7038fbadd1558d61afd5630d"
+               },
+               {
+                "kind": "METRIC_REFERENCE",
+                "type": "MONEY",
+                "metricName": "Consolidated EBITDA",
+                "companyId": "phase-3-validation-chwy",
+                "instrumentKey": "chwy-2026-revolving-credit-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+               }
+              ],
+              "provenance": {
+               "documentId": "doc-a",
+               "sourceNodeKey": null,
+               "sourceCitation": "Prepayment Event definition, clause (a)(ii)",
+               "excerpt": null
+              }
+             }
+            ],
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "Prepayment Event definition, clause (a)(ii)",
+             "excerpt": null
+            }
+           },
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "Prepayment Event definition, clause (a)(ii)",
+            "excerpt": null
+           }
+          },
+          {
+           "kind": "COMPARE",
+           "type": "BOOLEAN",
+           "exprId": "ir-expr:44216620d573d69195da2645",
+           "left": {
+            "kind": "TRANSACTION_INPUT_REFERENCE",
+            "type": "MONEY",
+            "inputName": "aggregate Net Proceeds of transactions in such fiscal year",
+            "exprId": "ir-expr:1a251efc2a7d9c992e188fe0"
+           },
+           "operator": "LTE",
+           "right": {
+            "kind": "MAX",
+            "type": "MONEY",
+            "exprId": "ir-expr:4e293aa55dcd961c5d9ddd5e",
+            "operands": [
+             {
+              "kind": "MONEY",
+              "type": "MONEY",
+              "amount": 216000000,
+              "currency": "USD",
+              "provenance": {
+               "documentId": "doc-a",
+               "sourceNodeKey": null,
+               "sourceCitation": "Prepayment Event definition, clause (a)(iii)",
+               "excerpt": null
+              },
+              "exprId": "ir-expr:bdf639146a0af840a79448ff"
+             },
+             {
+              "kind": "MULTIPLY",
+              "type": "MONEY",
+              "exprId": "ir-expr:29b9dc666ba53792376db5ae",
+              "operands": [
+               {
+                "kind": "PERCENT",
+                "type": "PERCENT",
+                "value": 0.3,
+                "provenance": {
+                 "documentId": "doc-a",
+                 "sourceNodeKey": null,
+                 "sourceCitation": "Prepayment Event definition, clause (a)(iii)",
+                 "excerpt": null
+                },
+                "exprId": "ir-expr:5fd4452406de98abd914224e"
+               },
+               {
+                "kind": "METRIC_REFERENCE",
+                "type": "MONEY",
+                "metricName": "Consolidated EBITDA",
+                "companyId": "phase-3-validation-chwy",
+                "instrumentKey": "chwy-2026-revolving-credit-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+               }
+              ],
+              "provenance": {
+               "documentId": "doc-a",
+               "sourceNodeKey": null,
+               "sourceCitation": "Prepayment Event definition, clause (a)(iii)",
+               "excerpt": null
+              }
+             }
+            ],
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "Prepayment Event definition, clause (a)(iii)",
+             "excerpt": null
+            }
+           },
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "Prepayment Event definition, clause (a)(iii)",
+            "excerpt": null
+           }
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "Prepayment Event definition, clause (a)",
+          "excerpt": null
+         }
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "Prepayment Event definition, clause (a)",
+         "excerpt": null
+        }
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01 (definition of 'Prepayment Event'), clause (a)",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Prepayment Event",
+      "Asset Sale",
+      "Collateral",
+      "Consolidated EBITDA",
+      "Test Period",
+      "Net Proceeds"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Resolved via cross-reference to the 'Prepayment Event' definition, clause (a), which supplies the operative thresholds.",
+      "The carryforward mechanic (unused Transaction Threshold/Annual Threshold amounts carried forward to a later fiscal year) is a stateful ledger mechanic not expressible with the current node set and is left UNSUPPORTED rather than guessed.",
+      "qualitative triggering condition",
+      "qualitative exclusion",
+      "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "NOT keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01 (definition of 'Prepayment Event'), clause (a)",
+      "excerpt": "any Asset Sale of Collateral consummated by a Loan Party solely pursuant to Section 6.05(a)(2)(ii), other than ... dispositions resulting in aggregate Net Proceeds not exceeding the greater of $144.0 million and 20% of Consolidated EBITDA ... (the 'Transaction Threshold') and ... not exceeding the greater of $216.0 million and 30% of Consolidated EBITDA ... (the 'Annual Threshold')"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:5a31cbec2744f0a4e1d6fb79",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Asset Sale Proceeds Application Period",
+     "covenantFamily": "ASSET_SALES",
+     "calculationExpression": {
+      "kind": "EVENT_ACTIVE",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:4eda2ba22b7a050d1676b4b8",
+      "eventDescription": "a Loan Party's receipt of any Net Proceeds of any Asset Sale consummated by a Loan Party pursuant to Section 6.05(a)(2)(ii)",
+      "triggerCondition": null,
+      "activeDuration": "24 months",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.05(b)",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Net Proceeds",
+      "Asset Sale"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Resolved via the cross-referenced Section 6.05(b) text, which fully supplies the 24-month period and its trigger."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.05(b)",
+      "excerpt": "Within twenty-four (24) months after a Loan Party's receipt of any Net Proceeds of any Asset Sale consummated by a Loan Party pursuant to Section 6.05(a)(2)(ii) (the \"Asset Sale Proceeds Application Period\")"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:913aea472bc054a25d1323c3",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Assignment and Assumption",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Eligible Assignee",
+      "Affiliated Lender Assignment and Assumption",
+      "Administrative Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely documentary/procedural definition with no quantitative economics; the two alternative forms are fully captured descriptively."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means (a) an assignment and assumption entered into by a Lender and an Eligible Assignee (with the consent of any Person whose consent is required by Section 9.04), substantially in the form of Exhibit A-1 or any other form reasonably approved by the Administrative Agent, and/or (b) an Affiliated Lender Assignment and Assumption, as applicable."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f38b8cdf03116d39cafef787",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Available Amount",
+     "covenantFamily": "RESTRICTED_PAYMENTS",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§6.08(a)(3)",
+      "semanticDescription": "Available Amount = sum of amounts attributable to clauses (a) through (f) [chapeau] of Section 6.08(a)(3), whose lettered sub-clauses were not retrieved",
+      "reason": "the referenced sub-clauses are a separate, extensive builder-basket provision not included in the supplied evidence for this compilation and not resolvable within budget",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:d6ece623b13c4c8bcdf2b4af"
+     },
+     "dependsOnTerms": [
+      "Restricted Payments",
+      "Credit Agreement Refinancing Indebtedness"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Section 1.01 only cross-references Section 6.08(a)(3) for this term's meaning.",
+      "Section 6.08(a)(3)'s chapeau confirms the term is a sum of amounts attributable to lettered sub-clauses, but the substantive content of those sub-clauses (which extend at least through clause (i) with further sub-parts, per structural inspection) was not retrieved - resolving all of it is a materially separate, extensive builder-basket provision outside the scope of the 'Asset Sale'-centered evidence supplied for this compilation.",
+      "the referenced sub-clauses are a separate, extensive builder-basket provision not included in the supplied evidence for this compilation and not resolvable within budget"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.08(a)(3)",
+      "excerpt": "the sum of the amounts attributable to clauses (a) through (f) below are referred to herein as the \"Available Amount\""
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d3098664453fbfb14eba9d7f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Available Investment Capacity Amount",
+     "covenantFamily": "INVESTMENTS",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "(no evidence captured)",
+      "semanticDescription": "unrecognized or malformed expression (kind=\"SUBTRACT\")",
+      "reason": "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "attemptedStructure": {
+       "kind": "SUBTRACT",
+       "type": "NUMBER",
+       "exprId": "ir-expr:0847f14da4863d9ca754b4de",
+       "left": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 definition of 'Permitted Investments', clause (13)",
+        "semanticDescription": "amount of Investments that may be made at the time of determination pursuant to clause (13) of the 'Permitted Investments' definition",
+        "reason": "clause (13) of 'Permitted Investments' was not retrievable - the definition's text is truncated before reaching clause (13) and no tool resolves an internal numbered clause of another definition",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:b887a9be9817bfab3f82ca8c"
+       },
+       "right": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "Section 6.08(b)(26): \"Restricted Payments in an aggregate amount not to exceed the Available Investment Capacity Amount\"",
+        "semanticDescription": "cumulative amount of the Available Investment Capacity Amount previously utilized by the Restricted Parties pursuant to Section 6.08(b)(26), after giving effect to any permitted reallocation/reclassification",
+        "reason": "represents a running usage ledger against Section 6.08(b)(26), a provision outside this submission; no shared-capacity member rule for 6.08(b)(26) is being compiled here",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:eb4c9dd281185ebc7814ce87"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "exprId": "ir-expr:626b5890fb96f68c4840dc2f",
+      "inventoryItemIds": [
+       "inv-item:c081b7907f1d12ed28484634"
+      ]
+     },
+     "dependsOnTerms": [
+      "Permitted Investments"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Component (a) requires clause (13) of the 'Permitted Investments' definition; that definition's full text is truncated by context/tool budget before reaching clause (13), and no tool resolves an internal numbered clause of another definition directly.",
+      "Component (b) is a running usage ledger against Section 6.08(b)(26) (text confirms that section grants 'Restricted Payments in an aggregate amount not to exceed the Available Investment Capacity Amount'), which is a provision outside this submission with no member rule compiled here to attach a LEDGER_USAGE_REFERENCE to.",
+      "clause (13) of 'Permitted Investments' was not retrievable - the definition's text is truncated before reaching clause (13) and no tool resolves an internal numbered clause of another definition",
+      "represents a running usage ledger against Section 6.08(b)(26), a provision outside this submission; no shared-capacity member rule for 6.08(b)(26) is being compiled here",
+      "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, at any time, (a) the amount of Investments that may be made at the time of determination pursuant to clause 13 of \"Permitted Investments,\" minus (b) the amount of the Available Investment Capacity Amount utilized by the Restricted Parties pursuant to Section 6.08(b)(26) (after giving effect to any reallocation or reclassification permitted hereunder)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": [
+    {
+     "inventoryItemId": "inv-item:c3f0b1cde49d0388ead4506a",
+     "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+     "note": "Discretionary reclassification election by the Initial Borrower among 'Asset Sale'/'Restricted Payment'/'Permitted Investment' categories for a single overlapping transaction; a classification election, not itself a computable threshold, condition, or dollar/percentage value, so it is not embedded in the Asset Sale boundary test."
+    }
+   ]
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].AND[0]] Qualitative triggering description, not a computable financial value",
+   "[definition[d1].AND[1].NOT.operand.OR[0]] Each is a categorical/qualitative exclusion with no stated dollar or percentage threshold; not a computable financial mechanic",
+   "[definition[d1].AND[1].NOT.operand] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1].AND[1]] NOT keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d2].AND[0]] qualitative triggering condition",
+   "[definition[d2].AND[1].NOT.operand.OR[0]] qualitative exclusion",
+   "[definition[d2].AND[1].NOT.operand] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d2].AND[1]] NOT keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d2]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d5]] the referenced sub-clauses are a separate, extensive builder-basket provision not included in the supplied evidence for this compilation and not resolvable within budget",
+   "[definition[d6].SUBTRACT.left] clause (13) of 'Permitted Investments' was not retrievable - the definition's text is truncated before reaching clause (13) and no tool resolves an internal numbered clause of another definition",
+   "[definition[d6].SUBTRACT.right] represents a running usage ledger against Section 6.08(b)(26), a provision outside this submission; no shared-capacity member rule for 6.08(b)(26) is being compiled here",
+   "[definition[d6]] SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+   "This compilation covers the 'Asset Sale' definition and the sibling defined terms declared in the same §1.01 excerpt: 'Asset Sale Prepayment Event', 'Asset Sale Proceeds Application Period', 'Assignment and Assumption', 'Available Amount', and 'Available Investment Capacity Amount'.",
+   "'Asset Sale' itself is a categorical/boundary definition, not a single dollar formula; only the material quantitative carve-outs flagged in the frozen inventory (clauses (d), (x), (cc), (ee), (ff)) are represented with their thresholds - the many purely qualitative carve-outs are bundled into one UNSUPPORTED node rather than guessed at individually, since none carry a stated numeric value.",
+   "Cross-references to Sections 6.01, 6.02, 6.03, 6.08, 6.08(a), 6.08(b) (other than 6.08(a)(3) and 6.08(b)(26), which were retrieved) were out of scope per the source-context budget and are not required for the Asset Sale carve-outs' own economics (they gate eligibility of other exceptions, e.g. (b), (c), (u)), which remain UNSUPPORTED/qualitative in this compilation.",
+   "'Available Amount' (Section 6.08(a)(3)) and the 'clause (13)' component of 'Available Investment Capacity Amount' were both investigated via getReferencedProvision/getDefinition/getChildren, but each leads into a large, separate builder-basket provision whose full lettered sub-clauses were not retrievable within budget; both are marked MISSING_CONTEXT rather than guessed.",
+   "'Asset Sale Prepayment Event' and 'Asset Sale Proceeds Application Period' were successfully resolved via their cross-referenced sections/definitions and are represented with much fuller economics than the bare cross-reference in the original §1.01 excerpt."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 169289,
+   "outputTokens": 36307,
+   "costUsd": 0.701648
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:7816a4c1b9dbf24aa30579c7",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Asset Sale",
+    "covenantFamily": "ASSET_SALES",
+    "calculationExpression": {
+     "kind": "AND",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:a0dc6a19befec4823965c013",
+     "operands": [
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01, clauses (1)-(2) of 'Asset Sale' definition",
+       "semanticDescription": "Occurrence of a disposition of property or assets (including via Sale-and-Lease-Back Transaction) by a Borrower or Restricted Subsidiary, or an issuance/sale of Equity Interests of a Restricted Subsidiary (other than certain Preferred Stock issued under Section 6.01)",
+       "reason": "Qualitative triggering description, not a computable financial value",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:5cdd57e812d8b0704cdaf033"
+      },
+      {
+       "kind": "NOT",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:e3687f6af59b8ab900d66a0b",
+       "operand": {
+        "kind": "OR",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:8a993c26e9ce3b49de5d4b73",
+        "operands": [
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01(a),(b),(c),(e)-(w),(y),(z),(aa),(bb),(dd)",
+          "semanticDescription": "Qualitative, non-quantitative carve-outs: ordinary-course/obsolete asset dispositions; all-or-substantially-all/Change of Control dispositions; dispositions funding a Permitted Investment or Restricted Payment; intercompany transfers; like-kind/replacement-property exchanges; leases/licenses in the ordinary course; Unrestricted Subsidiary interests; casualty/condemnation/foreclosure events; asset-backed financings and Sale-and-Lease-Back transactions; receivables financings; IP licensing; current-asset/receivables dispositions; contract-right settlements; hedge/cash-management unwinds; JV buy/sell; IP lapse/abandonment; qualifying shares/equity comp plan issuances; cash/Cash Equivalents/Investment Grade Securities sales; non-core or antitrust-driven asset dispositions; Permitted Liens; Delaware Divided LLC formations; acquisition-consideration equity transfers; Excluded-Contribution-funded sales; Permitted Tax Restructurings; Ordinary Course Non-Recourse Third Party Financing Transactions; Transactions-related dispositions; and dispositions of non-Collateral assets",
+          "reason": "Each is a categorical/qualitative exclusion with no stated dollar or percentage threshold; not a computable financial mechanic",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:129cb04026f3c8ee5963c2a8"
+         },
+         {
+          "kind": "COMPARE",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:ead6160f4114ffada181f36d",
+          "left": {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "type": "MONEY",
+           "inputName": "Aggregate Fair Market Value of the disposition or issuance/sale (single transaction or series of related transactions)",
+           "exprId": "ir-expr:116061cfd3e6ab3d81416fb4"
+          },
+          "operator": "LT",
+          "right": {
+           "kind": "MAX",
+           "type": "MONEY",
+           "exprId": "ir-expr:8c24d9b29f637b57cc43ec8a",
+           "operands": [
+            {
+             "kind": "MONEY",
+             "type": "MONEY",
+             "amount": 108000000,
+             "currency": "USD",
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(d)",
+              "excerpt": null
+             },
+             "exprId": "ir-expr:9590fad63cb64b3d8bc3266b",
+             "inventoryItemIds": [
+              "inv-item:5281d5a9dec8ef6bab146dcf"
+             ]
+            },
+            {
+             "kind": "MULTIPLY",
+             "type": "MONEY",
+             "exprId": "ir-expr:f0681d1930fec9837e1c85e9",
+             "operands": [
+              {
+               "kind": "PERCENT",
+               "type": "PERCENT",
+               "value": 0.15,
+               "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§1.01(d)",
+                "excerpt": null
+               },
+               "exprId": "ir-expr:18c86a0bbc3a82a49717653a",
+               "inventoryItemIds": [
+                "inv-item:5fe0262251331def71b6c2ac"
+               ]
+              },
+              {
+               "kind": "METRIC_REFERENCE",
+               "type": "MONEY",
+               "metricName": "Consolidated EBITDA",
+               "companyId": "phase-3-validation-chwy",
+               "instrumentKey": "chwy-2026-revolving-credit-instrument",
+               "resolvedDefinitionId": null,
+               "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+              }
+             ],
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(d)",
+              "excerpt": null
+             },
+             "inventoryItemIds": [
+              "inv-item:5fe0262251331def71b6c2ac"
+             ]
+            }
+           ],
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(d)",
+            "excerpt": null
+           },
+           "inventoryItemIds": [
+            "inv-item:35c05a2ca9eb56a348d86140"
+           ]
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(d)",
+           "excerpt": null
+          },
+          "inventoryItemIds": [
+           "inv-item:35c05a2ca9eb56a348d86140"
+          ]
+         },
+         {
+          "kind": "COMPARE",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:c0c8331efe8898f14839025e",
+          "left": {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "type": "MONEY",
+           "inputName": "Aggregate Fair Market Value of dispositions/issuances in such fiscal year",
+           "exprId": "ir-expr:60bc090cb22866fc7a5be050"
+          },
+          "operator": "LTE",
+          "right": {
+           "kind": "MAX",
+           "type": "MONEY",
+           "exprId": "ir-expr:bb2e64566d6a397d60125c18",
+           "operands": [
+            {
+             "kind": "MONEY",
+             "type": "MONEY",
+             "amount": 360000000,
+             "currency": "USD",
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(x)",
+              "excerpt": null
+             },
+             "exprId": "ir-expr:0924c66181fcd69fd36387dc",
+             "inventoryItemIds": [
+              "inv-item:48d84e6f6c1e29b3a13334a0"
+             ]
+            },
+            {
+             "kind": "MULTIPLY",
+             "type": "MONEY",
+             "exprId": "ir-expr:1ee15d66033bd71b678ea852",
+             "operands": [
+              {
+               "kind": "PERCENT",
+               "type": "PERCENT",
+               "value": 0.5,
+               "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§1.01(x)",
+                "excerpt": null
+               },
+               "exprId": "ir-expr:a64b5ff8f37da615be77632e",
+               "inventoryItemIds": [
+                "inv-item:685b10fc530db466e82be9e6"
+               ]
+              },
+              {
+               "kind": "METRIC_REFERENCE",
+               "type": "MONEY",
+               "metricName": "Consolidated EBITDA",
+               "companyId": "phase-3-validation-chwy",
+               "instrumentKey": "chwy-2026-revolving-credit-instrument",
+               "resolvedDefinitionId": null,
+               "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+              }
+             ],
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(x)",
+              "excerpt": null
+             },
+             "inventoryItemIds": [
+              "inv-item:685b10fc530db466e82be9e6"
+             ]
+            }
+           ],
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(x)",
+            "excerpt": null
+           },
+           "inventoryItemIds": [
+            "inv-item:039a4062eeadde709d445ab2"
+           ]
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(x)",
+           "excerpt": null
+          },
+          "inventoryItemIds": [
+           "inv-item:039a4062eeadde709d445ab2"
+          ]
+         },
+         {
+          "kind": "OR",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:daa283455c5f72b5dc1edead",
+          "operands": [
+           {
+            "kind": "OR",
+            "type": "BOOLEAN",
+            "exprId": "ir-expr:f4401ea8dc713492beb99bd3",
+            "operands": [
+             {
+              "kind": "COMPARE",
+              "type": "BOOLEAN",
+              "exprId": "ir-expr:c826709d0e46ebbb868af7d2",
+              "left": {
+               "kind": "METRIC_REFERENCE",
+               "type": "RATIO",
+               "metricName": "First Lien Leverage Ratio",
+               "companyId": "phase-3-validation-chwy",
+               "instrumentKey": "chwy-2026-revolving-credit-instrument",
+               "resolvedDefinitionId": null,
+               "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+              },
+              "operator": "LTE",
+              "right": {
+               "kind": "RATIO",
+               "type": "RATIO",
+               "value": 2,
+               "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§1.01(cc)(i)(A)",
+                "excerpt": null
+               },
+               "exprId": "ir-expr:f20b8b6b8109214cda57d25f",
+               "inventoryItemIds": [
+                "inv-item:139265f3eef57f0e3038aa70"
+               ]
+              },
+              "provenance": {
+               "documentId": "doc-a",
+               "sourceNodeKey": null,
+               "sourceCitation": "§1.01(cc)(i)(A)",
+               "excerpt": null
+              }
+             },
+             {
+              "kind": "COMPARE",
+              "type": "BOOLEAN",
+              "exprId": "ir-expr:79800d4a0d49f1c1ebea1186",
+              "left": {
+               "kind": "METRIC_REFERENCE",
+               "type": "RATIO",
+               "metricName": "First Lien Leverage Ratio",
+               "companyId": "phase-3-validation-chwy",
+               "instrumentKey": "chwy-2026-revolving-credit-instrument",
+               "resolvedDefinitionId": null,
+               "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+              },
+              "operator": "LTE",
+              "right": {
+               "kind": "METRIC_REFERENCE",
+               "type": "RATIO",
+               "metricName": "First Lien Leverage Ratio",
+               "companyId": "phase-3-validation-chwy",
+               "instrumentKey": "chwy-2026-revolving-credit-instrument",
+               "resolvedDefinitionId": null,
+               "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+              },
+              "provenance": {
+               "documentId": "doc-a",
+               "sourceNodeKey": null,
+               "sourceCitation": "§1.01(cc)(i)(B)",
+               "excerpt": null
+              }
+             }
+            ],
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(cc)(i)",
+             "excerpt": null
+            }
+           },
+           {
+            "kind": "OR",
+            "type": "BOOLEAN",
+            "exprId": "ir-expr:8f634159b4022f13aba97818",
+            "operands": [
+             {
+              "kind": "COMPARE",
+              "type": "BOOLEAN",
+              "exprId": "ir-expr:2bcb40a22847363b40fea9ac",
+              "left": {
+               "kind": "METRIC_REFERENCE",
+               "type": "RATIO",
+               "metricName": "Interest Coverage Ratio",
+               "companyId": "phase-3-validation-chwy",
+               "instrumentKey": "chwy-2026-revolving-credit-instrument",
+               "resolvedDefinitionId": null,
+               "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+              },
+              "operator": "GTE",
+              "right": {
+               "kind": "RATIO",
+               "type": "RATIO",
+               "value": 1.75,
+               "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§1.01(cc)(ii)(A)",
+                "excerpt": null
+               },
+               "exprId": "ir-expr:cabea262cbb8dd194429fddb",
+               "inventoryItemIds": [
+                "inv-item:139265f3eef57f0e3038aa70"
+               ]
+              },
+              "provenance": {
+               "documentId": "doc-a",
+               "sourceNodeKey": null,
+               "sourceCitation": "§1.01(cc)(ii)(A)",
+               "excerpt": null
+              }
+             },
+             {
+              "kind": "COMPARE",
+              "type": "BOOLEAN",
+              "exprId": "ir-expr:fcdc47b9be6c676e81e0745f",
+              "left": {
+               "kind": "METRIC_REFERENCE",
+               "type": "RATIO",
+               "metricName": "Interest Coverage Ratio",
+               "companyId": "phase-3-validation-chwy",
+               "instrumentKey": "chwy-2026-revolving-credit-instrument",
+               "resolvedDefinitionId": null,
+               "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+              },
+              "operator": "GTE",
+              "right": {
+               "kind": "METRIC_REFERENCE",
+               "type": "RATIO",
+               "metricName": "Interest Coverage Ratio",
+               "companyId": "phase-3-validation-chwy",
+               "instrumentKey": "chwy-2026-revolving-credit-instrument",
+               "resolvedDefinitionId": null,
+               "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+              },
+              "provenance": {
+               "documentId": "doc-a",
+               "sourceNodeKey": null,
+               "sourceCitation": "§1.01(cc)(ii)(B)",
+               "excerpt": null
+              }
+             }
+            ],
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(cc)(ii)",
+             "excerpt": null
+            }
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(cc)",
+           "excerpt": null
+          },
+          "inventoryItemIds": [
+           "inv-item:139265f3eef57f0e3038aa70"
+          ]
+         },
+         {
+          "kind": "DURING_PERIOD",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:6c5728a15db7060c08943837",
+          "value": {
+           "kind": "COMPARE",
+           "type": "BOOLEAN",
+           "exprId": "ir-expr:64e44f79c652dbcf152b9c76",
+           "left": {
+            "kind": "TRANSACTION_INPUT_REFERENCE",
+            "type": "MONEY",
+            "inputName": "Aggregate Fair Market Value of dispositions/issuances",
+            "exprId": "ir-expr:fbe4b074ef68e4f4d225ab9b"
+           },
+           "operator": "LTE",
+           "right": {
+            "kind": "MAX",
+            "type": "MONEY",
+            "exprId": "ir-expr:498c3ed43db03eb38f42255c",
+            "operands": [
+             {
+              "kind": "MONEY",
+              "type": "MONEY",
+              "amount": 540000000,
+              "currency": "USD",
+              "provenance": {
+               "documentId": "doc-a",
+               "sourceNodeKey": null,
+               "sourceCitation": "§1.01(ee)",
+               "excerpt": null
+              },
+              "exprId": "ir-expr:86d17b69b83c8cd273d32b23",
+              "inventoryItemIds": [
+               "inv-item:0b92716dbe2d2e42555bf6ea"
+              ]
+             },
+             {
+              "kind": "MULTIPLY",
+              "type": "MONEY",
+              "exprId": "ir-expr:7154dad7857e19c3dae9ebca",
+              "operands": [
+               {
+                "kind": "PERCENT",
+                "type": "PERCENT",
+                "value": 0.75,
+                "provenance": {
+                 "documentId": "doc-a",
+                 "sourceNodeKey": null,
+                 "sourceCitation": "§1.01(ee)",
+                 "excerpt": null
+                },
+                "exprId": "ir-expr:baafaa531972135e78083f2e",
+                "inventoryItemIds": [
+                 "inv-item:0b92716dbe2d2e42555bf6ea"
+                ]
+               },
+               {
+                "kind": "METRIC_REFERENCE",
+                "type": "MONEY",
+                "metricName": "Consolidated EBITDA",
+                "companyId": "phase-3-validation-chwy",
+                "instrumentKey": "chwy-2026-revolving-credit-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+               }
+              ],
+              "provenance": {
+               "documentId": "doc-a",
+               "sourceNodeKey": null,
+               "sourceCitation": "§1.01(ee)",
+               "excerpt": null
+              },
+              "inventoryItemIds": [
+               "inv-item:0b92716dbe2d2e42555bf6ea"
+              ]
+             }
+            ],
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(ee)",
+             "excerpt": null
+            },
+            "inventoryItemIds": [
+             "inv-item:0b92716dbe2d2e42555bf6ea"
+            ]
+           },
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(ee)",
+            "excerpt": null
+           },
+           "inventoryItemIds": [
+            "inv-item:0b92716dbe2d2e42555bf6ea"
+           ]
+          },
+          "periodDescription": "during the term of the Initial Term Loans",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(ee)",
+           "excerpt": null
+          },
+          "inventoryItemIds": [
+           "inv-item:0b92716dbe2d2e42555bf6ea"
+          ]
+         },
+         {
+          "kind": "COMPARE",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:b6abf2dfb24de9930a3f218d",
+          "left": {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "type": "MONEY",
+           "inputName": "Fair Market Value of the business unit, division or line of business being disposed",
+           "exprId": "ir-expr:d6324b03d8eec421245b1d8d"
+          },
+          "operator": "LTE",
+          "right": {
+           "kind": "MAX",
+           "type": "MONEY",
+           "exprId": "ir-expr:116cd98a399ef85a91f6cb29",
+           "operands": [
+            {
+             "kind": "MONEY",
+             "type": "MONEY",
+             "amount": 36000000,
+             "currency": "USD",
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(ff)",
+              "excerpt": null
+             },
+             "exprId": "ir-expr:d686db8b95501f4dfa1cf05b",
+             "inventoryItemIds": [
+              "inv-item:edfec62d509cb6078460fe25"
+             ]
+            },
+            {
+             "kind": "MULTIPLY",
+             "type": "MONEY",
+             "exprId": "ir-expr:43689401ead9264104b900c4",
+             "operands": [
+              {
+               "kind": "PERCENT",
+               "type": "PERCENT",
+               "value": 0.05,
+               "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§1.01(ff)",
+                "excerpt": null
+               },
+               "exprId": "ir-expr:0231a55a6c4db9a8ce9c1832",
+               "inventoryItemIds": [
+                "inv-item:edfec62d509cb6078460fe25"
+               ]
+              },
+              {
+               "kind": "METRIC_REFERENCE",
+               "type": "MONEY",
+               "metricName": "Consolidated EBITDA",
+               "companyId": "phase-3-validation-chwy",
+               "instrumentKey": "chwy-2026-revolving-credit-instrument",
+               "resolvedDefinitionId": null,
+               "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+              }
+             ],
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(ff)",
+              "excerpt": null
+             },
+             "inventoryItemIds": [
+              "inv-item:edfec62d509cb6078460fe25"
+             ]
+            }
+           ],
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(ff)",
+            "excerpt": null
+           },
+           "inventoryItemIds": [
+            "inv-item:edfec62d509cb6078460fe25"
+           ]
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(ff)",
+           "excerpt": null
+          },
+          "inventoryItemIds": [
+           "inv-item:edfec62d509cb6078460fe25"
+          ]
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Consolidated EBITDA",
+     "Test Period",
+     "First Lien Leverage Ratio",
+     "Interest Coverage Ratio",
+     "Initial Term Loans",
+     "Permitted Investments",
+     "Restricted Payments",
+     "Change of Control",
+     "Sale and Lease-Back Transaction",
+     "Equity Interests",
+     "Preferred Stock",
+     "Division",
+     "Fair Market Value",
+     "Similar Business",
+     "Unrestricted Subsidiary",
+     "Receivables Assets",
+     "Permitted Receivables Financing",
+     "Excluded Contributions",
+     "Permitted Tax Restructuring",
+     "Ordinary Course Non-Recourse Third Party Financing Transactions",
+     "Transactions",
+     "Collateral"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The 25+ qualitative carve-outs (a)-(c),(e)-(w),(y),(z),(aa),(bb),(dd) are categorical exclusions with no stated dollar/percentage threshold and are represented as a single UNSUPPORTED bucket rather than guessed at.",
+     "The material quantitative de minimis (d), annual basket (x), pro forma ratio election (cc), Initial Term Loan-term basket (ee), and business-unit basket (ff) exclusions are fully represented with their thresholds.",
+     "The final paragraph's discretionary reclassification right (Initial Borrower may reclassify a transaction across Asset Sale/Restricted Payment/Permitted Investment) is a separate, non-computational election and is dispositioned rather than folded into the boundary test.",
+     "Qualitative triggering description, not a computable financial value",
+     "Each is a categorical/qualitative exclusion with no stated dollar or percentage threshold; not a computable financial mechanic",
+     "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+     "NOT keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+     "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Asset Sale\" means: (1) the sale, conveyance, transfer or other disposition ... of property or assets ... of a Borrower or any of its respective Restricted Subsidiaries; or (2) the issuance or sale of Equity Interests of any of the Restricted Subsidiaries ...; in each case, other than: (a) ... through (ff) ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d875620e56d7b253b5b82df4",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Asset Sale Prepayment Event",
+    "covenantFamily": "ASSET_SALES",
+    "calculationExpression": {
+     "kind": "AND",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:815859e8ece16134b13b6fca",
+     "operands": [
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "Prepayment Event definition, clause (a)",
+       "semanticDescription": "Occurrence of an Asset Sale of Collateral consummated by a Loan Party solely pursuant to Section 6.05(a)(2)(ii)",
+       "reason": "qualitative triggering condition",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 (definition of 'Prepayment Event'), clause (a)",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:35bd266901f6d01521151cf6"
+      },
+      {
+       "kind": "NOT",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:d0e6f02a123d6ec5cb2ed778",
+       "operand": {
+        "kind": "OR",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:a3e59877432f8e7ac4d2095d",
+        "operands": [
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "Prepayment Event definition, clause (a)(i)",
+          "semanticDescription": "issuance by a Restricted Party of Equity Interests",
+          "reason": "qualitative exclusion",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "Prepayment Event definition, clause (a)",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:58e4a2ba409056080ab88bcf"
+         },
+         {
+          "kind": "COMPARE",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:ce7e16866d652b9918f84ef2",
+          "left": {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "type": "MONEY",
+           "inputName": "aggregate Net Proceeds of such single transaction or series of related transactions",
+           "exprId": "ir-expr:d1db9cea0ec925959ef45885"
+          },
+          "operator": "LTE",
+          "right": {
+           "kind": "MAX",
+           "type": "MONEY",
+           "exprId": "ir-expr:69b5a1a90159df01ffbe8535",
+           "operands": [
+            {
+             "kind": "MONEY",
+             "type": "MONEY",
+             "amount": 144000000,
+             "currency": "USD",
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "Prepayment Event definition, clause (a)(ii)",
+              "excerpt": null
+             },
+             "exprId": "ir-expr:210d332b3bb8fb5cea8084b4"
+            },
+            {
+             "kind": "MULTIPLY",
+             "type": "MONEY",
+             "exprId": "ir-expr:306319c346ef60014b50a117",
+             "operands": [
+              {
+               "kind": "PERCENT",
+               "type": "PERCENT",
+               "value": 0.2,
+               "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "Prepayment Event definition, clause (a)(ii)",
+                "excerpt": null
+               },
+               "exprId": "ir-expr:7038fbadd1558d61afd5630d"
+              },
+              {
+               "kind": "METRIC_REFERENCE",
+               "type": "MONEY",
+               "metricName": "Consolidated EBITDA",
+               "companyId": "phase-3-validation-chwy",
+               "instrumentKey": "chwy-2026-revolving-credit-instrument",
+               "resolvedDefinitionId": null,
+               "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+              }
+             ],
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "Prepayment Event definition, clause (a)(ii)",
+              "excerpt": null
+             }
+            }
+           ],
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "Prepayment Event definition, clause (a)(ii)",
+            "excerpt": null
+           }
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "Prepayment Event definition, clause (a)(ii)",
+           "excerpt": null
+          }
+         },
+         {
+          "kind": "COMPARE",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:44216620d573d69195da2645",
+          "left": {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "type": "MONEY",
+           "inputName": "aggregate Net Proceeds of transactions in such fiscal year",
+           "exprId": "ir-expr:1a251efc2a7d9c992e188fe0"
+          },
+          "operator": "LTE",
+          "right": {
+           "kind": "MAX",
+           "type": "MONEY",
+           "exprId": "ir-expr:4e293aa55dcd961c5d9ddd5e",
+           "operands": [
+            {
+             "kind": "MONEY",
+             "type": "MONEY",
+             "amount": 216000000,
+             "currency": "USD",
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "Prepayment Event definition, clause (a)(iii)",
+              "excerpt": null
+             },
+             "exprId": "ir-expr:bdf639146a0af840a79448ff"
+            },
+            {
+             "kind": "MULTIPLY",
+             "type": "MONEY",
+             "exprId": "ir-expr:29b9dc666ba53792376db5ae",
+             "operands": [
+              {
+               "kind": "PERCENT",
+               "type": "PERCENT",
+               "value": 0.3,
+               "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "Prepayment Event definition, clause (a)(iii)",
+                "excerpt": null
+               },
+               "exprId": "ir-expr:5fd4452406de98abd914224e"
+              },
+              {
+               "kind": "METRIC_REFERENCE",
+               "type": "MONEY",
+               "metricName": "Consolidated EBITDA",
+               "companyId": "phase-3-validation-chwy",
+               "instrumentKey": "chwy-2026-revolving-credit-instrument",
+               "resolvedDefinitionId": null,
+               "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+              }
+             ],
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "Prepayment Event definition, clause (a)(iii)",
+              "excerpt": null
+             }
+            }
+           ],
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "Prepayment Event definition, clause (a)(iii)",
+            "excerpt": null
+           }
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "Prepayment Event definition, clause (a)(iii)",
+           "excerpt": null
+          }
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "Prepayment Event definition, clause (a)",
+         "excerpt": null
+        }
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "Prepayment Event definition, clause (a)",
+        "excerpt": null
+       }
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01 (definition of 'Prepayment Event'), clause (a)",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Prepayment Event",
+     "Asset Sale",
+     "Collateral",
+     "Consolidated EBITDA",
+     "Test Period",
+     "Net Proceeds"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Resolved via cross-reference to the 'Prepayment Event' definition, clause (a), which supplies the operative thresholds.",
+     "The carryforward mechanic (unused Transaction Threshold/Annual Threshold amounts carried forward to a later fiscal year) is a stateful ledger mechanic not expressible with the current node set and is left UNSUPPORTED rather than guessed.",
+     "qualitative triggering condition",
+     "qualitative exclusion",
+     "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+     "NOT keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+     "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01 (definition of 'Prepayment Event'), clause (a)",
+     "excerpt": "any Asset Sale of Collateral consummated by a Loan Party solely pursuant to Section 6.05(a)(2)(ii), other than ... dispositions resulting in aggregate Net Proceeds not exceeding the greater of $144.0 million and 20% of Consolidated EBITDA ... (the 'Transaction Threshold') and ... not exceeding the greater of $216.0 million and 30% of Consolidated EBITDA ... (the 'Annual Threshold')"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:5a31cbec2744f0a4e1d6fb79",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Asset Sale Proceeds Application Period",
+    "covenantFamily": "ASSET_SALES",
+    "calculationExpression": {
+     "kind": "EVENT_ACTIVE",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:4eda2ba22b7a050d1676b4b8",
+     "eventDescription": "a Loan Party's receipt of any Net Proceeds of any Asset Sale consummated by a Loan Party pursuant to Section 6.05(a)(2)(ii)",
+     "triggerCondition": null,
+     "activeDuration": "24 months",
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.05(b)",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Net Proceeds",
+     "Asset Sale"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Resolved via the cross-referenced Section 6.05(b) text, which fully supplies the 24-month period and its trigger."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§6.05(b)",
+     "excerpt": "Within twenty-four (24) months after a Loan Party's receipt of any Net Proceeds of any Asset Sale consummated by a Loan Party pursuant to Section 6.05(a)(2)(ii) (the \"Asset Sale Proceeds Application Period\")"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:913aea472bc054a25d1323c3",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Assignment and Assumption",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Eligible Assignee",
+     "Affiliated Lender Assignment and Assumption",
+     "Administrative Agent"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely documentary/procedural definition with no quantitative economics; the two alternative forms are fully captured descriptively."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means (a) an assignment and assumption entered into by a Lender and an Eligible Assignee (with the consent of any Person whose consent is required by Section 9.04), substantially in the form of Exhibit A-1 or any other form reasonably approved by the Administrative Agent, and/or (b) an Affiliated Lender Assignment and Assumption, as applicable."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f38b8cdf03116d39cafef787",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Available Amount",
+    "covenantFamily": "RESTRICTED_PAYMENTS",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§6.08(a)(3)",
+     "semanticDescription": "Available Amount = sum of amounts attributable to clauses (a) through (f) [chapeau] of Section 6.08(a)(3), whose lettered sub-clauses were not retrieved",
+     "reason": "the referenced sub-clauses are a separate, extensive builder-basket provision not included in the supplied evidence for this compilation and not resolvable within budget",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:d6ece623b13c4c8bcdf2b4af"
+    },
+    "dependsOnTerms": [
+     "Restricted Payments",
+     "Credit Agreement Refinancing Indebtedness"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Section 1.01 only cross-references Section 6.08(a)(3) for this term's meaning.",
+     "Section 6.08(a)(3)'s chapeau confirms the term is a sum of amounts attributable to lettered sub-clauses, but the substantive content of those sub-clauses (which extend at least through clause (i) with further sub-parts, per structural inspection) was not retrieved - resolving all of it is a materially separate, extensive builder-basket provision outside the scope of the 'Asset Sale'-centered evidence supplied for this compilation.",
+     "the referenced sub-clauses are a separate, extensive builder-basket provision not included in the supplied evidence for this compilation and not resolvable within budget"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§6.08(a)(3)",
+     "excerpt": "the sum of the amounts attributable to clauses (a) through (f) below are referred to herein as the \"Available Amount\""
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d3098664453fbfb14eba9d7f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Available Investment Capacity Amount",
+    "covenantFamily": "INVESTMENTS",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "(no evidence captured)",
+     "semanticDescription": "unrecognized or malformed expression (kind=\"SUBTRACT\")",
+     "reason": "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "attemptedStructure": {
+      "kind": "SUBTRACT",
+      "type": "NUMBER",
+      "exprId": "ir-expr:0847f14da4863d9ca754b4de",
+      "left": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01 definition of 'Permitted Investments', clause (13)",
+       "semanticDescription": "amount of Investments that may be made at the time of determination pursuant to clause (13) of the 'Permitted Investments' definition",
+       "reason": "clause (13) of 'Permitted Investments' was not retrievable - the definition's text is truncated before reaching clause (13) and no tool resolves an internal numbered clause of another definition",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:b887a9be9817bfab3f82ca8c"
+      },
+      "right": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "Section 6.08(b)(26): \"Restricted Payments in an aggregate amount not to exceed the Available Investment Capacity Amount\"",
+       "semanticDescription": "cumulative amount of the Available Investment Capacity Amount previously utilized by the Restricted Parties pursuant to Section 6.08(b)(26), after giving effect to any permitted reallocation/reclassification",
+       "reason": "represents a running usage ledger against Section 6.08(b)(26), a provision outside this submission; no shared-capacity member rule for 6.08(b)(26) is being compiled here",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:eb4c9dd281185ebc7814ce87"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "exprId": "ir-expr:626b5890fb96f68c4840dc2f",
+     "inventoryItemIds": [
+      "inv-item:c081b7907f1d12ed28484634"
+     ]
+    },
+    "dependsOnTerms": [
+     "Permitted Investments"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Component (a) requires clause (13) of the 'Permitted Investments' definition; that definition's full text is truncated by context/tool budget before reaching clause (13), and no tool resolves an internal numbered clause of another definition directly.",
+     "Component (b) is a running usage ledger against Section 6.08(b)(26) (text confirms that section grants 'Restricted Payments in an aggregate amount not to exceed the Available Investment Capacity Amount'), which is a provision outside this submission with no member rule compiled here to attach a LEDGER_USAGE_REFERENCE to.",
+     "clause (13) of 'Permitted Investments' was not retrievable - the definition's text is truncated before reaching clause (13) and no tool resolves an internal numbered clause of another definition",
+     "represents a running usage ledger against Section 6.08(b)(26), a provision outside this submission; no shared-capacity member rule for 6.08(b)(26) is being compiled here",
+     "SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, at any time, (a) the amount of Investments that may be made at the time of determination pursuant to clause 13 of \"Permitted Investments,\" minus (b) the amount of the Available Investment Capacity Amount utilized by the Restricted Parties pursuant to Section 6.08(b)(26) (after giving effect to any reallocation or reclassification permitted hereunder)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "Prepayment Event definition, clause (a): 'any portion of the Transaction Threshold or Annual Threshold not utilized in any given fiscal year may be carried forward to increase the applicable Transaction Threshold and Annual Threshold for any subsequent fiscal year'",
+    "semanticRequirement": "A basket/threshold whose available amount in a period depends on unused amounts carried forward (added) from prior periods - a stateful, usage-history-dependent ceiling.",
+    "whyExistingPrimitivesFail": "SCHEDULE only supports date-keyed fixed values, not usage-dependent accumulation; SUM/MAX/ADD have no way to reference 'prior period's unused amount' without a dedicated running-ledger/carryforward primitive.",
+    "candidateGeneralizedPrimitive": "CARRYFORWARD_LEDGER(baseAmount, periodDescription, unusedRolloverInto) - a node representing a periodic cap augmented by unused amounts rolled forward from prior periods."
+   },
+   {
+    "sourceEvidence": "Asset Sale definition, final paragraph: 'the Initial Borrower ... shall be entitled to divide and classify or reclassify ... such transaction (or a portion thereof) as an Asset Sale and/or one or more of the types of Restricted Payments or Permitted Investments'",
+    "semanticRequirement": "A single transaction can be split and simultaneously/alternatively classified across multiple independent defined-term categories at obligor discretion, each category then drawing on its own separate capacity.",
+    "whyExistingPrimitivesFail": "No existing node represents a discretionary multi-category classification/split of one transaction's economics across otherwise-independent rules/definitions; IF/OR select a single branch rather than an apportioned split.",
+    "candidateGeneralizedPrimitive": "CLASSIFICATION_ELECTION(candidateCategories[], splitAllowed: true) capturing an obligor's discretionary allocation of one transaction across multiple defined categories."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].AND[0]] Qualitative triggering description, not a computable financial value",
+   "[definition[d1].AND[1].NOT.operand.OR[0]] Each is a categorical/qualitative exclusion with no stated dollar or percentage threshold; not a computable financial mechanic",
+   "[definition[d1].AND[1].NOT.operand] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1].AND[1]] NOT keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d2].AND[0]] qualitative triggering condition",
+   "[definition[d2].AND[1].NOT.operand.OR[0]] qualitative exclusion",
+   "[definition[d2].AND[1].NOT.operand] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d2].AND[1]] NOT keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d2]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d5]] the referenced sub-clauses are a separate, extensive builder-basket provision not included in the supplied evidence for this compilation and not resolvable within budget",
+   "[definition[d6].SUBTRACT.left] clause (13) of 'Permitted Investments' was not retrievable - the definition's text is truncated before reaching clause (13) and no tool resolves an internal numbered clause of another definition",
+   "[definition[d6].SUBTRACT.right] represents a running usage ledger against Section 6.08(b)(26), a provision outside this submission; no shared-capacity member rule for 6.08(b)(26) is being compiled here",
+   "[definition[d6]] SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+   "This compilation covers the 'Asset Sale' definition and the sibling defined terms declared in the same §1.01 excerpt: 'Asset Sale Prepayment Event', 'Asset Sale Proceeds Application Period', 'Assignment and Assumption', 'Available Amount', and 'Available Investment Capacity Amount'.",
+   "'Asset Sale' itself is a categorical/boundary definition, not a single dollar formula; only the material quantitative carve-outs flagged in the frozen inventory (clauses (d), (x), (cc), (ee), (ff)) are represented with their thresholds - the many purely qualitative carve-outs are bundled into one UNSUPPORTED node rather than guessed at individually, since none carry a stated numeric value.",
+   "Cross-references to Sections 6.01, 6.02, 6.03, 6.08, 6.08(a), 6.08(b) (other than 6.08(a)(3) and 6.08(b)(26), which were retrieved) were out of scope per the source-context budget and are not required for the Asset Sale carve-outs' own economics (they gate eligibility of other exceptions, e.g. (b), (c), (u)), which remain UNSUPPORTED/qualitative in this compilation.",
+   "'Available Amount' (Section 6.08(a)(3)) and the 'clause (13)' component of 'Available Investment Capacity Amount' were both investigated via getReferencedProvision/getDefinition/getChildren, but each leads into a large, separate builder-basket provision whose full lettered sub-clauses were not retrievable within budget; both are marked MISSING_CONTEXT rather than guessed.",
+   "'Asset Sale Prepayment Event' and 'Asset Sale Proceeds Application Period' were successfully resolved via their cross-referenced sections/definitions and are represented with much fuller economics than the bare cross-reference in the original §1.01 excerpt."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Prepayment Event"
+    },
+    "outputSummary": "definition \"Prepayment Event\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 1477,
+    "timestamp": "2026-09-14T15:21:54.946Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Prepayment Event",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:dda1225b3c26e6a7d75e918b",
+     "sourceNodeKey": "doc-a::1.01(51)(ii)(ii)",
+     "charStart": 291823,
+     "charEnd": 293300,
+     "rawText": "“ Prepayment Event ” means:\n\n(a)\nany Asset Sale of Collateral consummated by a Loan Party solely pursuant to Section 6.05(a)(2)(ii), other\nthan (i) the issuance by a Restricted Party of Equity Interests, (ii) dispositions resulting in aggregate Net Proceeds not exceeding the greater of $144.0 million and 20% of Consolidated EBITDA (calculated on a Pro Forma Basis) for\nthe most recently ended Test Period in the case of any single transaction or series of related transactions (the “ Transaction Threshold ”) and (iii) dispositions resulting in aggregate Net Proceeds not exceeding the greater of\n$216.0 million and 30% of Consolidated EBITDA (calculated on a Pro Forma Basis) for the most recently ended Test Period in the case of transactions in the aggregate in any fiscal year (the “ Annual Threshold ”) (with only the\namount in excess of such per transaction and annual thresholds required to be offered to be prepaid and any portion of the Transaction Threshold or Annual Threshold not utilized in any given fiscal year may be carried forward to increase the\napplicable Transaction Threshold and Annual Threshold for any subsequent fiscal year) (each such event, an “ Asset Sale Prepayment Event ”); or\n\n-63-\n\n(b)\nthe incurrence by the Borrowers or any other Restricted Party of any Indebtedness, other than Indebtedness\npermitted under Section 6.01 (other than Credit Agreement Refinancing Indebtedness) or permitted by the Required Lenders pursuant to Section 9.02.\n\n",
+     "contentHash": "c687216d2911198a5b48f7ce2a8889509e92aa2749469ac9dc02cb766c5e6aa4",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 6.08(a)(3)"
+    },
+    "outputSummary": "resolved reference \"Section 6.08(a)(3)\" -> 6.08(a)(3) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 544,
+    "timestamp": "2026-09-14T15:21:54.947Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 6.08(a)(3)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:daf3cbd312583695aedf327f",
+     "sourceNodeKey": "doc-a::6.08(a)(3)",
+     "charStart": 662051,
+     "charEnd": 662595,
+     "rawText": "(3) such Restricted Payment, together with the aggregate amount of all other\nRestricted Payments made by any Restricted Party after the Effective Date which have not been returned, unwound or rescinded (including Restricted Payments permitted by Sections 6.08(b)(1) and 6.08(b)(6)(c) hereof, but excluding all other Restricted\nPayments permitted by Section 6.08(b) hereof), is less than the sum of (without duplication) (the sum or the amounts attributable to clauses (a) through (f) below are referred to herein as the “ Available Amount ”):\n\n",
+     "contentHash": "7fe8cb2b0e9cf0704101ed3eb5e2d139c9ee81a36edd588054bc2695be20d002",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 6.05(b)"
+    },
+    "outputSummary": "resolved reference \"Section 6.05(b)\" -> 6.05(b) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 302,
+    "timestamp": "2026-09-14T15:21:54.948Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 6.05(b)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:45e7a76774f3aaa009f56941",
+     "sourceNodeKey": "doc-a::6.05(b)",
+     "charStart": 654452,
+     "charEnd": 654754,
+     "rawText": "(b) Within twenty-four (24) months after a Loan Party’s receipt of any Net\nProceeds of any Asset Sale consummated by a Loan Party pursuant to Section 6.05(a)(2)(ii) (the “ Asset Sale Proceeds Application Period ”), such Loan Party shall apply an amount equal to the Net Proceeds from such Asset Sale:\n\n",
+     "contentHash": "eec6759a3dec5f12eb984bbf9269dae1a517f9b16830e821ddd82d3207a5b139",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "clause 13 of Permitted Investments"
+    },
+    "outputSummary": "refused: reference \"clause 13 of Permitted Investments\" did not resolve to any section (or any enclosing section) within this instrument's documents",
+    "charsReturned": 139,
+    "timestamp": "2026-09-14T15:21:54.948Z"
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Permitted Investments"
+    },
+    "outputSummary": "definition \"Permitted Investments\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 4059,
+    "timestamp": "2026-09-14T15:21:59.724Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": true,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Permitted Investments",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:344b456719a30ef35e5a798a",
+     "sourceNodeKey": "doc-a::1.01(3)(ii)(a)",
+     "charStart": 248524,
+     "charEnd": 262645,
+     "rawText": "“ Permitted Investments ” means:\n\n(1) any Investment in any Restricted Party (including guarantees of obligations of Restricted Subsidiaries);\n\n(2) any Investment in cash, Cash Equivalents or Investment Grade Securities;\n\n(3) any Investment or other acquisition, by any Restricted Party, whether by purchase, merger, amalgamation or otherwise, of all or substantially all of the\nassets of, or any business line, unit or division or product line (including research and development and related assets in respect of any product) of, a Person or of a majority of the outstanding Capital Stock of any Person (and, in any event,\nincluding any Investment in (a) any Restricted Party the effect of which is to increase any Restricted Party’s equity ownership in such Restricted Party or (b) any joint venture for the purpose of increasing any Restricted\nParty’s ownership interest in such joint venture) that is engaged, directly or indirectly, in a Similar Business (or in assets of a Similar Business) if as a result of such Investment (each such transaction, a “ Permitted\nAcquisition ”);\n\n(a)\nsuch Person becomes a Restricted Subsidiary (including by redesignation of an Unrestricted Subsidiary as a\nRestricted Subsidiary or by means of a Division); or\n\n(b)\nsuch Person, in one (1) transaction or a series of related transactions, is merged, consolidated or\namalgamated with or into, or transfers or conveys (i) substantially all of its assets to, transfers or conveys assets constituting a business unit, line of business or division of such Person, or is liquidated into, any Restricted Party, (ii)\n50% or more of its Equity Interests to any Restricted Party or a Qualified Restricted Subsidiary or (iii) minority ownership interests in such Person that is engaged in a business permitted pursuant to Section 5.16;\n\nand, in each case, any Investment held by such Person; provided that such Investment was not acquired by such Person in contemplation of such\nacquisition, merger, consolidation, amalgamation, Division, transfer, conveyance or redesignation;\n(4) any Investment in securities or other assets\n(including earn-outs) not constituting cash, Cash Equivalents or Investment Grade Securities and received in connection with an Asset Sale made pursuant to Section 6.05 hereof or any other disposition of assets not constituting an Asset Sale;\n\n-54-\n\n(5) any Investment existing on the Effective Date or made pursuant to binding commitments in effect on the\nEffective Date, or an Investment consisting of any extension, modification, replacement, reinvestment or renewal of any such Investment existing on the Effective Date or binding commitment in effect on the Effective Date; provided that the\namount of any such Investment may be increased in such extension, modification, replacement, reinvestment or renewal only (a) as required by the terms of such Investment or binding commitment as in existence on the Effective Date (including as\na result of the accrual or accretion of interest or original issue discount or the issuance of pay in kind securities) or (b) as otherwise permitted under this Agreement;\n\n(6) any Investment acquired by any Restricted Party:\n\n(a)\nconsisting of extensions of credit in the nature of accounts receivable or notes receivable arising from the\ngrant of trade credit in the ordinary course of business or consistent with past practice and Investments received in satisfaction or partial satisfaction thereof from financially troubled account debtors and other credits to suppliers in the\nordinary course of business;\n\n(b)\nin exchange for any other Investment or accounts receivable, endorsements for collection or deposit held by any\nRestricted Party in connection with or as a result of a bankruptcy, workout, reorganization or recapitalization of the issuer of such other Investment or accounts receivable;\n\n(c)\nin satisfaction of judgments against other Persons; or\n\n(d)\nas a result of a foreclosure by any Restricted Party with respect to any secured Investment or other transfer\nof title with respect to any secured Investment in default; or\n\n(e)\nreceived in compromise or resolution of (a) obligations of trade creditors, suppliers or customers that\nwere incurred in the ordinary course of business of the Restricted Parties or consistent with past practice, including pursuant to any plan of reorganization or similar arrangement upon the bankruptcy or insolvency of any trade creditor, supplier or\ncustomer, or (b) litigation, arbitration or other disputes;\n\n(7) Hedging Obligations permitted under Section 6.01(b)(10)\nhereof;\n(8) any Investment in a Similar Business having an aggregate Fair Market Value, taken together with all other Investments made pursuant to this\nclause (8) that are at that time outstanding, not to exceed the sum of (i) greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of such\nInvestment plus (ii) any Investment capacity available under clauses (22) and (30) of this definition; provided , however , that if any Investment pursuant to this clause (8) is made in any Person that is not a\nRestricted Subsidiary at the date of the making of such Investment and such Person becomes a Restricted Subsidiary after such date, such investment shall thereafter be deemed to have been made pursuant to clause (1) above and shall cease to\nhave been made pursuant to this clause (8) for so long as such Person continues to be a Restricted Subsidiary;\n(9) Investments the payment for which\nconsists of Equity Interests of a Borrower or any Parent Entity (exclusive of Disqualified Stock); provided , however , that such Equity Interests shall not increase the amount available for Restricted Payments under\nSection 6.08(a)(3) hereof;\n(10) guarantees of Indebtedness to the extent such guarantees are permitted under Section 6.01 hereof; the creation\nof Liens on the assets of any Restricted Party in compliance with Section 6.02; and Restricted Payments permitted under Section 6.08 (including any transactions incurred in reliance on the Available RP Capacity Amount) (other than by\nreference to this clause (10));\n(11) any transaction to the extent it constitutes an Investment that is permitted and made in accordance with the\nprovisions of Section 5.18(b) hereof (except transactions described in Sections 5.18(b)(2), (5), (9) and (15) hereof);\n(12) Investments\nconsisting of purchases and acquisitions of inventory, supplies, material or equipment, or other similar assets, or the licensing or contribution of intellectual property pursuant to joint marketing arrangements with other Persons;\n\n-55-\n\n(13) additional Investments having an aggregate Fair Market Value, taken together with all other Investments\nmade pursuant to this clause (13) that are at that time outstanding not to exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time\nof such Investment (the greater of such amounts, the “ General Basket Amount ”); provided , however , that if any Investment pursuant to this clause (13) is made in any Person that is not a Restricted Subsidiary at\nthe date of the making of such Investment and such Person becomes a Restricted Subsidiary after such date, such Investment shall thereafter be deemed to have been made pursuant to clause (1) above and shall cease to have been made pursuant to\nthis clause (13) for so long as such Person continues to be a Restricted Subsidiary;\n(14) Investments in or by a Receivables Subsidiary, including\nthe contribution or lending of cash to a Receivables Subsidiary to finance (i) the purchase of assets or to otherwise fund required reserves and other accounts permitted or required by the arrangements governing such Permitted Receivables\nFinancing, that, in the good faith determination of the Initial Borrower, are necessary or advisable to effect any Permitted Receivables Financing or any repurchase obligation in connection therewith and (ii) distributions or payments by such\nReceivables Subsidiary of Receivables Fees;\n(15) loans and advances to, or guarantees of Indebtedness of, officers, directors, managers, employees and\nconsultants not in excess of the greater of (x) $108.0 million and (y) 15% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, outstanding at any one time, in the aggregate;\n\n(16) loans and advances to officers, directors, managers, employees and consultants for business-related travel expenses, moving or relocation expenses,\nentertainment, payroll advances and other analogous or similar expenses or payroll expenses, in each case incurred in the ordinary course of business or consistent with past practice or to fund such Person’s purchase of Equity Interests of the\nBorrowers or any Parent Entity;\n(17) advances, loans or extensions of trade credit (including the creation of receivables) or prepayments to suppliers or\nlessors or loans or advances made to distributors, and performance guarantees and Contingent Obligations incurred in the ordinary course of business or consistent with past practice of any Restricted Party;\n\n(18) intercompany current liabilities owed by Unrestricted Subsidiaries or joint ventures incurred in the ordinary course of business in connection with the\ncash management operations of the Restricted Parties and their respective Subsidiaries;\n(19) Investments in the ordinary course of business or consistent\nwith past practice consisting of Uniform Commercial Code Article 3 endorsements for collection or deposit and Article 4 customary trade arrangements with customers consistent with past practices or, the equivalent actions in any non-U.S. jurisdiction;\n(20) Investments consisting of promissory notes issued to any Restricted Party by future,\npresent or former employees, directors, officers, managers or consultants of the Borrowers or any of their respective Subsidiaries or their respective estates, spouses or former spouses to finance the purchase or redemption of Equity Interests of\nthe Borrowers or any Parent Entity thereof, to the extent the applicable Restricted Payment is permitted by Section 6.08 hereof;\n(21) repurchases of\nSenior Indebtedness of the Restricted Parties;\n(22) Investments in Unrestricted Subsidiaries having an aggregate Fair Market Value, taken together with\nall other Investments made pursuant to this clause (22) that are at the time outstanding, without giving effect to the sale of an Unrestricted Subsidiary to the extent the proceeds of such sale do not consist of cash, Cash Equivalents or\nmarketable securities, not to exceed the sum of (i) the greater of (x) (x) $360.0 million and (y) 50% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of such Investment\nplus (ii) any Investment capacity available under clauses (8) and (30) of this definition; provided , however , that any Investment pursuant to this clause (22) made in any Person that is a Unrestricted Subsidiary\nof the Borrowers at the date of the making of such Investment and such Person becomes a Restricted Subsidiary after such date, such Investment shall thereafter be deemed to have been made pursuant to clause (1) above and shall cease to have\nbeen made pursuant to this clause (22) for so long as such Person continues to be a Restricted Subsidiary;\n\n-56-\n\n(23) guarantee obligations of any Restricted Party in respect of leases or of other obligations that do not\nconstitute Indebtedness, in each case, entered into in the ordinary course of business;\n(24) guarantee obligations of any Restricted Party in connection\nwith the provision of credit card payment processing services in the ordinary course of business or consistent with past practice;\n(25) Investments by an\nUnrestricted Subsidiary entered into prior to the day such Unrestricted Subsidiary is redesignated as a Restricted Subsidiary pursuant to the definition of “Unrestricted Subsidiary”;\n\n(26) non-cash Investments in connection with tax planning and reorganization activities, and Investments in connection\nwith a Permitted Tax Restructuring or related transactions;\n(27) any other Investment; provided that on a Pro Forma Basis after giving effect to\nsuch Investment, at the election of the Initial Borrower, (i) the First Lien Leverage Ratio for the most recently ended Test Period would not exceed (A) 2.00:1.00 or (B) the First Lien Leverage Ratio as of the last day of the then most\nrecently ended Test Period or (ii) the Interest Coverage Ratio on a pro forma basis is at least equal to or greater than (A) 1.75:1.00 or (B) the Interest Coverage Ratio level as of the last day of the then most recently ended Test Period;\nprovided that this clause (ii) shall not be relied on for the purpose of incurring Indebtedness secured by a lien on all or a material portion of the Collateral on a pari passu basis with the Term Loans;\n\n(28) the Transactions;\n(29) any acquisition or Investment by\nany Non-Loan Party Subsidiary to the extent funded with the operating cash flow of Non-Loan Party Subsidiaries; and\n\n(30) any Investment in a Joint Venture having an aggregate Fair Market Value, taken together with all other Investments made pursuant to this clause\n(30) that are at that time outstanding, not to exceed the sum of (i) the greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of such\nInvestment, plus (ii) any Investment capacity available under clauses (8) and (22) of this definition; provided , however , that any Investment pursuant to this clause (30) made in any Person that is a Joint Venture\nat the date of the making of such Investment and such Person becomes a Restricted Subsidiary after such date, such Investment shall thereafter be deemed to have been made pursuant to clause (1) above and shall cease to have been made pursuant\nto this clause (30) for so long as such Person continues to be a Restricted Subsidiary.\n",
+     "contentHash": "633793c0a5032bfc93c70acedcf7059c2eae3e60839634064490e71deba9b56f",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getChildren",
+    "input": {
+     "nodeId": "structural-node:daf3cbd312583695aedf327f"
+    },
+    "outputSummary": "18 child clause(s) of 6.08(a)(3) (parent UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 69,
+    "timestamp": "2026-09-14T15:23:34.493Z",
+    "evidenceUnresolved": true
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "Asset Sale",
+     "covenantFamily": "ASSET_SALES",
+     "citation": "§1.01",
+     "excerpt": "\"Asset Sale\" means: (1) the sale, conveyance, transfer or other disposition ... of property or assets ... of a Borrower or any of its respective Restricted Subsidiaries; or (2) the issuance or sale of Equity Interests of any of the Restricted Subsidiaries ...; in each case, other than: (a) ... through (ff) ...",
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Test Period",
+      "First Lien Leverage Ratio",
+      "Interest Coverage Ratio",
+      "Initial Term Loans",
+      "Permitted Investments",
+      "Restricted Payments",
+      "Change of Control",
+      "Sale and Lease-Back Transaction",
+      "Equity Interests",
+      "Preferred Stock",
+      "Division",
+      "Fair Market Value",
+      "Similar Business",
+      "Unrestricted Subsidiary",
+      "Receivables Assets",
+      "Permitted Receivables Financing",
+      "Excluded Contributions",
+      "Permitted Tax Restructuring",
+      "Ordinary Course Non-Recourse Third Party Financing Transactions",
+      "Transactions",
+      "Collateral"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The 25+ qualitative carve-outs (a)-(c),(e)-(w),(y),(z),(aa),(bb),(dd) are categorical exclusions with no stated dollar/percentage threshold and are represented as a single UNSUPPORTED bucket rather than guessed at.",
+      "The material quantitative de minimis (d), annual basket (x), pro forma ratio election (cc), Initial Term Loan-term basket (ee), and business-unit basket (ff) exclusions are fully represented with their thresholds.",
+      "The final paragraph's discretionary reclassification right (Initial Borrower may reclassify a transaction across Asset Sale/Restricted Payment/Permitted Investment) is a separate, non-computational election and is dispositioned rather than folded into the boundary test."
+     ],
+     "calculationExpression": {
+      "kind": "AND",
+      "citation": "§1.01",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "Occurrence of a disposition of property or assets (including via Sale-and-Lease-Back Transaction) by a Borrower or Restricted Subsidiary, or an issuance/sale of Equity Interests of a Restricted Subsidiary (other than certain Preferred Stock issued under Section 6.01)",
+        "reason": "Qualitative triggering description, not a computable financial value",
+        "sourceEvidence": "§1.01, clauses (1)-(2) of 'Asset Sale' definition"
+       },
+       {
+        "kind": "NOT",
+        "citation": "§1.01",
+        "operand": {
+         "kind": "OR",
+         "citation": "§1.01",
+         "operands": [
+          {
+           "kind": "UNSUPPORTED",
+           "semanticDescription": "Qualitative, non-quantitative carve-outs: ordinary-course/obsolete asset dispositions; all-or-substantially-all/Change of Control dispositions; dispositions funding a Permitted Investment or Restricted Payment; intercompany transfers; like-kind/replacement-property exchanges; leases/licenses in the ordinary course; Unrestricted Subsidiary interests; casualty/condemnation/foreclosure events; asset-backed financings and Sale-and-Lease-Back transactions; receivables financings; IP licensing; current-asset/receivables dispositions; contract-right settlements; hedge/cash-management unwinds; JV buy/sell; IP lapse/abandonment; qualifying shares/equity comp plan issuances; cash/Cash Equivalents/Investment Grade Securities sales; non-core or antitrust-driven asset dispositions; Permitted Liens; Delaware Divided LLC formations; acquisition-consideration equity transfers; Excluded-Contribution-funded sales; Permitted Tax Restructurings; Ordinary Course Non-Recourse Third Party Financing Transactions; Transactions-related dispositions; and dispositions of non-Collateral assets",
+           "reason": "Each is a categorical/qualitative exclusion with no stated dollar or percentage threshold; not a computable financial mechanic",
+           "sourceEvidence": "§1.01(a),(b),(c),(e)-(w),(y),(z),(aa),(bb),(dd)"
+          },
+          {
+           "kind": "COMPARE",
+           "operator": "LT",
+           "citation": "§1.01(d)",
+           "inventoryItemIds": [
+            "inv-item:35c05a2ca9eb56a348d86140"
+           ],
+           "left": {
+            "kind": "TRANSACTION_INPUT_REFERENCE",
+            "inputName": "Aggregate Fair Market Value of the disposition or issuance/sale (single transaction or series of related transactions)"
+           },
+           "right": {
+            "kind": "MAX",
+            "citation": "§1.01(d)",
+            "inventoryItemIds": [
+             "inv-item:35c05a2ca9eb56a348d86140"
+            ],
+            "operands": [
+             {
+              "kind": "MONEY",
+              "amount": 108000000,
+              "currency": "USD",
+              "citation": "§1.01(d)",
+              "inventoryItemIds": [
+               "inv-item:5281d5a9dec8ef6bab146dcf"
+              ]
+             },
+             {
+              "kind": "MULTIPLY",
+              "citation": "§1.01(d)",
+              "inventoryItemIds": [
+               "inv-item:5fe0262251331def71b6c2ac"
+              ],
+              "operands": [
+               {
+                "kind": "PERCENT",
+                "value": 0.15,
+                "citation": "§1.01(d)",
+                "inventoryItemIds": [
+                 "inv-item:5fe0262251331def71b6c2ac"
+                ]
+               },
+               {
+                "kind": "METRIC_REFERENCE",
+                "metricName": "Consolidated EBITDA",
+                "citation": "§1.01(d)"
+               }
+              ]
+             }
+            ]
+           }
+          },
+          {
+           "kind": "COMPARE",
+           "operator": "LTE",
+           "citation": "§1.01(x)",
+           "inventoryItemIds": [
+            "inv-item:039a4062eeadde709d445ab2"
+           ],
+           "left": {
+            "kind": "TRANSACTION_INPUT_REFERENCE",
+            "inputName": "Aggregate Fair Market Value of dispositions/issuances in such fiscal year"
+           },
+           "right": {
+            "kind": "MAX",
+            "citation": "§1.01(x)",
+            "inventoryItemIds": [
+             "inv-item:039a4062eeadde709d445ab2"
+            ],
+            "operands": [
+             {
+              "kind": "MONEY",
+              "amount": 360000000,
+              "currency": "USD",
+              "citation": "§1.01(x)",
+              "inventoryItemIds": [
+               "inv-item:48d84e6f6c1e29b3a13334a0"
+              ]
+             },
+             {
+              "kind": "MULTIPLY",
+              "citation": "§1.01(x)",
+              "inventoryItemIds": [
+               "inv-item:685b10fc530db466e82be9e6"
+              ],
+              "operands": [
+               {
+                "kind": "PERCENT",
+                "value": 0.5,
+                "citation": "§1.01(x)",
+                "inventoryItemIds": [
+                 "inv-item:685b10fc530db466e82be9e6"
+                ]
+               },
+               {
+                "kind": "METRIC_REFERENCE",
+                "metricName": "Consolidated EBITDA",
+                "citation": "§1.01(x)"
+               }
+              ]
+             }
+            ]
+           }
+          },
+          {
+           "kind": "OR",
+           "citation": "§1.01(cc)",
+           "inventoryItemIds": [
+            "inv-item:139265f3eef57f0e3038aa70"
+           ],
+           "operands": [
+            {
+             "kind": "OR",
+             "citation": "§1.01(cc)(i)",
+             "operands": [
+              {
+               "kind": "COMPARE",
+               "operator": "LTE",
+               "citation": "§1.01(cc)(i)(A)",
+               "left": {
+                "kind": "METRIC_REFERENCE",
+                "metricName": "First Lien Leverage Ratio",
+                "valueType": "RATIO",
+                "excerpt": "pro forma after giving effect to the disposition"
+               },
+               "right": {
+                "kind": "RATIO",
+                "value": 2,
+                "citation": "§1.01(cc)(i)(A)",
+                "inventoryItemIds": [
+                 "inv-item:139265f3eef57f0e3038aa70"
+                ]
+               }
+              },
+              {
+               "kind": "COMPARE",
+               "operator": "LTE",
+               "citation": "§1.01(cc)(i)(B)",
+               "left": {
+                "kind": "METRIC_REFERENCE",
+                "metricName": "First Lien Leverage Ratio",
+                "valueType": "RATIO",
+                "excerpt": "pro forma after giving effect to the disposition"
+               },
+               "right": {
+                "kind": "METRIC_REFERENCE",
+                "metricName": "First Lien Leverage Ratio",
+                "valueType": "RATIO",
+                "excerpt": "as of the last day of the then most recently ended Test Period (pre-disposition)"
+               }
+              }
+             ]
+            },
+            {
+             "kind": "OR",
+             "citation": "§1.01(cc)(ii)",
+             "operands": [
+              {
+               "kind": "COMPARE",
+               "operator": "GTE",
+               "citation": "§1.01(cc)(ii)(A)",
+               "left": {
+                "kind": "METRIC_REFERENCE",
+                "metricName": "Interest Coverage Ratio",
+                "valueType": "RATIO",
+                "excerpt": "pro forma after giving effect to the disposition"
+               },
+               "right": {
+                "kind": "RATIO",
+                "value": 1.75,
+                "citation": "§1.01(cc)(ii)(A)",
+                "inventoryItemIds": [
+                 "inv-item:139265f3eef57f0e3038aa70"
+                ]
+               }
+              },
+              {
+               "kind": "COMPARE",
+               "operator": "GTE",
+               "citation": "§1.01(cc)(ii)(B)",
+               "left": {
+                "kind": "METRIC_REFERENCE",
+                "metricName": "Interest Coverage Ratio",
+                "valueType": "RATIO",
+                "excerpt": "pro forma after giving effect to the disposition"
+               },
+               "right": {
+                "kind": "METRIC_REFERENCE",
+                "metricName": "Interest Coverage Ratio",
+                "valueType": "RATIO",
+                "excerpt": "as of the last day of the then most recently ended Test Period (pre-disposition)"
+               }
+              }
+             ]
+            }
+           ]
+          },
+          {
+           "kind": "DURING_PERIOD",
+           "periodDescription": "during the term of the Initial Term Loans",
+           "citation": "§1.01(ee)",
+           "inventoryItemIds": [
+            "inv-item:0b92716dbe2d2e42555bf6ea"
+           ],
+           "operand": {
+            "kind": "COMPARE",
+            "operator": "LTE",
+            "citation": "§1.01(ee)",
+            "inventoryItemIds": [
+             "inv-item:0b92716dbe2d2e42555bf6ea"
+            ],
+            "left": {
+             "kind": "TRANSACTION_INPUT_REFERENCE",
+             "inputName": "Aggregate Fair Market Value of dispositions/issuances"
+            },
+            "right": {
+             "kind": "MAX",
+             "citation": "§1.01(ee)",
+             "inventoryItemIds": [
+              "inv-item:0b92716dbe2d2e42555bf6ea"
+             ],
+             "operands": [
+              {
+               "kind": "MONEY",
+               "amount": 540000000,
+               "currency": "USD",
+               "citation": "§1.01(ee)",
+               "inventoryItemIds": [
+                "inv-item:0b92716dbe2d2e42555bf6ea"
+               ]
+              },
+              {
+               "kind": "MULTIPLY",
+               "citation": "§1.01(ee)",
+               "inventoryItemIds": [
+                "inv-item:0b92716dbe2d2e42555bf6ea"
+               ],
+               "operands": [
+                {
+                 "kind": "PERCENT",
+                 "value": 0.75,
+                 "citation": "§1.01(ee)",
+                 "inventoryItemIds": [
+                  "inv-item:0b92716dbe2d2e42555bf6ea"
+                 ]
+                },
+                {
+                 "kind": "METRIC_REFERENCE",
+                 "metricName": "Consolidated EBITDA",
+                 "citation": "§1.01(ee)"
+                }
+               ]
+              }
+             ]
+            }
+           }
+          },
+          {
+           "kind": "COMPARE",
+           "operator": "LTE",
+           "citation": "§1.01(ff)",
+           "inventoryItemIds": [
+            "inv-item:edfec62d509cb6078460fe25"
+           ],
+           "left": {
+            "kind": "TRANSACTION_INPUT_REFERENCE",
+            "inputName": "Fair Market Value of the business unit, division or line of business being disposed"
+           },
+           "right": {
+            "kind": "MAX",
+            "citation": "§1.01(ff)",
+            "inventoryItemIds": [
+             "inv-item:edfec62d509cb6078460fe25"
+            ],
+            "operands": [
+             {
+              "kind": "MONEY",
+              "amount": 36000000,
+              "currency": "USD",
+              "citation": "§1.01(ff)",
+              "inventoryItemIds": [
+               "inv-item:edfec62d509cb6078460fe25"
+              ]
+             },
+             {
+              "kind": "MULTIPLY",
+              "citation": "§1.01(ff)",
+              "inventoryItemIds": [
+               "inv-item:edfec62d509cb6078460fe25"
+              ],
+              "operands": [
+               {
+                "kind": "PERCENT",
+                "value": 0.05,
+                "citation": "§1.01(ff)",
+                "inventoryItemIds": [
+                 "inv-item:edfec62d509cb6078460fe25"
+                ]
+               },
+               {
+                "kind": "METRIC_REFERENCE",
+                "metricName": "Consolidated EBITDA",
+                "citation": "§1.01(ff)"
+               }
+              ]
+             }
+            ]
+           }
+          }
+         ]
+        }
+       }
+      ]
+     }
+    },
+    {
+     "localRef": "d2",
+     "termName": "Asset Sale Prepayment Event",
+     "covenantFamily": "ASSET_SALES",
+     "citation": "§1.01 (definition of 'Prepayment Event'), clause (a)",
+     "excerpt": "any Asset Sale of Collateral consummated by a Loan Party solely pursuant to Section 6.05(a)(2)(ii), other than ... dispositions resulting in aggregate Net Proceeds not exceeding the greater of $144.0 million and 20% of Consolidated EBITDA ... (the 'Transaction Threshold') and ... not exceeding the greater of $216.0 million and 30% of Consolidated EBITDA ... (the 'Annual Threshold')",
+     "dependsOnTerms": [
+      "Prepayment Event",
+      "Asset Sale",
+      "Collateral",
+      "Consolidated EBITDA",
+      "Test Period",
+      "Net Proceeds"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Resolved via cross-reference to the 'Prepayment Event' definition, clause (a), which supplies the operative thresholds.",
+      "The carryforward mechanic (unused Transaction Threshold/Annual Threshold amounts carried forward to a later fiscal year) is a stateful ledger mechanic not expressible with the current node set and is left UNSUPPORTED rather than guessed."
+     ],
+     "calculationExpression": {
+      "kind": "AND",
+      "citation": "§1.01 (definition of 'Prepayment Event'), clause (a)",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "Occurrence of an Asset Sale of Collateral consummated by a Loan Party solely pursuant to Section 6.05(a)(2)(ii)",
+        "reason": "qualitative triggering condition",
+        "sourceEvidence": "Prepayment Event definition, clause (a)"
+       },
+       {
+        "kind": "NOT",
+        "citation": "Prepayment Event definition, clause (a)",
+        "operand": {
+         "kind": "OR",
+         "citation": "Prepayment Event definition, clause (a)",
+         "operands": [
+          {
+           "kind": "UNSUPPORTED",
+           "semanticDescription": "issuance by a Restricted Party of Equity Interests",
+           "reason": "qualitative exclusion",
+           "sourceEvidence": "Prepayment Event definition, clause (a)(i)"
+          },
+          {
+           "kind": "COMPARE",
+           "operator": "LTE",
+           "citation": "Prepayment Event definition, clause (a)(ii)",
+           "left": {
+            "kind": "TRANSACTION_INPUT_REFERENCE",
+            "inputName": "aggregate Net Proceeds of such single transaction or series of related transactions"
+           },
+           "right": {
+            "kind": "MAX",
+            "citation": "Prepayment Event definition, clause (a)(ii)",
+            "operands": [
+             {
+              "kind": "MONEY",
+              "amount": 144000000,
+              "currency": "USD",
+              "citation": "Prepayment Event definition, clause (a)(ii)"
+             },
+             {
+              "kind": "MULTIPLY",
+              "citation": "Prepayment Event definition, clause (a)(ii)",
+              "operands": [
+               {
+                "kind": "PERCENT",
+                "value": 0.2,
+                "citation": "Prepayment Event definition, clause (a)(ii)"
+               },
+               {
+                "kind": "METRIC_REFERENCE",
+                "metricName": "Consolidated EBITDA",
+                "citation": "Prepayment Event definition, clause (a)(ii)"
+               }
+              ]
+             }
+            ]
+           }
+          },
+          {
+           "kind": "COMPARE",
+           "operator": "LTE",
+           "citation": "Prepayment Event definition, clause (a)(iii)",
+           "left": {
+            "kind": "TRANSACTION_INPUT_REFERENCE",
+            "inputName": "aggregate Net Proceeds of transactions in such fiscal year"
+           },
+           "right": {
+            "kind": "MAX",
+            "citation": "Prepayment Event definition, clause (a)(iii)",
+            "operands": [
+             {
+              "kind": "MONEY",
+              "amount": 216000000,
+              "currency": "USD",
+              "citation": "Prepayment Event definition, clause (a)(iii)"
+             },
+             {
+              "kind": "MULTIPLY",
+              "citation": "Prepayment Event definition, clause (a)(iii)",
+              "operands": [
+               {
+                "kind": "PERCENT",
+                "value": 0.3,
+                "citation": "Prepayment Event definition, clause (a)(iii)"
+               },
+               {
+                "kind": "METRIC_REFERENCE",
+                "metricName": "Consolidated EBITDA",
+                "citation": "Prepayment Event definition, clause (a)(iii)"
+               }
+              ]
+             }
+            ]
+           }
+          }
+         ]
+        }
+       }
+      ]
+     }
+    },
+    {
+     "localRef": "d3",
+     "termName": "Asset Sale Proceeds Application Period",
+     "covenantFamily": "ASSET_SALES",
+     "citation": "§6.05(b)",
+     "excerpt": "Within twenty-four (24) months after a Loan Party's receipt of any Net Proceeds of any Asset Sale consummated by a Loan Party pursuant to Section 6.05(a)(2)(ii) (the \"Asset Sale Proceeds Application Period\")",
+     "dependsOnTerms": [
+      "Net Proceeds",
+      "Asset Sale"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Resolved via the cross-referenced Section 6.05(b) text, which fully supplies the 24-month period and its trigger."
+     ],
+     "calculationExpression": {
+      "kind": "EVENT_ACTIVE",
+      "citation": "§6.05(b)",
+      "eventDescription": "a Loan Party's receipt of any Net Proceeds of any Asset Sale consummated by a Loan Party pursuant to Section 6.05(a)(2)(ii)",
+      "triggerCondition": null,
+      "activeDuration": "24 months"
+     }
+    },
+    {
+     "localRef": "d4",
+     "termName": "Assignment and Assumption",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "citation": "§1.01",
+     "excerpt": "means (a) an assignment and assumption entered into by a Lender and an Eligible Assignee (with the consent of any Person whose consent is required by Section 9.04), substantially in the form of Exhibit A-1 or any other form reasonably approved by the Administrative Agent, and/or (b) an Affiliated Lender Assignment and Assumption, as applicable.",
+     "dependsOnTerms": [
+      "Eligible Assignee",
+      "Affiliated Lender Assignment and Assumption",
+      "Administrative Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely documentary/procedural definition with no quantitative economics; the two alternative forms are fully captured descriptively."
+     ],
+     "calculationExpression": null
+    },
+    {
+     "localRef": "d5",
+     "termName": "Available Amount",
+     "covenantFamily": "RESTRICTED_PAYMENTS",
+     "citation": "§6.08(a)(3)",
+     "excerpt": "the sum of the amounts attributable to clauses (a) through (f) below are referred to herein as the \"Available Amount\"",
+     "dependsOnTerms": [
+      "Restricted Payments",
+      "Credit Agreement Refinancing Indebtedness"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Section 1.01 only cross-references Section 6.08(a)(3) for this term's meaning.",
+      "Section 6.08(a)(3)'s chapeau confirms the term is a sum of amounts attributable to lettered sub-clauses, but the substantive content of those sub-clauses (which extend at least through clause (i) with further sub-parts, per structural inspection) was not retrieved - resolving all of it is a materially separate, extensive builder-basket provision outside the scope of the 'Asset Sale'-centered evidence supplied for this compilation."
+     ],
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Available Amount = sum of amounts attributable to clauses (a) through (f) [chapeau] of Section 6.08(a)(3), whose lettered sub-clauses were not retrieved",
+      "reason": "the referenced sub-clauses are a separate, extensive builder-basket provision not included in the supplied evidence for this compilation and not resolvable within budget",
+      "sourceEvidence": "§6.08(a)(3)"
+     }
+    },
+    {
+     "localRef": "d6",
+     "termName": "Available Investment Capacity Amount",
+     "covenantFamily": "INVESTMENTS",
+     "citation": "§1.01",
+     "excerpt": "means, at any time, (a) the amount of Investments that may be made at the time of determination pursuant to clause 13 of \"Permitted Investments,\" minus (b) the amount of the Available Investment Capacity Amount utilized by the Restricted Parties pursuant to Section 6.08(b)(26) (after giving effect to any reallocation or reclassification permitted hereunder).",
+     "dependsOnTerms": [
+      "Permitted Investments"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Component (a) requires clause (13) of the 'Permitted Investments' definition; that definition's full text is truncated by context/tool budget before reaching clause (13), and no tool resolves an internal numbered clause of another definition directly.",
+      "Component (b) is a running usage ledger against Section 6.08(b)(26) (text confirms that section grants 'Restricted Payments in an aggregate amount not to exceed the Available Investment Capacity Amount'), which is a provision outside this submission with no member rule compiled here to attach a LEDGER_USAGE_REFERENCE to."
+     ],
+     "calculationExpression": {
+      "kind": "SUBTRACT",
+      "citation": "§1.01",
+      "inventoryItemIds": [
+       "inv-item:c081b7907f1d12ed28484634"
+      ],
+      "left": {
+       "kind": "UNSUPPORTED",
+       "semanticDescription": "amount of Investments that may be made at the time of determination pursuant to clause (13) of the 'Permitted Investments' definition",
+       "reason": "clause (13) of 'Permitted Investments' was not retrievable - the definition's text is truncated before reaching clause (13) and no tool resolves an internal numbered clause of another definition",
+       "sourceEvidence": "§1.01 definition of 'Permitted Investments', clause (13)"
+      },
+      "right": {
+       "kind": "UNSUPPORTED",
+       "semanticDescription": "cumulative amount of the Available Investment Capacity Amount previously utilized by the Restricted Parties pursuant to Section 6.08(b)(26), after giving effect to any permitted reallocation/reclassification",
+       "reason": "represents a running usage ledger against Section 6.08(b)(26), a provision outside this submission; no shared-capacity member rule for 6.08(b)(26) is being compiled here",
+       "sourceEvidence": "Section 6.08(b)(26): \"Restricted Payments in an aggregate amount not to exceed the Available Investment Capacity Amount\""
+      }
+     }
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "inventoryDispositions": [
+    {
+     "inventoryItemId": "inv-item:c3f0b1cde49d0388ead4506a",
+     "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+     "note": "Discretionary reclassification election by the Initial Borrower among 'Asset Sale'/'Restricted Payment'/'Permitted Investment' categories for a single overlapping transaction; a classification election, not itself a computable threshold, condition, or dollar/percentage value, so it is not embedded in the Asset Sale boundary test."
+    }
+   ],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "Prepayment Event definition, clause (a): 'any portion of the Transaction Threshold or Annual Threshold not utilized in any given fiscal year may be carried forward to increase the applicable Transaction Threshold and Annual Threshold for any subsequent fiscal year'",
+     "semanticRequirement": "A basket/threshold whose available amount in a period depends on unused amounts carried forward (added) from prior periods - a stateful, usage-history-dependent ceiling.",
+     "whyExistingPrimitivesFail": "SCHEDULE only supports date-keyed fixed values, not usage-dependent accumulation; SUM/MAX/ADD have no way to reference 'prior period's unused amount' without a dedicated running-ledger/carryforward primitive.",
+     "candidateGeneralizedPrimitive": "CARRYFORWARD_LEDGER(baseAmount, periodDescription, unusedRolloverInto) - a node representing a periodic cap augmented by unused amounts rolled forward from prior periods."
+    },
+    {
+     "sourceEvidence": "Asset Sale definition, final paragraph: 'the Initial Borrower ... shall be entitled to divide and classify or reclassify ... such transaction (or a portion thereof) as an Asset Sale and/or one or more of the types of Restricted Payments or Permitted Investments'",
+     "semanticRequirement": "A single transaction can be split and simultaneously/alternatively classified across multiple independent defined-term categories at obligor discretion, each category then drawing on its own separate capacity.",
+     "whyExistingPrimitivesFail": "No existing node represents a discretionary multi-category classification/split of one transaction's economics across otherwise-independent rules/definitions; IF/OR select a single branch rather than an apportioned split.",
+     "candidateGeneralizedPrimitive": "CLASSIFICATION_ELECTION(candidateCategories[], splitAllowed: true) capturing an obligor's discretionary allocation of one transaction across multiple defined categories."
+    }
+   ],
+   "overallNotes": [
+    "This compilation covers the 'Asset Sale' definition and the sibling defined terms declared in the same §1.01 excerpt: 'Asset Sale Prepayment Event', 'Asset Sale Proceeds Application Period', 'Assignment and Assumption', 'Available Amount', and 'Available Investment Capacity Amount'.",
+    "'Asset Sale' itself is a categorical/boundary definition, not a single dollar formula; only the material quantitative carve-outs flagged in the frozen inventory (clauses (d), (x), (cc), (ee), (ff)) are represented with their thresholds - the many purely qualitative carve-outs are bundled into one UNSUPPORTED node rather than guessed at individually, since none carry a stated numeric value.",
+    "Cross-references to Sections 6.01, 6.02, 6.03, 6.08, 6.08(a), 6.08(b) (other than 6.08(a)(3) and 6.08(b)(26), which were retrieved) were out of scope per the source-context budget and are not required for the Asset Sale carve-outs' own economics (they gate eligibility of other exceptions, e.g. (b), (c), (u)), which remain UNSUPPORTED/qualitative in this compilation.",
+    "'Available Amount' (Section 6.08(a)(3)) and the 'clause (13)' component of 'Available Investment Capacity Amount' were both investigated via getReferencedProvision/getDefinition/getChildren, but each leads into a large, separate builder-basket provision whose full lettered sub-clauses were not retrievable within budget; both are marked MISSING_CONTEXT rather than guessed.",
+    "'Asset Sale Prepayment Event' and 'Asset Sale Proceeds Application Period' were successfully resolved via their cross-referenced sections/definitions and are represented with much fuller economics than the bare cross-reference in the original §1.01 excerpt."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T15:25:43.953Z",
+   "inputTokens": 169289,
+   "outputTokens": 36307,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 4,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 338011,
+   "calculatedCostUsd": 0.701648
+  },
+  "cacheKey": "6ae7581135182fc3fd24fbd2f86f37512b10eb9bb722e1db60fd878d796d453d",
+  "compiledAt": "2026-09-14T15:25:43.953Z"
+ },
+ "shardInputSummary": {
+  "candidateRef": "phase-3-validation:chwy:1.01#shard:1c29e71eef1717d4f9e1",
+  "operativeChars": 11172,
+  "ownedInventoryItems": 11,
+  "contextRegions": 8,
+  "bundleItems": 0,
+  "unresolvedDependencies": 29
+ },
+ "attemptsSoFar": 1
+}

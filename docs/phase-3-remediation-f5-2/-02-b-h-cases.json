@@ -1,0 +1,1620 @@
+{
+ "artifact": "F-5.2A forensic record of every B_GRANULARITY_INSTABILITY and H_DEPENDENCY_FRAGMENTATION case (zero model calls)",
+ "B": {
+  "count": 12,
+  "bySourceForm": {
+   "K_CONTINUATION_FRAGMENT": 5,
+   "B_ENUMERATED_BRANCH": 4,
+   "H_DEPENDENCY_FRAGMENT": 1,
+   "I_TEMPORAL_COMPONENT": 1,
+   "A_COORDINATED_PROPOSITION": 1
+  },
+  "byFailureStage": {
+   "SCORER_ERROR": 12
+  },
+  "cases": [
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentRun": "A",
+    "missingRun": "B",
+    "inventoryItemId": "inv-item:679be1302aceaac819a636a5",
+    "slotId": "operative:6.08(a)(3)(a)#4",
+    "slotSpan": [
+     4100,
+     4320
+    ],
+    "crossesSlots": false,
+    "slotText": "fiscal quarter is less than zero), (y) the sum of 100% of Retained Excess Cash Flow (which amount shall be deemed to be zero for any fiscal quarter in which such amount for such fiscal quarter is less than zero) and (z) ",
+    "coordinationSubIndex": 0,
+    "span": [
+     4100,
+     4319
+    ],
+    "spanLength": 219,
+    "excerpt": "fiscal quarter is less than zero), (y) the sum of 100% of Retained Excess Cash Flow (which amount shall be deemed to be zero for any fiscal quarter in which such amount for such fiscal quarter is less than zero) and (z)",
+    "semanticFunctions": {
+     "effect": "NONE",
+     "logic": [
+      "ALTERNATIVE"
+     ],
+     "quantitative": [
+      "FORMULA_COMPONENT",
+      "THRESHOLD"
+     ],
+     "dependency": []
+    },
+    "declaredRoles": [
+     "ALTERNATIVE",
+     "FORMULA_COMPONENT"
+    ],
+    "legacyRole": "ALTERNATIVE",
+    "materiality": "CRITICAL",
+    "quantitativeValues": [
+     "OTHER:zero",
+     "PERCENT:100%"
+    ],
+    "referencedTerms": [
+     "Retained Excess Cash Flow"
+    ],
+    "referencedSections": [],
+    "parentItemId": "inv-item:251f78fe41f437d1795ca15c",
+    "emittedIn": "NOT_RECOVERABLE (the frozen inventory does not record first-pass vs gap-pass per item; see 03-failure-stages.json)",
+    "missingRunCoverageDisposition": {
+     "COVERED_BY_INVENTORY": 218,
+     "PUNCTUATION_OR_DELIMITER": 1
+    },
+    "missingRunOverlappingItems": [
+     {
+      "id": "inv-item:ea98bf5eeeba5f9744e99e01",
+      "span": [
+       4100,
+       4134
+      ],
+      "role": "CONDITION",
+      "overlapOfShorter": 1,
+      "excerpt": "fiscal quarter is less than zero),"
+     },
+     {
+      "id": "inv-item:dcf11322eb23e36949412d67",
+      "span": [
+       4135,
+       4319
+      ],
+      "role": "ALTERNATIVE",
+      "overlapOfShorter": 1,
+      "excerpt": "(y) the sum of 100% of Retained Excess Cash Flow (which amount shall be deemed to be zero for any fi"
+     }
+    ],
+    "missingRunSubsumingItem": false,
+    "missingRunAnchoredItem": true,
+    "missingRunInFinalUnaccounted": false,
+    "slotItemCounts": {
+     "present": 1,
+     "missing": 2
+    },
+    "scorerClassificationCorrect": false,
+    "bestMissingOverlapOfShorter": 1,
+    "bestUnmatchedMissingOverlapOfShorter": 1,
+    "missingRunCoversItWithAnItemSharedByBothRuns": false,
+    "sourceForm": "K_CONTINUATION_FRAGMENT",
+    "sourceFormSignals": [
+     "value",
+     "temporal",
+     "deontic",
+     "continuation"
+    ],
+    "failureStage": "SCORER_ERROR",
+    "stageDetermination": {
+     "sourcePresentInSlot": true,
+     "slotSentToModel": true,
+     "firstPassOmittedOrUnknown": "first-pass vs gap not recoverable per item",
+     "postProcessingLoss": false,
+     "coverageIdentifiedMissedSource": false,
+     "gapTargetedIt": "no (the missing run's coverage discharged the text through another item)",
+     "gapModelStillOmitted": null
+    }
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentRun": "B",
+    "missingRun": "A",
+    "inventoryItemId": "inv-item:dcf11322eb23e36949412d67",
+    "slotId": "operative:6.08(a)(3)(a)#4",
+    "slotSpan": [
+     4100,
+     4320
+    ],
+    "crossesSlots": false,
+    "slotText": "fiscal quarter is less than zero), (y) the sum of 100% of Retained Excess Cash Flow (which amount shall be deemed to be zero for any fiscal quarter in which such amount for such fiscal quarter is less than zero) and (z) ",
+    "coordinationSubIndex": 1,
+    "span": [
+     4135,
+     4319
+    ],
+    "spanLength": 184,
+    "excerpt": "(y) the sum of 100% of Retained Excess Cash Flow (which amount shall be deemed to be zero for any fiscal quarter in which such amount for such fiscal quarter is less than zero) and (z)",
+    "semanticFunctions": {
+     "effect": "NONE",
+     "logic": [
+      "ALTERNATIVE"
+     ],
+     "quantitative": [
+      "FORMULA_COMPONENT",
+      "THRESHOLD"
+     ],
+     "dependency": []
+    },
+    "declaredRoles": [
+     "ALTERNATIVE",
+     "FORMULA_COMPONENT"
+    ],
+    "legacyRole": "ALTERNATIVE",
+    "materiality": "CRITICAL",
+    "quantitativeValues": [
+     "PERCENT:100%"
+    ],
+    "referencedTerms": [
+     "Retained Excess Cash Flow"
+    ],
+    "referencedSections": [],
+    "parentItemId": "inv-item:eeff3a34a411ce183240cbee",
+    "emittedIn": "NOT_RECOVERABLE (the frozen inventory does not record first-pass vs gap-pass per item; see 03-failure-stages.json)",
+    "missingRunCoverageDisposition": {
+     "COVERED_BY_INVENTORY": 184
+    },
+    "missingRunOverlappingItems": [
+     {
+      "id": "inv-item:679be1302aceaac819a636a5",
+      "span": [
+       4100,
+       4319
+      ],
+      "role": "ALTERNATIVE",
+      "overlapOfShorter": 1,
+      "excerpt": "fiscal quarter is less than zero), (y) the sum of 100% of Retained Excess Cash Flow (which amount sh"
+     }
+    ],
+    "missingRunSubsumingItem": true,
+    "missingRunAnchoredItem": false,
+    "missingRunInFinalUnaccounted": false,
+    "slotItemCounts": {
+     "present": 2,
+     "missing": 1
+    },
+    "scorerClassificationCorrect": false,
+    "bestMissingOverlapOfShorter": 1,
+    "bestUnmatchedMissingOverlapOfShorter": 1,
+    "missingRunCoversItWithAnItemSharedByBothRuns": false,
+    "sourceForm": "B_ENUMERATED_BRANCH",
+    "sourceFormSignals": [
+     "enumerator",
+     "value",
+     "temporal",
+     "deontic"
+    ],
+    "failureStage": "SCORER_ERROR",
+    "stageDetermination": {
+     "sourcePresentInSlot": true,
+     "slotSentToModel": true,
+     "firstPassOmittedOrUnknown": "first-pass vs gap not recoverable per item",
+     "postProcessingLoss": false,
+     "coverageIdentifiedMissedSource": false,
+     "gapTargetedIt": "no (the missing run's coverage discharged the text through another item)",
+     "gapModelStillOmitted": null
+    }
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentRun": "A",
+    "missingRun": "B",
+    "inventoryItemId": "inv-item:e79b8424cca81a04dfe4e759",
+    "slotId": "operative:6.08(a)(3)(a)(B)#2",
+    "slotSpan": [
+     4578,
+     4825
+    ],
+    "crossesSlots": false,
+    "slotText": "the cumulative Consolidated Interest Expense for such applicable fiscal quarter (which amount shall be deemed to be zero for any fiscal quarter in which such amount for such fiscal quarter is less than zero ) (which amounts under clauses (x), (y)\n",
+    "coordinationSubIndex": 0,
+    "span": [
+     4578,
+     4824
+    ],
+    "spanLength": 246,
+    "excerpt": "the cumulative Consolidated Interest Expense for such applicable fiscal quarter (which amount shall be deemed to be zero for any fiscal quarter in which such amount for such fiscal quarter is less than zero ) (which amounts under clauses (x), (y)",
+    "semanticFunctions": {
+     "effect": "NONE",
+     "logic": [
+      "CONDITION"
+     ],
+     "quantitative": [
+      "FORMULA_COMPONENT",
+      "THRESHOLD"
+     ],
+     "dependency": [
+      "REFERENCE"
+     ]
+    },
+    "declaredRoles": [
+     "CONDITION",
+     "FORMULA_COMPONENT"
+    ],
+    "legacyRole": "CONDITION",
+    "materiality": "MATERIAL",
+    "quantitativeValues": [
+     "OTHER:zero"
+    ],
+    "referencedTerms": [
+     "Consolidated Interest Expense"
+    ],
+    "referencedSections": [],
+    "parentItemId": "inv-item:8268d620a2068169ea41409e",
+    "emittedIn": "NOT_RECOVERABLE (the frozen inventory does not record first-pass vs gap-pass per item; see 03-failure-stages.json)",
+    "missingRunCoverageDisposition": {
+     "COVERED_BY_INVENTORY": 208,
+     "UNACCOUNTED_SOURCE": 28,
+     "STRUCTURAL_NOISE": 8
+    },
+    "missingRunOverlappingItems": [
+     {
+      "id": "inv-item:8817112967fbe97e9511a6c1",
+      "span": [
+       4578,
+       4786
+      ],
+      "role": "CONDITION",
+      "overlapOfShorter": 1,
+      "excerpt": "the cumulative Consolidated Interest Expense for such applicable fiscal quarter (which amount shall "
+     },
+     {
+      "id": "inv-item:a858b0d3cfb71d3226aab515",
+      "span": [
+       4787,
+       4815
+      ],
+      "role": "REFERENCE",
+      "overlapOfShorter": 1,
+      "excerpt": "(which amounts under clauses"
+     }
+    ],
+    "missingRunSubsumingItem": false,
+    "missingRunAnchoredItem": true,
+    "missingRunInFinalUnaccounted": true,
+    "slotItemCounts": {
+     "present": 1,
+     "missing": 2
+    },
+    "scorerClassificationCorrect": false,
+    "bestMissingOverlapOfShorter": 1,
+    "bestUnmatchedMissingOverlapOfShorter": 1,
+    "missingRunCoversItWithAnItemSharedByBothRuns": false,
+    "sourceForm": "K_CONTINUATION_FRAGMENT",
+    "sourceFormSignals": [
+     "citation",
+     "temporal",
+     "deontic",
+     "continuation"
+    ],
+    "failureStage": "SCORER_ERROR",
+    "stageDetermination": {
+     "sourcePresentInSlot": true,
+     "slotSentToModel": true,
+     "firstPassOmittedOrUnknown": "first-pass vs gap not recoverable per item",
+     "postProcessingLoss": false,
+     "coverageIdentifiedMissedSource": true,
+     "gapTargetedIt": "yes (unaccounted stretch re-presented with its whole slot)",
+     "gapModelStillOmitted": true
+    }
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentRun": "B",
+    "missingRun": "A",
+    "inventoryItemId": "inv-item:8817112967fbe97e9511a6c1",
+    "slotId": "operative:6.08(a)(3)(a)(B)#2",
+    "slotSpan": [
+     4578,
+     4825
+    ],
+    "crossesSlots": false,
+    "slotText": "the cumulative Consolidated Interest Expense for such applicable fiscal quarter (which amount shall be deemed to be zero for any fiscal quarter in which such amount for such fiscal quarter is less than zero ) (which amounts under clauses (x), (y)\n",
+    "coordinationSubIndex": 0,
+    "span": [
+     4578,
+     4786
+    ],
+    "spanLength": 208,
+    "excerpt": "the cumulative Consolidated Interest Expense for such applicable fiscal quarter (which amount shall be deemed to be zero for any fiscal quarter in which such amount for such fiscal quarter is less than zero )",
+    "semanticFunctions": {
+     "effect": "NONE",
+     "logic": [
+      "CONDITION"
+     ],
+     "quantitative": [
+      "FORMULA_COMPONENT"
+     ],
+     "dependency": []
+    },
+    "declaredRoles": [
+     "CONDITION",
+     "FORMULA_COMPONENT"
+    ],
+    "legacyRole": "CONDITION",
+    "materiality": "MATERIAL",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Consolidated Interest Expense"
+    ],
+    "referencedSections": [],
+    "parentItemId": "inv-item:90bd371d1a9395b6d526978a",
+    "emittedIn": "NOT_RECOVERABLE (the frozen inventory does not record first-pass vs gap-pass per item; see 03-failure-stages.json)",
+    "missingRunCoverageDisposition": {
+     "COVERED_BY_INVENTORY": 208
+    },
+    "missingRunOverlappingItems": [
+     {
+      "id": "inv-item:e79b8424cca81a04dfe4e759",
+      "span": [
+       4578,
+       4824
+      ],
+      "role": "CONDITION",
+      "overlapOfShorter": 1,
+      "excerpt": "the cumulative Consolidated Interest Expense for such applicable fiscal quarter (which amount shall "
+     }
+    ],
+    "missingRunSubsumingItem": true,
+    "missingRunAnchoredItem": true,
+    "missingRunInFinalUnaccounted": false,
+    "slotItemCounts": {
+     "present": 2,
+     "missing": 1
+    },
+    "scorerClassificationCorrect": false,
+    "bestMissingOverlapOfShorter": 1,
+    "bestUnmatchedMissingOverlapOfShorter": 1,
+    "missingRunCoversItWithAnItemSharedByBothRuns": false,
+    "sourceForm": "K_CONTINUATION_FRAGMENT",
+    "sourceFormSignals": [
+     "temporal",
+     "deontic",
+     "continuation"
+    ],
+    "failureStage": "SCORER_ERROR",
+    "stageDetermination": {
+     "sourcePresentInSlot": true,
+     "slotSentToModel": true,
+     "firstPassOmittedOrUnknown": "first-pass vs gap not recoverable per item",
+     "postProcessingLoss": false,
+     "coverageIdentifiedMissedSource": false,
+     "gapTargetedIt": "no (the missing run's coverage discharged the text through another item)",
+     "gapModelStillOmitted": null
+    }
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentRun": "A",
+    "missingRun": "B",
+    "inventoryItemId": "inv-item:214c9b0a17e4232244456a2b",
+    "slotId": "operative:6.08(a)(3)(c)(i)#2",
+    "slotSpan": [
+     7763,
+     7914
+    ],
+    "crossesSlots": false,
+    "slotText": "Section 6.01(b)(12)(a) hereof, (ii) are contributed by a Restricted Subsidiary, (iii) from ABL Cure Amount or (iv) constitute Excluded Contributions); ",
+    "coordinationSubIndex": 1,
+    "span": [
+     7794,
+     7842
+    ],
+    "spanLength": 48,
+    "excerpt": "(ii) are contributed by a Restricted Subsidiary,",
+    "semanticFunctions": {
+     "effect": "NONE",
+     "logic": [
+      "EXCEPTION"
+     ],
+     "quantitative": [],
+     "dependency": []
+    },
+    "declaredRoles": [
+     "EXCEPTION"
+    ],
+    "legacyRole": "EXCEPTION",
+    "materiality": "MATERIAL",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentItemId": "inv-item:ca2d4f7c11533917fc3d3530",
+    "emittedIn": "NOT_RECOVERABLE (the frozen inventory does not record first-pass vs gap-pass per item; see 03-failure-stages.json)",
+    "missingRunCoverageDisposition": {
+     "COVERED_BY_INVENTORY": 48
+    },
+    "missingRunOverlappingItems": [
+     {
+      "id": "inv-item:cba6e1dd200cd4129a09035d",
+      "span": [
+       7763,
+       7913
+      ],
+      "role": "EXCEPTION",
+      "overlapOfShorter": 1,
+      "excerpt": "Section 6.01(b)(12)(a) hereof, (ii) are contributed by a Restricted Subsidiary, (iii) from ABL Cure "
+     }
+    ],
+    "missingRunSubsumingItem": true,
+    "missingRunAnchoredItem": false,
+    "missingRunInFinalUnaccounted": false,
+    "slotItemCounts": {
+     "present": 4,
+     "missing": 2
+    },
+    "scorerClassificationCorrect": false,
+    "bestMissingOverlapOfShorter": 1,
+    "bestUnmatchedMissingOverlapOfShorter": 1,
+    "missingRunCoversItWithAnItemSharedByBothRuns": false,
+    "sourceForm": "B_ENUMERATED_BRANCH",
+    "sourceFormSignals": [
+     "enumerator"
+    ],
+    "failureStage": "SCORER_ERROR",
+    "stageDetermination": {
+     "sourcePresentInSlot": true,
+     "slotSentToModel": true,
+     "firstPassOmittedOrUnknown": "first-pass vs gap not recoverable per item",
+     "postProcessingLoss": false,
+     "coverageIdentifiedMissedSource": false,
+     "gapTargetedIt": "no (the missing run's coverage discharged the text through another item)",
+     "gapModelStillOmitted": null
+    }
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentRun": "A",
+    "missingRun": "B",
+    "inventoryItemId": "inv-item:8cc6af26af5d27513643ebb7",
+    "slotId": "operative:6.08(a)(3)(c)(i)#2",
+    "slotSpan": [
+     7763,
+     7914
+    ],
+    "crossesSlots": false,
+    "slotText": "Section 6.01(b)(12)(a) hereof, (ii) are contributed by a Restricted Subsidiary, (iii) from ABL Cure Amount or (iv) constitute Excluded Contributions); ",
+    "coordinationSubIndex": 2,
+    "span": [
+     7870,
+     7913
+    ],
+    "spanLength": 43,
+    "excerpt": "or (iv) constitute Excluded Contributions);",
+    "semanticFunctions": {
+     "effect": "NONE",
+     "logic": [
+      "EXCEPTION"
+     ],
+     "quantitative": [],
+     "dependency": []
+    },
+    "declaredRoles": [
+     "EXCEPTION"
+    ],
+    "legacyRole": "EXCEPTION",
+    "materiality": "MATERIAL",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Excluded Contributions"
+    ],
+    "referencedSections": [],
+    "parentItemId": "inv-item:ca2d4f7c11533917fc3d3530",
+    "emittedIn": "NOT_RECOVERABLE (the frozen inventory does not record first-pass vs gap-pass per item; see 03-failure-stages.json)",
+    "missingRunCoverageDisposition": {
+     "COVERED_BY_INVENTORY": 43
+    },
+    "missingRunOverlappingItems": [
+     {
+      "id": "inv-item:cba6e1dd200cd4129a09035d",
+      "span": [
+       7763,
+       7913
+      ],
+      "role": "EXCEPTION",
+      "overlapOfShorter": 1,
+      "excerpt": "Section 6.01(b)(12)(a) hereof, (ii) are contributed by a Restricted Subsidiary, (iii) from ABL Cure "
+     }
+    ],
+    "missingRunSubsumingItem": true,
+    "missingRunAnchoredItem": false,
+    "missingRunInFinalUnaccounted": false,
+    "slotItemCounts": {
+     "present": 4,
+     "missing": 2
+    },
+    "scorerClassificationCorrect": false,
+    "bestMissingOverlapOfShorter": 1,
+    "bestUnmatchedMissingOverlapOfShorter": 1,
+    "missingRunCoversItWithAnItemSharedByBothRuns": false,
+    "sourceForm": "B_ENUMERATED_BRANCH",
+    "sourceFormSignals": [
+     "enumerator"
+    ],
+    "failureStage": "SCORER_ERROR",
+    "stageDetermination": {
+     "sourcePresentInSlot": true,
+     "slotSentToModel": true,
+     "firstPassOmittedOrUnknown": "first-pass vs gap not recoverable per item",
+     "postProcessingLoss": false,
+     "coverageIdentifiedMissedSource": false,
+     "gapTargetedIt": "no (the missing run's coverage discharged the text through another item)",
+     "gapModelStillOmitted": null
+    }
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentRun": "A",
+    "missingRun": "B",
+    "inventoryItemId": "inv-item:bf029f35702216965707d368",
+    "slotId": "operative:6.08(a)(3)(c)(i)#2",
+    "slotSpan": [
+     7763,
+     7914
+    ],
+    "crossesSlots": false,
+    "slotText": "Section 6.01(b)(12)(a) hereof, (ii) are contributed by a Restricted Subsidiary, (iii) from ABL Cure Amount or (iv) constitute Excluded Contributions); ",
+    "coordinationSubIndex": 2,
+    "span": [
+     7843,
+     7869
+    ],
+    "spanLength": 26,
+    "excerpt": "(iii) from ABL Cure Amount",
+    "semanticFunctions": {
+     "effect": "NONE",
+     "logic": [
+      "EXCEPTION"
+     ],
+     "quantitative": [],
+     "dependency": []
+    },
+    "declaredRoles": [
+     "EXCEPTION"
+    ],
+    "legacyRole": "EXCEPTION",
+    "materiality": "MATERIAL",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "ABL Cure Amount"
+    ],
+    "referencedSections": [],
+    "parentItemId": "inv-item:ca2d4f7c11533917fc3d3530",
+    "emittedIn": "NOT_RECOVERABLE (the frozen inventory does not record first-pass vs gap-pass per item; see 03-failure-stages.json)",
+    "missingRunCoverageDisposition": {
+     "COVERED_BY_INVENTORY": 26
+    },
+    "missingRunOverlappingItems": [
+     {
+      "id": "inv-item:cba6e1dd200cd4129a09035d",
+      "span": [
+       7763,
+       7913
+      ],
+      "role": "EXCEPTION",
+      "overlapOfShorter": 1,
+      "excerpt": "Section 6.01(b)(12)(a) hereof, (ii) are contributed by a Restricted Subsidiary, (iii) from ABL Cure "
+     }
+    ],
+    "missingRunSubsumingItem": true,
+    "missingRunAnchoredItem": false,
+    "missingRunInFinalUnaccounted": false,
+    "slotItemCounts": {
+     "present": 4,
+     "missing": 2
+    },
+    "scorerClassificationCorrect": false,
+    "bestMissingOverlapOfShorter": 1,
+    "bestUnmatchedMissingOverlapOfShorter": 1,
+    "missingRunCoversItWithAnItemSharedByBothRuns": false,
+    "sourceForm": "B_ENUMERATED_BRANCH",
+    "sourceFormSignals": [
+     "enumerator"
+    ],
+    "failureStage": "SCORER_ERROR",
+    "stageDetermination": {
+     "sourcePresentInSlot": true,
+     "slotSentToModel": true,
+     "firstPassOmittedOrUnknown": "first-pass vs gap not recoverable per item",
+     "postProcessingLoss": false,
+     "coverageIdentifiedMissedSource": false,
+     "gapTargetedIt": "no (the missing run's coverage discharged the text through another item)",
+     "gapModelStillOmitted": null
+    }
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentRun": "B",
+    "missingRun": "A",
+    "inventoryItemId": "inv-item:cba6e1dd200cd4129a09035d",
+    "slotId": "operative:6.08(a)(3)(c)(i)#2",
+    "slotSpan": [
+     7763,
+     7914
+    ],
+    "crossesSlots": false,
+    "slotText": "Section 6.01(b)(12)(a) hereof, (ii) are contributed by a Restricted Subsidiary, (iii) from ABL Cure Amount or (iv) constitute Excluded Contributions); ",
+    "coordinationSubIndex": 0,
+    "span": [
+     7763,
+     7913
+    ],
+    "spanLength": 150,
+    "excerpt": "Section 6.01(b)(12)(a) hereof, (ii) are contributed by a Restricted Subsidiary, (iii) from ABL Cure Amount or (iv) constitute Excluded Contributions);",
+    "semanticFunctions": {
+     "effect": "NONE",
+     "logic": [
+      "EXCEPTION"
+     ],
+     "quantitative": [],
+     "dependency": [
+      "REFERENCE"
+     ]
+    },
+    "declaredRoles": [
+     "EXCEPTION",
+     "REFERENCE"
+    ],
+    "legacyRole": "EXCEPTION",
+    "materiality": "MATERIAL",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "ABL Cure Amount",
+     "Excluded Contributions"
+    ],
+    "referencedSections": [
+     "Section 6.01(b)(12)(a)"
+    ],
+    "parentItemId": "inv-item:fce6f5b2c293ecf4b935e5cd",
+    "emittedIn": "NOT_RECOVERABLE (the frozen inventory does not record first-pass vs gap-pass per item; see 03-failure-stages.json)",
+    "missingRunCoverageDisposition": {
+     "COVERED_BY_INVENTORY": 147,
+     "PUNCTUATION_OR_DELIMITER": 3
+    },
+    "missingRunOverlappingItems": [
+     {
+      "id": "inv-item:60afc5af8038a8e51d2058f0",
+      "span": [
+       7763,
+       7793
+      ],
+      "role": "REFERENCE",
+      "overlapOfShorter": 1,
+      "excerpt": "Section 6.01(b)(12)(a) hereof,"
+     },
+     {
+      "id": "inv-item:214c9b0a17e4232244456a2b",
+      "span": [
+       7794,
+       7842
+      ],
+      "role": "EXCEPTION",
+      "overlapOfShorter": 1,
+      "excerpt": "(ii) are contributed by a Restricted Subsidiary,"
+     },
+     {
+      "id": "inv-item:bf029f35702216965707d368",
+      "span": [
+       7843,
+       7869
+      ],
+      "role": "EXCEPTION",
+      "overlapOfShorter": 1,
+      "excerpt": "(iii) from ABL Cure Amount"
+     },
+     {
+      "id": "inv-item:8cc6af26af5d27513643ebb7",
+      "span": [
+       7870,
+       7913
+      ],
+      "role": "EXCEPTION",
+      "overlapOfShorter": 1,
+      "excerpt": "or (iv) constitute Excluded Contributions);"
+     }
+    ],
+    "missingRunSubsumingItem": false,
+    "missingRunAnchoredItem": true,
+    "missingRunInFinalUnaccounted": false,
+    "slotItemCounts": {
+     "present": 2,
+     "missing": 4
+    },
+    "scorerClassificationCorrect": false,
+    "bestMissingOverlapOfShorter": 1,
+    "bestUnmatchedMissingOverlapOfShorter": 1,
+    "missingRunCoversItWithAnItemSharedByBothRuns": true,
+    "sourceForm": "H_DEPENDENCY_FRAGMENT",
+    "sourceFormSignals": [
+     "citation"
+    ],
+    "failureStage": "SCORER_ERROR",
+    "stageDetermination": {
+     "sourcePresentInSlot": true,
+     "slotSentToModel": true,
+     "firstPassOmittedOrUnknown": "first-pass vs gap not recoverable per item",
+     "postProcessingLoss": false,
+     "coverageIdentifiedMissedSource": false,
+     "gapTargetedIt": "no (the missing run's coverage discharged the text through another item)",
+     "gapModelStillOmitted": null
+    }
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentRun": "A",
+    "missingRun": "B",
+    "inventoryItemId": "inv-item:1b5fd3b9ea84e6b0c6a2a690",
+    "slotId": "operative:6.08(b)(2)(a)#3",
+    "slotSpan": [
+     11944,
+     12184
+    ],
+    "crossesSlots": false,
+    "slotText": "to a Restricted Subsidiary) of, Equity Interests of the Borrowers or any Parent Entity that is made within ninety (90) days of such sale to the extent, in the case of an issuance or sale by a Parent Entity, such amount was contributed to a\n",
+    "coordinationSubIndex": 1,
+    "span": [
+     12031,
+     12080
+    ],
+    "spanLength": 49,
+    "excerpt": "that is made within ninety (90) days of such sale",
+    "semanticFunctions": {
+     "effect": "NONE",
+     "logic": [],
+     "quantitative": [
+      "TIME_PERIOD"
+     ],
+     "dependency": []
+    },
+    "declaredRoles": [
+     "TIME_PERIOD"
+    ],
+    "legacyRole": "TIME_PERIOD",
+    "materiality": "CRITICAL",
+    "quantitativeValues": [
+     "OTHER:ninety (90) days",
+     "DAYS:ninety (90) days"
+    ],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentItemId": "inv-item:747685bc0f3ef6e0e554d47f",
+    "emittedIn": "NOT_RECOVERABLE (the frozen inventory does not record first-pass vs gap-pass per item; see 03-failure-stages.json)",
+    "missingRunCoverageDisposition": {
+     "COVERED_BY_INVENTORY": 49
+    },
+    "missingRunOverlappingItems": [
+     {
+      "id": "inv-item:b4751ff187a28c1b7fd5477c",
+      "span": [
+       11944,
+       12183
+      ],
+      "role": "TIME_PERIOD",
+      "overlapOfShorter": 1,
+      "excerpt": "to a Restricted Subsidiary) of, Equity Interests of the Borrowers or any Parent Entity that is made "
+     }
+    ],
+    "missingRunSubsumingItem": true,
+    "missingRunAnchoredItem": false,
+    "missingRunInFinalUnaccounted": false,
+    "slotItemCounts": {
+     "present": 4,
+     "missing": 1
+    },
+    "scorerClassificationCorrect": false,
+    "bestMissingOverlapOfShorter": 1,
+    "bestUnmatchedMissingOverlapOfShorter": 1,
+    "missingRunCoversItWithAnItemSharedByBothRuns": false,
+    "sourceForm": "I_TEMPORAL_COMPONENT",
+    "sourceFormSignals": [
+     "temporal"
+    ],
+    "failureStage": "SCORER_ERROR",
+    "stageDetermination": {
+     "sourcePresentInSlot": true,
+     "slotSentToModel": true,
+     "firstPassOmittedOrUnknown": "first-pass vs gap not recoverable per item",
+     "postProcessingLoss": false,
+     "coverageIdentifiedMissedSource": false,
+     "gapTargetedIt": "no (the missing run's coverage discharged the text through another item)",
+     "gapModelStillOmitted": null
+    }
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentRun": "B",
+    "missingRun": "A",
+    "inventoryItemId": "inv-item:b4751ff187a28c1b7fd5477c",
+    "slotId": "operative:6.08(b)(2)(a)#3",
+    "slotSpan": [
+     11944,
+     12184
+    ],
+    "crossesSlots": false,
+    "slotText": "to a Restricted Subsidiary) of, Equity Interests of the Borrowers or any Parent Entity that is made within ninety (90) days of such sale to the extent, in the case of an issuance or sale by a Parent Entity, such amount was contributed to a\n",
+    "coordinationSubIndex": 0,
+    "span": [
+     11944,
+     12183
+    ],
+    "spanLength": 239,
+    "excerpt": "to a Restricted Subsidiary) of, Equity Interests of the Borrowers or any Parent Entity that is made within ninety (90) days of such sale to the extent, in the case of an issuance or sale by a Parent Entity, such amount was contributed to a",
+    "semanticFunctions": {
+     "effect": "NONE",
+     "logic": [
+      "CONDITION"
+     ],
+     "quantitative": [
+      "TIME_PERIOD"
+     ],
+     "dependency": []
+    },
+    "declaredRoles": [
+     "TIME_PERIOD",
+     "CONDITION"
+    ],
+    "legacyRole": "TIME_PERIOD",
+    "materiality": "CRITICAL",
+    "quantitativeValues": [
+     "OTHER:ninety (90) days",
+     "DAYS:ninety (90) days"
+    ],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentItemId": "inv-item:b52bc64a5c271ed04c9b536e",
+    "emittedIn": "NOT_RECOVERABLE (the frozen inventory does not record first-pass vs gap-pass per item; see 03-failure-stages.json)",
+    "missingRunCoverageDisposition": {
+     "COVERED_BY_INVENTORY": 232,
+     "STRUCTURAL_NOISE": 5,
+     "PUNCTUATION_OR_DELIMITER": 2
+    },
+    "missingRunOverlappingItems": [
+     {
+      "id": "inv-item:268010a31e11a2805ab30bcb",
+      "span": [
+       11944,
+       11971
+      ],
+      "role": "EXCEPTION",
+      "overlapOfShorter": 1,
+      "excerpt": "to a Restricted Subsidiary)"
+     },
+     {
+      "id": "inv-item:ecc138338556eeabe3d08318",
+      "span": [
+       11976,
+       12030
+      ],
+      "role": "CONDITION",
+      "overlapOfShorter": 1,
+      "excerpt": "Equity Interests of the Borrowers or any Parent Entity"
+     },
+     {
+      "id": "inv-item:1b5fd3b9ea84e6b0c6a2a690",
+      "span": [
+       12031,
+       12080
+      ],
+      "role": "TIME_PERIOD",
+      "overlapOfShorter": 1,
+      "excerpt": "that is made within ninety (90) days of such sale"
+     },
+     {
+      "id": "inv-item:9747b6b73dfd10369b9dee03",
+      "span": [
+       12081,
+       12183
+      ],
+      "role": "CONDITION",
+      "overlapOfShorter": 1,
+      "excerpt": "to the extent, in the case of an issuance or sale by a Parent Entity, such amount was contributed to"
+     }
+    ],
+    "missingRunSubsumingItem": false,
+    "missingRunAnchoredItem": true,
+    "missingRunInFinalUnaccounted": false,
+    "slotItemCounts": {
+     "present": 1,
+     "missing": 4
+    },
+    "scorerClassificationCorrect": false,
+    "bestMissingOverlapOfShorter": 1,
+    "bestUnmatchedMissingOverlapOfShorter": 1,
+    "missingRunCoversItWithAnItemSharedByBothRuns": false,
+    "sourceForm": "K_CONTINUATION_FRAGMENT",
+    "sourceFormSignals": [
+     "temporal",
+     "continuation"
+    ],
+    "failureStage": "SCORER_ERROR",
+    "stageDetermination": {
+     "sourcePresentInSlot": true,
+     "slotSentToModel": true,
+     "firstPassOmittedOrUnknown": "first-pass vs gap not recoverable per item",
+     "postProcessingLoss": false,
+     "coverageIdentifiedMissedSource": false,
+     "gapTargetedIt": "no (the missing run's coverage discharged the text through another item)",
+     "gapModelStillOmitted": null
+    }
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentRun": "A",
+    "missingRun": "B",
+    "inventoryItemId": "inv-item:9ed0c8ec2425d8b2b2e590a1",
+    "slotId": "operative:6.08(b)(9)(i)(a)#2",
+    "slotSpan": [
+     20752,
+     20992
+    ],
+    "crossesSlots": false,
+    "slotText": "any Parent Entity to fund a payment of dividends on such company’s common stock) or the redemption, purchase, repurchase, defeasance or other acquisition or retirement of any Equity Interests of the Borrowers, following consummation of the\n",
+    "coordinationSubIndex": 1,
+    "span": [
+     20836,
+     20991
+    ],
+    "spanLength": 155,
+    "excerpt": "the redemption, purchase, repurchase, defeasance or other acquisition or retirement of any Equity Interests of the Borrowers, following consummation of the",
+    "semanticFunctions": {
+     "effect": "PERMISSION",
+     "logic": [
+      "ALTERNATIVE"
+     ],
+     "quantitative": [],
+     "dependency": []
+    },
+    "declaredRoles": [
+     "ALTERNATIVE",
+     "PERMISSION"
+    ],
+    "legacyRole": "ALTERNATIVE",
+    "materiality": "CRITICAL",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Equity Interests"
+    ],
+    "referencedSections": [],
+    "parentItemId": "inv-item:00f7d7865a104205b6b5bdf1",
+    "emittedIn": "NOT_RECOVERABLE (the frozen inventory does not record first-pass vs gap-pass per item; see 03-failure-stages.json)",
+    "missingRunCoverageDisposition": {
+     "COVERED_BY_INVENTORY": 155
+    },
+    "missingRunOverlappingItems": [
+     {
+      "id": "inv-item:eaa6f721fca36ca6f042faca",
+      "span": [
+       20752,
+       20991
+      ],
+      "role": "ALTERNATIVE",
+      "overlapOfShorter": 1,
+      "excerpt": "any Parent Entity to fund a payment of dividends on such company’s common stock) or the redemption, "
+     }
+    ],
+    "missingRunSubsumingItem": true,
+    "missingRunAnchoredItem": false,
+    "missingRunInFinalUnaccounted": false,
+    "slotItemCounts": {
+     "present": 2,
+     "missing": 1
+    },
+    "scorerClassificationCorrect": false,
+    "bestMissingOverlapOfShorter": 1,
+    "bestUnmatchedMissingOverlapOfShorter": 1,
+    "missingRunCoversItWithAnItemSharedByBothRuns": false,
+    "sourceForm": "A_COORDINATED_PROPOSITION",
+    "sourceFormSignals": [
+     "coordinated"
+    ],
+    "failureStage": "SCORER_ERROR",
+    "stageDetermination": {
+     "sourcePresentInSlot": true,
+     "slotSentToModel": true,
+     "firstPassOmittedOrUnknown": "first-pass vs gap not recoverable per item",
+     "postProcessingLoss": false,
+     "coverageIdentifiedMissedSource": false,
+     "gapTargetedIt": "no (the missing run's coverage discharged the text through another item)",
+     "gapModelStillOmitted": null
+    }
+   },
+   {
+    "class": "B_GRANULARITY_INSTABILITY",
+    "presentRun": "B",
+    "missingRun": "A",
+    "inventoryItemId": "inv-item:eaa6f721fca36ca6f042faca",
+    "slotId": "operative:6.08(b)(9)(i)(a)#2",
+    "slotSpan": [
+     20752,
+     20992
+    ],
+    "crossesSlots": false,
+    "slotText": "any Parent Entity to fund a payment of dividends on such company’s common stock) or the redemption, purchase, repurchase, defeasance or other acquisition or retirement of any Equity Interests of the Borrowers, following consummation of the\n",
+    "coordinationSubIndex": 0,
+    "span": [
+     20752,
+     20991
+    ],
+    "spanLength": 239,
+    "excerpt": "any Parent Entity to fund a payment of dividends on such company’s common stock) or the redemption, purchase, repurchase, defeasance or other acquisition or retirement of any Equity Interests of the Borrowers, following consummation of the",
+    "semanticFunctions": {
+     "effect": "NONE",
+     "logic": [
+      "ALTERNATIVE"
+     ],
+     "quantitative": [],
+     "dependency": []
+    },
+    "declaredRoles": [
+     "ALTERNATIVE"
+    ],
+    "legacyRole": "ALTERNATIVE",
+    "materiality": "CRITICAL",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentItemId": "inv-item:aa51cf196e77bce68c56480f",
+    "emittedIn": "NOT_RECOVERABLE (the frozen inventory does not record first-pass vs gap-pass per item; see 03-failure-stages.json)",
+    "missingRunCoverageDisposition": {
+     "UNACCOUNTED_SOURCE": 83,
+     "COVERED_BY_INVENTORY": 155
+    },
+    "missingRunOverlappingItems": [
+     {
+      "id": "inv-item:f1290c40272de4ea3855fb79",
+      "span": [
+       20644,
+       20835
+      ],
+      "role": "PERMISSION",
+      "overlapOfShorter": 0.43,
+      "excerpt": "(a) the declaration and payment of dividends on any Borrower’s common stock (or the payment of divid"
+     },
+     {
+      "id": "inv-item:9ed0c8ec2425d8b2b2e590a1",
+      "span": [
+       20836,
+       20991
+      ],
+      "role": "ALTERNATIVE",
+      "overlapOfShorter": 1,
+      "excerpt": "the redemption, purchase, repurchase, defeasance or other acquisition or retirement of any Equity In"
+     },
+     {
+      "id": "inv-item:0914469284c7b2179ece8c48",
+      "span": [
+       20962,
+       20991
+      ],
+      "role": "TRIGGER",
+      "overlapOfShorter": 1,
+      "excerpt": "following consummation of the"
+     }
+    ],
+    "missingRunSubsumingItem": false,
+    "missingRunAnchoredItem": false,
+    "missingRunInFinalUnaccounted": true,
+    "slotItemCounts": {
+     "present": 1,
+     "missing": 2
+    },
+    "scorerClassificationCorrect": false,
+    "bestMissingOverlapOfShorter": 1,
+    "bestUnmatchedMissingOverlapOfShorter": 1,
+    "missingRunCoversItWithAnItemSharedByBothRuns": true,
+    "sourceForm": "K_CONTINUATION_FRAGMENT",
+    "sourceFormSignals": [
+     "continuation"
+    ],
+    "failureStage": "SCORER_ERROR",
+    "stageDetermination": {
+     "sourcePresentInSlot": true,
+     "slotSentToModel": true,
+     "firstPassOmittedOrUnknown": "first-pass vs gap not recoverable per item",
+     "postProcessingLoss": false,
+     "coverageIdentifiedMissedSource": true,
+     "gapTargetedIt": "yes (unaccounted stretch re-presented with its whole slot)",
+     "gapModelStillOmitted": true
+    }
+   }
+  ]
+ },
+ "H": {
+  "count": 6,
+  "bySourceForm": {
+   "K_CONTINUATION_FRAGMENT": 2,
+   "H_DEPENDENCY_FRAGMENT": 1,
+   "E_QUALIFIER_OR_PROVISO": 1,
+   "L_OTHER": 2
+  },
+  "byFailureStage": {
+   "SCORER_ERROR": 6
+  },
+  "cases": [
+   {
+    "class": "H_DEPENDENCY_FRAGMENTATION",
+    "presentRun": "B",
+    "missingRun": "A",
+    "inventoryItemId": "inv-item:ea98bf5eeeba5f9744e99e01",
+    "slotId": "operative:6.08(a)(3)(a)#4",
+    "slotSpan": [
+     4100,
+     4320
+    ],
+    "crossesSlots": false,
+    "slotText": "fiscal quarter is less than zero), (y) the sum of 100% of Retained Excess Cash Flow (which amount shall be deemed to be zero for any fiscal quarter in which such amount for such fiscal quarter is less than zero) and (z) ",
+    "coordinationSubIndex": 0,
+    "span": [
+     4100,
+     4134
+    ],
+    "spanLength": 34,
+    "excerpt": "fiscal quarter is less than zero),",
+    "semanticFunctions": {
+     "effect": "NONE",
+     "logic": [
+      "CONDITION"
+     ],
+     "quantitative": [
+      "FORMULA_COMPONENT"
+     ],
+     "dependency": []
+    },
+    "declaredRoles": [
+     "CONDITION",
+     "FORMULA_COMPONENT"
+    ],
+    "legacyRole": "CONDITION",
+    "materiality": "MATERIAL",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentItemId": "inv-item:b328f0a9af569f7f301c6cc0",
+    "emittedIn": "NOT_RECOVERABLE (the frozen inventory does not record first-pass vs gap-pass per item; see 03-failure-stages.json)",
+    "missingRunCoverageDisposition": {
+     "COVERED_BY_INVENTORY": 34
+    },
+    "missingRunOverlappingItems": [
+     {
+      "id": "inv-item:679be1302aceaac819a636a5",
+      "span": [
+       4100,
+       4319
+      ],
+      "role": "ALTERNATIVE",
+      "overlapOfShorter": 1,
+      "excerpt": "fiscal quarter is less than zero), (y) the sum of 100% of Retained Excess Cash Flow (which amount sh"
+     }
+    ],
+    "missingRunSubsumingItem": true,
+    "missingRunAnchoredItem": true,
+    "missingRunInFinalUnaccounted": false,
+    "slotItemCounts": {
+     "present": 2,
+     "missing": 1
+    },
+    "scorerClassificationCorrect": false,
+    "bestMissingOverlapOfShorter": 1,
+    "bestUnmatchedMissingOverlapOfShorter": 1,
+    "missingRunCoversItWithAnItemSharedByBothRuns": false,
+    "sourceForm": "K_CONTINUATION_FRAGMENT",
+    "sourceFormSignals": [
+     "temporal",
+     "continuation"
+    ],
+    "failureStage": "SCORER_ERROR",
+    "stageDetermination": {
+     "sourcePresentInSlot": true,
+     "slotSentToModel": true,
+     "firstPassOmittedOrUnknown": "first-pass vs gap not recoverable per item",
+     "postProcessingLoss": false,
+     "coverageIdentifiedMissedSource": false,
+     "gapTargetedIt": "no (the missing run's coverage discharged the text through another item)",
+     "gapModelStillOmitted": null
+    }
+   },
+   {
+    "class": "H_DEPENDENCY_FRAGMENTATION",
+    "presentRun": "B",
+    "missingRun": "A",
+    "inventoryItemId": "inv-item:a858b0d3cfb71d3226aab515",
+    "slotId": "operative:6.08(a)(3)(a)(B)#2",
+    "slotSpan": [
+     4578,
+     4825
+    ],
+    "crossesSlots": false,
+    "slotText": "the cumulative Consolidated Interest Expense for such applicable fiscal quarter (which amount shall be deemed to be zero for any fiscal quarter in which such amount for such fiscal quarter is less than zero ) (which amounts under clauses (x), (y)\n",
+    "coordinationSubIndex": 0,
+    "span": [
+     4787,
+     4815
+    ],
+    "spanLength": 28,
+    "excerpt": "(which amounts under clauses",
+    "semanticFunctions": {
+     "effect": "NONE",
+     "logic": [],
+     "quantitative": [],
+     "dependency": [
+      "REFERENCE",
+      "DEPENDENCY"
+     ]
+    },
+    "declaredRoles": [
+     "REFERENCE",
+     "DEPENDENCY"
+    ],
+    "legacyRole": "REFERENCE",
+    "materiality": "REVIEW_UNCERTAIN",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentItemId": null,
+    "emittedIn": "NOT_RECOVERABLE (the frozen inventory does not record first-pass vs gap-pass per item; see 03-failure-stages.json)",
+    "missingRunCoverageDisposition": {
+     "COVERED_BY_INVENTORY": 28
+    },
+    "missingRunOverlappingItems": [
+     {
+      "id": "inv-item:e79b8424cca81a04dfe4e759",
+      "span": [
+       4578,
+       4824
+      ],
+      "role": "CONDITION",
+      "overlapOfShorter": 1,
+      "excerpt": "the cumulative Consolidated Interest Expense for such applicable fiscal quarter (which amount shall "
+     }
+    ],
+    "missingRunSubsumingItem": true,
+    "missingRunAnchoredItem": false,
+    "missingRunInFinalUnaccounted": false,
+    "slotItemCounts": {
+     "present": 2,
+     "missing": 1
+    },
+    "scorerClassificationCorrect": false,
+    "bestMissingOverlapOfShorter": 1,
+    "bestUnmatchedMissingOverlapOfShorter": 1,
+    "missingRunCoversItWithAnItemSharedByBothRuns": false,
+    "sourceForm": "H_DEPENDENCY_FRAGMENT",
+    "sourceFormSignals": [
+     "citation"
+    ],
+    "failureStage": "SCORER_ERROR",
+    "stageDetermination": {
+     "sourcePresentInSlot": true,
+     "slotSentToModel": true,
+     "firstPassOmittedOrUnknown": "first-pass vs gap not recoverable per item",
+     "postProcessingLoss": false,
+     "coverageIdentifiedMissedSource": false,
+     "gapTargetedIt": "no (the missing run's coverage discharged the text through another item)",
+     "gapModelStillOmitted": null
+    }
+   },
+   {
+    "class": "H_DEPENDENCY_FRAGMENTATION",
+    "presentRun": "A",
+    "missingRun": "B",
+    "inventoryItemId": "inv-item:268010a31e11a2805ab30bcb",
+    "slotId": "operative:6.08(b)(2)(a)#3",
+    "slotSpan": [
+     11944,
+     12184
+    ],
+    "crossesSlots": false,
+    "slotText": "to a Restricted Subsidiary) of, Equity Interests of the Borrowers or any Parent Entity that is made within ninety (90) days of such sale to the extent, in the case of an issuance or sale by a Parent Entity, such amount was contributed to a\n",
+    "coordinationSubIndex": 0,
+    "span": [
+     11944,
+     11971
+    ],
+    "spanLength": 27,
+    "excerpt": "to a Restricted Subsidiary)",
+    "semanticFunctions": {
+     "effect": "NONE",
+     "logic": [
+      "EXCEPTION"
+     ],
+     "quantitative": [],
+     "dependency": []
+    },
+    "declaredRoles": [
+     "EXCEPTION"
+    ],
+    "legacyRole": "EXCEPTION",
+    "materiality": "CRITICAL",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentItemId": "inv-item:747685bc0f3ef6e0e554d47f",
+    "emittedIn": "NOT_RECOVERABLE (the frozen inventory does not record first-pass vs gap-pass per item; see 03-failure-stages.json)",
+    "missingRunCoverageDisposition": {
+     "COVERED_BY_INVENTORY": 27
+    },
+    "missingRunOverlappingItems": [
+     {
+      "id": "inv-item:b4751ff187a28c1b7fd5477c",
+      "span": [
+       11944,
+       12183
+      ],
+      "role": "TIME_PERIOD",
+      "overlapOfShorter": 1,
+      "excerpt": "to a Restricted Subsidiary) of, Equity Interests of the Borrowers or any Parent Entity that is made "
+     }
+    ],
+    "missingRunSubsumingItem": true,
+    "missingRunAnchoredItem": true,
+    "missingRunInFinalUnaccounted": false,
+    "slotItemCounts": {
+     "present": 4,
+     "missing": 1
+    },
+    "scorerClassificationCorrect": false,
+    "bestMissingOverlapOfShorter": 1,
+    "bestUnmatchedMissingOverlapOfShorter": 1,
+    "missingRunCoversItWithAnItemSharedByBothRuns": false,
+    "sourceForm": "K_CONTINUATION_FRAGMENT",
+    "sourceFormSignals": [
+     "continuation"
+    ],
+    "failureStage": "SCORER_ERROR",
+    "stageDetermination": {
+     "sourcePresentInSlot": true,
+     "slotSentToModel": true,
+     "firstPassOmittedOrUnknown": "first-pass vs gap not recoverable per item",
+     "postProcessingLoss": false,
+     "coverageIdentifiedMissedSource": false,
+     "gapTargetedIt": "no (the missing run's coverage discharged the text through another item)",
+     "gapModelStillOmitted": null
+    }
+   },
+   {
+    "class": "H_DEPENDENCY_FRAGMENTATION",
+    "presentRun": "A",
+    "missingRun": "B",
+    "inventoryItemId": "inv-item:9747b6b73dfd10369b9dee03",
+    "slotId": "operative:6.08(b)(2)(a)#3",
+    "slotSpan": [
+     11944,
+     12184
+    ],
+    "crossesSlots": false,
+    "slotText": "to a Restricted Subsidiary) of, Equity Interests of the Borrowers or any Parent Entity that is made within ninety (90) days of such sale to the extent, in the case of an issuance or sale by a Parent Entity, such amount was contributed to a\n",
+    "coordinationSubIndex": 1,
+    "span": [
+     12081,
+     12183
+    ],
+    "spanLength": 102,
+    "excerpt": "to the extent, in the case of an issuance or sale by a Parent Entity, such amount was contributed to a",
+    "semanticFunctions": {
+     "effect": "NONE",
+     "logic": [
+      "CONDITION"
+     ],
+     "quantitative": [],
+     "dependency": []
+    },
+    "declaredRoles": [
+     "CONDITION"
+    ],
+    "legacyRole": "CONDITION",
+    "materiality": "CRITICAL",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentItemId": "inv-item:747685bc0f3ef6e0e554d47f",
+    "emittedIn": "NOT_RECOVERABLE (the frozen inventory does not record first-pass vs gap-pass per item; see 03-failure-stages.json)",
+    "missingRunCoverageDisposition": {
+     "COVERED_BY_INVENTORY": 102
+    },
+    "missingRunOverlappingItems": [
+     {
+      "id": "inv-item:b4751ff187a28c1b7fd5477c",
+      "span": [
+       11944,
+       12183
+      ],
+      "role": "TIME_PERIOD",
+      "overlapOfShorter": 1,
+      "excerpt": "to a Restricted Subsidiary) of, Equity Interests of the Borrowers or any Parent Entity that is made "
+     }
+    ],
+    "missingRunSubsumingItem": true,
+    "missingRunAnchoredItem": false,
+    "missingRunInFinalUnaccounted": false,
+    "slotItemCounts": {
+     "present": 4,
+     "missing": 1
+    },
+    "scorerClassificationCorrect": false,
+    "bestMissingOverlapOfShorter": 1,
+    "bestUnmatchedMissingOverlapOfShorter": 1,
+    "missingRunCoversItWithAnItemSharedByBothRuns": false,
+    "sourceForm": "E_QUALIFIER_OR_PROVISO",
+    "sourceFormSignals": [
+     "qualifier"
+    ],
+    "failureStage": "SCORER_ERROR",
+    "stageDetermination": {
+     "sourcePresentInSlot": true,
+     "slotSentToModel": true,
+     "firstPassOmittedOrUnknown": "first-pass vs gap not recoverable per item",
+     "postProcessingLoss": false,
+     "coverageIdentifiedMissedSource": false,
+     "gapTargetedIt": "no (the missing run's coverage discharged the text through another item)",
+     "gapModelStillOmitted": null
+    }
+   },
+   {
+    "class": "H_DEPENDENCY_FRAGMENTATION",
+    "presentRun": "A",
+    "missingRun": "B",
+    "inventoryItemId": "inv-item:ecc138338556eeabe3d08318",
+    "slotId": "operative:6.08(b)(2)(a)#3",
+    "slotSpan": [
+     11944,
+     12184
+    ],
+    "crossesSlots": false,
+    "slotText": "to a Restricted Subsidiary) of, Equity Interests of the Borrowers or any Parent Entity that is made within ninety (90) days of such sale to the extent, in the case of an issuance or sale by a Parent Entity, such amount was contributed to a\n",
+    "coordinationSubIndex": 0,
+    "span": [
+     11976,
+     12030
+    ],
+    "spanLength": 54,
+    "excerpt": "Equity Interests of the Borrowers or any Parent Entity",
+    "semanticFunctions": {
+     "effect": "NONE",
+     "logic": [
+      "CONDITION"
+     ],
+     "quantitative": [],
+     "dependency": [
+      "DEPENDENCY"
+     ]
+    },
+    "declaredRoles": [
+     "CONDITION",
+     "DEPENDENCY"
+    ],
+    "legacyRole": "CONDITION",
+    "materiality": "MATERIAL",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Parent Entity"
+    ],
+    "referencedSections": [],
+    "parentItemId": "inv-item:ac13604debe41a712a15ebd6",
+    "emittedIn": "NOT_RECOVERABLE (the frozen inventory does not record first-pass vs gap-pass per item; see 03-failure-stages.json)",
+    "missingRunCoverageDisposition": {
+     "COVERED_BY_INVENTORY": 54
+    },
+    "missingRunOverlappingItems": [
+     {
+      "id": "inv-item:b4751ff187a28c1b7fd5477c",
+      "span": [
+       11944,
+       12183
+      ],
+      "role": "TIME_PERIOD",
+      "overlapOfShorter": 1,
+      "excerpt": "to a Restricted Subsidiary) of, Equity Interests of the Borrowers or any Parent Entity that is made "
+     }
+    ],
+    "missingRunSubsumingItem": true,
+    "missingRunAnchoredItem": false,
+    "missingRunInFinalUnaccounted": false,
+    "slotItemCounts": {
+     "present": 4,
+     "missing": 1
+    },
+    "scorerClassificationCorrect": false,
+    "bestMissingOverlapOfShorter": 1,
+    "bestUnmatchedMissingOverlapOfShorter": 1,
+    "missingRunCoversItWithAnItemSharedByBothRuns": false,
+    "sourceForm": "L_OTHER",
+    "sourceFormSignals": [],
+    "failureStage": "SCORER_ERROR",
+    "stageDetermination": {
+     "sourcePresentInSlot": true,
+     "slotSentToModel": true,
+     "firstPassOmittedOrUnknown": "first-pass vs gap not recoverable per item",
+     "postProcessingLoss": false,
+     "coverageIdentifiedMissedSource": false,
+     "gapTargetedIt": "no (the missing run's coverage discharged the text through another item)",
+     "gapModelStillOmitted": null
+    }
+   },
+   {
+    "class": "H_DEPENDENCY_FRAGMENTATION",
+    "presentRun": "A",
+    "missingRun": "B",
+    "inventoryItemId": "inv-item:0914469284c7b2179ece8c48",
+    "slotId": "operative:6.08(b)(9)(i)(a)#2",
+    "slotSpan": [
+     20752,
+     20992
+    ],
+    "crossesSlots": false,
+    "slotText": "any Parent Entity to fund a payment of dividends on such company’s common stock) or the redemption, purchase, repurchase, defeasance or other acquisition or retirement of any Equity Interests of the Borrowers, following consummation of the\n",
+    "coordinationSubIndex": 3,
+    "span": [
+     20962,
+     20991
+    ],
+    "spanLength": 29,
+    "excerpt": "following consummation of the",
+    "semanticFunctions": {
+     "effect": "NONE",
+     "logic": [
+      "CONDITION",
+      "TRIGGER"
+     ],
+     "quantitative": [],
+     "dependency": []
+    },
+    "declaredRoles": [
+     "TRIGGER",
+     "CONDITION"
+    ],
+    "legacyRole": "TRIGGER",
+    "materiality": "CRITICAL",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentItemId": "inv-item:00f7d7865a104205b6b5bdf1",
+    "emittedIn": "NOT_RECOVERABLE (the frozen inventory does not record first-pass vs gap-pass per item; see 03-failure-stages.json)",
+    "missingRunCoverageDisposition": {
+     "COVERED_BY_INVENTORY": 29
+    },
+    "missingRunOverlappingItems": [
+     {
+      "id": "inv-item:eaa6f721fca36ca6f042faca",
+      "span": [
+       20752,
+       20991
+      ],
+      "role": "ALTERNATIVE",
+      "overlapOfShorter": 1,
+      "excerpt": "any Parent Entity to fund a payment of dividends on such company’s common stock) or the redemption, "
+     }
+    ],
+    "missingRunSubsumingItem": true,
+    "missingRunAnchoredItem": false,
+    "missingRunInFinalUnaccounted": false,
+    "slotItemCounts": {
+     "present": 2,
+     "missing": 1
+    },
+    "scorerClassificationCorrect": false,
+    "bestMissingOverlapOfShorter": 1,
+    "bestUnmatchedMissingOverlapOfShorter": 1,
+    "missingRunCoversItWithAnItemSharedByBothRuns": false,
+    "sourceForm": "L_OTHER",
+    "sourceFormSignals": [],
+    "failureStage": "SCORER_ERROR",
+    "stageDetermination": {
+     "sourcePresentInSlot": true,
+     "slotSentToModel": true,
+     "firstPassOmittedOrUnknown": "first-pass vs gap not recoverable per item",
+     "postProcessingLoss": false,
+     "coverageIdentifiedMissedSource": false,
+     "gapTargetedIt": "no (the missing run's coverage discharged the text through another item)",
+     "gapModelStillOmitted": null
+    }
+   }
+  ]
+ }
+}

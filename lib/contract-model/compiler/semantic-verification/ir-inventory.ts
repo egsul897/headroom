@@ -17,19 +17,23 @@ interface WalkCtx {
   candidateRef: string;
   ruleOrDefinitionId: string;
   items: IrInventoryItem[];
+  /** F-4: the owning IRDefinition's termName (null inside a rule) - carried onto every item for evidence scoping. */
+  ownerTermName: string | null;
 }
 
-function pushItem(ctx: WalkCtx, kind: IrInventoryItemKind, irPath: string, numericValue: number | null, textValue: string | null, isAlternative: boolean, sourceCitation: string | null, sourceExcerpt: string | null): void {
+function pushItem(ctx: WalkCtx, kind: IrInventoryItemKind, irPath: string, numericValue: number | null, textValue: string | null, isAlternative: boolean, sourceCitation: string | null, sourceExcerpt: string | null, currency: string | null = null): void {
   ctx.items.push({
     itemId: hashParts([ctx.candidateRef, ctx.ruleOrDefinitionId, irPath, kind, String(numericValue), textValue ?? "", IR_INVENTORY_ALGORITHM_VERSION]),
     kind,
     ruleOrDefinitionId: ctx.ruleOrDefinitionId,
     irPath,
     numericValue,
+    currency,
     textValue,
     isAlternativeWithinSelection: isAlternative,
     sourceCitation,
     sourceExcerpt,
+    ownerTermName: ctx.ownerTermName,
   });
 }
 
@@ -40,7 +44,8 @@ function walkExpression(ctx: WalkCtx, expr: IRExpression | null, path: string, i
 
   switch (expr.kind) {
     case "MONEY":
-      pushItem(ctx, "AMOUNT", path, expr.amount, null, isAlternative, citation, excerpt);
+      // F-3: the literal's currency travels with the value so reconciliation can refuse a cross-currency "match".
+      pushItem(ctx, "AMOUNT", path, expr.amount, null, isAlternative, citation, excerpt, expr.currency ?? null);
       return;
     case "NUMBER":
       pushItem(ctx, "AMOUNT", path, expr.value, null, isAlternative, citation, excerpt);
@@ -167,7 +172,7 @@ function walkException(ctx: WalkCtx, exception: IRException, path: string): void
 }
 
 function walkRule(candidateRef: string, rule: IRRule, rulePath: string): IrInventoryItem[] {
-  const ctx: WalkCtx = { candidateRef, ruleOrDefinitionId: rule.ruleId, items: [] };
+  const ctx: WalkCtx = { candidateRef, ruleOrDefinitionId: rule.ruleId, items: [], ownerTermName: null };
   const ruleCitation = rule.provenance?.sourceCitation ?? null;
   const ruleExcerpt = rule.provenance?.excerpt ?? null;
 
@@ -195,7 +200,7 @@ function walkRule(candidateRef: string, rule: IRRule, rulePath: string): IrInven
 }
 
 function walkDefinition(candidateRef: string, definition: IRDefinition, defPath: string): IrInventoryItem[] {
-  const ctx: WalkCtx = { candidateRef, ruleOrDefinitionId: definition.definitionId, items: [] };
+  const ctx: WalkCtx = { candidateRef, ruleOrDefinitionId: definition.definitionId, items: [], ownerTermName: definition.termName };
   definition.dependsOnTerms.forEach((term, i) => pushItem(ctx, "DEPENDENCY", `${defPath}.dependsOnTerms[${i}]`, null, `DEFINED_TERM:${term}`, false, null, null));
   if (definition.calculationExpression) walkExpression(ctx, definition.calculationExpression, `${defPath}.calculationExpression`, false);
   return ctx.items;

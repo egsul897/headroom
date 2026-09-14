@@ -1,0 +1,633 @@
+{
+ "record": {
+  "stage": 1,
+  "attempt": 1,
+  "shardId": "shard:4f06625557e9aecbbb7a",
+  "shardHash": "f1b437e22ee07474adbce6cb0f9ab25ceb36ca10847253c797fce0f3af206cf5",
+  "ordinal": 26,
+  "ownedUnits": 1,
+  "sourceChars": 26695,
+  "contextEntries": 7,
+  "contextChars": 3701,
+  "unresolvedContext": 1,
+  "oversized": true,
+  "ownedItems": 6,
+  "ownedMaterialItems": 6,
+  "estimatedFirstTurnInputTokens": 34344,
+  "preCallEstimate": {
+   "inputTokens": 112992,
+   "outputTokens": 4000,
+   "usd": 0.265984
+  },
+  "actual": {
+   "inputTokens": 79480,
+   "outputTokens": 30906,
+   "turns": 2,
+   "latencyMs": 291681,
+   "costUsd": 0.46802,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "FAILED",
+  "shardStatus": "SHARD_SCHEMA_FAILURE",
+  "failureReasons": [
+   "MODEL_SCHEMA_FAILURE"
+  ],
+  "toolCalls": 2,
+  "toolCallNames": [
+   "getDefinition",
+   "getReferencedProvision"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 0,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 0,
+   "dispositioned": 0,
+   "missingMaterial": 6,
+   "valuesRepresented": 0,
+   "valuesMissing": 9,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "MISSING_FROM_COMPOSITION": 6
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [],
+  "unresolvedIssues": [
+   "submit_compilation input failed schema validation: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"definitions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"sharedCapacities\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"irExtensionCandidates\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"inventoryDispositions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"overallNotes\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  }\n]"
+  ],
+  "errorSummary": null
+ },
+ "result": {
+  "shardId": "shard:4f06625557e9aecbbb7a",
+  "shardHash": "f1b437e22ee07474adbce6cb0f9ab25ceb36ca10847253c797fce0f3af206cf5",
+  "status": "SHARD_SCHEMA_FAILURE",
+  "composition": null,
+  "failureReasons": [
+   "MODEL_SCHEMA_FAILURE"
+  ],
+  "unresolvedIssues": [
+   "submit_compilation input failed schema validation: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"definitions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"sharedCapacities\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"irExtensionCandidates\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"inventoryDispositions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"overallNotes\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  }\n]"
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 79480,
+   "outputTokens": 30906,
+   "costUsd": 0.46802
+  }
+ },
+ "compile": {
+  "status": "FAILED",
+  "failureReasons": [
+   "MODEL_SCHEMA_FAILURE"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [],
+  "unresolvedIssues": [
+   "submit_compilation input failed schema validation: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"definitions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"sharedCapacities\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"irExtensionCandidates\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"inventoryDispositions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"overallNotes\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  }\n]"
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Permitted Ratio Debt"
+    },
+    "outputSummary": "refused: no defined term matching \"Permitted Ratio Debt\" found in this instrument's documents",
+    "charsReturned": 84,
+    "timestamp": "2026-09-14T12:52:48.750Z"
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 6.01(a)"
+    },
+    "outputSummary": "resolved reference \"Section 6.01(a)\" -> 6.01(a) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 1846,
+    "timestamp": "2026-09-14T12:52:48.750Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 6.01(a)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:fad6958ae495921ac1b462c5",
+     "sourceNodeKey": "doc-a::6.01(a)",
+     "charStart": 609014,
+     "charEnd": 610860,
+     "rawText": "(a) the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to create, incur, issue, assume, guarantee or otherwise\nbecome liable, contingently or otherwise (collectively, “ incur ” and collectively, an “ incurrence ”) with respect to any Indebtedness (including Acquired Indebtedness) and the Borrowers shall not issue any shares\nof Disqualified Stock and shall not permit any Restricted Subsidiary to issue any shares of Disqualified Stock or any Restricted Subsidiary that is not a Guarantor to issue Preferred Stock; provided , however , that the Borrowers may\nincur Indebtedness (including Acquired Indebtedness) and issue shares of Disqualified Stock, and any of their Restricted Subsidiaries may incur Indebtedness (including Acquired Indebtedness) and issue shares of Disqualified Stock and Preferred Stock\nthat is, in each case, secured by all or a material portion of the Collateral on a pari passu basis with the Secured Obligations, secured by all or a material portion of the Collateral on a Junior Lien Priority basis or not secured by the\nCollateral, in an unlimited amount if, after giving effect thereto, (1) with respect to any Indebtedness, Disqualified Stock or Preferred Stock that is secured by all or a material portion of the Collateral on a pari passu basis with the\nSecured Obligations, on a Pro Forma Basis the First Lien Leverage Ratio for the applicable Test Period does not exceed the greater of (x) 2.00:1.00 and (y) the First Lien Leverage Ratio immediately prior to the incurrence of such Indebtedness,\nDisqualified Stock or Preferred Stock, (2) with respect to any Indebtedness, Disqualified Stock or Preferred Stock that is secured by all or a material portion of the Collateral on a Junior Lien Priority basis, on a Pro Forma Basis, at the\nInitial Borrower’s sole discretion, either ",
+     "contentHash": "4639f1599f7ee196580280cb8224b00c6a514e5c4090daa4eba1205f27ed72df",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": "[\n  {\n    \"localRef\": \"def-permitted-liens\",\n    \"termName\": \"Permitted Liens\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"UNSUPPORTED\",\n      \"semanticDescription\": \"Clauses (1),(4)-(19),(22)-(51) of the 'Permitted Liens' definition enumerate 45+ independent categorical/qualitative lien types (ordinary-course statutory liens, purchase-money/replacement liens, liens in favor of the Borrowers/Guarantors, liens on intercompany indebtedness, various operational and financing-related liens, etc.) none of which carry a dollar amount or ratio threshold, plus a closing interpretive paragraph permitting combination/reclassification of a Lien among categories in the Initial Borrower's sole discretion, and a gloss that 'Indebtedness' for this definition includes accrued interest. These are not reducible to a single computable formula; clauses (20) and (21), which DO contain quantitative/ratio thresholds, are separately modeled as independent WireRules (r-pl-20x, r-pl-20y, r-pl-20z, r-pl-21).\",\n      \"reason\": \"A 45+-branch categorical enumeration of qualitative lien permissions and a discretionary classification/stacking election are not expressible as a single typed calculation expression without fabricating structure not actually present in the source.\",\n      \"sourceEvidence\": \"§1.01, definition of \\\"Permitted Liens\\\", clauses (1),(4)-(19),(22)-(51) and closing paragraphs beginning \\\"For purposes of determining compliance with this definition...\\\" and \\\"For purposes of this definition, the term 'Indebtedness'...\\\"\"\n    },\n    \"dependsOnTerms\": [\"General Lien Basket\", \"First Lien Leverage Ratio\", \"Senior Secured Leverage Ratio\", \"Total Leverage Ratio\", \"Interest Coverage Ratio\", \"Consolidated EBITDA\", \"Permitted Ratio Debt\", \"Restricted Subsidiary\", \"Indebtedness\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\n      \"The quantitative sub-parts of this definition (clauses (20) and (21)) are fully represented as separate WireRules rather than duplicated inside this term's own calculationExpression.\",\n      \"The remaining ~45 clauses are purely categorical/qualitative lien-type carve-outs with no dollar or ratio content and are represented as a single UNSUPPORTED node rather than being force-fit into arithmetic/comparison nodes.\",\n      \"The closing discretionary reclassification/combination election (clause governing 'classify or reclassify') is a real drafting mechanic affecting basket stacking but is not itself a computable value.\"\n    ],\n    \"citation\": \"\\u00a71.01 (definition of \\\"Permitted Liens\\\")\",\n    \"excerpt\": \"\\\"Permitted Liens\\\" means, with respect to any Person: (1)...(51)... a Lien need not be incurred solely by reference to one category of Permitted Liens... but may be incurred under any combination of such categories... the Initial Borrower shall, in its sole discretion, classify or reclassify such Lien...\",\n    \"inventoryItemIds\": [\"dea92930d39a32acc3fe1e6b\"]\n  },\n  {\n    \"localRef\": \"def-permitted-ratio-debt\",\n    \"termName\": \"Permitted Ratio Debt\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"UNSUPPORTED\",\n      \"semanticDescription\": \"Term is defined entirely by cross-reference to Section 6.01(a) rather than given independent content in \\u00a71.01.\",\n      \"reason\": \"getDefinition found no standalone entry for \\\"Permitted Ratio Debt\\\"; getReferencedProvision returned only a partial/truncated excerpt of Section 6.01(a) that describes an unlimited ratio-gated secured-debt basket but does not itself show where the label \\\"Permitted Ratio Debt\\\" is affixed, and Section 6.01(a)'s own supersession/amendment status is UNKNOWN_SUPERSESSION_STATUS, so even that partial text cannot be treated as confirmed-current.\",\n      \"sourceEvidence\": \"\\u00a71.01: \\\"'Permitted Ratio Debt' has the meaning assigned to such term in Section 6.01(a).\\\"\"\n    },\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"MISSING_CONTEXT\",\n    \"sufficiencyReasons\": [\n      \"Definition is a pure cross-reference to Section 6.01(a); attempted retrieval of that section did not resolve the defined term's actual content, and its current/superseded status is unconfirmed.\"\n    ],\n    \"citation\": \"\\u00a71.01 (definition of \\\"Permitted Ratio Debt\\\")\",\n    \"excerpt\": \"\\\"Permitted Ratio Debt\\\" has the meaning assigned to such term in Section 6.01(a).\"\n  }\n]",
+   "rules": [
+    {
+     "localRef": "r-pl-2",
+     "sourceSectionRef": "1.01(2)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUALITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "GRANT_LIEN",
+     "entityScope": [
+      "any Person"
+     ],
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "gatedBy": {
+       "kind": "OR",
+       "operands": [
+        {
+         "kind": "COMPARE",
+         "left": {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "inputName": "days such construction-related lien sum has been overdue"
+         },
+         "operator": "LTE",
+         "right": {
+          "kind": "NUMBER",
+          "value": 30
+         },
+         "citation": "§1.01(2)",
+         "inventoryItemIds": [
+          "inv-item:3d6848f080a00529c6cd5931"
+         ]
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "semanticDescription": "sum being contested in good faith by appropriate proceedings",
+         "reason": "qualitative legal standard, not a numeric comparison",
+         "sourceEvidence": "§1.01(2)"
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "semanticDescription": "Lien from a judgment/award under appeal, adequate GAAP reserves maintained on the books",
+         "reason": "qualitative accounting/legal standard, not a numeric comparison",
+         "sourceEvidence": "§1.01(2)"
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "semanticDescription": "failure to make payment could not reasonably be expected to have a Material Adverse Effect",
+         "reason": "qualitative MAE standard, not a numeric comparison",
+         "sourceEvidence": "§1.01(2)"
+        }
+       ],
+       "citation": "§1.01(2)"
+      }
+     },
+     "conditions": [
+      {
+       "conditionType": "TIME_LIMIT",
+       "description": "sums not yet overdue for more than thirty (30) days, or contested/appealed with adequate reserves or no reasonably expected Material Adverse Effect",
+       "citation": "§1.01(2)",
+       "inventoryItemIds": [
+        "inv-item:3d6848f080a00529c6cd5931"
+       ]
+      }
+     ],
+     "inventoryItemIds": [
+      "inv-item:3d6848f080a00529c6cd5931"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The 30-day numeric prong is fully represented; the 'contested in good faith', 'GAAP reserves', and 'no Material Adverse Effect' alternative prongs are qualitative legal standards represented as UNSUPPORTED nested nodes rather than guessed numeric comparisons."
+     ],
+     "citation": "§1.01(2)",
+     "excerpt": "Liens imposed by law or regulation relating to the construction or renovation of any property... for sums not yet overdue for a period of more than thirty (30) days or being contested in good faith by appropriate proceedings or other Liens arising out of judgments or awards..."
+    },
+    {
+     "localRef": "r-pl-3",
+     "sourceSectionRef": "1.01(3)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUALITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "GRANT_LIEN",
+     "entityScope": [
+      "any Person"
+     ],
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "gatedBy": {
+       "kind": "OR",
+       "operands": [
+        {
+         "kind": "COMPARE",
+         "left": {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "inputName": "days such tax/assessment/governmental charge has been overdue"
+         },
+         "operator": "LTE",
+         "right": {
+          "kind": "NUMBER",
+          "value": 30
+         },
+         "citation": "§1.01(3)",
+         "inventoryItemIds": [
+          "inv-item:3d6848f080a00529c6cd5931"
+         ]
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "semanticDescription": "contested in good faith by appropriate proceedings diligently conducted with adequate GAAP reserves maintained",
+         "reason": "qualitative legal/accounting standard, not a numeric comparison",
+         "sourceEvidence": "§1.01(3)"
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "semanticDescription": "failure to make payment could not reasonably be expected to have a Material Adverse Effect",
+         "reason": "qualitative MAE standard, not a numeric comparison",
+         "sourceEvidence": "§1.01(3)"
+        }
+       ],
+       "citation": "§1.01(3)"
+      }
+     },
+     "conditions": [
+      {
+       "conditionType": "TIME_LIMIT",
+       "description": "taxes/assessments/governmental charges not yet overdue for more than thirty (30) days, or contested in good faith with adequate reserves or no reasonably expected Material Adverse Effect",
+       "citation": "§1.01(3)",
+       "inventoryItemIds": [
+        "inv-item:3d6848f080a00529c6cd5931"
+       ]
+      }
+     ],
+     "inventoryItemIds": [
+      "inv-item:3d6848f080a00529c6cd5931"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The 30-day numeric prong is fully represented; the good-faith-contest/reserves and no-MAE alternative prongs are qualitative standards represented as UNSUPPORTED nested nodes."
+     ],
+     "citation": "§1.01(3)",
+     "excerpt": "Liens for taxes, assessments or governmental charges not yet overdue for a period of more than thirty (30) days or that are being contested in good faith by appropriate proceedings diligently conducted, if adequate reserves..."
+    },
+    {
+     "localRef": "r-pl-20x",
+     "sourceSectionRef": "1.01(20)(x)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "GRANT_LIEN",
+     "entityScope": [
+      "Restricted Party"
+     ],
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "gatedBy": {
+       "kind": "COMPARE",
+       "left": {
+        "kind": "METRIC_REFERENCE",
+        "metricName": "First Lien Leverage Ratio",
+        "valueType": "RATIO"
+       },
+       "operator": "LTE",
+       "right": {
+        "kind": "MAX",
+        "operands": [
+         {
+          "kind": "RATIO",
+          "value": 2,
+          "citation": "§1.01(20)(x)"
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "metricName": "First Lien Leverage Ratio immediately prior to incurrence",
+          "valueType": "RATIO"
+         }
+        ],
+        "citation": "§1.01(20)(x)"
+       },
+       "citation": "§1.01(20)(x)"
+      }
+     },
+     "conditions": [
+      {
+       "conditionType": "RATIO_SATISFIED",
+       "description": "pro forma First Lien Leverage Ratio for the applicable Test Period must not exceed the greater of 2.00:1.00 and the First Lien Leverage Ratio immediately prior to incurrence",
+       "citation": "§1.01(20)(x)",
+       "inventoryItemIds": [
+        "inv-item:42c037b1d716e8d759f1af1b"
+       ]
+      }
+     ],
+     "dependsOn": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01",
+       "description": "applies only to Indebtedness, Disqualified Stock or Preferred Stock permitted to be incurred pursuant to Section 6.01, secured by all or a material portion of the Collateral on a pari passu basis; Section 6.01 itself is outside this submission's retrieved scope"
+      }
+     ],
+     "inventoryItemIds": [
+      "inv-item:42c037b1d716e8d759f1af1b"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The ratio-test formula itself is fully represented; the scope of underlying Indebtedness eligible for this Lien (governed by Section 6.01) could not be retrieved within the source-context budget."
+     ],
+     "citation": "§1.01(20)(x)",
+     "excerpt": "with respect to any Indebtedness, Disqualified Stock or Preferred Stock that will be secured by all or a material portion of the Collateral on a pari passu basis with the Secured Obligations, the First Lien Leverage Ratio for the applicable Test Period does not exceed the greater of (A) 2.00:1.00 and (B) the First Lien Leverage Ratio immediately prior to the incurrence..."
+    },
+    {
+     "localRef": "r-pl-20y",
+     "sourceSectionRef": "1.01(20)(y)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "GRANT_LIEN",
+     "entityScope": [
+      "Restricted Party"
+     ],
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "gatedBy": {
+       "kind": "OR",
+       "operands": [
+        {
+         "kind": "COMPARE",
+         "left": {
+          "kind": "METRIC_REFERENCE",
+          "metricName": "Senior Secured Leverage Ratio",
+          "valueType": "RATIO"
+         },
+         "operator": "LTE",
+         "right": {
+          "kind": "MAX",
+          "operands": [
+           {
+            "kind": "RATIO",
+            "value": 3,
+            "citation": "§1.01(20)(y)"
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "metricName": "Senior Secured Leverage Ratio immediately prior to incurrence",
+            "valueType": "RATIO"
+           }
+          ]
+         },
+         "citation": "§1.01(20)(y)"
+        },
+        {
+         "kind": "COMPARE",
+         "left": {
+          "kind": "METRIC_REFERENCE",
+          "metricName": "Interest Coverage Ratio",
+          "valueType": "RATIO"
+         },
+         "operator": "GTE",
+         "right": {
+          "kind": "MIN",
+          "operands": [
+           {
+            "kind": "RATIO",
+            "value": 1.75,
+            "citation": "§1.01(20)(y)"
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "metricName": "Interest Coverage Ratio immediately prior to incurrence",
+            "valueType": "RATIO"
+           }
+          ]
+         },
+         "citation": "§1.01(20)(y)"
+        }
+       ],
+       "citation": "§1.01(20)(y)"
+      }
+     },
+     "conditions": [
+      {
+       "conditionType": "RATIO_SATISFIED",
+       "description": "at Initial Borrower's sole discretion, either the pro forma Senior Secured Leverage Ratio does not exceed the greater of 3.00:1.00 and the pre-incurrence Senior Secured Leverage Ratio, or the Interest Coverage Ratio is at least the lesser of 1.75:1.00 and the pre-incurrence Interest Coverage Ratio",
+       "citation": "§1.01(20)(y)",
+       "inventoryItemIds": [
+        "inv-item:e0247f2436dfe133ca048078"
+       ]
+      }
+     ],
+     "dependsOn": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01",
+       "description": "applies only to Indebtedness, Disqualified Stock or Preferred Stock permitted to be incurred pursuant to Section 6.01, secured on a Junior Lien Priority basis; Section 6.01 itself is outside this submission's retrieved scope"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Junior Lien Priority",
+       "description": "the categorization of Collateral as secured on a 'Junior Lien Priority' basis is undefined in this instrument (no detected definition of 'Junior Lien Priority')"
+      }
+     ],
+     "inventoryItemIds": [
+      "inv-item:e0247f2436dfe133ca048078"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The alternative ratio-test formulas are fully represented; the underlying scope (Section 6.01) and the undefined term 'Junior Lien Priority' that determines which debt this clause even applies to could not be resolved."
+     ],
+     "citation": "§1.01(20)(y)",
+     "excerpt": "with respect to any Indebtedness, Disqualified Stock or Preferred Stock that will be secured by all or a material portion of the Collateral on a Junior Lien Priority basis, at the Initial Borrower's sole discretion, either (i) the Senior Secured Leverage Ratio... does not exceed the greater of (A) 3.00:1.00... or (ii) the Interest Coverage Ratio is greater than or equal to the lesser of (A) 1.75:1.00..."
+    },
+    {
+     "localRef": "r-pl-20z",
+     "sourceSectionRef": "1.01(20)(z)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "GRANT_LIEN",
+     "entityScope": [
+      "Restricted Party"
+     ],
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "gatedBy": {
+       "kind": "OR",
+       "operands": [
+        {
+         "kind": "COMPARE",
+         "left": {
+          "kind": "METRIC_REFERENCE",
+          "metricName": "Total Leverage Ratio",
+          "valueType": "RATIO"
+         },
+         "operator": "LTE",
+         "right": {
+          "kind": "MAX",
+          "operands": [
+           {
+            "kind": "RATIO",
+            "value": 4,
+            "citation": "§1.01(20)(z)"
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "metricName": "Total Leverage Ratio immediately prior to incurrence",
+            "valueType": "RATIO"
+           }
+          ]
+         },
+         "citation": "§1.01(20)(z)"
+        },
+        {
+         "kind": "COMPARE",
+         "left": {
+          "kind": "METRIC_REFERENCE",
+          "metricName": "Interest Coverage Ratio",
+          "valueType": "RATIO"
+         },
+         "operator": "GTE",
+         "right": {
+          "kind": "MIN",
+          "operands": [
+           {
+            "kind": "RATIO",
+            "value": 1.75,
+            "citation": "§1.01(20)(z)"
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "metricName": "Interest Coverage Ratio immediately prior to incurrence",
+            "valueType": "RATIO"
+           }
+          ]
+         },
+         "citation": "§1.01(20)(z)"
+        }
+       ],
+       "citation": "§1.01(20)(z)"
+      }
+     },
+     "conditions": [
+      {
+       "conditionType": "RATIO_SATISFIED",
+       "description": "at Initial Borrower's sole discretion, either the pro forma Total Leverage Ratio does not exceed the greater of 4.00:1.00 and the pre-incurrence Total Leverage Ratio, or the Interest Coverage Ratio is at least the lesser of 1.75:1.00 and the pre-incurrence Interest Coverage Ratio",
+       "citation": "§1.01(20)(z)",
+       "inventoryItemIds": [
+        "inv-item:5fd357ec4014b3d504eaaf6b"
+       ]
+      }
+     ],
+     "dependsOn": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01",
+       "description": "applies only to Indebtedness, Disqualified Stock or Preferred Stock permitted to be incurred pursuant to Section 6.01, secured by Liens on assets not constituting a material portion of Collateral or ranking junior to second-lien indebtedness; Section 6.01 itself is outside this submission's retrieved scope"
+      }
+     ],
+     "inventoryItemIds": [
+      "inv-item:5fd357ec4014b3d504eaaf6b"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The alternative ratio-test formulas are fully represented; the underlying scope defined by Section 6.01 could not be retrieved within the source-context budget."
+     ],
+     "citation": "§1.01(20)(z)",
+     "excerpt": "with respect to any Indebtedness, Disqualified Stock or Preferred Stock that is secured by Liens on assets not constituting all or a material portion of the Collateral or secured by Liens on the Collateral rank on a junior priority basis to any second lien priority indebtedness... either (i) the Total Leverage Ratio... does not exceed the greater of (A) 4.00:1.00... or (ii) the Interest Coverage Ratio..."
+    },
+    {
+     "localRef": "r-pl-21",
+     "sourceSectionRef": "1.01(21)",
+     "covenantFamily": "LIENS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "GRANT_LIEN",
+     "entityScope": [
+      "Restricted Party"
+     ],
+     "capacityExpression": {
+      "kind": "MAX",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "amount": 720000000,
+        "currency": "USD",
+        "citation": "§1.01(21)",
+        "inventoryItemIds": [
+         "inv-item:c321c001b3a38b2e086a75a2"
+        ]
+       },
+       {
+        "kind": "MULTIPLY",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "value": 1,
+          "citation": "§1.01(21)",
+          "inventoryItemIds": [
+           "inv-item:c321c001b3a38b2e086a75a2"
+          ]
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "metricName": "Consolidated EBITDA"
+         }
+        ],
+        "citation": "§1.01(21)"
+       }
+      ],
+      "citation": "§1.01(21)"
+     },
+     "inventoryItemIds": [
+      "inv-item:c321c001b3a38b2e086a75a2"
+     ],
+     "sufficiency": "COMPLETE",
+     "citation": "§1.01(21)",
+     "excerpt": "other Liens securing obligations that any time outstanding do not exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of incurrence"
+    }
+   ],
+   "sharedCapacities": "[]",
+   "irExtensionCandidates": "[\n  {\n    \"sourceEvidence\": \"\\u00a71.01(2),(3) 'contested in good faith by appropriate proceedings', 'adequate reserves ... in accordance with GAAP', 'could not reasonably be expected to have a Material Adverse Effect' (recurring throughout Permitted Liens and elsewhere in the instrument)\",\n    \"semanticRequirement\": \"A way to represent a qualitative legal/accounting standard (good-faith contest, GAAP-adequate-reserves, no-Material-Adverse-Effect) as a first-class boolean condition distinct from a numeric TRANSACTION_INPUT_REFERENCE comparison, so that such standards can be composed in AND/OR trees without being downgraded to UNSUPPORTED leaves.\",\n    \"whyExistingPrimitivesFail\": \"TRANSACTION_INPUT_REFERENCE is typed generically (defaults to MONEY valueType) and COMPARE requires two same-typed operands; there is no native boolean-standard/qualitative-judgment leaf node, so these recurring qualitative prongs must currently be represented via UNSUPPORTED even though they are a real, recurring, and legally material component of many baskets.\",\n    \"candidateGeneralizedPrimitive\": \"A QUALITATIVE_STANDARD_REFERENCE leaf node (e.g. standardName: 'contested in good faith with adequate reserves under GAAP') that resolves to a boolean and can be used directly as an AND/OR operand, distinct from UNSUPPORTED (which signals inability to represent) and from TRANSACTION_INPUT_REFERENCE (which signals a numeric external input).\"\n  }\n]",
+   "inventoryDispositions": "[]",
+   "overallNotes": "[\n  \"The 'Permitted Liens' definition (\\u00a71.01) contains 51 enumerated clauses plus a closing reclassification paragraph. Only clauses (2),(3),(20)(x)/(y)/(z) and (21) carry the quantitative/ratio/time-based content flagged by the Frozen Semantic Inventory and by deterministic value-detection; these are modeled as seven independent WireRules. The remaining ~45 clauses are purely categorical/qualitative lien-type carve-outs (ordinary-course liens, statutory liens, purchase-money liens, intercompany liens, etc.) with no dollar or ratio amount, and are represented collectively as a single UNSUPPORTED component inside the overall 'Permitted Liens' WireDefinition rather than as 45 separate near-duplicate rules, to avoid manufacturing structure not actually present in the quantitative economics.\",\n  \"Clause (20)(x), (20)(y) and (20)(z) are mutually exclusive alternative ratio tests keyed to the Collateral priority of the secured Indebtedness (pari passu Collateral / Junior Lien Priority Collateral / non-Collateral or junior-priority-to-second-lien) - they are modeled as three separate rules for fidelity to the source's own structure and to the Frozen Inventory's own item-splitting, but they are NOT cumulative/stacking baskets and share no aggregate dollar ceiling (hence no WireSharedCapacity was created for them).\",\n  \"Section 6.01 (and its subclauses (a), (b)(1), (b)(4), (b)(12), (b)(14), (b)(18), (b)(19), (b)(21), (b)(26), (b)(27), (b)(31)-(33)) is referenced pervasively throughout the Permitted Liens definition (clauses (6), (10), (18), (20), (25), (39) etc.) to define which underlying Indebtedness a Lien may secure, but could not be retrieved within the available source-context budget (or, for Section 6.01(b)(1), was flagged as genuinely ambiguous between two occurrences). These cross-unit dependencies are preserved via dependsOn on the affected rules rather than dropped or guessed.\",\n  \"'Junior Lien Priority' is used as a defined-sounding term in clauses (20)(y) and in Section 6.01(a) but has no detected definition anywhere in this instrument; this gap is carried as an explicit dependsOn/sufficiency caveat on rule r-pl-20y rather than assumed.\"\n]"
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T12:55:34.515Z",
+   "inputTokens": 79480,
+   "outputTokens": 30906,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 291678,
+   "calculatedCostUsd": 0.46802
+  },
+  "cacheKey": "57457663960c3ca211dfc394134ce78588c9534d07c416343616d6b866ab7abd",
+  "compiledAt": "2026-09-14T12:55:34.515Z"
+ },
+ "shardInputSummary": {
+  "candidateRef": "phase-3-validation:chwy:1.01#shard:4f06625557e9aecbbb7a",
+  "operativeChars": 26695,
+  "ownedInventoryItems": 6,
+  "contextRegions": 7,
+  "bundleItems": 0,
+  "unresolvedDependencies": 37
+ },
+ "attemptsSoFar": 1
+}

@@ -1,0 +1,198 @@
+{
+  "artifact": "F-6 deterministic rescoring of the frozen 6.08 reference items (measurement only, no Phase 3 verdict)",
+  "referenceSet": "docs/phase-3-validation/04-human-reference-set.json",
+  "referenceSetEdited": false,
+  "replayBeforeReproducesRecordedDispositions": true,
+  "before": {
+    "PARTIAL": 6,
+    "FULL": 1
+  },
+  "after": {
+    "PARTIAL": 4,
+    "FULL": 3
+  },
+  "rows": [
+    {
+      "id": "A5",
+      "category": "A",
+      "materiality": "CRITICAL",
+      "section": "6.08(a)",
+      "recorded": "PARTIAL",
+      "replayBefore": "PARTIAL",
+      "replayAfter": "PARTIAL",
+      "overlappingItems": 103,
+      "itemsChanged": [
+        [
+          "inv-item:fb94c5778957c130aad42a6c",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ],
+        [
+          "inv-item:72c7fd9b304d55a0ea0977fe",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ],
+        [
+          "inv-item:892dccd636f61f09459c9723",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ],
+        [
+          "inv-item:cbdcb4d48b25a99a8f16cd03",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ],
+        [
+          "inv-item:b8b3178fd493d66697cf3684",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ],
+        [
+          "inv-item:73473b35e1bf1831a19966df",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ]
+      ]
+    },
+    {
+      "id": "B8",
+      "category": "B",
+      "materiality": "MATERIAL",
+      "section": "6.08(b)(9)",
+      "recorded": "PARTIAL",
+      "replayBefore": "PARTIAL",
+      "replayAfter": "FULL",
+      "overlappingItems": 10,
+      "itemsChanged": [
+        [
+          "inv-item:33355a9c1fc48a0b3dad4d7d",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ],
+        [
+          "inv-item:abbeb548a74273faa56e047c",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ]
+      ]
+    },
+    {
+      "id": "B9",
+      "category": "B",
+      "materiality": "CRITICAL",
+      "section": "6.08(b)(10)",
+      "recorded": "PARTIAL",
+      "replayBefore": "PARTIAL",
+      "replayAfter": "FULL",
+      "overlappingItems": 11,
+      "itemsChanged": [
+        [
+          "inv-item:86e64995b1a3e12d4aa74ca1",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ],
+        [
+          "inv-item:e9ebc54c4bedee9a732fb9f4",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ]
+      ]
+    },
+    {
+      "id": "B10",
+      "category": "B",
+      "materiality": "CRITICAL",
+      "section": "6.08(b)(12)",
+      "recorded": "FULL",
+      "replayBefore": "FULL",
+      "replayAfter": "FULL",
+      "overlappingItems": 7,
+      "itemsChanged": []
+    },
+    {
+      "id": "B11",
+      "category": "B",
+      "materiality": "CRITICAL",
+      "section": "6.08(b)(15)/(25)",
+      "recorded": "PARTIAL",
+      "replayBefore": "PARTIAL",
+      "replayAfter": "PARTIAL",
+      "overlappingItems": 63,
+      "itemsChanged": [
+        [
+          "inv-item:898f62b26c441dcabfa36aca",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ],
+        [
+          "inv-item:439fa76c4033f55855c6418b",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ],
+        [
+          "inv-item:5f2e1ef5065a83911682bac6",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ],
+        [
+          "inv-item:d9b3430629660c3451d577ca",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ]
+      ]
+    },
+    {
+      "id": "C1",
+      "category": "C",
+      "materiality": "CRITICAL",
+      "section": "6.08(a)(3)",
+      "recorded": "PARTIAL",
+      "replayBefore": "PARTIAL",
+      "replayAfter": "PARTIAL",
+      "overlappingItems": 73,
+      "itemsChanged": [
+        [
+          "inv-item:fb94c5778957c130aad42a6c",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ],
+        [
+          "inv-item:72c7fd9b304d55a0ea0977fe",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ],
+        [
+          "inv-item:892dccd636f61f09459c9723",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ],
+        [
+          "inv-item:cbdcb4d48b25a99a8f16cd03",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ],
+        [
+          "inv-item:b8b3178fd493d66697cf3684",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ],
+        [
+          "inv-item:73473b35e1bf1831a19966df",
+          "UNSUPPORTED",
+          "REPRESENTED"
+        ]
+      ]
+    },
+    {
+      "id": "C8",
+      "category": "C",
+      "materiality": "MATERIAL",
+      "section": "6.08(b)(1)",
+      "recorded": "PARTIAL",
+      "replayBefore": "PARTIAL",
+      "replayAfter": "PARTIAL",
+      "overlappingItems": 3,
+      "itemsChanged": []
+    }
+  ]
+}

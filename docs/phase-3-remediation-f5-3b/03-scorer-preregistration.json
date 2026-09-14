@@ -1,0 +1,71 @@
+{
+ "artifact": "F-5.3B section 7 - PRE-REGISTERED ensemble certification scorer + gates, frozen BEFORE the new paid pair",
+ "frozenAt": "2026-09-09T15:49:39.697613Z",
+ "gitSha": "9addb29e3ccc1102c1f64a66f55663da965734fc",
+ "scorer": "scripts/f5-3b-ensemble-certification-score.py",
+ "scorerSha256": "0ac56e31fb6c0554583aa3cb7edb54f890011d7496145d2cc7a353522a634995",
+ "referenceScorer": "scripts/f5-reference-recall.py",
+ "referenceScorerSha256": "dc9658c24a173df6d93aadc732c6426705f14cd3e48850656ac920347f667c1b",
+ "humanReferenceSha256": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036",
+ "e1": {
+  "frozenContentHash": "6f648e724520fdc9071c93d80860a5dbb37b5c03f9ae939a16ce2983b3e6d8ed",
+  "reproducedUnderFinalCode": true,
+  "artifact": "docs/phase-3-remediation-f5-3b/e1-final.json",
+  "sha256": "1618a8bcf87d38bb59d914d45187b7073bceb527656482ed259ea704ea4575a5"
+ },
+ "identity": "F-5.1 canonical: same inventoryItemId OR (>= 50% overlap of the shorter span AND no contradictory deontic effect). Label-blind AND support-blind - pass labels / support status are never matching criteria.",
+ "metrics": [
+  "strictCanonicalIdentityStability",
+  "semanticStability",
+  "criticalMaterialSemanticStability",
+  "sourceSpanCoverageStability",
+  "quantitativeComponentStability",
+  "conditionExceptionStability",
+  "dependencyXrefStability",
+  "semanticFunctionStabilityByDimension",
+  "canonicalItemCountDelta"
+ ],
+ "supportDiagnostics": [
+  "corroborated/singleton/materialSingleton/conflict counts per ensemble",
+  "supportStatusAgreementOnMatched",
+  "corroboratedInE1_singletonInE2",
+  "singletonInE1_corroboratedInE2",
+  "support-state variance is diagnostic and never erases a valid proposition"
+ ],
+ "decomposition": {
+  "order": [
+   "A_IDENTITY_VARIANCE",
+   "C_SEMANTIC_FUNCTION_VARIANCE",
+   "F_DEPENDENCY_FRAGMENTATION",
+   "B_GRANULARITY_VARIANCE",
+   "D_TRUE_ENSEMBLE_OMISSION / E_TRUE_ENSEMBLE_ADDITION",
+   "G_OTHER"
+  ],
+  "rules": "see scorer docstring; a proposition is never classified missing because support status differs"
+ },
+ "dangerousSilentOmission": "CRITICAL/MATERIAL D/E case where the lacking ensemble has no material item touching the span, does not disclose it as UNACCOUNTED_SOURCE, and presents as trustworthy-complete (INVENTORY_OK and supportReviewRequired false)",
+ "originalF5Gates": {
+  "criticalMaterialSemanticStability": ">= 0.85",
+  "semanticStability": ">= 0.80",
+  "dangerousSilentOmissions": "== 0",
+  "frozenReferenceRecall": "no material degradation vs E1 (1.0 discovery / critical-material / quantitative / condition-exception)",
+  "rounding": "none"
+ },
+ "additionalTrustGates": [
+  "zero false completeness",
+  "zero CRITICAL/MATERIAL source-unverifiable items surviving ensemble normalization",
+  "zero contradictory effects silently merged",
+  "zero lost quantitative values through ensemble",
+  "zero dangling lineage introduced by ensemble",
+  "supportReviewRequired propagates to REVIEW_REQUIRED",
+  "raw both-pass source gaps remain disclosed",
+  "order independence holds"
+ ],
+ "selfCheck": "scorer over E1 vs E1: every stability 1.0, 0 unmatched, 0 dangerous (run before freezing)",
+ "deterministicSuites": {
+  "f5-3b-ensemble-compatibility": "11 passed",
+  "f5-3b-support-trust": "10 passed",
+  "f5-3a-ensemble": "14 passed",
+  "semantic-accountability + semantic-compiler + independence + failure-observability": "506 passed / 18 failed, failure set identical to the pre-existing baseline (pass-a-inventory 7, pass-a-stability 4, pass-bc-reconciliation 7)"
+ }
+}

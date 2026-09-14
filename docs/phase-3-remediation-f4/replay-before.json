@@ -1,0 +1,1034 @@
+{
+ "artifact": "F-4 verifier deterministic replay (before) over frozen Chewy 6.08 - 0 model calls",
+ "label": "before",
+ "gitSha": "5e171383e1ec6e9505ea6812fd3d3ddf0768c696",
+ "at": "2026-09-10T20:28:00.407Z",
+ "inputs": {
+  "unit": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/unit-6.08.json",
+  "unitSha256": "fc147145c2db7df77bfb7122b8442d3fe21f5645b5c4782b791ffa942c8b750c",
+  "document": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+  "documentSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+  "operativeTextChars": 38529,
+  "operativeTextSha256": "98b4d151d733483b6e63d1bfce14b3bbfe79d46d1583498442eb73c7a22a51a9",
+  "window": [
+   659042,
+   697571
+  ],
+  "rules": 38,
+  "definitions": 6,
+  "toolCallLogEntries": 6,
+  "toolCallLogHasRetrievedSourceRecords": false,
+  "operativeState": null,
+  "packageGraph": null,
+  "recordedVerifierAlgorithm": "phase-3c-semantic-verifier.v1"
+ },
+ "evidenceSet": {
+  "localSourceHash": "98b4d151d733483b6e63d1bfce14b3bbfe79d46d1583498442eb73c7a22a51a9",
+  "evidenceSetHash": "4170e8ed117f54c52eab86df33eb0e428aa842ece8659a92ce0714a6fc1acc7b",
+  "packageDocumentIds": [
+   "doc-a"
+  ],
+  "authenticated": [
+   {
+    "evidenceId": "2c83d07488998cab4e61e4f4678f7220057ec3c2334f3252f6380930a272fc10",
+    "requestKind": "PROVISION",
+    "requestKey": "Section 6.01(b)",
+    "role": "REFERENCED_ONLY",
+    "representedDefinitionIds": [],
+    "documentId": "doc-a",
+    "documentVersion": "BASE_DOCUMENT",
+    "sourceNodeId": "structural-node:85ee54c312ce2a2526bc705b",
+    "sourceNodeKey": "doc-a::6.01(b)",
+    "charStart": 612129,
+    "charEnd": 612195,
+    "chars": 66,
+    "contentHash": "d91f08b1ff8d88f8f61008f510fdb1717708f7fcec8decc5ad0b9685f98096ea",
+    "textHead": "(b) The provisions of Section 6.01(a) hereof shall not apply to: ",
+    "duplicatesLocalWindow": false,
+    "compilerRecord": {
+     "present": false,
+     "matched": null,
+     "toolCallIndexes": []
+    },
+    "linkage": [
+     {
+      "origin": "COMPILER_TOOL_CALL",
+      "detail": "toolCallLog[3] getReferencedProvision {\"ref\":\"Section 6.01(b)\"}",
+      "compilerRecordedContentHash": null
+     }
+    ],
+    "checks": [
+     {
+      "code": "A_DOCUMENT_IN_PACKAGE",
+      "passed": true,
+      "detail": "document \"doc-a\" belongs to this instrument's package [doc-a]"
+     },
+     {
+      "code": "B_SPAN_RESOLVES",
+      "passed": true,
+      "detail": "provision \"Section 6.01(b)\" resolved to node structural-node:85ee54c312ce2a2526bc705b span [612129, 612195)"
+     },
+     {
+      "code": "G_SPAN_IN_BOUNDS",
+      "passed": true,
+      "detail": "span [612129, 612195) lies within document \"doc-a\" (864362 chars)"
+     },
+     {
+      "code": "C_RAW_TEXT_MATCH",
+      "passed": true,
+      "detail": "resolved text is byte-identical to document.text.slice(612129, 612195)"
+     },
+     {
+      "code": "D_HASH_MATCH",
+      "passed": true,
+      "detail": "no compiler retrieval record for this request (legacy tool log or IR-derived request) - content hash d91f08b1ff8d88f8f61008f510fdb1717708f7fcec8decc5ad0b9685f98096ea computed independently from the resolved text"
+     },
+     {
+      "code": "F_NOT_UNRELATED_DOCUMENT",
+      "passed": true,
+      "detail": "no compiler-recorded document/node identity to compare - resolved within the package by this verifier alone"
+     },
+     {
+      "code": "E_OPERATIVE_VERSION",
+      "passed": true,
+      "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+     }
+    ],
+    "numericItems": [],
+    "reverseComparable": false
+   },
+   {
+    "evidenceId": "31933ed94e27b92aa26646d1a2880d1f9bed05ed1c5176e0ef4bc1a9448c2744",
+    "requestKind": "DEFINITION",
+    "requestKey": "Available Investment Capacity Amount",
+    "role": "REPRESENTED_DEFINITION",
+    "representedDefinitionIds": [
+     "ir-definition:d3098664453fbfb14eba9d7f"
+    ],
+    "documentId": "doc-a",
+    "documentVersion": "BASE_DOCUMENT",
+    "sourceNodeId": "structural-node:fa9e7b56834cd21fd722335e",
+    "sourceNodeKey": "doc-a::1.01(2)(b)(2)(ff)(b)",
+    "charStart": 35389,
+    "charEnd": 35791,
+    "chars": 402,
+    "contentHash": "94ddc8e8e731d98ce725ef88ab9b87e8403ae31d31cc4fd4b7a6e38efc06eb68",
+    "textHead": "“ Available Investment Capacity Amount ” means, at any time, (a) the amount of Investments that may be made at the time of determination pursuant to clause 13 o",
+    "duplicatesLocalWindow": false,
+    "compilerRecord": {
+     "present": false,
+     "matched": null,
+     "toolCallIndexes": []
+    },
+    "linkage": [
+     {
+      "origin": "COMPILER_TOOL_CALL",
+      "detail": "toolCallLog[1] getDefinition {\"term\":\"Available Investment Capacity Amount\"}",
+      "compilerRecordedContentHash": null
+     },
+     {
+      "origin": "IR_DEFINITION_TERM",
+      "detail": "definitions[3].termName = \"Available Investment Capacity Amount\"",
+      "compilerRecordedContentHash": null
+     }
+    ],
+    "checks": [
+     {
+      "code": "A_DOCUMENT_IN_PACKAGE",
+      "passed": true,
+      "detail": "document \"doc-a\" belongs to this instrument's package [doc-a]"
+     },
+     {
+      "code": "B_SPAN_RESOLVES",
+      "passed": true,
+      "detail": "definition \"Available Investment Capacity Amount\" resolved to node structural-node:fa9e7b56834cd21fd722335e span [35389, 35791)"
+     },
+     {
+      "code": "G_SPAN_IN_BOUNDS",
+      "passed": true,
+      "detail": "span [35389, 35791) lies within document \"doc-a\" (864362 chars)"
+     },
+     {
+      "code": "C_RAW_TEXT_MATCH",
+      "passed": true,
+      "detail": "resolved text is byte-identical to document.text.slice(35389, 35791)"
+     },
+     {
+      "code": "D_HASH_MATCH",
+      "passed": true,
+      "detail": "no compiler retrieval record for this request (legacy tool log or IR-derived request) - content hash 94ddc8e8e731d98ce725ef88ab9b87e8403ae31d31cc4fd4b7a6e38efc06eb68 computed independently from the resolved text"
+     },
+     {
+      "code": "F_NOT_UNRELATED_DOCUMENT",
+      "passed": true,
+      "detail": "no compiler-recorded document/node identity to compare - resolved within the package by this verifier alone"
+     },
+     {
+      "code": "E_OPERATIVE_VERSION",
+      "passed": true,
+      "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+     }
+    ],
+    "numericItems": [],
+    "reverseComparable": true
+   },
+   {
+    "evidenceId": "679a4951f1ac1998cc6baf865ae5dd5e023b1e5b3d64cc7125ce40e6751fbad8",
+    "requestKind": "PROVISION",
+    "requestKey": "Section 2.09(b)",
+    "role": "REFERENCED_ONLY",
+    "representedDefinitionIds": [],
+    "documentId": "doc-a",
+    "documentVersion": "BASE_DOCUMENT",
+    "sourceNodeId": "structural-node:a69f9debf57e39ab35019414",
+    "sourceNodeKey": "doc-a::2.09(b)",
+    "charStart": 430523,
+    "charEnd": 431608,
+    "chars": 1085,
+    "contentHash": "3498ab88c20879529bddeeecc247a6022227a18b0a7b7f7c40520ad9d2a38fcf",
+    "textHead": "(b) Subject to the provisions of Section 6.05(b), in the event and on each occasion that any Net Proceeds are received by or on behalf of a Loan Party (or, in t",
+    "duplicatesLocalWindow": false,
+    "compilerRecord": {
+     "present": false,
+     "matched": null,
+     "toolCallIndexes": []
+    },
+    "linkage": [
+     {
+      "origin": "COMPILER_TOOL_CALL",
+      "detail": "toolCallLog[5] getReferencedProvision {\"ref\":\"Section 2.09(b)\"}",
+      "compilerRecordedContentHash": null
+     }
+    ],
+    "checks": [
+     {
+      "code": "A_DOCUMENT_IN_PACKAGE",
+      "passed": true,
+      "detail": "document \"doc-a\" belongs to this instrument's package [doc-a]"
+     },
+     {
+      "code": "B_SPAN_RESOLVES",
+      "passed": true,
+      "detail": "provision \"Section 2.09(b)\" resolved to node structural-node:a69f9debf57e39ab35019414 span [430523, 431608)"
+     },
+     {
+      "code": "G_SPAN_IN_BOUNDS",
+      "passed": true,
+      "detail": "span [430523, 431608) lies within document \"doc-a\" (864362 chars)"
+     },
+     {
+      "code": "C_RAW_TEXT_MATCH",
+      "passed": true,
+      "detail": "resolved text is byte-identical to document.text.slice(430523, 431608)"
+     },
+     {
+      "code": "D_HASH_MATCH",
+      "passed": true,
+      "detail": "no compiler retrieval record for this request (legacy tool log or IR-derived request) - content hash 3498ab88c20879529bddeeecc247a6022227a18b0a7b7f7c40520ad9d2a38fcf computed independently from the resolved text"
+     },
+     {
+      "code": "F_NOT_UNRELATED_DOCUMENT",
+      "passed": true,
+      "detail": "no compiler-recorded document/node identity to compare - resolved within the package by this verifier alone"
+     },
+     {
+      "code": "E_OPERATIVE_VERSION",
+      "passed": true,
+      "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+     }
+    ],
+    "numericItems": [
+     {
+      "kind": "PERCENT",
+      "rawText": "100%",
+      "numericValue": 1,
+      "currency": null,
+      "documentCharStart": 431284
+     }
+    ],
+    "reverseComparable": false
+   },
+   {
+    "evidenceId": "9aed373ce41f760ec8eefa2ae6e9f5798aa9d4929bf58274d46cfc92dd143e14",
+    "requestKind": "DEFINITION",
+    "requestKey": "Available RP Capacity Amount",
+    "role": "REPRESENTED_DEFINITION",
+    "representedDefinitionIds": [
+     "ir-definition:046cbf2174d94d7e133eadd2"
+    ],
+    "documentId": "doc-a",
+    "documentVersion": "BASE_DOCUMENT",
+    "sourceNodeId": "structural-node:fa9e7b56834cd21fd722335e",
+    "sourceNodeKey": "doc-a::1.01(2)(b)(2)(ff)(b)",
+    "charStart": 35791,
+    "charEnd": 37298,
+    "chars": 1507,
+    "contentHash": "ea211990a4826b340da917150a49a32021fd1f6616cea45f8c5efd29a1e023c6",
+    "textHead": "“ Available RP Capacity Amount ” means, at any time of determination (and after giving effect to any reallocation or reclassification permitted hereunder), the ",
+    "duplicatesLocalWindow": false,
+    "compilerRecord": {
+     "present": false,
+     "matched": null,
+     "toolCallIndexes": []
+    },
+    "linkage": [
+     {
+      "origin": "COMPILER_TOOL_CALL",
+      "detail": "toolCallLog[2] getDefinition {\"term\":\"Available RP Capacity Amount\"}",
+      "compilerRecordedContentHash": null
+     },
+     {
+      "origin": "IR_DEFINITION_TERM",
+      "detail": "definitions[4].termName = \"Available RP Capacity Amount\"",
+      "compilerRecordedContentHash": null
+     }
+    ],
+    "checks": [
+     {
+      "code": "A_DOCUMENT_IN_PACKAGE",
+      "passed": true,
+      "detail": "document \"doc-a\" belongs to this instrument's package [doc-a]"
+     },
+     {
+      "code": "B_SPAN_RESOLVES",
+      "passed": true,
+      "detail": "definition \"Available RP Capacity Amount\" resolved to node structural-node:fa9e7b56834cd21fd722335e span [35791, 37298)"
+     },
+     {
+      "code": "G_SPAN_IN_BOUNDS",
+      "passed": true,
+      "detail": "span [35791, 37298) lies within document \"doc-a\" (864362 chars)"
+     },
+     {
+      "code": "C_RAW_TEXT_MATCH",
+      "passed": true,
+      "detail": "resolved text is byte-identical to document.text.slice(35791, 37298)"
+     },
+     {
+      "code": "D_HASH_MATCH",
+      "passed": true,
+      "detail": "no compiler retrieval record for this request (legacy tool log or IR-derived request) - content hash ea211990a4826b340da917150a49a32021fd1f6616cea45f8c5efd29a1e023c6 computed independently from the resolved text"
+     },
+     {
+      "code": "F_NOT_UNRELATED_DOCUMENT",
+      "passed": true,
+      "detail": "no compiler-recorded document/node identity to compare - resolved within the package by this verifier alone"
+     },
+     {
+      "code": "E_OPERATIVE_VERSION",
+      "passed": true,
+      "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+     }
+    ],
+    "numericItems": [],
+    "reverseComparable": true
+   },
+   {
+    "evidenceId": "9cf1138a988a5e9f871dee3710c7ace7ab0ed69272a9fc8ff05a358fe8b4328f",
+    "requestKind": "PROVISION",
+    "requestKey": "Section 5.18(b)",
+    "role": "REFERENCED_ONLY",
+    "representedDefinitionIds": [],
+    "documentId": "doc-a",
+    "documentVersion": "BASE_DOCUMENT",
+    "sourceNodeId": "structural-node:883974aa395dc34db1d1364f",
+    "sourceNodeKey": "doc-a::5.18(b)",
+    "charStart": 594906,
+    "charEnd": 594986,
+    "chars": 80,
+    "contentHash": "f9136ddaecd6bdfef2aa8a592f9d25f8eaf77afa5dcc0def5d60cc0b8e6b0d70",
+    "textHead": "(b) The provisions of Section 5.18(a) hereof shall not apply to the following: ",
+    "duplicatesLocalWindow": false,
+    "compilerRecord": {
+     "present": false,
+     "matched": null,
+     "toolCallIndexes": []
+    },
+    "linkage": [
+     {
+      "origin": "COMPILER_TOOL_CALL",
+      "detail": "toolCallLog[4] getReferencedProvision {\"ref\":\"Section 5.18(b)\"}",
+      "compilerRecordedContentHash": null
+     }
+    ],
+    "checks": [
+     {
+      "code": "A_DOCUMENT_IN_PACKAGE",
+      "passed": true,
+      "detail": "document \"doc-a\" belongs to this instrument's package [doc-a]"
+     },
+     {
+      "code": "B_SPAN_RESOLVES",
+      "passed": true,
+      "detail": "provision \"Section 5.18(b)\" resolved to node structural-node:883974aa395dc34db1d1364f span [594906, 594986)"
+     },
+     {
+      "code": "G_SPAN_IN_BOUNDS",
+      "passed": true,
+      "detail": "span [594906, 594986) lies within document \"doc-a\" (864362 chars)"
+     },
+     {
+      "code": "C_RAW_TEXT_MATCH",
+      "passed": true,
+      "detail": "resolved text is byte-identical to document.text.slice(594906, 594986)"
+     },
+     {
+      "code": "D_HASH_MATCH",
+      "passed": true,
+      "detail": "no compiler retrieval record for this request (legacy tool log or IR-derived request) - content hash f9136ddaecd6bdfef2aa8a592f9d25f8eaf77afa5dcc0def5d60cc0b8e6b0d70 computed independently from the resolved text"
+     },
+     {
+      "code": "F_NOT_UNRELATED_DOCUMENT",
+      "passed": true,
+      "detail": "no compiler-recorded document/node identity to compare - resolved within the package by this verifier alone"
+     },
+     {
+      "code": "E_OPERATIVE_VERSION",
+      "passed": true,
+      "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+     }
+    ],
+    "numericItems": [],
+    "reverseComparable": false
+   },
+   {
+    "evidenceId": "aa3eaafa4f66cf4686eedb9de2170649bc01b9ed8ce6a570d092ae78b7a250c0",
+    "requestKind": "DEFINITION",
+    "requestKey": "Threshold Amount",
+    "role": "REPRESENTED_DEFINITION",
+    "representedDefinitionIds": [
+     "ir-definition:930efa2b63880d3f6f0afef3"
+    ],
+    "documentId": "doc-a",
+    "documentVersion": "BASE_DOCUMENT",
+    "sourceNodeId": "structural-node:b51b74180792bda67d86f589",
+    "sourceNodeKey": "doc-a::1.01(51)(c)(a)(4)(b)(c)",
+    "charStart": 350042,
+    "charEnd": 350203,
+    "chars": 161,
+    "contentHash": "6c7b20f45ab0fc5d6cd62bf3886abf21df99fed5b6424adfa38b22382738e7f5",
+    "textHead": "“ Threshold Amount ” means the greater of (a) $324.0 million and (b) 45% of Consolidated EBITDA on a Pro Forma Basis as of the applicable date of determination.",
+    "duplicatesLocalWindow": false,
+    "compilerRecord": {
+     "present": false,
+     "matched": null,
+     "toolCallIndexes": []
+    },
+    "linkage": [
+     {
+      "origin": "COMPILER_TOOL_CALL",
+      "detail": "toolCallLog[0] getDefinition {\"term\":\"Threshold Amount\"}",
+      "compilerRecordedContentHash": null
+     },
+     {
+      "origin": "IR_DEFINITION_TERM",
+      "detail": "definitions[2].termName = \"Threshold Amount\"",
+      "compilerRecordedContentHash": null
+     },
+     {
+      "origin": "IR_PROVENANCE_CITATION",
+      "detail": "definitions[2].calculationExpression.operands[0].provenance.sourceCitation = \"Definition of Threshold Amount\"",
+      "compilerRecordedContentHash": null
+     },
+     {
+      "origin": "IR_PROVENANCE_CITATION",
+      "detail": "definitions[2].calculationExpression.operands[1].operands[0].provenance.sourceCitation = \"Definition of Threshold Amount\"",
+      "compilerRecordedContentHash": null
+     }
+    ],
+    "checks": [
+     {
+      "code": "A_DOCUMENT_IN_PACKAGE",
+      "passed": true,
+      "detail": "document \"doc-a\" belongs to this instrument's package [doc-a]"
+     },
+     {
+      "code": "B_SPAN_RESOLVES",
+      "passed": true,
+      "detail": "definition \"Threshold Amount\" resolved to node structural-node:b51b74180792bda67d86f589 span [350042, 350203)"
+     },
+     {
+      "code": "G_SPAN_IN_BOUNDS",
+      "passed": true,
+      "detail": "span [350042, 350203) lies within document \"doc-a\" (864362 chars)"
+     },
+     {
+      "code": "C_RAW_TEXT_MATCH",
+      "passed": true,
+      "detail": "resolved text is byte-identical to document.text.slice(350042, 350203)"
+     },
+     {
+      "code": "D_HASH_MATCH",
+      "passed": true,
+      "detail": "no compiler retrieval record for this request (legacy tool log or IR-derived request) - content hash 6c7b20f45ab0fc5d6cd62bf3886abf21df99fed5b6424adfa38b22382738e7f5 computed independently from the resolved text"
+     },
+     {
+      "code": "F_NOT_UNRELATED_DOCUMENT",
+      "passed": true,
+      "detail": "no compiler-recorded document/node identity to compare - resolved within the package by this verifier alone"
+     },
+     {
+      "code": "E_OPERATIVE_VERSION",
+      "passed": true,
+      "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)"
+     }
+    ],
+    "numericItems": [
+     {
+      "kind": "AMOUNT",
+      "rawText": "$324.0 million",
+      "numericValue": 324000000,
+      "currency": "USD",
+      "documentCharStart": 350088
+     },
+     {
+      "kind": "PERCENT",
+      "rawText": "45%",
+      "numericValue": 0.45,
+      "currency": null,
+      "documentCharStart": 350111
+     }
+    ],
+    "reverseComparable": true
+   }
+  ],
+  "rejected": [
+   {
+    "requestKind": "DEFINITION",
+    "requestKey": "Restricted Payments",
+    "scopeKey": "restricted payments",
+    "claimedByCompiler": false,
+    "documentId": null,
+    "reason": "no defined term matching \"Restricted Payments\" found in this instrument's documents",
+    "linkage": [
+     {
+      "origin": "IR_DEFINITION_TERM",
+      "detail": "definitions[0].termName = \"Restricted Payments\"",
+      "compilerRecordedContentHash": null
+     }
+    ],
+    "authenticationStatus": "REJECTED",
+    "checks": [
+     {
+      "code": "B_SPAN_RESOLVES",
+      "passed": false,
+      "detail": "no defined term matching \"Restricted Payments\" found in this instrument's documents"
+     }
+    ]
+   },
+   {
+    "requestKind": "DEFINITION",
+    "requestKey": "Restricted Debt Payments",
+    "scopeKey": "restricted debt payments",
+    "claimedByCompiler": false,
+    "documentId": null,
+    "reason": "no defined term matching \"Restricted Debt Payments\" found in this instrument's documents",
+    "linkage": [
+     {
+      "origin": "IR_DEFINITION_TERM",
+      "detail": "definitions[1].termName = \"Restricted Debt Payments\"",
+      "compilerRecordedContentHash": null
+     }
+    ],
+    "authenticationStatus": "REJECTED",
+    "checks": [
+     {
+      "code": "B_SPAN_RESOLVES",
+      "passed": false,
+      "detail": "no defined term matching \"Restricted Debt Payments\" found in this instrument's documents"
+     }
+    ]
+   },
+   {
+    "requestKind": "DEFINITION",
+    "requestKey": "Available Amount",
+    "scopeKey": "available amount",
+    "claimedByCompiler": false,
+    "documentId": null,
+    "reason": "no defined term matching \"Available Amount\" found in this instrument's documents",
+    "linkage": [
+     {
+      "origin": "IR_DEFINITION_TERM",
+      "detail": "definitions[5].termName = \"Available Amount\"",
+      "compilerRecordedContentHash": null
+     }
+    ],
+    "authenticationStatus": "REJECTED",
+    "checks": [
+     {
+      "code": "B_SPAN_RESOLVES",
+      "passed": false,
+      "detail": "no defined term matching \"Available Amount\" found in this instrument's documents"
+     }
+    ]
+   }
+  ]
+ },
+ "reconciliationCounts": {
+  "ACCOUNTED_FOR": 56,
+  "POSSIBLY_ACCOUNTED_FOR": 388,
+  "NOT_ACCOUNTED_FOR": 14,
+  "IR_ONLY": 2,
+  "AMBIGUOUS": 2
+ },
+ "retrievedReconciliation": [],
+ "irOnly": [
+  {
+   "kind": "AMOUNT",
+   "irPath": "definitions[2].calculationExpression.operands[0]",
+   "value": 324000000,
+   "currency": "USD",
+   "ownerTermName": "Threshold Amount",
+   "citation": "Definition of Threshold Amount",
+   "reason": "compiled IR AMOUNT value 324000000 at definitions[2].calculationExpression.operands[0] has no matching source-side figure",
+   "finding": "844f0a36f675e721815f0b9249d7c8967f7d342e398a4dd309025cf0eba5aca7"
+  },
+  {
+   "kind": "PERCENT",
+   "irPath": "definitions[2].calculationExpression.operands[1].operands[0]",
+   "value": 0.45,
+   "currency": null,
+   "ownerTermName": "Threshold Amount",
+   "citation": "Definition of Threshold Amount",
+   "reason": "compiled IR PERCENT value 0.45 at definitions[2].calculationExpression.operands[1].operands[0] has no matching source-side figure",
+   "finding": "c75b8e97b3d7ff939b81acf03721dcd51688f4e77ce62e7774537af30ca40241"
+  }
+ ],
+ "findings": [
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": null,
+   "irPath": null,
+   "sourceCitation": "6.08",
+   "sourceEvidence": "$540.0 million",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source AMOUNT 540000000 (from \"$540.0 million\") (canonical 540000000 USD = 540 x 1000000 \"million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": null,
+   "irPath": null,
+   "sourceCitation": "6.08",
+   "sourceEvidence": "$252.0 million",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source AMOUNT 252000000 (from \"$252.0 million\") (canonical 252000000 USD = 252 x 1000000 \"million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": null,
+   "irPath": null,
+   "sourceCitation": "6.08",
+   "sourceEvidence": "$504.0 million",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source AMOUNT 504000000 (from \"$504.0 million\") (canonical 504000000 USD = 504 x 1000000 \"million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": null,
+   "irPath": null,
+   "sourceCitation": "6.08",
+   "sourceEvidence": "50%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 0.5 (from \"50%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": null,
+   "irPath": null,
+   "sourceCitation": "6.08",
+   "sourceEvidence": "140%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 1.4 (from \"140%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": null,
+   "irPath": null,
+   "sourceCitation": "6.08",
+   "sourceEvidence": "75%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 0.75 (from \"75%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": null,
+   "irPath": null,
+   "sourceCitation": "6.08",
+   "sourceEvidence": "35%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 0.35 (from \"35%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": null,
+   "irPath": null,
+   "sourceCitation": "6.08",
+   "sourceEvidence": "70.0%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 0.7 (from \"70.0%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": null,
+   "irPath": null,
+   "sourceCitation": "6.08",
+   "sourceEvidence": "6.0%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 0.06 (from \"6.0%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": null,
+   "irPath": null,
+   "sourceCitation": "6.08",
+   "sourceEvidence": "7.0%",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source PERCENT 0.07 (from \"7.0%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": null,
+   "irPath": null,
+   "sourceCitation": "6.08",
+   "sourceEvidence": "2.00:1.00",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source RATIO 2 (from \"2.00:1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": null,
+   "irPath": null,
+   "sourceCitation": "6.08",
+   "sourceEvidence": "1.75:1.00",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source RATIO 1.75 (from \"1.75:1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": null,
+   "irPath": null,
+   "sourceCitation": "6.08",
+   "sourceEvidence": "2.00x",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source RATIO 2 (from \"2.00x\") does not appear as a RATIO value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": null,
+   "irPath": null,
+   "sourceCitation": "6.08",
+   "sourceEvidence": "1.75:1.00",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source RATIO 1.75 (from \"1.75:1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "844f0a36f675e721815f0b9249d7c8967f7d342e398a4dd309025cf0eba5aca7",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": "ir-definition:930efa2b63880d3f6f0afef3",
+   "irPath": "definitions[2].calculationExpression.operands[0]",
+   "sourceCitation": "6.08",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+   "proposedIrEvidence": "definitions[2].calculationExpression.operands[0]=324000000",
+   "reasoning": "compiled IR AMOUNT value 324000000 at definitions[2].calculationExpression.operands[0] has no matching source-side figure"
+  },
+  {
+   "findingId": "c75b8e97b3d7ff939b81acf03721dcd51688f4e77ce62e7774537af30ca40241",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": "ir-definition:930efa2b63880d3f6f0afef3",
+   "irPath": "definitions[2].calculationExpression.operands[1].operands[0]",
+   "sourceCitation": "6.08",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+   "proposedIrEvidence": "definitions[2].calculationExpression.operands[1].operands[0]=0.45",
+   "reasoning": "compiled IR PERCENT value 0.45 at definitions[2].calculationExpression.operands[1].operands[0] has no matching source-side figure"
+  },
+  {
+   "findingId": "036538e7a3bb253bc175f08ef0796b8a2b79a7ffba4466d16f1223a291f7d427",
+   "findingType": "WRONG_ENTITY_SCOPE",
+   "severity": "UNCERTAIN",
+   "ruleOrDefinitionId": null,
+   "irPath": null,
+   "sourceCitation": "6.08",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source text distinguishes 7 distinct entity-scope term(s) (restricted subsidiaries, restricted subsidiary, borrower, unrestricted subsidiary, guarantor, unrestricted subsidiaries, loan party) but the compiled IR records no entity-scope restriction - possible missing/wrong entity scope"
+  },
+  {
+   "findingId": "d040cc39bc75feb31918694cff828bbc6025e78c569713504bc285f417038401",
+   "findingType": "MISSING_RECLASSIFICATION",
+   "severity": "UNCERTAIN",
+   "ruleOrDefinitionId": null,
+   "irPath": null,
+   "sourceCitation": "6.08",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "reasoning": "source text contains 4 reclassification/redesignation signal(s) but the compiled IR records no RECLASSIFIABLE_TO/REDESIGNATES_TO dependency - possible missing reclassification right"
+  }
+ ],
+ "materialDeterministic": 16,
+ "recordedDeterministicFindings": [
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "$540.0 million",
+   "reasoning": "source AMOUNT 540 (from \"$540.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "$252.0 million",
+   "reasoning": "source AMOUNT 252 (from \"$252.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "$504.0 million",
+   "reasoning": "source AMOUNT 504 (from \"$504.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "$720.0 million",
+   "reasoning": "source AMOUNT 720 (from \"$720.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "$720.0 million",
+   "reasoning": "source AMOUNT 720 (from \"$720.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "$720.0 million",
+   "reasoning": "source AMOUNT 720 (from \"$720.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "50%",
+   "reasoning": "source PERCENT 0.5 (from \"50%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "140%",
+   "reasoning": "source PERCENT 1.4 (from \"140%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "75%",
+   "reasoning": "source PERCENT 0.75 (from \"75%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "35%",
+   "reasoning": "source PERCENT 0.35 (from \"35%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "70.0%",
+   "reasoning": "source PERCENT 0.7 (from \"70.0%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "6.0%",
+   "reasoning": "source PERCENT 0.06 (from \"6.0%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "7.0%",
+   "reasoning": "source PERCENT 0.07 (from \"7.0%\") does not appear as a PERCENT value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "2.00:1.00",
+   "reasoning": "source RATIO 2 (from \"2.00:1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "1.75:1.00",
+   "reasoning": "source RATIO 1.75 (from \"1.75:1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "2.00x",
+   "reasoning": "source RATIO 2 (from \"2.00x\") does not appear as a RATIO value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "1.75:1.00",
+   "reasoning": "source RATIO 1.75 (from \"1.75:1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+  },
+  {
+   "findingId": "61df4151ac445a45d60a7f2357246f15d8b1331bc253003140476d0b8734984b",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severity": "MATERIAL",
+   "irPath": "rules[15].capacityExpression.operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+   "reasoning": "compiled IR AMOUNT value 720000000 at rules[15].capacityExpression.operands[0] has no matching source-side figure"
+  },
+  {
+   "findingId": "b29f3c195fb467ec9b1304ddc3d41a08e6dd7bc232cfe4d63c1ba717758701bd",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severity": "MATERIAL",
+   "irPath": "rules[18].capacityExpression.operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+   "reasoning": "compiled IR AMOUNT value 720000000 at rules[18].capacityExpression.operands[0] has no matching source-side figure"
+  },
+  {
+   "findingId": "42ea9754fc75d64ee40a3a3540951f9df5c73e264432ff2bdbd16efd968eeb55",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severity": "MATERIAL",
+   "irPath": "rules[25].capacityExpression.operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+   "reasoning": "compiled IR AMOUNT value 720000000 at rules[25].capacityExpression.operands[0] has no matching source-side figure"
+  },
+  {
+   "findingId": "844f0a36f675e721815f0b9249d7c8967f7d342e398a4dd309025cf0eba5aca7",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severity": "MATERIAL",
+   "irPath": "definitions[2].calculationExpression.operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+   "reasoning": "compiled IR AMOUNT value 324000000 at definitions[2].calculationExpression.operands[0] has no matching source-side figure"
+  },
+  {
+   "findingId": "c75b8e97b3d7ff939b81acf03721dcd51688f4e77ce62e7774537af30ca40241",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severity": "MATERIAL",
+   "irPath": "definitions[2].calculationExpression.operands[1].operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+   "reasoning": "compiled IR PERCENT value 0.45 at definitions[2].calculationExpression.operands[1].operands[0] has no matching source-side figure"
+  },
+  {
+   "findingId": "036538e7a3bb253bc175f08ef0796b8a2b79a7ffba4466d16f1223a291f7d427",
+   "findingType": "WRONG_ENTITY_SCOPE",
+   "severity": "NON_MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+   "reasoning": "source text distinguishes 7 distinct entity-scope term(s) (restricted subsidiaries, restricted subsidiary, borrower, unrestricted subsidiary, guarantor, unrestricted subsidiaries, loan party) but the "
+  },
+  {
+   "findingId": "d040cc39bc75feb31918694cff828bbc6025e78c569713504bc285f417038401",
+   "findingType": "MISSING_RECLASSIFICATION",
+   "severity": "NON_MATERIAL",
+   "irPath": null,
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+   "reasoning": "source text contains 4 reclassification/redesignation signal(s) but the compiled IR records no RECLASSIFIABLE_TO/REDESIGNATES_TO dependency - possible missing reclassification right [downgraded to NON"
+  }
+ ],
+ "recordedSemanticOnlyFindings": [
+  {
+   "findingId": "bf00d23a6608ceb5ab8fcd2047447fc6cc456cc0e2f2eacd086fbbbf6e18e915",
+   "method": "SEMANTIC_ONLY",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": "ir-definition:930efa2b63880d3f6f0afef3",
+   "irPath": "definitions[2] (termName: Threshold Amount).calculationExpression",
+   "sourceCitation": "§6.08(a)(iii)(c)",
+   "reasoning": "This is a fabricated/unsupported numeric addition: no source text or retrieved context anywhere states that Threshold Amount equals the greater of $324.0 million and 45% of Consolidated EBITDA. Phase 2's own unresolved-dependency list flags 'Threshold Amount' as an UNRESOLVED_DEFINED_TERM not declar"
+  },
+  {
+   "findingId": "debeb1e7a51a2327f6095ce040efb8e4ef8a80342b6812c227584997f14434ef",
+   "method": "SEMANTIC_ONLY",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": "ir-rule:92f832eccf22ae3e16c08e87",
+   "irPath": "rules[0].entityScope / entityScopeExcluded (and this pattern repeats across essentially every rule in the IR)",
+   "sourceCitation": "§6.08(a) (chapeau) and §6.08 (closing paragraphs)",
+   "reasoning": "The source text is explicit and operative about who is bound: the prohibition runs against the Borrowers and any Restricted Subsidiaries they permit to act, and the source separately and explicitly states Unrestricted Subsidiaries are not subject to any restrictive covenant in the Agreement (i.e., 6"
+  },
+  {
+   "findingId": "64d9e1ac0ffca6aed787661eb8f624ea0b7a33ce14374019548c8d0275e16c60",
+   "method": "SEMANTIC_ONLY",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": "ir-rule:bbf15a1d53bd3a669ac53eb5",
+   "irPath": "rules[18] (sourceSectionRef 6.08(b)(18)).capacityExpression",
+   "sourceCitation": "§6.08(b)(18)",
+   "reasoning": "This is a real, independently operative limiting proviso in the source (a 'cash-box' carve-out preventing this basket from being used to distribute out an Unrestricted Subsidiary that is merely a cash shell) that is silently absent from the IR, which nonetheless claims COMPLETE sufficiency for an un"
+  },
+  {
+   "findingId": "dfc070b91ea395a30d9cb5dd4c1b8a8d1c4f10734fba12d5c51254c6eb7ab7c2",
+   "method": "SEMANTIC_ONLY",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "UNCERTAIN",
+   "ruleOrDefinitionId": "ir-definition:f38b8cdf03116d39cafef787",
+   "irPath": "definitions[5] (Available Amount).calculationExpression (the resolved MAX node for clause (a), exprId ir-expr:7c9a478627966a15126184bc)",
+   "sourceCitation": "§6.08(a)(3)(a)",
+   "reasoning": "Although the overall Available Amount definition is honestly marked AMBIGUOUS due to other unresolved sub-pieces, the specific clause (a) sub-formula is presented as a resolved, usable expression yet omits an independently operative conditionality that could change whether a volitional dividend may "
+  }
+ ]
+}

@@ -3,6 +3,7 @@ export * from "./types";
 export * from "./source-inventory";
 export * from "./ir-inventory";
 export * from "./reconciliation";
+export * from "./retrieved-evidence";
 export * from "./findings";
 export * from "./identity";
 export * from "./prompt";

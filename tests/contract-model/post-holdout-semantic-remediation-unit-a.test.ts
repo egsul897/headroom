@@ -7,13 +7,19 @@
  * explicitly re-run the same shape under a renamed term and different
  * numbers to prove zero production code cares what the term is called).
  *
- * Targets: normalize.ts's buildComposite/unsupportedNode (attemptedStructure
- * preservation) and completeness-check.ts's
- * checkIntraDefinitionComponentCompleteness (the new diagnostic that reads
- * it). type-check.ts's inferType is intentionally NOT modified by this
- * remediation and is exercised here only indirectly, to confirm its
- * poison-propagation verdict (which composite counts as UNSUPPORTED) is
- * unchanged - only what happens to the DISCARDED structure changed.
+ * Targets: normalize.ts's buildComposite/unsupportedNode and
+ * completeness-check.ts's checkIntraDefinitionComponentCompleteness (the
+ * diagnostic that reads the preserved structure).
+ *
+ * F-6 (Phase 3 Chewy remediation 3) superseded the original "collapse to an
+ * UNSUPPORTED wrapper, keep the attempt in a sidecar" outcome for the
+ * common case: a composite whose typed operands agree now KEEPS its
+ * structure as live IR with the unsupported child in place. The verdicts
+ * these scenarios protect are unchanged - inferType still reports
+ * UNSUPPORTED for the whole (never executable), the definition is never
+ * COMPLETE, and every well-typed sibling stays visible - but they are now
+ * asserted on the live tree. The sidecar shape survives only for a genuine
+ * type conflict or a composite with no typed operand at all (S13/S14).
  *
  * Component-count assertions below deliberately avoid hand-predicting exact
  * recursive totals (checkIntraDefinitionComponentCompleteness walks the
@@ -28,6 +34,9 @@
 import { describe, expect, it } from "vitest";
 import { normalizeSubmission } from "../../lib/contract-model/compiler/semantic/normalize";
 import { checkIntraDefinitionComponentCompleteness } from "../../lib/contract-model/compiler/semantic/completeness-check";
+import { inferType } from "../../lib/contract-model/ir/type-check";
+import { validateDefinition } from "../../lib/contract-model/ir/validate";
+import { UNSUPPORTED_TYPE } from "../../lib/contract-model/ir/types";
 import type { SubmitCompilationInput, WireDefinition, WireExpression } from "../../lib/contract-model/compiler/semantic/wire-schema";
 import { testCompilerInput } from "./semantic-compiler/test-helpers";
 
@@ -62,9 +71,12 @@ function unsupported(reason: string): WireExpression {
   return { kind: "UNSUPPORTED", reason, semanticDescription: reason } as WireExpression;
 }
 
+function compileDefinition(expr: WireExpression, sufficiency = "AMBIGUOUS") {
+  const { definitions } = normalizeSubmission(submission([{ calculationExpression: expr, sufficiency }]), testCompilerInput());
+  return definitions[0]!;
+}
 function compile(expr: WireExpression) {
-  const { definitions } = normalizeSubmission(submission([{ calculationExpression: expr }]), testCompilerInput());
-  return definitions[0]!.calculationExpression!;
+  return compileDefinition(expr).calculationExpression!;
 }
 
 describe("Unit A (S1-S20) - dense multi-clause synthetic definition matrix", () => {
@@ -79,9 +91,13 @@ describe("Unit A (S1-S20) - dense multi-clause synthetic definition matrix", () 
     const operands: WireExpression[] = [];
     for (let i = 1; i <= 19; i++) operands.push(metric(`Synthetic Addback Clause ${i}`));
     operands.push(unsupported("clause (t) cross-references an unresolved provision"));
-    const expr = compile({ kind: "ADD", operands });
-    expect(expr.kind).toBe("UNSUPPORTED"); // the top-level verdict is correctly still UNSUPPORTED - type safety is not weakened
-    expect(expr.type).toBeNull();
+    const definition = compileDefinition({ kind: "ADD", operands }, "COMPLETE");
+    const expr = definition.calculationExpression!;
+    expect(expr.kind).toBe("ADD"); // F-6: the composite is kept live, typed by its 19 represented operands...
+    expect(expr.type).toBe("MONEY");
+    expect(inferType(expr)).toBe(UNSUPPORTED_TYPE); // ...but the whole is still non-executable - type safety is not weakened
+    expect(definition.sufficiency).toBe("PARTIAL"); // the model's COMPLETE claim is downgraded, never honored
+    expect((expr as { operands: unknown[] }).operands).toHaveLength(20); // the unsupported clause stays in place, visible
     const result = checkIntraDefinitionComponentCompleteness(expr);
     expect(result.applicable).toBe(true);
     expect(result.unsupportedComponentCount).toBe(1);
@@ -130,7 +146,9 @@ describe("Unit A (S1-S20) - dense multi-clause synthetic definition matrix", () 
       then: { kind: "PERCENT", value: 0.05 },
       else: unsupported("nested tier logic beyond this point could not be resolved"),
     });
-    expect(expr.kind).toBe("UNSUPPORTED");
+    expect(expr.kind).toBe("IF"); // F-6: the grid keeps its condition and good branch live; the poisoned branch stays in place
+    expect(expr.type).toBe("PERCENT");
+    expect(inferType(expr)).toBe(UNSUPPORTED_TYPE);
     const result = checkIntraDefinitionComponentCompleteness(expr);
     expect(result.applicable).toBe(true);
     expect(result.unsupportedComponentCount).toBe(1); // exactly the one poisoned "else" branch
@@ -160,7 +178,9 @@ describe("Unit A (S1-S20) - dense multi-clause synthetic definition matrix", () 
 
   it("S12 (multi-clause SUBTRACT poisoned): the exact real-holdout 'SUBTRACT operands do not type-check together' shape preserves the good side", () => {
     const expr = compile({ kind: "SUBTRACT", left: metric("Synthetic Base"), right: unsupported("this exclusion category could not be resolved") });
-    expect(expr.kind).toBe("UNSUPPORTED");
+    expect(expr.kind).toBe("SUBTRACT"); // F-6: kept live, typed MONEY from its represented left side
+    expect(expr.type).toBe("MONEY");
+    expect(inferType(expr)).toBe(UNSUPPORTED_TYPE);
     const result = checkIntraDefinitionComponentCompleteness(expr);
     expect(result.unsupportedComponentCount).toBe(1);
     expect(result.wellTypedComponentCount).toBeGreaterThanOrEqual(1); // the SUBTRACT node itself + the well-typed left operand survive
@@ -172,9 +192,10 @@ describe("Unit A (S1-S20) - dense multi-clause synthetic definition matrix", () 
     for (let i = 1; i <= 9; i++) operands.push(metric(`Clause ${i}`));
     operands.push({ kind: "MULTIPLY", operands: [{ kind: "PERCENT", value: 0.1 }, unsupported("nested base metric unresolved")] });
     const expr = compile({ kind: "ADD", operands });
-    expect(expr.kind).toBe("UNSUPPORTED");
+    expect(expr.kind).toBe("ADD"); // F-6: the outer ADD is kept live (9 typed siblings agree on MONEY)
+    expect(inferType(expr)).toBe(UNSUPPORTED_TYPE);
     const result = checkIntraDefinitionComponentCompleteness(expr);
-    // The diagnostic recurses into a nested UNSUPPORTED node's own attemptedStructure (docs/final-semantic-decomposition/03's own fix) rather than treating it as one opaque leaf - so the poisoned MULTIPLY itself (1) plus its own genuinely-unsupported leaf child (1) both count, while its OWN well-typed PERCENT operand also surfaces as visible structure. Exactly 2 unsupported (the wrapper + the true leaf cause), never fanning out to swallow the 9 well-typed siblings.
+    // The nested MULTIPLY(PERCENT, UNSUPPORTED) has no typed dimension of its own (a percent is only a scaling factor), so it still collapses to an UNSUPPORTED wrapper with its attempt preserved - the diagnostic recurses into that sidecar rather than treating it as one opaque leaf: the poisoned MULTIPLY wrapper (1) plus its genuinely-unsupported leaf child (1) both count, while its OWN well-typed PERCENT operand also surfaces as visible structure. Exactly 2 unsupported, never fanning out to swallow the 9 well-typed siblings.
     expect(result.unsupportedComponentCount).toBe(2);
     expect(result.wellTypedComponentCount).toBeGreaterThanOrEqual(9); // the 9 sibling clauses all survive
     expect(result.totalComponentCount).toBe(result.wellTypedComponentCount + result.unsupportedComponentCount);
@@ -217,18 +238,30 @@ describe("Unit A (S1-S20) - dense multi-clause synthetic definition matrix", () 
     };
     const runA = buildWith("Zorbex Consolidated Metric", 3);
     const runB = buildWith("Quintessential Widget Adjustment", 11);
+    expect(runA.applicable).toBe(true);
+    expect(runB.applicable).toBe(true);
     expect(runA.unsupportedComponentCount).toBe(1);
     expect(runB.unsupportedComponentCount).toBe(1);
     expect(runA.wellTypedComponentCount).toBe(runB.wellTypedComponentCount); // identical shape -> identical counts, regardless of term name or which position the failure is at
     expect(runA.totalComponentCount).toBe(runB.totalComponentCount);
   });
 
-  it("S20 (type safety is never weakened): the top-level UNSUPPORTED node's own `type` field stays null regardless of how much well-typed structure attemptedStructure preserves - never becomes falsely executable", () => {
+  it("S20 (type safety is never weakened): however much well-typed structure a partial composite keeps, the whole never becomes executable, a COMPLETE claim over it is rejected, and the unsupported leaf's own `type` stays null", () => {
     const operands: WireExpression[] = [];
     for (let i = 1; i <= 30; i++) operands.push(metric(`Clause ${i}`));
     operands.push(unsupported("one clause failed"));
-    const expr = compile({ kind: "ADD", operands });
-    expect(expr.type).toBeNull();
-    expect(expr.kind).toBe("UNSUPPORTED");
+    const definition = compileDefinition({ kind: "ADD", operands }, "COMPLETE");
+    const expr = definition.calculationExpression!;
+    expect(expr.kind).toBe("ADD");
+    expect(inferType(expr)).toBe(UNSUPPORTED_TYPE); // 30 well-typed clauses never outvote one unsupported one
+    expect(definition.sufficiency).toBe("PARTIAL"); // normalization downgraded the model's COMPLETE claim
+    const leaf = (expr as { operands: { kind: string; type: unknown }[] }).operands[30]!;
+    expect(leaf.kind).toBe("UNSUPPORTED");
+    expect(leaf.type).toBeNull();
+    // A hand-asserted COMPLETE over the same tree is caught structurally by validate.ts (false completeness is a blocker), never silently accepted.
+    const report = validateDefinition({ ...definition, sufficiency: "COMPLETE" });
+    expect(report.ok).toBe(false);
+    expect(report.issues.some((i) => i.kind === "FALSE_COMPLETENESS")).toBe(true);
+    expect(validateDefinition(definition).ok).toBe(true); // declared PARTIAL, it is structurally sound
   });
 });

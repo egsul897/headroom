@@ -1,0 +1,437 @@
+{
+ "artifact": "F-7B.1 §21 paid rerun of the exact five F-7B Stage-1 shards (same plan / hashes / source / inventory / context / model / prompt / tool policy; only the transport normalizer differs)",
+ "gitSha": "903d24dc1de2bd5c8682798828845c3952ba6b36",
+ "rerunShardIds": [
+  "shard:4f06625557e9aecbbb7a",
+  "shard:1c29e71eef1717d4f9e1",
+  "shard:3e3910ea2efd9edd45a3",
+  "shard:aac727054a5da5f1a9fd",
+  "shard:bf3da01cb454860cdf5f"
+ ],
+ "sameShardIdsAsOriginal": true,
+ "sameShardHashes": true,
+ "paidTurns": 18,
+ "paidCostUsd": 2.7197,
+ "capUsd": 3.25,
+ "refusals": [],
+ "gatewayBalanceBefore": "29.087466",
+ "gatewayBalanceAfterOriginalF7B": "26.455292",
+ "gatewayBalanceAfterRerun": "23.735636",
+ "records": [
+  {
+   "shardId": "shard:1c29e71eef1717d4f9e1",
+   "shardHash": "85cd3fe537a3657f61009c524910ba6bac773fc01343a89fdfc31b58025d6f06",
+   "ordinal": 2,
+   "oversized": false,
+   "turns": 4,
+   "inputTokens": 169289,
+   "outputTokens": 36307,
+   "maxSingleTurnInputTokens": 54617,
+   "maxSingleTurnOutputTokens": 15299,
+   "latencyMs": 338024,
+   "costUsd": 0.7016,
+   "toolCalls": 6,
+   "toolCallNames": [
+    "getDefinition",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getDefinition",
+    "getChildren"
+   ],
+   "transportDecodingFired": false,
+   "decodedFields": [],
+   "schemaResult": "ACCEPTED",
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED",
+    "TRUNCATED_EVIDENCE_USED"
+   ],
+   "ownedItems": 11,
+   "ownedMaterialItems": 11,
+   "represented": 9,
+   "dispositioned": 2,
+   "missingMaterial": 0,
+   "byDisposition": {
+    "REPRESENTED": 9,
+    "INTENTIONALLY_NON_COMPUTATIONAL": 1,
+    "UNSUPPORTED": 1
+   },
+   "valuesRepresented": 14,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "lineageClaimsOnUnownedItems": 0,
+   "rules": 0,
+   "definitions": 6,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 1,
+   "definitionsOutsideOwnedUnits": [
+    {
+     "term": "Asset Sale Prepayment Event",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    },
+    {
+     "term": "Asset Sale Proceeds Application Period",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    },
+    {
+     "term": "Available Amount",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    }
+   ],
+   "unresolvedContext": 1,
+   "contextEntries": 8
+  },
+  {
+   "shardId": "shard:bf3da01cb454860cdf5f",
+   "shardHash": "681651c0752343da54ae800cd818a0c263f2a2782d6e1cab8cc313f76cca0702",
+   "ordinal": 17,
+   "oversized": false,
+   "turns": 3,
+   "inputTokens": 105796,
+   "outputTokens": 25281,
+   "maxSingleTurnInputTokens": 39328,
+   "maxSingleTurnOutputTokens": 17501,
+   "latencyMs": 225025,
+   "costUsd": 0.4644,
+   "toolCalls": 3,
+   "toolCallNames": [
+    "getReferencedProvision",
+    "getDefinition",
+    "getDefinition"
+   ],
+   "transportDecodingFired": false,
+   "decodedFields": [],
+   "schemaResult": "ACCEPTED",
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED",
+    "TRUNCATED_EVIDENCE_USED"
+   ],
+   "ownedItems": 8,
+   "ownedMaterialItems": 8,
+   "represented": 6,
+   "dispositioned": 1,
+   "missingMaterial": 1,
+   "byDisposition": {
+    "REPRESENTED": 6,
+    "MISSING_FROM_COMPOSITION": 1,
+    "UNSUPPORTED": 1
+   },
+   "valuesRepresented": 9,
+   "valuesMissing": 1,
+   "danglingLineage": 0,
+   "lineageClaimsOnUnownedItems": 0,
+   "rules": 0,
+   "definitions": 22,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 8,
+   "definitionsOutsideOwnedUnits": [
+    {
+     "term": "Existing Liens",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    },
+    {
+     "term": "Expected Run Rate Benefit",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    },
+    {
+     "term": "FCPA",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    },
+    {
+     "term": "FILO Tranche",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    },
+    {
+     "term": "First Commitment Application Period",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    },
+    {
+     "term": "Fixed Amounts",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    }
+   ],
+   "unresolvedContext": 2,
+   "contextEntries": 6
+  },
+  {
+   "shardId": "shard:aac727054a5da5f1a9fd",
+   "shardHash": "9943af75025bd8550567628dd359394b6aba3cbadb767a1f228a30638fef3078",
+   "ordinal": 21,
+   "oversized": false,
+   "turns": 4,
+   "inputTokens": 104723,
+   "outputTokens": 12723,
+   "maxSingleTurnInputTokens": 28542,
+   "maxSingleTurnOutputTokens": 10316,
+   "latencyMs": 107643,
+   "costUsd": 0.3367,
+   "toolCalls": 9,
+   "toolCallNames": [
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getDefinition",
+    "getChildren",
+    "getChildren",
+    "getSourceSpan",
+    "getSourceSpan",
+    "getSourceSpan"
+   ],
+   "transportDecodingFired": false,
+   "decodedFields": [],
+   "schemaResult": "ACCEPTED",
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED"
+   ],
+   "ownedItems": 0,
+   "ownedMaterialItems": 0,
+   "represented": 0,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "byDisposition": {},
+   "valuesRepresented": 0,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "lineageClaimsOnUnownedItems": 0,
+   "rules": 0,
+   "definitions": 21,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "definitionsOutsideOwnedUnits": [
+    {
+     "term": "LCT Election",
+     "nestedInOwnShardText": false,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": true,
+     "notFoundAsQuotedTerm": false
+    },
+    {
+     "term": "LCT Test Date",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    },
+    {
+     "term": "Loan Modification Offer",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    },
+    {
+     "term": "Market Convention Rate",
+     "nestedInOwnShardText": false,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": true,
+     "notFoundAsQuotedTerm": false
+    },
+    {
+     "term": "Master Agreement",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    }
+   ],
+   "unresolvedContext": 0,
+   "contextEntries": 1
+  },
+  {
+   "shardId": "shard:4f06625557e9aecbbb7a",
+   "shardHash": "f1b437e22ee07474adbce6cb0f9ab25ceb36ca10847253c797fce0f3af206cf5",
+   "ordinal": 26,
+   "oversized": true,
+   "turns": 2,
+   "inputTokens": 75051,
+   "outputTokens": 32562,
+   "maxSingleTurnInputTokens": 41722,
+   "maxSingleTurnOutputTokens": 24896,
+   "latencyMs": 294248,
+   "costUsd": 0.4757,
+   "toolCalls": 2,
+   "toolCallNames": [
+    "getDefinition",
+    "getDefinition"
+   ],
+   "transportDecodingFired": false,
+   "decodedFields": [],
+   "schemaResult": "ACCEPTED",
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED"
+   ],
+   "ownedItems": 6,
+   "ownedMaterialItems": 6,
+   "represented": 5,
+   "dispositioned": 0,
+   "missingMaterial": 1,
+   "byDisposition": {
+    "MISSING_FROM_COMPOSITION": 1,
+    "REPRESENTED": 5
+   },
+   "valuesRepresented": 8,
+   "valuesMissing": 1,
+   "danglingLineage": 0,
+   "lineageClaimsOnUnownedItems": 0,
+   "rules": 11,
+   "definitions": 2,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "definitionsOutsideOwnedUnits": [
+    {
+     "term": "Permitted Ratio Debt",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    }
+   ],
+   "unresolvedContext": 1,
+   "contextEntries": 7
+  },
+  {
+   "shardId": "shard:3e3910ea2efd9edd45a3",
+   "shardHash": "183134ad7785f161b0d350297d89603860aada6016bbf04609fc1dd0c172957f",
+   "ordinal": 27,
+   "oversized": false,
+   "turns": 5,
+   "inputTokens": 182224,
+   "outputTokens": 37676,
+   "maxSingleTurnInputTokens": 49240,
+   "maxSingleTurnOutputTokens": 19678,
+   "latencyMs": 346087,
+   "costUsd": 0.7412,
+   "toolCalls": 10,
+   "toolCallNames": [
+    "getReferencedProvision",
+    "getDefinition",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getChildren",
+    "getOperativeProvision",
+    "getReferencedProvision",
+    "getDefinition"
+   ],
+   "transportDecodingFired": false,
+   "decodedFields": [],
+   "schemaResult": "ACCEPTED",
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED",
+    "TRUNCATED_EVIDENCE_USED"
+   ],
+   "ownedItems": 3,
+   "ownedMaterialItems": 3,
+   "represented": 3,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "byDisposition": {
+    "REPRESENTED": 3
+   },
+   "valuesRepresented": 4,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "lineageClaimsOnUnownedItems": 0,
+   "rules": 0,
+   "definitions": 23,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 3,
+   "definitionsOutsideOwnedUnits": [
+    {
+     "term": "Planned Expenditures",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    },
+    {
+     "term": "Platform",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    },
+    {
+     "term": "Transaction Threshold",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    },
+    {
+     "term": "Annual Threshold",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    },
+    {
+     "term": "Pro Forma Basis",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    },
+    {
+     "term": "Pro Forma Compliance",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    },
+    {
+     "term": "Proposed Change",
+     "nestedInOwnShardText": true,
+     "isAnotherShardsUnit": false,
+     "definedElsewhereInDocument": false,
+     "notFoundAsQuotedTerm": false
+    }
+   ],
+   "unresolvedContext": 2,
+   "contextEntries": 3
+  }
+ ]
+}

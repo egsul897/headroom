@@ -1,0 +1,22 @@
+{
+ "artifact": "F-7B.1 §26 original failed Stage 1 vs rerun",
+ "original": {
+  "costUsd": 2.6322,
+  "turns": 17,
+  "peakSingleTurnInput": 49649,
+  "peakOutputPerShard": 42224,
+  "aggregateInput": 633487,
+  "aggregateOutput": 136520,
+  "schemaFailures": 5
+ },
+ "rerun": {
+  "costUsd": 2.7197,
+  "turns": 18,
+  "peakSingleTurnInput": 54617,
+  "peakOutputPerShard": 37676,
+  "aggregateInput": 637083,
+  "aggregateOutput": 144549,
+  "schemaFailures": 0
+ },
+ "note": "cost/window differences are not architecture-quality signals; the critical question is whether valid semantic output survives the wire boundary"
+}

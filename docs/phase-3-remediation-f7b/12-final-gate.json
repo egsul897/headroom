@@ -1,0 +1,155 @@
+{
+ "artifact": "F-7B §25 closure gate",
+ "at": "2026-09-14T13:02:24.775Z",
+ "gitSha": "0cdfcf26ebb19b0a3ff59c8cb31f35f7e140610b",
+ "startingSha": "8b6bd445ae56bb6d66406706d76b45a83ac690be",
+ "gate": [
+  {
+   "n": 1,
+   "req": "frozen 36-shard plan executed without architectural modification",
+   "value": {
+    "allShardsTerminal": false,
+    "productionDiffSinceStart": "(none)"
+   },
+   "pass": false
+  },
+  {
+   "n": 2,
+   "req": "Stage 1 passed before Stage 2 spend",
+   "value": {
+    "stage1AllPass": false,
+    "stage2Calls": 0
+   },
+   "pass": false
+  },
+  {
+   "n": 3,
+   "req": "per-shard bounded input works in reality",
+   "value": {
+    "envelopeViolations": [],
+    "maxSingleTurnNormal": 49649
+   },
+   "pass": true
+  },
+  {
+   "n": 4,
+   "req": "no normal shard recreates the monolithic window problem",
+   "value": {
+    "peakInputReduction": 0.8409,
+    "nearCeilingOutput": [],
+    "truncated": []
+   },
+   "pass": true
+  },
+  {
+   "n": 5,
+   "req": "owned material semantics conservatively accounted",
+   "value": {
+    "rate": 0,
+    "missing": 108,
+    "passCListsEveryMaterialItem": true
+   },
+   "pass": false
+  },
+  {
+   "n": 6,
+   "req": "global Pass C remains completeness authority",
+   "value": {
+    "stitchedStatus": "FAILED",
+    "semanticallyComplete": false,
+    "failureReasons": [
+     "PROVIDER_FAILURE",
+     "SHARD_INCOMPLETE",
+     "MODEL_SCHEMA_FAILURE",
+     "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+     "PARTIAL_COMPILATION"
+    ]
+   },
+   "pass": true
+  },
+  {
+   "n": 7,
+   "req": "stitching loses zero values",
+   "value": 0,
+   "pass": true
+  },
+  {
+   "n": 8,
+   "req": "no dangling refs introduced by stitching",
+   "value": 0,
+   "pass": true
+  },
+  {
+   "n": 9,
+   "req": "partial/provider failures remain explicit and isolated",
+   "value": {
+    "shardStatuses": {
+     "NOT_EXECUTED": 31,
+     "SHARD_SCHEMA_FAILURE": 5
+    },
+    "nonCompleteExplicit": 36,
+    "unresolvedOwnedItems": 108,
+    "hiddenFailedShards": 0
+   },
+   "pass": true
+  },
+  {
+   "n": 10,
+   "req": "retry/cache isolation works",
+   "value": {
+    "reusedByHash": 0,
+    "sourceChangeOwnerInvalidated": true,
+    "unrelatedReusable": 0,
+    "inventoryChangeAll": true,
+    "mockTests": true
+   },
+   "pass": true
+  },
+  {
+   "n": 11,
+   "req": "no dangerous silent omission",
+   "value": 0,
+   "pass": true
+  },
+  {
+   "n": 12,
+   "req": "no false completeness",
+   "value": 0,
+   "pass": true
+  },
+  {
+   "n": 13,
+   "req": "no source-unverifiable IR survives",
+   "value": 0,
+   "pass": true
+  },
+  {
+   "n": 14,
+   "req": "total cost <= $15.00",
+   "value": 2.6322,
+   "pass": true
+  },
+  {
+   "n": 15,
+   "req": "sharding operationally viable for this real large unfamiliar unit (every shard reached a terminal state; the failed monolithic unit now yields a stitched IR with explicit accountability)",
+   "value": {
+    "allShardsTerminal": false,
+    "stitchedDefinitions": 0,
+    "stitchedRules": 0,
+    "materialAccounted": 0,
+    "providerFailures": 0
+   },
+   "pass": false
+  },
+  {
+   "n": 16,
+   "req": "F-3/F-4/F-5/F-6 unchanged",
+   "value": "(no production diff)",
+   "pass": true
+  }
+ ],
+ "gatePointsMet": 12,
+ "trustViolated": false,
+ "verdictBeforeActivationDecision": "F7_NEEDS_ARCHITECTURAL_ITERATION",
+ "note": "F7_CLOSED vs F7_CANARY_PASSED_ACTIVATION_PENDING is decided in the README after the §26 activation analysis; this file records the gate arithmetic only"
+}

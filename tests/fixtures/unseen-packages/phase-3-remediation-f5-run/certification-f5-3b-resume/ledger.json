@@ -1,0 +1,132 @@
+{
+  "attempt": "cert-pass-2-attempt-2",
+  "cap": 4.5,
+  "spent": 3.3013040000000005,
+  "calls": [
+    {
+      "n": 1,
+      "stage": "cert-pass-2-attempt-2:semantic_inventory",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 11487,
+      "outputTokens": 43800,
+      "costUsd": 0.46097400000000005,
+      "estimatedBeforeCallUsd": 0.175036,
+      "at": "2026-09-10T14:59:53.567Z"
+    },
+    {
+      "n": 2,
+      "stage": "cert-pass-2-attempt-2:semantic_inventory",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 12113,
+      "outputTokens": 43631,
+      "costUsd": 0.46053600000000006,
+      "estimatedBeforeCallUsd": 0.17575000000000002,
+      "at": "2026-09-10T15:05:14.453Z"
+    },
+    {
+      "n": 3,
+      "stage": "cert-pass-2-attempt-2:semantic_inventory",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 11201,
+      "outputTokens": 31340,
+      "costUsd": 0.335802,
+      "estimatedBeforeCallUsd": 0.175034,
+      "at": "2026-09-10T15:09:05.521Z"
+    },
+    {
+      "n": 4,
+      "stage": "cert-pass-2-attempt-2:semantic_inventory",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 11799,
+      "outputTokens": 47819,
+      "costUsd": 0.501788,
+      "estimatedBeforeCallUsd": 0.175732,
+      "at": "2026-09-10T15:15:01.353Z"
+    },
+    {
+      "n": 5,
+      "stage": "cert-pass-2-attempt-2:semantic_inventory",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 12148,
+      "outputTokens": 38057,
+      "costUsd": 0.404866,
+      "estimatedBeforeCallUsd": 0.175964,
+      "at": "2026-09-10T15:19:45.041Z"
+    },
+    {
+      "n": 6,
+      "stage": "cert-pass-2-attempt-2:semantic_inventory",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 11623,
+      "outputTokens": 47116,
+      "costUsd": 0.494406,
+      "estimatedBeforeCallUsd": 0.175484,
+      "at": "2026-09-10T15:25:46.065Z"
+    },
+    {
+      "n": 7,
+      "stage": "cert-pass-2-attempt-2:semantic_inventory",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 8812,
+      "outputTokens": 16789,
+      "costUsd": 0.185514,
+      "estimatedBeforeCallUsd": 0.17152,
+      "at": "2026-09-10T15:27:56.461Z"
+    },
+    {
+      "n": 8,
+      "stage": "cert-pass-2-attempt-2:semantic_inventory_gap",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 17119,
+      "outputTokens": 42318,
+      "costUsd": 0.45741800000000005,
+      "estimatedBeforeCallUsd": 0.183364,
+      "at": "2026-09-10T15:33:40.752Z"
+    }
+  ],
+  "refusals": [],
+  "failures": [],
+  "creditsBefore": {
+    "balance": 32.38877,
+    "totalUsed": 182.61123
+  },
+  "creditsAfter": {
+    "balance": 29.087466,
+    "totalUsed": 185.912534
+  },
+  "gatewayReportedSpendUsd": 3.3013039999999876,
+  "passIds": [
+    "cert-pass-1",
+    "cert-pass-2"
+  ],
+  "runD2Status": "INVENTORY_COVERAGE_GAP",
+  "ensemble": {
+    "built": true,
+    "passIds": [
+      "cert-pass-1",
+      "cert-pass-2"
+    ],
+    "compatibilityAdmitted": true,
+    "compatibilityFailures": [],
+    "orderIndependent": true,
+    "labelIndependent": true,
+    "frozenContentHash": "1dfe368a2f4dc6f0679f346742495d0f7a74968b41d38f0d9d4f0349124a992e",
+    "counts": {
+      "canonicalItems": 390,
+      "corroborated": 292,
+      "singleRun": 98,
+      "singleRunByPass": {
+        "cert-pass-1": 40,
+        "cert-pass-2": 58
+      },
+      "conflicted": 0,
+      "materialSingleRun": 98,
+      "informationalSingleRun": 0,
+      "materialConflicted": 0,
+      "rejectedUnverifiable": 0
+    },
+    "supportReviewFraction": 0.2513,
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+    "unaccountedSource": 21
+  }
+}

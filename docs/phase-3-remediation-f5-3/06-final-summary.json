@@ -1,0 +1,858 @@
+{
+ "artifact": "F-5.3A final summary - dual-pass semantic ensemble (canonical union + run provenance), zero-cost offline proof over the frozen F-5.1 pair",
+ "verdict": "F5_3A_DUAL_PASS_ARCHITECTURE_READY",
+ "verdictBasis": "all ten architecture-proof criteria hold on the frozen evidence: the support-aware canonical union retains every one of the 50/12/6/4/2/2 residual F/B/H/A/D/G propositions (45 F as explicit SINGLE_RUN, 5 as corroborated after canonicalization), adds 0 material source-unsupported items, merges 0 contradictory effects, recomputes coverage conservatively (33/32 -> 19 unaccounted stretches, all 19 gaps in BOTH runs; 10 A-gaps rescued by B-only semantics, 11 B-gaps by A-only), loses 0 values and 0 lineage, keeps frozen reference recall at 1.0, marks 114 singletons explicitly (112 material), never claims completeness, is byte-identical for Union(A,B) and Union(B,A), and is agreement-independent. This is an ARCHITECTURE PROOF, not F-5 certification; F-5 certification of the authoritative dual-pass output is the separate F-5.3B mission.",
+ "startingSha": "23bb5e7fdc8071297ddd4279e2d003a392bcf6e3",
+ "paidCalls": 0,
+ "paidSpendUsd": 0.0,
+ "providerAccess": "none",
+ "frozenHashes": {
+  "runA": "59b5a267e24b8fadd5c9e7be6a8a31a8ace97936c125a8f0bb320aa95c4fd24c",
+  "runB": "f7f7ad18b8839fe8e41d269e1efb24a621de061684beb578578c11f27d9e9b77",
+  "pair": "384e3595ea702dccb21dddeb902245434a21a10bfc4f039f85924e72ddc7c7e1",
+  "decomposition": "b8fb49623805cba6870b5b70f3b20c34e0a56df0df6260779a59f4c2f27bd1f6",
+  "canonicalScorer": "87fb312348f13dc1c4e42ba89eccee23e2ab2cc8ed915d6f9a0e87a0de4eb062",
+  "legacyScorer": "1ff775b54aa91e967e4339ce7c193f559073e667627e9df74f70164e8bd18988",
+  "referenceScorer": "dc9658c24a173df6d93aadc732c6426705f14cd3e48850656ac920347f667c1b",
+  "humanReference": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036",
+  "source": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+  "unit": "fc147145c2db7df77bfb7122b8442d3fe21f5645b5c4782b791ffa942c8b750c",
+  "semanticFunctions": "ebd54796670bb0ae6e6499464cfd1c347a0bc5073c504ec0ca7d0bf398ea92a3",
+  "inventory": "bebb28fa4e79d51240de6cbd82f5d943330c50455a159606668a322745e042c7",
+  "slots": "3b6d8a5e78cff528ccfb8b71f0ab21c023ec1bd46d3b9265a0a9cd8ad04ca67c",
+  "sourceCoverage": "7c0c3e0e7272d50596ade36716f5fcac4856ecf04d6158495baf71a96ad7f5f2",
+  "f52aFinalSummary": "b2f972e7b07a08cc3a2e296750b4510fc01ce369ab2ba127bc1d71aab2d2b51d",
+  "f52aGate": "3cdf3794e81acef3fe91f53f4eef6914755e7b193f0065541155f4011db3f08d"
+ },
+ "policies": {
+  "INTERSECTION_ONLY": {
+   "items": 282,
+   "material": 279
+  },
+  "RAW_UNION": {
+   "items": 377,
+   "material": 368,
+   "note": "exact-id union of both passes without canonicalization: overlapping descriptions of one proposition are kept twice"
+  },
+  "SUPPORT_AWARE_CANONICAL_UNION": {
+   "items": 396,
+   "material": 391
+  }
+ },
+ "ensemble": {
+  "counts": {
+   "canonicalItems": 396,
+   "corroborated": 282,
+   "singleRun": 114,
+   "singleRunByPass": {
+    "pass-1": 70,
+    "pass-2": 44
+   },
+   "conflicted": 0,
+   "materialSingleRun": 112,
+   "informationalSingleRun": 2,
+   "materialConflicted": 0,
+   "rejectedUnverifiable": 0
+  },
+  "supportReviewRequired": true,
+  "supportReviewFraction": 0.2828,
+  "conflicts": [],
+  "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+  "inventoryStatusReason": "396 canonical item(s) from 2 independent passes: 282 corroborated, 114 single-run (112 CRITICAL/MATERIAL), 0 conflicted; 19 stretch(es) of source remain UNACCOUNTED_SOURCE after the union - accountability for that text is not established by either pass; 112 CRITICAL/MATERIAL item(s) carry support asymmetry or conflict - REVIEW_REQUIRED unless independently resolved later",
+  "frozenContentHash": "6f648e724520fdc9071c93d80860a5dbb37b5c03f9ae939a16ce2983b3e6d8ed",
+  "algorithmVersion": "semantic-accountability.v5+semantic-ensemble.v1",
+  "itemsA": 352,
+  "itemsB": 326
+ },
+ "reviewBurden": {
+  "totalCanonical": 396,
+  "corroborated": 282,
+  "singletonA": 70,
+  "singletonB": 44,
+  "conflicted": 0,
+  "materialSingleton": 112,
+  "informationalSingleton": 2,
+  "materialConflicted": 0,
+  "percentRequiringSupportReview": 28.28
+ },
+ "recovery": {
+  "F": {
+   "total": 50,
+   "intersectionOnly": 0.1,
+   "rawUnion": 1,
+   "canonicalUnion": 1,
+   "collapsedWithCounterpart": 5,
+   "singleRun": 45,
+   "corroborated": 5,
+   "conflicted": 0,
+   "valuesPreserved": 50,
+   "laterReviewRequired": 45
+  },
+  "B": {
+   "total": 12,
+   "intersectionOnly": 0,
+   "rawUnion": 1,
+   "canonicalUnion": 1,
+   "collapsedWithCounterpart": 0,
+   "singleRun": 12,
+   "corroborated": 0,
+   "conflicted": 0,
+   "valuesPreserved": 12,
+   "laterReviewRequired": 12
+  },
+  "H": {
+   "total": 6,
+   "intersectionOnly": 0,
+   "rawUnion": 1,
+   "canonicalUnion": 1,
+   "collapsedWithCounterpart": 0,
+   "singleRun": 6,
+   "corroborated": 0,
+   "conflicted": 0,
+   "valuesPreserved": 6,
+   "laterReviewRequired": 5
+  },
+  "A": {
+   "total": 4,
+   "intersectionOnly": 0,
+   "rawUnion": 1,
+   "canonicalUnion": 1,
+   "collapsedWithCounterpart": 0,
+   "singleRun": 4,
+   "corroborated": 0,
+   "conflicted": 0,
+   "valuesPreserved": 4,
+   "laterReviewRequired": 4
+  },
+  "D": {
+   "total": 2,
+   "intersectionOnly": 0,
+   "rawUnion": 1,
+   "canonicalUnion": 1,
+   "collapsedWithCounterpart": 0,
+   "singleRun": 2,
+   "corroborated": 0,
+   "conflicted": 0,
+   "valuesPreserved": 2,
+   "laterReviewRequired": 2
+  },
+  "G": {
+   "total": 2,
+   "intersectionOnly": 0.5,
+   "rawUnion": 1,
+   "canonicalUnion": 1,
+   "collapsedWithCounterpart": 1,
+   "singleRun": 1,
+   "corroborated": 1,
+   "conflicted": 0,
+   "valuesPreserved": 2,
+   "laterReviewRequired": 0
+  }
+ },
+ "falseAdditions": {
+  "unionItemsBeyondIntersection": 114,
+  "byClass": {
+   "A_GENUINE_SOURCE_SEMANTICS_OMITTED_BY_OTHER_PASS": 103,
+   "C_SOURCE_VERIFIED_UNCERTAIN": 10,
+   "C_INFORMATIONAL_SOURCE_VERIFIED": 1
+  },
+  "granularityEquivalentsCanonicalized": {
+   "passItemsAbsorbedIntoCorroboratedItems": {
+    "pass-1": 282,
+    "pass-2": 282
+   },
+   "corroboratedCanonicalItems": 282
+  },
+  "unsupportedAdditions": {
+   "material": 0,
+   "informational": 0,
+   "rejectedUnverifiable": 0
+  },
+  "materialUnsupportedAdditions": 0
+ },
+ "coverage": {
+  "A": {
+   "unaccountedSegments": 33,
+   "accountedCharFraction": 0.9774,
+   "uninventoriedValues": 0
+  },
+  "B": {
+   "unaccountedSegments": 32,
+   "accountedCharFraction": 0.9766,
+   "uninventoriedValues": 0
+  },
+  "union": {
+   "unaccountedSegments": 19,
+   "accountedCharFraction": 0.9947,
+   "uninventoriedValues": 0,
+   "status": "INVENTORY_COVERAGE_GAP",
+   "countsByDisposition": {
+    "COVERED_BY_INVENTORY": 308,
+    "COVERED_BY_CHILD_DESCENT": 1,
+    "COVERED_BY_CONNECTIVE_OWNERSHIP": 0,
+    "ACCOUNTED_BY_EXTERNAL_UNIT": 0,
+    "STRUCTURAL_NOISE": 25,
+    "HEADING_OR_LABEL": 1,
+    "CITATION_ONLY": 1,
+    "DEFINED_TERM_LABEL": 0,
+    "PUNCTUATION_OR_DELIMITER": 304,
+    "NON_SEMANTIC_FORMATTING": 7,
+    "UNACCOUNTED_SOURCE": 19
+   }
+  },
+  "gapsInBothRunsStillGap": 19,
+  "gapsInBothRunsResolvedByUnion": 0,
+  "aGapsRescuedByBOnlySemantics": 10,
+  "bGapsRescuedByAOnlySemantics": 11,
+  "aGapsStillGap": 19,
+  "bGapsStillGap": 19,
+  "unionGapNotInEitherRun": 0
+ },
+ "preservation": {
+  "valuesLost": [],
+  "valuesLostCount": 0,
+  "lineage": {
+   "parentLinksA": 283,
+   "parentLinksB": 246,
+   "parentLinksUnion": 317,
+   "unionParentLinksResolvingToUnionItems": 317,
+   "danglingUnionParents": 0,
+   "memberIdsPreserved": true,
+   "passItemsAccountedFor": {
+    "pass-1": 352,
+    "pass-2": 326
+   }
+  },
+  "contradictoryEffectMerges": 0
+ },
+ "orderIndependence": {
+  "unionAB_equals_unionBA": true,
+  "hashAB": "6f648e724520fdc9071c93d80860a5dbb37b5c03f9ae939a16ce2983b3e6d8ed",
+  "hashBA": "6f648e724520fdc9071c93d80860a5dbb37b5c03f9ae939a16ce2983b3e6d8ed"
+ },
+ "referenceRecallByPolicy": {
+  "INTERSECTION_ONLY": {
+   "items": 282,
+   "discoveryRecall": 1.0,
+   "criticalMaterialRecall": 1.0,
+   "quantitativeRecall": 0.9333,
+   "conditionExceptionRecall": 1.0,
+   "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+  },
+  "RAW_UNION": {
+   "items": 377,
+   "discoveryRecall": 1.0,
+   "criticalMaterialRecall": 1.0,
+   "quantitativeRecall": 1.0,
+   "conditionExceptionRecall": 1.0,
+   "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+  },
+  "SUPPORT_AWARE_CANONICAL_UNION": {
+   "items": 396,
+   "discoveryRecall": 1.0,
+   "criticalMaterialRecall": 1.0,
+   "quantitativeRecall": 1.0,
+   "conditionExceptionRecall": 1.0,
+   "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+  },
+  "runA": {
+   "items": 352,
+   "discoveryRecall": 1.0,
+   "criticalMaterialRecall": 1.0,
+   "quantitativeRecall": 1.0,
+   "conditionExceptionRecall": 1.0,
+   "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+  },
+  "runB": {
+   "items": 326,
+   "discoveryRecall": 1.0,
+   "criticalMaterialRecall": 1.0,
+   "quantitativeRecall": 1.0,
+   "conditionExceptionRecall": 1.0,
+   "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+  }
+ },
+ "cost": {
+  "unit": "Chewy 6.08 (38.5k chars, 335 slots, 7 batches + 1 gap call per run)",
+  "onePassUsd": {
+   "v5RunA": 3.4418,
+   "v5RunB": 3.436,
+   "mean": 3.4389
+  },
+  "dualPassUsd": 6.8777,
+  "incrementalUsd": 3.436,
+  "phase3ChewyPaidRun": {
+   "totalUsd": 13.9612,
+   "passARun1Usd": 4.2283,
+   "passARun2Usd": 1.9005,
+   "discoveryUsd": 4.6551,
+   "compileUsd": 2.8481,
+   "verifyUsd": 0.3293,
+   "passAShareOfTotalOnePass": 0.3506,
+   "secondPassAShareOfDualPassTotal": 0.2596,
+   "note": "the Phase 3 paid run already contained a second Pass A (stability run 2) for 3 units; the one-pass total excludes it and the dual-pass total adds one more Pass A of the run-1 size"
+  }
+ },
+ "historicalControls": [
+  {
+   "label": "chewy-6.08 v4 certification pair (migrated to v5 identity)",
+   "algorithm": [
+    "semantic-accountability.v5 (zero-cost migration of v4 evidence)",
+    "semantic-accountability.v5 (zero-cost migration of v4 evidence)"
+   ],
+   "itemsA": 375,
+   "itemsB": 378,
+   "canonical": 434,
+   "counts": {
+    "canonicalItems": 434,
+    "corroborated": 319,
+    "singleRun": 115,
+    "singleRunByPass": {
+     "pass-1": 56,
+     "pass-2": 59
+    },
+    "conflicted": 0,
+    "materialSingleRun": 112,
+    "informationalSingleRun": 3,
+    "materialConflicted": 0,
+    "rejectedUnverifiable": 0
+   },
+   "supportReviewFraction": 0.2581,
+   "conflicts": 0,
+   "contradictoryEffectMerges": 0,
+   "falseMergeCandidates": 4,
+   "valuesLost": 0,
+   "parentLinks": [
+    299,
+    296,
+    348
+   ],
+   "unaccounted": [
+    27,
+    18,
+    10
+   ],
+   "orderIndependent": true,
+   "rejectedUnverifiable": 0
+  },
+  {
+   "label": "chewy-6.08 v3 frozen pair (older algorithm; sensitivity)",
+   "algorithm": [
+    "semantic-accountability.v3",
+    "semantic-accountability.v3"
+   ],
+   "itemsA": 288,
+   "itemsB": 307,
+   "canonical": 376,
+   "counts": {
+    "canonicalItems": 376,
+    "corroborated": 214,
+    "singleRun": 162,
+    "singleRunByPass": {
+     "pass-1": 72,
+     "pass-2": 90
+    },
+    "conflicted": 0,
+    "materialSingleRun": 157,
+    "informationalSingleRun": 5,
+    "materialConflicted": 0,
+    "rejectedUnverifiable": 0
+   },
+   "supportReviewFraction": 0.4176,
+   "conflicts": 0,
+   "contradictoryEffectMerges": 0,
+   "falseMergeCandidates": 2,
+   "valuesLost": 0,
+   "parentLinks": [
+    158,
+    194,
+    209
+   ],
+   "unaccounted": [
+    68,
+    75,
+    55
+   ],
+   "orderIndependent": true,
+   "rejectedUnverifiable": 0
+  },
+  {
+   "label": "holdout region-applicable-liquidity-rate (v1; sensitivity)",
+   "algorithm": [
+    "semantic-accountability.v1",
+    "semantic-accountability.v1"
+   ],
+   "itemsA": 61,
+   "itemsB": 66,
+   "canonical": 73,
+   "counts": {
+    "canonicalItems": 73,
+    "corroborated": 54,
+    "singleRun": 19,
+    "singleRunByPass": {
+     "pass-1": 7,
+     "pass-2": 12
+    },
+    "conflicted": 0,
+    "materialSingleRun": 17,
+    "informationalSingleRun": 2,
+    "materialConflicted": 0,
+    "rejectedUnverifiable": 0
+   },
+   "supportReviewFraction": 0.2329,
+   "conflicts": 0,
+   "contradictoryEffectMerges": 0,
+   "falseMergeCandidates": 1,
+   "valuesLost": 0,
+   "parentLinks": [
+    52,
+    59,
+    65
+   ],
+   "unaccounted": [
+    0,
+    0,
+    67
+   ],
+   "orderIndependent": true,
+   "rejectedUnverifiable": 0
+  },
+  {
+   "label": "holdout region-ebitda (v1; sensitivity)",
+   "algorithm": [
+    "semantic-accountability.v1",
+    "semantic-accountability.v1"
+   ],
+   "itemsA": 53,
+   "itemsB": 55,
+   "canonical": 67,
+   "counts": {
+    "canonicalItems": 67,
+    "corroborated": 41,
+    "singleRun": 26,
+    "singleRunByPass": {
+     "pass-1": 12,
+     "pass-2": 14
+    },
+    "conflicted": 0,
+    "materialSingleRun": 26,
+    "informationalSingleRun": 0,
+    "materialConflicted": 0,
+    "rejectedUnverifiable": 0
+   },
+   "supportReviewFraction": 0.3881,
+   "conflicts": 0,
+   "contradictoryEffectMerges": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": 0,
+   "parentLinks": [
+    52,
+    54,
+    65
+   ],
+   "unaccounted": [
+    0,
+    0,
+    50
+   ],
+   "orderIndependent": true,
+   "rejectedUnverifiable": 0
+  },
+  {
+   "label": "holdout region-first-lien-debt (v1; sensitivity)",
+   "algorithm": [
+    "semantic-accountability.v1",
+    "semantic-accountability.v1"
+   ],
+   "itemsA": 37,
+   "itemsB": 28,
+   "canonical": 39,
+   "counts": {
+    "canonicalItems": 39,
+    "corroborated": 26,
+    "singleRun": 13,
+    "singleRunByPass": {
+     "pass-1": 11,
+     "pass-2": 2
+    },
+    "conflicted": 0,
+    "materialSingleRun": 13,
+    "informationalSingleRun": 0,
+    "materialConflicted": 0,
+    "rejectedUnverifiable": 0
+   },
+   "supportReviewFraction": 0.3333,
+   "conflicts": 0,
+   "contradictoryEffectMerges": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": 0,
+   "parentLinks": [
+    35,
+    26,
+    37
+   ],
+   "unaccounted": [
+    0,
+    0,
+    24
+   ],
+   "orderIndependent": true,
+   "rejectedUnverifiable": 0
+  },
+  {
+   "label": "holdout region-interest-expense (v1; sensitivity)",
+   "algorithm": [
+    "semantic-accountability.v1",
+    "semantic-accountability.v1"
+   ],
+   "itemsA": 73,
+   "itemsB": 59,
+   "canonical": 108,
+   "counts": {
+    "canonicalItems": 108,
+    "corroborated": 24,
+    "singleRun": 84,
+    "singleRunByPass": {
+     "pass-1": 49,
+     "pass-2": 35
+    },
+    "conflicted": 0,
+    "materialSingleRun": 81,
+    "informationalSingleRun": 3,
+    "materialConflicted": 0,
+    "rejectedUnverifiable": 0
+   },
+   "supportReviewFraction": 0.75,
+   "conflicts": 0,
+   "contradictoryEffectMerges": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": 0,
+   "parentLinks": [
+    70,
+    57,
+    103
+   ],
+   "unaccounted": [
+    0,
+    0,
+    43
+   ],
+   "orderIndependent": true,
+   "rejectedUnverifiable": 0
+  },
+  {
+   "label": "holdout region-net-income (v1; sensitivity)",
+   "algorithm": [
+    "semantic-accountability.v1",
+    "semantic-accountability.v1"
+   ],
+   "itemsA": 61,
+   "itemsB": 47,
+   "canonical": 72,
+   "counts": {
+    "canonicalItems": 72,
+    "corroborated": 36,
+    "singleRun": 36,
+    "singleRunByPass": {
+     "pass-1": 25,
+     "pass-2": 11
+    },
+    "conflicted": 0,
+    "materialSingleRun": 32,
+    "informationalSingleRun": 4,
+    "materialConflicted": 0,
+    "rejectedUnverifiable": 0
+   },
+   "supportReviewFraction": 0.4444,
+   "conflicts": 0,
+   "contradictoryEffectMerges": 0,
+   "falseMergeCandidates": 1,
+   "valuesLost": 0,
+   "parentLinks": [
+    60,
+    46,
+    71
+   ],
+   "unaccounted": [
+    0,
+    0,
+    34
+   ],
+   "orderIndependent": true,
+   "rejectedUnverifiable": 0
+  },
+  {
+   "label": "holdout region-secured-net-leverage (v1; sensitivity)",
+   "algorithm": [
+    "semantic-accountability.v1",
+    "semantic-accountability.v1"
+   ],
+   "itemsA": 15,
+   "itemsB": 14,
+   "canonical": 20,
+   "counts": {
+    "canonicalItems": 20,
+    "corroborated": 9,
+    "singleRun": 11,
+    "singleRunByPass": {
+     "pass-1": 6,
+     "pass-2": 5
+    },
+    "conflicted": 0,
+    "materialSingleRun": 11,
+    "informationalSingleRun": 0,
+    "materialConflicted": 0,
+    "rejectedUnverifiable": 0
+   },
+   "supportReviewFraction": 0.55,
+   "conflicts": 0,
+   "contradictoryEffectMerges": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": 0,
+   "parentLinks": [
+    13,
+    12,
+    18
+   ],
+   "unaccounted": [
+    0,
+    0,
+    13
+   ],
+   "orderIndependent": true,
+   "rejectedUnverifiable": 0
+  }
+ ],
+ "historicalControlsReading": "v4 (same source, migrated identity): 434 canonical, 0 conflicts, 0 contradictory merges, 0 values lost, 4 flagged merges all inspected as correct (same citation with/without 'hereof', same proviso lead-in, same 1.75:1.00 branch), unaccounted 27/18 -> 10. v3 (older algorithm, sensitivity): 376 canonical, review 0.418, 0 conflicts, 2 flagged merges inspected as correct, unaccounted 68/75 -> 55. v1 holdout regions (sensitivity, segment-fallback slots, records predate coverage so their own unaccounted counts read 0): 0 conflicts, 0 contradictory merges, 0 values lost, review 0.23-0.75; one flagged merge each in two regions (an enumerated exception wrapper with/without its enumerator; a proviso with a different end) - correct merges.",
+ "gate": {
+  "1_canonicalUnionRecoversAllGenuineOmissionSemantics": {
+   "pass": true,
+   "F": {
+    "total": 50,
+    "intersectionOnly": 0.1,
+    "rawUnion": 1,
+    "canonicalUnion": 1,
+    "collapsedWithCounterpart": 5,
+    "singleRun": 45,
+    "corroborated": 5,
+    "conflicted": 0,
+    "valuesPreserved": 50,
+    "laterReviewRequired": 45
+   },
+   "B": {
+    "total": 12,
+    "intersectionOnly": 0,
+    "rawUnion": 1,
+    "canonicalUnion": 1,
+    "collapsedWithCounterpart": 0,
+    "singleRun": 12,
+    "corroborated": 0,
+    "conflicted": 0,
+    "valuesPreserved": 12,
+    "laterReviewRequired": 12
+   },
+   "H": {
+    "total": 6,
+    "intersectionOnly": 0,
+    "rawUnion": 1,
+    "canonicalUnion": 1,
+    "collapsedWithCounterpart": 0,
+    "singleRun": 6,
+    "corroborated": 0,
+    "conflicted": 0,
+    "valuesPreserved": 6,
+    "laterReviewRequired": 5
+   },
+   "A": {
+    "total": 4,
+    "intersectionOnly": 0,
+    "rawUnion": 1,
+    "canonicalUnion": 1,
+    "collapsedWithCounterpart": 0,
+    "singleRun": 4,
+    "corroborated": 0,
+    "conflicted": 0,
+    "valuesPreserved": 4,
+    "laterReviewRequired": 4
+   },
+   "D": {
+    "total": 2,
+    "intersectionOnly": 0,
+    "rawUnion": 1,
+    "canonicalUnion": 1,
+    "collapsedWithCounterpart": 0,
+    "singleRun": 2,
+    "corroborated": 0,
+    "conflicted": 0,
+    "valuesPreserved": 2,
+    "laterReviewRequired": 2
+   },
+   "G": {
+    "total": 2,
+    "intersectionOnly": 0.5,
+    "rawUnion": 1,
+    "canonicalUnion": 1,
+    "collapsedWithCounterpart": 1,
+    "singleRun": 1,
+    "corroborated": 1,
+    "conflicted": 0,
+    "valuesPreserved": 2,
+    "laterReviewRequired": 0
+   }
+  },
+  "2_noMaterialSourceUnsupportedAdditions": {
+   "pass": true,
+   "materialUnsupported": 0,
+   "rejectedUnverifiable": 0,
+   "additionsByClass": {
+    "A_GENUINE_SOURCE_SEMANTICS_OMITTED_BY_OTHER_PASS": 103,
+    "C_SOURCE_VERIFIED_UNCERTAIN": 10,
+    "C_INFORMATIONAL_SOURCE_VERIFIED": 1
+   }
+  },
+  "3_contradictorySemanticsNeverSilentlyMerged": {
+   "pass": true,
+   "paidPair": 0,
+   "controls": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "4_sourceCoverageRemainsConservative": {
+   "pass": true,
+   "unionStatus": "INVENTORY_COVERAGE_GAP",
+   "unaccountedA_B_union": [
+    33,
+    32,
+    19
+   ],
+   "bothRunGapsStillGap": 19,
+   "aGapsRescuedByBOnly": 10,
+   "bGapsRescuedByAOnly": 11,
+   "recomputedNotOred": true
+  },
+  "5_valuesLineageProvenanceNotLost": {
+   "pass": true,
+   "valuesLost": 0,
+   "lineage": {
+    "parentLinksA": 283,
+    "parentLinksB": 246,
+    "parentLinksUnion": 317,
+    "unionParentLinksResolvingToUnionItems": 317,
+    "danglingUnionParents": 0,
+    "memberIdsPreserved": true,
+    "passItemsAccountedFor": {
+     "pass-1": 352,
+     "pass-2": 326
+    }
+   }
+  },
+  "6_frozenReferenceRecallDoesNotDegrade": {
+   "pass": true,
+   "recall": {
+    "INTERSECTION_ONLY": {
+     "items": 282,
+     "discoveryRecall": 1.0,
+     "criticalMaterialRecall": 1.0,
+     "quantitativeRecall": 0.9333,
+     "conditionExceptionRecall": 1.0,
+     "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+    },
+    "RAW_UNION": {
+     "items": 377,
+     "discoveryRecall": 1.0,
+     "criticalMaterialRecall": 1.0,
+     "quantitativeRecall": 1.0,
+     "conditionExceptionRecall": 1.0,
+     "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+    },
+    "SUPPORT_AWARE_CANONICAL_UNION": {
+     "items": 396,
+     "discoveryRecall": 1.0,
+     "criticalMaterialRecall": 1.0,
+     "quantitativeRecall": 1.0,
+     "conditionExceptionRecall": 1.0,
+     "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+    },
+    "runA": {
+     "items": 352,
+     "discoveryRecall": 1.0,
+     "criticalMaterialRecall": 1.0,
+     "quantitativeRecall": 1.0,
+     "conditionExceptionRecall": 1.0,
+     "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+    },
+    "runB": {
+     "items": 326,
+     "discoveryRecall": 1.0,
+     "criticalMaterialRecall": 1.0,
+     "quantitativeRecall": 1.0,
+     "conditionExceptionRecall": 1.0,
+     "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+    }
+   }
+  },
+  "7_singletonSemanticsExplicitlyProvenanceMarked": {
+   "pass": true,
+   "singletons": 114,
+   "materialSingletons": 112,
+   "everyItemCarriesSupport": true
+  },
+  "8_noFalseCompleteness": {
+   "pass": true,
+   "status": "INVENTORY_COVERAGE_GAP",
+   "supportReviewRequired": true,
+   "test": "anti-enumeration G + trust test 'union cannot claim semantic completeness' pass"
+  },
+  "9_unionOrderIndependent": {
+   "pass": true,
+   "paidPair": {
+    "unionAB_equals_unionBA": true,
+    "hashAB": "6f648e724520fdc9071c93d80860a5dbb37b5c03f9ae939a16ce2983b3e6d8ed",
+    "hashBA": "6f648e724520fdc9071c93d80860a5dbb37b5c03f9ae939a16ce2983b3e6d8ed"
+   },
+   "controls": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "10_agreementIndependent": {
+   "pass": true,
+   "evidence": "no stability threshold enters the construction; the paid pair (semantic stability 0.837) and the v3 pair (0.45) and the v1 holdout regions all reconcile with 0 conflicts, 0 values lost; agreement only changes the review fraction (paid 0.283, v3 0.418, v1 regions 0.23-0.75)"
+  }
+ },
+ "implemented": {
+  "production": [
+   "lib/contract-model/compiler/semantic-accountability/ensemble.ts (new, deterministic, no provider call)",
+   "lib/contract-model/compiler/semantic-accountability/types.ts (additive: ItemSupport, SupportStatus, EnsembleRecord, SemanticInventoryItem.support?, FrozenSemanticInventory.ensemble?)"
+  ],
+  "notChanged": [
+   "semanticFunctions",
+   "slots",
+   "source coverage",
+   "inventory identity/merge",
+   "frozen scorers",
+   "reference set",
+   "General Covenant IR",
+   "reconciliation (Pass B contract designed only)",
+   "orchestrator (never spends twice automatically)"
+  ]
+ },
+ "tests": {
+  "f5-3a-ensemble.test.ts": "14 passed (7 anti-enumeration A-G, 7 trust invariants)",
+  "semanticAccountabilitySuite": "failure set identical to baseline (18 pre-existing)",
+  "independenceTest": "passes"
+ }
+}

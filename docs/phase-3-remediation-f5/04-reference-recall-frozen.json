@@ -1,0 +1,218 @@
+{
+ "artifact": "F-5 reference recall over the frozen 6.08 human reference subset",
+ "referenceItems": 7,
+ "runs": {
+  "run1": {
+   "items": 288,
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "discoveryRecall": 1.0,
+   "criticalMaterialRecall": 1.0,
+   "quantitativeRecall": 1.0,
+   "quantitativeValues": [
+    30,
+    30
+   ],
+   "conditionExceptionRecall": 1.0,
+   "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)",
+   "rows": [
+    {
+     "id": "A5",
+     "category": "A",
+     "materiality": "CRITICAL",
+     "section": "6.08(a)",
+     "discovered": true,
+     "criticalMaterialDiscovered": true,
+     "overlappingItems": 103,
+     "valuesInSpan": 9,
+     "valuesAttachedToMaterialItem": 9,
+     "conditionExceptionHit": null,
+     "dependencyHit": null
+    },
+    {
+     "id": "B8",
+     "category": "B",
+     "materiality": "MATERIAL",
+     "section": "6.08(b)(9)",
+     "discovered": true,
+     "criticalMaterialDiscovered": true,
+     "overlappingItems": 10,
+     "valuesInSpan": 2,
+     "valuesAttachedToMaterialItem": 2,
+     "conditionExceptionHit": null,
+     "dependencyHit": null
+    },
+    {
+     "id": "B9",
+     "category": "B",
+     "materiality": "CRITICAL",
+     "section": "6.08(b)(10)",
+     "discovered": true,
+     "criticalMaterialDiscovered": true,
+     "overlappingItems": 11,
+     "valuesInSpan": 2,
+     "valuesAttachedToMaterialItem": 2,
+     "conditionExceptionHit": null,
+     "dependencyHit": null
+    },
+    {
+     "id": "B10",
+     "category": "B",
+     "materiality": "CRITICAL",
+     "section": "6.08(b)(12)",
+     "discovered": true,
+     "criticalMaterialDiscovered": true,
+     "overlappingItems": 7,
+     "valuesInSpan": 2,
+     "valuesAttachedToMaterialItem": 2,
+     "conditionExceptionHit": null,
+     "dependencyHit": null
+    },
+    {
+     "id": "B11",
+     "category": "B",
+     "materiality": "CRITICAL",
+     "section": "6.08(b)(15)/(25)",
+     "discovered": true,
+     "criticalMaterialDiscovered": true,
+     "overlappingItems": 63,
+     "valuesInSpan": 6,
+     "valuesAttachedToMaterialItem": 6,
+     "conditionExceptionHit": null,
+     "dependencyHit": null
+    },
+    {
+     "id": "C1",
+     "category": "C",
+     "materiality": "CRITICAL",
+     "section": "6.08(a)(3)",
+     "discovered": true,
+     "criticalMaterialDiscovered": true,
+     "overlappingItems": 73,
+     "valuesInSpan": 9,
+     "valuesAttachedToMaterialItem": 9,
+     "conditionExceptionHit": true,
+     "dependencyHit": null
+    },
+    {
+     "id": "C8",
+     "category": "C",
+     "materiality": "MATERIAL",
+     "section": "6.08(b)(1)",
+     "discovered": true,
+     "criticalMaterialDiscovered": true,
+     "overlappingItems": 3,
+     "valuesInSpan": 0,
+     "valuesAttachedToMaterialItem": 0,
+     "conditionExceptionHit": true,
+     "dependencyHit": null
+    }
+   ]
+  },
+  "run2": {
+   "items": 307,
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "discoveryRecall": 1.0,
+   "criticalMaterialRecall": 1.0,
+   "quantitativeRecall": 1.0,
+   "quantitativeValues": [
+    30,
+    30
+   ],
+   "conditionExceptionRecall": 1.0,
+   "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)",
+   "rows": [
+    {
+     "id": "A5",
+     "category": "A",
+     "materiality": "CRITICAL",
+     "section": "6.08(a)",
+     "discovered": true,
+     "criticalMaterialDiscovered": true,
+     "overlappingItems": 108,
+     "valuesInSpan": 9,
+     "valuesAttachedToMaterialItem": 9,
+     "conditionExceptionHit": null,
+     "dependencyHit": null
+    },
+    {
+     "id": "B8",
+     "category": "B",
+     "materiality": "MATERIAL",
+     "section": "6.08(b)(9)",
+     "discovered": true,
+     "criticalMaterialDiscovered": true,
+     "overlappingItems": 14,
+     "valuesInSpan": 2,
+     "valuesAttachedToMaterialItem": 2,
+     "conditionExceptionHit": null,
+     "dependencyHit": null
+    },
+    {
+     "id": "B9",
+     "category": "B",
+     "materiality": "CRITICAL",
+     "section": "6.08(b)(10)",
+     "discovered": true,
+     "criticalMaterialDiscovered": true,
+     "overlappingItems": 17,
+     "valuesInSpan": 2,
+     "valuesAttachedToMaterialItem": 2,
+     "conditionExceptionHit": null,
+     "dependencyHit": null
+    },
+    {
+     "id": "B10",
+     "category": "B",
+     "materiality": "CRITICAL",
+     "section": "6.08(b)(12)",
+     "discovered": true,
+     "criticalMaterialDiscovered": true,
+     "overlappingItems": 8,
+     "valuesInSpan": 2,
+     "valuesAttachedToMaterialItem": 2,
+     "conditionExceptionHit": null,
+     "dependencyHit": null
+    },
+    {
+     "id": "B11",
+     "category": "B",
+     "materiality": "CRITICAL",
+     "section": "6.08(b)(15)/(25)",
+     "discovered": true,
+     "criticalMaterialDiscovered": true,
+     "overlappingItems": 64,
+     "valuesInSpan": 6,
+     "valuesAttachedToMaterialItem": 6,
+     "conditionExceptionHit": null,
+     "dependencyHit": null
+    },
+    {
+     "id": "C1",
+     "category": "C",
+     "materiality": "CRITICAL",
+     "section": "6.08(a)(3)",
+     "discovered": true,
+     "criticalMaterialDiscovered": true,
+     "overlappingItems": 75,
+     "valuesInSpan": 9,
+     "valuesAttachedToMaterialItem": 9,
+     "conditionExceptionHit": true,
+     "dependencyHit": null
+    },
+    {
+     "id": "C8",
+     "category": "C",
+     "materiality": "MATERIAL",
+     "section": "6.08(b)(1)",
+     "discovered": true,
+     "criticalMaterialDiscovered": true,
+     "overlappingItems": 2,
+     "valuesInSpan": 0,
+     "valuesAttachedToMaterialItem": 0,
+     "conditionExceptionHit": true,
+     "dependencyHit": null
+    }
+   ]
+  }
+ }
+}

@@ -101,9 +101,17 @@ describe("Phase 3A IR - Category C: safety", () => {
   it("C7: an UnsupportedExpression can never satisfy a real operator's type requirement, even deeply nested (e.g. as a COMPARE operand)", () => {
     const cmp = withExpressionId({ kind: "COMPARE", type: "BOOLEAN", left: unsupported, operator: "LTE", right: withExpressionId({ kind: "RATIO", type: "RATIO", value: 5.0 }) });
     expect(inferType(cmp)).toBe(UNSUPPORTED_TYPE); // never silently coerced to BOOLEAN just because the node's declared `type` field says so
+    // The rule declares COMPLETE while its gate is not executable: since F-6 an
+    // operator over an honest UNSUPPORTED child is no longer a structural
+    // TYPE_ERROR (it is a PARTIAL representation), so the mechanical guard
+    // is the explicit FALSE_COMPLETENESS issue - the report still fails.
     const rule = baseRule({ capacityExpression: { kind: "UNLIMITED_CAPACITY", type: "CAPACITY", gatedBy: cmp } });
     const report = validateRule(rule);
     expect(report.ok).toBe(false);
-    expect(report.issues.some((i) => i.kind === "TYPE_ERROR")).toBe(true);
+    expect(report.issues.some((i) => i.kind === "FALSE_COMPLETENESS")).toBe(true);
+    // Declared honestly PARTIAL, the same rule is structurally valid - partiality is not malformation.
+    expect(validateRule({ ...rule, sufficiency: "PARTIAL" }).ok).toBe(true);
+    // ...but the gate itself remains non-executable either way.
+    expect(inferType(cmp)).toBe(UNSUPPORTED_TYPE);
   });
 });

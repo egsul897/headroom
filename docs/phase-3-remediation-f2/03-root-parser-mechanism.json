@@ -1,0 +1,19 @@
+{
+  "artifact": "03-root-parser-mechanism",
+  "file": "lib/contract-model/compiler/clause-hierarchy.ts (buildClauseTree), consumed per SECTION region by stage-structure.ts buildStructuralNodesFromAcceptedMatches",
+  "recognition": {
+    "ARTICLE/SECTION": "stage-structure.ts regexes (unchanged)",
+    "subsection/clause/subclause labels": "MARKER_OCCURRENCE finds every '(x)' token preceded by whitespace/line start and not followed by '('; the token SHAPE (lower alpha / lower roman / upper alpha / upper roman / numeric) gives candidate families via classifyMarker",
+    "levelInference": "a stack of open lists; each occurrence is (1) a continuation of the innermost list if its index is lastIndex+1, else (2) a continuation of ANY outer list whose sequence it continues (stack cut to that level), else (3) if index==1, a NEW nested list beneath the last item (depth < 6); otherwise ignored. nodeType = depth (1 SUBSECTION, 2 CLAUSE, >=3 SUBCLAUSE)",
+    "listResets": "only via (2)/(3); there was no notion of a closed list, a paragraph boundary, or inline prose",
+    "parentAssignment": "parentMarkerPath = ancestor markers on the stack at push time"
+  },
+  "whyInner_a_became_a_subsection": [
+    "prose tokens 'clauses (i) through (iv) above' and 'clauses (i) and (iii) above' opened two spurious roman levels under 6.08(a)(iv), so (1)/(2)/(3) nested at depth 5 and the builder's '(a) through (f) below' reference opened depth 6, swallowing the real '(a) 50% of Consolidated Net Income' (depth cap)",
+    "the proviso 'this clause\\n(b) shall not include' was read as a lettered label; since the depth-1 lettered list (6.08(a)) was waiting for (b), rule (2) cut the stack to depth 1 and made it SUBSECTION 6.08(b)",
+    "builder items (c)-(h) then continued that depth-1 list as SUBSECTIONS 6.08(c)-(h); 'minus (i)' continued it as letter (i) -> SUBSECTION 6.08(i); the roman '(i) Liens ... (ii) Indebtedness' became 6.08(i)(i)/(ii)",
+    "the TRUE '(b) The foregoing provisions' (index 2) was neither a continuation (the lettered list was at 9) nor a start (index 1) -> silently dropped; its children (1)-(27) attached under 6.08(i)(ii)"
+  ],
+  "earliestIncorrectTransition": "start-of-new-list on the inline reference token '(i)' at 661773 ('clauses (i) through (iv) above'), the first of a chain of prose tokens accepted as labels; the promotion of the builder to subsection level is the consequence at 665769 ('this clause (b) shall not include')",
+  "invariantViolated": "a local label determined structural level by itself (token shape + sequence index), with no structural context"
+}

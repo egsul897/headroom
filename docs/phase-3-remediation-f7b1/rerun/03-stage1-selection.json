@@ -1,0 +1,1016 @@
+{
+ "artifact": "F-7B §6 Stage 1 deterministic representative selection (computed before any model call; structural dimensions only)",
+ "gitSha": "8b6bd445ae56bb6d66406706d76b45a83ac690be",
+ "planHash": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+ "dimensions": [
+  "sourceChars",
+  "ownedMaterialItems",
+  "contextEntries",
+  "oversized",
+  "quantitativeValues",
+  "foreignTermRefs (owned items referencing terms owned by another shard)"
+ ],
+ "medians": {
+  "sourceChars": 10017,
+  "ownedMaterialItems": 3
+ },
+ "picks": [
+  {
+   "criterion": "D oversized atomic-definition shard",
+   "shardId": "shard:4f06625557e9aecbbb7a",
+   "ordinal": 26
+  },
+  {
+   "criterion": "B highest owned-material-item count (ties: lowest ordinal)",
+   "shardId": "shard:1c29e71eef1717d4f9e1",
+   "ordinal": 2
+  },
+  {
+   "criterion": "C highest dependency-context entry count (ties: lowest ordinal)",
+   "shardId": "shard:1c29e71eef1717d4f9e1",
+   "ordinal": 2
+  },
+  {
+   "criterion": "E highest owned quantitative-value count (ties: lowest ordinal)",
+   "shardId": "shard:1c29e71eef1717d4f9e1",
+   "ordinal": 2
+  },
+  {
+   "criterion": "F highest foreign-term reference count (6.08 minority-lineage risk shape; ties: lowest ordinal)",
+   "shardId": "shard:1c29e71eef1717d4f9e1",
+   "ordinal": 2
+  },
+  {
+   "criterion": "A ordinary definition shard: closest to median source chars and median material items, with >=1 material item (ties: lowest ordinal)",
+   "shardId": "shard:3e3910ea2efd9edd45a3",
+   "ordinal": 27
+  },
+  {
+   "criterion": "G full-size (max units) shard owning ZERO material items - the textual/non-computational path where the compiler must disposition or emit nothing rather than invent IR (ties: lowest ordinal)",
+   "shardId": "shard:aac727054a5da5f1a9fd",
+   "ordinal": 21
+  },
+  {
+   "criterion": "H densest full-size shard: highest owned-material-item count among max-unit shards (ties: lowest ordinal)",
+   "shardId": "shard:bf3da01cb454860cdf5f",
+   "ordinal": 17
+  }
+ ],
+ "selectedShardIds": [
+  "shard:4f06625557e9aecbbb7a",
+  "shard:1c29e71eef1717d4f9e1",
+  "shard:3e3910ea2efd9edd45a3",
+  "shard:aac727054a5da5f1a9fd",
+  "shard:bf3da01cb454860cdf5f"
+ ],
+ "selected": [
+  {
+   "shardId": "shard:1c29e71eef1717d4f9e1",
+   "ordinal": 2,
+   "units": 3,
+   "sourceChars": 11172,
+   "ownedItems": 11,
+   "ownedMaterialItems": 11,
+   "contextEntries": 8,
+   "contextChars": 5735,
+   "unresolvedContext": 1,
+   "oversized": false,
+   "quantitativeItems": 9,
+   "quantitativeValues": 14,
+   "referencedTermsOut": 19,
+   "foreignTermRefs": 14,
+   "renderedInputTokens": 29510,
+   "plannerOutputEstimate": 9000,
+   "preCallEstimateUsd": 0.284176,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:bf3da01cb454860cdf5f",
+   "ordinal": 17,
+   "units": 16,
+   "sourceChars": 10233,
+   "ownedItems": 8,
+   "ownedMaterialItems": 8,
+   "contextEntries": 6,
+   "contextChars": 5891,
+   "unresolvedContext": 2,
+   "oversized": false,
+   "quantitativeItems": 7,
+   "quantitativeValues": 10,
+   "referencedTermsOut": 12,
+   "foreignTermRefs": 7,
+   "renderedInputTokens": 29330,
+   "plannerOutputEstimate": 41500,
+   "preCallEstimateUsd": 0.6079920000000001,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:aac727054a5da5f1a9fd",
+   "ordinal": 21,
+   "units": 16,
+   "sourceChars": 7577,
+   "ownedItems": 0,
+   "ownedMaterialItems": 0,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 0,
+   "quantitativeValues": 0,
+   "referencedTermsOut": 0,
+   "foreignTermRefs": 0,
+   "renderedInputTokens": 22825,
+   "plannerOutputEstimate": 41500,
+   "preCallEstimateUsd": 0.5651900000000001,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:4f06625557e9aecbbb7a",
+   "ordinal": 26,
+   "units": 1,
+   "sourceChars": 26695,
+   "ownedItems": 6,
+   "ownedMaterialItems": 6,
+   "contextEntries": 7,
+   "contextChars": 3701,
+   "unresolvedContext": 1,
+   "oversized": true,
+   "quantitativeItems": 5,
+   "quantitativeValues": 9,
+   "referencedTermsOut": 14,
+   "foreignTermRefs": 7,
+   "renderedInputTokens": 34344,
+   "plannerOutputEstimate": 4000,
+   "preCallEstimateUsd": 0.265984,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:3e3910ea2efd9edd45a3",
+   "ordinal": 27,
+   "units": 16,
+   "sourceChars": 10103,
+   "ownedItems": 3,
+   "ownedMaterialItems": 3,
+   "contextEntries": 3,
+   "contextChars": 2796,
+   "unresolvedContext": 2,
+   "oversized": false,
+   "quantitativeItems": 3,
+   "quantitativeValues": 5,
+   "referencedTermsOut": 8,
+   "foreignTermRefs": 3,
+   "renderedInputTokens": 26033,
+   "plannerOutputEstimate": 41500,
+   "preCallEstimateUsd": 0.586298,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  }
+ ],
+ "trancheEstimateUsd": 2.3096,
+ "stage1CapUsd": 3,
+ "fitsStage1Cap": true,
+ "trancheEstimateBreakdown": [
+  {
+   "shardId": "shard:1c29e71eef1717d4f9e1",
+   "renderedInputTokens": 29510,
+   "estInputTokens": 97088,
+   "estOutputTokens": 9000,
+   "usd": 0.2842
+  },
+  {
+   "shardId": "shard:bf3da01cb454860cdf5f",
+   "renderedInputTokens": 29330,
+   "estInputTokens": 96496,
+   "estOutputTokens": 41500,
+   "usd": 0.608
+  },
+  {
+   "shardId": "shard:aac727054a5da5f1a9fd",
+   "renderedInputTokens": 22825,
+   "estInputTokens": 75095,
+   "estOutputTokens": 41500,
+   "usd": 0.5652
+  },
+  {
+   "shardId": "shard:4f06625557e9aecbbb7a",
+   "renderedInputTokens": 34344,
+   "estInputTokens": 112992,
+   "estOutputTokens": 4000,
+   "usd": 0.266
+  },
+  {
+   "shardId": "shard:3e3910ea2efd9edd45a3",
+   "renderedInputTokens": 26033,
+   "estInputTokens": 85649,
+   "estOutputTokens": 41500,
+   "usd": 0.5863
+  }
+ ],
+ "profile": [
+  {
+   "shardId": "shard:2866a115c3a6d5cc2089",
+   "ordinal": 0,
+   "units": 16,
+   "sourceChars": 7965,
+   "ownedItems": 4,
+   "ownedMaterialItems": 4,
+   "contextEntries": 0,
+   "contextChars": 0,
+   "unresolvedContext": 3,
+   "oversized": false,
+   "quantitativeItems": 2,
+   "quantitativeValues": 5,
+   "referencedTermsOut": 6,
+   "foreignTermRefs": 0,
+   "renderedInputTokens": 24837,
+   "plannerOutputEstimate": 39000,
+   "preCallEstimateUsd": 0.553428,
+   "primaryUnitKinds": [
+    "LEAD_IN",
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:b934f8ceb0d79b5cfe57",
+   "ordinal": 1,
+   "units": 13,
+   "sourceChars": 7674,
+   "ownedItems": 7,
+   "ownedMaterialItems": 7,
+   "contextEntries": 5,
+   "contextChars": 1909,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 6,
+   "quantitativeValues": 8,
+   "referencedTermsOut": 11,
+   "foreignTermRefs": 8,
+   "renderedInputTokens": 25495,
+   "plannerOutputEstimate": 34000,
+   "preCallEstimateUsd": 0.507758,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:1c29e71eef1717d4f9e1",
+   "ordinal": 2,
+   "units": 3,
+   "sourceChars": 11172,
+   "ownedItems": 11,
+   "ownedMaterialItems": 11,
+   "contextEntries": 8,
+   "contextChars": 5735,
+   "unresolvedContext": 1,
+   "oversized": false,
+   "quantitativeItems": 9,
+   "quantitativeValues": 14,
+   "referencedTermsOut": 19,
+   "foreignTermRefs": 14,
+   "renderedInputTokens": 29510,
+   "plannerOutputEstimate": 9000,
+   "preCallEstimateUsd": 0.284176,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:4c30ced71fe038991b4b",
+   "ordinal": 3,
+   "units": 11,
+   "sourceChars": 11804,
+   "ownedItems": 2,
+   "ownedMaterialItems": 1,
+   "contextEntries": 2,
+   "contextChars": 336,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 1,
+   "quantitativeValues": 1,
+   "referencedTermsOut": 3,
+   "foreignTermRefs": 1,
+   "renderedInputTokens": 25012,
+   "plannerOutputEstimate": 29000,
+   "preCallEstimateUsd": 0.45458000000000004,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:9dae67b10a1cb8ab8e61",
+   "ordinal": 4,
+   "units": 16,
+   "sourceChars": 9303,
+   "ownedItems": 6,
+   "ownedMaterialItems": 6,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 6,
+   "quantitativeValues": 6,
+   "referencedTermsOut": 6,
+   "foreignTermRefs": 0,
+   "renderedInputTokens": 24241,
+   "plannerOutputEstimate": 41500,
+   "preCallEstimateUsd": 0.574506,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:c68b6e6e275414f90c39",
+   "ordinal": 5,
+   "units": 6,
+   "sourceChars": 8855,
+   "ownedItems": 6,
+   "ownedMaterialItems": 6,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 1,
+   "oversized": false,
+   "quantitativeItems": 6,
+   "quantitativeValues": 7,
+   "referencedTermsOut": 8,
+   "foreignTermRefs": 0,
+   "renderedInputTokens": 22963,
+   "plannerOutputEstimate": 16500,
+   "preCallEstimateUsd": 0.316098,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:ec1aea485db261059c14",
+   "ordinal": 6,
+   "units": 5,
+   "sourceChars": 5170,
+   "ownedItems": 1,
+   "ownedMaterialItems": 1,
+   "contextEntries": 2,
+   "contextChars": 1039,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 1,
+   "quantitativeValues": 1,
+   "referencedTermsOut": 2,
+   "foreignTermRefs": 1,
+   "renderedInputTokens": 21942,
+   "plannerOutputEstimate": 14000,
+   "preCallEstimateUsd": 0.28437999999999997,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:5f63d11e8ce53e883d6a",
+   "ordinal": 7,
+   "units": 4,
+   "sourceChars": 8259,
+   "ownedItems": 3,
+   "ownedMaterialItems": 3,
+   "contextEntries": 3,
+   "contextChars": 2176,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 3,
+   "quantitativeValues": 4,
+   "referencedTermsOut": 5,
+   "foreignTermRefs": 2,
+   "renderedInputTokens": 24634,
+   "plannerOutputEstimate": 11500,
+   "preCallEstimateUsd": 0.277092,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:87f08272567db019c17b",
+   "ordinal": 8,
+   "units": 1,
+   "sourceChars": 20175,
+   "ownedItems": 5,
+   "ownedMaterialItems": 5,
+   "contextEntries": 2,
+   "contextChars": 538,
+   "unresolvedContext": 1,
+   "oversized": false,
+   "quantitativeItems": 4,
+   "quantitativeValues": 5,
+   "referencedTermsOut": 7,
+   "foreignTermRefs": 1,
+   "renderedInputTokens": 28538,
+   "plannerOutputEstimate": 4000,
+   "preCallEstimateUsd": 0.227782,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:fc841e0f175ddcab1ccd",
+   "ordinal": 9,
+   "units": 2,
+   "sourceChars": 3368,
+   "ownedItems": 0,
+   "ownedMaterialItems": 0,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 0,
+   "quantitativeValues": 0,
+   "referencedTermsOut": 0,
+   "foreignTermRefs": 0,
+   "renderedInputTokens": 18865,
+   "plannerOutputEstimate": 6500,
+   "preCallEstimateUsd": 0.189132,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:86eec078e4ee957898ac",
+   "ordinal": 10,
+   "units": 1,
+   "sourceChars": 11403,
+   "ownedItems": 2,
+   "ownedMaterialItems": 2,
+   "contextEntries": 2,
+   "contextChars": 767,
+   "unresolvedContext": 1,
+   "oversized": false,
+   "quantitativeItems": 1,
+   "quantitativeValues": 2,
+   "referencedTermsOut": 3,
+   "foreignTermRefs": 0,
+   "renderedInputTokens": 23688,
+   "plannerOutputEstimate": 4000,
+   "preCallEstimateUsd": 0.19586800000000001,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:e3ddb1887d6b8499929a",
+   "ordinal": 11,
+   "units": 13,
+   "sourceChars": 11506,
+   "ownedItems": 3,
+   "ownedMaterialItems": 3,
+   "contextEntries": 2,
+   "contextChars": 1262,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 3,
+   "quantitativeValues": 6,
+   "referencedTermsOut": 4,
+   "foreignTermRefs": 1,
+   "renderedInputTokens": 25206,
+   "plannerOutputEstimate": 34000,
+   "preCallEstimateUsd": 0.5058560000000001,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:e43dc65668a775eaca1a",
+   "ordinal": 12,
+   "units": 11,
+   "sourceChars": 11131,
+   "ownedItems": 3,
+   "ownedMaterialItems": 3,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 3,
+   "quantitativeValues": 6,
+   "referencedTermsOut": 3,
+   "foreignTermRefs": 0,
+   "renderedInputTokens": 24913,
+   "plannerOutputEstimate": 29000,
+   "preCallEstimateUsd": 0.453928,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:4d114bdf00429cf670f8",
+   "ordinal": 13,
+   "units": 13,
+   "sourceChars": 11800,
+   "ownedItems": 7,
+   "ownedMaterialItems": 7,
+   "contextEntries": 5,
+   "contextChars": 2356,
+   "unresolvedContext": 2,
+   "oversized": false,
+   "quantitativeItems": 7,
+   "quantitativeValues": 11,
+   "referencedTermsOut": 11,
+   "foreignTermRefs": 3,
+   "renderedInputTokens": 26886,
+   "plannerOutputEstimate": 34000,
+   "preCallEstimateUsd": 0.51691,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:845680480624a0f129ec",
+   "ordinal": 14,
+   "units": 9,
+   "sourceChars": 5139,
+   "ownedItems": 1,
+   "ownedMaterialItems": 1,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 1,
+   "quantitativeValues": 1,
+   "referencedTermsOut": 1,
+   "foreignTermRefs": 0,
+   "renderedInputTokens": 20673,
+   "plannerOutputEstimate": 24000,
+   "preCallEstimateUsd": 0.37603,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:d3aac7c869cff4602343",
+   "ordinal": 15,
+   "units": 4,
+   "sourceChars": 10173,
+   "ownedItems": 1,
+   "ownedMaterialItems": 1,
+   "contextEntries": 2,
+   "contextChars": 2025,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 1,
+   "quantitativeValues": 1,
+   "referencedTermsOut": 2,
+   "foreignTermRefs": 0,
+   "renderedInputTokens": 24105,
+   "plannerOutputEstimate": 11500,
+   "preCallEstimateUsd": 0.273612,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:d2efbf609b9828839ddf",
+   "ordinal": 16,
+   "units": 4,
+   "sourceChars": 11247,
+   "ownedItems": 1,
+   "ownedMaterialItems": 1,
+   "contextEntries": 3,
+   "contextChars": 788,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 1,
+   "quantitativeValues": 2,
+   "referencedTermsOut": 3,
+   "foreignTermRefs": 2,
+   "renderedInputTokens": 24278,
+   "plannerOutputEstimate": 11500,
+   "preCallEstimateUsd": 0.27475,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:bf3da01cb454860cdf5f",
+   "ordinal": 17,
+   "units": 16,
+   "sourceChars": 10233,
+   "ownedItems": 8,
+   "ownedMaterialItems": 8,
+   "contextEntries": 6,
+   "contextChars": 5891,
+   "unresolvedContext": 2,
+   "oversized": false,
+   "quantitativeItems": 7,
+   "quantitativeValues": 10,
+   "referencedTermsOut": 12,
+   "foreignTermRefs": 7,
+   "renderedInputTokens": 29330,
+   "plannerOutputEstimate": 41500,
+   "preCallEstimateUsd": 0.6079920000000001,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:a8646966da2484b40b97",
+   "ordinal": 18,
+   "units": 16,
+   "sourceChars": 10363,
+   "ownedItems": 2,
+   "ownedMaterialItems": 2,
+   "contextEntries": 2,
+   "contextChars": 1532,
+   "unresolvedContext": 1,
+   "oversized": false,
+   "quantitativeItems": 0,
+   "quantitativeValues": 0,
+   "referencedTermsOut": 5,
+   "foreignTermRefs": 0,
+   "renderedInputTokens": 24603,
+   "plannerOutputEstimate": 41500,
+   "preCallEstimateUsd": 0.5768880000000001,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:30d337feeef5ba80d66b",
+   "ordinal": 19,
+   "units": 16,
+   "sourceChars": 10017,
+   "ownedItems": 5,
+   "ownedMaterialItems": 5,
+   "contextEntries": 2,
+   "contextChars": 264,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 5,
+   "quantitativeValues": 9,
+   "referencedTermsOut": 6,
+   "foreignTermRefs": 1,
+   "renderedInputTokens": 26029,
+   "plannerOutputEstimate": 41500,
+   "preCallEstimateUsd": 0.586272,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:a45ccfe3d94f990e5348",
+   "ordinal": 20,
+   "units": 13,
+   "sourceChars": 11995,
+   "ownedItems": 4,
+   "ownedMaterialItems": 4,
+   "contextEntries": 4,
+   "contextChars": 3828,
+   "unresolvedContext": 1,
+   "oversized": false,
+   "quantitativeItems": 3,
+   "quantitativeValues": 7,
+   "referencedTermsOut": 7,
+   "foreignTermRefs": 2,
+   "renderedInputTokens": 27567,
+   "plannerOutputEstimate": 34000,
+   "preCallEstimateUsd": 0.5213920000000001,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:aac727054a5da5f1a9fd",
+   "ordinal": 21,
+   "units": 16,
+   "sourceChars": 7577,
+   "ownedItems": 0,
+   "ownedMaterialItems": 0,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 0,
+   "quantitativeValues": 0,
+   "referencedTermsOut": 0,
+   "foreignTermRefs": 0,
+   "renderedInputTokens": 22825,
+   "plannerOutputEstimate": 41500,
+   "preCallEstimateUsd": 0.5651900000000001,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:f3eb63624b7f5a5c3cca",
+   "ordinal": 22,
+   "units": 16,
+   "sourceChars": 10945,
+   "ownedItems": 3,
+   "ownedMaterialItems": 3,
+   "contextEntries": 4,
+   "contextChars": 4153,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 3,
+   "quantitativeValues": 3,
+   "referencedTermsOut": 5,
+   "foreignTermRefs": 2,
+   "renderedInputTokens": 27334,
+   "plannerOutputEstimate": 41500,
+   "preCallEstimateUsd": 0.594858,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:2804206d37b6f769705a",
+   "ordinal": 23,
+   "units": 16,
+   "sourceChars": 7617,
+   "ownedItems": 0,
+   "ownedMaterialItems": 0,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 0,
+   "quantitativeValues": 0,
+   "referencedTermsOut": 0,
+   "foreignTermRefs": 0,
+   "renderedInputTokens": 21779,
+   "plannerOutputEstimate": 41500,
+   "preCallEstimateUsd": 0.558306,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:8b21b0018e4a6cedd585",
+   "ordinal": 24,
+   "units": 5,
+   "sourceChars": 4653,
+   "ownedItems": 0,
+   "ownedMaterialItems": 0,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 0,
+   "quantitativeValues": 0,
+   "referencedTermsOut": 0,
+   "foreignTermRefs": 0,
+   "renderedInputTokens": 21327,
+   "plannerOutputEstimate": 14000,
+   "preCallEstimateUsd": 0.280332,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:f048973d2e9a58498b81",
+   "ordinal": 25,
+   "units": 1,
+   "sourceChars": 14121,
+   "ownedItems": 6,
+   "ownedMaterialItems": 6,
+   "contextEntries": 7,
+   "contextChars": 6210,
+   "unresolvedContext": 1,
+   "oversized": false,
+   "quantitativeItems": 6,
+   "quantitativeValues": 12,
+   "referencedTermsOut": 17,
+   "foreignTermRefs": 10,
+   "renderedInputTokens": 30016,
+   "plannerOutputEstimate": 4000,
+   "preCallEstimateUsd": 0.237506,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:4f06625557e9aecbbb7a",
+   "ordinal": 26,
+   "units": 1,
+   "sourceChars": 26695,
+   "ownedItems": 6,
+   "ownedMaterialItems": 6,
+   "contextEntries": 7,
+   "contextChars": 3701,
+   "unresolvedContext": 1,
+   "oversized": true,
+   "quantitativeItems": 5,
+   "quantitativeValues": 9,
+   "referencedTermsOut": 14,
+   "foreignTermRefs": 7,
+   "renderedInputTokens": 34344,
+   "plannerOutputEstimate": 4000,
+   "preCallEstimateUsd": 0.265984,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:3e3910ea2efd9edd45a3",
+   "ordinal": 27,
+   "units": 16,
+   "sourceChars": 10103,
+   "ownedItems": 3,
+   "ownedMaterialItems": 3,
+   "contextEntries": 3,
+   "contextChars": 2796,
+   "unresolvedContext": 2,
+   "oversized": false,
+   "quantitativeItems": 3,
+   "quantitativeValues": 5,
+   "referencedTermsOut": 8,
+   "foreignTermRefs": 3,
+   "renderedInputTokens": 26033,
+   "plannerOutputEstimate": 41500,
+   "preCallEstimateUsd": 0.586298,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:6248230fa539039e625f",
+   "ordinal": 28,
+   "units": 16,
+   "sourceChars": 9729,
+   "ownedItems": 3,
+   "ownedMaterialItems": 3,
+   "contextEntries": 5,
+   "contextChars": 1815,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 3,
+   "quantitativeValues": 5,
+   "referencedTermsOut": 8,
+   "foreignTermRefs": 5,
+   "renderedInputTokens": 26023,
+   "plannerOutputEstimate": 41500,
+   "preCallEstimateUsd": 0.5862320000000001,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:5bbdd9026aa0eefb73f0",
+   "ordinal": 29,
+   "units": 16,
+   "sourceChars": 9851,
+   "ownedItems": 1,
+   "ownedMaterialItems": 1,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 1,
+   "quantitativeValues": 1,
+   "referencedTermsOut": 1,
+   "foreignTermRefs": 0,
+   "renderedInputTokens": 24990,
+   "plannerOutputEstimate": 41500,
+   "preCallEstimateUsd": 0.5794360000000001,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:42a0ee858a3457c23f47",
+   "ordinal": 30,
+   "units": 16,
+   "sourceChars": 4565,
+   "ownedItems": 0,
+   "ownedMaterialItems": 0,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 0,
+   "quantitativeValues": 0,
+   "referencedTermsOut": 0,
+   "foreignTermRefs": 0,
+   "renderedInputTokens": 21147,
+   "plannerOutputEstimate": 41500,
+   "preCallEstimateUsd": 0.5541480000000001,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:2b74338b4b2dc108057c",
+   "ordinal": 31,
+   "units": 16,
+   "sourceChars": 9340,
+   "ownedItems": 0,
+   "ownedMaterialItems": 0,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 0,
+   "quantitativeValues": 0,
+   "referencedTermsOut": 0,
+   "foreignTermRefs": 0,
+   "renderedInputTokens": 22731,
+   "plannerOutputEstimate": 41500,
+   "preCallEstimateUsd": 0.56457,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:d8e77df4fadace785588",
+   "ordinal": 32,
+   "units": 16,
+   "sourceChars": 10967,
+   "ownedItems": 0,
+   "ownedMaterialItems": 0,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 0,
+   "quantitativeValues": 0,
+   "referencedTermsOut": 0,
+   "foreignTermRefs": 0,
+   "renderedInputTokens": 24526,
+   "plannerOutputEstimate": 41500,
+   "preCallEstimateUsd": 0.5763820000000001,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:50e26ec2fb25035a3b7b",
+   "ordinal": 33,
+   "units": 16,
+   "sourceChars": 6520,
+   "ownedItems": 2,
+   "ownedMaterialItems": 2,
+   "contextEntries": 4,
+   "contextChars": 3378,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 1,
+   "quantitativeValues": 2,
+   "referencedTermsOut": 5,
+   "foreignTermRefs": 3,
+   "renderedInputTokens": 24755,
+   "plannerOutputEstimate": 41500,
+   "preCallEstimateUsd": 0.5778880000000001,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:e9d1223d90cc2dd9c683",
+   "ordinal": 34,
+   "units": 16,
+   "sourceChars": 10314,
+   "ownedItems": 3,
+   "ownedMaterialItems": 3,
+   "contextEntries": 4,
+   "contextChars": 2227,
+   "unresolvedContext": 3,
+   "oversized": false,
+   "quantitativeItems": 0,
+   "quantitativeValues": 0,
+   "referencedTermsOut": 8,
+   "foreignTermRefs": 3,
+   "renderedInputTokens": 26632,
+   "plannerOutputEstimate": 41500,
+   "preCallEstimateUsd": 0.59024,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  },
+  {
+   "shardId": "shard:c6f9067a716712ae085a",
+   "ordinal": 35,
+   "units": 4,
+   "sourceChars": 1774,
+   "ownedItems": 0,
+   "ownedMaterialItems": 0,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "quantitativeItems": 0,
+   "quantitativeValues": 0,
+   "referencedTermsOut": 0,
+   "foreignTermRefs": 0,
+   "renderedInputTokens": 18326,
+   "plannerOutputEstimate": 11500,
+   "preCallEstimateUsd": 0.23558600000000002,
+   "primaryUnitKinds": [
+    "DEFINITION"
+   ]
+  }
+ ],
+ "sanity": {
+  "oneTurnOnlyEstimateUsd": 1.6591
+ }
+}

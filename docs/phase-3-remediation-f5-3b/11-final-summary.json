@@ -1,0 +1,173 @@
+{
+ "artifact": "F-5.3B final summary - dual-pass ensemble production activation completed; authoritative E2 certification NOT completed (provider terminated the second pass mid-pair; the hard cap forbids a retry)",
+ "verdict": "F5_3B_ENVIRONMENT_BLOCKED",
+ "verdictBasis": "The zero-cost mission (sections 1-9) is complete and proven by tests: dual-pass production path wired (DUAL_PASS_ENSEMBLE), STRICT input-compatibility gate, support-trust propagation to REVIEW_REQUIRED at reconciliation/rollup/compile, Pass B support context, E1 reproduced exactly at the starting SHA and under the final code, scorer pre-registered and hashed. The paid pair (section 11) was started with a GO precheck ($37.12 balance, $6.88 worst-case estimate under the $8.00 cap). cert-pass-1 completed (332 items, INVENTORY_COVERAGE_GAP, $3.40). cert-pass-2 FAILED at batch 4/7 on a gateway transport error (gateway_stream_terminated) after 3 successful calls ($1.33): INVENTORY_FAILED, 0 items. The production orchestrator refused to build a one-pass 'ensemble' (ensembleBuilt=false, INVENTORY_FAILED with the refusal reason) exactly as specified in section 5. Total incremental spend $4.73; a retry of the second pass costs ~$3.40 (observed pass-1 cost) which would breach the $8.00 hard cap (~$8.14), so no further paid call was made. No E2 exists; sections 12-16 and 18 criteria 5-13 cannot be evaluated; the ensemble stability gates are UNMEASURED, not failed. No partial one-run certification is claimed.",
+ "at": "2026-09-09T16:52:49.175747Z",
+ "gitShaAtAnalysis": "b2284a45a43fdf8d44ae888f3978a237f861e6a4",
+ "startingSha": "9addb29e3ccc1102c1f64a66f55663da965734fc",
+ "e1": {
+  "frozenContentHash": "6f648e724520fdc9071c93d80860a5dbb37b5c03f9ae939a16ce2983b3e6d8ed",
+  "reproducedAtStartingSha": true,
+  "reproducedUnderFinalCode": true,
+  "orderIndependent": true,
+  "canonical": 396,
+  "corroborated": 282,
+  "singleRun": 114,
+  "singleRunByPass": {
+   "pass-1": 70,
+   "pass-2": 44
+  },
+  "materialSingleRun": 112,
+  "conflicted": 0,
+  "unaccountedSource": 19,
+  "supportReviewFraction": 0.2828,
+  "referenceRecall": {
+   "discoveryRecall": 1.0,
+   "criticalMaterialRecall": 1.0,
+   "quantitativeRecall": 1.0,
+   "conditionExceptionRecall": 1.0
+  },
+  "compatibilityMode": "STRICT",
+  "sourceIdentityMethod": "VERIFIED_BY_RE_ANCHORING (pre-F-5.3B evidence re-verified against the frozen source by source-identity-migration.v1)"
+ },
+ "paidPair": {
+  "passIds": [
+   "cert-pass-1",
+   "cert-pass-2"
+  ],
+  "precheckDecision": "GO",
+  "runC": {
+   "status": "INVENTORY_COVERAGE_GAP",
+   "items": 332,
+   "material": 325,
+   "unaccountedSource": 30,
+   "accountedCharFraction": 0.9836,
+   "uninventoriedValues": 1,
+   "rejectedUnverifiable": 19,
+   "gapReinventory": {
+    "attempted": true,
+    "segmentsBefore": 51,
+    "itemsAdded": 24,
+    "duplicatesDropped": 4,
+    "unverifiableDropped": 0,
+    "segmentsAfter": 30,
+    "costUsd": 0.360924,
+    "error": null
+   },
+   "calls": {
+    "firstPass": 7,
+    "gap": 1
+   },
+   "costUsd": 3.4024,
+   "frozenContentHash": "b8cf5f54be8bab7f431cdc0f330fd9df3c9cd8918f4c3091ca8d6c597b92cead",
+   "sourceIdentity": {
+    "method": "RECORDED_AT_FREEZE",
+    "sourceContextHash": "66e94bcf2d5ba3cfbcba7cde973bac451aab67d9f4982d3b7a8d794b963cbcb0",
+    "partitionHash": "2c822c6c65520b80d361d873b4334b1251904629e491fc75247acfd671a62a75"
+   },
+   "sourceMatchesE1": true,
+   "model": "VERCEL_AI_GATEWAY/anthropic/claude-sonnet-5"
+  },
+  "runD": {
+   "status": "INVENTORY_FAILED",
+   "items": 0,
+   "reason": "inventory call failed on batch 4/7: {\"type\":\"error\",\"error\":{\"type\":\"api_error\",\"message\":\"Upstream stream ended before terminal chunk (gateway_stream_terminated)\"},\"code\":\"gateway_stream_terminated\",\"origin\":\"gateway\"}",
+   "successfulCalls": 3,
+   "failedCallBatch": "4/7",
+   "costUsd": 1.3324920000000002
+  },
+  "ensembleBuilt": false,
+  "ensembleRefusal": "dual-pass ensemble not built: cert-pass-2 INVENTORY_FAILED - a pass that did not run cannot corroborate or be corroborated",
+  "e2": null
+ },
+ "cost": {
+  "paidCalls": 11,
+  "successfulCallsByPass": {
+   "cert-pass-1": 8,
+   "cert-pass-2": 3
+  },
+  "failedCalls": 1,
+  "paidSpendUsdRateCard": 4.7349,
+  "gatewayReportedSpendUsd": 4.7349,
+  "creditsBefore": {
+   "balance": 37.123662,
+   "totalUsed": 177.876338
+  },
+  "creditsAfter": {
+   "balance": 32.38877,
+   "totalUsed": 182.61123
+  },
+  "hardCapUsd": 8,
+  "capRefusals": 0,
+  "retryOfPass2EstimatedUsd": 3.4,
+  "retryWouldTotalUsd": 8.14,
+  "retryPermittedUnderCap": false
+ },
+ "diagnosticsNotCertification": {
+  "note": "single-pass run C compared with the frozen F-5.1 runs by the frozen F-5.1 canonical scorer - a single-run comparison is explicitly NOT the F-5 certification (that is ensemble-to-ensemble); reported only to inform the resume decision",
+  "runC_vs_runA": {
+   "items": [
+    352,
+    332
+   ],
+   "strict": 0.8095,
+   "semantic": 0.874,
+   "criticalMaterial": 0.8611,
+   "span": 0.9804,
+   "quantitative": 0.9
+  },
+  "runC_vs_runB": {
+   "items": [
+    326,
+    332
+   ],
+   "strict": 0.88,
+   "semantic": 0.9184,
+   "criticalMaterial": 0.9083,
+   "span": 0.9778,
+   "quantitative": 0.9474
+  },
+  "runA_vs_runB_F51": {
+   "items": [
+    352,
+    326
+   ],
+   "strict": 0.7984,
+   "semantic": 0.8374,
+   "criticalMaterial": 0.832
+  },
+  "runC_referenceRecall": {
+   "discoveryRecall": 1.0,
+   "criticalMaterialRecall": 1.0,
+   "quantitativeRecall": 1.0,
+   "conditionExceptionRecall": 1.0
+  }
+ },
+ "successCriteria": {
+  "1_dualPassProductionPathWired": true,
+  "2_inputCompatibilityGatePasses": true,
+  "3_supportAsymmetryConflictsPropagateToReviewRequired": true,
+  "4_e1Reproduced": true,
+  "5_exactlyOneNewPairCompleted": false,
+  "6_e2BuiltFromCDOnly": "NOT_BUILT (pass 2 failed)",
+  "7_criticalMaterialEnsembleStability": "UNMEASURED",
+  "8_ensembleSemanticStability": "UNMEASURED",
+  "9_zeroDangerousSilentOmissions": "UNMEASURED",
+  "10_frozenReferenceRecall": "UNMEASURED for E2 (E1 = 1.0; run C alone = 1.0)",
+  "11_zeroFalseCompleteness": "proven by tests; UNMEASURED on E2",
+  "12_noMaterialSourceUnverifiableAdditionsSurvive": "proven by tests; run C rejected 19 unverifiable items at freeze",
+  "13_noValuesOrLineageLost": "proven by tests; UNMEASURED on E2"
+ },
+ "resumePath": "a follow-up mission may run ONE new cert-pass-2 over the identical frozen input (same source-context hash 66e94bcf..., same 335-slot partition, same model) and build E2 = Ensemble(preserved run C, new run D); expected cost ~$3.40; run C is preserved with RECORDED_AT_FREEZE identity so the STRICT gate will admit it; the pre-registered scorer (sha256 0ac56e31fb6c0554583aa3cb7edb54f890011d7496145d2cc7a353522a634995) must be used unchanged",
+ "hashes": {
+  "runC": "18a4ff62f22611060a8a132fc2a5e51f6da672cb8d77eafc66c98143961292f0",
+  "runD": "2bf45df2a578f2b742f1ade15e7d9d24fe0292a5eb9bb827a7cd606fca10119e",
+  "ledger": "5994a5ee8f99578b005ebc566297805aed76229871d4cb9c83929d9667c93ef1",
+  "pair": "f19701564a0ab33622ae419c800f5b7f516e22c38888e96647c994334f53849c",
+  "e2RecordFailed": "484a6262e5728c6e2ab41fcb29a1218d73843057460023b27cbbdaff5158f241",
+  "scorer": "0ac56e31fb6c0554583aa3cb7edb54f890011d7496145d2cc7a353522a634995",
+  "scorerPreregistered": "0ac56e31fb6c0554583aa3cb7edb54f890011d7496145d2cc7a353522a634995",
+  "scorerUnchanged": true,
+  "humanReference": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036"
+ }
+}

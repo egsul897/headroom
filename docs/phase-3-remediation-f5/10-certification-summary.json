@@ -1,0 +1,409 @@
+{
+ "artifact": "F-5 certification (resume) - two independent Pass A runs over frozen Chewy 6.08 at production SHA 16e82c7, scored by the committed F-5 scorers",
+ "verdict": "F5_NEEDS_ARCHITECTURAL_ITERATION",
+ "verdictBasis": "trust is safe (no false completeness, zero dangerous silent omissions, reference recall 1.0 preserved) but convergence misses the pre-registered thresholds (critical/material 0.5236 < 0.85; semantic 0.5251 < 0.80). Thresholds were not altered after observing results.",
+ "startingSha": "16e82c7b15b226aa28cd0eabac4bcccdd6768c29",
+ "priorAttemptSha": "59aced59d303e0e2ada9aa1b5d7fe033a9b98475",
+ "productionChanged": false,
+ "freezeCheck": {
+  "result": "PASS",
+  "blobsChecked": 13,
+  "blobMismatches": 0,
+  "partition": {
+   "slots": 335,
+   "operativeSlots": 335,
+   "batches": 7,
+   "slotIdHash": "7cb1fb8638e7e0c5be923155d4a61bec21d62e5f40270d8c523fa8a3686f6df8",
+   "slotSpanHash": "f909e03b82ce6ed8bb111764562c5428d98f3a9042693bdeaacaf2fbbad9a173",
+   "batchHash": "0cc436eab7745b70b7c316ee05fc5f671392b7a4d717fd2643de6f7f6549dc41",
+   "identicalToAttempt1": true,
+   "identicalAfterRuns": true
+  },
+  "reference": "docs/phase-3-remediation-f5/09-certification-attempt-1.json"
+ },
+ "budget": {
+  "precheck": "docs/phase-3-remediation-f5/10-certification-precheck.json",
+  "gatewayBalanceBefore": 50.544536,
+  "gatewayBalanceAfter": 44.001382,
+  "gatewayReportedSpendUsd": 6.543154,
+  "rateCardSpendUsd": 6.5432,
+  "hardIncrementalCapUsd": 8,
+  "refusals": [],
+  "runA": {
+   "calls": 8,
+   "inputTokens": 89752,
+   "outputTokens": 292679,
+   "rateCardUsd": 3.1063
+  },
+  "runB": {
+   "calls": 8,
+   "inputTokens": 91885,
+   "outputTokens": 325309,
+   "rateCardUsd": 3.4369
+  },
+  "total": {
+   "calls": 16,
+   "inputTokens": 181637,
+   "outputTokens": 617988,
+   "cachedInputTokens": "not separately reported by the ledger (rate card charged all input at the uncached rate)",
+   "rateCardUsd": 6.5432
+  }
+ },
+ "runs": {
+  "A": {
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "items": 379,
+   "materiality": {
+    "CRITICAL": 239,
+    "INFORMATIONAL": 3,
+    "MATERIAL": 132,
+    "REVIEW_UNCERTAIN": 5
+   },
+   "firstPassCalls": 7,
+   "gapCalls": 1,
+   "gapBatches": 1,
+   "gapReinventory": {
+    "attempted": true,
+    "segmentsBefore": 33,
+    "itemsAdded": 10,
+    "duplicatesDropped": 3,
+    "unverifiableDropped": 4,
+    "segmentsAfter": 27,
+    "costUsd": 0.20914600000000003,
+    "error": null
+   },
+   "unaccountedSegments": 27,
+   "uninventoriedValues": [
+    {
+     "kind": "PERCENT",
+     "rawText": "100%",
+     "normalizedValue": 1,
+     "unit": "%",
+     "charStart": 10467,
+     "charEnd": 10471,
+     "regionId": "operative"
+    },
+    {
+     "kind": "RATIO",
+     "rawText": "1.75:1.00",
+     "normalizedValue": 1.75,
+     "unit": "x",
+     "charStart": 34692,
+     "charEnd": 34701,
+     "regionId": "operative"
+    }
+   ],
+   "rejectedUnverifiable": 4,
+   "rejectedDuplicate": 4,
+   "distinctSlotIdsUsed": 298,
+   "itemsWithoutSlotId": 0,
+   "mergedDuplicates": 7,
+   "frozenContentHash": "9ffa102570ef208f7ac76a65fef98f238415d0cbca6b215c4437b9582c753c46",
+   "provider": "VERCEL_AI_GATEWAY",
+   "model": "anthropic/claude-sonnet-5",
+   "algorithmVersion": "semantic-accountability.v4",
+   "promptVersion": "semantic-inventory-prompt.v4"
+  },
+  "B": {
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "items": 382,
+   "materiality": {
+    "CRITICAL": 257,
+    "INFORMATIONAL": 5,
+    "MATERIAL": 114,
+    "REVIEW_UNCERTAIN": 6
+   },
+   "firstPassCalls": 7,
+   "gapCalls": 1,
+   "gapBatches": 1,
+   "gapReinventory": {
+    "attempted": true,
+    "segmentsBefore": 47,
+    "itemsAdded": 35,
+    "duplicatesDropped": 2,
+    "unverifiableDropped": 0,
+    "segmentsAfter": 18,
+    "costUsd": 0.37794200000000006,
+    "error": null
+   },
+   "unaccountedSegments": 18,
+   "uninventoriedValues": [],
+   "rejectedUnverifiable": 15,
+   "rejectedDuplicate": 2,
+   "distinctSlotIdsUsed": 311,
+   "itemsWithoutSlotId": 0,
+   "mergedDuplicates": 4,
+   "frozenContentHash": "2ec6bfef1a8381bff5def1ccb88debe29be875b6be3fa2fd489eec6b5ca544b3",
+   "provider": "VERCEL_AI_GATEWAY",
+   "model": "anthropic/claude-sonnet-5",
+   "algorithmVersion": "semantic-accountability.v4",
+   "promptVersion": "semantic-inventory-prompt.v4"
+  }
+ },
+ "slotBehavior": {
+  "failedBatches": 0,
+  "slotsWithItemsInBoth": 296,
+  "slotsSameItemCount": 255,
+  "slotsWithItemsOnlyInA": 2,
+  "slotsWithItemsOnlyInB": 15,
+  "unaccountedSegmentsIdenticalAcrossRuns": 9,
+  "anySlotPrimarySpanDiffers": false
+ },
+ "stability": {
+  "run1Items": 379,
+  "run2Items": 382,
+  "itemCountDelta": 3,
+  "strictStability": 0.501,
+  "strictCounts": [
+   254,
+   507
+  ],
+  "semanticStability": 0.5251,
+  "semanticCounts": [
+   262,
+   499
+  ],
+  "criticalMaterialStability": 0.5236,
+  "criticalMaterialCounts": [
+   255,
+   487
+  ],
+  "sourceSpanCoverageStability": 0.9729,
+  "unaccountedSourceStability": 0.1989,
+  "quantitativeComponentStability": 0.9474,
+  "quantitativeComponentAtSamePositionStability": 0.9189,
+  "conditionExceptionStability": 0.6,
+  "conditionExceptionCounts": [
+   99,
+   165
+  ],
+  "dependencyXrefStability": 0.4186,
+  "dependencyXrefCounts": [
+   18,
+   43
+  ],
+  "duplicateRate": {
+   "run1": 0.0026,
+   "run2": 0.0026
+  },
+  "materialOnlyRun1": 114,
+  "materialOnlyRun2": 115,
+  "unaccountedSegments": {
+   "run1": 27,
+   "run2": 18
+  },
+  "accountedCharFraction": {
+   "run1": 0.9732,
+   "run2": 0.9877
+  }
+ },
+ "frozenComparison": {
+  "frozenV3Pair": {
+   "strict": 0.1948,
+   "semantic": 0.4477,
+   "criticalMaterial": 0.457
+  },
+  "zeroCostRekeyV4": {
+   "strict": 0.375,
+   "semantic": 0.46,
+   "criticalMaterial": 0.456
+  },
+  "certificationV4": {
+   "strict": 0.501,
+   "semantic": 0.5251,
+   "criticalMaterial": 0.5236
+  }
+ },
+ "decomposition": {
+  "identicalPairs": 254,
+  "runOnlyItemsClassified": 253,
+  "countsByClass": {
+   "A_IDENTITY_INSTABILITY": 8,
+   "B_GRANULARITY_INSTABILITY": 20,
+   "D_ROLE_INSTABILITY": 158,
+   "F_TRUE_SEMANTIC_OMISSION": 51,
+   "G_TRUE_SEMANTIC_ADDITION": 2,
+   "H_DEPENDENCY_FRAGMENTATION": 14
+  },
+  "countsByClassAndSeverity": {
+   "A_IDENTITY_INSTABILITY|material": 8,
+   "B_GRANULARITY_INSTABILITY|material": 20,
+   "D_ROLE_INSTABILITY|material": 153,
+   "D_ROLE_INSTABILITY|nonmaterial": 5,
+   "F_TRUE_SEMANTIC_OMISSION|material": 51,
+   "G_TRUE_SEMANTIC_ADDITION|nonmaterial": 2,
+   "H_DEPENDENCY_FRAGMENTATION|material": 13,
+   "H_DEPENDENCY_FRAGMENTATION|nonmaterial": 1
+  },
+  "countsByClassAndRun": {
+   "A_IDENTITY_INSTABILITY|run1": 4,
+   "A_IDENTITY_INSTABILITY|run2": 4,
+   "B_GRANULARITY_INSTABILITY|run1": 9,
+   "B_GRANULARITY_INSTABILITY|run2": 11,
+   "D_ROLE_INSTABILITY|run1": 79,
+   "D_ROLE_INSTABILITY|run2": 79,
+   "F_TRUE_SEMANTIC_OMISSION|run1": 21,
+   "F_TRUE_SEMANTIC_OMISSION|run2": 30,
+   "G_TRUE_SEMANTIC_ADDITION|run1": 1,
+   "G_TRUE_SEMANTIC_ADDITION|run2": 1,
+   "H_DEPENDENCY_FRAGMENTATION|run1": 11,
+   "H_DEPENDENCY_FRAGMENTATION|run2": 3
+  },
+  "C_BOUNDARY_INSTABILITY": 0,
+  "E_MATERIALITY_INSTABILITY": 0,
+  "I_OTHER": 0,
+  "omissionsDisclosedVsNot": {
+   "disclosed": 16,
+   "notDisclosed": 0
+  },
+  "aOnlySubstantiveOmissions": {
+   "definition": "CRITICAL/MATERIAL items present in run B with no >=50% counterpart in run A (F rows tagged run2)",
+   "count": 30
+  },
+  "bOnlySubstantiveOmissions": {
+   "definition": "CRITICAL/MATERIAL items present in run A with no >=50% counterpart in run B (F rows tagged run1)",
+   "count": 21
+  },
+  "inventedSemantics": {
+   "count": 2,
+   "note": "both are INFORMATIONAL echoes of the section heading, one per run; no CRITICAL/MATERIAL invention"
+  },
+  "fShape": {
+   "noTouchDisclosedByUnaccountedSource": 16,
+   "noTouchNotDisclosed": 0,
+   "marginallyTouchedByOtherRunItem": 35,
+   "spanLengthMedianChars": 31,
+   "spanLengthAtMost20Chars": 16
+  }
+ },
+ "roleVariationInsideIdenticalSlots": {
+  "identicalSlotAndSpanPairs": 298,
+  "roleDiffers": 82,
+  "materialityTierDiffers": 5,
+  "idsEqualWhenSlotSpanRoleAgree": "215/216",
+  "topRolePairs": [
+   [
+    "ALTERNATIVE",
+    "FORMULA_COMPONENT",
+    30
+   ],
+   [
+    "FORMULA_COMPONENT",
+    "OTHER",
+    22
+   ],
+   [
+    "CONDITION",
+    "FORMULA_COMPONENT",
+    20
+   ],
+   [
+    "CONDITION",
+    "EXCEPTION",
+    10
+   ],
+   [
+    "CONDITION",
+    "PERMISSION",
+    8
+   ]
+  ],
+  "dRowsWithFullOverlap": "100%"
+ },
+ "referenceRecall": {
+  "referenceItems": 7,
+  "runA": {
+   "items": 379,
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "discoveryRecall": 1.0,
+   "criticalMaterialRecall": 1.0,
+   "quantitativeRecall": 1.0,
+   "quantitativeValues": [
+    30,
+    30
+   ],
+   "conditionExceptionRecall": 1.0,
+   "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+  },
+  "runB": {
+   "items": 382,
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "discoveryRecall": 1.0,
+   "criticalMaterialRecall": 1.0,
+   "quantitativeRecall": 1.0,
+   "quantitativeValues": [
+    30,
+    30
+   ],
+   "conditionExceptionRecall": 1.0,
+   "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+  },
+  "intersection": {
+   "discoveryRecall": 1.0,
+   "criticalMaterialRecall": 1.0,
+   "quantitativeRecall": 1.0,
+   "conditionExceptionRecall": 1.0,
+   "dependencyRecall": "N/A (no category-E reference item in the 6.08 subset)"
+  },
+  "referenceSetInModelContext": false
+ },
+ "trustSafety": {
+  "runAStatus": "INVENTORY_COVERAGE_GAP (REVIEW_REQUIRED)",
+  "runBStatus": "INVENTORY_COVERAGE_GAP (REVIEW_REQUIRED)",
+  "falseCompletenessFindings": 0,
+  "safeDisclosedOmissions": {
+   "unaccountedSourceSegmentsA": 27,
+   "unaccountedSourceSegmentsB": 18,
+   "uninventoriedValuesA": 2,
+   "uninventoriedValuesB": 0,
+   "fItemsSittingInOtherRunsUnaccountedSource": 16
+  },
+  "dangerousSilentOmissions": 0,
+  "residualCaveat": "35 F-class items are covered in the other run only by a differently-bounded item (<50% overlap); they are not individually disclosed, but neither run claims completeness and no frozen-reference semantic is affected"
+ },
+ "gate": {
+  "criticalMaterialStability": {
+   "value": 0.5236,
+   "threshold": 0.85,
+   "pass": false
+  },
+  "semanticStability": {
+   "value": 0.5251,
+   "threshold": 0.8,
+   "pass": false
+  },
+  "deterministicSlotPartitionIdentity": {
+   "pass": true,
+   "evidence": "335 slots / 7 batches; slot-id, slot-span and batch hashes byte-identical across two pre-run invocations and one post-run invocation; both runs report partition {batches:7, firstPassCalls:7, gapCalls:1}; 0 items without slotId"
+  },
+  "zeroDangerousSilentOmissions": {
+   "pass": true,
+   "dangerousSilentOmissions": 0,
+   "evidence": "both runs terminate INVENTORY_COVERAGE_GAP (REVIEW_REQUIRED); frozen 6.08 reference recall 1.0 in both runs and in intersection; scorer omissionsDisclosedVsNot = {disclosed:16, notDisclosed:0}"
+  },
+  "noMaterialRecallDegradation": {
+   "pass": true,
+   "evidence": "frozen-reference discovery/critical-material/quantitative/condition-exception recall 1.0 in A, in B, and in intersection (frozen baseline 1.0)"
+  }
+ },
+ "dominantRemainingMechanism": {
+  "primary": "MODEL SEMANTICS STILL VARY INSIDE IDENTICAL SLOTS - role variation: the same slot and the same span receive different semanticRole labels (82 of 298 identical slot+span pairs; D_ROLE_INSTABILITY = 158 of 253 run-only items = 62%, every one at overlap 1.00), so the slot-keyed identity (which includes role) diverges even though the model decomposed the text identically",
+  "secondary": [
+   "true per-run omission / decomposition of small formula fragments (F = 51, median span 31 chars, 16 of them <= 20 chars, 16 disclosed by unaccountedSource)",
+   "gap-pass instability: A gap added 10 items over 33 segments, B added 35 over 47 (15 slots have items only in B); only 9 unaccounted segments are identical across runs",
+   "granularity + dependency fragmentation (B = 20, H = 14)"
+  ],
+  "ruledOut": [
+   "slot granularity too coarse/too fine (partition deterministic, 96% of slots populated in both runs, coverage stability 0.973)",
+   "cross-slot context loss (quantitative stability 0.947, reference recall 1.0)",
+   "canonical merge/identity issue (ids equal 215/216 when slot, span and role agree; duplicate rate 0.0026)",
+   "materiality instability (E = 0; tier differs on 5 of 298 identical pairs)"
+  ]
+ },
+ "regression": {
+  "f5SlotsStabilityTests": "15/15 passed",
+  "productionDiffFromStartingSha": "0 lines (lib, scripts, prisma, app)",
+  "partitionAfterRuns": "byte-identical to pre-run hashes",
+  "frozenGroundTruthEdited": false
+ }
+}

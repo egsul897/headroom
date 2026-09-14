@@ -1,0 +1,776 @@
+{
+ "artifact": "F-7B §8/§9 Stage 1 results + gate",
+ "at": "2026-09-14T13:01:43.662Z",
+ "gitSha": "0cdfcf26ebb19b0a3ff59c8cb31f35f7e140610b",
+ "planHash": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+ "selectedShardIds": [
+  "shard:4f06625557e9aecbbb7a",
+  "shard:1c29e71eef1717d4f9e1",
+  "shard:3e3910ea2efd9edd45a3",
+  "shard:aac727054a5da5f1a9fd",
+  "shard:bf3da01cb454860cdf5f"
+ ],
+ "trancheEstimateUsd": 2.3096,
+ "stage1Calls": 17,
+ "stage1CostUsd": 2.6322,
+ "stage1CapUsd": 3,
+ "maxActualInputTokensPerShard": 217357,
+ "maxSingleTurnInputTokens": 49649,
+ "maxActualOutputTokensPerShard": 42224,
+ "records": [
+  {
+   "stage": 1,
+   "attempt": 1,
+   "shardId": "shard:1c29e71eef1717d4f9e1",
+   "shardHash": "85cd3fe537a3657f61009c524910ba6bac773fc01343a89fdfc31b58025d6f06",
+   "ordinal": 2,
+   "ownedUnits": 3,
+   "sourceChars": 11172,
+   "contextEntries": 8,
+   "contextChars": 5735,
+   "unresolvedContext": 1,
+   "oversized": false,
+   "ownedItems": 11,
+   "ownedMaterialItems": 11,
+   "estimatedFirstTurnInputTokens": 29510,
+   "preCallEstimate": {
+    "inputTokens": 97088,
+    "outputTokens": 9000,
+    "usd": 0.284176
+   },
+   "actual": {
+    "inputTokens": 71218,
+    "outputTokens": 20370,
+    "turns": 2,
+    "latencyMs": 194932,
+    "costUsd": 0.346136,
+    "attemptCount": 2,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "FAILED",
+   "shardStatus": "SHARD_SCHEMA_FAILURE",
+   "failureReasons": [
+    "MODEL_SCHEMA_FAILURE"
+   ],
+   "toolCalls": 1,
+   "toolCallNames": [
+    "getDefinition"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 0,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 0,
+    "dispositioned": 0,
+    "missingMaterial": 11,
+    "valuesRepresented": 0,
+    "valuesMissing": 14,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {
+     "MISSING_FROM_COMPOSITION": 11
+    }
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [],
+   "unresolvedIssues": [
+    "submit_compilation input failed schema validation: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"definitions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"sharedCapacities\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"irExtensionCandidates\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"inventoryDispositions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"overallNotes\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  }\n]"
+   ],
+   "errorSummary": null
+  },
+  {
+   "stage": 1,
+   "attempt": 1,
+   "shardId": "shard:bf3da01cb454860cdf5f",
+   "shardHash": "681651c0752343da54ae800cd818a0c263f2a2782d6e1cab8cc313f76cca0702",
+   "ordinal": 17,
+   "ownedUnits": 16,
+   "sourceChars": 10233,
+   "contextEntries": 6,
+   "contextChars": 5891,
+   "unresolvedContext": 2,
+   "oversized": false,
+   "ownedItems": 8,
+   "ownedMaterialItems": 8,
+   "estimatedFirstTurnInputTokens": 29330,
+   "preCallEstimate": {
+    "inputTokens": 96496,
+    "outputTokens": 41500,
+    "usd": 0.6079920000000001
+   },
+   "actual": {
+    "inputTokens": 217357,
+    "outputTokens": 27697,
+    "turns": 5,
+    "latencyMs": 256327,
+    "costUsd": 0.711684,
+    "attemptCount": 5,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "FAILED",
+   "shardStatus": "SHARD_SCHEMA_FAILURE",
+   "failureReasons": [
+    "MODEL_SCHEMA_FAILURE"
+   ],
+   "toolCalls": 9,
+   "toolCallNames": [
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getDefinition",
+    "getChildren",
+    "getSourceSpan",
+    "getDefinition"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 0,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 0,
+    "dispositioned": 0,
+    "missingMaterial": 8,
+    "valuesRepresented": 0,
+    "valuesMissing": 10,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {
+     "MISSING_FROM_COMPOSITION": 8
+    }
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [],
+   "unresolvedIssues": [
+    "submit_compilation input failed schema validation: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"definitions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"sharedCapacities\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"irExtensionCandidates\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"overallNotes\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  }\n]"
+   ],
+   "errorSummary": null
+  },
+  {
+   "stage": 1,
+   "attempt": 1,
+   "shardId": "shard:aac727054a5da5f1a9fd",
+   "shardHash": "9943af75025bd8550567628dd359394b6aba3cbadb767a1f228a30638fef3078",
+   "ordinal": 21,
+   "ownedUnits": 16,
+   "sourceChars": 7577,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "ownedItems": 0,
+   "ownedMaterialItems": 0,
+   "estimatedFirstTurnInputTokens": 22825,
+   "preCallEstimate": {
+    "inputTokens": 75095,
+    "outputTokens": 41500,
+    "usd": 0.5651900000000001
+   },
+   "actual": {
+    "inputTokens": 77736,
+    "outputTokens": 15323,
+    "turns": 3,
+    "latencyMs": 134665,
+    "costUsd": 0.308702,
+    "attemptCount": 3,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "FAILED",
+   "shardStatus": "SHARD_SCHEMA_FAILURE",
+   "failureReasons": [
+    "MODEL_SCHEMA_FAILURE"
+   ],
+   "toolCalls": 6,
+   "toolCallNames": [
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getDefinition",
+    "getChildren",
+    "getChildren"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 0,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 0,
+    "dispositioned": 0,
+    "missingMaterial": 0,
+    "valuesRepresented": 0,
+    "valuesMissing": 0,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {}
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [],
+   "unresolvedIssues": [
+    "submit_compilation input failed schema validation: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"definitions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"sharedCapacities\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"irExtensionCandidates\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"inventoryDispositions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"overallNotes\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  }\n]"
+   ],
+   "errorSummary": null
+  },
+  {
+   "stage": 1,
+   "attempt": 1,
+   "shardId": "shard:4f06625557e9aecbbb7a",
+   "shardHash": "f1b437e22ee07474adbce6cb0f9ab25ceb36ca10847253c797fce0f3af206cf5",
+   "ordinal": 26,
+   "ownedUnits": 1,
+   "sourceChars": 26695,
+   "contextEntries": 7,
+   "contextChars": 3701,
+   "unresolvedContext": 1,
+   "oversized": true,
+   "ownedItems": 6,
+   "ownedMaterialItems": 6,
+   "estimatedFirstTurnInputTokens": 34344,
+   "preCallEstimate": {
+    "inputTokens": 112992,
+    "outputTokens": 4000,
+    "usd": 0.265984
+   },
+   "actual": {
+    "inputTokens": 79480,
+    "outputTokens": 30906,
+    "turns": 2,
+    "latencyMs": 291681,
+    "costUsd": 0.46802,
+    "attemptCount": 2,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "FAILED",
+   "shardStatus": "SHARD_SCHEMA_FAILURE",
+   "failureReasons": [
+    "MODEL_SCHEMA_FAILURE"
+   ],
+   "toolCalls": 2,
+   "toolCallNames": [
+    "getDefinition",
+    "getReferencedProvision"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 0,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 0,
+    "dispositioned": 0,
+    "missingMaterial": 6,
+    "valuesRepresented": 0,
+    "valuesMissing": 9,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {
+     "MISSING_FROM_COMPOSITION": 6
+    }
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [],
+   "unresolvedIssues": [
+    "submit_compilation input failed schema validation: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"definitions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"sharedCapacities\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"irExtensionCandidates\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"inventoryDispositions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"overallNotes\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  }\n]"
+   ],
+   "errorSummary": null
+  },
+  {
+   "stage": 1,
+   "attempt": 1,
+   "shardId": "shard:3e3910ea2efd9edd45a3",
+   "shardHash": "183134ad7785f161b0d350297d89603860aada6016bbf04609fc1dd0c172957f",
+   "ordinal": 27,
+   "ownedUnits": 16,
+   "sourceChars": 10103,
+   "contextEntries": 3,
+   "contextChars": 2796,
+   "unresolvedContext": 2,
+   "oversized": false,
+   "ownedItems": 3,
+   "ownedMaterialItems": 3,
+   "estimatedFirstTurnInputTokens": 26033,
+   "preCallEstimate": {
+    "inputTokens": 85649,
+    "outputTokens": 41500,
+    "usd": 0.586298
+   },
+   "actual": {
+    "inputTokens": 187696,
+    "outputTokens": 42224,
+    "turns": 5,
+    "latencyMs": 368848,
+    "costUsd": 0.797632,
+    "attemptCount": 5,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "FAILED",
+   "shardStatus": "SHARD_SCHEMA_FAILURE",
+   "failureReasons": [
+    "MODEL_SCHEMA_FAILURE"
+   ],
+   "toolCalls": 6,
+   "toolCallNames": [
+    "getDefinition",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getChildren",
+    "getSourceSpan",
+    "getReferencedProvision"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 0,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 0,
+    "dispositioned": 0,
+    "missingMaterial": 3,
+    "valuesRepresented": 0,
+    "valuesMissing": 5,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {
+     "MISSING_FROM_COMPOSITION": 3
+    }
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [],
+   "unresolvedIssues": [
+    "submit_compilation input failed schema validation: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"definitions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"sharedCapacities\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"irExtensionCandidates\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"overallNotes\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  }\n]"
+   ],
+   "errorSummary": null
+  }
+ ],
+ "partialStitchDiagnostics": {
+  "status": "FAILED",
+  "collisions": {},
+  "contextualEmissions": [],
+  "unresolvedOwnedItems": 108,
+  "strippedLineage": []
+ },
+ "scoreSnapshot": {
+  "A": {
+   "materialTotal": 108,
+   "materialRepresented": 0,
+   "materialDispositioned": 0,
+   "materialMissing": 108,
+   "materialAccountabilityRate": 0,
+   "materialMissingOwnedByCompleteShards": 0,
+   "materialMissingOwnedByFailedShards": 108,
+   "allItemsByDisposition": {
+    "MISSING_FROM_COMPOSITION": 109
+   },
+   "passC": {
+    "inventoried": 109,
+    "material": 108,
+    "represented": 0,
+    "intentionallyNonComputational": 0,
+    "unsupported": 0,
+    "ambiguous": 0,
+    "missingFromComposition": 109,
+    "materialMissingFromComposition": 108,
+    "criticalMissingFromComposition": 54,
+    "materialQuantitativeValues": 142,
+    "materialQuantitativeValuesMissing": 142,
+    "uninventoriedValues": 95,
+    "unaccountedSource": 721,
+    "danglingLineageReferences": 0,
+    "canonicalizedLineageReferences": 0
+   },
+   "semanticallyComplete": false,
+   "unresolvedOwnedItems": 108
+  },
+  "B": {
+   "valueOccurrencesBefore": 0,
+   "valueOccurrencesAfter": 0,
+   "distinctValuesBefore": 0,
+   "distinctValuesAfter": 0,
+   "valuesOnlyInDroppedContextualEmissions": 0,
+   "valuesLostByStitching": 0,
+   "valuesLostList": [],
+   "duplicatesCollapsed": 0,
+   "multisetOccurrencesRemoved": 0
+  },
+  "C": {
+   "lineageRefsBefore": 0,
+   "lineageRefsAfter": 0,
+   "canonicalizedDigestIds": 0,
+   "strippedClaimsOnUnownedItems": 0,
+   "strippedOnItemsOwnedBySomeShard": 0,
+   "strippedOnUnknownIds": 0,
+   "danglingLineageAfter": 0,
+   "lineageRefsInDroppedEmissions": 0,
+   "unknownLineageIdsBefore": 0
+  },
+  "E": {
+   "definitionTermDependencies": 0,
+   "resolvedToStitchedDefinition": 0,
+   "resolvedToSourceUnitOnly": 0,
+   "unresolvedTermDependencies": 0,
+   "crossShardTermDependencies": 0,
+   "crossShardResolved": 0,
+   "ruleDependencies": {
+    "resolved": 0,
+    "unresolved": 0
+   },
+   "missingContextDispositions": 0,
+   "missingContextSufficiencyObjects": 0,
+   "shardsGivenContext": 35,
+   "shardsGivenContextCompleteWithoutOwnedMaterialMissing": 0,
+   "contextEntriesTruncated": 14,
+   "shardsWithTruncatedContext": [
+    "shard:1c29e71eef1717d4f9e1",
+    "shard:5f63d11e8ce53e883d6a",
+    "shard:d3aac7c869cff4602343",
+    "shard:bf3da01cb454860cdf5f",
+    "shard:a45ccfe3d94f990e5348",
+    "shard:f3eb63624b7f5a5c3cca",
+    "shard:f048973d2e9a58498b81",
+    "shard:4f06625557e9aecbbb7a",
+    "shard:3e3910ea2efd9edd45a3",
+    "shard:50e26ec2fb25035a3b7b"
+   ],
+   "unresolvedContextEntries": 20
+  },
+  "H": {
+   "objectsKept": 0,
+   "sourceUnverifiableSurviving": 0,
+   "list": [],
+   "definitionsWithLineage": 0
+  },
+  "I": {
+   "unsupportedNodes": 0,
+   "exprNodes": 0,
+   "definitionSufficiency": {},
+   "ruleSufficiency": {},
+   "shardsPartial": 0,
+   "shardsMissingContext": 0,
+   "shardsSchemaFailure": 5,
+   "outputTruncatedShards": []
+  },
+  "J": {
+   "falseCompleteness": 0,
+   "falseCompletenessList": [],
+   "dangerousSilentOmissions": 0,
+   "silentList": [],
+   "hiddenFailedShards": 0,
+   "contextualOwnershipCredit": 0,
+   "conflictSilentMerge": 0
+  },
+  "W": {
+   "envelope": {
+    "normalShardMaxSingleTurnInputTokens": 60000,
+    "nearCeilingOutputTokens": 100000,
+    "maxTokensSetting": 128000
+   },
+   "normalShards": 4,
+   "maxSingleTurnInputNormal": 49649,
+   "envelopeViolations": [],
+   "perShardTotalInput": {
+    "max": 217357,
+    "median": 79480,
+    "p95": 217357,
+    "total": 633487
+   },
+   "singleTurnInput": {
+    "max": 49649,
+    "median": 45335,
+    "p95": 49649
+   },
+   "output": {
+    "maxPerShard": 42224,
+    "median": 27697,
+    "p95": 42224,
+    "total": 136520,
+    "maxSingleTurn": 28215,
+    "nearCeiling": [],
+    "truncated": []
+   },
+   "oversizedShard": {
+    "shardId": "shard:4f06625557e9aecbbb7a",
+    "oversized": true,
+    "maxTurnIn": 46151,
+    "totalIn": 79480,
+    "totalOut": 30906,
+    "maxTurnOut": 19101,
+    "turns": 2,
+    "cost": 0.46802
+   },
+   "historicalMonolithicFirstTurnInput": 312143,
+   "peakInputReduction": 0.8409,
+   "totalInputVsMonolithicFirstTurn": 2.029
+  },
+  "trust": {
+   "dangerousSilentOmissions": 0,
+   "falseCompleteness": 0,
+   "contextualOwnershipCredit": 0,
+   "sourceUnverifiableIrSurviving": 0,
+   "conflictingDuplicateSilentlyMerged": 0,
+   "valuesLostByStitching": 0,
+   "danglingReferencesCausedByStitching": 0,
+   "danglingLineageAfterPassC": 0,
+   "danglingRuleReferencesSurviving": 0,
+   "danglingRuleReferencesConvertedExplicitly": 0,
+   "failedShardHidden": 0,
+   "missingMaterialOwnedItemHidden": 0
+  },
+  "Ksummary": {
+   "items": 14,
+   "itemsWithValues": 7,
+   "valuesTotal": 23,
+   "valuesMatched": 0,
+   "itemsFullyMatched": 0
+  },
+  "K": [
+   {
+    "id": "B13",
+    "materiality": "MATERIAL",
+    "section": "Permitted Liens (46)",
+    "ownerShard": "shard:4f06625557e9aecbbb7a",
+    "ownerShardStatus": "SHARD_SCHEMA_FAILURE",
+    "referenceValues": [],
+    "matchedInStitchedIR": [],
+    "matchRate": null
+   },
+   {
+    "id": "B14",
+    "materiality": "CRITICAL",
+    "section": "Incremental Cap / Fixed Incremental Amount",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "ownerShardStatus": "SHARD_SCHEMA_FAILURE",
+    "referenceValues": [
+     "MONEY:720000000",
+     "PERCENT:1"
+    ],
+    "matchedInStitchedIR": [],
+    "matchRate": 0
+   },
+   {
+    "id": "C3",
+    "materiality": "CRITICAL",
+    "section": "Prepayment Event (a)/(b)",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "ownerShardStatus": "SHARD_SCHEMA_FAILURE",
+    "referenceValues": [
+     "MONEY:144000000",
+     "MONEY:216000000",
+     "PERCENT:0.2",
+     "PERCENT:0.3",
+     "PERCENT:1"
+    ],
+    "matchedInStitchedIR": [],
+    "matchRate": 0
+   },
+   {
+    "id": "D5",
+    "materiality": "CRITICAL",
+    "section": "Ratio definitions",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "ownerShardStatus": "SHARD_SCHEMA_FAILURE",
+    "referenceValues": [],
+    "matchedInStitchedIR": [],
+    "matchRate": null
+   },
+   {
+    "id": "E2",
+    "materiality": "MATERIAL",
+    "section": "Available Investment Capacity Amount",
+    "ownerShard": "shard:1c29e71eef1717d4f9e1",
+    "ownerShardStatus": "SHARD_SCHEMA_FAILURE",
+    "referenceValues": [],
+    "matchedInStitchedIR": [],
+    "matchRate": null
+   },
+   {
+    "id": "E3",
+    "materiality": "CRITICAL",
+    "section": "Fixed Incremental Amount consumption",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "ownerShardStatus": "SHARD_SCHEMA_FAILURE",
+    "referenceValues": [],
+    "matchedInStitchedIR": [],
+    "matchRate": null
+   }
+  ]
+ },
+ "gate": {
+  "1": {
+   "name": "no dangerous silent omission",
+   "value": 0,
+   "pass": true
+  },
+  "2": {
+   "name": "no false completeness",
+   "value": 0,
+   "pass": true
+  },
+  "3": {
+   "name": "zero shard-harness/protocol defect (no schema failure, no transport/internal error, every shard returned a classified result)",
+   "value": [
+    "shard:1c29e71eef1717d4f9e1",
+    "shard:bf3da01cb454860cdf5f",
+    "shard:aac727054a5da5f1a9fd",
+    "shard:4f06625557e9aecbbb7a",
+    "shard:3e3910ea2efd9edd45a3"
+   ],
+   "pass": false
+  },
+  "4": {
+   "name": "successful shards retain their output (evidence file present with composition, raw submission retained)",
+   "value": [],
+   "pass": true
+  },
+  "5": {
+   "name": "no contextual source earns ownership credit",
+   "value": 0,
+   "pass": true
+  },
+  "6": {
+   "name": "no production invariant violated (every material item still owned once; stitched status conservative; lineage claims on unowned items stripped, not credited)",
+   "value": {
+    "ownership": {
+     "materialItems": 108,
+     "ownedOnce": 108,
+     "unowned": 0,
+     "multiplyOwned": 0
+    },
+    "stitchedStatus": "FAILED",
+    "strippedClaims": 0
+   },
+   "pass": true
+  },
+  "7": {
+   "name": "ordinary shards within the bounded envelope (largest single turn < 60,000 input tokens; no output truncation)",
+   "value": [
+    {
+     "shardId": "shard:1c29e71eef1717d4f9e1",
+     "maxTurnInputTokens": 41849,
+     "outputTokens": 20370,
+     "truncated": false
+    },
+    {
+     "shardId": "shard:bf3da01cb454860cdf5f",
+     "maxTurnInputTokens": 49649,
+     "outputTokens": 27697,
+     "truncated": false
+    },
+    {
+     "shardId": "shard:aac727054a5da5f1a9fd",
+     "maxTurnInputTokens": 28010,
+     "outputTokens": 15323,
+     "truncated": false
+    },
+    {
+     "shardId": "shard:3e3910ea2efd9edd45a3",
+     "maxTurnInputTokens": 45335,
+     "outputTokens": 42224,
+     "truncated": false
+    }
+   ],
+   "pass": true
+  },
+  "8": {
+   "name": "oversized shard succeeds safely OR fails explicitly without poisoning unrelated shards",
+   "value": {
+    "shardId": "shard:4f06625557e9aecbbb7a",
+    "status": "SHARD_SCHEMA_FAILURE",
+    "failureReasons": [
+     "MODEL_SCHEMA_FAILURE"
+    ],
+    "maxTurnInputTokens": 46151,
+    "outputTokens": 30906,
+    "missingMaterial": 6
+   },
+   "pass": true
+  },
+  "9": {
+   "name": "no evidence the planner systematically deprives owner shards of context (MISSING_CONTEXT dispositions/sufficiency on owned items)",
+   "value": {
+    "missingContextDispositions": 0,
+    "missingContextObjects": 0,
+    "shardsMissingContext": 0,
+    "unresolvedContextEntriesInStage1": 6
+   },
+   "pass": true
+  },
+  "10": {
+   "name": "owned material semantics show real recovery (exact fraction; no post-hoc threshold - judged as architecture breakage vs disclosed model incompleteness)",
+   "value": {
+    "stage1OwnedMaterialItems": 28,
+    "accounted": 0,
+    "missing": 28,
+    "fraction": 0,
+    "representedAllItems": 0,
+    "dispositionedAllItems": 0,
+    "perShard": [
+     {
+      "shardId": "shard:1c29e71eef1717d4f9e1",
+      "material": 11,
+      "missing": 11,
+      "represented": 0,
+      "dispositioned": 0,
+      "byDisposition": {
+       "MISSING_FROM_COMPOSITION": 11
+      }
+     },
+     {
+      "shardId": "shard:bf3da01cb454860cdf5f",
+      "material": 8,
+      "missing": 8,
+      "represented": 0,
+      "dispositioned": 0,
+      "byDisposition": {
+       "MISSING_FROM_COMPOSITION": 8
+      }
+     },
+     {
+      "shardId": "shard:aac727054a5da5f1a9fd",
+      "material": 0,
+      "missing": 0,
+      "represented": 0,
+      "dispositioned": 0,
+      "byDisposition": {}
+     },
+     {
+      "shardId": "shard:4f06625557e9aecbbb7a",
+      "material": 6,
+      "missing": 6,
+      "represented": 0,
+      "dispositioned": 0,
+      "byDisposition": {
+       "MISSING_FROM_COMPOSITION": 6
+      }
+     },
+     {
+      "shardId": "shard:3e3910ea2efd9edd45a3",
+      "material": 3,
+      "missing": 3,
+      "represented": 0,
+      "dispositioned": 0,
+      "byDisposition": {
+       "MISSING_FROM_COMPOSITION": 3
+      }
+     }
+    ]
+   },
+   "pass": false
+  }
+ },
+ "allPass": false,
+ "costBounded": null,
+ "gateway": {
+  "balance": "26.455292",
+  "total_used": "188.544708"
+ },
+ "verdictIfFail": "F7_NEEDS_ARCHITECTURAL_ITERATION (or F7_NOT_SAFE if a trust gate failed)"
+}

@@ -13,9 +13,19 @@
  * compiler pipeline's own tenant/instrument isolation tests).
  */
 import type { IRCapacityExpression, IRCompilationUnit, IRDefinition, IRExpression, IRRule } from "./types";
-import { validateCapacityExpressionTypes, validateExpressionTypes, type TypeIssue } from "./type-check";
+import { inferType, validateCapacityExpressionTypes, validateExpressionTypes, type TypeIssue } from "./type-check";
+import { UNSUPPORTED_TYPE } from "./types";
 
-export type ValidationIssueKind = "TYPE_ERROR" | "CROSS_INSTRUMENT_REFERENCE" | "DANGLING_REFERENCE" | "ILLEGAL_CYCLE" | "MALFORMED_UNSUPPORTED" | "MISSING_REQUIRED_FIELD";
+/**
+ * FALSE_COMPLETENESS (F-6): a rule/definition that declares COMPLETE
+ * sufficiency while one of its own expressions contains an UNSUPPORTED
+ * subtree (inferType UNSUPPORTED). The type checker no longer reports an
+ * operator over an honest UNSUPPORTED child as a TYPE_ERROR (that is a
+ * PARTIAL representation, not a malformed one), so this is the structural
+ * check that keeps "unsupported semantics can never become COMPLETE merely
+ * because the outer expression validates" mechanically true.
+ */
+export type ValidationIssueKind = "TYPE_ERROR" | "CROSS_INSTRUMENT_REFERENCE" | "DANGLING_REFERENCE" | "ILLEGAL_CYCLE" | "MALFORMED_UNSUPPORTED" | "MISSING_REQUIRED_FIELD" | "FALSE_COMPLETENESS";
 
 export interface ValidationIssue {
   kind: ValidationIssueKind;
@@ -96,25 +106,36 @@ export function validateRule(rule: IRRule): ValidationReport {
   if (!rule.instrumentKey) issues.push({ kind: "MISSING_REQUIRED_FIELD", ruleId: rule.ruleId, message: "rule.instrumentKey is required" });
 
   const allReferences: IRExpression[] = [];
+  const ownedExpressions: { label: string; expr: IRExpression }[] = [];
   if (rule.capacityExpression) {
     const typeIssues = validateCapacityExpressionTypes(rule.capacityExpression);
     issues.push(...typeIssuesToValidationIssues(rule.ruleId, typeIssues));
     allReferences.push(...collectCapacityReferences(rule.capacityExpression));
+    if (rule.capacityExpression.kind === "UNLIMITED_CAPACITY") {
+      if (rule.capacityExpression.gatedBy) ownedExpressions.push({ label: "capacityExpression.gatedBy", expr: rule.capacityExpression.gatedBy });
+    } else ownedExpressions.push({ label: "capacityExpression", expr: rule.capacityExpression });
   }
-  for (const condition of rule.conditions) {
+  rule.conditions.forEach((condition, i) => {
     if (condition.expression) {
       const typeIssues = validateExpressionTypes(condition.expression);
       issues.push(...typeIssuesToValidationIssues(rule.ruleId, typeIssues));
       allReferences.push(...collectReferences(condition.expression));
+      ownedExpressions.push({ label: `conditions[${i}].expression`, expr: condition.expression });
     }
-  }
-  for (const exception of rule.exceptions) {
-    for (const condition of exception.conditions) {
+  });
+  rule.exceptions.forEach((exception, i) => {
+    exception.conditions.forEach((condition, j) => {
       if (condition.expression) {
         const typeIssues = validateExpressionTypes(condition.expression);
         issues.push(...typeIssuesToValidationIssues(rule.ruleId, typeIssues));
         allReferences.push(...collectReferences(condition.expression));
+        ownedExpressions.push({ label: `exceptions[${i}].conditions[${j}].expression`, expr: condition.expression });
       }
+    });
+  });
+  if (rule.sufficiency === "COMPLETE") {
+    for (const owned of ownedExpressions) {
+      if (inferType(owned.expr) === UNSUPPORTED_TYPE) issues.push({ kind: "FALSE_COMPLETENESS", ruleId: rule.ruleId, exprId: owned.expr.exprId, message: `rule declares sufficiency COMPLETE but ${owned.label} contains an UNSUPPORTED subtree (or fails to type-check) - it can be at most PARTIAL` });
     }
   }
 
@@ -149,6 +170,9 @@ export function validateDefinition(definition: IRDefinition): ValidationReport {
   if (definition.calculationExpression) {
     const typeIssues = validateExpressionTypes(definition.calculationExpression);
     issues.push(...typeIssues.map((i) => ({ kind: "TYPE_ERROR" as const, exprId: i.exprId, message: `[${i.kind}] ${i.message}` })));
+    if (definition.sufficiency === "COMPLETE" && inferType(definition.calculationExpression) === UNSUPPORTED_TYPE) {
+      issues.push({ kind: "FALSE_COMPLETENESS", exprId: definition.calculationExpression.exprId, message: `definition "${definition.definitionId}" declares sufficiency COMPLETE but its calculationExpression contains an UNSUPPORTED subtree (or fails to type-check) - it can be at most PARTIAL` });
+    }
 
     for (const ref of collectReferences(definition.calculationExpression)) {
       if (ref.kind === "METRIC_REFERENCE" || ref.kind === "DEFINED_TERM_REFERENCE" || ref.kind === "RULE_REFERENCE") {

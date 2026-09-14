@@ -20,6 +20,7 @@ if (!process.env.AI_GATEWAY_API_KEY && !process.env.ANTHROPIC_API_KEY) {
 import { z } from "zod";
 import { resolveSourceContext } from "../lib/contract-model/compiler/semantic-accountability/source-context";
 import { buildInventorySystemPrompt, buildInventoryUserContent } from "../lib/contract-model/compiler/semantic-accountability/prompt";
+import { batchSlots, partitionSourceSlots } from "../lib/contract-model/compiler/semantic-accountability/slots";
 import { getSemanticCaller } from "../lib/contract-model/compiler/semantic/caller";
 import { getStageCaller } from "../lib/contract-model/compiler/llm-caller";
 import { findAnchor, HOLDOUT_SPEC, loadPackage, WHOLE_AGREEMENT_SPEC, type ValidationSpec } from "./lib/semantic-accountability-regions";
@@ -62,7 +63,9 @@ function planFor(spec: ValidationSpec, pricing: { inPerToken: number; outPerToke
     const anchor = findAnchor(pkg.allNodes, region.documentId, start);
     const sc = resolveSourceContext({ index: pkg.index, documentId: region.documentId, operativeSourceText: window, anchorNodeId: anchor?.nodeId ?? null, operativeCharStart: start, documentText: text });
     const unit = sc.regions[0]!;
-    const passAInputTokens = Math.ceil((buildInventorySystemPrompt().length + buildInventoryUserContent(sc).length) / CHARS_PER_TOKEN);
+    // v4 (F-5): Pass A is one bounded call per slot batch; the system prompt is re-sent per batch.
+    const batches = batchSlots(partitionSourceSlots({ sourceContext: sc, structuralIndex: pkg.index }), sc);
+    const passAInputTokens = Math.ceil(batches.reduce((n, b) => n + buildInventorySystemPrompt().length + buildInventoryUserContent(sc, b).length, 0) / CHARS_PER_TOKEN);
     const passAOutputTokens = Math.ceil(Math.min(12_000, Math.max(1_500, sc.totalChars / 6))); // ~1 item per 60-100 chars of dense source, JSON overhead included
     const passACost = passAInputTokens * pricing.inPerToken + passAOutputTokens * pricing.outPerToken;
     const prior = spec.priorCompileCostUsd[region.id] ?? 0.4;

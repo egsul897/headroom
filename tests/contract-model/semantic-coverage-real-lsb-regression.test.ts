@@ -55,11 +55,11 @@ async function runAudit() {
 }
 
 describe("Phase 3E real LSB Article 6 regression (task #162) - $0 cost, real evidence only", () => {
-  it("audits the ENTIRE real 76-node document root - never a hand-selected section subset", () => {
+  it("audits the ENTIRE real 75-node document root - never a hand-selected section subset", () => {
     const { index } = loadFwrgLsbStructuralIndex();
     const discoveredCandidates = loadRealDiscoveredCandidates(index);
     expect(discoveredCandidates.length).toBe(82);
-    expect(index.allNodes().filter((n) => n.documentId === DOCUMENT_ID).length).toBe(76);
+    expect(index.allNodes().filter((n) => n.documentId === DOCUMENT_ID).length).toBe(75) /* F-2 (Phase 3 Chewy remediation 2): inline cross-reference / spelled-numeral markers such as 'clauses (i) through (iv)' are no longer structural labels - see docs/phase-3-remediation-f2 */;
   });
 
   it("produces a real, non-trivial semantic unit inventory and an honest, non-passing gate given only 3 of 82 candidates have real compiled IR", async () => {

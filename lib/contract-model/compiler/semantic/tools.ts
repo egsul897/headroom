@@ -17,10 +17,12 @@
  */
 import type { NodeSupersessionIndex, NodeSupersessionStatus, OperativeProvisionView, OperativeStateStatus } from "../amendment/types";
 import type { StructuralNode } from "../types";
-import { buildNodeSupersessionIndex, getNodeSupersessionStatus, isConfirmedCurrentOperativeEvidence, normalizeDefinedTermRef, resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
+import { buildNodeSupersessionIndex, getNodeSupersessionStatus, getOperativeDefinition, isConfirmedCurrentOperativeEvidence, normalizeDefinedTermRef, resolveOperativeDefinitionEvidence, resolveUniqueDefinitionByRef } from "../amendment/operative-state";
+import type { DefinitionEvidenceFound } from "../amendment/operative-state";
 import type { ContextItem } from "../context-retrieval/types";
+import { computeSourceContentHash } from "../hashing";
 import { resolveReferenceTarget } from "../semantic-accountability/reference-resolver";
-import type { SemanticToolAccess, ToolBudget, ToolCallLogEntry } from "./types";
+import type { RetrievedSourceRecord, SemanticToolAccess, ToolBudget, ToolCallLogEntry } from "./types";
 
 export interface ToolExecutionOutcome {
   ok: boolean;
@@ -63,6 +65,48 @@ export interface ToolExecutionOutcome {
    * nothing downstream of the model's own judgment ever acted on it.
    */
   evidenceTruncated?: boolean;
+  /**
+   * F-4 (Phase 3 Chewy remediation) - the authenticable record of the
+   * source text this call served (document, physical node, span, FULL
+   * untruncated raw text, content hash, text origin, evidence status).
+   * Set only by the source-reading tools (getDefinition,
+   * getReferencedProvision, getOperativeProvision) when real text is
+   * returned; never for a refusal. Copied verbatim onto the
+   * ToolCallLogEntry by ToolRunner.run. This is EVIDENCE PROVENANCE only -
+   * the independent verifier re-resolves the same request itself and uses
+   * this record solely to authenticate that the compiler was shown the
+   * authentic text (semantic-verification/retrieved-evidence.ts).
+   */
+  retrievedSource?: RetrievedSourceRecord;
+}
+
+/**
+ * F-4 - builds the RetrievedSourceRecord for a definition getDefinition
+ * just resolved. Base-document text is located to its real physical
+ * definition (resolveUniqueDefinitionByRef -> enclosing node + char span:
+ * the text IS document.text.slice(charStart, charStart + text.length),
+ * exactly how StructuralIndex.getDefinitionFullText slices it); an
+ * amendment's recorded current text carries the governing node identity
+ * from the OperativeProvisionView and no base-document span. Never
+ * truncated - the record must let a later reader recompute the same hash.
+ */
+function retrievedSourceForDefinition(access: SemanticToolAccess, term: string, resolution: DefinitionEvidenceFound): RetrievedSourceRecord | undefined {
+  if (resolution.text === null) return undefined;
+  const rawText = resolution.text;
+  const contentHash = computeSourceContentHash(rawText);
+  if (resolution.source === "base-document") {
+    const located = resolveUniqueDefinitionByRef(access.structuralIndex, resolution.documentId, term);
+    const def = located.status === "UNIQUE" ? located.definition : null;
+    return { requestKind: "DEFINITION", requestKey: term, documentId: resolution.documentId, sourceNodeId: def?.sourceNodeId ?? null, sourceNodeKey: def?.sourceNodeKey ?? null, charStart: def ? def.charStart : null, charEnd: def ? def.charStart + rawText.length : null, rawText, contentHash, textOrigin: resolution.isCurrentTruth ? "BASE_DOCUMENT_TEXT" : "HISTORICAL_BASE_TEXT", evidenceStatus: resolution.status, isCurrentTruth: resolution.isCurrentTruth };
+  }
+  const view = access.operativeState ? getOperativeDefinition(access.operativeState, term) : null;
+  return { requestKind: "DEFINITION", requestKey: term, documentId: resolution.documentId, sourceNodeId: view?.currentSourceNodeId ?? null, sourceNodeKey: view?.currentSourceNodeKey ?? null, charStart: null, charEnd: null, rawText, contentHash, textOrigin: resolution.isCurrentTruth ? "AMENDED_CURRENT_TEXT" : "UNRESOLVED_AMENDED_TEXT", evidenceStatus: resolution.status, isCurrentTruth: resolution.isCurrentTruth };
+}
+
+/** F-4 - the RetrievedSourceRecord for a section-reading tool that served `resolved` for physical node `node` (see retrievedSourceForDefinition). Base/historical text spans [node.charStart, node.charStart + text.length) - exactly StructuralIndex.getNodeText(nodeId, "OWN")'s own slice. */
+function retrievedSourceForNode(node: StructuralNode, resolved: ResolvedNodeEvidence, requestKey: string): RetrievedSourceRecord {
+  const fromDocument = resolved.textSource === "BASE_DOCUMENT_TEXT" || resolved.textSource === "HISTORICAL_BASE_TEXT";
+  return { requestKind: "PROVISION", requestKey, documentId: node.documentId, sourceNodeId: node.nodeId, sourceNodeKey: node.nodeKey, charStart: fromDocument ? node.charStart : null, charEnd: fromDocument ? node.charStart + resolved.text.length : null, rawText: resolved.text, contentHash: computeSourceContentHash(resolved.text), textOrigin: resolved.textSource, evidenceStatus: resolved.provisionOperativeStatus ?? resolved.nodeSupersessionStatus, isCurrentTruth: resolved.evidenceCurrent };
 }
 
 /**
@@ -522,6 +566,10 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
           // ToolExecutionOutcome's own header comment above).
           outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(view.status);
           outcome.evidenceTruncated = truncated;
+          // F-4 - amendment-recorded current text: governing node identity from the view, no base-document span.
+          if (view.currentText !== null && view.currentText !== undefined) {
+            outcome.retrievedSource = { requestKind: "PROVISION", requestKey: sectionRef, documentId: view.currentSourceDocumentId, sourceNodeId: view.currentSourceNodeId, sourceNodeKey: view.currentSourceNodeKey, charStart: null, charEnd: null, rawText: view.currentText, contentHash: computeSourceContentHash(view.currentText), textOrigin: view.status === "OPERATIVE_STATE_RESOLVED" ? "AMENDED_CURRENT_TEXT" : "UNRESOLVED_AMENDED_TEXT", evidenceStatus: view.status, isCurrentTruth: !outcome.evidenceUnresolved };
+          }
           return outcome;
         }
         // Phase 3F.1.2 (task §15, critical safety fix): a legal-reference
@@ -538,7 +586,8 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         if (resolution.status === "NOT_FOUND") return refuse(`no section "${sectionRef}" found in this instrument's documents, and it has no recorded amendment history`);
         if (resolution.status === "AMBIGUOUS") return refuse(`section reference "${sectionRef}" matches ${resolution.candidates.length} distinct physical locations in this document (e.g. a cross-reference mention and the section's real header can share the same number) - cannot serve this as uniquely-resolved evidence; try getReferencedProvision with a fromNodeId for a context-scoped resolution, or narrow the reference`);
         const node = resolution.node;
-        const { text, truncated } = truncate(access.structuralIndex.getNodeText(node.nodeId, "OWN"));
+        const fullNodeText = access.structuralIndex.getNodeText(node.nodeId, "OWN");
+        const { text, truncated } = truncate(fullNodeText);
         charsUsedRef.current += text.length;
         const supersession = getNodeSupersessionStatus(supersessionIndex, node.documentId, node.nodeId);
         const status = supersession.status === "KNOWN_SUPERSEDED" ? "OPERATIVE_STATE_PARTIAL" : "OPERATIVE_STATE_RESOLVED";
@@ -550,6 +599,8 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         );
         outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(supersession.status);
         outcome.evidenceTruncated = truncated;
+        // F-4 - base-document text sliced from the resolved physical node.
+        outcome.retrievedSource = { requestKind: "PROVISION", requestKey: sectionRef, documentId: node.documentId, sourceNodeId: node.nodeId, sourceNodeKey: node.nodeKey, charStart: node.charStart, charEnd: node.charStart + fullNodeText.length, rawText: fullNodeText, contentHash: computeSourceContentHash(fullNodeText), textOrigin: outcome.evidenceUnresolved ? "HISTORICAL_BASE_TEXT" : "BASE_DOCUMENT_TEXT", evidenceStatus: supersession.status, isCurrentTruth: !outcome.evidenceUnresolved };
         return outcome;
       },
     },
@@ -672,6 +723,11 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         // header comment).
         outcome.evidenceUnresolved = !resolution.isCurrentTruth;
         outcome.evidenceTruncated = truncated;
+        // F-4 (the Chewy "Threshold Amount" root cause, classification A):
+        // the authenticable location + full text + hash of what was just
+        // served, so an independent verifier can later admit this exact
+        // text as evidence only after re-resolving and re-hashing it itself.
+        outcome.retrievedSource = retrievedSourceForDefinition(access, term, resolution);
         return outcome;
       },
     },
@@ -833,6 +889,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
                 // comment above - identical gap, identical fix.
                 outcome.evidenceUnresolved = !resolved.evidenceCurrent;
                 outcome.evidenceTruncated = truncated;
+                outcome.retrievedSource = retrievedSourceForNode(targetNode, resolved, ref); // F-4
                 return outcome;
               }
             }
@@ -880,6 +937,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
             );
             outcome.evidenceUnresolved = !resolved.evidenceCurrent;
             outcome.evidenceTruncated = truncated;
+            outcome.retrievedSource = retrievedSourceForNode(node, resolved, ref); // F-4
             return outcome;
           }
         }
@@ -1078,7 +1136,10 @@ export class ToolRunner {
     // determineStatus) can deterministically detect "this attempt's own
     // evidence included an unresolved definition" without depending on the
     // model itself having faithfully self-reported it.
-    this.log.push({ toolName, input: rawInput, outputSummary: outcome.outputSummary, charsReturned: outcome.charsReturned, timestamp, evidenceUnresolved: outcome.evidenceUnresolved, evidenceTruncated: outcome.evidenceTruncated });
+    // F-4: the retrieved-source record travels with the log entry verbatim
+    // (evidence provenance, never interpretation) so the independent
+    // verifier can authenticate what the compiler was shown.
+    this.log.push({ toolName, input: rawInput, outputSummary: outcome.outputSummary, charsReturned: outcome.charsReturned, timestamp, evidenceUnresolved: outcome.evidenceUnresolved, evidenceTruncated: outcome.evidenceTruncated, ...(outcome.retrievedSource ? { retrievedSource: outcome.retrievedSource } : {}) });
     return outcome.result;
   }
 }

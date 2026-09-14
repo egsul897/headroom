@@ -1,0 +1,104 @@
+{
+ "artifact": "F-3 root cause - reproduced through the code at the starting SHA (0 model calls)",
+ "startingSha": "02af0865b094757814c354fb7c184bac3add4b1f",
+ "example": {
+  "sourceExcerpt": "o this Section 6.08(b)(12) not to exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA for",
+  "sourceSpan": [
+   24095,
+   24109
+  ],
+  "originalRawValue": "$720.0 million",
+  "before": {
+   "parsedNumericValue": 720,
+   "unitCurrency": "none carried (v1 inventory had no currency field; the '$' was stripped with every other non-digit)",
+   "scaleToken": "'million' - CAPTURED by the AMOUNT regex `[$\u00a3\u20ac]\\s?[\\d,]+(?:\\.\\d+)?(?:\\s?(?:million|billion))?` and then DROPPED by parseMoney's `raw.replace(/[^\\d.]/g, \"\")`",
+   "normalizedCanonicalValue": 720,
+   "compilerSideValueCompared": [
+    324000000,
+    720000000
+   ],
+   "verifierSideValueCompared": 720,
+   "resultingDiscrepancy": "NOT_ACCOUNTED_FOR -> MISSING_BASKET MATERIAL (source 720 does not appear as an AMOUNT anywhere in the compiled IR) AND the compiled MONEY(720000000) is reported IR_ONLY -> UNSUPPORTED_IR_ADDITION MATERIAL",
+   "numericProof": "720 vs 720000000: relative difference 0.999999 >> tolerance 1e-6 -> mismatch"
+  },
+  "after": {
+   "parsedAmount": 720,
+   "scaleToken": "million",
+   "scaleMultiplier": 1000000,
+   "currency": "USD",
+   "scaleStatus": "RESOLVED",
+   "canonicalValue": 720000000,
+   "compilerSideValueCompared": [
+    324000000,
+    720000000
+   ],
+   "result": "ACCOUNTED_FOR"
+  }
+ },
+ "earliestFailingFunction": "lib/contract-model/compiler/semantic-verification/source-inventory.ts :: parseMoney (v1), invoked from PATTERNS[0].parseValue for kind AMOUNT",
+ "classification": "B. SCALE_TOKEN_CAPTURED_BUT_DROPPED",
+ "secondary": "A. SCALE_TOKEN_NOT_CAPTURED for 'thousand' (not in the v1 regex) and for ISO-code / currency-word forms ('USD 720 million', '720 million dollars') which the v1 regex never matched at all; D/E: v1 carried no currency, so a cross-currency figure of equal magnitude would have matched (never exercised in the recorded fixture)",
+ "downstream": "reconciliation.ts numbersMatch compared 720 against the IR MONEY literal 720000000 (ir-inventory.ts pushes expr.amount, already canonical) -> NOT_ACCOUNTED_FOR + IR_ONLY; findings.ts mapped these to MATERIAL MISSING_BASKET / UNSUPPORTED_IR_ADDITION because at least one rule was COMPLETE",
+ "reproduction": {
+  "sourceNumericItemsMatchRecorded": true,
+  "deterministicFindingIdsIdenticalToRecorded": true,
+  "recordedDeterministicFindings": 24,
+  "recordedMaterialDeterministic": 22
+ },
+ "allScaledSourceValuesBefore": [
+  {
+   "raw": "$540.0 million",
+   "span": [
+    9958,
+    9972
+   ],
+   "before": 540,
+   "classification": "NOT_ACCOUNTED_FOR"
+  },
+  {
+   "raw": "$252.0 million",
+   "span": [
+    14875,
+    14889
+   ],
+   "before": 252,
+   "classification": "NOT_ACCOUNTED_FOR"
+  },
+  {
+   "raw": "$504.0 million",
+   "span": [
+    15541,
+    15555
+   ],
+   "before": 504,
+   "classification": "NOT_ACCOUNTED_FOR"
+  },
+  {
+   "raw": "$720.0 million",
+   "span": [
+    24095,
+    24109
+   ],
+   "before": 720,
+   "classification": "NOT_ACCOUNTED_FOR"
+  },
+  {
+   "raw": "$720.0 million",
+   "span": [
+    25636,
+    25650
+   ],
+   "before": 720,
+   "classification": "NOT_ACCOUNTED_FOR"
+  },
+  {
+   "raw": "$720.0 million",
+   "span": [
+    33508,
+    33522
+   ],
+   "before": 720,
+   "classification": "NOT_ACCOUNTED_FOR"
+  }
+ ]
+}

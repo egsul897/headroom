@@ -1,0 +1,230 @@
+{
+ "artifact": "F-7B DIAGNOSTIC (not scoring evidence): what stringified-array submissions would have yielded if the wire schema tolerated JSON-encoded arrays",
+ "note": "The production SubmitCompilationSchema (wire-schema.ts) accepts only real arrays; the model serialized top-level arrays as strings in these shards. Nothing here changes any scored result. A wire-tolerance change is a production change and is out of scope for F-7B (§2, §28).",
+ "rows": [
+  {
+   "shardId": "shard:1c29e71eef1717d4f9e1",
+   "status": "SHARD_SCHEMA_FAILURE",
+   "stringifiedKeys": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "overallNotes",
+    "inventoryDispositions"
+   ],
+   "unparseable": [],
+   "wouldValidate": true,
+   "irValidationOk": true,
+   "irValidationIssues": 0,
+   "wouldYield": {
+    "rules": 0,
+    "definitions": 6,
+    "definitionTerms": [
+     "Asset Sale",
+     "Asset Sale Prepayment Event",
+     "Asset Sale Proceeds Application Period",
+     "Assignment and Assumption",
+     "Available Amount",
+     "Available Investment Capacity Amount"
+    ],
+    "dispositions": 11,
+    "ownedAccountability": {
+     "represented": 0,
+     "materialMissing": 0,
+     "valuesMissing": 0,
+     "byDisposition": {
+      "UNSUPPORTED": 11
+     },
+     "semanticallyComplete": false
+    }
+   }
+  },
+  {
+   "shardId": "shard:bf3da01cb454860cdf5f",
+   "status": "SHARD_SCHEMA_FAILURE",
+   "stringifiedKeys": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "overallNotes"
+   ],
+   "unparseable": [],
+   "wouldValidate": true,
+   "irValidationOk": true,
+   "irValidationIssues": 0,
+   "wouldYield": {
+    "rules": 0,
+    "definitions": 22,
+    "definitionTerms": [
+     "Excluded Swap Obligation",
+     "Excluded Taxes",
+     "Excluded Term Loans",
+     "Existing Indebtedness",
+     "Existing Liens",
+     "Expected Run Rate Benefit",
+     "Extension Amount",
+     "Facility",
+     "Fair Market Value",
+     "Fair Value",
+     "FATCA",
+     "FCPA",
+     "Federal Funds Effective Rate",
+     "Fee Letter",
+     "FILO Tranche",
+     "Financial Officer",
+     "First Commitment Application Period",
+     "First Lien Intercreditor Agreement",
+     "First Lien Leverage Ratio",
+     "Fixed Amounts",
+     "Fixed Charges",
+     "Fixed Incremental Amount"
+    ],
+    "dispositions": 0,
+    "ownedAccountability": {
+     "represented": 7,
+     "materialMissing": 1,
+     "valuesMissing": 1,
+     "byDisposition": {
+      "REPRESENTED": 7,
+      "MISSING_FROM_COMPOSITION": 1
+     },
+     "semanticallyComplete": false
+    }
+   }
+  },
+  {
+   "shardId": "shard:aac727054a5da5f1a9fd",
+   "status": "SHARD_SCHEMA_FAILURE",
+   "stringifiedKeys": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "inventoryDispositions",
+    "overallNotes"
+   ],
+   "unparseable": [],
+   "wouldValidate": true,
+   "irValidationOk": true,
+   "irValidationIssues": 0,
+   "wouldYield": {
+    "rules": 0,
+    "definitions": 21,
+    "definitionTerms": [
+     "Junior Lien Intercreditor Agreement",
+     "Latest Maturity Date",
+     "LCT Election",
+     "LCT Test Date",
+     "Lead Arrangers",
+     "Lenders",
+     "Letter of Intent Transactions",
+     "Liabilities",
+     "Lien",
+     "Limited Condition Transaction",
+     "Limited Originator Recourse",
+     "Loan Document Obligations",
+     "Loan Documents",
+     "Loan Modification Agreement",
+     "Loan Modification Offer",
+     "Loan Parties",
+     "Loans",
+     "Management Investors",
+     "Market Capitalization",
+     "Market Convention Rate",
+     "Master Agreement"
+    ],
+    "dispositions": 0,
+    "ownedAccountability": {
+     "represented": 0,
+     "materialMissing": 0,
+     "valuesMissing": 0,
+     "byDisposition": {},
+     "semanticallyComplete": false
+    }
+   }
+  },
+  {
+   "shardId": "shard:4f06625557e9aecbbb7a",
+   "status": "SHARD_SCHEMA_FAILURE",
+   "stringifiedKeys": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "inventoryDispositions",
+    "overallNotes"
+   ],
+   "unparseable": [],
+   "wouldValidate": true,
+   "irValidationOk": true,
+   "irValidationIssues": 0,
+   "wouldYield": {
+    "rules": 6,
+    "definitions": 2,
+    "definitionTerms": [
+     "Permitted Liens",
+     "Permitted Ratio Debt"
+    ],
+    "dispositions": 0,
+    "ownedAccountability": {
+     "represented": 6,
+     "materialMissing": 0,
+     "valuesMissing": 0,
+     "byDisposition": {
+      "REPRESENTED": 6
+     },
+     "semanticallyComplete": false
+    }
+   }
+  },
+  {
+   "shardId": "shard:3e3910ea2efd9edd45a3",
+   "status": "SHARD_SCHEMA_FAILURE",
+   "stringifiedKeys": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "overallNotes"
+   ],
+   "unparseable": [],
+   "wouldValidate": true,
+   "irValidationOk": true,
+   "irValidationIssues": 0,
+   "wouldYield": {
+    "rules": 0,
+    "definitions": 21,
+    "definitionTerms": [
+     "Permitted Receivables Financings",
+     "Permitted Tax Restructuring",
+     "Permitted Transferees",
+     "Person",
+     "Plan",
+     "Planned Expenditures",
+     "Platform",
+     "Post-Transaction Period",
+     "Preferred Stock",
+     "Prepayment Event",
+     "Transaction Threshold",
+     "Annual Threshold",
+     "Prepayment Notice",
+     "Present Fair Saleable Value",
+     "Prime Rate",
+     "Pro Forma Adjustment",
+     "Pro Forma Basis",
+     "Pro Forma Disposal Adjustment",
+     "Pro Forma Entity",
+     "Pro Rata Share",
+     "Proposed Change"
+    ],
+    "dispositions": 0,
+    "ownedAccountability": {
+     "represented": 0,
+     "materialMissing": 3,
+     "valuesMissing": 5,
+     "byDisposition": {
+      "MISSING_FROM_COMPOSITION": 3
+     },
+     "semanticallyComplete": false
+    }
+   }
+  }
+ ]
+}

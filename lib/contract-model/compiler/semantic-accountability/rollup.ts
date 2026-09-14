@@ -19,8 +19,11 @@ export function classifyUnit(unit: AgreementUnitInput): { status: AgreementSeman
   if (unit.verifyStatus === "MATERIAL_DISCREPANCY") reasons.push("independent verification found a MATERIAL discrepancy");
   if (reasons.length > 0) return { status: "SEMANTICALLY_INCOMPLETE", reasons };
 
+  // F-5.3B: independent-pass support asymmetry is enforced HERE on its own field, not via semanticallyComplete's
+  // boolean or any reason string - RAW SOURCE COMPLETE + MATERIAL SINGLETON/CONFLICT => REVIEW_REQUIRED.
+  if (acc && acc.supportReviewRequired) reasons.push(`independent-pass support asymmetry: ${acc.support?.materialSingleRun ?? 0} CRITICAL/MATERIAL single-run and ${acc.support?.materialConflicted ?? 0} conflicted item(s) - review required`);
   if (!acc) reasons.push("no accountability result (inventory/reconciliation did not run)");
-  else if (!acc.semanticallyComplete) reasons.push(...(acc.reasons.length > 0 ? acc.reasons : ["accountability did not establish semantic completeness"]));
+  else if (!acc.semanticallyComplete) reasons.push(...(acc.reasons.length > 0 ? acc.reasons.filter((r) => !r.startsWith("independent-pass support asymmetry")) : ["accountability did not establish semantic completeness"]));
   if (unit.compileStatus !== "COMPLETED") reasons.push(`compile status ${unit.compileStatus}`);
   if (unit.verifyStatus === null) reasons.push("not independently verified");
   else if (unit.verifyStatus !== "VERIFIED_NO_MATERIAL_GAP_FOUND" && unit.verifyStatus !== "VERIFIED_WITH_NON_MATERIAL_FINDINGS") reasons.push(`verification status ${unit.verifyStatus}`);
@@ -39,6 +42,7 @@ export function rollupAgreementSemanticStatus(units: AgreementUnitInput[]): Agre
     reviewRequired: classified.filter((c) => c.status === "REVIEW_REQUIRED").length,
     materialMissingFromComposition: units.reduce((n, u) => n + (u.accountability?.counts.materialMissingFromComposition ?? 0), 0),
     unresolvedCrossReferences: units.reduce((n, u) => n + u.unresolvedCrossReferences, 0),
+    supportReviewRequired: units.filter((u) => u.accountability?.supportReviewRequired).length,
   };
   const reasons: string[] = [];
   let status: AgreementSemanticStatus;

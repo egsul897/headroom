@@ -1,0 +1,420 @@
+{
+ "artifact": "F-5.2A final summary (zero-cost forensics + architecture proof over the frozen F-5.1 paid pair)",
+ "verdict": "F5_2_ARCHITECTURE_NOT_PROVEN",
+ "verdictBasis": "the F-5.2 hypothesis is PROVEN on the frozen pair (every one of the 50 omissions is a proposition the missing run folded into a coarser item shared by both runs (34) or left unaccounted after the gap pass (16); 0 partition or post-processing failures), but the generic source-form obligation ledger does NOT expose those omissions consistently: it reaches 28/50 conservatively (16 through a real feature anchor, 12 only through the whole-slot BASE anchor that raw coverage already exposes) and 30/50 with fine coordination splits, against the pre-registered 0.67, while creating 172 (53%) / 384 (61%) candidate false obligations that BOTH independent runs treated as parts of larger propositions, against the pre-registered 0.30. Generic source form neither predicts nor bounds the number of independent propositions in a slot; making it finer trades a few more captures for far more review noise. Nothing was wired into production.",
+ "startingSha": "0ca111f4a107a178cd993c7f6db0c1fcb64e66dd",
+ "paidCalls": 0,
+ "paidSpendUsd": 0.0,
+ "providerAccess": "none (no key read, no gateway request, no model invocation)",
+ "frozenInputs": {
+  "runA": "59b5a267e24b8fadd5c9e7be6a8a31a8ace97936c125a8f0bb320aa95c4fd24c",
+  "runB": "f7f7ad18b8839fe8e41d269e1efb24a621de061684beb578578c11f27d9e9b77",
+  "pair": "384e3595ea702dccb21dddeb902245434a21a10bfc4f039f85924e72ddc7c7e1",
+  "decomposition": "b8fb49623805cba6870b5b70f3b20c34e0a56df0df6260779a59f4c2f27bd1f6",
+  "source": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+  "unit": "fc147145c2db7df77bfb7122b8442d3fe21f5645b5c4782b791ffa942c8b750c"
+ },
+ "forensics": {
+  "F": {
+   "analyzed": 50,
+   "byPresentRun": {
+    "A": 36,
+    "B": 14
+   },
+   "bySourceForm": {
+    "G_EXPLICIT_CROSS_REFERENCE": 3,
+    "B_ENUMERATED_BRANCH": 8,
+    "K_CONTINUATION_FRAGMENT": 17,
+    "A_COORDINATED_PROPOSITION": 5,
+    "L_OTHER": 7,
+    "F_EXCEPTION": 2,
+    "H_DEPENDENCY_FRAGMENT": 3,
+    "E_QUALIFIER_OR_PROVISO": 5
+   },
+   "byFailureStage": {
+    "MODEL_ENUMERATION_OMISSION": 34,
+    "GAP_MODEL_OMISSION": 16
+   },
+   "byMateriality": {
+    "MATERIAL": 29,
+    "CRITICAL": 21
+   },
+   "scorerClassificationCorrect": {
+    "true": 50
+   },
+   "spanLength": {
+    "min": 4,
+    "median": 50,
+    "max": 241
+   },
+   "emittedIn": "not recoverable per item from the frozen inventory (no per-item pass flag); the failure stage is determined from the MISSING run's deterministic coverage instead"
+  },
+  "B": {
+   "analyzed": 12,
+   "bySourceForm": {
+    "K_CONTINUATION_FRAGMENT": 5,
+    "B_ENUMERATED_BRANCH": 4,
+    "H_DEPENDENCY_FRAGMENT": 1,
+    "I_TEMPORAL_COMPONENT": 1,
+    "A_COORDINATED_PROPOSITION": 1
+   },
+   "byStage": {
+    "GRANULARITY_SPLIT_BOUNDARY_ONLY (anchored counterpart with different end)": 4,
+    "GRANULARITY_SPLIT_SAME_ROOT_AS_F (the other run holds this text inside a coarser or differently bounded item - the model decided fewer/different propositions for the same slot)": 8
+   }
+  },
+  "H": {
+   "analyzed": 6,
+   "bySourceForm": {
+    "K_CONTINUATION_FRAGMENT": 2,
+    "H_DEPENDENCY_FRAGMENT": 1,
+    "E_QUALIFIER_OR_PROVISO": 1,
+    "L_OTHER": 2
+   },
+   "byStage": {
+    "GRANULARITY_SPLIT_SAME_ROOT_AS_F (the other run holds this text inside a coarser or differently bounded item - the model decided fewer/different propositions for the same slot)": 6
+   }
+  },
+  "sameRootAsF": "8 of 12 B and 6 of 6 H are the same mechanism (the other run holds the text inside a coarser or differently bounded item); 4 B are boundary-only splits"
+ },
+ "earliestFailureStage": {
+  "MODEL_ENUMERATION_OMISSION": 34,
+  "GAP_MODEL_OMISSION": 16
+ },
+ "hypothesis": {
+  "artifact": "F-5.2A hypothesis test: deterministic slots fix where the model looks, the model still decides how many propositions each slot holds",
+  "operativeSlots": 335,
+  "slotsWithItemsInBoth": 284,
+  "slotsWithItemsOnlyA": 13,
+  "slotsWithItemsOnlyB": 5,
+  "slotsEmptyInBoth": 33,
+  "slotsSameItemCount": 246,
+  "slotsDifferentItemCount": 38,
+  "slotsIdenticalIdSet": 244,
+  "itemsA": 352,
+  "itemsB": 326,
+  "meanItemsPerPopulatedSlot": {
+   "A": 1.19,
+   "B": 1.13
+  },
+  "fCasesInSlotsPopulatedByBothRuns": 34,
+  "fCasesInSlotsEmptyInMissingRun": 16,
+  "fCasesWhereMissingRunHasFewerItemsInSlot": 50,
+  "fCasesCoveredByABroaderOrNeighbouringItem": 34,
+  "fCasesCoveredByAnItemSharedByBothRuns": 34,
+  "fCasesInFinalUnaccounted": 16
+ },
+ "obligationExperiment": {
+  "conservative": {
+   "ledger": {
+    "algorithmVersion": "inventory-obligations.experiment",
+    "sha256": "c79ccae955af547e13722874711213c269471886a256d296167122a0b50647f5",
+    "byteIdenticalAcrossTwoGenerations": true,
+    "totalObligations": 619,
+    "countsByKind": {
+     "EXPLICIT_REFERENCE": 67,
+     "BASE_SLOT": 296,
+     "ENUMERATED_BRANCH": 74,
+     "COORDINATED_FRAGMENT": 82,
+     "QUALIFIER_OR_PROVISO": 44,
+     "EXCEPTION_FRAGMENT": 28,
+     "ARITHMETIC_OPERAND": 5,
+     "QUANTITATIVE_SPAN": 20,
+     "TEMPORAL_SPAN": 3
+    },
+    "slotsWithObligations": 296,
+    "operativeSlots": 335,
+    "nonBaseObligations": 323
+   },
+   "satisfaction": {
+    "satisfiedByA": 404,
+    "satisfiedByB": 389,
+    "satisfiedByBoth": 371,
+    "unresolvedA": 215,
+    "unresolvedB": 230,
+    "aOnlyUnresolved": 18,
+    "bOnlyUnresolved": 33,
+    "unresolvedInBoth": 197,
+    "rateA": 0.6527,
+    "rateB": 0.6284,
+    "rateBoth": 0.5994,
+    "statusCountsA": {
+     "DISCHARGED_NON_SEMANTIC": 2,
+     "SATISFIED_BY_ANCHOR": 401,
+     "UNSATISFIED": 215,
+     "SATISFIED_BY_COVERAGE": 1
+    },
+    "statusCountsB": {
+     "DISCHARGED_NON_SEMANTIC": 2,
+     "SATISFIED_BY_ANCHOR": 387,
+     "UNSATISFIED": 230
+    },
+    "unresolvedByKindA": {
+     "COORDINATED_FRAGMENT": 35,
+     "QUALIFIER_OR_PROVISO": 35,
+     "EXCEPTION_FRAGMENT": 27,
+     "EXPLICIT_REFERENCE": 59,
+     "ENUMERATED_BRANCH": 35,
+     "BASE_SLOT": 13,
+     "ARITHMETIC_OPERAND": 5,
+     "QUANTITATIVE_SPAN": 3,
+     "TEMPORAL_SPAN": 3
+    },
+    "unresolvedByKindB": {
+     "COORDINATED_FRAGMENT": 36,
+     "QUALIFIER_OR_PROVISO": 35,
+     "EXCEPTION_FRAGMENT": 28,
+     "EXPLICIT_REFERENCE": 61,
+     "ENUMERATED_BRANCH": 43,
+     "BASE_SLOT": 16,
+     "ARITHMETIC_OPERAND": 5,
+     "QUANTITATIVE_SPAN": 3,
+     "TEMPORAL_SPAN": 3
+    }
+   },
+   "capture": {
+    "F": {
+     "total": 50,
+     "captured": 28,
+     "rate": 0.56,
+     "capturedByNonBaseObligation": 16,
+     "capturedOnlyByBaseSlot": 12,
+     "byKind": {
+      "EXPLICIT_REFERENCE": 3,
+      "ENUMERATED_BRANCH": 4,
+      "ENUMERATED_BRANCH+QUALIFIER_OR_PROVISO": 1,
+      "EXCEPTION_FRAGMENT": 1,
+      "BASE_SLOT": 12,
+      "QUALIFIER_OR_PROVISO": 4,
+      "COORDINATED_FRAGMENT": 1,
+      "COORDINATED_FRAGMENT+BASE_SLOT": 1,
+      "EXCEPTION_FRAGMENT+QUALIFIER_OR_PROVISO": 1
+     },
+     "anchoredButSatisfiedInMissingRun": 6,
+     "noAnchoredObligation": 16,
+     "byFailureStage": {
+      "captured": {
+       "MODEL_ENUMERATION_OMISSION": 15,
+       "GAP_MODEL_OMISSION": 13
+      },
+      "missed": {
+       "MODEL_ENUMERATION_OMISSION": 19,
+       "GAP_MODEL_OMISSION": 3
+      }
+     },
+     "bySourceForm": {
+      "captured": {
+       "G_EXPLICIT_CROSS_REFERENCE": 3,
+       "B_ENUMERATED_BRANCH": 5,
+       "F_EXCEPTION": 2,
+       "K_CONTINUATION_FRAGMENT": 12,
+       "E_QUALIFIER_OR_PROVISO": 4,
+       "A_COORDINATED_PROPOSITION": 1,
+       "L_OTHER": 1
+      },
+      "missed": {
+       "B_ENUMERATED_BRANCH": 3,
+       "K_CONTINUATION_FRAGMENT": 5,
+       "A_COORDINATED_PROPOSITION": 4,
+       "L_OTHER": 6,
+       "H_DEPENDENCY_FRAGMENT": 3,
+       "E_QUALIFIER_OR_PROVISO": 1
+      }
+     }
+    },
+    "B": {
+     "total": 12,
+     "captured": 5,
+     "rate": 0.4167
+    },
+    "H": {
+     "total": 6,
+     "captured": 1,
+     "rate": 0.1667
+    }
+   },
+   "falseObligationCandidates": {
+    "count": 172,
+    "rateOfNonBase": 0.5325,
+    "byKind": {
+     "COORDINATED_FRAGMENT": 29,
+     "QUALIFIER_OR_PROVISO": 28,
+     "EXCEPTION_FRAGMENT": 25,
+     "EXPLICIT_REFERENCE": 52,
+     "ENUMERATED_BRANCH": 28,
+     "ARITHMETIC_OPERAND": 4,
+     "QUANTITATIVE_SPAN": 3,
+     "TEMPORAL_SPAN": 3
+    }
+   },
+   "unresolvedInBothThatAreReviewWork": 12,
+   "falseSatisfactionCandidates": {
+    "A": 1,
+    "B": 0,
+    "definition": "satisfied only by inside-coverage (rule b) with no anchored item; listed for audit, counted as satisfied"
+   },
+   "gapTargets": {
+    "intersection": 197,
+    "unionSize": 248,
+    "jaccard": 0.7944,
+    "before": {
+     "unaccountedSegmentsA": 33,
+     "unaccountedSegmentsB": 32,
+     "identical": 18
+    }
+   }
+  },
+  "fineSensitivity": {
+   "ledger": {
+    "algorithmVersion": "inventory-obligations.experiment",
+    "sha256": "0aa5caaaa9ab91f521e7a91c16937fab8f4739927717ebafbe7261c1c440d6a8",
+    "byteIdenticalAcrossTwoGenerations": true,
+    "totalObligations": 927,
+    "countsByKind": {
+     "EXPLICIT_REFERENCE": 67,
+     "BASE_SLOT": 296,
+     "ENUMERATED_BRANCH": 104,
+     "COORDINATED_FRAGMENT": 362,
+     "QUALIFIER_OR_PROVISO": 44,
+     "EXCEPTION_FRAGMENT": 28,
+     "ARITHMETIC_OPERAND": 3,
+     "QUANTITATIVE_SPAN": 20,
+     "TEMPORAL_SPAN": 3
+    },
+    "slotsWithObligations": 296,
+    "operativeSlots": 335,
+    "nonBaseObligations": 631
+   },
+   "satisfaction": {
+    "satisfiedByA": 487,
+    "satisfiedByB": 471,
+    "satisfiedByBoth": 451,
+    "unresolvedA": 440,
+    "unresolvedB": 456,
+    "aOnlyUnresolved": 20,
+    "bOnlyUnresolved": 36,
+    "unresolvedInBoth": 420,
+    "rateA": 0.5254,
+    "rateB": 0.5081,
+    "rateBoth": 0.4865,
+    "statusCountsA": {
+     "DISCHARGED_NON_SEMANTIC": 2,
+     "SATISFIED_BY_ANCHOR": 485,
+     "UNSATISFIED": 440
+    },
+    "statusCountsB": {
+     "DISCHARGED_NON_SEMANTIC": 2,
+     "SATISFIED_BY_ANCHOR": 469,
+     "UNSATISFIED": 456
+    },
+    "unresolvedByKindA": {
+     "COORDINATED_FRAGMENT": 263,
+     "QUALIFIER_OR_PROVISO": 35,
+     "EXCEPTION_FRAGMENT": 27,
+     "EXPLICIT_REFERENCE": 59,
+     "ENUMERATED_BRANCH": 34,
+     "BASE_SLOT": 13,
+     "ARITHMETIC_OPERAND": 3,
+     "QUANTITATIVE_SPAN": 3,
+     "TEMPORAL_SPAN": 3
+    },
+    "unresolvedByKindB": {
+     "COORDINATED_FRAGMENT": 266,
+     "QUALIFIER_OR_PROVISO": 35,
+     "EXCEPTION_FRAGMENT": 28,
+     "EXPLICIT_REFERENCE": 61,
+     "ENUMERATED_BRANCH": 41,
+     "BASE_SLOT": 16,
+     "ARITHMETIC_OPERAND": 3,
+     "QUANTITATIVE_SPAN": 3,
+     "TEMPORAL_SPAN": 3
+    }
+   },
+   "captureF": 0.6,
+   "captureB": 0.5833,
+   "captureH": 0.1667,
+   "falseObligationRate": 0.6086,
+   "gapTargets": {
+    "intersection": 420,
+    "unionSize": 476,
+    "jaccard": 0.8824,
+    "before": {
+     "unaccountedSegmentsA": 33,
+     "unaccountedSegmentsB": 32,
+     "identical": 18
+    }
+   }
+  }
+ },
+ "gate": {
+  "hypothesisProven": {
+   "required": {
+    "everyFCaseSitsInASlotWhereTheMissingRunProducedFewerItems": ">= 90% of F cases",
+    "slotsPopulatedByBothRunsWithDifferentItemCounts": "> 0 and accounts for the F cases",
+    "noSourcePartitionFailureAndNoPostProcessingLoss": "0 cases at those stages"
+   },
+   "observed": {
+    "fCasesInSlotsWhereMissingRunProducedFewerItems": "50/50",
+    "slotsPopulatedByBothWithDifferentItemCounts": 38,
+    "sourcePartitionFailures": 0,
+    "postProcessingLosses": 0,
+    "absorbedIntoCoarserItemSharedByBothRuns": 34,
+    "leftUnaccountedAfterGapPass": 16
+   },
+   "pass": true
+  },
+  "fOmissionsCaptured": {
+   "required": ">= 0.67",
+   "conservative": 0.56,
+   "conservativeByNonBaseObligation": 16,
+   "conservativeOnlyByBaseSlot": 12,
+   "fine": 0.6,
+   "pass": false
+  },
+  "bCasesReached": {
+   "conservative": 0.4167,
+   "fine": 0.5833
+  },
+  "hCasesReached": {
+   "conservative": 0.1667,
+   "fine": 0.1667
+  },
+  "genericRules": {
+   "pass": true,
+   "evidence": "kinds = BASE_SLOT, ENUMERATED_BRANCH, COORDINATED_FRAGMENT, QUANTITATIVE_SPAN, EXPLICIT_REFERENCE, QUALIFIER_OR_PROVISO, EXCEPTION_FRAGMENT, SELECTOR_BRANCH, ARITHMETIC_OPERAND, TEMPORAL_SPAN; recognisers are enumerators, semicolons/comma-coordination, citation form, scanner values, qualifier/exception openers, selector phrases, arithmetic operators; no Chewy / 6.08 / EBITDA / basket vocabulary (grep-verified)"
+  },
+  "deterministicIdentity": {
+   "pass": true,
+   "ledgerSha256": "c79ccae955af547e13722874711213c269471886a256d296167122a0b50647f5",
+   "idInputs": "documentId, regionId, slotId, charStart, charEnd, kind, ordinal, algorithm version"
+  },
+  "falseObligationCandidates": {
+   "required": "<= 0.30 of non-BASE obligations",
+   "conservative": 0.5325,
+   "conservativeCount": 172,
+   "fine": 0.6086,
+   "fineCount": 384,
+   "pass": false
+  },
+  "trust": {
+   "pass": true,
+   "evidence": "design only creates review work: unsatisfied obligation => INVENTORY_COVERAGE_GAP; raw coverage untouched; nothing was wired into production, so no trust surface changed"
+  },
+  "overall": "F5_2_ARCHITECTURE_NOT_PROVEN"
+ },
+ "whyGenericObligationsFail": [
+  "16 of the 50 omitted spans start at no generic feature boundary at all (mid-clause coordinations without a comma, defined-term parentheticals, verb-phrase continuations) - no rule short of splitting on every conjunction anchors them, and that rule doubles the ledger and the false-obligation count",
+  "6 omitted spans ARE anchored by an obligation that the missing run nevertheless satisfies, because its coarser item starts at the same place - the model's item boundary, not the source, decided the proposition count",
+  "12 captures come only from the BASE_SLOT anchor on whole-slot continuation fragments, which raw source coverage already surfaced as UNACCOUNTED and the gap pass already re-presented (the gap model omitted them anyway: GAP_MODEL_OMISSION 16) - an obligation adds a stable target id, not new exposure",
+  "197 obligations (conservative) are unsatisfied in BOTH runs and 172 of them sit inside larger items in both runs: two independent inventories agree those fragments are not separate propositions, so the ledger would generate ~200 review items per unit that are mostly not omissions"
+ ],
+ "notImplemented": {
+  "production": "no file under lib/ changed; the generator + resolver used for the experiment live in scripts/f5-2a-obligations-experiment.ts",
+  "itemObligationLinking": "not wired",
+  "stableGapTargets": "not wired",
+  "syntheticTests": "not applicable - the layer is not implemented (mission section 12: STOP)",
+  "adversarialTests": "not applicable",
+  "sameRootReplay": "not applicable (no mapper in production); the counterfactual on the frozen pair is the only replay"
+ },
+ "recommendation": "the residual F-5 variance is the model's per-slot proposition count; a source-form ledger cannot fix it. Candidates for a future mission (not started here): (a) a model-side self-consistency step per slot (two independent slot inventories reconciled by the deterministic identity, at ~2x Pass A cost), or (b) treating the union of two runs' propositions as the inventory with per-item run provenance, so omission becomes disclosed asymmetry rather than silent absence."
+}

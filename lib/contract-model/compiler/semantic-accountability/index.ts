@@ -8,3 +8,6 @@ export * from "./source-context";
 export * from "./inventory";
 export * from "./reconciliation";
 export * from "./rollup";
+export * from "./source-identity";
+export * from "./ensemble";
+export * from "./dual-pass";

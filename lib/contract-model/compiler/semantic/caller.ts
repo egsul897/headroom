@@ -31,7 +31,10 @@ import { MissingCompilerCredentialError } from "../llm-caller";
 import { buildFewShotExamplesBlock, buildSystemPrompt } from "./prompt";
 import { buildToolSet, ToolRunner } from "./tools";
 import { SubmitCompilationSchema, WireDefinitionSchema, WireRuleSchema, type SubmitCompilationInput } from "./wire-schema";
+import { normalizeSubmitCompilationTransport, type TransportNormalizationAudit } from "./transport-normalization";
 import { DEFAULT_TOOL_BUDGET, type SemanticCompilerFailureReason, type SemanticCompilerInput, type ToolCallLogEntry } from "./types";
+import { validateToolUseProtocol } from "./tool-protocol";
+import type { ItemSupport } from "../semantic-accountability/types";
 
 /** Env var override for the semantic compiler's own model choice - additive, defaults to the same Sonnet 5 this codebase already uses everywhere else for cost-disciplined real LLM calls (task §51's own "do not change provider/model opportunistically"). */
 const MODEL_ENV_VAR = "SEMANTIC_COMPILER_MODEL";
@@ -84,6 +87,28 @@ const MAX_TOKENS_ENV_VAR = "SEMANTIC_COMPILER_MAX_TOKENS";
 const SUBMIT_TOOL_NAME = "submit_compilation";
 
 /**
+ * Phase 3 Chewy remediation F-1 - the retrieval nudge is delivered as the
+ * tool_result of the PROVISIONAL submit_compilation call it answers, never
+ * as a free-standing user text turn: the provider requires every tool_use
+ * that is followed by another turn to receive its tool_result first
+ * (tool-protocol.ts). The wording is the 3B.1 policy text unchanged; only
+ * the transport envelope changed.
+ */
+const RETRIEVAL_NUDGE_TEXT =
+  "NOT YET ACCEPTED - provisional submission evaluated. You marked at least one rule or definition UNSUPPORTED or MISSING_CONTEXT, but you have not made a single tool call yet and you still have tool budget remaining. Per the RETRIEVAL BEFORE GIVING UP policy, first attempt whichever of your available tools could plausibly resolve the specific gap (a cross-reference, an undefined term, a schedule, a versioning question, or other bundle evidence) before finalizing. If, after trying, the gap genuinely cannot be resolved (not found, refused, or no tool applies), resubmit with the same honest sufficiency - that is a correct outcome too.";
+
+/**
+ * F-1 invariant holder: builds the ONE user content block that must follow an
+ * assistant turn containing tool_use blocks - exactly one tool_result per
+ * tool_use, in order, before anything else. Every branch of the loop that
+ * continues the conversation after a tool_use goes through here, so the
+ * protocol cannot be violated by construction, whatever the tool is called.
+ */
+function toolResultsForAssistantTurn(toolUseBlocks: Anthropic.ToolUseBlock[], resolve: (block: Anthropic.ToolUseBlock) => string): Anthropic.ToolResultBlockParam[] {
+  return toolUseBlocks.map((block) => ({ type: "tool_result", tool_use_id: block.id, content: resolve(block) }));
+}
+
+/**
  * The minimal shape RealSemanticCaller actually calls on its client - a
  * real `Anthropic` instance satisfies this structurally (its own
  * `messages.stream(...)` returns a MessageStream object with a superset of
@@ -100,11 +125,14 @@ export interface MinimalAnthropicClient {
 
 export interface SemanticCallerResult {
   submission: SubmitCompilationInput | null;
+  /** The provider's submit_compilation tool input exactly as received - never rewritten (F-7B.1: transport normalization is applied to a copy). */
   rawSubmission: unknown;
   toolCallLog: ToolCallLogEntry[];
   telemetry: AnalyzerCallTelemetry | null;
   failureReason: SemanticCompilerFailureReason | null;
   failureDetail: string | null;
+  /** F-7B.1 (additive): what the transport-normalization step did to the terminal submit input before the wire schema judged it; null when no submit block was received. */
+  transportNormalization?: TransportNormalizationAudit | null;
 }
 
 export interface SemanticCaller {
@@ -148,6 +176,20 @@ function formatContextItem(i: SemanticCompilerInput["contextBundle"]["items"][nu
  * (compile.ts) checks this deterministically afterwards, so this text is
  * guidance, never the enforcement mechanism.
  */
+/** F-5.3B: the support tag Pass B sees on every ensemble item. Provenance only; the proposition line is unchanged. */
+export function supportTagFor(it: { support?: ItemSupport }): string {
+  const s = it.support;
+  if (!s) return "";
+  if (s.supportStatus === "CORROBORATED") return "[CORROBORATED] ";
+  if (s.supportStatus === "SINGLE_RUN") return `[SINGLE_RUN ${s.supportingPasses.join("+")}] `;
+  return `[CONFLICTED with ${(s.conflictWith ?? []).join(", ")}${s.conflictReason ? `: ${s.conflictReason}` : ""}] `;
+}
+
+/** Exported for deterministic tests of the Pass B context (never called by production code outside this file). */
+export function renderAccountabilityContext(input: SemanticCompilerInput): string {
+  return summarizeAccountability(input);
+}
+
 function summarizeAccountability(input: SemanticCompilerInput): string {
   const parts: string[] = [];
   const sc = input.sourceContext;
@@ -163,11 +205,16 @@ function summarizeAccountability(input: SemanticCompilerInput): string {
   const inv = input.frozenInventory;
   if (inv) {
     if (inv.items.length > 0) {
+      if (inv.ensemble) {
+        const e = inv.ensemble;
+        parts.push(`DUAL-PASS ENSEMBLE INVENTORY: the ${inv.items.length} item(s) below are the canonical union of ${e.passIds.length} INDEPENDENT Pass A executions (${e.passIds.join(", ")}): ${e.counts.corroborated} corroborated, ${e.counts.singleRun} single-run, ${e.counts.conflicted} conflicted. Each item carries a SUPPORT tag. Support is PROVENANCE, never a filter: a [SINGLE_RUN <pass>] item is authoritative source-verified inventory that one independent pass found and the other did not - consume or disposition it exactly like a corroborated item, never omit it because only one pass found it. A [CONFLICTED with <id>] pair makes incompatible claims over one source stretch: disposition BOTH sides AMBIGUOUS (say why) unless the source text itself resolves the conflict - never pick a side silently, and representing one side does not resolve the conflict.`);
+      }
       parts.push(`FROZEN SEMANTIC INVENTORY (Pass A, ${inv.items.length} item(s), content hash ${inv.frozenContentHash.slice(0, 16)}). ACCOUNTABILITY OBLIGATION: every item marked CRITICAL or MATERIAL below MUST end up either (a) CONSUMED - list its inventoryItemId in the inventoryItemIds array of the rule, definition, sharedCapacity, condition, exception, or expression node that represents it (a node may consume several items; a definition's calculationExpression consumes its FORMULA_COMPONENT items on the operand nodes themselves), or (b) DISPOSITIONED - listed in inventoryDispositions with INTENTIONALLY_NON_COMPUTATIONAL (real but not a computable mechanic - e.g. a purely descriptive statement), UNSUPPORTED (you could not represent it faithfully; prefer an UNSUPPORTED node that consumes it), or AMBIGUOUS (the source supports more than one reading; say why). A material item you neither consume nor disposition is reported as MISSING_FROM_COMPOSITION by a deterministic check - never silently omit one, and never list an item's id on a node that does not actually carry that item's value or meaning.`);
       for (const it of inv.items) {
         const values = it.quantitativeValues.length > 0 ? ` values={${it.quantitativeValues.map((v) => `${v.kind} ${v.rawText}`).join("; ")}}` : "";
         const refs = [...it.referencedTerms.map((t) => `term:${t}`), ...it.referencedSections.map((s) => `ref:${s}`)];
-        parts.push(`- ${it.inventoryItemId} [${it.semanticRole}/${it.materiality}${it.ambiguity !== "NONE" ? `/${it.ambiguity}` : ""}] ${it.proposition}${values}${refs.length > 0 ? ` {${refs.join(", ")}}` : ""} (${it.sourceSpan.sourceCitation}: "${it.sourceSpan.excerpt.slice(0, 160).replace(/\s+/g, " ")}")`);
+        const fn = it.semanticFunctions ? [it.semanticFunctions.effect !== "NONE" ? it.semanticFunctions.effect : null, ...it.semanticFunctions.logic, ...it.semanticFunctions.quantitative, ...it.semanticFunctions.dependency].filter(Boolean).join("+") : "";
+        parts.push(`- ${it.inventoryItemId} ${supportTagFor(it)}[${fn && fn !== it.semanticRole ? `${it.semanticRole}=${fn}` : it.semanticRole}/${it.materiality}${it.ambiguity !== "NONE" ? `/${it.ambiguity}` : ""}] ${it.proposition}${values}${refs.length > 0 ? ` {${refs.join(", ")}}` : ""} (${it.sourceSpan.sourceCitation}: "${it.sourceSpan.excerpt.slice(0, 160).replace(/\s+/g, " ")}")`);
       }
     } else {
       parts.push(`FROZEN SEMANTIC INVENTORY: ${inv.inventoryStatus} - ${inv.inventoryStatusReason}`);
@@ -289,12 +336,32 @@ export class RealSemanticCaller implements SemanticCaller {
     const startedAt = Date.now();
     let correctiveTurnsUsed = 0;
     let retrievalNudgeUsed = false;
+    /**
+     * F-1: a syntactically valid submission that this caller chose NOT to
+     * accept yet (it answered it with the retrieval nudge). If the
+     * continuation then fails for a reason that is NOT a semantic
+     * re-decision by the model (provider/transport failure, turn ceiling,
+     * corrective-reminder exhaustion), the held submission is returned with
+     * that failure reason attached - never discarded, never promoted: its
+     * own sufficiency values are exactly what the model stated.
+     */
+    let heldProvisional: { submission: SubmitCompilationInput; raw: unknown; audit: TransportNormalizationAudit | null } | null = null;
+    let lastTransportAudit: TransportNormalizationAudit | null = null;
+    const retainingHeld = (reason: SemanticCompilerFailureReason, detail: string, telemetry: AnalyzerCallTelemetry): SemanticCallerResult | null =>
+      heldProvisional ? this.finish(heldProvisional.submission, heldProvisional.raw, toolRunner.log, telemetry, reason, `${detail} - the provisional submission received before the retrieval nudge is RETAINED with the sufficiency the model itself stated (it was never accepted as complete by this caller; this failure reason marks why the continuation ended)`, heldProvisional.audit) : null;
 
     const maxTurns = budget.maxToolCalls + MAX_TURN_OVERHEAD;
     const maxTokens = resolveMaxTokens();
     for (let turn = 0; turn < maxTurns; turn++) {
       let message: Anthropic.Message;
       try {
+        // F-1 defense in depth: the invariant is structural (every continuation goes through
+        // toolResultsForAssistantTurn), but an outgoing sequence is still checked before it is sent
+        // so a future branch can never reach the provider with an orphaned tool_use. A violation is
+        // a caller-side protocol failure, classified with the transport failures below and never
+        // allowed to discard a held provisional submission.
+        const protocolViolations = validateToolUseProtocol(messages);
+        if (protocolViolations.length > 0) throw new Error(`caller tool-protocol violation before send: ${protocolViolations.map((v) => `${v.toolName}:${v.toolUseId} ${v.reason}`).join("; ")}`);
         const { value, attemptCount, retryCount, rateLimitFailures } = await withRetry(async () => {
           const stream = this.client.messages.stream({ model: this.model, max_tokens: maxTokens, system, messages, tools });
           return stream.finalMessage();
@@ -304,7 +371,9 @@ export class RealSemanticCaller implements SemanticCaller {
         aggRetryCount += retryCount;
         aggRateLimitFailures += rateLimitFailures;
       } catch (err) {
-        return this.finish(null, null, toolRunner.log, this.buildTelemetry(input.compilerPromptVersion, input.irSchemaVersion, startedAt, aggInputTokens, aggOutputTokens, aggCachedInputTokens, aggCacheCreationInputTokens, aggAttempts, aggRetryCount, aggRateLimitFailures, err instanceof Error ? err.message : String(err)), "PROVIDER_FAILURE", err instanceof Error ? err.message : String(err));
+        const detail = err instanceof Error ? err.message : String(err);
+        const telemetry = this.buildTelemetry(input.compilerPromptVersion, input.irSchemaVersion, startedAt, aggInputTokens, aggOutputTokens, aggCachedInputTokens, aggCacheCreationInputTokens, aggAttempts, aggRetryCount, aggRateLimitFailures, detail);
+        return retainingHeld("PROVIDER_FAILURE", `continuation turn failed at the provider: ${detail}`, telemetry) ?? this.finish(null, null, toolRunner.log, telemetry, "PROVIDER_FAILURE", detail);
       }
 
       aggInputTokens += message.usage?.input_tokens ?? 0;
@@ -315,7 +384,12 @@ export class RealSemanticCaller implements SemanticCaller {
       const toolUseBlocks = message.content.filter((b): b is Anthropic.ToolUseBlock => b.type === "tool_use");
       const submitBlock = toolUseBlocks.find((b) => b.name === SUBMIT_TOOL_NAME);
       if (submitBlock) {
-        const parsed = SubmitCompilationSchema.safeParse(submitBlock.input);
+        // F-7B.1: representational transport normalization ONLY (a top-level array field that arrived as a JSON-encoded
+        // string is decoded; nothing else changes) - the wire schema below stays the sole judge of content, and
+        // submitBlock.input is retained untouched as rawSubmission.
+        const transport = normalizeSubmitCompilationTransport(submitBlock.input);
+        lastTransportAudit = transport.audit;
+        const parsed = SubmitCompilationSchema.safeParse(transport.value);
         const telemetry = this.buildTelemetry(input.compilerPromptVersion, input.irSchemaVersion, startedAt, aggInputTokens, aggOutputTokens, aggCachedInputTokens, aggCacheCreationInputTokens, aggAttempts, aggRetryCount, aggRateLimitFailures);
         if (!parsed.success) {
           // Phase 3B.1 (task §5/§10): only attempt partial-output recovery when the provider's own
@@ -324,11 +398,11 @@ export class RealSemanticCaller implements SemanticCaller {
           if (message.stop_reason === "max_tokens") {
             const recovery = recoverPartialSubmission(submitBlock.input);
             if (recovery) {
-              return this.finish(recovery.recovered, submitBlock.input, toolRunner.log, telemetry, "OUTPUT_TRUNCATED", `response was truncated at the output-token ceiling (max_tokens=${maxTokens}); recovered ${recovery.rulesRecovered} rule(s) and ${recovery.definitionsRecovered} definition(s) as a validated prefix, dropped ${recovery.rulesDropped} rule(s) and ${recovery.definitionsDropped} definition(s) after the truncation point`);
+              return this.finish(recovery.recovered, submitBlock.input, toolRunner.log, telemetry, "OUTPUT_TRUNCATED", `response was truncated at the output-token ceiling (max_tokens=${maxTokens}); recovered ${recovery.rulesRecovered} rule(s) and ${recovery.definitionsRecovered} definition(s) as a validated prefix, dropped ${recovery.rulesDropped} rule(s) and ${recovery.definitionsDropped} definition(s) after the truncation point`, lastTransportAudit);
             }
-            return this.finish(null, submitBlock.input, toolRunner.log, telemetry, "OUTPUT_TRUNCATED", `response was truncated at the output-token ceiling (max_tokens=${maxTokens}) and no valid rule/definition prefix could be recovered`);
+            return this.finish(null, submitBlock.input, toolRunner.log, telemetry, "OUTPUT_TRUNCATED", `response was truncated at the output-token ceiling (max_tokens=${maxTokens}) and no valid rule/definition prefix could be recovered`, lastTransportAudit);
           }
-          return this.finish(null, submitBlock.input, toolRunner.log, telemetry, "MODEL_SCHEMA_FAILURE", `submit_compilation input failed schema validation: ${parsed.error.message}`);
+          return this.finish(null, submitBlock.input, toolRunner.log, telemetry, "MODEL_SCHEMA_FAILURE", `submit_compilation input failed schema validation: ${parsed.error.message}`, lastTransportAudit);
         }
 
         // Phase 3B.1 (task §12/§16) - mechanical, generic (never package/section-specific)
@@ -344,33 +418,27 @@ export class RealSemanticCaller implements SemanticCaller {
         const hasUnresolvedSufficiency = parsed.data.rules.some((r) => r.sufficiency === "UNSUPPORTED" || r.sufficiency === "MISSING_CONTEXT") || parsed.data.definitions.some((d) => d.sufficiency === "UNSUPPORTED" || d.sufficiency === "MISSING_CONTEXT");
         if (hasUnresolvedSufficiency && toolRunner.log.length === 0 && toolRunner.remainingCalls > 0 && !retrievalNudgeUsed) {
           retrievalNudgeUsed = true;
+          heldProvisional = { submission: parsed.data, raw: submitBlock.input, audit: lastTransportAudit };
           messages.push({ role: "assistant", content: message.content });
-          messages.push({
-            role: "user",
-            content:
-              "Before I accept this: you marked at least one rule or definition UNSUPPORTED or MISSING_CONTEXT, but you have not made a single tool call yet and you still have tool budget remaining. Per the RETRIEVAL BEFORE GIVING UP policy, first attempt whichever of your available tools could plausibly resolve the specific gap (a cross-reference, an undefined term, a schedule, a versioning question, or other bundle evidence) before finalizing. If, after trying, the gap genuinely cannot be resolved (not found, refused, or no tool applies), resubmit with the same honest sufficiency - that is a correct outcome too.",
-          });
+          // F-1: the nudge is the tool_result of the provisional submit call; any evidence tool the model
+          // requested in the same turn is served alongside it, so every tool_use in the turn is answered.
+          messages.push({ role: "user", content: toolResultsForAssistantTurn(toolUseBlocks, (block) => (block.name === SUBMIT_TOOL_NAME ? RETRIEVAL_NUDGE_TEXT : JSON.stringify(toolRunner.run(block.name, block.input)))) });
           continue;
         }
 
-        return this.finish(parsed.data, submitBlock.input, toolRunner.log, telemetry, null, null);
+        return this.finish(parsed.data, submitBlock.input, toolRunner.log, telemetry, null, null, lastTransportAudit);
       }
 
       if (toolUseBlocks.length > 0) {
         messages.push({ role: "assistant", content: message.content });
-        const toolResults: Anthropic.ToolResultBlockParam[] = toolUseBlocks.map((block) => ({
-          type: "tool_result",
-          tool_use_id: block.id,
-          content: JSON.stringify(toolRunner.run(block.name, block.input)),
-        }));
-        messages.push({ role: "user", content: toolResults });
+        messages.push({ role: "user", content: toolResultsForAssistantTurn(toolUseBlocks, (block) => JSON.stringify(toolRunner.run(block.name, block.input))) });
         continue;
       }
 
       // No tool_use at all - the model produced plain text instead of following protocol. Give it exactly one corrective nudge before failing honestly (task §29's own MODEL_SCHEMA_FAILURE).
       if (correctiveTurnsUsed >= 1) {
         const telemetry = this.buildTelemetry(input.compilerPromptVersion, input.irSchemaVersion, startedAt, aggInputTokens, aggOutputTokens, aggCachedInputTokens, aggCacheCreationInputTokens, aggAttempts, aggRetryCount, aggRateLimitFailures);
-        return this.finish(null, null, toolRunner.log, telemetry, "MODEL_SCHEMA_FAILURE", "model did not call submit_compilation or any evidence tool after a corrective reminder");
+        return retainingHeld("MODEL_SCHEMA_FAILURE", "model did not call submit_compilation or any evidence tool after a corrective reminder", telemetry) ?? this.finish(null, null, toolRunner.log, telemetry, "MODEL_SCHEMA_FAILURE", "model did not call submit_compilation or any evidence tool after a corrective reminder");
       }
       correctiveTurnsUsed += 1;
       messages.push({ role: "assistant", content: message.content });
@@ -378,11 +446,11 @@ export class RealSemanticCaller implements SemanticCaller {
     }
 
     const telemetry = this.buildTelemetry(input.compilerPromptVersion, input.irSchemaVersion, startedAt, aggInputTokens, aggOutputTokens, aggCachedInputTokens, aggCacheCreationInputTokens, aggAttempts, aggRetryCount, aggRateLimitFailures);
-    return this.finish(null, null, toolRunner.log, telemetry, "TOOL_BUDGET_EXHAUSTED", `model did not call submit_compilation within ${maxTurns} turns (tool budget ${budget.maxToolCalls})`);
+    return retainingHeld("TOOL_BUDGET_EXHAUSTED", `model did not call submit_compilation within ${maxTurns} turns (tool budget ${budget.maxToolCalls})`, telemetry) ?? this.finish(null, null, toolRunner.log, telemetry, "TOOL_BUDGET_EXHAUSTED", `model did not call submit_compilation within ${maxTurns} turns (tool budget ${budget.maxToolCalls})`);
   }
 
-  private finish(submission: SubmitCompilationInput | null, rawSubmission: unknown, toolCallLog: ToolCallLogEntry[], telemetry: AnalyzerCallTelemetry, failureReason: SemanticCompilerFailureReason | null, failureDetail: string | null): SemanticCallerResult {
-    return { submission, rawSubmission, toolCallLog, telemetry, failureReason, failureDetail };
+  private finish(submission: SubmitCompilationInput | null, rawSubmission: unknown, toolCallLog: ToolCallLogEntry[], telemetry: AnalyzerCallTelemetry, failureReason: SemanticCompilerFailureReason | null, failureDetail: string | null, transportNormalization: TransportNormalizationAudit | null = null): SemanticCallerResult {
+    return { submission, rawSubmission, toolCallLog, telemetry, failureReason, failureDetail, transportNormalization };
   }
 
   private buildTelemetry(

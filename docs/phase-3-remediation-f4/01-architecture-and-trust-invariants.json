@@ -1,0 +1,98 @@
+{
+ "artifact": "F-4 architecture, authentication checks, evidence model, trust invariants and production-change inventory",
+ "mission": "HEADROOM - PHASE 3 CHEWY REMEDIATION 6 / F-4 VERIFIER AUTHENTICATED RETRIEVED-SOURCE EVIDENCE",
+ "startingSha": "5e171383e1ec6e9505ea6812fd3d3ddf0768c696",
+ "paidModelCalls": 0,
+ "costUsd": 0.0,
+ "rootCause": {
+  "earliestDefect": "A. RETRIEVED_SOURCE_PROVENANCE_NOT_RECORDED",
+  "module": "lib/contract-model/compiler/semantic/tools.ts :: getDefinition.execute -> ToolRunner.run (ToolCallLogEntry)",
+  "consequence": "C. VERIFIER_INPUT_EXCLUDES_AUTHENTICATED_RETRIEVED_SOURCE (semantic-verification/verify.ts inventoried compilerInput.operativeSourceText only)",
+  "reproduction": "docs/phase-3-remediation-f4/00-diagnosis-and-reproduction.json (recorded at the starting SHA before any production change)"
+ },
+ "architecture": {
+  "flow": [
+   "compiler evidence tool retrieves source (getDefinition / getReferencedProvision / getOperativeProvision)",
+   "tool writes an EVIDENCE-ONLY RetrievedSourceRecord (document, physical node, span, FULL raw text, sha256, text origin, evidence status) onto the ToolCallLogEntry - never an interpretation",
+   "verifier collects retrieval requests from the tool log (compiler CLAIMS) and from the IR itself (IRDefinition terms; IR values whose provenance cites 'Definition of X')",
+   "verifier RE-RESOLVES every request through its own allowed inputs only: structural index + Phase 2G operative state (resolveOperativeDefinitionEvidence / resolveOperativeSectionEvidence - amendment/version precedence reused, never re-implemented) + package topology (this instrument's documents only)",
+   "authentication checks A-G; any failure => REJECTED (review), never a fallback to compiler metadata",
+   "AUTHENTICATED texts are inventoried with the verifier's own parser (source-inventory.ts / amount-parser.ts) as AUTHENTICATED_RETRIEVED items scoped to their term/section",
+   "reconciliation: PRIMARY_LOCAL first claim; then retrieved items may support ONLY IR values scoped to that evidence; REPRESENTED_DEFINITION evidence with an expression is compared in reverse too (figures in the authentic definition missing from the IR definition -> NOT_ACCOUNTED_FOR / MISSING_DEFINITION_EFFECT); rejected compiler claims -> AMBIGUOUS / PROVENANCE_MISMATCH review items",
+   "reviewer prompt gains an AUTHENTICATED RETRIEVED SOURCE section built only from the verifier's own authenticated evidence (raw text + document/version/node/span/hash); rejected claims are named without text",
+   "result carries admissibleEvidence (every authenticated evidence with its retrieval chain and checks, every rejected claim, packageDocumentIds, localSourceHash) and evidenceSetHash"
+  ],
+  "authenticatedEvidenceRecord": [
+   "documentId",
+   "documentVersion (BASE_DOCUMENT | AMENDED_OPERATIVE) + operativeEvidenceStatus",
+   "sourceNodeId / sourceNodeKey",
+   "charStart / charEnd (null for amendment-recorded current text)",
+   "rawText",
+   "contentHash (sha256 of rawText, computeSourceContentHash)",
+   "retrievalReason",
+   "relationshipToUnit + role (REPRESENTED_DEFINITION | REFERENCED_ONLY) + representedDefinitionIds",
+   "provenanceOrigin = VERIFIER_INDEPENDENT_RESOLUTION",
+   "compilerRecord {present, matched, toolCallIndexes}",
+   "linkage[] {origin COMPILER_TOOL_CALL | IR_DEFINITION_TERM | IR_PROVENANCE_CITATION, detail, compilerRecordedContentHash}",
+   "authenticationStatus + checks[] A-G"
+  ],
+  "authenticationChecks": {
+   "A_DOCUMENT_IN_PACKAGE": "resolved document belongs to this instrument's package (packageGraph instruments containing the home document; home only without a graph)",
+   "B_SPAN_RESOLVES": "request resolves to exactly one real definition/section with text (NOT_FOUND / AMBIGUOUS / null text reject)",
+   "C_RAW_TEXT_MATCH": "text is byte-identical to document.text.slice(charStart, charEnd) (base document) or is the operative state's recorded current text (amended)",
+   "D_HASH_MATCH": "compiler-recorded contentHash and rawText equal the text the tool serves for this request (no record => computed independently, passes)",
+   "E_OPERATIVE_VERSION": "resolution isCurrentTruth (CURRENT); KNOWN_SUPERSEDED / OPERATIVE_STATE_UNRESOLVED / PARTIAL_AMENDMENT / HISTORICAL_ONLY reject",
+   "F_NOT_UNRELATED_DOCUMENT": "compiler-recorded documentId / sourceNodeId equal the source the verifier resolved",
+   "G_SPAN_IN_BOUNDS": "0 <= charStart < charEnd <= document length (base document)"
+  },
+  "definitionEvidenceBound": "a base-document definition's admitted text is the index's served slice bounded to the end of the SECTION enclosing its declaration (the index slices 'to the next detected definition', which for the last definition before a definition-free stretch runs into later articles). D_HASH_MATCH still compares the compiler record against the SERVED text. Verified not to alter any Chewy 6.08 evidence (Threshold Amount stays 161 chars).",
+  "scoping": "an IR numeric value is in scope of DEFINITION evidence X only when its owning IRDefinition.termName is X (IrInventoryItem.ownerTermName) or its own provenance citation names the definition explicitly ('Definition of X' / 'X (definition)' / bare 'X'); in scope of PROVISION evidence S only when its citation is S or a sub-clause of S. A bare mention of a term inside a longer citation never scopes. No global numeric pooling; no term/section special case.",
+  "aggregateSignals": "conditional/exception/proviso, shared-cap, entity-scope, reclassification and enumeration signals remain PRIMARY_LOCAL-only",
+  "duplicateWindow": "authenticated evidence whose span overlaps the candidate's own operative window (operativeCharStart or unique substring match) is recorded for provenance but contributes no retrieved items (its figures are already PRIMARY_LOCAL)",
+  "identity": "evidenceSetHash = hashParts([localSourceHash, ...sorted authenticated (documentId|nodeId|charStart|charEnd|contentHash), RETRIEVED_EVIDENCE_ALGORITHM_VERSION]); rejected claims admit nothing and do not change it; SEMANTIC_VERIFIER_ALGORITHM_VERSION unchanged so finding ids stay comparable before/after (the replay depends on that)",
+  "statusGating": "determineStatus: any compiler-claimed retrieval that failed authentication forces at least REVIEW_REQUIRED (after MATERIAL and VERIFICATION_INCOMPLETE); the rejected claim is also a PROVENANCE_MISMATCH (UNCERTAIN) deterministic finding"
+ },
+ "trustInvariants": [
+  "the verifier never reads RetrievedSourceRecord.rawText as evidence, never inventories it, never shows it to the reviewer - it is only compared (D/F)",
+  "compiler outputSummary strings and IR provenance excerpts are never evidence",
+  "an authentication failure rejects the evidence outright - there is no fallback to compiler metadata; a rejected COMPILER claim is a review item; a rejected IR-derived request (a term the index never detected) is recorded but never manufactured into a finding",
+  "stale / superseded / conflicted / ambiguous / historical text is never admitted (E); a compiler record that matches such text is still rejected",
+  "retrieval is confined to this instrument's package documents (A); a same-named definition in another instrument or company is never admissible",
+  "retrieved figures support only IR values explicitly scoped to the evidence; the local window always has first claim",
+  "no defined term, section, company or package is special-cased anywhere (Architecture Invariants #29)"
+ ],
+ "productionChanges": {
+  "allowedAreas": [
+   "semantic-verification/* (new retrieved-evidence.ts; reconciliation, findings, ir-inventory, source-inventory, reviewer, verify, types, index)",
+   "narrow compiler retrieval-provenance plumbing (semantic/tools.ts: RetrievedSourceRecord written by getDefinition / getReferencedProvision / getOperativeProvision; ToolRunner.run copies it) - evidence only",
+   "shared provenance types (semantic/types.ts RetrievedSourceRecord + ToolCallLogEntry.retrievedSource; compiler/hashing.ts computeSourceContentHash)"
+  ],
+  "files": {
+   "lib/contract-model/compiler/semantic-verification/retrieved-evidence.ts": "331cb23098d35545d64a1f407e898a07d88341e9d6d2cf94fe1d564f3cc21bf7",
+   "lib/contract-model/compiler/semantic-verification/reconciliation.ts": "007a2328da8096aeefce608625a228d634b24dd207b2acd13d4d43600a9cf7a3",
+   "lib/contract-model/compiler/semantic-verification/verify.ts": "bbfd896a0020caa7deba70407714c6a2b2304be50148e18a4a496bc0b40d9fa7",
+   "lib/contract-model/compiler/semantic-verification/reviewer.ts": "7cdfbc938496186e647332e8b2c699111ee546d12be1afd22bd6d5ec90b73f6d",
+   "lib/contract-model/compiler/semantic-verification/findings.ts": "2ee374c5cb0056cda7558ee2b96bcf501ccab7a778706089a8c9bfbccfbbb7c7",
+   "lib/contract-model/compiler/semantic-verification/ir-inventory.ts": "f7d449bfc2adda1b0aec6ad71a8aa3d96b4912c85d87ceef45e7a9163ee97063",
+   "lib/contract-model/compiler/semantic-verification/source-inventory.ts": "b021971544acc2d8ee43d441891918ae6017312c0f77ceb60e4a4480f5f775dd",
+   "lib/contract-model/compiler/semantic-verification/types.ts": "6e18d19c45df8693f977c081592bc88720ba33a5fe76aaf61c08305d880eb4e6",
+   "lib/contract-model/compiler/semantic-verification/index.ts": "8f8dda494025b54d6a4225d60912b649005b152ce18010f7d41c2fc71e1be8c2",
+   "lib/contract-model/compiler/semantic/tools.ts": "f31ccfffad7eaf42f54fab44cd8a78a9b986fb3514d6d280ace8da5787241d1f",
+   "lib/contract-model/compiler/semantic/types.ts": "a6ffb46cb0a80118a49debbbfdaee02d2249b8711432ddb67818e61ff1316f87",
+   "lib/contract-model/compiler/hashing.ts": "393805b660c178fb96cb7acd83a5af1956b87a224d23dcb463e3e5dd179bd65d"
+  },
+  "untouchedControls": {
+   "lib/contract-model/compiler/semantic-verification/amount-parser.ts": "748edbeb95c74980f59aef7dd86285053c453dc2023b2f310026e41220274d8d",
+   "lib/contract-model/compiler/semantic-verification/prompt.ts": "013a59e77b7c8d29bac58bb0c8b443062131cb906c8eda5e368651851f0b95a2",
+   "lib/contract-model/compiler/semantic-verification/identity.ts": "3241f5a0628149c0f19582bc8484216f7d2e59e2ee6d66d76ae1985bf986491e",
+   "lib/contract-model/compiler/semantic/compile.ts": "581dae3279edeed8fd9c06c01c4af068125decbef63c84ca7e6d76f158d222e5",
+   "lib/contract-model/compiler/semantic/caller.ts": "f1dce1b75b7584c6acd5a380a19ab0356a3e03d38741b482f6edf2c1d52c749e",
+   "lib/contract-model/compiler/semantic-accountability/ensemble.ts": "fa7eb938494e34714f51f691efc0b08005da5a38abf5e158be222e737a283fb4",
+   "lib/contract-model/compiler/semantic-accountability/dual-pass.ts": "587f7730971321eb2380e516c8ca250dd41f3f273e27d5ca80555a70bfbbd4ce",
+   "lib/contract-model/compiler/amendment/operative-state.ts": "38c7c8161dcfe5de1564b358f85639ef890e1943fb0a6fa7460f92740c7d4b81",
+   "lib/contract-model/compiler/structural-index.ts": "3964fab803db3b2002cf67eb180b8221030c2d9bd9cc936f8ac9ca4f3817dfd2",
+   "lib/contract-model/analysis/orchestrator.ts": "883d91c937e02d88189c1c15398c98653cf36fc28d3425b7394937cdd0d751dd"
+  },
+  "forbiddenAreasTouched": "none - F-1/F-2/F-3 (amount-parser.ts unchanged), F-5 (semantic-accountability/* unchanged), F-6/F-7, discovery, source coverage, precedent, human reference set, Phase 4/5: zero diff (git diff --stat over those paths is empty)"
+ }
+}

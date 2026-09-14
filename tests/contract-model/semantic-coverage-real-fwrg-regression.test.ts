@@ -38,11 +38,11 @@ function loadRealDiscoveredCandidates(index: StructuralIndex): DiscoveredCandida
 const REAL_REGRESSION_OPERATIVE_STATE: OperativeContractState = { instrumentKey: "fwrg-instrument", asOfDate: "2026-01-01", provisions: [], status: "OPERATIVE_STATE_RESOLVED", summary: "no amendment-pipeline evidence loaded for this regression fixture", unattachedEffects: [] };
 
 describe("Phase 3E real FWRG Article 6 regression (task #161) - $0 cost, real evidence only", () => {
-  it("audits the ENTIRE real 418-node document root - never a hand-selected section subset", async () => {
+  it("audits the ENTIRE real 396-node document root - never a hand-selected section subset", async () => {
     const { index } = loadFwrgLsbStructuralIndex();
     const discoveredCandidates = loadRealDiscoveredCandidates(index);
     expect(discoveredCandidates.length).toBe(252);
-    expect(index.allNodes().filter((n) => n.documentId === DOCUMENT_ID).length).toBe(418);
+    expect(index.allNodes().filter((n) => n.documentId === DOCUMENT_ID).length).toBe(396) /* F-2 (Phase 3 Chewy remediation 2): inline cross-reference / spelled-numeral markers such as 'clauses (i) through (iv)' are no longer structural labels - see docs/phase-3-remediation-f2 */;
   });
 
   it("produces a real, non-trivial semantic unit inventory (never zero units on a real 252-candidate document)", async () => {

@@ -1,0 +1,269 @@
+{
+ "record": {
+  "stage": 1,
+  "attempt": 1,
+  "shardId": "shard:3e3910ea2efd9edd45a3",
+  "shardHash": "183134ad7785f161b0d350297d89603860aada6016bbf04609fc1dd0c172957f",
+  "ordinal": 27,
+  "ownedUnits": 16,
+  "sourceChars": 10103,
+  "contextEntries": 3,
+  "contextChars": 2796,
+  "unresolvedContext": 2,
+  "oversized": false,
+  "ownedItems": 3,
+  "ownedMaterialItems": 3,
+  "estimatedFirstTurnInputTokens": 26033,
+  "preCallEstimate": {
+   "inputTokens": 85649,
+   "outputTokens": 41500,
+   "usd": 0.586298
+  },
+  "actual": {
+   "inputTokens": 187696,
+   "outputTokens": 42224,
+   "turns": 5,
+   "latencyMs": 368848,
+   "costUsd": 0.797632,
+   "attemptCount": 5,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "FAILED",
+  "shardStatus": "SHARD_SCHEMA_FAILURE",
+  "failureReasons": [
+   "MODEL_SCHEMA_FAILURE"
+  ],
+  "toolCalls": 6,
+  "toolCallNames": [
+   "getDefinition",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getChildren",
+   "getSourceSpan",
+   "getReferencedProvision"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 0,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 0,
+   "dispositioned": 0,
+   "missingMaterial": 3,
+   "valuesRepresented": 0,
+   "valuesMissing": 5,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "MISSING_FROM_COMPOSITION": 3
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [],
+  "unresolvedIssues": [
+   "submit_compilation input failed schema validation: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"definitions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"sharedCapacities\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"irExtensionCandidates\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"overallNotes\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  }\n]"
+  ],
+  "errorSummary": null
+ },
+ "result": {
+  "shardId": "shard:3e3910ea2efd9edd45a3",
+  "shardHash": "183134ad7785f161b0d350297d89603860aada6016bbf04609fc1dd0c172957f",
+  "status": "SHARD_SCHEMA_FAILURE",
+  "composition": null,
+  "failureReasons": [
+   "MODEL_SCHEMA_FAILURE"
+  ],
+  "unresolvedIssues": [
+   "submit_compilation input failed schema validation: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"definitions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"sharedCapacities\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"irExtensionCandidates\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"overallNotes\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  }\n]"
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 187696,
+   "outputTokens": 42224,
+   "costUsd": 0.797632
+  }
+ },
+ "compile": {
+  "status": "FAILED",
+  "failureReasons": [
+   "MODEL_SCHEMA_FAILURE"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [],
+  "unresolvedIssues": [
+   "submit_compilation input failed schema validation: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"definitions\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"sharedCapacities\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"irExtensionCandidates\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"overallNotes\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  }\n]"
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Excess Cash Flow"
+    },
+    "outputSummary": "definition \"Excess Cash Flow\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 4059,
+    "timestamp": "2026-09-14T12:57:00.991Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": true,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Excess Cash Flow",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:acb75029bbddbc2fd12cd29c",
+     "sourceNodeKey": "doc-a::1.01(2)(v)(III)(c)(f)",
+     "charStart": 153704,
+     "charEnd": 162461,
+     "rawText": "“ Excess Cash Flow ” means, for any Calculation Period, an amount equal to the excess of:\n\n(a)\nthe sum, without duplication, of:\n\n(i)\nConsolidated Net Income for the applicable fiscal year;\n\n(ii)\nan amount equal to the amount of all non-cash charges to the extent\ndeducted in arriving at such Consolidated Net Income ( provided , in each case, that if any non-cash charge represents an accrual or reserve for cash items in any future period, the cash payment in\nrespect thereof in such future period shall be subtracted from Excess Cash Flow in such future period);\n\n(iii)\ndecreases in Consolidated Working Capital, long-term receivables and long-term prepaid assets and increases in\nlong-term deferred revenue for the applicable fiscal year;\n\n(iv)\nan amount equal to the aggregate net non-cash loss on dispositions by\nthe Restricted Parties during the applicable fiscal year (other than dispositions in the ordinary course of business) to the extent deducted in arriving at such Consolidated Net Income; and\n\n(v)\ncash receipts in respect of Swap Agreements to the extent not otherwise included in calculating Consolidated\nNet Income;\n\nover:\n\n(b)\nthe sum, without duplication, of:\n\n(i)\nan amount equal to the amount of all non-cash credits included in\narriving at such Consolidated Net Income (including any amounts included in Consolidated Net Income pursuant to the last sentence of the definition of “Consolidated Net Income” to the extent such amounts are due but not received during\nsuch period) and cash charges included in clauses (a) through (p) of the definition of “Consolidated Net Income” (other than cash charges in respect of Transaction Expenses paid on or about the Effective Date to the extent financed\nwith the proceeds of Indebtedness incurred on the Effective Date or an equity investment on the Effective Date);\n\n(ii)\nwithout duplication of amounts deducted pursuant to clause (x) below in prior fiscal years, the amount of\nCapital Expenditures made in cash or accrued during such Calculation Period, to the extent that such Capital Expenditures were not financed with Funded Debt (other than revolving debt) of the Restricted Parties;\n\n(iii)\n(x) the aggregate amount of all principal payments of Indebtedness except to the extent financed with the\nproceeds of Funded Debt (other than revolving debt) of a Restricted Party, including (A) the principal component of payments in respect of Capitalized Leases, (B) the amount of any prepayment of Loans and of other Indebtedness to the\nextent secured on a pari passu or junior basis to the Loan Document Obligations, (C) the amount of any Restricted Debt Payments, (D) the amount of any prepayment of Indebtedness to the extent secured by assets not constituting\nCollateral and (E) the amount of any prepayment of unsecured Indebtedness of a Non-Loan Party Subsidiary (and, in the case of any prepayments of revolving loans and swingline loans made during such\nperiod, only to the extent there is an equivalent permanent reduction in commitments thereunder and such permanent reduction does not reduce the amount of the repayment of Loans described in Section 2.09(c)), and (y) the aggregate amount\nof any premium, make-whole or penalty payments actually paid in cash by the Restricted Parties during such Calculation Period that are required to be made in connection with any prepayment of Indebtedness;\n\n-33-\n\n(iv)\nan amount equal to the aggregate net non-cash gain on dispositions by\nthe Restricted Parties during such Calculation Period (other than dispositions in the ordinary course of business) to the extent included in arriving at such Consolidated Net Income;\n\n(v)\nincreases in Consolidated Working Capital and long-term receivables and long-term prepaid assets and decreases\nin long-term deferred revenue for such fiscal year;\n\n(vi)\ncash payments by the Restricted Parties during such Calculation Period in respect of purchase price holdbacks,\nearnout obligations and long-term liabilities of the Restricted Parties other than Indebtedness to the extent such payments are not expensed during such Calculation Period or are not deducted in calculating Consolidated Net Income, except to the\nextent financed with the proceeds of Funded Debt (other than revolving debt) of any Restricted Party;\n\n(vii)\nwithout duplication of amounts deducted pursuant to clause (x) below in prior Calculation Periods, the\namount of Investments (other than Investments in Cash Equivalents) and acquisitions not prohibited by this Agreement to the extent that such Investments and acquisitions were not financed with the proceeds of Funded Debt (other than revolving debt)\nof the Restricted Parties;\n\n(viii)\nthe amount of dividends and distributions paid in cash during such Calculation Period not prohibited by this\nAgreement to the extent that such dividends and distributions were not financed with Funded Debt (other than revolving debt) of the Restricted Parties;\n\n(ix)\nthe aggregate amount of expenditures actually made by the Restricted Parties in cash during such fiscal year\n(including expenditures for the payment of financing fees and restructuring charges and expenditures for similar initiatives) to the extent that such expenditures are not expensed during such period or are not deducted in calculating Consolidated\nNet Income, to the extent that such expenditure was financed with internally generated cash flow of the Restricted Parties;\n\n(x)\nwithout duplication of amounts deducted from Excess Cash Flow in prior Calculation Periods, (1) the\naggregate consideration required to be paid in cash by any Restricted Party pursuant to binding contracts, commitments, letters of intent or purchase orders (the “ Contract Consideration ”), in each case, entered into prior to or\nduring such Calculation Period and (2) the aggregate amount of cash that is planned, budgeted or reasonably expected to be paid in respect of planned cash expenditures by any Restricted Party (the “ Planned Expenditures ”), in\nthe case of each of clauses (1) and (2), relating to Permitted Acquisitions, other Investments (other than Investments in Cash Equivalents), deferred payments in connection therewith, restructuring initiatives or capital expenditures (including\nCapitalized Software Expenditures or other purchases of Intellectual Property) and Restricted Payments (limited, in the case of a return on capital, to Restricted Payments declared, but not paid, during such Calculation Period and including other\nRestricted Payments to be made for the purpose of funding, selling, general and administrative expenses, taxes and similar items), Restricted Debt Payments and all other permitted cash expenditures to be consummated or made during a subsequent\nCalculation Period; provided that to the extent the aggregate amount actually utilized to finance such Permitted Acquisitions, Investments, deferred payments in connection therewith, restructuring initiatives, capital expenditures, Restricted\nDebt Payments or other permitted cash expenditures or Restricted Payments during such subsequent Excess Cash Flow Period is less than the Contract Consideration and Planned Expenditures, the amount of such shortfall shall be added to the calculation\nof Excess Cash Flow at the end of such subsequent Excess Cash Flow Period;\n\n(xi)\nthe amount of taxes (and any Tax Distributions) (including penalties and interest) paid in cash and/or tax\nreserves set aside or payable (without duplication) in such fiscal year, including for the avoidance of doubt, any income, withholdings and other taxes payable as a result of the distribution or deemed distribution of such proceeds to a Restricted\nParty, transfer taxes, deed or mortgage\n\n-34-\n\nrecording taxes and Taxes that would be payable in connection with any repatriation of such proceeds, any repatriation costs (including taxes) associated with receipt or distribution by the\napplicable taxpayer of such proceeds, and transfer taxes, deed or mortgage recording taxes and Taxes that would be payable in connection with any repatriation of such proceeds that are paid, payable or set aside in such period, to the extent the\naggregate of all such amounts described in this clause exceeds the amount of tax expense deducted in determining Consolidated Net Income for such fiscal year; and\n\n(xii)\ncash expenditures in respect of Swap Agreements to the extent not deducted in calculating Consolidated Net\nIncome.\n\nNotwithstanding anything set forth herein to the contrary, if the calculation of Excess Cash Flow pursuant to the definition\nhereof is less than zero (0) in any such year, such excess amount shall be applied to reduce the calculation of Excess Cash Flow in the subsequent period to reduce the prepayment pursuant to Section 2.09(c) in such period.\n\n",
+     "contentHash": "a4b910b529db64c64bd222827a8fe609b5e8e368e0253355755aa8ce80fc6bcb",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 5.01"
+    },
+    "outputSummary": "resolved reference \"Section 5.01\" -> 5.01 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 188,
+    "timestamp": "2026-09-14T12:57:00.992Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 5.01",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:65ab3a0a1f9dc108193f45ca",
+     "sourceNodeKey": "doc-a::5.01",
+     "charStart": 561978,
+     "charEnd": 562166,
+     "rawText": "Section 5.01 Financial Statements and Other Information . The Initial Borrower will furnish to the Administrative Agent (for\ndistribution to each Lender through the Administrative Agent):\n",
+     "contentHash": "6af63dd432be6a3d4b16e966391d333dc8df66bdf478e8cf863dfc88b4ea8367",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 9.02(c)"
+    },
+    "outputSummary": "resolved reference \"Section 9.02(c)\" -> 9.02(c) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 1689,
+    "timestamp": "2026-09-14T12:57:00.993Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 9.02(c)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:998e9ba7f1275a7b8cfb79a1",
+     "sourceNodeKey": "doc-a::9.02(c)",
+     "charStart": 763305,
+     "charEnd": 764994,
+     "rawText": "(c) upon notice thereof by the Initial Borrower to the Administrative Agent with respect to the inclusion of any previously absent\nfinancial maintenance covenant or any other covenant, this Agreement shall be amended by an agreement in writing entered into by the Borrowers and the Administrative Agent without the need to obtain the consent of any Lender to include such covenant\non the date of the incurrence of the applicable Indebtedness to the extent required by the terms of such definition or section.\n(c) In\nconnection with any proposed amendment, modification, waiver or termination (a “ Proposed Change ”) requiring the consent of all Lenders or all directly and adversely affected Lenders, if the consent of the Required Lenders or\nRequired Revolving Lenders, as applicable, to such Proposed Change is obtained, but the consent to such Proposed Change of other Lenders whose consent is required is not obtained (any such Lender whose consent\n\n-163-\n\nis not obtained as described in paragraph (b) of this Section 9.02 being referred to as a “ Non-Consenting Lender ”), then, so\nlong as the Lender that is acting as an Administrative Agent is not a Non-Consenting Lender, the Initial Borrower may, at its sole expense and effort, upon notice to such\nNon-Consenting Lender and the Administrative Agent, require such Non-Consenting Lender to assign and delegate, without recourse (in accordance with and subject to the\nrestrictions contained in Section 9.04), all its interests, rights and obligations under this Agreement to an Eligible Assignee that shall assume such obligations (which Eligible Assignee may be another Lender, if a Lender accepts such\nassignment); provided that ",
+     "contentHash": "e35a6a4b55016eb89b5c77dda937ae8dc963da8af1c7961f8568ef02b1bb9a67",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getChildren",
+    "input": {
+     "nodeId": "structural-node:65ab3a0a1f9dc108193f45ca"
+    },
+    "outputSummary": "7 child clause(s) of 5.01 (parent UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 62,
+    "timestamp": "2026-09-14T12:57:06.183Z",
+    "evidenceUnresolved": true
+   },
+   {
+    "toolName": "getSourceSpan",
+    "input": {
+     "nodeId": "structural-node:65ab3a0a1f9dc108193f45ca",
+     "includeDescendants": true
+    },
+    "outputSummary": "source span for 5.01 (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 4059,
+    "timestamp": "2026-09-14T12:57:12.677Z",
+    "evidenceTruncated": true
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 1.08(d)"
+    },
+    "outputSummary": "resolved reference \"Section 1.08(d)\" -> 1.08(d) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 1410,
+    "timestamp": "2026-09-14T12:57:58.590Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 1.08(d)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:87efe6e864d68b3b27e1d3b8",
+     "sourceNodeKey": "doc-a::1.08(d)",
+     "charStart": 383554,
+     "charEnd": 384964,
+     "rawText": "(d) Whenever pro forma effect is to be given to a Specified Transaction, the pro\nforma calculations shall be made in good faith by a Responsible Officer and may include, for the avoidance of doubt, the amount of synergies, cost savings, operating improvements, operating expense reductions, business optimization, revenue\nenhancements, revenue synergies, pricing initiatives, restructuring initiatives and other similar initiatives that are projected by the Initial Borrower in good faith to result from actions taken, committed to be taken or expected to be taken (in\nthe good faith determination of the Initial Borrower) (calculated on a Pro Forma Basis as though such synergies, cost savings, operating improvements, operating expense reductions, business optimization, revenue enhancements, pricing\ninitiatives, restructuring initiatives and other similar initiatives had been realized on the first (1st) day of such Test Period and as if such synergies, cost savings, operating improvements, operating expense reductions, business optimization,\nrevenue enhancements, pricing initiatives, restructuring initiatives and other similar initiatives were realized during the entirety of such period) relating to such Specified Transaction, net of the amount of actual benefits realized during such\nperiod from such actions (such cost savings and synergies, “ Specified Transaction Adjustments ”); provided that ",
+     "contentHash": "60c21eca4439097d49f9175832cb665a899fd1b4bc05471dd3a1dade863236d9",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": "[\n{\n  \"localRef\": \"d1\",\n  \"termName\": \"Permitted Receivables Financings\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": {\n    \"kind\": \"UNSUPPORTED\",\n    \"semanticDescription\": \"aggregation of two constituent facility-type defined terms (a Receivables Non-Recourse Facility and a Receivables Recourse Facility)\",\n    \"reason\": \"the constituent defined terms 'Receivables Non-Recourse Facility' and 'Receivables Recourse Facility' are not declared anywhere in the supplied source or elsewhere in the document package\",\n    \"sourceEvidence\": \"§1.01: \\\"means, collectively, any (i) Receivables Non-Recourse Facility and (ii) a Receivables Recourse Facility.\\\"\"\n  },\n  \"dependsOnTerms\": [\"Receivables Non-Recourse Facility\", \"Receivables Recourse Facility\"],\n  \"sufficiency\": \"PARTIAL\",\n  \"sufficiencyReasons\": [\"constituent defined terms not available in evidence\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"means, collectively, any (i) Receivables Non-Recourse Facility and (ii) a Receivables Recourse Facility.\"\n},\n{\n  \"localRef\": \"d2\",\n  \"termName\": \"Permitted Tax Restructuring\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Collateral\", \"Initial Borrower\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [\"qualitative good-faith materiality standard fully stated in source; not a computable formula\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"means any reorganizations, restructurings and other activities related to Tax planning and Tax reorganization entered into prior to, on or after the Effective Date so long as such Permitted Tax Restructuring does not materially impair the value of the Collateral, when taken as a whole (as determined by the Initial Borrower in good faith).\"\n},\n{\n  \"localRef\": \"d3\",\n  \"termName\": \"Permitted Transferees\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Immediate Family Members\", \"Affiliate\", \"Equity Interests\", \"Borrowers\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [\"full definitional text captured; non-computational estate/succession classification\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"means, with respect to any Person that is a natural person (and any Permitted Transferee of such Person), (a) such Person's Immediate Family Members... and (b) without duplication with any of the foregoing, such Person's heirs, legatees, executors and/or administrators upon the death of such Person and any other Person who was an Affiliate of such Person upon the death of such Person and who, upon such death, directly or indirectly owned Equity Interests in the Borrowers.\"\n},\n{\n  \"localRef\": \"d4\",\n  \"termName\": \"Person\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Governmental Authority\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [\"standard, fully self-contained definition\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"means any natural person, corporation, limited liability company, trust, joint venture, association, company, partnership, Governmental Authority or other entity.\"\n},\n{\n  \"localRef\": \"d5\",\n  \"termName\": \"Plan\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Multiemployer Plan\", \"ERISA Affiliate\", \"Code\", \"Loan Party\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [\"full ERISA definitional text captured\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"means any employee pension benefit plan (other than a Multiemployer Plan) subject to the provisions of Title IV of ERISA or Section 412 of the Code or Section 302 of ERISA, in respect of which (i) a Loan Party or any ERISA Affiliate is (or, if such plan were terminated, would under Section 4069 of ERISA be deemed to be) an \\\"employer\\\"... or (ii) has at any time within the preceding six (6) years been maintained, sponsored or contributed to by any Loan Party or any ERISA Affiliate.\"\n},\n{\n  \"localRef\": \"d6\",\n  \"termName\": \"Planned Expenditures\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": {\n    \"kind\": \"UNSUPPORTED\",\n    \"semanticDescription\": \"cross-referenced sub-definition located within the 'Excess Cash Flow' definition\",\n    \"reason\": \"attempted retrieval of the 'Excess Cash Flow' definition via tool; the returned text was truncated before reaching the specific 'Planned Expenditures' carve-out/sub-clause, so its content could not be confirmed\",\n    \"sourceEvidence\": \"§1.01: \\\"has the meaning assigned to such term in the definition of 'Excess Cash Flow.'\\\" (Excess Cash Flow definition retrieved but truncated)\"\n  },\n  \"dependsOnTerms\": [\"Excess Cash Flow\"],\n  \"sufficiency\": \"MISSING_CONTEXT\",\n  \"sufficiencyReasons\": [\"'Excess Cash Flow' definition retrieved but truncated before the 'Planned Expenditures' sub-clause could be located\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"has the meaning assigned to such term in the definition of \\\"Excess Cash Flow.\\\"\"\n},\n{\n  \"localRef\": \"d7\",\n  \"termName\": \"Platform\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": {\n    \"kind\": \"UNSUPPORTED\",\n    \"semanticDescription\": \"cross-referenced term defined within Section 5.01 (Financial Statements and Other Information)\",\n    \"reason\": \"Section 5.01 was retrieved (chapeau plus subclauses (a)-(b) of a multi-clause section) but the specific defined-term clause for 'Platform' (likely among electronic-delivery subsections (e)-(g)) was not reached within retrieval budget/truncation\",\n    \"sourceEvidence\": \"§1.01: \\\"has the meaning assigned to such term in Section 5.01.\\\" (Section 5.01 retrieved, truncated)\"\n  },\n  \"dependsOnTerms\": [],\n  \"sufficiency\": \"MISSING_CONTEXT\",\n  \"sufficiencyReasons\": [\"Section 5.01 retrieved but truncated before reaching the 'Platform' clause\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"has the meaning assigned to such term in Section 5.01.\"\n},\n{\n  \"localRef\": \"d8\",\n  \"termName\": \"Post-Transaction Period\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": {\n    \"kind\": \"NUMBER\",\n    \"value\": 12,\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"the twelfth (12th) full consecutive fiscal quarter of the Borrowers immediately following the date on which such Specified Transaction is consummated\",\n    \"inventoryItemIds\": [\"inv-item:ba01eab3fa76c9aad024202a\"]\n  },\n  \"dependsOnTerms\": [\"Specified Transaction\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [\"fully self-contained fixed period length tied to consummation of a Specified Transaction\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"means, with respect to any Specified Transaction, the period beginning on the date on which such Specified Transaction is consummated and ending on the last day of the twelfth (12th) full consecutive fiscal quarter of the Borrowers immediately following the date on which such Specified Transaction is consummated.\",\n  \"inventoryItemIds\": [\"inv-item:ba01eab3fa76c9aad024202a\"]\n},\n{\n  \"localRef\": \"d9\",\n  \"termName\": \"Preferred Stock\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Equity Interest\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [\"standard, fully self-contained definition\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"means any Equity Interest with preferential rights of payment of dividends or upon liquidation, dissolution, or winding up.\"\n},\n{\n  \"localRef\": \"d10\",\n  \"termName\": \"Prepayment Event\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": {\n    \"kind\": \"OR\",\n    \"citation\": \"§1.01\",\n    \"operands\": [\n      {\n        \"kind\": \"AND\",\n        \"citation\": \"§1.01(a)\",\n        \"operands\": [\n          {\n            \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n            \"inputName\": \"Asset Sale of Collateral consummated by a Loan Party solely pursuant to Section 6.05(a)(2)(ii)\",\n            \"citation\": \"§1.01(a)\"\n          },\n          {\n            \"kind\": \"NOT\",\n            \"operand\": {\n              \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n              \"inputName\": \"issuance by a Restricted Party of Equity Interests\",\n              \"citation\": \"§1.01(a)(i)\"\n            }\n          },\n          {\n            \"kind\": \"NOT\",\n            \"operand\": {\n              \"kind\": \"COMPARE\",\n              \"operator\": \"LTE\",\n              \"left\": {\n                \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n                \"inputName\": \"Net Proceeds of such disposition (single transaction or series of related transactions)\"\n              },\n              \"right\": {\n                \"kind\": \"DEFINED_TERM_REFERENCE\",\n                \"termName\": \"Transaction Threshold\"\n              },\n              \"citation\": \"§1.01(a)(ii)\",\n              \"inventoryItemIds\": [\"inv-item:2096052f696a830b72bcf305\"]\n            }\n          },\n          {\n            \"kind\": \"NOT\",\n            \"operand\": {\n              \"kind\": \"COMPARE\",\n              \"operator\": \"LTE\",\n              \"left\": {\n                \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n                \"inputName\": \"aggregate Net Proceeds of dispositions in such fiscal year\"\n              },\n              \"right\": {\n                \"kind\": \"DEFINED_TERM_REFERENCE\",\n                \"termName\": \"Annual Threshold\"\n              },\n              \"citation\": \"§1.01(a)(iii)\",\n              \"inventoryItemIds\": [\"inv-item:435bebbab162719b57e8df07\"]\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"AND\",\n        \"citation\": \"§1.01(b)\",\n        \"operands\": [\n          {\n            \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n            \"inputName\": \"incurrence by the Borrowers or any other Restricted Party of any Indebtedness\",\n            \"citation\": \"§1.01(b)\"\n          },\n          {\n            \"kind\": \"NOT\",\n            \"operand\": {\n              \"kind\": \"UNSUPPORTED\",\n              \"semanticDescription\": \"exclusion for Indebtedness permitted under Section 6.01 (other than Credit Agreement Refinancing Indebtedness) or permitted by the Required Lenders pursuant to Section 9.02\",\n              \"reason\": \"requires the full operative text of Section 6.01 and Section 9.02, which are outside this submission's retrieval scope\",\n              \"sourceEvidence\": \"§1.01(b): \\\"other than Indebtedness permitted under Section 6.01 (other than Credit Agreement Refinancing Indebtedness) or permitted by the Required Lenders pursuant to Section 9.02\\\"\"\n            }\n          }\n        ]\n      }\n    ]\n  },\n  \"dependsOnTerms\": [\"Transaction Threshold\", \"Annual Threshold\", \"Consolidated EBITDA\", \"Asset Sale\", \"Collateral\", \"Restricted Party\", \"Equity Interests\", \"Indebtedness\", \"Credit Agreement Refinancing Indebtedness\", \"Required Lenders\"],\n  \"sufficiency\": \"PARTIAL\",\n  \"sufficiencyReasons\": [\n    \"clause (b)'s exclusion for Indebtedness permitted under Section 6.01/Section 9.02 could not be fully represented without those sections' text (flagged out-of-scope for this submission)\",\n    \"relies on 'Transaction Threshold' and 'Annual Threshold' sub-definitions, which themselves carry a PARTIAL carryforward mechanic\"\n  ],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"means: (a) any Asset Sale of Collateral consummated by a Loan Party solely pursuant to Section 6.05(a)(2)(ii), other than (i) the issuance ... of Equity Interests, (ii) dispositions resulting in aggregate Net Proceeds not exceeding the greater of $144.0 million and 20% of Consolidated EBITDA ... (the \\\"Transaction Threshold\\\") and (iii) dispositions resulting in aggregate Net Proceeds not exceeding the greater of $216.0 million and 30% of Consolidated EBITDA ... (the \\\"Annual Threshold\\\") ...; or (b) the incurrence by the Borrowers or any other Restricted Party of any Indebtedness, other than Indebtedness permitted under Section 6.01 ... or permitted by the Required Lenders pursuant to Section 9.02.\"\n},\n{\n  \"localRef\": \"d11\",\n  \"termName\": \"Transaction Threshold\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": {\n    \"kind\": \"ADD\",\n    \"citation\": \"§1.01\",\n    \"left\": {\n      \"kind\": \"MAX\",\n      \"citation\": \"§1.01\",\n      \"inventoryItemIds\": [\"inv-item:2096052f696a830b72bcf305\"],\n      \"operands\": [\n        {\n          \"kind\": \"MONEY\",\n          \"amount\": 144000000,\n          \"currency\": \"USD\",\n          \"citation\": \"§1.01\",\n          \"excerpt\": \"$144.0 million\",\n          \"inventoryItemIds\": [\"inv-item:2096052f696a830b72bcf305\"]\n        },\n        {\n          \"kind\": \"MULTIPLY\",\n          \"citation\": \"§1.01\",\n          \"operands\": [\n            {\n              \"kind\": \"PERCENT\",\n              \"value\": 0.20,\n              \"citation\": \"§1.01\",\n              \"excerpt\": \"20% of Consolidated EBITDA\",\n              \"inventoryItemIds\": [\"inv-item:2096052f696a830b72bcf305\"]\n            },\n            {\n              \"kind\": \"METRIC_REFERENCE\",\n              \"metricName\": \"Consolidated EBITDA\",\n              \"valueType\": \"MONEY\"\n            }\n          ]\n        }\n      ]\n    },\n    \"right\": {\n      \"kind\": \"UNSUPPORTED\",\n      \"semanticDescription\": \"carryforward of unused Transaction Threshold/Annual Threshold capacity from a prior fiscal year, increasing the applicable threshold for a subsequent fiscal year\",\n      \"reason\": \"stateful, multi-year rollover mechanic dependent on historical unused amounts; not expressible as a static formula in this IR\",\n      \"sourceEvidence\": \"§1.01: \\\"any portion of the Transaction Threshold or Annual Threshold not utilized in any given fiscal year may be carried forward to increase the applicable Transaction Threshold and Annual Threshold for any subsequent fiscal year\\\"\"\n    }\n  },\n  \"dependsOnTerms\": [\"Consolidated EBITDA\", \"Test Period\"],\n  \"sufficiency\": \"PARTIAL\",\n  \"sufficiencyReasons\": [\"base greater-of formula is fully represented; carryforward augmentation of the threshold is a stateful mechanic not representable as a static formula\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"dispositions resulting in aggregate Net Proceeds not exceeding the greater of $144.0 million and 20% of Consolidated EBITDA (calculated on a Pro Forma Basis) for the most recently ended Test Period in the case of any single transaction or series of related transactions (the \\\"Transaction Threshold\\\")\",\n  \"inventoryItemIds\": [\"inv-item:2096052f696a830b72bcf305\"]\n},\n{\n  \"localRef\": \"d12\",\n  \"termName\": \"Annual Threshold\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": {\n    \"kind\": \"ADD\",\n    \"citation\": \"§1.01\",\n    \"left\": {\n      \"kind\": \"MAX\",\n      \"citation\": \"§1.01\",\n      \"inventoryItemIds\": [\"inv-item:435bebbab162719b57e8df07\"],\n      \"operands\": [\n        {\n          \"kind\": \"MONEY\",\n          \"amount\": 216000000,\n          \"currency\": \"USD\",\n          \"citation\": \"§1.01\",\n          \"excerpt\": \"$216.0 million\",\n          \"inventoryItemIds\": [\"inv-item:435bebbab162719b57e8df07\"]\n        },\n        {\n          \"kind\": \"MULTIPLY\",\n          \"citation\": \"§1.01\",\n          \"operands\": [\n            {\n              \"kind\": \"PERCENT\",\n              \"value\": 0.30,\n              \"citation\": \"§1.01\",\n              \"excerpt\": \"30% of Consolidated EBITDA\",\n              \"inventoryItemIds\": [\"inv-item:435bebbab162719b57e8df07\"]\n            },\n            {\n              \"kind\": \"METRIC_REFERENCE\",\n              \"metricName\": \"Consolidated EBITDA\",\n              \"valueType\": \"MONEY\"\n            }\n          ]\n        }\n      ]\n    },\n    \"right\": {\n      \"kind\": \"UNSUPPORTED\",\n      \"semanticDescription\": \"carryforward of unused Transaction Threshold/Annual Threshold capacity from a prior fiscal year, increasing the applicable threshold for a subsequent fiscal year\",\n      \"reason\": \"stateful, multi-year rollover mechanic dependent on historical unused amounts; not expressible as a static formula in this IR\",\n      \"sourceEvidence\": \"§1.01: \\\"any portion of the Transaction Threshold or Annual Threshold not utilized in any given fiscal year may be carried forward to increase the applicable Transaction Threshold and Annual Threshold for any subsequent fiscal year\\\"\"\n    }\n  },\n  \"dependsOnTerms\": [\"Consolidated EBITDA\", \"Test Period\"],\n  \"sufficiency\": \"PARTIAL\",\n  \"sufficiencyReasons\": [\"base greater-of formula is fully represented; carryforward augmentation of the threshold is a stateful mechanic not representable as a static formula\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"dispositions resulting in aggregate Net Proceeds not exceeding the greater of $216.0 million and 30% of Consolidated EBITDA (calculated on a Pro Forma Basis) for the most recently ended Test Period in the case of transactions in the aggregate in any fiscal year (the \\\"Annual Threshold\\\")\",\n  \"inventoryItemIds\": [\"inv-item:435bebbab162719b57e8df07\"]\n},\n{\n  \"localRef\": \"d13\",\n  \"termName\": \"Prepayment Notice\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [\"fully self-contained pointer definition; Exhibit J content not needed to state this definition's own meaning\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"means a notice of prepayment of Loans pursuant to Section 2.09(e), substantially in the form of Exhibit J.\"\n},\n{\n  \"localRef\": \"d14\",\n  \"termName\": \"Present Fair Saleable Value\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [\"standard qualitative solvency-test definition fully stated\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"means the amount that could be obtained by an independent willing seller from an independent willing buyer if the assets of the Borrowers and their Subsidiaries taken as a whole are sold with reasonable promptness in an arm's-length transaction under present conditions for the sale of comparable business enterprises insofar as such conditions can be reasonably evaluated.\"\n},\n{\n  \"localRef\": \"d15\",\n  \"termName\": \"Prime Rate\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Administrative Agent\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [\"fully self-contained published-rate reference definition\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"means the rate of interest last quoted by The Wall Street Journal as the \\\"Prime Rate\\\" in the U.S. or, if The Wall Street Journal ceases to quote such rate, the highest per annum interest rate published by the Federal Reserve Board in Federal Reserve Statistical Release H.15 (519) ... Each change in the Prime Rate shall be effective from and including the date such change is publicly announced or quoted as being effective.\"\n},\n{\n  \"localRef\": \"d16\",\n  \"termName\": \"Pro Forma Adjustment\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": {\n    \"kind\": \"ADD\",\n    \"citation\": \"§1.01\",\n    \"left\": {\n      \"kind\": \"UNSUPPORTED\",\n      \"semanticDescription\": \"adjustments to Consolidated EBITDA made in accordance with the proviso to, and other adjustments under, the definition of 'Consolidated EBITDA'\",\n      \"reason\": \"the full 'Consolidated EBITDA' definition (including its proviso) is voluminous and was only available in truncated form; its specific adjustment mechanics could not be confirmed\",\n      \"sourceEvidence\": \"§1.01 (definition of \\\"Consolidated EBITDA\\\", retrieved truncated)\"\n    },\n    \"right\": {\n      \"kind\": \"DEFINED_TERM_REFERENCE\",\n      \"termName\": \"Specified Transaction Adjustments\"\n    }\n  },\n  \"dependsOnTerms\": [\"Consolidated EBITDA\", \"Specified Transaction Adjustments\"],\n  \"sufficiency\": \"PARTIAL\",\n  \"sufficiencyReasons\": [\"'Specified Transaction Adjustments' meaning confirmed via Section 1.08(d) (synergies/cost savings net of realized benefits), but 'Consolidated EBITDA' proviso adjustments could not be confirmed due to truncation of that definition\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"means, for any Test Period, any adjustment to Consolidated EBITDA made in accordance with the proviso to the definition of that term, together with any adjustments made pursuant to the definition of \\\"Consolidated EBITDA\\\" and Specified Transaction Adjustments.\"\n},\n{\n  \"localRef\": \"d17\",\n  \"termName\": \"Pro Forma Basis\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Pro Forma Adjustment\", \"Specified Transaction\", \"Specified Transaction Adjustments\", \"Consolidated EBITDA\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [\"full methodology text captured verbatim and not truncated; inherently a qualitative calculation-methodology definition rather than a numeric formula\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"\\\"Pro Forma Basis,\\\" \\\"Pro Forma Compliance\\\" and \\\"Pro Forma Effect\\\" means, with respect to compliance with any test... that (a) to the extent applicable, the Pro Forma Adjustment shall have been made and (b) all Specified Transactions ... shall be deemed to have occurred as of the first (1st) day of the applicable period of measurement...\"\n},\n{\n  \"localRef\": \"d18\",\n  \"termName\": \"Pro Forma Disposal Adjustment\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": {\n    \"kind\": \"UNSUPPORTED\",\n    \"semanticDescription\": \"projected pro forma increase/decrease in Consolidated EBITDA from contractual arrangements with a disposed entity/business, measured incrementally to that entity's 'Disposed EBITDA'\",\n    \"reason\": \"depends materially on the undefined terms 'Sold Entity or Business' and 'Disposed EBITDA', neither of which is available in the supplied source\",\n    \"sourceEvidence\": \"§1.01\"\n  },\n  \"dependsOnTerms\": [\"Post-Transaction Period\", \"Sold Entity or Business\", \"Disposed EBITDA\"],\n  \"sufficiency\": \"PARTIAL\",\n  \"sufficiencyReasons\": [\"depends on undefined terms 'Sold Entity or Business' and 'Disposed EBITDA' central to the adjustment's own scope\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"means, for any four (4)-quarter period that includes all or a portion of a fiscal quarter included in any Post-Transaction Period with respect to any Sold Entity or Business, the pro forma increase or decrease in Consolidated EBITDA projected by the Initial Borrower in good faith... which represent an increase or decrease in Consolidated EBITDA which is incremental to the Disposed EBITDA of such Sold Entity or Business for the most recent four (4)-quarter period prior to its disposal.\"\n},\n{\n  \"localRef\": \"d19\",\n  \"termName\": \"Pro Forma Entity\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": {\n    \"kind\": \"UNSUPPORTED\",\n    \"semanticDescription\": \"definition entirely composed of a reference to two other, undefined defined terms\",\n    \"reason\": \"'Acquired Entity or Business' and 'Converted Restricted Subsidiary' are not defined anywhere in the supplied source or elsewhere in the document package\",\n    \"sourceEvidence\": \"§1.01: \\\"means any Acquired Entity or Business or any Converted Restricted Subsidiary.\\\"\"\n  },\n  \"dependsOnTerms\": [\"Acquired Entity or Business\", \"Converted Restricted Subsidiary\"],\n  \"sufficiency\": \"PARTIAL\",\n  \"sufficiencyReasons\": [\"entire meaning depends on undefined constituent terms\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"means any Acquired Entity or Business or any Converted Restricted Subsidiary.\"\n},\n{\n  \"localRef\": \"d20\",\n  \"termName\": \"Pro Rata Share\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": {\n    \"kind\": \"DIVIDE\",\n    \"citation\": \"§1.01\",\n    \"numerator\": {\n      \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n      \"inputName\": \"Dollar Amount of the Revolving Commitments and, if applicable and without duplication, Revolving Loans, of such Revolving Lender under the applicable Revolving Facility\"\n    },\n    \"denominator\": {\n      \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n      \"inputName\": \"aggregate Dollar Amount of the Revolving Commitments and, if applicable and without duplication, Revolving Loans under such Revolving Facility\"\n    }\n  },\n  \"dependsOnTerms\": [\"Revolving Lender\", \"Revolving Commitments\", \"Revolving Loans\", \"Revolving Facility\", \"Dollar Amount\", \"Revolving Exposure\"],\n  \"sufficiency\": \"PARTIAL\",\n  \"sufficiencyReasons\": [\"primary fraction formula fully represented; the alternate computation applicable once Revolving Commitments for the facility have terminated or expired (based on share of aggregate Revolving Exposure) is not separately modeled\"],\n  \"citation\": \"§1.01\",\n  \"excerpt\": \"means, with respect to each Revolving Lender at any time, a fraction (expressed as a percentage, carried out to the ninth decimal place)... (if the applicable Revolving Commitments for such Revolving Facility have terminated or expired, the Pro Rata Share shall be determined based upon such Revolving Lender's share of the aggregate Revolving Exposure under such Revolving Facility at that time).\"\n},\n{\n  \"localRef\": \"d21\",\n  \"termName\": \"Proposed Change\",\n  \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n  \"calculationExpression\": null,\n  \"dependsOnTerms\": [\"Required Lenders\", \"Required Revolving Lenders\", \"Non-Consenting Lender\"],\n  \"sufficiency\": \"COMPLETE\",\n  \"sufficiencyReasons\": [\"cross-reference to Section 9.02(c) resolved by retrieval; confirmed definitional text obtained\"],\n  \"citation\": \"§1.01; confirmed via Section 9.02(c)\",\n  \"excerpt\": \"has the meaning assigned to such term in Section 9.02(c): \\\"any proposed amendment, modification, waiver or termination (a 'Proposed Change') requiring the consent of all Lenders or all directly and adversely affected Lenders...\\\"\"\n}\n]",
+   "rules": [],
+   "sharedCapacities": "[]",
+   "irExtensionCandidates": "[\n{\n  \"sourceEvidence\": \"§1.01, definitions of 'Transaction Threshold' and 'Annual Threshold': \\\"any portion of the Transaction Threshold or Annual Threshold not utilized in any given fiscal year may be carried forward to increase the applicable Transaction Threshold and Annual Threshold for any subsequent fiscal year\\\"\",\n  \"semanticRequirement\": \"a basket/threshold whose current-period ceiling equals a base amount PLUS any unused portion of the same basket from the immediately preceding period(s), i.e. a stateful multi-period rollover of unused capacity\",\n  \"whyExistingPrimitivesFail\": \"all arithmetic nodes (ADD, MAX, SCHEDULE) operate on either static literals or the current period's own metric values; none can reference 'this basket's own unused amount from the prior period', which requires tracking usage history across periods\",\n  \"candidateGeneralizedPrimitive\": \"a CARRYFORWARD_BALANCE node type taking a base capacity expression plus a reference to the same basket's prior-period unused balance (bounded, e.g., single-period lookback) to compute the current effective ceiling\"\n}\n]",
+   "overallNotes": "[\"This source is a Section 1.01 defined-terms extract spanning alphabetically from 'Permitted Receivables Financings' through 'Proposed Change'; it contains no independently operative permission/prohibition covenant rule of its own (the actual mandatory-prepayment mechanics referencing 'Prepayment Event' live in Section 6.05/2.09, which are out of scope for this submission), so no WireRule or WireSharedCapacity was emitted - only WireDefinitions.\", \"Two pointer-only definitions ('Planned Expenditures' and 'Platform') were investigated via getDefinition/getReferencedProvision but the underlying target definitions were only retrievable in truncated form, so both are MISSING_CONTEXT rather than guessed.\", \"'Proposed Change' and 'Pro Forma Adjustment' cross-references (Section 9.02(c) and Section 1.08(d), respectively) were successfully retrieved and used to improve/confirm those definitions.\", \"Sections 6.01, 5.01 (full text), 6.05, 6.05(a)(2)(ii), 9.02, and 2.09(e) remain unresolved cross-references beyond this submission's practical retrieval scope; each is flagged inline via UNSUPPORTED sourceEvidence or sufficiencyReasons rather than silently assumed.\"]"
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T13:01:43.403Z",
+   "inputTokens": 187696,
+   "outputTokens": 42224,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 5,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 368830,
+   "calculatedCostUsd": 0.7976320000000001
+  },
+  "cacheKey": "e6bdbae3bf4eedf151e6c0200b28870950e870f5bf7b7e08adb6e906253b622b",
+  "compiledAt": "2026-09-14T13:01:43.403Z"
+ },
+ "shardInputSummary": {
+  "candidateRef": "phase-3-validation:chwy:1.01#shard:3e3910ea2efd9edd45a3",
+  "operativeChars": 10103,
+  "ownedInventoryItems": 3,
+  "contextRegions": 3,
+  "bundleItems": 0,
+  "unresolvedDependencies": 40
+ },
+ "attemptsSoFar": 1
+}

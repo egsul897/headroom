@@ -1,0 +1,1107 @@
+{
+ "artifact": "F-5 instability decomposition of every run-only Pass A item (both directions), classes A-I",
+ "method": "exact id -> IDENTICAL; otherwise items are linked when they overlap >= 50% of the shorter span (any role); connected overlap groups are classified: 1-1 same role = A (identity, overlap >= 0.9 or same span) / C (boundary) / E (materiality tier crosses CRITICAL-MATERIAL vs other); 1-1 different role = D (role) when the propositions or spans agree, else I; 1-n/n-m = B (granularity) for same-role members, H (dependency fragmentation) for component-role members nested inside a broader different-role item; isolated CRITICAL/MATERIAL items = F (omission by the other run, with disclosure through the other run's unaccountedSource checked), isolated non-accounting items = G; intra-run same-role >= 90% overlaps are counted as duplicates.",
+ "identicalPairs": 301,
+ "runOnlyItemsClassified": 76,
+ "countsByClass": {
+  "A_IDENTITY_INSTABILITY": 4,
+  "B_GRANULARITY_INSTABILITY": 12,
+  "D_ROLE_INSTABILITY": 2,
+  "F_TRUE_SEMANTIC_OMISSION": 50,
+  "G_TRUE_SEMANTIC_ADDITION": 2,
+  "H_DEPENDENCY_FRAGMENTATION": 6
+ },
+ "countsByClassAndSeverity": {
+  "A_IDENTITY_INSTABILITY|material": 4,
+  "B_GRANULARITY_INSTABILITY|material": 12,
+  "D_ROLE_INSTABILITY|material": 2,
+  "F_TRUE_SEMANTIC_OMISSION|material": 50,
+  "G_TRUE_SEMANTIC_ADDITION|nonmaterial": 2,
+  "H_DEPENDENCY_FRAGMENTATION|material": 5,
+  "H_DEPENDENCY_FRAGMENTATION|nonmaterial": 1
+ },
+ "countsByClassAndRun": {
+  "A_IDENTITY_INSTABILITY|run1": 2,
+  "A_IDENTITY_INSTABILITY|run2": 2,
+  "B_GRANULARITY_INSTABILITY|run1": 7,
+  "B_GRANULARITY_INSTABILITY|run2": 5,
+  "D_ROLE_INSTABILITY|run1": 1,
+  "D_ROLE_INSTABILITY|run2": 1,
+  "F_TRUE_SEMANTIC_OMISSION|run1": 36,
+  "F_TRUE_SEMANTIC_OMISSION|run2": 14,
+  "G_TRUE_SEMANTIC_ADDITION|run1": 1,
+  "G_TRUE_SEMANTIC_ADDITION|run2": 1,
+  "H_DEPENDENCY_FRAGMENTATION|run1": 4,
+  "H_DEPENDENCY_FRAGMENTATION|run2": 2
+ },
+ "omissionsDisclosedVsNot": {
+  "disclosed": 16,
+  "notDisclosed": 0
+ },
+ "rows": [
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:6cc18d694b97293840792cd1",
+   "role": "REFERENCE",
+   "materiality": "MATERIAL",
+   "span": [
+    1911,
+    1943
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "Sections 6.01(b)(7), (8) and (9)"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:3b82c837dbd00494ed1692e9",
+   "role": "CONDITION",
+   "materiality": "MATERIAL",
+   "span": [
+    3856,
+    4099
+   ],
+   "class": "A_IDENTITY_INSTABILITY",
+   "detail": "same span",
+   "counterpart": "inv-item:66145a8e287531e8c380c1f2",
+   "excerpt": "Borrower\u2019s most recently ended fiscal quarter for which internal financial statements are available at the time of such "
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:66145a8e287531e8c380c1f2",
+   "role": "CONDITION",
+   "materiality": "MATERIAL",
+   "span": [
+    3856,
+    4099
+   ],
+   "class": "A_IDENTITY_INSTABILITY",
+   "detail": "same span",
+   "counterpart": "inv-item:3b82c837dbd00494ed1692e9",
+   "excerpt": "Borrower\u2019s most recently ended fiscal quarter for which internal financial statements are available at the time of such "
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:679be1302aceaac819a636a5",
+   "role": "ALTERNATIVE",
+   "materiality": "CRITICAL",
+   "span": [
+    4100,
+    4319
+   ],
+   "class": "B_GRANULARITY_INSTABILITY",
+   "detail": "1 items in run1 vs 2 in the other run over one source stretch; same-role counterpart(s) 1",
+   "counterpart": "inv-item:dcf11322eb23e36949412d67,inv-item:ea98bf5eeeba5f9744e99e01",
+   "excerpt": "fiscal quarter is less than zero), (y) the sum of 100% of Retained Excess Cash Flow (which amount shall be deemed to be "
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:dcf11322eb23e36949412d67",
+   "role": "ALTERNATIVE",
+   "materiality": "CRITICAL",
+   "span": [
+    4135,
+    4319
+   ],
+   "class": "B_GRANULARITY_INSTABILITY",
+   "detail": "2 items in run2 vs 1 in the other run over one source stretch; same-role counterpart(s) 1",
+   "counterpart": "inv-item:679be1302aceaac819a636a5",
+   "excerpt": "(y) the sum of 100% of Retained Excess Cash Flow (which amount shall be deemed to be zero for any fiscal quarter in whic"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:ea98bf5eeeba5f9744e99e01",
+   "role": "CONDITION",
+   "materiality": "MATERIAL",
+   "span": [
+    4100,
+    4134
+   ],
+   "class": "H_DEPENDENCY_FRAGMENTATION",
+   "detail": "CONDITION carried only in run2 inside a broader ALTERNATIVE item of the other run",
+   "counterpart": "inv-item:679be1302aceaac819a636a5",
+   "excerpt": "fiscal quarter is less than zero),"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:e79b8424cca81a04dfe4e759",
+   "role": "CONDITION",
+   "materiality": "MATERIAL",
+   "span": [
+    4578,
+    4824
+   ],
+   "class": "B_GRANULARITY_INSTABILITY",
+   "detail": "1 items in run1 vs 2 in the other run over one source stretch; same-role counterpart(s) 1",
+   "counterpart": "inv-item:a858b0d3cfb71d3226aab515,inv-item:8817112967fbe97e9511a6c1",
+   "excerpt": "the cumulative Consolidated Interest Expense for such applicable fiscal quarter (which amount shall be deemed to be zero"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:a858b0d3cfb71d3226aab515",
+   "role": "REFERENCE",
+   "materiality": "REVIEW_UNCERTAIN",
+   "span": [
+    4787,
+    4815
+   ],
+   "class": "H_DEPENDENCY_FRAGMENTATION",
+   "detail": "REFERENCE carried only in run2 inside a broader CONDITION item of the other run",
+   "counterpart": "inv-item:e79b8424cca81a04dfe4e759",
+   "excerpt": "(which amounts under clauses"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:8817112967fbe97e9511a6c1",
+   "role": "CONDITION",
+   "materiality": "MATERIAL",
+   "span": [
+    4578,
+    4786
+   ],
+   "class": "B_GRANULARITY_INSTABILITY",
+   "detail": "2 items in run2 vs 1 in the other run over one source stretch; same-role counterpart(s) 1",
+   "counterpart": "inv-item:e79b8424cca81a04dfe4e759",
+   "excerpt": "the cumulative Consolidated Interest Expense for such applicable fiscal quarter (which amount shall be deemed to be zero"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:decaf3458cf8051b8783d992",
+   "role": "FORMULA_COMPONENT",
+   "materiality": "MATERIAL",
+   "span": [
+    6540,
+    6613
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "(ii) Indebtedness of any Restricted Party that has been converted into or"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:3ac15fdf96ceeb85d9aa50a4",
+   "role": "EXCEPTION",
+   "materiality": "MATERIAL",
+   "span": [
+    7024,
+    7125
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "(Y) Disqualified Stock (or Indebtedness that has been converted or exchanged into Disqualified Stock)"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:256513e7c7ab5997ece8e707",
+   "role": "EXCEPTION",
+   "materiality": "MATERIAL",
+   "span": [
+    7126,
+    7156
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "or (Z) Excluded Contributions;"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:214c9b0a17e4232244456a2b",
+   "role": "EXCEPTION",
+   "materiality": "MATERIAL",
+   "span": [
+    7794,
+    7842
+   ],
+   "class": "B_GRANULARITY_INSTABILITY",
+   "detail": "3 items in run1 vs 1 in the other run over one source stretch; same-role counterpart(s) 1",
+   "counterpart": "inv-item:cba6e1dd200cd4129a09035d",
+   "excerpt": "(ii) are contributed by a Restricted Subsidiary,"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:8cc6af26af5d27513643ebb7",
+   "role": "EXCEPTION",
+   "materiality": "MATERIAL",
+   "span": [
+    7870,
+    7913
+   ],
+   "class": "B_GRANULARITY_INSTABILITY",
+   "detail": "3 items in run1 vs 1 in the other run over one source stretch; same-role counterpart(s) 1",
+   "counterpart": "inv-item:cba6e1dd200cd4129a09035d",
+   "excerpt": "or (iv) constitute Excluded Contributions);"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:bf029f35702216965707d368",
+   "role": "EXCEPTION",
+   "materiality": "MATERIAL",
+   "span": [
+    7843,
+    7869
+   ],
+   "class": "B_GRANULARITY_INSTABILITY",
+   "detail": "3 items in run1 vs 1 in the other run over one source stretch; same-role counterpart(s) 1",
+   "counterpart": "inv-item:cba6e1dd200cd4129a09035d",
+   "excerpt": "(iii) from ABL Cure Amount"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:cba6e1dd200cd4129a09035d",
+   "role": "EXCEPTION",
+   "materiality": "MATERIAL",
+   "span": [
+    7763,
+    7913
+   ],
+   "class": "B_GRANULARITY_INSTABILITY",
+   "detail": "1 items in run2 vs 3 in the other run over one source stretch; same-role counterpart(s) 3",
+   "counterpart": "inv-item:214c9b0a17e4232244456a2b,inv-item:8cc6af26af5d27513643ebb7,inv-item:bf029f35702216965707d368",
+   "excerpt": "Section 6.01(b)(12)(a) hereof, (ii) are contributed by a Restricted Subsidiary, (iii) from ABL Cure Amount or (iv) const"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:d4e07eb24f0077cd9d6837f2",
+   "role": "FORMULA_COMPONENT",
+   "materiality": "MATERIAL",
+   "span": [
+    10159,
+    10202
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "(ii) Retained Asset Sale Proceeds since the"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:210c2c9c9f3110079bcc93ad",
+   "role": "FORMULA_COMPONENT",
+   "materiality": "CRITICAL",
+   "span": [
+    10463,
+    10538
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "(h) 100% of the aggregate amount received in cash and the Fair Market Value"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:7b7eee5232b3ddbe4dca6702",
+   "role": "FORMULA_COMPONENT",
+   "materiality": "MATERIAL",
+   "span": [
+    10680,
+    10685
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "no item of any role in the other run touches this span; DISCLOSED by the other run's unaccountedSource",
+   "counterpart": null,
+   "excerpt": "minus"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:cce79de89d896178253b4062",
+   "role": "CONDITION",
+   "materiality": "CRITICAL",
+   "span": [
+    11742,
+    11943
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "or Subordinated Indebtedness of any Restricted Party, or any Equity Interests of any Parent Entity, in exchange for, or "
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:268010a31e11a2805ab30bcb",
+   "role": "EXCEPTION",
+   "materiality": "CRITICAL",
+   "span": [
+    11944,
+    11971
+   ],
+   "class": "H_DEPENDENCY_FRAGMENTATION",
+   "detail": "EXCEPTION carried only in run1 inside a broader TIME_PERIOD item of the other run",
+   "counterpart": "inv-item:b4751ff187a28c1b7fd5477c",
+   "excerpt": "to a Restricted Subsidiary)"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:9747b6b73dfd10369b9dee03",
+   "role": "CONDITION",
+   "materiality": "CRITICAL",
+   "span": [
+    12081,
+    12183
+   ],
+   "class": "H_DEPENDENCY_FRAGMENTATION",
+   "detail": "CONDITION carried only in run1 inside a broader TIME_PERIOD item of the other run",
+   "counterpart": "inv-item:b4751ff187a28c1b7fd5477c",
+   "excerpt": "to the extent, in the case of an issuance or sale by a Parent Entity, such amount was contributed to a"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:1b5fd3b9ea84e6b0c6a2a690",
+   "role": "TIME_PERIOD",
+   "materiality": "CRITICAL",
+   "span": [
+    12031,
+    12080
+   ],
+   "class": "B_GRANULARITY_INSTABILITY",
+   "detail": "4 items in run1 vs 1 in the other run over one source stretch; same-role counterpart(s) 1",
+   "counterpart": "inv-item:b4751ff187a28c1b7fd5477c",
+   "excerpt": "that is made within ninety (90) days of such sale"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:ecc138338556eeabe3d08318",
+   "role": "CONDITION",
+   "materiality": "MATERIAL",
+   "span": [
+    11976,
+    12030
+   ],
+   "class": "H_DEPENDENCY_FRAGMENTATION",
+   "detail": "CONDITION carried only in run1 inside a broader TIME_PERIOD item of the other run",
+   "counterpart": "inv-item:b4751ff187a28c1b7fd5477c",
+   "excerpt": "Equity Interests of the Borrowers or any Parent Entity"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:b4751ff187a28c1b7fd5477c",
+   "role": "TIME_PERIOD",
+   "materiality": "CRITICAL",
+   "span": [
+    11944,
+    12183
+   ],
+   "class": "B_GRANULARITY_INSTABILITY",
+   "detail": "1 items in run2 vs 4 in the other run over one source stretch; same-role counterpart(s) 1",
+   "counterpart": "inv-item:268010a31e11a2805ab30bcb,inv-item:9747b6b73dfd10369b9dee03,inv-item:1b5fd3b9ea84e6b0c6a2a690,inv-item:ecc138338556eeabe3d08318",
+   "excerpt": "to a Restricted Subsidiary) of, Equity Interests of the Borrowers or any Parent Entity that is made within ninety (90) d"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:645cb655bbd3cadd0849b680",
+   "role": "OTHER",
+   "materiality": "MATERIAL",
+   "span": [
+    12243,
+    12272
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "(\u201c Refunding Capital Stock \u201d)"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:0d4df05dc8b1742c7ff0534b",
+   "role": "PERMISSION",
+   "materiality": "CRITICAL",
+   "span": [
+    12274,
+    12412
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "(b) the declaration and payment of dividends on the Treasury Capital Stock out of the proceeds of the substantially conc"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:310b903c3c03cfc9a78d1554",
+   "role": "CONDITION",
+   "materiality": "CRITICAL",
+   "span": [
+    12474,
+    12647
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "and (c) if immediately prior to the retirement of Treasury Capital Stock, the declaration and payment of dividends there"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:613b290701b05b3ec953c64c",
+   "role": "EXCEPTION",
+   "materiality": "CRITICAL",
+   "span": [
+    12716,
+    12896
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "(other than Refunding Capital Stock the proceeds of which were used to redeem, purchase, repurchase, defease, retire or "
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:7116bf5ef7a2f8591d286386",
+   "role": "OTHER",
+   "materiality": "MATERIAL",
+   "span": [
+    15102,
+    15129
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "no item of any role in the other run touches this span; DISCLOSED by the other run's unaccountedSource",
+   "counterpart": null,
+   "excerpt": "succeeding calendar years);"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:ff7801133b7ca108b95d3197",
+   "role": "OTHER",
+   "materiality": "MATERIAL",
+   "span": [
+    15770,
+    15797
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "no item of any role in the other run touches this span; DISCLOSED by the other run's unaccountedSource",
+   "counterpart": null,
+   "excerpt": "succeeding calendar years);"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:133e19c1d584606795338eb3",
+   "role": "FORMULA_COMPONENT",
+   "materiality": "CRITICAL",
+   "span": [
+    17231,
+    17235
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "no item of any role in the other run touches this span; DISCLOSED by the other run's unaccountedSource",
+   "counterpart": null,
+   "excerpt": "less"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:1a23f665b508e9de8e4731d0",
+   "role": "CONDITION",
+   "materiality": "MATERIAL",
+   "span": [
+    18327,
+    18386
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "in each case, issued in accordance with Section 6.01 hereof"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:9535cfecba93586918386d7b",
+   "role": "CONDITION",
+   "materiality": "MATERIAL",
+   "span": [
+    18387,
+    18455
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "to the extent such dividends are included in the definition of Fixed"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:d1317fa2817a561881c89601",
+   "role": "CONDITION",
+   "materiality": "MATERIAL",
+   "span": [
+    18610,
+    18666
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "issued by any Restricted Party after the Effective Date;"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:ccfc618dfdb658de0bd0d0a9",
+   "role": "ALTERNATIVE",
+   "materiality": "CRITICAL",
+   "span": [
+    20153,
+    20203
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "or repurchases or withholdings of Equity Interests"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:b97e1dbbafc0e99fd75338a0",
+   "role": "ALTERNATIVE",
+   "materiality": "CRITICAL",
+   "span": [
+    20426,
+    20452
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "or payments in lieu of the"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:7993ce95ecf602a1b5ff1c45",
+   "role": "ALTERNATIVE",
+   "materiality": "CRITICAL",
+   "span": [
+    20494,
+    20634
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "or withholding obligation with respect to, such options or warrants or other incentive interests or other Equity Interes"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:9ed0c8ec2425d8b2b2e590a1",
+   "role": "ALTERNATIVE",
+   "materiality": "CRITICAL",
+   "span": [
+    20836,
+    20991
+   ],
+   "class": "B_GRANULARITY_INSTABILITY",
+   "detail": "2 items in run1 vs 1 in the other run over one source stretch; same-role counterpart(s) 1",
+   "counterpart": "inv-item:eaa6f721fca36ca6f042faca",
+   "excerpt": "the redemption, purchase, repurchase, defeasance or other acquisition or retirement of any Equity Interests of the Borro"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:0914469284c7b2179ece8c48",
+   "role": "TRIGGER",
+   "materiality": "CRITICAL",
+   "span": [
+    20962,
+    20991
+   ],
+   "class": "H_DEPENDENCY_FRAGMENTATION",
+   "detail": "TRIGGER carried only in run1 inside a broader ALTERNATIVE item of the other run",
+   "counterpart": "inv-item:eaa6f721fca36ca6f042faca",
+   "excerpt": "following consummation of the"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:eaa6f721fca36ca6f042faca",
+   "role": "ALTERNATIVE",
+   "materiality": "CRITICAL",
+   "span": [
+    20752,
+    20991
+   ],
+   "class": "B_GRANULARITY_INSTABILITY",
+   "detail": "1 items in run2 vs 2 in the other run over one source stretch; same-role counterpart(s) 1",
+   "counterpart": "inv-item:9ed0c8ec2425d8b2b2e590a1,inv-item:0914469284c7b2179ece8c48",
+   "excerpt": "any Parent Entity to fund a payment of dividends on such company\u2019s common stock) or the redemption, purchase, repurchase"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:7064b938f4cc8c2632e257e0",
+   "role": "THRESHOLD",
+   "materiality": "CRITICAL",
+   "span": [
+    21112,
+    21149
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "in an amount not to exceed the sum of"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:ca2d4f7c11533917fc3d3530",
+   "role": "ALTERNATIVE",
+   "materiality": "CRITICAL",
+   "span": [
+    21691,
+    21835
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "any prepayment, purchase, repurchase, redemption, defeasance, discharge, retirement or other acquisition of the Borrower"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:54421ce716a29adb50ea78c9",
+   "role": "DEPENDENCY",
+   "materiality": "MATERIAL",
+   "span": [
+    22526,
+    22681
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "that have been used to incur Indebtedness, Disqualified Stock or Preferred Stock pursuant to clause (31) of Section 6.01"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:ab7cc08bed35e59b092687ab",
+   "role": "CONDITION",
+   "materiality": "CRITICAL",
+   "span": [
+    23458,
+    23478
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "and (II) there is no"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:fe3c7015a78f95e564bb03eb",
+   "role": "CONDITION",
+   "materiality": "CRITICAL",
+   "span": [
+    23953,
+    24061
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "aggregate amount taken together with all other Restricted Payments made pursuant to this Section 6.08(b)(12)"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:0825a9e582d80cb010158621",
+   "role": "OTHER",
+   "materiality": "INFORMATIONAL",
+   "span": [
+    24774,
+    24779
+   ],
+   "class": "G_TRUE_SEMANTIC_ADDITION",
+   "detail": "INFORMATIONAL item with no counterpart (non-accounting echo)",
+   "counterpart": null,
+   "excerpt": "Fees;"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:63708745f618bc0c68dbb048",
+   "role": "CONDITION",
+   "materiality": "CRITICAL",
+   "span": [
+    25489,
+    25602
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "aggregate amount taken together with all other Restricted Debt Payments made pursuant to this Section 6.08(b)(15)"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:9cafc298c6f3b10255db240e",
+   "role": "CONDITION",
+   "materiality": "MATERIAL",
+   "span": [
+    26456,
+    26563
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "no item of any role in the other run touches this span; DISCLOSED by the other run's unaccountedSource",
+   "counterpart": null,
+   "excerpt": "federal income tax purposes) of a consolidated, combined, affiliated, unitary or similar tax group for U.S."
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:4cb890a5ec1998b322199300",
+   "role": "CONDITION",
+   "materiality": "MATERIAL",
+   "span": [
+    26572,
+    26614
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "no item of any role in the other run touches this span; DISCLOSED by the other run's unaccountedSource",
+   "counterpart": null,
+   "excerpt": "and/or applicable state, local or non-U.S."
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:101baa255ed97316ac785d5c",
+   "role": "CONDITION",
+   "materiality": "MATERIAL",
+   "span": [
+    26826,
+    26884
+   ],
+   "class": "D_ROLE_INSTABILITY",
+   "detail": "CONDITION vs FORMULA_COMPONENT (prop jaccard 0.43, overlap 1.00)",
+   "counterpart": "inv-item:6d6a92ad11ce61ed76eb1d38",
+   "excerpt": "federal, state, local, provincial, territorial or non-U.S."
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:6d6a92ad11ce61ed76eb1d38",
+   "role": "FORMULA_COMPONENT",
+   "materiality": "MATERIAL",
+   "span": [
+    26817,
+    26884
+   ],
+   "class": "D_ROLE_INSTABILITY",
+   "detail": "CONDITION vs FORMULA_COMPONENT (prop jaccard 0.43, overlap 1.00)",
+   "counterpart": "inv-item:101baa255ed97316ac785d5c",
+   "excerpt": "any U.S. federal, state, local, provincial, territorial or non-U.S."
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:0f8a11989ee53b30fca48952",
+   "role": "CONDITION",
+   "materiality": "MATERIAL",
+   "span": [
+    27250,
+    27287
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "no item of any role in the other run touches this span; DISCLOSED by the other run's unaccountedSource",
+   "counterpart": null,
+   "excerpt": "federal income tax purposes) for U.S."
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:0c91179c8d3c16c6c19cad21",
+   "role": "CONDITION",
+   "materiality": "MATERIAL",
+   "span": [
+    27288,
+    27330
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "no item of any role in the other run touches this span; DISCLOSED by the other run's unaccountedSource",
+   "counterpart": null,
+   "excerpt": "and/or applicable state, local or non-U.S."
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:9b6f544f52702ab958e8cf09",
+   "role": "FORMULA_COMPONENT",
+   "materiality": "MATERIAL",
+   "span": [
+    27450,
+    27466
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "no item of any role in the other run touches this span; DISCLOSED by the other run's unaccountedSource",
+   "counterpart": null,
+   "excerpt": "income taxes (or"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:4fa3b9e1354ff38a10e53f52",
+   "role": "CONDITION",
+   "materiality": "MATERIAL",
+   "span": [
+    27975,
+    28012
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "no item of any role in the other run touches this span; DISCLOSED by the other run's unaccountedSource",
+   "counterpart": null,
+   "excerpt": "federal, state, local and/or non-U.S."
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:0d1fcb6adb37b10cf1a0a35d",
+   "role": "CONDITION",
+   "materiality": "MATERIAL",
+   "span": [
+    28082,
+    28155
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "no item of any role in the other run touches this span; DISCLOSED by the other run's unaccountedSource",
+   "counterpart": null,
+   "excerpt": "the Borrowers and/or any of their respective Subsidiaries, as applicable;"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:5110cac40f96001de90a14c1",
+   "role": "CONDITION",
+   "materiality": "CRITICAL",
+   "span": [
+    33360,
+    33408
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "provided that the aggregate amount of Restricted"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:10a7bfac749befea4811d607",
+   "role": "ALTERNATIVE",
+   "materiality": "CRITICAL",
+   "span": [
+    34594,
+    34687
+   ],
+   "class": "A_IDENTITY_INSTABILITY",
+   "detail": "overlap 1.00; boundary drift",
+   "counterpart": "inv-item:dd52de2678fb98c7b205ee39",
+   "excerpt": "or (ii) the Interest Coverage Ratio on a pro forma basis is at least equal to or greater than"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:dd52de2678fb98c7b205ee39",
+   "role": "ALTERNATIVE",
+   "materiality": "CRITICAL",
+   "span": [
+    34597,
+    34687
+   ],
+   "class": "A_IDENTITY_INSTABILITY",
+   "detail": "overlap 1.00; boundary drift",
+   "counterpart": "inv-item:10a7bfac749befea4811d607",
+   "excerpt": "(ii) the Interest Coverage Ratio on a pro forma basis is at least equal to or greater than"
+  },
+  {
+   "run": "run1",
+   "inventoryItemId": "inv-item:76cb45bd4ab183e72bebb3cf",
+   "role": "EXCEPTION",
+   "materiality": "MATERIAL",
+   "span": [
+    36042,
+    36071
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "(except to the extent repaid)"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:be7fa1dbef025182ac9eb1ae",
+   "role": "CONDITION",
+   "materiality": "CRITICAL",
+   "span": [
+    2886,
+    2962
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "unless, at the time of such Restricted Payment (or the declaration thereof):"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:9e613227dc5a5efa1627bb42",
+   "role": "EXCEPTION",
+   "materiality": "MATERIAL",
+   "span": [
+    8926,
+    8952
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "no item of any role in the other run touches this span; DISCLOSED by the other run's unaccountedSource",
+   "counterpart": null,
+   "excerpt": "after the Effective Date);"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:9f2addd230b397a90c759009",
+   "role": "REFERENCE",
+   "materiality": "MATERIAL",
+   "span": [
+    10359,
+    10374
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "Section 2.09(b)"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:21ff6c5be66617e473b4763f",
+   "role": "REFERENCE",
+   "materiality": "MATERIAL",
+   "span": [
+    10910,
+    10929
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "Section 6.01(b)(32)"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:9bc81e94daaf96bfb978be98",
+   "role": "PERMISSION",
+   "materiality": "MATERIAL",
+   "span": [
+    14692,
+    14725
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "no item of any role in the other run touches this span; DISCLOSED by the other run's unaccountedSource",
+   "counterpart": null,
+   "excerpt": "retirement or other acquisition);"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:62d388950ad3920e51188216",
+   "role": "EXCEPTION",
+   "materiality": "CRITICAL",
+   "span": [
+    18108,
+    18136
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "no item of any role in the other run touches this span; DISCLOSED by the other run's unaccountedSource",
+   "counterpart": null,
+   "excerpt": "provision of this Agreement;"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:285f1e2fb48d4c62d91ce59e",
+   "role": "REFERENCE",
+   "materiality": "MATERIAL",
+   "span": [
+    22689,
+    22736
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "no item of any role in the other run touches this span; DISCLOSED by the other run's unaccountedSource",
+   "counterpart": null,
+   "excerpt": "(46)(i) of the definition of \u201cPermitted Liens\u201d;"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:83123662324df9afe11428a3",
+   "role": "REFERENCE",
+   "materiality": "MATERIAL",
+   "span": [
+    25326,
+    25375
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "to the extent permitted by Section 5.18(b) hereof"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:8ebff4f01a3f0a2f6152cd0c",
+   "role": "FORMULA_COMPONENT",
+   "materiality": "MATERIAL",
+   "span": [
+    27562,
+    27646
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "of any direct or indirect equity owner of the Borrowers and/or any of its respective"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:88ccdcde45bb7f91d6dc9741",
+   "role": "CONDITION",
+   "materiality": "MATERIAL",
+   "span": [
+    28744,
+    28826
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "to the extent such salaries, bonuses, severance and other benefits and indemnities"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:f35f65450a52eb47ab3aa7fe",
+   "role": "FORMULA_COMPONENT",
+   "materiality": "CRITICAL",
+   "span": [
+    35394,
+    35635
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 2 item(s)",
+   "counterpart": null,
+   "excerpt": "the LCT Test Date, in the case of a Limited Condition Transaction, or the date of the Restricted Payment of the assets o"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:fdacd2ae37c5fa1f78bf9f44",
+   "role": "CONDITION",
+   "materiality": "REVIEW_UNCERTAIN",
+   "span": [
+    35905,
+    35993
+   ],
+   "class": "G_TRUE_SEMANTIC_ADDITION",
+   "detail": "REVIEW_UNCERTAIN item with no counterpart (non-accounting echo)",
+   "counterpart": null,
+   "excerpt": "For purposes of designating any Restricted Subsidiary as an Unrestricted Subsidiary, all"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:3b104cbdc2bc6a547237dc53",
+   "role": "CONDITION",
+   "materiality": "CRITICAL",
+   "span": [
+    36264,
+    36458
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "Such designation shall be permitted only if a Restricted Payment or Permitted Investments in such amount would be permit"
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:b0b5a1a4b38231319fc58f21",
+   "role": "CONDITION",
+   "materiality": "CRITICAL",
+   "span": [
+    36498,
+    36582
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "other run touches the span only marginally (<50% of the shorter span) via 1 item(s)",
+   "counterpart": null,
+   "excerpt": "and if such Subsidiary otherwise meets the definition of an Unrestricted Subsidiary."
+  },
+  {
+   "run": "run2",
+   "inventoryItemId": "inv-item:880d72d52663ddd1fe7513b3",
+   "role": "CONDITION",
+   "materiality": "CRITICAL",
+   "span": [
+    38444,
+    38528
+   ],
+   "class": "F_TRUE_SEMANTIC_OMISSION",
+   "detail": "no item of any role in the other run touches this span; DISCLOSED by the other run's unaccountedSource",
+   "counterpart": null,
+   "excerpt": "\u201cPermitted Investments,\u201d in a manner that otherwise complies with this Section 6.08."
+  }
+ ]
+}

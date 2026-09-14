@@ -1,0 +1,70 @@
+{
+  "artifact": "08 - F-6 tests, suite results, replay measurements, verdict",
+  "mission": "PHASE 3 CHEWY REMEDIATION 3 / F-6 IR TYPE-CHECK DEGRADATION / COMPOSITIONAL EXPRESSION REPRESENTATION",
+  "startingSha": "1a4070b020249157ab705dbb4244bb755072bd5f",
+  "paidCalls": 0,
+  "paidSpendUsd": 0,
+  "deployments": 0,
+  "productionFilesChanged": [
+    "lib/contract-model/ir/type-check.ts",
+    "lib/contract-model/ir/validate.ts",
+    "lib/contract-model/compiler/semantic/normalize.ts",
+    "lib/contract-model/compiler/semantic/completeness-check.ts",
+    "lib/contract-model/compiler/semantic-accountability/reconciliation.ts",
+    "lib/contract-model/compiler/semantic/wire-schema.ts (doc comment only)"
+  ],
+  "forbiddenAreasUntouched": ["clause-hierarchy / F-2", "semantic inventory prompt / Pass A", "source coverage", "verifier", "verifier money parser", "compiler caller / F-1", "precedent", "Chewy reference set (04-human-reference-set.json unchanged)", "paid-run scoring methodology (scripts/phase-3-validation-chwy-score.py unchanged)", "compiler prompt / tool schema (no prompt or schema version change)"],
+  "chewyReplay": {
+    "payload": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/unit-6.08.json compile.rawModelOutput (38 rules, 6 definitions, 0 shared capacities, 11 model-emitted UNSUPPORTED leaves)",
+    "beforeReproducedRecordedIRExactly": true,
+    "beforeReproducedRecordedAccountabilityCounts": true,
+    "recordedF6Expressions": 7,
+    "before": { "liveUnsupportedNodes": 8, "nodesOnlyInAttemptedStructure": 62, "liveNodes": 44, "partialCompositesKept": 0, "irValidationTypeErrors": 2, "ruleSufficiency": { "COMPLETE": 26, "PARTIAL": 12 }, "definitionSufficiency": { "COMPLETE": 3, "PARTIAL": 2, "AMBIGUOUS": 1 }, "accountability": { "represented": 253, "unsupported": 20, "ambiguous": 2, "missingFromComposition": 13, "materialQuantitativeValuesMissing": 8, "danglingLineageReferences": 1 } },
+    "after": { "liveUnsupportedNodes": 10, "nodesOnlyInAttemptedStructure": 12, "liveNodes": 140, "partialCompositesKept": 6, "irValidationTypeErrors": 0, "irValidationFalseCompleteness": 0, "ruleSufficiency": { "COMPLETE": 28, "PARTIAL": 10 }, "definitionSufficiency": { "COMPLETE": 3, "PARTIAL": 2, "AMBIGUOUS": 1 }, "accountability": { "represented": 273, "unsupported": 0, "ambiguous": 2, "missingFromComposition": 13, "materialQuantitativeValuesMissing": 8, "danglingLineageReferences": 1 }, "itemsWithDirectUnsupportedLineageCreditedRepresented": 0 },
+    "expressionsAcceptedBefore": "36 of 43 owned expressions typed (7 collapsed/degraded)",
+    "expressionsAcceptedAfter": "43 of 43 owned expressions keep their structure; 6 of them are live PARTIAL composites (non-executable, unsupported child in place); 3 nested sub-composites with no typed operand still collapse to an UNSUPPORTED node with their attempt preserved",
+    "substantiveComponentsRecovered": ["6.08(b)(4): IF(IPO ? MAX($504M, 70% EBITDA) : MAX($252M, 35% EBITDA)) + (equity/insurance/bonus proceeds - prior RPs), fully typed MONEY", "6.08(b)(9): ADD(6% x IPO proceeds, 7% x Market Capitalization) live under a kept SUBTRACT", "6.08(b)(10)/(25): AND(OR(FLLR <= 2.00x, FLLR <= FLLR-as-of), OR(ICR >= 1.75x, ICR >= ICR-as-of), NOT Specified Event of Default) - BOOLEAN gate, COMPLETE, IR validation clean", "Available Amount: MAX(50% CNI, Retained ECF, EBITDA - 140% interest), MAX($540M, 75% EBITDA), retained proceeds, sale-leaseback proceeds live under the builder's SUBTRACT/ADD", "Available Investment Capacity Amount / Available RP Capacity Amount: SUBTRACT with the typed usage deductions live", "20 CRITICAL Pass A items: UNSUPPORTED -> REPRESENTED with every stated value present in live IR ($504M, 70%, $252M, 35%, 6%, 7%, 2.00x, 1.75x, 50%, 140%, $540M, 75%)"],
+    "remainingUnsupportedComponents": ["6.08(b)(16) actual-cost tax-distribution basket (model-emitted UNSUPPORTED, in place)", "6.08(b)(9) usage deduction 'amounts used to incur Indebtedness/Disqualified Stock/Preferred Stock under clause ...' (model-emitted)", "Available Amount: equity issuance proceeds, capital contributions, returns on Restricted Investments, redesignation FMV, disposition proceeds not required to be applied, Permitted Liens (46)(ii) usage, 6.01(b)(32) usage (7 model-emitted leaves; the three MULTIPLY(100%, ...) wrappers around them have no typed operand and collapse with their attempt preserved)", "Available Investment / RP Capacity Amount: the source-pool components (model-emitted)", "13 items MISSING_FROM_COMPOSITION and 8 material values missing - unchanged; F-6 never invents representation for absent items"],
+    "danglingLineageBeforeAfter": "1 -> 1 (unchanged; a Pass A id the composition cited that is not in the frozen inventory)",
+    "unresolvedCrossUnitDependencies": "unchanged (carried as IRUnresolvedDependency, never guessed)"
+  },
+  "reference608Rescore": { "artifact": "07-reference-608-rescore.json", "referenceSetEdited": false, "replayBeforeReproducesRecordedDispositions": true, "before": { "FULL": 1, "PARTIAL": 6 }, "after": { "FULL": 3, "PARTIAL": 4 }, "changed": ["B8 6.08(b)(9) PARTIAL -> FULL", "B9 6.08(b)(10) PARTIAL -> FULL"], "note": "measurement of the F-6 effect on the 7 frozen 6.08 items only; no Phase 3 generalization verdict is issued from this replay" },
+  "sameRootSearch": { "artifact": "06-same-root-search.json", "recordsFound": 40, "recordsReplayed": 38, "wireParseErrors": 2, "recordsWithSameRootRepairs": 21, "expressionsRepaired": 34, "irValidationTypeErrorsBeforeAfter": "7 -> 0", "nodesOnlyInAttemptedStructureBeforeAfter": "192 -> 53", "partialCompositesKeptAfter": 93, "falseCompletenessAfter": 0 },
+  "tests": {
+    "new": {
+      "tests/contract-model/ir/type-check-partial.test.ts": "12 tests: §7 type table, invalid dimensional combinations rejected (10 shapes), unknown operator, UNKNOWN vs CONFLICT, no-typed-operand -> null, BOOLEAN operators over unsupported, deep unsupported leaf never disappears, gate/IF condition rules, FALSE_COMPLETENESS for rules (4 slots) and definitions, conflict + false completeness both reported",
+      "tests/contract-model/semantic-compiler/normalize-f6-compositional.test.ts": "18 tests: BOOLEAN slot typing (7 slots), sibling typing incl. nested composites, default preserved, explicit type never overridden, disagreeing siblings fix nothing, METRIC in BOOLEAN slot rejected; partial composites kept / no-typed-operand collapse / lineage+provenance / Pass C dispositions incl. direct-unsupported guard; anti-enumeration A (greater-of), B (ratio OR ratio), C (builders), D (one shared capacity, three permissions, different section refs); trust safety (invalid arithmetic, unknown kind, missing child, unresolved reference, false completeness, runtime-input absence is not UNSUPPORTED)",
+      "tests/contract-model/semantic-compiler/chewy-6-08-f6-replay.test.ts": "10 tests: recorded-payload after-state (validation clean, ratio gates, (b)(4), (b)(9), greater-of shape identity across 4 sites, Available Amount, shared-capacity definitions, lineage/provenance, Pass C counts 273/0/13 and no direct-unsupported item credited)"
+    },
+    "updated": {
+      "tests/contract-model/ir/safety.test.ts": "C7 now asserts the FALSE_COMPLETENESS kind (report still fails), that the same rule declared PARTIAL validates, and that the gate stays non-executable",
+      "tests/contract-model/post-holdout-semantic-remediation-unit-a.test.ts": "S2/S7b/S12/S13/S18-S19/S20 re-asserted on the live partial composite (kind kept, inferType UNSUPPORTED, sufficiency PARTIAL, FALSE_COMPLETENESS on a forged COMPLETE); S13/S14/S16 sidecar shapes unchanged",
+      "tests/contract-model/final-semantic-decomposition-whole-agreement.test.ts": "S31 re-asserted on the live ADD with the omitted addend in place"
+    },
+    "results": {
+      "tests/contract-model/ir (7 files)": "pass",
+      "tests/contract-model/semantic-compiler (14 files)": "pass",
+      "post-holdout unit A/B, final-semantic-decomposition, coverage reconciliation/pipeline, adversarial-verification, verification IR inventory, precedent compiler integration, accountability independence": "pass (312 tests)",
+      "definition-completeness-check": "pass",
+      "full tests/contract-model": "34 failed / 1891 passed / 172 skipped; every failing file is pre-existing (starting-SHA baseline 35 failed / 1849 passed / 172 skipped; the difference is the flaky recert-independent test and the 42 new tests)",
+      "tsc": "clean except pre-existing errors in untouched tests/foundation-audit/*",
+      "eslint": "clean on every changed and new file"
+    },
+    "preExistingFailures": ["Prisma/DB-backed suites (PrismaClientInitializationError; no database in this environment): stable-keys-and-replay, service-api, compatibility, validators, tenant-isolation, structural-persistence, semantic-truth-persistence, package-graph-persistence, part-b-recert-*, backfill-*, orchestrator/analysis-run/graph suites, coverage-structural", "semantic-accountability pass-a-inventory (7), pass-a-stability (4), pass-bc-reconciliation (7): synthetic corpus suites that require a live provider - identical at the starting SHA", "phase-3f1-1-forensic-machinery and architecture-proposal-node-identity: fixture-freeze checks tripped by the chwy-2026-credit-agreement fixture directory added in the Phase 3 validation mission - identical at the starting SHA"]
+  },
+  "verdict": "F6_CLOSED",
+  "verdictCriteria": {
+    "1_reproduced": "02a: recorded IR and accountability counts reproduced exactly at the starting SHA",
+    "2_earliestStages": "03: F=3 (untyped reference defaulted to MONEY in a BOOLEAN slot), E=4 (partial composite collapsed); dominant stage = normalization/type-check boundary",
+    "3_compositional": "no new expression kinds; anti-enumeration A-D pass with identical shapes across two agreements",
+    "4_symbolicSurvival": "43/43 owned Chewy expressions keep structure; corpus attempted-only nodes 192 -> 53",
+    "5_runtimeAbsence": "typed symbolic gates over metrics are COMPLETE (b)(10)/(25); explicit test",
+    "6_sharedCapBuilder": "Available Amount / Available *Capacity Amount / anti-enumeration D representable with existing primitives",
+    "7_unsupportedChildrenVisible": "every model-emitted UNSUPPORTED leaf is a live in-place node (11/11); attemptedStructure kept only where no dimension exists",
+    "8_lineageProvenance": "inventoryItemIds and citations preserved on composite and children; sourceSectionRef unchanged; tests",
+    "9_antiEnumeration": "pass",
+    "10_invalidDimensional": "10 conflict shapes rejected; MONEY x MONEY now also rejected",
+    "11_noFalseCompleteness": "FALSE_COMPLETENESS validation issue; normalization downgrade; Pass C direct-unsupported guard; 0 such items in Chewy replay",
+    "12_zeroPaidCalls": "0 calls, $0"
+  }
+}

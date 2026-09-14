@@ -1,0 +1,78 @@
+{
+ "artifact": "F-7B.2 \u00a727 - regression evidence: the failing set is byte-identical to the starting SHA",
+ "at": "2026-09-14T16:12:05.572799Z",
+ "command": "npx vitest run tests/contract-model/",
+ "startingSha": "d9949102b6da7806428cdc79a60da42c4fe76016",
+ "baselineRunIn": "a detached git worktree checked out at the starting SHA, with this mission's replay script copied in (read-only harness, no production change)",
+ "before": {
+  "files": 173,
+  "tests": 2286,
+  "passed": 2080,
+  "failed": 34,
+  "skipped": 172
+ },
+ "after": {
+  "files": 174,
+  "tests": 2302,
+  "passed": 2096,
+  "failed": 34,
+  "skipped": 172
+ },
+ "failingSetIdentical": true,
+ "preExistingFailures": [
+  "Compatibility mapping against real Coherent data (task \u00a733) Matthews' Permission rows are equally projectable - the mapping is company-agnostic, not tuned to Coherent specifically",
+  "Compatibility mapping against real Coherent data (task \u00a733) a KNOWN_NOT_MODELED Coherent permission projects to REVIEW_REQUIRED coverage, never a fabricated FULLY_MODELED",
+  "Compatibility mapping against real Coherent data (task \u00a733) every real Coherent PermissionRelationship row projects to a valid ContractRuleRelationshipType, preserving the fromPermission/toPermission pairing exactly",
+  "Compatibility mapping against real Coherent data (task \u00a733) no existing Coherent Permission or PermissionRelationship row has been touched by anything in lib/contract-model/** - zero ContractRule rows exist for Coherent as of this phase (a genuine data migration was deliberately NOT performed)",
+  "Compatibility mapping against real Coherent data (task \u00a733) projects every real Coherent Permission row into a valid ContractRule view without altering the underlying row",
+  "Pass A v3 - whole-unit source coverage + targeted gap re-inventory Pass C: INVENTORY_COVERAGE_GAP blocks semanticallyComplete even when every inventoried item has full lineage, and the residual segment is in the reasons/counts",
+  "Pass A v3 - whole-unit source coverage + targeted gap re-inventory a first pass that skips the definitional lead-in + condition triggers ONE targeted gap call that may only ADD verified items; when it closes the gap the status is INVENTORY_OK with the addition disclosed",
+  "Pass A v3 - whole-unit source coverage + targeted gap re-inventory audit B2'': echo items with non-material materiality (REVIEW_UNCERTAIN / INFORMATIONAL) never close a gap - the segment stays surfaced and the unit stays incomplete",
+  "Pass A v3 - whole-unit source coverage + targeted gap re-inventory corpus-wide: no fully-inventoried scenario leaves unaccounted source or an unaccounted value, and every scenario's gap record is disclosed",
+  "Phase 3F.1.1 forensic machinery - no Phase 3F.2 package contamination no new package directory was created under tests/fixtures/unseen-packages/ beyond the existing DSGR/FWRG/LSB/CONMED fixtures and this phase's own forensic output",
+  "Promotion invariant: a multi-basket rule failing basket-completeness cannot be promoted (task \u00a710) a correctly-extracted multi-basket section is NOT downgraded and both rules remain eligible for EXECUTABLE (no false positive from the new check)",
+  "Promotion invariant: a multi-basket rule failing basket-completeness cannot be promoted (task \u00a710) a swapped-threshold multi-basket section is downgraded and cannot be promoted to EXECUTABLE",
+  "Stable keys / replay safety (task \u00a748/\u00a749) a fresh-database replay produces a DIFFERENT generated row id but the IDENTICAL stableKey",
+  "Stable keys / replay safety (task \u00a748/\u00a749) changing reviewStatus/confidence does NOT change the stableKey - identity is independent of review state",
+  "Stable keys / replay safety (task \u00a748/\u00a749) changing the canonical source identity (a different section reference) DOES produce a different stableKey - it is a genuinely different provision",
+  "Stable keys / replay safety (task \u00a748/\u00a749) computeStableKey is a pure function of its inputs - identical inputs always produce the identical key across independent calls",
+  "Stable keys / replay safety (task \u00a748/\u00a749) stableKey uniqueness is enforced by the database itself, per company (task \u00a7@@unique constraint) - a duplicate insert is rejected, not silently overwritten",
+  "Stable keys / replay safety (task \u00a748/\u00a749) the same stableKey scheme, applied to two DIFFERENT companies, never collides - keys are scoped by companyId as an input, not just a uniqueness constraint",
+  "Structural coverage mechanism against Coherent's real, already-reviewed known-gap data (Task 7) flags the real, documented Indenture Contribution Indebtedness gap (\u00a73.3(b)(xviii)) as uncovered given Coherent's actual modeled Permission.sectionRef set",
+  "Structural node identity proposal - production freeze and historical integrity no new directory was created under tests/fixtures/unseen-packages/ (no new-package inspection)",
+  "semantic accountability - Pass A over the synthetic corpus (I1-I45) I1 dense definition, 20 components: source context = COMPLETE_LOCAL_SOURCE; 100% CRITICAL recall; every declared value found; 0 silent absences",
+  "semantic accountability - Pass A over the synthetic corpus (I1-I45) I23 springing covenant: source context = COMPLETE_LOCAL_SOURCE; 100% CRITICAL recall; every declared value found; 0 silent absences",
+  "semantic accountability - Pass A over the synthetic corpus (I1-I45) I25 reporting deadline: source context = COMPLETE_LOCAL_SOURCE; 100% CRITICAL recall; every declared value found; 0 silent absences",
+  "semantic accountability - Pass A over the synthetic corpus (I1-I45) I26 event notice: source context = COMPLETE_LOCAL_SOURCE; 100% CRITICAL recall; every declared value found; 0 silent absences",
+  "semantic accountability - Pass A over the synthetic corpus (I1-I45) I27 cure right: source context = DEPENDENCY_EXPANDED_SOURCE; 100% CRITICAL recall; every declared value found; 0 silent absences",
+  "semantic accountability - Pass A over the synthetic corpus (I1-I45) I3 pricing grid: source context = COMPLETE_LOCAL_SOURCE; 100% CRITICAL recall; every declared value found; 0 silent absences",
+  "semantic accountability - Pass A over the synthetic corpus (I1-I45) I4 capped addback: source context = COMPLETE_LOCAL_SOURCE; 100% CRITICAL recall; every declared value found; 0 silent absences",
+  "semantic accountability - Pass B/C over the synthetic corpus I1 dense definition, 20 components: full lineage-bearing composition -> 0 material MISSING, 0 dangling, semanticallyComplete=true",
+  "semantic accountability - Pass B/C over the synthetic corpus I23 springing covenant: full lineage-bearing composition -> 0 material MISSING, 0 dangling, semanticallyComplete=true",
+  "semantic accountability - Pass B/C over the synthetic corpus I25 reporting deadline: full lineage-bearing composition -> 0 material MISSING, 0 dangling, semanticallyComplete=true",
+  "semantic accountability - Pass B/C over the synthetic corpus I26 event notice: full lineage-bearing composition -> 0 material MISSING, 0 dangling, semanticallyComplete=true",
+  "semantic accountability - Pass B/C over the synthetic corpus I27 cure right: full lineage-bearing composition -> 0 material MISSING, 0 dangling, semanticallyComplete=true",
+  "semantic accountability - Pass B/C over the synthetic corpus I3 pricing grid: full lineage-bearing composition -> 0 material MISSING, 0 dangling, semanticallyComplete=true",
+  "semantic accountability - Pass B/C over the synthetic corpus I4 capped addback: full lineage-bearing composition -> 0 material MISSING, 0 dangling, semanticallyComplete=true"
+ ],
+ "newFailures": [],
+ "fixedByThisChange": [],
+ "targetedSuites": {
+  "tests/contract-model/f7a-shard-planner-stitcher.test.ts": "31/31 pass",
+  "tests/contract-model/f7b2-definition-source-anchor.test.ts": "16/16 pass",
+  "tests/contract-model/semantic-compiler/**": "180/180 pass"
+ },
+ "typecheck": {
+  "command": "npx tsc --noEmit",
+  "errors": 6,
+  "allIn": "tests/foundation-audit/**",
+  "preExisting": true
+ },
+ "eslint": {
+  "command": "npx eslint <touched files>",
+  "errors": 0,
+  "warnings": 0
+ },
+ "paidCalls": 0,
+ "costUsd": 0
+}

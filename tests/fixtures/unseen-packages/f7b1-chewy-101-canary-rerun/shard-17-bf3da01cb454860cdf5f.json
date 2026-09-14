@@ -1,0 +1,2813 @@
+{
+ "record": {
+  "stage": 1,
+  "attempt": 1,
+  "shardId": "shard:bf3da01cb454860cdf5f",
+  "shardHash": "681651c0752343da54ae800cd818a0c263f2a2782d6e1cab8cc313f76cca0702",
+  "ordinal": 17,
+  "ownedUnits": 16,
+  "sourceChars": 10233,
+  "contextEntries": 6,
+  "contextChars": 5891,
+  "unresolvedContext": 2,
+  "oversized": false,
+  "ownedItems": 8,
+  "ownedMaterialItems": 8,
+  "estimatedFirstTurnInputTokens": 29330,
+  "preCallEstimate": {
+   "inputTokens": 96496,
+   "outputTokens": 41500,
+   "usd": 0.6079920000000001
+  },
+  "actual": {
+   "inputTokens": 105796,
+   "outputTokens": 25281,
+   "turns": 3,
+   "latencyMs": 225025,
+   "costUsd": 0.464402,
+   "attemptCount": 3,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "toolCalls": 3,
+  "toolCallNames": [
+   "getReferencedProvision",
+   "getDefinition",
+   "getDefinition"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 22,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 8,
+  "ownedAccountability": {
+   "represented": 6,
+   "dispositioned": 1,
+   "missingMaterial": 1,
+   "valuesRepresented": 9,
+   "valuesMissing": 1,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "REPRESENTED": 6,
+    "MISSING_FROM_COMPOSITION": 1,
+    "UNSUPPORTED": 1
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Existing Liens",
+   "Expected Run Rate Benefit",
+   "FCPA",
+   "FILO Tranche",
+   "First Commitment Application Period",
+   "Fixed Amounts"
+  ],
+  "unresolvedIssues": [
+   "[definition[d22].SUBTRACT.left.SUM[1]] Computing 'unused' headroom under an external, usage-dependent basket (Section 6.01(b)(12)(b)) requires that section's own current utilization, which is not knowable from this definitions-only text; Section 6.01(b)(12)(b)'s own cap text was retrievable (greater of $720.0mm and 100% of Consolidated EBITDA) but its remaining/unused amount is not a static value.",
+   "[definition[d22].SUBTRACT.left] SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d22].SUBTRACT.right.SUM[0]] 'Incremental Facilities' has no standalone definition found anywhere in this instrument, and 'Section 6.01(b)(1)(Z)' is a genuinely ambiguous cross-reference (multiple colliding occurrences under 6.01(b)(1)) that cannot be resolved without guessing; the deduction component therefore cannot be faithfully quantified.",
+   "[definition[d22].SUBTRACT.right] SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d22]] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "This submission covers §1.01 defined terms from 'Excluded Swap Obligation' through 'Fixed Incremental Amount' (22 distinct terms) - every term in the supplied text was extracted as its own WireDefinition; none were silently dropped.",
+   "No WireRule/WireSharedCapacity outputs were produced: this source region is a definitions article, not an operative permission/prohibition/ratio-test section, so there is no independently operative covenant rule to compile here (the definitions themselves feed rules located elsewhere, e.g. Section 6.01).",
+   "'Existing Liens' (d5): the cross-reference to Section 9.02(b) was actively resolved via getReferencedProvision, but the returned text is an Amendments/waiver-consent provision, not a Liens definition - flagged MISSING_CONTEXT as a likely mismatched/renumbered cross-reference rather than guessed.",
+   "'Expected Run Rate Benefit' (d6): actively attempted via getDefinition (both for the term itself and for 'Consolidated EBITDA'); the term is embedded deep within the very long 'Consolidated EBITDA' definition, which remains truncated at the available context/tool budget - flagged MISSING_CONTEXT rather than guessed.",
+   "'Fixed Incremental Amount' (d22): the two additive components 'unused amounts under Section 6.01(b)(12)(b)' and the full clause (e) deduction (referencing the undefined term 'Incremental Facilities' and an ambiguous 'Section 6.01(b)(1)(Z)' cross-reference already flagged as unresolvable in the provided cross-reference table) are represented as UNSUPPORTED nodes nested inside an otherwise-complete SUM/SUBTRACT tree - the computable base component ($720.0mm / 100% Consolidated EBITDA greater-of test) is preserved intact per the PARTIAL-over-discard principle.",
+   "Several terms (FCPA, FILO Tranche, Fixed Amounts, First Commitment Application Period, Existing Liens, Expected Run Rate Benefit) are pure cross-reference pointers; where the pointer resolved to usable text it is marked COMPLETE, where it did not (Existing Liens, Expected Run Rate Benefit) it is marked MISSING_CONTEXT after an actual retrieval attempt."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:bf3da01cb454860cdf5f",
+  "shardHash": "681651c0752343da54ae800cd818a0c263f2a2782d6e1cab8cc313f76cca0702",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:289744e1e4aa484e6458b429",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Excluded Swap Obligation",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Swap Obligation",
+      "Guarantee"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Qualitative regulatory-eligibility test (CFTC/'eligible contract participant' status), not a numeric formula; text fully captured verbatim, nothing computational to represent."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any Swap Obligation if...such Guarantor's failure...to constitute an 'eligible contract participant'...or any other Swap Obligation designated as an 'Excluded Swap Obligation'..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:9d7953bf868b5d0a25e60c55",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Excluded Taxes",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Other Connection Taxes",
+      "FATCA"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Enumerated exclusion list is fully descriptive/qualitative; no numeric component."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means...(a) Taxes imposed on (or measured by) net income or profits...(b) any Tax attributable to Section 2.15(e) failure...(c) U.S. federal withholding Taxes...(d) any Tax imposed pursuant to FATCA."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:8c5989df966b022df12d7d77",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Excluded Term Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MAX",
+      "type": "MONEY",
+      "exprId": "ir-expr:3da99f583b9f0b0810f6c85f",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "type": "MONEY",
+        "amount": 1440000000,
+        "currency": "USD",
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:76b485ec0ad6383952be13a9",
+        "inventoryItemIds": [
+         "975d416ed9f098988605b883"
+        ]
+       },
+       {
+        "kind": "MULTIPLY",
+        "type": "MONEY",
+        "exprId": "ir-expr:9c791c8adc14ee3b2aa944d0",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "type": "PERCENT",
+          "value": 2,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:9c2120878edd9340b99ab2c4",
+          "inventoryItemIds": [
+           "dc9d7a4454fd3d2ca39d94d9"
+          ]
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "Consolidated EBITDA",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "inventoryItemIds": [
+         "dc9d7a4454fd3d2ca39d94d9"
+        ]
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "inventoryItemIds": [
+       "7fbbd03edaed55220dea29fe"
+      ]
+     },
+     "dependsOnTerms": [
+      "Incremental Term Loans",
+      "Ratio Incremental Amount",
+      "Maturity Exception Facility",
+      "Initial Term Loans",
+      "Consolidated EBITDA",
+      "Permitted Acquisition"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The dollar cap component (clause (d): greater of $1,440.0mm and 200% of Consolidated EBITDA) is fully represented.",
+      "Clauses (a),(b),(c) and (e) are additional qualitative eligibility conditions (form of debt, not incurred under the Ratio Incremental Amount/Maturity Exception Facility, maturity later than Initial Term Loans, transaction-purpose test) that are not numeric formula components and are not modeled as expression logic within this WireDefinition; preserved only in excerpt."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "in an original aggregate principal amount for any such Incremental Term Loan or other Indebtedness then being established not exceeding the greater of $1,440.0 million and 200% of Consolidated EBITDA (calculated on a Pro Forma Basis) for the most recently ended Test Period"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:37d8d0ac873e99690569ca4e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Existing Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Parties"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive scoping definition (existing on Effective Date plus accreted interest); no numeric threshold."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "Indebtedness of the Restricted Parties in existence on the Effective Date and any Guarantees thereof, plus interest accruing (or the accretion of discount) thereon."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:77cf7b5a7cbcf9a949bc66b5",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Existing Liens",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Term is defined entirely by cross-reference to Section 9.02(b). getReferencedProvision resolved 'Section 9.02(b)' to Amendments/waiver-consent text (Required Lender consent mechanics), which contains no definition of 'Existing Liens' - indicating either a mismatched/renumbered cross-reference or a location this tool set could not correctly resolve. The actual substantive meaning of 'Existing Liens' could not be confirmed."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term set forth in Section 9.02(b)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:95805ecfce2a93042a976c6c",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Expected Run Rate Benefit",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Consolidated EBITDA"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Term is defined entirely by cross-reference into the body of the 'Consolidated EBITDA' definition. getDefinition('Expected Run Rate Benefit') found no standalone definition, and getDefinition('Consolidated EBITDA') returned only a truncated head portion of that (very long) definition that did not reach the 'Expected Run Rate Benefit' passage (a separate context region for Consolidated EBITDA was also truncated at budget). Substantive meaning not retrievable within tool/context budget."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in the definition of \"Consolidated EBITDA.\""
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:cb472a18ebd6a999908e5e30",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Extension Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Incremental Facility",
+      "Term Facility",
+      "Permitted Amendment"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition states two alternative referential rules (amount equal to the extended/replaced portion of a Facility); fully descriptive, not reducible to a static numeric formula, but no missing evidence - full text given."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) in the case of an Incremental Facility that serves to effectively extend the maturity...an amount equal to the portion of the Term Facility...to be replaced...or (b)...an amount equal to the portion of the relevant terminated commitment or loan."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:9cb762d644892ccbc0afb691",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Revolving Facility",
+      "Initial Term Loans",
+      "Incremental Facility Amendment",
+      "Incremental Term Loans",
+      "Refinancing Amendment",
+      "Other Term Commitments",
+      "Other Loans"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Enumerated list of facility categories; fully descriptive."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "each Revolving Facility, the facility comprised of the Initial Term Loans, each facility created in connection with an Incremental Facility Amendment...and each facility created in connection with a Refinancing Amendment..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d80e625ac60a9120384d3422",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Fair Market Value",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Good-faith management/board determination standard, with a conclusiveness proviso for third-party valuation reports; qualitative, fully captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "determined in good faith by senior management or the Board of Directors of the Initial Borrower; provided that if supported by a valuation report...shall be conclusive for all purposes."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:69cc5456a976356922e79fe9",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Fair Value",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Willing-buyer/willing-seller enterprise valuation standard; qualitative, fully captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the amount at which the assets...of the Borrowers and their respective Subsidiaries taken as a whole would change hands between a willing buyer and a willing seller..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d91bcd4418e88db374762991",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "FATCA",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Statutory reference definition; qualitative, fully captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "Sections 1471 through 1474 of the Code as in effect on the Effective Date...and any fiscal or regulatory legislation, rules, guidance notes and or practices adopted by any jurisdiction to implement the foregoing."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:589ca941cb5041b8866373c2",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "FCPA",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pure pointer to Section 3.17(b); the pointer itself is the entire definition and is fully captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 3.17(b)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:971e610a146d93935c3bbfeb",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Federal Funds Effective Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MAX",
+      "type": "RATIO",
+      "exprId": "ir-expr:213b0b6198cdd0970a6a3a48",
+      "operands": [
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "RATIO",
+        "metricName": "NYFRB-published effective federal funds rate",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:016b416e175f922331efb245"
+       },
+       {
+        "kind": "RATIO",
+        "type": "RATIO",
+        "value": 0,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:040ac54c2f27a221c8108614"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Rate is defined by reference to an external NYFRB-published figure with a zero floor; the zero-floor mechanic is fully represented, the underlying market rate itself is external data referenced generically via METRIC_REFERENCE."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "an interest rate per annum equal to the rate calculated by the NYFRB...provided that if the Federal Funds Effective Rate...would be less than zero (0), such rate shall be deemed to be zero (0)..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:19555afe30f3d2c3d0f7f62a",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Fee Letter",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DATE_LITERAL",
+      "type": "DATE",
+      "isoDate": "2026-06-12",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:bf16f90b5db71dd01a27574c",
+      "inventoryItemIds": [
+       "eb4c99643218b586dfccf301"
+      ]
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully stated: a specific fee letter dated June 12, 2026 between the Initial Borrower and Lead Arrangers, as amended from time to time."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the Fee Letter, dated June 12, 2026, between the Initial Borrower and the Lead Arrangers, as amended, restated, modified or supplemented from time to time..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f8386dd900b91af62350241d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "FILO Tranche",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pure pointer to Section 2.18(g); fully captured as-is."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 2.18(g)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:ffa2f908dad12b1384aefa65",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Financial Officer",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Enumerated officer titles; qualitative, fully captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the chief financial officer, principal accounting officer, treasurer or controller of the Initial Borrower."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d469fa7d04a4df46bd2c0005",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "First Commitment Application Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pure pointer to Section 6.05(b)(2); fully captured as-is."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term set forth in Section 6.05(b)(2)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:6bb2f5d608e6716c2c8feffb",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "First Lien Intercreditor Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive form/parties definition referencing Exhibit E-2; qualitative, fully captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "an Intercreditor Agreement, substantially in the form of Exhibit E-2, among the Collateral Agent and the Senior Representatives for one or more classes of obligations to be secured pari passu..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:89e83fd9016e066e4bbba9d7",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "First Lien Leverage Ratio",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DIVIDE",
+      "type": "NUMBER",
+      "exprId": "ir-expr:9280defb59688a3f1ea5d91c",
+      "numerator": {
+       "kind": "METRIC_REFERENCE",
+       "type": "MONEY",
+       "metricName": "Consolidated First Lien Debt (excluding Excluded Revolving Loans)",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:688dd6bf237d77545139313a"
+      },
+      "denominator": {
+       "kind": "METRIC_REFERENCE",
+       "type": "MONEY",
+       "metricName": "Consolidated EBITDA",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Ratio formula (numerator/denominator) is fully stated; underlying component metrics 'Consolidated First Lien Debt' and 'Excluded Revolving Loans' are referenced generically as is standard for metric references not otherwise required to be fully unpacked."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the ratio of (a) Consolidated First Lien Debt as of such date (excluding any Excluded Revolving Loans) as of such date to (b) Consolidated EBITDA for the Test Period as of such date."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:054ed0eca2391ebf0a07c6d6",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Fixed Amounts",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pure pointer to Section 1.08(f); fully captured as-is."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 1.08(f)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:cb41297fc53052896c764a8d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Fixed Charges",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUM",
+      "type": "MONEY",
+      "exprId": "ir-expr:3452f6a02fa7538448b19c6e",
+      "operands": [
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "Consolidated Interest Expense",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:16a5c3ca869e763dd4b55664"
+       },
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "cash dividends or other distributions paid on Preferred Stock",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:6a4a0d3ab5baad62d748260e"
+       },
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "cash dividends or other distributions paid on Disqualified Stock",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:3c6a83cbace2297e14eda8e4"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Consolidated Interest Expense"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Three-part sum fully stated with 'without duplication' qualifier; each component represented as a metric reference."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the sum of: (1) Consolidated Interest Expense...(2) all cash dividends or other distributions paid...on any series of Preferred Stock...and (3)...on any series of Disqualified Stock..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f1861139cbbbb349d818f1da",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Fixed Incremental Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUBTRACT",
+      "type": "MONEY",
+      "exprId": "ir-expr:ea50462db4fdaef21c1b7383",
+      "left": {
+       "kind": "SUM",
+       "type": "MONEY",
+       "exprId": "ir-expr:57ac960eb6995c043c3093e4",
+       "operands": [
+        {
+         "kind": "MAX",
+         "type": "MONEY",
+         "exprId": "ir-expr:89742740dda75a51f940a6ba",
+         "operands": [
+          {
+           "kind": "MONEY",
+           "type": "MONEY",
+           "amount": 720000000,
+           "currency": "USD",
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:02121802187de4a0cadd9322",
+           "inventoryItemIds": [
+            "cff6aba64520d09fac7ca41f"
+           ]
+          },
+          {
+           "kind": "MULTIPLY",
+           "type": "MONEY",
+           "exprId": "ir-expr:364c6fbb9fe4c97b2f9514d5",
+           "operands": [
+            {
+             "kind": "PERCENT",
+             "type": "PERCENT",
+             "value": 1,
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01",
+              "excerpt": null
+             },
+             "exprId": "ir-expr:660871a88c04cd222cf1e1ae",
+             "inventoryItemIds": [
+              "3a78fe5b5a1e4208a5236ac1"
+             ]
+            },
+            {
+             "kind": "METRIC_REFERENCE",
+             "type": "MONEY",
+             "metricName": "Consolidated EBITDA",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+            }
+           ],
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "inventoryItemIds": [
+            "3a78fe5b5a1e4208a5236ac1"
+           ]
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "inventoryItemIds": [
+          "9e86ceeb6f2f72225585dbba"
+         ]
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01 (Fixed Incremental Amount, clause (b)); Section 6.01(b)(12)(b)",
+         "semanticDescription": "unused amounts under Section 6.01(b)(12)(b)",
+         "reason": "Computing 'unused' headroom under an external, usage-dependent basket (Section 6.01(b)(12)(b)) requires that section's own current utilization, which is not knowable from this definitions-only text; Section 6.01(b)(12)(b)'s own cap text was retrievable (greater of $720.0mm and 100% of Consolidated EBITDA) but its remaining/unused amount is not a static value.",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:dfb4cd53fab8343481f2ba77",
+         "inventoryItemIds": [
+          "8b28d97d989435401a6d146f"
+         ]
+        },
+        {
+         "kind": "DEFINED_TERM_REFERENCE",
+         "type": "MONEY",
+         "termName": "General Lien Basket Reallocated Amount",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:292822d3ae9ca4a411bd3d6c",
+         "inventoryItemIds": [
+          "8b28d97d989435401a6d146f"
+         ]
+        },
+        {
+         "kind": "DEFINED_TERM_REFERENCE",
+         "type": "MONEY",
+         "termName": "Available RP Capacity Amount",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:d98768d2281ab8f3c709db46",
+         "inventoryItemIds": [
+          "8b28d97d989435401a6d146f"
+         ]
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "8b28d97d989435401a6d146f"
+       ]
+      },
+      "right": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "(no evidence captured)",
+       "semanticDescription": "unrecognized or malformed expression (kind=\"SUM\")",
+       "reason": "SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "attemptedStructure": {
+        "kind": "SUM",
+        "type": "NUMBER",
+        "exprId": "ir-expr:a4e599e12a9139d2805968d1",
+        "operands": [
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01 (Fixed Incremental Amount, clause (e))",
+          "semanticDescription": "aggregate principal amount of (i) Incremental Facilities, (ii) Incremental Equivalent Debt, and (iii) Indebtedness incurred in reliance on Section 6.01(b)(1)(Z) or (14)(e)(2), in each case previously incurred in reliance on the Fixed Incremental Amount and not subsequently reclassified",
+          "reason": "'Incremental Facilities' has no standalone definition found anywhere in this instrument, and 'Section 6.01(b)(1)(Z)' is a genuinely ambiguous cross-reference (multiple colliding occurrences under 6.01(b)(1)) that cannot be resolved without guessing; the deduction component therefore cannot be faithfully quantified.",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:ad32a18a8379cd10ade83e71",
+          "inventoryItemIds": [
+           "8b28d97d989435401a6d146f"
+          ]
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "exprId": "ir-expr:2d0d3effea60c626628d4932",
+       "inventoryItemIds": [
+        "8b28d97d989435401a6d146f"
+       ]
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "inventoryItemIds": [
+       "8b28d97d989435401a6d146f"
+      ]
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "General Lien Basket Reallocated Amount",
+      "Available RP Capacity Amount",
+      "Incremental Equivalent Debt"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The base component (greater of $720.0mm and 100% of Consolidated EBITDA over the most recent four fiscal quarters) is fully represented.",
+      "The additive 'unused amounts under Section 6.01(b)(12)(b)' component is usage-dependent and not statically computable from this text; represented as UNSUPPORTED.",
+      "The additive 'General Lien Basket Reallocated Amount' and 'Available RP Capacity Amount' components are represented as defined-term references without further resolution (both are themselves usage-dependent optional reallocations).",
+      "The subtractive component (amounts previously drawn under the Fixed Incremental Amount via Incremental Facilities/Incremental Equivalent Debt/Section 6.01(b)(1)(Z) or (14)(e)(2)) references an undefined term ('Incremental Facilities') and a genuinely ambiguous section cross-reference; represented as UNSUPPORTED.",
+      "Computing 'unused' headroom under an external, usage-dependent basket (Section 6.01(b)(12)(b)) requires that section's own current utilization, which is not knowable from this definitions-only text; Section 6.01(b)(12)(b)'s own cap text was retrievable (greater of $720.0mm and 100% of Consolidated EBITDA) but its remaining/unused amount is not a static value.",
+      "SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+      "'Incremental Facilities' has no standalone definition found anywhere in this instrument, and 'Section 6.01(b)(1)(Z)' is a genuinely ambiguous cross-reference (multiple colliding occurrences under 6.01(b)(1)) that cannot be resolved without guessing; the deduction component therefore cannot be faithfully quantified.",
+      "SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+      "SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the sum of (a) the greater of (i) $720.0 million and (ii) an amount equal to 100% of Consolidated EBITDA on a Pro Forma Basis...plus (b) any unused amounts under Section 6.01(b)(12)(b), plus (c)...General Lien Basket Reallocated Amount, plus (d)...Available RP Capacity Amount minus (e)...the sum of the aggregate principal amount of all (i) Incremental Facilities, (ii) Incremental Equivalent Debt and (iii) Indebtedness incurred in reliance on Section 6.01(b)(1)(Z) or (14)(e)(2)..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": [
+    {
+     "inventoryItemId": "7fbbd03edaed55220dea29fe",
+     "disposition": "CONSUMED",
+     "note": "Consumed by Excluded Term Loans (d3) outer MAX cap expression."
+    },
+    {
+     "inventoryItemId": "975d416ed9f098988605b883",
+     "disposition": "CONSUMED",
+     "note": "Consumed by Excluded Term Loans (d3) MONEY operand."
+    },
+    {
+     "inventoryItemId": "dc9d7a4454fd3d2ca39d94d9",
+     "disposition": "CONSUMED",
+     "note": "Consumed by Excluded Term Loans (d3) MULTIPLY operand."
+    },
+    {
+     "inventoryItemId": "eb4c99643218b586dfccf301",
+     "disposition": "CONSUMED",
+     "note": "Consumed by Fee Letter (d14) DATE_LITERAL."
+    },
+    {
+     "inventoryItemId": "9e86ceeb6f2f72225585dbba",
+     "disposition": "CONSUMED",
+     "note": "Consumed by Fixed Incremental Amount (d22) base MAX expression."
+    },
+    {
+     "inventoryItemId": "cff6aba64520d09fac7ca41f",
+     "disposition": "CONSUMED",
+     "note": "Consumed by Fixed Incremental Amount (d22) MONEY operand."
+    },
+    {
+     "inventoryItemId": "3a78fe5b5a1e4208a5236ac1",
+     "disposition": "CONSUMED",
+     "note": "Consumed by Fixed Incremental Amount (d22) MULTIPLY operand."
+    },
+    {
+     "inventoryItemId": "8b28d97d989435401a6d146f",
+     "disposition": "CONSUMED",
+     "note": "Consumed across Fixed Incremental Amount (d22) SUM/UNSUPPORTED/DEFINED_TERM_REFERENCE nodes representing clauses (b)-(e); the usage-dependent sub-pieces are UNSUPPORTED, the defined-term sub-pieces are DEFINED_TERM_REFERENCE."
+    }
+   ]
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d22].SUBTRACT.left.SUM[1]] Computing 'unused' headroom under an external, usage-dependent basket (Section 6.01(b)(12)(b)) requires that section's own current utilization, which is not knowable from this definitions-only text; Section 6.01(b)(12)(b)'s own cap text was retrievable (greater of $720.0mm and 100% of Consolidated EBITDA) but its remaining/unused amount is not a static value.",
+   "[definition[d22].SUBTRACT.left] SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d22].SUBTRACT.right.SUM[0]] 'Incremental Facilities' has no standalone definition found anywhere in this instrument, and 'Section 6.01(b)(1)(Z)' is a genuinely ambiguous cross-reference (multiple colliding occurrences under 6.01(b)(1)) that cannot be resolved without guessing; the deduction component therefore cannot be faithfully quantified.",
+   "[definition[d22].SUBTRACT.right] SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d22]] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "This submission covers §1.01 defined terms from 'Excluded Swap Obligation' through 'Fixed Incremental Amount' (22 distinct terms) - every term in the supplied text was extracted as its own WireDefinition; none were silently dropped.",
+   "No WireRule/WireSharedCapacity outputs were produced: this source region is a definitions article, not an operative permission/prohibition/ratio-test section, so there is no independently operative covenant rule to compile here (the definitions themselves feed rules located elsewhere, e.g. Section 6.01).",
+   "'Existing Liens' (d5): the cross-reference to Section 9.02(b) was actively resolved via getReferencedProvision, but the returned text is an Amendments/waiver-consent provision, not a Liens definition - flagged MISSING_CONTEXT as a likely mismatched/renumbered cross-reference rather than guessed.",
+   "'Expected Run Rate Benefit' (d6): actively attempted via getDefinition (both for the term itself and for 'Consolidated EBITDA'); the term is embedded deep within the very long 'Consolidated EBITDA' definition, which remains truncated at the available context/tool budget - flagged MISSING_CONTEXT rather than guessed.",
+   "'Fixed Incremental Amount' (d22): the two additive components 'unused amounts under Section 6.01(b)(12)(b)' and the full clause (e) deduction (referencing the undefined term 'Incremental Facilities' and an ambiguous 'Section 6.01(b)(1)(Z)' cross-reference already flagged as unresolvable in the provided cross-reference table) are represented as UNSUPPORTED nodes nested inside an otherwise-complete SUM/SUBTRACT tree - the computable base component ($720.0mm / 100% Consolidated EBITDA greater-of test) is preserved intact per the PARTIAL-over-discard principle.",
+   "Several terms (FCPA, FILO Tranche, Fixed Amounts, First Commitment Application Period, Existing Liens, Expected Run Rate Benefit) are pure cross-reference pointers; where the pointer resolved to usable text it is marked COMPLETE, where it did not (Existing Liens, Expected Run Rate Benefit) it is marked MISSING_CONTEXT after an actual retrieval attempt."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 105796,
+   "outputTokens": 25281,
+   "costUsd": 0.464402
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:289744e1e4aa484e6458b429",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Excluded Swap Obligation",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Swap Obligation",
+     "Guarantee"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Qualitative regulatory-eligibility test (CFTC/'eligible contract participant' status), not a numeric formula; text fully captured verbatim, nothing computational to represent."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any Swap Obligation if...such Guarantor's failure...to constitute an 'eligible contract participant'...or any other Swap Obligation designated as an 'Excluded Swap Obligation'..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:9d7953bf868b5d0a25e60c55",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Excluded Taxes",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Other Connection Taxes",
+     "FATCA"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Enumerated exclusion list is fully descriptive/qualitative; no numeric component."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means...(a) Taxes imposed on (or measured by) net income or profits...(b) any Tax attributable to Section 2.15(e) failure...(c) U.S. federal withholding Taxes...(d) any Tax imposed pursuant to FATCA."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:8c5989df966b022df12d7d77",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Excluded Term Loans",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "MAX",
+     "type": "MONEY",
+     "exprId": "ir-expr:3da99f583b9f0b0810f6c85f",
+     "operands": [
+      {
+       "kind": "MONEY",
+       "type": "MONEY",
+       "amount": 1440000000,
+       "currency": "USD",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:76b485ec0ad6383952be13a9",
+       "inventoryItemIds": [
+        "975d416ed9f098988605b883"
+       ]
+      },
+      {
+       "kind": "MULTIPLY",
+       "type": "MONEY",
+       "exprId": "ir-expr:9c791c8adc14ee3b2aa944d0",
+       "operands": [
+        {
+         "kind": "PERCENT",
+         "type": "PERCENT",
+         "value": 2,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:9c2120878edd9340b99ab2c4",
+         "inventoryItemIds": [
+          "dc9d7a4454fd3d2ca39d94d9"
+         ]
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "Consolidated EBITDA",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "dc9d7a4454fd3d2ca39d94d9"
+       ]
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "inventoryItemIds": [
+      "7fbbd03edaed55220dea29fe"
+     ]
+    },
+    "dependsOnTerms": [
+     "Incremental Term Loans",
+     "Ratio Incremental Amount",
+     "Maturity Exception Facility",
+     "Initial Term Loans",
+     "Consolidated EBITDA",
+     "Permitted Acquisition"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The dollar cap component (clause (d): greater of $1,440.0mm and 200% of Consolidated EBITDA) is fully represented.",
+     "Clauses (a),(b),(c) and (e) are additional qualitative eligibility conditions (form of debt, not incurred under the Ratio Incremental Amount/Maturity Exception Facility, maturity later than Initial Term Loans, transaction-purpose test) that are not numeric formula components and are not modeled as expression logic within this WireDefinition; preserved only in excerpt."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "in an original aggregate principal amount for any such Incremental Term Loan or other Indebtedness then being established not exceeding the greater of $1,440.0 million and 200% of Consolidated EBITDA (calculated on a Pro Forma Basis) for the most recently ended Test Period"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:37d8d0ac873e99690569ca4e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Existing Indebtedness",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Restricted Parties"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive scoping definition (existing on Effective Date plus accreted interest); no numeric threshold."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "Indebtedness of the Restricted Parties in existence on the Effective Date and any Guarantees thereof, plus interest accruing (or the accretion of discount) thereon."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:77cf7b5a7cbcf9a949bc66b5",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Existing Liens",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Term is defined entirely by cross-reference to Section 9.02(b). getReferencedProvision resolved 'Section 9.02(b)' to Amendments/waiver-consent text (Required Lender consent mechanics), which contains no definition of 'Existing Liens' - indicating either a mismatched/renumbered cross-reference or a location this tool set could not correctly resolve. The actual substantive meaning of 'Existing Liens' could not be confirmed."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term set forth in Section 9.02(b)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:95805ecfce2a93042a976c6c",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Expected Run Rate Benefit",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Consolidated EBITDA"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Term is defined entirely by cross-reference into the body of the 'Consolidated EBITDA' definition. getDefinition('Expected Run Rate Benefit') found no standalone definition, and getDefinition('Consolidated EBITDA') returned only a truncated head portion of that (very long) definition that did not reach the 'Expected Run Rate Benefit' passage (a separate context region for Consolidated EBITDA was also truncated at budget). Substantive meaning not retrievable within tool/context budget."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of \"Consolidated EBITDA.\""
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:cb472a18ebd6a999908e5e30",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Extension Amount",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Incremental Facility",
+     "Term Facility",
+     "Permitted Amendment"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition states two alternative referential rules (amount equal to the extended/replaced portion of a Facility); fully descriptive, not reducible to a static numeric formula, but no missing evidence - full text given."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) in the case of an Incremental Facility that serves to effectively extend the maturity...an amount equal to the portion of the Term Facility...to be replaced...or (b)...an amount equal to the portion of the relevant terminated commitment or loan."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:9cb762d644892ccbc0afb691",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Facility",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Revolving Facility",
+     "Initial Term Loans",
+     "Incremental Facility Amendment",
+     "Incremental Term Loans",
+     "Refinancing Amendment",
+     "Other Term Commitments",
+     "Other Loans"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Enumerated list of facility categories; fully descriptive."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "each Revolving Facility, the facility comprised of the Initial Term Loans, each facility created in connection with an Incremental Facility Amendment...and each facility created in connection with a Refinancing Amendment..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d80e625ac60a9120384d3422",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Fair Market Value",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Good-faith management/board determination standard, with a conclusiveness proviso for third-party valuation reports; qualitative, fully captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "determined in good faith by senior management or the Board of Directors of the Initial Borrower; provided that if supported by a valuation report...shall be conclusive for all purposes."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:69cc5456a976356922e79fe9",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Fair Value",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Willing-buyer/willing-seller enterprise valuation standard; qualitative, fully captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the amount at which the assets...of the Borrowers and their respective Subsidiaries taken as a whole would change hands between a willing buyer and a willing seller..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d91bcd4418e88db374762991",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "FATCA",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Statutory reference definition; qualitative, fully captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "Sections 1471 through 1474 of the Code as in effect on the Effective Date...and any fiscal or regulatory legislation, rules, guidance notes and or practices adopted by any jurisdiction to implement the foregoing."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:589ca941cb5041b8866373c2",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "FCPA",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Pure pointer to Section 3.17(b); the pointer itself is the entire definition and is fully captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 3.17(b)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:971e610a146d93935c3bbfeb",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Federal Funds Effective Rate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "MAX",
+     "type": "RATIO",
+     "exprId": "ir-expr:213b0b6198cdd0970a6a3a48",
+     "operands": [
+      {
+       "kind": "METRIC_REFERENCE",
+       "type": "RATIO",
+       "metricName": "NYFRB-published effective federal funds rate",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:016b416e175f922331efb245"
+      },
+      {
+       "kind": "RATIO",
+       "type": "RATIO",
+       "value": 0,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:040ac54c2f27a221c8108614"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Rate is defined by reference to an external NYFRB-published figure with a zero floor; the zero-floor mechanic is fully represented, the underlying market rate itself is external data referenced generically via METRIC_REFERENCE."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "an interest rate per annum equal to the rate calculated by the NYFRB...provided that if the Federal Funds Effective Rate...would be less than zero (0), such rate shall be deemed to be zero (0)..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:19555afe30f3d2c3d0f7f62a",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Fee Letter",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "DATE_LITERAL",
+     "type": "DATE",
+     "isoDate": "2026-06-12",
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:bf16f90b5db71dd01a27574c",
+     "inventoryItemIds": [
+      "eb4c99643218b586dfccf301"
+     ]
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully stated: a specific fee letter dated June 12, 2026 between the Initial Borrower and Lead Arrangers, as amended from time to time."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the Fee Letter, dated June 12, 2026, between the Initial Borrower and the Lead Arrangers, as amended, restated, modified or supplemented from time to time..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f8386dd900b91af62350241d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "FILO Tranche",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Pure pointer to Section 2.18(g); fully captured as-is."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 2.18(g)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:ffa2f908dad12b1384aefa65",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Financial Officer",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Enumerated officer titles; qualitative, fully captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the chief financial officer, principal accounting officer, treasurer or controller of the Initial Borrower."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d469fa7d04a4df46bd2c0005",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "First Commitment Application Period",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Pure pointer to Section 6.05(b)(2); fully captured as-is."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term set forth in Section 6.05(b)(2)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:6bb2f5d608e6716c2c8feffb",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "First Lien Intercreditor Agreement",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Descriptive form/parties definition referencing Exhibit E-2; qualitative, fully captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "an Intercreditor Agreement, substantially in the form of Exhibit E-2, among the Collateral Agent and the Senior Representatives for one or more classes of obligations to be secured pari passu..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:89e83fd9016e066e4bbba9d7",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "First Lien Leverage Ratio",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "DIVIDE",
+     "type": "NUMBER",
+     "exprId": "ir-expr:9280defb59688a3f1ea5d91c",
+     "numerator": {
+      "kind": "METRIC_REFERENCE",
+      "type": "MONEY",
+      "metricName": "Consolidated First Lien Debt (excluding Excluded Revolving Loans)",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:688dd6bf237d77545139313a"
+     },
+     "denominator": {
+      "kind": "METRIC_REFERENCE",
+      "type": "MONEY",
+      "metricName": "Consolidated EBITDA",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Consolidated EBITDA"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Ratio formula (numerator/denominator) is fully stated; underlying component metrics 'Consolidated First Lien Debt' and 'Excluded Revolving Loans' are referenced generically as is standard for metric references not otherwise required to be fully unpacked."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the ratio of (a) Consolidated First Lien Debt as of such date (excluding any Excluded Revolving Loans) as of such date to (b) Consolidated EBITDA for the Test Period as of such date."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:054ed0eca2391ebf0a07c6d6",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Fixed Amounts",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Pure pointer to Section 1.08(f); fully captured as-is."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 1.08(f)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:cb41297fc53052896c764a8d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Fixed Charges",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "SUM",
+     "type": "MONEY",
+     "exprId": "ir-expr:3452f6a02fa7538448b19c6e",
+     "operands": [
+      {
+       "kind": "METRIC_REFERENCE",
+       "type": "MONEY",
+       "metricName": "Consolidated Interest Expense",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:16a5c3ca869e763dd4b55664"
+      },
+      {
+       "kind": "METRIC_REFERENCE",
+       "type": "MONEY",
+       "metricName": "cash dividends or other distributions paid on Preferred Stock",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:6a4a0d3ab5baad62d748260e"
+      },
+      {
+       "kind": "METRIC_REFERENCE",
+       "type": "MONEY",
+       "metricName": "cash dividends or other distributions paid on Disqualified Stock",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:3c6a83cbace2297e14eda8e4"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Consolidated Interest Expense"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Three-part sum fully stated with 'without duplication' qualifier; each component represented as a metric reference."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the sum of: (1) Consolidated Interest Expense...(2) all cash dividends or other distributions paid...on any series of Preferred Stock...and (3)...on any series of Disqualified Stock..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f1861139cbbbb349d818f1da",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Fixed Incremental Amount",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "SUBTRACT",
+     "type": "MONEY",
+     "exprId": "ir-expr:ea50462db4fdaef21c1b7383",
+     "left": {
+      "kind": "SUM",
+      "type": "MONEY",
+      "exprId": "ir-expr:57ac960eb6995c043c3093e4",
+      "operands": [
+       {
+        "kind": "MAX",
+        "type": "MONEY",
+        "exprId": "ir-expr:89742740dda75a51f940a6ba",
+        "operands": [
+         {
+          "kind": "MONEY",
+          "type": "MONEY",
+          "amount": 720000000,
+          "currency": "USD",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:02121802187de4a0cadd9322",
+          "inventoryItemIds": [
+           "cff6aba64520d09fac7ca41f"
+          ]
+         },
+         {
+          "kind": "MULTIPLY",
+          "type": "MONEY",
+          "exprId": "ir-expr:364c6fbb9fe4c97b2f9514d5",
+          "operands": [
+           {
+            "kind": "PERCENT",
+            "type": "PERCENT",
+            "value": 1,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:660871a88c04cd222cf1e1ae",
+            "inventoryItemIds": [
+             "3a78fe5b5a1e4208a5236ac1"
+            ]
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Consolidated EBITDA",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "inventoryItemIds": [
+           "3a78fe5b5a1e4208a5236ac1"
+          ]
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "inventoryItemIds": [
+         "9e86ceeb6f2f72225585dbba"
+        ]
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 (Fixed Incremental Amount, clause (b)); Section 6.01(b)(12)(b)",
+        "semanticDescription": "unused amounts under Section 6.01(b)(12)(b)",
+        "reason": "Computing 'unused' headroom under an external, usage-dependent basket (Section 6.01(b)(12)(b)) requires that section's own current utilization, which is not knowable from this definitions-only text; Section 6.01(b)(12)(b)'s own cap text was retrievable (greater of $720.0mm and 100% of Consolidated EBITDA) but its remaining/unused amount is not a static value.",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:dfb4cd53fab8343481f2ba77",
+        "inventoryItemIds": [
+         "8b28d97d989435401a6d146f"
+        ]
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "MONEY",
+        "termName": "General Lien Basket Reallocated Amount",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:292822d3ae9ca4a411bd3d6c",
+        "inventoryItemIds": [
+         "8b28d97d989435401a6d146f"
+        ]
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "MONEY",
+        "termName": "Available RP Capacity Amount",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:d98768d2281ab8f3c709db46",
+        "inventoryItemIds": [
+         "8b28d97d989435401a6d146f"
+        ]
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "inventoryItemIds": [
+       "8b28d97d989435401a6d146f"
+      ]
+     },
+     "right": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "(no evidence captured)",
+      "semanticDescription": "unrecognized or malformed expression (kind=\"SUM\")",
+      "reason": "SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "attemptedStructure": {
+       "kind": "SUM",
+       "type": "NUMBER",
+       "exprId": "ir-expr:a4e599e12a9139d2805968d1",
+       "operands": [
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01 (Fixed Incremental Amount, clause (e))",
+         "semanticDescription": "aggregate principal amount of (i) Incremental Facilities, (ii) Incremental Equivalent Debt, and (iii) Indebtedness incurred in reliance on Section 6.01(b)(1)(Z) or (14)(e)(2), in each case previously incurred in reliance on the Fixed Incremental Amount and not subsequently reclassified",
+         "reason": "'Incremental Facilities' has no standalone definition found anywhere in this instrument, and 'Section 6.01(b)(1)(Z)' is a genuinely ambiguous cross-reference (multiple colliding occurrences under 6.01(b)(1)) that cannot be resolved without guessing; the deduction component therefore cannot be faithfully quantified.",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:ad32a18a8379cd10ade83e71",
+         "inventoryItemIds": [
+          "8b28d97d989435401a6d146f"
+         ]
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "exprId": "ir-expr:2d0d3effea60c626628d4932",
+      "inventoryItemIds": [
+       "8b28d97d989435401a6d146f"
+      ]
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "inventoryItemIds": [
+      "8b28d97d989435401a6d146f"
+     ]
+    },
+    "dependsOnTerms": [
+     "Consolidated EBITDA",
+     "General Lien Basket Reallocated Amount",
+     "Available RP Capacity Amount",
+     "Incremental Equivalent Debt"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The base component (greater of $720.0mm and 100% of Consolidated EBITDA over the most recent four fiscal quarters) is fully represented.",
+     "The additive 'unused amounts under Section 6.01(b)(12)(b)' component is usage-dependent and not statically computable from this text; represented as UNSUPPORTED.",
+     "The additive 'General Lien Basket Reallocated Amount' and 'Available RP Capacity Amount' components are represented as defined-term references without further resolution (both are themselves usage-dependent optional reallocations).",
+     "The subtractive component (amounts previously drawn under the Fixed Incremental Amount via Incremental Facilities/Incremental Equivalent Debt/Section 6.01(b)(1)(Z) or (14)(e)(2)) references an undefined term ('Incremental Facilities') and a genuinely ambiguous section cross-reference; represented as UNSUPPORTED.",
+     "Computing 'unused' headroom under an external, usage-dependent basket (Section 6.01(b)(12)(b)) requires that section's own current utilization, which is not knowable from this definitions-only text; Section 6.01(b)(12)(b)'s own cap text was retrievable (greater of $720.0mm and 100% of Consolidated EBITDA) but its remaining/unused amount is not a static value.",
+     "SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+     "'Incremental Facilities' has no standalone definition found anywhere in this instrument, and 'Section 6.01(b)(1)(Z)' is a genuinely ambiguous cross-reference (multiple colliding occurrences under 6.01(b)(1)) that cannot be resolved without guessing; the deduction component therefore cannot be faithfully quantified.",
+     "SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+     "SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the sum of (a) the greater of (i) $720.0 million and (ii) an amount equal to 100% of Consolidated EBITDA on a Pro Forma Basis...plus (b) any unused amounts under Section 6.01(b)(12)(b), plus (c)...General Lien Basket Reallocated Amount, plus (d)...Available RP Capacity Amount minus (e)...the sum of the aggregate principal amount of all (i) Incremental Facilities, (ii) Incremental Equivalent Debt and (iii) Indebtedness incurred in reliance on Section 6.01(b)(1)(Z) or (14)(e)(2)..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01 'Fixed Incremental Amount' clauses (b)-(e), which incorporate 'unused amounts under Section 6.01(b)(12)(b)' and a deduction for amounts previously drawn against this very definition under other external, usage-dependent baskets/sections not modeled in this submission.",
+    "semanticRequirement": "A WireDefinition (unlike WireRule) has no `dependsOn` field to formally record a cross-unit dependency (e.g. SHARES_CAPACITY_WITH / LIMITED_BY against an exact external section reference) when a defined TERM's own formula - not a rule's capacity - incorporates another section's usage-dependent headroom.",
+    "whyExistingPrimitivesFail": "UNSUPPORTED and DEFINED_TERM_REFERENCE can flag the gap and name the referenced term, but neither preserves a structured, queryable pointer to the exact external section reference (e.g. 'Section 6.01(b)(12)(b)') the way dependsOn does for WireRule; the citation is only recoverable from a free-text sourceEvidence string on the UNSUPPORTED node.",
+    "candidateGeneralizedPrimitive": "Add an optional `dependsOn` array (same shape as WireRule's) to WireDefinition so definitional formula components can carry the same structured SHARES_CAPACITY_WITH/LIMITED_BY/REQUIRES cross-references that rules can."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d22].SUBTRACT.left.SUM[1]] Computing 'unused' headroom under an external, usage-dependent basket (Section 6.01(b)(12)(b)) requires that section's own current utilization, which is not knowable from this definitions-only text; Section 6.01(b)(12)(b)'s own cap text was retrievable (greater of $720.0mm and 100% of Consolidated EBITDA) but its remaining/unused amount is not a static value.",
+   "[definition[d22].SUBTRACT.left] SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d22].SUBTRACT.right.SUM[0]] 'Incremental Facilities' has no standalone definition found anywhere in this instrument, and 'Section 6.01(b)(1)(Z)' is a genuinely ambiguous cross-reference (multiple colliding occurrences under 6.01(b)(1)) that cannot be resolved without guessing; the deduction component therefore cannot be faithfully quantified.",
+   "[definition[d22].SUBTRACT.right] SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d22]] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "This submission covers §1.01 defined terms from 'Excluded Swap Obligation' through 'Fixed Incremental Amount' (22 distinct terms) - every term in the supplied text was extracted as its own WireDefinition; none were silently dropped.",
+   "No WireRule/WireSharedCapacity outputs were produced: this source region is a definitions article, not an operative permission/prohibition/ratio-test section, so there is no independently operative covenant rule to compile here (the definitions themselves feed rules located elsewhere, e.g. Section 6.01).",
+   "'Existing Liens' (d5): the cross-reference to Section 9.02(b) was actively resolved via getReferencedProvision, but the returned text is an Amendments/waiver-consent provision, not a Liens definition - flagged MISSING_CONTEXT as a likely mismatched/renumbered cross-reference rather than guessed.",
+   "'Expected Run Rate Benefit' (d6): actively attempted via getDefinition (both for the term itself and for 'Consolidated EBITDA'); the term is embedded deep within the very long 'Consolidated EBITDA' definition, which remains truncated at the available context/tool budget - flagged MISSING_CONTEXT rather than guessed.",
+   "'Fixed Incremental Amount' (d22): the two additive components 'unused amounts under Section 6.01(b)(12)(b)' and the full clause (e) deduction (referencing the undefined term 'Incremental Facilities' and an ambiguous 'Section 6.01(b)(1)(Z)' cross-reference already flagged as unresolvable in the provided cross-reference table) are represented as UNSUPPORTED nodes nested inside an otherwise-complete SUM/SUBTRACT tree - the computable base component ($720.0mm / 100% Consolidated EBITDA greater-of test) is preserved intact per the PARTIAL-over-discard principle.",
+   "Several terms (FCPA, FILO Tranche, Fixed Amounts, First Commitment Application Period, Existing Liens, Expected Run Rate Benefit) are pure cross-reference pointers; where the pointer resolved to usable text it is marked COMPLETE, where it did not (Existing Liens, Expected Run Rate Benefit) it is marked MISSING_CONTEXT after an actual retrieval attempt."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 9.02(b)"
+    },
+    "outputSummary": "resolved reference \"Section 9.02(b)\" -> 9.02(b) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 1111,
+    "timestamp": "2026-09-14T15:26:52.723Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 9.02(b)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:43058e9010266572582f04e7",
+     "sourceNodeKey": "doc-a::9.02(b)",
+     "charStart": 750796,
+     "charEnd": 751907,
+     "rawText": "(b) Except as expressly provided herein, neither any Loan Document nor any provision thereof may be waived, amended or modified except, in the\ncase of this Agreement, pursuant to an agreement or agreements in writing entered into by the Borrowers, the Administrative Agent (to the extent that such waiver, amendment or modification does not affect the rights, duties, privileges or\nobligations of an Administrative Agent under this Agreement, the Administrative Agent shall execute such waiver, amendment or other modification to the extent approved by the Required Lenders) and the Required Lenders (other than with respect to any\nwaiver, amendment or modification\n\n-161-\n\ncontemplated in the first proviso below) or, in the case of any other Loan Document, pursuant to an agreement or agreements in writing entered into by the Administrative Agent and the Loan Party\nor Loan Parties that are parties thereto, in each case with the consent of the Required Lenders (other than with respect to any waiver, amendment or modification contemplated in the first proviso below); provided that no such agreement shall\n",
+     "contentHash": "796747cf9edcbdf44f1c73f5d410f8b5c2a5b13ad64512e6fe206e396f9be92b",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Expected Run Rate Benefit"
+    },
+    "outputSummary": "refused: no defined term matching \"Expected Run Rate Benefit\" found in this instrument's documents",
+    "charsReturned": 89,
+    "timestamp": "2026-09-14T15:26:52.723Z"
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Consolidated EBITDA"
+    },
+    "outputSummary": "definition \"Consolidated EBITDA\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 4059,
+    "timestamp": "2026-09-14T15:27:02.746Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": true,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Consolidated EBITDA",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:ead7956708294784f939f12c",
+     "sourceNodeKey": "doc-a::1.01(2)(i)(A)(b)",
+     "charStart": 79182,
+     "charEnd": 99357,
+     "rawText": "“ Consolidated EBITDA ” means, for any\nTest Period, with respect to any Person for any period, the Consolidated Net Income of such Person and its Restricted Subsidiaries for such Test Period plus:\n\n(a)\nwithout duplication, including without duplication of any exclusion in Consolidated Net Income, the sum of the\nfollowing amounts for such period, in each case, at the election of the Initial Borrower:\n\n(i)\nconsolidated interest expense of such Person for such period, including (A) payments made or losses\nincurred in respect of hedging obligations or other derivative instruments entered into for the purpose of hedging interest rate risk, (B) bank and letter of credit fees and costs of surety bonds in connection with financing activities,\n(C) amortization and write-offs of deferred financing fees, debt issuance costs, commissions, fees and expenses and expensing of bridge, commitment or financing fees and (D) items excluded from the definition of “Consolidated\nInterest Expense” pursuant to clauses (i) through (xii) thereof;\n\n(ii)\ntaxes based on gross receipts, income, profits, revenue or capital, federal, foreign, state, provincial and\nterritorial income, franchise, excise, value added or similar taxes based on income, profits, revenue or capital and foreign withholding taxes, of such Person paid or accrued during such period (including in respect of repatriated funds), including\n(A) penalties, additions to tax and interest relating to such taxes or arising from any tax examinations and (B) Tax Distributions made to any direct or indirect holders of equity interests of such Person in respect of any such taxes;\n\n(iii)\namortization of such Person for such period (including amortization of goodwill, Capitalized Software\nExpenditures, internal labor costs and amortization of deferred financing fees, OID or costs);\n\n(iv)\ndepreciation expense of such Person for such period;\n\n(v)\nnon-cash items of such Person for such period; provided that if\nany such non-cash item represents an accrual or reserve for potential cash items in any future period, (A) the Initial Borrower may determine not to add back such\nnon-cash item in the current period and (B) to the extent the Initial Borrower decides to add back such non-cash expense or charge in the current period, the cash\npayment in respect thereof in such future period will be subtracted from Consolidated EBITDA in such future period to such extent;\n\n(vi)\ncharges and expenses incurred in connection with litigation (including threatened litigation), any\ninvestigation or proceeding (or any threatened investigation or proceeding) by a regulatory, governmental or law enforcement body (including any attorney general);\n\n(vii)\nitems (A) covered by a binding indemnification, reimbursement, guaranty, purchase price adjustment or\nrefunding obligation or insurance, (B) paid or payable (directly or indirectly) by a third party (except to the extent such payment gives rise to reimbursement obligations) or with the proceeds of a contribution to equity capital of such Person\nor (C) such Person is directly or indirectly reimbursed for such item by a third party;\n\n(viii)\n(A) the amount of management, monitoring, consulting and advisory fees (including termination fees),\nindemnities and expenses paid, payable or accrued in such period by such Person to any Investor (or their management companies), (B) the amount of payments made to option, phantom\n\n-17-\n\nequity or profits interest holders of any Parent Entity or any of its direct or indirect parent companies in connection with, or as a result of, any distribution being made to shareholders of\nsuch Person or any Parent Entity, which payments are being made to compensate such option, phantom equity or profits interest holders as though they were shareholders at the time of, and entitled to share in, such distribution, including any cash\nconsideration for any repurchase of equity, in each case to the extent permitted in this Agreement and (C) the amount of fees, expenses and indemnities paid to directors, including of any Parent Entity;\n\n(ix)\n[reserved];\n\n(x)\nexpenses, revenue and lost profits of such Person for such period with respect to liability or casualty events\nor business interruption, in each case, to the extent covered by insurance;\n\n(xi)\nthe amount of any income attributable to noncontrolling or minority interests of third parties in any non-wholly owned Subsidiary deducted excluding cash distributions in respect thereof;\n\n(xii)\nall charges, losses, costs, expenses, accruals or reserves in connection with or related to (A) the\nrollover, acceleration or payout of equity interests held by officers or employees and (B) payments made to holders of options, phantom equity, profits interests or other derivative equity interests of such Person or any direct or indirect\nparent thereof in connection with, or as a result of, any distribution being made to equity holders of such Person or any direct or indirect parent thereof, including (x) payments made to compensate such holders as though they were equity\nholders at the time of, and entitled to share in, such distribution, and (y) all dividend equivalent rights owed pursuant to any compensation or equity arrangement;\n\n(xiii)\n(A) fees, expenses or charges relating to curtailments or modifications to pension and post-retirement employee\nbenefit plans, costs or expenses (including any payroll taxes) incurred pursuant to any management equity plan, profits interest, severance agreement or stock option plan or any other management or employee benefit plan or agreement or any stock\nsubscription, stockholders or partnership agreement and any payments in the nature of compensation or expense reimbursement made to independent board members and (B) any net pension or other post-retirement benefit costs representing\namortization of unrecognized prior service costs, actuarial losses, including amortization of such amounts arising in prior periods, amortization of the unrecognized net obligation (and loss or cost), and any other items of a similar nature, in\naccordance with GAAP;\n\n(xiv)\nlosses, fees or discounts on a sale, conveyance, contribution or other transfer of receivables, securitization\nassets and related assets in connection with a securitization or other receivables financing or factoring transaction not prohibited hereunder;\n\n(xv)\nstart-up charges and expenses and de novo losses, including, without\nlimitation, any losses with respect to any new location opening, new project, new market or new service offerings or vertical offerings, which accrued during the first thirty-six (36) months after opening\nsuch new location, new project, new market or initially offering such new service offerings or vertical offerings and pre-opening charges, expenses, losses and start-up\ncosts and any other charges, expenses, losses and start-up costs related to the acquisition, opening, organizing and entering into of any new contracts, new market, facilities or other projects and all other\nlocation-specific costs incurred prior to the first (1st) day the new facilities or new projects are determined to be open for business (as determined by the Initial Borrower) and costs associated with upgrading, remodeling or construction of new\nfacilities, locations or other projects or entering into of new contracts, initial testing and registration costs in new markets, the cost of feasibility studies, travel costs for employees engaged in activities relating to any or all of the\nforegoing, or entering into of new contracts and the allocation of general and administrative support in connection with any or all of the foregoing;\n\n(xvi)\nall losses (A) upon any sale, abandonment or other disposition of any asset of the Restricted Parties\n(including pursuant to any Sale and Lease-Back Transaction) that is not sold, abandoned or otherwise disposed in the ordinary course of business (as determined in good faith by the Initial Borrower) and (B) from operations or assets expected to\nbe disposed of, abandoned and/or discontinued within twelve (12) months after the end of the relevant period;\n\n-18-\n\n(xvii)\n(A) earn-out and contingent consideration obligations (including to the\nextent accounted for as bonuses, compensation or otherwise) and adjustments thereof and purchase price adjustments, in each case in connection with acquisitions; and (B) amount paid to any equity holder (other than a Loan Party) of a Qualified\nRestricted Subsidiary in the form of compensation from the proceeds of any disposition;\n\n(xviii)\nnet realized losses from Swap Agreements or embedded derivatives that require similar accounting treatment in\naccordance with GAAP;\n\n(xix)\nany expenses, fees, charges or losses (other than expenses, fees, charges or losses covered by clauses\n(xii) and (xiii)) related to any equity offering or issuance, Investment (including compensation expense directly related thereto), acquisition, disposition, conveyance, Refinancing or recapitalization permitted hereunder or the incurrence of\nIndebtedness permitted to be incurred hereunder (in each case, including any such transaction consummated prior to the Effective Date and any such transaction undertaken but not completed and/or not successful), including (A) such fees,\nexpenses or charges related to this Agreement and any other Loan Document, (B) such fees, expenses or charges related to the Transactions and (C) such fees, expenses or charges related to any amendment or other modification, including any\nrefinancing of the Loans or any Indebtedness permitted by Section 6.01;\n\n(xx)\nrealized foreign exchange losses resulting from the impact of foreign currency changes on the valuation of\nassets or liabilities on the balance sheet of any Restricted Party;\n\n(xxi)\nany cost and expense in relation with the standing up of a business (including, without limitation, duplicative\ncosts, costs related to any transition services agreement (or similar agreement howsoever described) and employee compensation costs for carve-out related roles); and\n\n(xxii)\n“bad debt” expense related to revenue earned prior to the Effective Date or any Permitted\nAcquisition or Investment;\n\nplus\n\n(b)\nat the election of the Initial Borrower, without duplication, (i) the amount of “run rate”\nsynergies, cost savings, operating expense reductions, operating improvements, business optimization, revenue enhancements, revenue synergies, pricing initiatives, restructuring initiatives and other similar initiatives expected by the Initial\nBorrower in good faith to result from actions taken, committed to be taken or expected to be taken (in the good faith determination of the Initial Borrower) (collectively, the “ Expected Run Rate Benefit ”), including any synergies,\ncost savings, operating improvements, operating expense reductions, business optimization, revenue enhancements, pricing initiatives, restructuring initiatives and other similar initiatives related to (x) the Transactions (including prior to\nthe Effective Date) and (y) acquisitions, dispositions and other specified transactions, restructurings, cost savings initiatives and other initiatives, or actions or in connection with, or incurred by or on behalf of, any joint venture of any\nRestricted Party (whether accounted for on the financial statements of any such joint venture or the Initial Borrower) (which amounts will be determined by the Initial Borrower in good faith, added to Consolidated EBITDA until fully realized and\ncalculated on a Pro Forma Basis as though amounts had been realized on the first (1st) day of the period for which Consolidated EBITDA is being determined and as if such amounts were realized during the entirety of such period), net of the\namount of actual benefits realized during such period from such actions; provided that the amounts added back pursuant to this clause (b)(i)(y) are expected by the Initial Borrower in good faith to result from actions taken, committed to be\ntaken or planned to be taken (in the good faith determination of the Initial Borrower) within thirty-six (36) months after the end of the relevant period in which any change that is expected to result in\nsuch Expected Run Rate Benefit occurs; (ii) pro forma adjustments for the aggregate amount of annualized Consolidated Net Income and Consolidated EBITDA that is projected by the Initial Borrower to result from (x) new customer contracts or\nthird-party contracts (or\n\n-19-\n\namendments thereto) entered into or booked during such period, (y) increased pricing, volume or scope of products or services provided in existing contracts or (z) the entry into new\nmarkets, locations, facilities or units (or the acquisition thereof) (in each case of clauses (ii)(x) through (z), calculated on a Pro Forma Basis as though such Consolidated EBITDA had been realized on the first day of such period and as if such\namounts were realized during the entirety of such period); (iii) cash receipts (or any netting arrangements resulting in reduced cash expenditures) not included in the calculation of Consolidated Net Income in any period to the extent non-cash gains relating to such income were deducted in the calculation of Consolidated EBITDA pursuant to paragraph (c) below for any previous period and not added back or was realized in a prior period; and\n(iv) addbacks and adjustments (including pro forma adjustments) (a) of the type contained in any quality of earnings table or report or any client information memorandum or similar diligence items delivered to the Administrative Agent\nconducted by financial advisors (which are either nationally recognized or reasonably acceptable to the Administrative Agent (it being understood and agreed that any of the “Big Four” accounting firms are acceptable)) or\n(b) determined on a basis consistent with Article 11 of Regulation S-X promulgated under the Exchange Act and as interpreted by the staff of the SEC (or any successor agency); and (v) all addbacks\nand adjustments (including pro forma adjustments) of the type or similar to those set forth in the Model or any client information memorandum or lender presentation furnished by (or on behalf of) the Borrower to the Term Agent in connection with\nsyndication of the Initial Term Loans (in each case, as may be updated prior to the Effective Date in the reasonable discretion of the Lead Arrangers);\n\nplus\n\n(c)\nat the election of the Initial Borrower, the pro forma result projected by the Initial Borrower to result in\nconnection with any acquisitions and investments (including any acquisition or investment subject to a letter of intent or definitive acquisition agreement and including the effect of any expected debt financing in connection therewith), business\nexpansion, capital expenditure or other projects and dispositions of business entities or properties or assets constituting a division or line of business of any business entity or any joint venture of any Restricted Party (whether accounted for on\nthe financial statements of any such joint venture or the Initial Borrower) or any other transaction (including purchases and dispositions of Intellectual Property if pro forma treatment is elected by the Initial Borrower at its discretion) and, for\nany facility, site or project that is yet to be completed or operating for business for a period of thirty-six (36) months or less (including, for the avoidance of doubt, any facility, site or project\nthat has been completed during the previous thirty-six (36) months) as of the end of the relevant applicable period, pro forma effect shall be given so that the Consolidated EBITDA of such facility, site\nor project reflects the expected mature earnings profile of such facility, site or project as determined by the Initial Borrower in good faith to reflect a full twelve (12) months of earnings (net of the amount of actual benefits realized\nduring such period from such actions);\n\nminus\n\n(d)\nwithout duplication:\n\n(i)\nany non-cash items increasing Consolidated Net Income of such Person\nfor such period, excluding any gains that represent the reversal of any accrual of, or cash reserve for, anticipated cash charges in any prior period (other than such cash charges that have been added back to Consolidated Net Income in calculating\nConsolidated EBITDA in accordance with this definition);\n\n(ii)\nthe amount of any loss attributable to noncontrolling or minority interests of third parties in any non-wholly owned subsidiary;\n\n(iii)\nrealized foreign exchange income or gains resulting from the impact of foreign currency changes on the\nvaluation of assets or liabilities on the balance sheet of any Restricted Party; and\n\n(iv)\nnet realized gains from Swap Agreements or embedded derivatives that require similar accounting treatment,\n\nin each case, as determined on a consolidated basis for the Restricted Parties in accordance with GAAP; provided that,\n\n-20-\n\n(I) there shall be included in determining Consolidated EBITDA for any period, without\nduplication, the Acquired EBITDA of any Person, property, business or asset acquired by any Restricted Parties during such period (other than any Unrestricted Subsidiary) whether such acquisition occurred before or after the Effective Date to the\nextent not subsequently sold, transferred or otherwise disposed of (but not including the Acquired EBITDA of any related Person, property, business or assets to the extent not so acquired) (each such Person, property, business or asset acquired,\nincluding pursuant to the Transactions or pursuant to a transaction consummated prior to the Effective Date, and not subsequently so disposed of, an “ Acquired Entity or Business ”), and the Acquired EBITDA of any Unrestricted\nSubsidiary that is converted into a Restricted Subsidiary during such period (each, a “ Converted Restricted Subsidiary ”), in each case based on the Acquired EBITDA of such Pro Forma Entity for such period (including the portion\nthereof occurring prior to such acquisition or conversion) determined on a historical Pro Forma Basis; and\n(II) there shall be\n(A) excluded in determining Consolidated EBITDA for any period the Disposed EBITDA of any Person, property, business or asset (other than any Unrestricted Subsidiary) sold, transferred or otherwise disposed of, closed or classified as\ndiscontinued operations by any Restricted Party during such period (but if such operations are classified as discontinued due to the fact that they are subject to an agreement to dispose of such operations, at the option of the Borrowers, only when\nand to the extent such operations are actually disposed of) (each such Person, property, business or asset so sold, transferred or otherwise disposed of, closed or classified, a “ Sold Entity or Business ”), and the Disposed EBITDA\nof any Restricted Subsidiary that is converted into an Unrestricted Subsidiary during such period (each, a “ Converted Unrestricted Subsidiary ”), in each case based on the Disposed EBITDA of such Sold Entity or Business or\nConverted Unrestricted Subsidiary for such period (including the portion thereof occurring prior to such sale, transfer, disposition, closure, classification or conversion) determined on a historical Pro Forma Basis and (B) included in\ndetermining Consolidated EBITDA for any period in which a Sold Entity or Business is disposed, an adjustment equal to the Pro Forma Disposal Adjustment with respect to such Sold Entity or Business (including the portion thereof occurring prior to\nsuch disposal) as specified in the Pro Forma Disposal Adjustment certificate delivered to the Administrative Agent.\nNotwithstanding the\nforegoing, for purposes of calculating the availability under any basket, ratio or other financial metric under this Agreement or compliance with any provision of this Agreement, at the election of the Initial Borrower, the aggregate amount of\nConsolidated EBITDA (subject to any applicable caps and limitations set forth herein) projected by the Initial Borrower to be attributable to Letter of Intent Transactions may be included in the calculation of Consolidated EBITDA to the extent such\ntransactions remain unclosed and unterminated during such period.\n",
+     "contentHash": "66762e7cdd751b2370838af8468c951b0230dd9bd42d30d8d2240265462084b1",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "Excluded Swap Obligation",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Swap Obligation",
+      "Guarantee"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Qualitative regulatory-eligibility test (CFTC/'eligible contract participant' status), not a numeric formula; text fully captured verbatim, nothing computational to represent."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any Swap Obligation if...such Guarantor's failure...to constitute an 'eligible contract participant'...or any other Swap Obligation designated as an 'Excluded Swap Obligation'..."
+    },
+    {
+     "localRef": "d2",
+     "termName": "Excluded Taxes",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Other Connection Taxes",
+      "FATCA"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Enumerated exclusion list is fully descriptive/qualitative; no numeric component."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means...(a) Taxes imposed on (or measured by) net income or profits...(b) any Tax attributable to Section 2.15(e) failure...(c) U.S. federal withholding Taxes...(d) any Tax imposed pursuant to FATCA."
+    },
+    {
+     "localRef": "d3",
+     "termName": "Excluded Term Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MAX",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "amount": 1440000000,
+        "currency": "USD",
+        "citation": "§1.01",
+        "inventoryItemIds": [
+         "975d416ed9f098988605b883"
+        ]
+       },
+       {
+        "kind": "MULTIPLY",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "value": 2,
+          "citation": "§1.01",
+          "inventoryItemIds": [
+           "dc9d7a4454fd3d2ca39d94d9"
+          ]
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "metricName": "Consolidated EBITDA"
+         }
+        ],
+        "citation": "§1.01",
+        "inventoryItemIds": [
+         "dc9d7a4454fd3d2ca39d94d9"
+        ]
+       }
+      ],
+      "citation": "§1.01",
+      "inventoryItemIds": [
+       "7fbbd03edaed55220dea29fe"
+      ]
+     },
+     "dependsOnTerms": [
+      "Incremental Term Loans",
+      "Ratio Incremental Amount",
+      "Maturity Exception Facility",
+      "Initial Term Loans",
+      "Consolidated EBITDA",
+      "Permitted Acquisition"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The dollar cap component (clause (d): greater of $1,440.0mm and 200% of Consolidated EBITDA) is fully represented.",
+      "Clauses (a),(b),(c) and (e) are additional qualitative eligibility conditions (form of debt, not incurred under the Ratio Incremental Amount/Maturity Exception Facility, maturity later than Initial Term Loans, transaction-purpose test) that are not numeric formula components and are not modeled as expression logic within this WireDefinition; preserved only in excerpt."
+     ],
+     "citation": "§1.01",
+     "excerpt": "in an original aggregate principal amount for any such Incremental Term Loan or other Indebtedness then being established not exceeding the greater of $1,440.0 million and 200% of Consolidated EBITDA (calculated on a Pro Forma Basis) for the most recently ended Test Period"
+    },
+    {
+     "localRef": "d4",
+     "termName": "Existing Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Parties"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive scoping definition (existing on Effective Date plus accreted interest); no numeric threshold."
+     ],
+     "citation": "§1.01",
+     "excerpt": "Indebtedness of the Restricted Parties in existence on the Effective Date and any Guarantees thereof, plus interest accruing (or the accretion of discount) thereon."
+    },
+    {
+     "localRef": "d5",
+     "termName": "Existing Liens",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Term is defined entirely by cross-reference to Section 9.02(b). getReferencedProvision resolved 'Section 9.02(b)' to Amendments/waiver-consent text (Required Lender consent mechanics), which contains no definition of 'Existing Liens' - indicating either a mismatched/renumbered cross-reference or a location this tool set could not correctly resolve. The actual substantive meaning of 'Existing Liens' could not be confirmed."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term set forth in Section 9.02(b)."
+    },
+    {
+     "localRef": "d6",
+     "termName": "Expected Run Rate Benefit",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Consolidated EBITDA"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Term is defined entirely by cross-reference into the body of the 'Consolidated EBITDA' definition. getDefinition('Expected Run Rate Benefit') found no standalone definition, and getDefinition('Consolidated EBITDA') returned only a truncated head portion of that (very long) definition that did not reach the 'Expected Run Rate Benefit' passage (a separate context region for Consolidated EBITDA was also truncated at budget). Substantive meaning not retrievable within tool/context budget."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of \"Consolidated EBITDA.\""
+    },
+    {
+     "localRef": "d7",
+     "termName": "Extension Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Incremental Facility",
+      "Term Facility",
+      "Permitted Amendment"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition states two alternative referential rules (amount equal to the extended/replaced portion of a Facility); fully descriptive, not reducible to a static numeric formula, but no missing evidence - full text given."
+     ],
+     "citation": "§1.01",
+     "excerpt": "(a) in the case of an Incremental Facility that serves to effectively extend the maturity...an amount equal to the portion of the Term Facility...to be replaced...or (b)...an amount equal to the portion of the relevant terminated commitment or loan."
+    },
+    {
+     "localRef": "d8",
+     "termName": "Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Revolving Facility",
+      "Initial Term Loans",
+      "Incremental Facility Amendment",
+      "Incremental Term Loans",
+      "Refinancing Amendment",
+      "Other Term Commitments",
+      "Other Loans"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Enumerated list of facility categories; fully descriptive."
+     ],
+     "citation": "§1.01",
+     "excerpt": "each Revolving Facility, the facility comprised of the Initial Term Loans, each facility created in connection with an Incremental Facility Amendment...and each facility created in connection with a Refinancing Amendment..."
+    },
+    {
+     "localRef": "d9",
+     "termName": "Fair Market Value",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Good-faith management/board determination standard, with a conclusiveness proviso for third-party valuation reports; qualitative, fully captured."
+     ],
+     "citation": "§1.01",
+     "excerpt": "determined in good faith by senior management or the Board of Directors of the Initial Borrower; provided that if supported by a valuation report...shall be conclusive for all purposes."
+    },
+    {
+     "localRef": "d10",
+     "termName": "Fair Value",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Willing-buyer/willing-seller enterprise valuation standard; qualitative, fully captured."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the amount at which the assets...of the Borrowers and their respective Subsidiaries taken as a whole would change hands between a willing buyer and a willing seller..."
+    },
+    {
+     "localRef": "d11",
+     "termName": "FATCA",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Statutory reference definition; qualitative, fully captured."
+     ],
+     "citation": "§1.01",
+     "excerpt": "Sections 1471 through 1474 of the Code as in effect on the Effective Date...and any fiscal or regulatory legislation, rules, guidance notes and or practices adopted by any jurisdiction to implement the foregoing."
+    },
+    {
+     "localRef": "d12",
+     "termName": "FCPA",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pure pointer to Section 3.17(b); the pointer itself is the entire definition and is fully captured."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 3.17(b)."
+    },
+    {
+     "localRef": "d13",
+     "termName": "Federal Funds Effective Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MAX",
+      "operands": [
+       {
+        "kind": "METRIC_REFERENCE",
+        "metricName": "NYFRB-published effective federal funds rate",
+        "valueType": "RATIO"
+       },
+       {
+        "kind": "RATIO",
+        "value": 0
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Rate is defined by reference to an external NYFRB-published figure with a zero floor; the zero-floor mechanic is fully represented, the underlying market rate itself is external data referenced generically via METRIC_REFERENCE."
+     ],
+     "citation": "§1.01",
+     "excerpt": "an interest rate per annum equal to the rate calculated by the NYFRB...provided that if the Federal Funds Effective Rate...would be less than zero (0), such rate shall be deemed to be zero (0)..."
+    },
+    {
+     "localRef": "d14",
+     "termName": "Fee Letter",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DATE_LITERAL",
+      "isoDate": "2026-06-12",
+      "citation": "§1.01",
+      "inventoryItemIds": [
+       "eb4c99643218b586dfccf301"
+      ]
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully stated: a specific fee letter dated June 12, 2026 between the Initial Borrower and Lead Arrangers, as amended from time to time."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the Fee Letter, dated June 12, 2026, between the Initial Borrower and the Lead Arrangers, as amended, restated, modified or supplemented from time to time..."
+    },
+    {
+     "localRef": "d15",
+     "termName": "FILO Tranche",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pure pointer to Section 2.18(g); fully captured as-is."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 2.18(g)."
+    },
+    {
+     "localRef": "d16",
+     "termName": "Financial Officer",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Enumerated officer titles; qualitative, fully captured."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the chief financial officer, principal accounting officer, treasurer or controller of the Initial Borrower."
+    },
+    {
+     "localRef": "d17",
+     "termName": "First Commitment Application Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pure pointer to Section 6.05(b)(2); fully captured as-is."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term set forth in Section 6.05(b)(2)."
+    },
+    {
+     "localRef": "d18",
+     "termName": "First Lien Intercreditor Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive form/parties definition referencing Exhibit E-2; qualitative, fully captured."
+     ],
+     "citation": "§1.01",
+     "excerpt": "an Intercreditor Agreement, substantially in the form of Exhibit E-2, among the Collateral Agent and the Senior Representatives for one or more classes of obligations to be secured pari passu..."
+    },
+    {
+     "localRef": "d19",
+     "termName": "First Lien Leverage Ratio",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DIVIDE",
+      "numerator": {
+       "kind": "METRIC_REFERENCE",
+       "metricName": "Consolidated First Lien Debt (excluding Excluded Revolving Loans)"
+      },
+      "denominator": {
+       "kind": "METRIC_REFERENCE",
+       "metricName": "Consolidated EBITDA"
+      },
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Ratio formula (numerator/denominator) is fully stated; underlying component metrics 'Consolidated First Lien Debt' and 'Excluded Revolving Loans' are referenced generically as is standard for metric references not otherwise required to be fully unpacked."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the ratio of (a) Consolidated First Lien Debt as of such date (excluding any Excluded Revolving Loans) as of such date to (b) Consolidated EBITDA for the Test Period as of such date."
+    },
+    {
+     "localRef": "d20",
+     "termName": "Fixed Amounts",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pure pointer to Section 1.08(f); fully captured as-is."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 1.08(f)."
+    },
+    {
+     "localRef": "d21",
+     "termName": "Fixed Charges",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUM",
+      "operands": [
+       {
+        "kind": "METRIC_REFERENCE",
+        "metricName": "Consolidated Interest Expense"
+       },
+       {
+        "kind": "METRIC_REFERENCE",
+        "metricName": "cash dividends or other distributions paid on Preferred Stock"
+       },
+       {
+        "kind": "METRIC_REFERENCE",
+        "metricName": "cash dividends or other distributions paid on Disqualified Stock"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Consolidated Interest Expense"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Three-part sum fully stated with 'without duplication' qualifier; each component represented as a metric reference."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the sum of: (1) Consolidated Interest Expense...(2) all cash dividends or other distributions paid...on any series of Preferred Stock...and (3)...on any series of Disqualified Stock..."
+    },
+    {
+     "localRef": "d22",
+     "termName": "Fixed Incremental Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUBTRACT",
+      "left": {
+       "kind": "SUM",
+       "operands": [
+        {
+         "kind": "MAX",
+         "operands": [
+          {
+           "kind": "MONEY",
+           "amount": 720000000,
+           "currency": "USD",
+           "citation": "§1.01",
+           "inventoryItemIds": [
+            "cff6aba64520d09fac7ca41f"
+           ]
+          },
+          {
+           "kind": "MULTIPLY",
+           "operands": [
+            {
+             "kind": "PERCENT",
+             "value": 1,
+             "citation": "§1.01",
+             "inventoryItemIds": [
+              "3a78fe5b5a1e4208a5236ac1"
+             ]
+            },
+            {
+             "kind": "METRIC_REFERENCE",
+             "metricName": "Consolidated EBITDA"
+            }
+           ],
+           "citation": "§1.01",
+           "inventoryItemIds": [
+            "3a78fe5b5a1e4208a5236ac1"
+           ]
+          }
+         ],
+         "citation": "§1.01",
+         "inventoryItemIds": [
+          "9e86ceeb6f2f72225585dbba"
+         ]
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "semanticDescription": "unused amounts under Section 6.01(b)(12)(b)",
+         "reason": "Computing 'unused' headroom under an external, usage-dependent basket (Section 6.01(b)(12)(b)) requires that section's own current utilization, which is not knowable from this definitions-only text; Section 6.01(b)(12)(b)'s own cap text was retrievable (greater of $720.0mm and 100% of Consolidated EBITDA) but its remaining/unused amount is not a static value.",
+         "sourceEvidence": "§1.01 (Fixed Incremental Amount, clause (b)); Section 6.01(b)(12)(b)",
+         "inventoryItemIds": [
+          "8b28d97d989435401a6d146f"
+         ]
+        },
+        {
+         "kind": "DEFINED_TERM_REFERENCE",
+         "termName": "General Lien Basket Reallocated Amount",
+         "inventoryItemIds": [
+          "8b28d97d989435401a6d146f"
+         ]
+        },
+        {
+         "kind": "DEFINED_TERM_REFERENCE",
+         "termName": "Available RP Capacity Amount",
+         "inventoryItemIds": [
+          "8b28d97d989435401a6d146f"
+         ]
+        }
+       ],
+       "citation": "§1.01",
+       "inventoryItemIds": [
+        "8b28d97d989435401a6d146f"
+       ]
+      },
+      "right": {
+       "kind": "SUM",
+       "operands": [
+        {
+         "kind": "UNSUPPORTED",
+         "semanticDescription": "aggregate principal amount of (i) Incremental Facilities, (ii) Incremental Equivalent Debt, and (iii) Indebtedness incurred in reliance on Section 6.01(b)(1)(Z) or (14)(e)(2), in each case previously incurred in reliance on the Fixed Incremental Amount and not subsequently reclassified",
+         "reason": "'Incremental Facilities' has no standalone definition found anywhere in this instrument, and 'Section 6.01(b)(1)(Z)' is a genuinely ambiguous cross-reference (multiple colliding occurrences under 6.01(b)(1)) that cannot be resolved without guessing; the deduction component therefore cannot be faithfully quantified.",
+         "sourceEvidence": "§1.01 (Fixed Incremental Amount, clause (e))",
+         "inventoryItemIds": [
+          "8b28d97d989435401a6d146f"
+         ]
+        }
+       ],
+       "citation": "§1.01",
+       "inventoryItemIds": [
+        "8b28d97d989435401a6d146f"
+       ]
+      },
+      "citation": "§1.01",
+      "inventoryItemIds": [
+       "8b28d97d989435401a6d146f"
+      ]
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "General Lien Basket Reallocated Amount",
+      "Available RP Capacity Amount",
+      "Incremental Equivalent Debt"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The base component (greater of $720.0mm and 100% of Consolidated EBITDA over the most recent four fiscal quarters) is fully represented.",
+      "The additive 'unused amounts under Section 6.01(b)(12)(b)' component is usage-dependent and not statically computable from this text; represented as UNSUPPORTED.",
+      "The additive 'General Lien Basket Reallocated Amount' and 'Available RP Capacity Amount' components are represented as defined-term references without further resolution (both are themselves usage-dependent optional reallocations).",
+      "The subtractive component (amounts previously drawn under the Fixed Incremental Amount via Incremental Facilities/Incremental Equivalent Debt/Section 6.01(b)(1)(Z) or (14)(e)(2)) references an undefined term ('Incremental Facilities') and a genuinely ambiguous section cross-reference; represented as UNSUPPORTED."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the sum of (a) the greater of (i) $720.0 million and (ii) an amount equal to 100% of Consolidated EBITDA on a Pro Forma Basis...plus (b) any unused amounts under Section 6.01(b)(12)(b), plus (c)...General Lien Basket Reallocated Amount, plus (d)...Available RP Capacity Amount minus (e)...the sum of the aggregate principal amount of all (i) Incremental Facilities, (ii) Incremental Equivalent Debt and (iii) Indebtedness incurred in reliance on Section 6.01(b)(1)(Z) or (14)(e)(2)..."
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "inventoryDispositions": [
+    {
+     "inventoryItemId": "7fbbd03edaed55220dea29fe",
+     "disposition": "CONSUMED",
+     "note": "Consumed by Excluded Term Loans (d3) outer MAX cap expression."
+    },
+    {
+     "inventoryItemId": "975d416ed9f098988605b883",
+     "disposition": "CONSUMED",
+     "note": "Consumed by Excluded Term Loans (d3) MONEY operand."
+    },
+    {
+     "inventoryItemId": "dc9d7a4454fd3d2ca39d94d9",
+     "disposition": "CONSUMED",
+     "note": "Consumed by Excluded Term Loans (d3) MULTIPLY operand."
+    },
+    {
+     "inventoryItemId": "eb4c99643218b586dfccf301",
+     "disposition": "CONSUMED",
+     "note": "Consumed by Fee Letter (d14) DATE_LITERAL."
+    },
+    {
+     "inventoryItemId": "9e86ceeb6f2f72225585dbba",
+     "disposition": "CONSUMED",
+     "note": "Consumed by Fixed Incremental Amount (d22) base MAX expression."
+    },
+    {
+     "inventoryItemId": "cff6aba64520d09fac7ca41f",
+     "disposition": "CONSUMED",
+     "note": "Consumed by Fixed Incremental Amount (d22) MONEY operand."
+    },
+    {
+     "inventoryItemId": "3a78fe5b5a1e4208a5236ac1",
+     "disposition": "CONSUMED",
+     "note": "Consumed by Fixed Incremental Amount (d22) MULTIPLY operand."
+    },
+    {
+     "inventoryItemId": "8b28d97d989435401a6d146f",
+     "disposition": "CONSUMED",
+     "note": "Consumed across Fixed Incremental Amount (d22) SUM/UNSUPPORTED/DEFINED_TERM_REFERENCE nodes representing clauses (b)-(e); the usage-dependent sub-pieces are UNSUPPORTED, the defined-term sub-pieces are DEFINED_TERM_REFERENCE."
+    }
+   ],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01 'Fixed Incremental Amount' clauses (b)-(e), which incorporate 'unused amounts under Section 6.01(b)(12)(b)' and a deduction for amounts previously drawn against this very definition under other external, usage-dependent baskets/sections not modeled in this submission.",
+     "semanticRequirement": "A WireDefinition (unlike WireRule) has no `dependsOn` field to formally record a cross-unit dependency (e.g. SHARES_CAPACITY_WITH / LIMITED_BY against an exact external section reference) when a defined TERM's own formula - not a rule's capacity - incorporates another section's usage-dependent headroom.",
+     "whyExistingPrimitivesFail": "UNSUPPORTED and DEFINED_TERM_REFERENCE can flag the gap and name the referenced term, but neither preserves a structured, queryable pointer to the exact external section reference (e.g. 'Section 6.01(b)(12)(b)') the way dependsOn does for WireRule; the citation is only recoverable from a free-text sourceEvidence string on the UNSUPPORTED node.",
+     "candidateGeneralizedPrimitive": "Add an optional `dependsOn` array (same shape as WireRule's) to WireDefinition so definitional formula components can carry the same structured SHARES_CAPACITY_WITH/LIMITED_BY/REQUIRES cross-references that rules can."
+    }
+   ],
+   "overallNotes": [
+    "This submission covers §1.01 defined terms from 'Excluded Swap Obligation' through 'Fixed Incremental Amount' (22 distinct terms) - every term in the supplied text was extracted as its own WireDefinition; none were silently dropped.",
+    "No WireRule/WireSharedCapacity outputs were produced: this source region is a definitions article, not an operative permission/prohibition/ratio-test section, so there is no independently operative covenant rule to compile here (the definitions themselves feed rules located elsewhere, e.g. Section 6.01).",
+    "'Existing Liens' (d5): the cross-reference to Section 9.02(b) was actively resolved via getReferencedProvision, but the returned text is an Amendments/waiver-consent provision, not a Liens definition - flagged MISSING_CONTEXT as a likely mismatched/renumbered cross-reference rather than guessed.",
+    "'Expected Run Rate Benefit' (d6): actively attempted via getDefinition (both for the term itself and for 'Consolidated EBITDA'); the term is embedded deep within the very long 'Consolidated EBITDA' definition, which remains truncated at the available context/tool budget - flagged MISSING_CONTEXT rather than guessed.",
+    "'Fixed Incremental Amount' (d22): the two additive components 'unused amounts under Section 6.01(b)(12)(b)' and the full clause (e) deduction (referencing the undefined term 'Incremental Facilities' and an ambiguous 'Section 6.01(b)(1)(Z)' cross-reference already flagged as unresolvable in the provided cross-reference table) are represented as UNSUPPORTED nodes nested inside an otherwise-complete SUM/SUBTRACT tree - the computable base component ($720.0mm / 100% Consolidated EBITDA greater-of test) is preserved intact per the PARTIAL-over-discard principle.",
+    "Several terms (FCPA, FILO Tranche, Fixed Amounts, First Commitment Application Period, Existing Liens, Expected Run Rate Benefit) are pure cross-reference pointers; where the pointer resolved to usable text it is marked COMPLETE, where it did not (Existing Liens, Expected Run Rate Benefit) it is marked MISSING_CONTEXT after an actual retrieval attempt."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T15:29:28.996Z",
+   "inputTokens": 105796,
+   "outputTokens": 25281,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 3,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 225019,
+   "calculatedCostUsd": 0.46440200000000004
+  },
+  "cacheKey": "c98d3f58036c1f0360df40ad4cda5c9fde0947b5c3d950dacd9cb6c392cd37af",
+  "compiledAt": "2026-09-14T15:29:28.996Z"
+ },
+ "shardInputSummary": {
+  "candidateRef": "phase-3-validation:chwy:1.01#shard:bf3da01cb454860cdf5f",
+  "operativeChars": 10233,
+  "ownedInventoryItems": 8,
+  "contextRegions": 6,
+  "bundleItems": 0,
+  "unresolvedDependencies": 48
+ },
+ "attemptsSoFar": 1
+}

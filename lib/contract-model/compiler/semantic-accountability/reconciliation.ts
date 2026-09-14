@@ -33,10 +33,11 @@
  * Reads the final IR type-only as a COMPARISON TARGET (independence contract
  * in types.ts) - never the compiler's reasoning, never the verifier.
  */
+import { functionsOf } from "./semantic-functions";
 import type { IRCapacityExpression, IRDefinition, IRExpression, IRRule, IRSharedCapacity } from "../../ir/types";
 import { numbersMatch } from "./quantitative";
 import { INVENTORY_DISPOSITIONS, SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION } from "./types";
-import type { FrozenSemanticInventory, InventoryDisposition, QuantitativeDisposition, QuantitativeValue, ReconciliationItem, SemanticAccountabilityResult, SemanticInventoryItem, SourceContextState } from "./types";
+import type { AccountabilitySupportSummary, FrozenSemanticInventory, InventoryDisposition, QuantitativeDisposition, QuantitativeValue, ReconciliationItem, SemanticAccountabilityResult, SemanticInventoryItem, SourceContextState } from "./types";
 
 export interface CompositionForReconciliation {
   rules: IRRule[];
@@ -365,13 +366,21 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
 
     let disposition: InventoryDisposition;
     let inferredPaths: string[] = [];
+    // F-6: an item consumed into an UNSUPPORTED node (or into that node's attempted structure) is UNSUPPORTED
+    // there by the composition's own most specific claim. A broader lineage claim on an enclosing composite,
+    // rule or definition never outvotes it - since partial composites keep their unsupported children in place
+    // as live IR, the enclosing node is itself REPRESENTED, and without this rule the item would be credited.
+    const directlyUnsupported = lineage.some((e) => e.kind === "UNSUPPORTED");
     if (lineage.length > 0) {
       if (anyValueMissing) {
         disposition = "MISSING_FROM_COMPOSITION";
         reasons.push(`composition lineage claims this item (${lineage.map((e) => e.irPath).join(", ")}) but ${quantitative.filter((q) => q.disposition === "VALUE_MISSING_FROM_COMPOSITION").map((q) => q.value.rawText).join(", ")} appears nowhere in the composed IR - a lineage claim without value correspondence does not count`);
-      } else if (lineage.some((e) => e.kind === "REPRESENTED") && !anyValueOnlyAttempted) {
+      } else if (lineage.some((e) => e.kind === "REPRESENTED") && !anyValueOnlyAttempted && !directlyUnsupported) {
         disposition = "REPRESENTED";
         reasons.push(`lineage: ${lineage.map((e) => e.irPath).join(", ")}${quantitative.length > 0 ? `; every stated value present (${quantitative.flatMap((q) => q.irPaths).join(", ")})` : ""}`);
+      } else if (directlyUnsupported && lineage.some((e) => e.kind === "REPRESENTED")) {
+        disposition = "UNSUPPORTED";
+        reasons.push(`consumed into an UNSUPPORTED node (${lineage.filter((e) => e.kind === "UNSUPPORTED").map((e) => e.irPath).join(", ")}) - the broader lineage claim at ${lineage.filter((e) => e.kind === "REPRESENTED").map((e) => e.irPath).join(", ")} does not override the composition's own most specific UNSUPPORTED claim`);
       } else if (lineage.some((e) => e.kind === "UNRESOLVED_DEPENDENCY") && !lineage.some((e) => e.kind === "REPRESENTED")) {
         disposition = "AMBIGUOUS";
         reasons.push(`carried as an unresolved cross-unit dependency (${lineage.map((e) => e.irPath).join(", ")}) - target not resolvable within this unit, never guessed`);
@@ -383,15 +392,17 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
       disposition = explicit.disposition;
       reasons.push(`composition explicitly dispositioned it ${explicit.disposition}${explicit.note ? `: ${explicit.note}` : ""}`);
     } else {
+      // v5 (F-5.1): dependency behaviour comes from the canonical functions (a v4 item maps its scalar role).
+      const dep = functionsOf(item).dependency;
       // Deterministic correspondence without lineage (disclosed as inferred).
       if (item.quantitativeValues.length > 0 && quantitative.every((q) => q.disposition === "VALUE_PRESENT_IN_IR")) {
         disposition = "REPRESENTED";
         inferredPaths = quantitative.flatMap((q) => q.irPaths);
         reasons.push(`no lineage declared, but every stated value is present in the composed IR (${inferredPaths.join(", ")}) - inferred by value correspondence`);
-      } else if (!anyValueMissing && (item.semanticRole === "DEPENDENCY" || item.semanticRole === "REFERENCE") && item.referencedTerms.some((t) => walk.termNames.has(t.toLowerCase()))) {
+      } else if (!anyValueMissing && (dep.includes("DEPENDENCY") || dep.includes("REFERENCE")) && item.referencedTerms.some((t) => walk.termNames.has(t.toLowerCase()))) {
         disposition = "REPRESENTED";
         reasons.push(`no lineage declared, but the referenced term(s) ${item.referencedTerms.filter((t) => walk.termNames.has(t.toLowerCase())).join(", ")} appear as references/dependencies in the composed IR - inferred by term correspondence`);
-      } else if (!anyValueMissing && (item.semanticRole === "DEPENDENCY" || item.semanticRole === "REFERENCE" || item.semanticRole === "SHARED_CAP") && item.referencedSections.some((s) => walk.unresolvedTargetRefs.some((u) => u.includes(s.replace(/\s+/g, "").toLowerCase().replace(/^(sections?|§)/, ""))))) {
+      } else if (!anyValueMissing && (dep.includes("DEPENDENCY") || dep.includes("REFERENCE") || dep.includes("SHARED_CAP")) && item.referencedSections.some((s) => walk.unresolvedTargetRefs.some((u) => u.includes(s.replace(/\s+/g, "").toLowerCase().replace(/^(sections?|§)/, ""))))) {
         disposition = "AMBIGUOUS";
         reasons.push(`the referenced section is carried as an unresolved cross-unit dependency in the composed IR - review required, never guessed`);
       } else if (item.quantitativeValues.length > 0 && quantitative.every((q) => q.disposition !== "VALUE_MISSING_FROM_COMPOSITION")) {
@@ -412,6 +423,8 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
       modelDisposition: explicit ? explicit.raw : null,
       quantitative,
       reason: reasons.join("; "),
+      // F-5.3B: support provenance rides along untouched - it never changes the disposition above.
+      ...(item.support ? { support: item.support } : {}),
     };
   });
 
@@ -440,11 +453,36 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
   if (reviewUncertainMissing.length > 0) reasons.push(`${reviewUncertainMissing.length} REVIEW_UNCERTAIN item(s) MISSING_FROM_COMPOSITION - materiality undetermined, never treated as immaterial: ${reviewUncertainMissing.map((r) => `${r.inventoryItemId} [${r.semanticRole}]`).join(", ")}`);
   if (danglingLineageReferences > 0) reasons.push(`${danglingLineageReferences} lineage/disposition reference(s) name an inventoryItemId that does not exist in the frozen inventory`);
 
+  // F-5.3B - SUPPORT TRUST PROPAGATION. Independent-pass support asymmetry is re-derived from the items themselves AND
+  // read from the ensemble record: either alone forces supportReviewRequired. A REPRESENTED singleton keeps full
+  // accountability credit (it is real, source-verified inventory) but the unit stays REVIEW_REQUIRED: RAW SOURCE
+  // COMPLETE + MATERIAL SINGLETON => REVIEW_REQUIRED, never COMPLETE. A CONFLICTED item is never resolved by a
+  // disposition of one side. Single-pass evidence carries no support provenance and is unaffected.
+  const supported = items.filter((r) => r.support);
+  const support: AccountabilitySupportSummary | undefined = supported.length > 0 || inventory.ensemble
+    ? (() => {
+        const byDisposition = Object.fromEntries(INVENTORY_DISPOSITIONS.map((d) => [d, { corroborated: 0, singleRun: 0, conflicted: 0 }])) as AccountabilitySupportSummary["byDisposition"];
+        let corroborated = 0, singleRun = 0, materialSingleRun = 0, conflicted = 0, materialConflicted = 0;
+        for (const r of supported) {
+          const st = r.support!.supportStatus;
+          const isMaterial = r.materiality === "CRITICAL" || r.materiality === "MATERIAL";
+          if (st === "CORROBORATED") { corroborated++; byDisposition[r.disposition].corroborated++; }
+          else if (st === "SINGLE_RUN") { singleRun++; byDisposition[r.disposition].singleRun++; if (isMaterial) materialSingleRun++; }
+          else { conflicted++; byDisposition[r.disposition].conflicted++; if (isMaterial) materialConflicted++; }
+        }
+        return { passIds: inventory.ensemble?.passIds ?? [...new Set(supported.flatMap((r) => r.support!.supportingPasses))].sort(), corroborated, singleRun, materialSingleRun, conflicted, materialConflicted, byDisposition };
+      })()
+    : undefined;
+  const supportReviewRequired = (inventory.ensemble?.supportReviewRequired ?? false) || (support ? support.materialSingleRun + support.materialConflicted > 0 : false);
+  if (supportReviewRequired) reasons.push(`independent-pass support asymmetry: ${support?.materialSingleRun ?? 0} CRITICAL/MATERIAL item(s) SINGLE_RUN and ${support?.materialConflicted ?? 0} CONFLICTED${inventory.ensemble ? ` across passes ${inventory.ensemble.passIds.join("+")}` : ""} - valid discovered source semantics with weaker support provenance; REVIEW_REQUIRED until independently resolved (verifier, human approval, another certified mechanism), never resolved by Pass B consuming them`);
+
   // Defense in depth (audit finding): completeness is refused on the residual segments themselves, not only on the status string that reports them.
   // NO_SEMANTIC_COMPLETE_WITH_UNACCOUNTED_SOURCE (§14). This is one of three independent enforcement points -
   // the inventory status, this boolean, and the compile failure reason - and none of them keys on another's
   // string: any unaccounted source span or unaccounted value refuses completeness on its own.
-  const semanticallyComplete = inventory.inventoryStatus === "INVENTORY_OK" && inventory.unaccountedSource.length === 0 && uninventoriedValues.length === 0 && (sourceContextState === "COMPLETE_LOCAL_SOURCE" || sourceContextState === "DEPENDENCY_EXPANDED_SOURCE") && materialMissing.length === 0 && reviewUncertainMissing.length === 0 && materialValuesMissing.length === 0 && danglingLineageReferences === 0;
+  // F-5.3B: support asymmetry refuses completeness on its own, independently of inventoryStatus (which stays a raw
+  // source-coverage verdict and may legitimately read INVENTORY_OK while material singletons exist).
+  const semanticallyComplete = inventory.inventoryStatus === "INVENTORY_OK" && inventory.unaccountedSource.length === 0 && uninventoriedValues.length === 0 && (sourceContextState === "COMPLETE_LOCAL_SOURCE" || sourceContextState === "DEPENDENCY_EXPANDED_SOURCE") && materialMissing.length === 0 && reviewUncertainMissing.length === 0 && materialValuesMissing.length === 0 && danglingLineageReferences === 0 && !supportReviewRequired;
 
   return {
     candidateRef: inventory.candidateRef,
@@ -469,6 +507,8 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
       canonicalizedLineageReferences,
     },
     semanticallyComplete,
+    supportReviewRequired,
+    ...(support ? { support } : {}),
     reasons,
     algorithmVersion: SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION,
   };

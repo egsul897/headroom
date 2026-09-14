@@ -1,0 +1,81 @@
+{
+  "artifact": "03-caller-state-machine-trace",
+  "file": "lib/contract-model/compiler/semantic/caller.ts (RealSemanticCaller.compile)",
+  "toolDefinitions": {
+    "evidenceTools": [
+      "getOperativeProvision",
+      "getDefinition",
+      "getDefinitionDependencies",
+      "getParentClause",
+      "getChildren",
+      "getSiblingClauses",
+      "getReferencedProvision",
+      "getRelatedAmendments",
+      "getPriorVersion",
+      "getInstrumentDocuments",
+      "getContextBundleComponent",
+      "getSharedCapContext",
+      "getSourceSpan",
+      "getRuleDependency"
+    ],
+    "terminalTool": "submit_compilation (appended to the tool list; not counted against ToolBudget.maxToolCalls)"
+  },
+  "toolUseIdTracking": "None beyond the current assistant message: each turn's tool_use blocks are read from message.content; ids are echoed into tool_result blocks only in the ordinary-tool branch (pre-fix) / in every continuation branch through toolResultsForAssistantTurn (post-fix). No cross-turn id ledger exists or is needed: the provider only requires the immediately-following user content to answer the preceding assistant turn.",
+  "turnLoop": [
+    {
+      "step": 1,
+      "state": "SEND",
+      "detail": "withRetry(stream(model,max_tokens,system,messages,tools).finalMessage()); a thrown error (rate-limit retries exhausted, 4xx, 5xx, gateway stream errors) -> PROVIDER_FAILURE (pre-fix: submission=null always)."
+    },
+    {
+      "step": 2,
+      "state": "AGGREGATE_USAGE",
+      "detail": "input/output/cache tokens summed for telemetry."
+    },
+    {
+      "step": 3,
+      "state": "CLASSIFY_TURN",
+      "detail": "toolUseBlocks = content.filter(tool_use); submitBlock = first tool_use named submit_compilation."
+    },
+    {
+      "step": "4a",
+      "state": "SUBMIT_PRESENT",
+      "branches": [
+        {
+          "name": "schema failure",
+          "transition": "SubmitCompilationSchema.safeParse fails -> if stop_reason==max_tokens: OUTPUT_TRUNCATED (+ recoverPartialSubmission prefix) else MODEL_SCHEMA_FAILURE; terminal."
+        },
+        {
+          "name": "retrieval nudge (3B.1 tool-under-use policy)",
+          "condition": "any rule/definition sufficiency in {UNSUPPORTED, MISSING_CONTEXT} AND toolRunner.log.length==0 AND remainingCalls>0 AND !retrievalNudgeUsed",
+          "preFixTransition": "messages.push(assistant content [contains submit tool_use]); messages.push(user PLAIN TEXT nudge); continue  <-- EARLIEST INCORRECT STATE TRANSITION: the assistant tool_use is followed by ordinary user text with no tool_result for its id; the next SEND is rejected by the provider (400) and the catch discards the already-parsed valid submission.",
+          "postFixTransition": "heldProvisional={parsed, raw}; messages.push(assistant content); messages.push(user [tool_result(submit id)=nudge text, tool_result(other ids)=tool outputs]); continue"
+        },
+        {
+          "name": "accept",
+          "transition": "finish(parsed submission, raw, log, telemetry, null, null); terminal (submission semantic status = whatever the model stated)."
+        }
+      ]
+    },
+    {
+      "step": "4b",
+      "state": "EVIDENCE_TOOLS_ONLY",
+      "transition": "messages.push(assistant); messages.push(user [one tool_result per tool_use via ToolRunner.run]); continue - protocol-valid before and after (now via the shared helper)."
+    },
+    {
+      "step": "4c",
+      "state": "PLAIN_TEXT_TURN",
+      "transition": "first time: push assistant + corrective user text (no tool_use present, so protocol-valid); second time: MODEL_SCHEMA_FAILURE terminal (post-fix: retains a held provisional submission)."
+    },
+    {
+      "step": 5,
+      "state": "TURN_CEILING",
+      "transition": "maxTurns = maxToolCalls + 4 exhausted -> TOOL_BUDGET_EXHAUSTED terminal (post-fix: retains a held provisional submission)."
+    }
+  ],
+  "sufficiencyEvaluation": "parsed.data.rules[].sufficiency / definitions[].sufficiency compared to the strings UNSUPPORTED and MISSING_CONTEXT; never rewritten by the caller; compile.ts maps them to failureReasons UNSUPPORTED_SEMANTICS / MISSING_CONTEXT and to status (REVIEW_REQUIRED, never COMPLETED).",
+  "providerFailureClassification": "Any exception from the stream call -> failureReason PROVIDER_FAILURE with failureDetail = error message; compile.ts: submission null -> status FAILED; submission present (post-fix retention) -> failureReasons include PROVIDER_FAILURE -> REVIEW_REQUIRED (or PARTIAL/FAILED per the other reasons).",
+  "chewyDiagnosisConfirmedInCode": true,
+  "earliestIncorrectTransition": "retrieval-nudge branch: assistant(tool_use submit) -> user(plain text)",
+  "submitCompilationSemanticRole": "C - terminal by default; provisional exactly once, only under the 3B.1 retrieval-nudge condition (the model is asked to try retrieval before finalizing). The prompt tells the model to call it exactly once; the caller's one-shot nudge is the single sanctioned continuation. The fix keeps that architecture and only changes the transport envelope of the nudge (tool_result instead of user text) plus retention of the held submission."
+}

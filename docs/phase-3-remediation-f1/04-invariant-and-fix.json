@@ -1,0 +1,52 @@
+{
+  "artifact": "04-invariant-and-fix",
+  "invariant": "EVERY ASSISTANT tool_use THAT IS FOLLOWED BY ANOTHER CONVERSATION TURN MUST RECEIVE A CORRESPONDING tool_result IN THE IMMEDIATELY FOLLOWING USER CONTENT BEFORE ANY ORDINARY USER TEXT OR SUBSEQUENT ASSISTANT TURN.",
+  "implementation": [
+    {
+      "file": "lib/contract-model/compiler/semantic/tool-protocol.ts",
+      "new": true,
+      "what": "validateToolUseProtocol(messages) pure validator (generic over tool names) + ToolProtocolViolationError (provider-shaped error for scripted clients)."
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic/caller.ts",
+      "new": false,
+      "what": [
+        "toolResultsForAssistantTurn(toolUseBlocks, resolve): the single helper that builds the user reply to any assistant turn containing tool_use blocks - exactly one tool_result per tool_use, in order, nothing else; both continuation branches (evidence tools; retrieval nudge) use it.",
+        "RETRIEVAL_NUDGE_TEXT delivered as the tool_result content of the provisional submit_compilation call (policy wording unchanged, prefixed 'NOT YET ACCEPTED - provisional submission evaluated').",
+        "heldProvisional: the parsed provisional submission is kept when the nudge is issued; retainingHeld() returns it (with the model's own sufficiency values) under PROVIDER_FAILURE / TOOL_BUDGET_EXHAUSTED / MODEL_SCHEMA_FAILURE if the continuation ends without a new submission - never null, never promoted.",
+        "Pre-send guard: validateToolUseProtocol(messages) before every stream call; a violation throws inside the same try so it is classified with transport failures and cannot discard held work."
+      ]
+    }
+  ],
+  "genericOrSubmitSpecific": "Generic. The helper and validator treat submit_compilation as an ordinary tool_use for protocol purposes; the only submit-specific logic is WHAT the tool_result says (the nudge), which is the semantic role the tool genuinely has under the 3B.1 policy.",
+  "notChanged": [
+    "semantic prompt (prompt.ts)",
+    "wire schema / IR",
+    "sufficiency handling in compile.ts",
+    "trust gates",
+    "nudge condition and its once-only semantics",
+    "verifier, reconciliation, inventory, source coverage, structural parser, quantitative scanner, precedent"
+  ],
+  "falseCompleteness": "None introduced: a retained provisional submission always carries a non-null failureReason (compile.ts -> REVIEW_REQUIRED at best) and its rules/definitions keep the sufficiency the model stated (UNSUPPORTED/MISSING_CONTEXT -> UNSUPPORTED_SEMANTICS/MISSING_CONTEXT failure reasons).",
+  "sameRootBranches": {
+    "found": [
+      "retrieval-nudge branch (the defect): assistant tool_use -> plain user text",
+      "post-nudge terminations discarding the held submission: transport failure (catch), turn ceiling (TOOL_BUDGET_EXHAUSTED), corrective-reminder exhaustion (MODEL_SCHEMA_FAILURE)"
+    ],
+    "fixedThroughInvariant": [
+      "retrieval-nudge branch"
+    ],
+    "fixedThroughRetention": [
+      "transport-failure catch",
+      "turn ceiling",
+      "corrective-reminder exhaustion"
+    ],
+    "inspectedAndAlreadyValid": [
+      "evidence-tool branch (always emitted one tool_result per tool_use)",
+      "corrective reminder after a plain-text turn (no tool_use in that assistant turn, so plain user text is legal)"
+    ],
+    "distinctMechanismsNotFixed": [
+      "compile.ts maps a caller PROVIDER_FAILURE with a retained submission to REVIEW_REQUIRED via the generic failureReasons path; no dedicated 'transport failure after provisional submission' status exists (reported, not addressed - not a protocol defect)."
+    ]
+  }
+}

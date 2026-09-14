@@ -1,0 +1,490 @@
+{
+ "artifact": "F-5 zero-cost identity-scheme experiment over the two frozen Chewy 6.08 runs",
+ "independentSegments": 314,
+ "structuralNodes": 106,
+ "schemes": {
+  "S0_span": {
+   "strictStability": 0.1948,
+   "counts": [
+    97,
+    498
+   ],
+   "criticalMaterialStrictStability": 0.1885,
+   "distinctKeys": {
+    "run1": 288,
+    "run2": 307
+   },
+   "intraRunMerges": {
+    "run1": 0,
+    "run2": 0
+   },
+   "potentialFalseMerges(propJaccard<0.2, not same start)": {
+    "run1": 0,
+    "run2": 0
+   },
+   "examples": []
+  },
+  "S1_segment": {
+   "strictStability": 0.4116,
+   "counts": [
+    163,
+    396
+   ],
+   "criticalMaterialStrictStability": 0.4109,
+   "distinctKeys": {
+    "run1": 274,
+    "run2": 285
+   },
+   "intraRunMerges": {
+    "run1": 14,
+    "run2": 22
+   },
+   "potentialFalseMerges(propJaccard<0.2, not same start)": {
+    "run1": 9,
+    "run2": 11
+   },
+   "examples": [
+    {
+     "run": "run1",
+     "scheme": "S1_segment",
+     "a": "Any Restricted Party must receive at least its pro rata share of dividends from a non-wholly-owned R",
+     "b": "A special condition applies to dividends/payments/distributions payable on securities issued by a Re",
+     "spans": [
+      [
+       926,
+       1145
+      ],
+      [
+       738,
+       925
+      ]
+     ]
+    },
+    {
+     "run": "run1",
+     "scheme": "S1_segment",
+     "a": "Component (z)(A): cumulative Consolidated EBITDA since the fiscal quarter of the Effective Date.",
+     "b": "A component amount is deemed zero for any fiscal quarter in which it would otherwise be less than ze",
+     "spans": [
+      [
+       4324,
+       4558
+      ],
+      [
+       4100,
+       4134
+      ]
+     ]
+    },
+    {
+     "run": "run1",
+     "scheme": "S1_segment",
+     "a": "Clause (b) excludes proceeds from Refunding Capital Stock applied under Section 6.08(b)(2)(b) or (6)",
+     "b": "Clause (b) excludes Equity Interests (or converted Indebtedness) sold to a Restricted Party.",
+     "spans": [
+      [
+       6749,
+       6860
+      ],
+      [
+       6862,
+       7022
+      ]
+     ]
+    },
+    {
+     "run": "run1",
+     "scheme": "S1_segment",
+     "a": "Clause (b) excludes proceeds from Refunding Capital Stock applied under Section 6.08(b)(2)(b) or (6)",
+     "b": "A sub-clause (b) introduces items that the Available Amount definition shall not include.",
+     "spans": [
+      [
+       6749,
+       6860
+      ],
+      [
+       6727,
+       6748
+      ]
+     ]
+    },
+    {
+     "run": "run1",
+     "scheme": "S1_segment",
+     "a": "Clause (b) excludes Disqualified Stock (or Indebtedness converted into Disqualified Stock).",
+     "b": "Equity Interests of the Borrowers sold to a Restricted Party are excluded from the relevant computat",
+     "spans": [
+      [
+       7024,
+       7125
+      ],
+      [
+       6948,
+       7023
+      ]
+     ]
+    },
+    {
+     "run": "run1",
+     "scheme": "S1_segment",
+     "a": "Clause (c) also includes amounts becoming part of capital via consolidation, amalgamation or merger ",
+     "b": "An Available Amount addend includes the capital of any Restricted Party, including the aggregate pri",
+     "spans": [
+      [
+       7465,
+       7595
+      ],
+      [
+       7288,
+       7464
+      ]
+     ]
+    }
+   ]
+  },
+  "S2_segment_ids": {
+   "strictStability": 0.2327,
+   "counts": [
+    111,
+    477
+   ],
+   "criticalMaterialStrictStability": 0.2296,
+   "distinctKeys": {
+    "run1": 285,
+    "run2": 303
+   },
+   "intraRunMerges": {
+    "run1": 3,
+    "run2": 4
+   },
+   "potentialFalseMerges(propJaccard<0.2, not same start)": {
+    "run1": 1,
+    "run2": 1
+   },
+   "examples": [
+    {
+     "run": "run1",
+     "scheme": "S2_segment_ids",
+     "a": "(16)(d) also includes, following the first public offering, listing fees and public-company costs of",
+     "b": "A permitted category includes expenses related to maintenance of corporate/other existence and audit",
+     "spans": [
+      [
+       29303,
+       29508
+      ],
+      [
+       29139,
+       29302
+      ]
+     ]
+    },
+    {
+     "run": "run2",
+     "scheme": "S2_segment_ids",
+     "a": "The basket is reduced by the amount of Restricted Payments previously made with the cash proceeds de",
+     "b": "Cross-reference continuation to Section 6.08(b)(4)(a) for the reducing deduction.",
+     "spans": [
+      [
+       17251,
+       17353
+      ],
+      [
+       17339,
+       17353
+      ]
+     ]
+    }
+   ]
+  },
+  "S3_node": {
+   "strictStability": 0.5192,
+   "counts": [
+    149,
+    287
+   ],
+   "criticalMaterialStrictStability": 0.5125,
+   "distinctKeys": {
+    "run1": 214,
+    "run2": 222
+   },
+   "intraRunMerges": {
+    "run1": 74,
+    "run2": 85
+   },
+   "potentialFalseMerges(propJaccard<0.2, not same start)": {
+    "run1": 39,
+    "run2": 49
+   },
+   "examples": [
+    {
+     "run": "run1",
+     "scheme": "S3_node",
+     "a": "Any Restricted Party must receive at least its pro rata share of dividends from a non-wholly-owned R",
+     "b": "A special condition applies to dividends/payments/distributions payable on securities issued by a Re",
+     "spans": [
+      [
+       926,
+       1145
+      ],
+      [
+       738,
+       925
+      ]
+     ]
+    },
+    {
+     "run": "run1",
+     "scheme": "S3_node",
+     "a": "Amounts under clauses (x), (y) and (z) are each calculated on a Pro Forma Basis.",
+     "b": "No Restricted Payment constituting a volitional dividend may be made in reliance on clause (a) while",
+     "spans": [
+      [
+       4788,
+       4888
+      ],
+      [
+       4891,
+       5074
+      ]
+     ]
+    },
+    {
+     "run": "run1",
+     "scheme": "S3_node",
+     "a": "Amounts under clauses (x), (y) and (z) are each calculated on a Pro Forma Basis.",
+     "b": "A condition tied to the absence of a continuing Event of Default, feeding into a 'plus' formula step",
+     "spans": [
+      [
+       4788,
+       4888
+      ],
+      [
+       5058,
+       5080
+      ]
+     ]
+    },
+    {
+     "run": "run1",
+     "scheme": "S3_node",
+     "a": "Clause (b) excludes ABL Cure Amount proceeds and proceeds used to incur Indebtedness/Disqualified St",
+     "b": "Clause (b) excludes Equity Interests (or converted Indebtedness) sold to a Restricted Party.",
+     "spans": [
+      [
+       5270,
+       5490
+      ],
+      [
+       6862,
+       7022
+      ]
+     ]
+    },
+    {
+     "run": "run1",
+     "scheme": "S3_node",
+     "a": "Clause (b) excludes ABL Cure Amount proceeds and proceeds used to incur Indebtedness/Disqualified St",
+     "b": "Clause (b) excludes Excluded Contributions.",
+     "spans": [
+      [
+       5270,
+       5490
+      ],
+      [
+       7129,
+       7155
+      ]
+     ]
+    },
+    {
+     "run": "run1",
+     "scheme": "S3_node",
+     "a": "Clause (b) excludes ABL Cure Amount proceeds and proceeds used to incur Indebtedness/Disqualified St",
+     "b": "A sub-clause (b) introduces items that the Available Amount definition shall not include.",
+     "spans": [
+      [
+       5270,
+       5490
+      ],
+      [
+       6727,
+       6748
+      ]
+     ]
+    }
+   ]
+  },
+  "S4_node_segment": {
+   "strictStability": 0.3995,
+   "counts": [
+    161,
+    403
+   ],
+   "criticalMaterialStrictStability": 0.3959,
+   "distinctKeys": {
+    "run1": 275,
+    "run2": 289
+   },
+   "intraRunMerges": {
+    "run1": 13,
+    "run2": 18
+   },
+   "potentialFalseMerges(propJaccard<0.2, not same start)": {
+    "run1": 8,
+    "run2": 8
+   },
+   "examples": [
+    {
+     "run": "run1",
+     "scheme": "S4_node_segment",
+     "a": "Any Restricted Party must receive at least its pro rata share of dividends from a non-wholly-owned R",
+     "b": "A special condition applies to dividends/payments/distributions payable on securities issued by a Re",
+     "spans": [
+      [
+       926,
+       1145
+      ],
+      [
+       738,
+       925
+      ]
+     ]
+    },
+    {
+     "run": "run1",
+     "scheme": "S4_node_segment",
+     "a": "Clause (b) excludes proceeds from Refunding Capital Stock applied under Section 6.08(b)(2)(b) or (6)",
+     "b": "Clause (b) excludes Equity Interests (or converted Indebtedness) sold to a Restricted Party.",
+     "spans": [
+      [
+       6749,
+       6860
+      ],
+      [
+       6862,
+       7022
+      ]
+     ]
+    },
+    {
+     "run": "run1",
+     "scheme": "S4_node_segment",
+     "a": "Clause (b) excludes proceeds from Refunding Capital Stock applied under Section 6.08(b)(2)(b) or (6)",
+     "b": "A sub-clause (b) introduces items that the Available Amount definition shall not include.",
+     "spans": [
+      [
+       6749,
+       6860
+      ],
+      [
+       6727,
+       6748
+      ]
+     ]
+    },
+    {
+     "run": "run1",
+     "scheme": "S4_node_segment",
+     "a": "Clause (b) excludes Disqualified Stock (or Indebtedness converted into Disqualified Stock).",
+     "b": "Equity Interests of the Borrowers sold to a Restricted Party are excluded from the relevant computat",
+     "spans": [
+      [
+       7024,
+       7125
+      ],
+      [
+       6948,
+       7023
+      ]
+     ]
+    },
+    {
+     "run": "run1",
+     "scheme": "S4_node_segment",
+     "a": "Clause (c) also includes amounts becoming part of capital via consolidation, amalgamation or merger ",
+     "b": "An Available Amount addend includes the capital of any Restricted Party, including the aggregate pri",
+     "spans": [
+      [
+       7465,
+       7595
+      ],
+      [
+       7288,
+       7464
+      ]
+     ]
+    },
+    {
+     "run": "run1",
+     "scheme": "S4_node_segment",
+     "a": "Sub-component (d)(i) continued: repayments of loans/advances and releases of guarantees constituting",
+     "b": "An addend includes returns on Restricted Investments made by the Restricted Parties, including repur",
+     "spans": [
+      [
+       8377,
+       8547
+      ],
+      [
+       8159,
+       8376
+      ]
+     ]
+    }
+   ]
+  },
+  "S5_node_segment_ids": {
+   "strictStability": 0.2296,
+   "counts": [
+    110,
+    479
+   ],
+   "criticalMaterialStrictStability": 0.2265,
+   "distinctKeys": {
+    "run1": 285,
+    "run2": 304
+   },
+   "intraRunMerges": {
+    "run1": 3,
+    "run2": 3
+   },
+   "potentialFalseMerges(propJaccard<0.2, not same start)": {
+    "run1": 1,
+    "run2": 1
+   },
+   "examples": [
+    {
+     "run": "run1",
+     "scheme": "S5_node_segment_ids",
+     "a": "(16)(d) also includes, following the first public offering, listing fees and public-company costs of",
+     "b": "A permitted category includes expenses related to maintenance of corporate/other existence and audit",
+     "spans": [
+      [
+       29303,
+       29508
+      ],
+      [
+       29139,
+       29302
+      ]
+     ]
+    },
+    {
+     "run": "run2",
+     "scheme": "S5_node_segment_ids",
+     "a": "The basket is reduced by the amount of Restricted Payments previously made with the cash proceeds de",
+     "b": "Cross-reference continuation to Section 6.08(b)(4)(a) for the reducing deduction.",
+     "spans": [
+      [
+       17251,
+       17353
+      ],
+      [
+       17339,
+       17353
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

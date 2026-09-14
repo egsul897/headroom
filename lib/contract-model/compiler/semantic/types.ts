@@ -28,6 +28,7 @@ import type { IRDefinition, IRRule, IRSharedCapacity, OperativeLineageRef } from
 import type { AnalyzerCallTelemetry } from "../../analyzer/telemetry";
 import type { DefinitionCompletenessCheckResult } from "./completeness-check";
 import type { FrozenSemanticInventory, SemanticAccountabilityResult, SourceContextResult } from "../semantic-accountability/types";
+import type { SemanticInventoryMode } from "../semantic-accountability/dual-pass";
 
 /**
  * Phase 3B.1 (task §35) - any change to output orchestration, tool-use
@@ -76,6 +77,44 @@ export interface ToolBudget {
 export const DEFAULT_TOOL_BUDGET: ToolBudget = { maxToolCalls: 8, maxRecursionDepth: 3, maxAdditionalSourceChars: 20_000 };
 
 /** One real, source-backed tool invocation, logged for provenance/audit (task §7/§34) - never silently discarded. */
+/**
+ * F-4 (Phase 3 Chewy remediation) - the AUTHENTICABLE record of what a
+ * source-reading evidence tool actually returned, written by
+ * semantic/tools.ts at the moment of retrieval and carried verbatim on the
+ * ToolCallLogEntry. EVIDENCE ONLY: it names WHERE the text came from
+ * (document, physical node, span, content hash) and carries the raw text
+ * untruncated - it never carries any compiler interpretation of that text.
+ * The independent verifier (semantic-verification/retrieved-evidence.ts)
+ * never trusts this record as source truth: it re-resolves the same
+ * request against its own allowed inputs (structural index, operative
+ * state, package topology) and uses this record only to check that what
+ * the compiler was shown is exactly the authentic text it found itself
+ * (raw text and hash must match; a mismatch is a rejected claim, never a
+ * fallback to compiler metadata).
+ */
+export interface RetrievedSourceRecord {
+  requestKind: "DEFINITION" | "PROVISION";
+  /** The term or section reference exactly as the model requested it. */
+  requestKey: string;
+  documentId: string;
+  /** Physical occurrence identity of the node the text was read from (the definition's enclosing node, or the resolved section node); null when the text is an amendment's recorded current text with no single base-document node. */
+  sourceNodeId: string | null;
+  /** @deprecated legacy label-shaped key - display only. */
+  sourceNodeKey: string | null;
+  /** Absolute char span within the document's text when the text was sliced from the base document; null when it is amendment-recorded current text. */
+  charStart: number | null;
+  charEnd: number | null;
+  /** The FULL text the tool resolved, before the MAX_TEXT_RESULT_CHARS truncation applied to what the model sees. */
+  rawText: string;
+  /** sha256 of rawText (computeSourceContentHash, compiler/hashing.ts). */
+  contentHash: string;
+  /** Which text this is: base-document text (sliced from the indexed document) or an amendment's resolved current text (operative state). */
+  textOrigin: "BASE_DOCUMENT_TEXT" | "AMENDED_CURRENT_TEXT" | "UNRESOLVED_AMENDED_TEXT" | "HISTORICAL_BASE_TEXT";
+  /** The evidence status the tool itself disclosed for this text (resolveOperativeDefinitionEvidence's DefinitionEvidenceStatus, or the node supersession status). */
+  evidenceStatus: string;
+  isCurrentTruth: boolean;
+}
+
 export interface ToolCallLogEntry {
   toolName: string;
   input: unknown;
@@ -97,6 +136,8 @@ export interface ToolCallLogEntry {
   evidenceUnresolved?: boolean;
   /** POST-3F.2 remediation (Unit A3) - mirrors ToolExecutionOutcome.evidenceTruncated in semantic/tools.ts verbatim; see that field's own header comment for the full contract. */
   evidenceTruncated?: boolean;
+  /** F-4 - the authenticable retrieved-source record (see RetrievedSourceRecord) for a source-reading tool call that returned real text; undefined for a refusal, for a non-text tool, and for every entry logged before F-4 (a legacy log the verifier handles by independent re-resolution alone). */
+  retrievedSource?: RetrievedSourceRecord;
 }
 
 // ---------------------------------------------------------------------------
@@ -184,7 +225,13 @@ export type SemanticCompilerFailureReason =
   /** SEMANTIC ACCOUNTABILITY v2 (Phase 3 final closure, decision 05): Pass A ran but, even after its bounded gap re-inventory, left at least one operative-text segment carrying operative/conditional drafting language uncovered (INVENTORY_COVERAGE_GAP, residual segments disclosed on frozenInventory.uninventoriedSegments). Accountability for that text is not established, so this attempt can never be COMPLETED - the omission is visible instead of silent. */
   | "SEMANTIC_INVENTORY_COVERAGE_GAP"
   /** SEMANTIC ACCOUNTABILITY v2 (re-audit): Pass C's semanticallyComplete is false for a reason not carried by the more specific reasons above (uninventoried operative money/percent/ratio values, a REVIEW_UNCERTAIN inventory item MISSING_FROM_COMPOSITION, dangling lineage) - the attempt can never be COMPLETED while its own accountability says it is incomplete. */
-  | "SEMANTIC_ACCOUNTABILITY_INCOMPLETE";
+  | "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+  /** F-5.3B (dual-pass ensemble): at least one CRITICAL/MATERIAL frozen-inventory item is SINGLE_RUN (found by one independent Pass A execution only) or CONFLICTED (two passes made incompatible claims over one source stretch). The item is real, source-verified inventory with weaker support provenance: Pass B must still consume/disposition it, and the attempt can never be COMPLETED - RAW SOURCE COMPLETE + MATERIAL SINGLETON => REVIEW_REQUIRED. Resolved only by the independent verifier, human approval or another certified mechanism, never by Pass B or a third run. */
+  | "SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+  /** F-7A (bounded compilation shards): at least one shard of a sharded compilation did not end SHARD_COMPLETE (provider / schema / missing-context / partial) - the stitched candidate is PARTIAL at best and its owned material items are listed as unresolved; never COMPLETED. */
+  | "SHARD_INCOMPLETE"
+  /** F-7A: independently compiled shards emitted incompatible representations of the same source (or an emission owned by another shard, or a dangling cross-shard reference) - explicit review, never a silent choice. */
+  | "SHARD_CONFLICT";
 
 /** Phase 3F.1 §33/F6 - preserved for every FAILED result whose failureReasons includes TRANSPORT_OR_INTERNAL_ERROR (never populated for any other failure path, which already carries its own structured detail via failureReasons/unresolvedIssues). Bounded and sanitized - never a raw stack dump, never a credential/token value, per task §33's explicit "no secrets/unrestricted stack dumps" instruction. */
 export interface SemanticCompilerErrorDetail {
@@ -265,6 +312,10 @@ export interface SemanticCompilationResult {
   frozenInventory?: FrozenSemanticInventory | null;
   /** SEMANTIC ACCOUNTABILITY: Pass C's deterministic reconciliation of the frozen inventory against the composed IR. Null when accountability was disabled or no submission was produced. Never consumed by the independent verifier. */
   accountability?: SemanticAccountabilityResult | null;
+  /** F-5.3B: which production inventory mode produced frozenInventory (SINGLE_PASS = one Pass A execution; DUAL_PASS_ENSEMBLE = two independent executions reconciled by ensemble.ts). Undefined on results built by pre-F-5.3B fixtures or with accountability disabled. */
+  inventoryMode?: SemanticInventoryMode | null;
+  /** F-5.3B (DUAL_PASS_ENSEMBLE only): the two frozen passes' own identities, so an auditor can reconstruct which pass said what without re-running anything. */
+  inventoryPasses?: { passId: string; frozenContentHash: string; inventoryStatus: string; items: number; telemetryCostUsd: number | null }[] | null;
   /** The raw, unnormalized wire object the model actually submitted - preserved for audit/debugging, never treated as authoritative (task §9). */
   rawModelOutput: unknown;
   provider: string;

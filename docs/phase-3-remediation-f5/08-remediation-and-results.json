@@ -1,0 +1,51 @@
+{
+  "artifact": "08 - F-5 remediation, zero-cost measurements, paid-validation status, verdict",
+  "mission": "PHASE 3 CHEWY REMEDIATION 4 / F-5 PASS A SEMANTIC INVENTORY INSTABILITY",
+  "startingSha": "01a69147629e720fba51ef8c743e62fc52c7e257",
+  "paidCalls": 0,
+  "paidSpendUsd": 0,
+  "productionFilesChanged": [
+    "lib/contract-model/compiler/semantic-accountability/slots.ts (new)",
+    "lib/contract-model/compiler/semantic-accountability/inventory.ts",
+    "lib/contract-model/compiler/semantic-accountability/prompt.ts",
+    "lib/contract-model/compiler/semantic-accountability/wire-schema.ts",
+    "lib/contract-model/compiler/semantic-accountability/types.ts",
+    "lib/contract-model/compiler/semantic-accountability/source-coverage.ts (export of independentSegmentBounds only)"
+  ],
+  "forbiddenAreasUntouched": ["clause hierarchy / F-2", "compiler caller / F-1", "IR / type system / F-6", "verifier", "money parsing", "compiler prompt", "precedent", "Chewy human reference set", "Phase 3 scoring methodology"],
+  "agreementSpecificLogicAdded": false,
+  "remediation": {
+    "sourcePartitioningBefore": "none before the model call: the whole unit (38,529 chars) in one message; segmentation only after the call, inside source coverage",
+    "sourcePartitioningAfter": "deterministic SOURCE SLOTS before any call (slots.ts): each structural node's own text (text minus children) split at independent segment bounds (sentence/line terminators - the same bounds source coverage credits against); content-free stretches merged into their successor; slots tile the region exactly; each slot carries its enclosing nodes' lead-ins as read-only context. Fallback without a structural index: independent segments. Chewy 6.08: 335 slots (method STRUCTURAL_NODES), batched into 7 bounded calls of <= 6,000 primary chars (prompts 17.7k-24.8k chars each, system prompt included).",
+    "itemIdMechanismBefore": "hash(candidateRef, role, regionId, charStart, charEnd, valueSignature, v3) - the model's own excerpt boundaries were the identity",
+    "itemIdMechanismAfter": "hash(candidateRef, role, regionId, slotId, coordinationSubIndex, clusterOrdinal, valueSignature, v4) - slot = deterministic structural anchor of the verified span's start; coordination sub-index = count of and/or/;/enumerator-comma boundaries before the start within the slot; cluster ordinal = source-order rank among same-key items that do not overlap; never the excerpt boundary, the proposition wording or model-listed identifiers (measured: identifiers halve cross-run agreement)",
+    "granularityMechanismBefore": "the model's own judgment of 'atomic proposition' over the whole unit; exact-id collisions were the only duplicate rule (12% intra-run near-duplicates survived)",
+    "granularityMechanismAfter": "canonical: one item per (slot, coordination sub-index, role, values) source position; same-key items merge when they are the same proposition - overlapping by >= 50% of the longer span (value-free) or of the shorter span (valued: a source-owned number pins the proposition); disjoint or nested-without-value items stay distinct with a deterministic ordinal. Merge = span union, values/identifiers union, strongest materiality, first wording kept, count recorded (mergedDuplicates). First-pass and gap items are normalized together so clustering is global.",
+    "gapPassBefore": "one call over run-specific unaccounted FRAGMENTS (128/133 per run) - half of every run's items came from run-dependent boundaries",
+    "gapPassAfter": "bounded calls over the SLOTS that still contain unaccounted text, each slot re-presented in full with its unaccounted stretches quoted; deterministic boundaries; items can only be added; whole-slot deterministic identity applies",
+    "promptChanges": "v4: obligation 12 (slots define the boundaries; slotId on every item; context is read-only) and slot-structured user content; roles, materiality, ambiguity, security and the synthetic example are unchanged - no consistency exhortation, no template",
+    "wireChanges": "optional slotId on the item (tolerant; a wrong or missing slotId is recovered from the located excerpt)",
+    "callShape": "first pass: one call per operative-region slot batch (cross-reference expansion regions stay read-only context, as v3); gap: one call per affected-slot batch; system prompt re-sent per call",
+    "trustSafety": "unchanged: anti-hallucination gate, deterministic value completion, whole-unit source coverage, INVENTORY_COVERAGE_GAP / EMPTY_SUSPECT / FAILED semantics, freeze hash. Slots never suppress text; a batch failure is INVENTORY_FAILED for the unit."
+  },
+  "zeroCostMeasurements": {
+    "frozenRunsReKeyedThroughV4 (03-rekeyed-metrics.json)": { "items": { "run1": "288 -> 286", "run2": "307 -> 304" }, "merges": [2, 3], "falseMergesAtPropJaccardBelow0.2": [0, 0], "strictStability": "0.1948 -> 0.3753", "semanticStability": "0.4477 -> 0.4604", "criticalMaterialStability": "0.4573 -> 0.4557", "sourceSpanCoverageStability": "0.9013 -> 0.9013", "quantitativeStability": "1.0 -> 1.0", "conditionExceptionStability": "0.496 -> 0.5164", "dependencyXrefStability": "0.2727 -> 0.2727", "intraRunDuplicatePairs": "34/38 -> 31/34", "reading": "post-processing alone removes the identity component (class A) and some duplicates; it cannot and does not touch the model's decomposition (classes B/H/D) - that is what the slot-scoped calls are for, and only independent paid runs can measure them" },
+    "identitySchemeExperiment (02)": { "S0_span": 0.1948, "S1_segment": 0.4116, "S2_segment_ids": 0.2327, "S3_node": "0.5192 (39/49 false merges)", "S4_node_segment": 0.3995, "S5_node_segment_ids": 0.2296, "S6_node_segment_coordination": "0.3815 (3/3)", "S8_plus_overlap_clustering": "0.3762 (0/1)", "final_mutual_overlap_rule": "0.3735-0.3753 (0/0)" },
+    "referenceRecall6.08 (04)": { "frozenRun1": { "discovery": 1.0, "criticalMaterial": 1.0, "quantitative": "30/30", "conditionException": 1.0, "dependency": "N/A" }, "frozenRun2": "identical", "reKeyedRun1AndRun2": "identical (1.0 across the board) - the deterministic remediation loses no reference recall" },
+    "sameRootZeroCostRegression (06)": { "recordsReplayed": 33, "itemsBefore": 1965, "itemsAfter": 1959, "merged": 6, "falseMergeCandidates": 2, "unaccountedStretches": "1957 -> 1957", "unaccountedValues": "230 -> 230", "identityChanged": "all (v4 re-keys by design; Pass C canonicalizes recorded lineage by digest)", "lineage": "no lineage dropped - parent/related refs remap onto merged identities" }
+  },
+  "paidValidation": {
+    "status": "NOT EXECUTED - blocked by gateway balance",
+    "precheck": "07-paid-run-precheck.json: pair upper-bound estimate $4.89 (2 runs x <= 14 bounded calls x 16k assumed output tokens) within the $8.00 cap, but gateway balance $0.5445 < $4.89; the harness aborted BEFORE any paid call, as designed",
+    "harness": "scripts/f5-pass-a-stability-run.ts (precheck | run <label>): balance + cap guard, GuardedStageCaller ledger, preservation under tests/fixtures/unseen-packages/phase-3-remediation-f5-run/<label>/, pair.json consumable by scripts/f5-align-runs.py and scripts/f5-reference-recall.py",
+    "consequence": "post-fix run A/B item counts, stability, coverage and recall are NOT measured; the gate (critical/material >= 0.85 AND semantic >= 0.80) is therefore unproven"
+  },
+  "tests": {
+    "new": "tests/contract-model/semantic-accountability/f5-slots-stability.test.ts - 15 tests: partition determinism/tiling/uniqueness/content, lead-in context + segment fallback, anti-enumeration partition (two agreements, same shape), batching, slotForOffset/coordinationIndex, identity convergence + merge semantics, order/slotId independence, disjoint-never-merge, role/value distinctness, anti-hallucination + lineage remap, scripted two-run strict stability 1.0 with per-batch/gap call shape, trust safety (coverage gap kept, INVENTORY_FAILED), anti-enumeration end-to-end, wire tolerance",
+    "suites": "semantic-accountability, post-holdout Unit B, whole-agreement decomposition, compile-and-package, Chewy F-6 replay, accountability independence: failure set IDENTICAL to the starting-SHA baseline (18 pre-existing: pass-a-inventory 7, pass-a-stability 4, pass-bc-reconciliation 7 - the v3 coverage-gap expectations of the synthetic corpus); full tests/contract-model: see README",
+    "tsc": "clean except pre-existing tests/foundation-audit errors",
+    "eslint": "clean on every changed/new TypeScript file"
+  },
+  "verdict": "F5_NOT_CLOSED",
+  "verdictReason": "criteria 1-3 (decomposed, root cause proven, generic remediation) and 7-10 (conservative coverage, recall preserved on the frozen/re-keyed evidence, no false completeness, $0 spend) are met; criteria 4-6 (independent post-fix runs converge; critical/material and semantic stability meet the gate) could not be demonstrated because the gateway balance ($0.54) is below the pair estimate ($4.89). The remediation is committed and the paid harness is ready; funding the gateway and running `npx tsx scripts/f5-pass-a-stability-run.ts run <label>` completes the validation within the original budget."
+}

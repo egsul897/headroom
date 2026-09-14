@@ -1,0 +1,2378 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:b934f8ceb0d79b5cfe57",
+  "shardHash": "a517905c1e378aff65e60c3ee6022befd80a20511f1c4617e936f80611eb6ce6",
+  "ordinal": 1,
+  "ownedUnits": 13,
+  "sourceChars": 7674,
+  "contextEntries": 5,
+  "contextChars": 1909,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 7,
+  "ownedMaterialItems": 7,
+  "estimatedFirstTurnInputTokens": 25495,
+  "preCallEstimate": {
+   "inputTokens": 83879,
+   "outputTokens": 34000,
+   "usd": 0.507758
+  },
+  "actual": {
+   "inputTokens": 71834,
+   "outputTokens": 38525,
+   "turns": 2,
+   "latencyMs": 353286,
+   "costUsd": 0.528918,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_COMPLETE",
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED",
+   "DEFINITION_COMPLETENESS_SUSPECT"
+  ],
+  "toolCalls": 1,
+  "toolCallNames": [
+   "getReferencedProvision"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 23,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 3,
+   "dispositioned": 2,
+   "missingMaterial": 2,
+   "valuesRepresented": 2,
+   "valuesMissing": 2,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "MISSING_FROM_COMPOSITION": 2,
+    "UNSUPPORTED": 2,
+    "REPRESENTED": 3
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Affiliated Lender Assignment and Assumption",
+   "Affiliated Lender Cap",
+   "Agreement Currency",
+   "Alternative Currency Term Benchmark",
+   "Ancillary Fees",
+   "Annual Period",
+   "Annual Threshold",
+   "Applicable Creditor",
+   "Applicable Indebtedness",
+   "Approved Bank",
+   "Approved Electronic Platform"
+  ],
+  "unresolvedIssues": [
+   "[definition[d9].MAX[0].IF.condition] This is a contingent operational/benchmark-fallback fact, not a static boolean derivable from §1.01 text alone; Section 2.12 and 2.12(c) were out of the retrieved source-context budget.",
+   "[definition[d9].MAX[0].IF.then.MAX[0]] ADD requires at least one operand",
+   "[definition[d9].MAX[0].IF.then] MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9].MAX[0].IF.else.MAX[0]] ADD requires at least one operand",
+   "[definition[d9].MAX[0].IF.else.MAX[2]] ADD requires at least one operand",
+   "[definition[d9].MAX[0].IF.else] MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9].MAX[0]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9]] MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12].MAX[0].IF.condition] Currency selection is a per-Borrowing transaction fact, not a static boolean expressible with the IR's comparison primitives.",
+   "[definition[d12].MAX[0]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12]] MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d19].IF.condition] Class identity is a static fact about a particular Loan/tranche at any given time, but is a lookup key rather than a boolean comparison expressible with the IR's comparison primitives applied to this definitional text alone.",
+   "[definition[d19].IF.then.IF.condition] Interest rate option selected for a Borrowing is a transaction-time selection, not a static boolean.",
+   "[definition[d19].IF.then] IF keeps its structure with at least one UNSUPPORTED operand in place - typed PERCENT from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d19].IF.else] The rate is deferred to, and set entirely by, a future Incremental Facility Amendment, Refinancing Amendment or Permitted Amendment - none of which are part of the §1.01 text or the supplied evidence.",
+   "[definition[d19]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed PERCENT from its represented operands; PARTIAL, never executable (F-6)",
+   "Source is a fragment of the §1.01 defined-terms alphabetical run (Affiliated Debt Fund through Approved Fund, plus the chapeau-adjacent 'ABL Administrative Agent' entry which was explicitly flagged as read-only dependency context and excluded from compilation).",
+   "All 7 FROZEN SEMANTIC INVENTORY items (Alternate Base Rate formula components and Applicable Rate values) are consumed on the specific leaf nodes carrying their values within d9 (Alternate Base Rate) and d19 (Applicable Rate); none required disposition as omitted.",
+   "The five deterministically-detected 'uncovered' percent literals (1.00% x1, 0.00% x4) correspond to (a) the base percentage inside the already-inventoried '1/2 of 1.00%' spread and (b) the paired floor-test/floor-outcome mentions of 0.00% in both Alternate Base Rate and Alternative Currency Term Benchmark Rate - all represented via the NUMBER floor/spread nodes in d9 and d12, none left unrepresented.",
+   "Cross-references to Sections 9.04(f)(6), 9.20(b), 9.02(b), 1.08(j), 9.01, 9.02, 2.12 and 2.12(c) were out of the Phase 2 source-context retrieval budget; each corresponding definition is represented as a faithfully-captured pointer (sufficiency COMPLETE for the pointer itself) except where the target's economics were material enough to independently fetch (Affiliated Lender Cap, via Section 9.04(f)(5), fetched directly in this session) or where the cross-reference gates a live computational mechanic within the definition's own formula (Section 2.12 within Alternate Base Rate and Alternative Currency Term Benchmark Rate, both marked PARTIAL).",
+   "The Section 9.04(f)(5) text retrieved for Affiliated Lender Cap carries supersessionStatus UNKNOWN_SUPERSESSION_STATUS; that uncertainty is reflected in d4's PARTIAL sufficiency rather than a confident COMPLETE.",
+   "'Article IV' and 'Article I' cross-references were reported as genuinely ambiguous (two substantive occurrences each) and were left unresolved rather than guessed, per the retrieval report."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": true,
+   "decodedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "inventoryDispositions",
+    "overallNotes"
+   ],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": true,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "string",
+      "originalStringSha256": "bcb828bc5e6a67d106fc2aca67415011e71e3831f1df5270ffcd9c9dbf694bfe",
+      "originalStringLength": 24460,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 23,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "string",
+      "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "originalStringLength": 2,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 0,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "string",
+      "originalStringSha256": "81edefc3ffa231b6e2120a29bba8fc973e321a1ee5c6b80cc39a5033c261f02c",
+      "originalStringLength": 2323,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 2,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "string",
+      "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "originalStringLength": 2,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 0,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "string",
+      "originalStringSha256": "9e6500345212322bd3750a04a9c39f1d850cf749554d5cbf6e188663246c2671",
+      "originalStringLength": 2015,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 6,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:b934f8ceb0d79b5cfe57",
+  "shardHash": "a517905c1e378aff65e60c3ee6022befd80a20511f1c4617e936f80611eb6ce6",
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:16293d438aba37a5facca173",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Affiliated Debt Fund",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Affiliated Lender"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive/qualitative definition with no quantitative or conditional mechanic to model."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means an Affiliated Lender that is a bona fide bank, debt fund, distressed asset fund, hedge fund, mutual fund, insurance company, financial institution or an investment vehicle ... that is not organized primarily for the purpose of making equity investments."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:4e2695c949636fc72b3c4bae",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Affiliated Lender",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Lender",
+      "Borrowers",
+      "Subsidiaries"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive status definition (Affiliate status test), no numeric mechanic."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, at any time, any Lender that is an Affiliate of the Borrowers (other than the Borrowers or any of their respective Subsidiaries) at such time."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:6219a1804b7729b9eb85b678",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Affiliated Lender Assignment and Assumption",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Term is a pure pointer to Section 9.04(f)(6); the pointer itself is fully captured even though the substantive mechanic lives in that other section (recorded as a dependency, not fetched, since it is a procedural document name rather than an economics-bearing term)."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 9.04(f)(6)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:278fa0ecb44a37e917d951ec",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Affiliated Lender Cap",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MULTIPLY",
+      "type": "MONEY",
+      "exprId": "ir-expr:a696afe630109692d942fc80",
+      "operands": [
+       {
+        "kind": "PERCENT",
+        "type": "PERCENT",
+        "value": 0.4,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§9.04(f)(5)",
+         "excerpt": "may not exceed 40%"
+        },
+        "exprId": "ir-expr:6241737c85030e6a94f06b7e"
+       },
+       {
+        "kind": "SUM",
+        "type": "MONEY",
+        "exprId": "ir-expr:bcf52c2bddf9cbba74e5af48",
+        "operands": [
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "outstanding principal amount of all Loans",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:d288be95041b55c2a4bbe535"
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "outstanding principal amount of all term loans made pursuant to an Incremental Loan",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:c7886d63d3c0979b192dd841"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§9.04(f)(5)",
+         "excerpt": null
+        }
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§9.04(f)(5)",
+       "excerpt": "may not exceed 40% of the outstanding principal amount of all Loans plus the outstanding principal amount of all term loans made pursuant to an Incremental Loan calculated at the time such Loans are purchased"
+      }
+     },
+     "dependsOnTerms": [
+      "Affiliated Lender",
+      "Affiliated Debt Fund",
+      "Incremental Loan"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "§1.01 itself is a pure pointer; substantive economics retrieved from Section 9.04(f)(5) via getReferencedProvision.",
+      "The retrieved Section 9.04(f)(5) text carries supersessionStatus UNKNOWN_SUPERSESSION_STATUS (never checked against amendment history) - its current-operative status is not confirmed, so this cannot be certified COMPLETE.",
+      "The related consequence that excess assignments to Affiliated Lenders are void ab initio is a mechanic/remedy, not a value, and is not separately modeled as a rule since only §1.01 was requested for compilation."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §9.04(f)(5)",
+      "excerpt": "\"Affiliated Lender Cap\" has the meaning assigned to such term in Section 9.04(f)(5): 'the aggregate principal amount of Loans purchased by assignment ... held at any one time by Affiliated Lenders (other than Affiliated Debt Funds) may not exceed 40% of the outstanding principal amount of all Loans plus the outstanding principal amount of all term loans made pursuant to an Incremental Loan ...'"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:53d979304f9f718a945c6695",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Agent",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Administrative Agent",
+      "Collateral Agent",
+      "Lead Arranger"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive role definition, no computable mechanic."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the Administrative Agent, the Collateral Agent, each Lead Arranger, and any successors and assigns in such capacity, and \"Agents\" means two (2) or more of them."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:beb0d91d93d82a97962457f9",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Trivial self-referential definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means this agreement."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:858be0fd76d908c3d6adf504",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Agreement Currency",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pure pointer to Section 9.20(b); pointer fully captured, substantive mechanic not requested for this compilation."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 9.20(b)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:c3a052377cdc6c91706efc77",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "AHYDO Payment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive definition referencing an external Internal Revenue Code test (Section 163(e)(5) of the Code); that external statutory reference is not part of this financing instrument and is not fetchable by any tool in scope, but the definition itself is fully quoted."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means any payment required to be made under the terms of Indebtedness in order to avoid the application of Section 163(e)(5) of the Code to such Indebtedness."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:b78aa7baf35860987e0d83fd",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Alternate Base Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MAX",
+      "type": "NUMBER",
+      "exprId": "ir-expr:21e6a27964a3158a2ae38d6d",
+      "operands": [
+       {
+        "kind": "IF",
+        "type": "NUMBER",
+        "exprId": "ir-expr:1b73f2ebbea279edf9115a14",
+        "condition": {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01: \"If the Alternate Base Rate is being used as an alternate rate of interest pursuant to Section 2.12 (for the avoidance of doubt, only until the Benchmark Replacement has been determined pursuant to Section 2.12(c)), then the Alternate Base Rate shall be the greater of clauses (a) and (b) above and shall be determined without reference to clause (c) above.\"",
+         "semanticDescription": "whether the Alternate Base Rate is being used as an alternate rate of interest pursuant to Section 2.12, prior to determination of a Benchmark Replacement under Section 2.12(c)",
+         "reason": "This is a contingent operational/benchmark-fallback fact, not a static boolean derivable from §1.01 text alone; Section 2.12 and 2.12(c) were out of the retrieved source-context budget.",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:a69579c8bd3970dfdc35fb43"
+        },
+        "then": {
+         "kind": "MAX",
+         "type": "NUMBER",
+         "exprId": "ir-expr:ea52c9dad7c1f6086e712e84",
+         "operands": [
+          {
+           "kind": "UNSUPPORTED",
+           "type": null,
+           "sourceEvidence": "(no evidence captured)",
+           "semanticDescription": "unrecognized or malformed expression (kind=\"ADD\")",
+           "reason": "ADD requires at least one operand",
+           "requiredReview": true,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:6b1c6bba7dd9b8b7190616c8",
+           "inventoryItemIds": [
+            "8bb012a92dfa4cffe16f6f80"
+           ]
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "type": "NUMBER",
+           "metricName": "Prime Rate",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:90d4178e61a384361237978d",
+           "inventoryItemIds": [
+            "158017c882aa62f82bde49c5"
+           ]
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "the Alternate Base Rate shall be the greater of clauses (a) and (b) above and shall be determined without reference to clause (c) above"
+         }
+        },
+        "else": {
+         "kind": "MAX",
+         "type": "NUMBER",
+         "exprId": "ir-expr:cff0724c2c978d19a9cc6dad",
+         "operands": [
+          {
+           "kind": "UNSUPPORTED",
+           "type": null,
+           "sourceEvidence": "(no evidence captured)",
+           "semanticDescription": "unrecognized or malformed expression (kind=\"ADD\")",
+           "reason": "ADD requires at least one operand",
+           "requiredReview": true,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:6b1c6bba7dd9b8b7190616c8",
+           "inventoryItemIds": [
+            "8bb012a92dfa4cffe16f6f80"
+           ]
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "type": "NUMBER",
+           "metricName": "Prime Rate",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:90d4178e61a384361237978d",
+           "inventoryItemIds": [
+            "158017c882aa62f82bde49c5"
+           ]
+          },
+          {
+           "kind": "UNSUPPORTED",
+           "type": null,
+           "sourceEvidence": "(no evidence captured)",
+           "semanticDescription": "unrecognized or malformed expression (kind=\"ADD\")",
+           "reason": "ADD requires at least one operand",
+           "requiredReview": true,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:6b1c6bba7dd9b8b7190616c8",
+           "inventoryItemIds": [
+            "9f3e806f6ec4b3fe09940054"
+           ]
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "the highest of (a) the NYFRB Rate plus 1/2 of 1.00%, (b) the Prime Rate for such day and (c) Term SOFR Rate for a one (1)-month Interest Period as published two (2) U.S. Government Securities Business Days prior to such day ... plus 1.00%"
+         },
+         "inventoryItemIds": [
+          "ae5c57afe8712d40aadf87ac"
+         ]
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       {
+        "kind": "NUMBER",
+        "type": "NUMBER",
+        "value": 0,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": "the Alternate Base Rate will be deemed to be 0.00% per annum if the Alternate Base Rate calculated pursuant to the foregoing provisions would otherwise be less than 0.00% per annum"
+        },
+        "exprId": "ir-expr:4585409186dce9d7a98224f3",
+        "inventoryItemIds": [
+         "327d0ed0c6e13b3fd6e0fe71"
+        ]
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "NYFRB Rate",
+      "Prime Rate",
+      "Term SOFR Rate",
+      "Term SOFR Reference Rate",
+      "Benchmark Replacement"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The Section 2.12 fallback-mode selector is represented as an UNSUPPORTED boolean condition because it is a contingent, cross-referenced operational fact (Section 2.12/2.12(c) were out of the retrieved source-context budget), not a value derivable from §1.01 alone.",
+      "Percentage rate additions (rate + spread) are approximated using the NUMBER type rather than PERCENT because the IR's stated type discipline restricts ADD to MONEY/NUMBER/RATIO operands only, excluding PERCENT; see irExtensionCandidate for a proposed fix.",
+      "The Term SOFR Reference Rate publication-timing proviso is captured only descriptively (as excerpt), not as a separate computable node.",
+      "This is a contingent operational/benchmark-fallback fact, not a static boolean derivable from §1.01 text alone; Section 2.12 and 2.12(c) were out of the retrieved source-context budget.",
+      "ADD requires at least one operand",
+      "MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+      "ADD requires at least one operand",
+      "ADD requires at least one operand",
+      "MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+      "IF keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+      "MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means for any day a fluctuating rate per annum equal to the highest of (a) the NYFRB Rate plus 1/2 of 1.00%, (b) the Prime Rate for such day and (c) Term SOFR Rate for a one (1)-month Interest Period ... plus 1.00% ... the Alternate Base Rate will be deemed to be 0.00% per annum if ... otherwise be less than 0.00% per annum."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:be9f80584c4f4240db6fa23e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Alternative Currency",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Administrative Agent",
+      "Revolving Lender"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Enumerated list of currencies plus a consent-gated open category; fully captured descriptively, no dollar/ratio arithmetic involved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means (a) euros, (b) Sterling, (c) Canadian Dollars and (d) subject to the consent of the Administrative Agent and each Revolving Lender agreeing to make Revolving Loans in such currency, any other currency."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:1fc77d84660affc9528cffe3",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Alternative Currency Term Benchmark",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Alternative Currency Term Benchmark Rate"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive labeling definition (whether a Loan bears interest by reference to the rate), no independent computable value."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "when used in reference to any Loan or Borrowing, refers to whether such Loan, or the Loans comprising such Borrowing, are bearing interest at a rate determined by reference to the Alternative Currency Term Benchmark Rate."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:7c2470966c3498bc15c0c86a",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Alternative Currency Term Benchmark Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MAX",
+      "type": "NUMBER",
+      "exprId": "ir-expr:55b2f45d2bd7152071be6214",
+      "operands": [
+       {
+        "kind": "IF",
+        "type": "NUMBER",
+        "exprId": "ir-expr:48afdfee9402710aa547205d",
+        "condition": {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01: '(a) for any Interest Period with respect to an Alternative Currency Term Benchmark Borrowing denominated in Canadian Dollars, Term CORRA; and (b) for any Interest Period with respect to an Alternative Currency Term Benchmark Borrowing denominated in euro, the EURIBOR Rate...'",
+         "semanticDescription": "the currency of the Alternative Currency Term Benchmark Borrowing (Canadian Dollars vs. euro) - a transaction-time currency selection",
+         "reason": "Currency selection is a per-Borrowing transaction fact, not a static boolean expressible with the IR's comparison primitives.",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:bc6983dd8a573e2ac5b96f88"
+        },
+        "then": {
+         "kind": "METRIC_REFERENCE",
+         "type": "NUMBER",
+         "metricName": "Term CORRA",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:4171899da3005a521599e5ad"
+        },
+        "else": {
+         "kind": "METRIC_REFERENCE",
+         "type": "NUMBER",
+         "metricName": "EURIBOR Rate",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:0243871d2ed9e6650ce3f550"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       {
+        "kind": "NUMBER",
+        "type": "NUMBER",
+        "value": 0,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": "in no event shall the Alternative Currency Term Benchmark Rate be less than 0.00% (and if such rate would otherwise be less than 0.00%, it shall be deemed to be 0.00%)"
+        },
+        "exprId": "ir-expr:4585409186dce9d7a98224f3"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Term CORRA",
+      "EURIBOR Rate"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Currency-selection switch modeled with an UNSUPPORTED boolean condition since it is a transaction-time fact rather than a static comparison.",
+      "The successor/comparable-rate mechanism proviso expressly depends on Section 2.12, which was out of the retrieved source-context budget - preserved as an unresolved cross-unit dependency rather than guessed.",
+      "Currency selection is a per-Borrowing transaction fact, not a static boolean expressible with the IR's comparison primitives.",
+      "IF keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+      "MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means: (a) for any Interest Period with respect to an Alternative Currency Term Benchmark Borrowing denominated in Canadian Dollars, Term CORRA; and (b) ... euro, the EURIBOR Rate ...; provided that to the extent a comparable or successor rate is established pursuant to Section 2.12 ...; Notwithstanding the foregoing, in no event shall the Alternative Currency Term Benchmark Rate be less than 0.00%..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:33886c52863f13dcafaef5e8",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Ancillary Fees",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pure pointer to Section 9.02(b); pointer fully captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 9.02(b)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:22eb591e375212a1fb41dcc3",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Annual Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pure pointer to Section 1.08(j); pointer fully captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 1.08(j)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:9798cd4753246e6ba790c06e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Annual Threshold",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Prepayment Event"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pure pointer to the definition of \"Prepayment Event\"; pointer fully captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in the definition of \"Prepayment Event.\""
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d0d034c653e6ce8c338541bc",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Applicable Account",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Administrative Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive, procedural definition; no computable mechanic."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, with respect to any payment to be made to the Administrative Agent hereunder, the account specified by the Administrative Agent from time to time for the purpose of receiving payments of such type."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:03349e6a1e5a8d2fe9ee6f15",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Applicable Creditor",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pure pointer to Section 9.20(b); pointer fully captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 9.20(b)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3c950f6f1f6630fec91850cf",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Applicable Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Weighted Average Life to Maturity"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pure pointer to the definition of \"Weighted Average Life to Maturity\"; pointer fully captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in the definition of \"Weighted Average Life to Maturity.\""
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:6f8c9dd3ebe627df2026916f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Applicable Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "IF",
+      "type": "PERCENT",
+      "exprId": "ir-expr:9a837225af871a72833b5d48",
+      "condition": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01: '(a) with respect to the Initial Term Loans, ... and (b) with respect to any Class of Term Loans other than the Initial Term Loans, as specified in the applicable Incremental Facility Amendment, Refinancing Amendment or Permitted Amendment.'",
+       "semanticDescription": "whether the Term Loans in question are Initial Term Loans (clause (a)) or another Class of Term Loans (clause (b))",
+       "reason": "Class identity is a static fact about a particular Loan/tranche at any given time, but is a lookup key rather than a boolean comparison expressible with the IR's comparison primitives applied to this definitional text alone.",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:7a4dd260c2a7e0e7f3e4e740"
+      },
+      "then": {
+       "kind": "IF",
+       "type": "PERCENT",
+       "exprId": "ir-expr:be1aff7cb6164ba7a451f3af",
+       "condition": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01: '(1) for Term SOFR Loans, 1.75% and (2) for ABR Loans, 0.75%'",
+        "semanticDescription": "whether the particular Initial Term Loan is a Term SOFR Loan or an ABR Loan",
+        "reason": "Interest rate option selected for a Borrowing is a transaction-time selection, not a static boolean.",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:6ca8760d98de9c5fd3db6fff"
+       },
+       "then": {
+        "kind": "PERCENT",
+        "type": "PERCENT",
+        "value": 0.0175,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": "for Term SOFR Loans, 1.75%"
+        },
+        "exprId": "ir-expr:1f7899816302cd8818295a29",
+        "inventoryItemIds": [
+         "b70ddb9b1e45a1d6cea28109"
+        ]
+       },
+       "else": {
+        "kind": "PERCENT",
+        "type": "PERCENT",
+        "value": 0.0075,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": "for ABR Loans, 0.75%"
+        },
+        "exprId": "ir-expr:94d1d2a1dd42e3aa7089a7f0",
+        "inventoryItemIds": [
+         "98a2a63931fda612ac6a57a0"
+        ]
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "else": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01: 'as specified in the applicable Incremental Facility Amendment, Refinancing Amendment or Permitted Amendment.'",
+       "semanticDescription": "Applicable Rate for any Class of Term Loans other than the Initial Term Loans",
+       "reason": "The rate is deferred to, and set entirely by, a future Incremental Facility Amendment, Refinancing Amendment or Permitted Amendment - none of which are part of the §1.01 text or the supplied evidence.",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:b689d6aa2d021e92329c14ec"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Initial Term Loans",
+      "Term SOFR Loans",
+      "ABR Loans",
+      "Incremental Facility Amendment",
+      "Refinancing Amendment",
+      "Permitted Amendment"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The two CRITICAL rate values for Initial Term Loans (1.75% Term SOFR / 0.75% ABR) are fully and faithfully captured as literal PERCENT values.",
+      "The Class/interest-rate-option selectors are modeled as UNSUPPORTED boolean conditions because they are lookup keys/transaction-time selections, not static comparisons.",
+      "The rate applicable to non-Initial Term Loan Classes is genuinely undetermined at this document layer (deferred to a future amendment instrument) and is marked UNSUPPORTED rather than guessed.",
+      "Class identity is a static fact about a particular Loan/tranche at any given time, but is a lookup key rather than a boolean comparison expressible with the IR's comparison primitives applied to this definitional text alone.",
+      "Interest rate option selected for a Borrowing is a transaction-time selection, not a static boolean.",
+      "IF keeps its structure with at least one UNSUPPORTED operand in place - typed PERCENT from its represented operands; PARTIAL, never executable (F-6)",
+      "The rate is deferred to, and set entirely by, a future Incremental Facility Amendment, Refinancing Amendment or Permitted Amendment - none of which are part of the §1.01 text or the supplied evidence.",
+      "IF keeps its structure with at least one UNSUPPORTED operand in place - typed PERCENT from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means: (a) with respect to the Initial Term Loans, (1) for Term SOFR Loans, 1.75% and (2) for ABR Loans, 0.75%; and (b) with respect to any Class of Term Loans other than the Initial Term Loans, as specified in the applicable Incremental Facility Amendment, Refinancing Amendment or Permitted Amendment."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:c1fdd29c59289405ecdc449c",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Approved Bank",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Cash Equivalents"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pure pointer to the definition of \"Cash Equivalents\"; pointer fully captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in the definition of the term \"Cash Equivalents.\""
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:4f57d38f0afd0cefde8647c7",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Approved Electronic Communications",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Loan Party",
+      "Administrative Agent",
+      "Collateral Agent",
+      "Loan Document",
+      "Security Documents",
+      "Approved Electronic Platform",
+      "Borrowing",
+      "Default",
+      "Event of Default"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive definition with a four-part carve-out list (borrowing notices, prepayment notices, default notices, and Article IV conditions); no dollar/ratio economics, fully captured descriptively.",
+      "The 'Article IV' cross-reference within the carve-out is inherently ambiguous per the retrieval report (2 substantive occurrences share the citation 'IV') and is left unresolved rather than guessed."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means each notice, demand, communication, information, document and other material that any Loan Party is obligated to, or otherwise chooses to, provide to the Administrative Agent and/or the Collateral Agent ... \"Approved Electronic Communication\" shall exclude (a) any notice of borrowing ... (b) any notice relating to the payment of any principal ... (c) all notices of any Default or Event of Default and (d) any notice ... required to be delivered to satisfy any of the conditions set forth in Article IV or any other condition to any Borrowing ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d7f9aab71878ae95f1915a97",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Approved Electronic Platform",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pure pointer to Section 9.01; pointer fully captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 9.01."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:2fc2c7ac717811772b794bd0",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Approved Fund",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Fund",
+      "Lender",
+      "Disqualified Lender"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive eligibility definition (administered/managed-by test with a Disqualified Lender carve-out); no computable dollar/ratio mechanic."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means any Fund that is administered or managed by (a) a Lender, (b) an Affiliate of a Lender or (c) an entity or an Affiliate of an entity that administers or manages a Lender, in each case, other than any Fund that is a Disqualified Lender."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED",
+   "DEFINITION_COMPLETENESS_SUSPECT"
+  ],
+  "unresolvedIssues": [
+   "[definition[d9].MAX[0].IF.condition] This is a contingent operational/benchmark-fallback fact, not a static boolean derivable from §1.01 text alone; Section 2.12 and 2.12(c) were out of the retrieved source-context budget.",
+   "[definition[d9].MAX[0].IF.then.MAX[0]] ADD requires at least one operand",
+   "[definition[d9].MAX[0].IF.then] MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9].MAX[0].IF.else.MAX[0]] ADD requires at least one operand",
+   "[definition[d9].MAX[0].IF.else.MAX[2]] ADD requires at least one operand",
+   "[definition[d9].MAX[0].IF.else] MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9].MAX[0]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9]] MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12].MAX[0].IF.condition] Currency selection is a per-Borrowing transaction fact, not a static boolean expressible with the IR's comparison primitives.",
+   "[definition[d12].MAX[0]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12]] MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d19].IF.condition] Class identity is a static fact about a particular Loan/tranche at any given time, but is a lookup key rather than a boolean comparison expressible with the IR's comparison primitives applied to this definitional text alone.",
+   "[definition[d19].IF.then.IF.condition] Interest rate option selected for a Borrowing is a transaction-time selection, not a static boolean.",
+   "[definition[d19].IF.then] IF keeps its structure with at least one UNSUPPORTED operand in place - typed PERCENT from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d19].IF.else] The rate is deferred to, and set entirely by, a future Incremental Facility Amendment, Refinancing Amendment or Permitted Amendment - none of which are part of the §1.01 text or the supplied evidence.",
+   "[definition[d19]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed PERCENT from its represented operands; PARTIAL, never executable (F-6)",
+   "Source is a fragment of the §1.01 defined-terms alphabetical run (Affiliated Debt Fund through Approved Fund, plus the chapeau-adjacent 'ABL Administrative Agent' entry which was explicitly flagged as read-only dependency context and excluded from compilation).",
+   "All 7 FROZEN SEMANTIC INVENTORY items (Alternate Base Rate formula components and Applicable Rate values) are consumed on the specific leaf nodes carrying their values within d9 (Alternate Base Rate) and d19 (Applicable Rate); none required disposition as omitted.",
+   "The five deterministically-detected 'uncovered' percent literals (1.00% x1, 0.00% x4) correspond to (a) the base percentage inside the already-inventoried '1/2 of 1.00%' spread and (b) the paired floor-test/floor-outcome mentions of 0.00% in both Alternate Base Rate and Alternative Currency Term Benchmark Rate - all represented via the NUMBER floor/spread nodes in d9 and d12, none left unrepresented.",
+   "Cross-references to Sections 9.04(f)(6), 9.20(b), 9.02(b), 1.08(j), 9.01, 9.02, 2.12 and 2.12(c) were out of the Phase 2 source-context retrieval budget; each corresponding definition is represented as a faithfully-captured pointer (sufficiency COMPLETE for the pointer itself) except where the target's economics were material enough to independently fetch (Affiliated Lender Cap, via Section 9.04(f)(5), fetched directly in this session) or where the cross-reference gates a live computational mechanic within the definition's own formula (Section 2.12 within Alternate Base Rate and Alternative Currency Term Benchmark Rate, both marked PARTIAL).",
+   "The Section 9.04(f)(5) text retrieved for Affiliated Lender Cap carries supersessionStatus UNKNOWN_SUPERSESSION_STATUS; that uncertainty is reflected in d4's PARTIAL sufficiency rather than a confident COMPLETE.",
+   "'Article IV' and 'Article I' cross-references were reported as genuinely ambiguous (two substantive occurrences each) and were left unresolved rather than guessed, per the retrieval report."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 71834,
+   "outputTokens": 38525,
+   "costUsd": 0.528918
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED",
+   "DEFINITION_COMPLETENESS_SUSPECT"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:16293d438aba37a5facca173",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Affiliated Debt Fund",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Affiliated Lender"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive/qualitative definition with no quantitative or conditional mechanic to model."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means an Affiliated Lender that is a bona fide bank, debt fund, distressed asset fund, hedge fund, mutual fund, insurance company, financial institution or an investment vehicle ... that is not organized primarily for the purpose of making equity investments."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:4e2695c949636fc72b3c4bae",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Affiliated Lender",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Lender",
+     "Borrowers",
+     "Subsidiaries"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive status definition (Affiliate status test), no numeric mechanic."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, at any time, any Lender that is an Affiliate of the Borrowers (other than the Borrowers or any of their respective Subsidiaries) at such time."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:6219a1804b7729b9eb85b678",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Affiliated Lender Assignment and Assumption",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Term is a pure pointer to Section 9.04(f)(6); the pointer itself is fully captured even though the substantive mechanic lives in that other section (recorded as a dependency, not fetched, since it is a procedural document name rather than an economics-bearing term)."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.04(f)(6)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:278fa0ecb44a37e917d951ec",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Affiliated Lender Cap",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "MULTIPLY",
+     "type": "MONEY",
+     "exprId": "ir-expr:a696afe630109692d942fc80",
+     "operands": [
+      {
+       "kind": "PERCENT",
+       "type": "PERCENT",
+       "value": 0.4,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§9.04(f)(5)",
+        "excerpt": "may not exceed 40%"
+       },
+       "exprId": "ir-expr:6241737c85030e6a94f06b7e"
+      },
+      {
+       "kind": "SUM",
+       "type": "MONEY",
+       "exprId": "ir-expr:bcf52c2bddf9cbba74e5af48",
+       "operands": [
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "outstanding principal amount of all Loans",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:d288be95041b55c2a4bbe535"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "outstanding principal amount of all term loans made pursuant to an Incremental Loan",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:c7886d63d3c0979b192dd841"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§9.04(f)(5)",
+        "excerpt": null
+       }
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§9.04(f)(5)",
+      "excerpt": "may not exceed 40% of the outstanding principal amount of all Loans plus the outstanding principal amount of all term loans made pursuant to an Incremental Loan calculated at the time such Loans are purchased"
+     }
+    },
+    "dependsOnTerms": [
+     "Affiliated Lender",
+     "Affiliated Debt Fund",
+     "Incremental Loan"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "§1.01 itself is a pure pointer; substantive economics retrieved from Section 9.04(f)(5) via getReferencedProvision.",
+     "The retrieved Section 9.04(f)(5) text carries supersessionStatus UNKNOWN_SUPERSESSION_STATUS (never checked against amendment history) - its current-operative status is not confirmed, so this cannot be certified COMPLETE.",
+     "The related consequence that excess assignments to Affiliated Lenders are void ab initio is a mechanic/remedy, not a value, and is not separately modeled as a rule since only §1.01 was requested for compilation."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §9.04(f)(5)",
+     "excerpt": "\"Affiliated Lender Cap\" has the meaning assigned to such term in Section 9.04(f)(5): 'the aggregate principal amount of Loans purchased by assignment ... held at any one time by Affiliated Lenders (other than Affiliated Debt Funds) may not exceed 40% of the outstanding principal amount of all Loans plus the outstanding principal amount of all term loans made pursuant to an Incremental Loan ...'"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:53d979304f9f718a945c6695",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Agent",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Administrative Agent",
+     "Collateral Agent",
+     "Lead Arranger"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive role definition, no computable mechanic."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the Administrative Agent, the Collateral Agent, each Lead Arranger, and any successors and assigns in such capacity, and \"Agents\" means two (2) or more of them."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:beb0d91d93d82a97962457f9",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Agreement",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Trivial self-referential definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means this agreement."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:858be0fd76d908c3d6adf504",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Agreement Currency",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Pure pointer to Section 9.20(b); pointer fully captured, substantive mechanic not requested for this compilation."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.20(b)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:c3a052377cdc6c91706efc77",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "AHYDO Payment",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Indebtedness"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Descriptive definition referencing an external Internal Revenue Code test (Section 163(e)(5) of the Code); that external statutory reference is not part of this financing instrument and is not fetchable by any tool in scope, but the definition itself is fully quoted."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means any payment required to be made under the terms of Indebtedness in order to avoid the application of Section 163(e)(5) of the Code to such Indebtedness."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:b78aa7baf35860987e0d83fd",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Alternate Base Rate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "MAX",
+     "type": "NUMBER",
+     "exprId": "ir-expr:21e6a27964a3158a2ae38d6d",
+     "operands": [
+      {
+       "kind": "IF",
+       "type": "NUMBER",
+       "exprId": "ir-expr:1b73f2ebbea279edf9115a14",
+       "condition": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01: \"If the Alternate Base Rate is being used as an alternate rate of interest pursuant to Section 2.12 (for the avoidance of doubt, only until the Benchmark Replacement has been determined pursuant to Section 2.12(c)), then the Alternate Base Rate shall be the greater of clauses (a) and (b) above and shall be determined without reference to clause (c) above.\"",
+        "semanticDescription": "whether the Alternate Base Rate is being used as an alternate rate of interest pursuant to Section 2.12, prior to determination of a Benchmark Replacement under Section 2.12(c)",
+        "reason": "This is a contingent operational/benchmark-fallback fact, not a static boolean derivable from §1.01 text alone; Section 2.12 and 2.12(c) were out of the retrieved source-context budget.",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:a69579c8bd3970dfdc35fb43"
+       },
+       "then": {
+        "kind": "MAX",
+        "type": "NUMBER",
+        "exprId": "ir-expr:ea52c9dad7c1f6086e712e84",
+        "operands": [
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "(no evidence captured)",
+          "semanticDescription": "unrecognized or malformed expression (kind=\"ADD\")",
+          "reason": "ADD requires at least one operand",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:6b1c6bba7dd9b8b7190616c8",
+          "inventoryItemIds": [
+           "8bb012a92dfa4cffe16f6f80"
+          ]
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "NUMBER",
+          "metricName": "Prime Rate",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:90d4178e61a384361237978d",
+          "inventoryItemIds": [
+           "158017c882aa62f82bde49c5"
+          ]
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": "the Alternate Base Rate shall be the greater of clauses (a) and (b) above and shall be determined without reference to clause (c) above"
+        }
+       },
+       "else": {
+        "kind": "MAX",
+        "type": "NUMBER",
+        "exprId": "ir-expr:cff0724c2c978d19a9cc6dad",
+        "operands": [
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "(no evidence captured)",
+          "semanticDescription": "unrecognized or malformed expression (kind=\"ADD\")",
+          "reason": "ADD requires at least one operand",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:6b1c6bba7dd9b8b7190616c8",
+          "inventoryItemIds": [
+           "8bb012a92dfa4cffe16f6f80"
+          ]
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "NUMBER",
+          "metricName": "Prime Rate",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:90d4178e61a384361237978d",
+          "inventoryItemIds": [
+           "158017c882aa62f82bde49c5"
+          ]
+         },
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "(no evidence captured)",
+          "semanticDescription": "unrecognized or malformed expression (kind=\"ADD\")",
+          "reason": "ADD requires at least one operand",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:6b1c6bba7dd9b8b7190616c8",
+          "inventoryItemIds": [
+           "9f3e806f6ec4b3fe09940054"
+          ]
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": "the highest of (a) the NYFRB Rate plus 1/2 of 1.00%, (b) the Prime Rate for such day and (c) Term SOFR Rate for a one (1)-month Interest Period as published two (2) U.S. Government Securities Business Days prior to such day ... plus 1.00%"
+        },
+        "inventoryItemIds": [
+         "ae5c57afe8712d40aadf87ac"
+        ]
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      {
+       "kind": "NUMBER",
+       "type": "NUMBER",
+       "value": 0,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": "the Alternate Base Rate will be deemed to be 0.00% per annum if the Alternate Base Rate calculated pursuant to the foregoing provisions would otherwise be less than 0.00% per annum"
+       },
+       "exprId": "ir-expr:4585409186dce9d7a98224f3",
+       "inventoryItemIds": [
+        "327d0ed0c6e13b3fd6e0fe71"
+       ]
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "NYFRB Rate",
+     "Prime Rate",
+     "Term SOFR Rate",
+     "Term SOFR Reference Rate",
+     "Benchmark Replacement"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The Section 2.12 fallback-mode selector is represented as an UNSUPPORTED boolean condition because it is a contingent, cross-referenced operational fact (Section 2.12/2.12(c) were out of the retrieved source-context budget), not a value derivable from §1.01 alone.",
+     "Percentage rate additions (rate + spread) are approximated using the NUMBER type rather than PERCENT because the IR's stated type discipline restricts ADD to MONEY/NUMBER/RATIO operands only, excluding PERCENT; see irExtensionCandidate for a proposed fix.",
+     "The Term SOFR Reference Rate publication-timing proviso is captured only descriptively (as excerpt), not as a separate computable node.",
+     "This is a contingent operational/benchmark-fallback fact, not a static boolean derivable from §1.01 text alone; Section 2.12 and 2.12(c) were out of the retrieved source-context budget.",
+     "ADD requires at least one operand",
+     "MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+     "ADD requires at least one operand",
+     "ADD requires at least one operand",
+     "MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+     "IF keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+     "MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means for any day a fluctuating rate per annum equal to the highest of (a) the NYFRB Rate plus 1/2 of 1.00%, (b) the Prime Rate for such day and (c) Term SOFR Rate for a one (1)-month Interest Period ... plus 1.00% ... the Alternate Base Rate will be deemed to be 0.00% per annum if ... otherwise be less than 0.00% per annum."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:be9f80584c4f4240db6fa23e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Alternative Currency",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Administrative Agent",
+     "Revolving Lender"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Enumerated list of currencies plus a consent-gated open category; fully captured descriptively, no dollar/ratio arithmetic involved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means (a) euros, (b) Sterling, (c) Canadian Dollars and (d) subject to the consent of the Administrative Agent and each Revolving Lender agreeing to make Revolving Loans in such currency, any other currency."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:1fc77d84660affc9528cffe3",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Alternative Currency Term Benchmark",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Alternative Currency Term Benchmark Rate"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive labeling definition (whether a Loan bears interest by reference to the rate), no independent computable value."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "when used in reference to any Loan or Borrowing, refers to whether such Loan, or the Loans comprising such Borrowing, are bearing interest at a rate determined by reference to the Alternative Currency Term Benchmark Rate."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:7c2470966c3498bc15c0c86a",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Alternative Currency Term Benchmark Rate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "MAX",
+     "type": "NUMBER",
+     "exprId": "ir-expr:55b2f45d2bd7152071be6214",
+     "operands": [
+      {
+       "kind": "IF",
+       "type": "NUMBER",
+       "exprId": "ir-expr:48afdfee9402710aa547205d",
+       "condition": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01: '(a) for any Interest Period with respect to an Alternative Currency Term Benchmark Borrowing denominated in Canadian Dollars, Term CORRA; and (b) for any Interest Period with respect to an Alternative Currency Term Benchmark Borrowing denominated in euro, the EURIBOR Rate...'",
+        "semanticDescription": "the currency of the Alternative Currency Term Benchmark Borrowing (Canadian Dollars vs. euro) - a transaction-time currency selection",
+        "reason": "Currency selection is a per-Borrowing transaction fact, not a static boolean expressible with the IR's comparison primitives.",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:bc6983dd8a573e2ac5b96f88"
+       },
+       "then": {
+        "kind": "METRIC_REFERENCE",
+        "type": "NUMBER",
+        "metricName": "Term CORRA",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:4171899da3005a521599e5ad"
+       },
+       "else": {
+        "kind": "METRIC_REFERENCE",
+        "type": "NUMBER",
+        "metricName": "EURIBOR Rate",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:0243871d2ed9e6650ce3f550"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      {
+       "kind": "NUMBER",
+       "type": "NUMBER",
+       "value": 0,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": "in no event shall the Alternative Currency Term Benchmark Rate be less than 0.00% (and if such rate would otherwise be less than 0.00%, it shall be deemed to be 0.00%)"
+       },
+       "exprId": "ir-expr:4585409186dce9d7a98224f3"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Term CORRA",
+     "EURIBOR Rate"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Currency-selection switch modeled with an UNSUPPORTED boolean condition since it is a transaction-time fact rather than a static comparison.",
+     "The successor/comparable-rate mechanism proviso expressly depends on Section 2.12, which was out of the retrieved source-context budget - preserved as an unresolved cross-unit dependency rather than guessed.",
+     "Currency selection is a per-Borrowing transaction fact, not a static boolean expressible with the IR's comparison primitives.",
+     "IF keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+     "MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means: (a) for any Interest Period with respect to an Alternative Currency Term Benchmark Borrowing denominated in Canadian Dollars, Term CORRA; and (b) ... euro, the EURIBOR Rate ...; provided that to the extent a comparable or successor rate is established pursuant to Section 2.12 ...; Notwithstanding the foregoing, in no event shall the Alternative Currency Term Benchmark Rate be less than 0.00%..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:33886c52863f13dcafaef5e8",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Ancillary Fees",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Pure pointer to Section 9.02(b); pointer fully captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.02(b)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:22eb591e375212a1fb41dcc3",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Annual Period",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Pure pointer to Section 1.08(j); pointer fully captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 1.08(j)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:9798cd4753246e6ba790c06e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Annual Threshold",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Prepayment Event"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Pure pointer to the definition of \"Prepayment Event\"; pointer fully captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of \"Prepayment Event.\""
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d0d034c653e6ce8c338541bc",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Applicable Account",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Administrative Agent"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive, procedural definition; no computable mechanic."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, with respect to any payment to be made to the Administrative Agent hereunder, the account specified by the Administrative Agent from time to time for the purpose of receiving payments of such type."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:03349e6a1e5a8d2fe9ee6f15",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Applicable Creditor",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Pure pointer to Section 9.20(b); pointer fully captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.20(b)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3c950f6f1f6630fec91850cf",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Applicable Indebtedness",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Weighted Average Life to Maturity"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Pure pointer to the definition of \"Weighted Average Life to Maturity\"; pointer fully captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of \"Weighted Average Life to Maturity.\""
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:6f8c9dd3ebe627df2026916f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Applicable Rate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "IF",
+     "type": "PERCENT",
+     "exprId": "ir-expr:9a837225af871a72833b5d48",
+     "condition": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: '(a) with respect to the Initial Term Loans, ... and (b) with respect to any Class of Term Loans other than the Initial Term Loans, as specified in the applicable Incremental Facility Amendment, Refinancing Amendment or Permitted Amendment.'",
+      "semanticDescription": "whether the Term Loans in question are Initial Term Loans (clause (a)) or another Class of Term Loans (clause (b))",
+      "reason": "Class identity is a static fact about a particular Loan/tranche at any given time, but is a lookup key rather than a boolean comparison expressible with the IR's comparison primitives applied to this definitional text alone.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:7a4dd260c2a7e0e7f3e4e740"
+     },
+     "then": {
+      "kind": "IF",
+      "type": "PERCENT",
+      "exprId": "ir-expr:be1aff7cb6164ba7a451f3af",
+      "condition": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01: '(1) for Term SOFR Loans, 1.75% and (2) for ABR Loans, 0.75%'",
+       "semanticDescription": "whether the particular Initial Term Loan is a Term SOFR Loan or an ABR Loan",
+       "reason": "Interest rate option selected for a Borrowing is a transaction-time selection, not a static boolean.",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:6ca8760d98de9c5fd3db6fff"
+      },
+      "then": {
+       "kind": "PERCENT",
+       "type": "PERCENT",
+       "value": 0.0175,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": "for Term SOFR Loans, 1.75%"
+       },
+       "exprId": "ir-expr:1f7899816302cd8818295a29",
+       "inventoryItemIds": [
+        "b70ddb9b1e45a1d6cea28109"
+       ]
+      },
+      "else": {
+       "kind": "PERCENT",
+       "type": "PERCENT",
+       "value": 0.0075,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": "for ABR Loans, 0.75%"
+       },
+       "exprId": "ir-expr:94d1d2a1dd42e3aa7089a7f0",
+       "inventoryItemIds": [
+        "98a2a63931fda612ac6a57a0"
+       ]
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "else": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: 'as specified in the applicable Incremental Facility Amendment, Refinancing Amendment or Permitted Amendment.'",
+      "semanticDescription": "Applicable Rate for any Class of Term Loans other than the Initial Term Loans",
+      "reason": "The rate is deferred to, and set entirely by, a future Incremental Facility Amendment, Refinancing Amendment or Permitted Amendment - none of which are part of the §1.01 text or the supplied evidence.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:b689d6aa2d021e92329c14ec"
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Initial Term Loans",
+     "Term SOFR Loans",
+     "ABR Loans",
+     "Incremental Facility Amendment",
+     "Refinancing Amendment",
+     "Permitted Amendment"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The two CRITICAL rate values for Initial Term Loans (1.75% Term SOFR / 0.75% ABR) are fully and faithfully captured as literal PERCENT values.",
+     "The Class/interest-rate-option selectors are modeled as UNSUPPORTED boolean conditions because they are lookup keys/transaction-time selections, not static comparisons.",
+     "The rate applicable to non-Initial Term Loan Classes is genuinely undetermined at this document layer (deferred to a future amendment instrument) and is marked UNSUPPORTED rather than guessed.",
+     "Class identity is a static fact about a particular Loan/tranche at any given time, but is a lookup key rather than a boolean comparison expressible with the IR's comparison primitives applied to this definitional text alone.",
+     "Interest rate option selected for a Borrowing is a transaction-time selection, not a static boolean.",
+     "IF keeps its structure with at least one UNSUPPORTED operand in place - typed PERCENT from its represented operands; PARTIAL, never executable (F-6)",
+     "The rate is deferred to, and set entirely by, a future Incremental Facility Amendment, Refinancing Amendment or Permitted Amendment - none of which are part of the §1.01 text or the supplied evidence.",
+     "IF keeps its structure with at least one UNSUPPORTED operand in place - typed PERCENT from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means: (a) with respect to the Initial Term Loans, (1) for Term SOFR Loans, 1.75% and (2) for ABR Loans, 0.75%; and (b) with respect to any Class of Term Loans other than the Initial Term Loans, as specified in the applicable Incremental Facility Amendment, Refinancing Amendment or Permitted Amendment."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:c1fdd29c59289405ecdc449c",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Approved Bank",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Cash Equivalents"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Pure pointer to the definition of \"Cash Equivalents\"; pointer fully captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of the term \"Cash Equivalents.\""
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:4f57d38f0afd0cefde8647c7",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Approved Electronic Communications",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Loan Party",
+     "Administrative Agent",
+     "Collateral Agent",
+     "Loan Document",
+     "Security Documents",
+     "Approved Electronic Platform",
+     "Borrowing",
+     "Default",
+     "Event of Default"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive definition with a four-part carve-out list (borrowing notices, prepayment notices, default notices, and Article IV conditions); no dollar/ratio economics, fully captured descriptively.",
+     "The 'Article IV' cross-reference within the carve-out is inherently ambiguous per the retrieval report (2 substantive occurrences share the citation 'IV') and is left unresolved rather than guessed."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means each notice, demand, communication, information, document and other material that any Loan Party is obligated to, or otherwise chooses to, provide to the Administrative Agent and/or the Collateral Agent ... \"Approved Electronic Communication\" shall exclude (a) any notice of borrowing ... (b) any notice relating to the payment of any principal ... (c) all notices of any Default or Event of Default and (d) any notice ... required to be delivered to satisfy any of the conditions set forth in Article IV or any other condition to any Borrowing ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d7f9aab71878ae95f1915a97",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Approved Electronic Platform",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Pure pointer to Section 9.01; pointer fully captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 9.01."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:2fc2c7ac717811772b794bd0",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Approved Fund",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Fund",
+     "Lender",
+     "Disqualified Lender"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive eligibility definition (administered/managed-by test with a Disqualified Lender carve-out); no computable dollar/ratio mechanic."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means any Fund that is administered or managed by (a) a Lender, (b) an Affiliate of a Lender or (c) an entity or an Affiliate of an entity that administers or manages a Lender, in each case, other than any Fund that is a Disqualified Lender."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01 Alternate Base Rate ('the NYFRB Rate plus 1/2 of 1.00%'; 'Term SOFR Rate ... plus 1.00%') and Applicable Rate/Alternative Currency Term Benchmark Rate family generally",
+    "semanticRequirement": "Interest-rate benchmark definitions routinely require adding a percentage spread to a percentage reference rate (rate stacking), and comparing/flooring the resulting rate against 0%.",
+    "whyExistingPrimitivesFail": "The IR's stated type discipline restricts ADD/SUBTRACT/MULTIPLY/SUM to MONEY/NUMBER/RATIO operands, and reserves PERCENT exclusively as a MULTIPLY scaling factor - it does not permit adding two PERCENT-typed values (rate + spread) even though this is the single most common construct in floating-rate interest definitions. We approximated by using the NUMBER type for both the metric reference and the spread literal, which type-checks but loses the semantic tag that these are percentage/rate values.",
+    "candidateGeneralizedPrimitive": "Allow ADD/SUBTRACT to combine PERCENT operands (rate + spread => rate), or add a dedicated RATE node type/valueType that ADD explicitly supports, distinct from a metric-of-a-base PERCENT."
+   },
+   {
+    "sourceEvidence": "§1.01 Alternate Base Rate (fallback mode tied to Section 2.12), Alternative Currency Term Benchmark Rate (currency-keyed lookup), Applicable Rate (Loan-Class/interest-rate-option-keyed lookup)",
+    "semanticRequirement": "Several definitions select among alternative values based on a transaction-time categorical fact (which currency was borrowed, which interest rate option was elected, which Class a Loan belongs to) rather than a numeric/ratio comparison.",
+    "whyExistingPrimitivesFail": "IF's condition slot is designed for boolean/comparison expressions (COMPARE/AND/OR/NOT), not for a categorical selector keyed by a transaction attribute; TRANSACTION_INPUT_REFERENCE has no associated equality/lookup construct. We approximated with UNSUPPORTED conditions nested inside IF, preserving the branch values but not the selection logic itself.",
+    "candidateGeneralizedPrimitive": "A CATEGORICAL_SELECT node (selector: TRANSACTION_INPUT_REFERENCE or ENTITY_SCOPE_REFERENCE, cases: [{matchValue, value}], defaultValue) to express lookup-table style definitions without misusing IF or SCHEDULE."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d9].MAX[0].IF.condition] This is a contingent operational/benchmark-fallback fact, not a static boolean derivable from §1.01 text alone; Section 2.12 and 2.12(c) were out of the retrieved source-context budget.",
+   "[definition[d9].MAX[0].IF.then.MAX[0]] ADD requires at least one operand",
+   "[definition[d9].MAX[0].IF.then] MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9].MAX[0].IF.else.MAX[0]] ADD requires at least one operand",
+   "[definition[d9].MAX[0].IF.else.MAX[2]] ADD requires at least one operand",
+   "[definition[d9].MAX[0].IF.else] MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9].MAX[0]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9]] MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12].MAX[0].IF.condition] Currency selection is a per-Borrowing transaction fact, not a static boolean expressible with the IR's comparison primitives.",
+   "[definition[d12].MAX[0]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12]] MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d19].IF.condition] Class identity is a static fact about a particular Loan/tranche at any given time, but is a lookup key rather than a boolean comparison expressible with the IR's comparison primitives applied to this definitional text alone.",
+   "[definition[d19].IF.then.IF.condition] Interest rate option selected for a Borrowing is a transaction-time selection, not a static boolean.",
+   "[definition[d19].IF.then] IF keeps its structure with at least one UNSUPPORTED operand in place - typed PERCENT from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d19].IF.else] The rate is deferred to, and set entirely by, a future Incremental Facility Amendment, Refinancing Amendment or Permitted Amendment - none of which are part of the §1.01 text or the supplied evidence.",
+   "[definition[d19]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed PERCENT from its represented operands; PARTIAL, never executable (F-6)",
+   "Source is a fragment of the §1.01 defined-terms alphabetical run (Affiliated Debt Fund through Approved Fund, plus the chapeau-adjacent 'ABL Administrative Agent' entry which was explicitly flagged as read-only dependency context and excluded from compilation).",
+   "All 7 FROZEN SEMANTIC INVENTORY items (Alternate Base Rate formula components and Applicable Rate values) are consumed on the specific leaf nodes carrying their values within d9 (Alternate Base Rate) and d19 (Applicable Rate); none required disposition as omitted.",
+   "The five deterministically-detected 'uncovered' percent literals (1.00% x1, 0.00% x4) correspond to (a) the base percentage inside the already-inventoried '1/2 of 1.00%' spread and (b) the paired floor-test/floor-outcome mentions of 0.00% in both Alternate Base Rate and Alternative Currency Term Benchmark Rate - all represented via the NUMBER floor/spread nodes in d9 and d12, none left unrepresented.",
+   "Cross-references to Sections 9.04(f)(6), 9.20(b), 9.02(b), 1.08(j), 9.01, 9.02, 2.12 and 2.12(c) were out of the Phase 2 source-context retrieval budget; each corresponding definition is represented as a faithfully-captured pointer (sufficiency COMPLETE for the pointer itself) except where the target's economics were material enough to independently fetch (Affiliated Lender Cap, via Section 9.04(f)(5), fetched directly in this session) or where the cross-reference gates a live computational mechanic within the definition's own formula (Section 2.12 within Alternate Base Rate and Alternative Currency Term Benchmark Rate, both marked PARTIAL).",
+   "The Section 9.04(f)(5) text retrieved for Affiliated Lender Cap carries supersessionStatus UNKNOWN_SUPERSESSION_STATUS; that uncertainty is reflected in d4's PARTIAL sufficiency rather than a confident COMPLETE.",
+   "'Article IV' and 'Article I' cross-references were reported as genuinely ambiguous (two substantive occurrences each) and were left unresolved rather than guessed, per the retrieval report."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 9.04(f)(5)"
+    },
+    "outputSummary": "resolved reference \"Section 9.04(f)(5)\" -> 9.04(f)(5) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 727,
+    "timestamp": "2026-09-14T16:47:33.798Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 9.04(f)(5)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:6cbfa4d935a3407844527ed2",
+     "sourceNodeKey": "doc-a::9.04(f)(5)",
+     "charStart": 807905,
+     "charEnd": 808632,
+     "rawText": "(5) the aggregate principal\namount of Loans purchased by assignment pursuant to this Section 9.04 and held at any one time by Affiliated Lenders (other than Affiliated Debt Funds) may not exceed 40% of the outstanding principal amount of all Loans plus the\noutstanding principal amount of all term loans made pursuant to an Incremental Loan calculated at the time such Loans are purchased (such percentage, the “ Affiliated Lender Cap ”); provided that to the extent any assignment\nto an Affiliated Lender would result in the aggregate principal amount of all Loans held by Affiliated Lenders (other than Affiliated Debt Funds) exceeding the Affiliated Lender Cap, the assignment of such excess amount will be void ab\ninitio ;\n",
+     "contentHash": "b8e428ab0c1328ac5e9b0d9b670e90ec75e0ddc93741435c6f6acb70db93e9d4",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": {
+   "fired": true,
+   "detectedSourceTermLabels": [
+    "Affiliated Debt Fund",
+    "Affiliated Lender",
+    "Agent",
+    "Agents",
+    "Agreement",
+    "AHYDO Payment",
+    "Alternate Base Rate",
+    "Alternative Currency",
+    "Alternative Currency\nTerm Benchmark Rate",
+    "Applicable Account",
+    "Applicable Rate",
+    "Approved Electronic Communications",
+    "Approved Fund"
+   ],
+   "compiledTermLabels": [
+    "Affiliated Debt Fund",
+    "Affiliated Lender",
+    "Affiliated Lender Assignment and Assumption",
+    "Affiliated Lender Cap",
+    "Agent",
+    "Agreement",
+    "Agreement Currency",
+    "AHYDO Payment",
+    "Alternate Base Rate",
+    "Alternative Currency",
+    "Alternative Currency Term Benchmark",
+    "Alternative Currency Term Benchmark Rate",
+    "Ancillary Fees",
+    "Annual Period",
+    "Annual Threshold",
+    "Applicable Account",
+    "Applicable Creditor",
+    "Applicable Indebtedness",
+    "Applicable Rate",
+    "Approved Bank",
+    "Approved Electronic Communications",
+    "Approved Electronic Platform",
+    "Approved Fund"
+   ],
+   "missingTermLabels": [
+    "Agents"
+   ],
+   "reason": "Deterministic completeness check found 1 quoted defined-term citation(s) in the supplied source (matching the '\"Term\" means'/'\"Term\" shall mean' pattern) that do not appear among the 23 compiled definition(s): \"Agents\". This is a structural detection only - it does not assert what these terms mean or why they were omitted."
+  },
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": "[\n  {\n    \"localRef\": \"d1\",\n    \"termName\": \"Affiliated Debt Fund\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Affiliated Lender\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Purely descriptive/qualitative definition with no quantitative or conditional mechanic to model.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means an Affiliated Lender that is a bona fide bank, debt fund, distressed asset fund, hedge fund, mutual fund, insurance company, financial institution or an investment vehicle ... that is not organized primarily for the purpose of making equity investments.\"\n  },\n  {\n    \"localRef\": \"d2\",\n    \"termName\": \"Affiliated Lender\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Lender\", \"Borrowers\", \"Subsidiaries\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Purely descriptive status definition (Affiliate status test), no numeric mechanic.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means, at any time, any Lender that is an Affiliate of the Borrowers (other than the Borrowers or any of their respective Subsidiaries) at such time.\"\n  },\n  {\n    \"localRef\": \"d3\",\n    \"termName\": \"Affiliated Lender Assignment and Assumption\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Term is a pure pointer to Section 9.04(f)(6); the pointer itself is fully captured even though the substantive mechanic lives in that other section (recorded as a dependency, not fetched, since it is a procedural document name rather than an economics-bearing term).\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"has the meaning assigned to such term in Section 9.04(f)(6).\"\n  },\n  {\n    \"localRef\": \"d4\",\n    \"termName\": \"Affiliated Lender Cap\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"MULTIPLY\",\n      \"operands\": [\n        {\"kind\": \"PERCENT\", \"value\": 0.40, \"citation\": \"§9.04(f)(5)\", \"excerpt\": \"may not exceed 40%\"},\n        {\n          \"kind\": \"SUM\",\n          \"operands\": [\n            {\"kind\": \"METRIC_REFERENCE\", \"metricName\": \"outstanding principal amount of all Loans\", \"citation\": \"§9.04(f)(5)\"},\n            {\"kind\": \"METRIC_REFERENCE\", \"metricName\": \"outstanding principal amount of all term loans made pursuant to an Incremental Loan\", \"citation\": \"§9.04(f)(5)\"}\n          ],\n          \"citation\": \"§9.04(f)(5)\"\n        }\n      ],\n      \"citation\": \"§9.04(f)(5)\",\n      \"excerpt\": \"may not exceed 40% of the outstanding principal amount of all Loans plus the outstanding principal amount of all term loans made pursuant to an Incremental Loan calculated at the time such Loans are purchased\"\n    },\n    \"dependsOnTerms\": [\"Affiliated Lender\", \"Affiliated Debt Fund\", \"Incremental Loan\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\n      \"§1.01 itself is a pure pointer; substantive economics retrieved from Section 9.04(f)(5) via getReferencedProvision.\",\n      \"The retrieved Section 9.04(f)(5) text carries supersessionStatus UNKNOWN_SUPERSESSION_STATUS (never checked against amendment history) - its current-operative status is not confirmed, so this cannot be certified COMPLETE.\",\n      \"The related consequence that excess assignments to Affiliated Lenders are void ab initio is a mechanic/remedy, not a value, and is not separately modeled as a rule since only §1.01 was requested for compilation.\"\n    ],\n    \"citation\": \"§1.01; §9.04(f)(5)\",\n    \"excerpt\": \"\\\"Affiliated Lender Cap\\\" has the meaning assigned to such term in Section 9.04(f)(5): 'the aggregate principal amount of Loans purchased by assignment ... held at any one time by Affiliated Lenders (other than Affiliated Debt Funds) may not exceed 40% of the outstanding principal amount of all Loans plus the outstanding principal amount of all term loans made pursuant to an Incremental Loan ...'\"\n  },\n  {\n    \"localRef\": \"d5\",\n    \"termName\": \"Agent\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Administrative Agent\", \"Collateral Agent\", \"Lead Arranger\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Purely descriptive role definition, no computable mechanic.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means the Administrative Agent, the Collateral Agent, each Lead Arranger, and any successors and assigns in such capacity, and \\\"Agents\\\" means two (2) or more of them.\"\n  },\n  {\n    \"localRef\": \"d6\",\n    \"termName\": \"Agreement\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Trivial self-referential definition.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means this agreement.\"\n  },\n  {\n    \"localRef\": \"d7\",\n    \"termName\": \"Agreement Currency\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Pure pointer to Section 9.20(b); pointer fully captured, substantive mechanic not requested for this compilation.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"has the meaning assigned to such term in Section 9.20(b).\"\n  },\n  {\n    \"localRef\": \"d8\",\n    \"termName\": \"AHYDO Payment\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Indebtedness\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Descriptive definition referencing an external Internal Revenue Code test (Section 163(e)(5) of the Code); that external statutory reference is not part of this financing instrument and is not fetchable by any tool in scope, but the definition itself is fully quoted.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means any payment required to be made under the terms of Indebtedness in order to avoid the application of Section 163(e)(5) of the Code to such Indebtedness.\"\n  },\n  {\n    \"localRef\": \"d9\",\n    \"termName\": \"Alternate Base Rate\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"MAX\",\n      \"operands\": [\n        {\n          \"kind\": \"IF\",\n          \"condition\": {\n            \"kind\": \"UNSUPPORTED\",\n            \"semanticDescription\": \"whether the Alternate Base Rate is being used as an alternate rate of interest pursuant to Section 2.12, prior to determination of a Benchmark Replacement under Section 2.12(c)\",\n            \"reason\": \"This is a contingent operational/benchmark-fallback fact, not a static boolean derivable from §1.01 text alone; Section 2.12 and 2.12(c) were out of the retrieved source-context budget.\",\n            \"sourceEvidence\": \"§1.01: \\\"If the Alternate Base Rate is being used as an alternate rate of interest pursuant to Section 2.12 (for the avoidance of doubt, only until the Benchmark Replacement has been determined pursuant to Section 2.12(c)), then the Alternate Base Rate shall be the greater of clauses (a) and (b) above and shall be determined without reference to clause (c) above.\\\"\"\n          },\n          \"then\": {\n            \"kind\": \"MAX\",\n            \"operands\": [\n              {\n                \"kind\": \"ADD\",\n                \"left\": {\"kind\": \"METRIC_REFERENCE\", \"metricName\": \"NYFRB Rate\", \"valueType\": \"NUMBER\", \"citation\": \"§1.01\"},\n                \"right\": {\"kind\": \"NUMBER\", \"value\": 0.005, \"citation\": \"§1.01\", \"excerpt\": \"plus 1/2 of 1.00%\"},\n                \"citation\": \"§1.01\",\n                \"inventoryItemIds\": [\"8bb012a92dfa4cffe16f6f80\"]\n              },\n              {\"kind\": \"METRIC_REFERENCE\", \"metricName\": \"Prime Rate\", \"valueType\": \"NUMBER\", \"citation\": \"§1.01\", \"inventoryItemIds\": [\"158017c882aa62f82bde49c5\"]}\n            ],\n            \"citation\": \"§1.01\",\n            \"excerpt\": \"the Alternate Base Rate shall be the greater of clauses (a) and (b) above and shall be determined without reference to clause (c) above\"\n          },\n          \"else\": {\n            \"kind\": \"MAX\",\n            \"operands\": [\n              {\n                \"kind\": \"ADD\",\n                \"left\": {\"kind\": \"METRIC_REFERENCE\", \"metricName\": \"NYFRB Rate\", \"valueType\": \"NUMBER\", \"citation\": \"§1.01\"},\n                \"right\": {\"kind\": \"NUMBER\", \"value\": 0.005, \"citation\": \"§1.01\", \"excerpt\": \"plus 1/2 of 1.00%\"},\n                \"citation\": \"§1.01\",\n                \"inventoryItemIds\": [\"8bb012a92dfa4cffe16f6f80\"]\n              },\n              {\"kind\": \"METRIC_REFERENCE\", \"metricName\": \"Prime Rate\", \"valueType\": \"NUMBER\", \"citation\": \"§1.01\", \"inventoryItemIds\": [\"158017c882aa62f82bde49c5\"]},\n              {\n                \"kind\": \"ADD\",\n                \"left\": {\"kind\": \"METRIC_REFERENCE\", \"metricName\": \"Term SOFR Rate\", \"valueType\": \"NUMBER\", \"citation\": \"§1.01\", \"excerpt\": \"Term SOFR Rate for a one (1)-month Interest Period as published two (2) U.S. Government Securities Business Days prior to such day\"},\n                \"right\": {\"kind\": \"NUMBER\", \"value\": 0.01, \"citation\": \"§1.01\"},\n                \"citation\": \"§1.01\",\n                \"inventoryItemIds\": [\"9f3e806f6ec4b3fe09940054\"]\n              }\n            ],\n            \"citation\": \"§1.01\",\n            \"excerpt\": \"the highest of (a) the NYFRB Rate plus 1/2 of 1.00%, (b) the Prime Rate for such day and (c) Term SOFR Rate for a one (1)-month Interest Period as published two (2) U.S. Government Securities Business Days prior to such day ... plus 1.00%\",\n            \"inventoryItemIds\": [\"ae5c57afe8712d40aadf87ac\"]\n          },\n          \"citation\": \"§1.01\"\n        },\n        {\"kind\": \"NUMBER\", \"value\": 0.0, \"citation\": \"§1.01\", \"excerpt\": \"the Alternate Base Rate will be deemed to be 0.00% per annum if the Alternate Base Rate calculated pursuant to the foregoing provisions would otherwise be less than 0.00% per annum\", \"inventoryItemIds\": [\"327d0ed0c6e13b3fd6e0fe71\"]}\n      ],\n      \"citation\": \"§1.01\"\n    },\n    \"dependsOnTerms\": [\"NYFRB Rate\", \"Prime Rate\", \"Term SOFR Rate\", \"Term SOFR Reference Rate\", \"Benchmark Replacement\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\n      \"The Section 2.12 fallback-mode selector is represented as an UNSUPPORTED boolean condition because it is a contingent, cross-referenced operational fact (Section 2.12/2.12(c) were out of the retrieved source-context budget), not a value derivable from §1.01 alone.\",\n      \"Percentage rate additions (rate + spread) are approximated using the NUMBER type rather than PERCENT because the IR's stated type discipline restricts ADD to MONEY/NUMBER/RATIO operands only, excluding PERCENT; see irExtensionCandidate for a proposed fix.\",\n      \"The Term SOFR Reference Rate publication-timing proviso is captured only descriptively (as excerpt), not as a separate computable node.\"\n    ],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means for any day a fluctuating rate per annum equal to the highest of (a) the NYFRB Rate plus 1/2 of 1.00%, (b) the Prime Rate for such day and (c) Term SOFR Rate for a one (1)-month Interest Period ... plus 1.00% ... the Alternate Base Rate will be deemed to be 0.00% per annum if ... otherwise be less than 0.00% per annum.\"\n  },\n  {\n    \"localRef\": \"d10\",\n    \"termName\": \"Alternative Currency\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Administrative Agent\", \"Revolving Lender\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Enumerated list of currencies plus a consent-gated open category; fully captured descriptively, no dollar/ratio arithmetic involved.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means (a) euros, (b) Sterling, (c) Canadian Dollars and (d) subject to the consent of the Administrative Agent and each Revolving Lender agreeing to make Revolving Loans in such currency, any other currency.\"\n  },\n  {\n    \"localRef\": \"d11\",\n    \"termName\": \"Alternative Currency Term Benchmark\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Alternative Currency Term Benchmark Rate\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Purely descriptive labeling definition (whether a Loan bears interest by reference to the rate), no independent computable value.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"when used in reference to any Loan or Borrowing, refers to whether such Loan, or the Loans comprising such Borrowing, are bearing interest at a rate determined by reference to the Alternative Currency Term Benchmark Rate.\"\n  },\n  {\n    \"localRef\": \"d12\",\n    \"termName\": \"Alternative Currency Term Benchmark Rate\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"MAX\",\n      \"operands\": [\n        {\n          \"kind\": \"IF\",\n          \"condition\": {\n            \"kind\": \"UNSUPPORTED\",\n            \"semanticDescription\": \"the currency of the Alternative Currency Term Benchmark Borrowing (Canadian Dollars vs. euro) - a transaction-time currency selection\",\n            \"reason\": \"Currency selection is a per-Borrowing transaction fact, not a static boolean expressible with the IR's comparison primitives.\",\n            \"sourceEvidence\": \"§1.01: '(a) for any Interest Period with respect to an Alternative Currency Term Benchmark Borrowing denominated in Canadian Dollars, Term CORRA; and (b) for any Interest Period with respect to an Alternative Currency Term Benchmark Borrowing denominated in euro, the EURIBOR Rate...'\"\n          },\n          \"then\": {\"kind\": \"METRIC_REFERENCE\", \"metricName\": \"Term CORRA\", \"valueType\": \"NUMBER\", \"citation\": \"§1.01\"},\n          \"else\": {\"kind\": \"METRIC_REFERENCE\", \"metricName\": \"EURIBOR Rate\", \"valueType\": \"NUMBER\", \"citation\": \"§1.01\", \"excerpt\": \"as adjusted to reflect applicable reserves prescribed by Governmental Authorities\"},\n          \"citation\": \"§1.01\"\n        },\n        {\"kind\": \"NUMBER\", \"value\": 0.0, \"citation\": \"§1.01\", \"excerpt\": \"in no event shall the Alternative Currency Term Benchmark Rate be less than 0.00% (and if such rate would otherwise be less than 0.00%, it shall be deemed to be 0.00%)\"}\n      ],\n      \"citation\": \"§1.01\"\n    },\n    \"dependsOnTerms\": [\"Term CORRA\", \"EURIBOR Rate\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\n      \"Currency-selection switch modeled with an UNSUPPORTED boolean condition since it is a transaction-time fact rather than a static comparison.\",\n      \"The successor/comparable-rate mechanism proviso expressly depends on Section 2.12, which was out of the retrieved source-context budget - preserved as an unresolved cross-unit dependency rather than guessed.\"\n    ],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means: (a) for any Interest Period with respect to an Alternative Currency Term Benchmark Borrowing denominated in Canadian Dollars, Term CORRA; and (b) ... euro, the EURIBOR Rate ...; provided that to the extent a comparable or successor rate is established pursuant to Section 2.12 ...; Notwithstanding the foregoing, in no event shall the Alternative Currency Term Benchmark Rate be less than 0.00%...\"\n  },\n  {\n    \"localRef\": \"d13\",\n    \"termName\": \"Ancillary Fees\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Pure pointer to Section 9.02(b); pointer fully captured.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"has the meaning assigned to such term in Section 9.02(b).\"\n  },\n  {\n    \"localRef\": \"d14\",\n    \"termName\": \"Annual Period\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Pure pointer to Section 1.08(j); pointer fully captured.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"has the meaning assigned to such term in Section 1.08(j).\"\n  },\n  {\n    \"localRef\": \"d15\",\n    \"termName\": \"Annual Threshold\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Prepayment Event\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Pure pointer to the definition of \\\"Prepayment Event\\\"; pointer fully captured.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"has the meaning assigned to such term in the definition of \\\"Prepayment Event.\\\"\"\n  },\n  {\n    \"localRef\": \"d16\",\n    \"termName\": \"Applicable Account\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Administrative Agent\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Purely descriptive, procedural definition; no computable mechanic.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means, with respect to any payment to be made to the Administrative Agent hereunder, the account specified by the Administrative Agent from time to time for the purpose of receiving payments of such type.\"\n  },\n  {\n    \"localRef\": \"d17\",\n    \"termName\": \"Applicable Creditor\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Pure pointer to Section 9.20(b); pointer fully captured.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"has the meaning assigned to such term in Section 9.20(b).\"\n  },\n  {\n    \"localRef\": \"d18\",\n    \"termName\": \"Applicable Indebtedness\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Weighted Average Life to Maturity\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Pure pointer to the definition of \\\"Weighted Average Life to Maturity\\\"; pointer fully captured.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"has the meaning assigned to such term in the definition of \\\"Weighted Average Life to Maturity.\\\"\"\n  },\n  {\n    \"localRef\": \"d19\",\n    \"termName\": \"Applicable Rate\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"IF\",\n      \"condition\": {\n        \"kind\": \"UNSUPPORTED\",\n        \"semanticDescription\": \"whether the Term Loans in question are Initial Term Loans (clause (a)) or another Class of Term Loans (clause (b))\",\n        \"reason\": \"Class identity is a static fact about a particular Loan/tranche at any given time, but is a lookup key rather than a boolean comparison expressible with the IR's comparison primitives applied to this definitional text alone.\",\n        \"sourceEvidence\": \"§1.01: '(a) with respect to the Initial Term Loans, ... and (b) with respect to any Class of Term Loans other than the Initial Term Loans, as specified in the applicable Incremental Facility Amendment, Refinancing Amendment or Permitted Amendment.'\"\n      },\n      \"then\": {\n        \"kind\": \"IF\",\n        \"condition\": {\n          \"kind\": \"UNSUPPORTED\",\n          \"semanticDescription\": \"whether the particular Initial Term Loan is a Term SOFR Loan or an ABR Loan\",\n          \"reason\": \"Interest rate option selected for a Borrowing is a transaction-time selection, not a static boolean.\",\n          \"sourceEvidence\": \"§1.01: '(1) for Term SOFR Loans, 1.75% and (2) for ABR Loans, 0.75%'\"\n        },\n        \"then\": {\"kind\": \"PERCENT\", \"value\": 0.0175, \"citation\": \"§1.01\", \"excerpt\": \"for Term SOFR Loans, 1.75%\", \"inventoryItemIds\": [\"b70ddb9b1e45a1d6cea28109\"]},\n        \"else\": {\"kind\": \"PERCENT\", \"value\": 0.0075, \"citation\": \"§1.01\", \"excerpt\": \"for ABR Loans, 0.75%\", \"inventoryItemIds\": [\"98a2a63931fda612ac6a57a0\"]},\n        \"citation\": \"§1.01\"\n      },\n      \"else\": {\n        \"kind\": \"UNSUPPORTED\",\n        \"semanticDescription\": \"Applicable Rate for any Class of Term Loans other than the Initial Term Loans\",\n        \"reason\": \"The rate is deferred to, and set entirely by, a future Incremental Facility Amendment, Refinancing Amendment or Permitted Amendment - none of which are part of the §1.01 text or the supplied evidence.\",\n        \"sourceEvidence\": \"§1.01: 'as specified in the applicable Incremental Facility Amendment, Refinancing Amendment or Permitted Amendment.'\"\n      },\n      \"citation\": \"§1.01\"\n    },\n    \"dependsOnTerms\": [\"Initial Term Loans\", \"Term SOFR Loans\", \"ABR Loans\", \"Incremental Facility Amendment\", \"Refinancing Amendment\", \"Permitted Amendment\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\n      \"The two CRITICAL rate values for Initial Term Loans (1.75% Term SOFR / 0.75% ABR) are fully and faithfully captured as literal PERCENT values.\",\n      \"The Class/interest-rate-option selectors are modeled as UNSUPPORTED boolean conditions because they are lookup keys/transaction-time selections, not static comparisons.\",\n      \"The rate applicable to non-Initial Term Loan Classes is genuinely undetermined at this document layer (deferred to a future amendment instrument) and is marked UNSUPPORTED rather than guessed.\"\n    ],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means: (a) with respect to the Initial Term Loans, (1) for Term SOFR Loans, 1.75% and (2) for ABR Loans, 0.75%; and (b) with respect to any Class of Term Loans other than the Initial Term Loans, as specified in the applicable Incremental Facility Amendment, Refinancing Amendment or Permitted Amendment.\"\n  },\n  {\n    \"localRef\": \"d20\",\n    \"termName\": \"Approved Bank\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Cash Equivalents\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Pure pointer to the definition of \\\"Cash Equivalents\\\"; pointer fully captured.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"has the meaning assigned to such term in the definition of the term \\\"Cash Equivalents.\\\"\"\n  },\n  {\n    \"localRef\": \"d21\",\n    \"termName\": \"Approved Electronic Communications\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Loan Party\", \"Administrative Agent\", \"Collateral Agent\", \"Loan Document\", \"Security Documents\", \"Approved Electronic Platform\", \"Borrowing\", \"Default\", \"Event of Default\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Purely descriptive definition with a four-part carve-out list (borrowing notices, prepayment notices, default notices, and Article IV conditions); no dollar/ratio economics, fully captured descriptively.\", \"The 'Article IV' cross-reference within the carve-out is inherently ambiguous per the retrieval report (2 substantive occurrences share the citation 'IV') and is left unresolved rather than guessed.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means each notice, demand, communication, information, document and other material that any Loan Party is obligated to, or otherwise chooses to, provide to the Administrative Agent and/or the Collateral Agent ... \\\"Approved Electronic Communication\\\" shall exclude (a) any notice of borrowing ... (b) any notice relating to the payment of any principal ... (c) all notices of any Default or Event of Default and (d) any notice ... required to be delivered to satisfy any of the conditions set forth in Article IV or any other condition to any Borrowing ...\"\n  },\n  {\n    \"localRef\": \"d22\",\n    \"termName\": \"Approved Electronic Platform\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Pure pointer to Section 9.01; pointer fully captured.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"has the meaning assigned to such term in Section 9.01.\"\n  },\n  {\n    \"localRef\": \"d23\",\n    \"termName\": \"Approved Fund\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Fund\", \"Lender\", \"Disqualified Lender\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Purely descriptive eligibility definition (administered/managed-by test with a Disqualified Lender carve-out); no computable dollar/ratio mechanic.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means any Fund that is administered or managed by (a) a Lender, (b) an Affiliate of a Lender or (c) an entity or an Affiliate of an entity that administers or manages a Lender, in each case, other than any Fund that is a Disqualified Lender.\"\n  }\n]",
+   "rules": [],
+   "sharedCapacities": "[]",
+   "inventoryDispositions": "[]",
+   "irExtensionCandidates": "[\n  {\n    \"sourceEvidence\": \"§1.01 Alternate Base Rate ('the NYFRB Rate plus 1/2 of 1.00%'; 'Term SOFR Rate ... plus 1.00%') and Applicable Rate/Alternative Currency Term Benchmark Rate family generally\",\n    \"semanticRequirement\": \"Interest-rate benchmark definitions routinely require adding a percentage spread to a percentage reference rate (rate stacking), and comparing/flooring the resulting rate against 0%.\",\n    \"whyExistingPrimitivesFail\": \"The IR's stated type discipline restricts ADD/SUBTRACT/MULTIPLY/SUM to MONEY/NUMBER/RATIO operands, and reserves PERCENT exclusively as a MULTIPLY scaling factor - it does not permit adding two PERCENT-typed values (rate + spread) even though this is the single most common construct in floating-rate interest definitions. We approximated by using the NUMBER type for both the metric reference and the spread literal, which type-checks but loses the semantic tag that these are percentage/rate values.\",\n    \"candidateGeneralizedPrimitive\": \"Allow ADD/SUBTRACT to combine PERCENT operands (rate + spread => rate), or add a dedicated RATE node type/valueType that ADD explicitly supports, distinct from a metric-of-a-base PERCENT.\"\n  },\n  {\n    \"sourceEvidence\": \"§1.01 Alternate Base Rate (fallback mode tied to Section 2.12), Alternative Currency Term Benchmark Rate (currency-keyed lookup), Applicable Rate (Loan-Class/interest-rate-option-keyed lookup)\",\n    \"semanticRequirement\": \"Several definitions select among alternative values based on a transaction-time categorical fact (which currency was borrowed, which interest rate option was elected, which Class a Loan belongs to) rather than a numeric/ratio comparison.\",\n    \"whyExistingPrimitivesFail\": \"IF's condition slot is designed for boolean/comparison expressions (COMPARE/AND/OR/NOT), not for a categorical selector keyed by a transaction attribute; TRANSACTION_INPUT_REFERENCE has no associated equality/lookup construct. We approximated with UNSUPPORTED conditions nested inside IF, preserving the branch values but not the selection logic itself.\",\n    \"candidateGeneralizedPrimitive\": \"A CATEGORICAL_SELECT node (selector: TRANSACTION_INPUT_REFERENCE or ENTITY_SCOPE_REFERENCE, cases: [{matchValue, value}], defaultValue) to express lookup-table style definitions without misusing IF or SCHEDULE.\"\n  }\n]",
+   "overallNotes": "[\n  \"Source is a fragment of the §1.01 defined-terms alphabetical run (Affiliated Debt Fund through Approved Fund, plus the chapeau-adjacent 'ABL Administrative Agent' entry which was explicitly flagged as read-only dependency context and excluded from compilation).\",\n  \"All 7 FROZEN SEMANTIC INVENTORY items (Alternate Base Rate formula components and Applicable Rate values) are consumed on the specific leaf nodes carrying their values within d9 (Alternate Base Rate) and d19 (Applicable Rate); none required disposition as omitted.\",\n  \"The five deterministically-detected 'uncovered' percent literals (1.00% x1, 0.00% x4) correspond to (a) the base percentage inside the already-inventoried '1/2 of 1.00%' spread and (b) the paired floor-test/floor-outcome mentions of 0.00% in both Alternate Base Rate and Alternative Currency Term Benchmark Rate - all represented via the NUMBER floor/spread nodes in d9 and d12, none left unrepresented.\",\n  \"Cross-references to Sections 9.04(f)(6), 9.20(b), 9.02(b), 1.08(j), 9.01, 9.02, 2.12 and 2.12(c) were out of the Phase 2 source-context retrieval budget; each corresponding definition is represented as a faithfully-captured pointer (sufficiency COMPLETE for the pointer itself) except where the target's economics were material enough to independently fetch (Affiliated Lender Cap, via Section 9.04(f)(5), fetched directly in this session) or where the cross-reference gates a live computational mechanic within the definition's own formula (Section 2.12 within Alternate Base Rate and Alternative Currency Term Benchmark Rate, both marked PARTIAL).\",\n  \"The Section 9.04(f)(5) text retrieved for Affiliated Lender Cap carries supersessionStatus UNKNOWN_SUPERSESSION_STATUS; that uncertainty is reflected in d4's PARTIAL sufficiency rather than a confident COMPLETE.\",\n  \"'Article IV' and 'Article I' cross-references were reported as genuinely ambiguous (two substantive occurrences each) and were left unresolved rather than guessed, per the retrieval report.\"\n]"
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T16:50:09.896Z",
+   "inputTokens": 71834,
+   "outputTokens": 38525,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 353269,
+   "calculatedCostUsd": 0.528918
+  },
+  "cacheKey": "158484778650679fed1e93a4aa8ae05e6d07c6d1b40b81a57d5da11c0ff56a7c",
+  "compiledAt": "2026-09-14T16:50:09.896Z"
+ },
+ "wave": "A",
+ "attemptsSoFar": 1
+}

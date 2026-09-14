@@ -1,0 +1,132 @@
+{
+  "cap": 8,
+  "spent": 4.734892,
+  "calls": [
+    {
+      "n": 1,
+      "stage": "cert-pass-1:semantic_inventory",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 11487,
+      "outputTokens": 48947,
+      "costUsd": 0.512444,
+      "estimatedBeforeCallUsd": 0.175036,
+      "at": "2026-09-09T15:57:04.954Z"
+    },
+    {
+      "n": 2,
+      "stage": "cert-pass-1:semantic_inventory",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 12113,
+      "outputTokens": 40268,
+      "costUsd": 0.426906,
+      "estimatedBeforeCallUsd": 0.17575000000000002,
+      "at": "2026-09-09T16:02:00.591Z"
+    },
+    {
+      "n": 3,
+      "stage": "cert-pass-1:semantic_inventory",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 11201,
+      "outputTokens": 40705,
+      "costUsd": 0.429452,
+      "estimatedBeforeCallUsd": 0.175034,
+      "at": "2026-09-09T16:07:06.589Z"
+    },
+    {
+      "n": 4,
+      "stage": "cert-pass-1:semantic_inventory",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 11799,
+      "outputTokens": 39904,
+      "costUsd": 0.422638,
+      "estimatedBeforeCallUsd": 0.175732,
+      "at": "2026-09-09T16:12:03.026Z"
+    },
+    {
+      "n": 5,
+      "stage": "cert-pass-1:semantic_inventory",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 12148,
+      "outputTokens": 60306,
+      "costUsd": 0.627356,
+      "estimatedBeforeCallUsd": 0.175964,
+      "at": "2026-09-09T16:19:50.192Z"
+    },
+    {
+      "n": 6,
+      "stage": "cert-pass-1:semantic_inventory",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 11623,
+      "outputTokens": 38245,
+      "costUsd": 0.405696,
+      "estimatedBeforeCallUsd": 0.175484,
+      "at": "2026-09-09T16:24:44.863Z"
+    },
+    {
+      "n": 7,
+      "stage": "cert-pass-1:semantic_inventory",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 8812,
+      "outputTokens": 19936,
+      "costUsd": 0.216984,
+      "estimatedBeforeCallUsd": 0.17152,
+      "at": "2026-09-09T16:27:14.235Z"
+    },
+    {
+      "n": 8,
+      "stage": "cert-pass-1:semantic_inventory_gap",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 16597,
+      "outputTokens": 32773,
+      "costUsd": 0.360924,
+      "estimatedBeforeCallUsd": 0.182216,
+      "at": "2026-09-09T16:31:47.743Z"
+    },
+    {
+      "n": 9,
+      "stage": "cert-pass-2:semantic_inventory",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 11487,
+      "outputTokens": 53098,
+      "costUsd": 0.5539540000000001,
+      "estimatedBeforeCallUsd": 0.175036,
+      "at": "2026-09-09T16:38:38.479Z"
+    },
+    {
+      "n": 10,
+      "stage": "cert-pass-2:semantic_inventory",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 12113,
+      "outputTokens": 34598,
+      "costUsd": 0.37020600000000004,
+      "estimatedBeforeCallUsd": 0.17575000000000002,
+      "at": "2026-09-09T16:42:47.450Z"
+    },
+    {
+      "n": 11,
+      "stage": "cert-pass-2:semantic_inventory",
+      "model": "anthropic/claude-sonnet-5",
+      "inputTokens": 11201,
+      "outputTokens": 38593,
+      "costUsd": 0.40833200000000003,
+      "estimatedBeforeCallUsd": 0.175034,
+      "at": "2026-09-09T16:47:50.238Z"
+    }
+  ],
+  "refusals": [],
+  "creditsBefore": {
+    "balance": 37.123662,
+    "totalUsed": 177.876338
+  },
+  "creditsAfter": {
+    "balance": 32.38877,
+    "totalUsed": 182.61123
+  },
+  "gatewayReportedSpendUsd": 4.734892000000002,
+  "passIds": [
+    "cert-pass-1",
+    "cert-pass-2"
+  ],
+  "ensembleBuilt": false,
+  "ensembleRefusal": "dual-pass ensemble not built: cert-pass-2 INVENTORY_FAILED - a pass that did not run cannot corroborate or be corroborated"
+}

@@ -1,0 +1,61 @@
+{
+ "artifact": "F-7B.2 §18 - zero owned values or lineage lost, zero new dangling references",
+ "at": "2026-09-14T16:11:38.553Z",
+ "values": {
+  "before": 32,
+  "after": 32,
+  "identical": true,
+  "distinctIdentical": true,
+  "mismatches": []
+ },
+ "lineage": {
+  "refsBefore": 53,
+  "refsAfter": 53,
+  "identical": true,
+  "distinctItemsIdentical": true
+ },
+ "dependencies": {
+  "edgesBefore": 0,
+  "edgesAfter": 0,
+  "unresolvedBefore": 15,
+  "unresolvedAfter": 15,
+  "identical": true
+ },
+ "danglingLineageReferences": {
+  "before": 0,
+  "after": 0
+ },
+ "ruleReferences": {
+  "before": [],
+  "after": [],
+  "identical": true
+ },
+ "definedTermReferences": {
+  "before": [
+   "available rp capacity amount",
+   "general lien basket reallocated amount",
+   "available rp capacity amount",
+   "pro forma basis",
+   "pro forma basis"
+  ],
+  "after": [
+   "available rp capacity amount",
+   "general lien basket reallocated amount",
+   "available rp capacity amount",
+   "pro forma basis",
+   "pro forma basis"
+  ],
+  "identical": true,
+  "note": "DEFINED_TERM_REFERENCE resolves by term NAME, never by definition id, so dropping a definition can never create a dangling id reference."
+ },
+ "irShape": {
+  "rulesBefore": 11,
+  "rulesAfter": 11,
+  "exprNodesBefore": 201,
+  "exprNodesAfter": 201,
+  "unsupportedBefore": 30,
+  "unsupportedAfter": 30
+ },
+ "collisionsBefore": {},
+ "collisionsAfter": {}
+}

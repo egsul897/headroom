@@ -1,0 +1,576 @@
+{
+ "artifact": "F-4 finding replay classification (sections 14-16) - 0 model calls",
+ "gitSha": "5e171383e1ec6e9505ea6812fd3d3ddf0768c696",
+ "inputs": {
+  "replayBefore": {
+   "unit": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/unit-6.08.json",
+   "unitSha256": "fc147145c2db7df77bfb7122b8442d3fe21f5645b5c4782b791ffa942c8b750c",
+   "document": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+   "documentSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+   "operativeTextChars": 38529,
+   "operativeTextSha256": "98b4d151d733483b6e63d1bfce14b3bbfe79d46d1583498442eb73c7a22a51a9",
+   "window": [
+    659042,
+    697571
+   ],
+   "rules": 38,
+   "definitions": 6,
+   "toolCallLogEntries": 6,
+   "toolCallLogHasRetrievedSourceRecords": false,
+   "operativeState": null,
+   "packageGraph": null,
+   "recordedVerifierAlgorithm": "phase-3c-semantic-verifier.v1"
+  },
+  "replayAfterEvidenceSetHash": "4170e8ed117f54c52eab86df33eb0e428aa842ece8659a92ce0714a6fc1acc7b",
+  "diagnosisGitSha": "5e171383e1ec6e9505ea6812fd3d3ddf0768c696"
+ },
+ "section14_f4Candidates": [
+  {
+   "findingId": "844f0a36f675e721815f0b9249d7c8967f7d342e398a4dd309025cf0eba5aca7",
+   "replayKey": "844f0a36f675e721815f0b9249d7c8967f7d342e398a4dd309025cf0eba5aca7|UNSUPPORTED_IR_ADDITION|definitions[2].calculationExpression.operands[0]|(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative |compiled IR AMOUNT value 324000000 at definitions[2].calculationExpression.operands[0] has no matching source-side figure#0",
+   "irPath": "definitions[2].calculationExpression.operands[0]",
+   "irKind": "AMOUNT",
+   "irValue": 324000000,
+   "sourceTerm": "Threshold Amount",
+   "beforeSeverity": "MATERIAL",
+   "beforeType": "UNSUPPORTED_IR_ADDITION",
+   "classification": "F4_AUTHENTIC_EVIDENCE_FIXED",
+   "evidence": "before: UNSUPPORTED_IR_ADDITION MATERIAL at definitions[2].calculationExpression.operands[0] (value 324000000); after: the value is ACCOUNTED_FOR by the authenticated definition of \"Threshold Amount\" (document doc-a, node structural-node:b51b74180792bda67d86f589, span [350042, 350203), sha256 6c7b20f45ab0fc5d6cd62bf3886abf21df99fed5b6424adfa38b22382738e7f5) - the same span/hash the diagnosis located independently; all 7 authentication checks passed; the supporting source text is '$324.0 million'",
+   "supportingSourceText": "$324.0 million",
+   "evidenceId": "aa3eaafa4f66cf4686eedb9de2170649bc01b9ed8ce6a570d092ae78b7a250c0"
+  },
+  {
+   "findingId": "c75b8e97b3d7ff939b81acf03721dcd51688f4e77ce62e7774537af30ca40241",
+   "replayKey": "c75b8e97b3d7ff939b81acf03721dcd51688f4e77ce62e7774537af30ca40241|UNSUPPORTED_IR_ADDITION|definitions[2].calculationExpression.operands[1].operands[0]|(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative |compiled IR PERCENT value 0.45 at definitions[2].calculationExpression.operands[1].operands[0] has no matching source-side figure#0",
+   "irPath": "definitions[2].calculationExpression.operands[1].operands[0]",
+   "irKind": "PERCENT",
+   "irValue": 0.45,
+   "sourceTerm": "Threshold Amount",
+   "beforeSeverity": "MATERIAL",
+   "beforeType": "UNSUPPORTED_IR_ADDITION",
+   "classification": "F4_AUTHENTIC_EVIDENCE_FIXED",
+   "evidence": "before: UNSUPPORTED_IR_ADDITION MATERIAL at definitions[2].calculationExpression.operands[1].operands[0] (value 0.45); after: the value is ACCOUNTED_FOR by the authenticated definition of \"Threshold Amount\" (document doc-a, node structural-node:b51b74180792bda67d86f589, span [350042, 350203), sha256 6c7b20f45ab0fc5d6cd62bf3886abf21df99fed5b6424adfa38b22382738e7f5) - the same span/hash the diagnosis located independently; all 7 authentication checks passed; the supporting source text is '45%'",
+   "supportingSourceText": "45%",
+   "evidenceId": "aa3eaafa4f66cf4686eedb9de2170649bc01b9ed8ce6a570d092ae78b7a250c0"
+  }
+ ],
+ "section15_deterministicReplay": {
+  "beforeCount": 18,
+  "afterCount": 16,
+  "beforeMaterial": 16,
+  "afterMaterial": 14,
+  "counts": {
+   "UNCHANGED": 16,
+   "REMOVED_BY_F4": 2,
+   "NEW_AFTER_F4": 0
+  },
+  "beforeFindingIdsEqualRecordedPostF3Ids": false,
+  "recordedFrozenRunDeterministicCount": 24,
+  "rows": [
+   {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "replayKey": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed|MISSING_BASKET|None|$540.0 million|source AMOUNT 540000000 (from \"$540.0 million\") (canonical 540000000 USD = 540 x 1000000 \"million\") does not appear as a AMOUNT value anywhere in the compiled I#0",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL",
+    "irPath": null,
+    "sourceEvidence": "$540.0 million",
+    "status": "UNCHANGED",
+    "afterSeverity": "MATERIAL",
+    "afterType": "MISSING_BASKET",
+    "recordedInFrozenRun": true,
+    "note": "identical finding id, type and severity before and after F-4 - not a retrieved-source case"
+   },
+   {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "replayKey": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed|MISSING_BASKET|None|$252.0 million|source AMOUNT 252000000 (from \"$252.0 million\") (canonical 252000000 USD = 252 x 1000000 \"million\") does not appear as a AMOUNT value anywhere in the compiled I#0",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL",
+    "irPath": null,
+    "sourceEvidence": "$252.0 million",
+    "status": "UNCHANGED",
+    "afterSeverity": "MATERIAL",
+    "afterType": "MISSING_BASKET",
+    "recordedInFrozenRun": true,
+    "note": "identical finding id, type and severity before and after F-4 - not a retrieved-source case"
+   },
+   {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "replayKey": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed|MISSING_BASKET|None|$504.0 million|source AMOUNT 504000000 (from \"$504.0 million\") (canonical 504000000 USD = 504 x 1000000 \"million\") does not appear as a AMOUNT value anywhere in the compiled I#0",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL",
+    "irPath": null,
+    "sourceEvidence": "$504.0 million",
+    "status": "UNCHANGED",
+    "afterSeverity": "MATERIAL",
+    "afterType": "MISSING_BASKET",
+    "recordedInFrozenRun": true,
+    "note": "identical finding id, type and severity before and after F-4 - not a retrieved-source case"
+   },
+   {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "replayKey": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed|MISSING_BASKET|None|50%|source PERCENT 0.5 (from \"50%\") does not appear as a PERCENT value anywhere in the compiled IR#0",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL",
+    "irPath": null,
+    "sourceEvidence": "50%",
+    "status": "UNCHANGED",
+    "afterSeverity": "MATERIAL",
+    "afterType": "MISSING_BASKET",
+    "recordedInFrozenRun": true,
+    "note": "identical finding id, type and severity before and after F-4 - not a retrieved-source case"
+   },
+   {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "replayKey": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed|MISSING_BASKET|None|140%|source PERCENT 1.4 (from \"140%\") does not appear as a PERCENT value anywhere in the compiled IR#0",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL",
+    "irPath": null,
+    "sourceEvidence": "140%",
+    "status": "UNCHANGED",
+    "afterSeverity": "MATERIAL",
+    "afterType": "MISSING_BASKET",
+    "recordedInFrozenRun": true,
+    "note": "identical finding id, type and severity before and after F-4 - not a retrieved-source case"
+   },
+   {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "replayKey": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed|MISSING_BASKET|None|75%|source PERCENT 0.75 (from \"75%\") does not appear as a PERCENT value anywhere in the compiled IR#0",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL",
+    "irPath": null,
+    "sourceEvidence": "75%",
+    "status": "UNCHANGED",
+    "afterSeverity": "MATERIAL",
+    "afterType": "MISSING_BASKET",
+    "recordedInFrozenRun": true,
+    "note": "identical finding id, type and severity before and after F-4 - not a retrieved-source case"
+   },
+   {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "replayKey": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed|MISSING_BASKET|None|35%|source PERCENT 0.35 (from \"35%\") does not appear as a PERCENT value anywhere in the compiled IR#0",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL",
+    "irPath": null,
+    "sourceEvidence": "35%",
+    "status": "UNCHANGED",
+    "afterSeverity": "MATERIAL",
+    "afterType": "MISSING_BASKET",
+    "recordedInFrozenRun": true,
+    "note": "identical finding id, type and severity before and after F-4 - not a retrieved-source case"
+   },
+   {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "replayKey": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed|MISSING_BASKET|None|70.0%|source PERCENT 0.7 (from \"70.0%\") does not appear as a PERCENT value anywhere in the compiled IR#0",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL",
+    "irPath": null,
+    "sourceEvidence": "70.0%",
+    "status": "UNCHANGED",
+    "afterSeverity": "MATERIAL",
+    "afterType": "MISSING_BASKET",
+    "recordedInFrozenRun": true,
+    "note": "identical finding id, type and severity before and after F-4 - not a retrieved-source case"
+   },
+   {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "replayKey": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed|MISSING_BASKET|None|6.0%|source PERCENT 0.06 (from \"6.0%\") does not appear as a PERCENT value anywhere in the compiled IR#0",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL",
+    "irPath": null,
+    "sourceEvidence": "6.0%",
+    "status": "UNCHANGED",
+    "afterSeverity": "MATERIAL",
+    "afterType": "MISSING_BASKET",
+    "recordedInFrozenRun": true,
+    "note": "identical finding id, type and severity before and after F-4 - not a retrieved-source case"
+   },
+   {
+    "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+    "replayKey": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed|MISSING_BASKET|None|7.0%|source PERCENT 0.07 (from \"7.0%\") does not appear as a PERCENT value anywhere in the compiled IR#0",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL",
+    "irPath": null,
+    "sourceEvidence": "7.0%",
+    "status": "UNCHANGED",
+    "afterSeverity": "MATERIAL",
+    "afterType": "MISSING_BASKET",
+    "recordedInFrozenRun": true,
+    "note": "identical finding id, type and severity before and after F-4 - not a retrieved-source case"
+   },
+   {
+    "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+    "replayKey": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c|MISSING_RULE|None|2.00:1.00|source RATIO 2 (from \"2.00:1.00\") does not appear as a RATIO value anywhere in the compiled IR#0",
+    "findingType": "MISSING_RULE",
+    "severity": "MATERIAL",
+    "irPath": null,
+    "sourceEvidence": "2.00:1.00",
+    "status": "UNCHANGED",
+    "afterSeverity": "MATERIAL",
+    "afterType": "MISSING_RULE",
+    "recordedInFrozenRun": true,
+    "note": "identical finding id, type and severity before and after F-4 - not a retrieved-source case"
+   },
+   {
+    "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+    "replayKey": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c|MISSING_RULE|None|1.75:1.00|source RATIO 1.75 (from \"1.75:1.00\") does not appear as a RATIO value anywhere in the compiled IR#0",
+    "findingType": "MISSING_RULE",
+    "severity": "MATERIAL",
+    "irPath": null,
+    "sourceEvidence": "1.75:1.00",
+    "status": "UNCHANGED",
+    "afterSeverity": "MATERIAL",
+    "afterType": "MISSING_RULE",
+    "recordedInFrozenRun": true,
+    "note": "identical finding id, type and severity before and after F-4 - not a retrieved-source case"
+   },
+   {
+    "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+    "replayKey": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c|MISSING_RULE|None|2.00x|source RATIO 2 (from \"2.00x\") does not appear as a RATIO value anywhere in the compiled IR#0",
+    "findingType": "MISSING_RULE",
+    "severity": "MATERIAL",
+    "irPath": null,
+    "sourceEvidence": "2.00x",
+    "status": "UNCHANGED",
+    "afterSeverity": "MATERIAL",
+    "afterType": "MISSING_RULE",
+    "recordedInFrozenRun": true,
+    "note": "identical finding id, type and severity before and after F-4 - not a retrieved-source case"
+   },
+   {
+    "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+    "replayKey": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c|MISSING_RULE|None|1.75:1.00|source RATIO 1.75 (from \"1.75:1.00\") does not appear as a RATIO value anywhere in the compiled IR#1",
+    "findingType": "MISSING_RULE",
+    "severity": "MATERIAL",
+    "irPath": null,
+    "sourceEvidence": "1.75:1.00",
+    "status": "UNCHANGED",
+    "afterSeverity": "MATERIAL",
+    "afterType": "MISSING_RULE",
+    "recordedInFrozenRun": true,
+    "note": "identical finding id, type and severity before and after F-4 - not a retrieved-source case"
+   },
+   {
+    "findingId": "844f0a36f675e721815f0b9249d7c8967f7d342e398a4dd309025cf0eba5aca7",
+    "replayKey": "844f0a36f675e721815f0b9249d7c8967f7d342e398a4dd309025cf0eba5aca7|UNSUPPORTED_IR_ADDITION|definitions[2].calculationExpression.operands[0]|(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative |compiled IR AMOUNT value 324000000 at definitions[2].calculationExpression.operands[0] has no matching source-side figure#0",
+    "findingType": "UNSUPPORTED_IR_ADDITION",
+    "severity": "MATERIAL",
+    "irPath": "definitions[2].calculationExpression.operands[0]",
+    "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+    "status": "REMOVED_BY_F4",
+    "recordedInFrozenRun": true,
+    "note": "F4_AUTHENTIC_EVIDENCE_FIXED"
+   },
+   {
+    "findingId": "c75b8e97b3d7ff939b81acf03721dcd51688f4e77ce62e7774537af30ca40241",
+    "replayKey": "c75b8e97b3d7ff939b81acf03721dcd51688f4e77ce62e7774537af30ca40241|UNSUPPORTED_IR_ADDITION|definitions[2].calculationExpression.operands[1].operands[0]|(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative |compiled IR PERCENT value 0.45 at definitions[2].calculationExpression.operands[1].operands[0] has no matching source-side figure#0",
+    "findingType": "UNSUPPORTED_IR_ADDITION",
+    "severity": "MATERIAL",
+    "irPath": "definitions[2].calculationExpression.operands[1].operands[0]",
+    "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+    "status": "REMOVED_BY_F4",
+    "recordedInFrozenRun": true,
+    "note": "F4_AUTHENTIC_EVIDENCE_FIXED"
+   },
+   {
+    "findingId": "036538e7a3bb253bc175f08ef0796b8a2b79a7ffba4466d16f1223a291f7d427",
+    "replayKey": "036538e7a3bb253bc175f08ef0796b8a2b79a7ffba4466d16f1223a291f7d427|WRONG_ENTITY_SCOPE|None|(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative |source text distinguishes 7 distinct entity-scope term(s) (restricted subsidiaries, restricted subsidiary, borrower, unrestricted subsidiary, guarantor, unrestr#0",
+    "findingType": "WRONG_ENTITY_SCOPE",
+    "severity": "UNCERTAIN",
+    "irPath": null,
+    "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+    "status": "UNCHANGED",
+    "afterSeverity": "UNCERTAIN",
+    "afterType": "WRONG_ENTITY_SCOPE",
+    "recordedInFrozenRun": true,
+    "note": "identical finding id, type and severity before and after F-4 - not a retrieved-source case"
+   },
+   {
+    "findingId": "d040cc39bc75feb31918694cff828bbc6025e78c569713504bc285f417038401",
+    "replayKey": "d040cc39bc75feb31918694cff828bbc6025e78c569713504bc285f417038401|MISSING_RECLASSIFICATION|None|(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative |source text contains 4 reclassification/redesignation signal(s) but the compiled IR records no RECLASSIFIABLE_TO/REDESIGNATES_TO dependency - possible missing r#0",
+    "findingType": "MISSING_RECLASSIFICATION",
+    "severity": "UNCERTAIN",
+    "irPath": null,
+    "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+    "status": "UNCHANGED",
+    "afterSeverity": "UNCERTAIN",
+    "afterType": "MISSING_RECLASSIFICATION",
+    "recordedInFrozenRun": true,
+    "note": "identical finding id, type and severity before and after F-4 - not a retrieved-source case"
+   }
+  ]
+ },
+ "section16_semanticOnly": [
+  {
+   "findingId": "bf00d23a6608ceb5ab8fcd2047447fc6cc456cc0e2f2eacd086fbbbf6e18e915",
+   "method": "SEMANTIC_ONLY",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": "ir-definition:930efa2b63880d3f6f0afef3",
+   "irPath": "definitions[2] (termName: Threshold Amount).calculationExpression",
+   "classification": "CANNOT_REPLAY_WITHOUT_MODEL",
+   "note": "the recorded reviewer's reasoning rests on the same absence F-4 closes (it was never shown the retrieved definition); whether the reviewer withdraws it can only be established by a model call, which this mission does not make - retained, not re-judged"
+  },
+  {
+   "findingId": "debeb1e7a51a2327f6095ce040efb8e4ef8a80342b6812c227584997f14434ef",
+   "method": "SEMANTIC_ONLY",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": "ir-rule:92f832eccf22ae3e16c08e87",
+   "irPath": "rules[0].entityScope / entityScopeExcluded (and this pattern repeats across essentially every rule in the IR)",
+   "classification": "CANNOT_REPLAY_WITHOUT_MODEL",
+   "note": "a Layer 2 judgment on a subject F-4's evidence does not bear on - retained as recorded"
+  },
+  {
+   "findingId": "64d9e1ac0ffca6aed787661eb8f624ea0b7a33ce14374019548c8d0275e16c60",
+   "method": "SEMANTIC_ONLY",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "MATERIAL",
+   "ruleOrDefinitionId": "ir-rule:bbf15a1d53bd3a669ac53eb5",
+   "irPath": "rules[18] (sourceSectionRef 6.08(b)(18)).capacityExpression",
+   "classification": "CANNOT_REPLAY_WITHOUT_MODEL",
+   "note": "a Layer 2 judgment on a subject F-4's evidence does not bear on - retained as recorded"
+  },
+  {
+   "findingId": "dfc070b91ea395a30d9cb5dd4c1b8a8d1c4f10734fba12d5c51254c6eb7ab7c2",
+   "method": "SEMANTIC_ONLY",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "UNCERTAIN",
+   "ruleOrDefinitionId": "ir-definition:f38b8cdf03116d39cafef787",
+   "irPath": "definitions[5] (Available Amount).calculationExpression (the resolved MAX node for clause (a), exprId ir-expr:7c9a478627966a15126184bc)",
+   "classification": "CANNOT_REPLAY_WITHOUT_MODEL",
+   "note": "a Layer 2 judgment on a subject F-4's evidence does not bear on - retained as recorded"
+  }
+ ],
+ "reconciliationCounts": {
+  "before": {
+   "ACCOUNTED_FOR": 56,
+   "POSSIBLY_ACCOUNTED_FOR": 388,
+   "NOT_ACCOUNTED_FOR": 14,
+   "IR_ONLY": 2,
+   "AMBIGUOUS": 2
+  },
+  "after": {
+   "ACCOUNTED_FOR": 58,
+   "POSSIBLY_ACCOUNTED_FOR": 388,
+   "NOT_ACCOUNTED_FOR": 14,
+   "IR_ONLY": 0,
+   "AMBIGUOUS": 2
+  }
+ },
+ "authenticatedEvidenceAdmitted": [
+  {
+   "requestKind": "PROVISION",
+   "requestKey": "Section 6.01(b)",
+   "role": "REFERENCED_ONLY",
+   "documentId": "doc-a",
+   "sourceNodeId": "structural-node:85ee54c312ce2a2526bc705b",
+   "span": [
+    612129,
+    612195
+   ],
+   "contentHash": "d91f08b1ff8d88f8f61008f510fdb1717708f7fcec8decc5ad0b9685f98096ea",
+   "numericItems": [],
+   "usedToSupport": [],
+   "compilerRecordPresent": false,
+   "linkage": [
+    "COMPILER_TOOL_CALL"
+   ]
+  },
+  {
+   "requestKind": "DEFINITION",
+   "requestKey": "Available Investment Capacity Amount",
+   "role": "REPRESENTED_DEFINITION",
+   "documentId": "doc-a",
+   "sourceNodeId": "structural-node:fa9e7b56834cd21fd722335e",
+   "span": [
+    35389,
+    35791
+   ],
+   "contentHash": "94ddc8e8e731d98ce725ef88ab9b87e8403ae31d31cc4fd4b7a6e38efc06eb68",
+   "numericItems": [],
+   "usedToSupport": [],
+   "compilerRecordPresent": false,
+   "linkage": [
+    "COMPILER_TOOL_CALL",
+    "IR_DEFINITION_TERM"
+   ]
+  },
+  {
+   "requestKind": "PROVISION",
+   "requestKey": "Section 2.09(b)",
+   "role": "REFERENCED_ONLY",
+   "documentId": "doc-a",
+   "sourceNodeId": "structural-node:a69f9debf57e39ab35019414",
+   "span": [
+    430523,
+    431608
+   ],
+   "contentHash": "3498ab88c20879529bddeeecc247a6022227a18b0a7b7f7c40520ad9d2a38fcf",
+   "numericItems": [
+    {
+     "kind": "PERCENT",
+     "rawText": "100%",
+     "numericValue": 1,
+     "currency": null,
+     "documentCharStart": 431284
+    }
+   ],
+   "usedToSupport": [],
+   "compilerRecordPresent": false,
+   "linkage": [
+    "COMPILER_TOOL_CALL"
+   ]
+  },
+  {
+   "requestKind": "DEFINITION",
+   "requestKey": "Available RP Capacity Amount",
+   "role": "REPRESENTED_DEFINITION",
+   "documentId": "doc-a",
+   "sourceNodeId": "structural-node:fa9e7b56834cd21fd722335e",
+   "span": [
+    35791,
+    37298
+   ],
+   "contentHash": "ea211990a4826b340da917150a49a32021fd1f6616cea45f8c5efd29a1e023c6",
+   "numericItems": [],
+   "usedToSupport": [],
+   "compilerRecordPresent": false,
+   "linkage": [
+    "COMPILER_TOOL_CALL",
+    "IR_DEFINITION_TERM"
+   ]
+  },
+  {
+   "requestKind": "PROVISION",
+   "requestKey": "Section 5.18(b)",
+   "role": "REFERENCED_ONLY",
+   "documentId": "doc-a",
+   "sourceNodeId": "structural-node:883974aa395dc34db1d1364f",
+   "span": [
+    594906,
+    594986
+   ],
+   "contentHash": "f9136ddaecd6bdfef2aa8a592f9d25f8eaf77afa5dcc0def5d60cc0b8e6b0d70",
+   "numericItems": [],
+   "usedToSupport": [],
+   "compilerRecordPresent": false,
+   "linkage": [
+    "COMPILER_TOOL_CALL"
+   ]
+  },
+  {
+   "requestKind": "DEFINITION",
+   "requestKey": "Threshold Amount",
+   "role": "REPRESENTED_DEFINITION",
+   "documentId": "doc-a",
+   "sourceNodeId": "structural-node:b51b74180792bda67d86f589",
+   "span": [
+    350042,
+    350203
+   ],
+   "contentHash": "6c7b20f45ab0fc5d6cd62bf3886abf21df99fed5b6424adfa38b22382738e7f5",
+   "numericItems": [
+    {
+     "kind": "AMOUNT",
+     "rawText": "$324.0 million",
+     "numericValue": 324000000,
+     "currency": "USD",
+     "documentCharStart": 350088
+    },
+    {
+     "kind": "PERCENT",
+     "rawText": "45%",
+     "numericValue": 0.45,
+     "currency": null,
+     "documentCharStart": 350111
+    }
+   ],
+   "usedToSupport": [
+    [
+     "definitions[2].calculationExpression.operands[0]"
+    ],
+    [
+     "definitions[2].calculationExpression.operands[1].operands[0]"
+    ]
+   ],
+   "compilerRecordPresent": false,
+   "linkage": [
+    "COMPILER_TOOL_CALL",
+    "IR_DEFINITION_TERM",
+    "IR_PROVENANCE_CITATION",
+    "IR_PROVENANCE_CITATION"
+   ]
+  }
+ ],
+ "rejectedRequests": [
+  {
+   "requestKind": "DEFINITION",
+   "requestKey": "Restricted Payments",
+   "scopeKey": "restricted payments",
+   "claimedByCompiler": false,
+   "documentId": null,
+   "reason": "no defined term matching \"Restricted Payments\" found in this instrument's documents",
+   "linkage": [
+    {
+     "origin": "IR_DEFINITION_TERM",
+     "detail": "definitions[0].termName = \"Restricted Payments\"",
+     "compilerRecordedContentHash": null
+    }
+   ],
+   "authenticationStatus": "REJECTED",
+   "checks": [
+    {
+     "code": "B_SPAN_RESOLVES",
+     "passed": false,
+     "detail": "no defined term matching \"Restricted Payments\" found in this instrument's documents"
+    }
+   ]
+  },
+  {
+   "requestKind": "DEFINITION",
+   "requestKey": "Restricted Debt Payments",
+   "scopeKey": "restricted debt payments",
+   "claimedByCompiler": false,
+   "documentId": null,
+   "reason": "no defined term matching \"Restricted Debt Payments\" found in this instrument's documents",
+   "linkage": [
+    {
+     "origin": "IR_DEFINITION_TERM",
+     "detail": "definitions[1].termName = \"Restricted Debt Payments\"",
+     "compilerRecordedContentHash": null
+    }
+   ],
+   "authenticationStatus": "REJECTED",
+   "checks": [
+    {
+     "code": "B_SPAN_RESOLVES",
+     "passed": false,
+     "detail": "no defined term matching \"Restricted Debt Payments\" found in this instrument's documents"
+    }
+   ]
+  },
+  {
+   "requestKind": "DEFINITION",
+   "requestKey": "Available Amount",
+   "scopeKey": "available amount",
+   "claimedByCompiler": false,
+   "documentId": null,
+   "reason": "no defined term matching \"Available Amount\" found in this instrument's documents",
+   "linkage": [
+    {
+     "origin": "IR_DEFINITION_TERM",
+     "detail": "definitions[5].termName = \"Available Amount\"",
+     "compilerRecordedContentHash": null
+    }
+   ],
+   "authenticationStatus": "REJECTED",
+   "checks": [
+    {
+     "code": "B_SPAN_RESOLVES",
+     "passed": false,
+     "detail": "no defined term matching \"Available Amount\" found in this instrument's documents"
+    }
+   ]
+  }
+ ]
+}

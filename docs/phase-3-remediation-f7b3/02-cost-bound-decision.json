@@ -1,0 +1,78 @@
+{
+ "artifact": "F-7B.3 \u00a77/\u00a728 - pre-run cost bound: zero paid calls made",
+ "at": "2026-09-14T16:25:31.405374Z",
+ "startingSha": "1660817cef85ebe70888185b0248e56d1297616d",
+ "baselineValid": true,
+ "planHash": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+ "remainingShards": 31,
+ "paidCalls": 0,
+ "newStage2CostUsd": 0.0,
+ "capUsd": 20,
+ "gatewayBalanceUsd": 23.735636,
+ "estimators": [
+  {
+   "name": "F-7B pre-registered estimator (3.29x rendered first turn + planner output estimate)",
+   "usd": 13.6017,
+   "fitsCap": true,
+   "role": "optimistic - this estimator already under-predicted Stage 1 actuals ($2.31 estimated vs $2.72 actual)"
+  },
+  {
+   "name": "mean observed dollars per rendered first-turn token, size-adjusted per remaining shard",
+   "usd": 14.4379,
+   "fitsCap": true,
+   "role": "central expectation, no margin"
+  },
+  {
+   "name": "Stage-1 mean cost per shard x 31",
+   "usd": 16.8619,
+   "fitsCap": true,
+   "role": "central expectation ignoring that remaining shards are lighter"
+  },
+  {
+   "name": "worst observed per-shard rate, no variance margin",
+   "usd": 21.4694,
+   "fitsCap": false,
+   "role": "conservative bound without margin"
+  },
+  {
+   "name": "worst observed per-shard rate x 1.25 variance margin (pre-registered conservative estimate)",
+   "usd": 26.8368,
+   "fitsCap": false,
+   "role": "the conservative full-31 estimate \u00a77 tests"
+  }
+ ],
+ "decision": {
+  "rule": "\u00a77 - if a conservative full-31 estimate exceeds $20.00, make ZERO new calls and return F7B_3_COST_BOUND_BEFORE_START",
+  "conservativeEstimateUsd": 26.8368,
+  "exceedsCap": true,
+  "exceedsGatewayBalance": true,
+  "independentBlocker": "The conservative estimate also exceeds the gateway balance, so raising the cap alone would not guarantee completion: the account holds $23.74 and the conservative bound is $26.84.",
+  "alsoNote": "Even the worst observed rate with NO variance margin ($21.47) exceeds the $20.00 cap, so the bound does not depend on the choice of margin.",
+  "whyNotProceedAnyway": "Central expectation is $14.4 to $16.9, so a run would probably finish. But \u00a77 tests a conservative estimate, not the expectation, and starting a run that has a real chance of stopping at wave C would spend most of the cap and still leave the canary incomplete - the exact outcome \u00a77 forbids."
+ },
+ "optionsForTheNextMission": [
+  {
+   "option": "raise the Stage-2 cap to $27 and top up the gateway balance to at least $30",
+   "covers": "the conservative bound with headroom",
+   "newCallsNeeded": 31
+  },
+  {
+   "option": "keep the $20 cap and split into Wave A + Wave B now (20 shards, conservative bound $17.50), Wave C in a follow-up",
+   "covers": "20 of 31 shards within the current cap and balance",
+   "newCallsNeeded": 20,
+   "note": "this is a deliberate two-mission split, not an unplanned partial run - the wave results are frozen and reusable by shard hash"
+  },
+  {
+   "option": "proceed on the central estimate at the user's risk",
+   "covers": "all 31 with roughly a 90 to 95 percent chance of finishing under $20",
+   "newCallsNeeded": 31,
+   "note": "requires the user to waive the \u00a77 conservative test"
+  }
+ ],
+ "waveConservativeEstimates": {
+  "A": 8.5492,
+  "B": 8.9541,
+  "C": 9.3335
+ },
+ "verdict": "F7B_3_COST_BOUND_BEFORE_START"
+}

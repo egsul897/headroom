@@ -1,0 +1,468 @@
+{
+ "artifact": "F-5.3B RESUME final summary - E2 = Ensemble(preserved run C, fresh run D2) certified against frozen E1 with the pre-registered scorer",
+ "verdict": "F5_CLOSED",
+ "at": "2026-09-10T15:36:19.167636Z",
+ "gitShaAtAnalysis": "ce8cdbd363007ea1b8f7a1b207034a0b8d01e4bc",
+ "startingSha": "9addb29e3ccc1102c1f64a66f55663da965734fc",
+ "e1": {
+  "frozenContentHash": "6f648e724520fdc9071c93d80860a5dbb37b5c03f9ae939a16ce2983b3e6d8ed",
+  "reproducedAtStartingSha": true,
+  "reproducedUnderFinalCode": true,
+  "burden": {
+   "canonical": 396,
+   "corroborated": 282,
+   "singleton": 114,
+   "singletonByPass": {
+    "pass-1": 70,
+    "pass-2": 44
+   },
+   "materialSingleton": 112,
+   "informationalSingleton": 2,
+   "conflicted": 0,
+   "materialConflicted": 0,
+   "supportReviewFraction": 0.2828,
+   "percentRequiringSupportReview": 28.28,
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "unaccountedSource": 19
+  },
+  "referenceRecall": {
+   "discoveryRecall": 1.0,
+   "criticalMaterialRecall": 1.0,
+   "quantitativeRecall": 1.0,
+   "conditionExceptionRecall": 1.0
+  }
+ },
+ "e2": {
+  "runCItems": 332,
+  "runDItems": 350,
+  "runCStatus": "INVENTORY_COVERAGE_GAP",
+  "runDStatus": "INVENTORY_COVERAGE_GAP",
+  "runCHash": "b8cf5f54be8bab7f431cdc0f330fd9df3c9cd8918f4c3091ca8d6c597b92cead",
+  "runDHash": "5085cebe198202d759156766f9f77ab5144544394abbaac12ae765dc3169c604",
+  "canonicalItems": 390,
+  "corroborated": 292,
+  "singletonC": 40,
+  "singletonD": 58,
+  "materialSingletons": 98,
+  "conflicts": 0,
+  "materialConflicted": 0,
+  "unaccountedSource": 21,
+  "accountedCharFraction": 0.9919,
+  "uninventoriedValues": 1,
+  "supportReviewFraction": 0.2513,
+  "supportReviewRequired": true,
+  "frozenContentHash": "1dfe368a2f4dc6f0679f346742495d0f7a74968b41d38f0d9d4f0349124a992e",
+  "algorithmVersion": "semantic-accountability.v5+semantic-ensemble.v1",
+  "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+  "compatibilityMode": "STRICT",
+  "rejectedUnverifiable": 0,
+  "telemetryCostUsd": 6.703704,
+  "calls": {
+   "firstPass": 7,
+   "gap": 1
+  }
+ },
+ "ensembleToEnsemble": {
+  "e1Items": 396,
+  "e2Items": 390,
+  "canonicalItemCountDelta": -6,
+  "strictCanonicalIdentityStability": 0.8322,
+  "semanticStability": 0.8582,
+  "semanticCounts": [
+   363,
+   423
+  ],
+  "criticalMaterialSemanticStability": 0.8565,
+  "criticalMaterialCounts": [
+   358,
+   418
+  ],
+  "sourceSpanCoverageStability": 0.9951,
+  "quantitativeComponentStability": 0.9048,
+  "conditionExceptionStability": 0.7218,
+  "dependencyXrefStability": 0.6504,
+  "semanticFunctionStabilityByDimension_jaccardMean": {
+   "effect": 0.9146,
+   "logic": 0.7851,
+   "quantitative": 0.8531,
+   "dependency": 0.8618,
+   "allTokens": 0.724
+  },
+  "allFunctionsExactAgreementOnAligned": 0.4959,
+  "alignedPairs": 363
+ },
+ "decomposition": {
+  "total": 60,
+  "byClass": {
+   "A_IDENTITY_VARIANCE": 57,
+   "D_TRUE_ENSEMBLE_OMISSION": 1,
+   "G_OTHER": 1,
+   "E_TRUE_ENSEMBLE_ADDITION": 1
+  },
+  "byClassMaterial": {
+   "A_IDENTITY_VARIANCE": 56,
+   "D_TRUE_ENSEMBLE_OMISSION": 1,
+   "E_TRUE_ENSEMBLE_ADDITION": 1
+  },
+  "e1Only": 33,
+  "e2Only": 27,
+  "materialTrueOmissionOrAddition": 2,
+  "undisclosedButReviewMarked": 0,
+  "dangerousSilentOmissions": 0
+ },
+ "supportDiagnostics": {
+  "E1": {
+   "canonical": 396,
+   "corroborated": 282,
+   "singleRun": 114,
+   "singleRunByPass": {
+    "pass-1": 70,
+    "pass-2": 44
+   },
+   "materialSingleRun": 112,
+   "conflicted": 0,
+   "materialConflicted": 0,
+   "supportReviewRequired": true,
+   "supportReviewFraction": 0.2828,
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "unaccountedSource": 19,
+   "accountedCharFraction": 0.9947,
+   "uninventoriedValues": 0
+  },
+  "E2": {
+   "canonical": 390,
+   "corroborated": 292,
+   "singleRun": 98,
+   "singleRunByPass": {
+    "cert-pass-1": 40,
+    "cert-pass-2": 58
+   },
+   "materialSingleRun": 98,
+   "conflicted": 0,
+   "materialConflicted": 0,
+   "supportReviewRequired": true,
+   "supportReviewFraction": 0.2513,
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "unaccountedSource": 21,
+   "accountedCharFraction": 0.9919,
+   "uninventoriedValues": 1
+  },
+  "alignedPairs": 363,
+  "supportStatusAgreementOnMatched": 0.8733,
+  "transitionsOnMatched": {
+   "CORROBORATED->CORROBORATED": 259,
+   "CORROBORATED->SINGLE_RUN": 18,
+   "SINGLE_RUN->SINGLE_RUN": 58,
+   "SINGLE_RUN->CORROBORATED": 28
+  },
+  "corroboratedInE1_singletonInE2": 18,
+  "singletonInE1_corroboratedInE2": 28,
+  "matchedMaterialWhoseSupportChanged": 46,
+  "note": "support-state variance is diagnostic; it never erases an otherwise valid source proposition and never enters the identity match"
+ },
+ "reviewBurden": {
+  "E1": {
+   "canonical": 396,
+   "corroborated": 282,
+   "singleton": 114,
+   "singletonByPass": {
+    "pass-1": 70,
+    "pass-2": 44
+   },
+   "materialSingleton": 112,
+   "informationalSingleton": 2,
+   "conflicted": 0,
+   "materialConflicted": 0,
+   "supportReviewFraction": 0.2828,
+   "percentRequiringSupportReview": 28.28,
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "unaccountedSource": 19
+  },
+  "E2": {
+   "canonical": 390,
+   "corroborated": 292,
+   "singleton": 98,
+   "singletonByPass": {
+    "cert-pass-1": 40,
+    "cert-pass-2": 58
+   },
+   "materialSingleton": 98,
+   "informationalSingleton": 0,
+   "conflicted": 0,
+   "materialConflicted": 0,
+   "supportReviewFraction": 0.2513,
+   "percentRequiringSupportReview": 25.13,
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "unaccountedSource": 21
+  },
+  "matchedMaterialWhoseSupportChanged": 46,
+  "corroboratedInE1_singletonInE2": 18,
+  "singletonInE1_corroboratedInE2": 28,
+  "note": "reported, not thresholded; singletons are never suppressed"
+ },
+ "historicalResidualRecoveryByE2": {
+  "F": {
+   "total": 50,
+   "recovered": 49,
+   "recoveryRate": 0.98,
+   "valuesPreserved": 48,
+   "bySupport": {
+    "CORROBORATED": 29,
+    "SINGLE_RUN": 20,
+    "CONFLICTED": 0
+   }
+  },
+  "B": {
+   "total": 12,
+   "recovered": 12,
+   "recoveryRate": 1.0,
+   "valuesPreserved": 7,
+   "bySupport": {
+    "CORROBORATED": 5,
+    "SINGLE_RUN": 7,
+    "CONFLICTED": 0
+   }
+  },
+  "H": {
+   "total": 6,
+   "recovered": 6,
+   "recoveryRate": 1.0,
+   "valuesPreserved": 6,
+   "bySupport": {
+    "CORROBORATED": 4,
+    "SINGLE_RUN": 2,
+    "CONFLICTED": 0
+   }
+  }
+ },
+ "referenceRecall": {
+  "discoveryRecall": {
+   "E1": 1.0,
+   "E2": 1.0,
+   "degraded": false
+  },
+  "criticalMaterialRecall": {
+   "E1": 1.0,
+   "E2": 1.0,
+   "degraded": false
+  },
+  "quantitativeRecall": {
+   "E1": 1.0,
+   "E2": 1.0,
+   "degraded": false
+  },
+  "conditionExceptionRecall": {
+   "E1": 1.0,
+   "E2": 1.0,
+   "degraded": false
+  },
+  "dependencyRecall": {
+   "E1": "N/A (no category-E reference item in the 6.08 subset)",
+   "E2": "N/A (no category-E reference item in the 6.08 subset)"
+  }
+ },
+ "originalF5Gates": {
+  "criticalMaterialSemanticStability": {
+   "value": 0.8565,
+   "threshold": 0.85,
+   "pass": true
+  },
+  "semanticStability": {
+   "value": 0.8582,
+   "threshold": 0.8,
+   "pass": true
+  },
+  "dangerousSilentOmissions": {
+   "value": 0,
+   "threshold": 0,
+   "pass": true
+  },
+  "frozenReferenceRecallNoMaterialDegradation": {
+   "pass": true,
+   "detail": {
+    "discoveryRecall": {
+     "E1": 1.0,
+     "E2": 1.0,
+     "degraded": false
+    },
+    "criticalMaterialRecall": {
+     "E1": 1.0,
+     "E2": 1.0,
+     "degraded": false
+    },
+    "quantitativeRecall": {
+     "E1": 1.0,
+     "E2": 1.0,
+     "degraded": false
+    },
+    "conditionExceptionRecall": {
+     "E1": 1.0,
+     "E2": 1.0,
+     "degraded": false
+    },
+    "dependencyRecall": {
+     "E1": "N/A (no category-E reference item in the 6.08 subset)",
+     "E2": "N/A (no category-E reference item in the 6.08 subset)"
+    }
+   }
+  }
+ },
+ "originalF5GatesPass": true,
+ "additionalTrustGates": {
+  "zeroFalseCompleteness": {
+   "pass": true,
+   "detail": {
+    "unionStatus": "INVENTORY_COVERAGE_GAP",
+    "counterfactualRawCompleteAllAccountedStillNotComplete": true
+   }
+  },
+  "zeroMaterialSourceUnverifiableSurviving": {
+   "pass": true,
+   "detail": {
+    "failures": 0,
+    "materialUnverifiableSurviving": 0,
+    "rejectedUnverifiableAtEnsemble": 0,
+    "rejectedUnverifiableInPasses": [
+     19,
+     24
+    ]
+   }
+  },
+  "zeroContradictoryEffectsSilentlyMerged": {
+   "pass": true,
+   "detail": 0
+  },
+  "zeroLostQuantitativeValues": {
+   "pass": true,
+   "detail": 0
+  },
+  "zeroDanglingLineage": {
+   "pass": true,
+   "detail": {
+    "parentLinks": 284,
+    "dangling": 0
+   }
+  },
+  "supportReviewRequiredPropagatesToReviewRequired": {
+   "pass": true,
+   "detail": {
+    "ensemble": true,
+    "reconciliation": true,
+    "rollup": "SEMANTICALLY_INCOMPLETE",
+    "counterfactualRollup": "REVIEW_REQUIRED"
+   }
+  },
+  "rawBothPassGapsRemainDisclosed": {
+   "pass": true,
+   "detail": {
+    "cert-pass-1": 30,
+    "cert-pass-2": 25,
+    "union": 21,
+    "gapsInBothPasses": 21,
+    "gapsInBothPassesStillDisclosed": 21,
+    "cGapsRescuedByDOnlySemantics": 7,
+    "dGapsRescuedByCOnlySemantics": 2,
+    "cGapsStillGap": 21,
+    "dGapsStillGap": 21,
+    "gapsInBothResolvedByUnion": 0,
+    "unionGapNotInEitherInput": 0,
+    "accountedCharFraction": {
+     "cert-pass-1": 0.9836,
+     "cert-pass-2": 0.9837,
+     "union": 0.9919
+    },
+    "unionStatus": "INVENTORY_COVERAGE_GAP",
+    "falseCompleteness": false
+   }
+  },
+  "orderIndependenceHolds": {
+   "pass": true,
+   "detail": {
+    "unionCD_equals_unionDC": true,
+    "hashCD": "1dfe368a2f4dc6f0679f346742495d0f7a74968b41d38f0d9d4f0349124a992e",
+    "hashDC": "1dfe368a2f4dc6f0679f346742495d0f7a74968b41d38f0d9d4f0349124a992e",
+    "reproducesOrchestratorE2": true,
+    "orchestratorHash": "1dfe368a2f4dc6f0679f346742495d0f7a74968b41d38f0d9d4f0349124a992e"
+   }
+  },
+  "inputCompatibilityGatePassed": {
+   "pass": true,
+   "detail": {
+    "mode": "STRICT",
+    "allChecksPass": true,
+    "sourceIdentity": {
+     "cert-pass-1": {
+      "method": "RECORDED_AT_FREEZE",
+      "sourceContextHash": "66e94bcf2d5ba3cfbcba7cde973bac451aab67d9f4982d3b7a8d794b963cbcb0",
+      "partitionHash": "2c822c6c65520b80d361d873b4334b1251904629e491fc75247acfd671a62a75"
+     },
+     "cert-pass-2": {
+      "method": "RECORDED_AT_FREEZE",
+      "sourceContextHash": "66e94bcf2d5ba3cfbcba7cde973bac451aab67d9f4982d3b7a8d794b963cbcb0",
+      "partitionHash": "2c822c6c65520b80d361d873b4334b1251904629e491fc75247acfd671a62a75"
+     }
+    }
+   }
+  }
+ },
+ "additionalTrustGatesPass": true,
+ "successCriteria": {
+  "1_dualPassProductionPathWired": true,
+  "2_inputCompatibilityGatePasses": true,
+  "3_supportAsymmetryConflictsPropagateToReviewRequired": true,
+  "4_e1Reproduced": true,
+  "5_exactlyOneNewPairCompleted": true,
+  "6_e2BuiltFromCDOnly": true,
+  "7_criticalMaterialEnsembleStabilityGte085": true,
+  "8_ensembleSemanticStabilityGte080": true,
+  "9_zeroDangerousSilentOmissions": true,
+  "10_frozenReferenceRecallNotMateriallyDegraded": true,
+  "11_zeroFalseCompleteness": true,
+  "12_noMaterialSourceUnverifiableAdditionsSurvive": true,
+  "13_noValuesOrLineageLost": true
+ },
+ "cost": {
+  "paidCalls": 8,
+  "failedCalls": 0,
+  "paidSpendUsdRateCard": 3.3013,
+  "gatewayReportedSpendUsd": 3.3013039999999876,
+  "creditsBefore": {
+   "balance": 32.38877,
+   "totalUsed": 182.61123
+  },
+  "creditsAfter": {
+   "balance": 29.087466,
+   "totalUsed": 185.912534
+  },
+  "cap": 4.5,
+  "refusals": 0,
+  "byLabel": {
+   "cert-pass-2-attempt-2": 3.3013
+  },
+  "estimateBefore": {
+   "inputTokensPerRun": 52260,
+   "assumedOutputTokensPerCall": 16000,
+   "callsUpperBound": 14,
+   "estimatorUsdUpperBound": 2.449,
+   "observedRunCUsd": 3.4024,
+   "worstCaseUsd": 3.4024
+  },
+  "runCPreservedCostUsd(priorMission)": 3.4024
+ },
+ "hashes": {
+  "e2": "feaa0964b279b6ef8ae07c0b5b83119c55b3273146e8a96b0523b79aa5c8f51e",
+  "runC": "18a4ff62f22611060a8a132fc2a5e51f6da672cb8d77eafc66c98143961292f0",
+  "runD": "a27a538185f9bc078ce5d4d5b8b6b34c5e6116b0968b90e6cc579cccd9e2f9e9",
+  "ledger": "e673926891238b7146df6eb6d2727d745ad3ebd6be76c9faf7bb4f407e1eb183",
+  "scorer": "0ac56e31fb6c0554583aa3cb7edb54f890011d7496145d2cc7a353522a634995",
+  "scorerPreregistered": "0ac56e31fb6c0554583aa3cb7edb54f890011d7496145d2cc7a353522a634995",
+  "scorerUnchangedSincePreregistration": true,
+  "humanReference": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036",
+  "humanReferencePreregistered": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036"
+ },
+ "missionStartingSha": "c4373f7ec3e738ea096873cf1f46a206f5ac0a7b",
+ "productionDiffFromStartingSha": "zero (lib/ byte-identical; scripts and artifacts only)",
+ "attemptIdentifier": "cert-pass-2-attempt-2 (ledger label); ensemble pass ids are generic (cert-pass-1, cert-pass-2); relabelling to x/y yields the identical canonical propositions and support statuses (labelIndependent=true in ledger.json)",
+ "oldFailedD": "tests/fixtures/unseen-packages/phase-3-remediation-f5-run/certification-f5-3b/run-D.json preserved unchanged (sha256 2bf45df2...), never read for content, never combined",
+ "materialDEInspection": "see 11-material-de-inspection-and-support-diagnostics.json: 1 D (E1-only MATERIAL PERMISSION fragment 'retirement or other acquisition);', 33 chars, source-verified, E2 discloses the span as UNACCOUNTED_SOURCE) and 1 E (E2-only MATERIAL ALTERNATIVE fragment 'Proceeds,', 9 chars, source-verified, E1 discloses the span as UNACCOUNTED_SOURCE); both are genuine small-fragment differences, neither silent, neither affects a frozen-reference semantic"
+}

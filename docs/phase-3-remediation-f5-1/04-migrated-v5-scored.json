@@ -1,0 +1,1352 @@
+{
+ "artifact": "F-5.1 canonical + legacy stability over one Pass A pair",
+ "input": "docs/phase-3-remediation-f5-1/03-certification-pair-migrated-v5.json",
+ "run1Items": 375,
+ "run2Items": 378,
+ "itemCountDelta": 3,
+ "strictStability": 0.8101,
+ "strictCounts": [
+  337,
+  416
+ ],
+ "canonical": {
+  "definition": "same id OR (>=50% overlap of the shorter span AND no contradictory deontic effect) - label-blind",
+  "semanticStability": 0.8456,
+  "semanticCounts": [
+   345,
+   408
+  ],
+  "criticalMaterialStability": 0.8358,
+  "criticalMaterialCounts": [
+   336,
+   402
+  ]
+ },
+ "legacyDerivedRole": {
+  "definition": "frozen F-5 scorer: same id OR (same DERIVED semanticRole AND >=50% overlap)",
+  "semanticStability": 0.8277,
+  "semanticCounts": [
+   341,
+   412
+  ],
+  "criticalMaterialStability": 0.8177,
+  "criticalMaterialCounts": [
+   332,
+   406
+  ]
+ },
+ "legacyDeclaredRole": {
+  "definition": "frozen F-5 scorer on the model's DECLARED primary role",
+  "semanticStability": 0.8321,
+  "semanticCounts": [
+   342,
+   411
+  ],
+  "criticalMaterialStability": 0.8222,
+  "criticalMaterialCounts": [
+   333,
+   405
+  ]
+ },
+ "functionStabilityByDimension_jaccardMean": {
+  "effect": 0.9536,
+  "logic": 0.7899,
+  "quantitative": 0.8319,
+  "dependency": 0.9623,
+  "allTokens": 0.7222
+ },
+ "functionStabilityByDimension_exactAgreement": {
+  "effect": 0.9536,
+  "logic": 0.7855,
+  "quantitative": 0.829,
+  "dependency": 0.9594
+ },
+ "allFunctionsExactAgreement": 0.6812,
+ "dimensionDisagreementsOnAlignedPairs": {
+  "logic": 74,
+  "effect": 16,
+  "dependency": 14,
+  "quantitative": 59
+ },
+ "legacyDerivedRoleAgreementOnAlignedPairs": 0.7014,
+ "declaredRoleAgreementOnAlignedPairs": 0.7072,
+ "alignedPairs": 345,
+ "sourceSpanCoverageStability": 0.9729,
+ "quantitativeComponentStability": 0.9474,
+ "conditionExceptionStability": {
+  "canonical": 0.6975,
+  "canonicalCounts": [
+   113,
+   162
+  ],
+  "legacy": 0.6438,
+  "legacyCounts": [
+   103,
+   160
+  ]
+ },
+ "dependencyXrefStability": {
+  "canonical": 0.7816,
+  "canonicalCounts": [
+   68,
+   87
+  ],
+  "legacy": 0.5227,
+  "legacyCounts": [
+   23,
+   44
+  ]
+ },
+ "runOnlySubstantive": {
+  "aOnly": 28,
+  "bOnly": 32,
+  "aOnlyDisclosedByB": 1,
+  "bOnlyDisclosedByA": 15
+ },
+ "inventedSemantics": {
+  "aOnlyNonMaterial": 2,
+  "bOnlyNonMaterial": 1
+ },
+ "intraRunDuplicatePairs": {
+  "run1": 0,
+  "run2": 0
+ },
+ "duplicateRate": {
+  "run1": 0.0,
+  "run2": 0.0
+ },
+ "gapPass": {
+  "run1": {
+   "attempted": true,
+   "segmentsBefore": 33,
+   "itemsAdded": 10,
+   "duplicatesDropped": 3,
+   "unverifiableDropped": 4,
+   "segmentsAfter": 27,
+   "costUsd": 0.20914600000000003,
+   "error": null
+  },
+  "run2": {
+   "attempted": true,
+   "segmentsBefore": 47,
+   "itemsAdded": 35,
+   "duplicatesDropped": 2,
+   "unverifiableDropped": 0,
+   "segmentsAfter": 18,
+   "costUsd": 0.37794200000000006,
+   "error": null
+  },
+  "unaccountedSegments": [
+   27,
+   18
+  ],
+  "identicalUnaccountedSegments": 9
+ },
+ "inventoryStatus": [
+  "INVENTORY_COVERAGE_GAP",
+  "INVENTORY_COVERAGE_GAP"
+ ],
+ "accountedCharFraction": [
+  0.9732,
+  0.9877
+ ],
+ "runOnlyRows": [
+  {
+   "run": "A",
+   "id": "inv-item:38ad2fce0cdb9a708e3f4cad",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "materiality": "INFORMATIONAL",
+   "span": [
+    0,
+    48
+   ],
+   "excerpt": "Section 6.08 Limitation on Restricted Payments ."
+  },
+  {
+   "run": "A",
+   "id": "inv-item:be7fa1dbef025182ac9eb1ae",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    2886,
+    2962
+   ],
+   "excerpt": "unless, at the time of such Restricted Payment (or the declaration thereof):"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:55803279a1c441fa90c1315f",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    2888,
+    2892
+   ],
+   "excerpt": "less"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:2d3a95642d4fd31634da0d09",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    4312,
+    4319
+   ],
+   "excerpt": "and (z)"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:fa9a024390970ca0c48466e0",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    5460,
+    5482
+   ],
+   "excerpt": "Section 6.08(b)(12)(a)"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:cdaa3d9034e2ef6c93a2d49f",
+   "role": "EXCEPTION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "EXCEPTION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    6289,
+    6456
+   ],
+   "excerpt": "(excluding contributions of the proceeds from the sale of Designated Preferred Stock of such companies or contributions "
+  },
+  {
+   "run": "A",
+   "id": "inv-item:ecacb33bf03a4495b380d494",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    6822,
+    6860
+   ],
+   "excerpt": "Section 6.08(b)(2)(b) or (6)(c) hereof"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:3ac15fdf96ceeb85d9aa50a4",
+   "role": "EXCEPTION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "EXCEPTION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    7024,
+    7125
+   ],
+   "excerpt": "(Y) Disqualified Stock (or Indebtedness that has been converted or exchanged into Disqualified Stock)"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:9bae739cc11c3054c3928135",
+   "role": "EXCEPTION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "EXCEPTION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    7129,
+    7156
+   ],
+   "excerpt": "(Z) Excluded Contributions;"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:214c9b0a17e4232244456a2b",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    7794,
+    7842
+   ],
+   "excerpt": "(ii) are contributed by a Restricted Subsidiary,"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:bf029f35702216965707d368",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    7843,
+    7869
+   ],
+   "excerpt": "(iii) from ABL Cure Amount"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:2da0691005154d18b88caeb4",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    7873,
+    7913
+   ],
+   "excerpt": "(iv) constitute Excluded Contributions);"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:bc60bb6b528d59d666e8f799",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    9119,
+    9244
+   ],
+   "excerpt": "and without duplication of any returns, profits, distributions or similar amounts included in the calculation of such ba"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:d4e07eb24f0077cd9d6837f2",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    10159,
+    10202
+   ],
+   "excerpt": "(ii) Retained Asset Sale Proceeds since the"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:d7809acfa4fbc3fe279b10ad",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    11288,
+    11419
+   ],
+   "excerpt": "if, at the date of declaration or the giving of such notice, such payment would have complied with the provisions of thi"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:9bc81e94daaf96bfb978be98",
+   "role": "PERMISSION",
+   "functions": {
+    "effect": "PERMISSION",
+    "logic": [],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    14692,
+    14725
+   ],
+   "excerpt": "retirement or other acquisition);"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:4fdd22daebb4ab3ad7145643",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    16570,
+    16588
+   ],
+   "excerpt": "Section 6.08(a)(3)"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:d1317fa2817a561881c89601",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    18610,
+    18666
+   ],
+   "excerpt": "issued by any Restricted Party after the Effective Date;"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:bc8019a62486566fe62dfb8e",
+   "role": "EXCEPTION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "EXCEPTION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    19086,
+    19117
+   ],
+   "excerpt": "(other than Disqualified Stock)"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:9ed0c8ec2425d8b2b2e590a1",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    20836,
+    20961
+   ],
+   "excerpt": "the redemption, purchase, repurchase, defeasance or other acquisition or retirement of any Equity Interests of the Borro"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:0914469284c7b2179ece8c48",
+   "role": "TRIGGER",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "TRIGGER"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "REVIEW_UNCERTAIN",
+   "span": [
+    20962,
+    20991
+   ],
+   "excerpt": "following consummation of the"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:84e7c79f081ee92a9a11c80a",
+   "role": "EXCEPTION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "EXCEPTION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    21342,
+    21432
+   ],
+   "excerpt": "other than public offerings with respect to the Borrowers\u2019 common stock registered on Form"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:e2d07148c2b3b47720775a70",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [
+     "VALUE"
+    ],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    24095,
+    24109
+   ],
+   "excerpt": "$720.0 million"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:c16420321a5b31ff7b530c32",
+   "role": "DEPENDENCY",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE",
+     "DEPENDENCY"
+    ]
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    25388,
+    25415
+   ],
+   "excerpt": "Section 5.18(b)(2) and (15)"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:85cb84e3113c9ca2c8d6845d",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [
+     "VALUE"
+    ],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    25636,
+    25650
+   ],
+   "excerpt": "$720.0 million"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:edff855f3f06b1cd9b2fc688",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    25752,
+    25829
+   ],
+   "excerpt": "calculated on a Pro Forma Basis, at the time of such Restricted Debt Payment;"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:a4ffd4941c89af20c01cb70d",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    33650,
+    33680
+   ],
+   "excerpt": "issued as a Restricted Payment"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:7b0d7b1959e01e5c8c1b4821",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    33684,
+    33727
+   ],
+   "excerpt": "as consideration for a Permitted Investment"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:4bd275378a8df1106ef60dae",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    35464,
+    35635
+   ],
+   "excerpt": "the date of the Restricted Payment of the assets or securities proposed to be transferred or issued by any Restricted Pa"
+  },
+  {
+   "run": "A",
+   "id": "inv-item:fce6f5b2c293ecf4b935e5cd",
+   "role": "EXCEPTION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION",
+     "EXCEPTION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    36842,
+    36933
+   ],
+   "excerpt": "unless such Unrestricted Subsidiary has granted an irrevocable license to use such Material"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:58db30852018aa8a2c57c379",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    3429,
+    3551
+   ],
+   "excerpt": "(the sum or the amounts attributable to clauses (a) through (f) below are referred to herein as the \u201c Available Amount \u201d"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:8e354dae265bbbf9c8a3da28",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    4150,
+    4183
+   ],
+   "excerpt": "100% of Retained Excess Cash Flow"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:a858b0d3cfb71d3226aab515",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    4658,
+    4786
+   ],
+   "excerpt": "(which amount shall be deemed to be zero for any fiscal quarter in which such amount for such fiscal quarter is less tha"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:c1a872c6c8f5a98e8b5ffd7f",
+   "role": "EXCEPTION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "EXCEPTION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    5270,
+    5409
+   ],
+   "excerpt": "(other than net cash proceeds from an ABL Cure Amount or to the extent such net cash proceeds have been used to incur In"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:a4705301a6927b7d16a11f25",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    7914,
+    7918
+   ],
+   "excerpt": "plus"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:3cef5148cd37148c81e538e9",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    9245,
+    9249
+   ],
+   "excerpt": "plus"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:01204176eb44f54e6431f10c",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    9930,
+    9934
+   ],
+   "excerpt": "plus"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:9385189586dcdb53603a75bc",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    10082,
+    10086
+   ],
+   "excerpt": "plus"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:884e027e7bed964b77402214",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    10450,
+    10454
+   ],
+   "excerpt": "plus"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:7b7eee5232b3ddbe4dca6702",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    10680,
+    10685
+   ],
+   "excerpt": "minus"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:21ff6c5be66617e473b4763f",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    10910,
+    10929
+   ],
+   "excerpt": "Section 6.01(b)(32)"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:07da12c66659467794eef961",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    13705,
+    13717
+   ],
+   "excerpt": "Section 6.01"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:832d163bcbe8f15f62b787ea",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    13898,
+    14048
+   ],
+   "excerpt": "of the Borrowers or any Parent Entity held by any future, present or former employee, director, manager, or consultant ("
+  },
+  {
+   "run": "B",
+   "id": "inv-item:4ba12f4a5eb799b4f0de0291",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    15706,
+    15769
+   ],
+   "excerpt": "(with unused amounts in any calendar year being carried over to"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:ff7801133b7ca108b95d3197",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    15770,
+    15797
+   ],
+   "excerpt": "succeeding calendar years);"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:22bcdaf3c38fc11fd331e6d4",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    16597,
+    16601
+   ],
+   "excerpt": "plus"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:0c854d972d9201a6c59ff32d",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    16756,
+    16760
+   ],
+   "excerpt": "plus"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:133e19c1d584606795338eb3",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    17231,
+    17235
+   ],
+   "excerpt": "less"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:600ecf6a34e925c733a00da2",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    18465,
+    18577
+   ],
+   "excerpt": "(6) (a) the declaration and payment of dividends to holders of any class or series of Designated Preferred Stock"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:cfd99dbdb06f0c6f3cfa1270",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    20636,
+    20751
+   ],
+   "excerpt": "(9) (i) (a) the declaration and payment of dividends on any Borrower\u2019s common stock (or the payment of dividends to"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:81cfab927d106eabb117423e",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    22482,
+    22681
+   ],
+   "excerpt": "clause (9) or (10) of this Section 6.08(b)) that have been used to incur Indebtedness, Disqualified Stock or Preferred S"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:cdc5c2ae0998630707aebdb5",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    22607,
+    22649
+   ],
+   "excerpt": "pursuant to clause (31) of Section 6.01(b)"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:da08f9cd99d7922da7f3ce58",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "materiality": "INFORMATIONAL",
+   "span": [
+    26564,
+    26571
+   ],
+   "excerpt": "federal"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:e1a4736b86e7aa81b25a6d6f",
+   "role": "OTHER",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    26778,
+    26825
+   ],
+   "excerpt": "applicable taxpayer (a \u201c Tax Group \u201d), any U.S."
+  },
+  {
+   "run": "B",
+   "id": "inv-item:6cfd12ad4275040c438c4e12",
+   "role": "OTHER",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    27475,
+    27646
+   ],
+   "excerpt": "any similar tax imposed in lieu of an income tax) (any such taxes, the \u201c Tax Amount \u201d) of any direct or indirect equity "
+  },
+  {
+   "run": "B",
+   "id": "inv-item:a29979086f7753ae1e18af43",
+   "role": "OTHER",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    28503,
+    28527
+   ],
+   "excerpt": "a \u201c Tax Distribution \u201d);"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:00a1d853252ac46835447dfc",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    28827,
+    29021
+   ],
+   "excerpt": "are attributable to the ownership or operation of any Restricted Party, including any Restricted Party\u2019s proportionate s"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:d4226003bdf9acad8f78e043",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    30257,
+    30286
+   ],
+   "excerpt": "Sections 5.18(b)(3), (8), (9)"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:e965812f4205de969102559f",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    30353,
+    30396
+   ],
+   "excerpt": "only in respect of indemnities and expenses"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:a652cfc96ca747ae9e3d2fb4",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    31270,
+    31296
+   ],
+   "excerpt": "Section 6.08(b)(4) or (14)"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:85c50333e46ced48b4f91552",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "materiality": "MATERIAL",
+   "span": [
+    32967,
+    32979
+   ],
+   "excerpt": "Section 6.03"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:5110cac40f96001de90a14c1",
+   "role": "THRESHOLD",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [
+     "THRESHOLD"
+    ],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    33360,
+    33408
+   ],
+   "excerpt": "provided that the aggregate amount of Restricted"
+  },
+  {
+   "run": "B",
+   "id": "inv-item:1033fb64af1db7cd0a0528ea",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "materiality": "CRITICAL",
+   "span": [
+    34397,
+    34459
+   ],
+   "excerpt": "the First Lien Leverage Ratio for the most recently ended Test"
+  }
+ ]
+}

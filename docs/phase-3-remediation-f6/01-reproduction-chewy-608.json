@@ -1,0 +1,830 @@
+{
+  "artifact": "01 - F-6 reproduction from the RECORDED Chewy \u00a76.08 compiler output (zero model calls)",
+  "startingSha": "1a4070b020249157ab705dbb4244bb755072bd5f",
+  "source": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/unit-6.08.json (compile.rawModelOutput, exactly as the model emitted it; compile.rules/definitions as recorded)",
+  "reproductionMethod": "scripts/f6-recorded-replay.ts chewy: SubmitCompilationSchema.parse(rawModelOutput) -> normalizeSubmission -> validateCompilationUnit -> reconcileInventoryWithComposition against compile.frozenInventory, run with the starting-SHA production code (git stash of the F-6 changes). 02a-chewy-replay-before.json is the full output.",
+  "reproducedRecordedIRExactly": true,
+  "reproducedRecordedAccountabilityCounts": true,
+  "recordedFailureReasons": [
+    "IR_VALIDATION_FAILURE",
+    "OPERATIVE_STATE_UNRESOLVED",
+    "SEMANTIC_INVENTORY_COVERAGE_GAP",
+    "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+  ],
+  "irValidationIssuesBefore": [
+    "[TYPE_ERROR] [UNLIMITED_CAPACITY] UnlimitedCapacity.gatedBy must be BOOLEAN",
+    "[TYPE_ERROR] [UNLIMITED_CAPACITY] UnlimitedCapacity.gatedBy must be BOOLEAN"
+  ],
+  "expressionStatsBefore": {
+    "unsupportedNodes": 8,
+    "modelEmittedUnsupported": 11,
+    "nodesOnlyInAttemptedStructure": 62,
+    "partialCompositesKept": 0,
+    "liveNodes": 44
+  },
+  "ruleSufficiencyBefore": {
+    "COMPLETE": 26,
+    "PARTIAL": 12,
+    "AMBIGUOUS": 0,
+    "UNSUPPORTED": 0,
+    "MISSING_CONTEXT": 0,
+    "CONFLICTED": 0
+  },
+  "definitionSufficiencyBefore": {
+    "COMPLETE": 3,
+    "PARTIAL": 2,
+    "AMBIGUOUS": 1,
+    "UNSUPPORTED": 0,
+    "MISSING_CONTEXT": 0,
+    "CONFLICTED": 0
+  },
+  "recordedF6Expressions": 7,
+  "cases": [
+    {
+      "sourceProvision": "6.08(b)(4)",
+      "localRef": "r_b4",
+      "inventoryLineage": [
+        "6855a39e81ba03d27e08060a",
+        "3ecab54fb96a361d31eef442",
+        "d0c62ff05a24de9c42cd22ac",
+        "13f8714edff4ee617e96b29c",
+        "17e4368b7c3031a54204b54f",
+        "387110b764aae7f4e3c5bd36",
+        "3406b1717673b78db6270d31",
+        "56869b0538f755b8d2b94eb0",
+        "0b33e51e83c35c504f9091fc",
+        "31ad6cb625315f6ff4773d3a",
+        "35113bcf21dafec8b8c28411",
+        "3deb08bc081e2b88626a90b7",
+        "53623fc2ef1468e72d923347",
+        "d7e44b26fae7a0102c230ea0",
+        "2695eb3d7ddea8e0e7bc5729",
+        "866071bc82ac0a72d23af1eb",
+        "78ca6347735a2c15d2faaab8",
+        "0c0fd0dd85ba29f3b1e70175",
+        "e7a46668a4b54c7eb1b5613e",
+        "05267339e89e4491edd8e177",
+        "2def9799df1614d88daaaed2",
+        "ec69ed085c9ddc414c9d69ec",
+        "ec117b617f103cefc7ee8904",
+        "c4fe2b29167e50676cb0894c",
+        "4f2f798f617b48fd5e921310",
+        "18343292a5ab7fdce1d42268",
+        "56a2dbffd588c4b3487a0e4f",
+        "770c18c65f78b33ff66b86f2",
+        "f22e45395dd2880b0bedfeba",
+        "9cdb635289e8d55177b26e3d",
+        "2c91449d28a797ecc8903525",
+        "4f90e14e52ed3f86be461704"
+      ],
+      "rawCompilerExpression": {
+        "kind": "ADD",
+        "operands": [
+          {
+            "kind": "IF",
+            "condition": {
+              "kind": "TRANSACTION_INPUT_REFERENCE",
+              "inputName": "first public offering of Borrower/Parent common stock has been consummated (excluding Form S-8 registrations and Excluded Contribution sales)"
+            },
+            "then": {
+              "kind": "MAX",
+              "operands": [
+                {
+                  "kind": "MONEY",
+                  "amount": 504000000,
+                  "currency": "USD"
+                },
+                {
+                  "kind": "MULTIPLY",
+                  "operands": [
+                    {
+                      "kind": "PERCENT",
+                      "value": 0.7
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "metricName": "Consolidated EBITDA"
+                    }
+                  ]
+                }
+              ],
+              "citation": "\u00a76.08(b)(4) (post-IPO proviso)"
+            },
+            "then_": null,
+            "else": {
+              "kind": "MAX",
+              "operands": [
+                {
+                  "kind": "MONEY",
+                  "amount": 252000000,
+                  "currency": "USD"
+                },
+                {
+                  "kind": "MULTIPLY",
+                  "operands": [
+                    {
+                      "kind": "PERCENT",
+                      "value": 0.35
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "metricName": "Consolidated EBITDA"
+                    }
+                  ]
+                }
+              ],
+              "citation": "\u00a76.08(b)(4) (base cap)"
+            }
+          },
+          {
+            "kind": "SUBTRACT",
+            "left": {
+              "kind": "ADD",
+              "operands": [
+                {
+                  "kind": "TRANSACTION_INPUT_REFERENCE",
+                  "inputName": "cash proceeds from equity sales to employees/directors/consultants since the Effective Date, not otherwise applied under \u00a76.08(a)(3)"
+                },
+                {
+                  "kind": "TRANSACTION_INPUT_REFERENCE",
+                  "inputName": "cash proceeds of key man life insurance policies"
+                },
+                {
+                  "kind": "TRANSACTION_INPUT_REFERENCE",
+                  "inputName": "bona fide cash bonuses foregone in exchange for Equity Interests"
+                }
+              ]
+            },
+            "right": {
+              "kind": "TRANSACTION_INPUT_REFERENCE",
+              "inputName": "Restricted Payments previously made with the proceeds described in (a),(b),(c)"
+            },
+            "citation": "\u00a76.08(b)(4) (discretionary annual increase)"
+          }
+        ],
+        "citation": "\u00a76.08(b)(4)"
+      },
+      "normalizedExpressionBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"IF\")\"; attempted=IF:BOOLEAN(TXIN(\"first public offering of Borrower/Parent\":MONEY) ? MAX:MONEY(MONEY(504000000), MULTIPLY:MONEY(PERCENT(0.7), METRIC(\"Consolidated EBITDA\":MONEY))) : MAX:MONEY(MONEY(252000000), MULTIPLY:MONEY(PERCENT(0.35), METRIC(\"Consolidated EBITDA\":MONEY))))), SUBTRACT:MONEY(ADD:MONEY(TXIN(\"cash proceeds from equity sales to emplo\":MONEY), TXIN(\"cash proceeds of key man life insurance \":MONEY), TXIN(\"bona fide cash bonuses foregone in excha\":MONEY)), TXIN(\"Restricted Payments previously made with\":MONEY))))",
+      "validationOrTypeCheckResultBefore": "UNSUPPORTED",
+      "finalIrBefore": "UNSUPPORTED wrapper with attemptedStructure sidecar",
+      "sufficiencyBefore": "PARTIAL",
+      "earliestFailure": "IF.condition: TRANSACTION_INPUT_REFERENCE(\"first public offering ... has been consummated\") carried no valueType -> defaulted to MONEY -> IF condition not BOOLEAN -> IF UNSUPPORTED -> ADD UNSUPPORTED",
+      "classification": "F REFERENCE_TYPING_DEFECT (untyped predicate reference defaulted to MONEY) then E TYPE_CHECKER_DEFECT (partial composite collapsed)",
+      "exactLostSemanticComponents": [
+        "IF(IPO consummated ? MAX($504M, 70% EBITDA) : MAX($252M, 35% EBITDA)) - the whole conditional grower",
+        "SUBTRACT(ADD(equity proceeds, key-man insurance proceeds, foregone bonuses), prior RPs) - the whole builder arithmetic",
+        "$504,000,000; 70%; $252,000,000; 35% (all four values invisible to Pass C value correspondence)"
+      ]
+    },
+    {
+      "sourceProvision": "6.08(b)(9)",
+      "localRef": "r_b9",
+      "inventoryLineage": [
+        "02e3c64ca1cd38bd8a45e89b",
+        "abbeb548a74273faa56e047c",
+        "fa1d103d3c82f9913ada1434",
+        "7437edb8958b2b9a60a84b69",
+        "c5e6c4b6242eff08fd620e24",
+        "4b44e47e468890905a655dc6",
+        "3b5dc331d31cf1bdbd3361d5",
+        "04cce2e3ae9c69a745a054ca",
+        "872fbec1bc3232fc5d39e606",
+        "68f6861e594ab5cdbcceb521",
+        "d79ba5df719f8732b516c203",
+        "33355a9c1fc48a0b3dad4d7d"
+      ],
+      "rawCompilerExpression": {
+        "kind": "SUBTRACT",
+        "left": {
+          "kind": "ADD",
+          "operands": [
+            {
+              "kind": "MULTIPLY",
+              "operands": [
+                {
+                  "kind": "PERCENT",
+                  "value": 0.06
+                },
+                {
+                  "kind": "TRANSACTION_INPUT_REFERENCE",
+                  "inputName": "net cash proceeds received by/contributed to the Borrowers from a public offering of common stock (excluding Form S-8 and Excluded Contribution sales)"
+                }
+              ]
+            },
+            {
+              "kind": "MULTIPLY",
+              "operands": [
+                {
+                  "kind": "PERCENT",
+                  "value": 0.07
+                },
+                {
+                  "kind": "METRIC_REFERENCE",
+                  "metricName": "Market Capitalization"
+                }
+              ]
+            }
+          ]
+        },
+        "right": {
+          "kind": "UNSUPPORTED",
+          "semanticDescription": "amounts used to incur Indebtedness/Disqualified Stock/Preferred Stock under clause (31) of Section 6.01(b), and to incur Liens under clause (46)(i) of Permitted Liens, to the extent not already reducing amounts under \u00a76.08(a)(3) or \u00a76.08(b)(9)/(10)",
+          "reason": "depends on Section 6.01(b)(31) and Permitted Liens clause (46)(i), both out of scope of this submission's evidence, plus a cross-basket anti-duplication mechanic",
+          "sourceEvidence": "\u00a76.08(b)(9)(ii)"
+        }
+      },
+      "normalizedExpressionBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(ADD:MONEY(MULTIPLY:MONEY(PERCENT(0.06), TXIN(\"net cash proceeds received by/contribute\":MONEY)), MULTIPLY:MONEY(PERCENT(0.07), METRIC(\"Market Capitalization\":MONEY))), UNSUPPORTED(\"amounts used to incur Indebtedness/Disqualified St\")))",
+      "validationOrTypeCheckResultBefore": "UNSUPPORTED",
+      "finalIrBefore": "UNSUPPORTED wrapper with attemptedStructure sidecar",
+      "sufficiencyBefore": "PARTIAL",
+      "earliestFailure": "SUBTRACT.right is a model-emitted UNSUPPORTED leaf -> inferType(SUBTRACT) = UNSUPPORTED -> whole SUBTRACT collapsed to an UNSUPPORTED wrapper (represented left side moved into the attemptedStructure sidecar)",
+      "classification": "E TYPE_CHECKER_DEFECT (an honest UNSUPPORTED child treated as a type failure of the whole composite)",
+      "exactLostSemanticComponents": [
+        "ADD(6% x IPO net cash proceeds, 7% x Market Capitalization) - the whole represented capacity",
+        "6.0%; 7.0%"
+      ]
+    },
+    {
+      "sourceProvision": "6.08(b)(10)",
+      "localRef": "r_b10",
+      "inventoryLineage": [
+        "1193ca615dcc9fe72c03c491",
+        "86e64995b1a3e12d4aa74ca1",
+        "48f46ac3fea2ac5448a28603",
+        "898f62b26c441dcabfa36aca",
+        "a4ac97988fdea13239ac15d5",
+        "2ac1f47ac69168642d7c8f35",
+        "81fcf32841f3355dd4006f2a",
+        "e9ebc54c4bedee9a732fb9f4",
+        "4d795ebda93ebeb1e75c7f03"
+      ],
+      "rawCompilerExpression": {
+        "kind": "UNLIMITED_CAPACITY",
+        "gatedBy": {
+          "kind": "AND",
+          "operands": [
+            {
+              "kind": "OR",
+              "operands": [
+                {
+                  "kind": "OR",
+                  "operands": [
+                    {
+                      "kind": "COMPARE",
+                      "left": {
+                        "kind": "METRIC_REFERENCE",
+                        "metricName": "First Lien Leverage Ratio",
+                        "valueType": "RATIO"
+                      },
+                      "operator": "LTE",
+                      "right": {
+                        "kind": "RATIO",
+                        "value": 2
+                      }
+                    },
+                    {
+                      "kind": "COMPARE",
+                      "left": {
+                        "kind": "METRIC_REFERENCE",
+                        "metricName": "First Lien Leverage Ratio",
+                        "valueType": "RATIO"
+                      },
+                      "operator": "LTE",
+                      "right": {
+                        "kind": "DEFINED_TERM_REFERENCE",
+                        "termName": "First Lien Leverage Ratio as of the last day of the then most recently ended Test Period",
+                        "valueType": "RATIO"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "kind": "OR",
+                  "operands": [
+                    {
+                      "kind": "COMPARE",
+                      "left": {
+                        "kind": "METRIC_REFERENCE",
+                        "metricName": "Interest Coverage Ratio",
+                        "valueType": "RATIO"
+                      },
+                      "operator": "GTE",
+                      "right": {
+                        "kind": "RATIO",
+                        "value": 1.75
+                      }
+                    },
+                    {
+                      "kind": "COMPARE",
+                      "left": {
+                        "kind": "METRIC_REFERENCE",
+                        "metricName": "Interest Coverage Ratio",
+                        "valueType": "RATIO"
+                      },
+                      "operator": "GTE",
+                      "right": {
+                        "kind": "DEFINED_TERM_REFERENCE",
+                        "termName": "Interest Coverage Ratio as of the last day of the then most recently ended Test Period",
+                        "valueType": "RATIO"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "NOT",
+              "operand": {
+                "kind": "DEFINED_TERM_REFERENCE",
+                "termName": "Specified Event of Default"
+              }
+            }
+          ]
+        }
+      },
+      "normalizedExpressionBefore": "UNLIMITED(gatedBy=UNSUPPORTED(\"unrecognized or malformed expression (kind=\"AND\")\"; attempted=AND:BOOLEAN(OR:BOOLEAN(OR:BOOLEAN(COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE RATIO(2)), COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE TERM(\"First Lien Leverage Ratio as of the last\":RATIO))), OR:BOOLEAN(COMPARE(METRIC(\"Interest Coverage Ratio\":RATIO) GTE RATIO(1.75)), COMPARE(METRIC(\"Interest Coverage Ratio\":RATIO) GTE TERM(\"Interest Coverage Ratio as of the last d\":RATIO)))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"NOT\")\"; attempted=NOT(TERM(\"Specified Event of Default\":MONEY))))))",
+      "validationOrTypeCheckResultBefore": "gate:UNSUPPORTED",
+      "finalIrBefore": "UNSUPPORTED wrapper with attemptedStructure sidecar",
+      "sufficiencyBefore": "PARTIAL",
+      "earliestFailure": "NOT.operand: DEFINED_TERM_REFERENCE(\"Specified Event of Default\") carried no valueType -> defaulted to MONEY -> NOT not BOOLEAN -> AND UNSUPPORTED -> gatedBy UNSUPPORTED -> validate.ts TYPE_ERROR \"gatedBy must be BOOLEAN\" -> IR_VALIDATION_FAILURE",
+      "classification": "F REFERENCE_TYPING_DEFECT, then E (validate.ts TYPE_ERROR on an unknown-typed gate)",
+      "exactLostSemanticComponents": [
+        "AND(OR(FLLR <= 2.00x, FLLR <= FLLR as of the last Test Period), OR(ICR >= 1.75x, ICR >= ICR as of last Test Period), NOT(Specified Event of Default)) - the whole ratio gate",
+        "2.00:1.00; 1.75:1.00; plus an IR_VALIDATION_FAILURE on the unit (gatedBy must be BOOLEAN)"
+      ]
+    },
+    {
+      "sourceProvision": "6.08(b)(25)",
+      "localRef": "r_b25",
+      "inventoryLineage": [
+        "9dd2950e65566ce0ff8a7692",
+        "439fa76c4033f55855c6418b",
+        "5f2e1ef5065a83911682bac6",
+        "d9b3430629660c3451d577ca",
+        "195eea71c2b629a44d543773",
+        "f7c86a75f11487d13733b9e6"
+      ],
+      "rawCompilerExpression": {
+        "kind": "UNLIMITED_CAPACITY",
+        "gatedBy": {
+          "kind": "AND",
+          "operands": [
+            {
+              "kind": "OR",
+              "operands": [
+                {
+                  "kind": "OR",
+                  "operands": [
+                    {
+                      "kind": "COMPARE",
+                      "left": {
+                        "kind": "METRIC_REFERENCE",
+                        "metricName": "First Lien Leverage Ratio",
+                        "valueType": "RATIO"
+                      },
+                      "operator": "LTE",
+                      "right": {
+                        "kind": "RATIO",
+                        "value": 2
+                      }
+                    },
+                    {
+                      "kind": "COMPARE",
+                      "left": {
+                        "kind": "METRIC_REFERENCE",
+                        "metricName": "First Lien Leverage Ratio",
+                        "valueType": "RATIO"
+                      },
+                      "operator": "LTE",
+                      "right": {
+                        "kind": "DEFINED_TERM_REFERENCE",
+                        "termName": "First Lien Leverage Ratio as of the last day of the then most recently ended Test Period",
+                        "valueType": "RATIO"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "kind": "OR",
+                  "operands": [
+                    {
+                      "kind": "COMPARE",
+                      "left": {
+                        "kind": "METRIC_REFERENCE",
+                        "metricName": "Interest Coverage Ratio",
+                        "valueType": "RATIO"
+                      },
+                      "operator": "GTE",
+                      "right": {
+                        "kind": "RATIO",
+                        "value": 1.75
+                      }
+                    },
+                    {
+                      "kind": "COMPARE",
+                      "left": {
+                        "kind": "METRIC_REFERENCE",
+                        "metricName": "Interest Coverage Ratio",
+                        "valueType": "RATIO"
+                      },
+                      "operator": "GTE",
+                      "right": {
+                        "kind": "DEFINED_TERM_REFERENCE",
+                        "termName": "Interest Coverage Ratio as of the last day of the then most recently ended Test Period",
+                        "valueType": "RATIO"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "NOT",
+              "operand": {
+                "kind": "DEFINED_TERM_REFERENCE",
+                "termName": "Specified Event of Default"
+              }
+            }
+          ]
+        }
+      },
+      "normalizedExpressionBefore": "UNLIMITED(gatedBy=UNSUPPORTED(\"unrecognized or malformed expression (kind=\"AND\")\"; attempted=AND:BOOLEAN(OR:BOOLEAN(OR:BOOLEAN(COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE RATIO(2)), COMPARE(METRIC(\"First Lien Leverage Ratio\":RATIO) LTE TERM(\"First Lien Leverage Ratio as of the last\":RATIO))), OR:BOOLEAN(COMPARE(METRIC(\"Interest Coverage Ratio\":RATIO) GTE RATIO(1.75)), COMPARE(METRIC(\"Interest Coverage Ratio\":RATIO) GTE TERM(\"Interest Coverage Ratio as of the last d\":RATIO)))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"NOT\")\"; attempted=NOT(TERM(\"Specified Event of Default\":MONEY))))))",
+      "validationOrTypeCheckResultBefore": "gate:UNSUPPORTED",
+      "finalIrBefore": "UNSUPPORTED wrapper with attemptedStructure sidecar",
+      "sufficiencyBefore": "PARTIAL",
+      "earliestFailure": "identical to (b)(10)",
+      "classification": "F REFERENCE_TYPING_DEFECT, then E",
+      "exactLostSemanticComponents": [
+        "same ratio gate as (b)(10)",
+        "2.00x; 1.75:1.00; plus an IR_VALIDATION_FAILURE on the unit"
+      ]
+    },
+    {
+      "sourceProvision": "definition of \"Available Investment Capacity Amount\" (\u00a76.08 context)",
+      "localRef": "d_avail_inv_cap",
+      "inventoryLineage": [
+        "02caea32a5d3ef73fe86921f"
+      ],
+      "rawCompilerExpression": {
+        "kind": "SUBTRACT",
+        "left": {
+          "kind": "UNSUPPORTED",
+          "semanticDescription": "Investments that may be made pursuant to clause 13 of the definition of \"Permitted Investments\"",
+          "reason": "the definition of \"Permitted Investments\" and its clause 13 are not part of the supplied Section 6.08 evidence and are a different definition not included in this submission",
+          "sourceEvidence": "Definition of Available Investment Capacity Amount"
+        },
+        "right": {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "inputName": "amount of Available Investment Capacity Amount already utilized under Section 6.08(b)(26)"
+        },
+        "citation": "Definition of Available Investment Capacity Amount"
+      },
+      "normalizedExpressionBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED(\"Investments that may be made pursuant to clause 13\"), TXIN(\"amount of Available Investment Capacity \":MONEY)))",
+      "validationOrTypeCheckResultBefore": "UNSUPPORTED",
+      "finalIrBefore": "UNSUPPORTED wrapper with attemptedStructure sidecar",
+      "sufficiencyBefore": "PARTIAL",
+      "earliestFailure": "SUBTRACT.left is a model-emitted UNSUPPORTED leaf -> whole SUBTRACT collapsed",
+      "classification": "E TYPE_CHECKER_DEFECT",
+      "exactLostSemanticComponents": [
+        "SUBTRACT(<pool component, honestly UNSUPPORTED>, amount already utilized under 6.08(b)(26)) - the usage deduction and the shared-capacity shape"
+      ]
+    },
+    {
+      "sourceProvision": "definition of \"Available RP Capacity Amount\" (\u00a76.08 context)",
+      "localRef": "d_avail_rp_cap",
+      "inventoryLineage": [
+        "6c3f41ed9a8b2b8b40ae4dcd",
+        "e5102d502426bd8c3c1a6acb"
+      ],
+      "rawCompilerExpression": {
+        "kind": "SUBTRACT",
+        "left": {
+          "kind": "UNSUPPORTED",
+          "semanticDescription": "the amount of Restricted Payments that may be made pursuant to Section 6.08 or the definition of Permitted Investments",
+          "reason": "self-referential base amount tied to the entirety of Section 6.08's own remaining capacity plus Permitted Investments exceptions - not independently quantifiable without circularity",
+          "sourceEvidence": "Definition of Available RP Capacity Amount"
+        },
+        "right": {
+          "kind": "ADD",
+          "operands": [
+            {
+              "kind": "TRANSACTION_INPUT_REFERENCE",
+              "inputName": "outstanding Indebtedness incurred under Section 6.01(b)(31) (and Section 6.01(b)(13) refinancings thereof)"
+            },
+            {
+              "kind": "TRANSACTION_INPUT_REFERENCE",
+              "inputName": "amount utilized to incur Liens under clause (46)(i) of the definition of Permitted Liens"
+            }
+          ]
+        },
+        "citation": "Definition of Available RP Capacity Amount"
+      },
+      "normalizedExpressionBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED(\"the amount of Restricted Payments that may be made\"), ADD:MONEY(TXIN(\"outstanding Indebtedness incurred under \":MONEY), TXIN(\"amount utilized to incur Liens under cla\":MONEY))))",
+      "validationOrTypeCheckResultBefore": "UNSUPPORTED",
+      "finalIrBefore": "UNSUPPORTED wrapper with attemptedStructure sidecar",
+      "sufficiencyBefore": "PARTIAL",
+      "earliestFailure": "SUBTRACT.left is a model-emitted UNSUPPORTED leaf -> whole SUBTRACT collapsed",
+      "classification": "E TYPE_CHECKER_DEFECT",
+      "exactLostSemanticComponents": [
+        "SUBTRACT(<pool component, honestly UNSUPPORTED>, ADD(6.01(b)(31) debt outstanding, Permitted Liens (46)(i) usage)) - both usage deductions and the shape"
+      ]
+    },
+    {
+      "sourceProvision": "definition of \"Available Amount\" (\u00a76.08 context)",
+      "localRef": "d_avail",
+      "inventoryLineage": [
+        "f3beab7131eeb6d2ccdc1f60",
+        "fb94c5778957c130aad42a6c",
+        "72c7fd9b304d55a0ea0977fe",
+        "dc5cfdc4e613a9c0d47bc235",
+        "306db0aa79d0bc6a1aabda56",
+        "0a3d7fc327a49f6bc336162c",
+        "a85ba163fa4a50de7348321f",
+        "892dccd636f61f09459c9723",
+        "724d3b73576c589beb7c9808",
+        "648bb677e2e65a736cc6d920",
+        "23339c13932d8f3d5a6be6f8",
+        "91104b98f70132d8690e7004",
+        "fdc6f3ebdfbf88975f0d28bc",
+        "3dbda498604b4c6ccac6f746",
+        "b2a53ec9daafb2b86ce2bd14",
+        "ca11684a5201ce1f9990ab55",
+        "4a259d40a6a499a3c8b55715",
+        "4baf8681ffb70ff71ad52f3a",
+        "0af6b30f650c575379d9b7da",
+        "c59637a43b2e9742529905e1",
+        "6d8e5d1e1729ed7ab377dffe",
+        "8a38039e587bd09a96a1e53c",
+        "5c5b6413a9b9adfce3918235",
+        "fa6c8b0e4755eb1310b3e06c",
+        "79509fa175db204b988d5655",
+        "885fff870ec34c41075a127a",
+        "3f4adb300d7b9e1195dd2903",
+        "a40771acb9ea6a859c7207c9",
+        "ef1ff791e3cfb2d46faaaa7b",
+        "cf33b7a63aad4911e27af88a",
+        "a3b9c5a432d5883626a4b854",
+        "729bc2ada8e33f05386cbce3",
+        "32a7f5590359b942eb307aff",
+        "160c90217dcc1dfa335ea1ee",
+        "dbe37091b4488f46032faeb5",
+        "9343ce8b3a5d96408b94bf1b",
+        "60caf28a8ecf53ce08f5f6c7",
+        "2b94a4f7314139dba1b84d4a",
+        "f9a08ed6d4e97ebf255a9705",
+        "32ece089fece40ca5acee3ae",
+        "412522838cf75094517a81a2",
+        "cbdcb4d48b25a99a8f16cd03",
+        "b8b3178fd493d66697cf3684",
+        "73473b35e1bf1831a19966df",
+        "b6a4e2b40f79444731e9251f",
+        "9450efcb179ca8cac19368e2",
+        "2424a4715d79096f82cf82c6",
+        "1cf22551838f29826490c7af",
+        "aba72269bff4e632a93e1e35",
+        "a7ce8616ba9f0d8011c3b6b5",
+        "4273874b3c9a8d86659808e0",
+        "94d88e48b4a1f1d574b46e50",
+        "a5188475c57735d549b9f2bb",
+        "483787943e0ec01a6fbedb60",
+        "2a5c63bf4e8238c517408f1c",
+        "a827ca5eb46bbb84d6867cda",
+        "54ac85ea348a272cdc3c02ce",
+        "14e01fdb2091e9f9d60b4c18",
+        "d8951f17868d9ad616da9688",
+        "2356e65b1728f5dcb4dead56",
+        "2796dfcc67cc53702f658812",
+        "8a679ddb91a8f24e082b5e67",
+        "1740faa4f9caa55dff70d815",
+        "c86de8240b244904a3d4f730",
+        "18fa3b0c54c32c61794a44f2",
+        "032d488a768932dd812ea99f",
+        "8b913fc3642f21bdf23cc581",
+        "c4254c8877c5652e69d1cea9",
+        "b6d4b0b7003ece50e9937e79",
+        "a5d33284b04cffb845f3eeed",
+        "74bd7bc96b6339f25163278e"
+      ],
+      "rawCompilerExpression": {
+        "kind": "SUBTRACT",
+        "left": {
+          "kind": "ADD",
+          "operands": [
+            {
+              "kind": "MAX",
+              "operands": [
+                {
+                  "kind": "MULTIPLY",
+                  "operands": [
+                    {
+                      "kind": "PERCENT",
+                      "value": 0.5
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "metricName": "Consolidated Net Income"
+                    }
+                  ],
+                  "citation": "\u00a76.08(a)(3)(a)(x)"
+                },
+                {
+                  "kind": "MULTIPLY",
+                  "operands": [
+                    {
+                      "kind": "PERCENT",
+                      "value": 1
+                    },
+                    {
+                      "kind": "DEFINED_TERM_REFERENCE",
+                      "termName": "Retained Excess Cash Flow"
+                    }
+                  ],
+                  "citation": "\u00a76.08(a)(3)(a)(y)"
+                },
+                {
+                  "kind": "SUBTRACT",
+                  "left": {
+                    "kind": "METRIC_REFERENCE",
+                    "metricName": "Consolidated EBITDA"
+                  },
+                  "right": {
+                    "kind": "MULTIPLY",
+                    "operands": [
+                      {
+                        "kind": "PERCENT",
+                        "value": 1.4
+                      },
+                      {
+                        "kind": "METRIC_REFERENCE",
+                        "metricName": "Consolidated Interest Expense"
+                      }
+                    ]
+                  },
+                  "citation": "\u00a76.08(a)(3)(a)(z)"
+                }
+              ],
+              "citation": "\u00a76.08(a)(3)(a)"
+            },
+            {
+              "kind": "MULTIPLY",
+              "operands": [
+                {
+                  "kind": "PERCENT",
+                  "value": 1
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "semanticDescription": "net cash proceeds/FMV from issue or sale of Equity Interests (incl. Treasury Capital Stock) and converted Indebtedness since immediately after the Effective Date, net of numerous specified exclusions (ABL Cure Amount, \u00a76.08(b)(12)(a) usage, employee/consultant sales, Designated Preferred Stock, Refunding Capital Stock already applied under \u00a76.08(b)(2)(b)/(6)(c), sales to a Restricted Party, Disqualified Stock, Excluded Contributions)",
+                  "reason": "too many nested, cross-referenced carve-outs to safely reduce to a single arithmetic expression without risk of misstating the ceiling",
+                  "sourceEvidence": "\u00a76.08(a)(3)(b)"
+                }
+              ],
+              "citation": "\u00a76.08(a)(3)(b)"
+            },
+            {
+              "kind": "MULTIPLY",
+              "operands": [
+                {
+                  "kind": "PERCENT",
+                  "value": 1
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "semanticDescription": "cash/FMV contributed to the capital of a Restricted Party (incl. contributed Indebtedness cancelled) or arising from consolidation/amalgamation/merger after the Effective Date, net of specified exclusions (\u00a76.01(b)(12)(a) usage, contributions by a Restricted Subsidiary, ABL Cure Amount, Excluded Contributions)",
+                  "reason": "nested cross-referenced carve-outs not safely reducible to arithmetic",
+                  "sourceEvidence": "\u00a76.08(a)(3)(c)"
+                }
+              ],
+              "citation": "\u00a76.08(a)(3)(c)"
+            },
+            {
+              "kind": "MULTIPLY",
+              "operands": [
+                {
+                  "kind": "PERCENT",
+                  "value": 1
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "semanticDescription": "amounts received via sale/return on Restricted Investments, distributions from/sale of an Unrestricted Subsidiary, and returns on baskets-based Permitted Investments (without double counting)",
+                  "reason": "nested carve-outs and anti-duplication provisos not safely reducible to arithmetic",
+                  "sourceEvidence": "\u00a76.08(a)(3)(d)"
+                }
+              ],
+              "citation": "\u00a76.08(a)(3)(d)"
+            },
+            {
+              "kind": "UNSUPPORTED",
+              "semanticDescription": "Fair Market Value of an Investment (or net assets) upon redesignation of an Unrestricted Subsidiary as Restricted, or its merger/consolidation/asset-transfer into a Restricted Party, to the extent the Investment was a Permitted Investment made after the Effective Date",
+              "reason": "FMV determination at a triggering event, not a stated numeric formula",
+              "sourceEvidence": "\u00a76.08(a)(3)(e)"
+            },
+            {
+              "kind": "MAX",
+              "operands": [
+                {
+                  "kind": "MONEY",
+                  "amount": 540000000,
+                  "currency": "USD"
+                },
+                {
+                  "kind": "MULTIPLY",
+                  "operands": [
+                    {
+                      "kind": "PERCENT",
+                      "value": 0.75
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "metricName": "Consolidated EBITDA"
+                    }
+                  ]
+                }
+              ],
+              "citation": "\u00a76.08(a)(3)(f)"
+            },
+            {
+              "kind": "ADD",
+              "operands": [
+                {
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "termName": "Retained Declined Proceeds"
+                },
+                {
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "termName": "Retained Asset Sale Proceeds"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "semanticDescription": "aggregate proceeds from dispositions/asset sales not required to be applied under Section 2.09(b), as determined by the Initial Borrower",
+                  "reason": "depends on a discretionary Initial-Borrower determination under the mandatory-prepayment mechanic of Section 2.09(b)",
+                  "sourceEvidence": "\u00a76.08(a)(3)(g)"
+                }
+              ],
+              "citation": "\u00a76.08(a)(3)(g)"
+            },
+            {
+              "kind": "MULTIPLY",
+              "operands": [
+                {
+                  "kind": "PERCENT",
+                  "value": 1
+                },
+                {
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "termName": "Sale and Leaseback Transaction Proceeds"
+                }
+              ],
+              "citation": "\u00a76.08(a)(3)(h)"
+            }
+          ]
+        },
+        "right": {
+          "kind": "ADD",
+          "operands": [
+            {
+              "kind": "UNSUPPORTED",
+              "semanticDescription": "cumulative Liens incurred under clause (46)(ii) of the definition of Permitted Liens since the Effective Date and outstanding",
+              "reason": "cross-referenced defined term (Permitted Liens clause (46)(ii)) not in evidence",
+              "sourceEvidence": "\u00a76.08(a)(3)(i)(i)"
+            },
+            {
+              "kind": "UNSUPPORTED",
+              "semanticDescription": "Indebtedness incurred pursuant to Section 6.01(b)(32) since the Effective Date and outstanding",
+              "reason": "Section 6.01(b)(32) is out of scope of the supplied evidence (only the Section 6.01(b) chapeau was retrievable)",
+              "sourceEvidence": "\u00a76.08(a)(3)(i)(ii)"
+            }
+          ]
+        },
+        "citation": "\u00a76.08(a)(3)"
+      },
+      "normalizedExpressionBefore": "UNSUPPORTED(\"unrecognized or malformed expression (kind=\"SUBTRA\"; attempted=SUBTRACT:NUMBER(UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(MAX:MONEY(MULTIPLY:MONEY(PERCENT(0.5), METRIC(\"Consolidated Net Income\":MONEY)), MULTIPLY:MONEY(PERCENT(1), TERM(\"Retained Excess Cash Flow\":MONEY)), SUBTRACT:MONEY(METRIC(\"Consolidated EBITDA\":MONEY), MULTIPLY:MONEY(PERCENT(1.4), METRIC(\"Consolidated Interest Expense\":MONEY)))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"MULTIP\"; attempted=MULTIPLY:NUMBER(PERCENT(1), UNSUPPORTED(\"net cash proceeds/FMV from issue or sale of Equity\"))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"MULTIP\"; attempted=MULTIPLY:NUMBER(PERCENT(1), UNSUPPORTED(\"cash/FMV contributed to the capital of a Restricte\"))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"MULTIP\"; attempted=MULTIPLY:NUMBER(PERCENT(1), UNSUPPORTED(\"amounts received via sale/return on Restricted Inv\"))), UNSUPPORTED(\"Fair Market Value of an Investment (or net assets)\"), MAX:MONEY(MONEY(540000000), MULTIPLY:MONEY(PERCENT(0.75), METRIC(\"Consolidated EBITDA\":MONEY))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(TERM(\"Retained Declined Proceeds\":MONEY), TERM(\"Retained Asset Sale Proceeds\":MONEY), UNSUPPORTED(\"aggregate proceeds from dispositions/asset sales n\"))), MULTIPLY:MONEY(PERCENT(1), TERM(\"Sale and Leaseback Transaction Proceeds\":MONEY)))), UNSUPPORTED(\"unrecognized or malformed expression (kind=\"ADD\")\"; attempted=ADD:NUMBER(UNSUPPORTED(\"cumulative Liens incurred under clause (46)(ii) of\"), UNSUPPORTED(\"Indebtedness incurred pursuant to Section 6.01(b)(\")))))",
+      "validationOrTypeCheckResultBefore": "UNSUPPORTED",
+      "finalIrBefore": "UNSUPPORTED wrapper with attemptedStructure sidecar",
+      "sufficiencyBefore": "AMBIGUOUS",
+      "earliestFailure": "three MULTIPLY(PERCENT(1), UNSUPPORTED) addends and two bare UNSUPPORTED addends -> ADD UNSUPPORTED -> SUBTRACT UNSUPPORTED (the fully typed MAX/SUBTRACT/ADD components moved into nested attemptedStructure sidecars)",
+      "classification": "E TYPE_CHECKER_DEFECT",
+      "exactLostSemanticComponents": [
+        "ADD(MAX(50% CNI, 100% Retained ECF, EBITDA - 140% Interest Expense), ..., MAX($540M, 75% EBITDA), ADD(Retained Declined Proceeds, Retained Asset Sale Proceeds, ...), 100% x Sale and Leaseback Transaction Proceeds) - the entire positive side of the builder",
+        "50%; 140%; $540,000,000; 75% (six critical items invisible to value correspondence)"
+      ]
+    }
+  ],
+  "otherRecordedDegradationsNotInF6Scope": [
+    {
+      "issue": "condition[0].conditionType \"THRESHOLD_TEST\" not recognized - normalized to UNSUPPORTED (rule r1 6.08(a))",
+      "classification": "A MODEL_OUTPUT_INVALID (a condition-type vocabulary value outside ContractConditionType); the condition EXPRESSION itself (COMPARE(ADD(TXIN,TXIN) LT TERM(\"Available Amount\"))) normalized fine both before and after",
+      "disposition": "recorded, not addressed (enum vocabulary, not the expression type path)"
+    },
+    {
+      "issue": "ruleType \"PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (rules r_b5, r_b6b, r_b6c, r_b7, r_b8, r_b13, r_b14, r_b16-r_b20, r_b23, r_b24)",
+      "classification": "A MODEL_OUTPUT_INVALID (ruleType vocabulary); posture PERMISSION was preserved",
+      "disposition": "recorded, not addressed - a separate root (wire enum vocabulary), flagged for a later mission"
+    },
+    {
+      "issue": "the model itself emitted 11 UNSUPPORTED leaves (e.g. 6.08(b)(16) tax-distribution basket, Available Amount equity/contribution/redesignation components, usage deductions)",
+      "classification": "not a defect of the deterministic path - honest model-level unsupported semantics; F-6 keeps them visible in place",
+      "disposition": "unchanged by design"
+    }
+  ]
+}

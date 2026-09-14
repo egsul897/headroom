@@ -1,0 +1,2088 @@
+{
+ "artifact": "F-5.3B pre-registered ensemble-to-ensemble certification score (E1 vs E2), label-blind and support-blind identity",
+ "inputs": {
+  "e1": "docs/phase-3-remediation-f5-3b/e1-final.json",
+  "e2": "tests/fixtures/unseen-packages/phase-3-remediation-f5-run/certification-f5-3b-resume/e2.json",
+  "unit": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/unit-6.08.json",
+  "e1Hash": "6f648e724520fdc9071c93d80860a5dbb37b5c03f9ae939a16ce2983b3e6d8ed",
+  "e2Hash": "1dfe368a2f4dc6f0679f346742495d0f7a74968b41d38f0d9d4f0349124a992e",
+  "e1Passes": [
+   "pass-1",
+   "pass-2"
+  ],
+  "e2Passes": [
+   "cert-pass-1",
+   "cert-pass-2"
+  ]
+ },
+ "e1Items": 396,
+ "e2Items": 390,
+ "canonicalItemCountDelta": -6,
+ "strictCanonicalIdentityStability": 0.8322,
+ "strictCounts": [
+  357,
+  429
+ ],
+ "semanticStability": 0.8582,
+ "semanticCounts": [
+  363,
+  423
+ ],
+ "criticalMaterialSemanticStability": 0.8565,
+ "criticalMaterialCounts": [
+  358,
+  418
+ ],
+ "sourceSpanCoverageStability": 0.9951,
+ "quantitativeComponentStability": 0.9048,
+ "quantitativeCounts": [
+  19,
+  21
+ ],
+ "conditionExceptionStability": 0.7218,
+ "conditionExceptionCounts": [
+  179,
+  248
+ ],
+ "dependencyXrefStability": 0.6504,
+ "dependencyXrefCounts": [
+  80,
+  123
+ ],
+ "semanticFunctionStabilityByDimension_jaccardMean": {
+  "effect": 0.9146,
+  "logic": 0.7851,
+  "quantitative": 0.8531,
+  "dependency": 0.8618,
+  "allTokens": 0.724
+ },
+ "allFunctionsExactAgreementOnAligned": 0.4959,
+ "dimensionDisagreementsOnAligned": {
+  "effect": 31,
+  "logic": 101,
+  "dependency": 66,
+  "quantitative": 62
+ },
+ "alignedPairs": 363,
+ "support": {
+  "E1": {
+   "canonical": 396,
+   "corroborated": 282,
+   "singleRun": 114,
+   "singleRunByPass": {
+    "pass-1": 70,
+    "pass-2": 44
+   },
+   "materialSingleRun": 112,
+   "conflicted": 0,
+   "materialConflicted": 0,
+   "supportReviewRequired": true,
+   "supportReviewFraction": 0.2828,
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "unaccountedSource": 19,
+   "accountedCharFraction": 0.9947,
+   "uninventoriedValues": 0
+  },
+  "E2": {
+   "canonical": 390,
+   "corroborated": 292,
+   "singleRun": 98,
+   "singleRunByPass": {
+    "cert-pass-1": 40,
+    "cert-pass-2": 58
+   },
+   "materialSingleRun": 98,
+   "conflicted": 0,
+   "materialConflicted": 0,
+   "supportReviewRequired": true,
+   "supportReviewFraction": 0.2513,
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "unaccountedSource": 21,
+   "accountedCharFraction": 0.9919,
+   "uninventoriedValues": 1
+  },
+  "alignedPairs": 363,
+  "supportStatusAgreementOnMatched": 0.8733,
+  "transitionsOnMatched": {
+   "CORROBORATED->CORROBORATED": 259,
+   "CORROBORATED->SINGLE_RUN": 18,
+   "SINGLE_RUN->SINGLE_RUN": 58,
+   "SINGLE_RUN->CORROBORATED": 28
+  },
+  "corroboratedInE1_singletonInE2": 18,
+  "singletonInE1_corroboratedInE2": 28,
+  "matchedMaterialWhoseSupportChanged": 46,
+  "note": "support-state variance is diagnostic; it never erases an otherwise valid source proposition and never enters the identity match"
+ },
+ "ensembleOnlyDecomposition": {
+  "total": 60,
+  "byClass": {
+   "A_IDENTITY_VARIANCE": 57,
+   "D_TRUE_ENSEMBLE_OMISSION": 1,
+   "G_OTHER": 1,
+   "E_TRUE_ENSEMBLE_ADDITION": 1
+  },
+  "byClassMaterial": {
+   "A_IDENTITY_VARIANCE": 56,
+   "D_TRUE_ENSEMBLE_OMISSION": 1,
+   "E_TRUE_ENSEMBLE_ADDITION": 1
+  },
+  "e1Only": 33,
+  "e2Only": 27,
+  "materialTrueOmissionOrAddition": 2,
+  "undisclosedButReviewMarked": 0,
+  "dangerousSilentOmissions": 0
+ },
+ "gates": {
+  "criticalMaterialSemanticStability": {
+   "value": 0.8565,
+   "threshold": 0.85,
+   "pass": true
+  },
+  "semanticStability": {
+   "value": 0.8582,
+   "threshold": 0.8,
+   "pass": true
+  },
+  "dangerousSilentOmissions": {
+   "value": 0,
+   "threshold": 0,
+   "pass": true
+  },
+  "referenceRecall": "scored separately by scripts/f5-reference-recall.py (no material degradation vs E1 / frozen baseline 1.0)",
+  "roundingPolicy": "none - 0.849 fails 0.85"
+ },
+ "rows": [
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:be7fa1dbef025182ac9eb1ae",
+   "materiality": "CRITICAL",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-1"
+   ],
+   "span": [
+    2854,
+    2962
+   ],
+   "excerpt": "to as \u201c Restricted Payments \u201d), unless, at the time of such Restricted Payment (or the declaration thereof):",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:55803279a1c441fa90c1315f",
+   "materiality": "CRITICAL",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION",
+     "TRIGGER"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-2"
+   ],
+   "span": [
+    2886,
+    2962
+   ],
+   "excerpt": "unless, at the time of such Restricted Payment (or the declaration thereof):",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:2af21abd1b17909c4b667104",
+   "materiality": "MATERIAL",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-1"
+   ],
+   "span": [
+    3255,
+    3299
+   ],
+   "excerpt": "Sections 6.08(b)(1) and 6.08(b)(6)(c) hereof",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:a858b0d3cfb71d3226aab515",
+   "materiality": "REVIEW_UNCERTAIN",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE",
+     "DEPENDENCY"
+    ]
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-2"
+   ],
+   "span": [
+    4787,
+    4815
+   ],
+   "excerpt": "(which amounts under clauses",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:fa9a024390970ca0c48466e0",
+   "materiality": "MATERIAL",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-1"
+   ],
+   "span": [
+    5460,
+    5482
+   ],
+   "excerpt": "Section 6.08(b)(12)(a)",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:afc13ae03b85811e9cf81745",
+   "materiality": "MATERIAL",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-2"
+   ],
+   "span": [
+    5491,
+    5517
+   ],
+   "excerpt": "from the issue or sale of:",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:21ff6c5be66617e473b4763f",
+   "materiality": "MATERIAL",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-2"
+   ],
+   "span": [
+    10910,
+    10929
+   ],
+   "excerpt": "Section 6.01(b)(32)",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:cce79de89d896178253b4062",
+   "materiality": "MATERIAL",
+   "role": "EXCEPTION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "EXCEPTION"
+    ],
+    "quantitative": [],
+    "dependency": [
+     "DEPENDENCY"
+    ]
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-2"
+   ],
+   "span": [
+    11713,
+    11943
+   ],
+   "excerpt": "(\u201c Treasury Capital Stock \u201d) or Subordinated Indebtedness of any Restricted Party, or any Equity Interests of any Parent Entity, in exchange for, or in an amoun",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:e3248dd58c9a9d844beb2e34",
+   "materiality": "CRITICAL",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION",
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-1"
+   ],
+   "span": [
+    11742,
+    11943
+   ],
+   "excerpt": "or Subordinated Indebtedness of any Restricted Party, or any Equity Interests of any Parent Entity, in exchange for, or in an amount equal to or less than the p",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:b4751ff187a28c1b7fd5477c",
+   "materiality": "CRITICAL",
+   "role": "TIME_PERIOD",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [
+     "TIME_PERIOD"
+    ],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-2"
+   ],
+   "span": [
+    11944,
+    12183
+   ],
+   "excerpt": "to a Restricted Subsidiary) of, Equity Interests of the Borrowers or any Parent Entity that is made within ninety (90) days of such sale to the extent, in the c",
+   "values": [
+    "DAYS:90",
+    "OTHER:90"
+   ],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:ecc138338556eeabe3d08318",
+   "materiality": "MATERIAL",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": [
+     "DEPENDENCY"
+    ]
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-1"
+   ],
+   "span": [
+    11976,
+    12030
+   ],
+   "excerpt": "Equity Interests of the Borrowers or any Parent Entity",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:1b5fd3b9ea84e6b0c6a2a690",
+   "materiality": "CRITICAL",
+   "role": "TIME_PERIOD",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "TIME_PERIOD"
+    ],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-1"
+   ],
+   "span": [
+    12031,
+    12080
+   ],
+   "excerpt": "that is made within ninety (90) days of such sale",
+   "values": [
+    "DAYS:90",
+    "OTHER:90"
+   ],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:9747b6b73dfd10369b9dee03",
+   "materiality": "CRITICAL",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-1"
+   ],
+   "span": [
+    12081,
+    12183
+   ],
+   "excerpt": "to the extent, in the case of an issuance or sale by a Parent Entity, such amount was contributed to a",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:35f7e5da4b0d8c5d260fb24b",
+   "materiality": "MATERIAL",
+   "role": "OTHER",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-1"
+   ],
+   "span": [
+    12243,
+    12272
+   ],
+   "excerpt": "(\u201c Refunding Capital Stock \u201d)",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:45af00b3d8578fc24d859a43",
+   "materiality": "MATERIAL",
+   "role": "PERMISSION",
+   "functions": {
+    "effect": "PERMISSION",
+    "logic": [
+     "EXCEPTION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-2"
+   ],
+   "span": [
+    12648,
+    12896
+   ],
+   "excerpt": "declaration and payment of dividends on the Refunding Capital Stock (other than Refunding Capital Stock the proceeds of which were used to redeem, purchase, rep",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:613b290701b05b3ec953c64c",
+   "materiality": "CRITICAL",
+   "role": "EXCEPTION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "EXCEPTION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-1"
+   ],
+   "span": [
+    12716,
+    12896
+   ],
+   "excerpt": "(other than Refunding Capital Stock the proceeds of which were used to redeem, purchase, repurchase, defease, retire or otherwise acquire any Equity Interests o",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "D_TRUE_ENSEMBLE_OMISSION",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:9bc81e94daaf96bfb978be98",
+   "materiality": "MATERIAL",
+   "role": "PERMISSION",
+   "functions": {
+    "effect": "PERMISSION",
+    "logic": [],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-2"
+   ],
+   "span": [
+    14692,
+    14725
+   ],
+   "excerpt": "retirement or other acquisition);",
+   "values": [],
+   "coverFractionByOtherMaterial": 0.0,
+   "otherMaterialItemTouches": false,
+   "disclosedAsUnaccountedByLacking": true,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:9535cfecba93586918386d7b",
+   "materiality": "MATERIAL",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-1"
+   ],
+   "span": [
+    18387,
+    18455
+   ],
+   "excerpt": "to the extent such dividends are included in the definition of Fixed",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:ccfc618dfdb658de0bd0d0a9",
+   "materiality": "CRITICAL",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-1"
+   ],
+   "span": [
+    20153,
+    20203
+   ],
+   "excerpt": "or repurchases or withholdings of Equity Interests",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:b97e1dbbafc0e99fd75338a0",
+   "materiality": "CRITICAL",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-1"
+   ],
+   "span": [
+    20426,
+    20452
+   ],
+   "excerpt": "or payments in lieu of the",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:7993ce95ecf602a1b5ff1c45",
+   "materiality": "MATERIAL",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-2"
+   ],
+   "span": [
+    20453,
+    20634
+   ],
+   "excerpt": "issuance of fractional Equity Interests, or withholding obligation with respect to, such options or warrants or other incentive interests or other Equity Intere",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:2c19b9af8a84ff49f15f4fb5",
+   "materiality": "CRITICAL",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-1"
+   ],
+   "span": [
+    20494,
+    20634
+   ],
+   "excerpt": "or withholding obligation with respect to, such options or warrants or other incentive interests or other Equity Interests or equity awards;",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:39189bef30f974ce91b69f2b",
+   "materiality": "CRITICAL",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "PERMISSION",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-1"
+   ],
+   "span": [
+    21691,
+    21835
+   ],
+   "excerpt": "any prepayment, purchase, repurchase, redemption, defeasance, discharge, retirement or other acquisition of the Borrowers\u2019 Equity Interests (and",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:e2d07148c2b3b47720775a70",
+   "materiality": "CRITICAL",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [
+     "VALUE"
+    ],
+    "dependency": []
+   },
+   "support": "CORROBORATED",
+   "passes": [
+    "pass-1",
+    "pass-2"
+   ],
+   "span": [
+    24095,
+    24109
+   ],
+   "excerpt": "$720.0 million",
+   "values": [
+    "MONEY:720000000"
+   ],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:1ddb558fd775dc73c26eda7c",
+   "materiality": "CRITICAL",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "support": "CORROBORATED",
+   "passes": [
+    "pass-1",
+    "pass-2"
+   ],
+   "span": [
+    24118,
+    24185
+   ],
+   "excerpt": "100% of Consolidated EBITDA for the most recently ended Test Period",
+   "values": [
+    "PERCENT:1"
+   ],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:85cb84e3113c9ca2c8d6845d",
+   "materiality": "CRITICAL",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [
+     "VALUE"
+    ],
+    "dependency": []
+   },
+   "support": "CORROBORATED",
+   "passes": [
+    "pass-1",
+    "pass-2"
+   ],
+   "span": [
+    25636,
+    25650
+   ],
+   "excerpt": "$720.0 million",
+   "values": [
+    "MONEY:720000000"
+   ],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:9da229f63f288a13d003178f",
+   "materiality": "CRITICAL",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "support": "CORROBORATED",
+   "passes": [
+    "pass-1",
+    "pass-2"
+   ],
+   "span": [
+    25659,
+    25723
+   ],
+   "excerpt": "100% of Consolidated EBITDA of the Initial Borrower for the most",
+   "values": [
+    "PERCENT:1"
+   ],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:101baa255ed97316ac785d5c",
+   "materiality": "MATERIAL",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-1"
+   ],
+   "span": [
+    26826,
+    26884
+   ],
+   "excerpt": "federal, state, local, provincial, territorial or non-U.S.",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:8ebff4f01a3f0a2f6152cd0c",
+   "materiality": "MATERIAL",
+   "role": "DEPENDENCY",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "DEPENDENCY"
+    ]
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-2"
+   ],
+   "span": [
+    27525,
+    27561
+   ],
+   "excerpt": "(any such taxes, the \u201c Tax Amount \u201d)",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:dac963a2677f4ce72461162e",
+   "materiality": "MATERIAL",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-2"
+   ],
+   "span": [
+    27562,
+    27646
+   ],
+   "excerpt": "of any direct or indirect equity owner of the Borrowers and/or any of its respective",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:88ccdcde45bb7f91d6dc9741",
+   "materiality": "MATERIAL",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-2"
+   ],
+   "span": [
+    28744,
+    28826
+   ],
+   "excerpt": "to the extent such salaries, bonuses, severance and other benefits and indemnities",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:dd52de2678fb98c7b205ee39",
+   "materiality": "CRITICAL",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [
+     "THRESHOLD"
+    ],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "pass-2"
+   ],
+   "span": [
+    34597,
+    34687
+   ],
+   "excerpt": "(ii) the Interest Coverage Ratio on a pro forma basis is at least equal to or greater than",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E1",
+   "lackingIn": "E2",
+   "id": "inv-item:34e10076f5e40ced75374a03",
+   "materiality": "CRITICAL",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION",
+     "EXCEPTION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "CORROBORATED",
+   "passes": [
+    "pass-1",
+    "pass-2"
+   ],
+   "span": [
+    36842,
+    36933
+   ],
+   "excerpt": "unless such Unrestricted Subsidiary has granted an irrevocable license to use such Material",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "G_OTHER",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:38ad2fce0cdb9a708e3f4cad",
+   "materiality": "INFORMATIONAL",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "support": "CORROBORATED",
+   "passes": [
+    "cert-pass-1",
+    "cert-pass-2"
+   ],
+   "span": [
+    0,
+    48
+   ],
+   "excerpt": "Section 6.08 Limitation on Restricted Payments .",
+   "values": [],
+   "coverFractionByOtherMaterial": 0.0,
+   "otherMaterialItemTouches": false,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:37dc213b8bc5113aeb35844a",
+   "materiality": "MATERIAL",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-1"
+   ],
+   "span": [
+    264,
+    505
+   ],
+   "excerpt": "(in each case, solely to a holder of Equity Interests in such Person\u2019s capacity as a holder of such Equity Interests), including any dividend, payment or distri",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:2a8c93fbf988fb4ffeebd1ef",
+   "materiality": "MATERIAL",
+   "role": "OTHER",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-2"
+   ],
+   "span": [
+    383,
+    505
+   ],
+   "excerpt": "including any dividend, payment or distribution payable in connection with any merger, amalgamation or consolidation other",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:e6b5e42df5404e253ae3f826",
+   "materiality": "CRITICAL",
+   "role": "TIME_PERIOD",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [
+     "TIME_PERIOD"
+    ],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-1"
+   ],
+   "span": [
+    2080,
+    2313
+   ],
+   "excerpt": "Indebtedness in anticipation of satisfying a sinking fund obligation, principal installment or final maturity, in each case due within one (1) year of the date ",
+   "values": [
+    "PERIOD:1"
+   ],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:0edbaf3d86d3e6f8529980a9",
+   "materiality": "CRITICAL",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [
+     "FORMULA_COMPONENT",
+     "THRESHOLD"
+    ],
+    "dependency": []
+   },
+   "support": "CORROBORATED",
+   "passes": [
+    "cert-pass-1",
+    "cert-pass-2"
+   ],
+   "span": [
+    3009,
+    3085
+   ],
+   "excerpt": "(3) such Restricted Payment, together with the aggregate amount of all other",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:afb1e4e98ddd04ab98d86568",
+   "materiality": "MATERIAL",
+   "role": "TIME_PERIOD",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "TIME_PERIOD"
+    ],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-1"
+   ],
+   "span": [
+    3682,
+    3855
+   ],
+   "excerpt": "for the period (taken as one (1) accounting period) beginning on the first (1 st ) day of the fiscal quarter during which the Effective Date occurs to the end o",
+   "values": [
+    "OTHER:1",
+    "PERIOD:1"
+   ],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:2d3a95642d4fd31634da0d09",
+   "materiality": "MATERIAL",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-1"
+   ],
+   "span": [
+    4185,
+    4310
+   ],
+   "excerpt": "which amount shall be deemed to be zero for any fiscal quarter in which such amount for such fiscal quarter is less than zero",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:0c346b5a11a1d8dbd8ebff8c",
+   "materiality": "MATERIAL",
+   "role": "EXCEPTION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "EXCEPTION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-2"
+   ],
+   "span": [
+    6862,
+    6947
+   ],
+   "excerpt": "(X) Equity Interests (or Indebtedness that has been converted or exchanged for Equity",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:b92d5f1c034d2d7732e815ec",
+   "materiality": "MATERIAL",
+   "role": "FORMULA_COMPONENT",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-2"
+   ],
+   "span": [
+    10222,
+    10431
+   ],
+   "excerpt": "(iii) the aggregate amount of proceeds from dispositions or asset sales the proceeds of which are not required to be applied pursuant to Section 2.09(b) (includ",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:d1d918085a066469600285c4",
+   "materiality": "CRITICAL",
+   "role": "PERMISSION",
+   "functions": {
+    "effect": "PERMISSION",
+    "logic": [],
+    "quantitative": [
+     "TIME_PERIOD"
+    ],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-1"
+   ],
+   "span": [
+    11066,
+    11182
+   ],
+   "excerpt": "(1) the payment of any dividend or other distribution or the consummation of any irrevocable redemption within sixty",
+   "values": [
+    "OTHER:60"
+   ],
+   "coverFractionByOtherMaterial": 0.9655,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:d7809acfa4fbc3fe279b10ad",
+   "materiality": "CRITICAL",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-2"
+   ],
+   "span": [
+    11288,
+    11419
+   ],
+   "excerpt": "if, at the date of declaration or the giving of such notice, such payment would have complied with the provisions of this Agreement",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:68b17c60ccfd7b0d467705cc",
+   "materiality": "CRITICAL",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [
+     "VALUE"
+    ],
+    "dependency": []
+   },
+   "support": "CORROBORATED",
+   "passes": [
+    "cert-pass-1",
+    "cert-pass-2"
+   ],
+   "span": [
+    15541,
+    15555
+   ],
+   "excerpt": "$504.0 million",
+   "values": [
+    "MONEY:504000000"
+   ],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:ef46e7e06aa00035c613fed2",
+   "materiality": "CRITICAL",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "support": "CORROBORATED",
+   "passes": [
+    "cert-pass-1",
+    "cert-pass-2"
+   ],
+   "span": [
+    15564,
+    15705
+   ],
+   "excerpt": "70.0% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of such Restricted Payment",
+   "values": [
+    "PERCENT:0.7"
+   ],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:bc8019a62486566fe62dfb8e",
+   "materiality": "MATERIAL",
+   "role": "EXCEPTION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "EXCEPTION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-2"
+   ],
+   "span": [
+    19086,
+    19117
+   ],
+   "excerpt": "(other than Disqualified Stock)",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:54e1544ce5100f121dc0269c",
+   "materiality": "MATERIAL",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [
+     "TIME_PERIOD"
+    ],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-2"
+   ],
+   "span": [
+    19118,
+    19172
+   ],
+   "excerpt": "of such Parent Entity issued after the Effective Date;",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:aeebf247d477de4b71b8d8ac",
+   "materiality": "MATERIAL",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE",
+     "DEPENDENCY"
+    ]
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-2"
+   ],
+   "span": [
+    19343,
+    19361
+   ],
+   "excerpt": "Section 6.08(b)(2)",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:144a87818a2304af4357b8cc",
+   "materiality": "CRITICAL",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-1"
+   ],
+   "span": [
+    19412,
+    19587
+   ],
+   "excerpt": "Subsidiary to the Borrowers or any Parent Entity to the extent the proceeds of such Restricted Payments are contributed or loaned or advanced to another Restric",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:9da52b0cd8d58974764c2c28",
+   "materiality": "CRITICAL",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-2"
+   ],
+   "span": [
+    19461,
+    19587
+   ],
+   "excerpt": "to the extent the proceeds of such Restricted Payments are contributed or loaned or advanced to another Restricted Subsidiary;",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:215e524366507fc41cbfa24f",
+   "materiality": "MATERIAL",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-1"
+   ],
+   "span": [
+    21610,
+    21612
+   ],
+   "excerpt": "or",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:fd453feeee0b2c0e53944372",
+   "materiality": "MATERIAL",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE"
+    ]
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-1"
+   ],
+   "span": [
+    22689,
+    22736
+   ],
+   "excerpt": "(46)(i) of the definition of \u201cPermitted Liens\u201d;",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:1999ed001ff2b2d09aa5d200",
+   "materiality": "MATERIAL",
+   "role": "REFERENCE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "REFERENCE",
+     "DEPENDENCY"
+    ]
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-1"
+   ],
+   "span": [
+    25353,
+    25368
+   ],
+   "excerpt": "Section 5.18(b)",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:0f8a11989ee53b30fca48952",
+   "materiality": "MATERIAL",
+   "role": "DEPENDENCY",
+   "functions": {
+    "effect": "NONE",
+    "logic": [],
+    "quantitative": [],
+    "dependency": [
+     "DEPENDENCY"
+    ]
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-2"
+   ],
+   "span": [
+    27250,
+    27287
+   ],
+   "excerpt": "federal income tax purposes) for U.S.",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "E_TRUE_ENSEMBLE_ADDITION",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:eb869f49a85def3c3e0dd7d1",
+   "materiality": "MATERIAL",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-2"
+   ],
+   "span": [
+    33182,
+    33191
+   ],
+   "excerpt": "Proceeds,",
+   "values": [],
+   "coverFractionByOtherMaterial": 0.0,
+   "otherMaterialItemTouches": false,
+   "disclosedAsUnaccountedByLacking": true,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:bac8851ebf0403b2cb9945c1",
+   "materiality": "MATERIAL",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-2"
+   ],
+   "span": [
+    33192,
+    33225
+   ],
+   "excerpt": "(ii) Retained Asset Sale Proceeds",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:93dd230615ae8e70af5baabf",
+   "materiality": "CRITICAL",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [
+     "FORMULA_COMPONENT"
+    ],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-1"
+   ],
+   "span": [
+    33531,
+    33598
+   ],
+   "excerpt": "100% of Consolidated EBITDA for the most recently ended Test Period",
+   "values": [
+    "OTHER:1",
+    "PERCENT:1"
+   ],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:4bd275378a8df1106ef60dae",
+   "materiality": "MATERIAL",
+   "role": "ALTERNATIVE",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "ALTERNATIVE"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "SINGLE_RUN",
+   "passes": [
+    "cert-pass-2"
+   ],
+   "span": [
+    35464,
+    35635
+   ],
+   "excerpt": "the date of the Restricted Payment of the assets or securities proposed to be transferred or issued by any Restricted Party, as the case may be, pursuant to the",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  },
+  {
+   "class": "A_IDENTITY_VARIANCE",
+   "presentIn": "E2",
+   "lackingIn": "E1",
+   "id": "inv-item:dcf16e4189d00cf9612e79af",
+   "materiality": "CRITICAL",
+   "role": "CONDITION",
+   "functions": {
+    "effect": "NONE",
+    "logic": [
+     "CONDITION"
+    ],
+    "quantitative": [],
+    "dependency": []
+   },
+   "support": "CORROBORATED",
+   "passes": [
+    "cert-pass-1",
+    "cert-pass-2"
+   ],
+   "span": [
+    36498,
+    36582
+   ],
+   "excerpt": "and if such Subsidiary otherwise meets the definition of an Unrestricted Subsidiary.",
+   "values": [],
+   "coverFractionByOtherMaterial": 1.0,
+   "otherMaterialItemTouches": true,
+   "disclosedAsUnaccountedByLacking": false,
+   "lackingClaimsComplete": false,
+   "dangerousSilentOmission": false
+  }
+ ]
+}

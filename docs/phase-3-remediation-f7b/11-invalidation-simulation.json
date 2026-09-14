@@ -1,0 +1,34 @@
+{
+ "artifact": "F-7B §23 source / inventory change invalidation (deterministic simulation on the frozen plan; no paid call; Chewy not mutated on disk)",
+ "mutatedUnit": {
+  "unitKey": "operative:DEFINITION:def:compliance certificate",
+  "term": "Compliance Certificate",
+  "ownerShard": "shard:5f63d11e8ce53e883d6a"
+ },
+ "sourceByteChange": {
+  "shardIdsUnchanged": true,
+  "planHashChanged": true,
+  "shardsInvalidated": [
+   "shard:5f63d11e8ce53e883d6a"
+  ],
+  "ownerShardInvalidated": true,
+  "contextReaders": [],
+  "contextReadersInvalidated": [],
+  "unrelatedShardsReusable": 0,
+  "unrelatedShardsUnchanged": 35,
+  "expected": "owner + every shard that reads the mutated definition as context change hash; every other shard keeps its hash and its completed result is reused without a call"
+ },
+ "inventoryHashChange": {
+  "shardsInvalidated": 36,
+  "allInvalidated": true,
+  "expected": "every shard (the frozen inventory is part of every shard's freeze identity)"
+ },
+ "estimatedOneShardRerunCostUsd": 0,
+ "rerunShards": [
+  {
+   "shardId": "shard:5f63d11e8ce53e883d6a",
+   "actualCostUsd": 0
+  }
+ ],
+ "fullRunCostUsd": 2.6322
+}

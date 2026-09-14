@@ -113,7 +113,12 @@ export interface RawMarkerOccurrence {
 // consistently semicolon-separated ("(a) ...; (b) ...; (c) ..."), never
 // comma-separated. A disclosed, real limitation: a document that DOES use
 // commas to separate genuine list items would not be handled by this rule.
-const MARKER_OCCURRENCE = /(?<!,\s)(?<=^|\s)\(([a-zA-Z]{1,7}|\d{1,3})\)(?!\()/g;
+/**
+ * F-2: the comma exclusion targets INLINE enumeration ("..., (b) the declaration ...") and is limited to
+ * horizontal whitespace; a label that begins a new line after a lead-in ending in a comma
+ * ("in each case without duplication,\n(a) franchise ...") is a list item, never an inline reference.
+ */
+const MARKER_OCCURRENCE = /(?<!,[ \t])(?<=^|\s)\(([a-zA-Z]{1,7}|\d{1,3})\)(?!\()/g;
 
 export function findRawMarkerOccurrences(text: string): RawMarkerOccurrence[] {
   const out: RawMarkerOccurrence[] = [];
@@ -124,6 +129,76 @@ export function findRawMarkerOccurrences(text: string): RawMarkerOccurrence[] {
     if (m.index === re.lastIndex) re.lastIndex++;
   }
   return out;
+}
+
+/**
+ * Phase 3 Chewy remediation F-2 - a local label such as (a), (b), (1), (A) does
+ * NOT determine structural level by itself. Two pieces of positive structural
+ * context are consulted before a marker occurrence is treated as a list label:
+ *
+ * 1. LEGAL NUMBERING GRAMMAR - inline cross-references and spelled numerals
+ *    carry the same "(x)" token shape as list labels but are prose, never
+ *    structure: "clauses (i) through (iv) above", "this clause (b) shall not",
+ *    "sixty (60) days". A marker immediately preceded (across whitespace and
+ *    line breaks) by a reference lead-in word or a number word, or immediately
+ *    followed by a range/position word, is an inline reference and is skipped.
+ *    This is grammar of legal drafting, not an enumeration of any agreement.
+ *
+ * 2. LIST CONTINUATION / SOURCE BOUNDARIES - a paragraph break followed by
+ *    ordinary prose (a hanging paragraph) between two labels means the innermost
+ *    nested list was closed and the enclosing item's own text resumed. A NEW
+ *    label family that starts after such a paragraph therefore belongs to the
+ *    enclosing level, not beneath the last item of the closed list. A
+ *    continuation of the innermost list (the item merely had two paragraphs) is
+ *    unaffected: continuation is always checked first.
+ */
+const REFERENCE_LEAD_IN = /\b(?:clauses?|paragraphs?|sub-?paragraphs?|subsections?|sections?|sub-?clauses?|items?|through|thru|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand)\s*$/i;
+const REFERENCE_TRAILING = /^\s*(?:through|thru|above|below|hereof|thereof|of\s+(?:this|the|such)\s+(?:section|clause|paragraph|subsection|definition|agreement)\b)/i;
+/** A reference chain: "clauses (9) or (10)", "subclauses (A) and (B)", "(a) through (f)" - a marker joined to a preceding inline-reference marker only by a comma/conjunction/range word is part of the same reference. */
+const REFERENCE_CHAIN_JOIN = /^\s*(?:,|and|or|and\/or|through|thru|to)\s*$/i;
+const PAGE_MARKER_LINE = /^[ \t]*-\d+-[ \t]*$/;
+
+/** True when the "(x)" occurrence is an inline cross-reference or spelled numeral rather than a list label (mechanism 1 above). */
+export function isInlineReferenceMarker(text: string, occ: RawMarkerOccurrence): boolean {
+  if (REFERENCE_LEAD_IN.test(text.slice(Math.max(0, occ.charStart - 40), occ.charStart))) return true;
+  if (REFERENCE_TRAILING.test(text.slice(occ.charEnd, occ.charEnd + 16))) return true;
+  return false;
+}
+
+/** The marker occurrences that are structural labels: every occurrence minus inline references, where reference status propagates along a comma/conjunction/range chain ("clauses (9) or (10)"). */
+export function structuralMarkerOccurrences(text: string): RawMarkerOccurrence[] {
+  const all = findRawMarkerOccurrences(text);
+  const out: RawMarkerOccurrence[] = [];
+  let prev: RawMarkerOccurrence | null = null;
+  let prevWasReference = false;
+  for (const occ of all) {
+    const chained: boolean = prev !== null && prevWasReference && REFERENCE_CHAIN_JOIN.test(text.slice(prev.charEnd, occ.charStart));
+    const isReference: boolean = chained || isInlineReferenceMarker(text, occ);
+    if (!isReference) out.push(occ);
+    prev = occ;
+    prevWasReference = isReference;
+  }
+  return out;
+}
+
+/** True when the text between two labels contains a paragraph break followed by ordinary prose (mechanism 2 above); page-marker lines and the next label itself never count as prose. */
+export function hasHangingParagraph(text: string, from: number, to: number, isLabelStart: (pos: number) => boolean): boolean {
+  const gap = text.slice(from, to);
+  const boundary = /\n[ \t]*\n/g;
+  let m: RegExpExecArray | null;
+  while ((m = boundary.exec(gap)) !== null) {
+    let p = from + m.index + m[0].length;
+    for (;;) {
+      while (p < to && /\s/.test(text[p]!)) p++;
+      const lineEnd = text.indexOf("\n", p);
+      const line = text.slice(p, lineEnd === -1 || lineEnd > to ? to : lineEnd);
+      if (p < to && PAGE_MARKER_LINE.test(line)) { p += line.length; continue; }
+      break;
+    }
+    if (p >= to) continue;
+    if (!isLabelStart(p)) return true;
+  }
+  return false;
 }
 
 export interface ClauseTreeNode {
@@ -157,15 +232,19 @@ interface OpenLevel {
  * guess.
  */
 export function buildClauseTree(sectionText: string): ClauseTreeNode[] {
-  const occurrences = findRawMarkerOccurrences(sectionText);
+  const occurrences = structuralMarkerOccurrences(sectionText);
+  const labelStarts = new Set(occurrences.map((o) => o.charStart));
   const nodes: ClauseTreeNode[] = [];
   const stack: OpenLevel[] = [];
+  let previousLabelEnd = 0;
 
   for (const occ of occurrences) {
     const candidates = classifyMarker(occ.token);
     if (candidates.length === 0) continue;
 
     const marker = `(${occ.token})`;
+    const hangingParagraphBefore = hasHangingParagraph(sectionText, previousLabelEnd, occ.charStart, (pos) => labelStarts.has(pos));
+    previousLabelEnd = occ.charEnd;
 
     // 1. Continue the current (deepest open) level.
     if (stack.length > 0) {
@@ -181,9 +260,22 @@ export function buildClauseTree(sectionText: string): ClauseTreeNode[] {
 
     // 2. Return to an already-open OUTER level (pop deeper levels first).
     let resumedOuter = false;
+    // F-2 mechanism 3 (neighboring label sequence / ancestor stack): a label continues the NEAREST open
+    // list of its own family. It may resume a farther outer list of that family only when no nearer open
+    // list of the same family exists, or when it begins a new line (a paragraph-level return). A
+    // mid-sentence "(c)" written right after an inline "(a) ..., (b) ..." at the innermost level (e.g.
+    // "..., (b) the declaration ... and (c) if ...") is inline enumeration there and must never re-open
+    // a distant outer subsection whose sequence merely happens to be waiting for (c).
+    const atLineStart = /(?:^|\n)[ \t]*$/.test(sectionText.slice(Math.max(0, occ.charStart - 8), occ.charStart));
+    // Inline-enumeration context: the label is joined to the preceding text by a bare comma or
+    // conjunction ("..., (b) ... and (c) ...") rather than by the list punctuation (";" / ":") that
+    // separates sibling items of an outer list ("...; (c) ..." / "...; and (c) ...").
+    const beforeText = sectionText.slice(Math.max(0, occ.charStart - 16), occ.charStart);
+    const inlineEnumeration = /(?:,|\band|\bor|\band\/or)\s*$/i.test(beforeText) && !/[;:]\s*(?:and\/or|and|or)?\s*$/i.test(beforeText);
     for (let level = stack.length - 2; level >= 0; level--) {
       const outer = stack[level]!;
       const cont = candidates.find((c) => c.kind === outer.kind && c.index === outer.lastIndex + 1);
+      if (cont && !atLineStart && inlineEnumeration && stack.slice(level + 1).some((nearer) => nearer.kind === cont.kind)) continue;
       if (cont) {
         stack.length = level + 1;
         outer.lastIndex = cont.index;
@@ -199,6 +291,8 @@ export function buildClauseTree(sectionText: string): ClauseTreeNode[] {
     // candidate whose index is exactly 1 (a/i/A/1) - never mid-sequence.
     const startCandidates = candidates.filter((c) => c.index === 1);
     if (startCandidates.length > 0 && stack.length < 6) {
+      // F-2 mechanism 2: a new family after a hanging paragraph attaches to the enclosing level.
+      if (hangingParagraphBefore && stack.length >= 2) stack.length -= 1;
       const preference = START_PREFERENCE_BY_DEPTH[Math.min(stack.length, START_PREFERENCE_BY_DEPTH.length - 1)]!;
       const preferenceRank = (kind: MarkerSequenceKind) => (preference.includes(kind) ? preference.indexOf(kind) : preference.length);
       const chosen = startCandidates.sort((a, b) => preferenceRank(a.kind) - preferenceRank(b.kind))[0]!;

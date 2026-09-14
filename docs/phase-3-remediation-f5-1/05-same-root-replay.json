@@ -1,0 +1,2475 @@
+{
+ "artifact": "F-5.1 same-root zero-cost replay of every recorded Pass A inventory through the v5 canonical migration (segment-fallback slots; no model call)",
+ "totals": {
+  "records": 33,
+  "itemsBefore": 1965,
+  "itemsAfter": 1957,
+  "merged": 8,
+  "roleConflictPairs": 72,
+  "roleConflictPairsCanonicalized": 1,
+  "falseMergeCandidates": 0,
+  "valuesLost": 0,
+  "itemsLost": 0,
+  "parentLinksBefore": 1393,
+  "parentLinksAfter": 1386,
+  "materialityChanged": 0,
+  "coverageChangedRecords": 0,
+  "statusChangedRecords": 0,
+  "deterministicAdditions": 521
+ },
+ "records": [
+  {
+   "file": "semantic-accountability-validation/holdout/run-1/region-applicable-liquidity-rate.json",
+   "pointer": "/compile",
+   "itemsBefore": 61,
+   "itemsAfter": 61,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 1,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    52,
+    52
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    66,
+    66
+   ],
+   "accountedCharFraction": [
+    0.178,
+    0.178
+   ],
+   "itemsWithDeterministicFunctionAddition": 16,
+   "conflictRows": [
+    {
+     "roles": [
+      "FORMULA_COMPONENT",
+      "EXCEPTION"
+     ],
+     "spans": [
+      [
+       2884,
+       3284
+      ],
+      [
+       2926,
+       3190
+      ]
+     ],
+     "mutualOverlap": 0.66,
+     "propJaccard": 0.18,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "the issuance or sale of Equity Interests (other than Preferred Stock or Disqualified Stock of Subsid"
+    }
+   ]
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-1/region-ebitda.json",
+   "pointer": "/compile",
+   "itemsBefore": 53,
+   "itemsAfter": 53,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 0,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    52,
+    52
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    48,
+    48
+   ],
+   "accountedCharFraction": [
+    0.2802,
+    0.2802
+   ],
+   "itemsWithDeterministicFunctionAddition": 9,
+   "conflictRows": []
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-1/region-first-lien-debt.json",
+   "pointer": "/compile",
+   "itemsBefore": 37,
+   "itemsAfter": 37,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 2,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    35,
+    35
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    24,
+    24
+   ],
+   "accountedCharFraction": [
+    0.2688,
+    0.2688
+   ],
+   "itemsWithDeterministicFunctionAddition": 2,
+   "conflictRows": [
+    {
+     "roles": [
+      "FORMULA_COMPONENT",
+      "DEPENDENCY"
+     ],
+     "spans": [
+      [
+       1810,
+       1969
+      ],
+      [
+       1880,
+       1969
+      ]
+     ],
+     "mutualOverlap": 0.56,
+     "propJaccard": 0.53,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "(ii) pay-in-kind interest expense of such Person and its Subsidiaries payable pursuant to the terms "
+    },
+    {
+     "roles": [
+      "EXCEPTION",
+      "REFERENCE"
+     ],
+     "spans": [
+      [
+       2895,
+       3001
+      ],
+      [
+       2927,
+       3001
+      ]
+     ],
+     "mutualOverlap": 0.7,
+     "propJaccard": 0.19,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "(v) “additional interest” owing pursuant to a registration rights agreement with respect to any secu"
+    }
+   ]
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-1/region-interest-expense.json",
+   "pointer": "/compile",
+   "itemsBefore": 73,
+   "itemsAfter": 73,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 1,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    70,
+    70
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    45,
+    45
+   ],
+   "accountedCharFraction": [
+    0.3529,
+    0.3529
+   ],
+   "itemsWithDeterministicFunctionAddition": 9,
+   "conflictRows": [
+    {
+     "roles": [
+      "REQUIREMENT",
+      "EXCEPTION"
+     ],
+     "spans": [
+      [
+       5479,
+       5722
+      ],
+      [
+       5516,
+       5649
+      ]
+     ],
+     "mutualOverlap": 0.55,
+     "propJaccard": 0.15,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "the cash payment in respect thereof, with the exception of any cash payments related to the settleme"
+    }
+   ]
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-1/region-net-income.json",
+   "pointer": "/compile",
+   "itemsBefore": 61,
+   "itemsAfter": 61,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 2,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    60,
+    60
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    34,
+    34
+   ],
+   "accountedCharFraction": [
+    0.5833,
+    0.5833
+   ],
+   "itemsWithDeterministicFunctionAddition": 10,
+   "conflictRows": [
+    {
+     "roles": [
+      "FORMULA_COMPONENT",
+      "EXCEPTION"
+     ],
+     "spans": [
+      [
+       601,
+       745
+      ],
+      [
+       660,
+       744
+      ]
+     ],
+     "mutualOverlap": 0.58,
+     "propJaccard": 0.23,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "any gain (loss) on asset sales, disposals or abandonments (other than\nasset sales, disposals or aban"
+    },
+    {
+     "roles": [
+      "FORMULA_COMPONENT",
+      "REFERENCE"
+     ],
+     "spans": [
+      [
+       6022,
+       6159
+      ],
+      [
+       6089,
+       6159
+      ]
+     ],
+     "mutualOverlap": 0.51,
+     "propJaccard": 0.42,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "mark to market movement of other financial instruments pursuant to FASB\nAccounting Standards Codific"
+    }
+   ]
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-1/region-secured-net-leverage.json",
+   "pointer": "/compile",
+   "itemsBefore": 15,
+   "itemsAfter": 15,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 3,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    13,
+    13
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    14,
+    14
+   ],
+   "accountedCharFraction": [
+    0.098,
+    0.098
+   ],
+   "itemsWithDeterministicFunctionAddition": 3,
+   "conflictRows": [
+    {
+     "roles": [
+      "ALTERNATIVE",
+      "DEPENDENCY"
+     ],
+     "spans": [
+      [
+       417,
+       588
+      ],
+      [
+       463,
+       588
+      ]
+     ],
+     "mutualOverlap": 0.73,
+     "propJaccard": 0.59,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "(y) are restricted in favor of the Facilities (which may also secure other Indebtedness secured by a"
+    },
+    {
+     "roles": [
+      "FORMULA_COMPONENT",
+      "ALTERNATIVE"
+     ],
+     "spans": [
+      [
+       589,
+       880
+      ],
+      [
+       596,
+       769
+      ]
+     ],
+     "mutualOverlap": 0.59,
+     "propJaccard": 0.42,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "to (b) (i) for purposes of determining compliance with the Financial Maintenance Covenant, Consolida"
+    },
+    {
+     "roles": [
+      "OTHER",
+      "DEPENDENCY"
+     ],
+     "spans": [
+      [
+       1002,
+       1308
+      ],
+      [
+       1145,
+       1308
+      ]
+     ],
+     "mutualOverlap": 0.53,
+     "propJaccard": 0.67,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "“Secured Parties” means, collectively, the Administrative Agent, the Collateral Agent, the Lenders, "
+    }
+   ]
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-1-haiku-discarded/region-applicable-liquidity-rate.json",
+   "pointer": "/compile",
+   "itemsBefore": 39,
+   "itemsAfter": 39,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 0,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    13,
+    13
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    68,
+    68
+   ],
+   "accountedCharFraction": [
+    0.1349,
+    0.1349
+   ],
+   "itemsWithDeterministicFunctionAddition": 14,
+   "conflictRows": []
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-1-haiku-discarded/region-ebitda.json",
+   "pointer": "/compile",
+   "itemsBefore": 31,
+   "itemsAfter": 30,
+   "merged": 1,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 1,
+   "roleConflictPairsCanonicalized": 1,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    5,
+    5
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    38,
+    38
+   ],
+   "accountedCharFraction": [
+    0.184,
+    0.184
+   ],
+   "itemsWithDeterministicFunctionAddition": 4,
+   "conflictRows": [
+    {
+     "roles": [
+      "REFERENCE",
+      "DEPENDENCY"
+     ],
+     "spans": [
+      [
+       8448,
+       8582
+      ],
+      [
+       8448,
+       8582
+      ]
+     ],
+     "mutualOverlap": 1,
+     "propJaccard": 0.27,
+     "canonicalizedIntoOne": true,
+     "falseMergeCandidate": false,
+     "excerpt": "For the avoidance of doubt, Consolidated EBITDA shall be calculated, including pro forma adjustments"
+    }
+   ]
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-1-haiku-discarded/region-first-lien-debt.json",
+   "pointer": "/compile",
+   "itemsBefore": 17,
+   "itemsAfter": 17,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 0,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    0,
+    0
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    20,
+    20
+   ],
+   "accountedCharFraction": [
+    0.1984,
+    0.1984
+   ],
+   "itemsWithDeterministicFunctionAddition": 2,
+   "conflictRows": []
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-1-haiku-discarded/region-interest-expense.json",
+   "pointer": "/compile",
+   "itemsBefore": 43,
+   "itemsAfter": 43,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 0,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    4,
+    4
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    52,
+    52
+   ],
+   "accountedCharFraction": [
+    0.1958,
+    0.1958
+   ],
+   "itemsWithDeterministicFunctionAddition": 6,
+   "conflictRows": []
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-1-haiku-discarded/region-net-income.json",
+   "pointer": "/compile",
+   "itemsBefore": 27,
+   "itemsAfter": 27,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 0,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    5,
+    5
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    25,
+    25
+   ],
+   "accountedCharFraction": [
+    0.3705,
+    0.3705
+   ],
+   "itemsWithDeterministicFunctionAddition": 3,
+   "conflictRows": []
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-1-haiku-discarded/region-new-definitions.json",
+   "pointer": "/compile",
+   "itemsBefore": 6,
+   "itemsAfter": 6,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 0,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    0,
+    0
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    7,
+    7
+   ],
+   "accountedCharFraction": [
+    0.379,
+    0.379
+   ],
+   "itemsWithDeterministicFunctionAddition": 1,
+   "conflictRows": []
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-1-haiku-discarded/region-secured-net-leverage.json",
+   "pointer": "/compile",
+   "itemsBefore": 6,
+   "itemsAfter": 6,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 0,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    0,
+    0
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    15,
+    15
+   ],
+   "accountedCharFraction": [
+    0.0576,
+    0.0576
+   ],
+   "itemsWithDeterministicFunctionAddition": 1,
+   "conflictRows": []
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-1-pre-canonicalization-fix/region-applicable-liquidity-rate.json",
+   "pointer": "/compile",
+   "itemsBefore": 83,
+   "itemsAfter": 80,
+   "merged": 3,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 1,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    77,
+    74
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    62,
+    62
+   ],
+   "accountedCharFraction": [
+    0.2213,
+    0.2213
+   ],
+   "itemsWithDeterministicFunctionAddition": 21,
+   "conflictRows": [
+    {
+     "roles": [
+      "EXCEPTION",
+      "CONDITION"
+     ],
+     "spans": [
+      [
+       3866,
+       4091
+      ],
+      [
+       3961,
+       4091
+      ]
+     ],
+     "mutualOverlap": 0.58,
+     "propJaccard": 0.5,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "assets for purposes of charitable contributions or similar gifts to the extent such assets are\nnot m"
+    }
+   ]
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-1-pre-canonicalization-fix/region-ebitda.json",
+   "pointer": "/compile",
+   "itemsBefore": 49,
+   "itemsAfter": 49,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 0,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    48,
+    48
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    47,
+    47
+   ],
+   "accountedCharFraction": [
+    0.2603,
+    0.2603
+   ],
+   "itemsWithDeterministicFunctionAddition": 10,
+   "conflictRows": []
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-1-pre-canonicalization-fix/region-first-lien-debt.json",
+   "pointer": "/compile",
+   "itemsBefore": 33,
+   "itemsAfter": 33,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 0,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    31,
+    31
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    24,
+    24
+   ],
+   "accountedCharFraction": [
+    0.2613,
+    0.2613
+   ],
+   "itemsWithDeterministicFunctionAddition": 4,
+   "conflictRows": []
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-1-pre-canonicalization-fix/region-interest-expense.json",
+   "pointer": "/compile",
+   "itemsBefore": 58,
+   "itemsAfter": 58,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 1,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    56,
+    56
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    48,
+    48
+   ],
+   "accountedCharFraction": [
+    0.2964,
+    0.2964
+   ],
+   "itemsWithDeterministicFunctionAddition": 8,
+   "conflictRows": [
+    {
+     "roles": [
+      "TRIGGER",
+      "EXCEPTION"
+     ],
+     "spans": [
+      [
+       5479,
+       5722
+      ],
+      [
+       5516,
+       5649
+      ]
+     ],
+     "mutualOverlap": 0.55,
+     "propJaccard": 0.08,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "the cash payment in respect thereof, with the exception of any cash payments related to the settleme"
+    }
+   ]
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-1-pre-canonicalization-fix/region-net-income.json",
+   "pointer": "/compile",
+   "itemsBefore": 47,
+   "itemsAfter": 47,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 1,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    46,
+    46
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    26,
+    26
+   ],
+   "accountedCharFraction": [
+    0.6309,
+    0.6309
+   ],
+   "itemsWithDeterministicFunctionAddition": 1,
+   "conflictRows": [
+    {
+     "roles": [
+      "FORMULA_COMPONENT",
+      "REFERENCE"
+     ],
+     "spans": [
+      [
+       6576,
+       6686
+      ],
+      [
+       6626,
+       6685
+      ]
+     ],
+     "mutualOverlap": 0.54,
+     "propJaccard": 0.18,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "any adjustments resulting from the application of Accounting Standards Codification Topic No. 460, G"
+    }
+   ]
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-1-pre-canonicalization-fix/region-secured-net-leverage.json",
+   "pointer": "/compile",
+   "itemsBefore": 12,
+   "itemsAfter": 12,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 1,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    10,
+    10
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    15,
+    15
+   ],
+   "accountedCharFraction": [
+    0.0839,
+    0.0839
+   ],
+   "itemsWithDeterministicFunctionAddition": 2,
+   "conflictRows": [
+    {
+     "roles": [
+      "FORMULA_COMPONENT",
+      "ALTERNATIVE"
+     ],
+     "spans": [
+      [
+       589,
+       880
+      ],
+      [
+       600,
+       769
+      ]
+     ],
+     "mutualOverlap": 0.58,
+     "propJaccard": 0.5,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "to (b) (i) for purposes of determining compliance with the Financial Maintenance Covenant, Consolida"
+    }
+   ]
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-2/region-applicable-liquidity-rate.json",
+   "pointer": "/compile",
+   "itemsBefore": 66,
+   "itemsAfter": 66,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 1,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    59,
+    59
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    66,
+    66
+   ],
+   "accountedCharFraction": [
+    0.1905,
+    0.1905
+   ],
+   "itemsWithDeterministicFunctionAddition": 18,
+   "conflictRows": [
+    {
+     "roles": [
+      "OTHER",
+      "EXCEPTION"
+     ],
+     "spans": [
+      [
+       2884,
+       3191
+      ],
+      [
+       2926,
+       3190
+      ]
+     ],
+     "mutualOverlap": 0.86,
+     "propJaccard": 0.24,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "the issuance or sale of Equity Interests (other than Preferred Stock or Disqualified Stock of Subsid"
+    }
+   ]
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-2/region-ebitda.json",
+   "pointer": "/compile",
+   "itemsBefore": 55,
+   "itemsAfter": 55,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 0,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    54,
+    54
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    49,
+    49
+   ],
+   "accountedCharFraction": [
+    0.2713,
+    0.2713
+   ],
+   "itemsWithDeterministicFunctionAddition": 9,
+   "conflictRows": []
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-2/region-first-lien-debt.json",
+   "pointer": "/compile",
+   "itemsBefore": 28,
+   "itemsAfter": 28,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 0,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    26,
+    26
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    25,
+    25
+   ],
+   "accountedCharFraction": [
+    0.2529,
+    0.2529
+   ],
+   "itemsWithDeterministicFunctionAddition": 4,
+   "conflictRows": []
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-2/region-interest-expense.json",
+   "pointer": "/compile",
+   "itemsBefore": 59,
+   "itemsAfter": 59,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 0,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    57,
+    57
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    59,
+    59
+   ],
+   "accountedCharFraction": [
+    0.1937,
+    0.1937
+   ],
+   "itemsWithDeterministicFunctionAddition": 9,
+   "conflictRows": []
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-2/region-net-income.json",
+   "pointer": "/compile",
+   "itemsBefore": 47,
+   "itemsAfter": 47,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 0,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    46,
+    46
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    32,
+    32
+   ],
+   "accountedCharFraction": [
+    0.4814,
+    0.4814
+   ],
+   "itemsWithDeterministicFunctionAddition": 8,
+   "conflictRows": []
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-2/region-new-definitions.json",
+   "pointer": "/compile",
+   "itemsBefore": 20,
+   "itemsAfter": 20,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 0,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    15,
+    15
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    8,
+    8
+   ],
+   "accountedCharFraction": [
+    0.6296,
+    0.6296
+   ],
+   "itemsWithDeterministicFunctionAddition": 5,
+   "conflictRows": []
+  },
+  {
+   "file": "semantic-accountability-validation/holdout/run-2/region-secured-net-leverage.json",
+   "pointer": "/compile",
+   "itemsBefore": 14,
+   "itemsAfter": 14,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 1,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    12,
+    12
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    14,
+    14
+   ],
+   "accountedCharFraction": [
+    0.1013,
+    0.1013
+   ],
+   "itemsWithDeterministicFunctionAddition": 2,
+   "conflictRows": [
+    {
+     "roles": [
+      "OTHER",
+      "REFERENCE"
+     ],
+     "spans": [
+      [
+       1002,
+       1308
+      ],
+      [
+       1145,
+       1307
+      ]
+     ],
+     "mutualOverlap": 0.53,
+     "propJaccard": 0.62,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "“Secured Parties” means, collectively, the Administrative Agent, the Collateral Agent, the Lenders, "
+    }
+   ]
+  },
+  {
+   "file": "semantic-accountability-validation/whole-agreement/run-1/region-debt-dsgr.json",
+   "pointer": "/compile",
+   "itemsBefore": 49,
+   "itemsAfter": 49,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 0,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    42,
+    42
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    48,
+    48
+   ],
+   "accountedCharFraction": [
+    0.198,
+    0.198
+   ],
+   "itemsWithDeterministicFunctionAddition": 14,
+   "conflictRows": []
+  },
+  {
+   "file": "semantic-accountability-validation/whole-agreement/run-1/region-debt-lsb.json",
+   "pointer": "/compile",
+   "itemsBefore": 139,
+   "itemsAfter": 139,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 1,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    136,
+    136
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    66,
+    66
+   ],
+   "accountedCharFraction": [
+    0.6036,
+    0.6036
+   ],
+   "itemsWithDeterministicFunctionAddition": 58,
+   "conflictRows": [
+    {
+     "roles": [
+      "EXCEPTION",
+      "ALTERNATIVE"
+     ],
+     "spans": [
+      [
+       2656,
+       2917
+      ],
+      [
+       2777,
+       2917
+      ]
+     ],
+     "mutualOverlap": 0.54,
+     "propJaccard": 0.29,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "other Indebtedness in an aggregate principal amount outstanding at any time not to exceed the greate"
+    }
+   ]
+  },
+  {
+   "file": "semantic-accountability-validation/whole-agreement/run-1/region-definitions-dsgr.json",
+   "pointer": "/compile",
+   "itemsBefore": 41,
+   "itemsAfter": 40,
+   "merged": 1,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 1,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    23,
+    22
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    51,
+    51
+   ],
+   "accountedCharFraction": [
+    0.1346,
+    0.1346
+   ],
+   "itemsWithDeterministicFunctionAddition": 5,
+   "conflictRows": [
+    {
+     "roles": [
+      "OTHER",
+      "ALTERNATIVE"
+     ],
+     "spans": [
+      [
+       3869,
+       3889
+      ],
+      [
+       3875,
+       3886
+      ]
+     ],
+     "mutualOverlap": 0.55,
+     "propJaccard": 0.14,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "means (a) dollars or"
+    }
+   ]
+  },
+  {
+   "file": "semantic-accountability-validation/whole-agreement/run-1/region-definitions-lsb.json",
+   "pointer": "/compile",
+   "itemsBefore": 81,
+   "itemsAfter": 79,
+   "merged": 2,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 5,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    66,
+    64
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    29,
+    29
+   ],
+   "accountedCharFraction": [
+    0.807,
+    0.807
+   ],
+   "itemsWithDeterministicFunctionAddition": 24,
+   "conflictRows": [
+    {
+     "roles": [
+      "EXCEPTION",
+      "REFERENCE"
+     ],
+     "spans": [
+      [
+       462,
+       644
+      ],
+      [
+       519,
+       644
+      ]
+     ],
+     "mutualOverlap": 0.69,
+     "propJaccard": 0.1,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "Availability Block Removal Period, the amount calculated pursuant to clause (a) of this definition b"
+    },
+    {
+     "roles": [
+      "FORMULA_COMPONENT",
+      "ALTERNATIVE"
+     ],
+     "spans": [
+      [
+       1080,
+       1207
+      ],
+      [
+       1107,
+       1207
+      ]
+     ],
+     "mutualOverlap": 0.79,
+     "propJaccard": 0.18,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "plus (b) the lesser of (i) 75% of the Borrowers’ Eligible Inventory, at such time, valued at the low"
+    },
+    {
+     "roles": [
+      "ALTERNATIVE",
+      "FORMULA_COMPONENT"
+     ],
+     "spans": [
+      [
+       1253,
+       1306
+      ],
+      [
+       1273,
+       1306
+      ]
+     ],
+     "mutualOverlap": 0.62,
+     "propJaccard": 0.4,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "(ii) the product of 85% multiplied by the Net Orderly"
+    },
+    {
+     "roles": [
+      "FORMULA_COMPONENT",
+      "CONDITION"
+     ],
+     "spans": [
+      [
+       1944,
+       2047
+      ],
+      [
+       1963,
+       2015
+      ]
+     ],
+     "mutualOverlap": 0.5,
+     "propJaccard": 0.24,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "Expenditures made (to the extent not already incurred in a prior period) or incurred during such per"
+    },
+    {
+     "roles": [
+      "THRESHOLD",
+      "ALTERNATIVE"
+     ],
+     "spans": [
+      [
+       7573,
+       7767
+      ],
+      [
+       7626,
+       7767
+      ]
+     ],
+     "mutualOverlap": 0.73,
+     "propJaccard": 0.04,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "not to exceed the greater of (x) $70,000,000 and (y) 5.5% of the total consolidated assets of the Lo"
+    }
+   ]
+  },
+  {
+   "file": "unseen-packages/phase-3-validation-chwy-paid-run/unit-1.01.json",
+   "pointer": "/compile",
+   "itemsBefore": 109,
+   "itemsAfter": 109,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 0,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    21,
+    21
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    721,
+    721
+   ],
+   "accountedCharFraction": [
+    0.0576,
+    0.0576
+   ],
+   "itemsWithDeterministicFunctionAddition": 77,
+   "conflictRows": []
+  },
+  {
+   "file": "unseen-packages/phase-3-validation-chwy-paid-run/unit-6.08.json",
+   "pointer": "/compile",
+   "itemsBefore": 288,
+   "itemsAfter": 287,
+   "merged": 1,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 30,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    158,
+    157
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    68,
+    68
+   ],
+   "accountedCharFraction": [
+    0.7694,
+    0.7694
+   ],
+   "itemsWithDeterministicFunctionAddition": 86,
+   "conflictRows": [
+    {
+     "roles": [
+      "CONDITION",
+      "FORMULA_COMPONENT"
+     ],
+     "spans": [
+      [
+       926,
+       1145
+      ],
+      [
+       984,
+       1146
+      ]
+     ],
+     "mutualOverlap": 0.74,
+     "propJaccard": 0.23,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "any Restricted Party receives at least its pro rata share\n(taking into account any Preferred Stock) "
+    },
+    {
+     "roles": [
+      "FORMULA_COMPONENT",
+      "CONDITION"
+     ],
+     "spans": [
+      [
+       8962,
+       9243
+      ],
+      [
+       9044,
+       9249
+      ]
+     ],
+     "mutualOverlap": 0.71,
+     "propJaccard": 0.3,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "any returns, profits, distribution and similar amounts received on account of any\nPermitted Investme"
+    },
+    {
+     "roles": [
+      "FORMULA_COMPONENT",
+      "TRIGGER"
+     ],
+     "spans": [
+      [
+       9254,
+       9549
+      ],
+      [
+       9359,
+       9550
+      ]
+     ],
+     "mutualOverlap": 0.64,
+     "propJaccard": 0.32,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "in the case of the redesignation of an Unrestricted Subsidiary as a Restricted Subsidiary or the mer"
+    },
+    {
+     "roles": [
+      "EXCEPTION",
+      "CONDITION"
+     ],
+     "spans": [
+      [
+       9796,
+       9928
+      ],
+      [
+       9848,
+       9934
+      ]
+     ],
+     "mutualOverlap": 0.61,
+     "propJaccard": 0.53,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "other than an Unrestricted Subsidiary to the extent\nsuch Investment constituted a Permitted Investme"
+    },
+    {
+     "roles": [
+      "PERMISSION",
+      "TIME_PERIOD"
+     ],
+     "spans": [
+      [
+       11070,
+       11419
+      ],
+      [
+       11183,
+       11419
+      ]
+     ],
+     "mutualOverlap": 0.68,
+     "propJaccard": 0.44,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "the payment of any dividend or other distribution or the consummation of any irrevocable redemption "
+    },
+    {
+     "roles": [
+      "CONDITION",
+      "REFERENCE"
+     ],
+     "spans": [
+      [
+       13654,
+       13724
+      ],
+      [
+       13689,
+       13725
+      ]
+     ],
+     "mutualOverlap": 0.5,
+     "propJaccard": 0.25,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "that, in each case, is incurred in\ncompliance with Section 6.01 hereof"
+    },
+    {
+     "roles": [
+      "EXCEPTION",
+      "FORMULA_COMPONENT"
+     ],
+     "spans": [
+      [
+       17581,
+       17981
+      ],
+      [
+       17619,
+       18005
+      ]
+     ],
+     "mutualOverlap": 0.91,
+     "propJaccard": 0.3,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "cancellation of Indebtedness owing to\nany Restricted Party from any future, present or former employ"
+    },
+    {
+     "roles": [
+      "PERMISSION",
+      "EXCEPTION"
+     ],
+     "spans": [
+      [
+       18141,
+       18463
+      ],
+      [
+       18219,
+       18464
+      ]
+     ],
+     "mutualOverlap": 0.76,
+     "propJaccard": 0.5,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "the declaration and payment of dividends to holders of any class or series of\nDisqualified Stock of "
+    },
+    {
+     "roles": [
+      "PERMISSION",
+      "REQUIREMENT"
+     ],
+     "spans": [
+      [
+       18890,
+       19171
+      ],
+      [
+       18957,
+       19172
+      ]
+     ],
+     "mutualOverlap": 0.76,
+     "propJaccard": 0.29,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "the declaration and payment of dividends to any Parent Entity, the\nproceeds of which shall be used t"
+    },
+    {
+     "roles": [
+      "PERMISSION",
+      "CONDITION"
+     ],
+     "spans": [
+      [
+       19374,
+       19586
+      ],
+      [
+       19412,
+       19587
+      ]
+     ],
+     "mutualOverlap": 0.82,
+     "propJaccard": 0.69,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "Restricted Payments by any Restricted\nSubsidiary to the Borrowers or any Parent Entity to the extent"
+    },
+    {
+     "roles": [
+      "FORMULA_COMPONENT",
+      "CONDITION"
+     ],
+     "spans": [
+      [
+       22348,
+       22649
+      ],
+      [
+       22496,
+       22681
+      ]
+     ],
+     "mutualOverlap": 0.51,
+     "propJaccard": 0.42,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "any amounts (to the extent not reducing the amounts available under clause (3) of the first (1st) pa"
+    },
+    {
+     "roles": [
+      "PERMISSION",
+      "CONDITION"
+     ],
+     "spans": [
+      [
+       22742,
+       22990
+      ],
+      [
+       22792,
+       23036
+      ]
+     ],
+     "mutualOverlap": 0.8,
+     "propJaccard": 0.21,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "any Restricted Payment (other than any Restricted\nDebt Payment); provided that on a Pro Forma Basis "
+    },
+    {
+     "roles": [
+      "PERMISSION",
+      "FORMULA_COMPONENT"
+     ],
+     "spans": [
+      [
+       23531,
+       23659
+      ],
+      [
+       23593,
+       23663
+      ]
+     ],
+     "mutualOverlap": 0.52,
+     "propJaccard": 0.62,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "Restricted Payments (i) in an amount that does not exceed the\namount of Excluded Contributions recei"
+    },
+    {
+     "roles": [
+      "CONDITION",
+      "FORMULA_COMPONENT"
+     ],
+     "spans": [
+      [
+       24278,
+       24599
+      ],
+      [
+       24417,
+       24603
+      ]
+     ],
+     "mutualOverlap": 0.57,
+     "propJaccard": 0.28,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "if this Section 6.08(b)(12) is utilized to make a Restricted Investment, the amount counted against "
+    },
+    {
+     "roles": [
+      "PERMISSION",
+      "FORMULA_COMPONENT"
+     ],
+     "spans": [
+      [
+       24785,
+       25163
+      ],
+      [
+       24892,
+       25166
+      ]
+     ],
+     "mutualOverlap": 0.72,
+     "propJaccard": 0.17,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "any Restricted Payment (A) made in connection with or in order to consummate the Transactions and th"
+    },
+    {
+     "roles": [
+      "CONDITION",
+      "FORMULA_COMPONENT"
+     ],
+     "spans": [
+      [
+       27896,
+       28139
+      ],
+      [
+       27975,
+       28180
+      ]
+     ],
+     "mutualOverlap": 0.67,
+     "propJaccard": 0.33,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "the Tax Amount shall be calculated assuming the highest combined marginal U.S. federal, state, local"
+    },
+    {
+     "roles": [
+      "FORMULA_COMPONENT",
+      "PERMISSION"
+     ],
+     "spans": [
+      [
+       28532,
+       28897
+      ],
+      [
+       28577,
+       28977
+      ]
+     ],
+     "mutualOverlap": 0.8,
+     "propJaccard": 0.26,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "customary salary, bonus, severance and other\nbenefits payable to, and indemnities provided on behalf"
+    },
+    {
+     "roles": [
+      "FORMULA_COMPONENT",
+      "OTHER"
+     ],
+     "spans": [
+      [
+       29872,
+       30174
+      ],
+      [
+       29990,
+       30175
+      ]
+     ],
+     "mutualOverlap": 0.61,
+     "propJaccard": 0.13,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "cash payments in lieu of issuing fractional shares or interests in connection with the exercise of w"
+    },
+    {
+     "roles": [
+      "CONDITION",
+      "FORMULA_COMPONENT"
+     ],
+     "spans": [
+      [
+       30413,
+       30746
+      ],
+      [
+       30519,
+       30750
+      ]
+     ],
+     "mutualOverlap": 0.68,
+     "propJaccard": 0.59,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "the amount of any dividend or distribution under this Section 5.18(b)(16)(g) to permit such payment "
+    },
+    {
+     "roles": [
+      "PERMISSION",
+      "EXCEPTION"
+     ],
+     "spans": [
+      [
+       31318,
+       31710
+      ],
+      [
+       31390,
+       31790
+      ]
+     ],
+     "mutualOverlap": 0.8,
+     "propJaccard": 0.32,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "the purchase, repurchase, redemption or other acquisition or retirement\nof Equity Interests of any R"
+    },
+    {
+     "roles": [
+      "PERMISSION",
+      "OTHER"
+     ],
+     "spans": [
+      [
+       31810,
+       31995
+      ],
+      [
+       31876,
+       31996
+      ]
+     ],
+     "mutualOverlap": 0.64,
+     "propJaccard": 0.14,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "cash payments made in accordance with any conversion request by a\nholder of securities convertible i"
+    },
+    {
+     "roles": [
+      "PERMISSION",
+      "OTHER"
+     ],
+     "spans": [
+      [
+       32003,
+       32308
+      ],
+      [
+       32126,
+       32309
+      ]
+     ],
+     "mutualOverlap": 0.6,
+     "propJaccard": 0.06,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "the distribution, by dividend or otherwise, or other transfer or disposition of shares of Capital St"
+    },
+    {
+     "roles": [
+      "EXCEPTION",
+      "OTHER"
+     ],
+     "spans": [
+      [
+       32572,
+       32670
+      ],
+      [
+       32596,
+       32671
+      ]
+     ],
+     "mutualOverlap": 0.76,
+     "propJaccard": 0.38,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "other than Unrestricted\nSubsidiaries, the primary assets of which are cash and/or Cash Equivalents"
+    },
+    {
+     "roles": [
+      "PERMISSION",
+      "FORMULA_COMPONENT"
+     ],
+     "spans": [
+      [
+       33137,
+       33358
+      ],
+      [
+       33182,
+       33359
+      ]
+     ],
+     "mutualOverlap": 0.8,
+     "propJaccard": 0.57,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "Restricted Payments of (i) Retained Declined\nProceeds, (ii) Retained Asset Sale Proceeds and (iii) p"
+    },
+    {
+     "roles": [
+      "THRESHOLD",
+      "SHARED_CAP"
+     ],
+     "spans": [
+      [
+       33374,
+       33598
+      ],
+      [
+       33409,
+       33599
+      ]
+     ],
+     "mutualOverlap": 0.84,
+     "propJaccard": 0.65,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "the aggregate amount of Restricted\nPayments that may be made in reliance on this clause (21)(iii) sh"
+    },
+    {
+     "roles": [
+      "PERMISSION",
+      "CONDITION"
+     ],
+     "spans": [
+      [
+       33606,
+       33865
+      ],
+      [
+       33728,
+       33866
+      ]
+     ],
+     "mutualOverlap": 0.53,
+     "propJaccard": 0.32,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "mandatory redemptions of Disqualified Stock issued as a Restricted Payment or as consideration for a"
+    },
+    {
+     "roles": [
+      "PERMISSION",
+      "CONDITION"
+     ],
+     "spans": [
+      [
+       34120,
+       34351
+      ],
+      [
+       34149,
+       34396
+      ]
+     ],
+     "mutualOverlap": 0.82,
+     "propJaccard": 0.08,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "any Restricted Debt Payment; provided that on a Pro Forma Basis after giving effect to any such any\n"
+    },
+    {
+     "roles": [
+      "PERMISSION",
+      "SHARED_CAP"
+     ],
+     "spans": [
+      [
+       34981,
+       35294
+      ],
+      [
+       35104,
+       35295
+      ]
+     ],
+     "mutualOverlap": 0.61,
+     "propJaccard": 0.45,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "Restricted Debt Payments in an aggregate outstanding principal amount which, when taken together wit"
+    },
+    {
+     "roles": [
+      "VALUE",
+      "DEPENDENCY"
+     ],
+     "spans": [
+      [
+       35304,
+       35644
+      ],
+      [
+       35394,
+       35644
+      ]
+     ],
+     "mutualOverlap": 0.74,
+     "propJaccard": 0.37,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "The amount of all Restricted Payments (other than cash) shall be the Fair Market Value on\nthe LCT Te"
+    },
+    {
+     "roles": [
+      "OTHER",
+      "REQUIREMENT"
+     ],
+     "spans": [
+      [
+       36973,
+       37373
+      ],
+      [
+       37064,
+       37464
+      ]
+     ],
+     "mutualOverlap": 0.77,
+     "propJaccard": 0.32,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "If any Restricted Party makes a Restricted Payment which at the time of the making of such\nRestricte"
+    }
+   ]
+  },
+  {
+   "file": "unseen-packages/phase-3-validation-chwy-paid-run/unit-9.04.json",
+   "pointer": "/compile",
+   "itemsBefore": 218,
+   "itemsAfter": 218,
+   "merged": 0,
+   "unverifiable": 0,
+   "itemsLost": 0,
+   "roleConflictPairs": 19,
+   "roleConflictPairsCanonicalized": 0,
+   "falseMergeCandidates": 0,
+   "valuesLost": [],
+   "parentLinks": [
+    101,
+    101
+   ],
+   "materialityChanged": 0,
+   "unaccountedSegments": [
+    43,
+    43
+   ],
+   "accountedCharFraction": [
+    0.8619,
+    0.8619
+   ],
+   "itemsWithDeterministicFunctionAddition": 76,
+   "conflictRows": [
+    {
+     "roles": [
+      "CONDITION",
+      "EXCEPTION"
+     ],
+     "spans": [
+      [
+       1725,
+       1853
+      ],
+      [
+       1751,
+       1853
+      ]
+     ],
+     "mutualOverlap": 0.8,
+     "propJaccard": 0.53,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "(A) the Initial Borrower; provided that no consent of the Initial Borrower shall be required for an "
+    },
+    {
+     "roles": [
+      "THRESHOLD",
+      "CONDITION"
+     ],
+     "spans": [
+      [
+       2828,
+       3105
+      ],
+      [
+       2940,
+       3105
+      ]
+     ],
+     "mutualOverlap": 0.6,
+     "propJaccard": 0.52,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "provided further , that the withholding of consent by the Initial Borrower to any assignment to any "
+    },
+    {
+     "roles": [
+      "OTHER",
+      "EXCEPTION"
+     ],
+     "spans": [
+      [
+       3171,
+       3497
+      ],
+      [
+       3175,
+       3499
+      ]
+     ],
+     "mutualOverlap": 0.99,
+     "propJaccard": 0.52,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "the\nAdministrative Agent shall not have any responsibility or obligation to determine or notify the "
+    },
+    {
+     "roles": [
+      "CONDITION",
+      "TIME_PERIOD"
+     ],
+     "spans": [
+      [
+       4599,
+       4985
+      ],
+      [
+       4602,
+       4985
+      ]
+     ],
+     "mutualOverlap": 0.99,
+     "propJaccard": 0.59,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "if\nthe consent of the Initial Borrower is otherwise required by this paragraph with respect to any a"
+    },
+    {
+     "roles": [
+      "DEPENDENCY",
+      "REQUIREMENT"
+     ],
+     "spans": [
+      [
+       8131,
+       8496
+      ],
+      [
+       8245,
+       8497
+      ]
+     ],
+     "mutualOverlap": 0.69,
+     "propJaccard": 0.52,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "Subject to acceptance and recording thereof pursuant to paragraph (b)(v) of this Section 9.04, from "
+    },
+    {
+     "roles": [
+      "EXCEPTION",
+      "REQUIREMENT"
+     ],
+     "spans": [
+      [
+       8675,
+       9075
+      ],
+      [
+       8735,
+       9088
+      ]
+     ],
+     "mutualOverlap": 0.85,
+     "propJaccard": 0.48,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "in the case of an Assignment and Assumption covering all of\nthe assigning Lender’s rights and obliga"
+    },
+    {
+     "roles": [
+      "RECLASSIFICATION",
+      "DEPENDENCY"
+     ],
+     "spans": [
+      [
+       9089,
+       9395
+      ],
+      [
+       9205,
+       9395
+      ]
+     ],
+     "mutualOverlap": 0.62,
+     "propJaccard": 0.24,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "Any assignment or transfer by a Lender of rights or obligations under this Agreement that does not c"
+    },
+    {
+     "roles": [
+      "OTHER",
+      "EXCEPTION"
+     ],
+     "spans": [
+      [
+       10808,
+       11088
+      ],
+      [
+       10939,
+       11088
+      ]
+     ],
+     "mutualOverlap": 0.53,
+     "propJaccard": 0.63,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "in no event shall the Administrative Agent be obligated to ascertain, monitor or inquire as to wheth"
+    },
+    {
+     "roles": [
+      "OTHER",
+      "DEPENDENCY"
+     ],
+     "spans": [
+      [
+       12252,
+       12556
+      ],
+      [
+       12309,
+       12556
+      ]
+     ],
+     "mutualOverlap": 0.81,
+     "propJaccard": 0.54,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "The parties hereto agree and intend that the Loans shall\nbe treated as being in “registered form” fo"
+    },
+    {
+     "roles": [
+      "CONDITION",
+      "REQUIREMENT"
+     ],
+     "spans": [
+      [
+       13209,
+       13508
+      ],
+      [
+       13353,
+       13508
+      ]
+     ],
+     "mutualOverlap": 0.52,
+     "propJaccard": 0.38,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "(D) any sale of participations of a Lenders’ rights to participate their Revolving Commitments and R"
+    },
+    {
+     "roles": [
+      "CONDITION",
+      "CURE"
+     ],
+     "spans": [
+      [
+       13509,
+       13860
+      ],
+      [
+       13590,
+       13860
+      ]
+     ],
+     "mutualOverlap": 0.77,
+     "propJaccard": 0.29,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "(and any purported participation without such notice shall be null and void and,\npromptly following "
+    },
+    {
+     "roles": [
+      "DEPENDENCY",
+      "REQUIREMENT"
+     ],
+     "spans": [
+      [
+       14485,
+       14826
+      ],
+      [
+       14561,
+       14826
+      ]
+     ],
+     "mutualOverlap": 0.78,
+     "propJaccard": 0.52,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "Subject to paragraph (c)(ii) of this Section 9.04, the Borrowers agree that\neach Participant shall b"
+    },
+    {
+     "roles": [
+      "CONDITION",
+      "REFERENCE"
+     ],
+     "spans": [
+      [
+       15063,
+       15205
+      ],
+      [
+       15123,
+       15209
+      ]
+     ],
+     "mutualOverlap": 0.58,
+     "propJaccard": 0.67,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "A Participant (A) agrees to be subject to the provisions of\nSection 2.17(a) as if it were an assigne"
+    },
+    {
+     "roles": [
+      "THRESHOLD",
+      "EXCEPTION"
+     ],
+     "spans": [
+      [
+       15210,
+       15593
+      ],
+      [
+       15340,
+       15593
+      ]
+     ],
+     "mutualOverlap": 0.66,
+     "propJaccard": 0.46,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "(B) shall not be entitled to receive any greater payment under Section 2.13 or Section 2.15 than the"
+    },
+    {
+     "roles": [
+      "OTHER",
+      "REQUIREMENT"
+     ],
+     "spans": [
+      [
+       16844,
+       17134
+      ],
+      [
+       16929,
+       17134
+      ]
+     ],
+     "mutualOverlap": 0.71,
+     "propJaccard": 0.5,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "The entries in the Participant Register shall be conclusive (absent manifest error),\nand each Person"
+    },
+    {
+     "roles": [
+      "OTHER",
+      "REQUIREMENT"
+     ],
+     "spans": [
+      [
+       18537,
+       18705
+      ],
+      [
+       18553,
+       18705
+      ]
+     ],
+     "mutualOverlap": 0.9,
+     "propJaccard": 0.53,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "The making of a\nLoan by an SPV hereunder shall utilize the Commitment of the Granting Lender to the "
+    },
+    {
+     "roles": [
+      "REQUIREMENT",
+      "TIME_PERIOD"
+     ],
+     "spans": [
+      [
+       18933,
+       19333
+      ],
+      [
+       19050,
+       19282
+      ]
+     ],
+     "mutualOverlap": 0.58,
+     "propJaccard": 0.68,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "each party hereto hereby agrees (which agreement shall survive the termination of this Agreement) th"
+    },
+    {
+     "roles": [
+      "THRESHOLD",
+      "ALTERNATIVE"
+     ],
+     "spans": [
+      [
+       25874,
+       26273
+      ],
+      [
+       26000,
+       26230
+      ]
+     ],
+     "mutualOverlap": 0.58,
+     "propJaccard": 0.22,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "Notwithstanding anything in Section 9.02 or the definition of “Required Lenders” to the contrary, fo"
+    },
+    {
+     "roles": [
+      "OTHER",
+      "REQUIREMENT"
+     ],
+     "spans": [
+      [
+       26737,
+       27136
+      ],
+      [
+       26829,
+       27209
+      ]
+     ],
+     "mutualOverlap": 0.77,
+     "propJaccard": 0.53,
+     "canonicalizedIntoOne": false,
+     "falseMergeCandidate": false,
+     "excerpt": "Each Affiliated Lender by its acquisition of any Loans outstanding hereunder will be deemed\nto have "
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,110 @@
+{
+ "artifact": "F-7B.2 \u00a725 - the 16-point zero-cost closure gate",
+ "at": "2026-09-14T16:12:24.875958Z",
+ "points": [
+  {
+   "n": 1,
+   "criterion": "The unsafe fallback is reproduced at the starting SHA before any code change",
+   "pass": true
+  },
+  {
+   "n": 2,
+   "criterion": "Every retained authoritative definition carries affirmative primary-source or owned-lineage attribution",
+   "pass": true
+  },
+  {
+   "n": 3,
+   "criterion": "Source-unverifiable authoritative definitions = 0",
+   "pass": true
+  },
+  {
+   "n": 4,
+   "criterion": "SHARD_FIRST_UNIT no longer attributes any definition",
+   "pass": true
+  },
+  {
+   "n": 5,
+   "criterion": "Every previously source-unverifiable definition is classified into exactly one of A-F",
+   "pass": true
+  },
+  {
+   "n": 6,
+   "criterion": "Owned-material accountability is unchanged",
+   "pass": true
+  },
+  {
+   "n": 7,
+   "criterion": "Stage-1 owned material accounting holds at the 28/23/3/2 baseline",
+   "pass": true
+  },
+  {
+   "n": 8,
+   "criterion": "Zero owned quantitative values lost",
+   "pass": true
+  },
+  {
+   "n": 9,
+   "criterion": "Zero owned lineage references lost",
+   "pass": true
+  },
+  {
+   "n": 10,
+   "criterion": "Zero new dangling references",
+   "pass": true
+  },
+  {
+   "n": 11,
+   "criterion": "Collision behaviour preserved: existing kinds still fire, and every new drop or conflict is recorded with requiresReview",
+   "pass": true,
+   "evidence": {
+    "f7aStitcherSuite": "31/31 pass (tests/contract-model/f7a-shard-planner-stitcher.test.ts)",
+    "newKindsExercised": [
+     "CONTEXTUAL_UNOWNED_DEFINITION",
+     "DEFINITION_ATTRIBUTION_AMBIGUOUS",
+     "DEFINITION_ATTRIBUTION_CONFLICT"
+    ],
+    "provenBy": "synthetic matrix cases B, D, E, G, H",
+    "realRunCollisions": {
+     "before": {},
+     "after": {}
+    }
+   }
+  },
+  {
+   "n": 12,
+   "criterion": "The synthetic safety matrix A-J passes in full",
+   "pass": true
+  },
+  {
+   "n": 13,
+   "criterion": "The frozen 36-shard plan, shard ids and shard hashes are unchanged",
+   "pass": true
+  },
+  {
+   "n": 14,
+   "criterion": "The regression failing set is identical to the starting SHA (no new failures)",
+   "pass": true
+  },
+  {
+   "n": 15,
+   "criterion": "No false completeness: Pass C still reports the 68 unexecuted-shard material items as missing",
+   "pass": true
+  },
+  {
+   "n": 16,
+   "criterion": "Zero paid model calls and zero cost",
+   "pass": true
+  }
+ ],
+ "passed": 16,
+ "total": 16,
+ "verdict": "F7B_STAGE1_READY_FOR_COMPLETION",
+ "verdictBasis": "All 16 pre-registered points pass. The single trust defect this mission was scoped to close (an unanchored definition retained by SHARD_FIRST_UNIT) is closed with an affirmative proof for every retained definition, the frozen plan and the paid evidence are untouched, and nothing else in the stitched IR moved.",
+ "scopeNotExecuted": [
+  "the remaining 31 shards",
+  "any rerun of the five paid shards",
+  "any whole-Chewy rerun",
+  "Phase 4"
+ ],
+ "note": "Point 11 is proven synthetically, not by the real five-shard re-stitch: in that run every emitted definition earned a proof, so no drop or ambiguity path fired. The real run proves the positive side of the invariant; the matrix proves the negative side."
+}

@@ -1,0 +1,41 @@
+{
+  "artifact": "05 - F-5 Pass A instability: implementation trace and proven root cause",
+  "startingSha": "01a69147629e720fba51ef8c743e62fc52c7e257",
+  "frozenEvidence": {
+    "run1": "tests/fixtures/unseen-packages/phase-3-validation-chwy-paid-run/unit-6.08.json compile.frozenInventory (288 items, INVENTORY_COVERAGE_GAP, 68 unaccounted stretches)",
+    "run2": "same file, inventoryRun2 (307 items, INVENTORY_COVERAGE_GAP, 75 unaccounted stretches)",
+    "identicalInput": "both runs consumed the SAME resolved source context object (one OPERATIVE region, 38,529 chars, COMPLETE_LOCAL_SOURCE, 12 unresolved references)",
+    "telemetry": { "run1FirstPass": { "inputTokens": 19192, "outputTokens": 107880, "costUsd": 1.117 }, "run1Gap": { "inputTokens": 19023, "outputTokens": 76972, "costUsd": 0.808 }, "run2FirstPass": { "inputTokens": 19192, "outputTokens": 96154, "costUsd": 1.0 }, "run2Gap": { "inputTokens": 18942, "outputTokens": 86269, "costUsd": 0.901 }, "note": "one ~19k-token input produced ~100k output tokens per pass: the model composes a very long, free-form decomposition of the whole unit in a single response" }
+  },
+  "originalMetrics": { "run1Items": 288, "run2Items": 307, "strictStability": 0.1948, "semanticStability": 0.4477, "criticalMaterialStability": 0.4573, "materialOnlyRun1": 99, "materialOnlyRun2": 121, "reproducedBy": "scripts/f5-align-runs.py (01-frozen-metrics.json) - identical numbers to docs/phase-3-validation/12-pass-a-stability.json" },
+  "additionalMetrics": { "sourceSpanCoverageStability": 0.9013, "quantitativeComponentStability": 1.0, "quantitativeComponentAtSamePositionStability": 1.0, "conditionExceptionStability": 0.496, "dependencyXrefStability": 0.2727, "dependencyTermsAtPositionStability": 0.2297, "intraRunDuplicatePairs": { "run1": 34, "run2": 38 }, "duplicateRate": { "run1": 0.1181, "run2": 0.1238 }, "unaccountedSourceStability": 0.4933 },
+  "decomposition": {
+    "runOnlyItemsClassified": 401,
+    "identicalPairs": 97,
+    "countsByClass": { "A_IDENTITY_INSTABILITY": 40, "B_GRANULARITY_INSTABILITY": 233, "C_BOUNDARY_INSTABILITY": 0, "D_ROLE_INSTABILITY": 46, "E_MATERIALITY_INSTABILITY": 0, "F_TRUE_SEMANTIC_OMISSION": 22, "G_TRUE_SEMANTIC_ADDITION": 0, "H_DEPENDENCY_FRAGMENTATION": 60, "I_OTHER": 0 },
+    "bySeverity": { "material": 393, "nonMaterial": 8 },
+    "omissions": { "total": 22, "disclosedByOtherRunsCoverageGap": 17, "marginallyTouched": 5, "notDisclosed": 0 },
+    "intraRunDuplicates": { "run1": 34, "run2": 38, "classifiedAs": "G (invented/duplicated semantics) - counted separately from the cross-run classes" },
+    "reading": "Both runs covered the same source (span-coverage stability 0.90) and every quantitative value (1.0). 95% of run-only items are the SAME semantics chopped differently: granularity (58%), dependency fragmentation (15%), role relabels (11%), boundary/identity drift (10%). True omissions are 5% and every one is disclosed by the other run's coverage gap - trust safety held, as the validation reported."
+  },
+  "implementationTrace": {
+    "sourceUnitConstruction": "source-context.ts resolveSourceContext: one OPERATIVE region for the anchored section (extended to its unit boundary) + cross-reference expansion regions. Deterministic. Not a cause.",
+    "sourceSegmentation": "NONE before the model call at v3: the whole 38k unit is one user message. Segmentation exists only AFTER the call, inside source-coverage.ts (independent segments, coordination boundaries, child descent) to decide what is accounted. Cause #1 (freedom).",
+    "modelPrompt": "prompt.ts v3: 'one item per atomic proposition' with no boundary the model must respect - atomicity is the model's own judgment over the whole unit, decided afresh each run. Cause #1/#5.",
+    "outputSchema": "wire-schema.ts: flat item with model-chosen excerpt (<= 400 chars), role, values, refs, parentRef. The excerpt boundary is a model degree of freedom that then becomes identity. Cause #4.",
+    "itemGeneration": "inventory.ts normalizeInventorySubmission v3: excerpt located verbatim (anti-hallucination gate), values completed deterministically. Sound; not a cause.",
+    "itemIds": "v3 computeInventoryItemId = hash(candidateRef, role, regionId, charStart, charEnd, values): the model's excerpt boundaries ARE the identity, so two excerpts of one proposition starting a few words apart are two ids (class A, 40 items) and the model's proposition wording never contributes - correct - but nothing canonical anchors the id either. Cause #4.",
+    "sourceSpans": "verified, exact - not a cause.",
+    "gapPass": "v3: ONE second call over the run-specific UNACCOUNTED fragments (128 in run 1, 133 in run 2), i.e. over text whose boundaries depend on what the first pass happened to cover. Half of every run's items came from this pass (144 of 288; 137 of 307), anchored to run-specific fragment boundaries. Cause #2 (nondeterministic segmentation of the gap input).",
+    "reconciliation": "Pass C is downstream; not a cause.",
+    "duplicateHandling": "v3 rejects only EXACT id collisions; 34/38 intra-run same-role >= 90% overlaps survived as separate items (12% duplicate rate). Cause #6 (no canonicalization).",
+    "materialityAssignment": "model-assigned; class E instability measured at 0 between the runs - not a cause.",
+    "coverageGate": "deterministic, run-independent for a given item set; produced the disclosure that kept trust safety intact. Not a cause."
+  },
+  "dominantRootCause": {
+    "verdict": "1 + 2 + 4 + 6 combined: one model call had unbounded freedom to decompose a 38k-character unit (the source imposed no boundaries), the gap pass then re-inventoried run-specific fragments, item identity hashed the model's own excerpt boundaries, and no deterministic canonicalization merged same-proposition wordings.",
+    "notSufficientAlone": "identity re-keying alone (02-identity-scheme-experiment.json): the best deterministic canonical key over the frozen items lifts strict stability only to 0.38-0.41 (segment/slot keys) or 0.52 with 39-49 false merges per run (node keys) - the residual 60% is the model's decomposition itself, which no post-processing can reconcile. 'LLMs are nondeterministic' is not the mechanism; the mechanism is that the architecture handed the model the boundary decision.",
+    "evidenceThatBoundariesArePartOfTheProblem": "class B (233) + H (60) + D (46) all describe the same text carved into different item sets; span-coverage stability 0.90 shows the carving, not the coverage, moved."
+  },
+  "invariantAdopted": "The SOURCE defines the inventory boundaries (deterministic slots from the structural node hierarchy and independent structural segments); the MODEL interprets semantics within them; identity is anchored to the slot, never to the model's excerpt boundary or wording."
+}

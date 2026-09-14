@@ -1,0 +1,87 @@
+{
+ "artifact": "F-7B.1 §22 primary success test - owned material across the same 5 shards (the REAL rerun is authoritative; offline decoded historical outputs are not used here)",
+ "ownedMaterialTotal": 28,
+ "representedFromPerShard": 23,
+ "dispositionedAllItemsPerShard": 3,
+ "missingPerShard": 2,
+ "globalPassCOverAll108": {
+  "represented": 37,
+  "dispositioned": 3,
+  "missing": 68,
+  "total": 108,
+  "note": "108 - the 31 shards outside Stage 1 are NOT executed, so their 80 material items are MISSING by construction"
+ },
+ "stage1Accounted": 26,
+ "stage1AccountabilityRate": 0.9286,
+ "originalF7BStage1": {
+  "represented": 0,
+  "dispositioned": 0,
+  "missing": 28,
+  "rate": 0
+ },
+ "perShard": [
+  {
+   "shardId": "shard:1c29e71eef1717d4f9e1",
+   "material": 11,
+   "represented": 9,
+   "dispositioned": 2,
+   "missing": 0,
+   "byDisposition": {
+    "REPRESENTED": 9,
+    "INTENTIONALLY_NON_COMPUTATIONAL": 1,
+    "UNSUPPORTED": 1
+   },
+   "valuesRepresented": 14,
+   "valuesMissing": 0
+  },
+  {
+   "shardId": "shard:bf3da01cb454860cdf5f",
+   "material": 8,
+   "represented": 6,
+   "dispositioned": 1,
+   "missing": 1,
+   "byDisposition": {
+    "REPRESENTED": 6,
+    "MISSING_FROM_COMPOSITION": 1,
+    "UNSUPPORTED": 1
+   },
+   "valuesRepresented": 9,
+   "valuesMissing": 1
+  },
+  {
+   "shardId": "shard:aac727054a5da5f1a9fd",
+   "material": 0,
+   "represented": 0,
+   "dispositioned": 0,
+   "missing": 0,
+   "byDisposition": {},
+   "valuesRepresented": 0,
+   "valuesMissing": 0
+  },
+  {
+   "shardId": "shard:4f06625557e9aecbbb7a",
+   "material": 6,
+   "represented": 5,
+   "dispositioned": 0,
+   "missing": 1,
+   "byDisposition": {
+    "MISSING_FROM_COMPOSITION": 1,
+    "REPRESENTED": 5
+   },
+   "valuesRepresented": 8,
+   "valuesMissing": 1
+  },
+  {
+   "shardId": "shard:3e3910ea2efd9edd45a3",
+   "material": 3,
+   "represented": 3,
+   "dispositioned": 0,
+   "missing": 0,
+   "byDisposition": {
+    "REPRESENTED": 3
+   },
+   "valuesRepresented": 4,
+   "valuesMissing": 0
+  }
+ ]
+}

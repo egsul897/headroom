@@ -1,0 +1,106 @@
+{
+ "artifact": "F-5.3B freeze manifest + E1 baseline reproduction (0 model calls)",
+ "mode": "baseline",
+ "gitSha": "9addb29e3ccc1102c1f64a66f55663da965734fc",
+ "startingSha": "9addb29e3ccc1102c1f64a66f55663da965734fc",
+ "hashes": {
+  "ensembleTs": "74c184a44cb871bc6acbeece31fc2d30a309392f6a2b46887a0436c6f33fefab",
+  "typesTs": "53efaedb76d7538a660d160aa9320d34afb2997e290156633b7149bacffbc964",
+  "inventoryTs": "bebb28fa4e79d51240de6cbd82f5d943330c50455a159606668a322745e042c7",
+  "slotsTs": "3b6d8a5e78cff528ccfb8b71f0ab21c023ec1bd46d3b9265a0a9cd8ad04ca67c",
+  "semanticFunctionsTs": "ebd54796670bb0ae6e6499464cfd1c347a0bc5073c504ec0ca7d0bf398ea92a3",
+  "sourceCoverageTs": "7c0c3e0e7272d50596ade36716f5fcac4856ecf04d6158495baf71a96ad7f5f2",
+  "promptTs": "92a8834ac5458aac6984cf77a717671a48e638e05193822ba26d11bd3f0aa3ec",
+  "wireSchemaTs": "fbacd5309f20e622a1011e45284aa3ac76758b97e4313bbb50a6cdc6f4bfbdbc",
+  "runA": "59b5a267e24b8fadd5c9e7be6a8a31a8ace97936c125a8f0bb320aa95c4fd24c",
+  "runB": "f7f7ad18b8839fe8e41d269e1efb24a621de061684beb578578c11f27d9e9b77",
+  "pair": "384e3595ea702dccb21dddeb902245434a21a10bfc4f039f85924e72ddc7c7e1",
+  "ledger": "9cb0d8136111513ec0d5287585015c9ab6f14d067d6f796f1d761326a96a466f",
+  "e1F53A": "3573ce0865a0a127618387b3915b1e6bd166d49cee48b17b3879173bb4f49d71",
+  "f53aEvaluation": "f24b62b84f695ddd01be02595413a7786bf7afd47a24af230571768080e276c3",
+  "f53aFinalSummary": "87fa0bd6ec299dcc60b9722563c7a450760f82ad606eea5c5794925a4f86d2b3",
+  "chewySource": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+  "frozenUnit608": "fc147145c2db7df77bfb7122b8442d3fe21f5645b5c4782b791ffa942c8b750c",
+  "humanReference": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036",
+  "canonicalScorer": "87fb312348f13dc1c4e42ba89eccee23e2ab2cc8ed915d6f9a0e87a0de4eb062",
+  "legacyScorer": "1ff775b54aa91e967e4339ce7c193f559073e667627e9df74f70164e8bd18988",
+  "referenceScorer": "dc9658c24a173df6d93aadc732c6426705f14cd3e48850656ac920347f667c1b",
+  "originalF5Summary": "ce5b7c29c8cf9f4c132446d3079996a7d6b44e5236333c3a24c87a083395ac98",
+  "f52aFCases": "2122a774beb0dc6452c312d4e1d0749ccedc831ed45993de626027c3c5b0d578",
+  "f52aBHCases": "55d09ec0f235b197ab366322db220aa7ed062b916cb6f058601d1d1483a0ab39"
+ },
+ "partition": {
+  "slots": 335,
+  "methods": {
+   "operative": "STRUCTURAL_NODES"
+  },
+  "unitChars": 38529,
+  "regions": 1,
+  "state": "COMPLETE_LOCAL_SOURCE",
+  "anchor": {
+   "nodeId": "structural-node:e8ca06925feddf727f99129b",
+   "charStart": 659042,
+   "charEnd": 697571
+  }
+ },
+ "versions": {
+  "accountabilityAlgorithm": "semantic-accountability.v5",
+  "inventoryPrompt": "semantic-inventory-prompt.v5",
+  "runA": {
+   "algorithm": "semantic-accountability.v5",
+   "prompt": "semantic-inventory-prompt.v5",
+   "provider": "VERCEL_AI_GATEWAY",
+   "model": "anthropic/claude-sonnet-5",
+   "hash": "b406e85b809d89eb79f51241c8ff2645afce60e36a9a410988edc88c1cba38c4",
+   "items": 352
+  },
+  "runB": {
+   "algorithm": "semantic-accountability.v5",
+   "prompt": "semantic-inventory-prompt.v5",
+   "provider": "VERCEL_AI_GATEWAY",
+   "model": "anthropic/claude-sonnet-5",
+   "hash": "9cfb29d4ec404553e8bde7c3c2e2d537d42ba10b1e429f133b2f3524bb0da9d7",
+   "items": 326
+  }
+ },
+ "originalF5Thresholds": {
+  "criticalMaterialSemanticStability": 0.85,
+  "semanticStability": 0.8,
+  "dangerousSilentOmissions": 0,
+  "referenceRecall": "no material degradation vs frozen baseline (1.0)"
+ },
+ "e1": {
+  "expected": {
+   "canonicalItems": 396,
+   "corroborated": 282,
+   "singleRun": 114,
+   "materialSingleRun": 112,
+   "conflicted": 0,
+   "unaccountedSource": 19,
+   "frozenContentHash": "6f648e724520fdc9071c93d80860a5dbb37b5c03f9ae939a16ce2983b3e6d8ed"
+  },
+  "observed": {
+   "canonicalItems": 396,
+   "corroborated": 282,
+   "singleRun": 114,
+   "materialSingleRun": 112,
+   "conflicted": 0,
+   "unaccountedSource": 19,
+   "frozenContentHash": "6f648e724520fdc9071c93d80860a5dbb37b5c03f9ae939a16ce2983b3e6d8ed"
+  },
+  "mismatches": [],
+  "reproduced": true,
+  "orderIndependent": true,
+  "algorithmVersion": "semantic-accountability.v5+semantic-ensemble.v1",
+  "supportReviewRequired": true,
+  "supportReviewFraction": 0.2828,
+  "singleRunByPass": {
+   "pass-1": 70,
+   "pass-2": 44
+  },
+  "accountedCharFraction": 0.9947,
+  "uninventoriedValues": 0,
+  "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+  "compatibility": null
+ }
+}

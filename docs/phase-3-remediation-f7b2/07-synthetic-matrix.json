@@ -1,0 +1,87 @@
+{
+ "artifact": "F-7B.2 \u00a720 - the synthetic safety matrix A-J (zero model calls, generic synthetic text only)",
+ "at": "2026-09-14T16:11:54.279757Z",
+ "file": "tests/contract-model/f7b2-definition-source-anchor.test.ts",
+ "total": 16,
+ "passed": 16,
+ "failed": 0,
+ "matrix": {
+  "A": "nested definition declared inside the shard's own unit is anchored to the ENCLOSING owned unit, with no new planner unit",
+  "B": "a definition reachable only through read-only context can never be owned - dropped and recorded",
+  "C": "a term owned by another shard's planner unit stays with its owner - the non-owner copy is contextual",
+  "D": "two declarations of one term in owned source is an explicit ambiguity, never a first match",
+  "E": "a quoted term with no definitional grammar, and a bare capitalized mention, are not definitions",
+  "F": "owned inventory lineage alone still retains a definition (no locator needed)",
+  "G": "term-unit and lineage disagreeing is surfaced as a conflict; the term-unit proof wins by precedence",
+  "H": "dropping an unowned definition leaves no dangling reference, and the drop is visible for review",
+  "I": "the same nested definition emitted twice with identical content yields one authoritative copy",
+  "J": "the same nested definition emitted twice with different content is an explicit conflict",
+  "\u00a75": "SHARD_FIRST_UNIT is absent from the definition attribution path; every retained definition carries one of the three proof classes"
+ },
+ "cases": [
+  {
+   "case": "F-7B.2 \u00a720 A - a nested definition declared inside the shard's own unit is anchored, not guessed retains the nested definition and attributes it to the ENCLOSING owned unit, with a real source anchor",
+   "status": "passed"
+  },
+  {
+   "case": "F-7B.2 \u00a720 A - a nested definition declared inside the shard's own unit is anchored, not guessed creates no planner unit for the nested term - the frozen plan is untouched",
+   "status": "passed"
+  },
+  {
+   "case": "F-7B.2 \u00a720 A - a nested definition declared inside the shard's own unit is anchored, not guessed publishes the anchor as stitcher/audit metadata, never inside the IR definition object",
+   "status": "passed"
+  },
+  {
+   "case": "F-7B.2 \u00a720 B - a definition seen only in read-only context can never be owned drops it, records CONTEXTUAL_UNOWNED_DEFINITION or non-owner emission, and never credits the emitting shard",
+   "status": "passed"
+  },
+  {
+   "case": "F-7B.2 \u00a720 B - a definition seen only in read-only context can never be owned the locator refuses it too: the term is not declared in the emitting shard's owned source",
+   "status": "passed"
+  },
+  {
+   "case": "F-7B.2 \u00a720 C - a term owned by another shard's planner unit stays with its owner keeps only the owner's copy; the non-owner copy is a contextual emission",
+   "status": "passed"
+  },
+  {
+   "case": "F-7B.2 \u00a720 D - two declarations of the same term in owned source is an ambiguity, never a first match drops the emission and raises an explicit review collision naming both candidates",
+   "status": "passed"
+  },
+  {
+   "case": "F-7B.2 \u00a720 E - a mention of a term is not a definition of it refuses both: a quoted term with no definitional grammar, and a bare capitalized mention",
+   "status": "passed"
+  },
+  {
+   "case": "F-7B.2 \u00a720 F - owned inventory lineage alone still retains a definition (no locator needed) attributes it by lineage to the unit that owns the cited inventory item",
+   "status": "passed"
+  },
+  {
+   "case": "F-7B.2 \u00a720 G - term unit and lineage disagreeing is surfaced, never silently reconciled uses the term-unit proof (precedence) and records an explicit conflict for review",
+   "status": "passed"
+  },
+  {
+   "case": "F-7B.2 \u00a720 H - dropping an unowned definition leaves no dangling reference behind keeps the owned definition and its by-name reference intact, with zero dangling id references",
+   "status": "passed"
+  },
+  {
+   "case": "F-7B.2 \u00a720 H - dropping an unowned definition leaves no dangling reference behind does not report completeness it cannot prove: the dropped emission is visible for review",
+   "status": "passed"
+  },
+  {
+   "case": "F-7B.2 \u00a720 I - the same nested definition emitted twice with identical content yields one authoritative copy keeps exactly one and marks the duplicate as consistent, not as a conflict",
+   "status": "passed"
+  },
+  {
+   "case": "F-7B.2 \u00a720 J - the same nested definition emitted twice with different content is an explicit conflict keeps one copy, flags DEFINITION_CONFLICT for review and never silently reconciles the two",
+   "status": "passed"
+  },
+  {
+   "case": "F-7B.2 \u00a75 - the SHARD_FIRST_UNIT fallback no longer exists for definitions is absent from the stitcher's definition path",
+   "status": "passed"
+  },
+  {
+   "case": "F-7B.2 \u00a75 - the SHARD_FIRST_UNIT fallback no longer exists for definitions every retained definition in every case above carries at least one of the three proof classes",
+   "status": "passed"
+  }
+ ]
+}

@@ -1,0 +1,760 @@
+{
+ "artifact": "F-3 section 7 - recorded Chewy 6.08 verifier findings replayed BEFORE/AFTER (0 model calls)",
+ "replayed": 28,
+ "byClassification": {
+  "CANNOT_REPLAY": 4,
+  "TRUE_DISCREPANCY": 16,
+  "F3_SCALE_ARTIFACT_FIXED": 6,
+  "DIFFERENT_ROOT_CAUSE": 2
+ },
+ "materialBefore": 25,
+ "materialAfter": 19,
+ "deterministicBefore": 24,
+ "deterministicAfter": 18,
+ "newFindingsIntroducedAfter": [],
+ "incorrectlySuppressed": [],
+ "suppressionCheck": "every F3_SCALE_ARTIFACT_FIXED row is a $720.0 million source figure (or its IR MONEY(720000000, USD) counterpart) whose canonical USD magnitude now equals the compiled literal - no finding was removed for any other reason",
+ "rows": [
+  {
+   "findingId": "bf00d23a6608ceb5ab8fcd2047447fc6cc456cc0e2f2eacd086fbbbf6e18e915",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severityBefore": "MATERIAL",
+   "method": "SEMANTIC_ONLY",
+   "irPath": "definitions[2] (termName: Threshold Amount).calculationExpression",
+   "sourceEvidence": "\"(c) Indebtedness individually having an aggregate principal amount which is below the Threshold Amo",
+   "rawSourceValue": null,
+   "sourceSpan": null,
+   "compilerCanonical": null,
+   "verifierBefore": null,
+   "verifierAfter": null,
+   "beforeVerdict": "MATERIAL (recorded, Layer 2 model)",
+   "afterVerdict": "retained as recorded (not regenerable without a model call)",
+   "classification": "CANNOT_REPLAY",
+   "note": "SEMANTIC_ONLY finding; not F-3-attributed; unchanged by this fix"
+  },
+  {
+   "findingId": "debeb1e7a51a2327f6095ce040efb8e4ef8a80342b6812c227584997f14434ef",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severityBefore": "MATERIAL",
+   "method": "SEMANTIC_ONLY",
+   "irPath": "rules[0].entityScope / entityScopeExcluded (and this pattern repeats across essentially every rule in the IR)",
+   "sourceEvidence": "\"The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:\" ... and, se",
+   "rawSourceValue": null,
+   "sourceSpan": null,
+   "compilerCanonical": null,
+   "verifierBefore": null,
+   "verifierAfter": null,
+   "beforeVerdict": "MATERIAL (recorded, Layer 2 model)",
+   "afterVerdict": "retained as recorded (not regenerable without a model call)",
+   "classification": "CANNOT_REPLAY",
+   "note": "SEMANTIC_ONLY finding; not F-3-attributed; unchanged by this fix"
+  },
+  {
+   "findingId": "64d9e1ac0ffca6aed787661eb8f624ea0b7a33ce14374019548c8d0275e16c60",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severityBefore": "MATERIAL",
+   "method": "SEMANTIC_ONLY",
+   "irPath": "rules[18] (sourceSectionRef 6.08(b)(18)).capacityExpression",
+   "sourceEvidence": "\"(18) the distribution, by dividend or otherwise, or other transfer or disposition of shares of Capi",
+   "rawSourceValue": null,
+   "sourceSpan": null,
+   "compilerCanonical": null,
+   "verifierBefore": null,
+   "verifierAfter": null,
+   "beforeVerdict": "MATERIAL (recorded, Layer 2 model)",
+   "afterVerdict": "retained as recorded (not regenerable without a model call)",
+   "classification": "CANNOT_REPLAY",
+   "note": "SEMANTIC_ONLY finding; not F-3-attributed; unchanged by this fix"
+  },
+  {
+   "findingId": "dfc070b91ea395a30d9cb5dd4c1b8a8d1c4f10734fba12d5c51254c6eb7ab7c2",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severityBefore": "UNCERTAIN",
+   "method": "SEMANTIC_ONLY",
+   "irPath": "definitions[5] (Available Amount).calculationExpression (the resolved MAX node for clause (a), exprId ir-expr:7c9a478627966a15126184bc)",
+   "sourceEvidence": "\"...(which amounts under clauses (x), (y) and (z) shall, in each case, be calculated on a Pro Forma ",
+   "rawSourceValue": null,
+   "sourceSpan": null,
+   "compilerCanonical": null,
+   "verifierBefore": null,
+   "verifierAfter": null,
+   "beforeVerdict": "UNCERTAIN (recorded, Layer 2 model)",
+   "afterVerdict": "retained as recorded (not regenerable without a model call)",
+   "classification": "CANNOT_REPLAY",
+   "note": "SEMANTIC_ONLY finding; not F-3-attributed; unchanged by this fix"
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "$540.0 million",
+   "rawSourceValue": "$540.0 million",
+   "sourceSpan": [
+    [
+     9958,
+     9972
+    ]
+   ],
+   "compilerCanonical": [
+    324000000,
+    720000000
+   ],
+   "verifierBefore": [
+    540
+   ],
+   "verifierAfter": [
+    540000000
+   ],
+   "beforeVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "afterVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "classification": "TRUE_DISCREPANCY",
+   "note": "canonical source figure genuinely absent from the compiled IR (compile PARTIAL - IR composition, not scale); left open",
+   "sharedFindingIdNote": "recorded finding id is shared by every finding of this type/citation (identity excludes the value)",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "$252.0 million",
+   "rawSourceValue": "$252.0 million",
+   "sourceSpan": [
+    [
+     14875,
+     14889
+    ]
+   ],
+   "compilerCanonical": [
+    324000000,
+    720000000
+   ],
+   "verifierBefore": [
+    252
+   ],
+   "verifierAfter": [
+    252000000
+   ],
+   "beforeVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "afterVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "classification": "TRUE_DISCREPANCY",
+   "note": "canonical source figure genuinely absent from the compiled IR (compile PARTIAL - IR composition, not scale); left open",
+   "sharedFindingIdNote": "recorded finding id is shared by every finding of this type/citation (identity excludes the value)",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "$504.0 million",
+   "rawSourceValue": "$504.0 million",
+   "sourceSpan": [
+    [
+     15541,
+     15555
+    ]
+   ],
+   "compilerCanonical": [
+    324000000,
+    720000000
+   ],
+   "verifierBefore": [
+    504
+   ],
+   "verifierAfter": [
+    504000000
+   ],
+   "beforeVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "afterVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "classification": "TRUE_DISCREPANCY",
+   "note": "canonical source figure genuinely absent from the compiled IR (compile PARTIAL - IR composition, not scale); left open",
+   "sharedFindingIdNote": "recorded finding id is shared by every finding of this type/citation (identity excludes the value)",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "$720.0 million",
+   "rawSourceValue": "$720.0 million",
+   "sourceSpan": [
+    [
+     24095,
+     24109
+    ],
+    [
+     25636,
+     25650
+    ],
+    [
+     33508,
+     33522
+    ]
+   ],
+   "compilerCanonical": [
+    324000000,
+    720000000
+   ],
+   "verifierBefore": [
+    720
+   ],
+   "verifierAfter": [
+    720000000
+   ],
+   "beforeVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR, NOT_ACCOUNTED_FOR, NOT_ACCOUNTED_FOR)",
+   "afterVerdict": "no finding for this value (ACCOUNTED_FOR, ACCOUNTED_FOR, ACCOUNTED_FOR)",
+   "classification": "F3_SCALE_ARTIFACT_FIXED",
+   "note": "verifier-side scale resolved; source canonical now equals the compiler's MONEY literal in the same currency (USD)",
+   "sharedFindingIdNote": "recorded finding id is shared by every finding of this type/citation (identity excludes the value)",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "$720.0 million",
+   "rawSourceValue": "$720.0 million",
+   "sourceSpan": [
+    [
+     24095,
+     24109
+    ],
+    [
+     25636,
+     25650
+    ],
+    [
+     33508,
+     33522
+    ]
+   ],
+   "compilerCanonical": [
+    324000000,
+    720000000
+   ],
+   "verifierBefore": [
+    720
+   ],
+   "verifierAfter": [
+    720000000
+   ],
+   "beforeVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR, NOT_ACCOUNTED_FOR, NOT_ACCOUNTED_FOR)",
+   "afterVerdict": "no finding for this value (ACCOUNTED_FOR, ACCOUNTED_FOR, ACCOUNTED_FOR)",
+   "classification": "F3_SCALE_ARTIFACT_FIXED",
+   "note": "verifier-side scale resolved; source canonical now equals the compiler's MONEY literal in the same currency (USD)",
+   "sharedFindingIdNote": "recorded finding id is shared by every finding of this type/citation (identity excludes the value)",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "$720.0 million",
+   "rawSourceValue": "$720.0 million",
+   "sourceSpan": [
+    [
+     24095,
+     24109
+    ],
+    [
+     25636,
+     25650
+    ],
+    [
+     33508,
+     33522
+    ]
+   ],
+   "compilerCanonical": [
+    324000000,
+    720000000
+   ],
+   "verifierBefore": [
+    720
+   ],
+   "verifierAfter": [
+    720000000
+   ],
+   "beforeVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR, NOT_ACCOUNTED_FOR, NOT_ACCOUNTED_FOR)",
+   "afterVerdict": "no finding for this value (ACCOUNTED_FOR, ACCOUNTED_FOR, ACCOUNTED_FOR)",
+   "classification": "F3_SCALE_ARTIFACT_FIXED",
+   "note": "verifier-side scale resolved; source canonical now equals the compiler's MONEY literal in the same currency (USD)",
+   "sharedFindingIdNote": "recorded finding id is shared by every finding of this type/citation (identity excludes the value)",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "50%",
+   "rawSourceValue": "50%",
+   "sourceSpan": [
+    [
+     3576,
+     3579
+    ]
+   ],
+   "compilerCanonical": [
+    0.45,
+    1
+   ],
+   "verifierBefore": [
+    0.5
+   ],
+   "verifierAfter": [
+    0.5
+   ],
+   "beforeVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "afterVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "classification": "TRUE_DISCREPANCY",
+   "note": "canonical source figure genuinely absent from the compiled IR (compile PARTIAL - IR composition, not scale); left open",
+   "sharedFindingIdNote": "recorded finding id is shared by every finding of this type/citation (identity excludes the value)",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "140%",
+   "rawSourceValue": "140%",
+   "sourceSpan": [
+    [
+     4570,
+     4574
+    ]
+   ],
+   "compilerCanonical": [
+    0.45,
+    1
+   ],
+   "verifierBefore": [
+    1.4
+   ],
+   "verifierAfter": [
+    1.4
+   ],
+   "beforeVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "afterVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "classification": "TRUE_DISCREPANCY",
+   "note": "canonical source figure genuinely absent from the compiled IR (compile PARTIAL - IR composition, not scale); left open",
+   "sharedFindingIdNote": "recorded finding id is shared by every finding of this type/citation (identity excludes the value)",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "75%",
+   "rawSourceValue": "75%",
+   "sourceSpan": [
+    [
+     9981,
+     9984
+    ]
+   ],
+   "compilerCanonical": [
+    0.45,
+    1
+   ],
+   "verifierBefore": [
+    0.75
+   ],
+   "verifierAfter": [
+    0.75
+   ],
+   "beforeVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "afterVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "classification": "TRUE_DISCREPANCY",
+   "note": "canonical source figure genuinely absent from the compiled IR (compile PARTIAL - IR composition, not scale); left open",
+   "sharedFindingIdNote": "recorded finding id is shared by every finding of this type/citation (identity excludes the value)",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "35%",
+   "rawSourceValue": "35%",
+   "sourceSpan": [
+    [
+     14898,
+     14901
+    ]
+   ],
+   "compilerCanonical": [
+    0.45,
+    1
+   ],
+   "verifierBefore": [
+    0.35
+   ],
+   "verifierAfter": [
+    0.35
+   ],
+   "beforeVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "afterVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "classification": "TRUE_DISCREPANCY",
+   "note": "canonical source figure genuinely absent from the compiled IR (compile PARTIAL - IR composition, not scale); left open",
+   "sharedFindingIdNote": "recorded finding id is shared by every finding of this type/citation (identity excludes the value)",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "70.0%",
+   "rawSourceValue": "70.0%",
+   "sourceSpan": [
+    [
+     15564,
+     15569
+    ]
+   ],
+   "compilerCanonical": [
+    0.45,
+    1
+   ],
+   "verifierBefore": [
+    0.7
+   ],
+   "verifierAfter": [
+    0.7
+   ],
+   "beforeVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "afterVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "classification": "TRUE_DISCREPANCY",
+   "note": "canonical source figure genuinely absent from the compiled IR (compile PARTIAL - IR composition, not scale); left open",
+   "sharedFindingIdNote": "recorded finding id is shared by every finding of this type/citation (identity excludes the value)",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "6.0%",
+   "rawSourceValue": "6.0%",
+   "sourceSpan": [
+    [
+     21154,
+     21158
+    ]
+   ],
+   "compilerCanonical": [
+    0.45,
+    1
+   ],
+   "verifierBefore": [
+    0.06
+   ],
+   "verifierAfter": [
+    0.06
+   ],
+   "beforeVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "afterVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "classification": "TRUE_DISCREPANCY",
+   "note": "canonical source figure genuinely absent from the compiled IR (compile PARTIAL - IR composition, not scale); left open",
+   "sharedFindingIdNote": "recorded finding id is shared by every finding of this type/citation (identity excludes the value)",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "0fabbf4924b118f976a6840930d54e74b313f46b6f84c8faa53ae326ac666bed",
+   "findingType": "MISSING_BASKET",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "7.0%",
+   "rawSourceValue": "7.0%",
+   "sourceSpan": [
+    [
+     21579,
+     21583
+    ]
+   ],
+   "compilerCanonical": [
+    0.45,
+    1
+   ],
+   "verifierBefore": [
+    0.07
+   ],
+   "verifierAfter": [
+    0.07
+   ],
+   "beforeVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "afterVerdict": "MATERIAL MISSING_BASKET (NOT_ACCOUNTED_FOR)",
+   "classification": "TRUE_DISCREPANCY",
+   "note": "canonical source figure genuinely absent from the compiled IR (compile PARTIAL - IR composition, not scale); left open",
+   "sharedFindingIdNote": "recorded finding id is shared by every finding of this type/citation (identity excludes the value)",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "findingType": "MISSING_RULE",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "2.00:1.00",
+   "rawSourceValue": "2.00:1.00",
+   "sourceSpan": [
+    [
+     23136,
+     23145
+    ]
+   ],
+   "compilerCanonical": [],
+   "verifierBefore": [
+    2
+   ],
+   "verifierAfter": [
+    2
+   ],
+   "beforeVerdict": "MATERIAL MISSING_RULE (NOT_ACCOUNTED_FOR)",
+   "afterVerdict": "MATERIAL MISSING_RULE (NOT_ACCOUNTED_FOR)",
+   "classification": "TRUE_DISCREPANCY",
+   "note": "canonical source figure genuinely absent from the compiled IR (compile PARTIAL - IR composition, not scale); left open",
+   "sharedFindingIdNote": "recorded finding id is shared by every finding of this type/citation (identity excludes the value)",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "findingType": "MISSING_RULE",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "1.75:1.00",
+   "rawSourceValue": "1.75:1.00",
+   "sourceSpan": [
+    [
+     23344,
+     23353
+    ],
+    [
+     34692,
+     34701
+    ]
+   ],
+   "compilerCanonical": [],
+   "verifierBefore": [
+    1.75
+   ],
+   "verifierAfter": [
+    1.75
+   ],
+   "beforeVerdict": "MATERIAL MISSING_RULE (NOT_ACCOUNTED_FOR, NOT_ACCOUNTED_FOR)",
+   "afterVerdict": "MATERIAL MISSING_RULE (NOT_ACCOUNTED_FOR, NOT_ACCOUNTED_FOR)",
+   "classification": "TRUE_DISCREPANCY",
+   "note": "canonical source figure genuinely absent from the compiled IR (compile PARTIAL - IR composition, not scale); left open",
+   "sharedFindingIdNote": "recorded finding id is shared by every finding of this type/citation (identity excludes the value)",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "findingType": "MISSING_RULE",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "2.00x",
+   "rawSourceValue": "2.00x",
+   "sourceSpan": [
+    [
+     34488,
+     34493
+    ]
+   ],
+   "compilerCanonical": [],
+   "verifierBefore": [
+    2
+   ],
+   "verifierAfter": [
+    2
+   ],
+   "beforeVerdict": "MATERIAL MISSING_RULE (NOT_ACCOUNTED_FOR)",
+   "afterVerdict": "MATERIAL MISSING_RULE (NOT_ACCOUNTED_FOR)",
+   "classification": "TRUE_DISCREPANCY",
+   "note": "canonical source figure genuinely absent from the compiled IR (compile PARTIAL - IR composition, not scale); left open",
+   "sharedFindingIdNote": "recorded finding id is shared by every finding of this type/citation (identity excludes the value)",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "4730bbf057f79e0ec230d6ae520db1116fe8257f9225460cef55ede2a3376f0c",
+   "findingType": "MISSING_RULE",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "1.75:1.00",
+   "rawSourceValue": "1.75:1.00",
+   "sourceSpan": [
+    [
+     23344,
+     23353
+    ],
+    [
+     34692,
+     34701
+    ]
+   ],
+   "compilerCanonical": [],
+   "verifierBefore": [
+    1.75
+   ],
+   "verifierAfter": [
+    1.75
+   ],
+   "beforeVerdict": "MATERIAL MISSING_RULE (NOT_ACCOUNTED_FOR, NOT_ACCOUNTED_FOR)",
+   "afterVerdict": "MATERIAL MISSING_RULE (NOT_ACCOUNTED_FOR, NOT_ACCOUNTED_FOR)",
+   "classification": "TRUE_DISCREPANCY",
+   "note": "canonical source figure genuinely absent from the compiled IR (compile PARTIAL - IR composition, not scale); left open",
+   "sharedFindingIdNote": "recorded finding id is shared by every finding of this type/citation (identity excludes the value)",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "61df4151ac445a45d60a7f2357246f15d8b1331bc253003140476d0b8734984b",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": "rules[15].capacityExpression.operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+   "rawSourceValue": "(none in verifier window)",
+   "sourceSpan": null,
+   "compilerCanonical": 720000000.0,
+   "verifierBefore": "no source figure equal to the IR value",
+   "verifierAfter": "a scaled source figure now resolves to this canonical value",
+   "beforeVerdict": "MATERIAL UNSUPPORTED_IR_ADDITION (IR_ONLY)",
+   "afterVerdict": "no finding (ACCOUNTED_FOR by the matching source figure)",
+   "classification": "F3_SCALE_ARTIFACT_FIXED",
+   "note": "",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "b29f3c195fb467ec9b1304ddc3d41a08e6dd7bc232cfe4d63c1ba717758701bd",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": "rules[18].capacityExpression.operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+   "rawSourceValue": "(none in verifier window)",
+   "sourceSpan": null,
+   "compilerCanonical": 720000000.0,
+   "verifierBefore": "no source figure equal to the IR value",
+   "verifierAfter": "a scaled source figure now resolves to this canonical value",
+   "beforeVerdict": "MATERIAL UNSUPPORTED_IR_ADDITION (IR_ONLY)",
+   "afterVerdict": "no finding (ACCOUNTED_FOR by the matching source figure)",
+   "classification": "F3_SCALE_ARTIFACT_FIXED",
+   "note": "",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "42ea9754fc75d64ee40a3a3540951f9df5c73e264432ff2bdbd16efd968eeb55",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": "rules[25].capacityExpression.operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+   "rawSourceValue": "(none in verifier window)",
+   "sourceSpan": null,
+   "compilerCanonical": 720000000.0,
+   "verifierBefore": "no source figure equal to the IR value",
+   "verifierAfter": "a scaled source figure now resolves to this canonical value",
+   "beforeVerdict": "MATERIAL UNSUPPORTED_IR_ADDITION (IR_ONLY)",
+   "afterVerdict": "no finding (ACCOUNTED_FOR by the matching source figure)",
+   "classification": "F3_SCALE_ARTIFACT_FIXED",
+   "note": "",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "844f0a36f675e721815f0b9249d7c8967f7d342e398a4dd309025cf0eba5aca7",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": "definitions[2].calculationExpression.operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+   "rawSourceValue": "(none in verifier window)",
+   "sourceSpan": null,
+   "compilerCanonical": 324000000.0,
+   "verifierBefore": "no source figure equal to the IR value",
+   "verifierAfter": "still no source figure equal to the IR value",
+   "beforeVerdict": "MATERIAL UNSUPPORTED_IR_ADDITION (IR_ONLY)",
+   "afterVerdict": "MATERIAL UNSUPPORTED_IR_ADDITION (IR_ONLY)",
+   "classification": "DIFFERENT_ROOT_CAUSE",
+   "note": "IR figure sits in a definition the compiler retrieved from outside the verifier's operative window (old report: Threshold Amount definition never given in the supplied section) - F-4 verifier tool-retrieval provenance, left open",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "c75b8e97b3d7ff939b81acf03721dcd51688f4e77ce62e7774537af30ca40241",
+   "findingType": "UNSUPPORTED_IR_ADDITION",
+   "severityBefore": "MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": "definitions[2].calculationExpression.operands[1].operands[0]",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+   "rawSourceValue": "(none in verifier window)",
+   "sourceSpan": null,
+   "compilerCanonical": 0.45,
+   "verifierBefore": "no source figure equal to the IR value",
+   "verifierAfter": "still no source figure equal to the IR value",
+   "beforeVerdict": "MATERIAL UNSUPPORTED_IR_ADDITION (IR_ONLY)",
+   "afterVerdict": "MATERIAL UNSUPPORTED_IR_ADDITION (IR_ONLY)",
+   "classification": "DIFFERENT_ROOT_CAUSE",
+   "note": "IR figure sits in a definition the compiler retrieved from outside the verifier's operative window (old report: Threshold Amount definition never given in the supplied section) - F-4 verifier tool-retrieval provenance, left open",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "036538e7a3bb253bc175f08ef0796b8a2b79a7ffba4466d16f1223a291f7d427",
+   "findingType": "WRONG_ENTITY_SCOPE",
+   "severityBefore": "NON_MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+   "rawSourceValue": null,
+   "sourceSpan": null,
+   "compilerCanonical": null,
+   "verifierBefore": null,
+   "verifierAfter": null,
+   "beforeVerdict": "NON_MATERIAL WRONG_ENTITY_SCOPE",
+   "afterVerdict": "same",
+   "classification": "TRUE_DISCREPANCY",
+   "note": "aggregate structural signal, not a numeric comparison",
+   "reproducedBefore": true
+  },
+  {
+   "findingId": "d040cc39bc75feb31918694cff828bbc6025e78c569713504bc285f417038401",
+   "findingType": "MISSING_RECLASSIFICATION",
+   "severityBefore": "NON_MATERIAL",
+   "method": "DETERMINISTIC_ONLY",
+   "irPath": null,
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative ",
+   "rawSourceValue": null,
+   "sourceSpan": null,
+   "compilerCanonical": null,
+   "verifierBefore": null,
+   "verifierAfter": null,
+   "beforeVerdict": "NON_MATERIAL MISSING_RECLASSIFICATION",
+   "afterVerdict": "same",
+   "classification": "TRUE_DISCREPANCY",
+   "note": "aggregate structural signal, not a numeric comparison",
+   "reproducedBefore": true
+  }
+ ]
+}

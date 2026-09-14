@@ -1,0 +1,2867 @@
+{
+ "artifact": "F-7B §1 frozen Chewy 1.01 shard plan (regenerated at the starting SHA; identical to F-7A 02 by planHash)",
+ "gitSha": "8b6bd445ae56bb6d66406706d76b45a83ac690be",
+ "planHash": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+ "algorithmVersion": "semantic-compilation-shards.v1",
+ "candidateRef": "phase-3-validation:chwy:1.01",
+ "frozenContentHash": "9e5ec23580d3bbf3b5a69fdd932b6874caec1a14c0e3ef1e6e203dda07258e34",
+ "budget": {
+  "targetPrimaryChars": 12000,
+  "maxPrimaryChars": 24000,
+  "maxContextChars": 10000,
+  "maxContextEntryChars": 1800,
+  "maxUnitsPerShard": 16
+ },
+ "derivation": {
+  "operative": "STRUCTURAL_DEFINITIONS"
+ },
+ "ownershipProof": {
+  "materialItems": 108,
+  "ownedOnce": 108,
+  "unowned": 0,
+  "multiplyOwned": 0
+ },
+ "totals": {
+  "shardCount": 36,
+  "primaryChars": 353523,
+  "contextChars": 57651,
+  "contextDuplicationChars": 49835,
+  "estimatedInputTokens": 804892,
+  "maxShardInputTokens": 30562,
+  "medianShardInputTokens": 22297,
+  "p95ShardInputTokens": 26673,
+  "maxShardOutputTokens": 41500,
+  "largestShardPrimaryChars": 26695,
+  "largestShardOwnedItems": 11,
+  "largestShardUnits": 16,
+  "oversizedShards": 1
+ },
+ "units": 380,
+ "mustLinkGroups": 0,
+ "shards": [
+  {
+   "ordinal": 0,
+   "shardId": "shard:2866a115c3a6d5cc2089",
+   "shardHash": "761693f3812b6d466cf90519f5fe515843bb68e3ea8e4ab7e5a760ba40d5b85a",
+   "ownedUnitKeys": [
+    "operative:LEAD_IN:lead-in",
+    "operative:DEFINITION:def:abl credit agreement",
+    "operative:DEFINITION:def:abl facility",
+    "operative:DEFINITION:def:abl intercreditor agreement",
+    "operative:DEFINITION:def:abl lenders",
+    "operative:DEFINITION:def:abl loan documents",
+    "operative:DEFINITION:def:abl loans",
+    "operative:DEFINITION:def:abl obligations",
+    "operative:DEFINITION:def:abl priority collateral",
+    "operative:DEFINITION:def:acquired ebitda",
+    "operative:DEFINITION:def:acquired indebtedness",
+    "operative:DEFINITION:def:additional lender",
+    "operative:DEFINITION:def:administrative agent",
+    "operative:DEFINITION:def:administrative questionnaire",
+    "operative:DEFINITION:def:affected financial institution",
+    "operative:DEFINITION:def:affiliate"
+   ],
+   "primaryCharStart": 0,
+   "primaryCharEnd": 7965,
+   "primaryChars": 7965,
+   "ownedItemIds": [
+    "inv-item:8a953f95ff6074675676bca4",
+    "inv-item:8957e8458cb9520914b3c3a5",
+    "inv-item:b6398b40817eb1345662b64b",
+    "inv-item:f2fbeda4d086b76bb0a52659"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:8a953f95ff6074675676bca4",
+    "inv-item:8957e8458cb9520914b3c3a5",
+    "inv-item:b6398b40817eb1345662b64b",
+    "inv-item:f2fbeda4d086b76bb0a52659"
+   ],
+   "context": [],
+   "contextChars": 0,
+   "unresolvedContext": [
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "collateral agent",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Collateral Agent\" in document doc-a",
+     "requiredBy": [
+      "inv-item:f2fbeda4d086b76bb0a52659"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "9.03",
+     "reason": "AMBIGUOUS",
+     "detail": "section Section 9.03 matches 2 physical locations",
+     "requiredBy": [
+      "inv-item:f2fbeda4d086b76bb0a52659"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "articleviii",
+     "reason": "NOT_FOUND",
+     "detail": "section Article VIII not found in document doc-a",
+     "requiredBy": [
+      "inv-item:f2fbeda4d086b76bb0a52659"
+     ]
+    }
+   ],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 7965,
+    "contextChars": 0,
+    "inventoryRenderedChars": 1495,
+    "fixedOverheadChars": 43806,
+    "totalChars": 53266,
+    "inputTokens": 21078,
+    "outputTokens": 39000
+   },
+   "renderedFirstTurn": {
+    "chars": 62765,
+    "tokens": 24837,
+    "system": 25228,
+    "user": 21457,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 1,
+   "shardId": "shard:b934f8ceb0d79b5cfe57",
+   "shardHash": "a517905c1e378aff65e60c3ee6022befd80a20511f1c4617e936f80611eb6ce6",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:affiliated debt fund",
+    "operative:DEFINITION:def:affiliated lender",
+    "operative:DEFINITION:def:agent",
+    "operative:DEFINITION:def:agents",
+    "operative:DEFINITION:def:agreement",
+    "operative:DEFINITION:def:ahydo payment",
+    "operative:DEFINITION:def:alternate base rate",
+    "operative:DEFINITION:def:alternative currency",
+    "operative:DEFINITION:def:alternative currency term benchmark rate",
+    "operative:DEFINITION:def:applicable account",
+    "operative:DEFINITION:def:applicable rate",
+    "operative:DEFINITION:def:approved electronic communications",
+    "operative:DEFINITION:def:approved fund"
+   ],
+   "primaryCharStart": 7965,
+   "primaryCharEnd": 15639,
+   "primaryChars": 7674,
+   "ownedItemIds": [
+    "inv-item:ae5c57afe8712d40aadf87ac",
+    "inv-item:8bb012a92dfa4cffe16f6f80",
+    "inv-item:158017c882aa62f82bde49c5",
+    "inv-item:9f3e806f6ec4b3fe09940054",
+    "inv-item:327d0ed0c6e13b3fd6e0fe71",
+    "inv-item:b70ddb9b1e45a1d6cea28109",
+    "inv-item:98a2a63931fda612ac6a57a0"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:ae5c57afe8712d40aadf87ac",
+    "inv-item:8bb012a92dfa4cffe16f6f80",
+    "inv-item:158017c882aa62f82bde49c5",
+    "inv-item:9f3e806f6ec4b3fe09940054",
+    "inv-item:327d0ed0c6e13b3fd6e0fe71",
+    "inv-item:b70ddb9b1e45a1d6cea28109",
+    "inv-item:98a2a63931fda612ac6a57a0"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:initial term loans",
+     "ownerShardId": "shard:30d337feeef5ba80d66b",
+     "chars": 68,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:nyfrb rate",
+     "ownerShardId": "shard:2804206d37b6f769705a",
+     "chars": 358,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:prime rate",
+     "ownerShardId": "shard:3e3910ea2efd9edd45a3",
+     "chars": 711,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:term sofr rate",
+     "ownerShardId": "shard:50e26ec2fb25035a3b7b",
+     "chars": 547,
+     "truncated": false
+    }
+   ],
+   "contextChars": 1909,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 7674,
+    "contextChars": 1909,
+    "inventoryRenderedChars": 1989,
+    "fixedOverheadChars": 43806,
+    "totalChars": 55378,
+    "inputTokens": 21914,
+    "outputTokens": 34000
+   },
+   "renderedFirstTurn": {
+    "chars": 64429,
+    "tokens": 25495,
+    "system": 25228,
+    "user": 23121,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 2,
+   "shardId": "shard:1c29e71eef1717d4f9e1",
+   "shardHash": "85cd3fe537a3657f61009c524910ba6bac773fc01343a89fdfc31b58025d6f06",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:asset sale",
+    "operative:DEFINITION:def:assignment and assumption",
+    "operative:DEFINITION:def:available investment capacity amount"
+   ],
+   "primaryCharStart": 15639,
+   "primaryCharEnd": 26811,
+   "primaryChars": 11172,
+   "ownedItemIds": [
+    "inv-item:35c05a2ca9eb56a348d86140",
+    "inv-item:5281d5a9dec8ef6bab146dcf",
+    "inv-item:5fe0262251331def71b6c2ac",
+    "inv-item:039a4062eeadde709d445ab2",
+    "inv-item:48d84e6f6c1e29b3a13334a0",
+    "inv-item:685b10fc530db466e82be9e6",
+    "inv-item:139265f3eef57f0e3038aa70",
+    "inv-item:0b92716dbe2d2e42555bf6ea",
+    "inv-item:edfec62d509cb6078460fe25",
+    "inv-item:c3f0b1cde49d0388ead4506a",
+    "inv-item:c081b7907f1d12ed28484634"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:35c05a2ca9eb56a348d86140",
+    "inv-item:5281d5a9dec8ef6bab146dcf",
+    "inv-item:5fe0262251331def71b6c2ac",
+    "inv-item:039a4062eeadde709d445ab2",
+    "inv-item:48d84e6f6c1e29b3a13334a0",
+    "inv-item:685b10fc530db466e82be9e6",
+    "inv-item:139265f3eef57f0e3038aa70",
+    "inv-item:0b92716dbe2d2e42555bf6ea",
+    "inv-item:edfec62d509cb6078460fe25",
+    "inv-item:c3f0b1cde49d0388ead4506a",
+    "inv-item:c081b7907f1d12ed28484634"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:consolidated ebitda",
+     "ownerShardId": "shard:87f08272567db019c17b",
+     "chars": 1800,
+     "truncated": true
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:first lien leverage ratio",
+     "ownerShardId": "shard:bf3da01cb454860cdf5f",
+     "chars": 308,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:initial term loans",
+     "ownerShardId": "shard:30d337feeef5ba80d66b",
+     "chars": 68,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:interest coverage ratio",
+     "ownerShardId": "shard:a45ccfe3d94f990e5348",
+     "chars": 848,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:permitted investments",
+     "ownerShardId": "shard:f048973d2e9a58498b81",
+     "chars": 1800,
+     "truncated": true
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:test period",
+     "ownerShardId": "shard:50e26ec2fb25035a3b7b",
+     "chars": 579,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "contextKey": "section:6.08(b)(26)",
+     "ownerShardId": null,
+     "chars": 107,
+     "truncated": false
+    }
+   ],
+   "contextChars": 5735,
+   "unresolvedContext": [
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "restricted payments",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Restricted Payments\" in document doc-a",
+     "requiredBy": [
+      "inv-item:c3f0b1cde49d0388ead4506a"
+     ]
+    }
+   ],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 11172,
+    "contextChars": 5735,
+    "inventoryRenderedChars": 4531,
+    "fixedOverheadChars": 43806,
+    "totalChars": 65244,
+    "inputTokens": 25818,
+    "outputTokens": 9000
+   },
+   "renderedFirstTurn": {
+    "chars": 74575,
+    "tokens": 29510,
+    "system": 25228,
+    "user": 33267,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 3,
+   "shardId": "shard:4c30ced71fe038991b4b",
+   "shardHash": "ec01142d97abc7e224d2afd46f64343a9692f6d4fd22bfb8561060f9388dcfb8",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:available rp capacity amount",
+    "operative:DEFINITION:def:available tenor",
+    "operative:DEFINITION:def:bail-in action",
+    "operative:DEFINITION:def:bail-in legislation",
+    "operative:DEFINITION:def:basel iii",
+    "operative:DEFINITION:def:benchmark",
+    "operative:DEFINITION:def:benchmark~2",
+    "operative:DEFINITION:def:benchmark replacement",
+    "operative:DEFINITION:def:benchmark replacement conforming changes",
+    "operative:DEFINITION:def:benchmark replacement date",
+    "operative:DEFINITION:def:benchmark transition event"
+   ],
+   "primaryCharStart": 26811,
+   "primaryCharEnd": 38615,
+   "primaryChars": 11804,
+   "ownedItemIds": [
+    "inv-item:83fff234181c1d313477265d",
+    "inv-item:c8481fd7d7368bd1dde37b3d"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:83fff234181c1d313477265d"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:eea member country",
+     "ownerShardId": "shard:4d114bdf00429cf670f8",
+     "chars": 111,
+     "truncated": false
+    }
+   ],
+   "contextChars": 336,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 11804,
+    "contextChars": 336,
+    "inventoryRenderedChars": 781,
+    "fixedOverheadChars": 43806,
+    "totalChars": 56727,
+    "inputTokens": 22447,
+    "outputTokens": 29000
+   },
+   "renderedFirstTurn": {
+    "chars": 63207,
+    "tokens": 25012,
+    "system": 25228,
+    "user": 21899,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 4,
+   "shardId": "shard:9dae67b10a1cb8ab8e61",
+   "shardHash": "482d471bf9fe47f279ff4e4b51c1533fa549e9c4f8e000c1fb46e1a5a1d1a2c7",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:benchmark unavailability period",
+    "operative:DEFINITION:def:benefit plan",
+    "operative:DEFINITION:def:board of directors",
+    "operative:DEFINITION:def:board of governors",
+    "operative:DEFINITION:def:borrowing",
+    "operative:DEFINITION:def:borrowing minimum",
+    "operative:DEFINITION:def:borrowing multiple",
+    "operative:DEFINITION:def:borrowing request",
+    "operative:DEFINITION:def:business day",
+    "operative:DEFINITION:def:calculation period",
+    "operative:DEFINITION:def:canadian prime rate",
+    "operative:DEFINITION:def:capital expenditures",
+    "operative:DEFINITION:def:capital stock",
+    "operative:DEFINITION:def:capitalized lease obligation",
+    "operative:DEFINITION:def:capitalized leases",
+    "operative:DEFINITION:def:capitalized software expenditures"
+   ],
+   "primaryCharStart": 38615,
+   "primaryCharEnd": 47918,
+   "primaryChars": 9303,
+   "ownedItemIds": [
+    "inv-item:b92eb911ab5d8bbf5ff8a73f",
+    "inv-item:5ce96983b21dd809446ed45e",
+    "inv-item:c2fb1041230e9905e39b04b3",
+    "inv-item:2f7b694dd336d169f74df263",
+    "inv-item:16a88e8856dca75a54339505",
+    "inv-item:d2bf132cbd8e771395922191"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:b92eb911ab5d8bbf5ff8a73f",
+    "inv-item:5ce96983b21dd809446ed45e",
+    "inv-item:c2fb1041230e9905e39b04b3",
+    "inv-item:2f7b694dd336d169f74df263",
+    "inv-item:16a88e8856dca75a54339505",
+    "inv-item:d2bf132cbd8e771395922191"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    }
+   ],
+   "contextChars": 225,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 9303,
+    "contextChars": 225,
+    "inventoryRenderedChars": 2116,
+    "fixedOverheadChars": 43806,
+    "totalChars": 55450,
+    "inputTokens": 21942,
+    "outputTokens": 41500
+   },
+   "renderedFirstTurn": {
+    "chars": 61259,
+    "tokens": 24241,
+    "system": 25228,
+    "user": 19951,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 5,
+   "shardId": "shard:c68b6e6e275414f90c39",
+   "shardHash": "de7b889487ab225e5d7f253498249cc6440e3a2e2f248e63b5585f4bb905e90c",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:cash equivalents",
+    "operative:DEFINITION:def:cash management obligations",
+    "operative:DEFINITION:def:cash management services",
+    "operative:DEFINITION:def:central bank rate",
+    "operative:DEFINITION:def:cfc",
+    "operative:DEFINITION:def:change in law"
+   ],
+   "primaryCharStart": 47918,
+   "primaryCharEnd": 56773,
+   "primaryChars": 8855,
+   "ownedItemIds": [
+    "inv-item:ef6290ba17af109cb88f0cd8",
+    "inv-item:c2d70438daa8f136d0f51bee",
+    "inv-item:ba7383560e2c813dfc980543",
+    "inv-item:067b0e5b8c71122b70e681f1",
+    "inv-item:83b525efbf2987a57fcafd95",
+    "inv-item:b0222599546fcdec46da748e"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:ef6290ba17af109cb88f0cd8",
+    "inv-item:c2d70438daa8f136d0f51bee",
+    "inv-item:ba7383560e2c813dfc980543",
+    "inv-item:067b0e5b8c71122b70e681f1",
+    "inv-item:83b525efbf2987a57fcafd95",
+    "inv-item:b0222599546fcdec46da748e"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    }
+   ],
+   "contextChars": 225,
+   "unresolvedContext": [
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "approved bank",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Approved Bank\" in document doc-a",
+     "requiredBy": [
+      "inv-item:ef6290ba17af109cb88f0cd8",
+      "inv-item:c2d70438daa8f136d0f51bee"
+     ]
+    }
+   ],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 8855,
+    "contextChars": 225,
+    "inventoryRenderedChars": 2315,
+    "fixedOverheadChars": 43806,
+    "totalChars": 55201,
+    "inputTokens": 21844,
+    "outputTokens": 16500
+   },
+   "renderedFirstTurn": {
+    "chars": 58031,
+    "tokens": 22963,
+    "system": 25228,
+    "user": 16723,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 6,
+   "shardId": "shard:ec1aea485db261059c14",
+   "shardHash": "34dbec9a9ca679af4271beef75f259e723cbfc5656749e58724a67ea523dbb0c",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:change of control",
+    "operative:DEFINITION:def:cme term sofr administrator",
+    "operative:DEFINITION:def:code",
+    "operative:DEFINITION:def:collateral",
+    "operative:DEFINITION:def:collateral agreement"
+   ],
+   "primaryCharStart": 56773,
+   "primaryCharEnd": 61943,
+   "primaryChars": 5170,
+   "ownedItemIds": [
+    "inv-item:b98884032f56f138865d3687"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:b98884032f56f138865d3687"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:permitted holder",
+     "ownerShardId": "shard:8b21b0018e4a6cedd585",
+     "chars": 814,
+     "truncated": false
+    }
+   ],
+   "contextChars": 1039,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 5170,
+    "contextChars": 1039,
+    "inventoryRenderedChars": 447,
+    "fixedOverheadChars": 43806,
+    "totalChars": 50462,
+    "inputTokens": 19968,
+    "outputTokens": 14000
+   },
+   "renderedFirstTurn": {
+    "chars": 55450,
+    "tokens": 21942,
+    "system": 25228,
+    "user": 14142,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 7,
+   "shardId": "shard:5f63d11e8ce53e883d6a",
+   "shardHash": "04b49f6f59cb8dad0b489729ee201aa3d0b74e593c6538c67c843a84bf3eb77d",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:collateral and guarantee requirement",
+    "operative:DEFINITION:def:commitment",
+    "operative:DEFINITION:def:commodity exchange act",
+    "operative:DEFINITION:def:compliance certificate"
+   ],
+   "primaryCharStart": 61943,
+   "primaryCharEnd": 70202,
+   "primaryChars": 8259,
+   "ownedItemIds": [
+    "inv-item:bf8f525080fd6d67c82aaa26",
+    "inv-item:037dfb0c800d20443ad9a148",
+    "inv-item:da380a7f6cb3b44da88f708c"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:bf8f525080fd6d67c82aaa26",
+    "inv-item:037dfb0c800d20443ad9a148",
+    "inv-item:da380a7f6cb3b44da88f708c"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:collateral agreement",
+     "ownerShardId": "shard:ec1aea485db261059c14",
+     "chars": 151,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:excluded subsidiary",
+     "ownerShardId": "shard:d2efbf609b9828839ddf",
+     "chars": 1800,
+     "truncated": true
+    }
+   ],
+   "contextChars": 2176,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 8259,
+    "contextChars": 2176,
+    "inventoryRenderedChars": 1433,
+    "fixedOverheadChars": 43806,
+    "totalChars": 55674,
+    "inputTokens": 22031,
+    "outputTokens": 11500
+   },
+   "renderedFirstTurn": {
+    "chars": 62252,
+    "tokens": 24634,
+    "system": 25228,
+    "user": 20944,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 8,
+   "shardId": "shard:87f08272567db019c17b",
+   "shardHash": "539e715598ac4b8f6b4e992b4414a3af27583e1f8b08be0c0fdf32d41b74113e",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:consolidated ebitda"
+   ],
+   "primaryCharStart": 70202,
+   "primaryCharEnd": 90377,
+   "primaryChars": 20175,
+   "ownedItemIds": [
+    "inv-item:30e65e4a2e01a1770fa4efc0",
+    "inv-item:259833ee6d36bb9e9b7fb8e8",
+    "inv-item:adea7c0c177b413e95fc2ab0",
+    "inv-item:bb05010156962d7fb9143cde",
+    "inv-item:79f678aba3fa1caa910d15ad"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:30e65e4a2e01a1770fa4efc0",
+    "inv-item:259833ee6d36bb9e9b7fb8e8",
+    "inv-item:adea7c0c177b413e95fc2ab0",
+    "inv-item:bb05010156962d7fb9143cde",
+    "inv-item:79f678aba3fa1caa910d15ad"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:letter of intent transactions",
+     "ownerShardId": "shard:aac727054a5da5f1a9fd",
+     "chars": 313,
+     "truncated": false
+    }
+   ],
+   "contextChars": 538,
+   "unresolvedContext": [
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "expected run rate benefit",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Expected Run Rate Benefit\" in document doc-a",
+     "requiredBy": [
+      "inv-item:adea7c0c177b413e95fc2ab0"
+     ]
+    }
+   ],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 20175,
+    "contextChars": 538,
+    "inventoryRenderedChars": 2321,
+    "fixedOverheadChars": 43806,
+    "totalChars": 66840,
+    "inputTokens": 26449,
+    "outputTokens": 4000
+   },
+   "renderedFirstTurn": {
+    "chars": 72120,
+    "tokens": 28538,
+    "system": 25228,
+    "user": 30812,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 9,
+   "shardId": "shard:fc841e0f175ddcab1ccd",
+   "shardHash": "48fc56978d7c7d7117cdc2b6f4795304ec702f3235bca199a4bf7be889943581",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:consolidated first lien debt",
+    "operative:DEFINITION:def:consolidated interest expense"
+   ],
+   "primaryCharStart": 90377,
+   "primaryCharEnd": 93745,
+   "primaryChars": 3368,
+   "ownedItemIds": [],
+   "ownedMaterialItemIds": [],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    }
+   ],
+   "contextChars": 225,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 3368,
+    "contextChars": 225,
+    "inventoryRenderedChars": 0,
+    "fixedOverheadChars": 43806,
+    "totalChars": 47399,
+    "inputTokens": 18756,
+    "outputTokens": 6500
+   },
+   "renderedFirstTurn": {
+    "chars": 47673,
+    "tokens": 18865,
+    "system": 25228,
+    "user": 6365,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 10,
+   "shardId": "shard:86eec078e4ee957898ac",
+   "shardHash": "44699221ab9197fea3a6efc01ca08530a352675313de3e47cc32c4d42be892d3",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:consolidated net income"
+   ],
+   "primaryCharStart": 93745,
+   "primaryCharEnd": 105148,
+   "primaryChars": 11403,
+   "ownedItemIds": [
+    "inv-item:ed673fb9ff17da07a38bafc1",
+    "inv-item:a2ea94db3d1186d37f8030f9"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:ed673fb9ff17da07a38bafc1",
+    "inv-item:a2ea94db3d1186d37f8030f9"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "contextKey": "section:6.08(a)(3)",
+     "ownerShardId": null,
+     "chars": 542,
+     "truncated": false
+    }
+   ],
+   "contextChars": 767,
+   "unresolvedContext": [
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "available amount",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Available Amount\" in document doc-a",
+     "requiredBy": [
+      "inv-item:a2ea94db3d1186d37f8030f9"
+     ]
+    }
+   ],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 11403,
+    "contextChars": 767,
+    "inventoryRenderedChars": 1074,
+    "fixedOverheadChars": 43806,
+    "totalChars": 57050,
+    "inputTokens": 22575,
+    "outputTokens": 4000
+   },
+   "renderedFirstTurn": {
+    "chars": 59863,
+    "tokens": 23688,
+    "system": 25228,
+    "user": 18555,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 11,
+   "shardId": "shard:e3ddb1887d6b8499929a",
+   "shardHash": "5abb0fef127e861eb31ccdac3a9b3f638d515658777915f9cbde032e5a1ce30f",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:consolidated senior secured debt",
+    "operative:DEFINITION:def:consolidated total debt",
+    "operative:DEFINITION:def:consolidated working capital",
+    "operative:DEFINITION:def:contingent obligations",
+    "operative:DEFINITION:def:control",
+    "operative:DEFINITION:def:controlled investment affiliate",
+    "operative:DEFINITION:def:corra",
+    "operative:DEFINITION:def:corra administrator",
+    "operative:DEFINITION:def:covered entity",
+    "operative:DEFINITION:def:credit agreement refinancing indebtedness",
+    "operative:DEFINITION:def:customary bridge loans",
+    "operative:DEFINITION:def:customary escrow provisions",
+    "operative:DEFINITION:def:customary exceptions"
+   ],
+   "primaryCharStart": 105148,
+   "primaryCharEnd": 116654,
+   "primaryChars": 11506,
+   "ownedItemIds": [
+    "inv-item:4fbeb76b3ff7e0e7bf4f9f18",
+    "inv-item:9f956507175088716bed50e3",
+    "inv-item:508f9c3cece4ebb6c6fed189"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:4fbeb76b3ff7e0e7bf4f9f18",
+    "inv-item:9f956507175088716bed50e3",
+    "inv-item:508f9c3cece4ebb6c6fed189"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:abl credit agreement",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 1037,
+     "truncated": false
+    }
+   ],
+   "contextChars": 1262,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 11506,
+    "contextChars": 1262,
+    "inventoryRenderedChars": 1411,
+    "fixedOverheadChars": 43806,
+    "totalChars": 57985,
+    "inputTokens": 22945,
+    "outputTokens": 34000
+   },
+   "renderedFirstTurn": {
+    "chars": 63698,
+    "tokens": 25206,
+    "system": 25228,
+    "user": 22390,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 12,
+   "shardId": "shard:e43dc65668a775eaca1a",
+   "shardHash": "fd9bcb3a167dc1aac0228b103b6394eb382c4eeb534cbe7065f5970fcdf825b4",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:customary intercreditor agreement",
+    "operative:DEFINITION:def:daily simple rfr",
+    "operative:DEFINITION:def:default",
+    "operative:DEFINITION:def:defaulting lender",
+    "operative:DEFINITION:def:delaware divided llc",
+    "operative:DEFINITION:def:delaware llc",
+    "operative:DEFINITION:def:delaware llc division",
+    "operative:DEFINITION:def:designated non-cash consideration",
+    "operative:DEFINITION:def:designated preferred stock",
+    "operative:DEFINITION:def:disinterested director",
+    "operative:DEFINITION:def:disposed ebitda"
+   ],
+   "primaryCharStart": 116654,
+   "primaryCharEnd": 127785,
+   "primaryChars": 11131,
+   "ownedItemIds": [
+    "inv-item:dd1733449170b90cdeffc810",
+    "inv-item:29c5fc302c916f0ffe29d047",
+    "inv-item:788f5f8206fb51b86ddd877b"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:dd1733449170b90cdeffc810",
+    "inv-item:29c5fc302c916f0ffe29d047",
+    "inv-item:788f5f8206fb51b86ddd877b"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    }
+   ],
+   "contextChars": 225,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 11131,
+    "contextChars": 225,
+    "inventoryRenderedChars": 1282,
+    "fixedOverheadChars": 43806,
+    "totalChars": 56444,
+    "inputTokens": 22335,
+    "outputTokens": 29000
+   },
+   "renderedFirstTurn": {
+    "chars": 62958,
+    "tokens": 24913,
+    "system": 25228,
+    "user": 21650,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 13,
+   "shardId": "shard:4d114bdf00429cf670f8",
+   "shardHash": "6b1825dc93b8db34bcf18b9867cf036f9608d258a7df96e4f99ae30ab53f7af1",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:disposition percentage",
+    "operative:DEFINITION:def:disqualified lenders",
+    "operative:DEFINITION:def:disqualified stock",
+    "operative:DEFINITION:def:dollar amount",
+    "operative:DEFINITION:def:domestic subsidiary",
+    "operative:DEFINITION:def:ecf percentage",
+    "operative:DEFINITION:def:eea financial institution",
+    "operative:DEFINITION:def:eea member country",
+    "operative:DEFINITION:def:eea resolution authority",
+    "operative:DEFINITION:def:effective date",
+    "operative:DEFINITION:def:effective yield",
+    "operative:DEFINITION:def:eligible assignee",
+    "operative:DEFINITION:def:emu legislation"
+   ],
+   "primaryCharStart": 127785,
+   "primaryCharEnd": 139585,
+   "primaryChars": 11800,
+   "ownedItemIds": [
+    "inv-item:bcb1952482c40eeb345a112d",
+    "inv-item:cf64fc7643adb7f35f917e96",
+    "inv-item:6cd88efec2c0749c0e0c0a84",
+    "inv-item:3fd7450fe3af8048b6bfc2a5",
+    "inv-item:4afd9623a2233cadc64b7996",
+    "inv-item:38a65560393a491613f95a11",
+    "inv-item:75bcc64a8677204937a6aab3"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:bcb1952482c40eeb345a112d",
+    "inv-item:cf64fc7643adb7f35f917e96",
+    "inv-item:6cd88efec2c0749c0e0c0a84",
+    "inv-item:3fd7450fe3af8048b6bfc2a5",
+    "inv-item:4afd9623a2233cadc64b7996",
+    "inv-item:38a65560393a491613f95a11",
+    "inv-item:75bcc64a8677204937a6aab3"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:excess cash flow period",
+     "ownerShardId": "shard:d3aac7c869cff4602343",
+     "chars": 358,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:first lien leverage ratio",
+     "ownerShardId": "shard:bf3da01cb454860cdf5f",
+     "chars": 308,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "contextKey": "section:2.09(b)",
+     "ownerShardId": null,
+     "chars": 1083,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "contextKey": "section:2.09(c)",
+     "ownerShardId": null,
+     "chars": 382,
+     "truncated": false
+    }
+   ],
+   "contextChars": 2356,
+   "unresolvedContext": [
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "net proceeds",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Net Proceeds\" in document doc-a",
+     "requiredBy": [
+      "inv-item:bcb1952482c40eeb345a112d"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "6.05(a)(2)(ii)",
+     "reason": "NOT_FOUND",
+     "detail": "section Section 6.05(a)(2)(ii) not found in document doc-a",
+     "requiredBy": [
+      "inv-item:bcb1952482c40eeb345a112d"
+     ]
+    }
+   ],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 11800,
+    "contextChars": 2356,
+    "inventoryRenderedChars": 2522,
+    "fixedOverheadChars": 43806,
+    "totalChars": 60484,
+    "inputTokens": 23934,
+    "outputTokens": 34000
+   },
+   "renderedFirstTurn": {
+    "chars": 67943,
+    "tokens": 26886,
+    "system": 25228,
+    "user": 26635,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 14,
+   "shardId": "shard:845680480624a0f129ec",
+   "shardHash": "ae0cb8ac5ac6fa925034c4b2b909622cff5716d6abc1e15c550d0a595820a5ee",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:environmental laws",
+    "operative:DEFINITION:def:environmental liability",
+    "operative:DEFINITION:def:equity interests",
+    "operative:DEFINITION:def:erisa",
+    "operative:DEFINITION:def:erisa affiliate",
+    "operative:DEFINITION:def:erisa event",
+    "operative:DEFINITION:def:eu bail-in legislation schedule",
+    "operative:DEFINITION:def:euribor rate",
+    "operative:DEFINITION:def:euro"
+   ],
+   "primaryCharStart": 139585,
+   "primaryCharEnd": 144724,
+   "primaryChars": 5139,
+   "ownedItemIds": [
+    "inv-item:de43820c718c23723b0ad061"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:de43820c718c23723b0ad061"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    }
+   ],
+   "contextChars": 225,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 5139,
+    "contextChars": 225,
+    "inventoryRenderedChars": 277,
+    "fixedOverheadChars": 43806,
+    "totalChars": 49447,
+    "inputTokens": 19567,
+    "outputTokens": 24000
+   },
+   "renderedFirstTurn": {
+    "chars": 52244,
+    "tokens": 20673,
+    "system": 25228,
+    "user": 10936,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 15,
+   "shardId": "shard:d3aac7c869cff4602343",
+   "shardHash": "23480ebdb0988850c2b9d04b4f6446160246ef07f812710c98eee8444a5064fb",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:excess cash flow",
+    "operative:DEFINITION:def:excess cash flow interim period",
+    "operative:DEFINITION:def:excess cash flow period",
+    "operative:DEFINITION:def:exchange act"
+   ],
+   "primaryCharStart": 144724,
+   "primaryCharEnd": 154897,
+   "primaryChars": 10173,
+   "ownedItemIds": [
+    "inv-item:bb41010b104c595efbf0a710"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:bb41010b104c595efbf0a710"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "contextKey": "section:5.01(a)",
+     "ownerShardId": null,
+     "chars": 1800,
+     "truncated": true
+    }
+   ],
+   "contextChars": 2025,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 10173,
+    "contextChars": 2025,
+    "inventoryRenderedChars": 472,
+    "fixedOverheadChars": 43806,
+    "totalChars": 56476,
+    "inputTokens": 22348,
+    "outputTokens": 11500
+   },
+   "renderedFirstTurn": {
+    "chars": 60917,
+    "tokens": 24105,
+    "system": 25228,
+    "user": 19609,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 16,
+   "shardId": "shard:d2efbf609b9828839ddf",
+   "shardHash": "28047c2b5b76287a19e71956238a1da948848c873fb944f36fe5f26ddfd7ae05",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:excluded assets",
+    "operative:DEFINITION:def:excluded contribution",
+    "operative:DEFINITION:def:excluded revolving loans",
+    "operative:DEFINITION:def:excluded subsidiary"
+   ],
+   "primaryCharStart": 154897,
+   "primaryCharEnd": 166144,
+   "primaryChars": 11247,
+   "ownedItemIds": [
+    "inv-item:bf087a69a8fd07a277893a35"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:bf087a69a8fd07a277893a35"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:cfc",
+     "ownerShardId": "shard:c68b6e6e275414f90c39",
+     "chars": 95,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:fshco",
+     "ownerShardId": "shard:a8646966da2484b40b97",
+     "chars": 468,
+     "truncated": false
+    }
+   ],
+   "contextChars": 788,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 11247,
+    "contextChars": 788,
+    "inventoryRenderedChars": 506,
+    "fixedOverheadChars": 43806,
+    "totalChars": 56347,
+    "inputTokens": 22297,
+    "outputTokens": 11500
+   },
+   "renderedFirstTurn": {
+    "chars": 61354,
+    "tokens": 24278,
+    "system": 25228,
+    "user": 20046,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 17,
+   "shardId": "shard:bf3da01cb454860cdf5f",
+   "shardHash": "681651c0752343da54ae800cd818a0c263f2a2782d6e1cab8cc313f76cca0702",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:excluded swap obligation",
+    "operative:DEFINITION:def:excluded taxes",
+    "operative:DEFINITION:def:excluded term loans",
+    "operative:DEFINITION:def:existing indebtedness",
+    "operative:DEFINITION:def:extension amount",
+    "operative:DEFINITION:def:facility",
+    "operative:DEFINITION:def:fair market value",
+    "operative:DEFINITION:def:fair value",
+    "operative:DEFINITION:def:fatca",
+    "operative:DEFINITION:def:federal funds effective rate",
+    "operative:DEFINITION:def:fee letter",
+    "operative:DEFINITION:def:financial officer",
+    "operative:DEFINITION:def:first lien intercreditor agreement",
+    "operative:DEFINITION:def:first lien leverage ratio",
+    "operative:DEFINITION:def:fixed charges",
+    "operative:DEFINITION:def:fixed incremental amount"
+   ],
+   "primaryCharStart": 166144,
+   "primaryCharEnd": 176377,
+   "primaryChars": 10233,
+   "ownedItemIds": [
+    "inv-item:7fbbd03edaed55220dea29fe",
+    "inv-item:975d416ed9f098988605b883",
+    "inv-item:dc9d7a4454fd3d2ca39d94d9",
+    "inv-item:eb4c99643218b586dfccf301",
+    "inv-item:9e86ceeb6f2f72225585dbba",
+    "inv-item:cff6aba64520d09fac7ca41f",
+    "inv-item:3a78fe5b5a1e4208a5236ac1",
+    "inv-item:8b28d97d989435401a6d146f"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:7fbbd03edaed55220dea29fe",
+    "inv-item:975d416ed9f098988605b883",
+    "inv-item:dc9d7a4454fd3d2ca39d94d9",
+    "inv-item:eb4c99643218b586dfccf301",
+    "inv-item:9e86ceeb6f2f72225585dbba",
+    "inv-item:cff6aba64520d09fac7ca41f",
+    "inv-item:3a78fe5b5a1e4208a5236ac1",
+    "inv-item:8b28d97d989435401a6d146f"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:available rp capacity amount",
+     "ownerShardId": "shard:4c30ced71fe038991b4b",
+     "chars": 1506,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:consolidated ebitda",
+     "ownerShardId": "shard:87f08272567db019c17b",
+     "chars": 1800,
+     "truncated": true
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:general lien basket reallocated amount",
+     "ownerShardId": "shard:a8646966da2484b40b97",
+     "chars": 467,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:incremental equivalent debt",
+     "ownerShardId": "shard:30d337feeef5ba80d66b",
+     "chars": 1101,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "contextKey": "section:6.01(b)(12)(b)",
+     "ownerShardId": null,
+     "chars": 792,
+     "truncated": false
+    }
+   ],
+   "contextChars": 5891,
+   "unresolvedContext": [
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "incremental facilities",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Incremental Facilities\" in document doc-a",
+     "requiredBy": [
+      "inv-item:8b28d97d989435401a6d146f"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "6.01(b)(1)(z)",
+     "reason": "NOT_FOUND",
+     "detail": "section Section 6.01(b)(1)(Z) not found in document doc-a",
+     "requiredBy": [
+      "inv-item:8b28d97d989435401a6d146f"
+     ]
+    }
+   ],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 10233,
+    "contextChars": 5891,
+    "inventoryRenderedChars": 2792,
+    "fixedOverheadChars": 43806,
+    "totalChars": 62722,
+    "inputTokens": 24820,
+    "outputTokens": 41500
+   },
+   "renderedFirstTurn": {
+    "chars": 74120,
+    "tokens": 29330,
+    "system": 25228,
+    "user": 32812,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 18,
+   "shardId": "shard:a8646966da2484b40b97",
+   "shardHash": "53b8d2efe4987c7441520de6acaddc2a3c11e6b0105658f183209dd5ce646150",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:foreign intellectual property",
+    "operative:DEFINITION:def:foreign subsidiary",
+    "operative:DEFINITION:def:form intercreditor agreements",
+    "operative:DEFINITION:def:fshco",
+    "operative:DEFINITION:def:fund",
+    "operative:DEFINITION:def:funded debt",
+    "operative:DEFINITION:def:gaap",
+    "operative:DEFINITION:def:general lien basket",
+    "operative:DEFINITION:def:general lien basket reallocated amount",
+    "operative:DEFINITION:def:governmental authority",
+    "operative:DEFINITION:def:guarantee agreement",
+    "operative:DEFINITION:def:guarantors",
+    "operative:DEFINITION:def:hazardous materials",
+    "operative:DEFINITION:def:hedging obligations",
+    "operative:DEFINITION:def:ifrs",
+    "operative:DEFINITION:def:immaterial subsidiary"
+   ],
+   "primaryCharStart": 176377,
+   "primaryCharEnd": 186740,
+   "primaryChars": 10363,
+   "ownedItemIds": [
+    "inv-item:23f90acf7c993b980bc60f5f",
+    "inv-item:75a16a473ef4b2ce533ed8ec"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:23f90acf7c993b980bc60f5f",
+    "inv-item:75a16a473ef4b2ce533ed8ec"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "contextKey": "section:1.04(d)",
+     "ownerShardId": null,
+     "chars": 1307,
+     "truncated": false
+    }
+   ],
+   "contextChars": 1532,
+   "unresolvedContext": [
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "accounting change",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Accounting Change\" in document doc-a",
+     "requiredBy": [
+      "inv-item:75a16a473ef4b2ce533ed8ec"
+     ]
+    }
+   ],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 10363,
+    "contextChars": 1532,
+    "inventoryRenderedChars": 718,
+    "fixedOverheadChars": 43806,
+    "totalChars": 56419,
+    "inputTokens": 22325,
+    "outputTokens": 41500
+   },
+   "renderedFirstTurn": {
+    "chars": 62174,
+    "tokens": 24603,
+    "system": 25228,
+    "user": 20866,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 19,
+   "shardId": "shard:30d337feeef5ba80d66b",
+   "shardHash": "7082b8c10ea569669d6a9cffd1e0441cbaaf75ebba85cecf1438122fde05296e",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:immediate family members",
+    "operative:DEFINITION:def:incremental cap",
+    "operative:DEFINITION:def:incremental equivalent debt",
+    "operative:DEFINITION:def:incremental facility",
+    "operative:DEFINITION:def:incremental loans",
+    "operative:DEFINITION:def:incremental revolving commitment",
+    "operative:DEFINITION:def:incremental revolving loans",
+    "operative:DEFINITION:def:incremental term commitment",
+    "operative:DEFINITION:def:incremental term facility",
+    "operative:DEFINITION:def:indebtedness",
+    "operative:DEFINITION:def:indemnified taxes",
+    "operative:DEFINITION:def:independent financial advisor",
+    "operative:DEFINITION:def:initial term commitment",
+    "operative:DEFINITION:def:initial term facility",
+    "operative:DEFINITION:def:initial term loans",
+    "operative:DEFINITION:def:initial term maturity date"
+   ],
+   "primaryCharStart": 186740,
+   "primaryCharEnd": 196757,
+   "primaryChars": 10017,
+   "ownedItemIds": [
+    "inv-item:40586a6671306826e608f73d",
+    "inv-item:c01880c80f5b6269542aae3f",
+    "inv-item:0ae4b1ab0b1d99bdd8194472",
+    "inv-item:8cfa44ae06b19e4ccb8d9436",
+    "inv-item:5f20e4b9abfc727cbdc7d913"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:40586a6671306826e608f73d",
+    "inv-item:c01880c80f5b6269542aae3f",
+    "inv-item:0ae4b1ab0b1d99bdd8194472",
+    "inv-item:8cfa44ae06b19e4ccb8d9436",
+    "inv-item:5f20e4b9abfc727cbdc7d913"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:effective date",
+     "ownerShardId": "shard:4d114bdf00429cf670f8",
+     "chars": 39,
+     "truncated": false
+    }
+   ],
+   "contextChars": 264,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 10017,
+    "contextChars": 264,
+    "inventoryRenderedChars": 1894,
+    "fixedOverheadChars": 43806,
+    "totalChars": 55981,
+    "inputTokens": 22152,
+    "outputTokens": 41500
+   },
+   "renderedFirstTurn": {
+    "chars": 65778,
+    "tokens": 26029,
+    "system": 25228,
+    "user": 24470,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 20,
+   "shardId": "shard:a45ccfe3d94f990e5348",
+   "shardHash": "5e5ca3d1c2758efb0410d916ef84535e2f133be04f81d112f5483326550e0556",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:inside maturity basket",
+    "operative:DEFINITION:def:intercreditor agreements",
+    "operative:DEFINITION:def:interest coverage ratio",
+    "operative:DEFINITION:def:interest election request",
+    "operative:DEFINITION:def:interest payment date",
+    "operative:DEFINITION:def:interest period",
+    "operative:DEFINITION:def:investment grade rating",
+    "operative:DEFINITION:def:investment grade securities",
+    "operative:DEFINITION:def:investments",
+    "operative:DEFINITION:def:investor",
+    "operative:DEFINITION:def:joint venture",
+    "operative:DEFINITION:def:jpmcb",
+    "operative:DEFINITION:def:junior lien priorit y"
+   ],
+   "primaryCharStart": 196757,
+   "primaryCharEnd": 208752,
+   "primaryChars": 11995,
+   "ownedItemIds": [
+    "inv-item:6396192d114e08932ad98306",
+    "inv-item:f93a595866ffe65a56ad9a1c",
+    "inv-item:949cac8849742471ce079d6e",
+    "inv-item:2a8a50bfcaab42c0f874aa77"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:6396192d114e08932ad98306",
+    "inv-item:f93a595866ffe65a56ad9a1c",
+    "inv-item:949cac8849742471ce079d6e",
+    "inv-item:2a8a50bfcaab42c0f874aa77"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:consolidated ebitda",
+     "ownerShardId": "shard:87f08272567db019c17b",
+     "chars": 1800,
+     "truncated": true
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:consolidated interest expense",
+     "ownerShardId": "shard:fc841e0f175ddcab1ccd",
+     "chars": 1800,
+     "truncated": true
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "contextKey": "section:1.08(f)",
+     "ownerShardId": null,
+     "chars": 3,
+     "truncated": false
+    }
+   ],
+   "contextChars": 3828,
+   "unresolvedContext": [
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "fixed amounts",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Fixed Amounts\" in document doc-a",
+     "requiredBy": [
+      "inv-item:2a8a50bfcaab42c0f874aa77"
+     ]
+    }
+   ],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 11995,
+    "contextChars": 3828,
+    "inventoryRenderedChars": 2015,
+    "fixedOverheadChars": 43806,
+    "totalChars": 61644,
+    "inputTokens": 24393,
+    "outputTokens": 34000
+   },
+   "renderedFirstTurn": {
+    "chars": 69665,
+    "tokens": 27567,
+    "system": 25228,
+    "user": 28357,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 21,
+   "shardId": "shard:aac727054a5da5f1a9fd",
+   "shardHash": "9943af75025bd8550567628dd359394b6aba3cbadb767a1f228a30638fef3078",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:junior lien intercreditor agreement",
+    "operative:DEFINITION:def:latest maturity date",
+    "operative:DEFINITION:def:lead arrangers",
+    "operative:DEFINITION:def:lenders",
+    "operative:DEFINITION:def:letter of intent transactions",
+    "operative:DEFINITION:def:liabilities",
+    "operative:DEFINITION:def:lien",
+    "operative:DEFINITION:def:limited condition transaction",
+    "operative:DEFINITION:def:limited originator recourse",
+    "operative:DEFINITION:def:loan document obligations",
+    "operative:DEFINITION:def:loan documents",
+    "operative:DEFINITION:def:loan modification agreement",
+    "operative:DEFINITION:def:loan parties",
+    "operative:DEFINITION:def:loans",
+    "operative:DEFINITION:def:management investors",
+    "operative:DEFINITION:def:market capitalization"
+   ],
+   "primaryCharStart": 208752,
+   "primaryCharEnd": 216329,
+   "primaryChars": 7577,
+   "ownedItemIds": [],
+   "ownedMaterialItemIds": [],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    }
+   ],
+   "contextChars": 225,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 7577,
+    "contextChars": 225,
+    "inventoryRenderedChars": 0,
+    "fixedOverheadChars": 43806,
+    "totalChars": 51608,
+    "inputTokens": 20422,
+    "outputTokens": 41500
+   },
+   "renderedFirstTurn": {
+    "chars": 57682,
+    "tokens": 22825,
+    "system": 25228,
+    "user": 16374,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 22,
+   "shardId": "shard:f3eb63624b7f5a5c3cca",
+   "shardHash": "9917d21e61733319db3c8f1beed79a78ab44f1e440ced3ee8dfafda4d0cc5a40",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:material acquisition",
+    "operative:DEFINITION:def:material adverse effect",
+    "operative:DEFINITION:def:material indebtedness",
+    "operative:DEFINITION:def:material intellectual property",
+    "operative:DEFINITION:def:material subsidiary",
+    "operative:DEFINITION:def:maturity date",
+    "operative:DEFINITION:def:maturity exception facility",
+    "operative:DEFINITION:def:model",
+    "operative:DEFINITION:def:moody ’ s",
+    "operative:DEFINITION:def:multiemployer plan",
+    "operative:DEFINITION:def:non-cash compensation expense",
+    "operative:DEFINITION:def:non-loan party subsidiary",
+    "operative:DEFINITION:def:not otherwise applied",
+    "operative:DEFINITION:def:notice of additional guarantor",
+    "operative:DEFINITION:def:numerical permission",
+    "operative:DEFINITION:def:nyfrb"
+   ],
+   "primaryCharStart": 216329,
+   "primaryCharEnd": 227274,
+   "primaryChars": 10945,
+   "ownedItemIds": [
+    "inv-item:700a0f2cf304c96a7da8800b",
+    "inv-item:cf0edb1b0c543eb786c2df44",
+    "inv-item:28e4901aa97afc67fabcd173"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:700a0f2cf304c96a7da8800b",
+    "inv-item:cf0edb1b0c543eb786c2df44",
+    "inv-item:28e4901aa97afc67fabcd173"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:consolidated ebitda",
+     "ownerShardId": "shard:87f08272567db019c17b",
+     "chars": 1800,
+     "truncated": true
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:erisa affiliate",
+     "ownerShardId": "shard:845680480624a0f129ec",
+     "chars": 328,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "contextKey": "section:5.01(a)",
+     "ownerShardId": null,
+     "chars": 1800,
+     "truncated": true
+    }
+   ],
+   "contextChars": 4153,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 10945,
+    "contextChars": 4153,
+    "inventoryRenderedChars": 1279,
+    "fixedOverheadChars": 43806,
+    "totalChars": 60183,
+    "inputTokens": 23815,
+    "outputTokens": 41500
+   },
+   "renderedFirstTurn": {
+    "chars": 69076,
+    "tokens": 27334,
+    "system": 25228,
+    "user": 27768,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 23,
+   "shardId": "shard:2804206d37b6f769705a",
+   "shardHash": "295194e683bbffe1a4170d4e67a9c1ff40abacadf899027e952aa3c709b01106",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:nyfrb rate",
+    "operative:DEFINITION:def:nyfrb rate~2",
+    "operative:DEFINITION:def:obligations",
+    "operative:DEFINITION:def:ordinary course non-recourse third party financing transaction",
+    "operative:DEFINITION:def:organizational documents",
+    "operative:DEFINITION:def:other commitments",
+    "operative:DEFINITION:def:other connection taxes",
+    "operative:DEFINITION:def:other loans",
+    "operative:DEFINITION:def:other revolving commitments",
+    "operative:DEFINITION:def:other revolving facility",
+    "operative:DEFINITION:def:other revolving loans",
+    "operative:DEFINITION:def:other taxes",
+    "operative:DEFINITION:def:other term commitments",
+    "operative:DEFINITION:def:other term facility",
+    "operative:DEFINITION:def:other term loans",
+    "operative:DEFINITION:def:overnight bank funding rate"
+   ],
+   "primaryCharStart": 227274,
+   "primaryCharEnd": 234891,
+   "primaryChars": 7617,
+   "ownedItemIds": [],
+   "ownedMaterialItemIds": [],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    }
+   ],
+   "contextChars": 225,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 7617,
+    "contextChars": 225,
+    "inventoryRenderedChars": 0,
+    "fixedOverheadChars": 43806,
+    "totalChars": 51648,
+    "inputTokens": 20438,
+    "outputTokens": 41500
+   },
+   "renderedFirstTurn": {
+    "chars": 55038,
+    "tokens": 21779,
+    "system": 25228,
+    "user": 13730,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 24,
+   "shardId": "shard:8b21b0018e4a6cedd585",
+   "shardHash": "4cd2f84d10958b7f104e38a1dc583a781d19e50d70ab8a08d059f3a190b54e04",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:parent entity",
+    "operative:DEFINITION:def:pbgc",
+    "operative:DEFINITION:def:permitted amendment",
+    "operative:DEFINITION:def:permitted asset swap",
+    "operative:DEFINITION:def:permitted holder"
+   ],
+   "primaryCharStart": 234891,
+   "primaryCharEnd": 239544,
+   "primaryChars": 4653,
+   "ownedItemIds": [],
+   "ownedMaterialItemIds": [],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    }
+   ],
+   "contextChars": 225,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 4653,
+    "contextChars": 225,
+    "inventoryRenderedChars": 0,
+    "fixedOverheadChars": 43806,
+    "totalChars": 48684,
+    "inputTokens": 19265,
+    "outputTokens": 14000
+   },
+   "renderedFirstTurn": {
+    "chars": 53896,
+    "tokens": 21327,
+    "system": 25228,
+    "user": 12588,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 25,
+   "shardId": "shard:f048973d2e9a58498b81",
+   "shardHash": "732123dea5d25e5612fe4e3b4761a079a07dd3187200c0c2047c38ae6bddf595",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:permitted investments"
+   ],
+   "primaryCharStart": 239544,
+   "primaryCharEnd": 253665,
+   "primaryChars": 14121,
+   "ownedItemIds": [
+    "inv-item:ad22b485966a3702b28b252e",
+    "inv-item:4791c1047af2d96cf3108a20",
+    "inv-item:e6f265b736ed64849a83c29d",
+    "inv-item:e03948f0e2536cccb87bcd72",
+    "inv-item:0b4ca24d4eaf1357e23c16a1",
+    "inv-item:c0e081db2c5f4cd1ab2135a2"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:ad22b485966a3702b28b252e",
+    "inv-item:4791c1047af2d96cf3108a20",
+    "inv-item:e6f265b736ed64849a83c29d",
+    "inv-item:e03948f0e2536cccb87bcd72",
+    "inv-item:0b4ca24d4eaf1357e23c16a1",
+    "inv-item:c0e081db2c5f4cd1ab2135a2"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:consolidated ebitda",
+     "ownerShardId": "shard:87f08272567db019c17b",
+     "chars": 1800,
+     "truncated": true
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:first lien leverage ratio",
+     "ownerShardId": "shard:bf3da01cb454860cdf5f",
+     "chars": 308,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:interest coverage ratio",
+     "ownerShardId": "shard:a45ccfe3d94f990e5348",
+     "chars": 848,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:joint venture",
+     "ownerShardId": "shard:a45ccfe3d94f990e5348",
+     "chars": 303,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:similar business",
+     "ownerShardId": "shard:2b74338b4b2dc108057c",
+     "chars": 926,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:unrestricted subsidiary",
+     "ownerShardId": "shard:e9d1223d90cc2dd9c683",
+     "chars": 1800,
+     "truncated": true
+    }
+   ],
+   "contextChars": 6210,
+   "unresolvedContext": [
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "general basket amount",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"General Basket Amount\" in document doc-a",
+     "requiredBy": [
+      "inv-item:4791c1047af2d96cf3108a20"
+     ]
+    }
+   ],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 14121,
+    "contextChars": 6210,
+    "inventoryRenderedChars": 3270,
+    "fixedOverheadChars": 43806,
+    "totalChars": 67407,
+    "inputTokens": 26673,
+    "outputTokens": 4000
+   },
+   "renderedFirstTurn": {
+    "chars": 75853,
+    "tokens": 30016,
+    "system": 25228,
+    "user": 34545,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 26,
+   "shardId": "shard:4f06625557e9aecbbb7a",
+   "shardHash": "f1b437e22ee07474adbce6cb0f9ab25ceb36ca10847253c797fce0f3af206cf5",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:permitted liens"
+   ],
+   "primaryCharStart": 253665,
+   "primaryCharEnd": 280360,
+   "primaryChars": 26695,
+   "ownedItemIds": [
+    "inv-item:3d6848f080a00529c6cd5931",
+    "inv-item:42c037b1d716e8d759f1af1b",
+    "inv-item:e0247f2436dfe133ca048078",
+    "inv-item:5fd357ec4014b3d504eaaf6b",
+    "inv-item:c321c001b3a38b2e086a75a2",
+    "inv-item:dea92930d39a32acc3fe1e6b"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:3d6848f080a00529c6cd5931",
+    "inv-item:42c037b1d716e8d759f1af1b",
+    "inv-item:e0247f2436dfe133ca048078",
+    "inv-item:5fd357ec4014b3d504eaaf6b",
+    "inv-item:c321c001b3a38b2e086a75a2",
+    "inv-item:dea92930d39a32acc3fe1e6b"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:consolidated ebitda",
+     "ownerShardId": "shard:87f08272567db019c17b",
+     "chars": 1800,
+     "truncated": true
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:first lien leverage ratio",
+     "ownerShardId": "shard:bf3da01cb454860cdf5f",
+     "chars": 308,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:general lien basket",
+     "ownerShardId": "shard:a8646966da2484b40b97",
+     "chars": 86,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:interest coverage ratio",
+     "ownerShardId": "shard:a45ccfe3d94f990e5348",
+     "chars": 848,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:senior secured leverage ratio",
+     "ownerShardId": "shard:2b74338b4b2dc108057c",
+     "chars": 224,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:total leverage ratio",
+     "ownerShardId": "shard:50e26ec2fb25035a3b7b",
+     "chars": 210,
+     "truncated": false
+    }
+   ],
+   "contextChars": 3701,
+   "unresolvedContext": [
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "junior lien priority",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Junior Lien Priority\" in document doc-a",
+     "requiredBy": [
+      "inv-item:e0247f2436dfe133ca048078"
+     ]
+    }
+   ],
+   "oversized": true,
+   "estimate": {
+    "primaryChars": 26695,
+    "contextChars": 3701,
+    "inventoryRenderedChars": 3031,
+    "fixedOverheadChars": 43806,
+    "totalChars": 77233,
+    "inputTokens": 30562,
+    "outputTokens": 4000
+   },
+   "renderedFirstTurn": {
+    "chars": 86792,
+    "tokens": 34344,
+    "system": 25228,
+    "user": 45484,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 27,
+   "shardId": "shard:3e3910ea2efd9edd45a3",
+   "shardHash": "183134ad7785f161b0d350297d89603860aada6016bbf04609fc1dd0c172957f",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:permitted receivables financings",
+    "operative:DEFINITION:def:permitted tax restructuring",
+    "operative:DEFINITION:def:permitted transferees",
+    "operative:DEFINITION:def:person",
+    "operative:DEFINITION:def:plan",
+    "operative:DEFINITION:def:post-transaction period",
+    "operative:DEFINITION:def:preferred stock",
+    "operative:DEFINITION:def:prepayment event",
+    "operative:DEFINITION:def:prepayment notice",
+    "operative:DEFINITION:def:present fair saleable value",
+    "operative:DEFINITION:def:prime rate",
+    "operative:DEFINITION:def:pro forma adjustment",
+    "operative:DEFINITION:def:pro forma effect",
+    "operative:DEFINITION:def:pro forma disposal adjustment",
+    "operative:DEFINITION:def:pro forma entity",
+    "operative:DEFINITION:def:pro rata share"
+   ],
+   "primaryCharStart": 280360,
+   "primaryCharEnd": 290463,
+   "primaryChars": 10103,
+   "ownedItemIds": [
+    "inv-item:ba01eab3fa76c9aad024202a",
+    "inv-item:2096052f696a830b72bcf305",
+    "inv-item:435bebbab162719b57e8df07"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:ba01eab3fa76c9aad024202a",
+    "inv-item:2096052f696a830b72bcf305",
+    "inv-item:435bebbab162719b57e8df07"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:consolidated ebitda",
+     "ownerShardId": "shard:87f08272567db019c17b",
+     "chars": 1800,
+     "truncated": true
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:specified transaction",
+     "ownerShardId": "shard:d8e77df4fadace785588",
+     "chars": 771,
+     "truncated": false
+    }
+   ],
+   "contextChars": 2796,
+   "unresolvedContext": [
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "annual threshold",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Annual Threshold\" in document doc-a",
+     "requiredBy": [
+      "inv-item:435bebbab162719b57e8df07"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "transaction threshold",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Transaction Threshold\" in document doc-a",
+     "requiredBy": [
+      "inv-item:2096052f696a830b72bcf305"
+     ]
+    }
+   ],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 10103,
+    "contextChars": 2796,
+    "inventoryRenderedChars": 1554,
+    "fixedOverheadChars": 43806,
+    "totalChars": 58259,
+    "inputTokens": 23054,
+    "outputTokens": 41500
+   },
+   "renderedFirstTurn": {
+    "chars": 65788,
+    "tokens": 26033,
+    "system": 25228,
+    "user": 24480,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 28,
+   "shardId": "shard:6248230fa539039e625f",
+   "shardHash": "917fead02cf8fb0b05717f81ca2c4d6574f6664a4776c4607700d16e36281769",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:pte",
+    "operative:DEFINITION:def:public company costs",
+    "operative:DEFINITION:def:purchase money obligations",
+    "operative:DEFINITION:def:purchasing borrower party",
+    "operative:DEFINITION:def:qualified equity interests",
+    "operative:DEFINITION:def:qualified restricted subsidiary",
+    "operative:DEFINITION:def:qualified jurisdiction",
+    "operative:DEFINITION:def:ratio incremental amount",
+    "operative:DEFINITION:def:receivables assets",
+    "operative:DEFINITION:def:receivables fees",
+    "operative:DEFINITION:def:receivables non-recourse facility",
+    "operative:DEFINITION:def:receivables recourse facility",
+    "operative:DEFINITION:def:receivables subsidiary",
+    "operative:DEFINITION:def:recipient",
+    "operative:DEFINITION:def:refinance",
+    "operative:DEFINITION:def:refinancing amendment"
+   ],
+   "primaryCharStart": 290463,
+   "primaryCharEnd": 300192,
+   "primaryChars": 9729,
+   "ownedItemIds": [
+    "inv-item:0919eeb8c68cf9ee5844cc9d",
+    "inv-item:cf5d0d1981f56a0478bad80a",
+    "inv-item:5f126ce5217a759268f65339"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:0919eeb8c68cf9ee5844cc9d",
+    "inv-item:cf5d0d1981f56a0478bad80a",
+    "inv-item:5f126ce5217a759268f65339"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:first lien leverage ratio",
+     "ownerShardId": "shard:bf3da01cb454860cdf5f",
+     "chars": 308,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:interest coverage ratio",
+     "ownerShardId": "shard:a45ccfe3d94f990e5348",
+     "chars": 848,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:senior secured leverage ratio",
+     "ownerShardId": "shard:2b74338b4b2dc108057c",
+     "chars": 224,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:total leverage ratio",
+     "ownerShardId": "shard:50e26ec2fb25035a3b7b",
+     "chars": 210,
+     "truncated": false
+    }
+   ],
+   "contextChars": 1815,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 9729,
+    "contextChars": 1815,
+    "inventoryRenderedChars": 1670,
+    "fixedOverheadChars": 43806,
+    "totalChars": 57020,
+    "inputTokens": 22563,
+    "outputTokens": 41500
+   },
+   "renderedFirstTurn": {
+    "chars": 65762,
+    "tokens": 26023,
+    "system": 25228,
+    "user": 24454,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 29,
+   "shardId": "shard:5bbdd9026aa0eefb73f0",
+   "shardHash": "6ae7768f98f41902d5c7c11f542d870c8f15ddcb186a9858815d6e674b12991d",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:regulated bank",
+    "operative:DEFINITION:def:related business assets",
+    "operative:DEFINITION:def:related parties",
+    "operative:DEFINITION:def:release",
+    "operative:DEFINITION:def:relevant governmental body",
+    "operative:DEFINITION:def:repricing transaction",
+    "operative:DEFINITION:def:repurchase obligation",
+    "operative:DEFINITION:def:required lenders",
+    "operative:DEFINITION:def:required revolving lenders",
+    "operative:DEFINITION:def:required term lenders",
+    "operative:DEFINITION:def:requirements of law",
+    "operative:DEFINITION:def:resolution authority",
+    "operative:DEFINITION:def:responsible officer",
+    "operative:DEFINITION:def:restricted",
+    "operative:DEFINITION:def:restricted investment",
+    "operative:DEFINITION:def:restricted parties"
+   ],
+   "primaryCharStart": 300192,
+   "primaryCharEnd": 310043,
+   "primaryChars": 9851,
+   "ownedItemIds": [
+    "inv-item:fe8e892ff61ce8e57714f3e1"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:fe8e892ff61ce8e57714f3e1"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    }
+   ],
+   "contextChars": 225,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 9851,
+    "contextChars": 225,
+    "inventoryRenderedChars": 308,
+    "fixedOverheadChars": 43806,
+    "totalChars": 54190,
+    "inputTokens": 21443,
+    "outputTokens": 41500
+   },
+   "renderedFirstTurn": {
+    "chars": 63152,
+    "tokens": 24990,
+    "system": 25228,
+    "user": 21844,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 30,
+   "shardId": "shard:42a0ee858a3457c23f47",
+   "shardHash": "867efe57fd1ce295e84d6748ba9f1a9e9effa0f969d51df3468112ecd961f21a",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:restricted subsidiary",
+    "operative:DEFINITION:def:retained asset sale proceeds",
+    "operative:DEFINITION:def:retained excess cash flow",
+    "operative:DEFINITION:def:revolving borrowing",
+    "operative:DEFINITION:def:revolving commitment",
+    "operative:DEFINITION:def:revolving exposure",
+    "operative:DEFINITION:def:revolving facility",
+    "operative:DEFINITION:def:revolving lender",
+    "operative:DEFINITION:def:revolving loan",
+    "operative:DEFINITION:def:rfr",
+    "operative:DEFINITION:def:rfr borrowing",
+    "operative:DEFINITION:def:rfr business day",
+    "operative:DEFINITION:def:rfr loan",
+    "operative:DEFINITION:def:sale and lease-back transaction",
+    "operative:DEFINITION:def:sanctions",
+    "operative:DEFINITION:def:sec"
+   ],
+   "primaryCharStart": 310043,
+   "primaryCharEnd": 314608,
+   "primaryChars": 4565,
+   "ownedItemIds": [],
+   "ownedMaterialItemIds": [],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    }
+   ],
+   "contextChars": 225,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 4565,
+    "contextChars": 225,
+    "inventoryRenderedChars": 0,
+    "fixedOverheadChars": 43806,
+    "totalChars": 48596,
+    "inputTokens": 19230,
+    "outputTokens": 41500
+   },
+   "renderedFirstTurn": {
+    "chars": 53441,
+    "tokens": 21147,
+    "system": 25228,
+    "user": 12133,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 31,
+   "shardId": "shard:2b74338b4b2dc108057c",
+   "shardHash": "ee58b2e5782a89d8008d115ac62448eebfaeaa49042b6d19e60bea095320cc61",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:secured cash management obligations",
+    "operative:DEFINITION:def:secured indebtedness",
+    "operative:DEFINITION:def:secured obligations",
+    "operative:DEFINITION:def:secured parties",
+    "operative:DEFINITION:def:secured swap obligations",
+    "operative:DEFINITION:def:security documents",
+    "operative:DEFINITION:def:senior indebtedness",
+    "operative:DEFINITION:def:senior representative",
+    "operative:DEFINITION:def:senior secured leverage ratio",
+    "operative:DEFINITION:def:significant subsidiary",
+    "operative:DEFINITION:def:similar business",
+    "operative:DEFINITION:def:sofr",
+    "operative:DEFINITION:def:sofr administrator",
+    "operative:DEFINITION:def:sofr administrator ’ s website",
+    "operative:DEFINITION:def:solvent",
+    "operative:DEFINITION:def:sonia"
+   ],
+   "primaryCharStart": 314608,
+   "primaryCharEnd": 323948,
+   "primaryChars": 9340,
+   "ownedItemIds": [],
+   "ownedMaterialItemIds": [],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    }
+   ],
+   "contextChars": 225,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 9340,
+    "contextChars": 225,
+    "inventoryRenderedChars": 0,
+    "fixedOverheadChars": 43806,
+    "totalChars": 53371,
+    "inputTokens": 21119,
+    "outputTokens": 41500
+   },
+   "renderedFirstTurn": {
+    "chars": 57445,
+    "tokens": 22731,
+    "system": 25228,
+    "user": 16137,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 32,
+   "shardId": "shard:d8e77df4fadace785588",
+   "shardHash": "906bb9bf2b37febd2ac350c2e06c10b2ea11014234010318ea411fe87b08f1ec",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:sonia administrator",
+    "operative:DEFINITION:def:sonia administrator ’ s website",
+    "operative:DEFINITION:def:specified event of default",
+    "operative:DEFINITION:def:specified representations",
+    "operative:DEFINITION:def:specified transaction",
+    "operative:DEFINITION:def:sponsors",
+    "operative:DEFINITION:def:spot rate",
+    "operative:DEFINITION:def:standard securitization undertakings",
+    "operative:DEFINITION:def:subordinated indebtedness",
+    "operative:DEFINITION:def:subsidiary",
+    "operative:DEFINITION:def:subsidiary~2",
+    "operative:DEFINITION:def:subsidiary loan party",
+    "operative:DEFINITION:def:swap",
+    "operative:DEFINITION:def:swap agreement",
+    "operative:DEFINITION:def:swap obligation",
+    "operative:DEFINITION:def:target day"
+   ],
+   "primaryCharStart": 323948,
+   "primaryCharEnd": 334915,
+   "primaryChars": 10967,
+   "ownedItemIds": [],
+   "ownedMaterialItemIds": [],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    }
+   ],
+   "contextChars": 225,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 10967,
+    "contextChars": 225,
+    "inventoryRenderedChars": 0,
+    "fixedOverheadChars": 43806,
+    "totalChars": 54998,
+    "inputTokens": 21763,
+    "outputTokens": 41500
+   },
+   "renderedFirstTurn": {
+    "chars": 61981,
+    "tokens": 24526,
+    "system": 25228,
+    "user": 20673,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 33,
+   "shardId": "shard:50e26ec2fb25035a3b7b",
+   "shardHash": "fe4747230a2a39c766c1141d493a8122875d8b1edc3d66087521d01404c2a075",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:target2",
+    "operative:DEFINITION:def:taxes",
+    "operative:DEFINITION:def:term commitment",
+    "operative:DEFINITION:def:term corra",
+    "operative:DEFINITION:def:term corra administrator",
+    "operative:DEFINITION:def:term corra reference rate",
+    "operative:DEFINITION:def:term facility",
+    "operative:DEFINITION:def:term lenders",
+    "operative:DEFINITION:def:term priority collateral",
+    "operative:DEFINITION:def:term loans",
+    "operative:DEFINITION:def:term maturity date",
+    "operative:DEFINITION:def:term sofr rate",
+    "operative:DEFINITION:def:term sofr reference rate",
+    "operative:DEFINITION:def:test period",
+    "operative:DEFINITION:def:threshold amount",
+    "operative:DEFINITION:def:total leverage ratio"
+   ],
+   "primaryCharStart": 334915,
+   "primaryCharEnd": 341435,
+   "primaryChars": 6520,
+   "ownedItemIds": [
+    "inv-item:8241a7f6a6e0fda7298c06d8",
+    "inv-item:2a6efbcd8e47268fccc5081f"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:8241a7f6a6e0fda7298c06d8",
+    "inv-item:2a6efbcd8e47268fccc5081f"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:abl intercreditor agreement",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 618,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:consolidated ebitda",
+     "ownerShardId": "shard:87f08272567db019c17b",
+     "chars": 1800,
+     "truncated": true
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:material indebtedness",
+     "ownerShardId": "shard:f3eb63624b7f5a5c3cca",
+     "chars": 735,
+     "truncated": false
+    }
+   ],
+   "contextChars": 3378,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 6520,
+    "contextChars": 3378,
+    "inventoryRenderedChars": 800,
+    "fixedOverheadChars": 43806,
+    "totalChars": 54504,
+    "inputTokens": 21568,
+    "outputTokens": 41500
+   },
+   "renderedFirstTurn": {
+    "chars": 62560,
+    "tokens": 24755,
+    "system": 25228,
+    "user": 21252,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 34,
+   "shardId": "shard:e9d1223d90cc2dd9c683",
+   "shardHash": "5363f1f7b6d7bf682f24cc09a4a785da31c8f01e5652fbb06d16e4615747c209",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:total revolving commitments",
+    "operative:DEFINITION:def:transaction expenses",
+    "operative:DEFINITION:def:transactions",
+    "operative:DEFINITION:def:transformative transaction",
+    "operative:DEFINITION:def:u.s. government securities business day",
+    "operative:DEFINITION:def:uniform commercial code",
+    "operative:DEFINITION:def:uniform commercial code~2",
+    "operative:DEFINITION:def:uk financial institution",
+    "operative:DEFINITION:def:uk resolution authority",
+    "operative:DEFINITION:def:unrestricted subsidiary",
+    "operative:DEFINITION:def:unsecured capital lease obligations",
+    "operative:DEFINITION:def:unsecured capitalized leases",
+    "operative:DEFINITION:def:usa patriot act",
+    "operative:DEFINITION:def:vehicles",
+    "operative:DEFINITION:def:voluntary prepayment incremental amount",
+    "operative:DEFINITION:def:weighted average life to maturity"
+   ],
+   "primaryCharStart": 341435,
+   "primaryCharEnd": 351749,
+   "primaryChars": 10314,
+   "ownedItemIds": [
+    "inv-item:89fe5464b92bc35807a1a917",
+    "inv-item:6de33b9725d7fe3634deec6b",
+    "inv-item:1cbf00548b752521ed2f4e89"
+   ],
+   "ownedMaterialItemIds": [
+    "inv-item:89fe5464b92bc35807a1a917",
+    "inv-item:6de33b9725d7fe3634deec6b",
+    "inv-item:1cbf00548b752521ed2f4e89"
+   ],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:material intellectual property",
+     "ownerShardId": "shard:f3eb63624b7f5a5c3cca",
+     "chars": 326,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:responsible officer",
+     "ownerShardId": "shard:5bbdd9026aa0eefb73f0",
+     "chars": 1295,
+     "truncated": false
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "contextKey": "term:restricted subsidiary",
+     "ownerShardId": "shard:42a0ee858a3457c23f47",
+     "chars": 381,
+     "truncated": false
+    }
+   ],
+   "contextChars": 2227,
+   "unresolvedContext": [
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "event of default",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Event of Default\" in document doc-a",
+     "requiredBy": [
+      "inv-item:6de33b9725d7fe3634deec6b"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "restricted party",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Restricted Party\" in document doc-a",
+     "requiredBy": [
+      "inv-item:89fe5464b92bc35807a1a917"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "6.08",
+     "reason": "AMBIGUOUS",
+     "detail": "section Section 6.08 matches 2 physical locations",
+     "requiredBy": [
+      "inv-item:89fe5464b92bc35807a1a917"
+     ]
+    }
+   ],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 10314,
+    "contextChars": 2227,
+    "inventoryRenderedChars": 1556,
+    "fixedOverheadChars": 43806,
+    "totalChars": 57903,
+    "inputTokens": 22913,
+    "outputTokens": 41500
+   },
+   "renderedFirstTurn": {
+    "chars": 67302,
+    "tokens": 26632,
+    "system": 25228,
+    "user": 25994,
+    "tools": 16080
+   }
+  },
+  {
+   "ordinal": 35,
+   "shardId": "shard:c6f9067a716712ae085a",
+   "shardHash": "8c0ad1ed342cc215fa087f6049978954b7dd224e874af71de352c44ac743ae60",
+   "ownedUnitKeys": [
+    "operative:DEFINITION:def:wholly owned subsidiary",
+    "operative:DEFINITION:def:withdrawal liability",
+    "operative:DEFINITION:def:withholding agent",
+    "operative:DEFINITION:def:write-down and conversion powers"
+   ],
+   "primaryCharStart": 351749,
+   "primaryCharEnd": 353523,
+   "primaryChars": 1774,
+   "ownedItemIds": [],
+   "ownedMaterialItemIds": [],
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "contextKey": "chapeau:operative:LEAD_IN:lead-in",
+     "ownerShardId": "shard:2866a115c3a6d5cc2089",
+     "chars": 225,
+     "truncated": false
+    }
+   ],
+   "contextChars": 225,
+   "unresolvedContext": [],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 1774,
+    "contextChars": 225,
+    "inventoryRenderedChars": 0,
+    "fixedOverheadChars": 43806,
+    "totalChars": 45805,
+    "inputTokens": 18126,
+    "outputTokens": 11500
+   },
+   "renderedFirstTurn": {
+    "chars": 46311,
+    "tokens": 18326,
+    "system": 25228,
+    "user": 5003,
+    "tools": 16080
+   }
+  }
+ ],
+ "itemOwnerShard": {
+  "inv-item:8a953f95ff6074675676bca4": "shard:2866a115c3a6d5cc2089",
+  "inv-item:8957e8458cb9520914b3c3a5": "shard:2866a115c3a6d5cc2089",
+  "inv-item:38a65560393a491613f95a11": "shard:4d114bdf00429cf670f8",
+  "inv-item:ae5c57afe8712d40aadf87ac": "shard:b934f8ceb0d79b5cfe57",
+  "inv-item:8bb012a92dfa4cffe16f6f80": "shard:b934f8ceb0d79b5cfe57",
+  "inv-item:158017c882aa62f82bde49c5": "shard:b934f8ceb0d79b5cfe57",
+  "inv-item:9f3e806f6ec4b3fe09940054": "shard:b934f8ceb0d79b5cfe57",
+  "inv-item:327d0ed0c6e13b3fd6e0fe71": "shard:b934f8ceb0d79b5cfe57",
+  "inv-item:b70ddb9b1e45a1d6cea28109": "shard:b934f8ceb0d79b5cfe57",
+  "inv-item:98a2a63931fda612ac6a57a0": "shard:b934f8ceb0d79b5cfe57",
+  "inv-item:ef6290ba17af109cb88f0cd8": "shard:c68b6e6e275414f90c39",
+  "inv-item:c2d70438daa8f136d0f51bee": "shard:c68b6e6e275414f90c39",
+  "inv-item:35c05a2ca9eb56a348d86140": "shard:1c29e71eef1717d4f9e1",
+  "inv-item:5281d5a9dec8ef6bab146dcf": "shard:1c29e71eef1717d4f9e1",
+  "inv-item:5fe0262251331def71b6c2ac": "shard:1c29e71eef1717d4f9e1",
+  "inv-item:039a4062eeadde709d445ab2": "shard:1c29e71eef1717d4f9e1",
+  "inv-item:48d84e6f6c1e29b3a13334a0": "shard:1c29e71eef1717d4f9e1",
+  "inv-item:685b10fc530db466e82be9e6": "shard:1c29e71eef1717d4f9e1",
+  "inv-item:139265f3eef57f0e3038aa70": "shard:1c29e71eef1717d4f9e1",
+  "inv-item:0b92716dbe2d2e42555bf6ea": "shard:1c29e71eef1717d4f9e1",
+  "inv-item:edfec62d509cb6078460fe25": "shard:1c29e71eef1717d4f9e1",
+  "inv-item:c3f0b1cde49d0388ead4506a": "shard:1c29e71eef1717d4f9e1",
+  "inv-item:b92eb911ab5d8bbf5ff8a73f": "shard:9dae67b10a1cb8ab8e61",
+  "inv-item:5ce96983b21dd809446ed45e": "shard:9dae67b10a1cb8ab8e61",
+  "inv-item:c2fb1041230e9905e39b04b3": "shard:9dae67b10a1cb8ab8e61",
+  "inv-item:2f7b694dd336d169f74df263": "shard:9dae67b10a1cb8ab8e61",
+  "inv-item:16a88e8856dca75a54339505": "shard:9dae67b10a1cb8ab8e61",
+  "inv-item:d2bf132cbd8e771395922191": "shard:9dae67b10a1cb8ab8e61",
+  "inv-item:ba7383560e2c813dfc980543": "shard:c68b6e6e275414f90c39",
+  "inv-item:067b0e5b8c71122b70e681f1": "shard:c68b6e6e275414f90c39",
+  "inv-item:83b525efbf2987a57fcafd95": "shard:c68b6e6e275414f90c39",
+  "inv-item:b0222599546fcdec46da748e": "shard:c68b6e6e275414f90c39",
+  "inv-item:b98884032f56f138865d3687": "shard:ec1aea485db261059c14",
+  "inv-item:bf8f525080fd6d67c82aaa26": "shard:5f63d11e8ce53e883d6a",
+  "inv-item:037dfb0c800d20443ad9a148": "shard:5f63d11e8ce53e883d6a",
+  "inv-item:da380a7f6cb3b44da88f708c": "shard:5f63d11e8ce53e883d6a",
+  "inv-item:30e65e4a2e01a1770fa4efc0": "shard:87f08272567db019c17b",
+  "inv-item:259833ee6d36bb9e9b7fb8e8": "shard:87f08272567db019c17b",
+  "inv-item:adea7c0c177b413e95fc2ab0": "shard:87f08272567db019c17b",
+  "inv-item:bb05010156962d7fb9143cde": "shard:87f08272567db019c17b",
+  "inv-item:4fbeb76b3ff7e0e7bf4f9f18": "shard:e3ddb1887d6b8499929a",
+  "inv-item:9f956507175088716bed50e3": "shard:e3ddb1887d6b8499929a",
+  "inv-item:508f9c3cece4ebb6c6fed189": "shard:e3ddb1887d6b8499929a",
+  "inv-item:ed673fb9ff17da07a38bafc1": "shard:86eec078e4ee957898ac",
+  "inv-item:bcb1952482c40eeb345a112d": "shard:4d114bdf00429cf670f8",
+  "inv-item:cf64fc7643adb7f35f917e96": "shard:4d114bdf00429cf670f8",
+  "inv-item:6cd88efec2c0749c0e0c0a84": "shard:4d114bdf00429cf670f8",
+  "inv-item:3fd7450fe3af8048b6bfc2a5": "shard:4d114bdf00429cf670f8",
+  "inv-item:4afd9623a2233cadc64b7996": "shard:4d114bdf00429cf670f8",
+  "inv-item:75bcc64a8677204937a6aab3": "shard:4d114bdf00429cf670f8",
+  "inv-item:7fbbd03edaed55220dea29fe": "shard:bf3da01cb454860cdf5f",
+  "inv-item:975d416ed9f098988605b883": "shard:bf3da01cb454860cdf5f",
+  "inv-item:dc9d7a4454fd3d2ca39d94d9": "shard:bf3da01cb454860cdf5f",
+  "inv-item:eb4c99643218b586dfccf301": "shard:bf3da01cb454860cdf5f",
+  "inv-item:9e86ceeb6f2f72225585dbba": "shard:bf3da01cb454860cdf5f",
+  "inv-item:cff6aba64520d09fac7ca41f": "shard:bf3da01cb454860cdf5f",
+  "inv-item:3a78fe5b5a1e4208a5236ac1": "shard:bf3da01cb454860cdf5f",
+  "inv-item:8b28d97d989435401a6d146f": "shard:bf3da01cb454860cdf5f",
+  "inv-item:c081b7907f1d12ed28484634": "shard:1c29e71eef1717d4f9e1",
+  "inv-item:8cfa44ae06b19e4ccb8d9436": "shard:30d337feeef5ba80d66b",
+  "inv-item:5f20e4b9abfc727cbdc7d913": "shard:30d337feeef5ba80d66b",
+  "inv-item:6396192d114e08932ad98306": "shard:a45ccfe3d94f990e5348",
+  "inv-item:f93a595866ffe65a56ad9a1c": "shard:a45ccfe3d94f990e5348",
+  "inv-item:700a0f2cf304c96a7da8800b": "shard:f3eb63624b7f5a5c3cca",
+  "inv-item:cf0edb1b0c543eb786c2df44": "shard:f3eb63624b7f5a5c3cca",
+  "inv-item:ad22b485966a3702b28b252e": "shard:f048973d2e9a58498b81",
+  "inv-item:4791c1047af2d96cf3108a20": "shard:f048973d2e9a58498b81",
+  "inv-item:e6f265b736ed64849a83c29d": "shard:f048973d2e9a58498b81",
+  "inv-item:e03948f0e2536cccb87bcd72": "shard:f048973d2e9a58498b81",
+  "inv-item:0b4ca24d4eaf1357e23c16a1": "shard:f048973d2e9a58498b81",
+  "inv-item:c0e081db2c5f4cd1ab2135a2": "shard:f048973d2e9a58498b81",
+  "inv-item:3d6848f080a00529c6cd5931": "shard:4f06625557e9aecbbb7a",
+  "inv-item:42c037b1d716e8d759f1af1b": "shard:4f06625557e9aecbbb7a",
+  "inv-item:e0247f2436dfe133ca048078": "shard:4f06625557e9aecbbb7a",
+  "inv-item:5fd357ec4014b3d504eaaf6b": "shard:4f06625557e9aecbbb7a",
+  "inv-item:c321c001b3a38b2e086a75a2": "shard:4f06625557e9aecbbb7a",
+  "inv-item:2096052f696a830b72bcf305": "shard:3e3910ea2efd9edd45a3",
+  "inv-item:435bebbab162719b57e8df07": "shard:3e3910ea2efd9edd45a3",
+  "inv-item:0919eeb8c68cf9ee5844cc9d": "shard:6248230fa539039e625f",
+  "inv-item:cf5d0d1981f56a0478bad80a": "shard:6248230fa539039e625f",
+  "inv-item:5f126ce5217a759268f65339": "shard:6248230fa539039e625f",
+  "inv-item:2a6efbcd8e47268fccc5081f": "shard:50e26ec2fb25035a3b7b",
+  "inv-item:28e4901aa97afc67fabcd173": "shard:f3eb63624b7f5a5c3cca",
+  "inv-item:dd1733449170b90cdeffc810": "shard:e43dc65668a775eaca1a",
+  "inv-item:29c5fc302c916f0ffe29d047": "shard:e43dc65668a775eaca1a",
+  "inv-item:788f5f8206fb51b86ddd877b": "shard:e43dc65668a775eaca1a",
+  "inv-item:bb41010b104c595efbf0a710": "shard:d3aac7c869cff4602343",
+  "inv-item:949cac8849742471ce079d6e": "shard:a45ccfe3d94f990e5348",
+  "inv-item:fe8e892ff61ce8e57714f3e1": "shard:5bbdd9026aa0eefb73f0",
+  "inv-item:ba01eab3fa76c9aad024202a": "shard:3e3910ea2efd9edd45a3",
+  "inv-item:40586a6671306826e608f73d": "shard:30d337feeef5ba80d66b",
+  "inv-item:c01880c80f5b6269542aae3f": "shard:30d337feeef5ba80d66b",
+  "inv-item:0ae4b1ab0b1d99bdd8194472": "shard:30d337feeef5ba80d66b",
+  "inv-item:bf087a69a8fd07a277893a35": "shard:d2efbf609b9828839ddf",
+  "inv-item:de43820c718c23723b0ad061": "shard:845680480624a0f129ec",
+  "inv-item:83fff234181c1d313477265d": "shard:4c30ced71fe038991b4b",
+  "inv-item:c8481fd7d7368bd1dde37b3d": "shard:4c30ced71fe038991b4b",
+  "inv-item:23f90acf7c993b980bc60f5f": "shard:a8646966da2484b40b97",
+  "inv-item:75a16a473ef4b2ce533ed8ec": "shard:a8646966da2484b40b97",
+  "inv-item:dea92930d39a32acc3fe1e6b": "shard:4f06625557e9aecbbb7a",
+  "inv-item:2a8a50bfcaab42c0f874aa77": "shard:a45ccfe3d94f990e5348",
+  "inv-item:b6398b40817eb1345662b64b": "shard:2866a115c3a6d5cc2089",
+  "inv-item:8241a7f6a6e0fda7298c06d8": "shard:50e26ec2fb25035a3b7b",
+  "inv-item:f2fbeda4d086b76bb0a52659": "shard:2866a115c3a6d5cc2089",
+  "inv-item:a2ea94db3d1186d37f8030f9": "shard:86eec078e4ee957898ac",
+  "inv-item:79f678aba3fa1caa910d15ad": "shard:87f08272567db019c17b",
+  "inv-item:89fe5464b92bc35807a1a917": "shard:e9d1223d90cc2dd9c683",
+  "inv-item:6de33b9725d7fe3634deec6b": "shard:e9d1223d90cc2dd9c683",
+  "inv-item:1cbf00548b752521ed2f4e89": "shard:e9d1223d90cc2dd9c683"
+ }
+}

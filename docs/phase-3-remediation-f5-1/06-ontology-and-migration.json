@@ -1,0 +1,198 @@
+{
+ "artifact": "F-5.1 ontology decision, target model, consumers, identity, migration and zero-cost results (mission \u00a74-\u00a712, \u00a715)",
+ "architecturalInvariant": "Pass A inventory identity represents WHAT SOURCE SEMANTIC EXISTS (slot + coordination position + span cluster + values), never which one of several overlapping labels the model happened to pick. A classification label is an ATTRIBUTE of an item. Real semantic differences are not hidden: distinct source ownership (different start / disjoint span / different values) and contradictory deontic effects always remain distinct identities.",
+ "authoritativeSemanticModel": {
+  "before": "SemanticInventoryItem.semanticRole: one mutually-exclusive scalar from 17 roles; identity-bearing (computeInventoryItemId(candidateRef, role, regionId, slotId, coordination, values, ordinal)); base key for merging included the role.",
+  "after": "SemanticInventoryItem.semanticFunctions (AUTHORITATIVE): { effect: PERMISSION|PROHIBITION|REQUIREMENT|DEFINITIONAL|NONE (scalar, mutually exclusive by construction); logic: subset of {CONDITION, EXCEPTION, TRIGGER, ALTERNATIVE, CURE, RECLASSIFICATION}; quantitative: subset of {VALUE, FORMULA_COMPONENT, THRESHOLD, TIME_PERIOD}; dependency: subset of {REFERENCE, DEPENDENCY, SHARED_CAP} } = union of the declared roles' functions + deterministic source-structure additions. declaredRoles keeps every label the model gave (primary first; union across merged duplicates). functionProvenance records which tokens were declared and which were deterministic. semanticRole is RETAINED as a derived compatibility field (deriveLegacyRole: the declared primary when consistent with the canonical set, else fixed precedence).",
+  "dimensionsIntroduced": {
+   "effect": [
+    "PERMISSION",
+    "PROHIBITION",
+    "REQUIREMENT",
+    "DEFINITIONAL",
+    "NONE"
+   ],
+   "logic": [
+    "CONDITION",
+    "EXCEPTION",
+    "TRIGGER",
+    "ALTERNATIVE",
+    "CURE",
+    "RECLASSIFICATION"
+   ],
+   "quantitative": [
+    "VALUE",
+    "FORMULA_COMPONENT",
+    "THRESHOLD",
+    "TIME_PERIOD"
+   ],
+   "dependency": [
+    "REFERENCE",
+    "DEPENDENCY",
+    "SHARED_CAP"
+   ]
+  },
+  "justificationFromMatrix": "every observed identical-span conflict crosses exactly these dimension boundaries (logic x quantitative: ALTERNATIVE/FORMULA_COMPONENT 16, CONDITION/FORMULA_COMPONENT 12, ALTERNATIVE/THRESHOLD 2, THRESHOLD/VALUE 1 within quantitative; logic x effect: CONDITION/PERMISSION 5, ALTERNATIVE/PERMISSION 5, EXCEPTION/PERMISSION 3, CONDITION/PROHIBITION 2; logic x logic: CONDITION/EXCEPTION 5, ALTERNATIVE/CONDITION 5, CONDITION/TRIGGER 1 - sets, not scalars; logic x dependency: CONDITION/REFERENCE 3; dependency x dependency: REFERENCE/DEPENDENCY 2). Four dimensions are the minimum that separate every observed pair; effect stays scalar because no identical-span PERMISSION/PROHIBITION/REQUIREMENT conflict was observed and such a conflict is a genuine two-proposition signal.",
+  "noCovenantFamilyRoles": "no RP_BASKET / DEBT_BASKET / LEVERAGE_TEST / AVAILABLE_AMOUNT_COMPONENT / CHEWY_* - the vocabulary is unchanged; only its structure changed. DEFINITIONAL is an effect value reserved for structural callers and is NOT derived from the model's operative flag (measured: that flag varied on 75 of 344 aligned items)."
+ },
+ "deterministicCanonicalization": {
+  "module": "lib/contract-model/compiler/semantic-accountability/semantic-functions.ts deriveSemanticFunctions",
+  "rulesAddOnly": [
+   "explicit citation in the span (Section/\u00a7/clause/Schedule/Annex/Exhibit/Article + number) or a listed referencedSection -> dependency:REFERENCE",
+   "stated number + comparator in the span (not to exceed / less than / at least / in excess of / ...) -> quantitative:THRESHOLD",
+   "stated DAYS/DATE/PERIOD number -> quantitative:TIME_PERIOD",
+   "a span that IS the number (<= 3 words of residue), or a valued span with no quantitative function -> quantitative:VALUE",
+   "selector in the span (the greater/lesser/lower/... of, either) -> logic:ALTERNATIVE (the selection); a span hanging from a selector earlier in the same slot with no clause break between -> logic:ALTERNATIVE (a branch)",
+   "condition opener at span start (provided [that], so long as, if, subject to, to the extent, unless, in the event that) -> logic:CONDITION",
+   "exception opener at span start (other than, except, excluding, but not including, save for) -> logic:EXCEPTION",
+   "trigger opener at span start (upon, on the occurrence of, at any time after, from and after, immediately upon) -> logic:TRIGGER"
+  ],
+  "neverInferred": "a deontic effect (PERMISSION/PROHIBITION/REQUIREMENT) is never inferred from keywords ('shall not', 'may'); DEPENDENCY and SHARED_CAP stay model judgments; rules never remove a declared function.",
+  "modelSide": "prompt v5: semanticRole = primary role; additionalRoles = every other function the proposition genuinely serves (tolerant, optional, never identity-bearing). The example lists additionalRoles on the alternative branches and the condition."
+ },
+ "identityMechanism": {
+  "before": "stableKey(candidateRef, role, regionId, slotId, coordinationSubIndex, clusterOrdinal, valueSignature, v4); base key = [role, regionId, slotId, coordination, valueSignature]; same-key items clustered by span (value-free: mutual overlap >= 50% of the longer; valued: containment >= 50% of the shorter).",
+  "after": "stableKey(candidateRef, regionId, slotId, coordinationSubIndex, clusterOrdinal, valueSignature, v5) - ROLE-BLIND; base key = [regionId, slotId, coordination, valueSignature].",
+  "falseMergeProtections": [
+   "(1) contradictory deontic effects (PERMISSION vs PROHIBITION vs REQUIREMENT) never share a cluster whatever the overlap",
+   "(2) value-free: a cluster requires mutual overlap >= 50% AND the same normalized start (enumerators/coordinating connectives skipped, at most one word of slop) - a citation inside the permission it qualifies, a sub-exception inside its exception, a branch inside its selection all start elsewhere and stay their own identity (the I10 corpus scenario and tests C/F/trust-safety prove it)",
+   "(3) valued: containment >= 50% of the shorter merges only when the starts coincide OR the shorter excerpt IS the value ('$50,000,000' inside 'the greater of $50,000,000'); a value-bearing clause that starts elsewhere inside a longer value-bearing clause stays distinct (the certification pair's '(15) basket' vs its cap, the '(x) 50% of CNI' branch vs its 'greater of' selection)",
+   "(4) different values, disjoint spans and different coordination sub-indexes separate as before"
+  ],
+  "residualOrdinalWeakness": "within one base key several clusters are numbered in source order; if one run omits an earlier cluster the later one shifts ordinal (present in v4 too; measured as part of strict stability)."
+ },
+ "consumersOfSemanticRole": {
+  "inventory.ts (identity, base key, merge, freeze hash)": "MIGRATED - identity role-blind; merge unions functions/declaredRoles/provenance and re-derives the legacy role; freeze hash uses the functions signature",
+  "reconciliation.ts (Pass C dependency inference)": "MIGRATED - functionsOf(item).dependency (v4 evidence maps its scalar role)",
+  "semantic/caller.ts (Pass B compiler context)": "MIGRATED - prints '[ROLE=EFFECT+FUNCTIONS/materiality]' when the functions add to the legacy role; the legacy role stays first",
+  "completeness/accountability (source-coverage.ts, rollup.ts)": "UNCHANGED - never read the role",
+  "materiality": "UNCHANGED - strongest claim survives a merge exactly as in v4; relabelling never changes materiality (test)",
+  "precedent (semantic-precedent/*)": "UNCHANGED - does not read semanticRole",
+  "types.ts": "MIGRATED - semanticFunctions/declaredRoles/functionProvenance added; semanticRole documented as derived; ReconciliationItem.semanticRole unchanged (derived value)",
+  "wire-schema.ts / prompt.ts": "MIGRATED - additionalRoles (optional, tolerant); prompt v5 guidance + example",
+  "tests": "f5-slots-stability 'different roles -> different ids' rewritten to the v5 contract (one identity, union functions, contradictory effects distinct); all other accountability tests unchanged and passing; harness matches ground truth by role+excerpt on the derived role (round-trips)",
+  "scorers": "f5-align-runs.py / f5-reference-recall.py UNCHANGED (legacy); new scripts/f5-1-canonical-score.py reports canonical AND legacy (derived + declared) side by side",
+  "artifacts": "v4-and-earlier recorded inventories stay readable (semanticFunctions optional; functionsOf maps the scalar)"
+ },
+ "migrationStrategy": "A (mission \u00a76): semanticFunctions is canonical and authoritative; semanticRole is kept as a derived compatibility field; declaredRoles preserved for transparency. ONE authoritative identity per source proposition (role-blind key).",
+ "zeroCostReplayOfTheCertificationPair": {
+  "proxyOnly": "replays the v4 inventories (their verified excerpts, declared roles, values, parent links) through the v5 normalizer without a model call; cannot show what the v5 prompt elicits; never used to certify",
+  "migration": {
+   "runA": {
+    "itemsBefore": 379,
+    "itemsAfter": 375,
+    "mergedAway": 4,
+    "v4ItemsLost": 0,
+    "valuesLost": [],
+    "parentLinksBefore": 301,
+    "parentLinksAfter": 299,
+    "materialityChanged": 1,
+    "legacyRoleChangedFromDeclaredPrimary": 4,
+    "falseMergeCandidates": 1
+   },
+   "runB": {
+    "itemsBefore": 382,
+    "itemsAfter": 378,
+    "mergedAway": 4,
+    "v4ItemsLost": 0,
+    "valuesLost": [],
+    "parentLinksBefore": 300,
+    "parentLinksAfter": 296,
+    "materialityChanged": 0,
+    "legacyRoleChangedFromDeclaredPrimary": 4,
+    "falseMergeCandidates": 0
+   }
+  },
+  "falseMergeCandidateInspection": "runA flagged 1 (DEPENDENCY 'Threshold Amount' [2427,2443] + THRESHOLD 'Threshold Amount' [2427,2444]): same words, one proposition described as a dependency and as the threshold - a correct merge, flagged only because the two propositions' wordings share few tokens. runB flagged 0.",
+  "before_v4Ids_legacyScorer": {
+   "strict": 0.501,
+   "semantic": 0.5251,
+   "criticalMaterial": 0.5236,
+   "conditionException": 0.6,
+   "dependency": 0.4186
+  },
+  "before_v4Ids_canonicalScorer(representationOnly)": {
+   "semantic": 0.8426,
+   "criticalMaterial": 0.8321
+  },
+  "after_v5Ids_canonicalScorer": {
+   "strict": 0.8101,
+   "semantic": 0.8456,
+   "criticalMaterial": 0.8358,
+   "conditionException": 0.6975,
+   "dependency": 0.7816
+  },
+  "after_v5Ids_legacyScorer": {
+   "semantic": 0.8277,
+   "criticalMaterial": 0.8177,
+   "declaredRoleSemantic": 0.8321,
+   "conditionException": 0.6438,
+   "dependency": 0.5227
+  },
+  "functionStabilityByDimension": {
+   "effect": 0.9536,
+   "logic": 0.7855,
+   "quantitative": 0.829,
+   "dependency": 0.9594
+  },
+  "allFunctionsExactAgreement": 0.6812,
+  "legacyRoleAgreementOnAlignedPairs": 0.7014,
+  "coverage": 0.9729,
+  "quantitative": 0.9474,
+  "runOnlySubstantive": {
+   "aOnly": 28,
+   "bOnly": 32,
+   "aOnlyDisclosedByB": 1,
+   "bOnlyDisclosedByA": 15
+  },
+  "invented": {
+   "aOnlyNonMaterial": 2,
+   "bOnlyNonMaterial": 1
+  },
+  "duplicateRate": {
+   "run1": 0.0,
+   "run2": 0.0
+  },
+  "referenceRecall": {
+   "run1": {
+    "items": 375,
+    "discoveryRecall": 1.0,
+    "criticalMaterialRecall": 1.0,
+    "quantitativeRecall": 1.0,
+    "conditionExceptionRecall": 1.0
+   },
+   "run2": {
+    "items": 378,
+    "discoveryRecall": 1.0,
+    "criticalMaterialRecall": 1.0,
+    "quantitativeRecall": 1.0,
+    "conditionExceptionRecall": 1.0
+   }
+  }
+ },
+ "antiGaming": {
+  "representationVsOntology": "Scoring the UNCHANGED v4 inventories with a label-blind matcher already lifts semantic stability from 0.5251 to 0.8426 and critical/material from 0.5236 to 0.8321: that is the part of the improvement that is 'representation' - and it is exactly the measured ontology ambiguity (90 of 337 aligned pairs differ only in label; 87 adjudicated A/B). The part that is a real IDENTITY change is strict stability: 0.501 -> 0.8101 on the same evidence, from making the key role-blind with the start/value/effect guards (4 merges per run, 0 lost items, 0 lost values). What the ontology does NOT fix is visible in both representations: the residual run-only substantive items (28/32) are decomposition and omission differences (the certification's F/B/H classes), and the per-dimension function agreement (logic 0.79, quantitative 0.83) shows the model still describes the same proposition's functions differently one time in five - an attribute variance that no longer manufactures identities.",
+  "legacyMetricRetained": "scripts/f5-1-canonical-score.py always emits legacyDerivedRole and legacyDeclaredRole blocks with the frozen definition; scripts/f5-align-runs.py is untouched and still runs on v5 output."
+ },
+ "sameRootReplay": {
+  "totals": {
+   "records": 33,
+   "itemsBefore": 1965,
+   "itemsAfter": 1957,
+   "merged": 8,
+   "roleConflictPairs": 72,
+   "roleConflictPairsCanonicalized": 1,
+   "falseMergeCandidates": 0,
+   "valuesLost": 0,
+   "itemsLost": 0,
+   "parentLinksBefore": 1393,
+   "parentLinksAfter": 1386,
+   "materialityChanged": 0,
+   "coverageChangedRecords": 0,
+   "statusChangedRecords": 0,
+   "deterministicAdditions": 521
+  },
+  "reading": "33 recorded inventories (v3-era evidence, segment-fallback slots): 72 role-conflict pairs, of which 1 has an identical span and was canonicalized into one identity; the other 71 are nested or differently-bounded propositions and stay distinct (0 false-merge candidates); 0 items lost, 0 values lost, 0 materiality changes, 0 records with a coverage change; 7 parent links resolved onto merged duplicates (self-loops removed); 521 items gained a deterministic structural function."
+ },
+ "gapPass": "NOT modified. The gap pass re-presents unaccounted slots and its additions pass through the same v5 normalization, so a gap item that re-describes an existing proposition with another label now merges into it instead of creating a role-specific duplicate. Its variance (which slots remain unaccounted after the first pass) is a different root cause and is measured, not fixed, in the paid pair (mission \u00a710)."
+}
