@@ -1,0 +1,1152 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:5f63d11e8ce53e883d6a",
+  "shardHash": "04b49f6f59cb8dad0b489729ee201aa3d0b74e593c6538c67c843a84bf3eb77d",
+  "ordinal": 7,
+  "ownedUnits": 4,
+  "sourceChars": 8259,
+  "contextEntries": 3,
+  "contextChars": 2176,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 3,
+  "ownedMaterialItems": 3,
+  "estimatedFirstTurnInputTokens": 24634,
+  "preCallEstimate": {
+   "inputTokens": 81046,
+   "outputTokens": 11500,
+   "usd": 0.277092
+  },
+  "actual": {
+   "inputTokens": 57338,
+   "outputTokens": 17359,
+   "turns": 2,
+   "latencyMs": 156370,
+   "costUsd": 0.288266,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "toolCalls": 3,
+  "toolCallNames": [
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 5,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 2,
+   "dispositioned": 0,
+   "missingMaterial": 1,
+   "valuesRepresented": 3,
+   "valuesMissing": 1,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "MISSING_FROM_COMPOSITION": 1,
+    "REPRESENTED": 2
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Company Materials"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].AND[0]] purely procedural document-delivery requirement (execution/delivery of security and guarantee documents and legal opinions), not a computable financial mechanic",
+   "[definition[d1].AND[1].EVENT_ACTIVE.triggerCondition] a subjective-awareness/notice trigger, not a formal boolean test expressible with existing comparison primitives",
+   "[definition[d1].AND[1]] EVENT_ACTIVE keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1].AND[2]] qualitative pledge/delivery requirement, not a computable financial mechanic",
+   "[definition[d1].AND[5]] a large bundle of qualitative exceptions, carve-outs and elective rights, not reducible to a computable financial mechanic",
+   "[definition[d1]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d4]] Section 5.01 was retrieved via tool but only its introductory chapeau ('Financial Statements and Other Information ... will furnish to the Administrative Agent ...') was returned; the specific sub-clause actually defining 'Company Materials' was not located within that section's text as retrieved",
+   "This 1.01 excerpt contains five independently declared defined terms: 'Collateral and Guarantee Requirement', 'Commitment', 'Commodity Exchange Act', 'Company Materials', and 'Compliance Certificate'; all five are emitted as separate WireDefinitions per the multiple-definitions rule.",
+   "'Collateral and Guarantee Requirement' is a large qualitative/procedural definition; its two genuinely computable components (the $112.0 million promissory-note threshold and the 90-day Subsidiary Loan Party grace period) are represented as discrete nodes within an overall AND, while the remaining procedural clauses and carve-outs are UNSUPPORTED, yielding an overall PARTIAL sufficiency rather than a false COMPLETE or a fully discarded UNSUPPORTED.",
+   "Cross-references to Section 4.01(a)(ii) and Section 4.01(a)(iv) were resolved via tool and confirm the procedural (non-computational) character of clause (a); Section 5.01 was also retrieved but only yielded its chapeau, leaving 'Company Materials' MISSING_CONTEXT rather than guessed.",
+   "Ambiguous local cross-references ('clause (a)' with 5 colliding occurrences; 'Section 9.23' with 2 colliding occurrences) were not adjudicated and are noted in sufficiencyReasons rather than silently resolved."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": true,
+   "decodedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "inventoryDispositions",
+    "overallNotes"
+   ],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": true,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "string",
+      "originalStringSha256": "3887eae40a0744d52ecc803aa88a7c67f84dbfa31883b790287a5e1af88a80b0",
+      "originalStringLength": 11080,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 5,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "string",
+      "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "originalStringLength": 2,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 0,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "string",
+      "originalStringSha256": "7440667dc6299e81ecdfdbc7309fe2bb43adbc9724dd1cc96d5a18984cac0ea8",
+      "originalStringLength": 948,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 1,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "string",
+      "originalStringSha256": "1c323d1cfc217d7875ea1b5af198cea47791a89fb392d3326a2a545dd7013d8a",
+      "originalStringLength": 793,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 3,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "string",
+      "originalStringSha256": "571733afb19068a696253637dc3b58166a9299cead047c71e2d0b6688b082989",
+      "originalStringLength": 1246,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 4,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:5f63d11e8ce53e883d6a",
+  "shardHash": "04b49f6f59cb8dad0b489729ee201aa3d0b74e593c6538c67c843a84bf3eb77d",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:6f07ed79042cc6e410dea04c",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Collateral and Guarantee Requirement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AND",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:846ed2aba9a6911ca0f3e385",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01(a); confirmed against §4.01(a)(ii) (Guarantee Agreement/Collateral Agreement counterparts and pledged equity/stock powers) and §4.01(a)(iv) (opinion of New York counsel)",
+        "semanticDescription": "Requirement that the Administrative Agent receive from the Loan Parties a supplement to the Collateral Agreement (and the Guarantee Agreement, per Section 4.01(a)(ii), for any Person becoming a Subsidiary Loan Party after the Effective Date), together with related documents and, if reasonably requested, opinions of the type referred to in Section 4.01(a)(iv)",
+        "reason": "purely procedural document-delivery requirement (execution/delivery of security and guarantee documents and legal opinions), not a computable financial mechanic",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (definition of \"Collateral and Guarantee Requirement\")",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:eda342ae4c2afa9d3a8c5a20"
+       },
+       {
+        "kind": "EVENT_ACTIVE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:3d012ca39435bbe50d2d714d",
+        "eventDescription": "A Subsidiary ceases to be an Excluded Subsidiary and thereby becomes required to become a Subsidiary Loan Party",
+        "triggerCondition": {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01(a)",
+         "semanticDescription": "the date on which the Initial Borrower becomes aware that such Subsidiary has ceased to be an Excluded Subsidiary",
+         "reason": "a subjective-awareness/notice trigger, not a formal boolean test expressible with existing comparison primitives",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(a)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:482741c0de9c5e26e7c9ba86"
+        },
+        "activeDuration": "90 days (or such longer period as the Administrative Agent shall reasonably agree)",
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(a)",
+         "excerpt": null
+        },
+        "inventoryItemIds": [
+         "inv-item:bf8f525080fd6d67c82aaa26"
+        ]
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01(b)",
+        "semanticDescription": "Requirement that all outstanding Equity Interests of Restricted Parties (other than Equity Interests constituting Excluded Assets or Equity Interests of Immaterial Subsidiaries) owned by a Loan Party be pledged under the Collateral Agreement, with certificates/instruments of transfer delivered subject to the ABL Intercreditor Agreement and any Customary Intercreditor Agreement",
+        "reason": "qualitative pledge/delivery requirement, not a computable financial mechanic",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (definition of \"Collateral and Guarantee Requirement\")",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:b54bb87eb854722640580b11"
+       },
+       {
+        "kind": "IF",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:635097285c1df50482fdce4b",
+        "condition": {
+         "kind": "COMPARE",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:667fc7f383eddac3815e7a2b",
+         "left": {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "MONEY",
+          "inputName": "principal amount of Indebtedness for borrowed money of a Borrower or Subsidiary owing to a Loan Party",
+          "exprId": "ir-expr:4124b90a295d77a40eb08126"
+         },
+         "operator": "GTE",
+         "right": {
+          "kind": "MONEY",
+          "type": "MONEY",
+          "amount": 112000000,
+          "currency": "USD",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(c)",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:be4b1e3d5c0d5886e125d0c4",
+          "inventoryItemIds": [
+           "inv-item:037dfb0c800d20443ad9a148"
+          ]
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(c)",
+          "excerpt": null
+         }
+        },
+        "then": {
+         "kind": "BOOLEAN_LITERAL",
+         "type": "BOOLEAN",
+         "value": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(c)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:6d28a50b6aeed3e83c5e7752"
+        },
+        "else": {
+         "kind": "BOOLEAN_LITERAL",
+         "type": "BOOLEAN",
+         "value": false,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(c)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:7af07edaf119e6437e091c63"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(c)",
+         "excerpt": null
+        },
+        "inventoryItemIds": [
+         "inv-item:037dfb0c800d20443ad9a148"
+        ]
+       },
+       {
+        "kind": "IF",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:d350b22b09c41e31a933b28d",
+        "condition": {
+         "kind": "COMPARE",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:3e66f44a541ff6663f491649",
+         "left": {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "MONEY",
+          "inputName": "principal amount of promissory note evidencing debt for borrowed money",
+          "exprId": "ir-expr:01f6743bd119c13d938eb67e"
+         },
+         "operator": "LT",
+         "right": {
+          "kind": "MONEY",
+          "type": "MONEY",
+          "amount": 112000000,
+          "currency": "USD",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01 (clause (v) of proviso)",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:1da40a9018341af2ce8b8878",
+          "inventoryItemIds": [
+           "inv-item:da380a7f6cb3b44da88f708c"
+          ]
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (clause (v) of proviso)",
+          "excerpt": null
+         }
+        },
+        "then": {
+         "kind": "BOOLEAN_LITERAL",
+         "type": "BOOLEAN",
+         "value": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (clause (v) of proviso)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:7928ca96cc328c9ee3a81175"
+        },
+        "else": {
+         "kind": "BOOLEAN_LITERAL",
+         "type": "BOOLEAN",
+         "value": false,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (clause (v) of proviso)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:f9b8de99fe02fcf739c18f26"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (clause (v) of proviso)",
+         "excerpt": null
+        },
+        "inventoryItemIds": [
+         "inv-item:da380a7f6cb3b44da88f708c"
+        ]
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01, clauses (i)-(iv) and (vi)-(xi) of the proviso and the two paragraphs following it",
+        "semanticDescription": "General 'notwithstanding' limitations on the collateral/guarantee requirement, including a cost/benefit ('excessive cost') exception, exclusions for control agreements over deposit/securities/commodities accounts, Vehicles and certificate-of-title assets, non-U.S. jurisdiction perfection actions, letter-of-credit rights/commercial tort claims/chattel paper perfection, share certificates for Immaterial Subsidiaries, Excluded Assets generally, real property landlord waivers/estoppels, the enumerated exclusive permitted perfection actions (UCC filings, USPTO/Copyright Office filings, delivery of certificated equity/debt instruments), the Administrative Agent's discretion to grant extensions, and the Initial Borrower's elective rights to add Discretionary Guarantors (Section 9.23) or pledge otherwise-Excluded Assets",
+        "reason": "a large bundle of qualitative exceptions, carve-outs and elective rights, not reducible to a computable financial mechanic",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (definition of \"Collateral and Guarantee Requirement\")",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:c1c26cb856428642969c75a7"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01 (definition of \"Collateral and Guarantee Requirement\")",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Excluded Subsidiary",
+      "Subsidiary Loan Party",
+      "Collateral Agreement",
+      "Guarantee Agreement",
+      "Security Documents",
+      "Equity Interests",
+      "Restricted Parties",
+      "Immaterial Subsidiary",
+      "Excluded Assets",
+      "ABL Intercreditor Agreement",
+      "Customary Intercreditor Agreement",
+      "Discretionary Guarantor",
+      "Loan Parties"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Clauses (a) and (b) and the general carve-outs ((i)-(iv), (vi)-(xi) and the trailing paragraphs) are procedural/qualitative document-delivery and exclusion provisions not reducible to a computable expression; represented as UNSUPPORTED nodes nested within an overall AND.",
+      "The $112.0 million promissory-note threshold (clause (c) and carve-out (v)) and the 90-day Subsidiary Loan Party grace period (clause (a) proviso) are the definition's genuinely computable components and are captured discretely.",
+      "Cross-references to Section 4.01(a)(ii) and Section 4.01(a)(iv) were resolved via tool and confirm clause (a)'s document list, but this does not change its non-computational, procedural nature.",
+      "The reference to Section 9.23 (Discretionary Guarantor election) could not be uniquely resolved (multiple substantive occurrences share that citation) and is left within the general UNSUPPORTED carve-out bundle rather than adjudicated.",
+      "One occurrence of 'clause (a)' within the definition's own text is itself ambiguous per the source-context report (5 substantive occurrences share the same local citation) and was not guessed.",
+      "purely procedural document-delivery requirement (execution/delivery of security and guarantee documents and legal opinions), not a computable financial mechanic",
+      "a subjective-awareness/notice trigger, not a formal boolean test expressible with existing comparison primitives",
+      "EVENT_ACTIVE keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "qualitative pledge/delivery requirement, not a computable financial mechanic",
+      "a large bundle of qualitative exceptions, carve-outs and elective rights, not reducible to a computable financial mechanic",
+      "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "“Collateral and Guarantee Requirement” means, at any time, subject to any applicable limitations set forth in this Agreement or the other Loan Documents, the requirement that: (a) ... (b) ... and (c) if any Indebtedness for borrowed money ... in a principal amount of $112.0 million or more is owing ... such Indebtedness shall be evidenced by a promissory note ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:bf8f525080fd6d67c82aaa26",
+      "inv-item:037dfb0c800d20443ad9a148",
+      "inv-item:da380a7f6cb3b44da88f708c"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:0ec3232f29d35b65765e2230",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Commitment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Revolving Lender",
+      "Revolving Commitment",
+      "Incremental Revolving Commitment",
+      "Other Revolving Commitments",
+      "Term Lender",
+      "Initial Term Commitment",
+      "Incremental Term Commitment",
+      "Other Term Commitment"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive definition aggregating other defined commitment terms by lender type; no numeric calculation to represent."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means (a) with respect to any Revolving Lender, its Revolving Commitment, Incremental Revolving Commitment, Other Revolving Commitments, or any combination thereof (as the context requires) and (b) with respect to any Term Lender, its Initial Term Commitment, Incremental Term Commitment, Other Term Commitment of any Class or any combination thereof (as the context requires)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:529ff2e42a03dde4a69c471d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Commodity Exchange Act",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely statutory cross-reference definition with no computable component."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the Commodity Exchange Act (7 U.S.C. § 1 et seq.), as amended from time to time, and any successor statute."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:971602ae7894d0f6796f66b4",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Company Materials",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01; §5.01 (chapeau only, as retrieved)",
+      "semanticDescription": "the substantive meaning of 'Company Materials' as assigned in Section 5.01",
+      "reason": "Section 5.01 was retrieved via tool but only its introductory chapeau ('Financial Statements and Other Information ... will furnish to the Administrative Agent ...') was returned; the specific sub-clause actually defining 'Company Materials' was not located within that section's text as retrieved",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:b67754a4f484ce063b64d6b0"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition operates entirely by cross-reference to Section 5.01; the specific defining language within Section 5.01 could not be located even after attempting retrieval of that section.",
+      "Section 5.01 was retrieved via tool but only its introductory chapeau ('Financial Statements and Other Information ... will furnish to the Administrative Agent ...') was returned; the specific sub-clause actually defining 'Company Materials' was not located within that section's text as retrieved"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; see Section 5.01",
+      "excerpt": "has the meaning assigned to such term in Section 5.01."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e7c6ec640024a2496fffa377",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Compliance Certificate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition is self-contained and descriptive (references the required delivery section and the exhibit form); no computable component to represent."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means each certificate required to be delivered pursuant to Section 5.01(d) in the form of Exhibit G (or such other form reasonably acceptable to the Administrative Agent)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].AND[0]] purely procedural document-delivery requirement (execution/delivery of security and guarantee documents and legal opinions), not a computable financial mechanic",
+   "[definition[d1].AND[1].EVENT_ACTIVE.triggerCondition] a subjective-awareness/notice trigger, not a formal boolean test expressible with existing comparison primitives",
+   "[definition[d1].AND[1]] EVENT_ACTIVE keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1].AND[2]] qualitative pledge/delivery requirement, not a computable financial mechanic",
+   "[definition[d1].AND[5]] a large bundle of qualitative exceptions, carve-outs and elective rights, not reducible to a computable financial mechanic",
+   "[definition[d1]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d4]] Section 5.01 was retrieved via tool but only its introductory chapeau ('Financial Statements and Other Information ... will furnish to the Administrative Agent ...') was returned; the specific sub-clause actually defining 'Company Materials' was not located within that section's text as retrieved",
+   "This 1.01 excerpt contains five independently declared defined terms: 'Collateral and Guarantee Requirement', 'Commitment', 'Commodity Exchange Act', 'Company Materials', and 'Compliance Certificate'; all five are emitted as separate WireDefinitions per the multiple-definitions rule.",
+   "'Collateral and Guarantee Requirement' is a large qualitative/procedural definition; its two genuinely computable components (the $112.0 million promissory-note threshold and the 90-day Subsidiary Loan Party grace period) are represented as discrete nodes within an overall AND, while the remaining procedural clauses and carve-outs are UNSUPPORTED, yielding an overall PARTIAL sufficiency rather than a false COMPLETE or a fully discarded UNSUPPORTED.",
+   "Cross-references to Section 4.01(a)(ii) and Section 4.01(a)(iv) were resolved via tool and confirm the procedural (non-computational) character of clause (a); Section 5.01 was also retrieved but only yielded its chapeau, leaving 'Company Materials' MISSING_CONTEXT rather than guessed.",
+   "Ambiguous local cross-references ('clause (a)' with 5 colliding occurrences; 'Section 9.23' with 2 colliding occurrences) were not adjudicated and are noted in sufficiencyReasons rather than silently resolved."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 57338,
+   "outputTokens": 17359,
+   "costUsd": 0.288266
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:6f07ed79042cc6e410dea04c",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Collateral and Guarantee Requirement",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "AND",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:846ed2aba9a6911ca0f3e385",
+     "operands": [
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01(a); confirmed against §4.01(a)(ii) (Guarantee Agreement/Collateral Agreement counterparts and pledged equity/stock powers) and §4.01(a)(iv) (opinion of New York counsel)",
+       "semanticDescription": "Requirement that the Administrative Agent receive from the Loan Parties a supplement to the Collateral Agreement (and the Guarantee Agreement, per Section 4.01(a)(ii), for any Person becoming a Subsidiary Loan Party after the Effective Date), together with related documents and, if reasonably requested, opinions of the type referred to in Section 4.01(a)(iv)",
+       "reason": "purely procedural document-delivery requirement (execution/delivery of security and guarantee documents and legal opinions), not a computable financial mechanic",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 (definition of \"Collateral and Guarantee Requirement\")",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:eda342ae4c2afa9d3a8c5a20"
+      },
+      {
+       "kind": "EVENT_ACTIVE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:3d012ca39435bbe50d2d714d",
+       "eventDescription": "A Subsidiary ceases to be an Excluded Subsidiary and thereby becomes required to become a Subsidiary Loan Party",
+       "triggerCondition": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01(a)",
+        "semanticDescription": "the date on which the Initial Borrower becomes aware that such Subsidiary has ceased to be an Excluded Subsidiary",
+        "reason": "a subjective-awareness/notice trigger, not a formal boolean test expressible with existing comparison primitives",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(a)",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:482741c0de9c5e26e7c9ba86"
+       },
+       "activeDuration": "90 days (or such longer period as the Administrative Agent shall reasonably agree)",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(a)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:bf8f525080fd6d67c82aaa26"
+       ]
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01(b)",
+       "semanticDescription": "Requirement that all outstanding Equity Interests of Restricted Parties (other than Equity Interests constituting Excluded Assets or Equity Interests of Immaterial Subsidiaries) owned by a Loan Party be pledged under the Collateral Agreement, with certificates/instruments of transfer delivered subject to the ABL Intercreditor Agreement and any Customary Intercreditor Agreement",
+       "reason": "qualitative pledge/delivery requirement, not a computable financial mechanic",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 (definition of \"Collateral and Guarantee Requirement\")",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:b54bb87eb854722640580b11"
+      },
+      {
+       "kind": "IF",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:635097285c1df50482fdce4b",
+       "condition": {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:667fc7f383eddac3815e7a2b",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "MONEY",
+         "inputName": "principal amount of Indebtedness for borrowed money of a Borrower or Subsidiary owing to a Loan Party",
+         "exprId": "ir-expr:4124b90a295d77a40eb08126"
+        },
+        "operator": "GTE",
+        "right": {
+         "kind": "MONEY",
+         "type": "MONEY",
+         "amount": 112000000,
+         "currency": "USD",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(c)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:be4b1e3d5c0d5886e125d0c4",
+         "inventoryItemIds": [
+          "inv-item:037dfb0c800d20443ad9a148"
+         ]
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(c)",
+         "excerpt": null
+        }
+       },
+       "then": {
+        "kind": "BOOLEAN_LITERAL",
+        "type": "BOOLEAN",
+        "value": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(c)",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:6d28a50b6aeed3e83c5e7752"
+       },
+       "else": {
+        "kind": "BOOLEAN_LITERAL",
+        "type": "BOOLEAN",
+        "value": false,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(c)",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:7af07edaf119e6437e091c63"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(c)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:037dfb0c800d20443ad9a148"
+       ]
+      },
+      {
+       "kind": "IF",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:d350b22b09c41e31a933b28d",
+       "condition": {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:3e66f44a541ff6663f491649",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "MONEY",
+         "inputName": "principal amount of promissory note evidencing debt for borrowed money",
+         "exprId": "ir-expr:01f6743bd119c13d938eb67e"
+        },
+        "operator": "LT",
+        "right": {
+         "kind": "MONEY",
+         "type": "MONEY",
+         "amount": 112000000,
+         "currency": "USD",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (clause (v) of proviso)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:1da40a9018341af2ce8b8878",
+         "inventoryItemIds": [
+          "inv-item:da380a7f6cb3b44da88f708c"
+         ]
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (clause (v) of proviso)",
+         "excerpt": null
+        }
+       },
+       "then": {
+        "kind": "BOOLEAN_LITERAL",
+        "type": "BOOLEAN",
+        "value": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (clause (v) of proviso)",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:7928ca96cc328c9ee3a81175"
+       },
+       "else": {
+        "kind": "BOOLEAN_LITERAL",
+        "type": "BOOLEAN",
+        "value": false,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (clause (v) of proviso)",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:f9b8de99fe02fcf739c18f26"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 (clause (v) of proviso)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:da380a7f6cb3b44da88f708c"
+       ]
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01, clauses (i)-(iv) and (vi)-(xi) of the proviso and the two paragraphs following it",
+       "semanticDescription": "General 'notwithstanding' limitations on the collateral/guarantee requirement, including a cost/benefit ('excessive cost') exception, exclusions for control agreements over deposit/securities/commodities accounts, Vehicles and certificate-of-title assets, non-U.S. jurisdiction perfection actions, letter-of-credit rights/commercial tort claims/chattel paper perfection, share certificates for Immaterial Subsidiaries, Excluded Assets generally, real property landlord waivers/estoppels, the enumerated exclusive permitted perfection actions (UCC filings, USPTO/Copyright Office filings, delivery of certificated equity/debt instruments), the Administrative Agent's discretion to grant extensions, and the Initial Borrower's elective rights to add Discretionary Guarantors (Section 9.23) or pledge otherwise-Excluded Assets",
+       "reason": "a large bundle of qualitative exceptions, carve-outs and elective rights, not reducible to a computable financial mechanic",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 (definition of \"Collateral and Guarantee Requirement\")",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:c1c26cb856428642969c75a7"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01 (definition of \"Collateral and Guarantee Requirement\")",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Excluded Subsidiary",
+     "Subsidiary Loan Party",
+     "Collateral Agreement",
+     "Guarantee Agreement",
+     "Security Documents",
+     "Equity Interests",
+     "Restricted Parties",
+     "Immaterial Subsidiary",
+     "Excluded Assets",
+     "ABL Intercreditor Agreement",
+     "Customary Intercreditor Agreement",
+     "Discretionary Guarantor",
+     "Loan Parties"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Clauses (a) and (b) and the general carve-outs ((i)-(iv), (vi)-(xi) and the trailing paragraphs) are procedural/qualitative document-delivery and exclusion provisions not reducible to a computable expression; represented as UNSUPPORTED nodes nested within an overall AND.",
+     "The $112.0 million promissory-note threshold (clause (c) and carve-out (v)) and the 90-day Subsidiary Loan Party grace period (clause (a) proviso) are the definition's genuinely computable components and are captured discretely.",
+     "Cross-references to Section 4.01(a)(ii) and Section 4.01(a)(iv) were resolved via tool and confirm clause (a)'s document list, but this does not change its non-computational, procedural nature.",
+     "The reference to Section 9.23 (Discretionary Guarantor election) could not be uniquely resolved (multiple substantive occurrences share that citation) and is left within the general UNSUPPORTED carve-out bundle rather than adjudicated.",
+     "One occurrence of 'clause (a)' within the definition's own text is itself ambiguous per the source-context report (5 substantive occurrences share the same local citation) and was not guessed.",
+     "purely procedural document-delivery requirement (execution/delivery of security and guarantee documents and legal opinions), not a computable financial mechanic",
+     "a subjective-awareness/notice trigger, not a formal boolean test expressible with existing comparison primitives",
+     "EVENT_ACTIVE keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+     "qualitative pledge/delivery requirement, not a computable financial mechanic",
+     "a large bundle of qualitative exceptions, carve-outs and elective rights, not reducible to a computable financial mechanic",
+     "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "“Collateral and Guarantee Requirement” means, at any time, subject to any applicable limitations set forth in this Agreement or the other Loan Documents, the requirement that: (a) ... (b) ... and (c) if any Indebtedness for borrowed money ... in a principal amount of $112.0 million or more is owing ... such Indebtedness shall be evidenced by a promissory note ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:bf8f525080fd6d67c82aaa26",
+     "inv-item:037dfb0c800d20443ad9a148",
+     "inv-item:da380a7f6cb3b44da88f708c"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:0ec3232f29d35b65765e2230",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Commitment",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Revolving Lender",
+     "Revolving Commitment",
+     "Incremental Revolving Commitment",
+     "Other Revolving Commitments",
+     "Term Lender",
+     "Initial Term Commitment",
+     "Incremental Term Commitment",
+     "Other Term Commitment"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive definition aggregating other defined commitment terms by lender type; no numeric calculation to represent."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means (a) with respect to any Revolving Lender, its Revolving Commitment, Incremental Revolving Commitment, Other Revolving Commitments, or any combination thereof (as the context requires) and (b) with respect to any Term Lender, its Initial Term Commitment, Incremental Term Commitment, Other Term Commitment of any Class or any combination thereof (as the context requires)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:529ff2e42a03dde4a69c471d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Commodity Exchange Act",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely statutory cross-reference definition with no computable component."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the Commodity Exchange Act (7 U.S.C. § 1 et seq.), as amended from time to time, and any successor statute."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:971602ae7894d0f6796f66b4",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Company Materials",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01; §5.01 (chapeau only, as retrieved)",
+     "semanticDescription": "the substantive meaning of 'Company Materials' as assigned in Section 5.01",
+     "reason": "Section 5.01 was retrieved via tool but only its introductory chapeau ('Financial Statements and Other Information ... will furnish to the Administrative Agent ...') was returned; the specific sub-clause actually defining 'Company Materials' was not located within that section's text as retrieved",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:b67754a4f484ce063b64d6b0"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Definition operates entirely by cross-reference to Section 5.01; the specific defining language within Section 5.01 could not be located even after attempting retrieval of that section.",
+     "Section 5.01 was retrieved via tool but only its introductory chapeau ('Financial Statements and Other Information ... will furnish to the Administrative Agent ...') was returned; the specific sub-clause actually defining 'Company Materials' was not located within that section's text as retrieved"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; see Section 5.01",
+     "excerpt": "has the meaning assigned to such term in Section 5.01."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e7c6ec640024a2496fffa377",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Compliance Certificate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition is self-contained and descriptive (references the required delivery section and the exhibit form); no computable component to represent."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means each certificate required to be delivered pursuant to Section 5.01(d) in the form of Exhibit G (or such other form reasonably acceptable to the Administrative Agent)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01(a): 'the date on which the Initial Borrower becomes aware that such Subsidiary has ceased to be an Excluded Subsidiary'",
+    "semanticRequirement": "Modeling a grace-period clock that starts running from a party's subjective awareness/notice of a triggering fact, rather than from an objective, calculable event date",
+    "whyExistingPrimitivesFail": "EVENT_ACTIVE's triggerCondition expects a boolean/comparable condition; a subjective-awareness trigger is not a formal test expressible with COMPARE/AND/OR over defined metrics or dates, so it must be left as an UNSUPPORTED leaf even though the surrounding 90-day duration itself is well-defined",
+    "candidateGeneralizedPrimitive": "NOTICE_OR_AWARENESS_TRIGGER node type carrying a description of the triggering fact and the party whose awareness starts the clock, usable wherever EVENT_ACTIVE/DURING_PERIOD need a non-objective start condition"
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].AND[0]] purely procedural document-delivery requirement (execution/delivery of security and guarantee documents and legal opinions), not a computable financial mechanic",
+   "[definition[d1].AND[1].EVENT_ACTIVE.triggerCondition] a subjective-awareness/notice trigger, not a formal boolean test expressible with existing comparison primitives",
+   "[definition[d1].AND[1]] EVENT_ACTIVE keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1].AND[2]] qualitative pledge/delivery requirement, not a computable financial mechanic",
+   "[definition[d1].AND[5]] a large bundle of qualitative exceptions, carve-outs and elective rights, not reducible to a computable financial mechanic",
+   "[definition[d1]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d4]] Section 5.01 was retrieved via tool but only its introductory chapeau ('Financial Statements and Other Information ... will furnish to the Administrative Agent ...') was returned; the specific sub-clause actually defining 'Company Materials' was not located within that section's text as retrieved",
+   "This 1.01 excerpt contains five independently declared defined terms: 'Collateral and Guarantee Requirement', 'Commitment', 'Commodity Exchange Act', 'Company Materials', and 'Compliance Certificate'; all five are emitted as separate WireDefinitions per the multiple-definitions rule.",
+   "'Collateral and Guarantee Requirement' is a large qualitative/procedural definition; its two genuinely computable components (the $112.0 million promissory-note threshold and the 90-day Subsidiary Loan Party grace period) are represented as discrete nodes within an overall AND, while the remaining procedural clauses and carve-outs are UNSUPPORTED, yielding an overall PARTIAL sufficiency rather than a false COMPLETE or a fully discarded UNSUPPORTED.",
+   "Cross-references to Section 4.01(a)(ii) and Section 4.01(a)(iv) were resolved via tool and confirm the procedural (non-computational) character of clause (a); Section 5.01 was also retrieved but only yielded its chapeau, leaving 'Company Materials' MISSING_CONTEXT rather than guessed.",
+   "Ambiguous local cross-references ('clause (a)' with 5 colliding occurrences; 'Section 9.23' with 2 colliding occurrences) were not adjudicated and are noted in sufficiencyReasons rather than silently resolved."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 5.01"
+    },
+    "outputSummary": "resolved reference \"Section 5.01\" -> 5.01 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 188,
+    "timestamp": "2026-09-14T17:04:44.016Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 5.01",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:65ab3a0a1f9dc108193f45ca",
+     "sourceNodeKey": "doc-a::5.01",
+     "charStart": 561978,
+     "charEnd": 562166,
+     "rawText": "Section 5.01 Financial Statements and Other Information . The Initial Borrower will furnish to the Administrative Agent (for\ndistribution to each Lender through the Administrative Agent):\n",
+     "contentHash": "6af63dd432be6a3d4b16e966391d333dc8df66bdf478e8cf863dfc88b4ea8367",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 4.01(a)(ii)"
+    },
+    "outputSummary": "resolved reference \"Section 4.01(a)(ii)\" -> 4.01(a)(ii) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 870,
+    "timestamp": "2026-09-14T17:04:44.016Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 4.01(a)(ii)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:cf64b25f90879e7593f0c8af",
+     "sourceNodeKey": "doc-a::4.01(a)(ii)",
+     "charStart": 553592,
+     "charEnd": 554462,
+     "rawText": "(ii) a counterpart of the Guarantee Agreement and\nthe Collateral Agreement, in each case together with certificates, if any, representing the secured equity of the Initial Borrower’s Subsidiaries and constituting Collateral, in each case, accompanied by undated stock powers executed in blank\nor undated signed partnership interest transfers and instruments evidencing the pledged debt (if any) indorsed in blank; provided that delivery of such pledged equity after the use of the Borrowers commercially reasonable efforts to provide\nsuch pledged equity shall not be a condition to the availability of the initial Loans on the Effective Date (but shall be required to be satisfied as promptly as practicable after the Effective Date and in any event within the period specified\ntherefor in Schedule 5.14 or such later date as Administrative Agent may reasonably agree);\n",
+     "contentHash": "7bf9cb5c66104f0747da0f531f5497d8907cdd7f64d7d751803d4880d6f4bbd9",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 4.01(a)(iv)"
+    },
+    "outputSummary": "resolved reference \"Section 4.01(a)(iv)\" -> 4.01(a)(iv) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 197,
+    "timestamp": "2026-09-14T17:04:44.017Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 4.01(a)(iv)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:07b4ab34f0ff1b509e65fa9a",
+     "sourceNodeKey": "doc-a::4.01(a)(iv)",
+     "charStart": 554571,
+     "charEnd": 554768,
+     "rawText": "(iv) a written opinion (addressed to the\nAdministrative Agent and the Lenders and dated the Effective Date) of Paul, Weiss, Rifkind, Wharton & Garrison LLP, New York counsel for the Loan Parties;\n\n",
+     "contentHash": "776f4fcac83569d4ea6b1f8af230275d743e11b9c368fcf51e319b271cc49a16",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": "[\n  {\n    \"localRef\": \"d1\",\n    \"termName\": \"Collateral and Guarantee Requirement\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"AND\",\n      \"operands\": [\n        {\n          \"kind\": \"UNSUPPORTED\",\n          \"semanticDescription\": \"Requirement that the Administrative Agent receive from the Loan Parties a supplement to the Collateral Agreement (and the Guarantee Agreement, per Section 4.01(a)(ii), for any Person becoming a Subsidiary Loan Party after the Effective Date), together with related documents and, if reasonably requested, opinions of the type referred to in Section 4.01(a)(iv)\",\n          \"reason\": \"purely procedural document-delivery requirement (execution/delivery of security and guarantee documents and legal opinions), not a computable financial mechanic\",\n          \"sourceEvidence\": \"\\u00a71.01(a); confirmed against \\u00a74.01(a)(ii) (Guarantee Agreement/Collateral Agreement counterparts and pledged equity/stock powers) and \\u00a74.01(a)(iv) (opinion of New York counsel)\"\n        },\n        {\n          \"kind\": \"EVENT_ACTIVE\",\n          \"eventDescription\": \"A Subsidiary ceases to be an Excluded Subsidiary and thereby becomes required to become a Subsidiary Loan Party\",\n          \"triggerCondition\": {\n            \"kind\": \"UNSUPPORTED\",\n            \"semanticDescription\": \"the date on which the Initial Borrower becomes aware that such Subsidiary has ceased to be an Excluded Subsidiary\",\n            \"reason\": \"a subjective-awareness/notice trigger, not a formal boolean test expressible with existing comparison primitives\",\n            \"sourceEvidence\": \"\\u00a71.01(a)\"\n          },\n          \"activeDuration\": \"90 days (or such longer period as the Administrative Agent shall reasonably agree)\",\n          \"citation\": \"\\u00a71.01(a)\",\n          \"inventoryItemIds\": [\"inv-item:bf8f525080fd6d67c82aaa26\"]\n        },\n        {\n          \"kind\": \"UNSUPPORTED\",\n          \"semanticDescription\": \"Requirement that all outstanding Equity Interests of Restricted Parties (other than Equity Interests constituting Excluded Assets or Equity Interests of Immaterial Subsidiaries) owned by a Loan Party be pledged under the Collateral Agreement, with certificates/instruments of transfer delivered subject to the ABL Intercreditor Agreement and any Customary Intercreditor Agreement\",\n          \"reason\": \"qualitative pledge/delivery requirement, not a computable financial mechanic\",\n          \"sourceEvidence\": \"\\u00a71.01(b)\"\n        },\n        {\n          \"kind\": \"IF\",\n          \"condition\": {\n            \"kind\": \"COMPARE\",\n            \"left\": {\n              \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n              \"inputName\": \"principal amount of Indebtedness for borrowed money of a Borrower or Subsidiary owing to a Loan Party\"\n            },\n            \"operator\": \"GTE\",\n            \"right\": {\n              \"kind\": \"MONEY\",\n              \"amount\": 112000000,\n              \"currency\": \"USD\",\n              \"citation\": \"\\u00a71.01(c)\",\n              \"inventoryItemIds\": [\"inv-item:037dfb0c800d20443ad9a148\"]\n            },\n            \"citation\": \"\\u00a71.01(c)\"\n          },\n          \"then\": {\"kind\": \"BOOLEAN_LITERAL\", \"boolValue\": true},\n          \"else\": {\"kind\": \"BOOLEAN_LITERAL\", \"boolValue\": false},\n          \"citation\": \"\\u00a71.01(c)\",\n          \"inventoryItemIds\": [\"inv-item:037dfb0c800d20443ad9a148\"]\n        },\n        {\n          \"kind\": \"IF\",\n          \"condition\": {\n            \"kind\": \"COMPARE\",\n            \"left\": {\n              \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n              \"inputName\": \"principal amount of promissory note evidencing debt for borrowed money\"\n            },\n            \"operator\": \"LT\",\n            \"right\": {\n              \"kind\": \"MONEY\",\n              \"amount\": 112000000,\n              \"currency\": \"USD\",\n              \"citation\": \"\\u00a71.01 (clause (v) of proviso)\",\n              \"inventoryItemIds\": [\"inv-item:da380a7f6cb3b44da88f708c\"]\n            },\n            \"citation\": \"\\u00a71.01 (clause (v) of proviso)\"\n          },\n          \"then\": {\"kind\": \"BOOLEAN_LITERAL\", \"boolValue\": true},\n          \"else\": {\"kind\": \"BOOLEAN_LITERAL\", \"boolValue\": false},\n          \"citation\": \"\\u00a71.01 (clause (v) of proviso)\",\n          \"inventoryItemIds\": [\"inv-item:da380a7f6cb3b44da88f708c\"]\n        },\n        {\n          \"kind\": \"UNSUPPORTED\",\n          \"semanticDescription\": \"General 'notwithstanding' limitations on the collateral/guarantee requirement, including a cost/benefit ('excessive cost') exception, exclusions for control agreements over deposit/securities/commodities accounts, Vehicles and certificate-of-title assets, non-U.S. jurisdiction perfection actions, letter-of-credit rights/commercial tort claims/chattel paper perfection, share certificates for Immaterial Subsidiaries, Excluded Assets generally, real property landlord waivers/estoppels, the enumerated exclusive permitted perfection actions (UCC filings, USPTO/Copyright Office filings, delivery of certificated equity/debt instruments), the Administrative Agent's discretion to grant extensions, and the Initial Borrower's elective rights to add Discretionary Guarantors (Section 9.23) or pledge otherwise-Excluded Assets\",\n          \"reason\": \"a large bundle of qualitative exceptions, carve-outs and elective rights, not reducible to a computable financial mechanic\",\n          \"sourceEvidence\": \"\\u00a71.01, clauses (i)-(iv) and (vi)-(xi) of the proviso and the two paragraphs following it\"\n        }\n      ],\n      \"citation\": \"\\u00a71.01 (definition of \\\"Collateral and Guarantee Requirement\\\")\"\n    },\n    \"dependsOnTerms\": [\"Excluded Subsidiary\", \"Subsidiary Loan Party\", \"Collateral Agreement\", \"Guarantee Agreement\", \"Security Documents\", \"Equity Interests\", \"Restricted Parties\", \"Immaterial Subsidiary\", \"Excluded Assets\", \"ABL Intercreditor Agreement\", \"Customary Intercreditor Agreement\", \"Discretionary Guarantor\", \"Loan Parties\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\n      \"Clauses (a) and (b) and the general carve-outs ((i)-(iv), (vi)-(xi) and the trailing paragraphs) are procedural/qualitative document-delivery and exclusion provisions not reducible to a computable expression; represented as UNSUPPORTED nodes nested within an overall AND.\",\n      \"The $112.0 million promissory-note threshold (clause (c) and carve-out (v)) and the 90-day Subsidiary Loan Party grace period (clause (a) proviso) are the definition's genuinely computable components and are captured discretely.\",\n      \"Cross-references to Section 4.01(a)(ii) and Section 4.01(a)(iv) were resolved via tool and confirm clause (a)'s document list, but this does not change its non-computational, procedural nature.\",\n      \"The reference to Section 9.23 (Discretionary Guarantor election) could not be uniquely resolved (multiple substantive occurrences share that citation) and is left within the general UNSUPPORTED carve-out bundle rather than adjudicated.\",\n      \"One occurrence of 'clause (a)' within the definition's own text is itself ambiguous per the source-context report (5 substantive occurrences share the same local citation) and was not guessed.\"\n    ],\n    \"citation\": \"\\u00a71.01\",\n    \"excerpt\": \"\\u201cCollateral and Guarantee Requirement\\u201d means, at any time, subject to any applicable limitations set forth in this Agreement or the other Loan Documents, the requirement that: (a) ... (b) ... and (c) if any Indebtedness for borrowed money ... in a principal amount of $112.0 million or more is owing ... such Indebtedness shall be evidenced by a promissory note ...\",\n    \"inventoryItemIds\": [\"inv-item:bf8f525080fd6d67c82aaa26\", \"inv-item:037dfb0c800d20443ad9a148\", \"inv-item:da380a7f6cb3b44da88f708c\"]\n  },\n  {\n    \"localRef\": \"d2\",\n    \"termName\": \"Commitment\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Revolving Lender\", \"Revolving Commitment\", \"Incremental Revolving Commitment\", \"Other Revolving Commitments\", \"Term Lender\", \"Initial Term Commitment\", \"Incremental Term Commitment\", \"Other Term Commitment\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Purely descriptive definition aggregating other defined commitment terms by lender type; no numeric calculation to represent.\"],\n    \"citation\": \"\\u00a71.01\",\n    \"excerpt\": \"means (a) with respect to any Revolving Lender, its Revolving Commitment, Incremental Revolving Commitment, Other Revolving Commitments, or any combination thereof (as the context requires) and (b) with respect to any Term Lender, its Initial Term Commitment, Incremental Term Commitment, Other Term Commitment of any Class or any combination thereof (as the context requires).\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d3\",\n    \"termName\": \"Commodity Exchange Act\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Purely statutory cross-reference definition with no computable component.\"],\n    \"citation\": \"\\u00a71.01\",\n    \"excerpt\": \"means the Commodity Exchange Act (7 U.S.C. \\u00a7 1 et seq.), as amended from time to time, and any successor statute.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d4\",\n    \"termName\": \"Company Materials\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"UNSUPPORTED\",\n      \"semanticDescription\": \"the substantive meaning of 'Company Materials' as assigned in Section 5.01\",\n      \"reason\": \"Section 5.01 was retrieved via tool but only its introductory chapeau ('Financial Statements and Other Information ... will furnish to the Administrative Agent ...') was returned; the specific sub-clause actually defining 'Company Materials' was not located within that section's text as retrieved\",\n      \"sourceEvidence\": \"\\u00a71.01; \\u00a75.01 (chapeau only, as retrieved)\"\n    },\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"MISSING_CONTEXT\",\n    \"sufficiencyReasons\": [\"Definition operates entirely by cross-reference to Section 5.01; the specific defining language within Section 5.01 could not be located even after attempting retrieval of that section.\"],\n    \"citation\": \"\\u00a71.01; see Section 5.01\",\n    \"excerpt\": \"has the meaning assigned to such term in Section 5.01.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d5\",\n    \"termName\": \"Compliance Certificate\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Definition is self-contained and descriptive (references the required delivery section and the exhibit form); no computable component to represent.\"],\n    \"citation\": \"\\u00a71.01\",\n    \"excerpt\": \"means each certificate required to be delivered pursuant to Section 5.01(d) in the form of Exhibit G (or such other form reasonably acceptable to the Administrative Agent).\",\n    \"inventoryItemIds\": []\n  }\n]",
+   "rules": [],
+   "sharedCapacities": "[]",
+   "irExtensionCandidates": "[\n  {\n    \"sourceEvidence\": \"\\u00a71.01(a): 'the date on which the Initial Borrower becomes aware that such Subsidiary has ceased to be an Excluded Subsidiary'\",\n    \"semanticRequirement\": \"Modeling a grace-period clock that starts running from a party's subjective awareness/notice of a triggering fact, rather than from an objective, calculable event date\",\n    \"whyExistingPrimitivesFail\": \"EVENT_ACTIVE's triggerCondition expects a boolean/comparable condition; a subjective-awareness trigger is not a formal test expressible with COMPARE/AND/OR over defined metrics or dates, so it must be left as an UNSUPPORTED leaf even though the surrounding 90-day duration itself is well-defined\",\n    \"candidateGeneralizedPrimitive\": \"NOTICE_OR_AWARENESS_TRIGGER node type carrying a description of the triggering fact and the party whose awareness starts the clock, usable wherever EVENT_ACTIVE/DURING_PERIOD need a non-objective start condition\"\n  }\n]",
+   "inventoryDispositions": "[\n  {\"inventoryItemId\": \"inv-item:bf8f525080fd6d67c82aaa26\", \"disposition\": \"AMBIGUOUS\", \"note\": \"Duration itself (90 days / longer as agreed) is captured in an EVENT_ACTIVE node, but its objective trigger event depends on a subjective-awareness condition modeled as UNSUPPORTED nested within that same node.\"},\n  {\"inventoryItemId\": \"inv-item:037dfb0c800d20443ad9a148\", \"disposition\": \"AMBIGUOUS\", \"note\": \"Threshold value consumed on the MONEY node inside clause (c)'s IF/COMPARE; the surrounding procedural pledge mechanics remain UNSUPPORTED.\"},\n  {\"inventoryItemId\": \"inv-item:da380a7f6cb3b44da88f708c\", \"disposition\": \"AMBIGUOUS\", \"note\": \"Threshold value consumed on the MONEY node inside carve-out (v)'s IF/COMPARE; surrounding perfection-exception mechanics otherwise qualitative.\"}\n]",
+   "overallNotes": "[\"This 1.01 excerpt contains five independently declared defined terms: 'Collateral and Guarantee Requirement', 'Commitment', 'Commodity Exchange Act', 'Company Materials', and 'Compliance Certificate'; all five are emitted as separate WireDefinitions per the multiple-definitions rule.\", \"'Collateral and Guarantee Requirement' is a large qualitative/procedural definition; its two genuinely computable components (the $112.0 million promissory-note threshold and the 90-day Subsidiary Loan Party grace period) are represented as discrete nodes within an overall AND, while the remaining procedural clauses and carve-outs are UNSUPPORTED, yielding an overall PARTIAL sufficiency rather than a false COMPLETE or a fully discarded UNSUPPORTED.\", \"Cross-references to Section 4.01(a)(ii) and Section 4.01(a)(iv) were resolved via tool and confirm the procedural (non-computational) character of clause (a); Section 5.01 was also retrieved but only yielded its chapeau, leaving 'Company Materials' MISSING_CONTEXT rather than guessed.\", \"Ambiguous local cross-references ('clause (a)' with 5 colliding occurrences; 'Section 9.23' with 2 colliding occurrences) were not adjudicated and are noted in sufficiencyReasons rather than silently resolved.\"]"
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T17:06:13.090Z",
+   "inputTokens": 57338,
+   "outputTokens": 17359,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 156365,
+   "calculatedCostUsd": 0.288266
+  },
+  "cacheKey": "93fe867883666fc4eac5ddb8ca34a681854d360f15deae8a4c86de732dc76d9d",
+  "compiledAt": "2026-09-14T17:06:13.090Z"
+ },
+ "wave": "A",
+ "attemptsSoFar": 1
+}
