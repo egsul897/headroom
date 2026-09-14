@@ -1,5 +1,5 @@
-import { computeSourceCoverage } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/source-coverage";
-import type { SourceContextRegion } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/types";
+import { computeSourceCoverage } from "../../lib/contract-model/compiler/semantic-accountability/source-coverage";
+import type { SourceContextRegion } from "../../lib/contract-model/compiler/semantic-accountability/types";
 const R = (text: string): SourceContextRegion => ({ regionId: "operative", kind: "OPERATIVE", documentId: "d", sourceNodeId: null, sectionRef: null, charStart: 0, charEnd: text.length, text, expandedFor: null, truncatedAtBudget: false, unitExtension: null });
 
 // A realistic ALL-CAPS jury-trial-waiver paragraph, as drafted in real credit agreements.
@@ -26,7 +26,7 @@ for (const n of [40, 60, 80, 82, 84]) {
 }
 
 // Value scanner blind spots
-import { scanQuantitativeValues } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/quantitative";
+import { scanQuantitativeValues } from "../../lib/contract-model/compiler/semantic-accountability/quantitative";
 console.log("\nvalue scanner:");
 for (const v of ["five million dollars", "fifty percent (50%)", "fifty percent", "one hundred and eighty days", "one-half of the Net Proceeds", "¥500,000,000", "CHF 2,000,000", "2,500,000 (the \"Cap\")", "a ratio of 4.5:1", "3/31/2030", "31 March 2030", "one half of one percent", "twenty-five basis points", "thirty days"]) {
   console.log("   ", JSON.stringify(v).padEnd(34), "->", JSON.stringify(scanQuantitativeValues(v).map(x=>x.rawText)));

@@ -1,0 +1,672 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:fc841e0f175ddcab1ccd",
+  "shardHash": "48fc56978d7c7d7117cdc2b6f4795304ec702f3235bca199a4bf7be889943581",
+  "ordinal": 9,
+  "ownedUnits": 2,
+  "sourceChars": 3368,
+  "contextEntries": 1,
+  "contextChars": 225,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 0,
+  "ownedMaterialItems": 0,
+  "estimatedFirstTurnInputTokens": 18865,
+  "preCallEstimate": {
+   "inputTokens": 62066,
+   "outputTokens": 6500,
+   "usd": 0.189132
+  },
+  "actual": {
+   "inputTokens": 61617,
+   "outputTokens": 14045,
+   "turns": 3,
+   "latencyMs": 139074,
+   "costUsd": 0.26368400000000003,
+   "attemptCount": 3,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_COMPLETE",
+  "failureReasons": [],
+  "toolCalls": 3,
+  "toolCallNames": [
+   "getDefinitionDependencies",
+   "getDefinitionDependencies",
+   "getDefinition"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 2,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 0,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "valuesRepresented": 0,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {}
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [],
+  "unresolvedIssues": [
+   "[definition[d1].SUM[0]] This is a qualitative subset-selection out of the aggregate Consolidated Total Debt figure (i.e., 'which specific tranches of debt count'), not an arithmetic combination of quantified metrics; 'Loans' and 'Incremental Loan' identify particular facilities rather than a separately stated dollar figure in this text.",
+   "[definition[d1].SUM[1]] A qualitative lien-priority / non-subordination eligibility test selecting a subset of Consolidated Total Debt; there is no numeric value stated and no arithmetic node type can faithfully express a boolean lien-seniority filter over an aggregate metric.",
+   "[definition[d1]] SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d2].SUBTRACT.left.SUBTRACT.right] Each item is a categorical carve-out (a description of a type of cost), not a numeric value or a separately quantified defined metric in the supplied source, so it cannot be represented as an arithmetic operand.",
+   "[definition[d2].SUBTRACT.left] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d2]] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "Source is a Definitions (§1.01) excerpt containing two independent defined terms - both extracted (Consolidated First Lien Debt, Consolidated Interest Expense); no covenant permission/prohibition rule (WireRule) is present in this excerpt, so no rules were emitted.",
+   "The FROZEN SEMANTIC INVENTORY reported an INVENTORY_COVERAGE_GAP (721 stretches of source unaccounted after a failed targeted re-inventory) with no individual inventoryItemIds surfaced to this compilation step; consequently no inventoryItemIds could be attached to any node, and no inventoryDispositions could be produced against specific item ids. This gap is flagged here rather than silently ignored.",
+   "getDefinition('Consolidated Total Debt') was retrieved because Consolidated First Lien Debt's economics are expressed as a share of that metric; it confirmed Consolidated Total Debt already nets cash/Cash Equivalents (its own clause (ii)), which materially informed the decision not to model a second, duplicative cash reduction in Consolidated First Lien Debt.",
+   "Dependent scope-defining terms (Loans, Incremental Loan, Loan Document Obligations, Collateral, Lien, Secured Obligations, ABL Obligations) were deliberately not individually fetched: per getDefinitionDependencies they exist, but none of them would convert the lien-seniority/subordination eligibility test into a computable arithmetic formula - the gap is structural (see irExtensionCandidates), not a missing numeric fact, so further retrieval would not change the PARTIAL sufficiency outcome.",
+   "This provision has no recorded amendment history; both definitions were compiled from COMPLETE_LOCAL_SOURCE text with no amendment-currency ambiguity."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": true,
+   "decodedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "overallNotes"
+   ],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": true,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "string",
+      "originalStringSha256": "19acd1e03cea4bb43a04415a8b5b80979af51d8654eb8bc4662a8745a0a919d8",
+      "originalStringLength": 8204,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 2,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "string",
+      "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "originalStringLength": 2,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 0,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "string",
+      "originalStringSha256": "956f21ca43c77ea0eadf64a7999d779a7b7a700dff25a0f6b902c533996a021d",
+      "originalStringLength": 1346,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 1,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "absent",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "absent - left absent for the schema's own default/optional handling"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "string",
+      "originalStringSha256": "6c1c6ac52ff5861d19894c217bf73def85cc0002c2d3d9ab6f1dec60aac85539",
+      "originalStringLength": 1706,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 5,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:fc841e0f175ddcab1ccd",
+  "shardHash": "48fc56978d7c7d7117cdc2b6f4795304ec702f3235bca199a4bf7be889943581",
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:9367c3e154dd42db56e72621",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Consolidated First Lien Debt",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "means the sum, without duplication, of the amount of Consolidated Total Debt (a) consisting of the Loans (including any Incremental Loan) and (b) that is not subordinated ... and is secured by Liens ... on an equal or senior priority basis ... with Liens securing the Secured Obligations",
+      "semanticDescription": "unrecognized or malformed expression (kind=\"SUM\")",
+      "reason": "SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01 (\"Consolidated First Lien Debt\")",
+       "excerpt": "means the sum, without duplication, of the amount of Consolidated Total Debt (a) consisting of the Loans (including any Incremental Loan) and (b) that is not subordinated ... and is secured by Liens ... on an equal or senior priority basis ... with Liens securing the Secured Obligations"
+      },
+      "attemptedStructure": {
+       "kind": "SUM",
+       "type": "NUMBER",
+       "exprId": "ir-expr:981bc2eabe6518d7be2fe87d",
+       "operands": [
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01 \"Consolidated First Lien Debt\", clause (a): \"consisting of the Loans (including any Incremental Loan)\"",
+         "semanticDescription": "The portion of Consolidated Total Debt consisting of the Loans (including any Incremental Loan)",
+         "reason": "This is a qualitative subset-selection out of the aggregate Consolidated Total Debt figure (i.e., 'which specific tranches of debt count'), not an arithmetic combination of quantified metrics; 'Loans' and 'Incremental Loan' identify particular facilities rather than a separately stated dollar figure in this text.",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (\"Consolidated First Lien Debt\")",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:2b327c9d1a1a1102299e0760"
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01 \"Consolidated First Lien Debt\", clause (b): \"that is not subordinated in right of payment to the Loan Document Obligations and is secured by Liens on all or a material portion of the Collateral on an equal or senior priority basis (but without regard to the control of remedies) with Liens securing the Secured Obligations (including for avoidance of doubt, the ABL Obligations)\"",
+         "semanticDescription": "The portion of Consolidated Total Debt that (i) is not subordinated in right of payment to the Loan Document Obligations and (ii) is secured by Liens on all or a material portion of the Collateral on an equal or senior priority basis (without regard to control of remedies) with the Liens securing the Secured Obligations (including the ABL Obligations)",
+         "reason": "A qualitative lien-priority / non-subordination eligibility test selecting a subset of Consolidated Total Debt; there is no numeric value stated and no arithmetic node type can faithfully express a boolean lien-seniority filter over an aggregate metric.",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (\"Consolidated First Lien Debt\")",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:1bbdd592708f7163d00ce0e5"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 (\"Consolidated First Lien Debt\")",
+        "excerpt": "means the sum, without duplication, of the amount of Consolidated Total Debt (a) consisting of the Loans (including any Incremental Loan) and (b) that is not subordinated ... and is secured by Liens ... on an equal or senior priority basis ... with Liens securing the Secured Obligations"
+       }
+      },
+      "exprId": "ir-expr:ef24f9c94a50ce6286a8c097"
+     },
+     "dependsOnTerms": [
+      "Consolidated Total Debt",
+      "Loans",
+      "Incremental Loan",
+      "Loan Document Obligations",
+      "Collateral",
+      "Lien",
+      "Secured Obligations",
+      "ABL Obligations",
+      "Cash Equivalents"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Top-level structure (a sum of two qualifying components of Consolidated Total Debt) is preserved and cited, but each component's eligibility test is a qualitative lien-seniority/subordination determination that cannot be expressed with the available arithmetic/comparison node types, so each is represented as UNSUPPORTED.",
+      "The base metric 'Consolidated Total Debt' was retrieved and confirms it already nets cash and Cash Equivalents from its own balance (clause (ii) of that definition); the closing 'for the avoidance of doubt' sentence here (\"reduced, without duplication, by the amount of cash and Cash Equivalents reducing Consolidated Total Debt\") is therefore read as a clarification that this same netting flows through into Consolidated First Lien Debt, not as an independent additional subtraction - no separate reduction operand was added, to avoid fabricating a double-count that the text's own 'without duplication' language expressly guards against.",
+      "Dependent terms Loans, Incremental Loan, Loan Document Obligations, Collateral, Lien, Secured Obligations and ABL Obligations were not independently resolved because none would convert this into a computable arithmetic formula - they define eligibility, not a quantum.",
+      "This is a qualitative subset-selection out of the aggregate Consolidated Total Debt figure (i.e., 'which specific tranches of debt count'), not an arithmetic combination of quantified metrics; 'Loans' and 'Incremental Loan' identify particular facilities rather than a separately stated dollar figure in this text.",
+      "A qualitative lien-priority / non-subordination eligibility test selecting a subset of Consolidated Total Debt; there is no numeric value stated and no arithmetic node type can faithfully express a boolean lien-seniority filter over an aggregate metric.",
+      "SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Consolidated First Lien Debt\" means the sum, without duplication, of the amount of Consolidated Total Debt (a) consisting of the Loans (including any Incremental Loan) and (b) that is not subordinated in right of payment to the Loan Document Obligations and is secured by Liens on all or a material portion of the Collateral on an equal or senior priority basis (but without regard to the control of remedies) with Liens securing the Secured Obligations (including for avoidance of doubt, the ABL Obligations). For the avoidance of doubt, Consolidated First Lien Debt shall be reduced, without duplication, by the amount of cash and Cash Equivalents reducing Consolidated Total Debt as of the relevant date of determination."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:07ae19d75455948c51c7ae28",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Consolidated Interest Expense",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUBTRACT",
+      "type": "MONEY",
+      "exprId": "ir-expr:72fd20f71be78495aab4d12c",
+      "left": {
+       "kind": "SUBTRACT",
+       "type": "MONEY",
+       "exprId": "ir-expr:ee4283394e086feba2700626",
+       "left": {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "Cash interest expense (including that attributable to Capitalized Leases), including letter of credit / bankers' acceptance commissions, discounts, fees and charges and net costs under hedging agreements",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:e2f82a76e8d8e9e7225cd399"
+       },
+       "right": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 \"Consolidated Interest Expense\", clause (1)(i)-(xii)",
+        "semanticDescription": "Twelve enumerated exclusions from cash interest expense: (i) amortization of deferred financing costs/OID/other non-cash interest; (ii) non-cash mark-to-market movement on hedging/derivative obligations; (iii) one-time cash hedging-breakage costs; (iv) fees/charges under a Permitted Receivables Financing; (v) non-recurring cash interest / registration-rights 'additional interest'; (vi) make-whole premium or breakage payments on Indebtedness; (vii) tax penalties, additions to tax and interest on taxes; (viii) accretion/accrual of discounted liabilities; (ix) push-down-accounting interest expense attributable to a Parent Entity; (x) discounting expense from recapitalization/purchase accounting; (xi) interest expense from appraisal-rights exercise/claim settlement re permitted acquisitions or investments; (xii) bridge/arrangement/structuring/commitment or other financing fees",
+        "reason": "Each item is a categorical carve-out (a description of a type of cost), not a numeric value or a separately quantified defined metric in the supplied source, so it cannot be represented as an arithmetic operand.",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (\"Consolidated Interest Expense\")",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:f0ce78a85163518153bde027"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 (\"Consolidated Interest Expense\")",
+        "excerpt": null
+       }
+      },
+      "right": {
+       "kind": "METRIC_REFERENCE",
+       "type": "MONEY",
+       "metricName": "Cash interest income",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:c1f20639220d8fbfa25efd9a"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01 (\"Consolidated Interest Expense\")",
+       "excerpt": "cash interest expense (including that attributable to Capitalized Leases), net of cash interest income, ... but excluding, for the avoidance of doubt: (i) ... (xii) ..."
+      }
+     },
+     "dependsOnTerms": [
+      "Capitalized Leases",
+      "Indebtedness",
+      "GAAP",
+      "Parent Entity",
+      "Person",
+      "Agreement"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The overall net-of-interest-income shape (cash interest expense less enumerated exclusions, net of cash interest income) is preserved and cited.",
+      "The twelve enumerated exclusion categories (i)-(xii) are qualitative descriptions of cost types, not stated dollar amounts, and are represented as a single UNSUPPORTED node rather than fabricated numeric operands.",
+      "The final 'interest on a Capitalized Lease ... rate ... implicit in such Capitalized Lease' sentence is an accounting/measurement convention rather than an independent computational component and is preserved only via the excerpt/citation, not modeled as a separate operand.",
+      "Each item is a categorical carve-out (a description of a type of cost), not a numeric value or a separately quantified defined metric in the supplied source, so it cannot be represented as an arithmetic operand.",
+      "SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+      "SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Consolidated Interest Expense\" means, with respect to any Person for any period, the sum, without duplication, of: (1) cash interest expense (including that attributable to Capitalized Leases), net of cash interest income, ... but excluding, for the avoidance of doubt: (i)...(xii)..., all as calculated on a consolidated basis in accordance with GAAP."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [],
+  "unresolvedIssues": [
+   "[definition[d1].SUM[0]] This is a qualitative subset-selection out of the aggregate Consolidated Total Debt figure (i.e., 'which specific tranches of debt count'), not an arithmetic combination of quantified metrics; 'Loans' and 'Incremental Loan' identify particular facilities rather than a separately stated dollar figure in this text.",
+   "[definition[d1].SUM[1]] A qualitative lien-priority / non-subordination eligibility test selecting a subset of Consolidated Total Debt; there is no numeric value stated and no arithmetic node type can faithfully express a boolean lien-seniority filter over an aggregate metric.",
+   "[definition[d1]] SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d2].SUBTRACT.left.SUBTRACT.right] Each item is a categorical carve-out (a description of a type of cost), not a numeric value or a separately quantified defined metric in the supplied source, so it cannot be represented as an arithmetic operand.",
+   "[definition[d2].SUBTRACT.left] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d2]] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "Source is a Definitions (§1.01) excerpt containing two independent defined terms - both extracted (Consolidated First Lien Debt, Consolidated Interest Expense); no covenant permission/prohibition rule (WireRule) is present in this excerpt, so no rules were emitted.",
+   "The FROZEN SEMANTIC INVENTORY reported an INVENTORY_COVERAGE_GAP (721 stretches of source unaccounted after a failed targeted re-inventory) with no individual inventoryItemIds surfaced to this compilation step; consequently no inventoryItemIds could be attached to any node, and no inventoryDispositions could be produced against specific item ids. This gap is flagged here rather than silently ignored.",
+   "getDefinition('Consolidated Total Debt') was retrieved because Consolidated First Lien Debt's economics are expressed as a share of that metric; it confirmed Consolidated Total Debt already nets cash/Cash Equivalents (its own clause (ii)), which materially informed the decision not to model a second, duplicative cash reduction in Consolidated First Lien Debt.",
+   "Dependent scope-defining terms (Loans, Incremental Loan, Loan Document Obligations, Collateral, Lien, Secured Obligations, ABL Obligations) were deliberately not individually fetched: per getDefinitionDependencies they exist, but none of them would convert the lien-seniority/subordination eligibility test into a computable arithmetic formula - the gap is structural (see irExtensionCandidates), not a missing numeric fact, so further retrieval would not change the PARTIAL sufficiency outcome.",
+   "This provision has no recorded amendment history; both definitions were compiled from COMPLETE_LOCAL_SOURCE text with no amendment-currency ambiguity."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 61617,
+   "outputTokens": 14045,
+   "costUsd": 0.26368400000000003
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:9367c3e154dd42db56e72621",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Consolidated First Lien Debt",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "means the sum, without duplication, of the amount of Consolidated Total Debt (a) consisting of the Loans (including any Incremental Loan) and (b) that is not subordinated ... and is secured by Liens ... on an equal or senior priority basis ... with Liens securing the Secured Obligations",
+     "semanticDescription": "unrecognized or malformed expression (kind=\"SUM\")",
+     "reason": "SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01 (\"Consolidated First Lien Debt\")",
+      "excerpt": "means the sum, without duplication, of the amount of Consolidated Total Debt (a) consisting of the Loans (including any Incremental Loan) and (b) that is not subordinated ... and is secured by Liens ... on an equal or senior priority basis ... with Liens securing the Secured Obligations"
+     },
+     "attemptedStructure": {
+      "kind": "SUM",
+      "type": "NUMBER",
+      "exprId": "ir-expr:981bc2eabe6518d7be2fe87d",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 \"Consolidated First Lien Debt\", clause (a): \"consisting of the Loans (including any Incremental Loan)\"",
+        "semanticDescription": "The portion of Consolidated Total Debt consisting of the Loans (including any Incremental Loan)",
+        "reason": "This is a qualitative subset-selection out of the aggregate Consolidated Total Debt figure (i.e., 'which specific tranches of debt count'), not an arithmetic combination of quantified metrics; 'Loans' and 'Incremental Loan' identify particular facilities rather than a separately stated dollar figure in this text.",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (\"Consolidated First Lien Debt\")",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:2b327c9d1a1a1102299e0760"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 \"Consolidated First Lien Debt\", clause (b): \"that is not subordinated in right of payment to the Loan Document Obligations and is secured by Liens on all or a material portion of the Collateral on an equal or senior priority basis (but without regard to the control of remedies) with Liens securing the Secured Obligations (including for avoidance of doubt, the ABL Obligations)\"",
+        "semanticDescription": "The portion of Consolidated Total Debt that (i) is not subordinated in right of payment to the Loan Document Obligations and (ii) is secured by Liens on all or a material portion of the Collateral on an equal or senior priority basis (without regard to control of remedies) with the Liens securing the Secured Obligations (including the ABL Obligations)",
+        "reason": "A qualitative lien-priority / non-subordination eligibility test selecting a subset of Consolidated Total Debt; there is no numeric value stated and no arithmetic node type can faithfully express a boolean lien-seniority filter over an aggregate metric.",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (\"Consolidated First Lien Debt\")",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:1bbdd592708f7163d00ce0e5"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01 (\"Consolidated First Lien Debt\")",
+       "excerpt": "means the sum, without duplication, of the amount of Consolidated Total Debt (a) consisting of the Loans (including any Incremental Loan) and (b) that is not subordinated ... and is secured by Liens ... on an equal or senior priority basis ... with Liens securing the Secured Obligations"
+      }
+     },
+     "exprId": "ir-expr:ef24f9c94a50ce6286a8c097"
+    },
+    "dependsOnTerms": [
+     "Consolidated Total Debt",
+     "Loans",
+     "Incremental Loan",
+     "Loan Document Obligations",
+     "Collateral",
+     "Lien",
+     "Secured Obligations",
+     "ABL Obligations",
+     "Cash Equivalents"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Top-level structure (a sum of two qualifying components of Consolidated Total Debt) is preserved and cited, but each component's eligibility test is a qualitative lien-seniority/subordination determination that cannot be expressed with the available arithmetic/comparison node types, so each is represented as UNSUPPORTED.",
+     "The base metric 'Consolidated Total Debt' was retrieved and confirms it already nets cash and Cash Equivalents from its own balance (clause (ii) of that definition); the closing 'for the avoidance of doubt' sentence here (\"reduced, without duplication, by the amount of cash and Cash Equivalents reducing Consolidated Total Debt\") is therefore read as a clarification that this same netting flows through into Consolidated First Lien Debt, not as an independent additional subtraction - no separate reduction operand was added, to avoid fabricating a double-count that the text's own 'without duplication' language expressly guards against.",
+     "Dependent terms Loans, Incremental Loan, Loan Document Obligations, Collateral, Lien, Secured Obligations and ABL Obligations were not independently resolved because none would convert this into a computable arithmetic formula - they define eligibility, not a quantum.",
+     "This is a qualitative subset-selection out of the aggregate Consolidated Total Debt figure (i.e., 'which specific tranches of debt count'), not an arithmetic combination of quantified metrics; 'Loans' and 'Incremental Loan' identify particular facilities rather than a separately stated dollar figure in this text.",
+     "A qualitative lien-priority / non-subordination eligibility test selecting a subset of Consolidated Total Debt; there is no numeric value stated and no arithmetic node type can faithfully express a boolean lien-seniority filter over an aggregate metric.",
+     "SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Consolidated First Lien Debt\" means the sum, without duplication, of the amount of Consolidated Total Debt (a) consisting of the Loans (including any Incremental Loan) and (b) that is not subordinated in right of payment to the Loan Document Obligations and is secured by Liens on all or a material portion of the Collateral on an equal or senior priority basis (but without regard to the control of remedies) with Liens securing the Secured Obligations (including for avoidance of doubt, the ABL Obligations). For the avoidance of doubt, Consolidated First Lien Debt shall be reduced, without duplication, by the amount of cash and Cash Equivalents reducing Consolidated Total Debt as of the relevant date of determination."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:07ae19d75455948c51c7ae28",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Consolidated Interest Expense",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "SUBTRACT",
+     "type": "MONEY",
+     "exprId": "ir-expr:72fd20f71be78495aab4d12c",
+     "left": {
+      "kind": "SUBTRACT",
+      "type": "MONEY",
+      "exprId": "ir-expr:ee4283394e086feba2700626",
+      "left": {
+       "kind": "METRIC_REFERENCE",
+       "type": "MONEY",
+       "metricName": "Cash interest expense (including that attributable to Capitalized Leases), including letter of credit / bankers' acceptance commissions, discounts, fees and charges and net costs under hedging agreements",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:e2f82a76e8d8e9e7225cd399"
+      },
+      "right": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01 \"Consolidated Interest Expense\", clause (1)(i)-(xii)",
+       "semanticDescription": "Twelve enumerated exclusions from cash interest expense: (i) amortization of deferred financing costs/OID/other non-cash interest; (ii) non-cash mark-to-market movement on hedging/derivative obligations; (iii) one-time cash hedging-breakage costs; (iv) fees/charges under a Permitted Receivables Financing; (v) non-recurring cash interest / registration-rights 'additional interest'; (vi) make-whole premium or breakage payments on Indebtedness; (vii) tax penalties, additions to tax and interest on taxes; (viii) accretion/accrual of discounted liabilities; (ix) push-down-accounting interest expense attributable to a Parent Entity; (x) discounting expense from recapitalization/purchase accounting; (xi) interest expense from appraisal-rights exercise/claim settlement re permitted acquisitions or investments; (xii) bridge/arrangement/structuring/commitment or other financing fees",
+       "reason": "Each item is a categorical carve-out (a description of a type of cost), not a numeric value or a separately quantified defined metric in the supplied source, so it cannot be represented as an arithmetic operand.",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 (\"Consolidated Interest Expense\")",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:f0ce78a85163518153bde027"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01 (\"Consolidated Interest Expense\")",
+       "excerpt": null
+      }
+     },
+     "right": {
+      "kind": "METRIC_REFERENCE",
+      "type": "MONEY",
+      "metricName": "Cash interest income",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:c1f20639220d8fbfa25efd9a"
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01 (\"Consolidated Interest Expense\")",
+      "excerpt": "cash interest expense (including that attributable to Capitalized Leases), net of cash interest income, ... but excluding, for the avoidance of doubt: (i) ... (xii) ..."
+     }
+    },
+    "dependsOnTerms": [
+     "Capitalized Leases",
+     "Indebtedness",
+     "GAAP",
+     "Parent Entity",
+     "Person",
+     "Agreement"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The overall net-of-interest-income shape (cash interest expense less enumerated exclusions, net of cash interest income) is preserved and cited.",
+     "The twelve enumerated exclusion categories (i)-(xii) are qualitative descriptions of cost types, not stated dollar amounts, and are represented as a single UNSUPPORTED node rather than fabricated numeric operands.",
+     "The final 'interest on a Capitalized Lease ... rate ... implicit in such Capitalized Lease' sentence is an accounting/measurement convention rather than an independent computational component and is preserved only via the excerpt/citation, not modeled as a separate operand.",
+     "Each item is a categorical carve-out (a description of a type of cost), not a numeric value or a separately quantified defined metric in the supplied source, so it cannot be represented as an arithmetic operand.",
+     "SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+     "SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Consolidated Interest Expense\" means, with respect to any Person for any period, the sum, without duplication, of: (1) cash interest expense (including that attributable to Capitalized Leases), net of cash interest income, ... but excluding, for the avoidance of doubt: (i)...(xii)..., all as calculated on a consolidated basis in accordance with GAAP."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01 \"Consolidated First Lien Debt\", clauses (a) and (b): debt that is 'consisting of the Loans' or that 'is not subordinated ... and is secured by Liens ... on an equal or senior priority basis ... with Liens securing the Secured Obligations'",
+    "semanticRequirement": "A node type to express 'the subset of aggregate metric M whose members satisfy qualitative eligibility test T' (e.g., a lien-seniority/subordination/facility-identity test), yielding a derived sub-amount of M rather than a freestanding arithmetic combination of independently quantified values.",
+    "whyExistingPrimitivesFail": "SUM/SUBTRACT/MULTIPLY/COMPARE all operate on values that are themselves already quantified (money, percent, ratio, or a metric reference resolving to a number). Here the qualifying criteria are boolean/categorical (lien priority, subordination status, facility identity) applied to unidentified line items within an aggregate metric, with no separate numeric input to combine - forcing it into SUM/COMPARE would fabricate structure the source does not provide.",
+    "candidateGeneralizedPrimitive": "FILTERED_METRIC_COMPONENT(baseMetric, eligibilityTest) -> a value representing the portion of baseMetric meeting eligibilityTest, distinct from arithmetic combination of two independently known values."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].SUM[0]] This is a qualitative subset-selection out of the aggregate Consolidated Total Debt figure (i.e., 'which specific tranches of debt count'), not an arithmetic combination of quantified metrics; 'Loans' and 'Incremental Loan' identify particular facilities rather than a separately stated dollar figure in this text.",
+   "[definition[d1].SUM[1]] A qualitative lien-priority / non-subordination eligibility test selecting a subset of Consolidated Total Debt; there is no numeric value stated and no arithmetic node type can faithfully express a boolean lien-seniority filter over an aggregate metric.",
+   "[definition[d1]] SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d2].SUBTRACT.left.SUBTRACT.right] Each item is a categorical carve-out (a description of a type of cost), not a numeric value or a separately quantified defined metric in the supplied source, so it cannot be represented as an arithmetic operand.",
+   "[definition[d2].SUBTRACT.left] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d2]] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "Source is a Definitions (§1.01) excerpt containing two independent defined terms - both extracted (Consolidated First Lien Debt, Consolidated Interest Expense); no covenant permission/prohibition rule (WireRule) is present in this excerpt, so no rules were emitted.",
+   "The FROZEN SEMANTIC INVENTORY reported an INVENTORY_COVERAGE_GAP (721 stretches of source unaccounted after a failed targeted re-inventory) with no individual inventoryItemIds surfaced to this compilation step; consequently no inventoryItemIds could be attached to any node, and no inventoryDispositions could be produced against specific item ids. This gap is flagged here rather than silently ignored.",
+   "getDefinition('Consolidated Total Debt') was retrieved because Consolidated First Lien Debt's economics are expressed as a share of that metric; it confirmed Consolidated Total Debt already nets cash/Cash Equivalents (its own clause (ii)), which materially informed the decision not to model a second, duplicative cash reduction in Consolidated First Lien Debt.",
+   "Dependent scope-defining terms (Loans, Incremental Loan, Loan Document Obligations, Collateral, Lien, Secured Obligations, ABL Obligations) were deliberately not individually fetched: per getDefinitionDependencies they exist, but none of them would convert the lien-seniority/subordination eligibility test into a computable arithmetic formula - the gap is structural (see irExtensionCandidates), not a missing numeric fact, so further retrieval would not change the PARTIAL sufficiency outcome.",
+   "This provision has no recorded amendment history; both definitions were compiled from COMPLETE_LOCAL_SOURCE text with no amendment-currency ambiguity."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getDefinitionDependencies",
+    "input": {
+     "term": "Consolidated First Lien Debt"
+    },
+    "outputSummary": "9 dependency term(s) found in \"Consolidated First Lien Debt\"'s own text",
+    "charsReturned": 71,
+    "timestamp": "2026-09-14T17:11:15.799Z"
+   },
+   {
+    "toolName": "getDefinitionDependencies",
+    "input": {
+     "term": "Consolidated Interest Expense"
+    },
+    "outputSummary": "6 dependency term(s) found in \"Consolidated Interest Expense\"'s own text",
+    "charsReturned": 72,
+    "timestamp": "2026-09-14T17:11:15.799Z"
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Consolidated Total Debt"
+    },
+    "outputSummary": "definition \"Consolidated Total Debt\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 2457,
+    "timestamp": "2026-09-14T17:11:18.623Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Consolidated Total Debt",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:9fcff1d7516df9b4a24d692f",
+     "sourceNodeKey": "doc-a::1.01(2)(v)(II)(B)(1)(xii)",
+     "charStart": 114736,
+     "charEnd": 117193,
+     "rawText": "“ Consolidated Total Debt ” means, as of any date of determination (i) the outstanding\nprincipal amount of all third-party Indebtedness for borrowed money (including purchase money Indebtedness), unreimbursed drawings under letters of credit that are outstanding more than five (5) Business Days after the date such amount is drawn\n(to the extent not cash collateralized), and third-party Indebtedness obligations evidenced by notes or similar instruments (but excluding surety bonds, performance bonds or other similar instruments) to the extent not paid within ten\n(10) Business Days of becoming due (unless subject to a good faith dispute), in each case of the Restricted Parties on such date, on a consolidated basis and determined in accordance with GAAP (excluding, in any event, the effects of any\ndiscounting of Indebtedness resulting from the application of acquisition method or pushdown accounting in connection with the Transactions or any Permitted Acquisition or other Investment); provided that Consolidated Total Debt will not\ninclude Indebtedness in respect of (a) any Permitted Receivables Financing, (b) any letter of credit or bank guarantees, except to the extent of unreimbursed obligations in respect of drawn letters of credit (including any unreimbursed\namount under any Letter of Credit (as defined in the ABL Credit Agreement)) or bank guarantees that are not reimbursed within five (5) Business Days after such amount is drawn (it being understood that any borrowing, whether automatic or\notherwise, to fund such reimbursement will be counted), (c) Hedging Obligations, (d) performance bonds, surety bonds or any similar instruments, (e) Cash Management Obligations, (f) any lease obligations (including, in respect of\nany capital lease, sale and lease back arrangements or similar arrangements) and (g) any lease obligations for which an irrevocable deposit of necessary funds for the payment, redemption or satisfaction of such Indebtedness has been made, minus\n(ii) the aggregate amount of cash and Cash Equivalents on the consolidated balance sheet of the Restricted Parties on such date that is not Restricted. For the avoidance of doubt, the outstanding principal amount of any particular Indebtedness\nfor borrowed money shall be counted only once in the Consolidated Total Debt, and the guarantees of, or obligations in respect of letters of credit or bank guarantees relating to, such Indebtedness shall be disregarded.\n\n",
+     "contentHash": "69eca9f8a7e0fe08923459414e4acd208af80c31a0b352133b9079f056096e01",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": "[\n  {\n    \"localRef\": \"d1\",\n    \"termName\": \"Consolidated First Lien Debt\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"SUM\",\n      \"operands\": [\n        {\n          \"kind\": \"UNSUPPORTED\",\n          \"semanticDescription\": \"The portion of Consolidated Total Debt consisting of the Loans (including any Incremental Loan)\",\n          \"reason\": \"This is a qualitative subset-selection out of the aggregate Consolidated Total Debt figure (i.e., 'which specific tranches of debt count'), not an arithmetic combination of quantified metrics; 'Loans' and 'Incremental Loan' identify particular facilities rather than a separately stated dollar figure in this text.\",\n          \"sourceEvidence\": \"§1.01 \\\"Consolidated First Lien Debt\\\", clause (a): \\\"consisting of the Loans (including any Incremental Loan)\\\"\"\n        },\n        {\n          \"kind\": \"UNSUPPORTED\",\n          \"semanticDescription\": \"The portion of Consolidated Total Debt that (i) is not subordinated in right of payment to the Loan Document Obligations and (ii) is secured by Liens on all or a material portion of the Collateral on an equal or senior priority basis (without regard to control of remedies) with the Liens securing the Secured Obligations (including the ABL Obligations)\",\n          \"reason\": \"A qualitative lien-priority / non-subordination eligibility test selecting a subset of Consolidated Total Debt; there is no numeric value stated and no arithmetic node type can faithfully express a boolean lien-seniority filter over an aggregate metric.\",\n          \"sourceEvidence\": \"§1.01 \\\"Consolidated First Lien Debt\\\", clause (b): \\\"that is not subordinated in right of payment to the Loan Document Obligations and is secured by Liens on all or a material portion of the Collateral on an equal or senior priority basis (but without regard to the control of remedies) with Liens securing the Secured Obligations (including for avoidance of doubt, the ABL Obligations)\\\"\"\n        }\n      ],\n      \"citation\": \"§1.01 (\\\"Consolidated First Lien Debt\\\")\",\n      \"excerpt\": \"means the sum, without duplication, of the amount of Consolidated Total Debt (a) consisting of the Loans (including any Incremental Loan) and (b) that is not subordinated ... and is secured by Liens ... on an equal or senior priority basis ... with Liens securing the Secured Obligations\"\n    },\n    \"dependsOnTerms\": [\"Consolidated Total Debt\", \"Loans\", \"Incremental Loan\", \"Loan Document Obligations\", \"Collateral\", \"Lien\", \"Secured Obligations\", \"ABL Obligations\", \"Cash Equivalents\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\n      \"Top-level structure (a sum of two qualifying components of Consolidated Total Debt) is preserved and cited, but each component's eligibility test is a qualitative lien-seniority/subordination determination that cannot be expressed with the available arithmetic/comparison node types, so each is represented as UNSUPPORTED.\",\n      \"The base metric 'Consolidated Total Debt' was retrieved and confirms it already nets cash and Cash Equivalents from its own balance (clause (ii) of that definition); the closing 'for the avoidance of doubt' sentence here (\\\"reduced, without duplication, by the amount of cash and Cash Equivalents reducing Consolidated Total Debt\\\") is therefore read as a clarification that this same netting flows through into Consolidated First Lien Debt, not as an independent additional subtraction - no separate reduction operand was added, to avoid fabricating a double-count that the text's own 'without duplication' language expressly guards against.\",\n      \"Dependent terms Loans, Incremental Loan, Loan Document Obligations, Collateral, Lien, Secured Obligations and ABL Obligations were not independently resolved because none would convert this into a computable arithmetic formula - they define eligibility, not a quantum.\"\n    ],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"\\\"Consolidated First Lien Debt\\\" means the sum, without duplication, of the amount of Consolidated Total Debt (a) consisting of the Loans (including any Incremental Loan) and (b) that is not subordinated in right of payment to the Loan Document Obligations and is secured by Liens on all or a material portion of the Collateral on an equal or senior priority basis (but without regard to the control of remedies) with Liens securing the Secured Obligations (including for avoidance of doubt, the ABL Obligations). For the avoidance of doubt, Consolidated First Lien Debt shall be reduced, without duplication, by the amount of cash and Cash Equivalents reducing Consolidated Total Debt as of the relevant date of determination.\"\n  },\n  {\n    \"localRef\": \"d2\",\n    \"termName\": \"Consolidated Interest Expense\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"SUBTRACT\",\n      \"left\": {\n        \"kind\": \"SUBTRACT\",\n        \"left\": {\n          \"kind\": \"METRIC_REFERENCE\",\n          \"metricName\": \"Cash interest expense (including that attributable to Capitalized Leases), including letter of credit / bankers' acceptance commissions, discounts, fees and charges and net costs under hedging agreements\"\n        },\n        \"right\": {\n          \"kind\": \"UNSUPPORTED\",\n          \"semanticDescription\": \"Twelve enumerated exclusions from cash interest expense: (i) amortization of deferred financing costs/OID/other non-cash interest; (ii) non-cash mark-to-market movement on hedging/derivative obligations; (iii) one-time cash hedging-breakage costs; (iv) fees/charges under a Permitted Receivables Financing; (v) non-recurring cash interest / registration-rights 'additional interest'; (vi) make-whole premium or breakage payments on Indebtedness; (vii) tax penalties, additions to tax and interest on taxes; (viii) accretion/accrual of discounted liabilities; (ix) push-down-accounting interest expense attributable to a Parent Entity; (x) discounting expense from recapitalization/purchase accounting; (xi) interest expense from appraisal-rights exercise/claim settlement re permitted acquisitions or investments; (xii) bridge/arrangement/structuring/commitment or other financing fees\",\n          \"reason\": \"Each item is a categorical carve-out (a description of a type of cost), not a numeric value or a separately quantified defined metric in the supplied source, so it cannot be represented as an arithmetic operand.\",\n          \"sourceEvidence\": \"§1.01 \\\"Consolidated Interest Expense\\\", clause (1)(i)-(xii)\"\n        },\n        \"citation\": \"§1.01 (\\\"Consolidated Interest Expense\\\")\"\n      },\n      \"right\": {\n        \"kind\": \"METRIC_REFERENCE\",\n        \"metricName\": \"Cash interest income\"\n      },\n      \"citation\": \"§1.01 (\\\"Consolidated Interest Expense\\\")\",\n      \"excerpt\": \"cash interest expense (including that attributable to Capitalized Leases), net of cash interest income, ... but excluding, for the avoidance of doubt: (i) ... (xii) ...\"\n    },\n    \"dependsOnTerms\": [\"Capitalized Leases\", \"Indebtedness\", \"GAAP\", \"Parent Entity\", \"Person\", \"Agreement\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\n      \"The overall net-of-interest-income shape (cash interest expense less enumerated exclusions, net of cash interest income) is preserved and cited.\",\n      \"The twelve enumerated exclusion categories (i)-(xii) are qualitative descriptions of cost types, not stated dollar amounts, and are represented as a single UNSUPPORTED node rather than fabricated numeric operands.\",\n      \"The final 'interest on a Capitalized Lease ... rate ... implicit in such Capitalized Lease' sentence is an accounting/measurement convention rather than an independent computational component and is preserved only via the excerpt/citation, not modeled as a separate operand.\"\n    ],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"\\\"Consolidated Interest Expense\\\" means, with respect to any Person for any period, the sum, without duplication, of: (1) cash interest expense (including that attributable to Capitalized Leases), net of cash interest income, ... but excluding, for the avoidance of doubt: (i)...(xii)..., all as calculated on a consolidated basis in accordance with GAAP.\"\n  }\n]",
+   "rules": [],
+   "sharedCapacities": "[]",
+   "irExtensionCandidates": "[\n  {\n    \"sourceEvidence\": \"§1.01 \\\"Consolidated First Lien Debt\\\", clauses (a) and (b): debt that is 'consisting of the Loans' or that 'is not subordinated ... and is secured by Liens ... on an equal or senior priority basis ... with Liens securing the Secured Obligations'\",\n    \"semanticRequirement\": \"A node type to express 'the subset of aggregate metric M whose members satisfy qualitative eligibility test T' (e.g., a lien-seniority/subordination/facility-identity test), yielding a derived sub-amount of M rather than a freestanding arithmetic combination of independently quantified values.\",\n    \"whyExistingPrimitivesFail\": \"SUM/SUBTRACT/MULTIPLY/COMPARE all operate on values that are themselves already quantified (money, percent, ratio, or a metric reference resolving to a number). Here the qualifying criteria are boolean/categorical (lien priority, subordination status, facility identity) applied to unidentified line items within an aggregate metric, with no separate numeric input to combine - forcing it into SUM/COMPARE would fabricate structure the source does not provide.\",\n    \"candidateGeneralizedPrimitive\": \"FILTERED_METRIC_COMPONENT(baseMetric, eligibilityTest) -> a value representing the portion of baseMetric meeting eligibilityTest, distinct from arithmetic combination of two independently known values.\"\n  }\n]",
+   "overallNotes": "[\n  \"Source is a Definitions (§1.01) excerpt containing two independent defined terms - both extracted (Consolidated First Lien Debt, Consolidated Interest Expense); no covenant permission/prohibition rule (WireRule) is present in this excerpt, so no rules were emitted.\",\n  \"The FROZEN SEMANTIC INVENTORY reported an INVENTORY_COVERAGE_GAP (721 stretches of source unaccounted after a failed targeted re-inventory) with no individual inventoryItemIds surfaced to this compilation step; consequently no inventoryItemIds could be attached to any node, and no inventoryDispositions could be produced against specific item ids. This gap is flagged here rather than silently ignored.\",\n  \"getDefinition('Consolidated Total Debt') was retrieved because Consolidated First Lien Debt's economics are expressed as a share of that metric; it confirmed Consolidated Total Debt already nets cash/Cash Equivalents (its own clause (ii)), which materially informed the decision not to model a second, duplicative cash reduction in Consolidated First Lien Debt.\",\n  \"Dependent scope-defining terms (Loans, Incremental Loan, Loan Document Obligations, Collateral, Lien, Secured Obligations, ABL Obligations) were deliberately not individually fetched: per getDefinitionDependencies they exist, but none of them would convert the lien-seniority/subordination eligibility test into a computable arithmetic formula - the gap is structural (see irExtensionCandidates), not a missing numeric fact, so further retrieval would not change the PARTIAL sufficiency outcome.\",\n  \"This provision has no recorded amendment history; both definitions were compiled from COMPLETE_LOCAL_SOURCE text with no amendment-currency ambiguity.\"\n]"
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T17:13:22.390Z",
+   "inputTokens": 61617,
+   "outputTokens": 14045,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 3,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 139070,
+   "calculatedCostUsd": 0.26368400000000003
+  },
+  "cacheKey": "13cf578c12a952e77d59293f1605c2cd7c0897d3a6c518db91a970a6fbcf49a2",
+  "compiledAt": "2026-09-14T17:13:22.390Z"
+ },
+ "wave": "A",
+ "attemptsSoFar": 1
+}

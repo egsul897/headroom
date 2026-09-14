@@ -1,0 +1,1612 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:87f08272567db019c17b",
+  "shardHash": "539e715598ac4b8f6b4e992b4414a3af27583e1f8b08be0c0fdf32d41b74113e",
+  "ordinal": 8,
+  "ownedUnits": 1,
+  "sourceChars": 20175,
+  "contextEntries": 2,
+  "contextChars": 538,
+  "unresolvedContext": 1,
+  "oversized": false,
+  "ownedItems": 5,
+  "ownedMaterialItems": 5,
+  "estimatedFirstTurnInputTokens": 28538,
+  "preCallEstimate": {
+   "inputTokens": 93891,
+   "outputTokens": 4000,
+   "usd": 0.227782
+  },
+  "actual": {
+   "inputTokens": 27454,
+   "outputTokens": 33097,
+   "turns": 1,
+   "latencyMs": 290219,
+   "costUsd": 0.38587800000000005,
+   "attemptCount": 1,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_COMPLETE",
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "toolCalls": 0,
+  "toolCallNames": [],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 6,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 0,
+   "dispositioned": 5,
+   "missingMaterial": 0,
+   "valuesRepresented": 0,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "UNSUPPORTED": 5
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Expected Run Rate Benefit",
+   "Acquired Entity or Business",
+   "Converted Restricted Subsidiary",
+   "Sold Entity or Business",
+   "Converted Unrestricted Subsidiary"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[5]] narrative, non-formulaic addback categories not reducible to a discrete quantitative expression from the text alone",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[6]] qualitative addback category with a time-window condition; represented as UNSUPPORTED to avoid fabricating a numeric formula, while preserving the 36-month value",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[7]] qualitative addback category with a time-window condition",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[8]] narrative addback category dependent on undefined term 'Qualified Restricted Subsidiary'",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[10]] depends on Section 6.01, which could not be expanded (source-context budget exhausted)",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[12]] narrative addback category",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[13]] narrative addback category",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1]] SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[2].SUM[1]] projection-based, discretionary pro forma adjustment not reducible to a determinate formula",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[2].SUM[2]] the cross-reference 'paragraph (c)' is genuinely ambiguous in the source (2 candidate targets) and has not been adjudicated",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[2].SUM[3]] depends on 'Article 11' cross-reference which could not be located, and on discretionary diligence-report content",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[2].SUM[4]] references extrinsic syndication materials not part of the supplied evidence",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[2]] SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[3]] discretionary, projection-based pro forma adjustment not reducible to a determinate formula from the text alone",
+   "[definition[d1].ADD[0].SUBTRACT.left] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1].ADD[0]] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1].ADD[1]] depends on undefined terms 'Acquired EBITDA' and 'Pro Forma Basis' not resolvable from the supplied evidence",
+   "[definition[d1].ADD[2]] depends on undefined terms 'Disposed EBITDA' and 'Pro Forma Disposal Adjustment' not resolvable from the supplied evidence",
+   "[definition[d1].ADD[3]] discretionary, projection-based inclusion contingent on unspecified 'applicable caps and limitations set forth herein' elsewhere in the Agreement, and on the Borrower's election - not a determinate formula component",
+   "[definition[d1]] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "Compiled the single defined term 'Consolidated EBITDA' from §1.01 plus five terms defined inline within the same definition (Expected Run Rate Benefit; Acquired Entity or Business; Converted Restricted Subsidiary; Sold Entity or Business; Converted Unrestricted Subsidiary).",
+   "All 5 frozen-inventory items (start-up/de novo 36-month window; discontinued-ops 12-month window; Expected Run Rate Benefit 36-month condition; facility ramp-up 36/12-month pro forma treatment; and the CRITICAL Letter of Intent Transactions election) are consumed on the specific nodes that carry their value.",
+   "Given the sheer breadth of this 'kitchen sink' EBITDA definition (22 sub-clauses in (a) alone, plus (b), (c), (d) and two provisos), narrative/qualitative addback categories not flagged by the frozen inventory and not reducible to a determinate formula were represented as UNSUPPORTED nodes (individually or bucketed) rather than forced into fabricated formulas - consistent with the safety principle that a cautious PARTIAL representation is preferable to a confidently wrong COMPLETE one.",
+   "The Section 6.01 cross-reference in clause (a)(xix) remains unresolved (Phase 2's source-context budget was exhausted before it could be expanded); the ambiguous 'paragraph (c)' and 'clause (b)' cross-references in clause (b) were left un-adjudicated per Phase 2's own findings of genuine textual ambiguity.",
+   "No WireRule outputs were produced because the supplied text is a pure definitional provision (no independently operative permission/prohibition/ratio-test rule is stated in §1.01 itself)."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": true,
+   "decodedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "inventoryDispositions",
+    "overallNotes"
+   ],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": true,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "string",
+      "originalStringSha256": "b5e0bb7538fbe26ae44e007685c81ba6b8c3f8d090a8e6ef71b24c565e4b8d6d",
+      "originalStringLength": 16940,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 6,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "string",
+      "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "originalStringLength": 2,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 0,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "string",
+      "originalStringSha256": "fc490f9359a17f5b2f07a59d8575e94fc44b3e7ed64afc57dd3d97c0e68bd4a4",
+      "originalStringLength": 2091,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 2,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "string",
+      "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "originalStringLength": 2,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 0,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "string",
+      "originalStringSha256": "3a0c644a0e258dfce25f85ba86cca9359b97b518b9cded306554ec1c55952abb",
+      "originalStringLength": 1599,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 5,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:87f08272567db019c17b",
+  "shardHash": "539e715598ac4b8f6b4e992b4414a3af27583e1f8b08be0c0fdf32d41b74113e",
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:b358e0e6d724e8b43dfeb071",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Consolidated EBITDA",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "ADD",
+      "type": "MONEY",
+      "exprId": "ir-expr:de7814c463f060ab656c6776",
+      "operands": [
+       {
+        "kind": "SUBTRACT",
+        "type": "MONEY",
+        "exprId": "ir-expr:58335ce761e4ca2de0ac3824",
+        "left": {
+         "kind": "ADD",
+         "type": "MONEY",
+         "exprId": "ir-expr:03ecd952fd6c083911d6cc85",
+         "operands": [
+          {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "Consolidated Net Income",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:ff48a3fb4a44a66e1d4471ca"
+          },
+          {
+           "kind": "SUM",
+           "type": "MONEY",
+           "exprId": "ir-expr:fd5b73e28135db2516e925fb",
+           "operands": [
+            {
+             "kind": "METRIC_REFERENCE",
+             "type": "MONEY",
+             "metricName": "Consolidated Interest Expense",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:16a5c3ca869e763dd4b55664"
+            },
+            {
+             "kind": "METRIC_REFERENCE",
+             "type": "MONEY",
+             "metricName": "Income and Similar Taxes Paid or Accrued",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:d3c902ba3932d8496731c573"
+            },
+            {
+             "kind": "METRIC_REFERENCE",
+             "type": "MONEY",
+             "metricName": "Amortization Expense",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:e7c9fb1a00cafb19c7401a36"
+            },
+            {
+             "kind": "METRIC_REFERENCE",
+             "type": "MONEY",
+             "metricName": "Depreciation Expense",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:ff076a2591f1ecf60aa22ef5"
+            },
+            {
+             "kind": "METRIC_REFERENCE",
+             "type": "MONEY",
+             "metricName": "Non-Cash Items",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:0878a3baa80f5d7a9cec9513"
+            },
+            {
+             "kind": "UNSUPPORTED",
+             "type": null,
+             "sourceEvidence": "§1.01(a)(vi)-(xiv)",
+             "semanticDescription": "Addback categories (a)(vi)-(a)(xiv): litigation/investigation charges; indemnified, insured or third-party-reimbursed items; sponsor management/monitoring/advisory/termination and director fees; [reserved]; insurance-covered casualty/business-interruption expenses and lost profits; income attributable to noncontrolling/minority interests (excluding cash distributions); and equity-rollover/option-holder distribution-related charges",
+             "reason": "narrative, non-formulaic addback categories not reducible to a discrete quantitative expression from the text alone",
+             "requiredReview": true,
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(a)",
+              "excerpt": null
+             },
+             "exprId": "ir-expr:366f5c505f0277a7dbb42c04"
+            },
+            {
+             "kind": "UNSUPPORTED",
+             "type": null,
+             "sourceEvidence": "§1.01(a)(xv)",
+             "semanticDescription": "Start-up charges/expenses and de novo losses for new locations, projects, markets or service offerings, accrued during the first thirty-six (36) months after opening/offering, plus related pre-opening/upgrade/organizational costs",
+             "reason": "qualitative addback category with a time-window condition; represented as UNSUPPORTED to avoid fabricating a numeric formula, while preserving the 36-month value",
+             "requiredReview": true,
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(a)",
+              "excerpt": null
+             },
+             "exprId": "ir-expr:99fab9961cb407390d45e617",
+             "inventoryItemIds": [
+              "inv-item:30e65e4a2e01a1770fa4efc0"
+             ]
+            },
+            {
+             "kind": "UNSUPPORTED",
+             "type": null,
+             "sourceEvidence": "§1.01(a)(xvi)",
+             "semanticDescription": "Losses on non-ordinary-course asset dispositions (xvi)(A), and losses from operations/assets expected to be disposed of, abandoned or discontinued within twelve (12) months after the relevant period end (xvi)(B)",
+             "reason": "qualitative addback category with a time-window condition",
+             "requiredReview": true,
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(a)",
+              "excerpt": null
+             },
+             "exprId": "ir-expr:e5f607cbba1b869d54b4bb89",
+             "inventoryItemIds": [
+              "inv-item:259833ee6d36bb9e9b7fb8e8"
+             ]
+            },
+            {
+             "kind": "UNSUPPORTED",
+             "type": null,
+             "sourceEvidence": "§1.01(a)(xvii)",
+             "semanticDescription": "Earn-out/contingent consideration obligations and purchase price adjustments in connection with acquisitions; amounts paid to equity holders of a Qualified Restricted Subsidiary as compensation from disposition proceeds",
+             "reason": "narrative addback category dependent on undefined term 'Qualified Restricted Subsidiary'",
+             "requiredReview": true,
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(a)",
+              "excerpt": null
+             },
+             "exprId": "ir-expr:23f47a96769226934b552a10"
+            },
+            {
+             "kind": "METRIC_REFERENCE",
+             "type": "MONEY",
+             "metricName": "Net Realized Losses from Swap Agreements",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:fdb870a75ea524511daf03ad"
+            },
+            {
+             "kind": "UNSUPPORTED",
+             "type": null,
+             "sourceEvidence": "§1.01(a)(xix)",
+             "semanticDescription": "Fees, expenses, charges or losses related to equity offerings, Investments, acquisitions, dispositions, Refinancings, recapitalizations or permitted Indebtedness incurrence, including amendments/refinancings of Loans or Indebtedness permitted by Section 6.01",
+             "reason": "depends on Section 6.01, which could not be expanded (source-context budget exhausted)",
+             "requiredReview": true,
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(a)",
+              "excerpt": null
+             },
+             "exprId": "ir-expr:9b77d401127a37f6ed716956"
+            },
+            {
+             "kind": "METRIC_REFERENCE",
+             "type": "MONEY",
+             "metricName": "Realized Foreign Exchange Losses",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:0b63edae60c7c451e1cc085e"
+            },
+            {
+             "kind": "UNSUPPORTED",
+             "type": null,
+             "sourceEvidence": "§1.01(a)(xxi)",
+             "semanticDescription": "Costs of standing up a business, including duplicative costs, transition-services-agreement costs and carve-out employee compensation",
+             "reason": "narrative addback category",
+             "requiredReview": true,
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(a)",
+              "excerpt": null
+             },
+             "exprId": "ir-expr:4b5aa7669df27711002c1314"
+            },
+            {
+             "kind": "UNSUPPORTED",
+             "type": null,
+             "sourceEvidence": "§1.01(a)(xxii)",
+             "semanticDescription": "'Bad debt' expense related to revenue earned prior to the Effective Date or a Permitted Acquisition/Investment",
+             "reason": "narrative addback category",
+             "requiredReview": true,
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(a)",
+              "excerpt": null
+             },
+             "exprId": "ir-expr:30e6323d6c87ab1ff98c4440"
+            }
+           ],
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(a)",
+            "excerpt": null
+           }
+          },
+          {
+           "kind": "SUM",
+           "type": "MONEY",
+           "exprId": "ir-expr:8b996961f4994ce7db9df00e",
+           "operands": [
+            {
+             "kind": "METRIC_REFERENCE",
+             "type": "MONEY",
+             "metricName": "Expected Run Rate Benefit",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:1533a4464e66a1dc81f4d7a0",
+             "inventoryItemIds": [
+              "inv-item:adea7c0c177b413e95fc2ab0"
+             ]
+            },
+            {
+             "kind": "UNSUPPORTED",
+             "type": null,
+             "sourceEvidence": "§1.01(b)(ii)",
+             "semanticDescription": "Pro forma adjustments for annualized Consolidated Net Income/EBITDA projected from new customer/third-party contracts, increased pricing/volume/scope under existing contracts, or entry into new markets/locations/facilities/units",
+             "reason": "projection-based, discretionary pro forma adjustment not reducible to a determinate formula",
+             "requiredReview": true,
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(b)",
+              "excerpt": null
+             },
+             "exprId": "ir-expr:a765bf39e1262982580d8ec8"
+            },
+            {
+             "kind": "UNSUPPORTED",
+             "type": null,
+             "sourceEvidence": "§1.01(b)(iii)",
+             "semanticDescription": "Cash receipts (or netting arrangements reducing cash expenditures) not included in Consolidated Net Income to the extent corresponding non-cash gains were previously deducted under 'paragraph (c)'",
+             "reason": "the cross-reference 'paragraph (c)' is genuinely ambiguous in the source (2 candidate targets) and has not been adjudicated",
+             "requiredReview": true,
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(b)",
+              "excerpt": null
+             },
+             "exprId": "ir-expr:88120d555266cc5374a5a417"
+            },
+            {
+             "kind": "UNSUPPORTED",
+             "type": null,
+             "sourceEvidence": "§1.01(b)(iv)",
+             "semanticDescription": "Addbacks/adjustments of the type in a quality-of-earnings report or client information memorandum/diligence materials from acceptable financial advisors, or determined on a basis consistent with Regulation S-X Article 11",
+             "reason": "depends on 'Article 11' cross-reference which could not be located, and on discretionary diligence-report content",
+             "requiredReview": true,
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(b)",
+              "excerpt": null
+             },
+             "exprId": "ir-expr:9839f1c5ac26a7926935c311"
+            },
+            {
+             "kind": "UNSUPPORTED",
+             "type": null,
+             "sourceEvidence": "§1.01(b)(v)",
+             "semanticDescription": "Addbacks/adjustments of the type in the Model or any client information memorandum/lender presentation furnished in connection with syndication of the Initial Term Loans",
+             "reason": "references extrinsic syndication materials not part of the supplied evidence",
+             "requiredReview": true,
+             "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01(b)",
+              "excerpt": null
+             },
+             "exprId": "ir-expr:2fb121748a4ea0c837f91423"
+            }
+           ],
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(b)",
+            "excerpt": null
+           }
+          },
+          {
+           "kind": "UNSUPPORTED",
+           "type": null,
+           "sourceEvidence": "§1.01(c)",
+           "semanticDescription": "Pro forma results projected from acquisitions/investments (including LOI/definitive-agreement-stage deals and related debt financing), business expansion, capex or other projects, and dispositions; for facilities/sites/projects not yet operating (or operating 36 months or less), pro forma effect credits a full twelve (12) months of expected mature earnings, net of actual benefits realized",
+           "reason": "discretionary, projection-based pro forma adjustment not reducible to a determinate formula from the text alone",
+           "requiredReview": true,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:c703b14aaaaff7286bd89188",
+           "inventoryItemIds": [
+            "inv-item:bb05010156962d7fb9143cde"
+           ]
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        },
+        "right": {
+         "kind": "SUM",
+         "type": "MONEY",
+         "exprId": "ir-expr:41c0c3d8d7e949ce9ec3e651",
+         "operands": [
+          {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "Non-Cash Items Increasing Consolidated Net Income",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:9bf0d2df2c99f74a8a8e6501"
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "Minority Interest Losses",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:d703352d7ba4a35498ca3423"
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "Realized Foreign Exchange Gains",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:ccec0a1da56dec4511c6574f"
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "Net Realized Gains from Swap Agreements",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:5906b6fd839db0e02cd601d2"
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(d)",
+          "excerpt": null
+         }
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01, proviso (I)",
+        "semanticDescription": "Inclusion, without duplication, of the Acquired EBITDA of any Person/property/business/asset acquired by the Restricted Parties during the period (an 'Acquired Entity or Business') and of any Unrestricted Subsidiary converted into a Restricted Subsidiary during the period (a 'Converted Restricted Subsidiary'), determined on a historical Pro Forma Basis",
+        "reason": "depends on undefined terms 'Acquired EBITDA' and 'Pro Forma Basis' not resolvable from the supplied evidence",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:ed57b3cc0e37737eb386b886"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01, proviso (II)",
+        "semanticDescription": "Exclusion of the Disposed EBITDA of any Person/property/business/asset sold, transferred, disposed of, closed or classified as discontinued (a 'Sold Entity or Business') and of any Restricted Subsidiary converted into an Unrestricted Subsidiary (a 'Converted Unrestricted Subsidiary') during the period, offset by inclusion of the Pro Forma Disposal Adjustment specified in the certificate delivered to the Administrative Agent",
+        "reason": "depends on undefined terms 'Disposed EBITDA' and 'Pro Forma Disposal Adjustment' not resolvable from the supplied evidence",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:54de796e6731fb2d4bc4dfb3"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 (final paragraph)",
+        "semanticDescription": "At the Initial Borrower's election, for purposes of calculating availability under any basket, ratio or other financial metric, inclusion of the aggregate amount of Consolidated EBITDA projected to be attributable to Letter of Intent Transactions, subject to applicable caps and limitations set forth in the Agreement, to the extent such transactions remain unclosed and unterminated during the period",
+        "reason": "discretionary, projection-based inclusion contingent on unspecified 'applicable caps and limitations set forth herein' elsewhere in the Agreement, and on the Borrower's election - not a determinate formula component",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:6f239ef5438529f3ea2dbc5c",
+        "inventoryItemIds": [
+         "inv-item:79f678aba3fa1caa910d15ad"
+        ]
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": "Consolidated Net Income ... plus (a) ... (b) ... (c) minus (d) ...; provided that (I) ... (II) ...; Notwithstanding the foregoing ... Letter of Intent Transactions ..."
+      },
+      "inventoryItemIds": [
+       "inv-item:30e65e4a2e01a1770fa4efc0",
+       "inv-item:259833ee6d36bb9e9b7fb8e8",
+       "inv-item:adea7c0c177b413e95fc2ab0",
+       "inv-item:bb05010156962d7fb9143cde",
+       "inv-item:79f678aba3fa1caa910d15ad"
+      ]
+     },
+     "dependsOnTerms": [
+      "Consolidated Net Income",
+      "Restricted Subsidiaries",
+      "Test Period",
+      "Consolidated Interest Expense",
+      "Acquired EBITDA",
+      "Disposed EBITDA",
+      "Pro Forma Disposal Adjustment",
+      "Pro Forma Basis",
+      "Expected Run Rate Benefit",
+      "Letter of Intent Transactions",
+      "Acquired Entity or Business",
+      "Sold Entity or Business",
+      "Converted Restricted Subsidiary",
+      "Converted Unrestricted Subsidiary",
+      "Restricted Parties",
+      "Unrestricted Subsidiary",
+      "Swap Agreements",
+      "Sale and Lease-Back Transaction",
+      "Qualified Restricted Subsidiary",
+      "Parent Entity",
+      "Investor",
+      "Initial Borrower"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Narrative/categorical addback clauses (a)(vi)-(xiv), (a)(xvii), (a)(xix), (a)(xxi)-(xxii), (b)(ii)-(v), and the pro-forma mechanics of (c) and provisos (I)/(II) are represented as aggregated UNSUPPORTED nodes rather than granular formulas because they are non-quantitative narrative categories and/or depend on undefined terms (Acquired EBITDA, Disposed EBITDA, Pro Forma Disposal Adjustment, Pro Forma Basis) not resolvable from the supplied evidence.",
+      "The (a)(xix) reference to 'Indebtedness permitted by Section 6.01' could not be expanded - Section 6.01 text was out of scope due to source-context budget exhaustion.",
+      "Cross-references 'paragraph (c)' (in (b)(iii)) and 'clause (b)' are flagged by Phase 2 as genuinely ambiguous (multiple candidate targets) and have not been adjudicated.",
+      "Numerous dependent defined terms used but not themselves defined in the supplied source are carried only as dependsOnTerms.",
+      "The core additive/subtractive skeleton (Consolidated Net Income + clause (a)/(b)/(c) addbacks - clause (d) deductions, plus the Acquired/Disposed EBITDA provisos and the elective Letter of Intent Transactions inclusion) is faithfully represented.",
+      "narrative, non-formulaic addback categories not reducible to a discrete quantitative expression from the text alone",
+      "qualitative addback category with a time-window condition; represented as UNSUPPORTED to avoid fabricating a numeric formula, while preserving the 36-month value",
+      "qualitative addback category with a time-window condition",
+      "narrative addback category dependent on undefined term 'Qualified Restricted Subsidiary'",
+      "depends on Section 6.01, which could not be expanded (source-context budget exhausted)",
+      "narrative addback category",
+      "narrative addback category",
+      "SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+      "projection-based, discretionary pro forma adjustment not reducible to a determinate formula",
+      "the cross-reference 'paragraph (c)' is genuinely ambiguous in the source (2 candidate targets) and has not been adjudicated",
+      "depends on 'Article 11' cross-reference which could not be located, and on discretionary diligence-report content",
+      "references extrinsic syndication materials not part of the supplied evidence",
+      "SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+      "discretionary, projection-based pro forma adjustment not reducible to a determinate formula from the text alone",
+      "ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+      "SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+      "depends on undefined terms 'Acquired EBITDA' and 'Pro Forma Basis' not resolvable from the supplied evidence",
+      "depends on undefined terms 'Disposed EBITDA' and 'Pro Forma Disposal Adjustment' not resolvable from the supplied evidence",
+      "discretionary, projection-based inclusion contingent on unspecified 'applicable caps and limitations set forth herein' elsewhere in the Agreement, and on the Borrower's election - not a determinate formula component",
+      "ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, for any Test Period, ... the Consolidated Net Income of such Person and its Restricted Subsidiaries for such Test Period plus (a) ... plus (b) ... plus (c) ... minus (d) ...; provided that (I) ... and (II) ...; Notwithstanding the foregoing ... Letter of Intent Transactions may be included ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:95805ecfce2a93042a976c6c",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Expected Run Rate Benefit",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Initial Borrower",
+      "Transactions",
+      "Restricted Party"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The term's own meaning is fully stated in the supplied text; it is a discretionary, good-faith projection rather than a computable formula."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(b)(i)",
+      "excerpt": "the amount of \"run rate\" synergies, cost savings, operating expense reductions, operating improvements, business optimization, revenue enhancements, revenue synergies, pricing initiatives, restructuring initiatives and other similar initiatives expected by the Initial Borrower in good faith to result from actions taken, committed to be taken or expected to be taken (in the good faith determination of the Initial Borrower) (collectively, the \"Expected Run Rate Benefit\")"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:cabede04ee733c794fe2f8e3",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Acquired Entity or Business",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Acquired EBITDA",
+      "Restricted Parties",
+      "Unrestricted Subsidiary",
+      "Transactions",
+      "Effective Date"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The term's own meaning is fully stated; its use within the Acquired EBITDA add-back mechanic depends on the undefined term 'Acquired EBITDA', carried as a dependency."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01, proviso (I)",
+      "excerpt": "each such Person, property, business or asset acquired, including pursuant to the Transactions or pursuant to a transaction consummated prior to the Effective Date, and not subsequently so disposed of, an \"Acquired Entity or Business\""
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:97aad43ed7abc5a72387d9f7",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Converted Restricted Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Unrestricted Subsidiary",
+      "Restricted Subsidiary",
+      "Acquired EBITDA"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The term's own meaning is fully stated in the supplied text."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01, proviso (I)",
+      "excerpt": "the Acquired EBITDA of any Unrestricted Subsidiary that is converted into a Restricted Subsidiary during such period (each, a \"Converted Restricted Subsidiary\")"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:a7905c9059ab253538ad414b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Sold Entity or Business",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Disposed EBITDA",
+      "Restricted Party",
+      "Unrestricted Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The term's own meaning is fully stated in the supplied text."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01, proviso (II)",
+      "excerpt": "each such Person, property, business or asset so sold, transferred or otherwise disposed of, closed or classified, a \"Sold Entity or Business\""
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:1ea4783d1f26d9eee4f889c8",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Converted Unrestricted Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Subsidiary",
+      "Unrestricted Subsidiary",
+      "Disposed EBITDA"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The term's own meaning is fully stated in the supplied text."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01, proviso (II)",
+      "excerpt": "the Disposed EBITDA of any Restricted Subsidiary that is converted into an Unrestricted Subsidiary during such period (each, a \"Converted Unrestricted Subsidiary\")"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[5]] narrative, non-formulaic addback categories not reducible to a discrete quantitative expression from the text alone",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[6]] qualitative addback category with a time-window condition; represented as UNSUPPORTED to avoid fabricating a numeric formula, while preserving the 36-month value",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[7]] qualitative addback category with a time-window condition",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[8]] narrative addback category dependent on undefined term 'Qualified Restricted Subsidiary'",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[10]] depends on Section 6.01, which could not be expanded (source-context budget exhausted)",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[12]] narrative addback category",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[13]] narrative addback category",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1]] SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[2].SUM[1]] projection-based, discretionary pro forma adjustment not reducible to a determinate formula",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[2].SUM[2]] the cross-reference 'paragraph (c)' is genuinely ambiguous in the source (2 candidate targets) and has not been adjudicated",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[2].SUM[3]] depends on 'Article 11' cross-reference which could not be located, and on discretionary diligence-report content",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[2].SUM[4]] references extrinsic syndication materials not part of the supplied evidence",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[2]] SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[3]] discretionary, projection-based pro forma adjustment not reducible to a determinate formula from the text alone",
+   "[definition[d1].ADD[0].SUBTRACT.left] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1].ADD[0]] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1].ADD[1]] depends on undefined terms 'Acquired EBITDA' and 'Pro Forma Basis' not resolvable from the supplied evidence",
+   "[definition[d1].ADD[2]] depends on undefined terms 'Disposed EBITDA' and 'Pro Forma Disposal Adjustment' not resolvable from the supplied evidence",
+   "[definition[d1].ADD[3]] discretionary, projection-based inclusion contingent on unspecified 'applicable caps and limitations set forth herein' elsewhere in the Agreement, and on the Borrower's election - not a determinate formula component",
+   "[definition[d1]] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "Compiled the single defined term 'Consolidated EBITDA' from §1.01 plus five terms defined inline within the same definition (Expected Run Rate Benefit; Acquired Entity or Business; Converted Restricted Subsidiary; Sold Entity or Business; Converted Unrestricted Subsidiary).",
+   "All 5 frozen-inventory items (start-up/de novo 36-month window; discontinued-ops 12-month window; Expected Run Rate Benefit 36-month condition; facility ramp-up 36/12-month pro forma treatment; and the CRITICAL Letter of Intent Transactions election) are consumed on the specific nodes that carry their value.",
+   "Given the sheer breadth of this 'kitchen sink' EBITDA definition (22 sub-clauses in (a) alone, plus (b), (c), (d) and two provisos), narrative/qualitative addback categories not flagged by the frozen inventory and not reducible to a determinate formula were represented as UNSUPPORTED nodes (individually or bucketed) rather than forced into fabricated formulas - consistent with the safety principle that a cautious PARTIAL representation is preferable to a confidently wrong COMPLETE one.",
+   "The Section 6.01 cross-reference in clause (a)(xix) remains unresolved (Phase 2's source-context budget was exhausted before it could be expanded); the ambiguous 'paragraph (c)' and 'clause (b)' cross-references in clause (b) were left un-adjudicated per Phase 2's own findings of genuine textual ambiguity.",
+   "No WireRule outputs were produced because the supplied text is a pure definitional provision (no independently operative permission/prohibition/ratio-test rule is stated in §1.01 itself)."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 27454,
+   "outputTokens": 33097,
+   "costUsd": 0.38587800000000005
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:b358e0e6d724e8b43dfeb071",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Consolidated EBITDA",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "ADD",
+     "type": "MONEY",
+     "exprId": "ir-expr:de7814c463f060ab656c6776",
+     "operands": [
+      {
+       "kind": "SUBTRACT",
+       "type": "MONEY",
+       "exprId": "ir-expr:58335ce761e4ca2de0ac3824",
+       "left": {
+        "kind": "ADD",
+        "type": "MONEY",
+        "exprId": "ir-expr:03ecd952fd6c083911d6cc85",
+        "operands": [
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "Consolidated Net Income",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:ff48a3fb4a44a66e1d4471ca"
+         },
+         {
+          "kind": "SUM",
+          "type": "MONEY",
+          "exprId": "ir-expr:fd5b73e28135db2516e925fb",
+          "operands": [
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Consolidated Interest Expense",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:16a5c3ca869e763dd4b55664"
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Income and Similar Taxes Paid or Accrued",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:d3c902ba3932d8496731c573"
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Amortization Expense",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:e7c9fb1a00cafb19c7401a36"
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Depreciation Expense",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:ff076a2591f1ecf60aa22ef5"
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Non-Cash Items",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:0878a3baa80f5d7a9cec9513"
+           },
+           {
+            "kind": "UNSUPPORTED",
+            "type": null,
+            "sourceEvidence": "§1.01(a)(vi)-(xiv)",
+            "semanticDescription": "Addback categories (a)(vi)-(a)(xiv): litigation/investigation charges; indemnified, insured or third-party-reimbursed items; sponsor management/monitoring/advisory/termination and director fees; [reserved]; insurance-covered casualty/business-interruption expenses and lost profits; income attributable to noncontrolling/minority interests (excluding cash distributions); and equity-rollover/option-holder distribution-related charges",
+            "reason": "narrative, non-formulaic addback categories not reducible to a discrete quantitative expression from the text alone",
+            "requiredReview": true,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(a)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:366f5c505f0277a7dbb42c04"
+           },
+           {
+            "kind": "UNSUPPORTED",
+            "type": null,
+            "sourceEvidence": "§1.01(a)(xv)",
+            "semanticDescription": "Start-up charges/expenses and de novo losses for new locations, projects, markets or service offerings, accrued during the first thirty-six (36) months after opening/offering, plus related pre-opening/upgrade/organizational costs",
+            "reason": "qualitative addback category with a time-window condition; represented as UNSUPPORTED to avoid fabricating a numeric formula, while preserving the 36-month value",
+            "requiredReview": true,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(a)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:99fab9961cb407390d45e617",
+            "inventoryItemIds": [
+             "inv-item:30e65e4a2e01a1770fa4efc0"
+            ]
+           },
+           {
+            "kind": "UNSUPPORTED",
+            "type": null,
+            "sourceEvidence": "§1.01(a)(xvi)",
+            "semanticDescription": "Losses on non-ordinary-course asset dispositions (xvi)(A), and losses from operations/assets expected to be disposed of, abandoned or discontinued within twelve (12) months after the relevant period end (xvi)(B)",
+            "reason": "qualitative addback category with a time-window condition",
+            "requiredReview": true,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(a)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:e5f607cbba1b869d54b4bb89",
+            "inventoryItemIds": [
+             "inv-item:259833ee6d36bb9e9b7fb8e8"
+            ]
+           },
+           {
+            "kind": "UNSUPPORTED",
+            "type": null,
+            "sourceEvidence": "§1.01(a)(xvii)",
+            "semanticDescription": "Earn-out/contingent consideration obligations and purchase price adjustments in connection with acquisitions; amounts paid to equity holders of a Qualified Restricted Subsidiary as compensation from disposition proceeds",
+            "reason": "narrative addback category dependent on undefined term 'Qualified Restricted Subsidiary'",
+            "requiredReview": true,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(a)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:23f47a96769226934b552a10"
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Net Realized Losses from Swap Agreements",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:fdb870a75ea524511daf03ad"
+           },
+           {
+            "kind": "UNSUPPORTED",
+            "type": null,
+            "sourceEvidence": "§1.01(a)(xix)",
+            "semanticDescription": "Fees, expenses, charges or losses related to equity offerings, Investments, acquisitions, dispositions, Refinancings, recapitalizations or permitted Indebtedness incurrence, including amendments/refinancings of Loans or Indebtedness permitted by Section 6.01",
+            "reason": "depends on Section 6.01, which could not be expanded (source-context budget exhausted)",
+            "requiredReview": true,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(a)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:9b77d401127a37f6ed716956"
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Realized Foreign Exchange Losses",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:0b63edae60c7c451e1cc085e"
+           },
+           {
+            "kind": "UNSUPPORTED",
+            "type": null,
+            "sourceEvidence": "§1.01(a)(xxi)",
+            "semanticDescription": "Costs of standing up a business, including duplicative costs, transition-services-agreement costs and carve-out employee compensation",
+            "reason": "narrative addback category",
+            "requiredReview": true,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(a)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:4b5aa7669df27711002c1314"
+           },
+           {
+            "kind": "UNSUPPORTED",
+            "type": null,
+            "sourceEvidence": "§1.01(a)(xxii)",
+            "semanticDescription": "'Bad debt' expense related to revenue earned prior to the Effective Date or a Permitted Acquisition/Investment",
+            "reason": "narrative addback category",
+            "requiredReview": true,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(a)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:30e6323d6c87ab1ff98c4440"
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(a)",
+           "excerpt": null
+          }
+         },
+         {
+          "kind": "SUM",
+          "type": "MONEY",
+          "exprId": "ir-expr:8b996961f4994ce7db9df00e",
+          "operands": [
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Expected Run Rate Benefit",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:1533a4464e66a1dc81f4d7a0",
+            "inventoryItemIds": [
+             "inv-item:adea7c0c177b413e95fc2ab0"
+            ]
+           },
+           {
+            "kind": "UNSUPPORTED",
+            "type": null,
+            "sourceEvidence": "§1.01(b)(ii)",
+            "semanticDescription": "Pro forma adjustments for annualized Consolidated Net Income/EBITDA projected from new customer/third-party contracts, increased pricing/volume/scope under existing contracts, or entry into new markets/locations/facilities/units",
+            "reason": "projection-based, discretionary pro forma adjustment not reducible to a determinate formula",
+            "requiredReview": true,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(b)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:a765bf39e1262982580d8ec8"
+           },
+           {
+            "kind": "UNSUPPORTED",
+            "type": null,
+            "sourceEvidence": "§1.01(b)(iii)",
+            "semanticDescription": "Cash receipts (or netting arrangements reducing cash expenditures) not included in Consolidated Net Income to the extent corresponding non-cash gains were previously deducted under 'paragraph (c)'",
+            "reason": "the cross-reference 'paragraph (c)' is genuinely ambiguous in the source (2 candidate targets) and has not been adjudicated",
+            "requiredReview": true,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(b)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:88120d555266cc5374a5a417"
+           },
+           {
+            "kind": "UNSUPPORTED",
+            "type": null,
+            "sourceEvidence": "§1.01(b)(iv)",
+            "semanticDescription": "Addbacks/adjustments of the type in a quality-of-earnings report or client information memorandum/diligence materials from acceptable financial advisors, or determined on a basis consistent with Regulation S-X Article 11",
+            "reason": "depends on 'Article 11' cross-reference which could not be located, and on discretionary diligence-report content",
+            "requiredReview": true,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(b)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:9839f1c5ac26a7926935c311"
+           },
+           {
+            "kind": "UNSUPPORTED",
+            "type": null,
+            "sourceEvidence": "§1.01(b)(v)",
+            "semanticDescription": "Addbacks/adjustments of the type in the Model or any client information memorandum/lender presentation furnished in connection with syndication of the Initial Term Loans",
+            "reason": "references extrinsic syndication materials not part of the supplied evidence",
+            "requiredReview": true,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(b)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:2fb121748a4ea0c837f91423"
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(b)",
+           "excerpt": null
+          }
+         },
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01(c)",
+          "semanticDescription": "Pro forma results projected from acquisitions/investments (including LOI/definitive-agreement-stage deals and related debt financing), business expansion, capex or other projects, and dispositions; for facilities/sites/projects not yet operating (or operating 36 months or less), pro forma effect credits a full twelve (12) months of expected mature earnings, net of actual benefits realized",
+          "reason": "discretionary, projection-based pro forma adjustment not reducible to a determinate formula from the text alone",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:c703b14aaaaff7286bd89188",
+          "inventoryItemIds": [
+           "inv-item:bb05010156962d7fb9143cde"
+          ]
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "right": {
+        "kind": "SUM",
+        "type": "MONEY",
+        "exprId": "ir-expr:41c0c3d8d7e949ce9ec3e651",
+        "operands": [
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "Non-Cash Items Increasing Consolidated Net Income",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:9bf0d2df2c99f74a8a8e6501"
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "Minority Interest Losses",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:d703352d7ba4a35498ca3423"
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "Realized Foreign Exchange Gains",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:ccec0a1da56dec4511c6574f"
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "Net Realized Gains from Swap Agreements",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:5906b6fd839db0e02cd601d2"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(d)",
+         "excerpt": null
+        }
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01, proviso (I)",
+       "semanticDescription": "Inclusion, without duplication, of the Acquired EBITDA of any Person/property/business/asset acquired by the Restricted Parties during the period (an 'Acquired Entity or Business') and of any Unrestricted Subsidiary converted into a Restricted Subsidiary during the period (a 'Converted Restricted Subsidiary'), determined on a historical Pro Forma Basis",
+       "reason": "depends on undefined terms 'Acquired EBITDA' and 'Pro Forma Basis' not resolvable from the supplied evidence",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:ed57b3cc0e37737eb386b886"
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01, proviso (II)",
+       "semanticDescription": "Exclusion of the Disposed EBITDA of any Person/property/business/asset sold, transferred, disposed of, closed or classified as discontinued (a 'Sold Entity or Business') and of any Restricted Subsidiary converted into an Unrestricted Subsidiary (a 'Converted Unrestricted Subsidiary') during the period, offset by inclusion of the Pro Forma Disposal Adjustment specified in the certificate delivered to the Administrative Agent",
+       "reason": "depends on undefined terms 'Disposed EBITDA' and 'Pro Forma Disposal Adjustment' not resolvable from the supplied evidence",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:54de796e6731fb2d4bc4dfb3"
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01 (final paragraph)",
+       "semanticDescription": "At the Initial Borrower's election, for purposes of calculating availability under any basket, ratio or other financial metric, inclusion of the aggregate amount of Consolidated EBITDA projected to be attributable to Letter of Intent Transactions, subject to applicable caps and limitations set forth in the Agreement, to the extent such transactions remain unclosed and unterminated during the period",
+       "reason": "discretionary, projection-based inclusion contingent on unspecified 'applicable caps and limitations set forth herein' elsewhere in the Agreement, and on the Borrower's election - not a determinate formula component",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:6f239ef5438529f3ea2dbc5c",
+       "inventoryItemIds": [
+        "inv-item:79f678aba3fa1caa910d15ad"
+       ]
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "Consolidated Net Income ... plus (a) ... (b) ... (c) minus (d) ...; provided that (I) ... (II) ...; Notwithstanding the foregoing ... Letter of Intent Transactions ..."
+     },
+     "inventoryItemIds": [
+      "inv-item:30e65e4a2e01a1770fa4efc0",
+      "inv-item:259833ee6d36bb9e9b7fb8e8",
+      "inv-item:adea7c0c177b413e95fc2ab0",
+      "inv-item:bb05010156962d7fb9143cde",
+      "inv-item:79f678aba3fa1caa910d15ad"
+     ]
+    },
+    "dependsOnTerms": [
+     "Consolidated Net Income",
+     "Restricted Subsidiaries",
+     "Test Period",
+     "Consolidated Interest Expense",
+     "Acquired EBITDA",
+     "Disposed EBITDA",
+     "Pro Forma Disposal Adjustment",
+     "Pro Forma Basis",
+     "Expected Run Rate Benefit",
+     "Letter of Intent Transactions",
+     "Acquired Entity or Business",
+     "Sold Entity or Business",
+     "Converted Restricted Subsidiary",
+     "Converted Unrestricted Subsidiary",
+     "Restricted Parties",
+     "Unrestricted Subsidiary",
+     "Swap Agreements",
+     "Sale and Lease-Back Transaction",
+     "Qualified Restricted Subsidiary",
+     "Parent Entity",
+     "Investor",
+     "Initial Borrower"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Narrative/categorical addback clauses (a)(vi)-(xiv), (a)(xvii), (a)(xix), (a)(xxi)-(xxii), (b)(ii)-(v), and the pro-forma mechanics of (c) and provisos (I)/(II) are represented as aggregated UNSUPPORTED nodes rather than granular formulas because they are non-quantitative narrative categories and/or depend on undefined terms (Acquired EBITDA, Disposed EBITDA, Pro Forma Disposal Adjustment, Pro Forma Basis) not resolvable from the supplied evidence.",
+     "The (a)(xix) reference to 'Indebtedness permitted by Section 6.01' could not be expanded - Section 6.01 text was out of scope due to source-context budget exhaustion.",
+     "Cross-references 'paragraph (c)' (in (b)(iii)) and 'clause (b)' are flagged by Phase 2 as genuinely ambiguous (multiple candidate targets) and have not been adjudicated.",
+     "Numerous dependent defined terms used but not themselves defined in the supplied source are carried only as dependsOnTerms.",
+     "The core additive/subtractive skeleton (Consolidated Net Income + clause (a)/(b)/(c) addbacks - clause (d) deductions, plus the Acquired/Disposed EBITDA provisos and the elective Letter of Intent Transactions inclusion) is faithfully represented.",
+     "narrative, non-formulaic addback categories not reducible to a discrete quantitative expression from the text alone",
+     "qualitative addback category with a time-window condition; represented as UNSUPPORTED to avoid fabricating a numeric formula, while preserving the 36-month value",
+     "qualitative addback category with a time-window condition",
+     "narrative addback category dependent on undefined term 'Qualified Restricted Subsidiary'",
+     "depends on Section 6.01, which could not be expanded (source-context budget exhausted)",
+     "narrative addback category",
+     "narrative addback category",
+     "SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+     "projection-based, discretionary pro forma adjustment not reducible to a determinate formula",
+     "the cross-reference 'paragraph (c)' is genuinely ambiguous in the source (2 candidate targets) and has not been adjudicated",
+     "depends on 'Article 11' cross-reference which could not be located, and on discretionary diligence-report content",
+     "references extrinsic syndication materials not part of the supplied evidence",
+     "SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+     "discretionary, projection-based pro forma adjustment not reducible to a determinate formula from the text alone",
+     "ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+     "SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+     "depends on undefined terms 'Acquired EBITDA' and 'Pro Forma Basis' not resolvable from the supplied evidence",
+     "depends on undefined terms 'Disposed EBITDA' and 'Pro Forma Disposal Adjustment' not resolvable from the supplied evidence",
+     "discretionary, projection-based inclusion contingent on unspecified 'applicable caps and limitations set forth herein' elsewhere in the Agreement, and on the Borrower's election - not a determinate formula component",
+     "ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, for any Test Period, ... the Consolidated Net Income of such Person and its Restricted Subsidiaries for such Test Period plus (a) ... plus (b) ... plus (c) ... minus (d) ...; provided that (I) ... and (II) ...; Notwithstanding the foregoing ... Letter of Intent Transactions may be included ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:95805ecfce2a93042a976c6c",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Expected Run Rate Benefit",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Initial Borrower",
+     "Transactions",
+     "Restricted Party"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The term's own meaning is fully stated in the supplied text; it is a discretionary, good-faith projection rather than a computable formula."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(b)(i)",
+     "excerpt": "the amount of \"run rate\" synergies, cost savings, operating expense reductions, operating improvements, business optimization, revenue enhancements, revenue synergies, pricing initiatives, restructuring initiatives and other similar initiatives expected by the Initial Borrower in good faith to result from actions taken, committed to be taken or expected to be taken (in the good faith determination of the Initial Borrower) (collectively, the \"Expected Run Rate Benefit\")"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:cabede04ee733c794fe2f8e3",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Acquired Entity or Business",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Acquired EBITDA",
+     "Restricted Parties",
+     "Unrestricted Subsidiary",
+     "Transactions",
+     "Effective Date"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The term's own meaning is fully stated; its use within the Acquired EBITDA add-back mechanic depends on the undefined term 'Acquired EBITDA', carried as a dependency."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01, proviso (I)",
+     "excerpt": "each such Person, property, business or asset acquired, including pursuant to the Transactions or pursuant to a transaction consummated prior to the Effective Date, and not subsequently so disposed of, an \"Acquired Entity or Business\""
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:97aad43ed7abc5a72387d9f7",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Converted Restricted Subsidiary",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Unrestricted Subsidiary",
+     "Restricted Subsidiary",
+     "Acquired EBITDA"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The term's own meaning is fully stated in the supplied text."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01, proviso (I)",
+     "excerpt": "the Acquired EBITDA of any Unrestricted Subsidiary that is converted into a Restricted Subsidiary during such period (each, a \"Converted Restricted Subsidiary\")"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:a7905c9059ab253538ad414b",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Sold Entity or Business",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Disposed EBITDA",
+     "Restricted Party",
+     "Unrestricted Subsidiary"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The term's own meaning is fully stated in the supplied text."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01, proviso (II)",
+     "excerpt": "each such Person, property, business or asset so sold, transferred or otherwise disposed of, closed or classified, a \"Sold Entity or Business\""
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:1ea4783d1f26d9eee4f889c8",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Converted Unrestricted Subsidiary",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Restricted Subsidiary",
+     "Unrestricted Subsidiary",
+     "Disposed EBITDA"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The term's own meaning is fully stated in the supplied text."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01, proviso (II)",
+     "excerpt": "the Disposed EBITDA of any Restricted Subsidiary that is converted into an Unrestricted Subsidiary during such period (each, a \"Converted Unrestricted Subsidiary\")"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01(a) chapeau ('in each case, at the election of the Initial Borrower'); §1.01(b) chapeau; §1.01(c) chapeau; final paragraph ('at the election of the Initial Borrower, the aggregate amount of Consolidated EBITDA ... attributable to Letter of Intent Transactions may be included')",
+    "semanticRequirement": "Many addback components in this EBITDA definition are included only if and to the extent a party (the Initial Borrower) unilaterally elects to include them for a given calculation, rather than being automatically and unconditionally added every period.",
+    "whyExistingPrimitivesFail": "IF/AND/OR/COMPARE require a determinable boolean derived from contractual facts; a party's unilateral, non-formulaic election is not such a boolean, so forcing it into a condition would fabricate a false determinacy.",
+    "candidateGeneralizedPrimitive": "ELECTIVE_ADJUSTMENT node representing a component whose inclusion/exclusion is controlled by a named party's discretionary election rather than by a testable condition"
+   },
+   {
+    "sourceEvidence": "§1.01(b)(i) ('calculated on a Pro Forma Basis as though amounts had been realized on the first (1st) day of the period ... and as if such amounts were realized during the entirety of such period'); §1.01(c) ('reflect a full twelve (12) months of earnings')",
+    "semanticRequirement": "Several components require restating a partial-period, prospective, or ramp-up amount as though it had been realized for the full measurement period (annualization/backdating) - a specific 'Pro Forma Basis' convention distinct from merely scoping a value to a period.",
+    "whyExistingPrimitivesFail": "DURING_PERIOD scopes an existing value to a period but does not express the annualization/backdating arithmetic (treating a not-yet-realized benefit as if realized for the full period) that these clauses require.",
+    "candidateGeneralizedPrimitive": "PRO_FORMA_ANNUALIZATION node taking an operand, an actual-realization window, and a normalization period, producing the annualized/backdated equivalent"
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[5]] narrative, non-formulaic addback categories not reducible to a discrete quantitative expression from the text alone",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[6]] qualitative addback category with a time-window condition; represented as UNSUPPORTED to avoid fabricating a numeric formula, while preserving the 36-month value",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[7]] qualitative addback category with a time-window condition",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[8]] narrative addback category dependent on undefined term 'Qualified Restricted Subsidiary'",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[10]] depends on Section 6.01, which could not be expanded (source-context budget exhausted)",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[12]] narrative addback category",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[13]] narrative addback category",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[1]] SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[2].SUM[1]] projection-based, discretionary pro forma adjustment not reducible to a determinate formula",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[2].SUM[2]] the cross-reference 'paragraph (c)' is genuinely ambiguous in the source (2 candidate targets) and has not been adjudicated",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[2].SUM[3]] depends on 'Article 11' cross-reference which could not be located, and on discretionary diligence-report content",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[2].SUM[4]] references extrinsic syndication materials not part of the supplied evidence",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[2]] SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1].ADD[0].SUBTRACT.left.ADD[3]] discretionary, projection-based pro forma adjustment not reducible to a determinate formula from the text alone",
+   "[definition[d1].ADD[0].SUBTRACT.left] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1].ADD[0]] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d1].ADD[1]] depends on undefined terms 'Acquired EBITDA' and 'Pro Forma Basis' not resolvable from the supplied evidence",
+   "[definition[d1].ADD[2]] depends on undefined terms 'Disposed EBITDA' and 'Pro Forma Disposal Adjustment' not resolvable from the supplied evidence",
+   "[definition[d1].ADD[3]] discretionary, projection-based inclusion contingent on unspecified 'applicable caps and limitations set forth herein' elsewhere in the Agreement, and on the Borrower's election - not a determinate formula component",
+   "[definition[d1]] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "Compiled the single defined term 'Consolidated EBITDA' from §1.01 plus five terms defined inline within the same definition (Expected Run Rate Benefit; Acquired Entity or Business; Converted Restricted Subsidiary; Sold Entity or Business; Converted Unrestricted Subsidiary).",
+   "All 5 frozen-inventory items (start-up/de novo 36-month window; discontinued-ops 12-month window; Expected Run Rate Benefit 36-month condition; facility ramp-up 36/12-month pro forma treatment; and the CRITICAL Letter of Intent Transactions election) are consumed on the specific nodes that carry their value.",
+   "Given the sheer breadth of this 'kitchen sink' EBITDA definition (22 sub-clauses in (a) alone, plus (b), (c), (d) and two provisos), narrative/qualitative addback categories not flagged by the frozen inventory and not reducible to a determinate formula were represented as UNSUPPORTED nodes (individually or bucketed) rather than forced into fabricated formulas - consistent with the safety principle that a cautious PARTIAL representation is preferable to a confidently wrong COMPLETE one.",
+   "The Section 6.01 cross-reference in clause (a)(xix) remains unresolved (Phase 2's source-context budget was exhausted before it could be expanded); the ambiguous 'paragraph (c)' and 'clause (b)' cross-references in clause (b) were left un-adjudicated per Phase 2's own findings of genuine textual ambiguity.",
+   "No WireRule outputs were produced because the supplied text is a pure definitional provision (no independently operative permission/prohibition/ratio-test rule is stated in §1.01 itself)."
+  ],
+  "toolCallLog": [],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": "[\n  {\n    \"localRef\": \"d1\",\n    \"termName\": \"Consolidated EBITDA\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means, for any Test Period, ... the Consolidated Net Income of such Person and its Restricted Subsidiaries for such Test Period plus (a) ... plus (b) ... plus (c) ... minus (d) ...; provided that (I) ... and (II) ...; Notwithstanding the foregoing ... Letter of Intent Transactions may be included ...\",\n    \"dependsOnTerms\": [\"Consolidated Net Income\",\"Restricted Subsidiaries\",\"Test Period\",\"Consolidated Interest Expense\",\"Acquired EBITDA\",\"Disposed EBITDA\",\"Pro Forma Disposal Adjustment\",\"Pro Forma Basis\",\"Expected Run Rate Benefit\",\"Letter of Intent Transactions\",\"Acquired Entity or Business\",\"Sold Entity or Business\",\"Converted Restricted Subsidiary\",\"Converted Unrestricted Subsidiary\",\"Restricted Parties\",\"Unrestricted Subsidiary\",\"Swap Agreements\",\"Sale and Lease-Back Transaction\",\"Qualified Restricted Subsidiary\",\"Parent Entity\",\"Investor\",\"Initial Borrower\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\n      \"Narrative/categorical addback clauses (a)(vi)-(xiv), (a)(xvii), (a)(xix), (a)(xxi)-(xxii), (b)(ii)-(v), and the pro-forma mechanics of (c) and provisos (I)/(II) are represented as aggregated UNSUPPORTED nodes rather than granular formulas because they are non-quantitative narrative categories and/or depend on undefined terms (Acquired EBITDA, Disposed EBITDA, Pro Forma Disposal Adjustment, Pro Forma Basis) not resolvable from the supplied evidence.\",\n      \"The (a)(xix) reference to 'Indebtedness permitted by Section 6.01' could not be expanded - Section 6.01 text was out of scope due to source-context budget exhaustion.\",\n      \"Cross-references 'paragraph (c)' (in (b)(iii)) and 'clause (b)' are flagged by Phase 2 as genuinely ambiguous (multiple candidate targets) and have not been adjudicated.\",\n      \"Numerous dependent defined terms used but not themselves defined in the supplied source are carried only as dependsOnTerms.\",\n      \"The core additive/subtractive skeleton (Consolidated Net Income + clause (a)/(b)/(c) addbacks - clause (d) deductions, plus the Acquired/Disposed EBITDA provisos and the elective Letter of Intent Transactions inclusion) is faithfully represented.\"\n    ],\n    \"calculationExpression\": {\n      \"kind\": \"ADD\",\n      \"citation\": \"§1.01\",\n      \"excerpt\": \"Consolidated Net Income ... plus (a) ... (b) ... (c) minus (d) ...; provided that (I) ... (II) ...; Notwithstanding the foregoing ... Letter of Intent Transactions ...\",\n      \"inventoryItemIds\": [\"inv-item:30e65e4a2e01a1770fa4efc0\",\"inv-item:259833ee6d36bb9e9b7fb8e8\",\"inv-item:adea7c0c177b413e95fc2ab0\",\"inv-item:bb05010156962d7fb9143cde\",\"inv-item:79f678aba3fa1caa910d15ad\"],\n      \"operands\": [\n        {\n          \"kind\": \"SUBTRACT\",\n          \"citation\": \"§1.01\",\n          \"left\": {\n            \"kind\": \"ADD\",\n            \"citation\": \"§1.01\",\n            \"operands\": [\n              {\n                \"kind\": \"METRIC_REFERENCE\",\n                \"metricName\": \"Consolidated Net Income\",\n                \"citation\": \"§1.01\",\n                \"excerpt\": \"the Consolidated Net Income of such Person and its Restricted Subsidiaries for such Test Period\"\n              },\n              {\n                \"kind\": \"SUM\",\n                \"citation\": \"§1.01(a)\",\n                \"operands\": [\n                  {\"kind\":\"METRIC_REFERENCE\",\"metricName\":\"Consolidated Interest Expense\",\"citation\":\"§1.01(a)(i)\",\"excerpt\":\"consolidated interest expense of such Person for such period, including ... items excluded from the definition of \\\"Consolidated Interest Expense\\\"\"},\n                  {\"kind\":\"METRIC_REFERENCE\",\"metricName\":\"Income and Similar Taxes Paid or Accrued\",\"citation\":\"§1.01(a)(ii)\",\"excerpt\":\"taxes based on gross receipts, income, profits, revenue or capital ... paid or accrued during such period\"},\n                  {\"kind\":\"METRIC_REFERENCE\",\"metricName\":\"Amortization Expense\",\"citation\":\"§1.01(a)(iii)\"},\n                  {\"kind\":\"METRIC_REFERENCE\",\"metricName\":\"Depreciation Expense\",\"citation\":\"§1.01(a)(iv)\"},\n                  {\"kind\":\"METRIC_REFERENCE\",\"metricName\":\"Non-Cash Items\",\"citation\":\"§1.01(a)(v)\",\"excerpt\":\"non-cash items of such Person for such period; provided that if any such non-cash item represents an accrual or reserve for potential cash items in any future period ...\"},\n                  {\"kind\":\"UNSUPPORTED\",\"semanticDescription\":\"Addback categories (a)(vi)-(a)(xiv): litigation/investigation charges; indemnified, insured or third-party-reimbursed items; sponsor management/monitoring/advisory/termination and director fees; [reserved]; insurance-covered casualty/business-interruption expenses and lost profits; income attributable to noncontrolling/minority interests (excluding cash distributions); and equity-rollover/option-holder distribution-related charges\",\"reason\":\"narrative, non-formulaic addback categories not reducible to a discrete quantitative expression from the text alone\",\"sourceEvidence\":\"§1.01(a)(vi)-(xiv)\"},\n                  {\"kind\":\"UNSUPPORTED\",\"semanticDescription\":\"Start-up charges/expenses and de novo losses for new locations, projects, markets or service offerings, accrued during the first thirty-six (36) months after opening/offering, plus related pre-opening/upgrade/organizational costs\",\"reason\":\"qualitative addback category with a time-window condition; represented as UNSUPPORTED to avoid fabricating a numeric formula, while preserving the 36-month value\",\"sourceEvidence\":\"§1.01(a)(xv)\",\"inventoryItemIds\":[\"inv-item:30e65e4a2e01a1770fa4efc0\"]},\n                  {\"kind\":\"UNSUPPORTED\",\"semanticDescription\":\"Losses on non-ordinary-course asset dispositions (xvi)(A), and losses from operations/assets expected to be disposed of, abandoned or discontinued within twelve (12) months after the relevant period end (xvi)(B)\",\"reason\":\"qualitative addback category with a time-window condition\",\"sourceEvidence\":\"§1.01(a)(xvi)\",\"inventoryItemIds\":[\"inv-item:259833ee6d36bb9e9b7fb8e8\"]},\n                  {\"kind\":\"UNSUPPORTED\",\"semanticDescription\":\"Earn-out/contingent consideration obligations and purchase price adjustments in connection with acquisitions; amounts paid to equity holders of a Qualified Restricted Subsidiary as compensation from disposition proceeds\",\"reason\":\"narrative addback category dependent on undefined term 'Qualified Restricted Subsidiary'\",\"sourceEvidence\":\"§1.01(a)(xvii)\"},\n                  {\"kind\":\"METRIC_REFERENCE\",\"metricName\":\"Net Realized Losses from Swap Agreements\",\"citation\":\"§1.01(a)(xviii)\"},\n                  {\"kind\":\"UNSUPPORTED\",\"semanticDescription\":\"Fees, expenses, charges or losses related to equity offerings, Investments, acquisitions, dispositions, Refinancings, recapitalizations or permitted Indebtedness incurrence, including amendments/refinancings of Loans or Indebtedness permitted by Section 6.01\",\"reason\":\"depends on Section 6.01, which could not be expanded (source-context budget exhausted)\",\"sourceEvidence\":\"§1.01(a)(xix)\"},\n                  {\"kind\":\"METRIC_REFERENCE\",\"metricName\":\"Realized Foreign Exchange Losses\",\"citation\":\"§1.01(a)(xx)\"},\n                  {\"kind\":\"UNSUPPORTED\",\"semanticDescription\":\"Costs of standing up a business, including duplicative costs, transition-services-agreement costs and carve-out employee compensation\",\"reason\":\"narrative addback category\",\"sourceEvidence\":\"§1.01(a)(xxi)\"},\n                  {\"kind\":\"UNSUPPORTED\",\"semanticDescription\":\"'Bad debt' expense related to revenue earned prior to the Effective Date or a Permitted Acquisition/Investment\",\"reason\":\"narrative addback category\",\"sourceEvidence\":\"§1.01(a)(xxii)\"}\n                ]\n              },\n              {\n                \"kind\": \"SUM\",\n                \"citation\": \"§1.01(b)\",\n                \"operands\": [\n                  {\"kind\":\"METRIC_REFERENCE\",\"metricName\":\"Expected Run Rate Benefit\",\"valueType\":\"MONEY\",\"citation\":\"§1.01(b)(i)\",\"excerpt\":\"'run rate' synergies, cost savings ... expected ... to result from actions taken ...; provided that the amounts added back pursuant to clause (b)(i)(y) are expected ... within thirty-six (36) months after the end of the relevant period\",\"inventoryItemIds\":[\"inv-item:adea7c0c177b413e95fc2ab0\"]},\n                  {\"kind\":\"UNSUPPORTED\",\"semanticDescription\":\"Pro forma adjustments for annualized Consolidated Net Income/EBITDA projected from new customer/third-party contracts, increased pricing/volume/scope under existing contracts, or entry into new markets/locations/facilities/units\",\"reason\":\"projection-based, discretionary pro forma adjustment not reducible to a determinate formula\",\"sourceEvidence\":\"§1.01(b)(ii)\"},\n                  {\"kind\":\"UNSUPPORTED\",\"semanticDescription\":\"Cash receipts (or netting arrangements reducing cash expenditures) not included in Consolidated Net Income to the extent corresponding non-cash gains were previously deducted under 'paragraph (c)'\",\"reason\":\"the cross-reference 'paragraph (c)' is genuinely ambiguous in the source (2 candidate targets) and has not been adjudicated\",\"sourceEvidence\":\"§1.01(b)(iii)\"},\n                  {\"kind\":\"UNSUPPORTED\",\"semanticDescription\":\"Addbacks/adjustments of the type in a quality-of-earnings report or client information memorandum/diligence materials from acceptable financial advisors, or determined on a basis consistent with Regulation S-X Article 11\",\"reason\":\"depends on 'Article 11' cross-reference which could not be located, and on discretionary diligence-report content\",\"sourceEvidence\":\"§1.01(b)(iv)\"},\n                  {\"kind\":\"UNSUPPORTED\",\"semanticDescription\":\"Addbacks/adjustments of the type in the Model or any client information memorandum/lender presentation furnished in connection with syndication of the Initial Term Loans\",\"reason\":\"references extrinsic syndication materials not part of the supplied evidence\",\"sourceEvidence\":\"§1.01(b)(v)\"}\n                ]\n              },\n              {\"kind\":\"UNSUPPORTED\",\"semanticDescription\":\"Pro forma results projected from acquisitions/investments (including LOI/definitive-agreement-stage deals and related debt financing), business expansion, capex or other projects, and dispositions; for facilities/sites/projects not yet operating (or operating 36 months or less), pro forma effect credits a full twelve (12) months of expected mature earnings, net of actual benefits realized\",\"reason\":\"discretionary, projection-based pro forma adjustment not reducible to a determinate formula from the text alone\",\"sourceEvidence\":\"§1.01(c)\",\"inventoryItemIds\":[\"inv-item:bb05010156962d7fb9143cde\"]}\n            ]\n          },\n          \"right\": {\n            \"kind\": \"SUM\",\n            \"citation\": \"§1.01(d)\",\n            \"operands\": [\n              {\"kind\":\"METRIC_REFERENCE\",\"metricName\":\"Non-Cash Items Increasing Consolidated Net Income\",\"citation\":\"§1.01(d)(i)\"},\n              {\"kind\":\"METRIC_REFERENCE\",\"metricName\":\"Minority Interest Losses\",\"citation\":\"§1.01(d)(ii)\"},\n              {\"kind\":\"METRIC_REFERENCE\",\"metricName\":\"Realized Foreign Exchange Gains\",\"citation\":\"§1.01(d)(iii)\"},\n              {\"kind\":\"METRIC_REFERENCE\",\"metricName\":\"Net Realized Gains from Swap Agreements\",\"citation\":\"§1.01(d)(iv)\"}\n            ]\n          }\n        },\n        {\"kind\":\"UNSUPPORTED\",\"semanticDescription\":\"Inclusion, without duplication, of the Acquired EBITDA of any Person/property/business/asset acquired by the Restricted Parties during the period (an 'Acquired Entity or Business') and of any Unrestricted Subsidiary converted into a Restricted Subsidiary during the period (a 'Converted Restricted Subsidiary'), determined on a historical Pro Forma Basis\",\"reason\":\"depends on undefined terms 'Acquired EBITDA' and 'Pro Forma Basis' not resolvable from the supplied evidence\",\"sourceEvidence\":\"§1.01, proviso (I)\"},\n        {\"kind\":\"UNSUPPORTED\",\"semanticDescription\":\"Exclusion of the Disposed EBITDA of any Person/property/business/asset sold, transferred, disposed of, closed or classified as discontinued (a 'Sold Entity or Business') and of any Restricted Subsidiary converted into an Unrestricted Subsidiary (a 'Converted Unrestricted Subsidiary') during the period, offset by inclusion of the Pro Forma Disposal Adjustment specified in the certificate delivered to the Administrative Agent\",\"reason\":\"depends on undefined terms 'Disposed EBITDA' and 'Pro Forma Disposal Adjustment' not resolvable from the supplied evidence\",\"sourceEvidence\":\"§1.01, proviso (II)\"},\n        {\"kind\":\"UNSUPPORTED\",\"semanticDescription\":\"At the Initial Borrower's election, for purposes of calculating availability under any basket, ratio or other financial metric, inclusion of the aggregate amount of Consolidated EBITDA projected to be attributable to Letter of Intent Transactions, subject to applicable caps and limitations set forth in the Agreement, to the extent such transactions remain unclosed and unterminated during the period\",\"reason\":\"discretionary, projection-based inclusion contingent on unspecified 'applicable caps and limitations set forth herein' elsewhere in the Agreement, and on the Borrower's election - not a determinate formula component\",\"sourceEvidence\":\"§1.01 (final paragraph)\",\"inventoryItemIds\":[\"inv-item:79f678aba3fa1caa910d15ad\"]}\n      ]\n    }\n  },\n  {\n    \"localRef\": \"d2\",\n    \"termName\": \"Expected Run Rate Benefit\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"citation\": \"§1.01(b)(i)\",\n    \"excerpt\": \"the amount of \\\"run rate\\\" synergies, cost savings, operating expense reductions, operating improvements, business optimization, revenue enhancements, revenue synergies, pricing initiatives, restructuring initiatives and other similar initiatives expected by the Initial Borrower in good faith to result from actions taken, committed to be taken or expected to be taken (in the good faith determination of the Initial Borrower) (collectively, the \\\"Expected Run Rate Benefit\\\")\",\n    \"dependsOnTerms\": [\"Initial Borrower\",\"Transactions\",\"Restricted Party\"],\n    \"calculationExpression\": null,\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"The term's own meaning is fully stated in the supplied text; it is a discretionary, good-faith projection rather than a computable formula.\"]\n  },\n  {\n    \"localRef\": \"d3\",\n    \"termName\": \"Acquired Entity or Business\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"citation\": \"§1.01, proviso (I)\",\n    \"excerpt\": \"each such Person, property, business or asset acquired, including pursuant to the Transactions or pursuant to a transaction consummated prior to the Effective Date, and not subsequently so disposed of, an \\\"Acquired Entity or Business\\\"\",\n    \"dependsOnTerms\": [\"Acquired EBITDA\",\"Restricted Parties\",\"Unrestricted Subsidiary\",\"Transactions\",\"Effective Date\"],\n    \"calculationExpression\": null,\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"The term's own meaning is fully stated; its use within the Acquired EBITDA add-back mechanic depends on the undefined term 'Acquired EBITDA', carried as a dependency.\"]\n  },\n  {\n    \"localRef\": \"d4\",\n    \"termName\": \"Converted Restricted Subsidiary\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"citation\": \"§1.01, proviso (I)\",\n    \"excerpt\": \"the Acquired EBITDA of any Unrestricted Subsidiary that is converted into a Restricted Subsidiary during such period (each, a \\\"Converted Restricted Subsidiary\\\")\",\n    \"dependsOnTerms\": [\"Unrestricted Subsidiary\",\"Restricted Subsidiary\",\"Acquired EBITDA\"],\n    \"calculationExpression\": null,\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"The term's own meaning is fully stated in the supplied text.\"]\n  },\n  {\n    \"localRef\": \"d5\",\n    \"termName\": \"Sold Entity or Business\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"citation\": \"§1.01, proviso (II)\",\n    \"excerpt\": \"each such Person, property, business or asset so sold, transferred or otherwise disposed of, closed or classified, a \\\"Sold Entity or Business\\\"\",\n    \"dependsOnTerms\": [\"Disposed EBITDA\",\"Restricted Party\",\"Unrestricted Subsidiary\"],\n    \"calculationExpression\": null,\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"The term's own meaning is fully stated in the supplied text.\"]\n  },\n  {\n    \"localRef\": \"d6\",\n    \"termName\": \"Converted Unrestricted Subsidiary\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"citation\": \"§1.01, proviso (II)\",\n    \"excerpt\": \"the Disposed EBITDA of any Restricted Subsidiary that is converted into an Unrestricted Subsidiary during such period (each, a \\\"Converted Unrestricted Subsidiary\\\")\",\n    \"dependsOnTerms\": [\"Restricted Subsidiary\",\"Unrestricted Subsidiary\",\"Disposed EBITDA\"],\n    \"calculationExpression\": null,\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"The term's own meaning is fully stated in the supplied text.\"]\n  }\n]",
+   "rules": [],
+   "sharedCapacities": "[]",
+   "inventoryDispositions": "[]",
+   "irExtensionCandidates": "[\n  {\n    \"sourceEvidence\": \"§1.01(a) chapeau ('in each case, at the election of the Initial Borrower'); §1.01(b) chapeau; §1.01(c) chapeau; final paragraph ('at the election of the Initial Borrower, the aggregate amount of Consolidated EBITDA ... attributable to Letter of Intent Transactions may be included')\",\n    \"semanticRequirement\": \"Many addback components in this EBITDA definition are included only if and to the extent a party (the Initial Borrower) unilaterally elects to include them for a given calculation, rather than being automatically and unconditionally added every period.\",\n    \"whyExistingPrimitivesFail\": \"IF/AND/OR/COMPARE require a determinable boolean derived from contractual facts; a party's unilateral, non-formulaic election is not such a boolean, so forcing it into a condition would fabricate a false determinacy.\",\n    \"candidateGeneralizedPrimitive\": \"ELECTIVE_ADJUSTMENT node representing a component whose inclusion/exclusion is controlled by a named party's discretionary election rather than by a testable condition\"\n  },\n  {\n    \"sourceEvidence\": \"§1.01(b)(i) ('calculated on a Pro Forma Basis as though amounts had been realized on the first (1st) day of the period ... and as if such amounts were realized during the entirety of such period'); §1.01(c) ('reflect a full twelve (12) months of earnings')\",\n    \"semanticRequirement\": \"Several components require restating a partial-period, prospective, or ramp-up amount as though it had been realized for the full measurement period (annualization/backdating) - a specific 'Pro Forma Basis' convention distinct from merely scoping a value to a period.\",\n    \"whyExistingPrimitivesFail\": \"DURING_PERIOD scopes an existing value to a period but does not express the annualization/backdating arithmetic (treating a not-yet-realized benefit as if realized for the full period) that these clauses require.\",\n    \"candidateGeneralizedPrimitive\": \"PRO_FORMA_ANNUALIZATION node taking an operand, an actual-realization window, and a normalization period, producing the annualized/backdated equivalent\"\n  }\n]",
+   "overallNotes": "[\n  \"Compiled the single defined term 'Consolidated EBITDA' from §1.01 plus five terms defined inline within the same definition (Expected Run Rate Benefit; Acquired Entity or Business; Converted Restricted Subsidiary; Sold Entity or Business; Converted Unrestricted Subsidiary).\",\n  \"All 5 frozen-inventory items (start-up/de novo 36-month window; discontinued-ops 12-month window; Expected Run Rate Benefit 36-month condition; facility ramp-up 36/12-month pro forma treatment; and the CRITICAL Letter of Intent Transactions election) are consumed on the specific nodes that carry their value.\",\n  \"Given the sheer breadth of this 'kitchen sink' EBITDA definition (22 sub-clauses in (a) alone, plus (b), (c), (d) and two provisos), narrative/qualitative addback categories not flagged by the frozen inventory and not reducible to a determinate formula were represented as UNSUPPORTED nodes (individually or bucketed) rather than forced into fabricated formulas - consistent with the safety principle that a cautious PARTIAL representation is preferable to a confidently wrong COMPLETE one.\",\n  \"The Section 6.01 cross-reference in clause (a)(xix) remains unresolved (Phase 2's source-context budget was exhausted before it could be expanded); the ambiguous 'paragraph (c)' and 'clause (b)' cross-references in clause (b) were left un-adjudicated per Phase 2's own findings of genuine textual ambiguity.\",\n  \"No WireRule outputs were produced because the supplied text is a pure definitional provision (no independently operative permission/prohibition/ratio-test rule is stated in §1.01 itself).\"\n]"
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T17:11:03.312Z",
+   "inputTokens": 27454,
+   "outputTokens": 33097,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 1,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 290214,
+   "calculatedCostUsd": 0.38587800000000005
+  },
+  "cacheKey": "6d72b460912fa251f0fbac79305e9b669a61dfed2bf412c8e487132d2b5ef590",
+  "compiledAt": "2026-09-14T17:11:03.312Z"
+ },
+ "wave": "A",
+ "attemptsSoFar": 1
+}

@@ -1,5 +1,5 @@
-import { classifyUnaccountedFragment, computeSourceCoverage } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/source-coverage";
-import { scanQuantitativeValues } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/quantitative";
+import { classifyUnaccountedFragment, computeSourceCoverage } from "../../lib/contract-model/compiler/semantic-accountability/source-coverage";
+import { scanQuantitativeValues } from "../../lib/contract-model/compiler/semantic-accountability/quantitative";
 
 const frags = [
   "jointly and severally,",

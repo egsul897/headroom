@@ -1,0 +1,2835 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:9dae67b10a1cb8ab8e61",
+  "shardHash": "482d471bf9fe47f279ff4e4b51c1533fa549e9c4f8e000c1fb46e1a5a1d1a2c7",
+  "ordinal": 4,
+  "ownedUnits": 16,
+  "sourceChars": 9303,
+  "contextEntries": 1,
+  "contextChars": 225,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 6,
+  "ownedMaterialItems": 6,
+  "estimatedFirstTurnInputTokens": 24241,
+  "preCallEstimate": {
+   "inputTokens": 79753,
+   "outputTokens": 41500,
+   "usd": 0.574506
+  },
+  "actual": {
+   "inputTokens": 59791,
+   "outputTokens": 33178,
+   "turns": 2,
+   "latencyMs": 299197,
+   "costUsd": 0.45136200000000004,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "toolCalls": 1,
+  "toolCallNames": [
+   "getReferencedProvision"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 20,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 6,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "valuesRepresented": 6,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "REPRESENTED": 6
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Beneficial Ownership Certification",
+   "BHC Act Affiliate",
+   "Borrowers",
+   "Canadian Dollars"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1]] the actual trigger/end mechanics depend on 'Benchmark Replacement Date' and 'Benchmark Replacement', and on Section 2.12's replacement mechanics, none of which were resolvable within the supplied source (Section 2.12 was flagged out-of-scope: source-context budget exhausted)",
+   "[definition[d2]] Section 4.01(h) was flagged out-of-scope (source-context budget exhausted) before it could be expanded; no substantive content for this term appears in the supplied source itself",
+   "[definition[d7]] the preliminary statements are not part of the supplied source and a direct cross-reference attempt ('preliminary statements hereto') did not resolve to any section in this instrument; 'Additional Borrower' and 'Successor Borrower' are also undefined in the supplied source",
+   "[definition[d9].IF.else.IF.else.IF.else.IF.else] the amount is 'to be agreed by the Administrative Agent and the Initial Borrower at the time such Alternative Currency is established' - a genuinely non-fixed, not-yet-ascertainable value",
+   "[definition[d9].IF.else.IF.else.IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9].IF.else.IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9].IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d10].IF.else.IF.else.IF.else.IF.else] the amount is 'an amount to be agreed by the Administrative Agent and the Initial Borrower at the time such Alternative Currency is established' - a genuinely non-fixed, not-yet-ascertainable value",
+   "[definition[d10].IF.else.IF.else.IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d10].IF.else.IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d10].IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d10]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d15]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+   "Source is Section 1.01 (Defined Terms), a definitions article containing many independent defined terms declared back-to-back; each was extracted as its own WireDefinition per the multiple-definitions rule, including terms with no covenant-quantitative content (e.g. Board of Directors, Capital Stock) rather than only the apparently 'salient' ones.",
+   "Two terms ('Beneficial Ownership Certification', 'Borrowers') are pure or near-pure cross-references outside the supplied source; getReferencedProvision was attempted for the 'Borrowers' preliminary-statements reference and did not resolve (confirmed via tool call). The Section 4.01(h) and Section 2.03 cross-references had already been flagged out-of-scope (source-context budget exhausted) by the prior retrieval pass, so those were not re-attempted per the no-duplicate-request policy.",
+   "'Borrowing Minimum' and 'Borrowing Multiple' are structurally piecewise-by-currency; the four fixed-dollar cases were represented with a best-effort IF/COMPARE currency-selector (flagged as an IR extension candidate gap) and the genuinely variable 'other Alternative Currency' case was correctly left UNSUPPORTED rather than guessed. All 6 frozen-inventory VALUE/MATERIAL items were consumed on their corresponding MONEY nodes and at each definition's top level.",
+   "The two detected 0.00% floor values and the December 31, 2018 GAAP-freeze date (not covered by named inventory items) were represented respectively in 'Canadian Prime Rate' (MAX floor) and 'Capitalized Lease Obligation' (AS_OF date anchor)."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": true,
+   "decodedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "inventoryDispositions",
+    "overallNotes"
+   ],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": true,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "string",
+      "originalStringSha256": "5bc525fb76b417ad73d4be680b761b1951515ce10c104e0519cacaecfb40626f",
+      "originalStringLength": 23419,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 20,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "string",
+      "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "originalStringLength": 2,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 0,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "string",
+      "originalStringSha256": "3a2f120f1ce025b65f1cac54ff1ec74b1c2abfb59cb185fe172467e168ac4604",
+      "originalStringLength": 1416,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 1,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "string",
+      "originalStringSha256": "ac7606bebfc5da7faded89cd6c2f158d4753df8c4eb32495a954530f896b4d74",
+      "originalStringLength": 1208,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 6,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "string",
+      "originalStringSha256": "348c1c840dd8f099b55975f8112a195c8220dfecda9f62c02f0656b3d36c076d",
+      "originalStringLength": 1566,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 4,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:9dae67b10a1cb8ab8e61",
+  "shardHash": "482d471bf9fe47f279ff4e4b51c1533fa549e9c4f8e000c1fb46e1a5a1d1a2c7",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:9ef15b23217e1a01d9c3dc65",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Benchmark Unavailability Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01",
+      "semanticDescription": "a time period beginning when a Benchmark Replacement Date under clauses (1) or (2) of that definition occurs (if no Benchmark Replacement has yet replaced the then-current Benchmark under Section 2.12) and ending when a Benchmark Replacement has so replaced it",
+      "reason": "the actual trigger/end mechanics depend on 'Benchmark Replacement Date' and 'Benchmark Replacement', and on Section 2.12's replacement mechanics, none of which were resolvable within the supplied source (Section 2.12 was flagged out-of-scope: source-context budget exhausted)",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:3d4df4a7334b760125701223"
+     },
+     "dependsOnTerms": [
+      "Benchmark",
+      "Benchmark Replacement Date",
+      "Benchmark Replacement"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Full defined-term text captured verbatim, but the operative start/end triggers depend on Section 2.12 and on 'Benchmark Replacement Date'/'Benchmark Replacement', which were out of scope for this retrieval.",
+      "the actual trigger/end mechanics depend on 'Benchmark Replacement Date' and 'Benchmark Replacement', and on Section 2.12's replacement mechanics, none of which were resolvable within the supplied source (Section 2.12 was flagged out-of-scope: source-context budget exhausted)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the period (if any) (x) beginning at the time that a Benchmark Replacement Date pursuant to clauses (1) or (2) of that definition has occurred if... no Benchmark Replacement has replaced such then-current Benchmark... and (y) ending at the time that a Benchmark Replacement has replaced such then-current Benchmark... in accordance with Section 2.12."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:cfc9a4e1d3d1d4c4aaef385a",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Beneficial Ownership Certification",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01",
+      "semanticDescription": "term whose entire meaning is assigned by cross-reference to Section 4.01(h)",
+      "reason": "Section 4.01(h) was flagged out-of-scope (source-context budget exhausted) before it could be expanded; no substantive content for this term appears in the supplied source itself",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:50f32bb5a3601c14f923b863"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Pure cross-reference to Section 4.01(h); that section's text was not retrievable within the available source budget.",
+      "Section 4.01(h) was flagged out-of-scope (source-context budget exhausted) before it could be expanded; no substantive content for this term appears in the supplied source itself"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 4.01(h)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:24ad25d5f6546e62b2df6746",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Benefit Plan",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Code"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full definition text is self-contained descriptive prose with no computation required."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any of (a) an \"employee benefit plan\" (as defined in ERISA) that is subject to Title I of ERISA, (b) a \"plan\" as defined in and subject to Section 4975 of the Code or (c) any Person whose assets include ... the assets of any such \"employee benefit plan\" or \"plan.\""
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d62a5ea92ba622a9ce27f4ee",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "BHC Act Affiliate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition referencing an external statute (12 U.S.C. 1841(k)), not requiring further internal resolution."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "an \"affiliate\" (as such term is defined under, and interpreted in accordance with, 12 U.S.C. 1841(k)) of such party."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3b4b4e8f41b3e052efb09e9e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Board of Directors",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) in the case of any corporation, the board of directors of such Person or any committee thereof duly authorized to act on behalf of such board, (b) in the case of any limited liability company, the board of managers or board of directors... (c) in the case of any partnership, the Board of Directors of the general partner... and (d) in any other case, the functional equivalent of the foregoing."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d1355f6548b6261c4b934be7",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Board of Governors",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple named-institution definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the Board of Governors of the Federal Reserve System of the United States of America."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:bb427a953213bf5d9a8f5953",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Borrowers",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01",
+      "semanticDescription": "the primary meaning of 'Borrowers' is assigned in the preliminary statements of the Agreement, supplemented by 'Additional Borrower' and 'Successor Borrower'",
+      "reason": "the preliminary statements are not part of the supplied source and a direct cross-reference attempt ('preliminary statements hereto') did not resolve to any section in this instrument; 'Additional Borrower' and 'Successor Borrower' are also undefined in the supplied source",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:c875432e4756c11412a338f6"
+     },
+     "dependsOnTerms": [
+      "Additional Borrower",
+      "Successor Borrower"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Attempted getReferencedProvision for the preliminary statements cross-reference; it did not resolve to any section in this instrument's documents.",
+      "The two supplementing defined terms ('Additional Borrower', 'Successor Borrower') were also not available in the supplied source.",
+      "the preliminary statements are not part of the supplied source and a direct cross-reference attempt ('preliminary statements hereto') did not resolve to any section in this instrument; 'Additional Borrower' and 'Successor Borrower' are also undefined in the supplied source"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in the preliminary statements hereto, together with any Additional Borrower and any Successor Borrower."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:0d146911fefa88dc1ea31c83",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Borrowing",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Facility",
+      "Class",
+      "Type",
+      "Alternative Currency Term Benchmark Loans",
+      "Term SOFR Loans",
+      "Interest Period"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full descriptive definition captured verbatim."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "Loans of the same Facility, Class and Type, made, converted or continued on the same date in the same currency and, in the case of Alternative Currency Term Benchmark Loans and Term SOFR Loans, as to which a single Interest Period is in effect."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:926fc579cf0166987139b824",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Borrowing Minimum",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "IF",
+      "type": "MONEY",
+      "exprId": "ir-expr:7127677ad6737ac9ecff1a2c",
+      "condition": {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:680607545922312409bde409",
+       "left": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "Borrowing Currency",
+        "exprId": "ir-expr:dfd454dea401c1c4d3f44cef"
+       },
+       "operator": "EQ",
+       "right": {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "MONEY",
+        "termName": "Dollars",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:baef01f3452189048b0c5776"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "then": {
+       "kind": "MIN",
+       "type": "MONEY",
+       "exprId": "ir-expr:0c9dca97bcc9276e770f84bf",
+       "operands": [
+        {
+         "kind": "MONEY",
+         "type": "MONEY",
+         "amount": 1000000,
+         "currency": "USD",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:23caa3defebf76742029d859",
+         "inventoryItemIds": [
+          "inv-item:b92eb911ab5d8bbf5ff8a73f"
+         ]
+        },
+        {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "MONEY",
+         "inputName": "remaining Commitments of the applicable Class",
+         "exprId": "ir-expr:967816d034f8a7c8a12d1022"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "else": {
+       "kind": "IF",
+       "type": "MONEY",
+       "exprId": "ir-expr:a2212e93442c6f63f58c12ab",
+       "condition": {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:6bece9679c612e26424200b8",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "MONEY",
+         "inputName": "Borrowing Currency",
+         "exprId": "ir-expr:dfd454dea401c1c4d3f44cef"
+        },
+        "operator": "EQ",
+        "right": {
+         "kind": "DEFINED_TERM_REFERENCE",
+         "type": "MONEY",
+         "termName": "Euro",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:61a3ec252f83d4b44ad1ab70"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "then": {
+        "kind": "MIN",
+        "type": "MONEY",
+        "exprId": "ir-expr:bf51204187c2fa0aa409568b",
+        "operands": [
+         {
+          "kind": "MONEY",
+          "type": "MONEY",
+          "amount": 1000000,
+          "currency": "EUR",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:99b93f81d9fa5e7f4aeb9193"
+         },
+         {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "MONEY",
+          "inputName": "remaining Commitments of the applicable Class",
+          "exprId": "ir-expr:967816d034f8a7c8a12d1022"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "else": {
+        "kind": "IF",
+        "type": "MONEY",
+        "exprId": "ir-expr:4e34df7b643e34b98ac3c8ce",
+        "condition": {
+         "kind": "COMPARE",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:0032c2d9b7768c64586255dc",
+         "left": {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "MONEY",
+          "inputName": "Borrowing Currency",
+          "exprId": "ir-expr:dfd454dea401c1c4d3f44cef"
+         },
+         "operator": "EQ",
+         "right": {
+          "kind": "DEFINED_TERM_REFERENCE",
+          "type": "MONEY",
+          "termName": "Sterling",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:1faba6081ed3e39182a0bb56"
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        },
+        "then": {
+         "kind": "MIN",
+         "type": "MONEY",
+         "exprId": "ir-expr:30c8c28c242933241a988bd5",
+         "operands": [
+          {
+           "kind": "MONEY",
+           "type": "MONEY",
+           "amount": 1000000,
+           "currency": "GBP",
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:5c138a1598cc4bd3cf7f7686",
+           "inventoryItemIds": [
+            "inv-item:5ce96983b21dd809446ed45e"
+           ]
+          },
+          {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "type": "MONEY",
+           "inputName": "remaining Commitments of the applicable Class",
+           "exprId": "ir-expr:967816d034f8a7c8a12d1022"
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        },
+        "else": {
+         "kind": "IF",
+         "type": "MONEY",
+         "exprId": "ir-expr:2f1b46970310b7e1c4378aa5",
+         "condition": {
+          "kind": "COMPARE",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:54f5b551158e946174e32ea3",
+          "left": {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "type": "MONEY",
+           "inputName": "Borrowing Currency",
+           "exprId": "ir-expr:dfd454dea401c1c4d3f44cef"
+          },
+          "operator": "EQ",
+          "right": {
+           "kind": "DEFINED_TERM_REFERENCE",
+           "type": "MONEY",
+           "termName": "Canadian Dollars",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:61d9e8057cf56c614ece3287"
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          }
+         },
+         "then": {
+          "kind": "MIN",
+          "type": "MONEY",
+          "exprId": "ir-expr:5ea2cdae73176401870084f7",
+          "operands": [
+           {
+            "kind": "MONEY",
+            "type": "MONEY",
+            "amount": 1000000,
+            "currency": "CAD",
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:0fcc5849776636c5490339db",
+            "inventoryItemIds": [
+             "inv-item:c2fb1041230e9905e39b04b3"
+            ]
+           },
+           {
+            "kind": "TRANSACTION_INPUT_REFERENCE",
+            "type": "MONEY",
+            "inputName": "remaining Commitments of the applicable Class",
+            "exprId": "ir-expr:967816d034f8a7c8a12d1022"
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          }
+         },
+         "else": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01, clause (e) of 'Borrowing Minimum'",
+          "semanticDescription": "Borrowing Minimum for a Borrowing denominated in any Alternative Currency other than euros, Sterling or Canadian Dollars",
+          "reason": "the amount is 'to be agreed by the Administrative Agent and the Initial Borrower at the time such Alternative Currency is established' - a genuinely non-fixed, not-yet-ascertainable value",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:67dcb9385d476c42fb4481e6"
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Commitments",
+      "Class",
+      "Alternative Currency",
+      "Administrative Agent",
+      "Initial Borrower",
+      "Dollars",
+      "Sterling",
+      "Canadian Dollars"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The four fixed-amount currency cases (USD/EUR/GBP/CAD) are represented with a best-effort currency-selector (IF/COMPARE) since the IR has no dedicated discrete/currency-keyed case-selection primitive (see irExtensionCandidate).",
+      "The fifth case (other Alternative Currencies) is inherently a variable, to-be-agreed amount and is correctly UNSUPPORTED rather than guessed.",
+      "the amount is 'to be agreed by the Administrative Agent and the Initial Borrower at the time such Alternative Currency is established' - a genuinely non-fixed, not-yet-ascertainable value",
+      "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+      "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+      "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+      "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) in the case of a Borrowing denominated in U.S. Dollars, the lesser of $1,000,000 and the remaining Commitments of the applicable Class, (b) ... euros, the lesser of 1,000,000 ..., (c) ... Sterling, the lesser of £1,000,000 ..., (d) ... Canadian Dollars, the lesser of C$1,000,000 ... and (e) ... any other Alternative Currency ..., an amount to be agreed by the Administrative Agent and the Initial Borrower ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:b92eb911ab5d8bbf5ff8a73f",
+      "inv-item:5ce96983b21dd809446ed45e",
+      "inv-item:c2fb1041230e9905e39b04b3"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:0aff407974660b2639d56afc",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Borrowing Multiple",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "IF",
+      "type": "MONEY",
+      "exprId": "ir-expr:0cf649b3206acec8711528c3",
+      "condition": {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:680607545922312409bde409",
+       "left": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "Borrowing Currency",
+        "exprId": "ir-expr:dfd454dea401c1c4d3f44cef"
+       },
+       "operator": "EQ",
+       "right": {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "MONEY",
+        "termName": "Dollars",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:baef01f3452189048b0c5776"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "then": {
+       "kind": "MIN",
+       "type": "MONEY",
+       "exprId": "ir-expr:d6cc6d46b2d3db5e04328af1",
+       "operands": [
+        {
+         "kind": "MONEY",
+         "type": "MONEY",
+         "amount": 500000,
+         "currency": "USD",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:cba9ce12f3ad52845b08bd54",
+         "inventoryItemIds": [
+          "inv-item:2f7b694dd336d169f74df263"
+         ]
+        },
+        {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "MONEY",
+         "inputName": "remaining Commitments of the applicable Class",
+         "exprId": "ir-expr:967816d034f8a7c8a12d1022"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "else": {
+       "kind": "IF",
+       "type": "MONEY",
+       "exprId": "ir-expr:ae26668956a24594493ba2d1",
+       "condition": {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:6bece9679c612e26424200b8",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "MONEY",
+         "inputName": "Borrowing Currency",
+         "exprId": "ir-expr:dfd454dea401c1c4d3f44cef"
+        },
+        "operator": "EQ",
+        "right": {
+         "kind": "DEFINED_TERM_REFERENCE",
+         "type": "MONEY",
+         "termName": "Euro",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:61a3ec252f83d4b44ad1ab70"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "then": {
+        "kind": "MIN",
+        "type": "MONEY",
+        "exprId": "ir-expr:09f7dde99bfe9b333f90bfd2",
+        "operands": [
+         {
+          "kind": "MONEY",
+          "type": "MONEY",
+          "amount": 500000,
+          "currency": "EUR",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:972b40c5016d61c42dfecaf6"
+         },
+         {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "MONEY",
+          "inputName": "remaining Commitments of the applicable Class",
+          "exprId": "ir-expr:967816d034f8a7c8a12d1022"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "else": {
+        "kind": "IF",
+        "type": "MONEY",
+        "exprId": "ir-expr:d348e89eae33b16a26c71a0e",
+        "condition": {
+         "kind": "COMPARE",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:0032c2d9b7768c64586255dc",
+         "left": {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "MONEY",
+          "inputName": "Borrowing Currency",
+          "exprId": "ir-expr:dfd454dea401c1c4d3f44cef"
+         },
+         "operator": "EQ",
+         "right": {
+          "kind": "DEFINED_TERM_REFERENCE",
+          "type": "MONEY",
+          "termName": "Sterling",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:1faba6081ed3e39182a0bb56"
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        },
+        "then": {
+         "kind": "MIN",
+         "type": "MONEY",
+         "exprId": "ir-expr:6be97b2c7dd6691b1db9d00c",
+         "operands": [
+          {
+           "kind": "MONEY",
+           "type": "MONEY",
+           "amount": 500000,
+           "currency": "GBP",
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:29b016d96ae94712e80d7261",
+           "inventoryItemIds": [
+            "inv-item:16a88e8856dca75a54339505"
+           ]
+          },
+          {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "type": "MONEY",
+           "inputName": "remaining Commitments of the applicable Class",
+           "exprId": "ir-expr:967816d034f8a7c8a12d1022"
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        },
+        "else": {
+         "kind": "IF",
+         "type": "MONEY",
+         "exprId": "ir-expr:a89c887343096a48478588df",
+         "condition": {
+          "kind": "COMPARE",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:54f5b551158e946174e32ea3",
+          "left": {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "type": "MONEY",
+           "inputName": "Borrowing Currency",
+           "exprId": "ir-expr:dfd454dea401c1c4d3f44cef"
+          },
+          "operator": "EQ",
+          "right": {
+           "kind": "DEFINED_TERM_REFERENCE",
+           "type": "MONEY",
+           "termName": "Canadian Dollars",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:61d9e8057cf56c614ece3287"
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          }
+         },
+         "then": {
+          "kind": "MIN",
+          "type": "MONEY",
+          "exprId": "ir-expr:b14313467e8ee8e0a418b2f8",
+          "operands": [
+           {
+            "kind": "MONEY",
+            "type": "MONEY",
+            "amount": 500000,
+            "currency": "CAD",
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:be73e3dead822454fa385eb9",
+            "inventoryItemIds": [
+             "inv-item:d2bf132cbd8e771395922191"
+            ]
+           },
+           {
+            "kind": "TRANSACTION_INPUT_REFERENCE",
+            "type": "MONEY",
+            "inputName": "remaining Commitments of the applicable Class",
+            "exprId": "ir-expr:967816d034f8a7c8a12d1022"
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          }
+         },
+         "else": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01, clause (e) of 'Borrowing Multiple'",
+          "semanticDescription": "Borrowing Multiple for a Borrowing denominated in any Alternative Currency other than euros, Sterling or Canadian Dollars",
+          "reason": "the amount is 'an amount to be agreed by the Administrative Agent and the Initial Borrower at the time such Alternative Currency is established' - a genuinely non-fixed, not-yet-ascertainable value",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:dd89add52384675e3493920d"
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Commitments",
+      "Class",
+      "Alternative Currency",
+      "Administrative Agent",
+      "Initial Borrower",
+      "Dollars",
+      "Sterling",
+      "Canadian Dollars"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Same structural gap as 'Borrowing Minimum': best-effort currency-selector for the four fixed cases, UNSUPPORTED for the inherently variable fifth case.",
+      "the amount is 'an amount to be agreed by the Administrative Agent and the Initial Borrower at the time such Alternative Currency is established' - a genuinely non-fixed, not-yet-ascertainable value",
+      "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+      "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+      "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+      "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) in the case of a Borrowing denominated in U.S. Dollars, the lesser of $500,000 ..., (b) ... euros, the lesser of 500,000 ..., (c) ... Sterling, the lesser of £500,000 ..., (d) ... Canadian Dollars, the lesser of C$500,000 ... and (e) ... any other Alternative Currency ..., an amount to be agreed ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:2f7b694dd336d169f74df263",
+      "inv-item:16a88e8856dca75a54339505",
+      "inv-item:d2bf132cbd8e771395922191"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:4bbdccef9f0547d569cd6f5c",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Borrowing Request",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Initial Borrower",
+      "Administrative Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The definitional substance (a request for a Borrowing, in a prescribed or acceptable form) is fully captured; Section 2.03 (out of scope) governs procedural mechanics but is not needed to state what the term means."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "a request by the Initial Borrower for a Borrowing in accordance with Section 2.03, in substantially the form of Exhibit B or another form which is acceptable to the Administrative Agent in its reasonable discretion."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:7e19a15d764f8c284f3f4d65",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Business Day",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Term SOFR Loans",
+      "Alternative Currency Term Benchmark Loan",
+      "Alternative Currency",
+      "CORRA",
+      "TARGET Day",
+      "RFR Loans",
+      "RFR Business Day",
+      "Sterling"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full definition, including all five currency/rate-specific carve-outs, captured verbatim."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any day that is not a Saturday, Sunday or other day on which commercial banks in New York City are authorized or required by law to remain closed; provided that (i)...(v)..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e9056dcd9400be3e6f144ef6",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Calculation Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Excess Cash Flow Period",
+      "Excess Cash Flow Interim Period"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Term is a contextual alias between two other defined terms ('as applicable'); the alias itself is fully stated, though which branch applies in any instance depends on those terms' own definitions, not supplied here."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "an Excess Cash Flow Period or an Excess Cash Flow Interim Period, as applicable."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:007c179c90cf44346d997e4f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Canadian Dollars",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple currency-label definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Canadian Dollars\" or \"C$\" each means lawful money of Canada."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:eacd52c1ba264731d1eaae05",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Canadian Prime Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "(no evidence captured)",
+      "semanticDescription": "unrecognized or malformed expression (kind=\"MAX\")",
+      "reason": "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "attemptedStructure": {
+       "kind": "MAX",
+       "type": "NUMBER",
+       "exprId": "ir-expr:565ff8c70276164b807af172",
+       "operands": [
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "PRIMCAN Index rate (Bloomberg screen, 10:15 a.m. Toronto time)",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:3e18455a7fdb3e369260a690"
+        },
+        {
+         "kind": "PERCENT",
+         "type": "PERCENT",
+         "value": 0,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:1af56cb36f2e70927f67e005"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "exprId": "ir-expr:451eb5f44ebfc227e50dbe80"
+     },
+     "dependsOnTerms": [
+      "Administrative Agent"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Rate mechanism and 0.00% floor (stated twice in the same proviso) fully captured.",
+      "deterministic post-processing: at least one subexpression is UNSUPPORTED or fails to type-check, so COMPLETE was downgraded to PARTIAL (task §27)",
+      "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the rate ... equal to the PRIMCAN Index rate that appears on the Bloomberg screen at 10:15 a.m. Toronto time ...; provided that if any of the above rates shall be less than 0.00%, such rate shall be deemed to be 0.00% ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:cb527c6ba7e0a6499fef4d41",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Capital Expenditures",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Parties",
+      "Initial Borrower"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition ties the metric to amounts required to be set forth in the Initial Borrower's consolidated cash flow statement under GAAP; no separate fixed formula is stated."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the additions to property, plant and equipment and other capital expenditures of the Restricted Parties that are (or are required to be) set forth in a consolidated statement of cash flows of the Initial Borrower for such period prepared in accordance with GAAP."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:172bb3fa8652800684bad0b7",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Capital Stock",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Four-part enumerative definition, fully descriptive, no computation."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(1) in the case of a corporation, corporate stock; (2) ... any and all shares, interests, participations, rights or other equivalents...; (3) ... partnership or membership interests...; and (4) any other interest or participation that confers on a Person the right to receive a share of the profits and losses of, or distributions of assets of, the issuing Person."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:c098765e1725ca42c0a75827",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Capitalized Lease Obligation",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AS_OF",
+      "type": "MONEY",
+      "exprId": "ir-expr:8b12f5c2e53bd2606dc9cd14",
+      "value": {
+       "kind": "METRIC_REFERENCE",
+       "type": "MONEY",
+       "metricName": "amount of the liability in respect of a Capitalized Lease required to be capitalized on a balance sheet in accordance with GAAP (excluding footnotes)",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:03312e1c7e9741578671865b"
+      },
+      "asOfDate": "2018-12-31",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Capitalized Leases",
+      "Initial Borrower"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The GAAP-freeze mechanic (measured as GAAP stood on December 31, 2018, with a borrower election to keep treating certain obligations as operating leases despite later GAAP changes) is captured via the AS_OF date anchor; the borrower-election proviso is preserved in the excerpt."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "an obligation that is a Capitalized Lease; provided the amount of Indebtedness represented thereby at any time shall be the amount of the liability in respect thereof that would at that time be required to be capitalized on a balance sheet in accordance with GAAP (excluding the footnotes thereto) as in effect on December 31, 2018 ... unless the Initial Borrower elects otherwise, continue to be accounted for as operating lease obligations ... regardless of any change in GAAP following such date ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:2f852605975f69ca5c28bb0a",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Capitalized Leases",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Subsidiaries"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple descriptive definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "all leases that have been or should be, in accordance with GAAP, recorded as leases in the financial statements of such Person and its Restricted Subsidiaries."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:2b0950be596e3e1fc529bf4d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Capitalized Software Expenditures",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Subsidiaries"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive aggregate definition tied to GAAP capitalization treatment; no separate fixed formula or threshold stated."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the aggregate of all expenditures (whether paid in cash or accrued as liabilities) by a Person and its Restricted Subsidiaries during such period in respect of purchased software or internally developed software and software enhancements that, in conformity with GAAP, are or are required to be reflected as capitalized costs on the consolidated balance sheet of a Person and its Restricted Subsidiaries."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1]] the actual trigger/end mechanics depend on 'Benchmark Replacement Date' and 'Benchmark Replacement', and on Section 2.12's replacement mechanics, none of which were resolvable within the supplied source (Section 2.12 was flagged out-of-scope: source-context budget exhausted)",
+   "[definition[d2]] Section 4.01(h) was flagged out-of-scope (source-context budget exhausted) before it could be expanded; no substantive content for this term appears in the supplied source itself",
+   "[definition[d7]] the preliminary statements are not part of the supplied source and a direct cross-reference attempt ('preliminary statements hereto') did not resolve to any section in this instrument; 'Additional Borrower' and 'Successor Borrower' are also undefined in the supplied source",
+   "[definition[d9].IF.else.IF.else.IF.else.IF.else] the amount is 'to be agreed by the Administrative Agent and the Initial Borrower at the time such Alternative Currency is established' - a genuinely non-fixed, not-yet-ascertainable value",
+   "[definition[d9].IF.else.IF.else.IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9].IF.else.IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9].IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d10].IF.else.IF.else.IF.else.IF.else] the amount is 'an amount to be agreed by the Administrative Agent and the Initial Borrower at the time such Alternative Currency is established' - a genuinely non-fixed, not-yet-ascertainable value",
+   "[definition[d10].IF.else.IF.else.IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d10].IF.else.IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d10].IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d10]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d15]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+   "Source is Section 1.01 (Defined Terms), a definitions article containing many independent defined terms declared back-to-back; each was extracted as its own WireDefinition per the multiple-definitions rule, including terms with no covenant-quantitative content (e.g. Board of Directors, Capital Stock) rather than only the apparently 'salient' ones.",
+   "Two terms ('Beneficial Ownership Certification', 'Borrowers') are pure or near-pure cross-references outside the supplied source; getReferencedProvision was attempted for the 'Borrowers' preliminary-statements reference and did not resolve (confirmed via tool call). The Section 4.01(h) and Section 2.03 cross-references had already been flagged out-of-scope (source-context budget exhausted) by the prior retrieval pass, so those were not re-attempted per the no-duplicate-request policy.",
+   "'Borrowing Minimum' and 'Borrowing Multiple' are structurally piecewise-by-currency; the four fixed-dollar cases were represented with a best-effort IF/COMPARE currency-selector (flagged as an IR extension candidate gap) and the genuinely variable 'other Alternative Currency' case was correctly left UNSUPPORTED rather than guessed. All 6 frozen-inventory VALUE/MATERIAL items were consumed on their corresponding MONEY nodes and at each definition's top level.",
+   "The two detected 0.00% floor values and the December 31, 2018 GAAP-freeze date (not covered by named inventory items) were represented respectively in 'Canadian Prime Rate' (MAX floor) and 'Capitalized Lease Obligation' (AS_OF date anchor)."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 59791,
+   "outputTokens": 33178,
+   "costUsd": 0.45136200000000004
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:9ef15b23217e1a01d9c3dc65",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Benchmark Unavailability Period",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01",
+     "semanticDescription": "a time period beginning when a Benchmark Replacement Date under clauses (1) or (2) of that definition occurs (if no Benchmark Replacement has yet replaced the then-current Benchmark under Section 2.12) and ending when a Benchmark Replacement has so replaced it",
+     "reason": "the actual trigger/end mechanics depend on 'Benchmark Replacement Date' and 'Benchmark Replacement', and on Section 2.12's replacement mechanics, none of which were resolvable within the supplied source (Section 2.12 was flagged out-of-scope: source-context budget exhausted)",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:3d4df4a7334b760125701223"
+    },
+    "dependsOnTerms": [
+     "Benchmark",
+     "Benchmark Replacement Date",
+     "Benchmark Replacement"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Full defined-term text captured verbatim, but the operative start/end triggers depend on Section 2.12 and on 'Benchmark Replacement Date'/'Benchmark Replacement', which were out of scope for this retrieval.",
+     "the actual trigger/end mechanics depend on 'Benchmark Replacement Date' and 'Benchmark Replacement', and on Section 2.12's replacement mechanics, none of which were resolvable within the supplied source (Section 2.12 was flagged out-of-scope: source-context budget exhausted)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the period (if any) (x) beginning at the time that a Benchmark Replacement Date pursuant to clauses (1) or (2) of that definition has occurred if... no Benchmark Replacement has replaced such then-current Benchmark... and (y) ending at the time that a Benchmark Replacement has replaced such then-current Benchmark... in accordance with Section 2.12."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:cfc9a4e1d3d1d4c4aaef385a",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Beneficial Ownership Certification",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01",
+     "semanticDescription": "term whose entire meaning is assigned by cross-reference to Section 4.01(h)",
+     "reason": "Section 4.01(h) was flagged out-of-scope (source-context budget exhausted) before it could be expanded; no substantive content for this term appears in the supplied source itself",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:50f32bb5a3601c14f923b863"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Pure cross-reference to Section 4.01(h); that section's text was not retrievable within the available source budget.",
+     "Section 4.01(h) was flagged out-of-scope (source-context budget exhausted) before it could be expanded; no substantive content for this term appears in the supplied source itself"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 4.01(h)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:24ad25d5f6546e62b2df6746",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Benefit Plan",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Code"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Full definition text is self-contained descriptive prose with no computation required."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any of (a) an \"employee benefit plan\" (as defined in ERISA) that is subject to Title I of ERISA, (b) a \"plan\" as defined in and subject to Section 4975 of the Code or (c) any Person whose assets include ... the assets of any such \"employee benefit plan\" or \"plan.\""
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d62a5ea92ba622a9ce27f4ee",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "BHC Act Affiliate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Self-contained descriptive definition referencing an external statute (12 U.S.C. 1841(k)), not requiring further internal resolution."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "an \"affiliate\" (as such term is defined under, and interpreted in accordance with, 12 U.S.C. 1841(k)) of such party."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3b4b4e8f41b3e052efb09e9e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Board of Directors",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Self-contained descriptive definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) in the case of any corporation, the board of directors of such Person or any committee thereof duly authorized to act on behalf of such board, (b) in the case of any limited liability company, the board of managers or board of directors... (c) in the case of any partnership, the Board of Directors of the general partner... and (d) in any other case, the functional equivalent of the foregoing."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d1355f6548b6261c4b934be7",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Board of Governors",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple named-institution definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the Board of Governors of the Federal Reserve System of the United States of America."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:bb427a953213bf5d9a8f5953",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Borrowers",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01",
+     "semanticDescription": "the primary meaning of 'Borrowers' is assigned in the preliminary statements of the Agreement, supplemented by 'Additional Borrower' and 'Successor Borrower'",
+     "reason": "the preliminary statements are not part of the supplied source and a direct cross-reference attempt ('preliminary statements hereto') did not resolve to any section in this instrument; 'Additional Borrower' and 'Successor Borrower' are also undefined in the supplied source",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:c875432e4756c11412a338f6"
+    },
+    "dependsOnTerms": [
+     "Additional Borrower",
+     "Successor Borrower"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Attempted getReferencedProvision for the preliminary statements cross-reference; it did not resolve to any section in this instrument's documents.",
+     "The two supplementing defined terms ('Additional Borrower', 'Successor Borrower') were also not available in the supplied source.",
+     "the preliminary statements are not part of the supplied source and a direct cross-reference attempt ('preliminary statements hereto') did not resolve to any section in this instrument; 'Additional Borrower' and 'Successor Borrower' are also undefined in the supplied source"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the preliminary statements hereto, together with any Additional Borrower and any Successor Borrower."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:0d146911fefa88dc1ea31c83",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Borrowing",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Facility",
+     "Class",
+     "Type",
+     "Alternative Currency Term Benchmark Loans",
+     "Term SOFR Loans",
+     "Interest Period"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Full descriptive definition captured verbatim."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "Loans of the same Facility, Class and Type, made, converted or continued on the same date in the same currency and, in the case of Alternative Currency Term Benchmark Loans and Term SOFR Loans, as to which a single Interest Period is in effect."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:926fc579cf0166987139b824",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Borrowing Minimum",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "IF",
+     "type": "MONEY",
+     "exprId": "ir-expr:7127677ad6737ac9ecff1a2c",
+     "condition": {
+      "kind": "COMPARE",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:680607545922312409bde409",
+      "left": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "MONEY",
+       "inputName": "Borrowing Currency",
+       "exprId": "ir-expr:dfd454dea401c1c4d3f44cef"
+      },
+      "operator": "EQ",
+      "right": {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "MONEY",
+       "termName": "Dollars",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:baef01f3452189048b0c5776"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "then": {
+      "kind": "MIN",
+      "type": "MONEY",
+      "exprId": "ir-expr:0c9dca97bcc9276e770f84bf",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "type": "MONEY",
+        "amount": 1000000,
+        "currency": "USD",
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:23caa3defebf76742029d859",
+        "inventoryItemIds": [
+         "inv-item:b92eb911ab5d8bbf5ff8a73f"
+        ]
+       },
+       {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "remaining Commitments of the applicable Class",
+        "exprId": "ir-expr:967816d034f8a7c8a12d1022"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "else": {
+      "kind": "IF",
+      "type": "MONEY",
+      "exprId": "ir-expr:a2212e93442c6f63f58c12ab",
+      "condition": {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:6bece9679c612e26424200b8",
+       "left": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "Borrowing Currency",
+        "exprId": "ir-expr:dfd454dea401c1c4d3f44cef"
+       },
+       "operator": "EQ",
+       "right": {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "MONEY",
+        "termName": "Euro",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:61a3ec252f83d4b44ad1ab70"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "then": {
+       "kind": "MIN",
+       "type": "MONEY",
+       "exprId": "ir-expr:bf51204187c2fa0aa409568b",
+       "operands": [
+        {
+         "kind": "MONEY",
+         "type": "MONEY",
+         "amount": 1000000,
+         "currency": "EUR",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:99b93f81d9fa5e7f4aeb9193"
+        },
+        {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "MONEY",
+         "inputName": "remaining Commitments of the applicable Class",
+         "exprId": "ir-expr:967816d034f8a7c8a12d1022"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "else": {
+       "kind": "IF",
+       "type": "MONEY",
+       "exprId": "ir-expr:4e34df7b643e34b98ac3c8ce",
+       "condition": {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:0032c2d9b7768c64586255dc",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "MONEY",
+         "inputName": "Borrowing Currency",
+         "exprId": "ir-expr:dfd454dea401c1c4d3f44cef"
+        },
+        "operator": "EQ",
+        "right": {
+         "kind": "DEFINED_TERM_REFERENCE",
+         "type": "MONEY",
+         "termName": "Sterling",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:1faba6081ed3e39182a0bb56"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "then": {
+        "kind": "MIN",
+        "type": "MONEY",
+        "exprId": "ir-expr:30c8c28c242933241a988bd5",
+        "operands": [
+         {
+          "kind": "MONEY",
+          "type": "MONEY",
+          "amount": 1000000,
+          "currency": "GBP",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:5c138a1598cc4bd3cf7f7686",
+          "inventoryItemIds": [
+           "inv-item:5ce96983b21dd809446ed45e"
+          ]
+         },
+         {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "MONEY",
+          "inputName": "remaining Commitments of the applicable Class",
+          "exprId": "ir-expr:967816d034f8a7c8a12d1022"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "else": {
+        "kind": "IF",
+        "type": "MONEY",
+        "exprId": "ir-expr:2f1b46970310b7e1c4378aa5",
+        "condition": {
+         "kind": "COMPARE",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:54f5b551158e946174e32ea3",
+         "left": {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "MONEY",
+          "inputName": "Borrowing Currency",
+          "exprId": "ir-expr:dfd454dea401c1c4d3f44cef"
+         },
+         "operator": "EQ",
+         "right": {
+          "kind": "DEFINED_TERM_REFERENCE",
+          "type": "MONEY",
+          "termName": "Canadian Dollars",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:61d9e8057cf56c614ece3287"
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        },
+        "then": {
+         "kind": "MIN",
+         "type": "MONEY",
+         "exprId": "ir-expr:5ea2cdae73176401870084f7",
+         "operands": [
+          {
+           "kind": "MONEY",
+           "type": "MONEY",
+           "amount": 1000000,
+           "currency": "CAD",
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:0fcc5849776636c5490339db",
+           "inventoryItemIds": [
+            "inv-item:c2fb1041230e9905e39b04b3"
+           ]
+          },
+          {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "type": "MONEY",
+           "inputName": "remaining Commitments of the applicable Class",
+           "exprId": "ir-expr:967816d034f8a7c8a12d1022"
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        },
+        "else": {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01, clause (e) of 'Borrowing Minimum'",
+         "semanticDescription": "Borrowing Minimum for a Borrowing denominated in any Alternative Currency other than euros, Sterling or Canadian Dollars",
+         "reason": "the amount is 'to be agreed by the Administrative Agent and the Initial Borrower at the time such Alternative Currency is established' - a genuinely non-fixed, not-yet-ascertainable value",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:67dcb9385d476c42fb4481e6"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Commitments",
+     "Class",
+     "Alternative Currency",
+     "Administrative Agent",
+     "Initial Borrower",
+     "Dollars",
+     "Sterling",
+     "Canadian Dollars"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The four fixed-amount currency cases (USD/EUR/GBP/CAD) are represented with a best-effort currency-selector (IF/COMPARE) since the IR has no dedicated discrete/currency-keyed case-selection primitive (see irExtensionCandidate).",
+     "The fifth case (other Alternative Currencies) is inherently a variable, to-be-agreed amount and is correctly UNSUPPORTED rather than guessed.",
+     "the amount is 'to be agreed by the Administrative Agent and the Initial Borrower at the time such Alternative Currency is established' - a genuinely non-fixed, not-yet-ascertainable value",
+     "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+     "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+     "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+     "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) in the case of a Borrowing denominated in U.S. Dollars, the lesser of $1,000,000 and the remaining Commitments of the applicable Class, (b) ... euros, the lesser of 1,000,000 ..., (c) ... Sterling, the lesser of £1,000,000 ..., (d) ... Canadian Dollars, the lesser of C$1,000,000 ... and (e) ... any other Alternative Currency ..., an amount to be agreed by the Administrative Agent and the Initial Borrower ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:b92eb911ab5d8bbf5ff8a73f",
+     "inv-item:5ce96983b21dd809446ed45e",
+     "inv-item:c2fb1041230e9905e39b04b3"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:0aff407974660b2639d56afc",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Borrowing Multiple",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "IF",
+     "type": "MONEY",
+     "exprId": "ir-expr:0cf649b3206acec8711528c3",
+     "condition": {
+      "kind": "COMPARE",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:680607545922312409bde409",
+      "left": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "MONEY",
+       "inputName": "Borrowing Currency",
+       "exprId": "ir-expr:dfd454dea401c1c4d3f44cef"
+      },
+      "operator": "EQ",
+      "right": {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "MONEY",
+       "termName": "Dollars",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:baef01f3452189048b0c5776"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "then": {
+      "kind": "MIN",
+      "type": "MONEY",
+      "exprId": "ir-expr:d6cc6d46b2d3db5e04328af1",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "type": "MONEY",
+        "amount": 500000,
+        "currency": "USD",
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:cba9ce12f3ad52845b08bd54",
+        "inventoryItemIds": [
+         "inv-item:2f7b694dd336d169f74df263"
+        ]
+       },
+       {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "remaining Commitments of the applicable Class",
+        "exprId": "ir-expr:967816d034f8a7c8a12d1022"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "else": {
+      "kind": "IF",
+      "type": "MONEY",
+      "exprId": "ir-expr:ae26668956a24594493ba2d1",
+      "condition": {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:6bece9679c612e26424200b8",
+       "left": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "Borrowing Currency",
+        "exprId": "ir-expr:dfd454dea401c1c4d3f44cef"
+       },
+       "operator": "EQ",
+       "right": {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "MONEY",
+        "termName": "Euro",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:61a3ec252f83d4b44ad1ab70"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "then": {
+       "kind": "MIN",
+       "type": "MONEY",
+       "exprId": "ir-expr:09f7dde99bfe9b333f90bfd2",
+       "operands": [
+        {
+         "kind": "MONEY",
+         "type": "MONEY",
+         "amount": 500000,
+         "currency": "EUR",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:972b40c5016d61c42dfecaf6"
+        },
+        {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "MONEY",
+         "inputName": "remaining Commitments of the applicable Class",
+         "exprId": "ir-expr:967816d034f8a7c8a12d1022"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "else": {
+       "kind": "IF",
+       "type": "MONEY",
+       "exprId": "ir-expr:d348e89eae33b16a26c71a0e",
+       "condition": {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:0032c2d9b7768c64586255dc",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "MONEY",
+         "inputName": "Borrowing Currency",
+         "exprId": "ir-expr:dfd454dea401c1c4d3f44cef"
+        },
+        "operator": "EQ",
+        "right": {
+         "kind": "DEFINED_TERM_REFERENCE",
+         "type": "MONEY",
+         "termName": "Sterling",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:1faba6081ed3e39182a0bb56"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "then": {
+        "kind": "MIN",
+        "type": "MONEY",
+        "exprId": "ir-expr:6be97b2c7dd6691b1db9d00c",
+        "operands": [
+         {
+          "kind": "MONEY",
+          "type": "MONEY",
+          "amount": 500000,
+          "currency": "GBP",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:29b016d96ae94712e80d7261",
+          "inventoryItemIds": [
+           "inv-item:16a88e8856dca75a54339505"
+          ]
+         },
+         {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "MONEY",
+          "inputName": "remaining Commitments of the applicable Class",
+          "exprId": "ir-expr:967816d034f8a7c8a12d1022"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "else": {
+        "kind": "IF",
+        "type": "MONEY",
+        "exprId": "ir-expr:a89c887343096a48478588df",
+        "condition": {
+         "kind": "COMPARE",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:54f5b551158e946174e32ea3",
+         "left": {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "MONEY",
+          "inputName": "Borrowing Currency",
+          "exprId": "ir-expr:dfd454dea401c1c4d3f44cef"
+         },
+         "operator": "EQ",
+         "right": {
+          "kind": "DEFINED_TERM_REFERENCE",
+          "type": "MONEY",
+          "termName": "Canadian Dollars",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:61d9e8057cf56c614ece3287"
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        },
+        "then": {
+         "kind": "MIN",
+         "type": "MONEY",
+         "exprId": "ir-expr:b14313467e8ee8e0a418b2f8",
+         "operands": [
+          {
+           "kind": "MONEY",
+           "type": "MONEY",
+           "amount": 500000,
+           "currency": "CAD",
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:be73e3dead822454fa385eb9",
+           "inventoryItemIds": [
+            "inv-item:d2bf132cbd8e771395922191"
+           ]
+          },
+          {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "type": "MONEY",
+           "inputName": "remaining Commitments of the applicable Class",
+           "exprId": "ir-expr:967816d034f8a7c8a12d1022"
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         }
+        },
+        "else": {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01, clause (e) of 'Borrowing Multiple'",
+         "semanticDescription": "Borrowing Multiple for a Borrowing denominated in any Alternative Currency other than euros, Sterling or Canadian Dollars",
+         "reason": "the amount is 'an amount to be agreed by the Administrative Agent and the Initial Borrower at the time such Alternative Currency is established' - a genuinely non-fixed, not-yet-ascertainable value",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:dd89add52384675e3493920d"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Commitments",
+     "Class",
+     "Alternative Currency",
+     "Administrative Agent",
+     "Initial Borrower",
+     "Dollars",
+     "Sterling",
+     "Canadian Dollars"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Same structural gap as 'Borrowing Minimum': best-effort currency-selector for the four fixed cases, UNSUPPORTED for the inherently variable fifth case.",
+     "the amount is 'an amount to be agreed by the Administrative Agent and the Initial Borrower at the time such Alternative Currency is established' - a genuinely non-fixed, not-yet-ascertainable value",
+     "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+     "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+     "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+     "IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) in the case of a Borrowing denominated in U.S. Dollars, the lesser of $500,000 ..., (b) ... euros, the lesser of 500,000 ..., (c) ... Sterling, the lesser of £500,000 ..., (d) ... Canadian Dollars, the lesser of C$500,000 ... and (e) ... any other Alternative Currency ..., an amount to be agreed ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:2f7b694dd336d169f74df263",
+     "inv-item:16a88e8856dca75a54339505",
+     "inv-item:d2bf132cbd8e771395922191"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:4bbdccef9f0547d569cd6f5c",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Borrowing Request",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Initial Borrower",
+     "Administrative Agent"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The definitional substance (a request for a Borrowing, in a prescribed or acceptable form) is fully captured; Section 2.03 (out of scope) governs procedural mechanics but is not needed to state what the term means."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "a request by the Initial Borrower for a Borrowing in accordance with Section 2.03, in substantially the form of Exhibit B or another form which is acceptable to the Administrative Agent in its reasonable discretion."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:7e19a15d764f8c284f3f4d65",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Business Day",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Term SOFR Loans",
+     "Alternative Currency Term Benchmark Loan",
+     "Alternative Currency",
+     "CORRA",
+     "TARGET Day",
+     "RFR Loans",
+     "RFR Business Day",
+     "Sterling"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Full definition, including all five currency/rate-specific carve-outs, captured verbatim."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any day that is not a Saturday, Sunday or other day on which commercial banks in New York City are authorized or required by law to remain closed; provided that (i)...(v)..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e9056dcd9400be3e6f144ef6",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Calculation Period",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Excess Cash Flow Period",
+     "Excess Cash Flow Interim Period"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Term is a contextual alias between two other defined terms ('as applicable'); the alias itself is fully stated, though which branch applies in any instance depends on those terms' own definitions, not supplied here."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "an Excess Cash Flow Period or an Excess Cash Flow Interim Period, as applicable."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:007c179c90cf44346d997e4f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Canadian Dollars",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple currency-label definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Canadian Dollars\" or \"C$\" each means lawful money of Canada."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:eacd52c1ba264731d1eaae05",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Canadian Prime Rate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "(no evidence captured)",
+     "semanticDescription": "unrecognized or malformed expression (kind=\"MAX\")",
+     "reason": "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "attemptedStructure": {
+      "kind": "MAX",
+      "type": "NUMBER",
+      "exprId": "ir-expr:565ff8c70276164b807af172",
+      "operands": [
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "PRIMCAN Index rate (Bloomberg screen, 10:15 a.m. Toronto time)",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:3e18455a7fdb3e369260a690"
+       },
+       {
+        "kind": "PERCENT",
+        "type": "PERCENT",
+        "value": 0,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:1af56cb36f2e70927f67e005"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "exprId": "ir-expr:451eb5f44ebfc227e50dbe80"
+    },
+    "dependsOnTerms": [
+     "Administrative Agent"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Rate mechanism and 0.00% floor (stated twice in the same proviso) fully captured.",
+     "deterministic post-processing: at least one subexpression is UNSUPPORTED or fails to type-check, so COMPLETE was downgraded to PARTIAL (task §27)",
+     "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the rate ... equal to the PRIMCAN Index rate that appears on the Bloomberg screen at 10:15 a.m. Toronto time ...; provided that if any of the above rates shall be less than 0.00%, such rate shall be deemed to be 0.00% ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:cb527c6ba7e0a6499fef4d41",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Capital Expenditures",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Restricted Parties",
+     "Initial Borrower"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition ties the metric to amounts required to be set forth in the Initial Borrower's consolidated cash flow statement under GAAP; no separate fixed formula is stated."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the additions to property, plant and equipment and other capital expenditures of the Restricted Parties that are (or are required to be) set forth in a consolidated statement of cash flows of the Initial Borrower for such period prepared in accordance with GAAP."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:172bb3fa8652800684bad0b7",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Capital Stock",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Four-part enumerative definition, fully descriptive, no computation."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(1) in the case of a corporation, corporate stock; (2) ... any and all shares, interests, participations, rights or other equivalents...; (3) ... partnership or membership interests...; and (4) any other interest or participation that confers on a Person the right to receive a share of the profits and losses of, or distributions of assets of, the issuing Person."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:c098765e1725ca42c0a75827",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Capitalized Lease Obligation",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "AS_OF",
+     "type": "MONEY",
+     "exprId": "ir-expr:8b12f5c2e53bd2606dc9cd14",
+     "value": {
+      "kind": "METRIC_REFERENCE",
+      "type": "MONEY",
+      "metricName": "amount of the liability in respect of a Capitalized Lease required to be capitalized on a balance sheet in accordance with GAAP (excluding footnotes)",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:03312e1c7e9741578671865b"
+     },
+     "asOfDate": "2018-12-31",
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Capitalized Leases",
+     "Initial Borrower"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The GAAP-freeze mechanic (measured as GAAP stood on December 31, 2018, with a borrower election to keep treating certain obligations as operating leases despite later GAAP changes) is captured via the AS_OF date anchor; the borrower-election proviso is preserved in the excerpt."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "an obligation that is a Capitalized Lease; provided the amount of Indebtedness represented thereby at any time shall be the amount of the liability in respect thereof that would at that time be required to be capitalized on a balance sheet in accordance with GAAP (excluding the footnotes thereto) as in effect on December 31, 2018 ... unless the Initial Borrower elects otherwise, continue to be accounted for as operating lease obligations ... regardless of any change in GAAP following such date ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:2f852605975f69ca5c28bb0a",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Capitalized Leases",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Restricted Subsidiaries"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple descriptive definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "all leases that have been or should be, in accordance with GAAP, recorded as leases in the financial statements of such Person and its Restricted Subsidiaries."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:2b0950be596e3e1fc529bf4d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Capitalized Software Expenditures",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Restricted Subsidiaries"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Descriptive aggregate definition tied to GAAP capitalization treatment; no separate fixed formula or threshold stated."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the aggregate of all expenditures (whether paid in cash or accrued as liabilities) by a Person and its Restricted Subsidiaries during such period in respect of purchased software or internally developed software and software enhancements that, in conformity with GAAP, are or are required to be reflected as capitalized costs on the consolidated balance sheet of a Person and its Restricted Subsidiaries."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01 'Borrowing Minimum' and 'Borrowing Multiple' definitions each state five parallel currency-keyed cases (USD/EUR/GBP/CAD/other Alternative Currency), a recurring pattern across credit agreements for currency-denominated thresholds.",
+    "semanticRequirement": "A construct that selects among a fixed set of labeled values based on matching a discrete, non-numeric transaction attribute (here, the Borrowing's currency) against named cases, analogous to SCHEDULE's date-ranged case selection but for discrete/categorical keys.",
+    "whyExistingPrimitivesFail": "SCHEDULE's cases are keyed by date ranges (from/to), not discrete labels. COMPARE/IF require both sides to be the same value type drawn from MONEY/NUMBER/RATIO/PERCENT-like literals, and there is no CURRENCY or generic ENUM literal kind, so comparing a TRANSACTION_INPUT_REFERENCE's currency against a fixed currency label has no clean, type-safe representation - forcing an ad hoc equality of two reference-kind nodes that the schema's type discipline does not clearly sanction.",
+    "candidateGeneralizedPrimitive": "A CASE_SELECT node (operand: the discrete key expression, e.g. a TRANSACTION_INPUT_REFERENCE; cases: [{matchValue (a literal or DEFINED_TERM_REFERENCE label), value}]; defaultValue) mirroring SCHEDULE's shape but for discrete/categorical keys such as currency, jurisdiction, or facility Type."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d1]] the actual trigger/end mechanics depend on 'Benchmark Replacement Date' and 'Benchmark Replacement', and on Section 2.12's replacement mechanics, none of which were resolvable within the supplied source (Section 2.12 was flagged out-of-scope: source-context budget exhausted)",
+   "[definition[d2]] Section 4.01(h) was flagged out-of-scope (source-context budget exhausted) before it could be expanded; no substantive content for this term appears in the supplied source itself",
+   "[definition[d7]] the preliminary statements are not part of the supplied source and a direct cross-reference attempt ('preliminary statements hereto') did not resolve to any section in this instrument; 'Additional Borrower' and 'Successor Borrower' are also undefined in the supplied source",
+   "[definition[d9].IF.else.IF.else.IF.else.IF.else] the amount is 'to be agreed by the Administrative Agent and the Initial Borrower at the time such Alternative Currency is established' - a genuinely non-fixed, not-yet-ascertainable value",
+   "[definition[d9].IF.else.IF.else.IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9].IF.else.IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9].IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d9]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d10].IF.else.IF.else.IF.else.IF.else] the amount is 'an amount to be agreed by the Administrative Agent and the Initial Borrower at the time such Alternative Currency is established' - a genuinely non-fixed, not-yet-ascertainable value",
+   "[definition[d10].IF.else.IF.else.IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d10].IF.else.IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d10].IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d10]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d15]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+   "Source is Section 1.01 (Defined Terms), a definitions article containing many independent defined terms declared back-to-back; each was extracted as its own WireDefinition per the multiple-definitions rule, including terms with no covenant-quantitative content (e.g. Board of Directors, Capital Stock) rather than only the apparently 'salient' ones.",
+   "Two terms ('Beneficial Ownership Certification', 'Borrowers') are pure or near-pure cross-references outside the supplied source; getReferencedProvision was attempted for the 'Borrowers' preliminary-statements reference and did not resolve (confirmed via tool call). The Section 4.01(h) and Section 2.03 cross-references had already been flagged out-of-scope (source-context budget exhausted) by the prior retrieval pass, so those were not re-attempted per the no-duplicate-request policy.",
+   "'Borrowing Minimum' and 'Borrowing Multiple' are structurally piecewise-by-currency; the four fixed-dollar cases were represented with a best-effort IF/COMPARE currency-selector (flagged as an IR extension candidate gap) and the genuinely variable 'other Alternative Currency' case was correctly left UNSUPPORTED rather than guessed. All 6 frozen-inventory VALUE/MATERIAL items were consumed on their corresponding MONEY nodes and at each definition's top level.",
+   "The two detected 0.00% floor values and the December 31, 2018 GAAP-freeze date (not covered by named inventory items) were represented respectively in 'Canadian Prime Rate' (MAX floor) and 'Capitalized Lease Obligation' (AS_OF date anchor)."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "preliminary statements hereto"
+    },
+    "outputSummary": "refused: reference \"preliminary statements hereto\" did not resolve to any section (or any enclosing section) within this instrument's documents",
+    "charsReturned": 134,
+    "timestamp": "2026-09-14T16:55:11.055Z"
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": "[\n  {\n    \"localRef\": \"d1\",\n    \"termName\": \"Benchmark Unavailability Period\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"UNSUPPORTED\",\n      \"semanticDescription\": \"a time period beginning when a Benchmark Replacement Date under clauses (1) or (2) of that definition occurs (if no Benchmark Replacement has yet replaced the then-current Benchmark under Section 2.12) and ending when a Benchmark Replacement has so replaced it\",\n      \"reason\": \"the actual trigger/end mechanics depend on 'Benchmark Replacement Date' and 'Benchmark Replacement', and on Section 2.12's replacement mechanics, none of which were resolvable within the supplied source (Section 2.12 was flagged out-of-scope: source-context budget exhausted)\",\n      \"sourceEvidence\": \"§1.01\"\n    },\n    \"dependsOnTerms\": [\"Benchmark\", \"Benchmark Replacement Date\", \"Benchmark Replacement\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\"Full defined-term text captured verbatim, but the operative start/end triggers depend on Section 2.12 and on 'Benchmark Replacement Date'/'Benchmark Replacement', which were out of scope for this retrieval.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"the period (if any) (x) beginning at the time that a Benchmark Replacement Date pursuant to clauses (1) or (2) of that definition has occurred if... no Benchmark Replacement has replaced such then-current Benchmark... and (y) ending at the time that a Benchmark Replacement has replaced such then-current Benchmark... in accordance with Section 2.12.\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d2\",\n    \"termName\": \"Beneficial Ownership Certification\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"UNSUPPORTED\",\n      \"semanticDescription\": \"term whose entire meaning is assigned by cross-reference to Section 4.01(h)\",\n      \"reason\": \"Section 4.01(h) was flagged out-of-scope (source-context budget exhausted) before it could be expanded; no substantive content for this term appears in the supplied source itself\",\n      \"sourceEvidence\": \"§1.01\"\n    },\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"MISSING_CONTEXT\",\n    \"sufficiencyReasons\": [\"Pure cross-reference to Section 4.01(h); that section's text was not retrievable within the available source budget.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"has the meaning assigned to such term in Section 4.01(h).\",\n    \"inventoryItemIds\": []\n  },\n  {\n    \"localRef\": \"d3\",\n    \"termName\": \"Benefit Plan\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Code\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Full definition text is self-contained descriptive prose with no computation required.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"any of (a) an \\\"employee benefit plan\\\" (as defined in ERISA) that is subject to Title I of ERISA, (b) a \\\"plan\\\" as defined in and subject to Section 4975 of the Code or (c) any Person whose assets include ... the assets of any such \\\"employee benefit plan\\\" or \\\"plan.\\\"\"\n  },\n  {\n    \"localRef\": \"d4\",\n    \"termName\": \"BHC Act Affiliate\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Self-contained descriptive definition referencing an external statute (12 U.S.C. 1841(k)), not requiring further internal resolution.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"an \\\"affiliate\\\" (as such term is defined under, and interpreted in accordance with, 12 U.S.C. 1841(k)) of such party.\"\n  },\n  {\n    \"localRef\": \"d5\",\n    \"termName\": \"Board of Directors\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Self-contained descriptive definition.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"(a) in the case of any corporation, the board of directors of such Person or any committee thereof duly authorized to act on behalf of such board, (b) in the case of any limited liability company, the board of managers or board of directors... (c) in the case of any partnership, the Board of Directors of the general partner... and (d) in any other case, the functional equivalent of the foregoing.\"\n  },\n  {\n    \"localRef\": \"d6\",\n    \"termName\": \"Board of Governors\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Simple named-institution definition.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"the Board of Governors of the Federal Reserve System of the United States of America.\"\n  },\n  {\n    \"localRef\": \"d7\",\n    \"termName\": \"Borrowers\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"UNSUPPORTED\",\n      \"semanticDescription\": \"the primary meaning of 'Borrowers' is assigned in the preliminary statements of the Agreement, supplemented by 'Additional Borrower' and 'Successor Borrower'\",\n      \"reason\": \"the preliminary statements are not part of the supplied source and a direct cross-reference attempt ('preliminary statements hereto') did not resolve to any section in this instrument; 'Additional Borrower' and 'Successor Borrower' are also undefined in the supplied source\",\n      \"sourceEvidence\": \"§1.01\"\n    },\n    \"dependsOnTerms\": [\"Additional Borrower\", \"Successor Borrower\"],\n    \"sufficiency\": \"MISSING_CONTEXT\",\n    \"sufficiencyReasons\": [\"Attempted getReferencedProvision for the preliminary statements cross-reference; it did not resolve to any section in this instrument's documents.\", \"The two supplementing defined terms ('Additional Borrower', 'Successor Borrower') were also not available in the supplied source.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"has the meaning assigned to such term in the preliminary statements hereto, together with any Additional Borrower and any Successor Borrower.\"\n  },\n  {\n    \"localRef\": \"d8\",\n    \"termName\": \"Borrowing\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Facility\", \"Class\", \"Type\", \"Alternative Currency Term Benchmark Loans\", \"Term SOFR Loans\", \"Interest Period\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Full descriptive definition captured verbatim.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"Loans of the same Facility, Class and Type, made, converted or continued on the same date in the same currency and, in the case of Alternative Currency Term Benchmark Loans and Term SOFR Loans, as to which a single Interest Period is in effect.\"\n  },\n  {\n    \"localRef\": \"d9\",\n    \"termName\": \"Borrowing Minimum\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"IF\",\n      \"condition\": {\n        \"kind\": \"COMPARE\",\n        \"left\": {\"kind\": \"TRANSACTION_INPUT_REFERENCE\", \"inputName\": \"Borrowing Currency\"},\n        \"operator\": \"EQ\",\n        \"right\": {\"kind\": \"DEFINED_TERM_REFERENCE\", \"termName\": \"Dollars\"}\n      },\n      \"then\": {\n        \"kind\": \"MIN\",\n        \"operands\": [\n          {\"kind\": \"MONEY\", \"amount\": 1000000, \"currency\": \"USD\", \"citation\": \"§1.01\", \"inventoryItemIds\": [\"inv-item:b92eb911ab5d8bbf5ff8a73f\"]},\n          {\"kind\": \"TRANSACTION_INPUT_REFERENCE\", \"inputName\": \"remaining Commitments of the applicable Class\"}\n        ],\n        \"citation\": \"§1.01\"\n      },\n      \"else\": {\n        \"kind\": \"IF\",\n        \"condition\": {\n          \"kind\": \"COMPARE\",\n          \"left\": {\"kind\": \"TRANSACTION_INPUT_REFERENCE\", \"inputName\": \"Borrowing Currency\"},\n          \"operator\": \"EQ\",\n          \"right\": {\"kind\": \"DEFINED_TERM_REFERENCE\", \"termName\": \"Euro\"}\n        },\n        \"then\": {\n          \"kind\": \"MIN\",\n          \"operands\": [\n            {\"kind\": \"MONEY\", \"amount\": 1000000, \"currency\": \"EUR\", \"citation\": \"§1.01\"},\n            {\"kind\": \"TRANSACTION_INPUT_REFERENCE\", \"inputName\": \"remaining Commitments of the applicable Class\"}\n          ],\n          \"citation\": \"§1.01\"\n        },\n        \"else\": {\n          \"kind\": \"IF\",\n          \"condition\": {\n            \"kind\": \"COMPARE\",\n            \"left\": {\"kind\": \"TRANSACTION_INPUT_REFERENCE\", \"inputName\": \"Borrowing Currency\"},\n            \"operator\": \"EQ\",\n            \"right\": {\"kind\": \"DEFINED_TERM_REFERENCE\", \"termName\": \"Sterling\"}\n          },\n          \"then\": {\n            \"kind\": \"MIN\",\n            \"operands\": [\n              {\"kind\": \"MONEY\", \"amount\": 1000000, \"currency\": \"GBP\", \"citation\": \"§1.01\", \"inventoryItemIds\": [\"inv-item:5ce96983b21dd809446ed45e\"]},\n              {\"kind\": \"TRANSACTION_INPUT_REFERENCE\", \"inputName\": \"remaining Commitments of the applicable Class\"}\n            ],\n            \"citation\": \"§1.01\"\n          },\n          \"else\": {\n            \"kind\": \"IF\",\n            \"condition\": {\n              \"kind\": \"COMPARE\",\n              \"left\": {\"kind\": \"TRANSACTION_INPUT_REFERENCE\", \"inputName\": \"Borrowing Currency\"},\n              \"operator\": \"EQ\",\n              \"right\": {\"kind\": \"DEFINED_TERM_REFERENCE\", \"termName\": \"Canadian Dollars\"}\n            },\n            \"then\": {\n              \"kind\": \"MIN\",\n              \"operands\": [\n                {\"kind\": \"MONEY\", \"amount\": 1000000, \"currency\": \"CAD\", \"citation\": \"§1.01\", \"inventoryItemIds\": [\"inv-item:c2fb1041230e9905e39b04b3\"]},\n                {\"kind\": \"TRANSACTION_INPUT_REFERENCE\", \"inputName\": \"remaining Commitments of the applicable Class\"}\n              ],\n              \"citation\": \"§1.01\"\n            },\n            \"else\": {\n              \"kind\": \"UNSUPPORTED\",\n              \"semanticDescription\": \"Borrowing Minimum for a Borrowing denominated in any Alternative Currency other than euros, Sterling or Canadian Dollars\",\n              \"reason\": \"the amount is 'to be agreed by the Administrative Agent and the Initial Borrower at the time such Alternative Currency is established' - a genuinely non-fixed, not-yet-ascertainable value\",\n              \"sourceEvidence\": \"§1.01, clause (e) of 'Borrowing Minimum'\"\n            }\n          }\n        }\n      }\n    },\n    \"dependsOnTerms\": [\"Commitments\", \"Class\", \"Alternative Currency\", \"Administrative Agent\", \"Initial Borrower\", \"Dollars\", \"Sterling\", \"Canadian Dollars\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\"The four fixed-amount currency cases (USD/EUR/GBP/CAD) are represented with a best-effort currency-selector (IF/COMPARE) since the IR has no dedicated discrete/currency-keyed case-selection primitive (see irExtensionCandidate).\", \"The fifth case (other Alternative Currencies) is inherently a variable, to-be-agreed amount and is correctly UNSUPPORTED rather than guessed.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"(a) in the case of a Borrowing denominated in U.S. Dollars, the lesser of $1,000,000 and the remaining Commitments of the applicable Class, (b) ... euros, the lesser of 1,000,000 ..., (c) ... Sterling, the lesser of £1,000,000 ..., (d) ... Canadian Dollars, the lesser of C$1,000,000 ... and (e) ... any other Alternative Currency ..., an amount to be agreed by the Administrative Agent and the Initial Borrower ...\",\n    \"inventoryItemIds\": [\"inv-item:b92eb911ab5d8bbf5ff8a73f\", \"inv-item:5ce96983b21dd809446ed45e\", \"inv-item:c2fb1041230e9905e39b04b3\"]\n  },\n  {\n    \"localRef\": \"d10\",\n    \"termName\": \"Borrowing Multiple\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"IF\",\n      \"condition\": {\n        \"kind\": \"COMPARE\",\n        \"left\": {\"kind\": \"TRANSACTION_INPUT_REFERENCE\", \"inputName\": \"Borrowing Currency\"},\n        \"operator\": \"EQ\",\n        \"right\": {\"kind\": \"DEFINED_TERM_REFERENCE\", \"termName\": \"Dollars\"}\n      },\n      \"then\": {\n        \"kind\": \"MIN\",\n        \"operands\": [\n          {\"kind\": \"MONEY\", \"amount\": 500000, \"currency\": \"USD\", \"citation\": \"§1.01\", \"inventoryItemIds\": [\"inv-item:2f7b694dd336d169f74df263\"]},\n          {\"kind\": \"TRANSACTION_INPUT_REFERENCE\", \"inputName\": \"remaining Commitments of the applicable Class\"}\n        ],\n        \"citation\": \"§1.01\"\n      },\n      \"else\": {\n        \"kind\": \"IF\",\n        \"condition\": {\n          \"kind\": \"COMPARE\",\n          \"left\": {\"kind\": \"TRANSACTION_INPUT_REFERENCE\", \"inputName\": \"Borrowing Currency\"},\n          \"operator\": \"EQ\",\n          \"right\": {\"kind\": \"DEFINED_TERM_REFERENCE\", \"termName\": \"Euro\"}\n        },\n        \"then\": {\n          \"kind\": \"MIN\",\n          \"operands\": [\n            {\"kind\": \"MONEY\", \"amount\": 500000, \"currency\": \"EUR\", \"citation\": \"§1.01\"},\n            {\"kind\": \"TRANSACTION_INPUT_REFERENCE\", \"inputName\": \"remaining Commitments of the applicable Class\"}\n          ],\n          \"citation\": \"§1.01\"\n        },\n        \"else\": {\n          \"kind\": \"IF\",\n          \"condition\": {\n            \"kind\": \"COMPARE\",\n            \"left\": {\"kind\": \"TRANSACTION_INPUT_REFERENCE\", \"inputName\": \"Borrowing Currency\"},\n            \"operator\": \"EQ\",\n            \"right\": {\"kind\": \"DEFINED_TERM_REFERENCE\", \"termName\": \"Sterling\"}\n          },\n          \"then\": {\n            \"kind\": \"MIN\",\n            \"operands\": [\n              {\"kind\": \"MONEY\", \"amount\": 500000, \"currency\": \"GBP\", \"citation\": \"§1.01\", \"inventoryItemIds\": [\"inv-item:16a88e8856dca75a54339505\"]},\n              {\"kind\": \"TRANSACTION_INPUT_REFERENCE\", \"inputName\": \"remaining Commitments of the applicable Class\"}\n            ],\n            \"citation\": \"§1.01\"\n          },\n          \"else\": {\n            \"kind\": \"IF\",\n            \"condition\": {\n              \"kind\": \"COMPARE\",\n              \"left\": {\"kind\": \"TRANSACTION_INPUT_REFERENCE\", \"inputName\": \"Borrowing Currency\"},\n              \"operator\": \"EQ\",\n              \"right\": {\"kind\": \"DEFINED_TERM_REFERENCE\", \"termName\": \"Canadian Dollars\"}\n            },\n            \"then\": {\n              \"kind\": \"MIN\",\n              \"operands\": [\n                {\"kind\": \"MONEY\", \"amount\": 500000, \"currency\": \"CAD\", \"citation\": \"§1.01\", \"inventoryItemIds\": [\"inv-item:d2bf132cbd8e771395922191\"]},\n                {\"kind\": \"TRANSACTION_INPUT_REFERENCE\", \"inputName\": \"remaining Commitments of the applicable Class\"}\n              ],\n              \"citation\": \"§1.01\"\n            },\n            \"else\": {\n              \"kind\": \"UNSUPPORTED\",\n              \"semanticDescription\": \"Borrowing Multiple for a Borrowing denominated in any Alternative Currency other than euros, Sterling or Canadian Dollars\",\n              \"reason\": \"the amount is 'an amount to be agreed by the Administrative Agent and the Initial Borrower at the time such Alternative Currency is established' - a genuinely non-fixed, not-yet-ascertainable value\",\n              \"sourceEvidence\": \"§1.01, clause (e) of 'Borrowing Multiple'\"\n            }\n          }\n        }\n      }\n    },\n    \"dependsOnTerms\": [\"Commitments\", \"Class\", \"Alternative Currency\", \"Administrative Agent\", \"Initial Borrower\", \"Dollars\", \"Sterling\", \"Canadian Dollars\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\"Same structural gap as 'Borrowing Minimum': best-effort currency-selector for the four fixed cases, UNSUPPORTED for the inherently variable fifth case.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"(a) in the case of a Borrowing denominated in U.S. Dollars, the lesser of $500,000 ..., (b) ... euros, the lesser of 500,000 ..., (c) ... Sterling, the lesser of £500,000 ..., (d) ... Canadian Dollars, the lesser of C$500,000 ... and (e) ... any other Alternative Currency ..., an amount to be agreed ...\",\n    \"inventoryItemIds\": [\"inv-item:2f7b694dd336d169f74df263\", \"inv-item:16a88e8856dca75a54339505\", \"inv-item:d2bf132cbd8e771395922191\"]\n  },\n  {\n    \"localRef\": \"d11\",\n    \"termName\": \"Borrowing Request\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Initial Borrower\", \"Administrative Agent\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"The definitional substance (a request for a Borrowing, in a prescribed or acceptable form) is fully captured; Section 2.03 (out of scope) governs procedural mechanics but is not needed to state what the term means.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"a request by the Initial Borrower for a Borrowing in accordance with Section 2.03, in substantially the form of Exhibit B or another form which is acceptable to the Administrative Agent in its reasonable discretion.\"\n  },\n  {\n    \"localRef\": \"d12\",\n    \"termName\": \"Business Day\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Term SOFR Loans\", \"Alternative Currency Term Benchmark Loan\", \"Alternative Currency\", \"CORRA\", \"TARGET Day\", \"RFR Loans\", \"RFR Business Day\", \"Sterling\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Full definition, including all five currency/rate-specific carve-outs, captured verbatim.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"any day that is not a Saturday, Sunday or other day on which commercial banks in New York City are authorized or required by law to remain closed; provided that (i)...(v)...\"\n  },\n  {\n    \"localRef\": \"d13\",\n    \"termName\": \"Calculation Period\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Excess Cash Flow Period\", \"Excess Cash Flow Interim Period\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Term is a contextual alias between two other defined terms ('as applicable'); the alias itself is fully stated, though which branch applies in any instance depends on those terms' own definitions, not supplied here.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"an Excess Cash Flow Period or an Excess Cash Flow Interim Period, as applicable.\"\n  },\n  {\n    \"localRef\": \"d14\",\n    \"termName\": \"Canadian Dollars\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Simple currency-label definition.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"\\\"Canadian Dollars\\\" or \\\"C$\\\" each means lawful money of Canada.\"\n  },\n  {\n    \"localRef\": \"d15\",\n    \"termName\": \"Canadian Prime Rate\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"MAX\",\n      \"operands\": [\n        {\"kind\": \"METRIC_REFERENCE\", \"metricName\": \"PRIMCAN Index rate (Bloomberg screen, 10:15 a.m. Toronto time)\"},\n        {\"kind\": \"PERCENT\", \"value\": 0.0, \"citation\": \"§1.01\"}\n      ],\n      \"citation\": \"§1.01\"\n    },\n    \"dependsOnTerms\": [\"Administrative Agent\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Rate mechanism and 0.00% floor (stated twice in the same proviso) fully captured.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"the rate ... equal to the PRIMCAN Index rate that appears on the Bloomberg screen at 10:15 a.m. Toronto time ...; provided that if any of the above rates shall be less than 0.00%, such rate shall be deemed to be 0.00% ...\"\n  },\n  {\n    \"localRef\": \"d16\",\n    \"termName\": \"Capital Expenditures\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Restricted Parties\", \"Initial Borrower\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Definition ties the metric to amounts required to be set forth in the Initial Borrower's consolidated cash flow statement under GAAP; no separate fixed formula is stated.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"the additions to property, plant and equipment and other capital expenditures of the Restricted Parties that are (or are required to be) set forth in a consolidated statement of cash flows of the Initial Borrower for such period prepared in accordance with GAAP.\"\n  },\n  {\n    \"localRef\": \"d17\",\n    \"termName\": \"Capital Stock\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Four-part enumerative definition, fully descriptive, no computation.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"(1) in the case of a corporation, corporate stock; (2) ... any and all shares, interests, participations, rights or other equivalents...; (3) ... partnership or membership interests...; and (4) any other interest or participation that confers on a Person the right to receive a share of the profits and losses of, or distributions of assets of, the issuing Person.\"\n  },\n  {\n    \"localRef\": \"d18\",\n    \"termName\": \"Capitalized Lease Obligation\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"AS_OF\",\n      \"operand\": {\n        \"kind\": \"METRIC_REFERENCE\",\n        \"metricName\": \"amount of the liability in respect of a Capitalized Lease required to be capitalized on a balance sheet in accordance with GAAP (excluding footnotes)\"\n      },\n      \"asOfDate\": \"2018-12-31\",\n      \"citation\": \"§1.01\"\n    },\n    \"dependsOnTerms\": [\"Capitalized Leases\", \"Initial Borrower\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"The GAAP-freeze mechanic (measured as GAAP stood on December 31, 2018, with a borrower election to keep treating certain obligations as operating leases despite later GAAP changes) is captured via the AS_OF date anchor; the borrower-election proviso is preserved in the excerpt.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"an obligation that is a Capitalized Lease; provided the amount of Indebtedness represented thereby at any time shall be the amount of the liability in respect thereof that would at that time be required to be capitalized on a balance sheet in accordance with GAAP (excluding the footnotes thereto) as in effect on December 31, 2018 ... unless the Initial Borrower elects otherwise, continue to be accounted for as operating lease obligations ... regardless of any change in GAAP following such date ...\"\n  },\n  {\n    \"localRef\": \"d19\",\n    \"termName\": \"Capitalized Leases\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Restricted Subsidiaries\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Simple descriptive definition.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"all leases that have been or should be, in accordance with GAAP, recorded as leases in the financial statements of such Person and its Restricted Subsidiaries.\"\n  },\n  {\n    \"localRef\": \"d20\",\n    \"termName\": \"Capitalized Software Expenditures\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Restricted Subsidiaries\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Descriptive aggregate definition tied to GAAP capitalization treatment; no separate fixed formula or threshold stated.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"the aggregate of all expenditures (whether paid in cash or accrued as liabilities) by a Person and its Restricted Subsidiaries during such period in respect of purchased software or internally developed software and software enhancements that, in conformity with GAAP, are or are required to be reflected as capitalized costs on the consolidated balance sheet of a Person and its Restricted Subsidiaries.\"\n  }\n]",
+   "rules": [],
+   "sharedCapacities": "[]",
+   "irExtensionCandidates": "[\n  {\n    \"sourceEvidence\": \"§1.01 'Borrowing Minimum' and 'Borrowing Multiple' definitions each state five parallel currency-keyed cases (USD/EUR/GBP/CAD/other Alternative Currency), a recurring pattern across credit agreements for currency-denominated thresholds.\",\n    \"semanticRequirement\": \"A construct that selects among a fixed set of labeled values based on matching a discrete, non-numeric transaction attribute (here, the Borrowing's currency) against named cases, analogous to SCHEDULE's date-ranged case selection but for discrete/categorical keys.\",\n    \"whyExistingPrimitivesFail\": \"SCHEDULE's cases are keyed by date ranges (from/to), not discrete labels. COMPARE/IF require both sides to be the same value type drawn from MONEY/NUMBER/RATIO/PERCENT-like literals, and there is no CURRENCY or generic ENUM literal kind, so comparing a TRANSACTION_INPUT_REFERENCE's currency against a fixed currency label has no clean, type-safe representation - forcing an ad hoc equality of two reference-kind nodes that the schema's type discipline does not clearly sanction.\",\n    \"candidateGeneralizedPrimitive\": \"A CASE_SELECT node (operand: the discrete key expression, e.g. a TRANSACTION_INPUT_REFERENCE; cases: [{matchValue (a literal or DEFINED_TERM_REFERENCE label), value}]; defaultValue) mirroring SCHEDULE's shape but for discrete/categorical keys such as currency, jurisdiction, or facility Type.\"\n  }\n]",
+   "overallNotes": "[\n  \"Source is Section 1.01 (Defined Terms), a definitions article containing many independent defined terms declared back-to-back; each was extracted as its own WireDefinition per the multiple-definitions rule, including terms with no covenant-quantitative content (e.g. Board of Directors, Capital Stock) rather than only the apparently 'salient' ones.\",\n  \"Two terms ('Beneficial Ownership Certification', 'Borrowers') are pure or near-pure cross-references outside the supplied source; getReferencedProvision was attempted for the 'Borrowers' preliminary-statements reference and did not resolve (confirmed via tool call). The Section 4.01(h) and Section 2.03 cross-references had already been flagged out-of-scope (source-context budget exhausted) by the prior retrieval pass, so those were not re-attempted per the no-duplicate-request policy.\",\n  \"'Borrowing Minimum' and 'Borrowing Multiple' are structurally piecewise-by-currency; the four fixed-dollar cases were represented with a best-effort IF/COMPARE currency-selector (flagged as an IR extension candidate gap) and the genuinely variable 'other Alternative Currency' case was correctly left UNSUPPORTED rather than guessed. All 6 frozen-inventory VALUE/MATERIAL items were consumed on their corresponding MONEY nodes and at each definition's top level.\",\n  \"The two detected 0.00% floor values and the December 31, 2018 GAAP-freeze date (not covered by named inventory items) were represented respectively in 'Canadian Prime Rate' (MAX floor) and 'Capitalized Lease Obligation' (AS_OF date anchor).\"\n]",
+   "inventoryDispositions": "[\n  {\"inventoryItemId\": \"inv-item:b92eb911ab5d8bbf5ff8a73f\", \"disposition\": \"CONSUMED\", \"note\": \"Represented as the USD MONEY literal inside the 'Borrowing Minimum' IF-chain's USD branch (d9).\"},\n  {\"inventoryItemId\": \"inv-item:5ce96983b21dd809446ed45e\", \"disposition\": \"CONSUMED\", \"note\": \"Represented as the GBP MONEY literal inside the 'Borrowing Minimum' IF-chain's Sterling branch (d9).\"},\n  {\"inventoryItemId\": \"inv-item:c2fb1041230e9905e39b04b3\", \"disposition\": \"CONSUMED\", \"note\": \"Represented as the CAD MONEY literal inside the 'Borrowing Minimum' IF-chain's Canadian Dollars branch (d9).\"},\n  {\"inventoryItemId\": \"inv-item:2f7b694dd336d169f74df263\", \"disposition\": \"CONSUMED\", \"note\": \"Represented as the USD MONEY literal inside the 'Borrowing Multiple' IF-chain's USD branch (d10).\"},\n  {\"inventoryItemId\": \"inv-item:16a88e8856dca75a54339505\", \"disposition\": \"CONSUMED\", \"note\": \"Represented as the GBP MONEY literal inside the 'Borrowing Multiple' IF-chain's Sterling branch (d10).\"},\n  {\"inventoryItemId\": \"inv-item:d2bf132cbd8e771395922191\", \"disposition\": \"CONSUMED\", \"note\": \"Represented as the CAD MONEY literal inside the 'Borrowing Multiple' IF-chain's Canadian Dollars branch (d10).\"}\n]"
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T16:58:16.900Z",
+   "inputTokens": 59791,
+   "outputTokens": 33178,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 299188,
+   "calculatedCostUsd": 0.45136200000000004
+  },
+  "cacheKey": "e12f7d03f6bd5ea6af1dcd5903cd134f19d614a148b10b2e591fc746c98f2366",
+  "compiledAt": "2026-09-14T16:58:16.900Z"
+ },
+ "wave": "A",
+ "attemptsSoFar": 1
+}

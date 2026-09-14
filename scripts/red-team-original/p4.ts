@@ -1,5 +1,5 @@
-import { classifyUnaccountedFragment, computeSourceCoverage, segmentSourceUnits } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/source-coverage";
-import { scanQuantitativeValues } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/quantitative";
+import { classifyUnaccountedFragment, computeSourceCoverage, segmentSourceUnits } from "../../lib/contract-model/compiler/semantic-accountability/source-coverage";
+import { scanQuantitativeValues } from "../../lib/contract-model/compiler/semantic-accountability/quantitative";
 const R = (text: string) => ({ regionId: "operative", kind: "OPERATIVE" as const, documentId: "d", sourceNodeId: null, sectionRef: null, charStart: 0, charEnd: text.length, text, expandedFor: null, truncatedAtBudget: false, unitExtension: null });
 const cls = (f: string) => classifyUnaccountedFragment(f, scanQuantitativeValues(f)).disposition;
 

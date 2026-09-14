@@ -1,0 +1,867 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:ec1aea485db261059c14",
+  "shardHash": "34dbec9a9ca679af4271beef75f259e723cbfc5656749e58724a67ea523dbb0c",
+  "ordinal": 6,
+  "ownedUnits": 5,
+  "sourceChars": 5170,
+  "contextEntries": 2,
+  "contextChars": 1039,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 1,
+  "ownedMaterialItems": 1,
+  "estimatedFirstTurnInputTokens": 21942,
+  "preCallEstimate": {
+   "inputTokens": 72190,
+   "outputTokens": 14000,
+   "usd": 0.28437999999999997
+  },
+  "actual": {
+   "inputTokens": 22150,
+   "outputTokens": 9906,
+   "turns": 1,
+   "latencyMs": 88739,
+   "costUsd": 0.14336000000000002,
+   "attemptCount": 1,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_COMPLETE",
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "toolCalls": 0,
+  "toolCallNames": [],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 8,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 1,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "valuesRepresented": 1,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "REPRESENTED": 1
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Class",
+   "Co-Borrower",
+   "Collateral Agent"
+  ],
+  "unresolvedIssues": [
+   "Section 1.01 excerpt contains 8 independent defined terms (Change of Control, Class, CME Term SOFR Administrator, Co-Borrower, Code, Collateral, Collateral Agent, Collateral Agreement); each is emitted as its own WireDefinition per the multiple-definitions rule.",
+   "Change of Control's qualitative carve-outs (clauses (i)-(v) governing what counts as 'beneficial ownership'/'group', and the internally-ambiguous 'clause (a)' cross-reference flagged by the evidence tooling) are documented in sufficiencyReasons rather than forced into the boolean tree, since they modify the meaning of inputs rather than adding independently computable conjuncts/disjuncts.",
+   "'Permitted Holder' definition was supplied as read-only dependency context and used only to interpret Change of Control; it was not independently compiled here as it is not part of this submission's operative source."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": true,
+   "decodedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "inventoryDispositions",
+    "overallNotes"
+   ],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": true,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "string",
+      "originalStringSha256": "542a18cb989a31b6a8725a2d4b33db087afce5847aa36bb02ace5b9fdc8f5ffb",
+      "originalStringLength": 8547,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 8,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "string",
+      "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "originalStringLength": 2,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 0,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "string",
+      "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "originalStringLength": 2,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 0,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "string",
+      "originalStringSha256": "5188aef30d71bb8d36c6277c835506429728f576db16c436b787d1e3ca959aa9",
+      "originalStringLength": 261,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 1,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "string",
+      "originalStringSha256": "ea5a623f12cbdee2260826ccaa061410a1317d36d87d2db23ac5fc4987228d8b",
+      "originalStringLength": 881,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 3,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:ec1aea485db261059c14",
+  "shardHash": "34dbec9a9ca679af4271beef75f259e723cbfc5656749e58724a67ea523dbb0c",
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:c86bec63936c13da9bde0392",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Change of Control",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AND",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:52d9ee83de0657bc3aab350a",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:4f73e12b001406976bf4c8b7",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "PERCENT",
+         "inputName": "beneficial ownership percentage of aggregate ordinary voting power of the Initial Borrower (or Successor Borrower) held by the relevant Person or group (other than Permitted Holders/excluded holdco parent)",
+         "exprId": "ir-expr:aa730ace7aea1e1a723feff7"
+        },
+        "operator": "GT",
+        "right": {
+         "kind": "PERCENT",
+         "type": "PERCENT",
+         "value": 0.5,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:c0b633a7664f9b87a597ac8e",
+         "inventoryItemIds": [
+          "inv-item:b98884032f56f138865d3687"
+         ]
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": "becoming the beneficial owner of Equity Interests representing more than 50% of the aggregate ordinary voting power entitled to vote for the election of the directors of the Initial Borrower"
+        },
+        "inventoryItemIds": [
+         "inv-item:b98884032f56f138865d3687"
+        ]
+       },
+       {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:c1e079dc3dc9ffd0db1a7e6c",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "MONEY",
+         "inputName": "beneficial ownership percentage of aggregate ordinary voting power of the Initial Borrower (or Successor Borrower) held by the relevant Person or group",
+         "exprId": "ir-expr:8ee8d69514c282997562c75b"
+        },
+        "operator": "GT",
+        "right": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "MONEY",
+         "inputName": "aggregate beneficial ownership percentage of aggregate ordinary voting power held, directly or indirectly, by the Permitted Holders",
+         "exprId": "ir-expr:2aa11db03753bf062fbd2d90"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": "the percentage of aggregate ordinary voting power so held is greater than the percentage of the aggregate ordinary voting power represented by the Equity Interests ... beneficially owned ... by the Permitted Holders"
+        }
+       },
+       {
+        "kind": "NOT",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:f0a7f342d135e8a168acc284",
+        "operand": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "BOOLEAN",
+         "inputName": "Permitted Holders have, at such time, the right or ability (by proxy, voting power, contract or otherwise) to directly or indirectly elect, designate, nominate or appoint a majority of the board of directors of the Initial Borrower (or Successor Borrower)",
+         "exprId": "ir-expr:1eb67d45a0fe2e364a55ac01"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": "unless the Permitted Holders have, at such time, the right or the ability ... to directly or indirectly elect, designate, nominate or appoint a majority of the board of directors"
+        }
+       },
+       {
+        "kind": "NOT",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:108016fc3a3134bbcbbeab0e",
+        "operand": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "BOOLEAN",
+         "inputName": "transaction resulting in a Successor Borrower in accordance with the terms of this Agreement",
+         "exprId": "ir-expr:c0ce07625e0228a197871a89"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": "any transaction resulting in a Successor Borrower in accordance with the terms of this Agreement shall not constitute a Change of Control"
+        }
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Permitted Holder",
+      "Successor Borrower",
+      "Equity Interests",
+      "Initial Borrower"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The definition's clauses (i)-(v) impose material qualifications on how 'beneficial ownership' and 'group' are determined (e.g., excluding shares of Permitted Holders within a mixed group, excluding not-yet-consummated acquisition-agreement rights, excluding certain veto/approval rights, incorporating Exchange Act Rules 13(d)-3/13(d)-5 definitions, and excluding employee benefit plans/fiduciaries) - these are qualitative modifiers to the TRANSACTION_INPUT_REFERENCE inputs rather than independently computable propositions, and are not separately modeled in the expression tree beyond being noted here.",
+      "One internal cross-reference ('clause (a) of this definition') was flagged by evidence-resolution tooling as genuinely ambiguous (matches multiple candidate targets) and is not adjudicated here.",
+      "The proviso defining 'Permitted Holder' (referenced, not compiled) and 'Successor Borrower' (undefined in supplied source) are treated as external dependencies."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Change of Control\" means any Person (other than a Permitted Holder) or Persons ... constituting a group becoming the beneficial owner of Equity Interests representing more than 50% of the aggregate ordinary voting power ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:39469a6392a4bd0f82625675",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Class",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Revolving Loans",
+      "Term Loans",
+      "Incremental Revolving Facility",
+      "Other Revolving Loans",
+      "Initial Term Loans",
+      "Incremental Term Loans",
+      "Other Term Loans"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely classificatory/descriptive definition with no quantitative economics; full text captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Class\" when used in reference to (a) any Loan or Borrowing, refers to whether such Loan ... are Loans under a specific Facility ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:07a4a715471b034d7ea51ba5",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "CME Term SOFR Administrator",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Identity/appointment definition with no quantitative economics; full text captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"CME Term SOFR Administrator\" means CME Group Benchmark Administration Limited as administrator of the forward-looking term Secured Overnight Financing Rate (SOFR) (or a successor administrator)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:5bef9783658cca558665b267",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Co-Borrower",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition is a complete cross-reference to the preamble as drafted; no additional resolution needed to capture the definition as written."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Co-Borrower\" has the meaning assigned to such term in the preamble hereto."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:562a6d1eccba64ee56697f5e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Code",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Standard statutory reference definition, fully captured."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Code\" means the Internal Revenue Code of 1986, as amended from time to time."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:ebde386d2351b65768348916",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Collateral",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Security Documents",
+      "Secured Obligations",
+      "Excluded Assets"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition fully captured as drafted; scope depends on other defined terms (Security Documents, Secured Obligations, Excluded Assets) not material to compiling this term's own text and not resolved further since no quantitative economics attach here."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Collateral\" means any and all assets ... on which Liens are purported to be granted pursuant to the Security Documents as security for the Secured Obligations, other than Excluded Assets."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:8e2f28f460600673b44d7e38",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Collateral Agent",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Collateral Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Complete cross-reference definition as drafted."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Collateral Agent\" has the meaning assigned to such term in the Collateral Agreement."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:95ce1d5077cc7a4e43c09da9",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Collateral Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Loan Parties",
+      "Collateral Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Complete identity definition as drafted, referencing a form exhibit; no quantitative economics attach here."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Collateral Agreement\" means the Collateral Agreement by and among the Loan Parties and the Collateral Agent, substantially in the form of Exhibit D."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "unresolvedIssues": [
+   "Section 1.01 excerpt contains 8 independent defined terms (Change of Control, Class, CME Term SOFR Administrator, Co-Borrower, Code, Collateral, Collateral Agent, Collateral Agreement); each is emitted as its own WireDefinition per the multiple-definitions rule.",
+   "Change of Control's qualitative carve-outs (clauses (i)-(v) governing what counts as 'beneficial ownership'/'group', and the internally-ambiguous 'clause (a)' cross-reference flagged by the evidence tooling) are documented in sufficiencyReasons rather than forced into the boolean tree, since they modify the meaning of inputs rather than adding independently computable conjuncts/disjuncts.",
+   "'Permitted Holder' definition was supplied as read-only dependency context and used only to interpret Change of Control; it was not independently compiled here as it is not part of this submission's operative source."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 22150,
+   "outputTokens": 9906,
+   "costUsd": 0.14336000000000002
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:c86bec63936c13da9bde0392",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Change of Control",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "AND",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:52d9ee83de0657bc3aab350a",
+     "operands": [
+      {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:4f73e12b001406976bf4c8b7",
+       "left": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "PERCENT",
+        "inputName": "beneficial ownership percentage of aggregate ordinary voting power of the Initial Borrower (or Successor Borrower) held by the relevant Person or group (other than Permitted Holders/excluded holdco parent)",
+        "exprId": "ir-expr:aa730ace7aea1e1a723feff7"
+       },
+       "operator": "GT",
+       "right": {
+        "kind": "PERCENT",
+        "type": "PERCENT",
+        "value": 0.5,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:c0b633a7664f9b87a597ac8e",
+        "inventoryItemIds": [
+         "inv-item:b98884032f56f138865d3687"
+        ]
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": "becoming the beneficial owner of Equity Interests representing more than 50% of the aggregate ordinary voting power entitled to vote for the election of the directors of the Initial Borrower"
+       },
+       "inventoryItemIds": [
+        "inv-item:b98884032f56f138865d3687"
+       ]
+      },
+      {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:c1e079dc3dc9ffd0db1a7e6c",
+       "left": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "beneficial ownership percentage of aggregate ordinary voting power of the Initial Borrower (or Successor Borrower) held by the relevant Person or group",
+        "exprId": "ir-expr:8ee8d69514c282997562c75b"
+       },
+       "operator": "GT",
+       "right": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "aggregate beneficial ownership percentage of aggregate ordinary voting power held, directly or indirectly, by the Permitted Holders",
+        "exprId": "ir-expr:2aa11db03753bf062fbd2d90"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": "the percentage of aggregate ordinary voting power so held is greater than the percentage of the aggregate ordinary voting power represented by the Equity Interests ... beneficially owned ... by the Permitted Holders"
+       }
+      },
+      {
+       "kind": "NOT",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:f0a7f342d135e8a168acc284",
+       "operand": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "BOOLEAN",
+        "inputName": "Permitted Holders have, at such time, the right or ability (by proxy, voting power, contract or otherwise) to directly or indirectly elect, designate, nominate or appoint a majority of the board of directors of the Initial Borrower (or Successor Borrower)",
+        "exprId": "ir-expr:1eb67d45a0fe2e364a55ac01"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": "unless the Permitted Holders have, at such time, the right or the ability ... to directly or indirectly elect, designate, nominate or appoint a majority of the board of directors"
+       }
+      },
+      {
+       "kind": "NOT",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:108016fc3a3134bbcbbeab0e",
+       "operand": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "BOOLEAN",
+        "inputName": "transaction resulting in a Successor Borrower in accordance with the terms of this Agreement",
+        "exprId": "ir-expr:c0ce07625e0228a197871a89"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": "any transaction resulting in a Successor Borrower in accordance with the terms of this Agreement shall not constitute a Change of Control"
+       }
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Permitted Holder",
+     "Successor Borrower",
+     "Equity Interests",
+     "Initial Borrower"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The definition's clauses (i)-(v) impose material qualifications on how 'beneficial ownership' and 'group' are determined (e.g., excluding shares of Permitted Holders within a mixed group, excluding not-yet-consummated acquisition-agreement rights, excluding certain veto/approval rights, incorporating Exchange Act Rules 13(d)-3/13(d)-5 definitions, and excluding employee benefit plans/fiduciaries) - these are qualitative modifiers to the TRANSACTION_INPUT_REFERENCE inputs rather than independently computable propositions, and are not separately modeled in the expression tree beyond being noted here.",
+     "One internal cross-reference ('clause (a) of this definition') was flagged by evidence-resolution tooling as genuinely ambiguous (matches multiple candidate targets) and is not adjudicated here.",
+     "The proviso defining 'Permitted Holder' (referenced, not compiled) and 'Successor Borrower' (undefined in supplied source) are treated as external dependencies."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Change of Control\" means any Person (other than a Permitted Holder) or Persons ... constituting a group becoming the beneficial owner of Equity Interests representing more than 50% of the aggregate ordinary voting power ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:39469a6392a4bd0f82625675",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Class",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Revolving Loans",
+     "Term Loans",
+     "Incremental Revolving Facility",
+     "Other Revolving Loans",
+     "Initial Term Loans",
+     "Incremental Term Loans",
+     "Other Term Loans"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely classificatory/descriptive definition with no quantitative economics; full text captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Class\" when used in reference to (a) any Loan or Borrowing, refers to whether such Loan ... are Loans under a specific Facility ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:07a4a715471b034d7ea51ba5",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "CME Term SOFR Administrator",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Identity/appointment definition with no quantitative economics; full text captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"CME Term SOFR Administrator\" means CME Group Benchmark Administration Limited as administrator of the forward-looking term Secured Overnight Financing Rate (SOFR) (or a successor administrator)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:5bef9783658cca558665b267",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Co-Borrower",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition is a complete cross-reference to the preamble as drafted; no additional resolution needed to capture the definition as written."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Co-Borrower\" has the meaning assigned to such term in the preamble hereto."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:562a6d1eccba64ee56697f5e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Code",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Standard statutory reference definition, fully captured."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Code\" means the Internal Revenue Code of 1986, as amended from time to time."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:ebde386d2351b65768348916",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Collateral",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Security Documents",
+     "Secured Obligations",
+     "Excluded Assets"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition fully captured as drafted; scope depends on other defined terms (Security Documents, Secured Obligations, Excluded Assets) not material to compiling this term's own text and not resolved further since no quantitative economics attach here."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Collateral\" means any and all assets ... on which Liens are purported to be granted pursuant to the Security Documents as security for the Secured Obligations, other than Excluded Assets."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:8e2f28f460600673b44d7e38",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Collateral Agent",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Collateral Agreement"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Complete cross-reference definition as drafted."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Collateral Agent\" has the meaning assigned to such term in the Collateral Agreement."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:95ce1d5077cc7a4e43c09da9",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Collateral Agreement",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Loan Parties",
+     "Collateral Agent"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Complete identity definition as drafted, referencing a form exhibit; no quantitative economics attach here."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Collateral Agreement\" means the Collateral Agreement by and among the Loan Parties and the Collateral Agent, substantially in the form of Exhibit D."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [],
+  "unresolvedIssues": [
+   "Section 1.01 excerpt contains 8 independent defined terms (Change of Control, Class, CME Term SOFR Administrator, Co-Borrower, Code, Collateral, Collateral Agent, Collateral Agreement); each is emitted as its own WireDefinition per the multiple-definitions rule.",
+   "Change of Control's qualitative carve-outs (clauses (i)-(v) governing what counts as 'beneficial ownership'/'group', and the internally-ambiguous 'clause (a)' cross-reference flagged by the evidence tooling) are documented in sufficiencyReasons rather than forced into the boolean tree, since they modify the meaning of inputs rather than adding independently computable conjuncts/disjuncts.",
+   "'Permitted Holder' definition was supplied as read-only dependency context and used only to interpret Change of Control; it was not independently compiled here as it is not part of this submission's operative source."
+  ],
+  "toolCallLog": [],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": "[\n  {\n    \"localRef\": \"d-coc\",\n    \"termName\": \"Change of Control\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": {\n      \"kind\": \"AND\",\n      \"operands\": [\n        {\n          \"kind\": \"COMPARE\",\n          \"left\": {\n            \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n            \"inputName\": \"beneficial ownership percentage of aggregate ordinary voting power of the Initial Borrower (or Successor Borrower) held by the relevant Person or group (other than Permitted Holders/excluded holdco parent)\"\n          },\n          \"operator\": \"GT\",\n          \"right\": {\n            \"kind\": \"PERCENT\",\n            \"value\": 0.5,\n            \"citation\": \"§1.01\",\n            \"inventoryItemIds\": [\"inv-item:b98884032f56f138865d3687\"]\n          },\n          \"citation\": \"§1.01\",\n          \"excerpt\": \"becoming the beneficial owner of Equity Interests representing more than 50% of the aggregate ordinary voting power entitled to vote for the election of the directors of the Initial Borrower\",\n          \"inventoryItemIds\": [\"inv-item:b98884032f56f138865d3687\"]\n        },\n        {\n          \"kind\": \"COMPARE\",\n          \"left\": {\n            \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n            \"inputName\": \"beneficial ownership percentage of aggregate ordinary voting power of the Initial Borrower (or Successor Borrower) held by the relevant Person or group\"\n          },\n          \"operator\": \"GT\",\n          \"right\": {\n            \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n            \"inputName\": \"aggregate beneficial ownership percentage of aggregate ordinary voting power held, directly or indirectly, by the Permitted Holders\"\n          },\n          \"citation\": \"§1.01\",\n          \"excerpt\": \"the percentage of aggregate ordinary voting power so held is greater than the percentage of the aggregate ordinary voting power represented by the Equity Interests ... beneficially owned ... by the Permitted Holders\"\n        },\n        {\n          \"kind\": \"NOT\",\n          \"operand\": {\n            \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n            \"inputName\": \"Permitted Holders have, at such time, the right or ability (by proxy, voting power, contract or otherwise) to directly or indirectly elect, designate, nominate or appoint a majority of the board of directors of the Initial Borrower (or Successor Borrower)\"\n          },\n          \"citation\": \"§1.01\",\n          \"excerpt\": \"unless the Permitted Holders have, at such time, the right or the ability ... to directly or indirectly elect, designate, nominate or appoint a majority of the board of directors\"\n        },\n        {\n          \"kind\": \"NOT\",\n          \"operand\": {\n            \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n            \"inputName\": \"transaction resulting in a Successor Borrower in accordance with the terms of this Agreement\"\n          },\n          \"citation\": \"§1.01\",\n          \"excerpt\": \"any transaction resulting in a Successor Borrower in accordance with the terms of this Agreement shall not constitute a Change of Control\"\n        }\n      ],\n      \"citation\": \"§1.01\"\n    },\n    \"dependsOnTerms\": [\"Permitted Holder\", \"Successor Borrower\", \"Equity Interests\", \"Initial Borrower\"],\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\n      \"The definition's clauses (i)-(v) impose material qualifications on how 'beneficial ownership' and 'group' are determined (e.g., excluding shares of Permitted Holders within a mixed group, excluding not-yet-consummated acquisition-agreement rights, excluding certain veto/approval rights, incorporating Exchange Act Rules 13(d)-3/13(d)-5 definitions, and excluding employee benefit plans/fiduciaries) - these are qualitative modifiers to the TRANSACTION_INPUT_REFERENCE inputs rather than independently computable propositions, and are not separately modeled in the expression tree beyond being noted here.\",\n      \"One internal cross-reference ('clause (a) of this definition') was flagged by evidence-resolution tooling as genuinely ambiguous (matches multiple candidate targets) and is not adjudicated here.\",\n      \"The proviso defining 'Permitted Holder' (referenced, not compiled) and 'Successor Borrower' (undefined in supplied source) are treated as external dependencies.\"\n    ],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"\\\"Change of Control\\\" means any Person (other than a Permitted Holder) or Persons ... constituting a group becoming the beneficial owner of Equity Interests representing more than 50% of the aggregate ordinary voting power ...\"\n  },\n  {\n    \"localRef\": \"d-class\",\n    \"termName\": \"Class\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Revolving Loans\", \"Term Loans\", \"Incremental Revolving Facility\", \"Other Revolving Loans\", \"Initial Term Loans\", \"Incremental Term Loans\", \"Other Term Loans\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Purely classificatory/descriptive definition with no quantitative economics; full text captured.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"\\\"Class\\\" when used in reference to (a) any Loan or Borrowing, refers to whether such Loan ... are Loans under a specific Facility ...\"\n  },\n  {\n    \"localRef\": \"d-cme\",\n    \"termName\": \"CME Term SOFR Administrator\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Identity/appointment definition with no quantitative economics; full text captured.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"\\\"CME Term SOFR Administrator\\\" means CME Group Benchmark Administration Limited as administrator of the forward-looking term Secured Overnight Financing Rate (SOFR) (or a successor administrator).\"\n  },\n  {\n    \"localRef\": \"d-coborrower\",\n    \"termName\": \"Co-Borrower\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Definition is a complete cross-reference to the preamble as drafted; no additional resolution needed to capture the definition as written.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"\\\"Co-Borrower\\\" has the meaning assigned to such term in the preamble hereto.\"\n  },\n  {\n    \"localRef\": \"d-code\",\n    \"termName\": \"Code\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Standard statutory reference definition, fully captured.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"\\\"Code\\\" means the Internal Revenue Code of 1986, as amended from time to time.\"\n  },\n  {\n    \"localRef\": \"d-collateral\",\n    \"termName\": \"Collateral\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Security Documents\", \"Secured Obligations\", \"Excluded Assets\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Definition fully captured as drafted; scope depends on other defined terms (Security Documents, Secured Obligations, Excluded Assets) not material to compiling this term's own text and not resolved further since no quantitative economics attach here.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"\\\"Collateral\\\" means any and all assets ... on which Liens are purported to be granted pursuant to the Security Documents as security for the Secured Obligations, other than Excluded Assets.\"\n  },\n  {\n    \"localRef\": \"d-collagent\",\n    \"termName\": \"Collateral Agent\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Collateral Agreement\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Complete cross-reference definition as drafted.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"\\\"Collateral Agent\\\" has the meaning assigned to such term in the Collateral Agreement.\"\n  },\n  {\n    \"localRef\": \"d-collagreement\",\n    \"termName\": \"Collateral Agreement\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"calculationExpression\": null,\n    \"dependsOnTerms\": [\"Loan Parties\", \"Collateral Agent\"],\n    \"sufficiency\": \"COMPLETE\",\n    \"sufficiencyReasons\": [\"Complete identity definition as drafted, referencing a form exhibit; no quantitative economics attach here.\"],\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"\\\"Collateral Agreement\\\" means the Collateral Agreement by and among the Loan Parties and the Collateral Agent, substantially in the form of Exhibit D.\"\n  }\n]",
+   "rules": [],
+   "sharedCapacities": "[]",
+   "irExtensionCandidates": "[]",
+   "inventoryDispositions": "[\n  {\n    \"inventoryItemId\": \"inv-item:b98884032f56f138865d3687\",\n    \"disposition\": \"\",\n    \"note\": \"Consumed on the PERCENT(0.5) literal and its enclosing COMPARE node within the Change of Control definition's calculationExpression (first AND operand).\"\n  }\n]",
+   "overallNotes": "[\"Section 1.01 excerpt contains 8 independent defined terms (Change of Control, Class, CME Term SOFR Administrator, Co-Borrower, Code, Collateral, Collateral Agent, Collateral Agreement); each is emitted as its own WireDefinition per the multiple-definitions rule.\", \"Change of Control's qualitative carve-outs (clauses (i)-(v) governing what counts as 'beneficial ownership'/'group', and the internally-ambiguous 'clause (a)' cross-reference flagged by the evidence tooling) are documented in sufficiencyReasons rather than forced into the boolean tree, since they modify the meaning of inputs rather than adding independently computable conjuncts/disjuncts.\", \"'Permitted Holder' definition was supplied as read-only dependency context and used only to interpret Change of Control; it was not independently compiled here as it is not part of this submission's operative source.\"]"
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T17:03:36.716Z",
+   "inputTokens": 22150,
+   "outputTokens": 9906,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 1,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 88735,
+   "calculatedCostUsd": 0.14336000000000002
+  },
+  "cacheKey": "6c4ff92d59dae6bb64aeb6326a505401f8dac5fc3d8b9274d5cebab26ff7ac53",
+  "compiledAt": "2026-09-14T17:03:36.717Z"
+ },
+ "wave": "A",
+ "attemptsSoFar": 1
+}
