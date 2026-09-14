@@ -1,0 +1,474 @@
+{
+ "artifact": "F-7B §16-§21 cost / window / definition / dependency summary",
+ "at": "2026-09-14T13:02:24.761Z",
+ "gitSha": "0cdfcf26ebb19b0a3ff59c8cb31f35f7e140610b",
+ "paidCalls": 17,
+ "paidCostUsd": 2.6322,
+ "stage1CostUsd": 2.6322,
+ "missionCapUsd": 15,
+ "refusals": [],
+ "historicalMonolithic": {
+  "firstTurnInputTokens": 312143,
+  "outputTokens": 60318,
+  "turnCostUsd": 1.227466,
+  "unitCostInclPassAUsd": 2.04469,
+  "status": "FAILED (whole unit lost)"
+ },
+ "input": {
+  "envelope": {
+   "normalShardMaxSingleTurnInputTokens": 60000,
+   "nearCeilingOutputTokens": 100000,
+   "maxTokensSetting": 128000
+  },
+  "normalShards": 4,
+  "maxSingleTurnInputNormal": 49649,
+  "envelopeViolations": [],
+  "perShardTotalInput": {
+   "max": 217357,
+   "median": 79480,
+   "p95": 217357,
+   "total": 633487
+  },
+  "singleTurnInput": {
+   "max": 49649,
+   "median": 45335,
+   "p95": 49649
+  },
+  "output": {
+   "maxPerShard": 42224,
+   "median": 27697,
+   "p95": 42224,
+   "total": 136520,
+   "maxSingleTurn": 28215,
+   "nearCeiling": [],
+   "truncated": []
+  },
+  "oversizedShard": {
+   "shardId": "shard:4f06625557e9aecbbb7a",
+   "oversized": true,
+   "maxTurnIn": 46151,
+   "totalIn": 79480,
+   "totalOut": 30906,
+   "maxTurnOut": 19101,
+   "turns": 2,
+   "cost": 0.46802
+  },
+  "historicalMonolithicFirstTurnInput": 312143,
+  "peakInputReduction": 0.8409,
+  "totalInputVsMonolithicFirstTurn": 2.029,
+  "fixedOverheadContribution": {
+   "charsPerCall": 41306,
+   "tokensPerCall": 16345,
+   "totalTokensOverAllTurns": 277865,
+   "shareOfTotalInput": 0.439
+  },
+  "peakWindowImprovement": "largest single turn 49649 tokens vs 312,143 (84.1% reduction)",
+  "totalTokenCost": "633487 input tokens over 17 turns = 2.029x the monolithic first turn"
+ },
+ "output": {
+  "maxPerShard": 42224,
+  "median": 27697,
+  "p95": 42224,
+  "total": 136520,
+  "maxSingleTurn": 28215,
+  "nearCeiling": [],
+  "truncated": [],
+  "f7aEstimateMaxPerShard": 41500,
+  "ceiling": 128000
+ },
+ "cost": {
+  "historicalFailedMonolithicUsd": 2.04469,
+  "newFullShardedUsd": 2.6322,
+  "costPerMaterialItemAccountedUsd": 2.6322,
+  "costPerCompiledDefinitionUsd": 2.6322,
+  "wastedFailedOrRetriedUsd": 2.6322,
+  "retryCostUsd": 0,
+  "estimatedOneShardRerunUsd": 0,
+  "meanCostPerShardUsd": 0.5264
+ },
+ "largestAtomicDefinition": {
+  "shardId": "shard:4f06625557e9aecbbb7a",
+  "term": "Permitted Liens",
+  "sourceChars": 26695,
+  "maxPrimaryChars": 24000,
+  "ownedItems": 6,
+  "ownedMaterialItems": 6,
+  "contextEntries": 7,
+  "contextChars": 3701,
+  "actual": {
+   "inputTokens": 79480,
+   "outputTokens": 30906,
+   "turns": 2,
+   "latencyMs": 291681,
+   "costUsd": 0.46802,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "maxSingleTurnInputTokens": 46151,
+  "status": "SHARD_SCHEMA_FAILURE",
+  "compileStatus": "FAILED",
+  "failureReasons": [
+   "MODEL_SCHEMA_FAILURE"
+  ],
+  "ownedAccountability": {
+   "represented": 0,
+   "dispositioned": 0,
+   "missingMaterial": 6,
+   "valuesRepresented": 0,
+   "valuesMissing": 9,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "MISSING_FROM_COMPOSITION": 6
+   }
+  },
+  "insideProviderLimits": true,
+  "atomicityCausedMaterialProblem": true
+ },
+ "definitions": {
+  "definitionUnits": 379,
+  "stitchedDefinitions": 0,
+  "coverage": {
+   "COMPILED": 0,
+   "ITEMS_REPRESENTED_WITHOUT_DEFINITION_OBJECT": 0,
+   "DISPOSITIONED_NON_COMPUTATIONAL": 0,
+   "NO_INVENTORY_ITEMS_NO_IR": 330,
+   "MISSING_MATERIAL": 0,
+   "OWNER_SHARD_NOT_COMPLETE": 49
+  },
+  "conflicts": 0,
+  "consistentDuplicates": 0,
+  "contextualDefinitionEmissions": 0,
+  "sufficiency": {},
+  "missingMaterialUnits": []
+ },
+ "dependencies": {
+  "definitionTermDependencies": 0,
+  "resolvedToStitchedDefinition": 0,
+  "resolvedToSourceUnitOnly": 0,
+  "unresolvedTermDependencies": 0,
+  "crossShardTermDependencies": 0,
+  "crossShardResolved": 0,
+  "ruleDependencies": {
+   "resolved": 0,
+   "unresolved": 0
+  },
+  "missingContextDispositions": 0,
+  "missingContextSufficiencyObjects": 0,
+  "shardsGivenContext": 35,
+  "shardsGivenContextCompleteWithoutOwnedMaterialMissing": 0,
+  "contextEntriesTruncated": 14,
+  "shardsWithTruncatedContext": [
+   "shard:1c29e71eef1717d4f9e1",
+   "shard:5f63d11e8ce53e883d6a",
+   "shard:d3aac7c869cff4602343",
+   "shard:bf3da01cb454860cdf5f",
+   "shard:a45ccfe3d94f990e5348",
+   "shard:f3eb63624b7f5a5c3cca",
+   "shard:f048973d2e9a58498b81",
+   "shard:4f06625557e9aecbbb7a",
+   "shard:3e3910ea2efd9edd45a3",
+   "shard:50e26ec2fb25035a3b7b"
+  ],
+  "unresolvedContextEntries": 20
+ },
+ "humanReference": {
+  "summary": {
+   "items": 14,
+   "itemsWithValues": 7,
+   "valuesTotal": 23,
+   "valuesMatched": 0,
+   "itemsFullyMatched": 0
+  },
+  "items": [
+   {
+    "id": "B12",
+    "materiality": "CRITICAL",
+    "section": "Permitted Investments (13)",
+    "ownerShard": "shard:f048973d2e9a58498b81",
+    "ownerShardStatus": "NOT_EXECUTED",
+    "referenceValues": [
+     "MONEY:720000000",
+     "PERCENT:1"
+    ],
+    "matchedInStitchedIR": [],
+    "matchRate": 0
+   },
+   {
+    "id": "B13",
+    "materiality": "MATERIAL",
+    "section": "Permitted Liens (46)",
+    "ownerShard": "shard:4f06625557e9aecbbb7a",
+    "ownerShardStatus": "SHARD_SCHEMA_FAILURE",
+    "referenceValues": [],
+    "matchedInStitchedIR": [],
+    "matchRate": null
+   },
+   {
+    "id": "B14",
+    "materiality": "CRITICAL",
+    "section": "Incremental Cap / Fixed Incremental Amount",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "ownerShardStatus": "SHARD_SCHEMA_FAILURE",
+    "referenceValues": [
+     "MONEY:720000000",
+     "PERCENT:1"
+    ],
+    "matchedInStitchedIR": [],
+    "matchRate": 0
+   },
+   {
+    "id": "C3",
+    "materiality": "CRITICAL",
+    "section": "Prepayment Event (a)/(b)",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "ownerShardStatus": "SHARD_SCHEMA_FAILURE",
+    "referenceValues": [
+     "MONEY:144000000",
+     "MONEY:216000000",
+     "PERCENT:0.2",
+     "PERCENT:0.3",
+     "PERCENT:1"
+    ],
+    "matchedInStitchedIR": [],
+    "matchRate": 0
+   },
+   {
+    "id": "D1",
+    "materiality": "CRITICAL",
+    "section": "Threshold Amount / Material Indebtedness",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "ownerShardStatus": "NOT_EXECUTED",
+    "referenceValues": [
+     "MONEY:324000000",
+     "PERCENT:0.45"
+    ],
+    "matchedInStitchedIR": [],
+    "matchRate": 0
+   },
+   {
+    "id": "D2",
+    "materiality": "CRITICAL",
+    "section": "ECF Percentage",
+    "ownerShard": "shard:4d114bdf00429cf670f8",
+    "ownerShardStatus": "NOT_EXECUTED",
+    "referenceValues": [
+     "PERCENT:0.5",
+     "PERCENT:0.25",
+     "PERCENT:0",
+     "RATIO:2.5",
+     "RATIO:2"
+    ],
+    "matchedInStitchedIR": [],
+    "matchRate": 0
+   },
+   {
+    "id": "D3",
+    "materiality": "CRITICAL",
+    "section": "Disposition Percentage",
+    "ownerShard": "shard:4d114bdf00429cf670f8",
+    "ownerShardStatus": "NOT_EXECUTED",
+    "referenceValues": [
+     "PERCENT:1",
+     "PERCENT:0.5",
+     "PERCENT:0",
+     "RATIO:2.5",
+     "RATIO:2"
+    ],
+    "matchedInStitchedIR": [],
+    "matchRate": 0
+   },
+   {
+    "id": "D4",
+    "materiality": "MATERIAL",
+    "section": "Applicable Rate",
+    "ownerShard": "shard:b934f8ceb0d79b5cfe57",
+    "ownerShardStatus": "NOT_EXECUTED",
+    "referenceValues": [
+     "PERCENT:0.0175",
+     "PERCENT:0.0075"
+    ],
+    "matchedInStitchedIR": [],
+    "matchRate": 0
+   },
+   {
+    "id": "D5",
+    "materiality": "CRITICAL",
+    "section": "Ratio definitions",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "ownerShardStatus": "SHARD_SCHEMA_FAILURE",
+    "referenceValues": [],
+    "matchedInStitchedIR": [],
+    "matchRate": null
+   },
+   {
+    "id": "D6",
+    "materiality": "MATERIAL",
+    "section": "Test Period",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "ownerShardStatus": "NOT_EXECUTED",
+    "referenceValues": [],
+    "matchedInStitchedIR": [],
+    "matchRate": null
+   },
+   {
+    "id": "D9",
+    "materiality": "MATERIAL",
+    "section": "Consolidated EBITDA",
+    "ownerShard": "shard:87f08272567db019c17b",
+    "ownerShardStatus": "NOT_EXECUTED",
+    "referenceValues": [],
+    "matchedInStitchedIR": [],
+    "matchRate": null
+   },
+   {
+    "id": "E1",
+    "materiality": "CRITICAL",
+    "section": "Available RP Capacity Amount",
+    "ownerShard": "shard:4c30ced71fe038991b4b",
+    "ownerShardStatus": "NOT_EXECUTED",
+    "referenceValues": [],
+    "matchedInStitchedIR": [],
+    "matchRate": null
+   },
+   {
+    "id": "E2",
+    "materiality": "MATERIAL",
+    "section": "Available Investment Capacity Amount",
+    "ownerShard": "shard:1c29e71eef1717d4f9e1",
+    "ownerShardStatus": "SHARD_SCHEMA_FAILURE",
+    "referenceValues": [],
+    "matchedInStitchedIR": [],
+    "matchRate": null
+   },
+   {
+    "id": "E3",
+    "materiality": "CRITICAL",
+    "section": "Fixed Incremental Amount consumption",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "ownerShardStatus": "SHARD_SCHEMA_FAILURE",
+    "referenceValues": [],
+    "matchedInStitchedIR": [],
+    "matchRate": null
+   }
+  ]
+ },
+ "shards": {
+  "shardStatuses": {
+   "NOT_EXECUTED": 31,
+   "SHARD_SCHEMA_FAILURE": 5
+  },
+  "retries": 0,
+  "stitchedStatus": "FAILED",
+  "stitchedFailureReasons": [
+   "PROVIDER_FAILURE",
+   "SHARD_INCOMPLETE",
+   "MODEL_SCHEMA_FAILURE",
+   "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+   "PARTIAL_COMPILATION"
+  ],
+  "unresolvedOwnedItems": 108,
+  "nonCompleteShardsExplicit": 36
+ },
+ "collisions": {},
+ "accountability": {
+  "materialTotal": 108,
+  "materialRepresented": 0,
+  "materialDispositioned": 0,
+  "materialMissing": 108,
+  "materialAccountabilityRate": 0,
+  "materialMissingOwnedByCompleteShards": 0,
+  "materialMissingOwnedByFailedShards": 108,
+  "allItemsByDisposition": {
+   "MISSING_FROM_COMPOSITION": 109
+  },
+  "passC": {
+   "inventoried": 109,
+   "material": 108,
+   "represented": 0,
+   "intentionallyNonComputational": 0,
+   "unsupported": 0,
+   "ambiguous": 0,
+   "missingFromComposition": 109,
+   "materialMissingFromComposition": 108,
+   "criticalMissingFromComposition": 54,
+   "materialQuantitativeValues": 142,
+   "materialQuantitativeValuesMissing": 142,
+   "uninventoriedValues": 95,
+   "unaccountedSource": 721,
+   "danglingLineageReferences": 0,
+   "canonicalizedLineageReferences": 0
+  },
+  "semanticallyComplete": false,
+  "unresolvedOwnedItems": 108
+ },
+ "valuePreservation": {
+  "valueOccurrencesBefore": 0,
+  "valueOccurrencesAfter": 0,
+  "distinctValuesBefore": 0,
+  "distinctValuesAfter": 0,
+  "valuesOnlyInDroppedContextualEmissions": 0,
+  "valuesLostByStitching": 0,
+  "valuesLostList": [],
+  "duplicatesCollapsed": 0,
+  "multisetOccurrencesRemoved": 0
+ },
+ "lineage": {
+  "lineageRefsBefore": 0,
+  "lineageRefsAfter": 0,
+  "canonicalizedDigestIds": 0,
+  "strippedClaimsOnUnownedItems": 0,
+  "strippedOnItemsOwnedBySomeShard": 0,
+  "strippedOnUnknownIds": 0,
+  "danglingLineageAfter": 0,
+  "lineageRefsInDroppedEmissions": 0,
+  "unknownLineageIdsBefore": 0
+ },
+ "provenance": {
+  "objectsKept": 0,
+  "sourceUnverifiableSurviving": 0,
+  "list": [],
+  "definitionsWithLineage": 0
+ },
+ "unsupported": {
+  "unsupportedNodes": 0,
+  "exprNodes": 0,
+  "definitionSufficiency": {},
+  "ruleSufficiency": {},
+  "shardsPartial": 0,
+  "shardsMissingContext": 0,
+  "shardsSchemaFailure": 5,
+  "outputTruncatedShards": []
+ },
+ "falseCompleteness": {
+  "falseCompleteness": 0,
+  "falseCompletenessList": [],
+  "dangerousSilentOmissions": 0,
+  "silentList": [],
+  "hiddenFailedShards": 0,
+  "contextualOwnershipCredit": 0,
+  "conflictSilentMerge": 0
+ },
+ "trust": {
+  "dangerousSilentOmissions": 0,
+  "falseCompleteness": 0,
+  "contextualOwnershipCredit": 0,
+  "sourceUnverifiableIrSurviving": 0,
+  "conflictingDuplicateSilentlyMerged": 0,
+  "valuesLostByStitching": 0,
+  "danglingReferencesCausedByStitching": 0,
+  "danglingLineageAfterPassC": 0,
+  "danglingRuleReferencesSurviving": 0,
+  "danglingRuleReferencesConvertedExplicitly": 0,
+  "failedShardHidden": 0,
+  "missingMaterialOwnedItemHidden": 0
+ },
+ "isolation": {
+  "realTransportFailures": [],
+  "retriedShards": [],
+  "siblingResultsReusedByHash": 0,
+  "deterministicMockTests": " ✓ tests/contract-model/f7a-shard-planner-stitcher.test.ts (31 tests | 26 skipped) 80ms\n      Tests  5 passed | 26 skipped (31)\n",
+  "note": "no real transport failure occurred; the deterministic mock tests (F-7A §19 E/F) are the isolation evidence"
+ }
+}
