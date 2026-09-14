@@ -1,0 +1,66 @@
+{
+ "artifact": "F-7B.3A \u00a79/\u00a713 - Wave A kill gate FAILED: root cause of the conflict-resolution content loss",
+ "at": "2026-09-14T17:17:05.143638Z",
+ "gate": "FAILED",
+ "waveBExecuted": false,
+ "verdict": "F7_NOT_SAFE",
+ "failedCounts": {
+  "ownedValuesLostByStitching": 2,
+  "ownedLineageLostByStitching": 6
+ },
+ "defect": {
+  "id": "F7B3A-1",
+  "name": "DEFINITION_CONFLICT tie-break discards the richer copy's values and lineage",
+  "whatHappened": "Two definitions were each emitted by two different shards with different content. The stitcher's conflict path keeps the FIRST owner copy, marks it sufficiency AMBIGUOUS and raises a review collision. In both cases the first copy was the EMPTY one (no quantitative values, no inventory lineage) and the discarded copy was the richer one. The discarded content is represented nowhere in the stitched IR.",
+  "cases": [
+   {
+    "definitionId": "ir-definition:c1fdd29c59289405ecdc449c",
+    "termName": "Approved Bank",
+    "keptFrom": "shard:b934f8ceb0d79b5cfe57",
+    "keptLineageRefs": 0,
+    "keptAmounts": 0,
+    "discardedFrom": "shard:c68b6e6e275414f90c39",
+    "discardedLineageRefs": 4,
+    "discardedAmounts": 2,
+    "lostValues": [
+     "MONEY:100000000",
+     "MONEY:250000000"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:9798cd4753246e6ba790c06e",
+    "termName": "Annual Threshold",
+    "keptFrom": "shard:b934f8ceb0d79b5cfe57",
+    "keptLineageRefs": 0,
+    "keptAmounts": 0,
+    "discardedFrom": "shard:3e3910ea2efd9edd45a3",
+    "discardedLineageRefs": 2,
+    "discardedAmounts": 1,
+    "lostValues": [],
+    "note": "contributes to the 6 lost lineage refs; its amount is a duplicate of a value present elsewhere so it does not add to the distinct-value loss"
+   }
+  ],
+  "isItSilent": "No. Both conflicts raise DEFINITION_CONFLICT with requiresReview true, and the retained copy is downgraded to sufficiency AMBIGUOUS with a stated reason. A reviewer can see that a conflict exists. What a reviewer CANNOT see from the IR is the content that was discarded.",
+  "whyItMattersAnyway": "The pre-registered gate is zero owned quantitative values lost by stitching. Two real MONEY values a shard emitted from its own owned source are absent from authoritative IR. Flagging the conflict does not restore them, and nothing downstream can recover them from the IR alone.",
+  "whyItNeverFiredBefore": "The F-7B.2 offline re-stitch over the five Stage-1 results produced zero collisions of any kind. A cross-shard definition-id conflict needs two shards to emit the same definition id, which first happened when Wave A shards were stitched alongside the frozen Stage-1 results. One of the two conflicts is in fact cross-stage: a Stage-1 shard against a Wave A shard.",
+  "classification": "Architecture defect in conflict resolution, not a wire, model or attribution defect. Definition attribution itself held perfectly: 191 proof-class assignments, zero source-unverifiable.",
+  "scopeOfFix": "lib/contract-model/compiler/semantic/shard-stitcher.ts conflict branch only. Out of scope for this mission by \u00a720, which forbids production changes and forbids fixing and continuing paid execution in the same mission."
+ },
+ "everythingElsePassed": {
+  "dangerousSilentOmissions": 0,
+  "falseCompleteness": 0,
+  "sourceUnverifiableAuthoritativeIr": 0,
+  "contextualOwnershipCredit": 0,
+  "silentIncompatibleMerges": 0,
+  "newDanglingReferences": 0,
+  "lineageClaimsOnUnownedItems": 0,
+  "hiddenFailedShards": 0,
+  "hiddenMissingMaterialItems": 0,
+  "schemaFailures": 0,
+  "providerFailures": 0,
+  "retries": 0,
+  "note": "11 of 13 gate points passed. The two failures share one root cause."
+ },
+ "waveBDecision": "Not executed. \u00a79 forbids executing Wave B after a failed gate, and \u00a720 forbids fixing production inside this mission. Wave A results are frozen and reusable by shard hash, so a remediation mission can re-stitch them offline at zero cost.",
+ "recommendedNextMission": "Zero-cost stitcher remediation: make the DEFINITION_CONFLICT branch preserve the union of owned values and lineage, or retain both copies explicitly for review, rather than discarding one side. Re-stitch the 15 frozen results offline to prove the counts reach zero, then resume Wave B."
+}

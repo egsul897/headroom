@@ -1,0 +1,445 @@
+{
+ "artifact": "F-7B.3A §14-§18 final reporting over the 5 frozen Stage-1 and the newly executed Stage-2 shards",
+ "at": "2026-09-14T17:16:39.611Z",
+ "gitSha": "669667612a2c2bfa08aa6e32a637bb4179cb225b",
+ "waves": [
+  {
+   "wave": "A",
+   "shards": 10,
+   "executed": 10,
+   "costUsd": 3.3829,
+   "allPass": false,
+   "gate": {
+    "dangerousSilentOmissions": true,
+    "falseCompleteness": true,
+    "sourceUnverifiableAuthoritativeIr": true,
+    "contextualOwnershipCredit": true,
+    "silentIncompatibleMerges": true,
+    "newDanglingReferences": true,
+    "ownedValuesLostByStitching": false,
+    "ownedLineageLostByStitching": false,
+    "noSystematicSchemaFailure": true,
+    "noNewToolProtocolFailure": true,
+    "noSystematicAttributionFailure": true,
+    "resultsIndependentlyReusable": true,
+    "costTrajectory": true
+   },
+   "trust": {
+    "dangerousSilentOmissions": 0,
+    "falseCompleteness": 0,
+    "sourceUnverifiableAuthoritativeIr": 0,
+    "sourceUnverifiableLegacyTwoClassMetric": 45,
+    "contextualOwnershipCredit": 0,
+    "silentIncompatibleMerges": 0,
+    "ownedValuesLostByStitching": 2,
+    "ownedLineageLostByStitching": 6,
+    "lineageClaimsOnUnownedItemsStripped": 0,
+    "newDanglingReferences": 0,
+    "hiddenFailedShards": 0,
+    "hiddenMissingMaterialItems": 0
+   },
+   "proofCounts": {
+    "PLANNER_DEFINITION_UNIT": 124,
+    "OWNED_INVENTORY_LINEAGE": 22,
+    "UNIQUE_PRIMARY_SOURCE_DECLARATION": 45,
+    "NONE": 0
+   }
+  }
+ ],
+ "terminalShards": 15,
+ "totalShards": 36,
+ "notExecuted": 21,
+ "accountability": {
+  "executedShards": 15,
+  "executedShardMaterialOwned": 63,
+  "executedRepresented": 37,
+  "executedIntentionallyNonComputational": 1,
+  "executedUnsupported": 16,
+  "executedAmbiguous": 0,
+  "executedMissing": 9,
+  "executedAccountabilityRate": 0.8571,
+  "unresolvedSolelyBecauseNotExecuted": 45,
+  "materialTotal": 108,
+  "globalPassC": {
+   "inventoried": 109,
+   "material": 108,
+   "represented": 50,
+   "intentionallyNonComputational": 1,
+   "unsupported": 18,
+   "ambiguous": 0,
+   "missingFromComposition": 40,
+   "materialMissingFromComposition": 39,
+   "criticalMissingFromComposition": 12,
+   "materialQuantitativeValues": 142,
+   "materialQuantitativeValuesMissing": 44,
+   "uninventoriedValues": 95,
+   "unaccountedSource": 721,
+   "danglingLineageReferences": 0,
+   "canonicalizedLineageReferences": 0
+  },
+  "semanticallyComplete": false
+ },
+ "proofCounts": {
+  "PLANNER_DEFINITION_UNIT": 124,
+  "OWNED_INVENTORY_LINEAGE": 22,
+  "UNIQUE_PRIMARY_SOURCE_DECLARATION": 45,
+  "NONE": 0
+ },
+ "trust": {
+  "dangerousSilentOmissions": 0,
+  "falseCompleteness": 0,
+  "sourceUnverifiableAuthoritativeIr": 0,
+  "sourceUnverifiableLegacyTwoClassMetric": 45,
+  "contextualOwnershipCredit": 0,
+  "silentIncompatibleMerges": 0,
+  "ownedValuesLostByStitching": 2,
+  "ownedLineageLostByStitching": 6,
+  "lineageClaimsOnUnownedItemsStripped": 0,
+  "newDanglingReferences": 0,
+  "hiddenFailedShards": 0,
+  "hiddenMissingMaterialItems": 0
+ },
+ "stitched": {
+  "status": "PARTIAL",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "SHARD_INCOMPLETE",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED",
+   "PROVIDER_FAILURE",
+   "SHARD_CONFLICT",
+   "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+  ],
+  "rules": 11,
+  "definitions": 170,
+  "sharedCapacities": 0,
+  "contextualEmissions": 10,
+  "collisionsByKind": {
+   "CONTEXTUAL_UNOWNED_DEFINITION": 10,
+   "DEFINITION_CONFLICT": 2
+  },
+  "unresolvedOwnedItems": 86
+ },
+ "window": {
+  "maxSingleTurnInputTokens": 45884,
+  "maxSingleTurnOutputTokens": 33097,
+  "newShardsMedianAggregateInput": 57338,
+  "newShardsP95AggregateInput": 71834,
+  "newShardsMedianOutput": 19474,
+  "newShardsP95Output": 33178,
+  "combinedMedianAggregateInput": 61617,
+  "combinedP95AggregateInput": 169289,
+  "combinedMedianOutput": 25281,
+  "combinedP95Output": 37676,
+  "totalNewInputTokens": 532109,
+  "totalNewOutputTokens": 231868,
+  "historicalMonolithicFirstTurnInput": 312143,
+  "peakInputReductionVsMonolithic": 0.853,
+  "outputTruncations": 0,
+  "partialRecoveries": 0,
+  "outputCeiling": 128000
+ },
+ "cost": {
+  "waveACostUsd": 3.3829,
+  "waveBCostUsd": null,
+  "totalNewCostUsd": 3.3829,
+  "capUsd": 20,
+  "remainingCapUsd": 16.6171,
+  "stage1HistoricalCostUsd": 2.7197,
+  "cumulativeCanaryCostUsd": 6.1026,
+  "retryOrWastedCostUsd": 0,
+  "meanCostPerNewShardUsd": 0.3383,
+  "paidTurns": 19,
+  "gatewayBalanceAfter": 20.352738,
+  "updatedWaveCEstimate": {
+   "wave": "B",
+   "shards": 10,
+   "renderedTokens": 251594,
+   "atWaveMeanRateUsd": 3.5431,
+   "atWaveWorstRateUsd": 5.2196,
+   "conservativeUsd": 6.5244
+  },
+  "refusals": []
+ },
+ "ownerShardRecovery": {
+  "executedShards": 15,
+  "materialOwned": 63,
+  "representedByOwner": 37,
+  "explicitlyDispositionedByOwner": 17,
+  "missingFromOwner": 9,
+  "accountabilityRate": 0.8571,
+  "lineageClaimsOnUnownedItemsStripped": 0,
+  "contextualOwnershipCredit": 0,
+  "perShard": [
+   {
+    "shardId": "shard:2866a115c3a6d5cc2089",
+    "ordinal": 0,
+    "stage": 2,
+    "status": "SHARD_MISSING_CONTEXT",
+    "ownedMaterial": 4,
+    "represented": 2,
+    "dispositioned": 0,
+    "missing": 2,
+    "lineageClaimsOnUnowned": 0
+   },
+   {
+    "shardId": "shard:b934f8ceb0d79b5cfe57",
+    "ordinal": 1,
+    "stage": 2,
+    "status": "SHARD_COMPLETE",
+    "ownedMaterial": 7,
+    "represented": 3,
+    "dispositioned": 2,
+    "missing": 2,
+    "lineageClaimsOnUnowned": 0
+   },
+   {
+    "shardId": "shard:1c29e71eef1717d4f9e1",
+    "ordinal": 2,
+    "stage": 1,
+    "status": "SHARD_MISSING_CONTEXT",
+    "ownedMaterial": 11,
+    "represented": 9,
+    "dispositioned": 2,
+    "missing": 0,
+    "lineageClaimsOnUnowned": 0
+   },
+   {
+    "shardId": "shard:4c30ced71fe038991b4b",
+    "ordinal": 3,
+    "stage": 2,
+    "status": "SHARD_COMPLETE",
+    "ownedMaterial": 1,
+    "represented": 1,
+    "dispositioned": 0,
+    "missing": 0,
+    "lineageClaimsOnUnowned": 0
+   },
+   {
+    "shardId": "shard:9dae67b10a1cb8ab8e61",
+    "ordinal": 4,
+    "stage": 2,
+    "status": "SHARD_MISSING_CONTEXT",
+    "ownedMaterial": 6,
+    "represented": 6,
+    "dispositioned": 0,
+    "missing": 0,
+    "lineageClaimsOnUnowned": 0
+   },
+   {
+    "shardId": "shard:c68b6e6e275414f90c39",
+    "ordinal": 5,
+    "stage": 2,
+    "status": "SHARD_COMPLETE",
+    "ownedMaterial": 6,
+    "represented": 2,
+    "dispositioned": 4,
+    "missing": 0,
+    "lineageClaimsOnUnowned": 0
+   },
+   {
+    "shardId": "shard:ec1aea485db261059c14",
+    "ordinal": 6,
+    "stage": 2,
+    "status": "SHARD_COMPLETE",
+    "ownedMaterial": 1,
+    "represented": 1,
+    "dispositioned": 0,
+    "missing": 0,
+    "lineageClaimsOnUnowned": 0
+   },
+   {
+    "shardId": "shard:5f63d11e8ce53e883d6a",
+    "ordinal": 7,
+    "stage": 2,
+    "status": "SHARD_MISSING_CONTEXT",
+    "ownedMaterial": 3,
+    "represented": 2,
+    "dispositioned": 0,
+    "missing": 1,
+    "lineageClaimsOnUnowned": 0
+   },
+   {
+    "shardId": "shard:87f08272567db019c17b",
+    "ordinal": 8,
+    "stage": 2,
+    "status": "SHARD_COMPLETE",
+    "ownedMaterial": 5,
+    "represented": 0,
+    "dispositioned": 5,
+    "missing": 0,
+    "lineageClaimsOnUnowned": 0
+   },
+   {
+    "shardId": "shard:fc841e0f175ddcab1ccd",
+    "ordinal": 9,
+    "stage": 2,
+    "status": "SHARD_COMPLETE",
+    "ownedMaterial": 0,
+    "represented": 0,
+    "dispositioned": 0,
+    "missing": 0,
+    "lineageClaimsOnUnowned": 0
+   },
+   {
+    "shardId": "shard:86eec078e4ee957898ac",
+    "ordinal": 10,
+    "stage": 2,
+    "status": "SHARD_COMPLETE",
+    "ownedMaterial": 2,
+    "represented": 0,
+    "dispositioned": 1,
+    "missing": 1,
+    "lineageClaimsOnUnowned": 0
+   },
+   {
+    "shardId": "shard:bf3da01cb454860cdf5f",
+    "ordinal": 17,
+    "stage": 1,
+    "status": "SHARD_MISSING_CONTEXT",
+    "ownedMaterial": 8,
+    "represented": 6,
+    "dispositioned": 1,
+    "missing": 1,
+    "lineageClaimsOnUnowned": 0
+   },
+   {
+    "shardId": "shard:aac727054a5da5f1a9fd",
+    "ordinal": 21,
+    "stage": 1,
+    "status": "SHARD_MISSING_CONTEXT",
+    "ownedMaterial": 0,
+    "represented": 0,
+    "dispositioned": 0,
+    "missing": 0,
+    "lineageClaimsOnUnowned": 0
+   },
+   {
+    "shardId": "shard:4f06625557e9aecbbb7a",
+    "ordinal": 26,
+    "stage": 1,
+    "status": "SHARD_MISSING_CONTEXT",
+    "ownedMaterial": 6,
+    "represented": 5,
+    "dispositioned": 0,
+    "missing": 1,
+    "lineageClaimsOnUnowned": 0
+   },
+   {
+    "shardId": "shard:3e3910ea2efd9edd45a3",
+    "ordinal": 27,
+    "stage": 1,
+    "status": "SHARD_MISSING_CONTEXT",
+    "ownedMaterial": 3,
+    "represented": 3,
+    "dispositioned": 0,
+    "missing": 0,
+    "lineageClaimsOnUnowned": 0
+   }
+  ]
+ },
+ "transportNormalization": {
+  "firedOnShards": [
+   {
+    "shardId": "shard:2866a115c3a6d5cc2089",
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "overallNotes"
+    ]
+   },
+   {
+    "shardId": "shard:b934f8ceb0d79b5cfe57",
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "inventoryDispositions",
+     "overallNotes"
+    ]
+   },
+   {
+    "shardId": "shard:4c30ced71fe038991b4b",
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "inventoryDispositions",
+     "overallNotes"
+    ]
+   },
+   {
+    "shardId": "shard:9dae67b10a1cb8ab8e61",
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "inventoryDispositions",
+     "overallNotes"
+    ]
+   },
+   {
+    "shardId": "shard:c68b6e6e275414f90c39",
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "overallNotes"
+    ]
+   },
+   {
+    "shardId": "shard:ec1aea485db261059c14",
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "inventoryDispositions",
+     "overallNotes"
+    ]
+   },
+   {
+    "shardId": "shard:5f63d11e8ce53e883d6a",
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "inventoryDispositions",
+     "overallNotes"
+    ]
+   },
+   {
+    "shardId": "shard:87f08272567db019c17b",
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "inventoryDispositions",
+     "overallNotes"
+    ]
+   },
+   {
+    "shardId": "shard:fc841e0f175ddcab1ccd",
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "overallNotes"
+    ]
+   },
+   {
+    "shardId": "shard:86eec078e4ee957898ac",
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "inventoryDispositions",
+     "overallNotes"
+    ]
+   }
+  ],
+  "totalFired": 10,
+  "shardsWithAudit": 10
+ },
+ "verdict": "WAVE_B_NOT_EXECUTED"
+}

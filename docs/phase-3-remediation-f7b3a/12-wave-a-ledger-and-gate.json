@@ -1,0 +1,5611 @@
+{
+ "artifact": "F-7B.3A §7-§13 Wave A ledger, partial stitch, global Pass C and kill gate",
+ "at": "2026-09-14T17:15:17.700Z",
+ "gitSha": "669667612a2c2bfa08aa6e32a637bb4179cb225b",
+ "planHash": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+ "wave": "A",
+ "waveShardIds": [
+  {
+   "ordinal": 0,
+   "shardId": "shard:2866a115c3a6d5cc2089",
+   "shardHash": "761693f3812b6d466cf90519f5fe515843bb68e3ea8e4ab7e5a760ba40d5b85a"
+  },
+  {
+   "ordinal": 1,
+   "shardId": "shard:b934f8ceb0d79b5cfe57",
+   "shardHash": "a517905c1e378aff65e60c3ee6022befd80a20511f1c4617e936f80611eb6ce6"
+  },
+  {
+   "ordinal": 3,
+   "shardId": "shard:4c30ced71fe038991b4b",
+   "shardHash": "ec01142d97abc7e224d2afd46f64343a9692f6d4fd22bfb8561060f9388dcfb8"
+  },
+  {
+   "ordinal": 4,
+   "shardId": "shard:9dae67b10a1cb8ab8e61",
+   "shardHash": "482d471bf9fe47f279ff4e4b51c1533fa549e9c4f8e000c1fb46e1a5a1d1a2c7"
+  },
+  {
+   "ordinal": 5,
+   "shardId": "shard:c68b6e6e275414f90c39",
+   "shardHash": "de7b889487ab225e5d7f253498249cc6440e3a2e2f248e63b5585f4bb905e90c"
+  },
+  {
+   "ordinal": 6,
+   "shardId": "shard:ec1aea485db261059c14",
+   "shardHash": "34dbec9a9ca679af4271beef75f259e723cbfc5656749e58724a67ea523dbb0c"
+  },
+  {
+   "ordinal": 7,
+   "shardId": "shard:5f63d11e8ce53e883d6a",
+   "shardHash": "04b49f6f59cb8dad0b489729ee201aa3d0b74e593c6538c67c843a84bf3eb77d"
+  },
+  {
+   "ordinal": 8,
+   "shardId": "shard:87f08272567db019c17b",
+   "shardHash": "539e715598ac4b8f6b4e992b4414a3af27583e1f8b08be0c0fdf32d41b74113e"
+  },
+  {
+   "ordinal": 9,
+   "shardId": "shard:fc841e0f175ddcab1ccd",
+   "shardHash": "48fc56978d7c7d7117cdc2b6f4795304ec702f3235bca199a4bf7be889943581"
+  },
+  {
+   "ordinal": 10,
+   "shardId": "shard:86eec078e4ee957898ac",
+   "shardHash": "44699221ab9197fea3a6efc01ca08530a352675313de3e47cc32c4d42be892d3"
+  }
+ ],
+ "precheck": {
+  "wave": "A",
+  "shards": 10,
+  "alreadyExecuted": 0,
+  "waveConservativeEstimateUsd": 8.5492,
+  "spentSoFarUsd": 0,
+  "remainingCapUsd": 20,
+  "gatewayBalanceUsd": 23.735636,
+  "fitsCap": true,
+  "fitsBalance": true
+ },
+ "baseline": {
+  "startingSha": {
+   "expected": "b1980baf529809a7c02eadb1294a72ba91257aed",
+   "actual": "b1980baf529809a7c02eadb1294a72ba91257aed",
+   "pass": true
+  },
+  "planHash": {
+   "expected": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+   "actual": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+   "pass": true
+  },
+  "shardCount": {
+   "actual": 36,
+   "pass": true
+  },
+  "ownership": {
+   "actual": {
+    "materialItems": 108,
+    "ownedOnce": 108,
+    "unowned": 0,
+    "multiplyOwned": 0
+   },
+   "pass": true
+  },
+  "committedManifestValid": {
+   "pass": true
+  },
+  "shardHashesMatchManifest": {
+   "pass": true
+  },
+  "stage1Frozen": {
+   "count": 5,
+   "pass": true
+  }
+ },
+ "calls": 19,
+ "waveCostUsd": 3.3829,
+ "cumulativeNewCostUsd": 3.3829,
+ "records": [
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:2866a115c3a6d5cc2089",
+   "shardHash": "761693f3812b6d466cf90519f5fe515843bb68e3ea8e4ab7e5a760ba40d5b85a",
+   "ordinal": 0,
+   "ownedUnits": 16,
+   "sourceChars": 7965,
+   "contextEntries": 0,
+   "contextChars": 0,
+   "unresolvedContext": 3,
+   "oversized": false,
+   "ownedItems": 4,
+   "ownedMaterialItems": 4,
+   "estimatedFirstTurnInputTokens": 24837,
+   "preCallEstimate": {
+    "inputTokens": 81714,
+    "outputTokens": 39000,
+    "usd": 0.553428
+   },
+   "actual": {
+    "inputTokens": 58249,
+    "outputTokens": 30141,
+    "turns": 2,
+    "latencyMs": 266730,
+    "costUsd": 0.41790800000000006,
+    "attemptCount": 2,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED"
+   ],
+   "toolCalls": 9,
+   "toolCallNames": [
+    "getInstrumentDocuments",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 26,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 2,
+    "dispositioned": 0,
+    "missingMaterial": 2,
+    "valuesRepresented": 0,
+    "valuesMissing": 5,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {
+     "MISSING_FROM_COMPOSITION": 2,
+     "REPRESENTED": 2
+    }
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [
+    "ABL Administrative Agent",
+    "ABL Cure Amount",
+    "ABR",
+    "Acceptable Commitment",
+    "Accepting Lenders",
+    "Accounting Changes",
+    "Acquired Entity or Business",
+    "Additional Borrower",
+    "Additional Borrower Effective Date",
+    "Affected Class",
+    "Affiliate Transaction"
+   ],
+   "unresolvedIssues": [
+    "[definition[d1]] The ABL Credit Agreement is not included in this document package (confirmed via getInstrumentDocuments, which lists only this document); its own definition of 'Administrative Agent' cannot be retrieved.",
+    "[definition[d3]] The ABL Credit Agreement is not included in this document package; its definition of 'Cure Amount' cannot be retrieved.",
+    "[definition[d6]] The ABL Credit Agreement is not included in this document package; its definition of 'Lenders' cannot be retrieved.",
+    "[definition[d8]] The ABL Credit Agreement is not included in this document package; its definition of 'Loans' cannot be retrieved.",
+    "[definition[d10]] The ABL Intercreditor Agreement is not included in this document package; its definition of 'ABL Priority Collateral' cannot be retrieved.",
+    "[definition[d13]] Section 2.22(a) was retrieved, but the returned text only reaches the 'Loan Modification Offer' and 'Affected Class' definitions before cutting off ('Such notice shall set forth ...'); the actual defining sentence for 'Accepting Lenders' is further along in that subsection and was not returned. Re-requesting the identical reference is not permitted under the no-duplicate-request policy.",
+    "[definition[d15]] No IR primitive expresses an entity-scope substitution applied across an entire referenced metric definition (recomputing 'Consolidated EBITDA' with 'Restricted Parties' replaced by a different entity set); the full 'Consolidated EBITDA' definition was also not requested as it is not itself the subject of this compilation.",
+    "[definition[d16]] The 'Consolidated EBITDA' definition was not included in the supplied §1.01 excerpt and this session's tool-call budget was exhausted before it could be retrieved.",
+    "[definition[d26]] getReferencedProvision was attempted for Section 5.18(a) but failed because this session's tool-call budget was exhausted before it could be served.",
+    "Source is the definitions section §1.01 of the credit agreement, spanning terms alphabetically from 'ABL Administrative Agent' through 'Affiliate Transaction' (26 distinct defined terms) - each extracted as its own WireDefinition per the multiple-definitions requirement.",
+    "No independently operative WireRule was identified in this excerpt: §1.01 is purely definitional; embedded operative mechanics found only by following cross-references (e.g. the Net Proceeds reinvestment mechanic in §6.05(b)(2) underlying 'Acceptable Commitment') belong to those other sections, not to §1.01 itself, and were used here only to complete the cross-referenced definition's text.",
+    "Several terms ('ABL Administrative Agent', 'ABL Cure Amount', 'ABL Lenders', 'ABL Loans', 'ABL Priority Collateral') are pure pointer-definitions into external agreements (the ABL Credit Agreement / ABL Intercreditor Agreement) that are confirmed absent from this instrument's document package (getInstrumentDocuments returned only this document) - each is marked PARTIAL with an UNSUPPORTED calculationExpression rather than guessed.",
+    "Two terms ('Acquired Entity or Business', 'Affiliate Transaction') and one ('Accepting Lenders') remain MISSING_CONTEXT after real retrieval attempts: Section 5.18(a) could not be fetched before the tool budget was exhausted, the 'Consolidated EBITDA' definition was never requested (out of scope of this compilation and budget-constrained), and the Section 2.22(a) retrieval succeeded but its returned text stopped short of the actual 'Accepting Lenders' defining sentence.",
+    "The 'Administrative Agent' extension clause referencing 'Article VIII' and 'Section 9.03' is flagged PARTIAL because Phase 2 identified genuine AMBIGUOUS_TARGET collisions (multiple physical locations sharing those labels) - not guessed or forced to a single reading."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": true,
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "overallNotes"
+    ],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": true,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "string",
+       "originalStringSha256": "80ff58bb79226dfad5ac77950b58a59d616db959df5cf515caa29fcba9384ebe",
+       "originalStringLength": 24093,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 26,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "string",
+       "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+       "originalStringLength": 2,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 0,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "string",
+       "originalStringSha256": "31ba2f5432a5539fbe3ba46601690bd0e384a2587ccb61b0a7b1ba80d70b3168",
+       "originalStringLength": 1290,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 1,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "absent",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "absent - left absent for the schema's own default/optional handling"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "string",
+       "originalStringSha256": "8f31efe163ff79ab0ca0e7ab0d5f130a837432b86dd51baf69b3c4a30d830746",
+       "originalStringLength": 1858,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 5,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:b934f8ceb0d79b5cfe57",
+   "shardHash": "a517905c1e378aff65e60c3ee6022befd80a20511f1c4617e936f80611eb6ce6",
+   "ordinal": 1,
+   "ownedUnits": 13,
+   "sourceChars": 7674,
+   "contextEntries": 5,
+   "contextChars": 1909,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "ownedItems": 7,
+   "ownedMaterialItems": 7,
+   "estimatedFirstTurnInputTokens": 25495,
+   "preCallEstimate": {
+    "inputTokens": 83879,
+    "outputTokens": 34000,
+    "usd": 0.507758
+   },
+   "actual": {
+    "inputTokens": 71834,
+    "outputTokens": 38525,
+    "turns": 2,
+    "latencyMs": 353286,
+    "costUsd": 0.528918,
+    "attemptCount": 2,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_COMPLETE",
+   "failureReasons": [
+    "OPERATIVE_STATE_UNRESOLVED",
+    "DEFINITION_COMPLETENESS_SUSPECT"
+   ],
+   "toolCalls": 1,
+   "toolCallNames": [
+    "getReferencedProvision"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 23,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 3,
+    "dispositioned": 2,
+    "missingMaterial": 2,
+    "valuesRepresented": 2,
+    "valuesMissing": 2,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {
+     "MISSING_FROM_COMPOSITION": 2,
+     "UNSUPPORTED": 2,
+     "REPRESENTED": 3
+    }
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [
+    "Affiliated Lender Assignment and Assumption",
+    "Affiliated Lender Cap",
+    "Agreement Currency",
+    "Alternative Currency Term Benchmark",
+    "Ancillary Fees",
+    "Annual Period",
+    "Annual Threshold",
+    "Applicable Creditor",
+    "Applicable Indebtedness",
+    "Approved Bank",
+    "Approved Electronic Platform"
+   ],
+   "unresolvedIssues": [
+    "[definition[d9].MAX[0].IF.condition] This is a contingent operational/benchmark-fallback fact, not a static boolean derivable from §1.01 text alone; Section 2.12 and 2.12(c) were out of the retrieved source-context budget.",
+    "[definition[d9].MAX[0].IF.then.MAX[0]] ADD requires at least one operand",
+    "[definition[d9].MAX[0].IF.then] MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d9].MAX[0].IF.else.MAX[0]] ADD requires at least one operand",
+    "[definition[d9].MAX[0].IF.else.MAX[2]] ADD requires at least one operand",
+    "[definition[d9].MAX[0].IF.else] MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d9].MAX[0]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d9]] MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d12].MAX[0].IF.condition] Currency selection is a per-Borrowing transaction fact, not a static boolean expressible with the IR's comparison primitives.",
+    "[definition[d12].MAX[0]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d12]] MAX keeps its structure with at least one UNSUPPORTED operand in place - typed NUMBER from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d19].IF.condition] Class identity is a static fact about a particular Loan/tranche at any given time, but is a lookup key rather than a boolean comparison expressible with the IR's comparison primitives applied to this definitional text alone.",
+    "[definition[d19].IF.then.IF.condition] Interest rate option selected for a Borrowing is a transaction-time selection, not a static boolean.",
+    "[definition[d19].IF.then] IF keeps its structure with at least one UNSUPPORTED operand in place - typed PERCENT from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d19].IF.else] The rate is deferred to, and set entirely by, a future Incremental Facility Amendment, Refinancing Amendment or Permitted Amendment - none of which are part of the §1.01 text or the supplied evidence.",
+    "[definition[d19]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed PERCENT from its represented operands; PARTIAL, never executable (F-6)",
+    "Source is a fragment of the §1.01 defined-terms alphabetical run (Affiliated Debt Fund through Approved Fund, plus the chapeau-adjacent 'ABL Administrative Agent' entry which was explicitly flagged as read-only dependency context and excluded from compilation).",
+    "All 7 FROZEN SEMANTIC INVENTORY items (Alternate Base Rate formula components and Applicable Rate values) are consumed on the specific leaf nodes carrying their values within d9 (Alternate Base Rate) and d19 (Applicable Rate); none required disposition as omitted.",
+    "The five deterministically-detected 'uncovered' percent literals (1.00% x1, 0.00% x4) correspond to (a) the base percentage inside the already-inventoried '1/2 of 1.00%' spread and (b) the paired floor-test/floor-outcome mentions of 0.00% in both Alternate Base Rate and Alternative Currency Term Benchmark Rate - all represented via the NUMBER floor/spread nodes in d9 and d12, none left unrepresented.",
+    "Cross-references to Sections 9.04(f)(6), 9.20(b), 9.02(b), 1.08(j), 9.01, 9.02, 2.12 and 2.12(c) were out of the Phase 2 source-context retrieval budget; each corresponding definition is represented as a faithfully-captured pointer (sufficiency COMPLETE for the pointer itself) except where the target's economics were material enough to independently fetch (Affiliated Lender Cap, via Section 9.04(f)(5), fetched directly in this session) or where the cross-reference gates a live computational mechanic within the definition's own formula (Section 2.12 within Alternate Base Rate and Alternative Currency Term Benchmark Rate, both marked PARTIAL).",
+    "The Section 9.04(f)(5) text retrieved for Affiliated Lender Cap carries supersessionStatus UNKNOWN_SUPERSESSION_STATUS; that uncertainty is reflected in d4's PARTIAL sufficiency rather than a confident COMPLETE.",
+    "'Article IV' and 'Article I' cross-references were reported as genuinely ambiguous (two substantive occurrences each) and were left unresolved rather than guessed, per the retrieval report."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": true,
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "inventoryDispositions",
+     "overallNotes"
+    ],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": true,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "string",
+       "originalStringSha256": "bcb828bc5e6a67d106fc2aca67415011e71e3831f1df5270ffcd9c9dbf694bfe",
+       "originalStringLength": 24460,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 23,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "string",
+       "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+       "originalStringLength": 2,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 0,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "string",
+       "originalStringSha256": "81edefc3ffa231b6e2120a29bba8fc973e321a1ee5c6b80cc39a5033c261f02c",
+       "originalStringLength": 2323,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 2,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "string",
+       "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+       "originalStringLength": 2,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 0,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "string",
+       "originalStringSha256": "9e6500345212322bd3750a04a9c39f1d850cf749554d5cbf6e188663246c2671",
+       "originalStringLength": 2015,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 6,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:4c30ced71fe038991b4b",
+   "shardHash": "ec01142d97abc7e224d2afd46f64343a9692f6d4fd22bfb8561060f9388dcfb8",
+   "ordinal": 3,
+   "ownedUnits": 11,
+   "sourceChars": 11804,
+   "contextEntries": 2,
+   "contextChars": 336,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "ownedItems": 2,
+   "ownedMaterialItems": 1,
+   "estimatedFirstTurnInputTokens": 25012,
+   "preCallEstimate": {
+    "inputTokens": 82290,
+    "outputTokens": 29000,
+    "usd": 0.45458000000000004
+   },
+   "actual": {
+    "inputTokens": 127529,
+    "outputTokens": 19474,
+    "turns": 4,
+    "latencyMs": 187798,
+    "costUsd": 0.44979800000000003,
+    "attemptCount": 4,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_COMPLETE",
+   "failureReasons": [
+    "OPERATIVE_STATE_UNRESOLVED",
+    "TRUNCATED_EVIDENCE_USED"
+   ],
+   "toolCalls": 6,
+   "toolCallNames": [
+    "getReferencedProvision",
+    "getDefinition",
+    "getDefinition",
+    "getSharedCapContext",
+    "getDefinitionDependencies",
+    "getDefinitionDependencies"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 10,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 1,
+    "dispositioned": 0,
+    "missingMaterial": 0,
+    "valuesRepresented": 0,
+    "valuesMissing": 0,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {
+     "REPRESENTED": 1,
+     "MISSING_FROM_COMPOSITION": 1
+    }
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [],
+   "unresolvedIssues": [
+    "[definition[d1].SUBTRACT.left] Section 6.08's substantive basket/formula text was requested via getReferencedProvision but only the section heading ('Section 6.08 Limitation on Restricted Payments.') was returned with no substantive body text in scope; 'Permitted Investments' is a long qualitative list of investment categories with no single quantifiable capacity figure, so the base amount cannot be derived from the evidence available.",
+    "[definition[d1].SUBTRACT.right.ADD[0]] Section 6.01(b)(31) and 6.01(b)(13) text is out of the retrievable source-context scope (budget exhausted) and could not be resolved to a figure",
+    "[definition[d1].SUBTRACT.right.ADD[1]] this reduction is self-referential (a usage-based ledger draw against this same defined term) and clause (46)(i) of 'Permitted Liens' was not reached before the definition text was truncated in the tool result, so no fixed value or formula can be stated",
+    "[definition[d1].SUBTRACT.right] ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+    "[definition[d1]] SUBTRACT operands do not type-check together: no operand carries a determinable type (every operand is itself unsupported)",
+    "[definition[d7].MAX[0]] this is a discretionary administrative/market-convention-based selection, not derivable as a fixed value or formula from the text",
+    "[definition[d7]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+    "Source region 1.01 is a definitions block containing 10 independent defined terms; all 10 were extracted as separate WireDefinitions per the multiple-definitions rule.",
+    "Available RP Capacity Amount is the only term with real quantitative/formula structure (a base RP capacity reduced by two enumerated, without-duplication reductions); its base capacity and both reductions ultimately depend on Section 6.08, Section 6.01(b)(31)/(13), and Permitted Liens clause (46)(i), none of which were resolvable within the retrievable scope (Section 6.08 was attempted via getReferencedProvision and returned only a heading; the other references were already flagged OUT_OF_SCOPE due to source-context budget exhaustion). The SUBTRACT/ADD structure itself is nonetheless faithfully represented, with UNSUPPORTED leaves carrying the unresolved components.",
+    "The Initial Borrower's allocation/reallocation election within Available RP Capacity Amount is an operational mechanic, not a computable value, and was not separately dispositioned as it does not correspond to a frozen inventory item.",
+    "Both frozen inventory items (Bail-In Legislation's Article 55 external reference; Basel III's December 2010 publication date) were consumed directly on their respective WireDefinitions.",
+    "The two deterministically-detected 0.00% values both belong to the single zero-floor proviso in the 'Benchmark Replacement' definition ('if ... less than 0.00% ... deemed to be 0.00%') and were represented together via one MAX floor node.",
+    "Getting Section 6.08's substantive text via getReferencedProvision returned only the section heading with no body (a degenerate/heading-only companion node was excluded by the tool itself), confirming the cross-reference could not be resolved further within this session's scope."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": true,
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "inventoryDispositions",
+     "overallNotes"
+    ],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": true,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "string",
+       "originalStringSha256": "49ac342b15b587b6d23f39b26f2282f3ec7ae2b42afa23967de3d520c4e8008f",
+       "originalStringLength": 13201,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 10,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "string",
+       "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+       "originalStringLength": 2,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 0,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "string",
+       "originalStringSha256": "7523f41652ec6da55a3c727f7c1c2bfcada000ee0fa9e0bf2fd500a6cbae7f1f",
+       "originalStringLength": 1078,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 1,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "string",
+       "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+       "originalStringLength": 2,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 0,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "string",
+       "originalStringSha256": "9daf65398d4473b022f38c3f906d34aa1851ffeb6a92cc316f20a17f298f9aec",
+       "originalStringLength": 1815,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 6,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:9dae67b10a1cb8ab8e61",
+   "shardHash": "482d471bf9fe47f279ff4e4b51c1533fa549e9c4f8e000c1fb46e1a5a1d1a2c7",
+   "ordinal": 4,
+   "ownedUnits": 16,
+   "sourceChars": 9303,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "ownedItems": 6,
+   "ownedMaterialItems": 6,
+   "estimatedFirstTurnInputTokens": 24241,
+   "preCallEstimate": {
+    "inputTokens": 79753,
+    "outputTokens": 41500,
+    "usd": 0.574506
+   },
+   "actual": {
+    "inputTokens": 59791,
+    "outputTokens": 33178,
+    "turns": 2,
+    "latencyMs": 299197,
+    "costUsd": 0.45136200000000004,
+    "attemptCount": 2,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED"
+   ],
+   "toolCalls": 1,
+   "toolCallNames": [
+    "getReferencedProvision"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 20,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 6,
+    "dispositioned": 0,
+    "missingMaterial": 0,
+    "valuesRepresented": 6,
+    "valuesMissing": 0,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {
+     "REPRESENTED": 6
+    }
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [
+    "Beneficial Ownership Certification",
+    "BHC Act Affiliate",
+    "Borrowers",
+    "Canadian Dollars"
+   ],
+   "unresolvedIssues": [
+    "[definition[d1]] the actual trigger/end mechanics depend on 'Benchmark Replacement Date' and 'Benchmark Replacement', and on Section 2.12's replacement mechanics, none of which were resolvable within the supplied source (Section 2.12 was flagged out-of-scope: source-context budget exhausted)",
+    "[definition[d2]] Section 4.01(h) was flagged out-of-scope (source-context budget exhausted) before it could be expanded; no substantive content for this term appears in the supplied source itself",
+    "[definition[d7]] the preliminary statements are not part of the supplied source and a direct cross-reference attempt ('preliminary statements hereto') did not resolve to any section in this instrument; 'Additional Borrower' and 'Successor Borrower' are also undefined in the supplied source",
+    "[definition[d9].IF.else.IF.else.IF.else.IF.else] the amount is 'to be agreed by the Administrative Agent and the Initial Borrower at the time such Alternative Currency is established' - a genuinely non-fixed, not-yet-ascertainable value",
+    "[definition[d9].IF.else.IF.else.IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d9].IF.else.IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d9].IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d9]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d10].IF.else.IF.else.IF.else.IF.else] the amount is 'an amount to be agreed by the Administrative Agent and the Initial Borrower at the time such Alternative Currency is established' - a genuinely non-fixed, not-yet-ascertainable value",
+    "[definition[d10].IF.else.IF.else.IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d10].IF.else.IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d10].IF.else] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d10]] IF keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d15]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+    "Source is Section 1.01 (Defined Terms), a definitions article containing many independent defined terms declared back-to-back; each was extracted as its own WireDefinition per the multiple-definitions rule, including terms with no covenant-quantitative content (e.g. Board of Directors, Capital Stock) rather than only the apparently 'salient' ones.",
+    "Two terms ('Beneficial Ownership Certification', 'Borrowers') are pure or near-pure cross-references outside the supplied source; getReferencedProvision was attempted for the 'Borrowers' preliminary-statements reference and did not resolve (confirmed via tool call). The Section 4.01(h) and Section 2.03 cross-references had already been flagged out-of-scope (source-context budget exhausted) by the prior retrieval pass, so those were not re-attempted per the no-duplicate-request policy.",
+    "'Borrowing Minimum' and 'Borrowing Multiple' are structurally piecewise-by-currency; the four fixed-dollar cases were represented with a best-effort IF/COMPARE currency-selector (flagged as an IR extension candidate gap) and the genuinely variable 'other Alternative Currency' case was correctly left UNSUPPORTED rather than guessed. All 6 frozen-inventory VALUE/MATERIAL items were consumed on their corresponding MONEY nodes and at each definition's top level.",
+    "The two detected 0.00% floor values and the December 31, 2018 GAAP-freeze date (not covered by named inventory items) were represented respectively in 'Canadian Prime Rate' (MAX floor) and 'Capitalized Lease Obligation' (AS_OF date anchor)."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": true,
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "inventoryDispositions",
+     "overallNotes"
+    ],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": true,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "string",
+       "originalStringSha256": "5bc525fb76b417ad73d4be680b761b1951515ce10c104e0519cacaecfb40626f",
+       "originalStringLength": 23419,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 20,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "string",
+       "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+       "originalStringLength": 2,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 0,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "string",
+       "originalStringSha256": "3a2f120f1ce025b65f1cac54ff1ec74b1c2abfb59cb185fe172467e168ac4604",
+       "originalStringLength": 1416,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 1,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "string",
+       "originalStringSha256": "ac7606bebfc5da7faded89cd6c2f158d4753df8c4eb32495a954530f896b4d74",
+       "originalStringLength": 1208,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 6,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "string",
+       "originalStringSha256": "348c1c840dd8f099b55975f8112a195c8220dfecda9f62c02f0656b3d36c076d",
+       "originalStringLength": 1566,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 4,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:c68b6e6e275414f90c39",
+   "shardHash": "de7b889487ab225e5d7f253498249cc6440e3a2e2f248e63b5585f4bb905e90c",
+   "ordinal": 5,
+   "ownedUnits": 6,
+   "sourceChars": 8855,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 1,
+   "oversized": false,
+   "ownedItems": 6,
+   "ownedMaterialItems": 6,
+   "estimatedFirstTurnInputTokens": 22963,
+   "preCallEstimate": {
+    "inputTokens": 75549,
+    "outputTokens": 16500,
+    "usd": 0.316098
+   },
+   "actual": {
+    "inputTokens": 22929,
+    "outputTokens": 24392,
+    "turns": 1,
+    "latencyMs": 231065,
+    "costUsd": 0.28977800000000004,
+    "attemptCount": 1,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_COMPLETE",
+   "failureReasons": [
+    "OPERATIVE_STATE_UNRESOLVED"
+   ],
+   "toolCalls": 0,
+   "toolCallNames": [],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 7,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 2,
+    "dispositioned": 4,
+    "missingMaterial": 0,
+    "valuesRepresented": 2,
+    "valuesMissing": 0,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {
+     "REPRESENTED": 2,
+     "UNSUPPORTED": 4
+    }
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [
+    "Approved Bank"
+   ],
+   "unresolvedIssues": [
+    "[definition[d1].OR[0]] These are qualitative, rating/currency/obligor-type categorical qualifications carrying no distinct numeric threshold identified in the frozen inventory; representing 10+ heterogeneous categorical alternatives faithfully would require an ENUM/MEMBERSHIP primitive the IR does not provide",
+    "[definition[d1].OR[1]] Categorical instrument-type qualification, not itself a computable arithmetic formula",
+    "[definition[d1].OR[2]] Categorical instrument-type qualification, not itself a computable arithmetic formula",
+    "[definition[d1].OR[4].DURING_PERIOD.value] Categorical currency-type qualification, not itself a computable numeric value",
+    "[definition[d1].OR[4]] DURING_PERIOD value type could not be determined: no operand carries a determinable type (every operand is itself unsupported)",
+    "[definition[d1]] OR operands do not type-check together under the IR's own composition rules: OR operands must all be BOOLEAN",
+    "This region is a definitions-only excerpt (Section 1.01); no independently operative permission/prohibition rules were found, so the rules and sharedCapacities arrays are empty.",
+    "Six distinct defined terms were extracted from the supplied source: Cash Equivalents, Approved Bank (extracted as its own term because it is expressly defined inline within the Cash Equivalents clause (4) parenthetical, not merely cross-referenced), Cash Management Obligations, Cash Management Services, Central Bank Rate, CFC, and Change in Law.",
+    "The 'Approved Bank' cross-reference flagged by the pipeline as OUT_OF_SCOPE ('no detected definition ... in document doc-a') refers to the absence of a standalone alphabetized 'Approved Bank' entry; the term is nonetheless substantively defined inline in this very provision, and that inline definition was compiled with full fidelity as its own WireDefinition (d2).",
+    "The 'Section 2.13' cross-reference in the Change in Law definition could not be expanded (source-context budget exhausted) but is illustrative/non-material to the definition's own meaning and does not affect its sufficiency rating.",
+    "The $250.0 million value flagged by deterministic scanning as uncovered by any frozen-inventory item is in fact the same U.S.-bank Approved Bank threshold covered by inv-item ef6290ba17af109cb88f0cd8; it is represented as a literal MONEY node in the extracted 'Approved Bank' definition (d2) rather than duplicated on the Cash Equivalents definition, to preserve honest value-correspondence between inventory items and the nodes that actually carry their values.",
+    "The Cash Equivalents definition is fundamentally an enumerated, disjunctive categorical list (13 numbered clauses plus extension/proviso paragraphs) rather than an arithmetic formula; it is represented as an OR of operands, most of which are UNSUPPORTED citation-bearing placeholders for purely qualitative category descriptions, while every frozen-inventory quantitative threshold (maturity limits, the 90% investment-fund threshold, and the 10-Business-Day conversion window) is attached to its own cited operand node so that its value is faithfully represented and traceable."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": true,
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "overallNotes"
+    ],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": true,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "string",
+       "originalStringSha256": "78f6430cc7e3410fa391d57f6d26e62de0ae55fccfb387fe0c5b1bc216d40c3e",
+       "originalStringLength": 11165,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 7,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "string",
+       "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+       "originalStringLength": 2,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 0,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "string",
+       "originalStringSha256": "8acb2d032eae15d6513d820278b624f826eacd926dd8b986174c95d2c38b6fb6",
+       "originalStringLength": 1407,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 1,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "absent",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "absent - left absent for the schema's own default/optional handling"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "string",
+       "originalStringSha256": "7667304ddd4b7913a0e1508c8fd77d57690757a95cfbdef1ada6970cbf1e51a3",
+       "originalStringLength": 2199,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 6,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:ec1aea485db261059c14",
+   "shardHash": "34dbec9a9ca679af4271beef75f259e723cbfc5656749e58724a67ea523dbb0c",
+   "ordinal": 6,
+   "ownedUnits": 5,
+   "sourceChars": 5170,
+   "contextEntries": 2,
+   "contextChars": 1039,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "ownedItems": 1,
+   "ownedMaterialItems": 1,
+   "estimatedFirstTurnInputTokens": 21942,
+   "preCallEstimate": {
+    "inputTokens": 72190,
+    "outputTokens": 14000,
+    "usd": 0.28437999999999997
+   },
+   "actual": {
+    "inputTokens": 22150,
+    "outputTokens": 9906,
+    "turns": 1,
+    "latencyMs": 88739,
+    "costUsd": 0.14336000000000002,
+    "attemptCount": 1,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_COMPLETE",
+   "failureReasons": [
+    "OPERATIVE_STATE_UNRESOLVED"
+   ],
+   "toolCalls": 0,
+   "toolCallNames": [],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 8,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 1,
+    "dispositioned": 0,
+    "missingMaterial": 0,
+    "valuesRepresented": 1,
+    "valuesMissing": 0,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {
+     "REPRESENTED": 1
+    }
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [
+    "Class",
+    "Co-Borrower",
+    "Collateral Agent"
+   ],
+   "unresolvedIssues": [
+    "Section 1.01 excerpt contains 8 independent defined terms (Change of Control, Class, CME Term SOFR Administrator, Co-Borrower, Code, Collateral, Collateral Agent, Collateral Agreement); each is emitted as its own WireDefinition per the multiple-definitions rule.",
+    "Change of Control's qualitative carve-outs (clauses (i)-(v) governing what counts as 'beneficial ownership'/'group', and the internally-ambiguous 'clause (a)' cross-reference flagged by the evidence tooling) are documented in sufficiencyReasons rather than forced into the boolean tree, since they modify the meaning of inputs rather than adding independently computable conjuncts/disjuncts.",
+    "'Permitted Holder' definition was supplied as read-only dependency context and used only to interpret Change of Control; it was not independently compiled here as it is not part of this submission's operative source."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": true,
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "inventoryDispositions",
+     "overallNotes"
+    ],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": true,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "string",
+       "originalStringSha256": "542a18cb989a31b6a8725a2d4b33db087afce5847aa36bb02ace5b9fdc8f5ffb",
+       "originalStringLength": 8547,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 8,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "string",
+       "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+       "originalStringLength": 2,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 0,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "string",
+       "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+       "originalStringLength": 2,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 0,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "string",
+       "originalStringSha256": "5188aef30d71bb8d36c6277c835506429728f576db16c436b787d1e3ca959aa9",
+       "originalStringLength": 261,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 1,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "string",
+       "originalStringSha256": "ea5a623f12cbdee2260826ccaa061410a1317d36d87d2db23ac5fc4987228d8b",
+       "originalStringLength": 881,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 3,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:5f63d11e8ce53e883d6a",
+   "shardHash": "04b49f6f59cb8dad0b489729ee201aa3d0b74e593c6538c67c843a84bf3eb77d",
+   "ordinal": 7,
+   "ownedUnits": 4,
+   "sourceChars": 8259,
+   "contextEntries": 3,
+   "contextChars": 2176,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "ownedItems": 3,
+   "ownedMaterialItems": 3,
+   "estimatedFirstTurnInputTokens": 24634,
+   "preCallEstimate": {
+    "inputTokens": 81046,
+    "outputTokens": 11500,
+    "usd": 0.277092
+   },
+   "actual": {
+    "inputTokens": 57338,
+    "outputTokens": 17359,
+    "turns": 2,
+    "latencyMs": 156370,
+    "costUsd": 0.288266,
+    "attemptCount": 2,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED"
+   ],
+   "toolCalls": 3,
+   "toolCallNames": [
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 5,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 2,
+    "dispositioned": 0,
+    "missingMaterial": 1,
+    "valuesRepresented": 3,
+    "valuesMissing": 1,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {
+     "MISSING_FROM_COMPOSITION": 1,
+     "REPRESENTED": 2
+    }
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [
+    "Company Materials"
+   ],
+   "unresolvedIssues": [
+    "[definition[d1].AND[0]] purely procedural document-delivery requirement (execution/delivery of security and guarantee documents and legal opinions), not a computable financial mechanic",
+    "[definition[d1].AND[1].EVENT_ACTIVE.triggerCondition] a subjective-awareness/notice trigger, not a formal boolean test expressible with existing comparison primitives",
+    "[definition[d1].AND[1]] EVENT_ACTIVE keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d1].AND[2]] qualitative pledge/delivery requirement, not a computable financial mechanic",
+    "[definition[d1].AND[5]] a large bundle of qualitative exceptions, carve-outs and elective rights, not reducible to a computable financial mechanic",
+    "[definition[d1]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d4]] Section 5.01 was retrieved via tool but only its introductory chapeau ('Financial Statements and Other Information ... will furnish to the Administrative Agent ...') was returned; the specific sub-clause actually defining 'Company Materials' was not located within that section's text as retrieved",
+    "This 1.01 excerpt contains five independently declared defined terms: 'Collateral and Guarantee Requirement', 'Commitment', 'Commodity Exchange Act', 'Company Materials', and 'Compliance Certificate'; all five are emitted as separate WireDefinitions per the multiple-definitions rule.",
+    "'Collateral and Guarantee Requirement' is a large qualitative/procedural definition; its two genuinely computable components (the $112.0 million promissory-note threshold and the 90-day Subsidiary Loan Party grace period) are represented as discrete nodes within an overall AND, while the remaining procedural clauses and carve-outs are UNSUPPORTED, yielding an overall PARTIAL sufficiency rather than a false COMPLETE or a fully discarded UNSUPPORTED.",
+    "Cross-references to Section 4.01(a)(ii) and Section 4.01(a)(iv) were resolved via tool and confirm the procedural (non-computational) character of clause (a); Section 5.01 was also retrieved but only yielded its chapeau, leaving 'Company Materials' MISSING_CONTEXT rather than guessed.",
+    "Ambiguous local cross-references ('clause (a)' with 5 colliding occurrences; 'Section 9.23' with 2 colliding occurrences) were not adjudicated and are noted in sufficiencyReasons rather than silently resolved."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": true,
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "inventoryDispositions",
+     "overallNotes"
+    ],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": true,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "string",
+       "originalStringSha256": "3887eae40a0744d52ecc803aa88a7c67f84dbfa31883b790287a5e1af88a80b0",
+       "originalStringLength": 11080,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 5,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "string",
+       "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+       "originalStringLength": 2,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 0,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "string",
+       "originalStringSha256": "7440667dc6299e81ecdfdbc7309fe2bb43adbc9724dd1cc96d5a18984cac0ea8",
+       "originalStringLength": 948,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 1,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "string",
+       "originalStringSha256": "1c323d1cfc217d7875ea1b5af198cea47791a89fb392d3326a2a545dd7013d8a",
+       "originalStringLength": 793,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 3,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "string",
+       "originalStringSha256": "571733afb19068a696253637dc3b58166a9299cead047c71e2d0b6688b082989",
+       "originalStringLength": 1246,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 4,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:87f08272567db019c17b",
+   "shardHash": "539e715598ac4b8f6b4e992b4414a3af27583e1f8b08be0c0fdf32d41b74113e",
+   "ordinal": 8,
+   "ownedUnits": 1,
+   "sourceChars": 20175,
+   "contextEntries": 2,
+   "contextChars": 538,
+   "unresolvedContext": 1,
+   "oversized": false,
+   "ownedItems": 5,
+   "ownedMaterialItems": 5,
+   "estimatedFirstTurnInputTokens": 28538,
+   "preCallEstimate": {
+    "inputTokens": 93891,
+    "outputTokens": 4000,
+    "usd": 0.227782
+   },
+   "actual": {
+    "inputTokens": 27454,
+    "outputTokens": 33097,
+    "turns": 1,
+    "latencyMs": 290219,
+    "costUsd": 0.38587800000000005,
+    "attemptCount": 1,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_COMPLETE",
+   "failureReasons": [
+    "OPERATIVE_STATE_UNRESOLVED"
+   ],
+   "toolCalls": 0,
+   "toolCallNames": [],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 6,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 0,
+    "dispositioned": 5,
+    "missingMaterial": 0,
+    "valuesRepresented": 0,
+    "valuesMissing": 0,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {
+     "UNSUPPORTED": 5
+    }
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [
+    "Expected Run Rate Benefit",
+    "Acquired Entity or Business",
+    "Converted Restricted Subsidiary",
+    "Sold Entity or Business",
+    "Converted Unrestricted Subsidiary"
+   ],
+   "unresolvedIssues": [
+    "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[5]] narrative, non-formulaic addback categories not reducible to a discrete quantitative expression from the text alone",
+    "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[6]] qualitative addback category with a time-window condition; represented as UNSUPPORTED to avoid fabricating a numeric formula, while preserving the 36-month value",
+    "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[7]] qualitative addback category with a time-window condition",
+    "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[8]] narrative addback category dependent on undefined term 'Qualified Restricted Subsidiary'",
+    "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[10]] depends on Section 6.01, which could not be expanded (source-context budget exhausted)",
+    "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[12]] narrative addback category",
+    "[definition[d1].ADD[0].SUBTRACT.left.ADD[1].SUM[13]] narrative addback category",
+    "[definition[d1].ADD[0].SUBTRACT.left.ADD[1]] SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d1].ADD[0].SUBTRACT.left.ADD[2].SUM[1]] projection-based, discretionary pro forma adjustment not reducible to a determinate formula",
+    "[definition[d1].ADD[0].SUBTRACT.left.ADD[2].SUM[2]] the cross-reference 'paragraph (c)' is genuinely ambiguous in the source (2 candidate targets) and has not been adjudicated",
+    "[definition[d1].ADD[0].SUBTRACT.left.ADD[2].SUM[3]] depends on 'Article 11' cross-reference which could not be located, and on discretionary diligence-report content",
+    "[definition[d1].ADD[0].SUBTRACT.left.ADD[2].SUM[4]] references extrinsic syndication materials not part of the supplied evidence",
+    "[definition[d1].ADD[0].SUBTRACT.left.ADD[2]] SUM keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d1].ADD[0].SUBTRACT.left.ADD[3]] discretionary, projection-based pro forma adjustment not reducible to a determinate formula from the text alone",
+    "[definition[d1].ADD[0].SUBTRACT.left] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d1].ADD[0]] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d1].ADD[1]] depends on undefined terms 'Acquired EBITDA' and 'Pro Forma Basis' not resolvable from the supplied evidence",
+    "[definition[d1].ADD[2]] depends on undefined terms 'Disposed EBITDA' and 'Pro Forma Disposal Adjustment' not resolvable from the supplied evidence",
+    "[definition[d1].ADD[3]] discretionary, projection-based inclusion contingent on unspecified 'applicable caps and limitations set forth herein' elsewhere in the Agreement, and on the Borrower's election - not a determinate formula component",
+    "[definition[d1]] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+    "Compiled the single defined term 'Consolidated EBITDA' from §1.01 plus five terms defined inline within the same definition (Expected Run Rate Benefit; Acquired Entity or Business; Converted Restricted Subsidiary; Sold Entity or Business; Converted Unrestricted Subsidiary).",
+    "All 5 frozen-inventory items (start-up/de novo 36-month window; discontinued-ops 12-month window; Expected Run Rate Benefit 36-month condition; facility ramp-up 36/12-month pro forma treatment; and the CRITICAL Letter of Intent Transactions election) are consumed on the specific nodes that carry their value.",
+    "Given the sheer breadth of this 'kitchen sink' EBITDA definition (22 sub-clauses in (a) alone, plus (b), (c), (d) and two provisos), narrative/qualitative addback categories not flagged by the frozen inventory and not reducible to a determinate formula were represented as UNSUPPORTED nodes (individually or bucketed) rather than forced into fabricated formulas - consistent with the safety principle that a cautious PARTIAL representation is preferable to a confidently wrong COMPLETE one.",
+    "The Section 6.01 cross-reference in clause (a)(xix) remains unresolved (Phase 2's source-context budget was exhausted before it could be expanded); the ambiguous 'paragraph (c)' and 'clause (b)' cross-references in clause (b) were left un-adjudicated per Phase 2's own findings of genuine textual ambiguity.",
+    "No WireRule outputs were produced because the supplied text is a pure definitional provision (no independently operative permission/prohibition/ratio-test rule is stated in §1.01 itself)."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": true,
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "inventoryDispositions",
+     "overallNotes"
+    ],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": true,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "string",
+       "originalStringSha256": "b5e0bb7538fbe26ae44e007685c81ba6b8c3f8d090a8e6ef71b24c565e4b8d6d",
+       "originalStringLength": 16940,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 6,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "string",
+       "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+       "originalStringLength": 2,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 0,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "string",
+       "originalStringSha256": "fc490f9359a17f5b2f07a59d8575e94fc44b3e7ed64afc57dd3d97c0e68bd4a4",
+       "originalStringLength": 2091,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 2,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "string",
+       "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+       "originalStringLength": 2,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 0,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "string",
+       "originalStringSha256": "3a0c644a0e258dfce25f85ba86cca9359b97b518b9cded306554ec1c55952abb",
+       "originalStringLength": 1599,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 5,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:fc841e0f175ddcab1ccd",
+   "shardHash": "48fc56978d7c7d7117cdc2b6f4795304ec702f3235bca199a4bf7be889943581",
+   "ordinal": 9,
+   "ownedUnits": 2,
+   "sourceChars": 3368,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "ownedItems": 0,
+   "ownedMaterialItems": 0,
+   "estimatedFirstTurnInputTokens": 18865,
+   "preCallEstimate": {
+    "inputTokens": 62066,
+    "outputTokens": 6500,
+    "usd": 0.189132
+   },
+   "actual": {
+    "inputTokens": 61617,
+    "outputTokens": 14045,
+    "turns": 3,
+    "latencyMs": 139074,
+    "costUsd": 0.26368400000000003,
+    "attemptCount": 3,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_COMPLETE",
+   "failureReasons": [],
+   "toolCalls": 3,
+   "toolCallNames": [
+    "getDefinitionDependencies",
+    "getDefinitionDependencies",
+    "getDefinition"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 2,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 0,
+    "dispositioned": 0,
+    "missingMaterial": 0,
+    "valuesRepresented": 0,
+    "valuesMissing": 0,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {}
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [],
+   "unresolvedIssues": [
+    "[definition[d1].SUM[0]] This is a qualitative subset-selection out of the aggregate Consolidated Total Debt figure (i.e., 'which specific tranches of debt count'), not an arithmetic combination of quantified metrics; 'Loans' and 'Incremental Loan' identify particular facilities rather than a separately stated dollar figure in this text.",
+    "[definition[d1].SUM[1]] A qualitative lien-priority / non-subordination eligibility test selecting a subset of Consolidated Total Debt; there is no numeric value stated and no arithmetic node type can faithfully express a boolean lien-seniority filter over an aggregate metric.",
+    "[definition[d1]] SUM operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+    "[definition[d2].SUBTRACT.left.SUBTRACT.right] Each item is a categorical carve-out (a description of a type of cost), not a numeric value or a separately quantified defined metric in the supplied source, so it cannot be represented as an arithmetic operand.",
+    "[definition[d2].SUBTRACT.left] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d2]] SUBTRACT keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+    "Source is a Definitions (§1.01) excerpt containing two independent defined terms - both extracted (Consolidated First Lien Debt, Consolidated Interest Expense); no covenant permission/prohibition rule (WireRule) is present in this excerpt, so no rules were emitted.",
+    "The FROZEN SEMANTIC INVENTORY reported an INVENTORY_COVERAGE_GAP (721 stretches of source unaccounted after a failed targeted re-inventory) with no individual inventoryItemIds surfaced to this compilation step; consequently no inventoryItemIds could be attached to any node, and no inventoryDispositions could be produced against specific item ids. This gap is flagged here rather than silently ignored.",
+    "getDefinition('Consolidated Total Debt') was retrieved because Consolidated First Lien Debt's economics are expressed as a share of that metric; it confirmed Consolidated Total Debt already nets cash/Cash Equivalents (its own clause (ii)), which materially informed the decision not to model a second, duplicative cash reduction in Consolidated First Lien Debt.",
+    "Dependent scope-defining terms (Loans, Incremental Loan, Loan Document Obligations, Collateral, Lien, Secured Obligations, ABL Obligations) were deliberately not individually fetched: per getDefinitionDependencies they exist, but none of them would convert the lien-seniority/subordination eligibility test into a computable arithmetic formula - the gap is structural (see irExtensionCandidates), not a missing numeric fact, so further retrieval would not change the PARTIAL sufficiency outcome.",
+    "This provision has no recorded amendment history; both definitions were compiled from COMPLETE_LOCAL_SOURCE text with no amendment-currency ambiguity."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": true,
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "overallNotes"
+    ],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": true,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "string",
+       "originalStringSha256": "19acd1e03cea4bb43a04415a8b5b80979af51d8654eb8bc4662a8745a0a919d8",
+       "originalStringLength": 8204,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 2,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "string",
+       "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+       "originalStringLength": 2,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 0,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "string",
+       "originalStringSha256": "956f21ca43c77ea0eadf64a7999d779a7b7a700dff25a0f6b902c533996a021d",
+       "originalStringLength": 1346,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 1,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "absent",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "absent - left absent for the schema's own default/optional handling"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "string",
+       "originalStringSha256": "6c1c6ac52ff5861d19894c217bf73def85cc0002c2d3d9ab6f1dec60aac85539",
+       "originalStringLength": 1706,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 5,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:86eec078e4ee957898ac",
+   "shardHash": "44699221ab9197fea3a6efc01ca08530a352675313de3e47cc32c4d42be892d3",
+   "ordinal": 10,
+   "ownedUnits": 1,
+   "sourceChars": 11403,
+   "contextEntries": 2,
+   "contextChars": 767,
+   "unresolvedContext": 1,
+   "oversized": false,
+   "ownedItems": 2,
+   "ownedMaterialItems": 2,
+   "estimatedFirstTurnInputTokens": 23688,
+   "preCallEstimate": {
+    "inputTokens": 77934,
+    "outputTokens": 4000,
+    "usd": 0.19586800000000001
+   },
+   "actual": {
+    "inputTokens": 23218,
+    "outputTokens": 11751,
+    "turns": 1,
+    "latencyMs": 114830,
+    "costUsd": 0.163946,
+    "attemptCount": 1,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_COMPLETE",
+   "failureReasons": [],
+   "toolCalls": 0,
+   "toolCallNames": [],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 1,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 0,
+    "dispositioned": 1,
+    "missingMaterial": 1,
+    "valuesRepresented": 0,
+    "valuesMissing": 2,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {
+     "MISSING_FROM_COMPOSITION": 1,
+     "UNSUPPORTED": 1
+    }
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [],
+   "unresolvedIssues": [
+    "[definition[d1].ADD[1]] these are qualitative, category-based, judgment-dependent add-backs (several expressly elective) with no stated dollar amount, percentage or formula in the source text that could be represented as arithmetic nodes",
+    "[definition[d1].ADD[2]] qualitative accounting-methodology adjustment with no quantifiable formula or amount stated",
+    "[definition[d1].ADD[5]] requires a case-by-case qualitative/legal determination (existence and waivability of dividend restrictions) that cannot be reduced to a comparison or arithmetic expression, and is expressly scoped to computing the 'Available Amount', a term that is referenced but not defined anywhere in this document or elsewhere in the instrument package (confirmed unresolved cross-reference)",
+    "[definition[d1]] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+    "The supplied source is a single defined term, 'Consolidated Net Income', in §1.01, not an operative permission/prohibition rule - no WireRule was emitted; only a WireDefinition.",
+    "The frozen semantic inventory's 2 items were both located and consumed: the 365-day business interruption insurance proceeds condition (on the IF node's condition/inputName and the overall node) and the clause (p) Available-Amount-specific carve-out (on the UNSUPPORTED node representing clause (p)).",
+    "The cross-referenced term 'Available Amount' used in clause (p) is confirmed, per the supplied cross-reference resolution, to have no definition anywhere in this document or the related instrument package; this is preserved as an explicit gap on the clause (p) UNSUPPORTED node rather than guessed.",
+    "The referenced §6.08(a)(3) region was used only as read-only context to confirm that 'Available Amount' is a defined aggregate concept used in the Restricted Payments covenant, consistent with clause (p)'s cross-reference; nothing was compiled from that region itself, per instructions.",
+    "Given the sheer number and qualitative/elective nature of exclusion categories (a) through (q), each was not separately split into its own WireDefinition (they are sub-components of the single defined term's formula, not independent defined terms), consistent with treating this as one definition with an internally complex calculation expression, most of which is honestly marked UNSUPPORTED rather than force-fit into arithmetic nodes."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": true,
+    "decodedFields": [
+     "definitions",
+     "sharedCapacities",
+     "irExtensionCandidates",
+     "inventoryDispositions",
+     "overallNotes"
+    ],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": true,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "string",
+       "originalStringSha256": "dd6c1ae2936e5b6ab0c30d2182b5d1bbaa67a66683cb73b2ed93a705d89bb431",
+       "originalStringLength": 6657,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 1,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "string",
+       "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+       "originalStringLength": 2,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 0,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "string",
+       "originalStringSha256": "2036d31d68b93c8e2c7d4459b4f34a1705da943c7794ddf12076d5cd2dc26e3b",
+       "originalStringLength": 1540,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 1,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "string",
+       "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+       "originalStringLength": 2,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 0,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "string",
+       "originalStringSha256": "7a9960036837bece57ad46504631824da9041e44afcaf082592f893195662672",
+       "originalStringLength": 1530,
+       "parseAttempted": true,
+       "parseSuccess": true,
+       "decodedType": "array",
+       "decodedArrayLength": 5,
+       "applied": true,
+       "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "shardStatuses": {
+  "SHARD_MISSING_CONTEXT": 8,
+  "SHARD_COMPLETE": 7
+ },
+ "notExecuted": 21,
+ "stitched": {
+  "status": "PARTIAL",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "SHARD_INCOMPLETE",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED",
+   "PROVIDER_FAILURE",
+   "SHARD_CONFLICT",
+   "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+  ],
+  "rules": 11,
+  "definitions": 170,
+  "sharedCapacities": 0,
+  "contextualEmissions": 10,
+  "collisionsByKind": {
+   "CONTEXTUAL_UNOWNED_DEFINITION": 10,
+   "DEFINITION_CONFLICT": 2
+  },
+  "unresolvedOwnedItems": 86
+ },
+ "proofCounts": {
+  "PLANNER_DEFINITION_UNIT": 124,
+  "OWNED_INVENTORY_LINEAGE": 22,
+  "UNIQUE_PRIMARY_SOURCE_DECLARATION": 45,
+  "NONE": 0
+ },
+ "noneList": [],
+ "accountability": {
+  "executedShards": 15,
+  "executedShardMaterialOwned": 63,
+  "executedRepresented": 37,
+  "executedIntentionallyNonComputational": 1,
+  "executedUnsupported": 16,
+  "executedAmbiguous": 0,
+  "executedMissing": 9,
+  "executedAccountabilityRate": 0.8571,
+  "unresolvedSolelyBecauseNotExecuted": 45,
+  "materialTotal": 108,
+  "globalPassC": {
+   "inventoried": 109,
+   "material": 108,
+   "represented": 50,
+   "intentionallyNonComputational": 1,
+   "unsupported": 18,
+   "ambiguous": 0,
+   "missingFromComposition": 40,
+   "materialMissingFromComposition": 39,
+   "criticalMissingFromComposition": 12,
+   "materialQuantitativeValues": 142,
+   "materialQuantitativeValuesMissing": 44,
+   "uninventoriedValues": 95,
+   "unaccountedSource": 721,
+   "danglingLineageReferences": 0,
+   "canonicalizedLineageReferences": 0
+  },
+  "semanticallyComplete": false
+ },
+ "trust": {
+  "dangerousSilentOmissions": 0,
+  "falseCompleteness": 0,
+  "sourceUnverifiableAuthoritativeIr": 0,
+  "sourceUnverifiableLegacyTwoClassMetric": 45,
+  "contextualOwnershipCredit": 0,
+  "silentIncompatibleMerges": 0,
+  "ownedValuesLostByStitching": 2,
+  "ownedLineageLostByStitching": 6,
+  "lineageClaimsOnUnownedItemsStripped": 0,
+  "newDanglingReferences": 0,
+  "hiddenFailedShards": 0,
+  "hiddenMissingMaterialItems": 0
+ },
+ "gate": {
+  "dangerousSilentOmissions": {
+   "value": 0,
+   "pass": true
+  },
+  "falseCompleteness": {
+   "value": 0,
+   "pass": true
+  },
+  "sourceUnverifiableAuthoritativeIr": {
+   "value": 0,
+   "pass": true,
+   "noneList": []
+  },
+  "contextualOwnershipCredit": {
+   "value": 0,
+   "pass": true
+  },
+  "silentIncompatibleMerges": {
+   "value": 0,
+   "pass": true
+  },
+  "newDanglingReferences": {
+   "value": 0,
+   "pass": true
+  },
+  "ownedValuesLostByStitching": {
+   "value": 2,
+   "pass": false
+  },
+  "ownedLineageLostByStitching": {
+   "value": 6,
+   "pass": false
+  },
+  "noSystematicSchemaFailure": {
+   "value": [],
+   "pass": true
+  },
+  "noNewToolProtocolFailure": {
+   "value": [],
+   "pass": true
+  },
+  "noSystematicAttributionFailure": {
+   "value": {
+    "ambiguous": 0,
+    "conflict": 0,
+    "contextualDropped": 10,
+    "retained": 170
+   },
+   "pass": true
+  },
+  "resultsIndependentlyReusable": {
+   "value": true,
+   "pass": true
+  },
+  "costTrajectory": {
+   "spentUsd": 3.3829,
+   "capUsd": 20,
+   "remainingUsd": 16.6171,
+   "costBounded": null,
+   "pass": true
+  }
+ },
+ "allPass": false,
+ "costBounded": null,
+ "window": {
+  "maxSingleTurnInputTokens": 45884,
+  "maxSingleTurnOutputTokens": 33097,
+  "historicalMonolithicPeak": 312143,
+  "peakReduction": 0.853,
+  "outputTruncations": 0
+ },
+ "score": {
+  "A": {
+   "materialTotal": 108,
+   "materialRepresented": 50,
+   "materialDispositioned": 19,
+   "materialMissing": 39,
+   "materialAccountabilityRate": 0.6389,
+   "materialMissingOwnedByCompleteShards": 4,
+   "materialMissingOwnedByFailedShards": 35,
+   "allItemsByDisposition": {
+    "MISSING_FROM_COMPOSITION": 40,
+    "UNSUPPORTED": 18,
+    "REPRESENTED": 50,
+    "INTENTIONALLY_NON_COMPUTATIONAL": 1
+   },
+   "passC": {
+    "inventoried": 109,
+    "material": 108,
+    "represented": 50,
+    "intentionallyNonComputational": 1,
+    "unsupported": 18,
+    "ambiguous": 0,
+    "missingFromComposition": 40,
+    "materialMissingFromComposition": 39,
+    "criticalMissingFromComposition": 12,
+    "materialQuantitativeValues": 142,
+    "materialQuantitativeValuesMissing": 44,
+    "uninventoriedValues": 95,
+    "unaccountedSource": 721,
+    "danglingLineageReferences": 0,
+    "canonicalizedLineageReferences": 0
+   },
+   "semanticallyComplete": false,
+   "unresolvedOwnedItems": 86
+  },
+  "B": {
+   "valueOccurrencesBefore": 54,
+   "valueOccurrencesAfter": 50,
+   "distinctValuesBefore": 34,
+   "distinctValuesAfter": 32,
+   "valuesOnlyInDroppedContextualEmissions": 0,
+   "valuesLostByStitching": 2,
+   "valuesLostList": [
+    "MONEY:100000000",
+    "MONEY:250000000"
+   ],
+   "duplicatesCollapsed": 0,
+   "multisetOccurrencesRemoved": 4
+  },
+  "C": {
+   "lineageRefsBefore": 115,
+   "lineageRefsAfter": 109,
+   "canonicalizedDigestIds": 52,
+   "strippedClaimsOnUnownedItems": 0,
+   "strippedOnItemsOwnedBySomeShard": 0,
+   "strippedOnUnknownIds": 0,
+   "danglingLineageAfter": 0,
+   "lineageRefsInDroppedEmissions": 0,
+   "unknownLineageIdsBefore": 0
+  },
+  "D": {
+   "definitionUnits": 379,
+   "stitchedDefinitions": 170,
+   "coverage": {
+    "COMPILED": 125,
+    "ITEMS_REPRESENTED_WITHOUT_DEFINITION_OBJECT": 0,
+    "DISPOSITIONED_NON_COMPUTATIONAL": 0,
+    "NO_INVENTORY_ITEMS_NO_IR": 227,
+    "MISSING_MATERIAL": 0,
+    "OWNER_SHARD_NOT_COMPLETE": 27
+   },
+   "conflicts": 2,
+   "consistentDuplicates": 0,
+   "contextualDefinitionEmissions": 10,
+   "sufficiency": {
+    "PARTIAL": 35,
+    "COMPLETE": 116,
+    "MISSING_CONTEXT": 17,
+    "AMBIGUOUS": 2
+   },
+   "missingMaterialUnits": []
+  },
+  "E": {
+   "definitionTermDependencies": 449,
+   "resolvedToStitchedDefinition": 164,
+   "resolvedToSourceUnitOnly": 170,
+   "unresolvedTermDependencies": 115,
+   "crossShardTermDependencies": 272,
+   "crossShardResolved": 272,
+   "ruleDependencies": {
+    "resolved": 0,
+    "unresolved": 15
+   },
+   "missingContextDispositions": 0,
+   "missingContextSufficiencyObjects": 19,
+   "shardsGivenContext": 35,
+   "shardsGivenContextCompleteWithoutOwnedMaterialMissing": 5,
+   "contextEntriesTruncated": 14,
+   "shardsWithTruncatedContext": [
+    "shard:1c29e71eef1717d4f9e1",
+    "shard:5f63d11e8ce53e883d6a",
+    "shard:d3aac7c869cff4602343",
+    "shard:bf3da01cb454860cdf5f",
+    "shard:a45ccfe3d94f990e5348",
+    "shard:f3eb63624b7f5a5c3cca",
+    "shard:f048973d2e9a58498b81",
+    "shard:4f06625557e9aecbbb7a",
+    "shard:3e3910ea2efd9edd45a3",
+    "shard:50e26ec2fb25035a3b7b"
+   ],
+   "unresolvedContextEntries": 20
+  },
+  "F": {
+   "shardStatuses": {
+    "SHARD_MISSING_CONTEXT": 8,
+    "SHARD_COMPLETE": 7,
+    "NOT_EXECUTED": 21
+   },
+   "retries": 0,
+   "stitchedStatus": "PARTIAL",
+   "stitchedFailureReasons": [
+    "MISSING_CONTEXT",
+    "SHARD_INCOMPLETE",
+    "OPERATIVE_STATE_UNRESOLVED",
+    "TRUNCATED_EVIDENCE_USED",
+    "PROVIDER_FAILURE",
+    "SHARD_CONFLICT",
+    "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+   ],
+   "unresolvedOwnedItems": 86,
+   "nonCompleteShardsExplicit": 29
+  },
+  "G": {
+   "CONTEXTUAL_UNOWNED_DEFINITION": 10,
+   "DEFINITION_CONFLICT": 2
+  },
+  "H": {
+   "objectsKept": 181,
+   "sourceUnverifiableSurviving": 45,
+   "list": [
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:54c46307498743194f14c834",
+     "term": "ABL Administrative Agent",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:2aa7c785e29ee9b95844798b",
+     "term": "ABL Cure Amount",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:e380a98c8181318523c6a717",
+     "term": "Acceptable Commitment",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:b4887d40148daf5c03d8ee41",
+     "term": "Accepting Lenders",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:ca5c625f9cd9f7aa2144bae5",
+     "term": "Accounting Changes",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:cabede04ee733c794fe2f8e3",
+     "term": "Acquired Entity or Business",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:0aa9e20146127e520435fc62",
+     "term": "Additional Borrower",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:d2a59c039f54318bcd9a918b",
+     "term": "Additional Borrower Effective Date",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:5db18e34da9bba26186d30dd",
+     "term": "Affected Class",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:4b0937b78b09a58bedeacb85",
+     "term": "Affiliate Transaction",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:6219a1804b7729b9eb85b678",
+     "term": "Affiliated Lender Assignment and Assumption",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:278fa0ecb44a37e917d951ec",
+     "term": "Affiliated Lender Cap",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:858be0fd76d908c3d6adf504",
+     "term": "Agreement Currency",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:33886c52863f13dcafaef5e8",
+     "term": "Ancillary Fees",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:22eb591e375212a1fb41dcc3",
+     "term": "Annual Period",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:9798cd4753246e6ba790c06e",
+     "term": "Annual Threshold",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:03349e6a1e5a8d2fe9ee6f15",
+     "term": "Applicable Creditor",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:3c950f6f1f6630fec91850cf",
+     "term": "Applicable Indebtedness",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:c1fdd29c59289405ecdc449c",
+     "term": "Approved Bank",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:d7f9aab71878ae95f1915a97",
+     "term": "Approved Electronic Platform",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:d875620e56d7b253b5b82df4",
+     "term": "Asset Sale Prepayment Event",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:5a31cbec2744f0a4e1d6fb79",
+     "term": "Asset Sale Proceeds Application Period",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:f38b8cdf03116d39cafef787",
+     "term": "Available Amount",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:cfc9a4e1d3d1d4c4aaef385a",
+     "term": "Beneficial Ownership Certification",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:bb427a953213bf5d9a8f5953",
+     "term": "Borrowers",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:5bef9783658cca558665b267",
+     "term": "Co-Borrower",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:8e2f28f460600673b44d7e38",
+     "term": "Collateral Agent",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:971602ae7894d0f6796f66b4",
+     "term": "Company Materials",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:77cf7b5a7cbcf9a949bc66b5",
+     "term": "Existing Liens",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    },
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:95805ecfce2a93042a976c6c",
+     "term": "Expected Run Rate Benefit",
+     "reason": "term is not a frozen DEFINITION unit and the object carries no inventory lineage"
+    }
+   ],
+   "definitionsWithLineage": 22
+  },
+  "I": {
+   "unsupportedNodes": 92,
+   "exprNodes": 402,
+   "definitionSufficiency": {
+    "PARTIAL": 35,
+    "COMPLETE": 116,
+    "MISSING_CONTEXT": 17,
+    "AMBIGUOUS": 2
+   },
+   "ruleSufficiency": {
+    "COMPLETE": 6,
+    "PARTIAL": 3,
+    "MISSING_CONTEXT": 2
+   },
+   "shardsPartial": 0,
+   "shardsMissingContext": 8,
+   "shardsSchemaFailure": 0,
+   "outputTruncatedShards": []
+  },
+  "J": {
+   "falseCompleteness": 0,
+   "falseCompletenessList": [],
+   "dangerousSilentOmissions": 0,
+   "silentList": [],
+   "hiddenFailedShards": 0,
+   "contextualOwnershipCredit": 0,
+   "conflictSilentMerge": 0
+  },
+  "K": [
+   {
+    "id": "B12",
+    "materiality": "CRITICAL",
+    "section": "Permitted Investments (13)",
+    "ownerShard": "shard:f048973d2e9a58498b81",
+    "ownerShardStatus": "NOT_EXECUTED",
+    "referenceValues": [
+     "MONEY:720000000",
+     "PERCENT:1"
+    ],
+    "matchedInStitchedIR": [
+     "MONEY:720000000",
+     "PERCENT:1"
+    ],
+    "matchRate": 1
+   },
+   {
+    "id": "B13",
+    "materiality": "MATERIAL",
+    "section": "Permitted Liens (46)",
+    "ownerShard": "shard:4f06625557e9aecbbb7a",
+    "ownerShardStatus": "SHARD_MISSING_CONTEXT",
+    "referenceValues": [],
+    "matchedInStitchedIR": [],
+    "matchRate": null
+   },
+   {
+    "id": "B14",
+    "materiality": "CRITICAL",
+    "section": "Incremental Cap / Fixed Incremental Amount",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "ownerShardStatus": "SHARD_MISSING_CONTEXT",
+    "referenceValues": [
+     "MONEY:720000000",
+     "PERCENT:1"
+    ],
+    "matchedInStitchedIR": [
+     "MONEY:720000000",
+     "PERCENT:1"
+    ],
+    "matchRate": 1
+   },
+   {
+    "id": "C3",
+    "materiality": "CRITICAL",
+    "section": "Prepayment Event (a)/(b)",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "ownerShardStatus": "SHARD_MISSING_CONTEXT",
+    "referenceValues": [
+     "MONEY:144000000",
+     "MONEY:216000000",
+     "PERCENT:0.2",
+     "PERCENT:0.3",
+     "PERCENT:1"
+    ],
+    "matchedInStitchedIR": [
+     "MONEY:144000000",
+     "MONEY:216000000",
+     "PERCENT:0.2",
+     "PERCENT:0.3",
+     "PERCENT:1"
+    ],
+    "matchRate": 1
+   },
+   {
+    "id": "D1",
+    "materiality": "CRITICAL",
+    "section": "Threshold Amount / Material Indebtedness",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "ownerShardStatus": "NOT_EXECUTED",
+    "referenceValues": [
+     "MONEY:324000000",
+     "PERCENT:0.45"
+    ],
+    "matchedInStitchedIR": [],
+    "matchRate": 0
+   },
+   {
+    "id": "D2",
+    "materiality": "CRITICAL",
+    "section": "ECF Percentage",
+    "ownerShard": "shard:4d114bdf00429cf670f8",
+    "ownerShardStatus": "NOT_EXECUTED",
+    "referenceValues": [
+     "PERCENT:0.5",
+     "PERCENT:0.25",
+     "PERCENT:0",
+     "RATIO:2.5",
+     "RATIO:2"
+    ],
+    "matchedInStitchedIR": [
+     "PERCENT:0.5",
+     "PERCENT:0",
+     "RATIO:2"
+    ],
+    "matchRate": 0.6
+   },
+   {
+    "id": "D3",
+    "materiality": "CRITICAL",
+    "section": "Disposition Percentage",
+    "ownerShard": "shard:4d114bdf00429cf670f8",
+    "ownerShardStatus": "NOT_EXECUTED",
+    "referenceValues": [
+     "PERCENT:1",
+     "PERCENT:0.5",
+     "PERCENT:0",
+     "RATIO:2.5",
+     "RATIO:2"
+    ],
+    "matchedInStitchedIR": [
+     "PERCENT:1",
+     "PERCENT:0.5",
+     "PERCENT:0",
+     "RATIO:2"
+    ],
+    "matchRate": 0.8
+   },
+   {
+    "id": "D4",
+    "materiality": "MATERIAL",
+    "section": "Applicable Rate",
+    "ownerShard": "shard:b934f8ceb0d79b5cfe57",
+    "ownerShardStatus": "SHARD_COMPLETE",
+    "referenceValues": [
+     "PERCENT:0.0175",
+     "PERCENT:0.0075"
+    ],
+    "matchedInStitchedIR": [
+     "PERCENT:0.0175",
+     "PERCENT:0.0075"
+    ],
+    "matchRate": 1
+   },
+   {
+    "id": "D5",
+    "materiality": "CRITICAL",
+    "section": "Ratio definitions",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "ownerShardStatus": "SHARD_MISSING_CONTEXT",
+    "referenceValues": [],
+    "matchedInStitchedIR": [],
+    "matchRate": null
+   },
+   {
+    "id": "D6",
+    "materiality": "MATERIAL",
+    "section": "Test Period",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "ownerShardStatus": "NOT_EXECUTED",
+    "referenceValues": [],
+    "matchedInStitchedIR": [],
+    "matchRate": null
+   },
+   {
+    "id": "D9",
+    "materiality": "MATERIAL",
+    "section": "Consolidated EBITDA",
+    "ownerShard": "shard:87f08272567db019c17b",
+    "ownerShardStatus": "SHARD_COMPLETE",
+    "referenceValues": [],
+    "matchedInStitchedIR": [],
+    "matchRate": null
+   },
+   {
+    "id": "E1",
+    "materiality": "CRITICAL",
+    "section": "Available RP Capacity Amount",
+    "ownerShard": "shard:4c30ced71fe038991b4b",
+    "ownerShardStatus": "SHARD_COMPLETE",
+    "referenceValues": [],
+    "matchedInStitchedIR": [],
+    "matchRate": null
+   },
+   {
+    "id": "E2",
+    "materiality": "MATERIAL",
+    "section": "Available Investment Capacity Amount",
+    "ownerShard": "shard:1c29e71eef1717d4f9e1",
+    "ownerShardStatus": "SHARD_MISSING_CONTEXT",
+    "referenceValues": [],
+    "matchedInStitchedIR": [],
+    "matchRate": null
+   },
+   {
+    "id": "E3",
+    "materiality": "CRITICAL",
+    "section": "Fixed Incremental Amount consumption",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "ownerShardStatus": "SHARD_MISSING_CONTEXT",
+    "referenceValues": [],
+    "matchedInStitchedIR": [],
+    "matchRate": null
+   }
+  ],
+  "Ksummary": {
+   "items": 14,
+   "itemsWithValues": 7,
+   "valuesTotal": 23,
+   "valuesMatched": 18,
+   "itemsFullyMatched": 4
+  },
+  "W": {
+   "envelope": {
+    "normalShardMaxSingleTurnInputTokens": 60000,
+    "nearCeilingOutputTokens": 100000,
+    "maxTokensSetting": 128000
+   },
+   "normalShards": 14,
+   "maxSingleTurnInputNormal": 45884,
+   "envelopeViolations": [],
+   "perShardTotalInput": {
+    "max": 182224,
+    "median": 61617,
+    "p95": 182224,
+    "total": 1169192
+   },
+   "singleTurnInput": {
+    "max": 45884,
+    "median": 22929,
+    "p95": 45884
+   },
+   "output": {
+    "maxPerShard": 38525,
+    "median": 25281,
+    "p95": 38525,
+    "total": 376417,
+    "maxSingleTurn": 33097,
+    "nearCeiling": [],
+    "truncated": []
+   },
+   "oversizedShard": {
+    "shardId": "shard:4f06625557e9aecbbb7a",
+    "oversized": true,
+    "maxTurnIn": 0,
+    "totalIn": 75051,
+    "totalOut": 32562,
+    "maxTurnOut": 0,
+    "turns": 2,
+    "cost": 0.47572200000000003
+   },
+   "historicalMonolithicFirstTurnInput": 312143,
+   "peakInputReduction": 0.853,
+   "totalInputVsMonolithicFirstTurn": 3.746
+  },
+  "trust": {
+   "dangerousSilentOmissions": 0,
+   "falseCompleteness": 0,
+   "contextualOwnershipCredit": 0,
+   "sourceUnverifiableIrSurviving": 45,
+   "conflictingDuplicateSilentlyMerged": 0,
+   "valuesLostByStitching": 2,
+   "danglingReferencesCausedByStitching": 0,
+   "danglingLineageAfterPassC": 0,
+   "danglingRuleReferencesSurviving": 0,
+   "danglingRuleReferencesConvertedExplicitly": 0,
+   "failedShardHidden": 0,
+   "missingMaterialOwnedItemHidden": 0
+  },
+  "perUnitDefinitionCoverage": [
+   {
+    "unitKey": "operative:DEFINITION:def:abl credit agreement",
+    "term": "ABL Credit Agreement",
+    "ownerShard": "shard:2866a115c3a6d5cc2089",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:abl facility",
+    "term": "ABL Facility",
+    "ownerShard": "shard:2866a115c3a6d5cc2089",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:abl intercreditor agreement",
+    "term": "ABL Intercreditor Agreement",
+    "ownerShard": "shard:2866a115c3a6d5cc2089",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:abl lenders",
+    "term": "ABL Lenders",
+    "ownerShard": "shard:2866a115c3a6d5cc2089",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:abl loan documents",
+    "term": "ABL Loan Documents",
+    "ownerShard": "shard:2866a115c3a6d5cc2089",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:abl loans",
+    "term": "ABL Loans",
+    "ownerShard": "shard:2866a115c3a6d5cc2089",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:abl obligations",
+    "term": "ABL Obligations",
+    "ownerShard": "shard:2866a115c3a6d5cc2089",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:abl priority collateral",
+    "term": "ABL Priority Collateral",
+    "ownerShard": "shard:2866a115c3a6d5cc2089",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:acquired ebitda",
+    "term": "Acquired EBITDA",
+    "ownerShard": "shard:2866a115c3a6d5cc2089",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:acquired indebtedness",
+    "term": "Acquired\nIndebtedness",
+    "ownerShard": "shard:2866a115c3a6d5cc2089",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:additional lender",
+    "term": "Additional Lender",
+    "ownerShard": "shard:2866a115c3a6d5cc2089",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:administrative agent",
+    "term": "Administrative Agent",
+    "ownerShard": "shard:2866a115c3a6d5cc2089",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:administrative questionnaire",
+    "term": "Administrative Questionnaire",
+    "ownerShard": "shard:2866a115c3a6d5cc2089",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:affected financial institution",
+    "term": "Affected Financial Institution",
+    "ownerShard": "shard:2866a115c3a6d5cc2089",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:affiliate",
+    "term": "Affiliate",
+    "ownerShard": "shard:2866a115c3a6d5cc2089",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:affiliated debt fund",
+    "term": "Affiliated Debt Fund",
+    "ownerShard": "shard:b934f8ceb0d79b5cfe57",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:affiliated lender",
+    "term": "Affiliated Lender",
+    "ownerShard": "shard:b934f8ceb0d79b5cfe57",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:agent",
+    "term": "Agent",
+    "ownerShard": "shard:b934f8ceb0d79b5cfe57",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:agents",
+    "term": "Agents",
+    "ownerShard": "shard:b934f8ceb0d79b5cfe57",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:agreement",
+    "term": "Agreement",
+    "ownerShard": "shard:b934f8ceb0d79b5cfe57",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:ahydo payment",
+    "term": "AHYDO Payment",
+    "ownerShard": "shard:b934f8ceb0d79b5cfe57",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:alternate base rate",
+    "term": "Alternate Base Rate",
+    "ownerShard": "shard:b934f8ceb0d79b5cfe57",
+    "items": 5,
+    "materialItems": 5,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:alternative currency",
+    "term": "Alternative Currency",
+    "ownerShard": "shard:b934f8ceb0d79b5cfe57",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:alternative currency term benchmark rate",
+    "term": "Alternative Currency\nTerm Benchmark Rate",
+    "ownerShard": "shard:b934f8ceb0d79b5cfe57",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:applicable account",
+    "term": "Applicable Account",
+    "ownerShard": "shard:b934f8ceb0d79b5cfe57",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:applicable rate",
+    "term": "Applicable Rate",
+    "ownerShard": "shard:b934f8ceb0d79b5cfe57",
+    "items": 2,
+    "materialItems": 2,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:approved electronic communications",
+    "term": "Approved Electronic Communications",
+    "ownerShard": "shard:b934f8ceb0d79b5cfe57",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:approved fund",
+    "term": "Approved Fund",
+    "ownerShard": "shard:b934f8ceb0d79b5cfe57",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:asset sale",
+    "term": "Asset Sale",
+    "ownerShard": "shard:1c29e71eef1717d4f9e1",
+    "items": 10,
+    "materialItems": 10,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:assignment and assumption",
+    "term": "Assignment and Assumption",
+    "ownerShard": "shard:1c29e71eef1717d4f9e1",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:available investment capacity amount",
+    "term": "Available Investment Capacity Amount",
+    "ownerShard": "shard:1c29e71eef1717d4f9e1",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:available rp capacity amount",
+    "term": "Available RP Capacity Amount",
+    "ownerShard": "shard:4c30ced71fe038991b4b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:available tenor",
+    "term": "Available Tenor",
+    "ownerShard": "shard:4c30ced71fe038991b4b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:bail-in action",
+    "term": "Bail-In Action",
+    "ownerShard": "shard:4c30ced71fe038991b4b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:bail-in legislation",
+    "term": "Bail-In\nLegislation",
+    "ownerShard": "shard:4c30ced71fe038991b4b",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:basel iii",
+    "term": "Basel III",
+    "ownerShard": "shard:4c30ced71fe038991b4b",
+    "items": 1,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:benchmark",
+    "term": "Benchmark",
+    "ownerShard": "shard:4c30ced71fe038991b4b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:benchmark~2",
+    "term": "Benchmark",
+    "ownerShard": "shard:4c30ced71fe038991b4b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:benchmark replacement",
+    "term": "Benchmark Replacement",
+    "ownerShard": "shard:4c30ced71fe038991b4b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:benchmark replacement conforming changes",
+    "term": "Benchmark Replacement Conforming Changes",
+    "ownerShard": "shard:4c30ced71fe038991b4b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:benchmark replacement date",
+    "term": "Benchmark Replacement Date",
+    "ownerShard": "shard:4c30ced71fe038991b4b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:benchmark transition event",
+    "term": "Benchmark Transition Event",
+    "ownerShard": "shard:4c30ced71fe038991b4b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:benchmark unavailability period",
+    "term": "Benchmark Unavailability Period",
+    "ownerShard": "shard:9dae67b10a1cb8ab8e61",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:benefit plan",
+    "term": "Benefit Plan",
+    "ownerShard": "shard:9dae67b10a1cb8ab8e61",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:board of directors",
+    "term": "Board of\nDirectors",
+    "ownerShard": "shard:9dae67b10a1cb8ab8e61",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:board of governors",
+    "term": "Board of\nGovernors",
+    "ownerShard": "shard:9dae67b10a1cb8ab8e61",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:borrowing",
+    "term": "Borrowing",
+    "ownerShard": "shard:9dae67b10a1cb8ab8e61",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:borrowing minimum",
+    "term": "Borrowing Minimum",
+    "ownerShard": "shard:9dae67b10a1cb8ab8e61",
+    "items": 3,
+    "materialItems": 3,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:borrowing multiple",
+    "term": "Borrowing Multiple",
+    "ownerShard": "shard:9dae67b10a1cb8ab8e61",
+    "items": 3,
+    "materialItems": 3,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:borrowing request",
+    "term": "Borrowing Request",
+    "ownerShard": "shard:9dae67b10a1cb8ab8e61",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:business day",
+    "term": "Business Day",
+    "ownerShard": "shard:9dae67b10a1cb8ab8e61",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:calculation period",
+    "term": "Calculation Period",
+    "ownerShard": "shard:9dae67b10a1cb8ab8e61",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:canadian prime rate",
+    "term": "Canadian Prime Rate",
+    "ownerShard": "shard:9dae67b10a1cb8ab8e61",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:capital expenditures",
+    "term": "Capital Expenditures",
+    "ownerShard": "shard:9dae67b10a1cb8ab8e61",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:capital stock",
+    "term": "Capital Stock",
+    "ownerShard": "shard:9dae67b10a1cb8ab8e61",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:capitalized lease obligation",
+    "term": "Capitalized Lease Obligation",
+    "ownerShard": "shard:9dae67b10a1cb8ab8e61",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:capitalized leases",
+    "term": "Capitalized Leases",
+    "ownerShard": "shard:9dae67b10a1cb8ab8e61",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:capitalized software expenditures",
+    "term": "Capitalized Software Expenditures",
+    "ownerShard": "shard:9dae67b10a1cb8ab8e61",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:cash equivalents",
+    "term": "Cash Equivalents",
+    "ownerShard": "shard:c68b6e6e275414f90c39",
+    "items": 6,
+    "materialItems": 6,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:cash management obligations",
+    "term": "Cash Management Obligations",
+    "ownerShard": "shard:c68b6e6e275414f90c39",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:cash management services",
+    "term": "Cash Management Services",
+    "ownerShard": "shard:c68b6e6e275414f90c39",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:central bank rate",
+    "term": "Central Bank Rate",
+    "ownerShard": "shard:c68b6e6e275414f90c39",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:cfc",
+    "term": "CFC",
+    "ownerShard": "shard:c68b6e6e275414f90c39",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:change in law",
+    "term": "Change in Law",
+    "ownerShard": "shard:c68b6e6e275414f90c39",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:change of control",
+    "term": "Change of Control",
+    "ownerShard": "shard:ec1aea485db261059c14",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:cme term sofr administrator",
+    "term": "CME Term SOFR Administrator",
+    "ownerShard": "shard:ec1aea485db261059c14",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:code",
+    "term": "Code",
+    "ownerShard": "shard:ec1aea485db261059c14",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:collateral",
+    "term": "Collateral",
+    "ownerShard": "shard:ec1aea485db261059c14",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:collateral agreement",
+    "term": "Collateral Agreement",
+    "ownerShard": "shard:ec1aea485db261059c14",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:collateral and guarantee requirement",
+    "term": "Collateral and Guarantee Requirement",
+    "ownerShard": "shard:5f63d11e8ce53e883d6a",
+    "items": 3,
+    "materialItems": 3,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:commitment",
+    "term": "Commitment",
+    "ownerShard": "shard:5f63d11e8ce53e883d6a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:commodity exchange act",
+    "term": "Commodity Exchange Act",
+    "ownerShard": "shard:5f63d11e8ce53e883d6a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:compliance certificate",
+    "term": "Compliance Certificate",
+    "ownerShard": "shard:5f63d11e8ce53e883d6a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:consolidated ebitda",
+    "term": "Consolidated EBITDA",
+    "ownerShard": "shard:87f08272567db019c17b",
+    "items": 5,
+    "materialItems": 5,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:consolidated first lien debt",
+    "term": "Consolidated First Lien Debt",
+    "ownerShard": "shard:fc841e0f175ddcab1ccd",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:consolidated interest expense",
+    "term": "Consolidated Interest Expense",
+    "ownerShard": "shard:fc841e0f175ddcab1ccd",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:consolidated net income",
+    "term": "Consolidated Net Income",
+    "ownerShard": "shard:86eec078e4ee957898ac",
+    "items": 2,
+    "materialItems": 2,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:consolidated senior secured debt",
+    "term": "Consolidated Senior Secured Debt",
+    "ownerShard": "shard:e3ddb1887d6b8499929a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:consolidated total debt",
+    "term": "Consolidated Total Debt",
+    "ownerShard": "shard:e3ddb1887d6b8499929a",
+    "items": 3,
+    "materialItems": 3,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:consolidated working capital",
+    "term": "Consolidated Working Capital",
+    "ownerShard": "shard:e3ddb1887d6b8499929a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:contingent obligations",
+    "term": "Contingent Obligations",
+    "ownerShard": "shard:e3ddb1887d6b8499929a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:control",
+    "term": "Control",
+    "ownerShard": "shard:e3ddb1887d6b8499929a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:controlled investment affiliate",
+    "term": "Controlled Investment Affiliate",
+    "ownerShard": "shard:e3ddb1887d6b8499929a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:corra",
+    "term": "CORRA",
+    "ownerShard": "shard:e3ddb1887d6b8499929a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:corra administrator",
+    "term": "CORRA Administrator",
+    "ownerShard": "shard:e3ddb1887d6b8499929a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:covered entity",
+    "term": "Covered Entity",
+    "ownerShard": "shard:e3ddb1887d6b8499929a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:credit agreement refinancing indebtedness",
+    "term": "Credit Agreement Refinancing Indebtedness",
+    "ownerShard": "shard:e3ddb1887d6b8499929a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:customary bridge loans",
+    "term": "Customary Bridge Loans",
+    "ownerShard": "shard:e3ddb1887d6b8499929a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:customary escrow provisions",
+    "term": "Customary Escrow Provisions",
+    "ownerShard": "shard:e3ddb1887d6b8499929a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:customary exceptions",
+    "term": "Customary Exceptions",
+    "ownerShard": "shard:e3ddb1887d6b8499929a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:customary intercreditor agreement",
+    "term": "Customary Intercreditor Agreement",
+    "ownerShard": "shard:e43dc65668a775eaca1a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:daily simple rfr",
+    "term": "Daily Simple RFR",
+    "ownerShard": "shard:e43dc65668a775eaca1a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:default",
+    "term": "Default",
+    "ownerShard": "shard:e43dc65668a775eaca1a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:defaulting lender",
+    "term": "Defaulting Lender",
+    "ownerShard": "shard:e43dc65668a775eaca1a",
+    "items": 3,
+    "materialItems": 3,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:delaware divided llc",
+    "term": "Delaware Divided LLC",
+    "ownerShard": "shard:e43dc65668a775eaca1a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:delaware llc",
+    "term": "Delaware LLC",
+    "ownerShard": "shard:e43dc65668a775eaca1a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:delaware llc division",
+    "term": "Delaware LLC Division",
+    "ownerShard": "shard:e43dc65668a775eaca1a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:designated non-cash consideration",
+    "term": "Designated Non-cash\nConsideration",
+    "ownerShard": "shard:e43dc65668a775eaca1a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:designated preferred stock",
+    "term": "Designated Preferred Stock",
+    "ownerShard": "shard:e43dc65668a775eaca1a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:disinterested director",
+    "term": "Disinterested Director",
+    "ownerShard": "shard:e43dc65668a775eaca1a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:disposed ebitda",
+    "term": "Disposed EBITDA",
+    "ownerShard": "shard:e43dc65668a775eaca1a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:disposition percentage",
+    "term": "Disposition Percentage",
+    "ownerShard": "shard:4d114bdf00429cf670f8",
+    "items": 3,
+    "materialItems": 3,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:disqualified lenders",
+    "term": "Disqualified Lenders",
+    "ownerShard": "shard:4d114bdf00429cf670f8",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:disqualified stock",
+    "term": "Disqualified\nStock",
+    "ownerShard": "shard:4d114bdf00429cf670f8",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:dollar amount",
+    "term": "Dollar Amount",
+    "ownerShard": "shard:4d114bdf00429cf670f8",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:domestic subsidiary",
+    "term": "Domestic Subsidiary",
+    "ownerShard": "shard:4d114bdf00429cf670f8",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:ecf percentage",
+    "term": "ECF Percentage",
+    "ownerShard": "shard:4d114bdf00429cf670f8",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:eea financial institution",
+    "term": "EEA Financial Institution",
+    "ownerShard": "shard:4d114bdf00429cf670f8",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:eea member country",
+    "term": "EEA Member Country",
+    "ownerShard": "shard:4d114bdf00429cf670f8",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:eea resolution authority",
+    "term": "EEA Resolution Authority",
+    "ownerShard": "shard:4d114bdf00429cf670f8",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:effective date",
+    "term": "Effective Date",
+    "ownerShard": "shard:4d114bdf00429cf670f8",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:effective yield",
+    "term": "Effective Yield",
+    "ownerShard": "shard:4d114bdf00429cf670f8",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:eligible assignee",
+    "term": "Eligible Assignee",
+    "ownerShard": "shard:4d114bdf00429cf670f8",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:emu legislation",
+    "term": "EMU Legislation",
+    "ownerShard": "shard:4d114bdf00429cf670f8",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:environmental laws",
+    "term": "Environmental Laws",
+    "ownerShard": "shard:845680480624a0f129ec",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:environmental liability",
+    "term": "Environmental Liability",
+    "ownerShard": "shard:845680480624a0f129ec",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:equity interests",
+    "term": "Equity Interests",
+    "ownerShard": "shard:845680480624a0f129ec",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:erisa",
+    "term": "ERISA",
+    "ownerShard": "shard:845680480624a0f129ec",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:erisa affiliate",
+    "term": "ERISA Affiliate",
+    "ownerShard": "shard:845680480624a0f129ec",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:erisa event",
+    "term": "ERISA Event",
+    "ownerShard": "shard:845680480624a0f129ec",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:eu bail-in legislation schedule",
+    "term": "EU Bail-In Legislation Schedule",
+    "ownerShard": "shard:845680480624a0f129ec",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:euribor rate",
+    "term": "EURIBOR\nRate",
+    "ownerShard": "shard:845680480624a0f129ec",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:euro",
+    "term": "euro",
+    "ownerShard": "shard:845680480624a0f129ec",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:excess cash flow",
+    "term": "Excess Cash Flow",
+    "ownerShard": "shard:d3aac7c869cff4602343",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:excess cash flow interim period",
+    "term": "Excess Cash Flow Interim Period",
+    "ownerShard": "shard:d3aac7c869cff4602343",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:excess cash flow period",
+    "term": "Excess Cash Flow Period",
+    "ownerShard": "shard:d3aac7c869cff4602343",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:exchange act",
+    "term": "Exchange Act",
+    "ownerShard": "shard:d3aac7c869cff4602343",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:excluded assets",
+    "term": "Excluded Assets",
+    "ownerShard": "shard:d2efbf609b9828839ddf",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:excluded contribution",
+    "term": "Excluded Contribution",
+    "ownerShard": "shard:d2efbf609b9828839ddf",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:excluded revolving loans",
+    "term": "Excluded Revolving Loans",
+    "ownerShard": "shard:d2efbf609b9828839ddf",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:excluded subsidiary",
+    "term": "Excluded Subsidiary",
+    "ownerShard": "shard:d2efbf609b9828839ddf",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:excluded swap obligation",
+    "term": "Excluded Swap Obligation",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:excluded taxes",
+    "term": "Excluded Taxes",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:excluded term loans",
+    "term": "Excluded Term Loans",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "items": 3,
+    "materialItems": 3,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:existing indebtedness",
+    "term": "Existing\nIndebtedness",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:extension amount",
+    "term": "Extension Amount",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:facility",
+    "term": "Facility",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:fair market value",
+    "term": "fair market value",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:fair value",
+    "term": "Fair Value",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:fatca",
+    "term": "FATCA",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:federal funds effective rate",
+    "term": "Federal Funds Effective Rate",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:fee letter",
+    "term": "Fee Letter",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:financial officer",
+    "term": "Financial Officer",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:first lien intercreditor agreement",
+    "term": "First Lien Intercreditor Agreement",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:first lien leverage ratio",
+    "term": "First Lien Leverage Ratio",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:fixed charges",
+    "term": "Fixed Charges",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:fixed incremental amount",
+    "term": "Fixed\nIncremental Amount",
+    "ownerShard": "shard:bf3da01cb454860cdf5f",
+    "items": 4,
+    "materialItems": 4,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:foreign intellectual property",
+    "term": "Foreign Intellectual Property",
+    "ownerShard": "shard:a8646966da2484b40b97",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:foreign subsidiary",
+    "term": "Foreign Subsidiary",
+    "ownerShard": "shard:a8646966da2484b40b97",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:form intercreditor agreements",
+    "term": "Form Intercreditor Agreements",
+    "ownerShard": "shard:a8646966da2484b40b97",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:fshco",
+    "term": "FSHCO",
+    "ownerShard": "shard:a8646966da2484b40b97",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:fund",
+    "term": "Fund",
+    "ownerShard": "shard:a8646966da2484b40b97",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:funded debt",
+    "term": "Funded Debt",
+    "ownerShard": "shard:a8646966da2484b40b97",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:gaap",
+    "term": "GAAP",
+    "ownerShard": "shard:a8646966da2484b40b97",
+    "items": 2,
+    "materialItems": 2,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:general lien basket",
+    "term": "General Lien Basket",
+    "ownerShard": "shard:a8646966da2484b40b97",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:general lien basket reallocated amount",
+    "term": "General Lien Basket Reallocated Amount",
+    "ownerShard": "shard:a8646966da2484b40b97",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:governmental authority",
+    "term": "Governmental Authority",
+    "ownerShard": "shard:a8646966da2484b40b97",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:guarantee agreement",
+    "term": "Guarantee Agreement",
+    "ownerShard": "shard:a8646966da2484b40b97",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:guarantors",
+    "term": "Guarantors",
+    "ownerShard": "shard:a8646966da2484b40b97",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:hazardous materials",
+    "term": "Hazardous Materials",
+    "ownerShard": "shard:a8646966da2484b40b97",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:hedging obligations",
+    "term": "Hedging Obligations",
+    "ownerShard": "shard:a8646966da2484b40b97",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:ifrs",
+    "term": "IFRS",
+    "ownerShard": "shard:a8646966da2484b40b97",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:immaterial subsidiary",
+    "term": "Immaterial Subsidiary",
+    "ownerShard": "shard:a8646966da2484b40b97",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:immediate family members",
+    "term": "Immediate Family Members",
+    "ownerShard": "shard:30d337feeef5ba80d66b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:incremental cap",
+    "term": "Incremental Cap",
+    "ownerShard": "shard:30d337feeef5ba80d66b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:incremental equivalent debt",
+    "term": "Incremental Equivalent Debt",
+    "ownerShard": "shard:30d337feeef5ba80d66b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:incremental facility",
+    "term": "Incremental Facility",
+    "ownerShard": "shard:30d337feeef5ba80d66b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:incremental loans",
+    "term": "Incremental Loans",
+    "ownerShard": "shard:30d337feeef5ba80d66b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:incremental revolving commitment",
+    "term": "Incremental Revolving Commitment",
+    "ownerShard": "shard:30d337feeef5ba80d66b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:incremental revolving loans",
+    "term": "Incremental Revolving Loans",
+    "ownerShard": "shard:30d337feeef5ba80d66b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:incremental term commitment",
+    "term": "Incremental Term Commitment",
+    "ownerShard": "shard:30d337feeef5ba80d66b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:incremental term facility",
+    "term": "Incremental Term Facility",
+    "ownerShard": "shard:30d337feeef5ba80d66b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:indebtedness",
+    "term": "Indebtedness",
+    "ownerShard": "shard:30d337feeef5ba80d66b",
+    "items": 3,
+    "materialItems": 3,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:indemnified taxes",
+    "term": "Indemnified Taxes",
+    "ownerShard": "shard:30d337feeef5ba80d66b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:independent financial advisor",
+    "term": "Independent Financial Advisor",
+    "ownerShard": "shard:30d337feeef5ba80d66b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:initial term commitment",
+    "term": "Initial Term Commitment",
+    "ownerShard": "shard:30d337feeef5ba80d66b",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:initial term facility",
+    "term": "Initial Term Facility",
+    "ownerShard": "shard:30d337feeef5ba80d66b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:initial term loans",
+    "term": "Initial Term Loans",
+    "ownerShard": "shard:30d337feeef5ba80d66b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:initial term maturity date",
+    "term": "Initial Term Maturity Date",
+    "ownerShard": "shard:30d337feeef5ba80d66b",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:inside maturity basket",
+    "term": "Inside Maturity Basket",
+    "ownerShard": "shard:a45ccfe3d94f990e5348",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:intercreditor agreements",
+    "term": "Intercreditor Agreements",
+    "ownerShard": "shard:a45ccfe3d94f990e5348",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:interest coverage ratio",
+    "term": "Interest Coverage\nRatio",
+    "ownerShard": "shard:a45ccfe3d94f990e5348",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:interest election request",
+    "term": "Interest Election Request",
+    "ownerShard": "shard:a45ccfe3d94f990e5348",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:interest payment date",
+    "term": "Interest Payment Date",
+    "ownerShard": "shard:a45ccfe3d94f990e5348",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:interest period",
+    "term": "Interest Period",
+    "ownerShard": "shard:a45ccfe3d94f990e5348",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:investment grade rating",
+    "term": "Investment Grade Rating",
+    "ownerShard": "shard:a45ccfe3d94f990e5348",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:investment grade securities",
+    "term": "Investment Grade Securities",
+    "ownerShard": "shard:a45ccfe3d94f990e5348",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:investments",
+    "term": "Investments",
+    "ownerShard": "shard:a45ccfe3d94f990e5348",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:investor",
+    "term": "Investor",
+    "ownerShard": "shard:a45ccfe3d94f990e5348",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:joint venture",
+    "term": "Joint Venture",
+    "ownerShard": "shard:a45ccfe3d94f990e5348",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:jpmcb",
+    "term": "JPMCB",
+    "ownerShard": "shard:a45ccfe3d94f990e5348",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:junior lien priorit y",
+    "term": "Junior Lien Priorit y",
+    "ownerShard": "shard:a45ccfe3d94f990e5348",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:junior lien intercreditor agreement",
+    "term": "Junior Lien Intercreditor\nAgreement",
+    "ownerShard": "shard:aac727054a5da5f1a9fd",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:latest maturity date",
+    "term": "Latest Maturity Date",
+    "ownerShard": "shard:aac727054a5da5f1a9fd",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:lead arrangers",
+    "term": "Lead Arrangers",
+    "ownerShard": "shard:aac727054a5da5f1a9fd",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:lenders",
+    "term": "Lenders",
+    "ownerShard": "shard:aac727054a5da5f1a9fd",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:letter of intent transactions",
+    "term": "Letter of Intent Transactions",
+    "ownerShard": "shard:aac727054a5da5f1a9fd",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:liabilities",
+    "term": "Liabilities",
+    "ownerShard": "shard:aac727054a5da5f1a9fd",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:lien",
+    "term": "Lien",
+    "ownerShard": "shard:aac727054a5da5f1a9fd",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:limited condition transaction",
+    "term": "Limited Condition\nTransaction",
+    "ownerShard": "shard:aac727054a5da5f1a9fd",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:limited originator recourse",
+    "term": "Limited Originator Recourse",
+    "ownerShard": "shard:aac727054a5da5f1a9fd",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:loan document obligations",
+    "term": "Loan Document Obligations",
+    "ownerShard": "shard:aac727054a5da5f1a9fd",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:loan documents",
+    "term": "Loan Documents",
+    "ownerShard": "shard:aac727054a5da5f1a9fd",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:loan modification agreement",
+    "term": "Loan Modification Agreement",
+    "ownerShard": "shard:aac727054a5da5f1a9fd",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:loan parties",
+    "term": "Loan Parties",
+    "ownerShard": "shard:aac727054a5da5f1a9fd",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:loans",
+    "term": "Loans",
+    "ownerShard": "shard:aac727054a5da5f1a9fd",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:management investors",
+    "term": "Management Investors",
+    "ownerShard": "shard:aac727054a5da5f1a9fd",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:market capitalization",
+    "term": "Market Capitalization",
+    "ownerShard": "shard:aac727054a5da5f1a9fd",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:material acquisition",
+    "term": "Material Acquisition",
+    "ownerShard": "shard:f3eb63624b7f5a5c3cca",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:material adverse effect",
+    "term": "Material Adverse Effect",
+    "ownerShard": "shard:f3eb63624b7f5a5c3cca",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:material indebtedness",
+    "term": "Material Indebtedness",
+    "ownerShard": "shard:f3eb63624b7f5a5c3cca",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:material intellectual property",
+    "term": "Material Intellectual Property",
+    "ownerShard": "shard:f3eb63624b7f5a5c3cca",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:material subsidiary",
+    "term": "Material Subsidiary",
+    "ownerShard": "shard:f3eb63624b7f5a5c3cca",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:maturity date",
+    "term": "Maturity Date",
+    "ownerShard": "shard:f3eb63624b7f5a5c3cca",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:maturity exception facility",
+    "term": "Maturity Exception Facility",
+    "ownerShard": "shard:f3eb63624b7f5a5c3cca",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:model",
+    "term": "Model",
+    "ownerShard": "shard:f3eb63624b7f5a5c3cca",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:moody ’ s",
+    "term": "Moody ’ s",
+    "ownerShard": "shard:f3eb63624b7f5a5c3cca",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:multiemployer plan",
+    "term": "Multiemployer Plan",
+    "ownerShard": "shard:f3eb63624b7f5a5c3cca",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:non-cash compensation expense",
+    "term": "Non-Cash Compensation Expense",
+    "ownerShard": "shard:f3eb63624b7f5a5c3cca",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:non-loan party subsidiary",
+    "term": "Non-Loan Party Subsidiary",
+    "ownerShard": "shard:f3eb63624b7f5a5c3cca",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:not otherwise applied",
+    "term": "Not Otherwise Applied",
+    "ownerShard": "shard:f3eb63624b7f5a5c3cca",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:notice of additional guarantor",
+    "term": "Notice of Additional Guarantor",
+    "ownerShard": "shard:f3eb63624b7f5a5c3cca",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:numerical permission",
+    "term": "Numerical Permission",
+    "ownerShard": "shard:f3eb63624b7f5a5c3cca",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:nyfrb",
+    "term": "NYFRB",
+    "ownerShard": "shard:f3eb63624b7f5a5c3cca",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:nyfrb rate",
+    "term": "NYFRB Rate",
+    "ownerShard": "shard:2804206d37b6f769705a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:nyfrb rate~2",
+    "term": "NYFRB\nRate",
+    "ownerShard": "shard:2804206d37b6f769705a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:obligations",
+    "term": "Obligations",
+    "ownerShard": "shard:2804206d37b6f769705a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:ordinary course non-recourse third party financing transaction",
+    "term": "Ordinary Course Non-Recourse Third Party Financing Transaction",
+    "ownerShard": "shard:2804206d37b6f769705a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:organizational documents",
+    "term": "Organizational\nDocuments",
+    "ownerShard": "shard:2804206d37b6f769705a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:other commitments",
+    "term": "Other Commitments",
+    "ownerShard": "shard:2804206d37b6f769705a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:other connection taxes",
+    "term": "Other Connection Taxes",
+    "ownerShard": "shard:2804206d37b6f769705a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:other loans",
+    "term": "Other Loans",
+    "ownerShard": "shard:2804206d37b6f769705a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:other revolving commitments",
+    "term": "Other Revolving Commitments",
+    "ownerShard": "shard:2804206d37b6f769705a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:other revolving facility",
+    "term": "Other Revolving Facility",
+    "ownerShard": "shard:2804206d37b6f769705a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:other revolving loans",
+    "term": "Other Revolving Loans",
+    "ownerShard": "shard:2804206d37b6f769705a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:other taxes",
+    "term": "Other Taxes",
+    "ownerShard": "shard:2804206d37b6f769705a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:other term commitments",
+    "term": "Other Term\nCommitments",
+    "ownerShard": "shard:2804206d37b6f769705a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:other term facility",
+    "term": "Other Term\nFacility",
+    "ownerShard": "shard:2804206d37b6f769705a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:other term loans",
+    "term": "Other Term Loans",
+    "ownerShard": "shard:2804206d37b6f769705a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:overnight bank funding rate",
+    "term": "Overnight Bank Funding Rate",
+    "ownerShard": "shard:2804206d37b6f769705a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:parent entity",
+    "term": "Parent Entity",
+    "ownerShard": "shard:8b21b0018e4a6cedd585",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:pbgc",
+    "term": "PBGC",
+    "ownerShard": "shard:8b21b0018e4a6cedd585",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:permitted amendment",
+    "term": "Permitted Amendment",
+    "ownerShard": "shard:8b21b0018e4a6cedd585",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:permitted asset swap",
+    "term": "Permitted Asset Swap",
+    "ownerShard": "shard:8b21b0018e4a6cedd585",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:permitted holder",
+    "term": "Permitted Holder",
+    "ownerShard": "shard:8b21b0018e4a6cedd585",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:permitted investments",
+    "term": "Permitted Investments",
+    "ownerShard": "shard:f048973d2e9a58498b81",
+    "items": 6,
+    "materialItems": 6,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:permitted liens",
+    "term": "Permitted Liens",
+    "ownerShard": "shard:4f06625557e9aecbbb7a",
+    "items": 6,
+    "materialItems": 6,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:permitted receivables financings",
+    "term": "Permitted Receivables Financings",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:permitted tax restructuring",
+    "term": "Permitted Tax Restructuring",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:permitted transferees",
+    "term": "Permitted Transferees",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:person",
+    "term": "Person",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:plan",
+    "term": "Plan",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:post-transaction period",
+    "term": "Post-Transaction Period",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:preferred stock",
+    "term": "Preferred Stock",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:prepayment event",
+    "term": "Prepayment Event",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "items": 2,
+    "materialItems": 2,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:prepayment notice",
+    "term": "Prepayment Notice",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:present fair saleable value",
+    "term": "Present Fair Saleable Value",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:prime rate",
+    "term": "Prime Rate",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:pro forma adjustment",
+    "term": "Pro Forma Adjustment",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:pro forma effect",
+    "term": "Pro Forma Effect",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:pro forma disposal adjustment",
+    "term": "Pro Forma Disposal Adjustment",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:pro forma entity",
+    "term": "Pro Forma Entity",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:pro rata share",
+    "term": "Pro Rata Share",
+    "ownerShard": "shard:3e3910ea2efd9edd45a3",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "COMPILED"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:pte",
+    "term": "PTE",
+    "ownerShard": "shard:6248230fa539039e625f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:public company costs",
+    "term": "Public Company Costs",
+    "ownerShard": "shard:6248230fa539039e625f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:purchase money obligations",
+    "term": "Purchase Money Obligations",
+    "ownerShard": "shard:6248230fa539039e625f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:purchasing borrower party",
+    "term": "Purchasing Borrower Party",
+    "ownerShard": "shard:6248230fa539039e625f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:qualified equity interests",
+    "term": "Qualified Equity Interests",
+    "ownerShard": "shard:6248230fa539039e625f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:qualified restricted subsidiary",
+    "term": "Qualified Restricted Subsidiary",
+    "ownerShard": "shard:6248230fa539039e625f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:qualified jurisdiction",
+    "term": "Qualified Jurisdiction",
+    "ownerShard": "shard:6248230fa539039e625f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:ratio incremental amount",
+    "term": "Ratio Incremental Amount",
+    "ownerShard": "shard:6248230fa539039e625f",
+    "items": 3,
+    "materialItems": 3,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:receivables assets",
+    "term": "Receivables Assets",
+    "ownerShard": "shard:6248230fa539039e625f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:receivables fees",
+    "term": "Receivables Fees",
+    "ownerShard": "shard:6248230fa539039e625f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:receivables non-recourse facility",
+    "term": "Receivables Non-Recourse Facility",
+    "ownerShard": "shard:6248230fa539039e625f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:receivables recourse facility",
+    "term": "Receivables Recourse Facility",
+    "ownerShard": "shard:6248230fa539039e625f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:receivables subsidiary",
+    "term": "Receivables Subsidiary",
+    "ownerShard": "shard:6248230fa539039e625f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:recipient",
+    "term": "Recipient",
+    "ownerShard": "shard:6248230fa539039e625f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:refinance",
+    "term": "Refinance",
+    "ownerShard": "shard:6248230fa539039e625f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:refinancing amendment",
+    "term": "Refinancing Amendment",
+    "ownerShard": "shard:6248230fa539039e625f",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:regulated bank",
+    "term": "Regulated Bank",
+    "ownerShard": "shard:5bbdd9026aa0eefb73f0",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:related business assets",
+    "term": "Related Business Assets",
+    "ownerShard": "shard:5bbdd9026aa0eefb73f0",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:related parties",
+    "term": "Related Parties",
+    "ownerShard": "shard:5bbdd9026aa0eefb73f0",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:release",
+    "term": "Release",
+    "ownerShard": "shard:5bbdd9026aa0eefb73f0",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:relevant governmental body",
+    "term": "Relevant Governmental Body",
+    "ownerShard": "shard:5bbdd9026aa0eefb73f0",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:repricing transaction",
+    "term": "Repricing Transaction",
+    "ownerShard": "shard:5bbdd9026aa0eefb73f0",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:repurchase obligation",
+    "term": "Repurchase Obligation",
+    "ownerShard": "shard:5bbdd9026aa0eefb73f0",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:required lenders",
+    "term": "Required Lenders",
+    "ownerShard": "shard:5bbdd9026aa0eefb73f0",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:required revolving lenders",
+    "term": "Required Revolving Lenders",
+    "ownerShard": "shard:5bbdd9026aa0eefb73f0",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:required term lenders",
+    "term": "Required Term Lenders",
+    "ownerShard": "shard:5bbdd9026aa0eefb73f0",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:requirements of law",
+    "term": "Requirements of Law",
+    "ownerShard": "shard:5bbdd9026aa0eefb73f0",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:resolution authority",
+    "term": "Resolution Authority",
+    "ownerShard": "shard:5bbdd9026aa0eefb73f0",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:responsible officer",
+    "term": "Responsible Officer",
+    "ownerShard": "shard:5bbdd9026aa0eefb73f0",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:restricted",
+    "term": "Restricted",
+    "ownerShard": "shard:5bbdd9026aa0eefb73f0",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:restricted investment",
+    "term": "Restricted Investment",
+    "ownerShard": "shard:5bbdd9026aa0eefb73f0",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:restricted parties",
+    "term": "Restricted Parties",
+    "ownerShard": "shard:5bbdd9026aa0eefb73f0",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:restricted subsidiary",
+    "term": "Restricted Subsidiary",
+    "ownerShard": "shard:42a0ee858a3457c23f47",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:retained asset sale proceeds",
+    "term": "Retained Asset Sale Proceeds",
+    "ownerShard": "shard:42a0ee858a3457c23f47",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:retained excess cash flow",
+    "term": "Retained Excess Cash Flow",
+    "ownerShard": "shard:42a0ee858a3457c23f47",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:revolving borrowing",
+    "term": "Revolving Borrowing",
+    "ownerShard": "shard:42a0ee858a3457c23f47",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:revolving commitment",
+    "term": "Revolving Commitment",
+    "ownerShard": "shard:42a0ee858a3457c23f47",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:revolving exposure",
+    "term": "Revolving Exposure",
+    "ownerShard": "shard:42a0ee858a3457c23f47",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:revolving facility",
+    "term": "Revolving\nFacility",
+    "ownerShard": "shard:42a0ee858a3457c23f47",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:revolving lender",
+    "term": "Revolving Lender",
+    "ownerShard": "shard:42a0ee858a3457c23f47",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:revolving loan",
+    "term": "Revolving Loan",
+    "ownerShard": "shard:42a0ee858a3457c23f47",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:rfr",
+    "term": "RFR",
+    "ownerShard": "shard:42a0ee858a3457c23f47",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:rfr borrowing",
+    "term": "RFR Borrowing",
+    "ownerShard": "shard:42a0ee858a3457c23f47",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:rfr business day",
+    "term": "RFR Business Day",
+    "ownerShard": "shard:42a0ee858a3457c23f47",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:rfr loan",
+    "term": "RFR Loan",
+    "ownerShard": "shard:42a0ee858a3457c23f47",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:sale and lease-back transaction",
+    "term": "Sale and Lease-Back Transaction",
+    "ownerShard": "shard:42a0ee858a3457c23f47",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:sanctions",
+    "term": "Sanctions",
+    "ownerShard": "shard:42a0ee858a3457c23f47",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:sec",
+    "term": "SEC",
+    "ownerShard": "shard:42a0ee858a3457c23f47",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:secured cash management obligations",
+    "term": "Secured Cash Management Obligations",
+    "ownerShard": "shard:2b74338b4b2dc108057c",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:secured indebtedness",
+    "term": "Secured Indebtedness",
+    "ownerShard": "shard:2b74338b4b2dc108057c",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:secured obligations",
+    "term": "Secured Obligations",
+    "ownerShard": "shard:2b74338b4b2dc108057c",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:secured parties",
+    "term": "Secured\nParties",
+    "ownerShard": "shard:2b74338b4b2dc108057c",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:secured swap obligations",
+    "term": "Secured Swap\nObligations",
+    "ownerShard": "shard:2b74338b4b2dc108057c",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:security documents",
+    "term": "Security Documents",
+    "ownerShard": "shard:2b74338b4b2dc108057c",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:senior indebtedness",
+    "term": "Senior\nIndebtedness",
+    "ownerShard": "shard:2b74338b4b2dc108057c",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:senior representative",
+    "term": "Senior Representative",
+    "ownerShard": "shard:2b74338b4b2dc108057c",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:senior secured leverage ratio",
+    "term": "Senior Secured Leverage Ratio",
+    "ownerShard": "shard:2b74338b4b2dc108057c",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:significant subsidiary",
+    "term": "Significant Subsidiary",
+    "ownerShard": "shard:2b74338b4b2dc108057c",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:similar business",
+    "term": "Similar Business",
+    "ownerShard": "shard:2b74338b4b2dc108057c",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:sofr",
+    "term": "SOFR",
+    "ownerShard": "shard:2b74338b4b2dc108057c",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:sofr administrator",
+    "term": "SOFR Administrator",
+    "ownerShard": "shard:2b74338b4b2dc108057c",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:sofr administrator ’ s website",
+    "term": "SOFR Administrator ’ s Website",
+    "ownerShard": "shard:2b74338b4b2dc108057c",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:solvent",
+    "term": "Solvent",
+    "ownerShard": "shard:2b74338b4b2dc108057c",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:sonia",
+    "term": "SONIA",
+    "ownerShard": "shard:2b74338b4b2dc108057c",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:sonia administrator",
+    "term": "SONIA Administrator",
+    "ownerShard": "shard:d8e77df4fadace785588",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:sonia administrator ’ s website",
+    "term": "SONIA Administrator ’ s Website",
+    "ownerShard": "shard:d8e77df4fadace785588",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:specified event of default",
+    "term": "Specified Event of Default",
+    "ownerShard": "shard:d8e77df4fadace785588",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:specified representations",
+    "term": "Specified Representations",
+    "ownerShard": "shard:d8e77df4fadace785588",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:specified transaction",
+    "term": "Specified Transaction",
+    "ownerShard": "shard:d8e77df4fadace785588",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:sponsors",
+    "term": "Sponsors",
+    "ownerShard": "shard:d8e77df4fadace785588",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:spot rate",
+    "term": "Spot Rate",
+    "ownerShard": "shard:d8e77df4fadace785588",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:standard securitization undertakings",
+    "term": "Standard Securitization Undertakings",
+    "ownerShard": "shard:d8e77df4fadace785588",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:subordinated indebtedness",
+    "term": "Subordinated Indebtedness",
+    "ownerShard": "shard:d8e77df4fadace785588",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:subsidiary",
+    "term": "subsidiary",
+    "ownerShard": "shard:d8e77df4fadace785588",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:subsidiary~2",
+    "term": "Subsidiary",
+    "ownerShard": "shard:d8e77df4fadace785588",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:subsidiary loan party",
+    "term": "Subsidiary Loan Party",
+    "ownerShard": "shard:d8e77df4fadace785588",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:swap",
+    "term": "Swap",
+    "ownerShard": "shard:d8e77df4fadace785588",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:swap agreement",
+    "term": "Swap Agreement",
+    "ownerShard": "shard:d8e77df4fadace785588",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:swap obligation",
+    "term": "Swap Obligation",
+    "ownerShard": "shard:d8e77df4fadace785588",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:target day",
+    "term": "TARGET Day",
+    "ownerShard": "shard:d8e77df4fadace785588",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:target2",
+    "term": "TARGET2",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:taxes",
+    "term": "Taxes",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:term commitment",
+    "term": "Term Commitment",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:term corra",
+    "term": "Term CORRA",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:term corra administrator",
+    "term": "Term CORRA Administrator",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:term corra reference rate",
+    "term": "Term CORRA Reference Rate",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:term facility",
+    "term": "Term Facility",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:term lenders",
+    "term": "Term Lenders",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:term priority collateral",
+    "term": "Term Priority\nCollateral",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:term loans",
+    "term": "Term\nLoans",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:term maturity date",
+    "term": "Term Maturity Date",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:term sofr rate",
+    "term": "Term SOFR Rate",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:term sofr reference rate",
+    "term": "Term SOFR Reference Rate",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:test period",
+    "term": "Test Period",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:threshold amount",
+    "term": "Threshold Amount",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "items": 1,
+    "materialItems": 1,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:total leverage ratio",
+    "term": "Total Leverage Ratio",
+    "ownerShard": "shard:50e26ec2fb25035a3b7b",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:total revolving commitments",
+    "term": "Total Revolving Commitments",
+    "ownerShard": "shard:e9d1223d90cc2dd9c683",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:transaction expenses",
+    "term": "Transaction Expenses",
+    "ownerShard": "shard:e9d1223d90cc2dd9c683",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:transactions",
+    "term": "Transactions",
+    "ownerShard": "shard:e9d1223d90cc2dd9c683",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:transformative transaction",
+    "term": "Transformative Transaction",
+    "ownerShard": "shard:e9d1223d90cc2dd9c683",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:u.s. government securities business day",
+    "term": "U.S. Government Securities Business Day",
+    "ownerShard": "shard:e9d1223d90cc2dd9c683",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:uniform commercial code",
+    "term": "Uniform Commercial Code",
+    "ownerShard": "shard:e9d1223d90cc2dd9c683",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:uniform commercial code~2",
+    "term": "Uniform Commercial Code",
+    "ownerShard": "shard:e9d1223d90cc2dd9c683",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:uk financial institution",
+    "term": "UK Financial Institution",
+    "ownerShard": "shard:e9d1223d90cc2dd9c683",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:uk resolution authority",
+    "term": "UK Resolution\nAuthority",
+    "ownerShard": "shard:e9d1223d90cc2dd9c683",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:unrestricted subsidiary",
+    "term": "Unrestricted Subsidiary",
+    "ownerShard": "shard:e9d1223d90cc2dd9c683",
+    "items": 3,
+    "materialItems": 3,
+    "cls": "OWNER_SHARD_NOT_COMPLETE"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:unsecured capital lease obligations",
+    "term": "Unsecured Capital Lease\nObligations",
+    "ownerShard": "shard:e9d1223d90cc2dd9c683",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:unsecured capitalized leases",
+    "term": "Unsecured Capitalized Leases",
+    "ownerShard": "shard:e9d1223d90cc2dd9c683",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:usa patriot act",
+    "term": "USA PATRIOT Act",
+    "ownerShard": "shard:e9d1223d90cc2dd9c683",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:vehicles",
+    "term": "Vehicles",
+    "ownerShard": "shard:e9d1223d90cc2dd9c683",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:voluntary prepayment incremental amount",
+    "term": "Voluntary Prepayment Incremental Amount",
+    "ownerShard": "shard:e9d1223d90cc2dd9c683",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:weighted average life to maturity",
+    "term": "Weighted Average Life to Maturity",
+    "ownerShard": "shard:e9d1223d90cc2dd9c683",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:wholly owned subsidiary",
+    "term": "wholly owned subsidiary",
+    "ownerShard": "shard:c6f9067a716712ae085a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:withdrawal liability",
+    "term": "Withdrawal Liability",
+    "ownerShard": "shard:c6f9067a716712ae085a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:withholding agent",
+    "term": "Withholding Agent",
+    "ownerShard": "shard:c6f9067a716712ae085a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   },
+   {
+    "unitKey": "operative:DEFINITION:def:write-down and conversion powers",
+    "term": "Write-Down and Conversion Powers",
+    "ownerShard": "shard:c6f9067a716712ae085a",
+    "items": 0,
+    "materialItems": 0,
+    "cls": "NO_INVENTORY_ITEMS_NO_IR"
+   }
+  ]
+ },
+ "nextWaveEstimate": {
+  "wave": "B",
+  "shards": 10,
+  "renderedTokens": 251594,
+  "atWaveMeanRateUsd": 3.5431,
+  "atWaveWorstRateUsd": 5.2196,
+  "conservativeUsd": 6.5244
+ },
+ "gatewayBalanceAfter": {
+  "balance": "20.352738",
+  "total_used": "194.647262"
+ },
+ "verdictIfFail": "F7_NOT_SAFE if a trust count is nonzero, otherwise F7_NEEDS_ARCHITECTURAL_ITERATION"
+}

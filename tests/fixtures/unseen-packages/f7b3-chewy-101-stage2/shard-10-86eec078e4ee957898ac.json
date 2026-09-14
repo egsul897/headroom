@@ -1,0 +1,583 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:86eec078e4ee957898ac",
+  "shardHash": "44699221ab9197fea3a6efc01ca08530a352675313de3e47cc32c4d42be892d3",
+  "ordinal": 10,
+  "ownedUnits": 1,
+  "sourceChars": 11403,
+  "contextEntries": 2,
+  "contextChars": 767,
+  "unresolvedContext": 1,
+  "oversized": false,
+  "ownedItems": 2,
+  "ownedMaterialItems": 2,
+  "estimatedFirstTurnInputTokens": 23688,
+  "preCallEstimate": {
+   "inputTokens": 77934,
+   "outputTokens": 4000,
+   "usd": 0.19586800000000001
+  },
+  "actual": {
+   "inputTokens": 23218,
+   "outputTokens": 11751,
+   "turns": 1,
+   "latencyMs": 114830,
+   "costUsd": 0.163946,
+   "attemptCount": 1,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_COMPLETE",
+  "failureReasons": [],
+  "toolCalls": 0,
+  "toolCallNames": [],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 1,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 0,
+   "dispositioned": 1,
+   "missingMaterial": 1,
+   "valuesRepresented": 0,
+   "valuesMissing": 2,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "MISSING_FROM_COMPOSITION": 1,
+    "UNSUPPORTED": 1
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [],
+  "unresolvedIssues": [
+   "[definition[d1].ADD[1]] these are qualitative, category-based, judgment-dependent add-backs (several expressly elective) with no stated dollar amount, percentage or formula in the source text that could be represented as arithmetic nodes",
+   "[definition[d1].ADD[2]] qualitative accounting-methodology adjustment with no quantifiable formula or amount stated",
+   "[definition[d1].ADD[5]] requires a case-by-case qualitative/legal determination (existence and waivability of dividend restrictions) that cannot be reduced to a comparison or arithmetic expression, and is expressly scoped to computing the 'Available Amount', a term that is referenced but not defined anywhere in this document or elsewhere in the instrument package (confirmed unresolved cross-reference)",
+   "[definition[d1]] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "The supplied source is a single defined term, 'Consolidated Net Income', in §1.01, not an operative permission/prohibition rule - no WireRule was emitted; only a WireDefinition.",
+   "The frozen semantic inventory's 2 items were both located and consumed: the 365-day business interruption insurance proceeds condition (on the IF node's condition/inputName and the overall node) and the clause (p) Available-Amount-specific carve-out (on the UNSUPPORTED node representing clause (p)).",
+   "The cross-referenced term 'Available Amount' used in clause (p) is confirmed, per the supplied cross-reference resolution, to have no definition anywhere in this document or the related instrument package; this is preserved as an explicit gap on the clause (p) UNSUPPORTED node rather than guessed.",
+   "The referenced §6.08(a)(3) region was used only as read-only context to confirm that 'Available Amount' is a defined aggregate concept used in the Restricted Payments covenant, consistent with clause (p)'s cross-reference; nothing was compiled from that region itself, per instructions.",
+   "Given the sheer number and qualitative/elective nature of exclusion categories (a) through (q), each was not separately split into its own WireDefinition (they are sub-components of the single defined term's formula, not independent defined terms), consistent with treating this as one definition with an internally complex calculation expression, most of which is honestly marked UNSUPPORTED rather than force-fit into arithmetic nodes."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": true,
+   "decodedFields": [
+    "definitions",
+    "sharedCapacities",
+    "irExtensionCandidates",
+    "inventoryDispositions",
+    "overallNotes"
+   ],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": true,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "string",
+      "originalStringSha256": "dd6c1ae2936e5b6ab0c30d2182b5d1bbaa67a66683cb73b2ed93a705d89bb431",
+      "originalStringLength": 6657,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 1,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "string",
+      "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "originalStringLength": 2,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 0,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "string",
+      "originalStringSha256": "2036d31d68b93c8e2c7d4459b4f34a1705da943c7794ddf12076d5cd2dc26e3b",
+      "originalStringLength": 1540,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 1,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "string",
+      "originalStringSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "originalStringLength": 2,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 0,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "string",
+      "originalStringSha256": "7a9960036837bece57ad46504631824da9041e44afcaf082592f893195662672",
+      "originalStringLength": 1530,
+      "parseAttempted": true,
+      "parseSuccess": true,
+      "decodedType": "array",
+      "decodedArrayLength": 5,
+      "applied": true,
+      "reason": "JSON-encoded array decoded; the schema now validates its elements exactly as it would a native array"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:86eec078e4ee957898ac",
+  "shardHash": "44699221ab9197fea3a6efc01ca08530a352675313de3e47cc32c4d42be892d3",
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:405c2cb13a1b9c7cf4e0eb5b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Consolidated Net Income",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "ADD",
+      "type": "MONEY",
+      "exprId": "ir-expr:be6044d69a6f2fe69aa0ba06",
+      "operands": [
+       {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "Net Income (Restricted Parties, consolidated, GAAP)",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:71003028e3ac6a2777601f3e"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01, clauses (a) through (o) and (q)",
+        "semanticDescription": "Exclusion/add-back items (a)-(o) and (q): extraordinary/nonrecurring/unusual charges, restructuring, transaction expenses, non-cash compensation, equity-method and minority/unrestricted-subsidiary income, mark-to-market and FX non-cash items, impairments, deferred tax adjustments, Public Company Costs, and other categorical exclusions, many exercisable at the Initial Borrower's election",
+        "reason": "these are qualitative, category-based, judgment-dependent add-backs (several expressly elective) with no stated dollar amount, percentage or formula in the source text that could be represented as arithmetic nodes",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:b1630e95e9750468ffbaab0e"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01, paragraph following clause (q) beginning \"There shall be excluded from Consolidated Net Income...\"",
+        "semanticDescription": "Exclusion of effects from applying acquisition method (purchase) accounting to inventory, PP&E, intangibles, in-process R&D and deferred revenue/costs in connection with the Transactions, pre-Effective Date acquisitions, and post-Effective Date Permitted Acquisitions/Investments",
+        "reason": "qualitative accounting-methodology adjustment with no quantifiable formula or amount stated",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:15e3fa8a2403755a7949e0d8"
+       },
+       {
+        "kind": "IF",
+        "type": "MONEY",
+        "exprId": "ir-expr:c61861f5642fbc1ccc23755b",
+        "condition": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "BOOLEAN",
+         "inputName": "Business interruption/indemnification insurance proceeds actually reimbursed within 365 days of the insurable or indemnifiable event",
+         "exprId": "ir-expr:b5bb1c9289a409a81167c299",
+         "inventoryItemIds": [
+          "ed673fb9ff17da07a38bafc1"
+         ]
+        },
+        "then": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "MONEY",
+         "inputName": "Amount of business interruption insurance proceeds / indemnified expense reimbursement received",
+         "exprId": "ir-expr:54f67430b2d4b3ab81080d63"
+        },
+        "else": {
+         "kind": "MONEY",
+         "type": "MONEY",
+         "amount": 0,
+         "currency": "USD",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:d305058928b2b513dfde8173"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": "the amount of proceeds received or ... reasonable evidence that such amount will in fact be reimbursed ... only to the extent that such amount is in fact reimbursed within three hundred sixty-five (365) days of the date of the insurable or indemnifiable event"
+        },
+        "inventoryItemIds": [
+         "ed673fb9ff17da07a38bafc1"
+        ]
+       },
+       {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "Cash tax benefits related to tax amortization of intangible assets in the period",
+        "exprId": "ir-expr:6cf1bbf82ec43037f4fe20cb"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01, clause (p)",
+        "semanticDescription": "Solely for purposes of determining the Available Amount, the net income of any non-Guarantor Restricted Party is excluded to the extent dividends/distributions from that party are not, as of the determination date, wholly permitted without unobtained governmental approval or are otherwise restricted by charter, agreement, law or governmental regulation - unless legally waived/released or the Initial Borrower reasonably believes the restriction could be waived and is using commercially reasonable efforts to pursue such waiver (excluding restrictions under this Agreement, the Loan Documents or the ABL Loan Documents); with Consolidated Net Income of the Initial Borrower increased by amounts actually paid in cash/Cash Equivalents to a Restricted Party in respect of such income",
+        "reason": "requires a case-by-case qualitative/legal determination (existence and waivability of dividend restrictions) that cannot be reduced to a comparison or arithmetic expression, and is expressly scoped to computing the 'Available Amount', a term that is referenced but not defined anywhere in this document or elsewhere in the instrument package (confirmed unresolved cross-reference)",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:e99f1068e31ae80f8259ad21",
+        "inventoryItemIds": [
+         "a2ea94db3d1186d37f8030f9"
+        ]
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Restricted Party",
+      "Restricted Parties",
+      "Unrestricted Subsidiary",
+      "Transaction Expenses",
+      "Non-Cash Compensation Expenses",
+      "Available Amount",
+      "Public Company Costs",
+      "Permitted Acquisitions",
+      "Cash Equivalents",
+      "Effective Date",
+      "Transactions",
+      "Initial Borrower",
+      "Guarantor",
+      "ABL Loan Documents",
+      "Hedging Obligations",
+      "Parent Entities"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The overall additive structure (GAAP net income of Restricted Parties, plus/minus stated categories of exclusions, plus specific quantifiable add-backs) is faithfully represented.",
+      "The large majority of the individual exclusion categories (clauses (a)-(o), (q), and the acquisition-accounting exclusion paragraph) are qualitative, elective, and stated by category rather than by formula or amount, and are therefore represented via UNSUPPORTED nodes rather than fabricated arithmetic.",
+      "The 365-day business interruption insurance proceeds add-back (clause, unlettered paragraph after (q)) and the cash tax benefit add-back are represented with an explicit conditional/variable-input structure.",
+      "Clause (p)'s Available Amount-specific carve-out depends on the undefined term 'Available Amount' (confirmed unresolved in this document and the related package) and on a qualitative legal determination, so it is represented as UNSUPPORTED while still being tied to the correct location in the tree and to its inventory item.",
+      "these are qualitative, category-based, judgment-dependent add-backs (several expressly elective) with no stated dollar amount, percentage or formula in the source text that could be represented as arithmetic nodes",
+      "qualitative accounting-methodology adjustment with no quantifiable formula or amount stated",
+      "requires a case-by-case qualitative/legal determination (existence and waivability of dividend restrictions) that cannot be reduced to a comparison or arithmetic expression, and is expressly scoped to computing the 'Available Amount', a term that is referenced but not defined anywhere in this document or elsewhere in the instrument package (confirmed unresolved cross-reference)",
+      "ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, for any period, the net income (loss) of the Restricted Parties for such period determined on a consolidated basis in accordance with GAAP, excluding (and excluding the effect of), without duplication: ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [],
+  "unresolvedIssues": [
+   "[definition[d1].ADD[1]] these are qualitative, category-based, judgment-dependent add-backs (several expressly elective) with no stated dollar amount, percentage or formula in the source text that could be represented as arithmetic nodes",
+   "[definition[d1].ADD[2]] qualitative accounting-methodology adjustment with no quantifiable formula or amount stated",
+   "[definition[d1].ADD[5]] requires a case-by-case qualitative/legal determination (existence and waivability of dividend restrictions) that cannot be reduced to a comparison or arithmetic expression, and is expressly scoped to computing the 'Available Amount', a term that is referenced but not defined anywhere in this document or elsewhere in the instrument package (confirmed unresolved cross-reference)",
+   "[definition[d1]] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "The supplied source is a single defined term, 'Consolidated Net Income', in §1.01, not an operative permission/prohibition rule - no WireRule was emitted; only a WireDefinition.",
+   "The frozen semantic inventory's 2 items were both located and consumed: the 365-day business interruption insurance proceeds condition (on the IF node's condition/inputName and the overall node) and the clause (p) Available-Amount-specific carve-out (on the UNSUPPORTED node representing clause (p)).",
+   "The cross-referenced term 'Available Amount' used in clause (p) is confirmed, per the supplied cross-reference resolution, to have no definition anywhere in this document or the related instrument package; this is preserved as an explicit gap on the clause (p) UNSUPPORTED node rather than guessed.",
+   "The referenced §6.08(a)(3) region was used only as read-only context to confirm that 'Available Amount' is a defined aggregate concept used in the Restricted Payments covenant, consistent with clause (p)'s cross-reference; nothing was compiled from that region itself, per instructions.",
+   "Given the sheer number and qualitative/elective nature of exclusion categories (a) through (q), each was not separately split into its own WireDefinition (they are sub-components of the single defined term's formula, not independent defined terms), consistent with treating this as one definition with an internally complex calculation expression, most of which is honestly marked UNSUPPORTED rather than force-fit into arithmetic nodes."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 23218,
+   "outputTokens": 11751,
+   "costUsd": 0.163946
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:405c2cb13a1b9c7cf4e0eb5b",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Consolidated Net Income",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "ADD",
+     "type": "MONEY",
+     "exprId": "ir-expr:be6044d69a6f2fe69aa0ba06",
+     "operands": [
+      {
+       "kind": "METRIC_REFERENCE",
+       "type": "MONEY",
+       "metricName": "Net Income (Restricted Parties, consolidated, GAAP)",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:71003028e3ac6a2777601f3e"
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01, clauses (a) through (o) and (q)",
+       "semanticDescription": "Exclusion/add-back items (a)-(o) and (q): extraordinary/nonrecurring/unusual charges, restructuring, transaction expenses, non-cash compensation, equity-method and minority/unrestricted-subsidiary income, mark-to-market and FX non-cash items, impairments, deferred tax adjustments, Public Company Costs, and other categorical exclusions, many exercisable at the Initial Borrower's election",
+       "reason": "these are qualitative, category-based, judgment-dependent add-backs (several expressly elective) with no stated dollar amount, percentage or formula in the source text that could be represented as arithmetic nodes",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:b1630e95e9750468ffbaab0e"
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01, paragraph following clause (q) beginning \"There shall be excluded from Consolidated Net Income...\"",
+       "semanticDescription": "Exclusion of effects from applying acquisition method (purchase) accounting to inventory, PP&E, intangibles, in-process R&D and deferred revenue/costs in connection with the Transactions, pre-Effective Date acquisitions, and post-Effective Date Permitted Acquisitions/Investments",
+       "reason": "qualitative accounting-methodology adjustment with no quantifiable formula or amount stated",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:15e3fa8a2403755a7949e0d8"
+      },
+      {
+       "kind": "IF",
+       "type": "MONEY",
+       "exprId": "ir-expr:c61861f5642fbc1ccc23755b",
+       "condition": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "BOOLEAN",
+        "inputName": "Business interruption/indemnification insurance proceeds actually reimbursed within 365 days of the insurable or indemnifiable event",
+        "exprId": "ir-expr:b5bb1c9289a409a81167c299",
+        "inventoryItemIds": [
+         "ed673fb9ff17da07a38bafc1"
+        ]
+       },
+       "then": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "MONEY",
+        "inputName": "Amount of business interruption insurance proceeds / indemnified expense reimbursement received",
+        "exprId": "ir-expr:54f67430b2d4b3ab81080d63"
+       },
+       "else": {
+        "kind": "MONEY",
+        "type": "MONEY",
+        "amount": 0,
+        "currency": "USD",
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:d305058928b2b513dfde8173"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": "the amount of proceeds received or ... reasonable evidence that such amount will in fact be reimbursed ... only to the extent that such amount is in fact reimbursed within three hundred sixty-five (365) days of the date of the insurable or indemnifiable event"
+       },
+       "inventoryItemIds": [
+        "ed673fb9ff17da07a38bafc1"
+       ]
+      },
+      {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "MONEY",
+       "inputName": "Cash tax benefits related to tax amortization of intangible assets in the period",
+       "exprId": "ir-expr:6cf1bbf82ec43037f4fe20cb"
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01, clause (p)",
+       "semanticDescription": "Solely for purposes of determining the Available Amount, the net income of any non-Guarantor Restricted Party is excluded to the extent dividends/distributions from that party are not, as of the determination date, wholly permitted without unobtained governmental approval or are otherwise restricted by charter, agreement, law or governmental regulation - unless legally waived/released or the Initial Borrower reasonably believes the restriction could be waived and is using commercially reasonable efforts to pursue such waiver (excluding restrictions under this Agreement, the Loan Documents or the ABL Loan Documents); with Consolidated Net Income of the Initial Borrower increased by amounts actually paid in cash/Cash Equivalents to a Restricted Party in respect of such income",
+       "reason": "requires a case-by-case qualitative/legal determination (existence and waivability of dividend restrictions) that cannot be reduced to a comparison or arithmetic expression, and is expressly scoped to computing the 'Available Amount', a term that is referenced but not defined anywhere in this document or elsewhere in the instrument package (confirmed unresolved cross-reference)",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:e99f1068e31ae80f8259ad21",
+       "inventoryItemIds": [
+        "a2ea94db3d1186d37f8030f9"
+       ]
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Restricted Party",
+     "Restricted Parties",
+     "Unrestricted Subsidiary",
+     "Transaction Expenses",
+     "Non-Cash Compensation Expenses",
+     "Available Amount",
+     "Public Company Costs",
+     "Permitted Acquisitions",
+     "Cash Equivalents",
+     "Effective Date",
+     "Transactions",
+     "Initial Borrower",
+     "Guarantor",
+     "ABL Loan Documents",
+     "Hedging Obligations",
+     "Parent Entities"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The overall additive structure (GAAP net income of Restricted Parties, plus/minus stated categories of exclusions, plus specific quantifiable add-backs) is faithfully represented.",
+     "The large majority of the individual exclusion categories (clauses (a)-(o), (q), and the acquisition-accounting exclusion paragraph) are qualitative, elective, and stated by category rather than by formula or amount, and are therefore represented via UNSUPPORTED nodes rather than fabricated arithmetic.",
+     "The 365-day business interruption insurance proceeds add-back (clause, unlettered paragraph after (q)) and the cash tax benefit add-back are represented with an explicit conditional/variable-input structure.",
+     "Clause (p)'s Available Amount-specific carve-out depends on the undefined term 'Available Amount' (confirmed unresolved in this document and the related package) and on a qualitative legal determination, so it is represented as UNSUPPORTED while still being tied to the correct location in the tree and to its inventory item.",
+     "these are qualitative, category-based, judgment-dependent add-backs (several expressly elective) with no stated dollar amount, percentage or formula in the source text that could be represented as arithmetic nodes",
+     "qualitative accounting-methodology adjustment with no quantifiable formula or amount stated",
+     "requires a case-by-case qualitative/legal determination (existence and waivability of dividend restrictions) that cannot be reduced to a comparison or arithmetic expression, and is expressly scoped to computing the 'Available Amount', a term that is referenced but not defined anywhere in this document or elsewhere in the instrument package (confirmed unresolved cross-reference)",
+     "ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, for any period, the net income (loss) of the Restricted Parties for such period determined on a consolidated basis in accordance with GAAP, excluding (and excluding the effect of), without duplication: ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01 clauses (a), (k), and the many other categorical, at-times-elective exclusion items in the Consolidated Net Income definition (e.g. 'at the election of the Initial Borrower, extraordinary, exceptional, infrequent, or nonrecurring or unusual charges or losses...')",
+    "semanticRequirement": "A way to represent a named, categorical qualitative add-back/exclusion (often exercisable at a specific party's election, with no stated dollar amount or formula) as a distinct, trackable node in the calculation tree - rather than only as an opaque UNSUPPORTED blob - so that downstream tooling can at least enumerate which categories exist, who may elect them, and cross-reference them, even though no arithmetic value can be computed from the defined-term text alone.",
+    "whyExistingPrimitivesFail": "UNSUPPORTED faithfully signals 'cannot compute a value' but discards structure (category label, electing party, one-time vs. recurring nature) that is real and recurring across many leveraged-finance EBITDA/Consolidated Net Income definitions; there is no existing node kind to preserve that categorical metadata while still being honest that no computable value is stated.",
+    "candidateGeneralizedPrimitive": "QUALITATIVE_ADJUSTMENT_CATEGORY (categoryLabel, electingParty/electionBasis, recurrenceType, sourceEvidence) - a non-computational but structured placeholder distinct from generic UNSUPPORTED, usable as an ADD/SUM operand for provenance/enumeration purposes without asserting a value."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].ADD[1]] these are qualitative, category-based, judgment-dependent add-backs (several expressly elective) with no stated dollar amount, percentage or formula in the source text that could be represented as arithmetic nodes",
+   "[definition[d1].ADD[2]] qualitative accounting-methodology adjustment with no quantifiable formula or amount stated",
+   "[definition[d1].ADD[5]] requires a case-by-case qualitative/legal determination (existence and waivability of dividend restrictions) that cannot be reduced to a comparison or arithmetic expression, and is expressly scoped to computing the 'Available Amount', a term that is referenced but not defined anywhere in this document or elsewhere in the instrument package (confirmed unresolved cross-reference)",
+   "[definition[d1]] ADD keeps its structure with at least one UNSUPPORTED operand in place - typed MONEY from its represented operands; PARTIAL, never executable (F-6)",
+   "The supplied source is a single defined term, 'Consolidated Net Income', in §1.01, not an operative permission/prohibition rule - no WireRule was emitted; only a WireDefinition.",
+   "The frozen semantic inventory's 2 items were both located and consumed: the 365-day business interruption insurance proceeds condition (on the IF node's condition/inputName and the overall node) and the clause (p) Available-Amount-specific carve-out (on the UNSUPPORTED node representing clause (p)).",
+   "The cross-referenced term 'Available Amount' used in clause (p) is confirmed, per the supplied cross-reference resolution, to have no definition anywhere in this document or the related instrument package; this is preserved as an explicit gap on the clause (p) UNSUPPORTED node rather than guessed.",
+   "The referenced §6.08(a)(3) region was used only as read-only context to confirm that 'Available Amount' is a defined aggregate concept used in the Restricted Payments covenant, consistent with clause (p)'s cross-reference; nothing was compiled from that region itself, per instructions.",
+   "Given the sheer number and qualitative/elective nature of exclusion categories (a) through (q), each was not separately split into its own WireDefinition (they are sub-components of the single defined term's formula, not independent defined terms), consistent with treating this as one definition with an internally complex calculation expression, most of which is honestly marked UNSUPPORTED rather than force-fit into arithmetic nodes."
+  ],
+  "toolCallLog": [],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": "[\n  {\n    \"localRef\": \"d1\",\n    \"termName\": \"Consolidated Net Income\",\n    \"covenantFamily\": \"DEFINITIONS_CALCULATION_RULES\",\n    \"citation\": \"§1.01\",\n    \"excerpt\": \"means, for any period, the net income (loss) of the Restricted Parties for such period determined on a consolidated basis in accordance with GAAP, excluding (and excluding the effect of), without duplication: ...\",\n    \"dependsOnTerms\": [\n      \"Restricted Party\",\n      \"Restricted Parties\",\n      \"Unrestricted Subsidiary\",\n      \"Transaction Expenses\",\n      \"Non-Cash Compensation Expenses\",\n      \"Available Amount\",\n      \"Public Company Costs\",\n      \"Permitted Acquisitions\",\n      \"Cash Equivalents\",\n      \"Effective Date\",\n      \"Transactions\",\n      \"Initial Borrower\",\n      \"Guarantor\",\n      \"ABL Loan Documents\",\n      \"Hedging Obligations\",\n      \"Parent Entities\"\n    ],\n    \"calculationExpression\": {\n      \"kind\": \"ADD\",\n      \"citation\": \"§1.01\",\n      \"operands\": [\n        {\n          \"kind\": \"METRIC_REFERENCE\",\n          \"metricName\": \"Net Income (Restricted Parties, consolidated, GAAP)\",\n          \"citation\": \"§1.01\",\n          \"excerpt\": \"the net income (loss) of the Restricted Parties for such period determined on a consolidated basis in accordance with GAAP\"\n        },\n        {\n          \"kind\": \"UNSUPPORTED\",\n          \"semanticDescription\": \"Exclusion/add-back items (a)-(o) and (q): extraordinary/nonrecurring/unusual charges, restructuring, transaction expenses, non-cash compensation, equity-method and minority/unrestricted-subsidiary income, mark-to-market and FX non-cash items, impairments, deferred tax adjustments, Public Company Costs, and other categorical exclusions, many exercisable at the Initial Borrower's election\",\n          \"reason\": \"these are qualitative, category-based, judgment-dependent add-backs (several expressly elective) with no stated dollar amount, percentage or formula in the source text that could be represented as arithmetic nodes\",\n          \"sourceEvidence\": \"§1.01, clauses (a) through (o) and (q)\"\n        },\n        {\n          \"kind\": \"UNSUPPORTED\",\n          \"semanticDescription\": \"Exclusion of effects from applying acquisition method (purchase) accounting to inventory, PP&E, intangibles, in-process R&D and deferred revenue/costs in connection with the Transactions, pre-Effective Date acquisitions, and post-Effective Date Permitted Acquisitions/Investments\",\n          \"reason\": \"qualitative accounting-methodology adjustment with no quantifiable formula or amount stated\",\n          \"sourceEvidence\": \"§1.01, paragraph following clause (q) beginning \\\"There shall be excluded from Consolidated Net Income...\\\"\"\n        },\n        {\n          \"kind\": \"IF\",\n          \"citation\": \"§1.01\",\n          \"excerpt\": \"the amount of proceeds received or ... reasonable evidence that such amount will in fact be reimbursed ... only to the extent that such amount is in fact reimbursed within three hundred sixty-five (365) days of the date of the insurable or indemnifiable event\",\n          \"condition\": {\n            \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n            \"inputName\": \"Business interruption/indemnification insurance proceeds actually reimbursed within 365 days of the insurable or indemnifiable event\",\n            \"citation\": \"§1.01\",\n            \"inventoryItemIds\": [\"ed673fb9ff17da07a38bafc1\"]\n          },\n          \"then\": {\n            \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n            \"inputName\": \"Amount of business interruption insurance proceeds / indemnified expense reimbursement received\",\n            \"citation\": \"§1.01\"\n          },\n          \"else\": {\n            \"kind\": \"MONEY\",\n            \"amount\": 0,\n            \"currency\": \"USD\"\n          },\n          \"inventoryItemIds\": [\"ed673fb9ff17da07a38bafc1\"]\n        },\n        {\n          \"kind\": \"TRANSACTION_INPUT_REFERENCE\",\n          \"inputName\": \"Cash tax benefits related to tax amortization of intangible assets in the period\",\n          \"citation\": \"§1.01\",\n          \"excerpt\": \"the amount of any cash tax benefits related to the tax amortization of intangible assets in such period\"\n        },\n        {\n          \"kind\": \"UNSUPPORTED\",\n          \"semanticDescription\": \"Solely for purposes of determining the Available Amount, the net income of any non-Guarantor Restricted Party is excluded to the extent dividends/distributions from that party are not, as of the determination date, wholly permitted without unobtained governmental approval or are otherwise restricted by charter, agreement, law or governmental regulation - unless legally waived/released or the Initial Borrower reasonably believes the restriction could be waived and is using commercially reasonable efforts to pursue such waiver (excluding restrictions under this Agreement, the Loan Documents or the ABL Loan Documents); with Consolidated Net Income of the Initial Borrower increased by amounts actually paid in cash/Cash Equivalents to a Restricted Party in respect of such income\",\n          \"reason\": \"requires a case-by-case qualitative/legal determination (existence and waivability of dividend restrictions) that cannot be reduced to a comparison or arithmetic expression, and is expressly scoped to computing the 'Available Amount', a term that is referenced but not defined anywhere in this document or elsewhere in the instrument package (confirmed unresolved cross-reference)\",\n          \"sourceEvidence\": \"§1.01, clause (p)\",\n          \"inventoryItemIds\": [\"a2ea94db3d1186d37f8030f9\"]\n        }\n      ]\n    },\n    \"sufficiency\": \"PARTIAL\",\n    \"sufficiencyReasons\": [\n      \"The overall additive structure (GAAP net income of Restricted Parties, plus/minus stated categories of exclusions, plus specific quantifiable add-backs) is faithfully represented.\",\n      \"The large majority of the individual exclusion categories (clauses (a)-(o), (q), and the acquisition-accounting exclusion paragraph) are qualitative, elective, and stated by category rather than by formula or amount, and are therefore represented via UNSUPPORTED nodes rather than fabricated arithmetic.\",\n      \"The 365-day business interruption insurance proceeds add-back (clause, unlettered paragraph after (q)) and the cash tax benefit add-back are represented with an explicit conditional/variable-input structure.\",\n      \"Clause (p)'s Available Amount-specific carve-out depends on the undefined term 'Available Amount' (confirmed unresolved in this document and the related package) and on a qualitative legal determination, so it is represented as UNSUPPORTED while still being tied to the correct location in the tree and to its inventory item.\"\n    ]\n  }\n]",
+   "rules": [],
+   "sharedCapacities": "[]",
+   "inventoryDispositions": "[]",
+   "irExtensionCandidates": "[\n  {\n    \"sourceEvidence\": \"§1.01 clauses (a), (k), and the many other categorical, at-times-elective exclusion items in the Consolidated Net Income definition (e.g. 'at the election of the Initial Borrower, extraordinary, exceptional, infrequent, or nonrecurring or unusual charges or losses...')\",\n    \"semanticRequirement\": \"A way to represent a named, categorical qualitative add-back/exclusion (often exercisable at a specific party's election, with no stated dollar amount or formula) as a distinct, trackable node in the calculation tree - rather than only as an opaque UNSUPPORTED blob - so that downstream tooling can at least enumerate which categories exist, who may elect them, and cross-reference them, even though no arithmetic value can be computed from the defined-term text alone.\",\n    \"whyExistingPrimitivesFail\": \"UNSUPPORTED faithfully signals 'cannot compute a value' but discards structure (category label, electing party, one-time vs. recurring nature) that is real and recurring across many leveraged-finance EBITDA/Consolidated Net Income definitions; there is no existing node kind to preserve that categorical metadata while still being honest that no computable value is stated.\",\n    \"candidateGeneralizedPrimitive\": \"QUALITATIVE_ADJUSTMENT_CATEGORY (categoryLabel, electingParty/electionBasis, recurrenceType, sourceEvidence) - a non-computational but structured placeholder distinct from generic UNSUPPORTED, usable as an ADD/SUM operand for provenance/enumeration purposes without asserting a value.\"\n  }\n]",
+   "overallNotes": "[\n  \"The supplied source is a single defined term, 'Consolidated Net Income', in §1.01, not an operative permission/prohibition rule - no WireRule was emitted; only a WireDefinition.\",\n  \"The frozen semantic inventory's 2 items were both located and consumed: the 365-day business interruption insurance proceeds condition (on the IF node's condition/inputName and the overall node) and the clause (p) Available-Amount-specific carve-out (on the UNSUPPORTED node representing clause (p)).\",\n  \"The cross-referenced term 'Available Amount' used in clause (p) is confirmed, per the supplied cross-reference resolution, to have no definition anywhere in this document or the related instrument package; this is preserved as an explicit gap on the clause (p) UNSUPPORTED node rather than guessed.\",\n  \"The referenced §6.08(a)(3) region was used only as read-only context to confirm that 'Available Amount' is a defined aggregate concept used in the Restricted Payments covenant, consistent with clause (p)'s cross-reference; nothing was compiled from that region itself, per instructions.\",\n  \"Given the sheer number and qualitative/elective nature of exclusion categories (a) through (q), each was not separately split into its own WireDefinition (they are sub-components of the single defined term's formula, not independent defined terms), consistent with treating this as one definition with an internally complex calculation expression, most of which is honestly marked UNSUPPORTED rather than force-fit into arithmetic nodes.\"\n]"
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T17:15:17.223Z",
+   "inputTokens": 23218,
+   "outputTokens": 11751,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 1,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 114827,
+   "calculatedCostUsd": 0.163946
+  },
+  "cacheKey": "cc6702e463fd785b4847e4a822a8f63934d5b9933642fb9d71083010ae1d9a3c",
+  "compiledAt": "2026-09-14T17:15:17.223Z"
+ },
+ "wave": "A",
+ "attemptsSoFar": 1
+}
