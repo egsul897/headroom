@@ -1,8 +1,8 @@
-import { runSemanticInventory } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/inventory";
-import { reconcileInventoryWithComposition } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/reconciliation";
-import { rollupAgreementSemanticStatus } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/rollup";
-import type { SourceContextResult } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/types";
-import type { StageCaller } from "/home/user/headroom/lib/contract-model/compiler/llm-caller";
+import { runSemanticInventory } from "../../lib/contract-model/compiler/semantic-accountability/inventory";
+import { reconcileInventoryWithComposition } from "../../lib/contract-model/compiler/semantic-accountability/reconciliation";
+import { rollupAgreementSemanticStatus } from "../../lib/contract-model/compiler/semantic-accountability/rollup";
+import type { SourceContextResult } from "../../lib/contract-model/compiler/semantic-accountability/types";
+import type { StageCaller } from "../../lib/contract-model/compiler/llm-caller";
 const TEXT = "The Borrower shall not incur Indebtedness exceeding $10,000,000. The Borrower shall maintain a Leverage Ratio of not more than 4.00 to 1.00 as of the last day of each fiscal quarter. The cure period is 30 days.";
 const ctx = (text: string): SourceContextResult => ({ state: "COMPLETE_LOCAL_SOURCE", regions: [{ regionId: "operative", kind: "OPERATIVE", documentId: "d", sourceNodeId: "n", sectionRef: "6.02", charStart: 0, charEnd: text.length, text, expandedFor: null, truncatedAtBudget: false, unitExtension: null }], unresolvedReferences: [], reasons: [], totalChars: text.length, budgetChars: 1e5 });
 const item = (excerpt: string, prop: string) => ({ localRef: "r", semanticRole: "OTHER", proposition: prop, excerpt, regionId: "operative", quantitativeValues: [], referencedTerms: [], referencedSections: [], parentRef: null, relatedRefs: [], materiality: "CRITICAL", ambiguity: "NONE", ambiguityReason: null, operative: "OPERATIVE" });

@@ -1,8 +1,8 @@
-import { runSemanticInventory } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/inventory";
-import { reconcileInventoryWithComposition } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/reconciliation";
-import { rollupAgreementSemanticStatus } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/rollup";
-import type { SourceContextResult } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/types";
-import type { StageCaller } from "/home/user/headroom/lib/contract-model/compiler/llm-caller";
+import { runSemanticInventory } from "../../lib/contract-model/compiler/semantic-accountability/inventory";
+import { reconcileInventoryWithComposition } from "../../lib/contract-model/compiler/semantic-accountability/reconciliation";
+import { rollupAgreementSemanticStatus } from "../../lib/contract-model/compiler/semantic-accountability/rollup";
+import type { SourceContextResult } from "../../lib/contract-model/compiler/semantic-accountability/types";
+import type { StageCaller } from "../../lib/contract-model/compiler/llm-caller";
 const caller = (items: any[]): StageCaller => ({ providerName: "s", model: "s", isSynthetic: false, async call<T>(): Promise<T> { return { items, overallNotes: [] } as unknown as T; }, lastTelemetry: () => null });
 const ctx = (text: string): SourceContextResult => ({ state: "COMPLETE_LOCAL_SOURCE", regions: [{ regionId: "operative", kind: "OPERATIVE", documentId: "d", sourceNodeId: "n", sectionRef: "6.02", charStart: 0, charEnd: text.length, text, expandedFor: null, truncatedAtBudget: false, unitExtension: null }], unresolvedReferences: [], reasons: [], totalChars: text.length, budgetChars: 1e5 });
 const wire = (excerpt: string, i: number) => ({ localRef: `r${i}`, semanticRole: "REQUIREMENT", proposition: "p", excerpt, regionId: "operative", quantitativeValues: [], referencedTerms: [], referencedSections: [], parentRef: null, relatedRefs: [], materiality: "CRITICAL", ambiguity: "NONE", ambiguityReason: null, operative: "OPERATIVE" });

@@ -1,5 +1,5 @@
-import { computeSourceCoverage } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/source-coverage";
-import type { SourceContextRegion } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/types";
+import { computeSourceCoverage } from "../../lib/contract-model/compiler/semantic-accountability/source-coverage";
+import type { SourceContextRegion } from "../../lib/contract-model/compiler/semantic-accountability/types";
 const R = (regionId: string, text: string, kind: SourceContextRegion["kind"] = "OPERATIVE"): SourceContextRegion => ({ regionId, kind, documentId: "d", sourceNodeId: null, sectionRef: null, charStart: 0, charEnd: text.length, text, expandedFor: null, truncatedAtBudget: false, unitExtension: null });
 
 // A. DUPLICATE REGION IDS: a span in region#1 masks the same offsets in region#2.

@@ -1,9 +1,9 @@
-import { runSemanticInventory } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/inventory";
-import { reconcileInventoryWithComposition } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/reconciliation";
-import { rollupAgreementSemanticStatus } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/rollup";
-import { computeSourceCoverage } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/source-coverage";
-import type { SourceContextResult } from "/home/user/headroom/lib/contract-model/compiler/semantic-accountability/types";
-import type { StageCaller } from "/home/user/headroom/lib/contract-model/compiler/llm-caller";
+import { runSemanticInventory } from "../../lib/contract-model/compiler/semantic-accountability/inventory";
+import { reconcileInventoryWithComposition } from "../../lib/contract-model/compiler/semantic-accountability/reconciliation";
+import { rollupAgreementSemanticStatus } from "../../lib/contract-model/compiler/semantic-accountability/rollup";
+import { computeSourceCoverage } from "../../lib/contract-model/compiler/semantic-accountability/source-coverage";
+import type { SourceContextResult } from "../../lib/contract-model/compiler/semantic-accountability/types";
+import type { StageCaller } from "../../lib/contract-model/compiler/llm-caller";
 
 const caller = (items: any[]): StageCaller => ({
   providerName: "scripted", model: "scripted-inventory", isSynthetic: false,
