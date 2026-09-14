@@ -1,12 +1,18 @@
 {
  "artifact": "F-7B.3E §1/§2/§3/§6 - zero-cost preflight before the final paid tranche (0 model calls, $0)",
- "at": "2026-09-14T21:23:42.087Z",
- "gitSha": "76e76a1781f381f360950255960dc182f9d01f69",
+ "at": "2026-09-14T21:27:01.250Z",
+ "gitSha": "c351cb7ab4b7749cc6c437267bedad7bc2a8f214",
  "planHash": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
  "baseline": {
-  "startingSha": {
+  "startingShaScope": {
    "expected": "76e76a1781f381f360950255960dc182f9d01f69",
-   "actual": "76e76a1781f381f360950255960dc182f9d01f69",
+   "head": "c351cb7ab4b7749cc6c437267bedad7bc2a8f214",
+   "startingShaIsAncestor": true,
+   "changedFiles": [
+    "docs/phase-3-remediation-f7b3e/00-baseline-frozen25-and-wavec-precheck.json",
+    "scripts/f7b3e-precheck.ts"
+   ],
+   "productionChanged": [],
    "pass": true
   },
   "planHash": {

@@ -1,0 +1,3307 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:f048973d2e9a58498b81",
+  "shardHash": "732123dea5d25e5612fe4e3b4761a079a07dd3187200c0c2047c38ae6bddf595",
+  "ordinal": 25,
+  "ownedUnits": 1,
+  "sourceChars": 14121,
+  "contextEntries": 7,
+  "contextChars": 6210,
+  "unresolvedContext": 1,
+  "oversized": false,
+  "ownedItems": 6,
+  "ownedMaterialItems": 6,
+  "estimatedFirstTurnInputTokens": 30016,
+  "preCallEstimate": {
+   "inputTokens": 98753,
+   "outputTokens": 4000,
+   "usd": 0.237506
+  },
+  "actual": {
+   "inputTokens": 29585,
+   "outputTokens": 31628,
+   "turns": 1,
+   "latencyMs": 274708,
+   "costUsd": 0.37545,
+   "attemptCount": 1,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_COMPLETE",
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "toolCalls": 0,
+  "toolCallNames": [],
+  "rawSubmissionRetained": true,
+  "rules": 6,
+  "definitions": 3,
+  "sharedCapacities": 1,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 6,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "valuesRepresented": 12,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "REPRESENTED": 6
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Permitted Acquisition",
+   "General Basket Amount"
+  ],
+  "unresolvedIssues": [
+   "[sharedCap[sc-8-22-30]] The IR's shared-capacity primitive models a single static ceiling shared among members; this text instead grants each of three baskets its own independent greater-of base PLUS access to whatever capacity remains unused under the other two, which is circular (each basket's 'available' amount depends on the others' usage) and has no closed-form ceiling value stated in the text.",
+   "Scope decision: given the frozen inventory flags only clauses (8), (13)/General Basket Amount, (15), (22), (27) and (30) as CRITICAL quantitative/conditional components, and no deterministic quantitative value was detected outside those six clauses, the remaining 24 purely categorical clauses of the 'Permitted Investments' definition (clauses (1)-(7), (9)-(12), (14), (16)-(21), (23)-(26), (28)-(29)) were preserved within the top-level 'Permitted Investments' WireDefinition (d-pi) rather than separately modeled as individual quantitative WireRules, since they impose no stated dollar cap or ratio gate.",
+   "Several categorical clauses cross-reference other covenant sections (6.01, 6.01(b)(10), 6.02, 6.05, 6.08, 6.08(a)(3), 5.16, 5.18(b) and enumerated sub-clauses thereof) that Phase 2's region retrieval reported as OUT_OF_SCOPE due to source-context budget exhaustion; these are noted only as unresolved dependencies in d-pi's sufficiencyReasons and were not independently re-fetched because they do not affect the economics of the six CRITICAL inventory items.",
+   "The dependency-context definitions of Consolidated EBITDA, First Lien Leverage Ratio, Interest Coverage Ratio, Joint Venture, Unrestricted Subsidiary and Similar Business were used only to interpret metric names and gating logic in the compiled rules, per their READ-ONLY status; no WireDefinition or inventory claim was made against them.",
+   "The Consolidated EBITDA definition region was itself reported TRUNCATED_AT_BUDGET; because Consolidated EBITDA is referenced here only by METRIC_REFERENCE name (not recomputed), this truncation does not affect the sufficiency of rules r-8/r-13/r-15/r-22/r-30, but any future compilation of the Consolidated EBITDA definition itself should not be treated as COMPLETE from this bundle alone."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:f048973d2e9a58498b81",
+  "shardHash": "732123dea5d25e5612fe4e3b4761a079a07dd3187200c0c2047c38ae6bddf595",
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [
+    {
+     "ruleId": "ir-rule:f46acad9d388de3f84faaed5",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "1.01(8)",
+     "covenantFamily": "INVESTMENTS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "MAKE_INVESTMENT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "ADD",
+      "type": "MONEY",
+      "exprId": "ir-expr:09294d2dbe6e5d314c4edf5e",
+      "operands": [
+       {
+        "kind": "MAX",
+        "type": "MONEY",
+        "exprId": "ir-expr:1bfa7e1a4c038516d99bca42",
+        "operands": [
+         {
+          "kind": "MONEY",
+          "type": "MONEY",
+          "amount": 360000000,
+          "currency": "USD",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(8)",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:8d53251e6222b7fb45d8a978",
+          "inventoryItemIds": [
+           "inv-item:ad22b485966a3702b28b252e"
+          ]
+         },
+         {
+          "kind": "MULTIPLY",
+          "type": "MONEY",
+          "exprId": "ir-expr:c920c69a0158aa586eec5a57",
+          "operands": [
+           {
+            "kind": "PERCENT",
+            "type": "PERCENT",
+            "value": 0.5,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(8)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:65d49b660a5c8b7fd82097ff",
+            "inventoryItemIds": [
+             "inv-item:ad22b485966a3702b28b252e"
+            ]
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Consolidated EBITDA",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(8)",
+           "excerpt": null
+          }
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(8)",
+         "excerpt": null
+        },
+        "inventoryItemIds": [
+         "inv-item:ad22b485966a3702b28b252e"
+        ]
+       },
+       {
+        "kind": "LEDGER_USAGE_REFERENCE",
+        "type": "MONEY",
+        "sharedCapId": "ir-sharedcap:69d0fb49380daf09779677c9",
+        "ruleId": null,
+        "exprId": "ir-expr:c2c1743a5d161e44e2dab1ff",
+        "inventoryItemIds": [
+         "inv-item:ad22b485966a3702b28b252e"
+        ]
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(8)",
+       "excerpt": null
+      },
+      "inventoryItemIds": [
+       "inv-item:ad22b485966a3702b28b252e"
+      ]
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r-8].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "If the Investment is made in a Person not yet a Restricted Subsidiary and such Person later becomes a Restricted Subsidiary, the Investment is thereafter deemed made under clause (1) and ceases to be counted under clause (8) for so long as it remains a Restricted Subsidiary.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(8)",
+        "excerpt": null
+       }
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [
+      {
+       "relationshipType": "SHARES_CAPACITY_WITH",
+       "targetRuleId": "ir-rule:01f87a6139d08407416b62f3",
+       "description": "reciprocal unused-capacity availability with clause (22) Unrestricted Subsidiaries basket"
+      },
+      {
+       "relationshipType": "SHARES_CAPACITY_WITH",
+       "targetRuleId": "ir-rule:bc340705aa70eb64a7947cbe",
+       "description": "reciprocal unused-capacity availability with clause (30) Joint Venture basket"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The greater-of $360.0mm / 50% Consolidated EBITDA base is fully represented.",
+      "The 'plus any Investment capacity available under clauses (22) and (30)' component is a reciprocal, circular cross-basket unused-capacity mechanism with no closed-form static value in the text; represented via a shared-capacity reference (sc-8-22-30) whose own cap expression is flagged UNSUPPORTED."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(8)",
+      "excerpt": "any Investment in a Similar Business having an aggregate Fair Market Value ... not to exceed the sum of (i) greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA ... plus (ii) any Investment capacity available under clauses (22) and (30) of this definition"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:ad22b485966a3702b28b252e"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:01f87a6139d08407416b62f3",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "1.01(22)",
+     "covenantFamily": "INVESTMENTS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "MAKE_INVESTMENT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "ADD",
+      "type": "MONEY",
+      "exprId": "ir-expr:4ed89c9e0204d69a165acf30",
+      "operands": [
+       {
+        "kind": "MAX",
+        "type": "MONEY",
+        "exprId": "ir-expr:f3ba544dcd4e55a161b4f343",
+        "operands": [
+         {
+          "kind": "MONEY",
+          "type": "MONEY",
+          "amount": 360000000,
+          "currency": "USD",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(22)",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:4531e116e6b97852f1dbb3be",
+          "inventoryItemIds": [
+           "inv-item:e03948f0e2536cccb87bcd72"
+          ]
+         },
+         {
+          "kind": "MULTIPLY",
+          "type": "MONEY",
+          "exprId": "ir-expr:91e80a9a62ddaf9c9b3c9a07",
+          "operands": [
+           {
+            "kind": "PERCENT",
+            "type": "PERCENT",
+            "value": 0.5,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(22)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:6b2c98a69855a2f1dd7c24ec",
+            "inventoryItemIds": [
+             "inv-item:e03948f0e2536cccb87bcd72"
+            ]
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Consolidated EBITDA",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(22)",
+           "excerpt": null
+          }
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(22)",
+         "excerpt": null
+        },
+        "inventoryItemIds": [
+         "inv-item:e03948f0e2536cccb87bcd72"
+        ]
+       },
+       {
+        "kind": "LEDGER_USAGE_REFERENCE",
+        "type": "MONEY",
+        "sharedCapId": "ir-sharedcap:69d0fb49380daf09779677c9",
+        "ruleId": null,
+        "exprId": "ir-expr:c2c1743a5d161e44e2dab1ff",
+        "inventoryItemIds": [
+         "inv-item:e03948f0e2536cccb87bcd72"
+        ]
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(22)",
+       "excerpt": null
+      },
+      "inventoryItemIds": [
+       "inv-item:e03948f0e2536cccb87bcd72"
+      ]
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r-22].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Fair Market Value is measured without giving effect to the sale of an Unrestricted Subsidiary to the extent the sale proceeds do not consist of cash, Cash Equivalents or marketable securities.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(22)",
+        "excerpt": null
+       }
+      },
+      {
+       "conditionId": "rule[r-22].condition[1]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "If the Investment is made in a Person that is an Unrestricted Subsidiary and such Person later becomes a Restricted Subsidiary, the Investment is thereafter deemed made under clause (1) and ceases to be counted under clause (22) for so long as it remains a Restricted Subsidiary.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(22)",
+        "excerpt": null
+       }
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [
+      {
+       "relationshipType": "SHARES_CAPACITY_WITH",
+       "targetRuleId": "ir-rule:f46acad9d388de3f84faaed5",
+       "description": "reciprocal unused-capacity availability with clause (8) Similar Business basket"
+      },
+      {
+       "relationshipType": "SHARES_CAPACITY_WITH",
+       "targetRuleId": "ir-rule:bc340705aa70eb64a7947cbe",
+       "description": "reciprocal unused-capacity availability with clause (30) Joint Venture basket"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The greater-of $360.0mm / 50% Consolidated EBITDA base is fully represented.",
+      "The 'plus any Investment capacity available under clauses (8) and (30)' component is a reciprocal, circular cross-basket unused-capacity mechanism with no closed-form static value in the text; represented via shared-capacity reference sc-8-22-30 flagged UNSUPPORTED."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(22)",
+      "excerpt": "Investments in Unrestricted Subsidiaries having an aggregate Fair Market Value ... not to exceed the sum of (i) the greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA ... plus (ii) any Investment capacity available under clauses (8) and (30) of this definition"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:e03948f0e2536cccb87bcd72"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:bc340705aa70eb64a7947cbe",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "1.01(30)",
+     "covenantFamily": "INVESTMENTS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "MAKE_INVESTMENT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "ADD",
+      "type": "MONEY",
+      "exprId": "ir-expr:72780b0eb0542640bab5fa83",
+      "operands": [
+       {
+        "kind": "MAX",
+        "type": "MONEY",
+        "exprId": "ir-expr:1ca1da77564de938193b823b",
+        "operands": [
+         {
+          "kind": "MONEY",
+          "type": "MONEY",
+          "amount": 360000000,
+          "currency": "USD",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(30)",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:3ee18022ff6d62a755f7ea81",
+          "inventoryItemIds": [
+           "inv-item:c0e081db2c5f4cd1ab2135a2"
+          ]
+         },
+         {
+          "kind": "MULTIPLY",
+          "type": "MONEY",
+          "exprId": "ir-expr:5271fa41fa2cc0ae3d5b00fb",
+          "operands": [
+           {
+            "kind": "PERCENT",
+            "type": "PERCENT",
+            "value": 0.5,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(30)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:09d53fc1ab357f3950c19a9f",
+            "inventoryItemIds": [
+             "inv-item:c0e081db2c5f4cd1ab2135a2"
+            ]
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Consolidated EBITDA",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(30)",
+           "excerpt": null
+          }
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(30)",
+         "excerpt": null
+        },
+        "inventoryItemIds": [
+         "inv-item:c0e081db2c5f4cd1ab2135a2"
+        ]
+       },
+       {
+        "kind": "LEDGER_USAGE_REFERENCE",
+        "type": "MONEY",
+        "sharedCapId": "ir-sharedcap:69d0fb49380daf09779677c9",
+        "ruleId": null,
+        "exprId": "ir-expr:c2c1743a5d161e44e2dab1ff",
+        "inventoryItemIds": [
+         "inv-item:c0e081db2c5f4cd1ab2135a2"
+        ]
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(30)",
+       "excerpt": null
+      },
+      "inventoryItemIds": [
+       "inv-item:c0e081db2c5f4cd1ab2135a2"
+      ]
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r-30].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "If the Investment is made in a Person that is a Joint Venture and such Person later becomes a Restricted Subsidiary, the Investment is thereafter deemed made under clause (1) and ceases to be counted under clause (30) for so long as it remains a Restricted Subsidiary.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(30)",
+        "excerpt": null
+       }
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [
+      {
+       "relationshipType": "SHARES_CAPACITY_WITH",
+       "targetRuleId": "ir-rule:f46acad9d388de3f84faaed5",
+       "description": "reciprocal unused-capacity availability with clause (8) Similar Business basket"
+      },
+      {
+       "relationshipType": "SHARES_CAPACITY_WITH",
+       "targetRuleId": "ir-rule:01f87a6139d08407416b62f3",
+       "description": "reciprocal unused-capacity availability with clause (22) Unrestricted Subsidiaries basket"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The greater-of $360.0mm / 50% Consolidated EBITDA base is fully represented.",
+      "The 'plus any Investment capacity available under clauses (8) and (22)' component is a reciprocal, circular cross-basket unused-capacity mechanism with no closed-form static value in the text; represented via shared-capacity reference sc-8-22-30 flagged UNSUPPORTED."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(30)",
+      "excerpt": "any Investment in a Joint Venture having an aggregate Fair Market Value ... not to exceed the sum of (i) the greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA ... plus (ii) any Investment capacity available under clauses (8) and (22) of this definition"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:c0e081db2c5f4cd1ab2135a2"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:9ff3ea8d3657c206fec38a2c",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "1.01(13)",
+     "covenantFamily": "INVESTMENTS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "MAKE_INVESTMENT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "MAX",
+      "type": "MONEY",
+      "exprId": "ir-expr:adf8a2ecb837918ce63c3e3d",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "type": "MONEY",
+        "amount": 720000000,
+        "currency": "USD",
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(13)",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:31c266f0d429a811b50fcf88",
+        "inventoryItemIds": [
+         "inv-item:4791c1047af2d96cf3108a20"
+        ]
+       },
+       {
+        "kind": "MULTIPLY",
+        "type": "MONEY",
+        "exprId": "ir-expr:0e40d7b8f0d3ee332025f269",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "type": "PERCENT",
+          "value": 1,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(13)",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:4fe313051adbcc6d8841850d",
+          "inventoryItemIds": [
+           "inv-item:4791c1047af2d96cf3108a20"
+          ]
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "Consolidated EBITDA",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(13)",
+         "excerpt": null
+        }
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(13)",
+       "excerpt": null
+      },
+      "inventoryItemIds": [
+       "inv-item:4791c1047af2d96cf3108a20"
+      ]
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r-13].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "If the Investment is made in a Person not yet a Restricted Subsidiary and such Person later becomes a Restricted Subsidiary, the Investment is thereafter deemed made under clause (1) and ceases to be counted under clause (13).",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(13)",
+        "excerpt": null
+       }
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full greater-of formula stated and captured; no cross-basket dependency exists for this clause."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(13)",
+      "excerpt": "additional Investments having an aggregate Fair Market Value ... not to exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA ... (the \"General Basket Amount\")"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:4791c1047af2d96cf3108a20"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:e5c86a84379f4bb39b2def02",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "1.01(15)",
+     "covenantFamily": "INVESTMENTS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "MAKE_INVESTMENT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "MAX",
+      "type": "MONEY",
+      "exprId": "ir-expr:981bb45d63f7433883180d0c",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "type": "MONEY",
+        "amount": 108000000,
+        "currency": "USD",
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(15)",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:a677709bc374cfbf265aff9b",
+        "inventoryItemIds": [
+         "inv-item:e6f265b736ed64849a83c29d"
+        ]
+       },
+       {
+        "kind": "MULTIPLY",
+        "type": "MONEY",
+        "exprId": "ir-expr:1fd90be78385a7d814641af0",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "type": "PERCENT",
+          "value": 0.15,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(15)",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:ed070f6231ebbcd8436cc91a",
+          "inventoryItemIds": [
+           "inv-item:e6f265b736ed64849a83c29d"
+          ]
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "Consolidated EBITDA",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(15)",
+         "excerpt": null
+        }
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(15)",
+       "excerpt": null
+      },
+      "inventoryItemIds": [
+       "inv-item:e6f265b736ed64849a83c29d"
+      ]
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full greater-of formula stated and captured verbatim; measured 'outstanding at any one time, in the aggregate'."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(15)",
+      "excerpt": "loans and advances to, or guarantees of Indebtedness of, officers, directors, managers, employees and consultants not in excess of the greater of (x) $108.0 million and (y) 15% of Consolidated EBITDA ... outstanding at any one time, in the aggregate"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:e6f265b736ed64849a83c29d"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:7873b3866c7a445ea1788861",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "1.01(27)",
+     "covenantFamily": "INVESTMENTS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "MAKE_INVESTMENT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": {
+       "kind": "OR",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:01ad3420a629201fef926c56",
+       "operands": [
+        {
+         "kind": "OR",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:ba33edae8d9668a164ff2202",
+         "operands": [
+          {
+           "kind": "COMPARE",
+           "type": "BOOLEAN",
+           "exprId": "ir-expr:97effc285e8ccb2abcdf6b12",
+           "left": {
+            "kind": "METRIC_REFERENCE",
+            "type": "RATIO",
+            "metricName": "First Lien Leverage Ratio",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+           },
+           "operator": "LTE",
+           "right": {
+            "kind": "RATIO",
+            "type": "RATIO",
+            "value": 2,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(27)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:02b31019f335e4f4f8edfe5b",
+            "inventoryItemIds": [
+             "inv-item:0b4ca24d4eaf1357e23c16a1"
+            ]
+           },
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(27)",
+            "excerpt": null
+           }
+          },
+          {
+           "kind": "COMPARE",
+           "type": "BOOLEAN",
+           "exprId": "ir-expr:61a214516674b5880e488f39",
+           "left": {
+            "kind": "METRIC_REFERENCE",
+            "type": "RATIO",
+            "metricName": "First Lien Leverage Ratio",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+           },
+           "operator": "LTE",
+           "right": {
+            "kind": "DURING_PERIOD",
+            "type": "RATIO",
+            "exprId": "ir-expr:e87c2862b60d0dc8cc257f7f",
+            "value": {
+             "kind": "METRIC_REFERENCE",
+             "type": "RATIO",
+             "metricName": "First Lien Leverage Ratio",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+            },
+            "periodDescription": "as of the last day of the then most recently ended Test Period (without giving pro forma effect to the Investment)",
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(27)",
+             "excerpt": null
+            }
+           },
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(27)",
+            "excerpt": null
+           }
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(27)",
+          "excerpt": null
+         }
+        },
+        {
+         "kind": "OR",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:f268d0494edc97cdd66e89be",
+         "operands": [
+          {
+           "kind": "COMPARE",
+           "type": "BOOLEAN",
+           "exprId": "ir-expr:b48a6f15d54ccb2e8fb94a5b",
+           "left": {
+            "kind": "METRIC_REFERENCE",
+            "type": "RATIO",
+            "metricName": "Interest Coverage Ratio",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+           },
+           "operator": "GTE",
+           "right": {
+            "kind": "RATIO",
+            "type": "RATIO",
+            "value": 1.75,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(27)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:17b0f6f198c7bb2e1f38b3eb",
+            "inventoryItemIds": [
+             "inv-item:0b4ca24d4eaf1357e23c16a1"
+            ]
+           },
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(27)",
+            "excerpt": null
+           }
+          },
+          {
+           "kind": "COMPARE",
+           "type": "BOOLEAN",
+           "exprId": "ir-expr:cc2f93ce2fc40cde838fd9f7",
+           "left": {
+            "kind": "METRIC_REFERENCE",
+            "type": "RATIO",
+            "metricName": "Interest Coverage Ratio",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+           },
+           "operator": "GTE",
+           "right": {
+            "kind": "DURING_PERIOD",
+            "type": "RATIO",
+            "exprId": "ir-expr:4318486e42fb4874772c6080",
+            "value": {
+             "kind": "METRIC_REFERENCE",
+             "type": "RATIO",
+             "metricName": "Interest Coverage Ratio",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+            },
+            "periodDescription": "as of the last day of the then most recently ended Test Period",
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§1.01(27)",
+             "excerpt": null
+            }
+           },
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(27)",
+            "excerpt": null
+           }
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(27)",
+          "excerpt": null
+         }
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(27)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:0b4ca24d4eaf1357e23c16a1"
+       ]
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r-27].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "The Initial Borrower elects, on a Pro Forma Basis after giving effect to the Investment, between the First Lien Leverage Ratio test and the Interest Coverage Ratio test.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(27)",
+        "excerpt": null
+       }
+      }
+     ],
+     "exceptions": [
+      {
+       "exceptionId": "rule[r-27].exception[0]",
+       "appliesToRuleId": "ir-rule:7873b3866c7a445ea1788861",
+       "description": "The Interest Coverage Ratio alternative (clause (ii)) may not be relied upon for the purpose of incurring Indebtedness secured by a Lien on all or a material portion of the Collateral on a pari passu basis with the Term Loans.",
+       "permissionRuleId": null,
+       "conditions": [],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(27)",
+        "excerpt": null
+       }
+      }
+     ],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The two elective ratio tests and their fixed numerical thresholds (2.00:1.00 and 1.75:1.00) are fully represented.",
+      "The alternative 'or the ratio level as of the last day of the then most recently ended Test Period' comparator (a floating, non-pro-forma prior-period benchmark) is approximated using DURING_PERIOD, since the IR has no dedicated primitive for a same-metric prior-period snapshot compared against a current pro forma value; this is a reasonable but non-exact representation."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(27)",
+      "excerpt": "any other Investment; provided that on a Pro Forma Basis ... at the election of the Initial Borrower, (i) the First Lien Leverage Ratio ... would not exceed (A) 2.00:1.00 or (B) the First Lien Leverage Ratio as of the last day of the then most recently ended Test Period, or (ii) the Interest Coverage Ratio ... is at least equal to or greater than (A) 1.75:1.00 or (B) the Interest Coverage Ratio level as of the last day of the then most recently ended Test Period; provided that this clause (ii) shall not be relied on for the purpose of incurring Indebtedness secured by a lien on all or a material portion of the Collateral on a pari passu basis with the Term Loans"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:0b4ca24d4eaf1357e23c16a1"
+     ]
+    }
+   ],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:6c088787f71290915dbe3eca",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Permitted Investments",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Party",
+      "Restricted Subsidiary",
+      "Cash Equivalents",
+      "Investment Grade Securities",
+      "Similar Business",
+      "Permitted Acquisition",
+      "Consolidated EBITDA",
+      "Unrestricted Subsidiary",
+      "Joint Venture",
+      "General Basket Amount",
+      "Receivables Subsidiary",
+      "Permitted Receivables Financing",
+      "Qualified Restricted Subsidiary",
+      "Disqualified Stock",
+      "Available RP Capacity Amount",
+      "Senior Indebtedness",
+      "Permitted Tax Restructuring",
+      "Non-Loan Party Subsidiary",
+      "First Lien Leverage Ratio",
+      "Interest Coverage Ratio",
+      "Fair Market Value",
+      "Pro Forma Basis",
+      "Test Period",
+      "Division"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "This 30-clause enumerated definition mixes uncapped categorical permissions with several clauses carrying stated dollar/percentage/ratio ceilings or ratio gates; the latter - clauses (8), (13)/General Basket Amount, (15), (22), (27), (30) - are separately modeled as WireRules r-8/r-13/r-15/r-22/r-27/r-30 to preserve their real economics.",
+      "The remaining purely categorical clauses (1)-(7),(9)-(12),(14),(16)-(21),(23)-(26),(28)-(29) impose no stated dollar cap or ratio gate in the text supplied and were not separately modeled as quantitative WireRules; several of them cross-reference Sections 6.01, 6.01(b)(10), 6.02, 6.05, 6.08, 6.08(a)(3), 5.16 and 5.18(b) (and sub-clauses thereof) that were reported out-of-scope of the supplied evidence region budget and are therefore preserved only as an acknowledged unresolved dependency, not resolved economics."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01 (definition of \"Permitted Investments\")",
+      "excerpt": "\"Permitted Investments\" means: (1) ... (30) any Investment in a Joint Venture ... [30 enumerated clauses]"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:1bf86530e744931a125369a2",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Permitted Acquisition",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Similar Business",
+      "Restricted Subsidiary",
+      "Restricted Party",
+      "Unrestricted Subsidiary",
+      "Division",
+      "Qualified Restricted Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Inline defined term fully captured descriptively; it is a categorical/qualitative definition with no computable formula."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(3)",
+      "excerpt": "any Investment or other acquisition ... of a Person ... engaged ... in a Similar Business ... if as a result of such Investment (each such transaction, a \"Permitted Acquisition\") (a) such Person becomes a Restricted Subsidiary ... or (b) such Person ... is merged, consolidated or amalgamated with or into ... any Restricted Party ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:dfcc6cc1ab52499045a98ca7",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "General Basket Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MAX",
+      "type": "MONEY",
+      "exprId": "ir-expr:adf8a2ecb837918ce63c3e3d",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "type": "MONEY",
+        "amount": 720000000,
+        "currency": "USD",
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(13)",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:31c266f0d429a811b50fcf88",
+        "inventoryItemIds": [
+         "inv-item:4791c1047af2d96cf3108a20"
+        ]
+       },
+       {
+        "kind": "MULTIPLY",
+        "type": "MONEY",
+        "exprId": "ir-expr:0e40d7b8f0d3ee332025f269",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "type": "PERCENT",
+          "value": 1,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(13)",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:4fe313051adbcc6d8841850d",
+          "inventoryItemIds": [
+           "inv-item:4791c1047af2d96cf3108a20"
+          ]
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "Consolidated EBITDA",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(13)",
+         "excerpt": null
+        }
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(13)",
+       "excerpt": null
+      },
+      "inventoryItemIds": [
+       "inv-item:4791c1047af2d96cf3108a20"
+      ]
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Test Period",
+      "Pro Forma Basis"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full greater-of formula stated in clause (13) and captured verbatim."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(13)",
+      "excerpt": "additional Investments having an aggregate Fair Market Value ... not to exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA ... (the greater of such amounts, the \"General Basket Amount\")"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:4791c1047af2d96cf3108a20"
+     ]
+    }
+   ],
+   "sharedCapacities": [
+    {
+     "sharedCapId": "ir-sharedcap:69d0fb49380daf09779677c9",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "description": "Reciprocal cross-basket capacity: unused Investment capacity under Permitted Investments clauses (8) [Similar Business Investments], (22) [Unrestricted Subsidiary Investments], and (30) [Joint Venture Investments] is each expressly available to, and drawable by, the other two clauses' baskets ('plus any Investment capacity available under clauses (X) and (Y)').",
+     "capExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01(8), (22), (30)",
+      "semanticDescription": "a dynamic, reciprocal 'available capacity' add-on shared circularly among three sibling baskets, each of which also feeds the other two",
+      "reason": "The IR's shared-capacity primitive models a single static ceiling shared among members; this text instead grants each of three baskets its own independent greater-of base PLUS access to whatever capacity remains unused under the other two, which is circular (each basket's 'available' amount depends on the others' usage) and has no closed-form ceiling value stated in the text.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:3c6cc5b9d0e32b6bfaafde3f"
+     },
+     "memberRuleIds": [
+      "ir-rule:f46acad9d388de3f84faaed5",
+      "ir-rule:01f87a6139d08407416b62f3",
+      "ir-rule:bc340705aa70eb64a7947cbe"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(8), (22), (30)",
+      "excerpt": "plus (ii) any Investment capacity available under clauses (22) and (30) of this definition [clause (8)]; ... plus (ii) any Investment capacity available under clauses (8) and (30) of this definition [clause (22)]; ... plus (ii) any Investment capacity available under clauses (8) and (22) of this definition [clause (30)]"
+     },
+     "inventoryItemIds": [
+      "inv-item:ad22b485966a3702b28b252e",
+      "inv-item:e03948f0e2536cccb87bcd72",
+      "inv-item:c0e081db2c5f4cd1ab2135a2"
+     ]
+    }
+   ],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "unresolvedIssues": [
+   "[sharedCap[sc-8-22-30]] The IR's shared-capacity primitive models a single static ceiling shared among members; this text instead grants each of three baskets its own independent greater-of base PLUS access to whatever capacity remains unused under the other two, which is circular (each basket's 'available' amount depends on the others' usage) and has no closed-form ceiling value stated in the text.",
+   "Scope decision: given the frozen inventory flags only clauses (8), (13)/General Basket Amount, (15), (22), (27) and (30) as CRITICAL quantitative/conditional components, and no deterministic quantitative value was detected outside those six clauses, the remaining 24 purely categorical clauses of the 'Permitted Investments' definition (clauses (1)-(7), (9)-(12), (14), (16)-(21), (23)-(26), (28)-(29)) were preserved within the top-level 'Permitted Investments' WireDefinition (d-pi) rather than separately modeled as individual quantitative WireRules, since they impose no stated dollar cap or ratio gate.",
+   "Several categorical clauses cross-reference other covenant sections (6.01, 6.01(b)(10), 6.02, 6.05, 6.08, 6.08(a)(3), 5.16, 5.18(b) and enumerated sub-clauses thereof) that Phase 2's region retrieval reported as OUT_OF_SCOPE due to source-context budget exhaustion; these are noted only as unresolved dependencies in d-pi's sufficiencyReasons and were not independently re-fetched because they do not affect the economics of the six CRITICAL inventory items.",
+   "The dependency-context definitions of Consolidated EBITDA, First Lien Leverage Ratio, Interest Coverage Ratio, Joint Venture, Unrestricted Subsidiary and Similar Business were used only to interpret metric names and gating logic in the compiled rules, per their READ-ONLY status; no WireDefinition or inventory claim was made against them.",
+   "The Consolidated EBITDA definition region was itself reported TRUNCATED_AT_BUDGET; because Consolidated EBITDA is referenced here only by METRIC_REFERENCE name (not recomputed), this truncation does not affect the sufficiency of rules r-8/r-13/r-15/r-22/r-30, but any future compilation of the Consolidated EBITDA definition itself should not be treated as COMPLETE from this bundle alone."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 29585,
+   "outputTokens": 31628,
+   "costUsd": 0.37545
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "errorDetail": null,
+  "rules": [
+   {
+    "ruleId": "ir-rule:f46acad9d388de3f84faaed5",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01(8)",
+    "covenantFamily": "INVESTMENTS",
+    "ruleType": "QUANTITATIVE_PERMISSION",
+    "posture": "PERMISSION",
+    "action": "MAKE_INVESTMENT",
+    "entityScope": [],
+    "entityScopeExcluded": [],
+    "transactionScope": null,
+    "capacityExpression": {
+     "kind": "ADD",
+     "type": "MONEY",
+     "exprId": "ir-expr:09294d2dbe6e5d314c4edf5e",
+     "operands": [
+      {
+       "kind": "MAX",
+       "type": "MONEY",
+       "exprId": "ir-expr:1bfa7e1a4c038516d99bca42",
+       "operands": [
+        {
+         "kind": "MONEY",
+         "type": "MONEY",
+         "amount": 360000000,
+         "currency": "USD",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(8)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:8d53251e6222b7fb45d8a978",
+         "inventoryItemIds": [
+          "inv-item:ad22b485966a3702b28b252e"
+         ]
+        },
+        {
+         "kind": "MULTIPLY",
+         "type": "MONEY",
+         "exprId": "ir-expr:c920c69a0158aa586eec5a57",
+         "operands": [
+          {
+           "kind": "PERCENT",
+           "type": "PERCENT",
+           "value": 0.5,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(8)",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:65d49b660a5c8b7fd82097ff",
+           "inventoryItemIds": [
+            "inv-item:ad22b485966a3702b28b252e"
+           ]
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "Consolidated EBITDA",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(8)",
+          "excerpt": null
+         }
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(8)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:ad22b485966a3702b28b252e"
+       ]
+      },
+      {
+       "kind": "LEDGER_USAGE_REFERENCE",
+       "type": "MONEY",
+       "sharedCapId": "ir-sharedcap:69d0fb49380daf09779677c9",
+       "ruleId": null,
+       "exprId": "ir-expr:c2c1743a5d161e44e2dab1ff",
+       "inventoryItemIds": [
+        "inv-item:ad22b485966a3702b28b252e"
+       ]
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(8)",
+      "excerpt": null
+     },
+     "inventoryItemIds": [
+      "inv-item:ad22b485966a3702b28b252e"
+     ]
+    },
+    "conditions": [
+     {
+      "conditionId": "rule[r-8].condition[0]",
+      "conditionType": "OTHER_RULE_SATISFIED",
+      "expression": null,
+      "referencesDefinitionId": null,
+      "description": "If the Investment is made in a Person not yet a Restricted Subsidiary and such Person later becomes a Restricted Subsidiary, the Investment is thereafter deemed made under clause (1) and ceases to be counted under clause (8) for so long as it remains a Restricted Subsidiary.",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(8)",
+       "excerpt": null
+      }
+     }
+    ],
+    "exceptions": [],
+    "dependsOn": [
+     {
+      "relationshipType": "SHARES_CAPACITY_WITH",
+      "targetRuleId": "ir-rule:01f87a6139d08407416b62f3",
+      "description": "reciprocal unused-capacity availability with clause (22) Unrestricted Subsidiaries basket"
+     },
+     {
+      "relationshipType": "SHARES_CAPACITY_WITH",
+      "targetRuleId": "ir-rule:bc340705aa70eb64a7947cbe",
+      "description": "reciprocal unused-capacity availability with clause (30) Joint Venture basket"
+     }
+    ],
+    "operativeLineage": null,
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The greater-of $360.0mm / 50% Consolidated EBITDA base is fully represented.",
+     "The 'plus any Investment capacity available under clauses (22) and (30)' component is a reciprocal, circular cross-basket unused-capacity mechanism with no closed-form static value in the text; represented via a shared-capacity reference (sc-8-22-30) whose own cap expression is flagged UNSUPPORTED."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(8)",
+     "excerpt": "any Investment in a Similar Business having an aggregate Fair Market Value ... not to exceed the sum of (i) greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA ... plus (ii) any Investment capacity available under clauses (22) and (30) of this definition"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:ad22b485966a3702b28b252e"
+    ]
+   },
+   {
+    "ruleId": "ir-rule:01f87a6139d08407416b62f3",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01(22)",
+    "covenantFamily": "INVESTMENTS",
+    "ruleType": "QUANTITATIVE_PERMISSION",
+    "posture": "PERMISSION",
+    "action": "MAKE_INVESTMENT",
+    "entityScope": [],
+    "entityScopeExcluded": [],
+    "transactionScope": null,
+    "capacityExpression": {
+     "kind": "ADD",
+     "type": "MONEY",
+     "exprId": "ir-expr:4ed89c9e0204d69a165acf30",
+     "operands": [
+      {
+       "kind": "MAX",
+       "type": "MONEY",
+       "exprId": "ir-expr:f3ba544dcd4e55a161b4f343",
+       "operands": [
+        {
+         "kind": "MONEY",
+         "type": "MONEY",
+         "amount": 360000000,
+         "currency": "USD",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(22)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:4531e116e6b97852f1dbb3be",
+         "inventoryItemIds": [
+          "inv-item:e03948f0e2536cccb87bcd72"
+         ]
+        },
+        {
+         "kind": "MULTIPLY",
+         "type": "MONEY",
+         "exprId": "ir-expr:91e80a9a62ddaf9c9b3c9a07",
+         "operands": [
+          {
+           "kind": "PERCENT",
+           "type": "PERCENT",
+           "value": 0.5,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(22)",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:6b2c98a69855a2f1dd7c24ec",
+           "inventoryItemIds": [
+            "inv-item:e03948f0e2536cccb87bcd72"
+           ]
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "Consolidated EBITDA",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(22)",
+          "excerpt": null
+         }
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(22)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:e03948f0e2536cccb87bcd72"
+       ]
+      },
+      {
+       "kind": "LEDGER_USAGE_REFERENCE",
+       "type": "MONEY",
+       "sharedCapId": "ir-sharedcap:69d0fb49380daf09779677c9",
+       "ruleId": null,
+       "exprId": "ir-expr:c2c1743a5d161e44e2dab1ff",
+       "inventoryItemIds": [
+        "inv-item:e03948f0e2536cccb87bcd72"
+       ]
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(22)",
+      "excerpt": null
+     },
+     "inventoryItemIds": [
+      "inv-item:e03948f0e2536cccb87bcd72"
+     ]
+    },
+    "conditions": [
+     {
+      "conditionId": "rule[r-22].condition[0]",
+      "conditionType": "OTHER_RULE_SATISFIED",
+      "expression": null,
+      "referencesDefinitionId": null,
+      "description": "Fair Market Value is measured without giving effect to the sale of an Unrestricted Subsidiary to the extent the sale proceeds do not consist of cash, Cash Equivalents or marketable securities.",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(22)",
+       "excerpt": null
+      }
+     },
+     {
+      "conditionId": "rule[r-22].condition[1]",
+      "conditionType": "OTHER_RULE_SATISFIED",
+      "expression": null,
+      "referencesDefinitionId": null,
+      "description": "If the Investment is made in a Person that is an Unrestricted Subsidiary and such Person later becomes a Restricted Subsidiary, the Investment is thereafter deemed made under clause (1) and ceases to be counted under clause (22) for so long as it remains a Restricted Subsidiary.",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(22)",
+       "excerpt": null
+      }
+     }
+    ],
+    "exceptions": [],
+    "dependsOn": [
+     {
+      "relationshipType": "SHARES_CAPACITY_WITH",
+      "targetRuleId": "ir-rule:f46acad9d388de3f84faaed5",
+      "description": "reciprocal unused-capacity availability with clause (8) Similar Business basket"
+     },
+     {
+      "relationshipType": "SHARES_CAPACITY_WITH",
+      "targetRuleId": "ir-rule:bc340705aa70eb64a7947cbe",
+      "description": "reciprocal unused-capacity availability with clause (30) Joint Venture basket"
+     }
+    ],
+    "operativeLineage": null,
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The greater-of $360.0mm / 50% Consolidated EBITDA base is fully represented.",
+     "The 'plus any Investment capacity available under clauses (8) and (30)' component is a reciprocal, circular cross-basket unused-capacity mechanism with no closed-form static value in the text; represented via shared-capacity reference sc-8-22-30 flagged UNSUPPORTED."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(22)",
+     "excerpt": "Investments in Unrestricted Subsidiaries having an aggregate Fair Market Value ... not to exceed the sum of (i) the greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA ... plus (ii) any Investment capacity available under clauses (8) and (30) of this definition"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:e03948f0e2536cccb87bcd72"
+    ]
+   },
+   {
+    "ruleId": "ir-rule:bc340705aa70eb64a7947cbe",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01(30)",
+    "covenantFamily": "INVESTMENTS",
+    "ruleType": "QUANTITATIVE_PERMISSION",
+    "posture": "PERMISSION",
+    "action": "MAKE_INVESTMENT",
+    "entityScope": [],
+    "entityScopeExcluded": [],
+    "transactionScope": null,
+    "capacityExpression": {
+     "kind": "ADD",
+     "type": "MONEY",
+     "exprId": "ir-expr:72780b0eb0542640bab5fa83",
+     "operands": [
+      {
+       "kind": "MAX",
+       "type": "MONEY",
+       "exprId": "ir-expr:1ca1da77564de938193b823b",
+       "operands": [
+        {
+         "kind": "MONEY",
+         "type": "MONEY",
+         "amount": 360000000,
+         "currency": "USD",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(30)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:3ee18022ff6d62a755f7ea81",
+         "inventoryItemIds": [
+          "inv-item:c0e081db2c5f4cd1ab2135a2"
+         ]
+        },
+        {
+         "kind": "MULTIPLY",
+         "type": "MONEY",
+         "exprId": "ir-expr:5271fa41fa2cc0ae3d5b00fb",
+         "operands": [
+          {
+           "kind": "PERCENT",
+           "type": "PERCENT",
+           "value": 0.5,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(30)",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:09d53fc1ab357f3950c19a9f",
+           "inventoryItemIds": [
+            "inv-item:c0e081db2c5f4cd1ab2135a2"
+           ]
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "Consolidated EBITDA",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(30)",
+          "excerpt": null
+         }
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(30)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:c0e081db2c5f4cd1ab2135a2"
+       ]
+      },
+      {
+       "kind": "LEDGER_USAGE_REFERENCE",
+       "type": "MONEY",
+       "sharedCapId": "ir-sharedcap:69d0fb49380daf09779677c9",
+       "ruleId": null,
+       "exprId": "ir-expr:c2c1743a5d161e44e2dab1ff",
+       "inventoryItemIds": [
+        "inv-item:c0e081db2c5f4cd1ab2135a2"
+       ]
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(30)",
+      "excerpt": null
+     },
+     "inventoryItemIds": [
+      "inv-item:c0e081db2c5f4cd1ab2135a2"
+     ]
+    },
+    "conditions": [
+     {
+      "conditionId": "rule[r-30].condition[0]",
+      "conditionType": "OTHER_RULE_SATISFIED",
+      "expression": null,
+      "referencesDefinitionId": null,
+      "description": "If the Investment is made in a Person that is a Joint Venture and such Person later becomes a Restricted Subsidiary, the Investment is thereafter deemed made under clause (1) and ceases to be counted under clause (30) for so long as it remains a Restricted Subsidiary.",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(30)",
+       "excerpt": null
+      }
+     }
+    ],
+    "exceptions": [],
+    "dependsOn": [
+     {
+      "relationshipType": "SHARES_CAPACITY_WITH",
+      "targetRuleId": "ir-rule:f46acad9d388de3f84faaed5",
+      "description": "reciprocal unused-capacity availability with clause (8) Similar Business basket"
+     },
+     {
+      "relationshipType": "SHARES_CAPACITY_WITH",
+      "targetRuleId": "ir-rule:01f87a6139d08407416b62f3",
+      "description": "reciprocal unused-capacity availability with clause (22) Unrestricted Subsidiaries basket"
+     }
+    ],
+    "operativeLineage": null,
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The greater-of $360.0mm / 50% Consolidated EBITDA base is fully represented.",
+     "The 'plus any Investment capacity available under clauses (8) and (22)' component is a reciprocal, circular cross-basket unused-capacity mechanism with no closed-form static value in the text; represented via shared-capacity reference sc-8-22-30 flagged UNSUPPORTED."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(30)",
+     "excerpt": "any Investment in a Joint Venture having an aggregate Fair Market Value ... not to exceed the sum of (i) the greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA ... plus (ii) any Investment capacity available under clauses (8) and (22) of this definition"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:c0e081db2c5f4cd1ab2135a2"
+    ]
+   },
+   {
+    "ruleId": "ir-rule:9ff3ea8d3657c206fec38a2c",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01(13)",
+    "covenantFamily": "INVESTMENTS",
+    "ruleType": "QUANTITATIVE_PERMISSION",
+    "posture": "PERMISSION",
+    "action": "MAKE_INVESTMENT",
+    "entityScope": [],
+    "entityScopeExcluded": [],
+    "transactionScope": null,
+    "capacityExpression": {
+     "kind": "MAX",
+     "type": "MONEY",
+     "exprId": "ir-expr:adf8a2ecb837918ce63c3e3d",
+     "operands": [
+      {
+       "kind": "MONEY",
+       "type": "MONEY",
+       "amount": 720000000,
+       "currency": "USD",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(13)",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:31c266f0d429a811b50fcf88",
+       "inventoryItemIds": [
+        "inv-item:4791c1047af2d96cf3108a20"
+       ]
+      },
+      {
+       "kind": "MULTIPLY",
+       "type": "MONEY",
+       "exprId": "ir-expr:0e40d7b8f0d3ee332025f269",
+       "operands": [
+        {
+         "kind": "PERCENT",
+         "type": "PERCENT",
+         "value": 1,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(13)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:4fe313051adbcc6d8841850d",
+         "inventoryItemIds": [
+          "inv-item:4791c1047af2d96cf3108a20"
+         ]
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "Consolidated EBITDA",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(13)",
+        "excerpt": null
+       }
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(13)",
+      "excerpt": null
+     },
+     "inventoryItemIds": [
+      "inv-item:4791c1047af2d96cf3108a20"
+     ]
+    },
+    "conditions": [
+     {
+      "conditionId": "rule[r-13].condition[0]",
+      "conditionType": "OTHER_RULE_SATISFIED",
+      "expression": null,
+      "referencesDefinitionId": null,
+      "description": "If the Investment is made in a Person not yet a Restricted Subsidiary and such Person later becomes a Restricted Subsidiary, the Investment is thereafter deemed made under clause (1) and ceases to be counted under clause (13).",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(13)",
+       "excerpt": null
+      }
+     }
+    ],
+    "exceptions": [],
+    "dependsOn": [],
+    "operativeLineage": null,
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Full greater-of formula stated and captured; no cross-basket dependency exists for this clause."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(13)",
+     "excerpt": "additional Investments having an aggregate Fair Market Value ... not to exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA ... (the \"General Basket Amount\")"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:4791c1047af2d96cf3108a20"
+    ]
+   },
+   {
+    "ruleId": "ir-rule:e5c86a84379f4bb39b2def02",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01(15)",
+    "covenantFamily": "INVESTMENTS",
+    "ruleType": "QUANTITATIVE_PERMISSION",
+    "posture": "PERMISSION",
+    "action": "MAKE_INVESTMENT",
+    "entityScope": [],
+    "entityScopeExcluded": [],
+    "transactionScope": null,
+    "capacityExpression": {
+     "kind": "MAX",
+     "type": "MONEY",
+     "exprId": "ir-expr:981bb45d63f7433883180d0c",
+     "operands": [
+      {
+       "kind": "MONEY",
+       "type": "MONEY",
+       "amount": 108000000,
+       "currency": "USD",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(15)",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:a677709bc374cfbf265aff9b",
+       "inventoryItemIds": [
+        "inv-item:e6f265b736ed64849a83c29d"
+       ]
+      },
+      {
+       "kind": "MULTIPLY",
+       "type": "MONEY",
+       "exprId": "ir-expr:1fd90be78385a7d814641af0",
+       "operands": [
+        {
+         "kind": "PERCENT",
+         "type": "PERCENT",
+         "value": 0.15,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(15)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:ed070f6231ebbcd8436cc91a",
+         "inventoryItemIds": [
+          "inv-item:e6f265b736ed64849a83c29d"
+         ]
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "Consolidated EBITDA",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(15)",
+        "excerpt": null
+       }
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(15)",
+      "excerpt": null
+     },
+     "inventoryItemIds": [
+      "inv-item:e6f265b736ed64849a83c29d"
+     ]
+    },
+    "conditions": [],
+    "exceptions": [],
+    "dependsOn": [],
+    "operativeLineage": null,
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Full greater-of formula stated and captured verbatim; measured 'outstanding at any one time, in the aggregate'."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(15)",
+     "excerpt": "loans and advances to, or guarantees of Indebtedness of, officers, directors, managers, employees and consultants not in excess of the greater of (x) $108.0 million and (y) 15% of Consolidated EBITDA ... outstanding at any one time, in the aggregate"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:e6f265b736ed64849a83c29d"
+    ]
+   },
+   {
+    "ruleId": "ir-rule:7873b3866c7a445ea1788861",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01(27)",
+    "covenantFamily": "INVESTMENTS",
+    "ruleType": "QUANTITATIVE_PERMISSION",
+    "posture": "PERMISSION",
+    "action": "MAKE_INVESTMENT",
+    "entityScope": [],
+    "entityScopeExcluded": [],
+    "transactionScope": null,
+    "capacityExpression": {
+     "kind": "UNLIMITED_CAPACITY",
+     "type": "CAPACITY",
+     "gatedBy": {
+      "kind": "OR",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:01ad3420a629201fef926c56",
+      "operands": [
+       {
+        "kind": "OR",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:ba33edae8d9668a164ff2202",
+        "operands": [
+         {
+          "kind": "COMPARE",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:97effc285e8ccb2abcdf6b12",
+          "left": {
+           "kind": "METRIC_REFERENCE",
+           "type": "RATIO",
+           "metricName": "First Lien Leverage Ratio",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+          },
+          "operator": "LTE",
+          "right": {
+           "kind": "RATIO",
+           "type": "RATIO",
+           "value": 2,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(27)",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:02b31019f335e4f4f8edfe5b",
+           "inventoryItemIds": [
+            "inv-item:0b4ca24d4eaf1357e23c16a1"
+           ]
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(27)",
+           "excerpt": null
+          }
+         },
+         {
+          "kind": "COMPARE",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:61a214516674b5880e488f39",
+          "left": {
+           "kind": "METRIC_REFERENCE",
+           "type": "RATIO",
+           "metricName": "First Lien Leverage Ratio",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+          },
+          "operator": "LTE",
+          "right": {
+           "kind": "DURING_PERIOD",
+           "type": "RATIO",
+           "exprId": "ir-expr:e87c2862b60d0dc8cc257f7f",
+           "value": {
+            "kind": "METRIC_REFERENCE",
+            "type": "RATIO",
+            "metricName": "First Lien Leverage Ratio",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+           },
+           "periodDescription": "as of the last day of the then most recently ended Test Period (without giving pro forma effect to the Investment)",
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(27)",
+            "excerpt": null
+           }
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(27)",
+           "excerpt": null
+          }
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(27)",
+         "excerpt": null
+        }
+       },
+       {
+        "kind": "OR",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:f268d0494edc97cdd66e89be",
+        "operands": [
+         {
+          "kind": "COMPARE",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:b48a6f15d54ccb2e8fb94a5b",
+          "left": {
+           "kind": "METRIC_REFERENCE",
+           "type": "RATIO",
+           "metricName": "Interest Coverage Ratio",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+          },
+          "operator": "GTE",
+          "right": {
+           "kind": "RATIO",
+           "type": "RATIO",
+           "value": 1.75,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(27)",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:17b0f6f198c7bb2e1f38b3eb",
+           "inventoryItemIds": [
+            "inv-item:0b4ca24d4eaf1357e23c16a1"
+           ]
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(27)",
+           "excerpt": null
+          }
+         },
+         {
+          "kind": "COMPARE",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:cc2f93ce2fc40cde838fd9f7",
+          "left": {
+           "kind": "METRIC_REFERENCE",
+           "type": "RATIO",
+           "metricName": "Interest Coverage Ratio",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+          },
+          "operator": "GTE",
+          "right": {
+           "kind": "DURING_PERIOD",
+           "type": "RATIO",
+           "exprId": "ir-expr:4318486e42fb4874772c6080",
+           "value": {
+            "kind": "METRIC_REFERENCE",
+            "type": "RATIO",
+            "metricName": "Interest Coverage Ratio",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:10f67a981bcbf6fff84ac229"
+           },
+           "periodDescription": "as of the last day of the then most recently ended Test Period",
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01(27)",
+            "excerpt": null
+           }
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(27)",
+           "excerpt": null
+          }
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(27)",
+         "excerpt": null
+        }
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(27)",
+       "excerpt": null
+      },
+      "inventoryItemIds": [
+       "inv-item:0b4ca24d4eaf1357e23c16a1"
+      ]
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "conditions": [
+     {
+      "conditionId": "rule[r-27].condition[0]",
+      "conditionType": "OTHER_RULE_SATISFIED",
+      "expression": null,
+      "referencesDefinitionId": null,
+      "description": "The Initial Borrower elects, on a Pro Forma Basis after giving effect to the Investment, between the First Lien Leverage Ratio test and the Interest Coverage Ratio test.",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(27)",
+       "excerpt": null
+      }
+     }
+    ],
+    "exceptions": [
+     {
+      "exceptionId": "rule[r-27].exception[0]",
+      "appliesToRuleId": "ir-rule:7873b3866c7a445ea1788861",
+      "description": "The Interest Coverage Ratio alternative (clause (ii)) may not be relied upon for the purpose of incurring Indebtedness secured by a Lien on all or a material portion of the Collateral on a pari passu basis with the Term Loans.",
+      "permissionRuleId": null,
+      "conditions": [],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01(27)",
+       "excerpt": null
+      }
+     }
+    ],
+    "dependsOn": [],
+    "operativeLineage": null,
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The two elective ratio tests and their fixed numerical thresholds (2.00:1.00 and 1.75:1.00) are fully represented.",
+     "The alternative 'or the ratio level as of the last day of the then most recently ended Test Period' comparator (a floating, non-pro-forma prior-period benchmark) is approximated using DURING_PERIOD, since the IR has no dedicated primitive for a same-metric prior-period snapshot compared against a current pro forma value; this is a reasonable but non-exact representation."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(27)",
+     "excerpt": "any other Investment; provided that on a Pro Forma Basis ... at the election of the Initial Borrower, (i) the First Lien Leverage Ratio ... would not exceed (A) 2.00:1.00 or (B) the First Lien Leverage Ratio as of the last day of the then most recently ended Test Period, or (ii) the Interest Coverage Ratio ... is at least equal to or greater than (A) 1.75:1.00 or (B) the Interest Coverage Ratio level as of the last day of the then most recently ended Test Period; provided that this clause (ii) shall not be relied on for the purpose of incurring Indebtedness secured by a lien on all or a material portion of the Collateral on a pari passu basis with the Term Loans"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:0b4ca24d4eaf1357e23c16a1"
+    ]
+   }
+  ],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:6c088787f71290915dbe3eca",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Permitted Investments",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Restricted Party",
+     "Restricted Subsidiary",
+     "Cash Equivalents",
+     "Investment Grade Securities",
+     "Similar Business",
+     "Permitted Acquisition",
+     "Consolidated EBITDA",
+     "Unrestricted Subsidiary",
+     "Joint Venture",
+     "General Basket Amount",
+     "Receivables Subsidiary",
+     "Permitted Receivables Financing",
+     "Qualified Restricted Subsidiary",
+     "Disqualified Stock",
+     "Available RP Capacity Amount",
+     "Senior Indebtedness",
+     "Permitted Tax Restructuring",
+     "Non-Loan Party Subsidiary",
+     "First Lien Leverage Ratio",
+     "Interest Coverage Ratio",
+     "Fair Market Value",
+     "Pro Forma Basis",
+     "Test Period",
+     "Division"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "This 30-clause enumerated definition mixes uncapped categorical permissions with several clauses carrying stated dollar/percentage/ratio ceilings or ratio gates; the latter - clauses (8), (13)/General Basket Amount, (15), (22), (27), (30) - are separately modeled as WireRules r-8/r-13/r-15/r-22/r-27/r-30 to preserve their real economics.",
+     "The remaining purely categorical clauses (1)-(7),(9)-(12),(14),(16)-(21),(23)-(26),(28)-(29) impose no stated dollar cap or ratio gate in the text supplied and were not separately modeled as quantitative WireRules; several of them cross-reference Sections 6.01, 6.01(b)(10), 6.02, 6.05, 6.08, 6.08(a)(3), 5.16 and 5.18(b) (and sub-clauses thereof) that were reported out-of-scope of the supplied evidence region budget and are therefore preserved only as an acknowledged unresolved dependency, not resolved economics."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01 (definition of \"Permitted Investments\")",
+     "excerpt": "\"Permitted Investments\" means: (1) ... (30) any Investment in a Joint Venture ... [30 enumerated clauses]"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:1bf86530e744931a125369a2",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Permitted Acquisition",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Similar Business",
+     "Restricted Subsidiary",
+     "Restricted Party",
+     "Unrestricted Subsidiary",
+     "Division",
+     "Qualified Restricted Subsidiary"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Inline defined term fully captured descriptively; it is a categorical/qualitative definition with no computable formula."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(3)",
+     "excerpt": "any Investment or other acquisition ... of a Person ... engaged ... in a Similar Business ... if as a result of such Investment (each such transaction, a \"Permitted Acquisition\") (a) such Person becomes a Restricted Subsidiary ... or (b) such Person ... is merged, consolidated or amalgamated with or into ... any Restricted Party ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:dfcc6cc1ab52499045a98ca7",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "General Basket Amount",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "MAX",
+     "type": "MONEY",
+     "exprId": "ir-expr:adf8a2ecb837918ce63c3e3d",
+     "operands": [
+      {
+       "kind": "MONEY",
+       "type": "MONEY",
+       "amount": 720000000,
+       "currency": "USD",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(13)",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:31c266f0d429a811b50fcf88",
+       "inventoryItemIds": [
+        "inv-item:4791c1047af2d96cf3108a20"
+       ]
+      },
+      {
+       "kind": "MULTIPLY",
+       "type": "MONEY",
+       "exprId": "ir-expr:0e40d7b8f0d3ee332025f269",
+       "operands": [
+        {
+         "kind": "PERCENT",
+         "type": "PERCENT",
+         "value": 1,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(13)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:4fe313051adbcc6d8841850d",
+         "inventoryItemIds": [
+          "inv-item:4791c1047af2d96cf3108a20"
+         ]
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "Consolidated EBITDA",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(13)",
+        "excerpt": null
+       }
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01(13)",
+      "excerpt": null
+     },
+     "inventoryItemIds": [
+      "inv-item:4791c1047af2d96cf3108a20"
+     ]
+    },
+    "dependsOnTerms": [
+     "Consolidated EBITDA",
+     "Test Period",
+     "Pro Forma Basis"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Full greater-of formula stated in clause (13) and captured verbatim."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(13)",
+     "excerpt": "additional Investments having an aggregate Fair Market Value ... not to exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA ... (the greater of such amounts, the \"General Basket Amount\")"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:4791c1047af2d96cf3108a20"
+    ]
+   }
+  ],
+  "sharedCapacities": [
+   {
+    "sharedCapId": "ir-sharedcap:69d0fb49380daf09779677c9",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "description": "Reciprocal cross-basket capacity: unused Investment capacity under Permitted Investments clauses (8) [Similar Business Investments], (22) [Unrestricted Subsidiary Investments], and (30) [Joint Venture Investments] is each expressly available to, and drawable by, the other two clauses' baskets ('plus any Investment capacity available under clauses (X) and (Y)').",
+    "capExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01(8), (22), (30)",
+     "semanticDescription": "a dynamic, reciprocal 'available capacity' add-on shared circularly among three sibling baskets, each of which also feeds the other two",
+     "reason": "The IR's shared-capacity primitive models a single static ceiling shared among members; this text instead grants each of three baskets its own independent greater-of base PLUS access to whatever capacity remains unused under the other two, which is circular (each basket's 'available' amount depends on the others' usage) and has no closed-form ceiling value stated in the text.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:3c6cc5b9d0e32b6bfaafde3f"
+    },
+    "memberRuleIds": [
+     "ir-rule:f46acad9d388de3f84faaed5",
+     "ir-rule:01f87a6139d08407416b62f3",
+     "ir-rule:bc340705aa70eb64a7947cbe"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01(8), (22), (30)",
+     "excerpt": "plus (ii) any Investment capacity available under clauses (22) and (30) of this definition [clause (8)]; ... plus (ii) any Investment capacity available under clauses (8) and (30) of this definition [clause (22)]; ... plus (ii) any Investment capacity available under clauses (8) and (22) of this definition [clause (30)]"
+    },
+    "inventoryItemIds": [
+     "inv-item:ad22b485966a3702b28b252e",
+     "inv-item:e03948f0e2536cccb87bcd72",
+     "inv-item:c0e081db2c5f4cd1ab2135a2"
+    ]
+   }
+  ],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01(8), (22), (30) - each clause grants a greater-of dollar/EBITDA-percentage base PLUS 'any Investment capacity available under' the other two clauses",
+    "semanticRequirement": "Represent a reciprocal, circular unused-capacity-sharing arrangement among three (or more) sibling baskets, where each basket's total capacity = its own base + whatever is currently unused under its siblings (which themselves depend on this basket's own usage).",
+    "whyExistingPrimitivesFail": "WireSharedCapacity assumes one static aggregate ceiling shared by members drawing down a common pool; LEDGER_USAGE_REFERENCE assumes a reference to usage against such a pool. Neither expresses a circular graph of three independently-based baskets that each donate/receive unused room from the others without double counting.",
+    "candidateGeneralizedPrimitive": "A RECIPROCAL_CAPACITY_POOL node type that models N member baskets each with its own base capacity expression, where each member's effective capacity is its base plus the sum of (other members' base minus other members' usage), computed transactionally rather than statically."
+   },
+   {
+    "sourceEvidence": "§1.01(27) - '...(B) the First Lien Leverage Ratio as of the last day of the then most recently ended Test Period' / '...(B) the Interest Coverage Ratio level as of the last day of the then most recently ended Test Period'",
+    "semanticRequirement": "Compare a pro forma metric value against the SAME metric's own actual (non-pro-forma) value as of a floating prior measurement date, as an alternative 'no worse than current' test.",
+    "whyExistingPrimitivesFail": "DURING_PERIOD is designed for period-scoped aggregation of a value, not for pinning a metric to its actual (non-hypothetical) historical measurement as a comparator baseline distinct from a pro forma calculation of the same metric name.",
+    "candidateGeneralizedPrimitive": "A PRIOR_ACTUAL_SNAPSHOT node (operand: METRIC_REFERENCE, periodDescription) explicitly denoting the metric's last actual (non-pro-forma) determination, usable as a COMPARE operand distinct from a current pro forma METRIC_REFERENCE of the same name."
+   }
+  ],
+  "unresolvedIssues": [
+   "[sharedCap[sc-8-22-30]] The IR's shared-capacity primitive models a single static ceiling shared among members; this text instead grants each of three baskets its own independent greater-of base PLUS access to whatever capacity remains unused under the other two, which is circular (each basket's 'available' amount depends on the others' usage) and has no closed-form ceiling value stated in the text.",
+   "Scope decision: given the frozen inventory flags only clauses (8), (13)/General Basket Amount, (15), (22), (27) and (30) as CRITICAL quantitative/conditional components, and no deterministic quantitative value was detected outside those six clauses, the remaining 24 purely categorical clauses of the 'Permitted Investments' definition (clauses (1)-(7), (9)-(12), (14), (16)-(21), (23)-(26), (28)-(29)) were preserved within the top-level 'Permitted Investments' WireDefinition (d-pi) rather than separately modeled as individual quantitative WireRules, since they impose no stated dollar cap or ratio gate.",
+   "Several categorical clauses cross-reference other covenant sections (6.01, 6.01(b)(10), 6.02, 6.05, 6.08, 6.08(a)(3), 5.16, 5.18(b) and enumerated sub-clauses thereof) that Phase 2's region retrieval reported as OUT_OF_SCOPE due to source-context budget exhaustion; these are noted only as unresolved dependencies in d-pi's sufficiencyReasons and were not independently re-fetched because they do not affect the economics of the six CRITICAL inventory items.",
+   "The dependency-context definitions of Consolidated EBITDA, First Lien Leverage Ratio, Interest Coverage Ratio, Joint Venture, Unrestricted Subsidiary and Similar Business were used only to interpret metric names and gating logic in the compiled rules, per their READ-ONLY status; no WireDefinition or inventory claim was made against them.",
+   "The Consolidated EBITDA definition region was itself reported TRUNCATED_AT_BUDGET; because Consolidated EBITDA is referenced here only by METRIC_REFERENCE name (not recomputed), this truncation does not affect the sufficiency of rules r-8/r-13/r-15/r-22/r-30, but any future compilation of the Consolidated EBITDA definition itself should not be treated as COMPLETE from this bundle alone."
+  ],
+  "toolCallLog": [],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d-pi",
+     "termName": "Permitted Investments",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Party",
+      "Restricted Subsidiary",
+      "Cash Equivalents",
+      "Investment Grade Securities",
+      "Similar Business",
+      "Permitted Acquisition",
+      "Consolidated EBITDA",
+      "Unrestricted Subsidiary",
+      "Joint Venture",
+      "General Basket Amount",
+      "Receivables Subsidiary",
+      "Permitted Receivables Financing",
+      "Qualified Restricted Subsidiary",
+      "Disqualified Stock",
+      "Available RP Capacity Amount",
+      "Senior Indebtedness",
+      "Permitted Tax Restructuring",
+      "Non-Loan Party Subsidiary",
+      "First Lien Leverage Ratio",
+      "Interest Coverage Ratio",
+      "Fair Market Value",
+      "Pro Forma Basis",
+      "Test Period",
+      "Division"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "This 30-clause enumerated definition mixes uncapped categorical permissions with several clauses carrying stated dollar/percentage/ratio ceilings or ratio gates; the latter - clauses (8), (13)/General Basket Amount, (15), (22), (27), (30) - are separately modeled as WireRules r-8/r-13/r-15/r-22/r-27/r-30 to preserve their real economics.",
+      "The remaining purely categorical clauses (1)-(7),(9)-(12),(14),(16)-(21),(23)-(26),(28)-(29) impose no stated dollar cap or ratio gate in the text supplied and were not separately modeled as quantitative WireRules; several of them cross-reference Sections 6.01, 6.01(b)(10), 6.02, 6.05, 6.08, 6.08(a)(3), 5.16 and 5.18(b) (and sub-clauses thereof) that were reported out-of-scope of the supplied evidence region budget and are therefore preserved only as an acknowledged unresolved dependency, not resolved economics."
+     ],
+     "citation": "§1.01 (definition of \"Permitted Investments\")",
+     "excerpt": "\"Permitted Investments\" means: (1) ... (30) any Investment in a Joint Venture ... [30 enumerated clauses]",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-pa",
+     "termName": "Permitted Acquisition",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Similar Business",
+      "Restricted Subsidiary",
+      "Restricted Party",
+      "Unrestricted Subsidiary",
+      "Division",
+      "Qualified Restricted Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Inline defined term fully captured descriptively; it is a categorical/qualitative definition with no computable formula."
+     ],
+     "citation": "§1.01(3)",
+     "excerpt": "any Investment or other acquisition ... of a Person ... engaged ... in a Similar Business ... if as a result of such Investment (each such transaction, a \"Permitted Acquisition\") (a) such Person becomes a Restricted Subsidiary ... or (b) such Person ... is merged, consolidated or amalgamated with or into ... any Restricted Party ...",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-gba",
+     "termName": "General Basket Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MAX",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "amount": 720000000,
+        "currency": "USD",
+        "citation": "§1.01(13)",
+        "inventoryItemIds": [
+         "inv-item:4791c1047af2d96cf3108a20"
+        ]
+       },
+       {
+        "kind": "MULTIPLY",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "value": 1,
+          "citation": "§1.01(13)",
+          "inventoryItemIds": [
+           "inv-item:4791c1047af2d96cf3108a20"
+          ]
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "metricName": "Consolidated EBITDA",
+          "valueType": "MONEY"
+         }
+        ],
+        "citation": "§1.01(13)"
+       }
+      ],
+      "citation": "§1.01(13)",
+      "inventoryItemIds": [
+       "inv-item:4791c1047af2d96cf3108a20"
+      ]
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA",
+      "Test Period",
+      "Pro Forma Basis"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full greater-of formula stated in clause (13) and captured verbatim."
+     ],
+     "citation": "§1.01(13)",
+     "excerpt": "additional Investments having an aggregate Fair Market Value ... not to exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA ... (the greater of such amounts, the \"General Basket Amount\")",
+     "inventoryItemIds": [
+      "inv-item:4791c1047af2d96cf3108a20"
+     ]
+    }
+   ],
+   "rules": [
+    {
+     "localRef": "r-8",
+     "sourceSectionRef": "1.01(8)",
+     "covenantFamily": "INVESTMENTS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "MAKE_INVESTMENT",
+     "capacityExpression": {
+      "kind": "ADD",
+      "operands": [
+       {
+        "kind": "MAX",
+        "operands": [
+         {
+          "kind": "MONEY",
+          "amount": 360000000,
+          "currency": "USD",
+          "citation": "§1.01(8)",
+          "inventoryItemIds": [
+           "inv-item:ad22b485966a3702b28b252e"
+          ]
+         },
+         {
+          "kind": "MULTIPLY",
+          "operands": [
+           {
+            "kind": "PERCENT",
+            "value": 0.5,
+            "citation": "§1.01(8)",
+            "inventoryItemIds": [
+             "inv-item:ad22b485966a3702b28b252e"
+            ]
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "metricName": "Consolidated EBITDA",
+            "valueType": "MONEY"
+           }
+          ],
+          "citation": "§1.01(8)"
+         }
+        ],
+        "citation": "§1.01(8)",
+        "inventoryItemIds": [
+         "inv-item:ad22b485966a3702b28b252e"
+        ]
+       },
+       {
+        "kind": "LEDGER_USAGE_REFERENCE",
+        "sharedCapRef": "sc-8-22-30",
+        "citation": "§1.01(8)",
+        "inventoryItemIds": [
+         "inv-item:ad22b485966a3702b28b252e"
+        ]
+       }
+      ],
+      "citation": "§1.01(8)",
+      "inventoryItemIds": [
+       "inv-item:ad22b485966a3702b28b252e"
+      ]
+     },
+     "conditions": [
+      {
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "description": "If the Investment is made in a Person not yet a Restricted Subsidiary and such Person later becomes a Restricted Subsidiary, the Investment is thereafter deemed made under clause (1) and ceases to be counted under clause (8) for so long as it remains a Restricted Subsidiary.",
+       "citation": "§1.01(8)"
+      }
+     ],
+     "dependsOn": [
+      {
+       "relationshipType": "SHARES_CAPACITY_WITH",
+       "targetRef": "r-22",
+       "description": "reciprocal unused-capacity availability with clause (22) Unrestricted Subsidiaries basket"
+      },
+      {
+       "relationshipType": "SHARES_CAPACITY_WITH",
+       "targetRef": "r-30",
+       "description": "reciprocal unused-capacity availability with clause (30) Joint Venture basket"
+      }
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The greater-of $360.0mm / 50% Consolidated EBITDA base is fully represented.",
+      "The 'plus any Investment capacity available under clauses (22) and (30)' component is a reciprocal, circular cross-basket unused-capacity mechanism with no closed-form static value in the text; represented via a shared-capacity reference (sc-8-22-30) whose own cap expression is flagged UNSUPPORTED."
+     ],
+     "citation": "§1.01(8)",
+     "excerpt": "any Investment in a Similar Business having an aggregate Fair Market Value ... not to exceed the sum of (i) greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA ... plus (ii) any Investment capacity available under clauses (22) and (30) of this definition",
+     "inventoryItemIds": [
+      "inv-item:ad22b485966a3702b28b252e"
+     ]
+    },
+    {
+     "localRef": "r-22",
+     "sourceSectionRef": "1.01(22)",
+     "covenantFamily": "INVESTMENTS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "MAKE_INVESTMENT",
+     "capacityExpression": {
+      "kind": "ADD",
+      "operands": [
+       {
+        "kind": "MAX",
+        "operands": [
+         {
+          "kind": "MONEY",
+          "amount": 360000000,
+          "currency": "USD",
+          "citation": "§1.01(22)",
+          "inventoryItemIds": [
+           "inv-item:e03948f0e2536cccb87bcd72"
+          ]
+         },
+         {
+          "kind": "MULTIPLY",
+          "operands": [
+           {
+            "kind": "PERCENT",
+            "value": 0.5,
+            "citation": "§1.01(22)",
+            "inventoryItemIds": [
+             "inv-item:e03948f0e2536cccb87bcd72"
+            ]
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "metricName": "Consolidated EBITDA",
+            "valueType": "MONEY"
+           }
+          ],
+          "citation": "§1.01(22)"
+         }
+        ],
+        "citation": "§1.01(22)",
+        "inventoryItemIds": [
+         "inv-item:e03948f0e2536cccb87bcd72"
+        ]
+       },
+       {
+        "kind": "LEDGER_USAGE_REFERENCE",
+        "sharedCapRef": "sc-8-22-30",
+        "citation": "§1.01(22)",
+        "inventoryItemIds": [
+         "inv-item:e03948f0e2536cccb87bcd72"
+        ]
+       }
+      ],
+      "citation": "§1.01(22)",
+      "inventoryItemIds": [
+       "inv-item:e03948f0e2536cccb87bcd72"
+      ]
+     },
+     "conditions": [
+      {
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "description": "Fair Market Value is measured without giving effect to the sale of an Unrestricted Subsidiary to the extent the sale proceeds do not consist of cash, Cash Equivalents or marketable securities.",
+       "citation": "§1.01(22)"
+      },
+      {
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "description": "If the Investment is made in a Person that is an Unrestricted Subsidiary and such Person later becomes a Restricted Subsidiary, the Investment is thereafter deemed made under clause (1) and ceases to be counted under clause (22) for so long as it remains a Restricted Subsidiary.",
+       "citation": "§1.01(22)"
+      }
+     ],
+     "dependsOn": [
+      {
+       "relationshipType": "SHARES_CAPACITY_WITH",
+       "targetRef": "r-8",
+       "description": "reciprocal unused-capacity availability with clause (8) Similar Business basket"
+      },
+      {
+       "relationshipType": "SHARES_CAPACITY_WITH",
+       "targetRef": "r-30",
+       "description": "reciprocal unused-capacity availability with clause (30) Joint Venture basket"
+      }
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The greater-of $360.0mm / 50% Consolidated EBITDA base is fully represented.",
+      "The 'plus any Investment capacity available under clauses (8) and (30)' component is a reciprocal, circular cross-basket unused-capacity mechanism with no closed-form static value in the text; represented via shared-capacity reference sc-8-22-30 flagged UNSUPPORTED."
+     ],
+     "citation": "§1.01(22)",
+     "excerpt": "Investments in Unrestricted Subsidiaries having an aggregate Fair Market Value ... not to exceed the sum of (i) the greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA ... plus (ii) any Investment capacity available under clauses (8) and (30) of this definition",
+     "inventoryItemIds": [
+      "inv-item:e03948f0e2536cccb87bcd72"
+     ]
+    },
+    {
+     "localRef": "r-30",
+     "sourceSectionRef": "1.01(30)",
+     "covenantFamily": "INVESTMENTS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "MAKE_INVESTMENT",
+     "capacityExpression": {
+      "kind": "ADD",
+      "operands": [
+       {
+        "kind": "MAX",
+        "operands": [
+         {
+          "kind": "MONEY",
+          "amount": 360000000,
+          "currency": "USD",
+          "citation": "§1.01(30)",
+          "inventoryItemIds": [
+           "inv-item:c0e081db2c5f4cd1ab2135a2"
+          ]
+         },
+         {
+          "kind": "MULTIPLY",
+          "operands": [
+           {
+            "kind": "PERCENT",
+            "value": 0.5,
+            "citation": "§1.01(30)",
+            "inventoryItemIds": [
+             "inv-item:c0e081db2c5f4cd1ab2135a2"
+            ]
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "metricName": "Consolidated EBITDA",
+            "valueType": "MONEY"
+           }
+          ],
+          "citation": "§1.01(30)"
+         }
+        ],
+        "citation": "§1.01(30)",
+        "inventoryItemIds": [
+         "inv-item:c0e081db2c5f4cd1ab2135a2"
+        ]
+       },
+       {
+        "kind": "LEDGER_USAGE_REFERENCE",
+        "sharedCapRef": "sc-8-22-30",
+        "citation": "§1.01(30)",
+        "inventoryItemIds": [
+         "inv-item:c0e081db2c5f4cd1ab2135a2"
+        ]
+       }
+      ],
+      "citation": "§1.01(30)",
+      "inventoryItemIds": [
+       "inv-item:c0e081db2c5f4cd1ab2135a2"
+      ]
+     },
+     "conditions": [
+      {
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "description": "If the Investment is made in a Person that is a Joint Venture and such Person later becomes a Restricted Subsidiary, the Investment is thereafter deemed made under clause (1) and ceases to be counted under clause (30) for so long as it remains a Restricted Subsidiary.",
+       "citation": "§1.01(30)"
+      }
+     ],
+     "dependsOn": [
+      {
+       "relationshipType": "SHARES_CAPACITY_WITH",
+       "targetRef": "r-8",
+       "description": "reciprocal unused-capacity availability with clause (8) Similar Business basket"
+      },
+      {
+       "relationshipType": "SHARES_CAPACITY_WITH",
+       "targetRef": "r-22",
+       "description": "reciprocal unused-capacity availability with clause (22) Unrestricted Subsidiaries basket"
+      }
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The greater-of $360.0mm / 50% Consolidated EBITDA base is fully represented.",
+      "The 'plus any Investment capacity available under clauses (8) and (22)' component is a reciprocal, circular cross-basket unused-capacity mechanism with no closed-form static value in the text; represented via shared-capacity reference sc-8-22-30 flagged UNSUPPORTED."
+     ],
+     "citation": "§1.01(30)",
+     "excerpt": "any Investment in a Joint Venture having an aggregate Fair Market Value ... not to exceed the sum of (i) the greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA ... plus (ii) any Investment capacity available under clauses (8) and (22) of this definition",
+     "inventoryItemIds": [
+      "inv-item:c0e081db2c5f4cd1ab2135a2"
+     ]
+    },
+    {
+     "localRef": "r-13",
+     "sourceSectionRef": "1.01(13)",
+     "covenantFamily": "INVESTMENTS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "MAKE_INVESTMENT",
+     "capacityExpression": {
+      "kind": "MAX",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "amount": 720000000,
+        "currency": "USD",
+        "citation": "§1.01(13)",
+        "inventoryItemIds": [
+         "inv-item:4791c1047af2d96cf3108a20"
+        ]
+       },
+       {
+        "kind": "MULTIPLY",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "value": 1,
+          "citation": "§1.01(13)",
+          "inventoryItemIds": [
+           "inv-item:4791c1047af2d96cf3108a20"
+          ]
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "metricName": "Consolidated EBITDA",
+          "valueType": "MONEY"
+         }
+        ],
+        "citation": "§1.01(13)"
+       }
+      ],
+      "citation": "§1.01(13)",
+      "inventoryItemIds": [
+       "inv-item:4791c1047af2d96cf3108a20"
+      ]
+     },
+     "conditions": [
+      {
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "description": "If the Investment is made in a Person not yet a Restricted Subsidiary and such Person later becomes a Restricted Subsidiary, the Investment is thereafter deemed made under clause (1) and ceases to be counted under clause (13).",
+       "citation": "§1.01(13)"
+      }
+     ],
+     "dependsOn": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full greater-of formula stated and captured; no cross-basket dependency exists for this clause."
+     ],
+     "citation": "§1.01(13)",
+     "excerpt": "additional Investments having an aggregate Fair Market Value ... not to exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA ... (the \"General Basket Amount\")",
+     "inventoryItemIds": [
+      "inv-item:4791c1047af2d96cf3108a20"
+     ]
+    },
+    {
+     "localRef": "r-15",
+     "sourceSectionRef": "1.01(15)",
+     "covenantFamily": "INVESTMENTS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "MAKE_INVESTMENT",
+     "capacityExpression": {
+      "kind": "MAX",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "amount": 108000000,
+        "currency": "USD",
+        "citation": "§1.01(15)",
+        "inventoryItemIds": [
+         "inv-item:e6f265b736ed64849a83c29d"
+        ]
+       },
+       {
+        "kind": "MULTIPLY",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "value": 0.15,
+          "citation": "§1.01(15)",
+          "inventoryItemIds": [
+           "inv-item:e6f265b736ed64849a83c29d"
+          ]
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "metricName": "Consolidated EBITDA",
+          "valueType": "MONEY"
+         }
+        ],
+        "citation": "§1.01(15)"
+       }
+      ],
+      "citation": "§1.01(15)",
+      "inventoryItemIds": [
+       "inv-item:e6f265b736ed64849a83c29d"
+      ]
+     },
+     "dependsOn": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full greater-of formula stated and captured verbatim; measured 'outstanding at any one time, in the aggregate'."
+     ],
+     "citation": "§1.01(15)",
+     "excerpt": "loans and advances to, or guarantees of Indebtedness of, officers, directors, managers, employees and consultants not in excess of the greater of (x) $108.0 million and (y) 15% of Consolidated EBITDA ... outstanding at any one time, in the aggregate",
+     "inventoryItemIds": [
+      "inv-item:e6f265b736ed64849a83c29d"
+     ]
+    },
+    {
+     "localRef": "r-27",
+     "sourceSectionRef": "1.01(27)",
+     "covenantFamily": "INVESTMENTS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "MAKE_INVESTMENT",
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "gatedBy": {
+       "kind": "OR",
+       "operands": [
+        {
+         "kind": "OR",
+         "operands": [
+          {
+           "kind": "COMPARE",
+           "left": {
+            "kind": "METRIC_REFERENCE",
+            "metricName": "First Lien Leverage Ratio",
+            "valueType": "RATIO"
+           },
+           "operator": "LTE",
+           "right": {
+            "kind": "RATIO",
+            "value": 2,
+            "citation": "§1.01(27)",
+            "inventoryItemIds": [
+             "inv-item:0b4ca24d4eaf1357e23c16a1"
+            ]
+           },
+           "citation": "§1.01(27)"
+          },
+          {
+           "kind": "COMPARE",
+           "left": {
+            "kind": "METRIC_REFERENCE",
+            "metricName": "First Lien Leverage Ratio",
+            "valueType": "RATIO"
+           },
+           "operator": "LTE",
+           "right": {
+            "kind": "DURING_PERIOD",
+            "operand": {
+             "kind": "METRIC_REFERENCE",
+             "metricName": "First Lien Leverage Ratio",
+             "valueType": "RATIO"
+            },
+            "periodDescription": "as of the last day of the then most recently ended Test Period (without giving pro forma effect to the Investment)"
+           },
+           "citation": "§1.01(27)"
+          }
+         ],
+         "citation": "§1.01(27)"
+        },
+        {
+         "kind": "OR",
+         "operands": [
+          {
+           "kind": "COMPARE",
+           "left": {
+            "kind": "METRIC_REFERENCE",
+            "metricName": "Interest Coverage Ratio",
+            "valueType": "RATIO"
+           },
+           "operator": "GTE",
+           "right": {
+            "kind": "RATIO",
+            "value": 1.75,
+            "citation": "§1.01(27)",
+            "inventoryItemIds": [
+             "inv-item:0b4ca24d4eaf1357e23c16a1"
+            ]
+           },
+           "citation": "§1.01(27)"
+          },
+          {
+           "kind": "COMPARE",
+           "left": {
+            "kind": "METRIC_REFERENCE",
+            "metricName": "Interest Coverage Ratio",
+            "valueType": "RATIO"
+           },
+           "operator": "GTE",
+           "right": {
+            "kind": "DURING_PERIOD",
+            "operand": {
+             "kind": "METRIC_REFERENCE",
+             "metricName": "Interest Coverage Ratio",
+             "valueType": "RATIO"
+            },
+            "periodDescription": "as of the last day of the then most recently ended Test Period"
+           },
+           "citation": "§1.01(27)"
+          }
+         ],
+         "citation": "§1.01(27)"
+        }
+       ],
+       "citation": "§1.01(27)",
+       "inventoryItemIds": [
+        "inv-item:0b4ca24d4eaf1357e23c16a1"
+       ]
+      }
+     },
+     "conditions": [
+      {
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "description": "The Initial Borrower elects, on a Pro Forma Basis after giving effect to the Investment, between the First Lien Leverage Ratio test and the Interest Coverage Ratio test.",
+       "citation": "§1.01(27)"
+      }
+     ],
+     "exceptions": [
+      {
+       "description": "The Interest Coverage Ratio alternative (clause (ii)) may not be relied upon for the purpose of incurring Indebtedness secured by a Lien on all or a material portion of the Collateral on a pari passu basis with the Term Loans.",
+       "permissionRef": null,
+       "citation": "§1.01(27)"
+      }
+     ],
+     "dependsOn": [],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The two elective ratio tests and their fixed numerical thresholds (2.00:1.00 and 1.75:1.00) are fully represented.",
+      "The alternative 'or the ratio level as of the last day of the then most recently ended Test Period' comparator (a floating, non-pro-forma prior-period benchmark) is approximated using DURING_PERIOD, since the IR has no dedicated primitive for a same-metric prior-period snapshot compared against a current pro forma value; this is a reasonable but non-exact representation."
+     ],
+     "citation": "§1.01(27)",
+     "excerpt": "any other Investment; provided that on a Pro Forma Basis ... at the election of the Initial Borrower, (i) the First Lien Leverage Ratio ... would not exceed (A) 2.00:1.00 or (B) the First Lien Leverage Ratio as of the last day of the then most recently ended Test Period, or (ii) the Interest Coverage Ratio ... is at least equal to or greater than (A) 1.75:1.00 or (B) the Interest Coverage Ratio level as of the last day of the then most recently ended Test Period; provided that this clause (ii) shall not be relied on for the purpose of incurring Indebtedness secured by a lien on all or a material portion of the Collateral on a pari passu basis with the Term Loans",
+     "inventoryItemIds": [
+      "inv-item:0b4ca24d4eaf1357e23c16a1"
+     ]
+    }
+   ],
+   "sharedCapacities": [
+    {
+     "localRef": "sc-8-22-30",
+     "description": "Reciprocal cross-basket capacity: unused Investment capacity under Permitted Investments clauses (8) [Similar Business Investments], (22) [Unrestricted Subsidiary Investments], and (30) [Joint Venture Investments] is each expressly available to, and drawable by, the other two clauses' baskets ('plus any Investment capacity available under clauses (X) and (Y)').",
+     "capExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "a dynamic, reciprocal 'available capacity' add-on shared circularly among three sibling baskets, each of which also feeds the other two",
+      "reason": "The IR's shared-capacity primitive models a single static ceiling shared among members; this text instead grants each of three baskets its own independent greater-of base PLUS access to whatever capacity remains unused under the other two, which is circular (each basket's 'available' amount depends on the others' usage) and has no closed-form ceiling value stated in the text.",
+      "sourceEvidence": "§1.01(8), (22), (30)"
+     },
+     "memberRefs": [
+      "r-8",
+      "r-22",
+      "r-30"
+     ],
+     "citation": "§1.01(8), (22), (30)",
+     "excerpt": "plus (ii) any Investment capacity available under clauses (22) and (30) of this definition [clause (8)]; ... plus (ii) any Investment capacity available under clauses (8) and (30) of this definition [clause (22)]; ... plus (ii) any Investment capacity available under clauses (8) and (22) of this definition [clause (30)]",
+     "inventoryItemIds": [
+      "inv-item:ad22b485966a3702b28b252e",
+      "inv-item:e03948f0e2536cccb87bcd72",
+      "inv-item:c0e081db2c5f4cd1ab2135a2"
+     ]
+    }
+   ],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01(8), (22), (30) - each clause grants a greater-of dollar/EBITDA-percentage base PLUS 'any Investment capacity available under' the other two clauses",
+     "semanticRequirement": "Represent a reciprocal, circular unused-capacity-sharing arrangement among three (or more) sibling baskets, where each basket's total capacity = its own base + whatever is currently unused under its siblings (which themselves depend on this basket's own usage).",
+     "whyExistingPrimitivesFail": "WireSharedCapacity assumes one static aggregate ceiling shared by members drawing down a common pool; LEDGER_USAGE_REFERENCE assumes a reference to usage against such a pool. Neither expresses a circular graph of three independently-based baskets that each donate/receive unused room from the others without double counting.",
+     "candidateGeneralizedPrimitive": "A RECIPROCAL_CAPACITY_POOL node type that models N member baskets each with its own base capacity expression, where each member's effective capacity is its base plus the sum of (other members' base minus other members' usage), computed transactionally rather than statically."
+    },
+    {
+     "sourceEvidence": "§1.01(27) - '...(B) the First Lien Leverage Ratio as of the last day of the then most recently ended Test Period' / '...(B) the Interest Coverage Ratio level as of the last day of the then most recently ended Test Period'",
+     "semanticRequirement": "Compare a pro forma metric value against the SAME metric's own actual (non-pro-forma) value as of a floating prior measurement date, as an alternative 'no worse than current' test.",
+     "whyExistingPrimitivesFail": "DURING_PERIOD is designed for period-scoped aggregation of a value, not for pinning a metric to its actual (non-hypothetical) historical measurement as a comparator baseline distinct from a pro forma calculation of the same metric name.",
+     "candidateGeneralizedPrimitive": "A PRIOR_ACTUAL_SNAPSHOT node (operand: METRIC_REFERENCE, periodDescription) explicitly denoting the metric's last actual (non-pro-forma) determination, usable as a COMPARE operand distinct from a current pro forma METRIC_REFERENCE of the same name."
+    }
+   ],
+   "inventoryDispositions": [],
+   "overallNotes": [
+    "Scope decision: given the frozen inventory flags only clauses (8), (13)/General Basket Amount, (15), (22), (27) and (30) as CRITICAL quantitative/conditional components, and no deterministic quantitative value was detected outside those six clauses, the remaining 24 purely categorical clauses of the 'Permitted Investments' definition (clauses (1)-(7), (9)-(12), (14), (16)-(21), (23)-(26), (28)-(29)) were preserved within the top-level 'Permitted Investments' WireDefinition (d-pi) rather than separately modeled as individual quantitative WireRules, since they impose no stated dollar cap or ratio gate.",
+    "Several categorical clauses cross-reference other covenant sections (6.01, 6.01(b)(10), 6.02, 6.05, 6.08, 6.08(a)(3), 5.16, 5.18(b) and enumerated sub-clauses thereof) that Phase 2's region retrieval reported as OUT_OF_SCOPE due to source-context budget exhaustion; these are noted only as unresolved dependencies in d-pi's sufficiencyReasons and were not independently re-fetched because they do not affect the economics of the six CRITICAL inventory items.",
+    "The dependency-context definitions of Consolidated EBITDA, First Lien Leverage Ratio, Interest Coverage Ratio, Joint Venture, Unrestricted Subsidiary and Similar Business were used only to interpret metric names and gating logic in the compiled rules, per their READ-ONLY status; no WireDefinition or inventory claim was made against them.",
+    "The Consolidated EBITDA definition region was itself reported TRUNCATED_AT_BUDGET; because Consolidated EBITDA is referenced here only by METRIC_REFERENCE name (not recomputed), this truncation does not affect the sufficiency of rules r-8/r-13/r-15/r-22/r-30, but any future compilation of the Consolidated EBITDA definition itself should not be treated as COMPLETE from this bundle alone."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T21:36:25.675Z",
+   "inputTokens": 29585,
+   "outputTokens": 31628,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 1,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 274688,
+   "calculatedCostUsd": 0.37545
+  },
+  "cacheKey": "c2967ce48930ed2d34c40ff55d91d7eabd5d7cbfa9389aec5da14c80befedb59",
+  "compiledAt": "2026-09-14T21:36:25.675Z"
+ },
+ "wave": "C",
+ "attemptsSoFar": 1
+}

@@ -1,0 +1,1648 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:2804206d37b6f769705a",
+  "shardHash": "295194e683bbffe1a4170d4e67a9c1ff40abacadf899027e952aa3c709b01106",
+  "ordinal": 23,
+  "ownedUnits": 16,
+  "sourceChars": 7617,
+  "contextEntries": 1,
+  "contextChars": 225,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 0,
+  "ownedMaterialItems": 0,
+  "estimatedFirstTurnInputTokens": 21779,
+  "preCallEstimate": {
+   "inputTokens": 71653,
+   "outputTokens": 41500,
+   "usd": 0.558306
+  },
+  "actual": {
+   "inputTokens": 75905,
+   "outputTokens": 14057,
+   "turns": 3,
+   "latencyMs": 133166,
+   "costUsd": 0.29238000000000003,
+   "attemptCount": 3,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "toolCalls": 4,
+  "toolCallNames": [
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getDefinition"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 17,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 0,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "valuesRepresented": 0,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {}
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "OFAC",
+   "Other Applicable Indebtedness"
+  ],
+  "unresolvedIssues": [
+   "[definition[d3]] Section 3.17(c) was retrieved but the returned text is truncated before it reaches the point where the term 'OFAC' is actually substantively used/defined (text cuts off at 'is:' introducing a list of sanctioned-person categories); the acronym's operative content (presumably 'Office of Foreign Assets Control' and its sanctions-list scope) is not established from the evidence obtained.",
+   "This submission compiles Section 1.01 defined terms from 'NYFRB Rate' through 'Overnight Bank Funding Rate' (17 terms). No independently operative WireRule (permission/prohibition/ratio-test) appears in this source region - it is purely a definitions article - so the 'rules' array is empty, consistent with the source content.",
+   "The FROZEN SEMANTIC INVENTORY for this submission reported an INVENTORY_COVERAGE_GAP (109 items accepted, 0 added by a failed targeted gap re-inventory due to a tool timeout, with 721 stretches of source left UNACCOUNTED_SOURCE) and no explicit inventoryItemId list was included in the supplied context. Because no concrete item IDs were provided to consume or disposition, the inventoryDispositions array is left empty here; this gap itself is flagged for review rather than silently assumed complete.",
+   "Three cross-references (Section 3.17(c) for 'OFAC', Section 2.09(g) for 'Other Applicable Indebtedness', and Section 2.17(b) for the 'Other Taxes' assignment carve-back) were actively resolved via getReferencedProvision per the mandatory retrieval-before-giving-up rule. Section 2.09(g) fully resolved the 'Other Applicable Indebtedness' definition (COMPLETE). Section 3.17(c) returned only a truncated fragment that did not reach the substantive OFAC-defining text, so 'OFAC' is marked MISSING_CONTEXT. Section 2.17(b) also returned a truncated fragment, but the 'Other Taxes' definition's own carve-back structure is fully stated on its face independent of 2.17(b)'s substance, so it remains COMPLETE.",
+   "'Federal Funds Effective Rate' (an operand of the NYFRB Rate MAX formula) was separately confirmed via getDefinition to be a materially similar greater-of-zero-floored published rate, supporting the MAX(...,0) representation of NYFRB Rate's own zero floor."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "absent",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "absent - left absent for the schema's own default/optional handling"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:2804206d37b6f769705a",
+  "shardHash": "295194e683bbffe1a4170d4e67a9c1ff40abacadf899027e952aa3c709b01106",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:f332fa56badecd4c181041b2",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "NYFRB Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MAX",
+      "type": "NUMBER",
+      "exprId": "ir-expr:85947a2aebb8b92c88497982",
+      "operands": [
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "NUMBER",
+        "termName": "Federal Funds Effective Rate",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:fc1a3e329d66d0e5f88b972a"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "NUMBER",
+        "termName": "Overnight Bank Funding Rate",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:60740dd4cfee1026ff356144"
+       },
+       {
+        "kind": "NUMBER",
+        "type": "NUMBER",
+        "value": 0,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:4585409186dce9d7a98224f3"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": "the greater of (a) the Federal Funds Effective Rate in effect on such day and (b) the Overnight Bank Funding Rate in effect on such day ... if any of the aforesaid rates shall be less than zero (0), such rate shall be deemed to be zero (0)"
+      }
+     },
+     "dependsOnTerms": [
+      "Federal Funds Effective Rate",
+      "Overnight Bank Funding Rate"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The greater-of structure and the zero floor are fully represented via MAX(FFER, OBFR, 0), which is mathematically equivalent to flooring each component at zero.",
+      "The fallback mechanism ('if both such rates are not so published ... the rate quoted ... by a Federal funds broker of recognized standing selected by [the Administrative Agent]') is a fact-contingent alternative definition that cannot be represented with the available node types (no primitive for data-availability-gated substitution of an externally-quoted, non-formulaic rate) and is not represented in the calculationExpression."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"NYFRB Rate\" means, for any day, the greater of (a) the Federal Funds Effective Rate ... and (b) the Overnight Bank Funding Rate ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:ef8ffa55304bb5d60eaadc79",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Obligations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive/enumerative definition (principal, interest, premium, penalties, fees, expenses, indemnifications, reimbursements, damages, liabilities and guarantees thereof payable under Indebtedness documentation); no numeric formula is stated, so a null calculationExpression faithfully represents it."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Obligations\" means any principal, interest ... premium, penalties, fees, expenses, indemnifications, reimbursements ... payable under the documentation governing any Indebtedness."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:96d608f5fbf574c55fc311ce",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "OFAC",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§3.17(c): \"None of the Borrowers or any Restricted Subsidiary ... is, or is 50% or more owned or otherwise controlled by, an individual or entity that is: \" [truncated]",
+      "semanticDescription": "meaning assigned by cross-reference to Section 3.17(c)",
+      "reason": "Section 3.17(c) was retrieved but the returned text is truncated before it reaches the point where the term 'OFAC' is actually substantively used/defined (text cuts off at 'is:' introducing a list of sanctioned-person categories); the acronym's operative content (presumably 'Office of Foreign Assets Control' and its sanctions-list scope) is not established from the evidence obtained.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:9f75b84cabddc16b81b350cf"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced Section 3.17(c) was fetched but returned only a truncated fragment that does not include the actual OFAC-defining language.",
+      "Section 3.17(c) was retrieved but the returned text is truncated before it reaches the point where the term 'OFAC' is actually substantively used/defined (text cuts off at 'is:' introducing a list of sanctioned-person categories); the acronym's operative content (presumably 'Office of Foreign Assets Control' and its sanctions-list scope) is not established from the evidence obtained."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"OFAC\" has the meaning assigned to such term in Section 3.17(c)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:4cd0e28502803ea7d85db880",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Ordinary Course Non-Recourse Third Party Financing Transaction",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully textual, qualitative definition (a factoring-type transaction involving 'Payable Contracts', with a no-recourse requirement subject to three carve-outs (i)-(iii) and a Lien safe-harbor (A)-(C)); no dollar amount, percentage or ratio is stated to compute, so a null calculationExpression with the full excerpt faithfully preserves the qualitative test."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Ordinary Course Non-Recourse Third Party Financing Transaction\" shall mean any transaction ... provided that there is no recourse ... for (i) uncollectible amounts ... (ii) breaches or defaults ... and (iii) nonpayment ... provided, however, that any such transaction shall not be deemed not to constitute an \"Ordinary Course Non-Recourse Third Party Financing Transaction\" solely as a result of the grant ... of any Lien that is limited to (A) ... (B) ... and (C) the proceeds of the foregoing."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:40d9e2f2e6a45f871a3b5cf0",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Organizational Documents",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive, entity-type-dependent list of constitutive documents; no computation is stated."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Organizational Documents\" means (a) with respect to any corporation, the certificate or articles of incorporation and the bylaws ...; (b) with respect to any limited liability company, ...; and (c) with respect to any partnership, joint venture, trust or other form of business entity, ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:4a0415c9b9d6c827e259da01",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Other Applicable Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Secured Obligation",
+      "Excess Cash Flow"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The cross-reference in §1.01 ('has the meaning assigned to such term in Section 2.09(g)') was resolved via the referenced provision, which contains the operative defining language in full."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§2.09(g)",
+      "excerpt": "if ... any Restricted Party is required to repay or repurchase any other Indebtedness ... that is secured on a pari passu basis with any Secured Obligation ... with the proceeds of such Asset Sale Prepayment Event or such Excess Cash Flow (such Indebtedness required to be so repaid or repurchased (or offered to be repaid or repurchased), the \"Other Applicable Indebtedness\")"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:2b4d75ce3ba5859e6b4ef440",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Other Commitments",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Other Revolving Commitments",
+      "Other Term Commitments"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple collective/union definition of two other defined terms both of which are themselves defined in this same source region; no formula is required."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Other Commitments\" means each and any Other Revolving Commitments and Other Term Commitments."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f5bf651ce61840c5e6f1ee6a",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Other Connection Taxes",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Taxes"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive definition of Taxes arising from a recipient's present/former connection to a taxing jurisdiction, with a parenthetical carve-back for connections arising solely from ordinary Loan Document activity; fully textual, no computation."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Other Connection Taxes\" means, with respect to the Administrative Agent, any Lender or any other recipient ..., Taxes imposed as a result of a present or former connection between such recipient and the jurisdiction imposing such Tax (other than a connection arising solely from such recipient having executed, delivered, or become a party to, ... any Loan or Loan Document)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:cdffe4bb19dd1a293d0fff66",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Other Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Other Revolving Loans",
+      "Other Term Loans"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple collective/union definition of two other defined terms both defined in this same source region; no formula is required."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Other Loans\" means each and any Other Revolving Loans and Other Term Loans."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3074d679339b4e20a489168d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Other Revolving Commitments",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Refinancing Amendment",
+      "Class"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully textual definition; depends on 'Refinancing Amendment' and 'Class', neither of which was supplied in the source excerpt, but their absence does not prevent faithfully representing this definition's own (non-numeric) text."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Other Revolving Commitments\" means one or more Classes of revolving loan commitments hereunder that result from a Refinancing Amendment."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:491bbf487234297a5c1ca460",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Other Revolving Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Other Revolving Commitments",
+      "Other Revolving Loans",
+      "Refinancing Amendment",
+      "Incremental Revolving Increase"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully textual, non-numeric collective definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Other Revolving Facility\" means each and any facility comprised of Other Revolving Commitments and Other Revolving Loans created pursuant to a Refinancing Amendment, together with any Incremental Revolving Increase and/or refinancing thereof, and the extensions of credit thereunder."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:fed8930c89abd7e127cda9b8",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Other Revolving Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Other Revolving Facility",
+      "Revolving Loans",
+      "Class"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully textual, non-numeric definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Other Revolving Loans\" means one or more Classes of Revolving Loans under an Other Revolving Facility, together with any refinancing thereof."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:fc4d387e61577aab9b26af99",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Other Taxes",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Taxes",
+      "Loan Document",
+      "Other Connection Taxes"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully textual definition of a category of Taxes with a stated exclusion for Other Connection Taxes imposed on an assignment, itself carved back for assignments made pursuant to Section 2.17(b). The cross-referenced Section 2.17(b) was requested but returned only a truncated one-line fragment ('(b) If '); however the meaning of THIS definition (the scope of the exclusion/carve-back structure) is fully stated on its own face and does not require knowing 2.17(b)'s substantive content to be faithfully represented."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Other Taxes\" means all present or future recording, stamp, court or documentary, intangible, filing or similar Taxes arising from any payment made under any Loan Document ..., except any such Taxes that are Other Connection Taxes imposed with respect to an assignment (other than an assignment made pursuant to Section 2.17(b))."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:9ee82fa8a3d2d273bfa5c3c0",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Other Term Commitments",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Refinancing Amendment",
+      "Class"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully textual, non-numeric definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Other Term Commitments\" means one or more Classes of term loan commitments hereunder that result from a Refinancing Amendment."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:8d00b911cd981e6f2eb934f5",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Other Term Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Other Term Commitments",
+      "Other Term Loans",
+      "Refinancing Amendment"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully textual, non-numeric collective definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Other Term Facility\" means each and any facility comprised of Other Term Commitments and Other Term Loans created pursuant to a Refinancing Amendment, together with any refinancing thereof."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:ef78d1ddc14092867135b007",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Other Term Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Other Term Facility",
+      "Term Loans",
+      "Refinancing Amendment",
+      "Class"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully textual, non-numeric definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Other Term Loans\" means one or more Classes of Term Loans under an Other Term Facility that result from a Refinancing Amendment, together with any refinancing thereof."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:20ee2d0e5dfdcac9c641ca25",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Overnight Bank Funding Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "NYFRB"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive definition of a composite published rate determined and published by the NYFRB; no additional formula beyond identifying the publishing source is stated, so a null calculationExpression with the excerpt faithfully represents it. It is separately consumed as a MAX operand within the NYFRB Rate definition (d1)."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Overnight Bank Funding Rate\" means, for any day, the rate comprised of both overnight federal funds and overnight Eurodollar transactions denominated in U.S. Dollars by U.S.-managed banking offices of depository institutions, as such composite rate shall be determined by the NYFRB ... and published on the next succeeding Business Day by the NYFRB as an overnight bank funding rate ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d3]] Section 3.17(c) was retrieved but the returned text is truncated before it reaches the point where the term 'OFAC' is actually substantively used/defined (text cuts off at 'is:' introducing a list of sanctioned-person categories); the acronym's operative content (presumably 'Office of Foreign Assets Control' and its sanctions-list scope) is not established from the evidence obtained.",
+   "This submission compiles Section 1.01 defined terms from 'NYFRB Rate' through 'Overnight Bank Funding Rate' (17 terms). No independently operative WireRule (permission/prohibition/ratio-test) appears in this source region - it is purely a definitions article - so the 'rules' array is empty, consistent with the source content.",
+   "The FROZEN SEMANTIC INVENTORY for this submission reported an INVENTORY_COVERAGE_GAP (109 items accepted, 0 added by a failed targeted gap re-inventory due to a tool timeout, with 721 stretches of source left UNACCOUNTED_SOURCE) and no explicit inventoryItemId list was included in the supplied context. Because no concrete item IDs were provided to consume or disposition, the inventoryDispositions array is left empty here; this gap itself is flagged for review rather than silently assumed complete.",
+   "Three cross-references (Section 3.17(c) for 'OFAC', Section 2.09(g) for 'Other Applicable Indebtedness', and Section 2.17(b) for the 'Other Taxes' assignment carve-back) were actively resolved via getReferencedProvision per the mandatory retrieval-before-giving-up rule. Section 2.09(g) fully resolved the 'Other Applicable Indebtedness' definition (COMPLETE). Section 3.17(c) returned only a truncated fragment that did not reach the substantive OFAC-defining text, so 'OFAC' is marked MISSING_CONTEXT. Section 2.17(b) also returned a truncated fragment, but the 'Other Taxes' definition's own carve-back structure is fully stated on its face independent of 2.17(b)'s substance, so it remains COMPLETE.",
+   "'Federal Funds Effective Rate' (an operand of the NYFRB Rate MAX formula) was separately confirmed via getDefinition to be a materially similar greater-of-zero-floored published rate, supporting the MAX(...,0) representation of NYFRB Rate's own zero floor."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 75905,
+   "outputTokens": 14057,
+   "costUsd": 0.29238000000000003
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:f332fa56badecd4c181041b2",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "NYFRB Rate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "MAX",
+     "type": "NUMBER",
+     "exprId": "ir-expr:85947a2aebb8b92c88497982",
+     "operands": [
+      {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "NUMBER",
+       "termName": "Federal Funds Effective Rate",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:fc1a3e329d66d0e5f88b972a"
+      },
+      {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "NUMBER",
+       "termName": "Overnight Bank Funding Rate",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:60740dd4cfee1026ff356144"
+      },
+      {
+       "kind": "NUMBER",
+       "type": "NUMBER",
+       "value": 0,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:4585409186dce9d7a98224f3"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the greater of (a) the Federal Funds Effective Rate in effect on such day and (b) the Overnight Bank Funding Rate in effect on such day ... if any of the aforesaid rates shall be less than zero (0), such rate shall be deemed to be zero (0)"
+     }
+    },
+    "dependsOnTerms": [
+     "Federal Funds Effective Rate",
+     "Overnight Bank Funding Rate"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The greater-of structure and the zero floor are fully represented via MAX(FFER, OBFR, 0), which is mathematically equivalent to flooring each component at zero.",
+     "The fallback mechanism ('if both such rates are not so published ... the rate quoted ... by a Federal funds broker of recognized standing selected by [the Administrative Agent]') is a fact-contingent alternative definition that cannot be represented with the available node types (no primitive for data-availability-gated substitution of an externally-quoted, non-formulaic rate) and is not represented in the calculationExpression."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"NYFRB Rate\" means, for any day, the greater of (a) the Federal Funds Effective Rate ... and (b) the Overnight Bank Funding Rate ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:ef8ffa55304bb5d60eaadc79",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Obligations",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Indebtedness"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive/enumerative definition (principal, interest, premium, penalties, fees, expenses, indemnifications, reimbursements, damages, liabilities and guarantees thereof payable under Indebtedness documentation); no numeric formula is stated, so a null calculationExpression faithfully represents it."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Obligations\" means any principal, interest ... premium, penalties, fees, expenses, indemnifications, reimbursements ... payable under the documentation governing any Indebtedness."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:96d608f5fbf574c55fc311ce",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "OFAC",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§3.17(c): \"None of the Borrowers or any Restricted Subsidiary ... is, or is 50% or more owned or otherwise controlled by, an individual or entity that is: \" [truncated]",
+     "semanticDescription": "meaning assigned by cross-reference to Section 3.17(c)",
+     "reason": "Section 3.17(c) was retrieved but the returned text is truncated before it reaches the point where the term 'OFAC' is actually substantively used/defined (text cuts off at 'is:' introducing a list of sanctioned-person categories); the acronym's operative content (presumably 'Office of Foreign Assets Control' and its sanctions-list scope) is not established from the evidence obtained.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:9f75b84cabddc16b81b350cf"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Cross-referenced Section 3.17(c) was fetched but returned only a truncated fragment that does not include the actual OFAC-defining language.",
+     "Section 3.17(c) was retrieved but the returned text is truncated before it reaches the point where the term 'OFAC' is actually substantively used/defined (text cuts off at 'is:' introducing a list of sanctioned-person categories); the acronym's operative content (presumably 'Office of Foreign Assets Control' and its sanctions-list scope) is not established from the evidence obtained."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"OFAC\" has the meaning assigned to such term in Section 3.17(c)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:4cd0e28502803ea7d85db880",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Ordinary Course Non-Recourse Third Party Financing Transaction",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully textual, qualitative definition (a factoring-type transaction involving 'Payable Contracts', with a no-recourse requirement subject to three carve-outs (i)-(iii) and a Lien safe-harbor (A)-(C)); no dollar amount, percentage or ratio is stated to compute, so a null calculationExpression with the full excerpt faithfully preserves the qualitative test."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Ordinary Course Non-Recourse Third Party Financing Transaction\" shall mean any transaction ... provided that there is no recourse ... for (i) uncollectible amounts ... (ii) breaches or defaults ... and (iii) nonpayment ... provided, however, that any such transaction shall not be deemed not to constitute an \"Ordinary Course Non-Recourse Third Party Financing Transaction\" solely as a result of the grant ... of any Lien that is limited to (A) ... (B) ... and (C) the proceeds of the foregoing."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:40d9e2f2e6a45f871a3b5cf0",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Organizational Documents",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive, entity-type-dependent list of constitutive documents; no computation is stated."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Organizational Documents\" means (a) with respect to any corporation, the certificate or articles of incorporation and the bylaws ...; (b) with respect to any limited liability company, ...; and (c) with respect to any partnership, joint venture, trust or other form of business entity, ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:4a0415c9b9d6c827e259da01",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Other Applicable Indebtedness",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Secured Obligation",
+     "Excess Cash Flow"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The cross-reference in §1.01 ('has the meaning assigned to such term in Section 2.09(g)') was resolved via the referenced provision, which contains the operative defining language in full."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§2.09(g)",
+     "excerpt": "if ... any Restricted Party is required to repay or repurchase any other Indebtedness ... that is secured on a pari passu basis with any Secured Obligation ... with the proceeds of such Asset Sale Prepayment Event or such Excess Cash Flow (such Indebtedness required to be so repaid or repurchased (or offered to be repaid or repurchased), the \"Other Applicable Indebtedness\")"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:2b4d75ce3ba5859e6b4ef440",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Other Commitments",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Other Revolving Commitments",
+     "Other Term Commitments"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple collective/union definition of two other defined terms both of which are themselves defined in this same source region; no formula is required."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Other Commitments\" means each and any Other Revolving Commitments and Other Term Commitments."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f5bf651ce61840c5e6f1ee6a",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Other Connection Taxes",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Taxes"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive definition of Taxes arising from a recipient's present/former connection to a taxing jurisdiction, with a parenthetical carve-back for connections arising solely from ordinary Loan Document activity; fully textual, no computation."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Other Connection Taxes\" means, with respect to the Administrative Agent, any Lender or any other recipient ..., Taxes imposed as a result of a present or former connection between such recipient and the jurisdiction imposing such Tax (other than a connection arising solely from such recipient having executed, delivered, or become a party to, ... any Loan or Loan Document)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:cdffe4bb19dd1a293d0fff66",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Other Loans",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Other Revolving Loans",
+     "Other Term Loans"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple collective/union definition of two other defined terms both defined in this same source region; no formula is required."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Other Loans\" means each and any Other Revolving Loans and Other Term Loans."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3074d679339b4e20a489168d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Other Revolving Commitments",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Refinancing Amendment",
+     "Class"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully textual definition; depends on 'Refinancing Amendment' and 'Class', neither of which was supplied in the source excerpt, but their absence does not prevent faithfully representing this definition's own (non-numeric) text."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Other Revolving Commitments\" means one or more Classes of revolving loan commitments hereunder that result from a Refinancing Amendment."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:491bbf487234297a5c1ca460",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Other Revolving Facility",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Other Revolving Commitments",
+     "Other Revolving Loans",
+     "Refinancing Amendment",
+     "Incremental Revolving Increase"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully textual, non-numeric collective definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Other Revolving Facility\" means each and any facility comprised of Other Revolving Commitments and Other Revolving Loans created pursuant to a Refinancing Amendment, together with any Incremental Revolving Increase and/or refinancing thereof, and the extensions of credit thereunder."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:fed8930c89abd7e127cda9b8",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Other Revolving Loans",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Other Revolving Facility",
+     "Revolving Loans",
+     "Class"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully textual, non-numeric definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Other Revolving Loans\" means one or more Classes of Revolving Loans under an Other Revolving Facility, together with any refinancing thereof."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:fc4d387e61577aab9b26af99",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Other Taxes",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Taxes",
+     "Loan Document",
+     "Other Connection Taxes"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully textual definition of a category of Taxes with a stated exclusion for Other Connection Taxes imposed on an assignment, itself carved back for assignments made pursuant to Section 2.17(b). The cross-referenced Section 2.17(b) was requested but returned only a truncated one-line fragment ('(b) If '); however the meaning of THIS definition (the scope of the exclusion/carve-back structure) is fully stated on its own face and does not require knowing 2.17(b)'s substantive content to be faithfully represented."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Other Taxes\" means all present or future recording, stamp, court or documentary, intangible, filing or similar Taxes arising from any payment made under any Loan Document ..., except any such Taxes that are Other Connection Taxes imposed with respect to an assignment (other than an assignment made pursuant to Section 2.17(b))."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:9ee82fa8a3d2d273bfa5c3c0",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Other Term Commitments",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Refinancing Amendment",
+     "Class"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully textual, non-numeric definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Other Term Commitments\" means one or more Classes of term loan commitments hereunder that result from a Refinancing Amendment."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:8d00b911cd981e6f2eb934f5",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Other Term Facility",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Other Term Commitments",
+     "Other Term Loans",
+     "Refinancing Amendment"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully textual, non-numeric collective definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Other Term Facility\" means each and any facility comprised of Other Term Commitments and Other Term Loans created pursuant to a Refinancing Amendment, together with any refinancing thereof."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:ef78d1ddc14092867135b007",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Other Term Loans",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Other Term Facility",
+     "Term Loans",
+     "Refinancing Amendment",
+     "Class"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully textual, non-numeric definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Other Term Loans\" means one or more Classes of Term Loans under an Other Term Facility that result from a Refinancing Amendment, together with any refinancing thereof."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:20ee2d0e5dfdcac9c641ca25",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Overnight Bank Funding Rate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "NYFRB"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Descriptive definition of a composite published rate determined and published by the NYFRB; no additional formula beyond identifying the publishing source is stated, so a null calculationExpression with the excerpt faithfully represents it. It is separately consumed as a MAX operand within the NYFRB Rate definition (d1)."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Overnight Bank Funding Rate\" means, for any day, the rate comprised of both overnight federal funds and overnight Eurodollar transactions denominated in U.S. Dollars by U.S.-managed banking offices of depository institutions, as such composite rate shall be determined by the NYFRB ... and published on the next succeeding Business Day by the NYFRB as an overnight bank funding rate ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01, 'NYFRB Rate': \"provided that if both such rates are not so published for any day that is a Business Day, the term 'NYFRB Rate' means the rate quoted for such day for a federal funds transaction at 11:00 a.m. on such day received by the Administrative Agent from a Federal funds broker of recognized standing selected by it\"",
+    "semanticRequirement": "A recurring benchmark-rate pattern where the primary formula (here, greater-of two published reference rates) is replaced by a manually-sourced, non-formulaic fallback (a broker-quoted rate) whenever the primary data sources are unavailable for a given day.",
+    "whyExistingPrimitivesFail": "IF/COMPARE require a boolean condition expressible from modeled values, but 'such rates are not so published' is a real-world data-availability fact with no corresponding IR literal, metric, or transaction input; and the fallback value itself (a broker's ad hoc quote) is not a fixed number, formula, or defined term but an external, non-deterministic quotation obtained at the time.",
+    "candidateGeneralizedPrimitive": "A DATA_AVAILABILITY_FALLBACK node (primaryExpression, unavailabilityCondition description, fallbackExpression) that can hold an UNSUPPORTED/externally-sourced fallbackExpression while still preserving the primary formula as computable."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d3]] Section 3.17(c) was retrieved but the returned text is truncated before it reaches the point where the term 'OFAC' is actually substantively used/defined (text cuts off at 'is:' introducing a list of sanctioned-person categories); the acronym's operative content (presumably 'Office of Foreign Assets Control' and its sanctions-list scope) is not established from the evidence obtained.",
+   "This submission compiles Section 1.01 defined terms from 'NYFRB Rate' through 'Overnight Bank Funding Rate' (17 terms). No independently operative WireRule (permission/prohibition/ratio-test) appears in this source region - it is purely a definitions article - so the 'rules' array is empty, consistent with the source content.",
+   "The FROZEN SEMANTIC INVENTORY for this submission reported an INVENTORY_COVERAGE_GAP (109 items accepted, 0 added by a failed targeted gap re-inventory due to a tool timeout, with 721 stretches of source left UNACCOUNTED_SOURCE) and no explicit inventoryItemId list was included in the supplied context. Because no concrete item IDs were provided to consume or disposition, the inventoryDispositions array is left empty here; this gap itself is flagged for review rather than silently assumed complete.",
+   "Three cross-references (Section 3.17(c) for 'OFAC', Section 2.09(g) for 'Other Applicable Indebtedness', and Section 2.17(b) for the 'Other Taxes' assignment carve-back) were actively resolved via getReferencedProvision per the mandatory retrieval-before-giving-up rule. Section 2.09(g) fully resolved the 'Other Applicable Indebtedness' definition (COMPLETE). Section 3.17(c) returned only a truncated fragment that did not reach the substantive OFAC-defining text, so 'OFAC' is marked MISSING_CONTEXT. Section 2.17(b) also returned a truncated fragment, but the 'Other Taxes' definition's own carve-back structure is fully stated on its face independent of 2.17(b)'s substance, so it remains COMPLETE.",
+   "'Federal Funds Effective Rate' (an operand of the NYFRB Rate MAX formula) was separately confirmed via getDefinition to be a materially similar greater-of-zero-floored published rate, supporting the MAX(...,0) representation of NYFRB Rate's own zero floor."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 3.17(c)"
+    },
+    "outputSummary": "resolved reference \"Section 3.17(c)\" -> 3.17(c) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 249,
+    "timestamp": "2026-09-14T21:27:21.006Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 3.17(c)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:9a4fd4beb09cdea30e20e973",
+     "sourceNodeKey": "doc-a::3.17(c)",
+     "charStart": 551591,
+     "charEnd": 551840,
+     "rawText": "(c) None of the Borrowers or any Restricted Subsidiary, or, to the knowledge of the Initial Borrower, any director, officer, employee or agent\nof the Borrowers is, or is 50% or more owned or otherwise controlled by, an individual or entity that is: ",
+     "contentHash": "c1891f57898b951e862882d43ada0da1bf8927cc3d5a5f89ef1f35fb2d8511f1",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.09(g)"
+    },
+    "outputSummary": "resolved reference \"Section 2.09(g)\" -> 2.09(g) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 1160,
+    "timestamp": "2026-09-14T21:27:21.007Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 2.09(g)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:5657c539fd530b0718cfee58",
+     "sourceNodeKey": "doc-a::2.09(g)",
+     "charStart": 442766,
+     "charEnd": 443926,
+     "rawText": "(g) Notwithstanding anything herein to the contrary, if, at the time that any prepayment would be required under Section 2.09(b) (solely\nwith respect to an Asset Sale Prepayment Event) or (c), any Restricted Party is required to repay or repurchase any other Indebtedness (or offer to repay or repurchase such Indebtedness) that is secured on a pari passu basis with any Secured\nObligation pursuant to the terms of the documentation governing such Indebtedness with the proceeds of such Asset Sale Prepayment Event or such Excess Cash Flow (such Indebtedness required to be so repaid or repurchased (or offered to be repaid or\nrepurchased), the “ Other Applicable Indebtedness ”), then the relevant Person may apply the proceeds of such Asset Sale Prepayment Event or such Excess Cash Flow on a pro rata (or less than pro rata) basis to the prepayment,\nrepurchase or repayment of the Other Applicable Indebtedness (determined on the basis of the aggregate outstanding principal amount of the Other Applicable Indebtedness (or accreted amount if such Other Applicable Indebtedness is issued with\noriginal issue discount) at such time); it being understood that ",
+     "contentHash": "24c1141ccd3d1968f0694c0f8629ee753a4776c8c3c192d35f72c15c4692e8be",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.17(b)"
+    },
+    "outputSummary": "resolved reference \"Section 2.17(b)\" -> 2.17(b) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 7,
+    "timestamp": "2026-09-14T21:27:21.007Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 2.17(b)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:d92211a6fcdb9b7e13fac9b3",
+     "sourceNodeKey": "doc-a::2.17(b)",
+     "charStart": 493654,
+     "charEnd": 493661,
+     "rawText": "(b) If ",
+     "contentHash": "04853b8ae62b17a2693701b99106b23aebb15fa18d2f9deb3c63c045d254155a",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Federal Funds Effective Rate"
+    },
+    "outputSummary": "definition \"Federal Funds Effective Rate\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 566,
+    "timestamp": "2026-09-14T21:28:16.995Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Federal Funds Effective Rate",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:0b0e9396a2678108c548ce81",
+     "sourceNodeKey": "doc-a::1.01(3)(i)(b)(ii)(i)(ii)",
+     "charStart": 182062,
+     "charEnd": 182628,
+     "rawText": "“ Federal Funds Effective Rate ” means, for any day, an interest rate per annum equal to the rate calculated by the NYFRB based on such\nday’s federal funds transactions by depository institutions (as determined in such manner as the NYFRB shall set forth on its public website from time to time) and published on the next succeeding Business Day by the NYFRB as the effective\nfederal funds rate; provided that if the Federal Funds Effective Rate as so determined would be less than zero (0), such rate shall be deemed to be zero (0) for purposes of this Agreement.\n\n",
+     "contentHash": "5cde107234118f1e13b5fcc68d97101c131a118c23c3f420eefa71ae13a6b4a6",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "NYFRB Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MAX",
+      "operands": [
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "termName": "Federal Funds Effective Rate",
+        "citation": "§1.01"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "termName": "Overnight Bank Funding Rate",
+        "citation": "§1.01"
+       },
+       {
+        "kind": "NUMBER",
+        "value": 0,
+        "citation": "§1.01"
+       }
+      ],
+      "citation": "§1.01",
+      "excerpt": "the greater of (a) the Federal Funds Effective Rate in effect on such day and (b) the Overnight Bank Funding Rate in effect on such day ... if any of the aforesaid rates shall be less than zero (0), such rate shall be deemed to be zero (0)"
+     },
+     "dependsOnTerms": [
+      "Federal Funds Effective Rate",
+      "Overnight Bank Funding Rate"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The greater-of structure and the zero floor are fully represented via MAX(FFER, OBFR, 0), which is mathematically equivalent to flooring each component at zero.",
+      "The fallback mechanism ('if both such rates are not so published ... the rate quoted ... by a Federal funds broker of recognized standing selected by [the Administrative Agent]') is a fact-contingent alternative definition that cannot be represented with the available node types (no primitive for data-availability-gated substitution of an externally-quoted, non-formulaic rate) and is not represented in the calculationExpression."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"NYFRB Rate\" means, for any day, the greater of (a) the Federal Funds Effective Rate ... and (b) the Overnight Bank Funding Rate ..."
+    },
+    {
+     "localRef": "d2",
+     "termName": "Obligations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive/enumerative definition (principal, interest, premium, penalties, fees, expenses, indemnifications, reimbursements, damages, liabilities and guarantees thereof payable under Indebtedness documentation); no numeric formula is stated, so a null calculationExpression faithfully represents it."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Obligations\" means any principal, interest ... premium, penalties, fees, expenses, indemnifications, reimbursements ... payable under the documentation governing any Indebtedness."
+    },
+    {
+     "localRef": "d3",
+     "termName": "OFAC",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "meaning assigned by cross-reference to Section 3.17(c)",
+      "reason": "Section 3.17(c) was retrieved but the returned text is truncated before it reaches the point where the term 'OFAC' is actually substantively used/defined (text cuts off at 'is:' introducing a list of sanctioned-person categories); the acronym's operative content (presumably 'Office of Foreign Assets Control' and its sanctions-list scope) is not established from the evidence obtained.",
+      "sourceEvidence": "§3.17(c): \"None of the Borrowers or any Restricted Subsidiary ... is, or is 50% or more owned or otherwise controlled by, an individual or entity that is: \" [truncated]"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced Section 3.17(c) was fetched but returned only a truncated fragment that does not include the actual OFAC-defining language."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"OFAC\" has the meaning assigned to such term in Section 3.17(c)."
+    },
+    {
+     "localRef": "d4",
+     "termName": "Ordinary Course Non-Recourse Third Party Financing Transaction",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully textual, qualitative definition (a factoring-type transaction involving 'Payable Contracts', with a no-recourse requirement subject to three carve-outs (i)-(iii) and a Lien safe-harbor (A)-(C)); no dollar amount, percentage or ratio is stated to compute, so a null calculationExpression with the full excerpt faithfully preserves the qualitative test."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Ordinary Course Non-Recourse Third Party Financing Transaction\" shall mean any transaction ... provided that there is no recourse ... for (i) uncollectible amounts ... (ii) breaches or defaults ... and (iii) nonpayment ... provided, however, that any such transaction shall not be deemed not to constitute an \"Ordinary Course Non-Recourse Third Party Financing Transaction\" solely as a result of the grant ... of any Lien that is limited to (A) ... (B) ... and (C) the proceeds of the foregoing."
+    },
+    {
+     "localRef": "d5",
+     "termName": "Organizational Documents",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive, entity-type-dependent list of constitutive documents; no computation is stated."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Organizational Documents\" means (a) with respect to any corporation, the certificate or articles of incorporation and the bylaws ...; (b) with respect to any limited liability company, ...; and (c) with respect to any partnership, joint venture, trust or other form of business entity, ..."
+    },
+    {
+     "localRef": "d6",
+     "termName": "Other Applicable Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Secured Obligation",
+      "Excess Cash Flow"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The cross-reference in §1.01 ('has the meaning assigned to such term in Section 2.09(g)') was resolved via the referenced provision, which contains the operative defining language in full."
+     ],
+     "citation": "§2.09(g)",
+     "excerpt": "if ... any Restricted Party is required to repay or repurchase any other Indebtedness ... that is secured on a pari passu basis with any Secured Obligation ... with the proceeds of such Asset Sale Prepayment Event or such Excess Cash Flow (such Indebtedness required to be so repaid or repurchased (or offered to be repaid or repurchased), the \"Other Applicable Indebtedness\")"
+    },
+    {
+     "localRef": "d7",
+     "termName": "Other Commitments",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Other Revolving Commitments",
+      "Other Term Commitments"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple collective/union definition of two other defined terms both of which are themselves defined in this same source region; no formula is required."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Other Commitments\" means each and any Other Revolving Commitments and Other Term Commitments."
+    },
+    {
+     "localRef": "d8",
+     "termName": "Other Connection Taxes",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Taxes"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive definition of Taxes arising from a recipient's present/former connection to a taxing jurisdiction, with a parenthetical carve-back for connections arising solely from ordinary Loan Document activity; fully textual, no computation."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Other Connection Taxes\" means, with respect to the Administrative Agent, any Lender or any other recipient ..., Taxes imposed as a result of a present or former connection between such recipient and the jurisdiction imposing such Tax (other than a connection arising solely from such recipient having executed, delivered, or become a party to, ... any Loan or Loan Document)."
+    },
+    {
+     "localRef": "d9",
+     "termName": "Other Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Other Revolving Loans",
+      "Other Term Loans"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple collective/union definition of two other defined terms both defined in this same source region; no formula is required."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Other Loans\" means each and any Other Revolving Loans and Other Term Loans."
+    },
+    {
+     "localRef": "d10",
+     "termName": "Other Revolving Commitments",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Refinancing Amendment",
+      "Class"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully textual definition; depends on 'Refinancing Amendment' and 'Class', neither of which was supplied in the source excerpt, but their absence does not prevent faithfully representing this definition's own (non-numeric) text."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Other Revolving Commitments\" means one or more Classes of revolving loan commitments hereunder that result from a Refinancing Amendment."
+    },
+    {
+     "localRef": "d11",
+     "termName": "Other Revolving Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Other Revolving Commitments",
+      "Other Revolving Loans",
+      "Refinancing Amendment",
+      "Incremental Revolving Increase"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully textual, non-numeric collective definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Other Revolving Facility\" means each and any facility comprised of Other Revolving Commitments and Other Revolving Loans created pursuant to a Refinancing Amendment, together with any Incremental Revolving Increase and/or refinancing thereof, and the extensions of credit thereunder."
+    },
+    {
+     "localRef": "d12",
+     "termName": "Other Revolving Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Other Revolving Facility",
+      "Revolving Loans",
+      "Class"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully textual, non-numeric definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Other Revolving Loans\" means one or more Classes of Revolving Loans under an Other Revolving Facility, together with any refinancing thereof."
+    },
+    {
+     "localRef": "d13",
+     "termName": "Other Taxes",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Taxes",
+      "Loan Document",
+      "Other Connection Taxes"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully textual definition of a category of Taxes with a stated exclusion for Other Connection Taxes imposed on an assignment, itself carved back for assignments made pursuant to Section 2.17(b). The cross-referenced Section 2.17(b) was requested but returned only a truncated one-line fragment ('(b) If '); however the meaning of THIS definition (the scope of the exclusion/carve-back structure) is fully stated on its own face and does not require knowing 2.17(b)'s substantive content to be faithfully represented."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Other Taxes\" means all present or future recording, stamp, court or documentary, intangible, filing or similar Taxes arising from any payment made under any Loan Document ..., except any such Taxes that are Other Connection Taxes imposed with respect to an assignment (other than an assignment made pursuant to Section 2.17(b))."
+    },
+    {
+     "localRef": "d14",
+     "termName": "Other Term Commitments",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Refinancing Amendment",
+      "Class"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully textual, non-numeric definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Other Term Commitments\" means one or more Classes of term loan commitments hereunder that result from a Refinancing Amendment."
+    },
+    {
+     "localRef": "d15",
+     "termName": "Other Term Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Other Term Commitments",
+      "Other Term Loans",
+      "Refinancing Amendment"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully textual, non-numeric collective definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Other Term Facility\" means each and any facility comprised of Other Term Commitments and Other Term Loans created pursuant to a Refinancing Amendment, together with any refinancing thereof."
+    },
+    {
+     "localRef": "d16",
+     "termName": "Other Term Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Other Term Facility",
+      "Term Loans",
+      "Refinancing Amendment",
+      "Class"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully textual, non-numeric definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Other Term Loans\" means one or more Classes of Term Loans under an Other Term Facility that result from a Refinancing Amendment, together with any refinancing thereof."
+    },
+    {
+     "localRef": "d17",
+     "termName": "Overnight Bank Funding Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "NYFRB"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive definition of a composite published rate determined and published by the NYFRB; no additional formula beyond identifying the publishing source is stated, so a null calculationExpression with the excerpt faithfully represents it. It is separately consumed as a MAX operand within the NYFRB Rate definition (d1)."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Overnight Bank Funding Rate\" means, for any day, the rate comprised of both overnight federal funds and overnight Eurodollar transactions denominated in U.S. Dollars by U.S.-managed banking offices of depository institutions, as such composite rate shall be determined by the NYFRB ... and published on the next succeeding Business Day by the NYFRB as an overnight bank funding rate ..."
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01, 'NYFRB Rate': \"provided that if both such rates are not so published for any day that is a Business Day, the term 'NYFRB Rate' means the rate quoted for such day for a federal funds transaction at 11:00 a.m. on such day received by the Administrative Agent from a Federal funds broker of recognized standing selected by it\"",
+     "semanticRequirement": "A recurring benchmark-rate pattern where the primary formula (here, greater-of two published reference rates) is replaced by a manually-sourced, non-formulaic fallback (a broker-quoted rate) whenever the primary data sources are unavailable for a given day.",
+     "whyExistingPrimitivesFail": "IF/COMPARE require a boolean condition expressible from modeled values, but 'such rates are not so published' is a real-world data-availability fact with no corresponding IR literal, metric, or transaction input; and the fallback value itself (a broker's ad hoc quote) is not a fixed number, formula, or defined term but an external, non-deterministic quotation obtained at the time.",
+     "candidateGeneralizedPrimitive": "A DATA_AVAILABILITY_FALLBACK node (primaryExpression, unavailabilityCondition description, fallbackExpression) that can hold an UNSUPPORTED/externally-sourced fallbackExpression while still preserving the primary formula as computable."
+    }
+   ],
+   "overallNotes": [
+    "This submission compiles Section 1.01 defined terms from 'NYFRB Rate' through 'Overnight Bank Funding Rate' (17 terms). No independently operative WireRule (permission/prohibition/ratio-test) appears in this source region - it is purely a definitions article - so the 'rules' array is empty, consistent with the source content.",
+    "The FROZEN SEMANTIC INVENTORY for this submission reported an INVENTORY_COVERAGE_GAP (109 items accepted, 0 added by a failed targeted gap re-inventory due to a tool timeout, with 721 stretches of source left UNACCOUNTED_SOURCE) and no explicit inventoryItemId list was included in the supplied context. Because no concrete item IDs were provided to consume or disposition, the inventoryDispositions array is left empty here; this gap itself is flagged for review rather than silently assumed complete.",
+    "Three cross-references (Section 3.17(c) for 'OFAC', Section 2.09(g) for 'Other Applicable Indebtedness', and Section 2.17(b) for the 'Other Taxes' assignment carve-back) were actively resolved via getReferencedProvision per the mandatory retrieval-before-giving-up rule. Section 2.09(g) fully resolved the 'Other Applicable Indebtedness' definition (COMPLETE). Section 3.17(c) returned only a truncated fragment that did not reach the substantive OFAC-defining text, so 'OFAC' is marked MISSING_CONTEXT. Section 2.17(b) also returned a truncated fragment, but the 'Other Taxes' definition's own carve-back structure is fully stated on its face independent of 2.17(b)'s substance, so it remains COMPLETE.",
+    "'Federal Funds Effective Rate' (an operand of the NYFRB Rate MAX formula) was separately confirmed via getDefinition to be a materially similar greater-of-zero-floored published rate, supporting the MAX(...,0) representation of NYFRB Rate's own zero floor."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T21:29:20.718Z",
+   "inputTokens": 75905,
+   "outputTokens": 14057,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 3,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 133159,
+   "calculatedCostUsd": 0.29238
+  },
+  "cacheKey": "02dfe2fef9a5d9fdc5b887bbb93296cbfa5140515ab8c531efca91195543394b",
+  "compiledAt": "2026-09-14T21:29:20.718Z"
+ },
+ "wave": "C",
+ "attemptsSoFar": 1
+}
