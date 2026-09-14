@@ -30,7 +30,7 @@ const throwingInventory: StageCaller = { providerName: "replay", model: "replay"
   const frozen = freezeAndPlan();
   const { plan, callerInput, unit } = frozen;
   const chewy = buildChewy();
-  const sec = chewy.index.getNodeById(unit.unit.nodeId)!;
+  const sec = chewy.index.getNodeById((unit as unknown as { unit: { nodeId: string } }).unit.nodeId)!;
   // The ORIGINAL caller-facing input - what a production caller hands compileCovenantToIR: the node's own text, no
   // pre-resolved sourceContext, no frozenInventory on the input (the frozen inventory is resumed via options).
   const baseInput = { ...callerInput, operativeSourceText: chewy.index.getNodeText(sec.nodeId, "DESCENDANTS"), operativeCharStart: sec.charStart, sourceContext: undefined, frozenInventory: undefined };

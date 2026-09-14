@@ -10,10 +10,12 @@ import type { SemanticCaller, SemanticCallerResult } from "../lib/contract-model
 import type { StageCaller } from "../lib/contract-model/compiler/llm-caller";
 import { testCompilerInput, emptyContextBundle } from "../tests/contract-model/semantic-compiler/test-helpers";
 import { buildDefinitionsCorpus, DOC, CO, INST } from "../tests/contract-model/f7a-synthetic-corpus";
+import { SubmitCompilationSchema } from "../lib/contract-model/compiler/semantic/wire-schema";
 
 const rule = (localRef: string, amount: number, extra: Record<string, unknown> = {}) => ({ localRef, sourceSectionRef: "9.01", covenantFamily: "INDEBTEDNESS", ruleType: "QUANTITATIVE_PERMISSION", posture: "PERMISSION", action: "INCUR_DEBT", entityScope: [], entityScopeExcluded: [], capacityExpression: { kind: "MONEY", amount }, conditions: [], exceptions: [], dependsOn: [], sufficiency: "COMPLETE", sufficiencyReasons: [], citation: null, excerpt: null, ...extra });
 const def = (localRef: string, termName: string, amount: number, extra: Record<string, unknown> = {}) => ({ localRef, termName, covenantFamily: "DEFINITIONS_CALCULATION_RULES", sufficiency: "COMPLETE", sufficiencyReasons: [], calculationExpression: { kind: "MONEY", amount }, ...extra });
-const submission = (rules: unknown[], definitions: unknown[] = [], notes: string[] = []) => ({ submission: { rules, definitions, sharedCapacities: [], irExtensionCandidates: [], overallNotes: notes }, rawSubmission: { rules, definitions }, toolCallLog: [], telemetry: null, failureReason: null, failureDetail: null }) as unknown as SemanticCallerResult;
+// Parsed through the wire schema exactly as the real caller does, so zod defaults (dependsOnTerms, dependsOn shapes, ...) apply.
+const submission = (rules: unknown[], definitions: unknown[] = [], notes: string[] = []) => ({ submission: SubmitCompilationSchema.parse({ rules, definitions, sharedCapacities: [], irExtensionCandidates: [], overallNotes: notes }), rawSubmission: { rules, definitions }, toolCallLog: [], telemetry: null, failureReason: null, failureDetail: null }) as unknown as SemanticCallerResult;
 const caller = (fn: () => Promise<SemanticCallerResult>): SemanticCaller => ({ providerName: "scripted", model: "scripted-model", isSynthetic: false, compile: fn });
 const synthetic: StageCaller = { providerName: "synthetic", model: "synthetic-v1", isSynthetic: true, call: async (schema) => schema.parse({}), lastTelemetry: () => null };
 
@@ -28,7 +30,7 @@ const scenarios: { name: string; input: ReturnType<typeof testCompilerInput>; op
   { name: "E unresolved operative evidence in the bundle -> OPERATIVE_STATE_UNRESOLVED", input: testCompilerInput({ contextBundle: emptyContextBundle({ hasUnresolvedOperativeEvidence: true, unresolvedEvidenceItemIds: ["ctx-1"] }) }), options: { caller: caller(async () => submission([rule("r1", 9)])), accountability: false } },
   { name: "F accountability on, synthetic Pass A (INVENTORY_SKIPPED_NO_PROVIDER), stub index", input: testCompilerInput(), options: { caller: caller(async () => submission([rule("r1", 11)], [], ["note"])), inventoryCaller: synthetic, inventoryMode: "SINGLE_PASS" } },
   { name: "G accountability on over a real small structural corpus, synthetic Pass A", input: testCompilerInput({ companyId: CO, instrumentKey: INST, sourceDocumentId: DOC, candidateRef: "cand:1.01", sourceSectionRef: "1.01", operativeSourceText: corpusText, operativeCharStart: corpus.sourceContext.regions[0]!.charStart, contextBundle: emptyContextBundle(), toolAccess: { structuralIndex: corpus.index, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle() } }), options: { caller: caller(async () => submission([], [def("d1", "Alpha Term", 1_000_000)])), inventoryCaller: synthetic, inventoryMode: "SINGLE_PASS" } },
-  { name: "H two rules with a dangling dependsOn -> validation issues surfaced", input: testCompilerInput(), options: { caller: caller(async () => submission([rule("r1", 1), rule("r2", 2, { dependsOn: ["r-missing"] })])), accountability: false } },
+  { name: "H two rules with a dangling dependsOn -> validation issues surfaced", input: testCompilerInput(), options: { caller: caller(async () => submission([rule("r1", 1), rule("r2", 2, { dependsOn: [{ targetRef: "r-missing", relationshipType: "REQUIRES", description: "dangling" }] })])), accountability: false } },
 ];
 
 (async () => {
