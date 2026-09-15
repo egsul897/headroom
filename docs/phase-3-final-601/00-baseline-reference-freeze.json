@@ -1,0 +1,185 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE §1/§2/§3/§4 - starting system, Chewy source identity, Section 6.01 node and the frozen 6.01 reference slice, all fixed before any paid call",
+ "at": "2026-09-15T00:15:41.688Z",
+ "startingSha": {
+  "expected": "a013ffdc4195257505a2e6546e984e7153cbf5bb",
+  "actual": "a013ffdc4195257505a2e6546e984e7153cbf5bb",
+  "match": true
+ },
+ "productionCompilerTreeSha256": "2c8deb633489d619488a68362f0d68854e15f6558091fc060d0175a46738e632",
+ "versions": {
+  "compilerAlgorithm": "semantic-accountability-compiler.v4",
+  "compilerPrompt": "semantic-accountability-compiler-prompt.v4",
+  "toolPolicy": "phase-3b1-tool-policy.v2",
+  "accountabilityAlgorithm": "semantic-accountability.v5",
+  "inventoryPrompt": "semantic-inventory-prompt.v5",
+  "sourceIdentityMigration": "source-identity-migration.v1",
+  "executionPolicy": "semantic-execution-mode.v1",
+  "shardPlanner": "semantic-compilation-shards.v1",
+  "shardBudget": {
+   "targetPrimaryChars": 12000,
+   "maxPrimaryChars": 24000,
+   "maxContextChars": 10000,
+   "maxContextEntryChars": 1800,
+   "maxUnitsPerShard": 16
+  },
+  "irSchema": "headroom-covenant-ir.v1"
+ },
+ "verifierVersion": null,
+ "scoringAndGatingCode": {
+  "preflight": "scripts/phase-3-601-preflight.ts",
+  "run": "scripts/phase-3-601-run.ts",
+  "score": "scripts/phase-3-601-score.ts",
+  "note": "the scorer never reads model output before the compiler and verifier results are written to disk"
+ },
+ "chewy": {
+  "fixture": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+  "extractedSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+  "expected": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+  "match": true
+ },
+ "section601": {
+  "nodeId": "structural-node:4feea9391572c23efd068db4",
+  "nodeKey": "doc-a::6.01",
+  "sectionRef": "6.01",
+  "heading": "Limitation on Incurrence of Indebtedness and Issuance of Disqualified Stock and Preferred Stoc k .",
+  "charStart": 608901,
+  "charEnd": 642524,
+  "chars": 33623,
+  "textSha256": "6b79685c94a08a9d27b484aaac52282ce92dbe9a7c3321bc38ff6504d12ec02a",
+  "resolvesUniquelyInBody": true
+ },
+ "humanReferenceSet": {
+  "path": "docs/phase-3-validation/04-human-reference-set.json",
+  "sha256": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036",
+  "expected": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036",
+  "match": true
+ },
+ "section601ReferenceItems": {
+  "byLabel": 8,
+  "bySpanWithinNode": 8,
+  "labelAndSpanAgree": true,
+  "itemsOutsideNodeSpan": [],
+  "byMateriality": {
+   "CRITICAL": 4,
+   "MATERIAL": 4
+  },
+  "expectedFromPriorPreflight": {
+   "total": 8,
+   "critical": 4
+  },
+  "items": [
+   {
+    "id": "A1",
+    "section": "6.01(a)",
+    "category": "A high-value restrictions",
+    "materiality": "CRITICAL",
+    "span": [
+     608901,
+     612151
+    ],
+    "dependencies": [
+     "definition:First Lien Leverage Ratio",
+     "definition:Senior Secured Leverage Ratio",
+     "definition:Total Leverage Ratio",
+     "definition:Interest Coverage Ratio"
+    ],
+    "descriptionSha256": "cb48c51468efa18a40f59fa88ce67fb70350b0a1238bb87b56d1b4d4b456dfdf"
+   },
+   {
+    "id": "B1",
+    "section": "6.01(b)(1)",
+    "category": "B permissions/baskets",
+    "materiality": "CRITICAL",
+    "span": [
+     612837,
+     613535
+    ],
+    "dependencies": [
+     "definition:Fixed Incremental Amount"
+    ],
+    "descriptionSha256": "cb5a1910f45ec4f298f254ae015d81e99eccecc7c783d70e7c568efc99ef4a33"
+   },
+   {
+    "id": "B2",
+    "section": "6.01(b)(4)",
+    "category": "B permissions/baskets",
+    "materiality": "MATERIAL",
+    "span": [
+     613535,
+     614500
+    ],
+    "dependencies": [],
+    "descriptionSha256": "fa49b9c1b2d5d9a442ec8b2eb1069d3a462abb3d86b3d7f1dd0aebcbe0d7f7f7"
+   },
+   {
+    "id": "B3",
+    "section": "6.01(b)(12)",
+    "category": "B permissions/baskets",
+    "materiality": "CRITICAL",
+    "span": [
+     621202,
+     623379
+    ],
+    "dependencies": [],
+    "descriptionSha256": "6c5a086078a18c8410c84ab21771822f69d479377cced7e0f698feceb20856f9"
+   },
+   {
+    "id": "B4",
+    "section": "6.01(b)(18)",
+    "category": "B permissions/baskets",
+    "materiality": "MATERIAL",
+    "span": [
+     630144,
+     630700
+    ],
+    "dependencies": [],
+    "descriptionSha256": "3b081b3407a06da802dc6fd78104896e98b6190204d8585dfb61d9e8906314f9"
+   },
+   {
+    "id": "B5",
+    "section": "6.01(b)(19)",
+    "category": "B permissions/baskets",
+    "materiality": "MATERIAL",
+    "span": [
+     630700,
+     631400
+    ],
+    "dependencies": [],
+    "descriptionSha256": "f98e124d94f7da8658bfdbd088dc1e7370af52de048de2abb4fe5720e1eea92b"
+   },
+   {
+    "id": "B6",
+    "section": "6.01(b)(27)",
+    "category": "B permissions/baskets",
+    "materiality": "MATERIAL",
+    "span": [
+     634000,
+     634400
+    ],
+    "dependencies": [],
+    "descriptionSha256": "3aae8217d7997a0da04c1fef90cad12fafb66f473eb71fe5a83e65d3b4ee88e2"
+   },
+   {
+    "id": "B7",
+    "section": "6.01(b)(31)/(32)/(33)",
+    "category": "B permissions/baskets",
+    "materiality": "CRITICAL",
+    "span": [
+     634400,
+     636112
+    ],
+    "dependencies": [
+     "definition:Available RP Capacity Amount",
+     "definition:Incremental Cap",
+     "definition:Incremental Equivalent Debt"
+    ],
+    "descriptionSha256": "8acc9f021489468277c89132b44340095621df6f3fb05a65c552a978fe146d97"
+   }
+  ],
+  "exposedToModel": false
+ },
+ "cap": {
+  "hardCapUsd": 11.5
+ }
+}

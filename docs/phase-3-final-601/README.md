@@ -1,0 +1,81 @@
+# Phase 3 Final-Bridge — Chewy Section 6.01 Fresh Integrated Production Validation
+
+**Verdict: `PHASE3_601_COST_BOUND_BEFORE_START`** — zero paid calls, $0.00 spent, Phase 4 not started, Phase 3 not closed.
+
+Starting SHA `a013ffdc4195257505a2e6546e984e7153cbf5bb`. Production files changed: **0**.
+
+## What was asked
+
+One high-value fresh integrated validation of Chewy Section 6.01 through the current production stack:
+`compileCovenantToIR` with a fresh DUAL_PASS_ENSEMBLE Pass A, automatic execution-mode selection, production
+sharding, stitching, global Pass C and the independent verifier, scored against the 8 frozen human-reference
+items for that section. Hard cap **$11.50**. Section 33 of the mission stresses that even a pass here would
+not close Phase 3.
+
+Mission §12 gates the first call: the conservative projected total must be **≤ $11.50 AND ≤ the gateway
+balance**, computed with the cost methodology already committed in `docs/phase-3-final-chewy/02-cost-preflight.json`,
+and **the estimator must not be weakened**. That gate fails.
+
+## Freeze (00) — everything matched
+
+| Item | Value |
+|---|---|
+| Starting SHA | `a013ffdc4195257505a2e6546e984e7153cbf5bb` (verified) |
+| Chewy extracted text sha256 | `f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb` (expected, matched) |
+| Human reference set sha256 | `e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036` (expected, matched) |
+| Section 6.01 node | unique in document body, chars 608,901–642,524, 33,623 chars |
+| 6.01 reference items | **8**, of which **4 CRITICAL** and 4 MATERIAL |
+| Label vs span agreement | all 8 items labelled `6.01*` also fall inside the node span; no disagreement |
+| Reference set exposed to any model | No |
+
+The mission's predicted execution shape was reproduced exactly by the deterministic preflight: **SHARDED,
+6 shards, 0 oversized, 6 Pass A batches per pass, 33,623 chars.** The batch count is not an approximation —
+it was computed through the real production slot partitioner and batcher (255 slots → 6 batches of
+5,967 / 5,907 / 5,971 / 5,865 / 5,906 / 4,007 chars).
+
+## Why no call was made (01)
+
+The committed methodology has three tiers: mean observed rates, worst single observed rate, and
+`conservative` = worst rates × 1.25.
+
+| Tier | Pass A | Pass B | Verifier | Total |
+|---|---|---|---|---|
+| Mean | $5.8820 | $2.0403 | $0.3863 | **$8.3086** |
+| Worst observed | $8.4789 | $3.7996 | $0.3863 | **$12.6648** |
+| Conservative (×1.25) | $10.5986 | $4.7495 | $0.4829 | **$15.8309** |
+
+Cap $11.50. Gateway balance $12.559204. The conservative total is **$4.33 over the cap** and **$3.27 over the
+balance**.
+
+Two things are worth stating plainly. First, the mission's own expected mean of about $8.3 is reproduced to
+the cent ($8.3086), so the disagreement is not about the model of the work — it is only about which tier the
+word "conservative" names. The mission's expected $10.4 corresponds to mean × 1.25; the committed artifact
+applies the 1.25 factor to the worst observed rates. Second, and independent of that choice: the
+worst-observed total with **no** safety factor ($12.66) already exceeds the balance ($12.56). There is no
+headroom for a worst-case draw, which is the exact failure that halted the original whole-agreement
+Validation B when the account hit its budget mid-run.
+
+Pass A is 67% of the conservative total, because §7 mandates two independent passes over a 6-batch unit.
+
+## Unblocking levers (01, none applied)
+
+- **A — fund and raise the cap.** Cap and balance of **$15.84** clear §12 with the committed methodology untouched. Shortfall against the current balance: **$3.27**.
+- **B — state that the conservative tier is mean × 1.25.** That gives $10.3857, which fits both the current cap and the current balance. This mission will not make that substitution on its own, because §12 says not to weaken the estimator, but it is one explicit instruction away.
+- **C — single-pass Pass A.** $10.5316 conservative, clears both bounds, but contradicts §7. Disclosed, not taken.
+- **D — a smaller unit.** Section 6.02 costs about $2.27 mean but carries 1 reference item instead of 8 and would not exercise sharding.
+
+## Artifacts
+
+- `00`, `01`, `02`, `10` are real. `02` is the paid ledger: 0 calls, 2 gateway balance reads, $0.00, balance unchanged at $12.559204.
+- `03`–`08` are committed as explicit `produced: false` placeholders. Each needs paid production output that does not exist.
+- `09` holds the trust gate, the quality gate and the §32 verdict table. Its hard trust counters are all zero and are recorded as **vacuous zeros that confer no trust evidence**; the trust gate is marked not passed rather than passed-with-zeros. The quality gate is `NOT_EVALUABLE`, which is deliberately not the same claim as `PHASE3_601_NEEDS_SEMANTIC_ITERATION`.
+- `10` is the regression record. Full suite 107 failing files / 162 failing tests / 3,167 passing, identical to baseline, failing identities unchanged. `npm run build` passes, lint is clean, `tsc` shows the same 6 pre-existing errors in untouched foundation-audit test files and 0 in mission files. The three targeted suites that fail (`pass-a-inventory`, `pass-a-stability`, `pass-bc-reconciliation`) are inside that baseline: no file under `lib/`, `tests/`, `app/` or `prisma/` changed since the starting SHA, and those tests are deterministic and make no model calls. Every F-7 suite passes.
+
+§32 scorecard: 17 conditions, 7 PASS, 8 FAIL, 2 NOT_EVALUATED.
+
+## Next step
+
+The next mission remains the zero-cost Phase 3 closure synthesis described in §33. If the Section 6.01
+evidence is still wanted first, it needs one of the levers above — most cleanly, a balance of $15.84 and a
+matching cap, or an explicit pre-registered statement that the conservative tier is mean × 1.25. Re-run
+`scripts/phase-3-601-preflight.ts` at the new head so `00` and `01` are re-frozen before any paid call.

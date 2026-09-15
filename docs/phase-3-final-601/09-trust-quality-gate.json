@@ -1,0 +1,222 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE \u00a726/\u00a727 - trust gate and quality gate",
+ "at": "2026-09-15T00:17:30.123517Z",
+ "trustGate": {
+  "counters": [
+   {
+    "counter": "dangerous silent omissions",
+    "value": 0,
+    "interpretation": "VACUOUS_ZERO"
+   },
+   {
+    "counter": "false completeness",
+    "value": 0,
+    "interpretation": "VACUOUS_ZERO"
+   },
+   {
+    "counter": "source-unverifiable authoritative IR",
+    "value": 0,
+    "interpretation": "VACUOUS_ZERO"
+   },
+   {
+    "counter": "contextual ownership-credit violations",
+    "value": 0,
+    "interpretation": "VACUOUS_ZERO"
+   },
+   {
+    "counter": "silent incompatible merges",
+    "value": 0,
+    "interpretation": "VACUOUS_ZERO"
+   },
+   {
+    "counter": "owned values lost",
+    "value": 0,
+    "interpretation": "VACUOUS_ZERO"
+   },
+   {
+    "counter": "distinct owned lineage lost",
+    "value": 0,
+    "interpretation": "VACUOUS_ZERO"
+   },
+   {
+    "counter": "new dangling refs",
+    "value": 0,
+    "interpretation": "VACUOUS_ZERO"
+   },
+   {
+    "counter": "hidden provider/schema failures",
+    "value": 0,
+    "interpretation": "VACUOUS_ZERO"
+   },
+   {
+    "counter": "hidden material omissions",
+    "value": 0,
+    "interpretation": "VACUOUS_ZERO"
+   },
+   {
+    "counter": "authoritative hallucinations",
+    "value": 0,
+    "interpretation": "VACUOUS_ZERO"
+   },
+   {
+    "counter": "silent CRITICAL reference misses",
+    "value": 0,
+    "interpretation": "VACUOUS_ZERO"
+   },
+   {
+    "counter": "incorrect authoritative CRITICAL representations",
+    "value": 0,
+    "interpretation": "VACUOUS_ZERO"
+   }
+  ],
+  "allZero": true,
+  "passed": false,
+  "note": "Every hard trust counter is zero only because no compilation, no stitch and no verification ran. These are vacuous zeros and confer NO trust evidence whatsoever. The trust gate is therefore recorded as NOT PASSED, not as passed-with-zeros: a gate that can only be satisfied by observing real production output cannot be satisfied by producing none."
+ },
+ "qualityGate": {
+  "evaluated": false,
+  "conclusion": "NOT_EVALUABLE",
+  "note": "CRITICAL recovery, MATERIAL recovery, quantitative recovery, explicit unsupported/missing rates, verifier behaviour and source/provenance integrity all require paid production output for Section 6.01. None exists for this mission. This is NOT a finding of inadequate semantic quality - PHASE3_601_NEEDS_SEMANTIC_ITERATION would be a claim about the system that this mission did not gather the evidence to make."
+ },
+ "performanceWindowAudit": {
+  "evaluated": false,
+  "maxSingleTurnInput": null,
+  "maxSingleTurnOutput": null,
+  "totalInputTokens": 0,
+  "totalOutputTokens": 0,
+  "outputTruncations": 0,
+  "providerFailures": 0,
+  "retries": 0,
+  "shardsExecuted": 0,
+  "largestShard": null,
+  "deterministicPlanBound": {
+   "plannedShards": 6,
+   "maxShardInputTokens": 21423,
+   "oversizedShards": 0,
+   "note": "the deterministic plan confirms current production sharding stays bounded for this unit (no oversized shard), but no turn was executed, so no observed window figures exist"
+  }
+ },
+ "rootCauseTaxonomy": {
+  "evaluated": false,
+  "counts": {},
+  "note": "\u00a725 assigns a primary cause to every incorrect/missing reference result; there are no results to classify"
+ },
+ "verdictGate": {
+  "reference": "\u00a732 - all 17 conditions required for PHASE3_601_INTEGRATED_VALIDATION_PASSED",
+  "conditions": [
+   {
+    "id": 1,
+    "condition": "exact source/reference set frozen",
+    "status": "PASS",
+    "evidence": "source sha256 f63b9dc6... and reference sha256 e7f863e5... both verified at the starting SHA (00)"
+   },
+   {
+    "id": 2,
+    "condition": "no human reference contamination",
+    "status": "PASS",
+    "evidence": "no model call was made, so no reference item could reach any prompt; the preflight reads the set only to freeze the 6.01 slice (00)"
+   },
+   {
+    "id": 3,
+    "condition": "fresh DUAL_PASS Pass A executed",
+    "status": "FAIL",
+    "evidence": "not executed - the \u00a712 bound blocked the start"
+   },
+   {
+    "id": 4,
+    "condition": "actual production entry point used",
+    "status": "FAIL",
+    "evidence": "compileCovenantToIR was not invoked"
+   },
+   {
+    "id": 5,
+    "condition": "execution mode selected automatically",
+    "status": "NOT_EVALUATED",
+    "evidence": "the deterministic preflight predicts SHARDED / 6 shards, but production itself did not select (01)"
+   },
+   {
+    "id": 6,
+    "condition": "no old frozen inventory reused",
+    "status": "PASS",
+    "evidence": "no frozenInventory was supplied to anything; vacuously satisfied, and the harness never constructs one"
+   },
+   {
+    "id": 7,
+    "condition": "no historical shard results reused",
+    "status": "PASS",
+    "evidence": "no priorShardResults were supplied; vacuously satisfied"
+   },
+   {
+    "id": 8,
+    "condition": "global Pass C used",
+    "status": "FAIL",
+    "evidence": "not reached"
+   },
+   {
+    "id": 9,
+    "condition": "independent verifier used",
+    "status": "FAIL",
+    "evidence": "not reached"
+   },
+   {
+    "id": 10,
+    "condition": "all hard trust counters zero",
+    "status": "FAIL",
+    "evidence": "the counters are zero only vacuously; see 09.trustGate - no production output existed to test"
+   },
+   {
+    "id": 11,
+    "condition": "silent CRITICAL misses zero",
+    "status": "FAIL",
+    "evidence": "vacuous; the 4 frozen CRITICAL items were never compared against real output"
+   },
+   {
+    "id": 12,
+    "condition": "CRITICAL incorrect authoritative claims zero",
+    "status": "FAIL",
+    "evidence": "vacuous, same basis"
+   },
+   {
+    "id": 13,
+    "condition": "semantic quality is operationally credible",
+    "status": "NOT_EVALUATED",
+    "evidence": "no evidence gathered; this is explicitly NOT a finding of inadequate quality"
+   },
+   {
+    "id": 14,
+    "condition": "spend <= $11.50",
+    "status": "PASS",
+    "evidence": "$0.00 spent, 0 paid calls (02)"
+   },
+   {
+    "id": 15,
+    "condition": "no production changes during paid run",
+    "status": "PASS",
+    "evidence": "no paid run; 0 production files changed since the starting SHA (10)"
+   },
+   {
+    "id": 16,
+    "condition": "no new regressions",
+    "status": "PASS",
+    "evidence": "full suite 107 failing files / 162 failing tests, identical to baseline; identities unchanged (10)"
+   },
+   {
+    "id": 17,
+    "condition": "build passes",
+    "status": "PASS",
+    "evidence": "npm run build exit 0 (10)"
+   }
+  ],
+  "summary": {
+   "PASS": 8,
+   "FAIL": 7,
+   "NOT_EVALUATED": 2,
+   "total": 17
+  },
+  "passed": false
+ },
+ "verdict": "PHASE3_601_COST_BOUND_BEFORE_START",
+ "verdictBasis": "\u00a712 requires, before the first call, that the conservative projected total be <= $11.50 AND <= the current gateway balance. Under the committed methodology of docs/phase-3-final-chewy/02-cost-preflight.json, applied unchanged, the conservative total is $15.8309 - $4.33 over the cap and $3.27 over the $12.559204 balance. Independently of the safety factor, the worst-observed-rate total with NO padding ($12.6648) already exceeds the balance, so a started run had no headroom against a worst-case draw. The estimator was not weakened to fit, and no partial run was attempted because \u00a714 forbids fix-and-continue and \u00a712 pre-registers this exact outcome.",
+ "phase3Closed": false,
+ "phase4Started": false
+}
