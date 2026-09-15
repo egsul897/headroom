@@ -1,0 +1,132 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 FINAL CLEAN RUN §1-§3 - frozen head, identities, versions",
+ "at": "2026-09-15T14:09:48.860Z",
+ "idChecks": {
+  "startingShaPin": {
+   "expected": "f3b885b12f5bc91fcf886b7b3f77e84ed26661c3",
+   "actual": "3df2210c27e4275b18cb646eae577976861be19e",
+   "exactMatch": false,
+   "isDescendantOfPin": true,
+   "filesChangedSincePin": [
+    "scripts/phase-3-601-final-certify.ts",
+    "scripts/phase-3-601-final-run.ts",
+    "scripts/phase-3-601-final-score.ts",
+    "scripts/phase-3-601-guard.ts"
+   ],
+   "allHarnessOnly": true,
+   "productionTreeIdentical": true,
+   "match": true
+  },
+  "workingTreeClean": {
+   "actual": "",
+   "match": true
+  },
+  "productionUnchangedSinceValidPassARun": {
+   "passARunPin": "f108ba2",
+   "treeAtPassARun": "3d363d0bf29e7da5ab1332fbf9097fdfa59257bac1eb960d9bf0d7c228806e03",
+   "treeNow": "3d363d0bf29e7da5ab1332fbf9097fdfa59257bac1eb960d9bf0d7c228806e03",
+   "match": true
+  },
+  "harnessFixesLimitedToHarness": {
+   "nonDocNonFixtureFilesChangedSincePassARun": [
+    "scripts/phase-3-601-clean-certify.ts",
+    "scripts/phase-3-601-clean-finalize.ts",
+    "scripts/phase-3-601-clean-rerun.ts",
+    "scripts/phase-3-601-clean-score.ts",
+    "scripts/phase-3-601-completion-certify.ts",
+    "scripts/phase-3-601-final-certify.ts",
+    "scripts/phase-3-601-final-run.ts",
+    "scripts/phase-3-601-final-score.ts",
+    "scripts/phase-3-601-guard.ts"
+   ],
+   "match": true
+  },
+  "sourceSha256": {
+   "expected": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+   "actual": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+   "match": true
+  },
+  "sectionTextSha256": {
+   "expected": "6b79685c94a08a9d27b484aaac52282ce92dbe9a7c3321bc38ff6504d12ec02a",
+   "actual": "6b79685c94a08a9d27b484aaac52282ce92dbe9a7c3321bc38ff6504d12ec02a",
+   "match": true
+  },
+  "sectionSpan": {
+   "expected": [
+    608901,
+    642524
+   ],
+   "actual": [
+    608901,
+    642524
+   ],
+   "match": true
+  },
+  "sectionChars": {
+   "expected": 33623,
+   "actual": 33623,
+   "match": true
+  },
+  "referenceSha256": {
+   "expected": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036",
+   "actual": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036",
+   "match": true
+  },
+  "referenceSlice": {
+   "expected": {
+    "total": 8,
+    "critical": 4,
+    "material": 4
+   },
+   "actual": {
+    "total": 8,
+    "critical": 4,
+    "material": 4
+   },
+   "match": true
+  }
+ },
+ "allIdentityChecksMatch": true,
+ "versions": {
+  "compilerAlgorithm": "semantic-accountability-compiler.v4",
+  "compilerPrompt": "semantic-accountability-compiler-prompt.v4",
+  "toolPolicy": "phase-3b1-tool-policy.v2",
+  "accountabilityAlgorithm": "semantic-accountability.v5",
+  "inventoryPrompt": "semantic-inventory-prompt.v5",
+  "sourceIdentityMigration": "source-identity-migration.v1",
+  "executionPolicy": "semantic-execution-mode.v1",
+  "shardPlanner": "semantic-compilation-shards.v1",
+  "shardBudget": {
+   "targetPrimaryChars": 12000,
+   "maxPrimaryChars": 24000,
+   "maxContextChars": 10000,
+   "maxContextEntryChars": 1800,
+   "maxUnitsPerShard": 16
+  },
+  "irSchema": "headroom-covenant-ir.v1",
+  "verifier": null
+ },
+ "harnessCode": {
+  "guard": "7ea15e10045fe6022f00d607527c4db7942550512d868e8a6657e99c2b98c8b8",
+  "certify": "d4add1d1fe620174ec2ddb022a3cc3355c0c1fbbb45e5c678f7f767b7ba7b0e2",
+  "run": "7d3bdce0f4b99fcea4a5bbeafdc305196cf26e768360ef724929ca1d68ae2458"
+ },
+ "costMethodology": {
+  "source": "docs/phase-3-final-601/01-cost-preflight.json",
+  "conservative": "worst observed rates x 1.25",
+  "perShardFloor": false,
+  "meanSubstitution": false
+ },
+ "referenceItems": {
+  "total": 8,
+  "critical": 4,
+  "material": 4,
+  "exposedToModel": false
+ },
+ "priorSpend": {
+  "voidUsd": 3.501676,
+  "lostPassAUsd": 5.291298,
+  "cumulativeUsd": 8.792974
+ },
+ "paidCallsAfterLatestHarnessFix": 0
+}

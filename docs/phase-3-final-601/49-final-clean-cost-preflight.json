@@ -1,0 +1,61 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 FINAL CLEAN RUN §5/§6 - cost preflight (frozen methodology)",
+ "at": "2026-09-15T14:09:49.265Z",
+ "rates": {
+  "passABatchMean": 0.431337,
+  "passABatchWorst": 0.627356,
+  "passABatchCalls": 38,
+  "passAGapMean": 0.3529920000000001,
+  "passAGapWorst": 0.47530800000000006,
+  "passAGapCalls": 5,
+  "passBMean": 0.000017264537354079804,
+  "passBWorst": 0.00003215094994361066,
+  "passBShards": 36,
+  "verifierSemanticReview": 0.32929600000000003,
+  "verifierCalls": 1
+ },
+ "deterministicPlan": {
+  "mode": "SHARDED",
+  "reason": "MULTIPLE_SHARDS_REQUIRED",
+  "planHash": "7be17413609ebdbda88ee601750bf1b21e015d790ce583f7572eb75c0083c5e9",
+  "shards": 6,
+  "oversizedShards": 0,
+  "plannerEstimatedInputTokens": 118179,
+  "passABatchesPerPass": 6,
+  "plannedWithEmptyInventory": true
+ },
+ "estimates": {
+  "meanRate": {
+   "passAUsd": 5.882,
+   "passBUsd": 2.0403,
+   "verifierUsd": 0.3863,
+   "totalUsd": 8.3086
+  },
+  "worstObservedRate": {
+   "passAUsd": 8.4789,
+   "passBUsd": 3.7996,
+   "verifierUsd": 0.3863,
+   "totalUsd": 12.6648
+  },
+  "conservative": {
+   "passAUsd": 10.5986,
+   "passBUsd": 4.7495,
+   "verifierUsd": 0.4829,
+   "totalUsd": 15.8309,
+   "safetyFactor": 1.25
+  }
+ },
+ "gate": {
+  "capUsd": 15.84,
+  "gatewayBalanceUsd": 23.76623,
+  "conservativeFitsCap": true,
+  "balanceCoversEstimate": true,
+  "passed": true
+ },
+ "priorSpend": {
+  "voidUsd": 3.501676,
+  "lostPassAUsd": 5.291298,
+  "cumulativeUsd": 8.792974
+ },
+ "decision": "CERTIFIED_CLEAR_TO_EXECUTE"
+}

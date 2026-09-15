@@ -1,0 +1,74 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 FINAL CLEAN RUN §4 - zero-cost certification of HD-1, HD-2 and HD-3 closures (0 model calls)",
+ "at": "2026-09-15T14:09:49.265Z",
+ "hd1": {
+  "liveInitialUsd": 15.830939,
+  "frozenEstimatorUsd": 15.830939,
+  "deltaUsd": 0,
+  "historicalExpectedUsd": 15.830939,
+  "agrees": true,
+  "firstPassACall": {
+   "admitted": true,
+   "conservativeRemaining": 15.830938891732458,
+   "capRemaining": 15.84,
+   "balanceRemaining": 23.76623
+  },
+  "certified": true
+ },
+ "hd2": {
+  "predicate": "passAPrerequisiteSatisfied (scripts/phase-3-601-guard.ts), imported by the paid runner",
+  "cases": [
+   {
+    "name": "INVENTORY_COVERAGE_GAP + items>0 + ensembleBuilt + authoritative>0",
+    "expected": true,
+    "actual": true,
+    "passed": true
+   },
+   {
+    "name": "INVENTORY_FAILED",
+    "expected": false,
+    "actual": false,
+    "passed": true
+   },
+   {
+    "name": "absent inventory",
+    "expected": false,
+    "actual": false,
+    "passed": true
+   },
+   {
+    "name": "zero items",
+    "expected": false,
+    "actual": false,
+    "passed": true
+   },
+   {
+    "name": "ensemble not built",
+    "expected": false,
+    "actual": false,
+    "passed": true
+   }
+  ],
+  "certified": true
+ },
+ "hd3": {
+  "helper": "scripts/phase-3-601-guard.ts persistAndReload (writeJsonDurable: write -> fsync -> close)",
+  "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-clean/certification/synthetic-frozen-inventory.json",
+  "existsAfterWrite": true,
+  "writtenSha256": "ea4d47816efd9e396d68c3473fddfec2873502c737a6334ef1cacb48b7bc0119",
+  "readSha256": "ea4d47816efd9e396d68c3473fddfec2873502c737a6334ef1cacb48b7bc0119",
+  "hashEqual": true,
+  "structurallyEqual": true,
+  "reloadedItemCount": 2,
+  "reloadedFrozenContentHash": "synthetic-8c9ae3fd43a2287d06ead19c61559774a2ff01461910ab0631eceaf2303f9c73",
+  "reloadedCandidateRef": "phase-3-final-601:chwy:6.01",
+  "reloadedSourceContextState": "COMPLETE_LOCAL_SOURCE",
+  "fileExistedBeforeSimulatedGate": true,
+  "simulatedGateResultOnReloaded": true,
+  "ordering": "persist -> reload -> gate (the gate only ever sees the reloaded object)",
+  "certified": true
+ },
+ "certified": true,
+ "decision": "CERTIFIED_CLEAR_TO_EXECUTE",
+ "paidCallsMade": 0
+}
