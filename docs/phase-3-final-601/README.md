@@ -156,3 +156,74 @@ applied **after** the run, touches no production code, produced no evidence in t
 A new pre-registered mission whose cap again covers the full $15.8309 conservative estimate. The identities, the
 deterministic plan and all three cost tiers reproduced exactly, and the guard now uses the same estimator as the
 gate, so that mission should reach a real Pass A on its first attempt.
+
+---
+
+# Clean rerun (artifacts 22-34)
+
+**Verdict: `PHASE3_601_HARNESS_DEFECT`** — $5.2913 spent of a $15.84 cap, Phase 3 not closed, Phase 4 not started.
+
+## What worked
+
+The mandatory §3 certification passed: `CERTIFIED_CLEAR_TO_EXECUTE`. The live guard's initial
+conservative-remaining was **$15.830939, bit-identical to the unrounded frozen estimator**, and both Pass A
+paths were probed admissible at zero cost. HD-1 is closed structurally, because the certification and the paid
+run now import one guard module, so the formula proved is the formula that runs.
+
+**Pass A ran to completion for the first time in this series.**
+
+| | Pass 1 | Pass 2 |
+|---|---|---|
+| Status | INVENTORY_COVERAGE_GAP | INVENTORY_COVERAGE_GAP |
+| Items | 284 | 290 |
+| Calls | 7 (6 batches + gap) | 7 (6 batches + gap) |
+| Cost | $2.6008 | $2.6905 |
+
+The ensemble built under STRICT compatibility: **322 canonical items, 252 corroborated, 70 single-run
+(32 / 38 by pass), 0 conflicted**, support-review fraction 0.1988, frozen at content hash `25203003…`.
+Anti-hallucination held perfectly: **0 items rejected as unverifiable** across both passes, with 252
+same-identity wordings merged. Source accountability: 255 stretches covered by inventory, 16 unaccounted,
+2 uninventoried values.
+
+## What went wrong: HD-2
+
+My §4 prerequisite gate demanded `INVENTORY_OK` from both passes. Both returned `INVENTORY_COVERAGE_GAP`,
+which is a **successful** Pass A that honestly discloses 16 unaccounted stretches. §4's enumerated stop
+conditions are: refused by the cost guard, throws, `INVENTORY_FAILED`, or no usable inventory due to
+harness/environment failure. None applied, and §4's own third requirement, that the ensemble be
+successfully constructed, was met. The gate was stricter than its specification and killed the run before
+Pass B.
+
+This is the same shape as HD-1. Both were harness gates stricter than the spec they implemented, and in
+both cases the over-strictness destroyed the run rather than protecting it. Production was not defective
+and was not changed.
+
+## Why the mission stops here
+
+§13 requires stopping rather than patching and continuing when a harness defect is found after paid calls.
+Independently, a full fresh run costs $15.8309 conservative against $10.5487 of remaining cap, so §7 would
+also forbid it. Reusing this mission's own 322-item inventory is permitted by §11 and would cost about
+$4.75 conservative for Pass B plus verifier, which **would** fit, but reaching it requires the patch §13
+prohibits. HD-2 is fixed in the harness anyway, after the run, with zero paid calls after the fix.
+
+## Artifacts
+
+`22`–`26` and `33`, `34` are real. `27`–`31` are committed as `produced: false`: scoring 8 reference items
+against a run with no compilation output would measure HD-2, not semantic quality. `32` records the trust
+counters as `NOT_MEASURABLE` and the quality gate as `NOT_EVALUABLE`, which is deliberately not the claim
+`PHASE3_601_NEEDS_SEMANTIC_ITERATION` would make, and carries the real Pass A evidence.
+
+§27 scorecard: 18 conditions, 9 PASS, 9 FAIL.
+
+## Regression
+
+Full suite 106 failing files / 161 failing tests / 3,168 passing, against a 107 / 162 baseline. **Zero new
+failures.** One file flipped to passing, `part-b-recert-finding4-independent`, characterised as a genuine
+flake by three isolated runs giving 12 passed, 1 failed, 12 passed with **zero `.ts` source files changed**
+since the pin. Build passes, lint clean, `tsc` shows the same 6 pre-existing errors.
+
+## Next step
+
+The 322-item ensemble inventory is frozen and directly reusable under §11. A follow-up mission can resume
+from it for roughly $4.75 conservative, covering Pass B, Pass C and the verifier, which is well inside a
+fresh $15.84 cap. Cumulative Section 6.01 spend so far is $8.792976 across the void run and this one.

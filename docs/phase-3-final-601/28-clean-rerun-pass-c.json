@@ -1,0 +1,9 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 CLEAN RERUN - global Pass C (\u00a714)",
+ "at": "2026-09-15T03:16:17.656611Z",
+ "produced": false,
+ "reason": "VOID - Pass B, Pass C and the verifier never executed. Harness defect HD-2: this mission's \u00a74 prerequisite gate required BOTH Pass A passes to report inventoryStatus === 'INVENTORY_OK'. Both reported INVENTORY_COVERAGE_GAP, which is a SUCCESSFUL Pass A that produced 284 and 290 usable items and honestly disclosed that 16 stretches of source remain unaccounted after the targeted gap re-inventory. The ensemble built with 322 canonical items. \u00a74's enumerated stop conditions are: refused by the cost guard, throws, returns INVENTORY_FAILED, or returns no usable inventory due to harness/environment failure. INVENTORY_COVERAGE_GAP is none of them, and \u00a74's own third requirement (ensemble successfully constructed) was met. The gate was stricter than the specification and destroyed the run. Per \u00a713 the mission stops rather than patching and continuing, so this artifact is intentionally NOT produced.",
+ "passBSpendUsd": 0,
+ "referenceSetReachedNoPrompt": true,
+ "note": "the reference set was never read for scoring; \u00a717 requires compiler and verifier outputs to be frozen first and they do not exist"
+}

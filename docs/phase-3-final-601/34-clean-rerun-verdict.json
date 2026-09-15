@@ -1,0 +1,144 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 CLEAN RERUN \u00a727 - final verdict",
+ "at": "2026-09-15T03:19:47.919359Z",
+ "conditions": [
+  {
+   "id": 1,
+   "condition": "HD-1 guard certification passes before spend",
+   "status": "PASS",
+   "evidence": "CERTIFIED_CLEAR_TO_EXECUTE; live guard $15.830939, delta vs unrounded frozen estimator exactly 0"
+  },
+  {
+   "id": 2,
+   "condition": "first Pass-A call admissible before spend",
+   "status": "PASS",
+   "evidence": "both Pass A paths probed admissible at zero cost; the first real call was then admitted at $15.830939"
+  },
+  {
+   "id": 3,
+   "condition": "both real Pass-A passes execute",
+   "status": "PASS",
+   "evidence": "pass 1 INVENTORY_COVERAGE_GAP 284 items / 7 calls / $2.6008; pass 2 INVENTORY_COVERAGE_GAP 290 items / 7 calls / $2.6905"
+  },
+  {
+   "id": 4,
+   "condition": "ensemble builds",
+   "status": "PASS",
+   "evidence": "322 canonical items, 252 corroborated, 70 single-run, 0 conflicted, STRICT compatibility"
+  },
+  {
+   "id": 5,
+   "condition": "Pass B never begins without valid Pass A",
+   "status": "PASS",
+   "evidence": "held - but see HD-2: the gate was stricter than \u00a74 and stopped Pass B after a SUCCESSFUL Pass A"
+  },
+  {
+   "id": 6,
+   "condition": "actual production entry point executes",
+   "status": "FAIL",
+   "evidence": "compileCovenantToIR never invoked (HD-2)"
+  },
+  {
+   "id": 7,
+   "condition": "no historical inventory/result reuse",
+   "status": "PASS",
+   "evidence": "no frozenInventory, no priorShardResults; Pass A produced fresh in-mission"
+  },
+  {
+   "id": 8,
+   "condition": "automatic mode selection executes",
+   "status": "FAIL",
+   "evidence": "not reached"
+  },
+  {
+   "id": 9,
+   "condition": "global Pass C executes",
+   "status": "FAIL",
+   "evidence": "not reached"
+  },
+  {
+   "id": 10,
+   "condition": "independent verifier executes",
+   "status": "FAIL",
+   "evidence": "not reached"
+  },
+  {
+   "id": 11,
+   "condition": "all hard trust counters measured and zero",
+   "status": "FAIL",
+   "evidence": "none measurable without Pass B/C output"
+  },
+  {
+   "id": 12,
+   "condition": "no silent CRITICAL miss",
+   "status": "FAIL",
+   "evidence": "NOT_MEASURABLE - reference comparison not produced"
+  },
+  {
+   "id": 13,
+   "condition": "no incorrect CRITICAL authoritative claim",
+   "status": "FAIL",
+   "evidence": "NOT_MEASURABLE - reference comparison not produced"
+  },
+  {
+   "id": 14,
+   "condition": "quality operationally credible",
+   "status": "FAIL",
+   "evidence": "NOT_EVALUABLE - no compilation output"
+  },
+  {
+   "id": 15,
+   "condition": "spend <= $15.84",
+   "status": "PASS",
+   "evidence": "$5.2913 of $15.84"
+  },
+  {
+   "id": 16,
+   "condition": "no mid-run fix",
+   "status": "PASS",
+   "evidence": "HD-2 was fixed only after the run stopped; 0 paid calls after the fix; 0 production code touched"
+  },
+  {
+   "id": 17,
+   "condition": "no new regression",
+   "status": "PASS",
+   "evidence": "0 new failures; one file and one test flipped to passing, characterised as a genuine flake with 0 .ts source files changed"
+  },
+  {
+   "id": 18,
+   "condition": "build passes",
+   "status": "PASS",
+   "evidence": "npm run build exit 0"
+  }
+ ],
+ "summary": {
+  "PASS": 10,
+  "FAIL": 8,
+  "total": 18
+ },
+ "verdict": "PHASE3_601_HARNESS_DEFECT",
+ "rootCause": {
+  "id": "HD-2",
+  "layer": "HARNESS",
+  "productionDefect": false,
+  "statement": "the \u00a74 Pass-A prerequisite gate in scripts/phase-3-601-clean-rerun.ts required inventoryStatus === 'INVENTORY_OK' from both passes. Both returned INVENTORY_COVERAGE_GAP, which is a SUCCESSFUL Pass A that produced 284 and 290 usable items and disclosed 16 unaccounted source stretches. The ensemble built with 322 canonical items. \u00a74's enumerated stop conditions are: refused by the cost guard, throws, INVENTORY_FAILED, or no usable inventory due to harness/environment failure - none of which applied - and \u00a74's own third requirement (ensemble successfully constructed) was met. The gate was stricter than its specification and killed the run before Pass B.",
+  "sameShapeAsHd1": "both defects were harness gates stricter than the specification they implemented; in both cases the over-strictness destroyed the run rather than protecting it",
+  "fixedAfterRun": true,
+  "paidCallsAfterFix": 0,
+  "productionCodeTouched": 0,
+  "perMissionRule": "\u00a713 requires STOP rather than patch-and-continue when a new harness defect is found after paid calls"
+ },
+ "whyNoRerunInThisMission": {
+  "rule": "\u00a713 forbids patching and continuing after a defect discovered post-spend",
+  "affordabilityNote": "independently, a full fresh run costs $15.8309 conservative against $10.5487 of remaining cap, so \u00a77 would also forbid it. Reusing THIS mission's own 322-item inventory (permitted by \u00a711) would cost roughly $4.75 conservative for Pass B plus verifier and WOULD fit, but reaching it requires the patch \u00a713 prohibits."
+ },
+ "evidenceObtained": "a complete, real DUAL_PASS_ENSEMBLE Pass A over Section 6.01 - the first in this mission series - frozen at content hash 25203003989dda12a9e8a26d3953d6668e2b0ff0907988b9db1f3e0b452d75e3 and directly reusable by the next mission under \u00a711",
+ "cumulativeCost": {
+  "thisMissionUsd": 5.2913,
+  "priorVoidMissionUsd": 3.501676,
+  "combinedUsd": 8.792976,
+  "thisMissionCapUsd": 15.84
+ },
+ "phase3Closed": false,
+ "phase4Started": false
+}

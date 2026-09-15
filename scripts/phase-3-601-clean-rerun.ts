@@ -62,7 +62,15 @@ void (async () => {
   const p1 = dual?.passes[0]?.inventory ?? null, p2 = dual?.passes[1]?.inventory ?? null;
   const inv = dual?.inventory ?? null;
   const ens = (inv as unknown as { ensemble?: Record<string, unknown> } | null)?.ensemble ?? null;
-  const passAOk = !!dual && p1?.inventoryStatus === "INVENTORY_OK" && p2?.inventoryStatus === "INVENTORY_OK" && dual.ensembleBuilt === true && (inv?.items.length ?? 0) > 0;
+  // HARNESS DEFECT HD-2, fixed after the 2026-09-15 run (see docs/phase-3-final-601/README.md): this gate previously
+  // demanded inventoryStatus === "INVENTORY_OK" from both passes. Both returned INVENTORY_COVERAGE_GAP - a SUCCESSFUL
+  // Pass A that produced 284/290 usable items and honestly disclosed 16 unaccounted source stretches - and the ensemble
+  // built with 322 canonical items, so the run was killed before Pass B for a quality disclosure rather than a failure.
+  // §4's enumerated stop conditions are: refused by the cost guard, throws, INVENTORY_FAILED, or no usable inventory
+  // due to harness/environment failure. The gate must test exactly those and nothing stricter: a gate that is stricter
+  // than its specification destroys runs instead of protecting them, which is the same failure shape as HD-1.
+  const usable = (i: typeof p1) => !!i && i.inventoryStatus !== "INVENTORY_FAILED" && i.items.length > 0;
+  const passAOk = !!dual && usable(p1) && usable(p2) && dual.ensembleBuilt === true && (inv?.items.length ?? 0) > 0;
   if (dual) console.log(`  -> pass1 ${p1?.inventoryStatus} items=${p1?.items.length} | pass2 ${p2?.inventoryStatus} items=${p2?.items.length} | ensembleBuilt=${dual.ensembleBuilt} canonical=${inv?.items.length}`);
 
   const writePassA = (stopped: boolean, reason: string | null) => {
