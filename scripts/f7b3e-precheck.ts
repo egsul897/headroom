@@ -5,6 +5,7 @@
  * Makes no model calls. One gateway balance read only.
  */
 import { createHash } from "node:crypto";
+import { execSync } from "node:child_process";
 import { F7A_BASELINE, freezeAndPlan, gatewayCredits, gitSha, loadGatewayKey, readJson, renderFirstTurns, writeJson } from "./f7b-lib";
 import { costModel, estimateShardUsd, loadFrozenStage1, loadStage2 } from "./f7b3-lib";
 
@@ -17,6 +18,15 @@ const CAP_USD = Number(process.env.F7B3E_CAP_USD ?? "9.5");
 
 interface ManifestRow { ordinal: number; shardId: string; shardHash: string; wave: string; estimatedFirstTurnInputTokens: number }
 
+/** §1/§34: the starting SHA must be an ancestor of HEAD and no production path may differ between them. */
+function productionScopeSinceStart(startSha: string): { startingShaIsAncestor: boolean; changedFiles: string[]; productionChanged: string[]; pass: boolean } {
+  const ancestor = (() => { try { execSync(`git merge-base --is-ancestor ${startSha} HEAD`, { stdio: "ignore" }); return true; } catch { return false; } })();
+  const changed = execSync(`git diff --name-only ${startSha} HEAD`, { encoding: "utf8" }).split("\n").filter(Boolean)
+    .concat(execSync("git diff --name-only HEAD", { encoding: "utf8" }).split("\n").filter(Boolean));
+  const production = changed.filter((f) => /^(lib|app|components|prisma)\//.test(f));
+  return { startingShaIsAncestor: ancestor, changedFiles: [...new Set(changed)], productionChanged: production, pass: ancestor && production.length === 0 };
+}
+
 (async () => {
   const frozen = freezeAndPlan();
   const { plan } = frozen;
@@ -27,7 +37,7 @@ interface ManifestRow { ordinal: number; shardId: string; shardHash: string; wav
   // ---- §1 baseline identity
   const inv = frozen.callerInput.frozenInventory!;
   const baseline = {
-    startingSha: { expected: STARTING_SHA, actual: gitSha(), pass: gitSha() === STARTING_SHA },
+    startingShaScope: { expected: STARTING_SHA, head: gitSha(), ...productionScopeSinceStart(STARTING_SHA) },
     planHash: { expected: F7A_BASELINE.planHash, actual: plan.planHash, pass: plan.planHash === F7A_BASELINE.planHash },
     shardCount: { actual: plan.shards.length, pass: plan.shards.length === 36 },
     shardHashesMatchManifest: { pass: manifest.manifest.every((m) => plan.shards.find((s) => s.shardId === m.shardId)?.shardHash === m.shardHash), checked: manifest.manifest.length },

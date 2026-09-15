@@ -1,0 +1,12 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE - quantitative reference audit and extra-output / hallucination audit (\u00a723, \u00a724)",
+ "at": "2026-09-15T00:17:30.123517Z",
+ "produced": false,
+ "reason": "PHASE3_601_COST_BOUND_BEFORE_START - the \u00a712 pre-run gate failed. Under the cost methodology committed in docs/phase-3-final-chewy/02-cost-preflight.json, applied unchanged, the conservative projected total for Section 6.01 is $15.8309, which exceeds both the $11.50 hard cap and the $12.559204 gateway balance. Zero paid calls were made, so this artifact, which requires paid production execution, is intentionally NOT produced. It is committed as an explicit placeholder so the \u00a731 artifact list is complete and no absent result can be mistaken for a lost one.",
+ "paidCallsMade": 0,
+ "spendUsd": 0,
+ "dependsOn": [
+  "01-cost-preflight.json \u00a712 bound decision",
+  "02-paid-ledger.json (0 calls)"
+ ]
+}

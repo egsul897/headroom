@@ -1,0 +1,94 @@
+{
+ "artifact": "F-7C §45/§46 - regression: full suite at the starting SHA vs the activated tree, failing identities diffed; targeted suites; build",
+ "startingSha": "c9b28224e118f6a5e54f99da88715da110ad7dee",
+ "fullSuite": {
+  "before": {
+   "testFilesFailed": 108,
+   "testsFailed": 163,
+   "testsPassed": 3125,
+   "testsTotal": 3812
+  },
+  "after": {
+   "testFilesFailed": 107,
+   "testsFailed": 162,
+   "testsPassed": 3152,
+   "testsTotal": 3838
+  },
+  "failingFileSetDiff": {
+   "onlyBefore": [
+    "tests/contract-model/part-b-recert-finding4-independent.test.ts"
+   ],
+   "onlyAfter": []
+  },
+  "failingTestIdentityDiff": {
+   "onlyBefore": [
+    "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows"
+   ],
+   "onlyAfter": []
+  },
+  "missionBaselineReference": {
+   "failingFiles": 107,
+   "failingTests": 162
+  },
+  "concurrentRunNote": "The two full suites and a Next build ran concurrently. Under that load ONE wall-clock timing test failed in the starting-SHA worktree only (part-b-recert-finding4-independent: bare-or chain wall-clock growth must be sub-quadratic). It is a timing assertion, not a semantic one, and it imports only semantic-coverage/unit-hypothesis, which F-7C does not touch.",
+  "isolatedRerun": {
+   "file": "tests/contract-model/part-b-recert-finding4-independent.test.ts",
+   "startingShaWorktree": {
+    "passed": 12,
+    "failed": 0
+   },
+   "activatedTree": {
+    "passed": 12,
+    "failed": 0
+   },
+   "conclusion": "the disappearance was load-induced flakiness at baseline, not a code difference"
+  },
+  "reconciled": {
+   "before": {
+    "testFilesFailed": 107,
+    "testsFailed": 162
+   },
+   "after": {
+    "testFilesFailed": 107,
+    "testsFailed": 162
+   },
+   "matchesMissionBaseline": true
+  }
+ },
+ "failingSetUnchanged": true,
+ "f7cActivationTests": {
+  "file": "tests/contract-model/f7c-production-activation.test.ts",
+  "passed": 26,
+  "failed": 0
+ },
+ "targetedSuites": "F-7A planner/stitcher 31, F-7B transport 21, F-7B.2 attribution 16, F-7B.3B conflict 15, F-7B.3D scorer 13, compiler suites (22 files / 267 tests), accountability support-trust 10, cache cross-tenant 6 - all green on the activated tree (run before the full suite)",
+ "typecheck": {
+  "command": "npx tsc --noEmit -p tsconfig.json",
+  "nonFoundationAuditErrors": 0
+ },
+ "lint": {
+  "files": [
+   "compile.ts",
+   "bounded-composition.ts",
+   "execution-mode.ts",
+   "shard-executor.ts",
+   "shard-execution.ts",
+   "cache.ts",
+   "types.ts",
+   "index.ts",
+   "f7c-production-activation.test.ts",
+   "f7c-replay-chewy.ts",
+   "f7c-monolithic-differential.ts"
+  ],
+  "exit": 0
+ },
+ "build": {
+  "command": "npm run build",
+  "exit": 0,
+  "compiledSuccessfully": true,
+  "note": "first attempt failed on a type error in scripts/f7c-replay-chewy.ts (Next type-checks scripts/); fixed with an explicit cast and rebuilt clean"
+ },
+ "paidCalls": 0,
+ "spendUsd": 0,
+ "newFailures": 0
+}

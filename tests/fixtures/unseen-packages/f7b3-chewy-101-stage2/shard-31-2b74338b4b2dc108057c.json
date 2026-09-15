@@ -1,0 +1,1783 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:2b74338b4b2dc108057c",
+  "shardHash": "ee58b2e5782a89d8008d115ac62448eebfaeaa49042b6d19e60bea095320cc61",
+  "ordinal": 31,
+  "ownedUnits": 16,
+  "sourceChars": 9340,
+  "contextEntries": 1,
+  "contextChars": 225,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 0,
+  "ownedMaterialItems": 0,
+  "estimatedFirstTurnInputTokens": 22731,
+  "preCallEstimate": {
+   "inputTokens": 74785,
+   "outputTokens": 41500,
+   "usd": 0.56457
+  },
+  "actual": {
+   "inputTokens": 151291,
+   "outputTokens": 19619,
+   "turns": 5,
+   "latencyMs": 173240,
+   "costUsd": 0.498772,
+   "attemptCount": 5,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED",
+   "DEFINITION_COMPLETENESS_SUSPECT"
+  ],
+  "toolCalls": 4,
+  "toolCallNames": [
+   "getDefinition",
+   "getDefinition",
+   "getDefinition",
+   "getDefinition"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 17,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 0,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "valuesRepresented": 0,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {}
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "SOFR Administrator's Website",
+   "Sold Entity or Business"
+  ],
+  "unresolvedIssues": [
+   "[definition[d3]] the term 'Excluded Swap Obligations' is used but not declared anywhere in this instrument or related package documents (confirmed via definition lookup), so the scope of the carve-out cannot be faithfully represented",
+   "[definition[d15]] attempted retrieval of 'Sold Entity or Business' directly (not independently declared) and of 'Consolidated EBITDA' (the cross-referenced source); the Consolidated EBITDA definition is extremely long and the returned text was truncated before reaching the sub-clause that actually defines 'Sold Entity or Business', so its operative meaning could not be confirmed from available evidence",
+   "This §1.01 excerpt is a pure Definitions article batch (Secured Cash Management Obligations through SONIA); no independently operative permission/prohibition/ratio-test rules appear in the supplied text, so no WireRule or WireSharedCapacity outputs were produced - only WireDefinition outputs.",
+   "The FROZEN SEMANTIC INVENTORY for this submission reported an INVENTORY_COVERAGE_GAP (721 stretches unaccounted, gap re-inventory call failed with a gateway timeout) and supplied no resolvable inventoryItemIds to this compiler; consequently no inventoryItemIds could be attached to any node and inventoryDispositions is empty. This gap should be treated as an open accountability item for review, not as evidence that the definitions below are complete against the frozen inventory.",
+   "Cross-reference 'Section 4.01(a)(ii)' (within Security Documents) was already reported by Phase 2 as OUT_OF_SCOPE due to source-context budget exhaustion; not re-requested per the no-duplicate-request policy. It does not affect the represented meaning of 'Security Documents' itself, which merely names it as one of several qualifying sections.",
+   "Cross-reference 'Article 1, Rule 1-02(w)(2) of Regulation S-X' (within Significant Subsidiary) is an external SEC regulation, not an internal document section (confirmed NOT_FOUND as an internal structural node), and is represented as-is via the definition's own excerpt.",
+   "'Sold Entity or Business' required retrieving the very large 'Consolidated EBITDA' definition; the returned text was truncated before reaching the sub-clause that defines this term, so its substantive meaning is MISSING_CONTEXT despite two good-faith retrieval attempts.",
+   "'Excluded Swap Obligations' (a carve-out inside 'Secured Obligations') and standalone lookup of 'Sold Entity or Business' were both confirmed not independently declared anywhere in the instrument package via direct tool lookup."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:2b74338b4b2dc108057c",
+  "shardHash": "ee58b2e5782a89d8008d115ac62448eebfaeaa49042b6d19e60bea095320cc61",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:9a1c5ec9bd43d232e62459c7",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Secured Cash Management Obligations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Cash Management Services",
+      "Administrative Agent",
+      "Affiliate",
+      "Effective Date",
+      "Lender",
+      "Agent",
+      "Restricted Parties",
+      "Initial Borrower",
+      "Exhibit L"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full categorical definition text captured; term is a list of obligation categories, not a numeric formula."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the due and punctual payment and performance of all obligations ... in respect of Cash Management Services ... that are (a) owed to either Administrative Agent or any of its Affiliates, (b) owed on the Effective Date to a Person that is a Lender or an Affiliate of a Lender ..., (c) owed to a Person that is an Agent, a Lender or an Affiliate of an Agent or Lender at the time such obligations are incurred or (d) owed to a Person ... designated by the Initial Borrower ... substantially in the form of Exhibit L ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f42a0a300858370141f88a19",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Secured Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Indebtedness",
+      "Restricted Party",
+      "Lien"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Short, fully self-contained categorical definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any Indebtedness of any Restricted Party secured by a Lien."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:91a42ba33c48f944b609d4cd",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Secured Obligations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"(c) the Secured Swap Obligations (excluding with respect to any Loan Party, Excluded Swap Obligations of such Loan Party)\"",
+      "semanticDescription": "the carve-out excluding, with respect to any Loan Party, that Loan Party's 'Excluded Swap Obligations' from clause (c) (Secured Swap Obligations)",
+      "reason": "the term 'Excluded Swap Obligations' is used but not declared anywhere in this instrument or related package documents (confirmed via definition lookup), so the scope of the carve-out cannot be faithfully represented",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:bbcb3dad5ce226e8ff8a7065"
+     },
+     "dependsOnTerms": [
+      "Loan Document Obligations",
+      "Secured Cash Management Obligations",
+      "Secured Swap Obligations",
+      "Excluded Swap Obligations",
+      "Loan Party"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Overall three-part structure ((a) Loan Document Obligations, (b) Secured Cash Management Obligations, (c) Secured Swap Obligations) is fully captured and each of (a)/(b)/(c) is itself a resolvable defined term, but the material carve-out for 'Excluded Swap Obligations' cannot be represented because that term is undefined anywhere in the available instrument package.",
+      "the term 'Excluded Swap Obligations' is used but not declared anywhere in this instrument or related package documents (confirmed via definition lookup), so the scope of the carve-out cannot be faithfully represented"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) the Loan Document Obligations, (b) the Secured Cash Management Obligations and (c) the Secured Swap Obligations (excluding with respect to any Loan Party, Excluded Swap Obligations of such Loan Party)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:00bd57a1481d5cb833b97a18",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Secured Parties",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Lender",
+      "Administrative Agent",
+      "Collateral Agent",
+      "Secured Cash Management Obligations",
+      "Swap Agreement",
+      "Secured Swap Obligations"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained enumeration of secured party categories."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) each Lender, (b) the Administrative Agent and Collateral Agent, (c) each Person to whom any Secured Cash Management Obligations are owed, (d) each counterparty to any Swap Agreement the obligations under which constitute Secured Swap Obligations and (e) the permitted successors and assigns of each of the foregoing."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:baa3ed24c4c2931d2230bf6d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Secured Swap Obligations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Swap Agreement",
+      "Administrative Agent",
+      "Affiliate",
+      "Effective Date",
+      "Lender",
+      "Agent",
+      "Initial Borrower",
+      "Exhibit M"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full categorical definition text captured; parallel structure to Secured Cash Management Obligations."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the due and punctual payment and performance of all obligations ... under each Swap Agreement that (a) is with a counterparty that is an Administrative Agent or any of its Affiliates, (b) is in effect on the Effective Date with a counterparty that is a Lender or an Affiliate of a Lender ..., (c) is entered into after the Effective Date with any counterparty that is a Lender, an Agent or an Affiliate ... or (d) is entered into with any counterparty ... designated by the Initial Borrower ... substantially in the form of Exhibit M ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:047fd825c4da5bcc9e3c6175",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Security Documents",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Collateral Agreement",
+      "Collateral and Guarantee Requirement",
+      "Secured Obligations"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition's own text is fully quoted; the enumerated internal cross-references (Collateral and Guarantee Requirement, Section 4.01(a)(ii), 5.11, 5.12, 5.14) merely name which sections' security agreements qualify and do not need to be individually expanded to represent this term's own meaning. Section 4.01(a)(ii) itself could not be expanded (source-context budget exhausted per Phase 2 retrieval) and is preserved below as an unresolved reference rather than guessed."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the Collateral Agreement and each other security agreement or pledge agreement executed and delivered pursuant to the Collateral and Guarantee Requirement, Section 4.01(a)(ii), 5.11, 5.12 or 5.14 to secure any of the Secured Obligations."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:08c984a39703be76bd63d956",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Senior Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Indebtedness",
+      "ABL Facility",
+      "Guarantee",
+      "Hedging Obligations",
+      "Cash Management Obligations",
+      "Borrowers"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full four-clause inclusion list and five-item exclusion proviso captured verbatim; this is a categorical (non-arithmetic) definition and is fully self-contained."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(1) all Indebtedness ... under the ABL Facility ... or the Loans and related Guarantees ...; (2) all (a) Hedging Obligations ... and (b) Cash Management Obligations ...; provided that such Hedging Obligations and Cash Management Obligations ... are permitted to be incurred under the terms of this Agreement; (3) any other Indebtedness ... permitted to be incurred under the terms of this Agreement, unless ... subordinated ...; and (4) all obligations with respect to the items listed in the preceding clauses (1), (2) and (3); provided, however, that Senior Indebtedness shall not include: (a) any obligation of such Person to the Borrowers or any of their Subsidiaries; (b) any liability for federal, state, local or other taxes ...; (c) any accounts payable or other liability to trade creditors arising in the ordinary course of business; (d) any Indebtedness ... subordinate or junior in right of payment ...; or (e) that portion of any Indebtedness which at the time of incurrence is incurred in violation of this Agreement."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:25cd29282367a9907b6a7145",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Senior Representative",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "with respect to any series of applicable Indebtedness, the trustee, administrative agent, collateral agent, security agent or similar agent under the indenture or agreement pursuant to which such Indebtedness is issued, incurred or otherwise obtained ..., and each of their successors in such capacities."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:b8cb10594d73b9f6ec918bd1",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Senior Secured Leverage Ratio",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DIVIDE",
+      "type": "NUMBER",
+      "exprId": "ir-expr:d56c0ba382c4764ec841ded3",
+      "numerator": {
+       "kind": "METRIC_REFERENCE",
+       "type": "MONEY",
+       "metricName": "Consolidated Senior Secured Debt",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:2c3c610d9b78983da576380e"
+      },
+      "denominator": {
+       "kind": "METRIC_REFERENCE",
+       "type": "MONEY",
+       "metricName": "Consolidated EBITDA",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Consolidated Senior Secured Debt",
+      "Excluded Revolving Loans",
+      "Consolidated EBITDA",
+      "Test Period"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The ratio's two components and division structure are stated explicitly; the categorical exclusion of 'Excluded Revolving Loans' from the numerator metric is a scope qualifier on that metric (captured in its excerpt) rather than a separate arithmetic operation, so it does not need its own subtraction node to faithfully represent this definition's stated formula."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the ratio of (a) Consolidated Senior Secured Debt (excluding any Excluded Revolving Loans) as of such date to (b) Consolidated EBITDA for the Test Period as of such date."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:aa52e9164eea49375e0b0f04",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Significant Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Subsidiary",
+      "Effective Date"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition text fully quoted; it incorporates an external SEC regulation (Regulation S-X Rule 1-02(w)(2)) by cross-reference, which is a fixed external standard rather than an internal document provision needing expansion to understand this term's own meaning."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any Restricted Subsidiary that would be a \"significant subsidiary\" as defined in Article 1, Rule 1-02(w)(2) of Regulation S-X, promulgated pursuant to the Securities Act, as such regulation is in effect on the Effective Date."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f8995ca26365c9e56826772d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Similar Business",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Party",
+      "Capital Stock",
+      "Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full four-clause definition plus deeming sentence captured verbatim."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) any business conducted or proposed to be conducted by the Restricted Parties on the Effective Date, (b) any businesses, services and activities ... similar, complementary, reasonably related, synergistic, incidental or ancillary thereto ..., (c) any business that in the Initial Borrower's good-faith determination constitutes a reasonable diversification ... and (d) a Person conducting a business, service or activity specified in clauses (a), (b) and (c), and any Subsidiary thereof. For the avoidance of doubt, any Person that invests in or owns Capital Stock or Indebtedness of another Person that is engaged in a Similar Business shall be deemed to be engaged in a Similar Business."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3968db2e36a2f7c231f6a957",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "SOFR",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "SOFR Administrator"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained rate definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "a rate equal to the secured overnight financing rate as administered by the SOFR Administrator."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:09e287f952cb06df87ee0eeb",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "SOFR Administrator",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "NYFRB"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the NYFRB (or a successor administrator of the secured overnight financing rate)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:fc23d2a8dba5d93b0c4b3d20",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "SOFR Administrator's Website",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "SOFR Administrator",
+      "NYFRB"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained definition."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the NYFRB's website, currently at http://www.newyorkfed.org, or any successor source for the secured overnight financing rate identified as such by the SOFR Administrator from time to time."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:a7905c9059ab253538ad414b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Sold Entity or Business",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"'Sold Entity or Business' has the meaning assigned to such term in the definition of 'Consolidated EBITDA.'\"",
+      "semanticDescription": "the substantive meaning of 'Sold Entity or Business', which this clause states is defined entirely inside the definition of 'Consolidated EBITDA'",
+      "reason": "attempted retrieval of 'Sold Entity or Business' directly (not independently declared) and of 'Consolidated EBITDA' (the cross-referenced source); the Consolidated EBITDA definition is extremely long and the returned text was truncated before reaching the sub-clause that actually defines 'Sold Entity or Business', so its operative meaning could not be confirmed from available evidence",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:ad9adbdfd83a43ab7df352e3"
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "This term is a pure cross-reference into the 'Consolidated EBITDA' definition; that definition was retrieved but returned truncated before reaching the 'Sold Entity or Business' sub-clause, so the actual substantive meaning is not confirmable from the evidence obtained.",
+      "attempted retrieval of 'Sold Entity or Business' directly (not independently declared) and of 'Consolidated EBITDA' (the cross-referenced source); the Consolidated EBITDA definition is extremely long and the returned text was truncated before reaching the sub-clause that actually defines 'Sold Entity or Business', so its operative meaning could not be confirmed from available evidence"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in the definition of \"Consolidated EBITDA.\""
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3fdf3e7e9ebe99ee4bd5e8a8",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Solvent",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Fair Value",
+      "Present Fair Saleable Value",
+      "Liabilities",
+      "Borrowers"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full four-part balance-sheet/cash-flow/capital-adequacy solvency test captured verbatim; categorical, not a numeric formula requiring external values."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) the Fair Value of the assets of the Borrowers and their Subsidiaries ... exceeds their Liabilities ...; (b) the Present Fair Saleable Value of the assets ... exceeds the amount that will be required to pay the probable liability ... as such Liabilities become absolute and matured, (c) the Borrowers and their Subsidiaries ... are able to pay their Liabilities ... as such Liabilities become absolute and matured, and (d) the Borrowers and their Subsidiaries ... are not engaged in, and are not about to engage in, business for which they have unreasonably small capital."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:07d9f15d51011cf0e86e2306",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "SONIA",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "SONIA Administrator",
+      "Business Day",
+      "Initial Borrower",
+      "Administrative Agent",
+      "Lender"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Rate definition plus its own benchmark-replacement amendment mechanism captured verbatim; the replacement mechanism is a procedural amendment-authorization clause, not a quantitative basket, and is fully represented by the excerpt/description rather than an arithmetic expression."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "with respect to any Business Day, a rate per annum equal to the Sterling Overnight Index Average for such Business Day published by the SONIA Administrator on the SONIA Administrator's Website on the immediately succeeding Business Day. ... if the Initial Borrower and the Administrative Agent reasonably determine in good faith that SONIA can no longer be determined ... and a comparable successor rate ... becomes available, then the Initial Borrower and the Administrative Agent may amend this Agreement ... without the consent of any Lender to (a) replace SONIA ... with the applicable successor rate ... and (b) make other conforming changes ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED",
+   "DEFINITION_COMPLETENESS_SUSPECT"
+  ],
+  "unresolvedIssues": [
+   "[definition[d3]] the term 'Excluded Swap Obligations' is used but not declared anywhere in this instrument or related package documents (confirmed via definition lookup), so the scope of the carve-out cannot be faithfully represented",
+   "[definition[d15]] attempted retrieval of 'Sold Entity or Business' directly (not independently declared) and of 'Consolidated EBITDA' (the cross-referenced source); the Consolidated EBITDA definition is extremely long and the returned text was truncated before reaching the sub-clause that actually defines 'Sold Entity or Business', so its operative meaning could not be confirmed from available evidence",
+   "This §1.01 excerpt is a pure Definitions article batch (Secured Cash Management Obligations through SONIA); no independently operative permission/prohibition/ratio-test rules appear in the supplied text, so no WireRule or WireSharedCapacity outputs were produced - only WireDefinition outputs.",
+   "The FROZEN SEMANTIC INVENTORY for this submission reported an INVENTORY_COVERAGE_GAP (721 stretches unaccounted, gap re-inventory call failed with a gateway timeout) and supplied no resolvable inventoryItemIds to this compiler; consequently no inventoryItemIds could be attached to any node and inventoryDispositions is empty. This gap should be treated as an open accountability item for review, not as evidence that the definitions below are complete against the frozen inventory.",
+   "Cross-reference 'Section 4.01(a)(ii)' (within Security Documents) was already reported by Phase 2 as OUT_OF_SCOPE due to source-context budget exhaustion; not re-requested per the no-duplicate-request policy. It does not affect the represented meaning of 'Security Documents' itself, which merely names it as one of several qualifying sections.",
+   "Cross-reference 'Article 1, Rule 1-02(w)(2) of Regulation S-X' (within Significant Subsidiary) is an external SEC regulation, not an internal document section (confirmed NOT_FOUND as an internal structural node), and is represented as-is via the definition's own excerpt.",
+   "'Sold Entity or Business' required retrieving the very large 'Consolidated EBITDA' definition; the returned text was truncated before reaching the sub-clause that defines this term, so its substantive meaning is MISSING_CONTEXT despite two good-faith retrieval attempts.",
+   "'Excluded Swap Obligations' (a carve-out inside 'Secured Obligations') and standalone lookup of 'Sold Entity or Business' were both confirmed not independently declared anywhere in the instrument package via direct tool lookup."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 151291,
+   "outputTokens": 19619,
+   "costUsd": 0.498772
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED",
+   "DEFINITION_COMPLETENESS_SUSPECT"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:9a1c5ec9bd43d232e62459c7",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Secured Cash Management Obligations",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Cash Management Services",
+     "Administrative Agent",
+     "Affiliate",
+     "Effective Date",
+     "Lender",
+     "Agent",
+     "Restricted Parties",
+     "Initial Borrower",
+     "Exhibit L"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Full categorical definition text captured; term is a list of obligation categories, not a numeric formula."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the due and punctual payment and performance of all obligations ... in respect of Cash Management Services ... that are (a) owed to either Administrative Agent or any of its Affiliates, (b) owed on the Effective Date to a Person that is a Lender or an Affiliate of a Lender ..., (c) owed to a Person that is an Agent, a Lender or an Affiliate of an Agent or Lender at the time such obligations are incurred or (d) owed to a Person ... designated by the Initial Borrower ... substantially in the form of Exhibit L ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f42a0a300858370141f88a19",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Secured Indebtedness",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Indebtedness",
+     "Restricted Party",
+     "Lien"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Short, fully self-contained categorical definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any Indebtedness of any Restricted Party secured by a Lien."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:91a42ba33c48f944b609d4cd",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Secured Obligations",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"(c) the Secured Swap Obligations (excluding with respect to any Loan Party, Excluded Swap Obligations of such Loan Party)\"",
+     "semanticDescription": "the carve-out excluding, with respect to any Loan Party, that Loan Party's 'Excluded Swap Obligations' from clause (c) (Secured Swap Obligations)",
+     "reason": "the term 'Excluded Swap Obligations' is used but not declared anywhere in this instrument or related package documents (confirmed via definition lookup), so the scope of the carve-out cannot be faithfully represented",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:bbcb3dad5ce226e8ff8a7065"
+    },
+    "dependsOnTerms": [
+     "Loan Document Obligations",
+     "Secured Cash Management Obligations",
+     "Secured Swap Obligations",
+     "Excluded Swap Obligations",
+     "Loan Party"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Overall three-part structure ((a) Loan Document Obligations, (b) Secured Cash Management Obligations, (c) Secured Swap Obligations) is fully captured and each of (a)/(b)/(c) is itself a resolvable defined term, but the material carve-out for 'Excluded Swap Obligations' cannot be represented because that term is undefined anywhere in the available instrument package.",
+     "the term 'Excluded Swap Obligations' is used but not declared anywhere in this instrument or related package documents (confirmed via definition lookup), so the scope of the carve-out cannot be faithfully represented"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) the Loan Document Obligations, (b) the Secured Cash Management Obligations and (c) the Secured Swap Obligations (excluding with respect to any Loan Party, Excluded Swap Obligations of such Loan Party)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:00bd57a1481d5cb833b97a18",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Secured Parties",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Lender",
+     "Administrative Agent",
+     "Collateral Agent",
+     "Secured Cash Management Obligations",
+     "Swap Agreement",
+     "Secured Swap Obligations"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained enumeration of secured party categories."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) each Lender, (b) the Administrative Agent and Collateral Agent, (c) each Person to whom any Secured Cash Management Obligations are owed, (d) each counterparty to any Swap Agreement the obligations under which constitute Secured Swap Obligations and (e) the permitted successors and assigns of each of the foregoing."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:baa3ed24c4c2931d2230bf6d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Secured Swap Obligations",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Swap Agreement",
+     "Administrative Agent",
+     "Affiliate",
+     "Effective Date",
+     "Lender",
+     "Agent",
+     "Initial Borrower",
+     "Exhibit M"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Full categorical definition text captured; parallel structure to Secured Cash Management Obligations."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the due and punctual payment and performance of all obligations ... under each Swap Agreement that (a) is with a counterparty that is an Administrative Agent or any of its Affiliates, (b) is in effect on the Effective Date with a counterparty that is a Lender or an Affiliate of a Lender ..., (c) is entered into after the Effective Date with any counterparty that is a Lender, an Agent or an Affiliate ... or (d) is entered into with any counterparty ... designated by the Initial Borrower ... substantially in the form of Exhibit M ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:047fd825c4da5bcc9e3c6175",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Security Documents",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Collateral Agreement",
+     "Collateral and Guarantee Requirement",
+     "Secured Obligations"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition's own text is fully quoted; the enumerated internal cross-references (Collateral and Guarantee Requirement, Section 4.01(a)(ii), 5.11, 5.12, 5.14) merely name which sections' security agreements qualify and do not need to be individually expanded to represent this term's own meaning. Section 4.01(a)(ii) itself could not be expanded (source-context budget exhausted per Phase 2 retrieval) and is preserved below as an unresolved reference rather than guessed."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the Collateral Agreement and each other security agreement or pledge agreement executed and delivered pursuant to the Collateral and Guarantee Requirement, Section 4.01(a)(ii), 5.11, 5.12 or 5.14 to secure any of the Secured Obligations."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:08c984a39703be76bd63d956",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Senior Indebtedness",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Indebtedness",
+     "ABL Facility",
+     "Guarantee",
+     "Hedging Obligations",
+     "Cash Management Obligations",
+     "Borrowers"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Full four-clause inclusion list and five-item exclusion proviso captured verbatim; this is a categorical (non-arithmetic) definition and is fully self-contained."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(1) all Indebtedness ... under the ABL Facility ... or the Loans and related Guarantees ...; (2) all (a) Hedging Obligations ... and (b) Cash Management Obligations ...; provided that such Hedging Obligations and Cash Management Obligations ... are permitted to be incurred under the terms of this Agreement; (3) any other Indebtedness ... permitted to be incurred under the terms of this Agreement, unless ... subordinated ...; and (4) all obligations with respect to the items listed in the preceding clauses (1), (2) and (3); provided, however, that Senior Indebtedness shall not include: (a) any obligation of such Person to the Borrowers or any of their Subsidiaries; (b) any liability for federal, state, local or other taxes ...; (c) any accounts payable or other liability to trade creditors arising in the ordinary course of business; (d) any Indebtedness ... subordinate or junior in right of payment ...; or (e) that portion of any Indebtedness which at the time of incurrence is incurred in violation of this Agreement."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:25cd29282367a9907b6a7145",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Senior Representative",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Indebtedness"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "with respect to any series of applicable Indebtedness, the trustee, administrative agent, collateral agent, security agent or similar agent under the indenture or agreement pursuant to which such Indebtedness is issued, incurred or otherwise obtained ..., and each of their successors in such capacities."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:b8cb10594d73b9f6ec918bd1",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Senior Secured Leverage Ratio",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "DIVIDE",
+     "type": "NUMBER",
+     "exprId": "ir-expr:d56c0ba382c4764ec841ded3",
+     "numerator": {
+      "kind": "METRIC_REFERENCE",
+      "type": "MONEY",
+      "metricName": "Consolidated Senior Secured Debt",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:2c3c610d9b78983da576380e"
+     },
+     "denominator": {
+      "kind": "METRIC_REFERENCE",
+      "type": "MONEY",
+      "metricName": "Consolidated EBITDA",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Consolidated Senior Secured Debt",
+     "Excluded Revolving Loans",
+     "Consolidated EBITDA",
+     "Test Period"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The ratio's two components and division structure are stated explicitly; the categorical exclusion of 'Excluded Revolving Loans' from the numerator metric is a scope qualifier on that metric (captured in its excerpt) rather than a separate arithmetic operation, so it does not need its own subtraction node to faithfully represent this definition's stated formula."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the ratio of (a) Consolidated Senior Secured Debt (excluding any Excluded Revolving Loans) as of such date to (b) Consolidated EBITDA for the Test Period as of such date."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:aa52e9164eea49375e0b0f04",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Significant Subsidiary",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Restricted Subsidiary",
+     "Effective Date"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition text fully quoted; it incorporates an external SEC regulation (Regulation S-X Rule 1-02(w)(2)) by cross-reference, which is a fixed external standard rather than an internal document provision needing expansion to understand this term's own meaning."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any Restricted Subsidiary that would be a \"significant subsidiary\" as defined in Article 1, Rule 1-02(w)(2) of Regulation S-X, promulgated pursuant to the Securities Act, as such regulation is in effect on the Effective Date."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f8995ca26365c9e56826772d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Similar Business",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Restricted Party",
+     "Capital Stock",
+     "Indebtedness"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Full four-clause definition plus deeming sentence captured verbatim."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) any business conducted or proposed to be conducted by the Restricted Parties on the Effective Date, (b) any businesses, services and activities ... similar, complementary, reasonably related, synergistic, incidental or ancillary thereto ..., (c) any business that in the Initial Borrower's good-faith determination constitutes a reasonable diversification ... and (d) a Person conducting a business, service or activity specified in clauses (a), (b) and (c), and any Subsidiary thereof. For the avoidance of doubt, any Person that invests in or owns Capital Stock or Indebtedness of another Person that is engaged in a Similar Business shall be deemed to be engaged in a Similar Business."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3968db2e36a2f7c231f6a957",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "SOFR",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "SOFR Administrator"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained rate definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "a rate equal to the secured overnight financing rate as administered by the SOFR Administrator."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:09e287f952cb06df87ee0eeb",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "SOFR Administrator",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "NYFRB"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the NYFRB (or a successor administrator of the secured overnight financing rate)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:fc23d2a8dba5d93b0c4b3d20",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "SOFR Administrator's Website",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "SOFR Administrator",
+     "NYFRB"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained definition."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the NYFRB's website, currently at http://www.newyorkfed.org, or any successor source for the secured overnight financing rate identified as such by the SOFR Administrator from time to time."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:a7905c9059ab253538ad414b",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Sold Entity or Business",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"'Sold Entity or Business' has the meaning assigned to such term in the definition of 'Consolidated EBITDA.'\"",
+     "semanticDescription": "the substantive meaning of 'Sold Entity or Business', which this clause states is defined entirely inside the definition of 'Consolidated EBITDA'",
+     "reason": "attempted retrieval of 'Sold Entity or Business' directly (not independently declared) and of 'Consolidated EBITDA' (the cross-referenced source); the Consolidated EBITDA definition is extremely long and the returned text was truncated before reaching the sub-clause that actually defines 'Sold Entity or Business', so its operative meaning could not be confirmed from available evidence",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:ad9adbdfd83a43ab7df352e3"
+    },
+    "dependsOnTerms": [
+     "Consolidated EBITDA"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "This term is a pure cross-reference into the 'Consolidated EBITDA' definition; that definition was retrieved but returned truncated before reaching the 'Sold Entity or Business' sub-clause, so the actual substantive meaning is not confirmable from the evidence obtained.",
+     "attempted retrieval of 'Sold Entity or Business' directly (not independently declared) and of 'Consolidated EBITDA' (the cross-referenced source); the Consolidated EBITDA definition is extremely long and the returned text was truncated before reaching the sub-clause that actually defines 'Sold Entity or Business', so its operative meaning could not be confirmed from available evidence"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of \"Consolidated EBITDA.\""
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3fdf3e7e9ebe99ee4bd5e8a8",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Solvent",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Fair Value",
+     "Present Fair Saleable Value",
+     "Liabilities",
+     "Borrowers"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Full four-part balance-sheet/cash-flow/capital-adequacy solvency test captured verbatim; categorical, not a numeric formula requiring external values."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) the Fair Value of the assets of the Borrowers and their Subsidiaries ... exceeds their Liabilities ...; (b) the Present Fair Saleable Value of the assets ... exceeds the amount that will be required to pay the probable liability ... as such Liabilities become absolute and matured, (c) the Borrowers and their Subsidiaries ... are able to pay their Liabilities ... as such Liabilities become absolute and matured, and (d) the Borrowers and their Subsidiaries ... are not engaged in, and are not about to engage in, business for which they have unreasonably small capital."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:07d9f15d51011cf0e86e2306",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "SONIA",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "SONIA Administrator",
+     "Business Day",
+     "Initial Borrower",
+     "Administrative Agent",
+     "Lender"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Rate definition plus its own benchmark-replacement amendment mechanism captured verbatim; the replacement mechanism is a procedural amendment-authorization clause, not a quantitative basket, and is fully represented by the excerpt/description rather than an arithmetic expression."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "with respect to any Business Day, a rate per annum equal to the Sterling Overnight Index Average for such Business Day published by the SONIA Administrator on the SONIA Administrator's Website on the immediately succeeding Business Day. ... if the Initial Borrower and the Administrative Agent reasonably determine in good faith that SONIA can no longer be determined ... and a comparable successor rate ... becomes available, then the Initial Borrower and the Administrative Agent may amend this Agreement ... without the consent of any Lender to (a) replace SONIA ... with the applicable successor rate ... and (b) make other conforming changes ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [],
+  "unresolvedIssues": [
+   "[definition[d3]] the term 'Excluded Swap Obligations' is used but not declared anywhere in this instrument or related package documents (confirmed via definition lookup), so the scope of the carve-out cannot be faithfully represented",
+   "[definition[d15]] attempted retrieval of 'Sold Entity or Business' directly (not independently declared) and of 'Consolidated EBITDA' (the cross-referenced source); the Consolidated EBITDA definition is extremely long and the returned text was truncated before reaching the sub-clause that actually defines 'Sold Entity or Business', so its operative meaning could not be confirmed from available evidence",
+   "This §1.01 excerpt is a pure Definitions article batch (Secured Cash Management Obligations through SONIA); no independently operative permission/prohibition/ratio-test rules appear in the supplied text, so no WireRule or WireSharedCapacity outputs were produced - only WireDefinition outputs.",
+   "The FROZEN SEMANTIC INVENTORY for this submission reported an INVENTORY_COVERAGE_GAP (721 stretches unaccounted, gap re-inventory call failed with a gateway timeout) and supplied no resolvable inventoryItemIds to this compiler; consequently no inventoryItemIds could be attached to any node and inventoryDispositions is empty. This gap should be treated as an open accountability item for review, not as evidence that the definitions below are complete against the frozen inventory.",
+   "Cross-reference 'Section 4.01(a)(ii)' (within Security Documents) was already reported by Phase 2 as OUT_OF_SCOPE due to source-context budget exhaustion; not re-requested per the no-duplicate-request policy. It does not affect the represented meaning of 'Security Documents' itself, which merely names it as one of several qualifying sections.",
+   "Cross-reference 'Article 1, Rule 1-02(w)(2) of Regulation S-X' (within Significant Subsidiary) is an external SEC regulation, not an internal document section (confirmed NOT_FOUND as an internal structural node), and is represented as-is via the definition's own excerpt.",
+   "'Sold Entity or Business' required retrieving the very large 'Consolidated EBITDA' definition; the returned text was truncated before reaching the sub-clause that defines this term, so its substantive meaning is MISSING_CONTEXT despite two good-faith retrieval attempts.",
+   "'Excluded Swap Obligations' (a carve-out inside 'Secured Obligations') and standalone lookup of 'Sold Entity or Business' were both confirmed not independently declared anywhere in the instrument package via direct tool lookup."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Sold Entity or Business"
+    },
+    "outputSummary": "refused: no defined term matching \"Sold Entity or Business\" found in this instrument's documents",
+    "charsReturned": 87,
+    "timestamp": "2026-09-14T21:47:45.311Z"
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Consolidated EBITDA"
+    },
+    "outputSummary": "definition \"Consolidated EBITDA\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 4059,
+    "timestamp": "2026-09-14T21:47:49.167Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": true,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Consolidated EBITDA",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:ead7956708294784f939f12c",
+     "sourceNodeKey": "doc-a::1.01(2)(i)(A)(b)",
+     "charStart": 79182,
+     "charEnd": 99357,
+     "rawText": "“ Consolidated EBITDA ” means, for any\nTest Period, with respect to any Person for any period, the Consolidated Net Income of such Person and its Restricted Subsidiaries for such Test Period plus:\n\n(a)\nwithout duplication, including without duplication of any exclusion in Consolidated Net Income, the sum of the\nfollowing amounts for such period, in each case, at the election of the Initial Borrower:\n\n(i)\nconsolidated interest expense of such Person for such period, including (A) payments made or losses\nincurred in respect of hedging obligations or other derivative instruments entered into for the purpose of hedging interest rate risk, (B) bank and letter of credit fees and costs of surety bonds in connection with financing activities,\n(C) amortization and write-offs of deferred financing fees, debt issuance costs, commissions, fees and expenses and expensing of bridge, commitment or financing fees and (D) items excluded from the definition of “Consolidated\nInterest Expense” pursuant to clauses (i) through (xii) thereof;\n\n(ii)\ntaxes based on gross receipts, income, profits, revenue or capital, federal, foreign, state, provincial and\nterritorial income, franchise, excise, value added or similar taxes based on income, profits, revenue or capital and foreign withholding taxes, of such Person paid or accrued during such period (including in respect of repatriated funds), including\n(A) penalties, additions to tax and interest relating to such taxes or arising from any tax examinations and (B) Tax Distributions made to any direct or indirect holders of equity interests of such Person in respect of any such taxes;\n\n(iii)\namortization of such Person for such period (including amortization of goodwill, Capitalized Software\nExpenditures, internal labor costs and amortization of deferred financing fees, OID or costs);\n\n(iv)\ndepreciation expense of such Person for such period;\n\n(v)\nnon-cash items of such Person for such period; provided that if\nany such non-cash item represents an accrual or reserve for potential cash items in any future period, (A) the Initial Borrower may determine not to add back such\nnon-cash item in the current period and (B) to the extent the Initial Borrower decides to add back such non-cash expense or charge in the current period, the cash\npayment in respect thereof in such future period will be subtracted from Consolidated EBITDA in such future period to such extent;\n\n(vi)\ncharges and expenses incurred in connection with litigation (including threatened litigation), any\ninvestigation or proceeding (or any threatened investigation or proceeding) by a regulatory, governmental or law enforcement body (including any attorney general);\n\n(vii)\nitems (A) covered by a binding indemnification, reimbursement, guaranty, purchase price adjustment or\nrefunding obligation or insurance, (B) paid or payable (directly or indirectly) by a third party (except to the extent such payment gives rise to reimbursement obligations) or with the proceeds of a contribution to equity capital of such Person\nor (C) such Person is directly or indirectly reimbursed for such item by a third party;\n\n(viii)\n(A) the amount of management, monitoring, consulting and advisory fees (including termination fees),\nindemnities and expenses paid, payable or accrued in such period by such Person to any Investor (or their management companies), (B) the amount of payments made to option, phantom\n\n-17-\n\nequity or profits interest holders of any Parent Entity or any of its direct or indirect parent companies in connection with, or as a result of, any distribution being made to shareholders of\nsuch Person or any Parent Entity, which payments are being made to compensate such option, phantom equity or profits interest holders as though they were shareholders at the time of, and entitled to share in, such distribution, including any cash\nconsideration for any repurchase of equity, in each case to the extent permitted in this Agreement and (C) the amount of fees, expenses and indemnities paid to directors, including of any Parent Entity;\n\n(ix)\n[reserved];\n\n(x)\nexpenses, revenue and lost profits of such Person for such period with respect to liability or casualty events\nor business interruption, in each case, to the extent covered by insurance;\n\n(xi)\nthe amount of any income attributable to noncontrolling or minority interests of third parties in any non-wholly owned Subsidiary deducted excluding cash distributions in respect thereof;\n\n(xii)\nall charges, losses, costs, expenses, accruals or reserves in connection with or related to (A) the\nrollover, acceleration or payout of equity interests held by officers or employees and (B) payments made to holders of options, phantom equity, profits interests or other derivative equity interests of such Person or any direct or indirect\nparent thereof in connection with, or as a result of, any distribution being made to equity holders of such Person or any direct or indirect parent thereof, including (x) payments made to compensate such holders as though they were equity\nholders at the time of, and entitled to share in, such distribution, and (y) all dividend equivalent rights owed pursuant to any compensation or equity arrangement;\n\n(xiii)\n(A) fees, expenses or charges relating to curtailments or modifications to pension and post-retirement employee\nbenefit plans, costs or expenses (including any payroll taxes) incurred pursuant to any management equity plan, profits interest, severance agreement or stock option plan or any other management or employee benefit plan or agreement or any stock\nsubscription, stockholders or partnership agreement and any payments in the nature of compensation or expense reimbursement made to independent board members and (B) any net pension or other post-retirement benefit costs representing\namortization of unrecognized prior service costs, actuarial losses, including amortization of such amounts arising in prior periods, amortization of the unrecognized net obligation (and loss or cost), and any other items of a similar nature, in\naccordance with GAAP;\n\n(xiv)\nlosses, fees or discounts on a sale, conveyance, contribution or other transfer of receivables, securitization\nassets and related assets in connection with a securitization or other receivables financing or factoring transaction not prohibited hereunder;\n\n(xv)\nstart-up charges and expenses and de novo losses, including, without\nlimitation, any losses with respect to any new location opening, new project, new market or new service offerings or vertical offerings, which accrued during the first thirty-six (36) months after opening\nsuch new location, new project, new market or initially offering such new service offerings or vertical offerings and pre-opening charges, expenses, losses and start-up\ncosts and any other charges, expenses, losses and start-up costs related to the acquisition, opening, organizing and entering into of any new contracts, new market, facilities or other projects and all other\nlocation-specific costs incurred prior to the first (1st) day the new facilities or new projects are determined to be open for business (as determined by the Initial Borrower) and costs associated with upgrading, remodeling or construction of new\nfacilities, locations or other projects or entering into of new contracts, initial testing and registration costs in new markets, the cost of feasibility studies, travel costs for employees engaged in activities relating to any or all of the\nforegoing, or entering into of new contracts and the allocation of general and administrative support in connection with any or all of the foregoing;\n\n(xvi)\nall losses (A) upon any sale, abandonment or other disposition of any asset of the Restricted Parties\n(including pursuant to any Sale and Lease-Back Transaction) that is not sold, abandoned or otherwise disposed in the ordinary course of business (as determined in good faith by the Initial Borrower) and (B) from operations or assets expected to\nbe disposed of, abandoned and/or discontinued within twelve (12) months after the end of the relevant period;\n\n-18-\n\n(xvii)\n(A) earn-out and contingent consideration obligations (including to the\nextent accounted for as bonuses, compensation or otherwise) and adjustments thereof and purchase price adjustments, in each case in connection with acquisitions; and (B) amount paid to any equity holder (other than a Loan Party) of a Qualified\nRestricted Subsidiary in the form of compensation from the proceeds of any disposition;\n\n(xviii)\nnet realized losses from Swap Agreements or embedded derivatives that require similar accounting treatment in\naccordance with GAAP;\n\n(xix)\nany expenses, fees, charges or losses (other than expenses, fees, charges or losses covered by clauses\n(xii) and (xiii)) related to any equity offering or issuance, Investment (including compensation expense directly related thereto), acquisition, disposition, conveyance, Refinancing or recapitalization permitted hereunder or the incurrence of\nIndebtedness permitted to be incurred hereunder (in each case, including any such transaction consummated prior to the Effective Date and any such transaction undertaken but not completed and/or not successful), including (A) such fees,\nexpenses or charges related to this Agreement and any other Loan Document, (B) such fees, expenses or charges related to the Transactions and (C) such fees, expenses or charges related to any amendment or other modification, including any\nrefinancing of the Loans or any Indebtedness permitted by Section 6.01;\n\n(xx)\nrealized foreign exchange losses resulting from the impact of foreign currency changes on the valuation of\nassets or liabilities on the balance sheet of any Restricted Party;\n\n(xxi)\nany cost and expense in relation with the standing up of a business (including, without limitation, duplicative\ncosts, costs related to any transition services agreement (or similar agreement howsoever described) and employee compensation costs for carve-out related roles); and\n\n(xxii)\n“bad debt” expense related to revenue earned prior to the Effective Date or any Permitted\nAcquisition or Investment;\n\nplus\n\n(b)\nat the election of the Initial Borrower, without duplication, (i) the amount of “run rate”\nsynergies, cost savings, operating expense reductions, operating improvements, business optimization, revenue enhancements, revenue synergies, pricing initiatives, restructuring initiatives and other similar initiatives expected by the Initial\nBorrower in good faith to result from actions taken, committed to be taken or expected to be taken (in the good faith determination of the Initial Borrower) (collectively, the “ Expected Run Rate Benefit ”), including any synergies,\ncost savings, operating improvements, operating expense reductions, business optimization, revenue enhancements, pricing initiatives, restructuring initiatives and other similar initiatives related to (x) the Transactions (including prior to\nthe Effective Date) and (y) acquisitions, dispositions and other specified transactions, restructurings, cost savings initiatives and other initiatives, or actions or in connection with, or incurred by or on behalf of, any joint venture of any\nRestricted Party (whether accounted for on the financial statements of any such joint venture or the Initial Borrower) (which amounts will be determined by the Initial Borrower in good faith, added to Consolidated EBITDA until fully realized and\ncalculated on a Pro Forma Basis as though amounts had been realized on the first (1st) day of the period for which Consolidated EBITDA is being determined and as if such amounts were realized during the entirety of such period), net of the\namount of actual benefits realized during such period from such actions; provided that the amounts added back pursuant to this clause (b)(i)(y) are expected by the Initial Borrower in good faith to result from actions taken, committed to be\ntaken or planned to be taken (in the good faith determination of the Initial Borrower) within thirty-six (36) months after the end of the relevant period in which any change that is expected to result in\nsuch Expected Run Rate Benefit occurs; (ii) pro forma adjustments for the aggregate amount of annualized Consolidated Net Income and Consolidated EBITDA that is projected by the Initial Borrower to result from (x) new customer contracts or\nthird-party contracts (or\n\n-19-\n\namendments thereto) entered into or booked during such period, (y) increased pricing, volume or scope of products or services provided in existing contracts or (z) the entry into new\nmarkets, locations, facilities or units (or the acquisition thereof) (in each case of clauses (ii)(x) through (z), calculated on a Pro Forma Basis as though such Consolidated EBITDA had been realized on the first day of such period and as if such\namounts were realized during the entirety of such period); (iii) cash receipts (or any netting arrangements resulting in reduced cash expenditures) not included in the calculation of Consolidated Net Income in any period to the extent non-cash gains relating to such income were deducted in the calculation of Consolidated EBITDA pursuant to paragraph (c) below for any previous period and not added back or was realized in a prior period; and\n(iv) addbacks and adjustments (including pro forma adjustments) (a) of the type contained in any quality of earnings table or report or any client information memorandum or similar diligence items delivered to the Administrative Agent\nconducted by financial advisors (which are either nationally recognized or reasonably acceptable to the Administrative Agent (it being understood and agreed that any of the “Big Four” accounting firms are acceptable)) or\n(b) determined on a basis consistent with Article 11 of Regulation S-X promulgated under the Exchange Act and as interpreted by the staff of the SEC (or any successor agency); and (v) all addbacks\nand adjustments (including pro forma adjustments) of the type or similar to those set forth in the Model or any client information memorandum or lender presentation furnished by (or on behalf of) the Borrower to the Term Agent in connection with\nsyndication of the Initial Term Loans (in each case, as may be updated prior to the Effective Date in the reasonable discretion of the Lead Arrangers);\n\nplus\n\n(c)\nat the election of the Initial Borrower, the pro forma result projected by the Initial Borrower to result in\nconnection with any acquisitions and investments (including any acquisition or investment subject to a letter of intent or definitive acquisition agreement and including the effect of any expected debt financing in connection therewith), business\nexpansion, capital expenditure or other projects and dispositions of business entities or properties or assets constituting a division or line of business of any business entity or any joint venture of any Restricted Party (whether accounted for on\nthe financial statements of any such joint venture or the Initial Borrower) or any other transaction (including purchases and dispositions of Intellectual Property if pro forma treatment is elected by the Initial Borrower at its discretion) and, for\nany facility, site or project that is yet to be completed or operating for business for a period of thirty-six (36) months or less (including, for the avoidance of doubt, any facility, site or project\nthat has been completed during the previous thirty-six (36) months) as of the end of the relevant applicable period, pro forma effect shall be given so that the Consolidated EBITDA of such facility, site\nor project reflects the expected mature earnings profile of such facility, site or project as determined by the Initial Borrower in good faith to reflect a full twelve (12) months of earnings (net of the amount of actual benefits realized\nduring such period from such actions);\n\nminus\n\n(d)\nwithout duplication:\n\n(i)\nany non-cash items increasing Consolidated Net Income of such Person\nfor such period, excluding any gains that represent the reversal of any accrual of, or cash reserve for, anticipated cash charges in any prior period (other than such cash charges that have been added back to Consolidated Net Income in calculating\nConsolidated EBITDA in accordance with this definition);\n\n(ii)\nthe amount of any loss attributable to noncontrolling or minority interests of third parties in any non-wholly owned subsidiary;\n\n(iii)\nrealized foreign exchange income or gains resulting from the impact of foreign currency changes on the\nvaluation of assets or liabilities on the balance sheet of any Restricted Party; and\n\n(iv)\nnet realized gains from Swap Agreements or embedded derivatives that require similar accounting treatment,\n\nin each case, as determined on a consolidated basis for the Restricted Parties in accordance with GAAP; provided that,\n\n-20-\n\n(I) there shall be included in determining Consolidated EBITDA for any period, without\nduplication, the Acquired EBITDA of any Person, property, business or asset acquired by any Restricted Parties during such period (other than any Unrestricted Subsidiary) whether such acquisition occurred before or after the Effective Date to the\nextent not subsequently sold, transferred or otherwise disposed of (but not including the Acquired EBITDA of any related Person, property, business or assets to the extent not so acquired) (each such Person, property, business or asset acquired,\nincluding pursuant to the Transactions or pursuant to a transaction consummated prior to the Effective Date, and not subsequently so disposed of, an “ Acquired Entity or Business ”), and the Acquired EBITDA of any Unrestricted\nSubsidiary that is converted into a Restricted Subsidiary during such period (each, a “ Converted Restricted Subsidiary ”), in each case based on the Acquired EBITDA of such Pro Forma Entity for such period (including the portion\nthereof occurring prior to such acquisition or conversion) determined on a historical Pro Forma Basis; and\n(II) there shall be\n(A) excluded in determining Consolidated EBITDA for any period the Disposed EBITDA of any Person, property, business or asset (other than any Unrestricted Subsidiary) sold, transferred or otherwise disposed of, closed or classified as\ndiscontinued operations by any Restricted Party during such period (but if such operations are classified as discontinued due to the fact that they are subject to an agreement to dispose of such operations, at the option of the Borrowers, only when\nand to the extent such operations are actually disposed of) (each such Person, property, business or asset so sold, transferred or otherwise disposed of, closed or classified, a “ Sold Entity or Business ”), and the Disposed EBITDA\nof any Restricted Subsidiary that is converted into an Unrestricted Subsidiary during such period (each, a “ Converted Unrestricted Subsidiary ”), in each case based on the Disposed EBITDA of such Sold Entity or Business or\nConverted Unrestricted Subsidiary for such period (including the portion thereof occurring prior to such sale, transfer, disposition, closure, classification or conversion) determined on a historical Pro Forma Basis and (B) included in\ndetermining Consolidated EBITDA for any period in which a Sold Entity or Business is disposed, an adjustment equal to the Pro Forma Disposal Adjustment with respect to such Sold Entity or Business (including the portion thereof occurring prior to\nsuch disposal) as specified in the Pro Forma Disposal Adjustment certificate delivered to the Administrative Agent.\nNotwithstanding the\nforegoing, for purposes of calculating the availability under any basket, ratio or other financial metric under this Agreement or compliance with any provision of this Agreement, at the election of the Initial Borrower, the aggregate amount of\nConsolidated EBITDA (subject to any applicable caps and limitations set forth herein) projected by the Initial Borrower to be attributable to Letter of Intent Transactions may be included in the calculation of Consolidated EBITDA to the extent such\ntransactions remain unclosed and unterminated during such period.\n",
+     "contentHash": "66762e7cdd751b2370838af8468c951b0230dd9bd42d30d8d2240265462084b1",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Excluded Swap Obligations"
+    },
+    "outputSummary": "refused: no defined term matching \"Excluded Swap Obligations\" found in this instrument's documents",
+    "charsReturned": 89,
+    "timestamp": "2026-09-14T21:48:39.701Z"
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Loan Document Obligations"
+    },
+    "outputSummary": "definition \"Loan Document Obligations\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 1514,
+    "timestamp": "2026-09-14T21:48:42.517Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Loan Document Obligations",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:6de79a1c09e2f4c22d94d36c",
+     "sourceNodeKey": "doc-a::1.01(3)(i)",
+     "charStart": 221613,
+     "charEnd": 223127,
+     "rawText": "“ Loan Document Obligations ” means (a) the due and\npunctual payment by the Borrowers of (i) the principal of and interest at the applicable rate or rates provided in this Agreement (including interest accruing during the pendency of any bankruptcy, insolvency, receivership or other similar\nproceeding, regardless of whether allowed or allowable in such proceeding) on the Loans, when and as due, whether at maturity, by acceleration, upon one or more dates set for prepayment or otherwise and (ii) all other monetary obligations of\nthe Borrowers under or pursuant to this Agreement and each of the other Loan Documents, including obligations to pay fees, expense reimbursement obligations and indemnification obligations, whether primary, secondary, direct, contingent, fixed or\notherwise (including monetary obligations incurred during the pendency of any bankruptcy, insolvency, receivership or other similar proceeding, regardless of whether allowed or allowable in such proceeding), (b) the due and punctual payment and\nperformance of all other obligations of the Borrowers under or pursuant to each of the Loan Documents and (c) the due and punctual payment and performance of all the obligations of each other Loan Party under or pursuant to this Agreement and\neach of the other Loan Documents (including interest and monetary obligations incurred during the pendency of any bankruptcy, insolvency, receivership or other similar proceeding, regardless of whether allowed or allowable in such proceeding).\n\n",
+     "contentHash": "3e90af56e39b4357d6cd3e40ce89a3f333300e9900b538e1c7b5d23c8ba70a8b",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": {
+   "fired": true,
+   "detectedSourceTermLabels": [
+    "Secured Cash Management Obligations",
+    "Secured Indebtedness",
+    "Secured Obligations",
+    "Secured\nParties",
+    "Secured Swap\nObligations",
+    "Security Documents",
+    "Senior\nIndebtedness",
+    "Senior Representative",
+    "Senior Secured Leverage Ratio",
+    "Significant Subsidiary",
+    "Similar Business",
+    "SOFR",
+    "SOFR Administrator",
+    "SOFR Administrator ’ s Website",
+    "Solvent",
+    "SONIA"
+   ],
+   "compiledTermLabels": [
+    "Secured Cash Management Obligations",
+    "Secured Indebtedness",
+    "Secured Obligations",
+    "Secured Parties",
+    "Secured Swap Obligations",
+    "Security Documents",
+    "Senior Indebtedness",
+    "Senior Representative",
+    "Senior Secured Leverage Ratio",
+    "Significant Subsidiary",
+    "Similar Business",
+    "SOFR",
+    "SOFR Administrator",
+    "SOFR Administrator's Website",
+    "Sold Entity or Business",
+    "Solvent",
+    "SONIA"
+   ],
+   "missingTermLabels": [
+    "SOFR Administrator ’ s Website"
+   ],
+   "reason": "Deterministic completeness check found 1 quoted defined-term citation(s) in the supplied source (matching the '\"Term\" means'/'\"Term\" shall mean' pattern) that do not appear among the 17 compiled definition(s): \"SOFR Administrator ’ s Website\". This is a structural detection only - it does not assert what these terms mean or why they were omitted."
+  },
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "Secured Cash Management Obligations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Cash Management Services",
+      "Administrative Agent",
+      "Affiliate",
+      "Effective Date",
+      "Lender",
+      "Agent",
+      "Restricted Parties",
+      "Initial Borrower",
+      "Exhibit L"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full categorical definition text captured; term is a list of obligation categories, not a numeric formula."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the due and punctual payment and performance of all obligations ... in respect of Cash Management Services ... that are (a) owed to either Administrative Agent or any of its Affiliates, (b) owed on the Effective Date to a Person that is a Lender or an Affiliate of a Lender ..., (c) owed to a Person that is an Agent, a Lender or an Affiliate of an Agent or Lender at the time such obligations are incurred or (d) owed to a Person ... designated by the Initial Borrower ... substantially in the form of Exhibit L ...",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d2",
+     "termName": "Secured Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Indebtedness",
+      "Restricted Party",
+      "Lien"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Short, fully self-contained categorical definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any Indebtedness of any Restricted Party secured by a Lien.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d3",
+     "termName": "Secured Obligations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "the carve-out excluding, with respect to any Loan Party, that Loan Party's 'Excluded Swap Obligations' from clause (c) (Secured Swap Obligations)",
+      "reason": "the term 'Excluded Swap Obligations' is used but not declared anywhere in this instrument or related package documents (confirmed via definition lookup), so the scope of the carve-out cannot be faithfully represented",
+      "sourceEvidence": "§1.01: \"(c) the Secured Swap Obligations (excluding with respect to any Loan Party, Excluded Swap Obligations of such Loan Party)\""
+     },
+     "dependsOnTerms": [
+      "Loan Document Obligations",
+      "Secured Cash Management Obligations",
+      "Secured Swap Obligations",
+      "Excluded Swap Obligations",
+      "Loan Party"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Overall three-part structure ((a) Loan Document Obligations, (b) Secured Cash Management Obligations, (c) Secured Swap Obligations) is fully captured and each of (a)/(b)/(c) is itself a resolvable defined term, but the material carve-out for 'Excluded Swap Obligations' cannot be represented because that term is undefined anywhere in the available instrument package."
+     ],
+     "citation": "§1.01",
+     "excerpt": "(a) the Loan Document Obligations, (b) the Secured Cash Management Obligations and (c) the Secured Swap Obligations (excluding with respect to any Loan Party, Excluded Swap Obligations of such Loan Party).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d4",
+     "termName": "Secured Parties",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Lender",
+      "Administrative Agent",
+      "Collateral Agent",
+      "Secured Cash Management Obligations",
+      "Swap Agreement",
+      "Secured Swap Obligations"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained enumeration of secured party categories."
+     ],
+     "citation": "§1.01",
+     "excerpt": "(a) each Lender, (b) the Administrative Agent and Collateral Agent, (c) each Person to whom any Secured Cash Management Obligations are owed, (d) each counterparty to any Swap Agreement the obligations under which constitute Secured Swap Obligations and (e) the permitted successors and assigns of each of the foregoing.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d5",
+     "termName": "Secured Swap Obligations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Swap Agreement",
+      "Administrative Agent",
+      "Affiliate",
+      "Effective Date",
+      "Lender",
+      "Agent",
+      "Initial Borrower",
+      "Exhibit M"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full categorical definition text captured; parallel structure to Secured Cash Management Obligations."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the due and punctual payment and performance of all obligations ... under each Swap Agreement that (a) is with a counterparty that is an Administrative Agent or any of its Affiliates, (b) is in effect on the Effective Date with a counterparty that is a Lender or an Affiliate of a Lender ..., (c) is entered into after the Effective Date with any counterparty that is a Lender, an Agent or an Affiliate ... or (d) is entered into with any counterparty ... designated by the Initial Borrower ... substantially in the form of Exhibit M ...",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d6",
+     "termName": "Security Documents",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Collateral Agreement",
+      "Collateral and Guarantee Requirement",
+      "Secured Obligations"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition's own text is fully quoted; the enumerated internal cross-references (Collateral and Guarantee Requirement, Section 4.01(a)(ii), 5.11, 5.12, 5.14) merely name which sections' security agreements qualify and do not need to be individually expanded to represent this term's own meaning. Section 4.01(a)(ii) itself could not be expanded (source-context budget exhausted per Phase 2 retrieval) and is preserved below as an unresolved reference rather than guessed."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the Collateral Agreement and each other security agreement or pledge agreement executed and delivered pursuant to the Collateral and Guarantee Requirement, Section 4.01(a)(ii), 5.11, 5.12 or 5.14 to secure any of the Secured Obligations.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d7",
+     "termName": "Senior Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Indebtedness",
+      "ABL Facility",
+      "Guarantee",
+      "Hedging Obligations",
+      "Cash Management Obligations",
+      "Borrowers"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full four-clause inclusion list and five-item exclusion proviso captured verbatim; this is a categorical (non-arithmetic) definition and is fully self-contained."
+     ],
+     "citation": "§1.01",
+     "excerpt": "(1) all Indebtedness ... under the ABL Facility ... or the Loans and related Guarantees ...; (2) all (a) Hedging Obligations ... and (b) Cash Management Obligations ...; provided that such Hedging Obligations and Cash Management Obligations ... are permitted to be incurred under the terms of this Agreement; (3) any other Indebtedness ... permitted to be incurred under the terms of this Agreement, unless ... subordinated ...; and (4) all obligations with respect to the items listed in the preceding clauses (1), (2) and (3); provided, however, that Senior Indebtedness shall not include: (a) any obligation of such Person to the Borrowers or any of their Subsidiaries; (b) any liability for federal, state, local or other taxes ...; (c) any accounts payable or other liability to trade creditors arising in the ordinary course of business; (d) any Indebtedness ... subordinate or junior in right of payment ...; or (e) that portion of any Indebtedness which at the time of incurrence is incurred in violation of this Agreement.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d8",
+     "termName": "Senior Representative",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "with respect to any series of applicable Indebtedness, the trustee, administrative agent, collateral agent, security agent or similar agent under the indenture or agreement pursuant to which such Indebtedness is issued, incurred or otherwise obtained ..., and each of their successors in such capacities.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d9",
+     "termName": "Senior Secured Leverage Ratio",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DIVIDE",
+      "numerator": {
+       "kind": "METRIC_REFERENCE",
+       "metricName": "Consolidated Senior Secured Debt",
+       "citation": "§1.01",
+       "excerpt": "Consolidated Senior Secured Debt (excluding any Excluded Revolving Loans)"
+      },
+      "denominator": {
+       "kind": "METRIC_REFERENCE",
+       "metricName": "Consolidated EBITDA",
+       "citation": "§1.01",
+       "excerpt": "Consolidated EBITDA for the Test Period as of such date"
+      },
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Consolidated Senior Secured Debt",
+      "Excluded Revolving Loans",
+      "Consolidated EBITDA",
+      "Test Period"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The ratio's two components and division structure are stated explicitly; the categorical exclusion of 'Excluded Revolving Loans' from the numerator metric is a scope qualifier on that metric (captured in its excerpt) rather than a separate arithmetic operation, so it does not need its own subtraction node to faithfully represent this definition's stated formula."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the ratio of (a) Consolidated Senior Secured Debt (excluding any Excluded Revolving Loans) as of such date to (b) Consolidated EBITDA for the Test Period as of such date.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d10",
+     "termName": "Significant Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Subsidiary",
+      "Effective Date"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition text fully quoted; it incorporates an external SEC regulation (Regulation S-X Rule 1-02(w)(2)) by cross-reference, which is a fixed external standard rather than an internal document provision needing expansion to understand this term's own meaning."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any Restricted Subsidiary that would be a \"significant subsidiary\" as defined in Article 1, Rule 1-02(w)(2) of Regulation S-X, promulgated pursuant to the Securities Act, as such regulation is in effect on the Effective Date.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d11",
+     "termName": "Similar Business",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Party",
+      "Capital Stock",
+      "Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full four-clause definition plus deeming sentence captured verbatim."
+     ],
+     "citation": "§1.01",
+     "excerpt": "(a) any business conducted or proposed to be conducted by the Restricted Parties on the Effective Date, (b) any businesses, services and activities ... similar, complementary, reasonably related, synergistic, incidental or ancillary thereto ..., (c) any business that in the Initial Borrower's good-faith determination constitutes a reasonable diversification ... and (d) a Person conducting a business, service or activity specified in clauses (a), (b) and (c), and any Subsidiary thereof. For the avoidance of doubt, any Person that invests in or owns Capital Stock or Indebtedness of another Person that is engaged in a Similar Business shall be deemed to be engaged in a Similar Business.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d12",
+     "termName": "SOFR",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "SOFR Administrator"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained rate definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "a rate equal to the secured overnight financing rate as administered by the SOFR Administrator.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d13",
+     "termName": "SOFR Administrator",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "NYFRB"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the NYFRB (or a successor administrator of the secured overnight financing rate).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d14",
+     "termName": "SOFR Administrator's Website",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "SOFR Administrator",
+      "NYFRB"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained definition."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the NYFRB's website, currently at http://www.newyorkfed.org, or any successor source for the secured overnight financing rate identified as such by the SOFR Administrator from time to time.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d15",
+     "termName": "Sold Entity or Business",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "the substantive meaning of 'Sold Entity or Business', which this clause states is defined entirely inside the definition of 'Consolidated EBITDA'",
+      "reason": "attempted retrieval of 'Sold Entity or Business' directly (not independently declared) and of 'Consolidated EBITDA' (the cross-referenced source); the Consolidated EBITDA definition is extremely long and the returned text was truncated before reaching the sub-clause that actually defines 'Sold Entity or Business', so its operative meaning could not be confirmed from available evidence",
+      "sourceEvidence": "§1.01: \"'Sold Entity or Business' has the meaning assigned to such term in the definition of 'Consolidated EBITDA.'\""
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "This term is a pure cross-reference into the 'Consolidated EBITDA' definition; that definition was retrieved but returned truncated before reaching the 'Sold Entity or Business' sub-clause, so the actual substantive meaning is not confirmable from the evidence obtained."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in the definition of \"Consolidated EBITDA.\"",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d16",
+     "termName": "Solvent",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Fair Value",
+      "Present Fair Saleable Value",
+      "Liabilities",
+      "Borrowers"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full four-part balance-sheet/cash-flow/capital-adequacy solvency test captured verbatim; categorical, not a numeric formula requiring external values."
+     ],
+     "citation": "§1.01",
+     "excerpt": "(a) the Fair Value of the assets of the Borrowers and their Subsidiaries ... exceeds their Liabilities ...; (b) the Present Fair Saleable Value of the assets ... exceeds the amount that will be required to pay the probable liability ... as such Liabilities become absolute and matured, (c) the Borrowers and their Subsidiaries ... are able to pay their Liabilities ... as such Liabilities become absolute and matured, and (d) the Borrowers and their Subsidiaries ... are not engaged in, and are not about to engage in, business for which they have unreasonably small capital.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d17",
+     "termName": "SONIA",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "SONIA Administrator",
+      "Business Day",
+      "Initial Borrower",
+      "Administrative Agent",
+      "Lender"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Rate definition plus its own benchmark-replacement amendment mechanism captured verbatim; the replacement mechanism is a procedural amendment-authorization clause, not a quantitative basket, and is fully represented by the excerpt/description rather than an arithmetic expression."
+     ],
+     "citation": "§1.01",
+     "excerpt": "with respect to any Business Day, a rate per annum equal to the Sterling Overnight Index Average for such Business Day published by the SONIA Administrator on the SONIA Administrator's Website on the immediately succeeding Business Day. ... if the Initial Borrower and the Administrative Agent reasonably determine in good faith that SONIA can no longer be determined ... and a comparable successor rate ... becomes available, then the Initial Borrower and the Administrative Agent may amend this Agreement ... without the consent of any Lender to (a) replace SONIA ... with the applicable successor rate ... and (b) make other conforming changes ...",
+     "inventoryItemIds": []
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "irExtensionCandidates": [],
+   "inventoryDispositions": [],
+   "overallNotes": [
+    "This §1.01 excerpt is a pure Definitions article batch (Secured Cash Management Obligations through SONIA); no independently operative permission/prohibition/ratio-test rules appear in the supplied text, so no WireRule or WireSharedCapacity outputs were produced - only WireDefinition outputs.",
+    "The FROZEN SEMANTIC INVENTORY for this submission reported an INVENTORY_COVERAGE_GAP (721 stretches unaccounted, gap re-inventory call failed with a gateway timeout) and supplied no resolvable inventoryItemIds to this compiler; consequently no inventoryItemIds could be attached to any node and inventoryDispositions is empty. This gap should be treated as an open accountability item for review, not as evidence that the definitions below are complete against the frozen inventory.",
+    "Cross-reference 'Section 4.01(a)(ii)' (within Security Documents) was already reported by Phase 2 as OUT_OF_SCOPE due to source-context budget exhaustion; not re-requested per the no-duplicate-request policy. It does not affect the represented meaning of 'Security Documents' itself, which merely names it as one of several qualifying sections.",
+    "Cross-reference 'Article 1, Rule 1-02(w)(2) of Regulation S-X' (within Significant Subsidiary) is an external SEC regulation, not an internal document section (confirmed NOT_FOUND as an internal structural node), and is represented as-is via the definition's own excerpt.",
+    "'Sold Entity or Business' required retrieving the very large 'Consolidated EBITDA' definition; the returned text was truncated before reaching the sub-clause that defines this term, so its substantive meaning is MISSING_CONTEXT despite two good-faith retrieval attempts.",
+    "'Excluded Swap Obligations' (a carve-out inside 'Secured Obligations') and standalone lookup of 'Sold Entity or Business' were both confirmed not independently declared anywhere in the instrument package via direct tool lookup."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T21:49:50.310Z",
+   "inputTokens": 151291,
+   "outputTokens": 19619,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 5,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 173234,
+   "calculatedCostUsd": 0.498772
+  },
+  "cacheKey": "96f21071bef4d43e80ea62ed6633c6a9ceb134e9c54d0f28a13005ead199d6ce",
+  "compiledAt": "2026-09-14T21:49:50.310Z"
+ },
+ "wave": "C",
+ "attemptsSoFar": 1
+}

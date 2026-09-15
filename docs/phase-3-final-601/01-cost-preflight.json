@@ -1,0 +1,139 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE §6/§12 - deterministic Section 6.01 plan and pre-run cost model, using the committed 02-cost-preflight.json methodology unchanged (0 model calls; one gateway balance read)",
+ "at": "2026-09-15T00:15:41.689Z",
+ "methodology": {
+  "source": "docs/phase-3-final-chewy/02-cost-preflight.json",
+  "tiers": {
+   "meanRate": "observed mean rates",
+   "worstObservedRate": "worst single observed rate in each ledger",
+   "conservative": "worst observed rates x 1.25 safety factor"
+  },
+  "unchanged": true,
+  "note": "the estimator is re-used verbatim for one unit; no rate, safety factor or call-count assumption was relaxed for this mission"
+ },
+ "rates": {
+  "passABatchMean": 0.431337,
+  "passABatchWorst": 0.627356,
+  "passABatchCalls": 38,
+  "passAGapMean": 0.3529920000000001,
+  "passAGapWorst": 0.47530800000000006,
+  "passAGapCalls": 5,
+  "passBMean": 0.000017264537354079804,
+  "passBWorst": 0.00003215094994361066,
+  "passBShards": 36,
+  "verifierSemanticReview": 0.32929600000000003,
+  "verifierCalls": 1
+ },
+ "deterministicPlan": {
+  "section": "6.01",
+  "chars": 33623,
+  "sourceContext": {
+   "state": "COMPLETE_LOCAL_SOURCE",
+   "regions": 1,
+   "totalChars": 33623,
+   "unresolvedReferences": 7
+  },
+  "mode": "SHARDED",
+  "reason": "MULTIPLE_SHARDS_REQUIRED",
+  "planHash": "7be17413609ebdbda88ee601750bf1b21e015d790ce583f7572eb75c0083c5e9",
+  "shards": 6,
+  "oversizedShards": 0,
+  "plannerEstimatedInputTokens": 118179,
+  "maxShardInputTokens": 21423,
+  "passABatchesPerPass": 6,
+  "plannedWith": "EMPTY inventory - the paid run plans again with the REAL fresh Pass A inventory and any difference is recorded (§6)"
+ },
+ "priorPreflightPrediction": {
+  "mode": "SHARDED",
+  "shards": 6,
+  "passABatchesPerPass": 6,
+  "chars": 33623,
+  "source": "docs/phase-3-final-chewy/01-structural-operative-preflight.json"
+ },
+ "callPlan": {
+  "passACalls": {
+   "batchesPerPass": 6,
+   "gapCallsPerPass": 1,
+   "passes": 2,
+   "total": 14
+  },
+  "passBConversations": 6,
+  "verifierCalls": {
+   "semanticReview": 1,
+   "conditionSuspicion": 5
+  }
+ },
+ "estimates": {
+  "meanRate": {
+   "passAUsd": 5.882,
+   "passBUsd": 2.0403,
+   "verifierUsd": 0.3863,
+   "totalUsd": 8.3086
+  },
+  "worstObservedRate": {
+   "passAUsd": 8.4789,
+   "passBUsd": 3.7996,
+   "verifierUsd": 0.3863,
+   "totalUsd": 12.6648
+  },
+  "conservative": {
+   "passAUsd": 10.5986,
+   "passBUsd": 4.7495,
+   "verifierUsd": 0.4829,
+   "totalUsd": 15.8309,
+   "safetyFactor": 1.25
+  }
+ },
+ "bound": {
+  "hardCapUsd": 11.5,
+  "gatewayBalanceUsd": 12.559204,
+  "conservativeFitsCap": false,
+  "conservativeFitsBalance": false,
+  "meanFitsCap": true,
+  "meanFitsBalance": true,
+  "worstObservedFitsBalance": false
+ },
+ "missionExpectation": {
+  "meanUsd": 8.3,
+  "conservativeUsd": 10.4,
+  "reproducedMeanUsd": 8.3086,
+  "note": "the mission's stated mean is reproduced to the cent. Its stated conservative figure corresponds to mean x 1.25 ($10.39); the COMMITTED methodology names as 'conservative' the WORST observed rates x 1.25, which is the tier applied to this gate. The estimator was not re-parameterised to fit the cap."
+ },
+ "whyTheBoundFails": {
+  "committedConservativeUsd": 15.8309,
+  "capUsd": 11.5,
+  "balanceUsd": 12.559204,
+  "overCapUsd": 4.3309,
+  "overBalanceUsd": 3.2717,
+  "methodologyIndependentFinding": "Independent of which safety factor is applied: the WORST-OBSERVED-RATE total with NO safety factor ($12.66) already exceeds the gateway balance ($12.56). There is no headroom for a worst-case run, so a started run could exhaust the account mid-execution - the exact failure that halted the original whole-agreement Validation B.",
+  "dominantTerm": {
+   "passAShareOfConservative": 0.669,
+   "reason": "DUAL_PASS_ENSEMBLE (§7) doubles Pass A: 12 batch calls + 2 gap calls. Pass A is 67% of the conservative total."
+  }
+ },
+ "unblockingLevers": {
+  "note": "Each lever is stated with exact arithmetic so a follow-up pre-registered mission can clear §12 without any estimator change. None of these were applied here.",
+  "A_fundAndRaiseCap": {
+   "requiredCapUsd": 15.84,
+   "requiredBalanceUsd": 15.84,
+   "shortfallVsBalanceUsd": 3.27,
+   "effect": "clears §12 under the committed methodology unchanged"
+  },
+  "B_adoptMissionsOwnConservativeArithmetic": {
+   "conservativeUsd": 10.3857,
+   "fitsCap": true,
+   "fitsBalance": true,
+   "effect": "clears §12 at the current cap and balance, but requires an EXPLICIT instruction that the conservative tier is mean x 1.25; this mission will not make that substitution on its own because §12 forbids weakening the estimator"
+  },
+  "C_singlePassPassA": {
+   "conservativeUsd": 10.5316,
+   "effect": "halves Pass A and clears both bounds under the committed methodology, but CONTRADICTS §7 (exactly two independent Pass A executions), so it is disclosed, not taken"
+  },
+  "D_smallerUnit": {
+   "note": "Section 6.02 was costed at $2.27 mean in the committed whole-agreement artifact, but carries 1 reference item versus 6.01's 8, so it does not exercise sharding or deliver comparable evidence"
+  }
+ },
+ "decision": "PHASE3_601_COST_BOUND_BEFORE_START",
+ "paidCallsMade": 0,
+ "spendUsd": 0
+}

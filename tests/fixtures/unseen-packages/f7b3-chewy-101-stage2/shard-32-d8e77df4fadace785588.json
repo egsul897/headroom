@@ -1,0 +1,2264 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:d8e77df4fadace785588",
+  "shardHash": "906bb9bf2b37febd2ac350c2e06c10b2ea11014234010318ea411fe87b08f1ec",
+  "ordinal": 32,
+  "ownedUnits": 16,
+  "sourceChars": 10967,
+  "contextEntries": 1,
+  "contextChars": 225,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 0,
+  "ownedMaterialItems": 0,
+  "estimatedFirstTurnInputTokens": 24526,
+  "preCallEstimate": {
+   "inputTokens": 80691,
+   "outputTokens": 41500,
+   "usd": 0.5763820000000001
+  },
+  "actual": {
+   "inputTokens": 59755,
+   "outputTokens": 23029,
+   "turns": 2,
+   "latencyMs": 210994,
+   "costUsd": 0.3498,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "DEFINITION_COMPLETENESS_SUSPECT"
+  ],
+  "toolCalls": 4,
+  "toolCallNames": [
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 22,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 0,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "valuesRepresented": 0,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {}
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "SONIA Administrator's Website",
+   "Specified Transaction Adjustments",
+   "Sponsor",
+   "SPV",
+   "Sterling",
+   "Successor Borrower",
+   "Supported QFC",
+   "Master Agreement"
+  ],
+  "unresolvedIssues": [
+   "[definition[d13].OR[1].AND[1]] qualitative control determination has no arithmetic/comparison representation in the IR node set",
+   "[definition[d13].OR[1]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d13].OR[2]] election-based qualitative control test, not an arithmetic/comparison primitive",
+   "[definition[d13].OR[3]] qualitative GAAP-consolidation test, not an arithmetic/comparison primitive",
+   "[definition[d13]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "This provision (§1.01 excerpt) is a pure Definitions section; no independently operative permission/prohibition/ratio-test rules exist here, so the rules array is empty and all output is WireDefinitions.",
+   "22 distinct defined terms were extracted, including 'Master Agreement' which is coined inline inside the 'Swap Agreement' definition rather than appearing as its own headword.",
+   "For four terms whose entire content in §1.01 is a pointer ('has the meaning assigned to such term in Section X'), getReferencedProvision was used to retrieve the target section: Specified Transaction Adjustments (§1.08(d)) and SPV (§9.04(e)) and Supported QFC (§9.22) resolved successfully; Successor Borrower (§6.03(d)) resolved to text that was cut off immediately before the clause coining the term, so that definition is marked MISSING_CONTEXT.",
+   "The two orphan 50% values flagged by the deterministic scan are both consumed in the 'subsidiary' definition's calculationExpression as PERCENT(0.5) thresholds inside COMPARE nodes; the qualitative control/consolidation alternatives in the same definition are UNSUPPORTED because they have no numeric content to represent.",
+   "The orphan 'two (2) Business Days' value is part of the Spot Rate fallback methodology description (§1.01) and is preserved in that definition's excerpt; it is a descriptive settlement-timing detail within a rate-determination waterfall, not itself a separately computable capacity, so no separate node was created for it.",
+   "No inventory item IDs were supplied in the context bundle for this submission (the frozen inventory summary described gaps and orphan values only in prose, without itemIds), so inventoryItemIds arrays are empty throughout and inventoryDispositions is empty; all flagged orphan values were nonetheless addressed narratively above and, where computational, structurally in the 'subsidiary' definition."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:d8e77df4fadace785588",
+  "shardHash": "906bb9bf2b37febd2ac350c2e06c10b2ea11014234010318ea411fe87b08f1ec",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:c39dde9fc85f3ecd770e378f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "SONIA Administrator",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully qualitative definition, text fully given"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the Bank of England (or any successor administrator of the Sterling Overnight Index Average)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:2360d877e4263ae5f7365888",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "SONIA Administrator's Website",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "SONIA Administrator"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully qualitative definition, text fully given"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the Bank of England's website, currently at http://www.bankofengland.co.uk, or any successor source for the Sterling Overnight Index Average identified as such by the SONIA Administrator from time to time."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d83127de95048dee340f9039",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Specified Event of Default",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition is a self-contained pointer to specific Event of Default clauses; the pointer list itself is fully given even though the underlying Section 7.01(a)/(b)/(h)/(i) event-of-default text was not expanded (not required to state which clauses are 'Specified')."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means an Event of Default pursuant to Section 7.01(a), Section 7.01(b), Section 7.01(h) (in respect of the Borrowers) or Section 7.01(i) (in respect of the Borrowers)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:034aa1f455e6eef455a8618d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Specified Representations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Immaterial Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full enumeration of sections and qualifiers, plus the Immaterial Subsidiary carve-out, is given verbatim; underlying substance of Sections 3.01-3.18 not needed to represent which representations are 'Specified'."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the representations and warranties ... set forth in Section 3.01(a) and (b) ... Section 3.02 ... Section 3.03(b)(i) ... Section 3.08, Section 3.14, Section 3.15 (solely to the extent...), Section 3.17(b) (solely to the extent...), Section 3.17(c) (solely to the extent...) and Section 3.18. ... in no event shall the Specified Representations (other than with respect to Section 3.14) include any representation or warranty with respect to any Immaterial Subsidiary of the Borrowers."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:7caddc6cfd91a22da57c4b92",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Specified Transaction",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Transactions",
+      "Investment",
+      "Restricted Payment",
+      "Pro Forma Basis",
+      "Pro Forma Compliance"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully enumerated qualitative list of transaction types electable by the Initial Borrower"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, with respect to any period, at the election of the Initial Borrower, the Transactions, any Investment, any disposition, any incurrence or prepayment... or other event that ... requires 'Pro Forma Compliance' ... or requires such test or covenant to be calculated on a 'Pro Forma Basis.'"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:414d089f48f9bfd955ea0725",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Specified Transaction Adjustments",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUBTRACT",
+      "type": "MONEY",
+      "exprId": "ir-expr:541a70451e31632ddc4aac9d",
+      "left": {
+       "kind": "METRIC_REFERENCE",
+       "type": "MONEY",
+       "metricName": "Projected Synergies, Cost Savings and Operating Improvements from a Specified Transaction (Pro Forma Basis)",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:8d2ebcce5945fda49647d10b"
+      },
+      "right": {
+       "kind": "METRIC_REFERENCE",
+       "type": "MONEY",
+       "metricName": "Actual Benefits Realized During Such Period",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:cc056e72f7168a9deacaa113"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.08(d)",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Specified Transaction",
+      "Pro Forma Basis",
+      "Test Period"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Section 1.01 itself only points to Section 1.08(d); retrieved 1.08(d) text supplies the core net-of-actual-benefits formula but cuts off mid-sentence at a 'provided that' proviso whose limiting conditions (e.g., any cap or certification requirement) were not returned.",
+      "The core add-back/net formula is represented; the unresolved proviso is not."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; substance at §1.08(d)",
+      "excerpt": "such cost savings and synergies ... net of the amount of actual benefits realized during such period from such actions (such cost savings and synergies, 'Specified Transaction Adjustments'); provided that [text not returned]"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:36e96e4a23afb1f36dcf6694",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Sponsor",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Affiliates"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full six-part entity enumeration given verbatim"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means (a) BC Partners, Inc. and its Affiliates ... (b) Caisse de dépôt et placement du Québec ... (c) Government of Singapore Investment Corporation ... (d) GIC Private Limited ... (e) Longview Asset Management LLC ... and (f) StepStone Group LP and its Affiliates ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:36ea2aed2f19a78615fde7b7",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Spot Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Alternative Currency"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Methodology (OANDA primary source, fallback to agreed publicly available service, further fallback to Administrative Agent's own spot rates for 2-Business-Day delivery) is a rate-determination waterfall, not itself a computable capacity amount; fully described qualitatively."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the rate at which such currency may be exchanged into U.S. Dollars (at the bid price) ... as determined by OANDA Corporation ...; in the event that such rate is not determined by OANDA Corporation, the Spot Rate shall be determined by reference to such other publicly available service ... or, in the absence of such agreement, ... the arithmetic average of the spot rates of exchange of the Administrative Agent ... for the purchase of U.S. Dollars for delivery two (2) Business Days later."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:6c0718f800c8b5a781ac5a70",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "SPV",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Section 1.01 points to Section 9.04(e); retrieved text supplies the full defining clause for the term 'SPV' itself ('a special purpose funding vehicle ... identified as such in writing ...'); a further proviso in 9.04(e) governs grant mechanics but is not needed to state what 'SPV' means."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; substance at §9.04(e)",
+      "excerpt": "any Lender (a 'Granting Lender') may grant to a special purpose funding vehicle (an 'SPV'), identified as such in writing from time to time by the Granting Lender to the Administrative Agent and the Initial Borrower, the option to provide to the Borrowers all or any part of any Loan that such Granting Lender would otherwise be obligated to make..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:81b22b0bfe4916146a2734d7",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Standard Securitization Undertakings",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Permitted Receivables Financing",
+      "Repurchase Obligations"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully qualitative definition given verbatim; substance of dependent terms not required to state what this term itself covers"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, customary representations, warranties, agreements, purchase obligations, covenants, guaranties and indemnities (including any Repurchase Obligations) made or provided, and servicing obligations undertaken, by any Subsidiary thereof in connection with a Permitted Receivables Financing."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:148c41f1b2271e2e60770bae",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Sterling",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully given"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "'Sterling' and '£' mean freely transferable lawful money of the United Kingdom (expressed in pounds sterling)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:110daddc0d325fba0f445c1a",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Subordinated Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Parent Entity",
+      "Restricted Party",
+      "Loan Document Obligations"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully qualitative eligibility definition (third-party debt, >12-month maturity, contractual subordination) given verbatim"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, any third-party Indebtedness for borrowed money (other than any permitted intercompany Indebtedness owing to any Parent Entity, a Borrower, or any Restricted Party) of any Borrower or any other Guarantor having a stated maturity of more than twelve (12) months and which is by its terms contractually subordinated in right of payment to the Loan Document Obligations."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:7f9bddcd239652a0d3ca01d6",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "OR",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:8bcb213ceb15f5dcfed39d71",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:5c445593ec99762f4cdf5e7e",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "PERCENT",
+         "inputName": "Percentage of total voting power of Capital Stock owned, directly or indirectly, by such Person or its Subsidiaries",
+         "exprId": "ir-expr:6cf942c1cf2a5a0cd4254804"
+        },
+        "operator": "GT",
+        "right": {
+         "kind": "PERCENT",
+         "type": "PERCENT",
+         "value": 0.5,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (subsidiary, clause (1))",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:586dcd182bdf72eba16a4ebd"
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (subsidiary, clause (1))",
+         "excerpt": null
+        }
+       },
+       {
+        "kind": "AND",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:8a834053a1253cc5bdea3d91",
+        "operands": [
+         {
+          "kind": "COMPARE",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:d5580b0c3677e037e9392a71",
+          "left": {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "type": "PERCENT",
+           "inputName": "Percentage of capital accounts, distribution rights, total equity and voting interests or general/limited partnership interests owned, directly or indirectly, by such Person or its Subsidiaries",
+           "exprId": "ir-expr:881e6320de9779724d6d3c7b"
+          },
+          "operator": "GT",
+          "right": {
+           "kind": "PERCENT",
+           "type": "PERCENT",
+           "value": 0.5,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01 (subsidiary, clause (2)(x))",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:1703baf83ebe14b79d3f0232"
+          },
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01 (subsidiary, clause (2)(x))",
+           "excerpt": null
+          }
+         },
+         {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01 (subsidiary, clause (2)(y))",
+          "semanticDescription": "control test: such Person or any Restricted Subsidiary of such Person is a controlling general partner or otherwise controls such entity",
+          "reason": "qualitative control determination has no arithmetic/comparison representation in the IR node set",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01 (subsidiary, clause (2))",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:01cb229f1bdb310d7ef3f85d"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (subsidiary, clause (2))",
+         "excerpt": null
+        }
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 (subsidiary, clause (3))",
+        "semanticDescription": "at the Initial Borrower's election, any partnership/JV/LLC of which such Person or a Restricted Subsidiary is a controlling general partner or otherwise controls such entity, with no ownership percentage threshold",
+        "reason": "election-based qualitative control test, not an arithmetic/comparison primitive",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:031d3478c3a3abfa90caa17a"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 (subsidiary, clause (4))",
+        "semanticDescription": "at the Initial Borrower's election, any entity whose accounts would be consolidated with such Person's under GAAP",
+        "reason": "qualitative GAAP-consolidation test, not an arithmetic/comparison primitive",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:251aeb7bbd74e58a78c0db2a"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Restricted Subsidiary",
+      "Capital Stock"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The two >50%-ownership numeric thresholds (clauses (1) and (2)(x)) are fully represented as COMPARE/PERCENT nodes.",
+      "The control-based and GAAP-consolidation-based alternative tests (clauses (2)(y), (3) and (4)) are genuinely qualitative and are represented as UNSUPPORTED rather than forced into an arithmetic form.",
+      "qualitative control determination has no arithmetic/comparison representation in the IR node set",
+      "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+      "election-based qualitative control test, not an arithmetic/comparison primitive",
+      "qualitative GAAP-consolidation test, not an arithmetic/comparison primitive",
+      "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(1) any corporation... of which more than 50% of the total voting power... is at the time of determination owned... (2) any partnership, joint venture, limited liability company or similar entity of which: (x) more than 50%... are owned... and (y) such Person... is a controlling general partner or otherwise controls such entity; and (3) at the Initial Borrower's election... and (4) at the Initial Borrower's election, any entity the accounts of which would be consolidated..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:7f9bddcd239652a0d3ca01d6",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple scoping of lowercase 'subsidiary' to the Borrowers"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "'Subsidiary' means any subsidiary of the Borrowers."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f05cda72dbe243214d8dd778",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Subsidiary Loan Party",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Guarantee Agreement",
+      "Collateral Agreement",
+      "Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully given"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means each Subsidiary that is a party to the Guarantee Agreement and/or any Collateral Agreement."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:22b47b5104d5c9db026ce1fd",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Successor Borrower",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Section 1.01 only points to Section 6.03(d); the retrieved 6.03(d) text ('the Borrowers may merge, amalgamate or consolidate with any other Person; provided that ...') was cut off exactly before the clause that actually coins the term 'Successor Borrower' (typically defining the surviving/transferee entity), so the substantive meaning was not obtained despite an attempted retrieval."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; pointer to §6.03(d)",
+      "excerpt": "has the meaning assigned to such term in Section 6.03(d)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:458141e2ae3d5608e5f2e67d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Supported QFC",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Swap Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Section 1.01 points to Section 9.22; retrieved 9.22 text supplies the full defining clause: any QFC for which the Loan Documents provide support (through guarantee or otherwise) for Swap Agreements or other QFC instruments."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; substance at §9.22",
+      "excerpt": "To the extent that the Loan Documents provide support, through a guarantee or otherwise, for Swap Agreements or any other agreement or instrument that is a QFC (such support, 'QFC Credit Support,' and each such QFC, a 'Supported QFC') ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:99fb007ce588d03a6f10040e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Swap",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully given"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means any agreement, contract, or transaction that constitutes a 'swap' within the meaning of section 1a(47) of the Commodity Exchange Act."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:5597a95b0e50b01eacc331d3",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Swap Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Master Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully given two-part (a)/(b) enumeration"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means (a) any and all rate swap transactions, basis swaps, credit derivative transactions... and (b) any and all transactions of any kind... which are subject to the terms and conditions of, or governed by, any form of master agreement published by [ISDA]... (any such master agreement, together with any related schedules, a 'Master Agreement')..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:2d8e6486301281cb1ceff918",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Master Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Swap Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Term coined inline within the Swap Agreement definition; fully given"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any form of master agreement published by the International Swaps and Derivatives Association, Inc., any International Foreign Exchange Master Agreement, or any other master agreement (any such master agreement, together with any related schedules, a 'Master Agreement')."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:eeff7bce26df6a20faf8ebae",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Swap Obligation",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Swap"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully given"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, with respect to any Person, any obligation to pay or perform under any Swap."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:c3722a35f2a3665d5ef001ef",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "TARGET Day",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully given"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means any day on which TARGET2 (or, if such payment system ceases to be operative, such other payment system, if any, determined by the Administrative Agent to be a suitable replacement) is open for the settlement of payments in euro."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "DEFINITION_COMPLETENESS_SUSPECT"
+  ],
+  "unresolvedIssues": [
+   "[definition[d13].OR[1].AND[1]] qualitative control determination has no arithmetic/comparison representation in the IR node set",
+   "[definition[d13].OR[1]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d13].OR[2]] election-based qualitative control test, not an arithmetic/comparison primitive",
+   "[definition[d13].OR[3]] qualitative GAAP-consolidation test, not an arithmetic/comparison primitive",
+   "[definition[d13]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "This provision (§1.01 excerpt) is a pure Definitions section; no independently operative permission/prohibition/ratio-test rules exist here, so the rules array is empty and all output is WireDefinitions.",
+   "22 distinct defined terms were extracted, including 'Master Agreement' which is coined inline inside the 'Swap Agreement' definition rather than appearing as its own headword.",
+   "For four terms whose entire content in §1.01 is a pointer ('has the meaning assigned to such term in Section X'), getReferencedProvision was used to retrieve the target section: Specified Transaction Adjustments (§1.08(d)) and SPV (§9.04(e)) and Supported QFC (§9.22) resolved successfully; Successor Borrower (§6.03(d)) resolved to text that was cut off immediately before the clause coining the term, so that definition is marked MISSING_CONTEXT.",
+   "The two orphan 50% values flagged by the deterministic scan are both consumed in the 'subsidiary' definition's calculationExpression as PERCENT(0.5) thresholds inside COMPARE nodes; the qualitative control/consolidation alternatives in the same definition are UNSUPPORTED because they have no numeric content to represent.",
+   "The orphan 'two (2) Business Days' value is part of the Spot Rate fallback methodology description (§1.01) and is preserved in that definition's excerpt; it is a descriptive settlement-timing detail within a rate-determination waterfall, not itself a separately computable capacity, so no separate node was created for it.",
+   "No inventory item IDs were supplied in the context bundle for this submission (the frozen inventory summary described gaps and orphan values only in prose, without itemIds), so inventoryItemIds arrays are empty throughout and inventoryDispositions is empty; all flagged orphan values were nonetheless addressed narratively above and, where computational, structurally in the 'subsidiary' definition."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 59755,
+   "outputTokens": 23029,
+   "costUsd": 0.3498
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "DEFINITION_COMPLETENESS_SUSPECT"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:c39dde9fc85f3ecd770e378f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "SONIA Administrator",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully qualitative definition, text fully given"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the Bank of England (or any successor administrator of the Sterling Overnight Index Average)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:2360d877e4263ae5f7365888",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "SONIA Administrator's Website",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "SONIA Administrator"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully qualitative definition, text fully given"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the Bank of England's website, currently at http://www.bankofengland.co.uk, or any successor source for the Sterling Overnight Index Average identified as such by the SONIA Administrator from time to time."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d83127de95048dee340f9039",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Specified Event of Default",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition is a self-contained pointer to specific Event of Default clauses; the pointer list itself is fully given even though the underlying Section 7.01(a)/(b)/(h)/(i) event-of-default text was not expanded (not required to state which clauses are 'Specified')."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means an Event of Default pursuant to Section 7.01(a), Section 7.01(b), Section 7.01(h) (in respect of the Borrowers) or Section 7.01(i) (in respect of the Borrowers)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:034aa1f455e6eef455a8618d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Specified Representations",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Immaterial Subsidiary"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Full enumeration of sections and qualifiers, plus the Immaterial Subsidiary carve-out, is given verbatim; underlying substance of Sections 3.01-3.18 not needed to represent which representations are 'Specified'."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the representations and warranties ... set forth in Section 3.01(a) and (b) ... Section 3.02 ... Section 3.03(b)(i) ... Section 3.08, Section 3.14, Section 3.15 (solely to the extent...), Section 3.17(b) (solely to the extent...), Section 3.17(c) (solely to the extent...) and Section 3.18. ... in no event shall the Specified Representations (other than with respect to Section 3.14) include any representation or warranty with respect to any Immaterial Subsidiary of the Borrowers."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:7caddc6cfd91a22da57c4b92",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Specified Transaction",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Transactions",
+     "Investment",
+     "Restricted Payment",
+     "Pro Forma Basis",
+     "Pro Forma Compliance"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully enumerated qualitative list of transaction types electable by the Initial Borrower"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, with respect to any period, at the election of the Initial Borrower, the Transactions, any Investment, any disposition, any incurrence or prepayment... or other event that ... requires 'Pro Forma Compliance' ... or requires such test or covenant to be calculated on a 'Pro Forma Basis.'"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:414d089f48f9bfd955ea0725",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Specified Transaction Adjustments",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "SUBTRACT",
+     "type": "MONEY",
+     "exprId": "ir-expr:541a70451e31632ddc4aac9d",
+     "left": {
+      "kind": "METRIC_REFERENCE",
+      "type": "MONEY",
+      "metricName": "Projected Synergies, Cost Savings and Operating Improvements from a Specified Transaction (Pro Forma Basis)",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:8d2ebcce5945fda49647d10b"
+     },
+     "right": {
+      "kind": "METRIC_REFERENCE",
+      "type": "MONEY",
+      "metricName": "Actual Benefits Realized During Such Period",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:cc056e72f7168a9deacaa113"
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.08(d)",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Specified Transaction",
+     "Pro Forma Basis",
+     "Test Period"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Section 1.01 itself only points to Section 1.08(d); retrieved 1.08(d) text supplies the core net-of-actual-benefits formula but cuts off mid-sentence at a 'provided that' proviso whose limiting conditions (e.g., any cap or certification requirement) were not returned.",
+     "The core add-back/net formula is represented; the unresolved proviso is not."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; substance at §1.08(d)",
+     "excerpt": "such cost savings and synergies ... net of the amount of actual benefits realized during such period from such actions (such cost savings and synergies, 'Specified Transaction Adjustments'); provided that [text not returned]"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:36e96e4a23afb1f36dcf6694",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Sponsor",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Affiliates"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Full six-part entity enumeration given verbatim"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means (a) BC Partners, Inc. and its Affiliates ... (b) Caisse de dépôt et placement du Québec ... (c) Government of Singapore Investment Corporation ... (d) GIC Private Limited ... (e) Longview Asset Management LLC ... and (f) StepStone Group LP and its Affiliates ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:36ea2aed2f19a78615fde7b7",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Spot Rate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Alternative Currency"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Methodology (OANDA primary source, fallback to agreed publicly available service, further fallback to Administrative Agent's own spot rates for 2-Business-Day delivery) is a rate-determination waterfall, not itself a computable capacity amount; fully described qualitatively."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the rate at which such currency may be exchanged into U.S. Dollars (at the bid price) ... as determined by OANDA Corporation ...; in the event that such rate is not determined by OANDA Corporation, the Spot Rate shall be determined by reference to such other publicly available service ... or, in the absence of such agreement, ... the arithmetic average of the spot rates of exchange of the Administrative Agent ... for the purchase of U.S. Dollars for delivery two (2) Business Days later."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:6c0718f800c8b5a781ac5a70",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "SPV",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Section 1.01 points to Section 9.04(e); retrieved text supplies the full defining clause for the term 'SPV' itself ('a special purpose funding vehicle ... identified as such in writing ...'); a further proviso in 9.04(e) governs grant mechanics but is not needed to state what 'SPV' means."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; substance at §9.04(e)",
+     "excerpt": "any Lender (a 'Granting Lender') may grant to a special purpose funding vehicle (an 'SPV'), identified as such in writing from time to time by the Granting Lender to the Administrative Agent and the Initial Borrower, the option to provide to the Borrowers all or any part of any Loan that such Granting Lender would otherwise be obligated to make..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:81b22b0bfe4916146a2734d7",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Standard Securitization Undertakings",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Permitted Receivables Financing",
+     "Repurchase Obligations"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully qualitative definition given verbatim; substance of dependent terms not required to state what this term itself covers"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, customary representations, warranties, agreements, purchase obligations, covenants, guaranties and indemnities (including any Repurchase Obligations) made or provided, and servicing obligations undertaken, by any Subsidiary thereof in connection with a Permitted Receivables Financing."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:148c41f1b2271e2e60770bae",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Sterling",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully given"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "'Sterling' and '£' mean freely transferable lawful money of the United Kingdom (expressed in pounds sterling)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:110daddc0d325fba0f445c1a",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Subordinated Indebtedness",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Parent Entity",
+     "Restricted Party",
+     "Loan Document Obligations"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully qualitative eligibility definition (third-party debt, >12-month maturity, contractual subordination) given verbatim"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, any third-party Indebtedness for borrowed money (other than any permitted intercompany Indebtedness owing to any Parent Entity, a Borrower, or any Restricted Party) of any Borrower or any other Guarantor having a stated maturity of more than twelve (12) months and which is by its terms contractually subordinated in right of payment to the Loan Document Obligations."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:7f9bddcd239652a0d3ca01d6",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "subsidiary",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "OR",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:8bcb213ceb15f5dcfed39d71",
+     "operands": [
+      {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:5c445593ec99762f4cdf5e7e",
+       "left": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "PERCENT",
+        "inputName": "Percentage of total voting power of Capital Stock owned, directly or indirectly, by such Person or its Subsidiaries",
+        "exprId": "ir-expr:6cf942c1cf2a5a0cd4254804"
+       },
+       "operator": "GT",
+       "right": {
+        "kind": "PERCENT",
+        "type": "PERCENT",
+        "value": 0.5,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (subsidiary, clause (1))",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:586dcd182bdf72eba16a4ebd"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 (subsidiary, clause (1))",
+        "excerpt": null
+       }
+      },
+      {
+       "kind": "AND",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:8a834053a1253cc5bdea3d91",
+       "operands": [
+        {
+         "kind": "COMPARE",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:d5580b0c3677e037e9392a71",
+         "left": {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "PERCENT",
+          "inputName": "Percentage of capital accounts, distribution rights, total equity and voting interests or general/limited partnership interests owned, directly or indirectly, by such Person or its Subsidiaries",
+          "exprId": "ir-expr:881e6320de9779724d6d3c7b"
+         },
+         "operator": "GT",
+         "right": {
+          "kind": "PERCENT",
+          "type": "PERCENT",
+          "value": 0.5,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01 (subsidiary, clause (2)(x))",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:1703baf83ebe14b79d3f0232"
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (subsidiary, clause (2)(x))",
+          "excerpt": null
+         }
+        },
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01 (subsidiary, clause (2)(y))",
+         "semanticDescription": "control test: such Person or any Restricted Subsidiary of such Person is a controlling general partner or otherwise controls such entity",
+         "reason": "qualitative control determination has no arithmetic/comparison representation in the IR node set",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (subsidiary, clause (2))",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:01cb229f1bdb310d7ef3f85d"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 (subsidiary, clause (2))",
+        "excerpt": null
+       }
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01 (subsidiary, clause (3))",
+       "semanticDescription": "at the Initial Borrower's election, any partnership/JV/LLC of which such Person or a Restricted Subsidiary is a controlling general partner or otherwise controls such entity, with no ownership percentage threshold",
+       "reason": "election-based qualitative control test, not an arithmetic/comparison primitive",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:031d3478c3a3abfa90caa17a"
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01 (subsidiary, clause (4))",
+       "semanticDescription": "at the Initial Borrower's election, any entity whose accounts would be consolidated with such Person's under GAAP",
+       "reason": "qualitative GAAP-consolidation test, not an arithmetic/comparison primitive",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:251aeb7bbd74e58a78c0db2a"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Restricted Subsidiary",
+     "Capital Stock"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The two >50%-ownership numeric thresholds (clauses (1) and (2)(x)) are fully represented as COMPARE/PERCENT nodes.",
+     "The control-based and GAAP-consolidation-based alternative tests (clauses (2)(y), (3) and (4)) are genuinely qualitative and are represented as UNSUPPORTED rather than forced into an arithmetic form.",
+     "qualitative control determination has no arithmetic/comparison representation in the IR node set",
+     "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+     "election-based qualitative control test, not an arithmetic/comparison primitive",
+     "qualitative GAAP-consolidation test, not an arithmetic/comparison primitive",
+     "OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(1) any corporation... of which more than 50% of the total voting power... is at the time of determination owned... (2) any partnership, joint venture, limited liability company or similar entity of which: (x) more than 50%... are owned... and (y) such Person... is a controlling general partner or otherwise controls such entity; and (3) at the Initial Borrower's election... and (4) at the Initial Borrower's election, any entity the accounts of which would be consolidated..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:7f9bddcd239652a0d3ca01d6",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Subsidiary",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "subsidiary"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Simple scoping of lowercase 'subsidiary' to the Borrowers"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "'Subsidiary' means any subsidiary of the Borrowers."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f05cda72dbe243214d8dd778",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Subsidiary Loan Party",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Guarantee Agreement",
+     "Collateral Agreement",
+     "Subsidiary"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully given"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means each Subsidiary that is a party to the Guarantee Agreement and/or any Collateral Agreement."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:22b47b5104d5c9db026ce1fd",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Successor Borrower",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Section 1.01 only points to Section 6.03(d); the retrieved 6.03(d) text ('the Borrowers may merge, amalgamate or consolidate with any other Person; provided that ...') was cut off exactly before the clause that actually coins the term 'Successor Borrower' (typically defining the surviving/transferee entity), so the substantive meaning was not obtained despite an attempted retrieval."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; pointer to §6.03(d)",
+     "excerpt": "has the meaning assigned to such term in Section 6.03(d)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:458141e2ae3d5608e5f2e67d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Supported QFC",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Swap Agreement"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Section 1.01 points to Section 9.22; retrieved 9.22 text supplies the full defining clause: any QFC for which the Loan Documents provide support (through guarantee or otherwise) for Swap Agreements or other QFC instruments."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; substance at §9.22",
+     "excerpt": "To the extent that the Loan Documents provide support, through a guarantee or otherwise, for Swap Agreements or any other agreement or instrument that is a QFC (such support, 'QFC Credit Support,' and each such QFC, a 'Supported QFC') ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:99fb007ce588d03a6f10040e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Swap",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully given"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means any agreement, contract, or transaction that constitutes a 'swap' within the meaning of section 1a(47) of the Commodity Exchange Act."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:5597a95b0e50b01eacc331d3",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Swap Agreement",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Master Agreement"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully given two-part (a)/(b) enumeration"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means (a) any and all rate swap transactions, basis swaps, credit derivative transactions... and (b) any and all transactions of any kind... which are subject to the terms and conditions of, or governed by, any form of master agreement published by [ISDA]... (any such master agreement, together with any related schedules, a 'Master Agreement')..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:2d8e6486301281cb1ceff918",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Master Agreement",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Swap Agreement"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Term coined inline within the Swap Agreement definition; fully given"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any form of master agreement published by the International Swaps and Derivatives Association, Inc., any International Foreign Exchange Master Agreement, or any other master agreement (any such master agreement, together with any related schedules, a 'Master Agreement')."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:eeff7bce26df6a20faf8ebae",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Swap Obligation",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Swap"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully given"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, with respect to any Person, any obligation to pay or perform under any Swap."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:c3722a35f2a3665d5ef001ef",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "TARGET Day",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully given"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means any day on which TARGET2 (or, if such payment system ceases to be operative, such other payment system, if any, determined by the Administrative Agent to be a suitable replacement) is open for the settlement of payments in euro."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01 'subsidiary' clauses (2)(y), (3): 'such Person or any Restricted Subsidiary of such Person is a controlling general partner or otherwise controls such entity'; §1.01 'subsidiary' clause (4): GAAP-consolidation test",
+    "semanticRequirement": "A qualitative, non-arithmetic control/consolidation predicate (e.g., 'is a controlling general partner or otherwise controls', 'accounts would be consolidated under GAAP') that determines membership in a defined term or basket, independent of any numeric ownership threshold.",
+    "whyExistingPrimitivesFail": "COMPARE/AND/OR/METRIC_REFERENCE assume a numeric or boolean value already exists to compare; there is no primitive for a freeform qualitative control/consolidation determination that itself has no numeric input, so it must currently be represented as UNSUPPORTED rather than a true boolean predicate node.",
+    "candidateGeneralizedPrimitive": "A QUALITATIVE_TEST node (e.g., {kind: 'QUALITATIVE_TEST', testDescription, citation}) that can appear as a boolean operand inside AND/OR/COMPARE trees, distinct from UNSUPPORTED, to preserve that a real (if non-computable) legal test exists at that position without conflating it with a genuine representational gap."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d13].OR[1].AND[1]] qualitative control determination has no arithmetic/comparison representation in the IR node set",
+   "[definition[d13].OR[1]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d13].OR[2]] election-based qualitative control test, not an arithmetic/comparison primitive",
+   "[definition[d13].OR[3]] qualitative GAAP-consolidation test, not an arithmetic/comparison primitive",
+   "[definition[d13]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "This provision (§1.01 excerpt) is a pure Definitions section; no independently operative permission/prohibition/ratio-test rules exist here, so the rules array is empty and all output is WireDefinitions.",
+   "22 distinct defined terms were extracted, including 'Master Agreement' which is coined inline inside the 'Swap Agreement' definition rather than appearing as its own headword.",
+   "For four terms whose entire content in §1.01 is a pointer ('has the meaning assigned to such term in Section X'), getReferencedProvision was used to retrieve the target section: Specified Transaction Adjustments (§1.08(d)) and SPV (§9.04(e)) and Supported QFC (§9.22) resolved successfully; Successor Borrower (§6.03(d)) resolved to text that was cut off immediately before the clause coining the term, so that definition is marked MISSING_CONTEXT.",
+   "The two orphan 50% values flagged by the deterministic scan are both consumed in the 'subsidiary' definition's calculationExpression as PERCENT(0.5) thresholds inside COMPARE nodes; the qualitative control/consolidation alternatives in the same definition are UNSUPPORTED because they have no numeric content to represent.",
+   "The orphan 'two (2) Business Days' value is part of the Spot Rate fallback methodology description (§1.01) and is preserved in that definition's excerpt; it is a descriptive settlement-timing detail within a rate-determination waterfall, not itself a separately computable capacity, so no separate node was created for it.",
+   "No inventory item IDs were supplied in the context bundle for this submission (the frozen inventory summary described gaps and orphan values only in prose, without itemIds), so inventoryItemIds arrays are empty throughout and inventoryDispositions is empty; all flagged orphan values were nonetheless addressed narratively above and, where computational, structurally in the 'subsidiary' definition."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 1.08(d)"
+    },
+    "outputSummary": "resolved reference \"Section 1.08(d)\" -> 1.08(d) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 1410,
+    "timestamp": "2026-09-14T21:51:14.633Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 1.08(d)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:87efe6e864d68b3b27e1d3b8",
+     "sourceNodeKey": "doc-a::1.08(d)",
+     "charStart": 383554,
+     "charEnd": 384964,
+     "rawText": "(d) Whenever pro forma effect is to be given to a Specified Transaction, the pro\nforma calculations shall be made in good faith by a Responsible Officer and may include, for the avoidance of doubt, the amount of synergies, cost savings, operating improvements, operating expense reductions, business optimization, revenue\nenhancements, revenue synergies, pricing initiatives, restructuring initiatives and other similar initiatives that are projected by the Initial Borrower in good faith to result from actions taken, committed to be taken or expected to be taken (in\nthe good faith determination of the Initial Borrower) (calculated on a Pro Forma Basis as though such synergies, cost savings, operating improvements, operating expense reductions, business optimization, revenue enhancements, pricing\ninitiatives, restructuring initiatives and other similar initiatives had been realized on the first (1st) day of such Test Period and as if such synergies, cost savings, operating improvements, operating expense reductions, business optimization,\nrevenue enhancements, pricing initiatives, restructuring initiatives and other similar initiatives were realized during the entirety of such period) relating to such Specified Transaction, net of the amount of actual benefits realized during such\nperiod from such actions (such cost savings and synergies, “ Specified Transaction Adjustments ”); provided that ",
+     "contentHash": "60c21eca4439097d49f9175832cb665a899fd1b4bc05471dd3a1dade863236d9",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 9.04(e)"
+    },
+    "outputSummary": "resolved reference \"Section 9.04(e)\" -> 9.04(e) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 473,
+    "timestamp": "2026-09-14T21:51:14.634Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 9.04(e)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:c80b0a18b72b2453fdf9bddb",
+     "sourceNodeKey": "doc-a::9.04(e)",
+     "charStart": 802176,
+     "charEnd": 802649,
+     "rawText": "(e) Notwithstanding anything to the contrary contained herein, any Lender\n(a “ Granting Lender ”) may grant to a special purpose funding vehicle (an “ SPV ”), identified as such in writing from time to time by the Granting Lender to the Administrative Agent and the Initial Borrower, the\noption to provide to the Borrowers all or any part of any Loan that such Granting Lender would otherwise be obligated to make to the Borrowers pursuant to this Agreement; provided that ",
+     "contentHash": "f3ee0187f98b07b1a1fd403516e1358e6e81ae23f5d09957f23b3bd2f0aa0a2a",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 6.03(d)"
+    },
+    "outputSummary": "resolved reference \"Section 6.03(d)\" -> 6.03(d) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 92,
+    "timestamp": "2026-09-14T21:51:14.634Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 6.03(d)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:693e3a1fca7c0040d38be6ff",
+     "sourceNodeKey": "doc-a::6.03(d)",
+     "charStart": 646747,
+     "charEnd": 646839,
+     "rawText": "(d) the Borrowers may merge, amalgamate or consolidate with any other Person;\nprovided that ",
+     "contentHash": "947e6384a5d51c61b1b4b24c27f075e68cd38d9fc17dde75ac2da9434caa1ca4",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 9.22"
+    },
+    "outputSummary": "resolved reference \"Section 9.22\" -> 9.22 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 2509,
+    "timestamp": "2026-09-14T21:51:14.634Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 9.22",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:bbf01c0035d8db5b4012a733",
+     "sourceNodeKey": "doc-a::9.22",
+     "charStart": 855796,
+     "charEnd": 858305,
+     "rawText": "Section 9.22\nAcknowledgement Regarding Any Supported QFCs . To the extent that the Loan Documents provide support, through a guarantee or otherwise, for Swap Agreements or any other agreement or instrument that is a QFC (such support, “ QFC Credit\nSupport ,” and each such QFC, a “ Supported QFC ”), the parties acknowledge and agree as follows with respect to the resolution power of the Federal Deposit Insurance Corporation under the Federal Deposit Insurance Act and\nTitle II of the Dodd-Frank Wall Street Reform and Consumer Protection Act (together with the regulations promulgated thereunder, the “ U.S. Special Resolution Regimes ”) in respect of such Supported QFC and QFC Credit Support (with\nthe provisions below applicable notwithstanding that the Loan Documents and any Supported QFC may in fact be stated to be governed by the laws of the State of New York and/or of the United States or any other state of the United States):\n\nIn the event a Covered Entity that is party to a Supported QFC (each, a “ Covered Party ”) becomes subject to a proceeding\nunder a U.S. Special Resolution Regime, the transfer of such Supported QFC and the benefit of such QFC Credit Support (and any interest and obligation in or under such Supported QFC and such QFC Credit Support, and any rights in property securing\nsuch Supported QFC or such QFC Credit Support) from such Covered Party will be effective to the same extent as the transfer would be effective under the U.S. Special Resolution Regime if the Supported QFC and such QFC Credit Support (and any such\ninterest, obligation and rights in property) were governed by the laws of the United States or a state of the United States. In the event a Covered Party or a BHC Act Affiliate of a Covered Party becomes subject to a proceeding under a U.S. Special\nResolution Regime, Default Rights under the Loan Documents that might otherwise apply to such Supported QFC or any QFC Credit Support that may be exercised against such Covered Party are permitted to be exercised to no greater extent than such\nDefault Rights could be exercised under the U.S. Special Resolution Regime if the Supported QFC and the Loan Documents were governed by the laws of the United States or a state of the United States. Without limitation of the foregoing, it is\nunderstood and agreed that rights and remedies of the parties with respect to a Defaulting Lender shall in no event affect the rights of any Covered Party with respect to a Supported QFC or any QFC Credit Support.\n\n",
+     "contentHash": "77f06ae129b5981561f8dd65ad14e7837aa4430faeedc5d12b3b9a880d54f602",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": {
+   "fired": true,
+   "detectedSourceTermLabels": [
+    "SONIA Administrator",
+    "SONIA Administrator ’ s Website",
+    "Specified Event of Default",
+    "Specified Representations",
+    "Specified Transaction",
+    "Sponsors",
+    "Spot Rate",
+    "Standard Securitization Undertakings",
+    "Subordinated Indebtedness",
+    "subsidiary",
+    "Subsidiary Loan Party",
+    "Swap",
+    "Swap Agreement",
+    "Swap Obligation",
+    "TARGET Day"
+   ],
+   "compiledTermLabels": [
+    "SONIA Administrator",
+    "SONIA Administrator's Website",
+    "Specified Event of Default",
+    "Specified Representations",
+    "Specified Transaction",
+    "Specified Transaction Adjustments",
+    "Sponsor",
+    "Spot Rate",
+    "SPV",
+    "Standard Securitization Undertakings",
+    "Sterling",
+    "Subordinated Indebtedness",
+    "subsidiary",
+    "Subsidiary",
+    "Subsidiary Loan Party",
+    "Successor Borrower",
+    "Supported QFC",
+    "Swap",
+    "Swap Agreement",
+    "Master Agreement",
+    "Swap Obligation",
+    "TARGET Day"
+   ],
+   "missingTermLabels": [
+    "SONIA Administrator ’ s Website",
+    "Sponsors"
+   ],
+   "reason": "Deterministic completeness check found 2 quoted defined-term citation(s) in the supplied source (matching the '\"Term\" means'/'\"Term\" shall mean' pattern) that do not appear among the 22 compiled definition(s): \"SONIA Administrator ’ s Website\", \"Sponsors\". This is a structural detection only - it does not assert what these terms mean or why they were omitted."
+  },
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "SONIA Administrator",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully qualitative definition, text fully given"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means the Bank of England (or any successor administrator of the Sterling Overnight Index Average)."
+    },
+    {
+     "localRef": "d2",
+     "termName": "SONIA Administrator's Website",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "SONIA Administrator"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully qualitative definition, text fully given"
+     ],
+     "citation": "§1.01",
+     "excerpt": "the Bank of England's website, currently at http://www.bankofengland.co.uk, or any successor source for the Sterling Overnight Index Average identified as such by the SONIA Administrator from time to time."
+    },
+    {
+     "localRef": "d3",
+     "termName": "Specified Event of Default",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition is a self-contained pointer to specific Event of Default clauses; the pointer list itself is fully given even though the underlying Section 7.01(a)/(b)/(h)/(i) event-of-default text was not expanded (not required to state which clauses are 'Specified')."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means an Event of Default pursuant to Section 7.01(a), Section 7.01(b), Section 7.01(h) (in respect of the Borrowers) or Section 7.01(i) (in respect of the Borrowers)."
+    },
+    {
+     "localRef": "d4",
+     "termName": "Specified Representations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Immaterial Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full enumeration of sections and qualifiers, plus the Immaterial Subsidiary carve-out, is given verbatim; underlying substance of Sections 3.01-3.18 not needed to represent which representations are 'Specified'."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the representations and warranties ... set forth in Section 3.01(a) and (b) ... Section 3.02 ... Section 3.03(b)(i) ... Section 3.08, Section 3.14, Section 3.15 (solely to the extent...), Section 3.17(b) (solely to the extent...), Section 3.17(c) (solely to the extent...) and Section 3.18. ... in no event shall the Specified Representations (other than with respect to Section 3.14) include any representation or warranty with respect to any Immaterial Subsidiary of the Borrowers."
+    },
+    {
+     "localRef": "d5",
+     "termName": "Specified Transaction",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Transactions",
+      "Investment",
+      "Restricted Payment",
+      "Pro Forma Basis",
+      "Pro Forma Compliance"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully enumerated qualitative list of transaction types electable by the Initial Borrower"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, with respect to any period, at the election of the Initial Borrower, the Transactions, any Investment, any disposition, any incurrence or prepayment... or other event that ... requires 'Pro Forma Compliance' ... or requires such test or covenant to be calculated on a 'Pro Forma Basis.'"
+    },
+    {
+     "localRef": "d6",
+     "termName": "Specified Transaction Adjustments",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUBTRACT",
+      "left": {
+       "kind": "METRIC_REFERENCE",
+       "metricName": "Projected Synergies, Cost Savings and Operating Improvements from a Specified Transaction (Pro Forma Basis)"
+      },
+      "right": {
+       "kind": "METRIC_REFERENCE",
+       "metricName": "Actual Benefits Realized During Such Period"
+      },
+      "citation": "§1.08(d)"
+     },
+     "dependsOnTerms": [
+      "Specified Transaction",
+      "Pro Forma Basis",
+      "Test Period"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Section 1.01 itself only points to Section 1.08(d); retrieved 1.08(d) text supplies the core net-of-actual-benefits formula but cuts off mid-sentence at a 'provided that' proviso whose limiting conditions (e.g., any cap or certification requirement) were not returned.",
+      "The core add-back/net formula is represented; the unresolved proviso is not."
+     ],
+     "citation": "§1.01; substance at §1.08(d)",
+     "excerpt": "such cost savings and synergies ... net of the amount of actual benefits realized during such period from such actions (such cost savings and synergies, 'Specified Transaction Adjustments'); provided that [text not returned]"
+    },
+    {
+     "localRef": "d7",
+     "termName": "Sponsor",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Affiliates"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full six-part entity enumeration given verbatim"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means (a) BC Partners, Inc. and its Affiliates ... (b) Caisse de dépôt et placement du Québec ... (c) Government of Singapore Investment Corporation ... (d) GIC Private Limited ... (e) Longview Asset Management LLC ... and (f) StepStone Group LP and its Affiliates ..."
+    },
+    {
+     "localRef": "d8",
+     "termName": "Spot Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Alternative Currency"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Methodology (OANDA primary source, fallback to agreed publicly available service, further fallback to Administrative Agent's own spot rates for 2-Business-Day delivery) is a rate-determination waterfall, not itself a computable capacity amount; fully described qualitatively."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the rate at which such currency may be exchanged into U.S. Dollars (at the bid price) ... as determined by OANDA Corporation ...; in the event that such rate is not determined by OANDA Corporation, the Spot Rate shall be determined by reference to such other publicly available service ... or, in the absence of such agreement, ... the arithmetic average of the spot rates of exchange of the Administrative Agent ... for the purchase of U.S. Dollars for delivery two (2) Business Days later."
+    },
+    {
+     "localRef": "d9",
+     "termName": "SPV",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Section 1.01 points to Section 9.04(e); retrieved text supplies the full defining clause for the term 'SPV' itself ('a special purpose funding vehicle ... identified as such in writing ...'); a further proviso in 9.04(e) governs grant mechanics but is not needed to state what 'SPV' means."
+     ],
+     "citation": "§1.01; substance at §9.04(e)",
+     "excerpt": "any Lender (a 'Granting Lender') may grant to a special purpose funding vehicle (an 'SPV'), identified as such in writing from time to time by the Granting Lender to the Administrative Agent and the Initial Borrower, the option to provide to the Borrowers all or any part of any Loan that such Granting Lender would otherwise be obligated to make..."
+    },
+    {
+     "localRef": "d10",
+     "termName": "Standard Securitization Undertakings",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Permitted Receivables Financing",
+      "Repurchase Obligations"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully qualitative definition given verbatim; substance of dependent terms not required to state what this term itself covers"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, customary representations, warranties, agreements, purchase obligations, covenants, guaranties and indemnities (including any Repurchase Obligations) made or provided, and servicing obligations undertaken, by any Subsidiary thereof in connection with a Permitted Receivables Financing."
+    },
+    {
+     "localRef": "d11",
+     "termName": "Sterling",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully given"
+     ],
+     "citation": "§1.01",
+     "excerpt": "'Sterling' and '£' mean freely transferable lawful money of the United Kingdom (expressed in pounds sterling)."
+    },
+    {
+     "localRef": "d12",
+     "termName": "Subordinated Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Parent Entity",
+      "Restricted Party",
+      "Loan Document Obligations"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully qualitative eligibility definition (third-party debt, >12-month maturity, contractual subordination) given verbatim"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, any third-party Indebtedness for borrowed money (other than any permitted intercompany Indebtedness owing to any Parent Entity, a Borrower, or any Restricted Party) of any Borrower or any other Guarantor having a stated maturity of more than twelve (12) months and which is by its terms contractually subordinated in right of payment to the Loan Document Obligations."
+    },
+    {
+     "localRef": "d13",
+     "termName": "subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "OR",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "left": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "inputName": "Percentage of total voting power of Capital Stock owned, directly or indirectly, by such Person or its Subsidiaries"
+        },
+        "operator": "GT",
+        "right": {
+         "kind": "PERCENT",
+         "value": 0.5
+        },
+        "citation": "§1.01 (subsidiary, clause (1))"
+       },
+       {
+        "kind": "AND",
+        "operands": [
+         {
+          "kind": "COMPARE",
+          "left": {
+           "kind": "TRANSACTION_INPUT_REFERENCE",
+           "inputName": "Percentage of capital accounts, distribution rights, total equity and voting interests or general/limited partnership interests owned, directly or indirectly, by such Person or its Subsidiaries"
+          },
+          "operator": "GT",
+          "right": {
+           "kind": "PERCENT",
+           "value": 0.5
+          },
+          "citation": "§1.01 (subsidiary, clause (2)(x))"
+         },
+         {
+          "kind": "UNSUPPORTED",
+          "semanticDescription": "control test: such Person or any Restricted Subsidiary of such Person is a controlling general partner or otherwise controls such entity",
+          "reason": "qualitative control determination has no arithmetic/comparison representation in the IR node set",
+          "sourceEvidence": "§1.01 (subsidiary, clause (2)(y))"
+         }
+        ],
+        "citation": "§1.01 (subsidiary, clause (2))"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "at the Initial Borrower's election, any partnership/JV/LLC of which such Person or a Restricted Subsidiary is a controlling general partner or otherwise controls such entity, with no ownership percentage threshold",
+        "reason": "election-based qualitative control test, not an arithmetic/comparison primitive",
+        "sourceEvidence": "§1.01 (subsidiary, clause (3))"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "at the Initial Borrower's election, any entity whose accounts would be consolidated with such Person's under GAAP",
+        "reason": "qualitative GAAP-consolidation test, not an arithmetic/comparison primitive",
+        "sourceEvidence": "§1.01 (subsidiary, clause (4))"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Restricted Subsidiary",
+      "Capital Stock"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The two >50%-ownership numeric thresholds (clauses (1) and (2)(x)) are fully represented as COMPARE/PERCENT nodes.",
+      "The control-based and GAAP-consolidation-based alternative tests (clauses (2)(y), (3) and (4)) are genuinely qualitative and are represented as UNSUPPORTED rather than forced into an arithmetic form."
+     ],
+     "citation": "§1.01",
+     "excerpt": "(1) any corporation... of which more than 50% of the total voting power... is at the time of determination owned... (2) any partnership, joint venture, limited liability company or similar entity of which: (x) more than 50%... are owned... and (y) such Person... is a controlling general partner or otherwise controls such entity; and (3) at the Initial Borrower's election... and (4) at the Initial Borrower's election, any entity the accounts of which would be consolidated..."
+    },
+    {
+     "localRef": "d14",
+     "termName": "Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Simple scoping of lowercase 'subsidiary' to the Borrowers"
+     ],
+     "citation": "§1.01",
+     "excerpt": "'Subsidiary' means any subsidiary of the Borrowers."
+    },
+    {
+     "localRef": "d15",
+     "termName": "Subsidiary Loan Party",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Guarantee Agreement",
+      "Collateral Agreement",
+      "Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully given"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means each Subsidiary that is a party to the Guarantee Agreement and/or any Collateral Agreement."
+    },
+    {
+     "localRef": "d16",
+     "termName": "Successor Borrower",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Section 1.01 only points to Section 6.03(d); the retrieved 6.03(d) text ('the Borrowers may merge, amalgamate or consolidate with any other Person; provided that ...') was cut off exactly before the clause that actually coins the term 'Successor Borrower' (typically defining the surviving/transferee entity), so the substantive meaning was not obtained despite an attempted retrieval."
+     ],
+     "citation": "§1.01; pointer to §6.03(d)",
+     "excerpt": "has the meaning assigned to such term in Section 6.03(d)."
+    },
+    {
+     "localRef": "d17",
+     "termName": "Supported QFC",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Swap Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Section 1.01 points to Section 9.22; retrieved 9.22 text supplies the full defining clause: any QFC for which the Loan Documents provide support (through guarantee or otherwise) for Swap Agreements or other QFC instruments."
+     ],
+     "citation": "§1.01; substance at §9.22",
+     "excerpt": "To the extent that the Loan Documents provide support, through a guarantee or otherwise, for Swap Agreements or any other agreement or instrument that is a QFC (such support, 'QFC Credit Support,' and each such QFC, a 'Supported QFC') ..."
+    },
+    {
+     "localRef": "d18",
+     "termName": "Swap",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully given"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means any agreement, contract, or transaction that constitutes a 'swap' within the meaning of section 1a(47) of the Commodity Exchange Act."
+    },
+    {
+     "localRef": "d19",
+     "termName": "Swap Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Master Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully given two-part (a)/(b) enumeration"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means (a) any and all rate swap transactions, basis swaps, credit derivative transactions... and (b) any and all transactions of any kind... which are subject to the terms and conditions of, or governed by, any form of master agreement published by [ISDA]... (any such master agreement, together with any related schedules, a 'Master Agreement')..."
+    },
+    {
+     "localRef": "d20",
+     "termName": "Master Agreement",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Swap Agreement"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Term coined inline within the Swap Agreement definition; fully given"
+     ],
+     "citation": "§1.01",
+     "excerpt": "any form of master agreement published by the International Swaps and Derivatives Association, Inc., any International Foreign Exchange Master Agreement, or any other master agreement (any such master agreement, together with any related schedules, a 'Master Agreement')."
+    },
+    {
+     "localRef": "d21",
+     "termName": "Swap Obligation",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Swap"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully given"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, with respect to any Person, any obligation to pay or perform under any Swap."
+    },
+    {
+     "localRef": "d22",
+     "termName": "TARGET Day",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully given"
+     ],
+     "citation": "§1.01",
+     "excerpt": "means any day on which TARGET2 (or, if such payment system ceases to be operative, such other payment system, if any, determined by the Administrative Agent to be a suitable replacement) is open for the settlement of payments in euro."
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01 'subsidiary' clauses (2)(y), (3): 'such Person or any Restricted Subsidiary of such Person is a controlling general partner or otherwise controls such entity'; §1.01 'subsidiary' clause (4): GAAP-consolidation test",
+     "semanticRequirement": "A qualitative, non-arithmetic control/consolidation predicate (e.g., 'is a controlling general partner or otherwise controls', 'accounts would be consolidated under GAAP') that determines membership in a defined term or basket, independent of any numeric ownership threshold.",
+     "whyExistingPrimitivesFail": "COMPARE/AND/OR/METRIC_REFERENCE assume a numeric or boolean value already exists to compare; there is no primitive for a freeform qualitative control/consolidation determination that itself has no numeric input, so it must currently be represented as UNSUPPORTED rather than a true boolean predicate node.",
+     "candidateGeneralizedPrimitive": "A QUALITATIVE_TEST node (e.g., {kind: 'QUALITATIVE_TEST', testDescription, citation}) that can appear as a boolean operand inside AND/OR/COMPARE trees, distinct from UNSUPPORTED, to preserve that a real (if non-computable) legal test exists at that position without conflating it with a genuine representational gap."
+    }
+   ],
+   "inventoryDispositions": [],
+   "overallNotes": [
+    "This provision (§1.01 excerpt) is a pure Definitions section; no independently operative permission/prohibition/ratio-test rules exist here, so the rules array is empty and all output is WireDefinitions.",
+    "22 distinct defined terms were extracted, including 'Master Agreement' which is coined inline inside the 'Swap Agreement' definition rather than appearing as its own headword.",
+    "For four terms whose entire content in §1.01 is a pointer ('has the meaning assigned to such term in Section X'), getReferencedProvision was used to retrieve the target section: Specified Transaction Adjustments (§1.08(d)) and SPV (§9.04(e)) and Supported QFC (§9.22) resolved successfully; Successor Borrower (§6.03(d)) resolved to text that was cut off immediately before the clause coining the term, so that definition is marked MISSING_CONTEXT.",
+    "The two orphan 50% values flagged by the deterministic scan are both consumed in the 'subsidiary' definition's calculationExpression as PERCENT(0.5) thresholds inside COMPARE nodes; the qualitative control/consolidation alternatives in the same definition are UNSUPPORTED because they have no numeric content to represent.",
+    "The orphan 'two (2) Business Days' value is part of the Spot Rate fallback methodology description (§1.01) and is preserved in that definition's excerpt; it is a descriptive settlement-timing detail within a rate-determination waterfall, not itself a separately computable capacity, so no separate node was created for it.",
+    "No inventory item IDs were supplied in the context bundle for this submission (the frozen inventory summary described gaps and orphan values only in prose, without itemIds), so inventoryItemIds arrays are empty throughout and inventoryDispositions is empty; all flagged orphan values were nonetheless addressed narratively above and, where computational, structurally in the 'subsidiary' definition."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T21:53:21.312Z",
+   "inputTokens": 59755,
+   "outputTokens": 23029,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 210991,
+   "calculatedCostUsd": 0.3498
+  },
+  "cacheKey": "b317d54bc2602166c84c790779aef9123013896938573a4ee463764ead28d1e7",
+  "compiledAt": "2026-09-14T21:53:21.312Z"
+ },
+ "wave": "C",
+ "attemptsSoFar": 1
+}

@@ -1,0 +1,68 @@
+{
+ "artifact": "PHASE 3 FINAL §1/§2/§4 - starting system, Chewy source identity and human reference set frozen before any paid call",
+ "at": "2026-09-14T23:54:16.857Z",
+ "startingSha": {
+  "expected": "a474ab3ba42c2518b1dabe552b73dd37712c43e6",
+  "actual": "a474ab3ba42c2518b1dabe552b73dd37712c43e6",
+  "match": true
+ },
+ "productionCompilerTreeSha256": "2c8deb633489d619488a68362f0d68854e15f6558091fc060d0175a46738e632",
+ "versions": {
+  "compilerAlgorithm": "semantic-accountability-compiler.v4",
+  "compilerPrompt": "semantic-accountability-compiler-prompt.v4",
+  "toolPolicy": "phase-3b1-tool-policy.v2",
+  "accountabilityAlgorithm": "semantic-accountability.v5",
+  "inventoryPrompt": "semantic-inventory-prompt.v5",
+  "sourceIdentityMigration": "source-identity-migration.v1",
+  "executionPolicy": "semantic-execution-mode.v1",
+  "shardPlanner": "semantic-compilation-shards.v1",
+  "shardBudget": {
+   "targetPrimaryChars": 12000,
+   "maxPrimaryChars": 24000,
+   "maxContextChars": 10000,
+   "maxContextEntryChars": 1800,
+   "maxUnitsPerShard": 16
+  },
+  "irSchema": "headroom-covenant-ir.v1"
+ },
+ "verifierVersion": null,
+ "chewy": {
+  "fixture": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+  "extractedSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+  "matchesPhase3ValidationManifest": true,
+  "extractionManifest": {
+   "keys": [
+    "packageKey",
+    "companyId",
+    "documents",
+    "frozenAt",
+    "note"
+   ],
+   "source": null
+  }
+ },
+ "humanReferenceSet": {
+  "path": "docs/phase-3-validation/04-human-reference-set.json",
+  "sha256": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036",
+  "itemCount": 46,
+  "items": 46,
+  "byMateriality": {
+   "CRITICAL": 28,
+   "MATERIAL": 18
+  },
+  "byCategory": {
+   "A high-value restrictions": 7,
+   "B permissions/baskets": 15,
+   "C exceptions/provisos": 9,
+   "D quantitative components": 9,
+   "E dependency/cross-reference mechanics": 5,
+   "F non-obvious feature": 1
+  },
+  "offsetsRelativeTo": "extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+  "exposedToCompilerOrVerifier": false,
+  "editedAfterPaidExecution": "n/a - no paid execution occurred"
+ },
+ "cap": {
+  "hardCapUsd": 20
+ }
+}

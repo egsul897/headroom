@@ -1,9 +1,21 @@
 /**
  * Phase 3B - the compiler's own public API (task §58): compileCovenantToIR.
- * Orchestrates: cache lookup -> bounded tool-use model call (caller.ts) ->
- * deterministic normalization (normalize.ts) -> Phase 3A IR structural
- * validation (lib/contract-model/ir/validate.ts, reused verbatim, never
- * re-implemented) -> final SemanticCompilationResult -> cache write.
+ * Orchestrates: cache lookup -> source-context sufficiency + Pass A (frozen
+ * inventory) -> deterministic EXECUTION-MODE selection (F-7C) -> either the
+ * bounded monolithic composition (bounded-composition.ts: model call ->
+ * deterministic normalization -> Phase 3A IR structural validation -> Pass C)
+ * or the certified sharded path (shard-planner -> bounded per-shard
+ * composition -> shard-stitcher -> GLOBAL Pass C) -> one normal
+ * SemanticCompilationResult -> cache write.
+ *
+ * F-7C PRODUCTION ACTIVATION: production callers never choose a mode. After
+ * Pass A the certified planner derives the unit's semantic source units and
+ * the deterministic policy (execution-mode.ts) asks one architectural
+ * question - can this unit be ONE normal bounded shard? If so the pre-F-7
+ * monolithic path runs exactly as before. If the planner needs more than one
+ * shard, or the unit is an oversized atomic block, the unit is knowingly
+ * unbounded for one conversation and runs SHARDED. No agreement, section,
+ * size constant or "try monolithic then fall back" enters the decision.
  *
  * PROPOSED, NEVER APPROVED (task §35): every IRRule/IRDefinition this
  * function returns carries `compilerVersion` set (marking it as a REAL
@@ -14,20 +26,30 @@
  * verification, not built here) and human review are later, separate
  * gates before anything from this module could be treated as authoritative.
  */
-import { validateCompilationUnit } from "../../ir/validate";
 import { getSemanticCaller, type SemanticCaller } from "./caller";
 import { InMemorySemanticCompilationCache, computeCacheKey, type SemanticCompilationCache } from "./cache";
-import { normalizeSubmission } from "./normalize";
 import { checkDefinitionCompleteness } from "./completeness-check";
-import { EMPTY_SUPERSESSION_INDEX, buildNodeSupersessionIndex, resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
-import type { IRDefinition } from "../../ir/types";
-import type { SemanticCompilationResult, SemanticCompilationStatus, SemanticCompilerErrorDetail, SemanticCompilerFailureReason, SemanticCompilerInput } from "./types";
+import { compileBoundedComposition, contextBundleEvidenceFlags, hasStaleReferencedDefinition, type AccountabilityFields } from "./bounded-composition";
+import { executionPolicyIdentity, selectCompilationExecutionMode, SEMANTIC_EXECUTION_POLICY_VERSION, type ExecutionModeDecision } from "./execution-mode";
+import { planCompilationShards } from "./shard-planner";
+import { executeShardPlan, type ShardExecutor } from "./shard-execution";
+import { createBoundedShardExecutor } from "./shard-executor";
+import { validateFrozenInventoryResume, type FrozenInventoryResumeRecord } from "./frozen-inventory-resume";
+import { computeSourceContextHash } from "../semantic-accountability/source-identity";
+import { normalizeDefinedTermRef } from "../amendment/chain";
+import type { ShardBudget, ShardExecutionResult, ShardPlan, StitchedCompilation } from "./shard-types";
+import type { SemanticCompilationResult, SemanticCompilationStatus, SemanticCompilerFailureReason, SemanticCompilerInput, SemanticExecutionMetadata } from "./types";
 import type { StageCaller } from "../llm-caller";
+import type { AnalyzerCallTelemetry } from "../../analyzer/telemetry";
 import { resolveSourceContext } from "../semantic-accountability/source-context";
 import { runSemanticInventory } from "../semantic-accountability/inventory";
 import { resolveSemanticInventoryMode, runDualPassSemanticInventory, type SemanticInventoryMode } from "../semantic-accountability/dual-pass";
-import { reconcileInventoryWithComposition } from "../semantic-accountability/reconciliation";
 import type { FrozenSemanticInventory, SourceContextResult } from "../semantic-accountability/types";
+
+// The helpers below moved to bounded-composition.ts (F-7C) so the monolithic
+// unit and every shard share ONE implementation; re-exported here so existing
+// importers (package-compile.ts, tests) keep their import path.
+export { sanitizeErrorMessage, classifyFailureCategory } from "./bounded-composition";
 
 // Phase 3F.1.4 (P1-1 remediation) - this module-level singleton is used by
 // EVERY real current caller that omits `options.cache` (every script under
@@ -41,102 +63,8 @@ import type { FrozenSemanticInventory, SourceContextResult } from "../semantic-a
 // itself was never the defect; the key formula it was given was.
 const defaultCache = new InMemorySemanticCompilationCache();
 
-const MAX_SANITIZED_MESSAGE_LENGTH = 500;
-/** Redacts common credential/token shapes before a message is ever persisted (task §33's "no secrets" instruction) - defensive even though a compile-time exception message should not ordinarily contain one. */
-const CREDENTIAL_LIKE_PATTERN = /\b(?:sk-|Bearer\s+|api[_-]?key["':=\s]+)[A-Za-z0-9._-]{8,}/gi;
-
-export function sanitizeErrorMessage(message: string): string {
-  const redacted = message.replace(CREDENTIAL_LIKE_PATTERN, "[REDACTED]");
-  return redacted.length > MAX_SANITIZED_MESSAGE_LENGTH ? `${redacted.slice(0, MAX_SANITIZED_MESSAGE_LENGTH)}... [truncated]` : redacted;
-}
-
-export function classifyFailureCategory(errorClass: string, message: string): SemanticCompilerErrorDetail["failureCategory"] {
-  const lower = `${errorClass} ${message}`.toLowerCase();
-  if (/timeout|timedout|network|econnreset|econnrefused|fetch failed|abort|enotfound|socket|connection reset/.test(lower)) return "TRANSPORT";
-  if (/schema|json|parse/.test(lower)) return "SCHEMA";
-  if (/tool/.test(lower)) return "TOOL";
-  if (/model|provider|rate.?limit|overloaded/.test(lower)) return "MODEL";
-  return "INTERNAL";
-}
-
-/** Phase 3F.1 FIX-2 - the ONE place `inputHasUnresolvedOperativeEvidence`/`unresolvedEvidenceItemIds` are ever derived, straight off the context bundle's own already-computed fields (never re-scanning `items` a second, independent way here). */
-function contextBundleEvidenceFlags(input: SemanticCompilerInput): Pick<SemanticCompilationResult, "inputHasUnresolvedOperativeEvidence" | "unresolvedEvidenceItemIds"> {
-  return { inputHasUnresolvedOperativeEvidence: input.contextBundle.hasUnresolvedOperativeEvidence, unresolvedEvidenceItemIds: input.contextBundle.unresolvedEvidenceItemIds };
-}
-
-/**
- * Phase 3F.1 FIX-2 (§5, defense in depth - "optional but preferred where
- * practical") - independent of `contextBundleEvidenceFlags` above (which
- * depends on the context bundle's own items having been routed through
- * evidenceState at CONSTRUCTION time - the normal, real production path):
- * for every IRDefinition this compilation actually emitted, directly
- * re-resolves that exact term's CURRENT operative status against the real
- * operativeState/structuralIndex this compilation's own toolAccess already
- * carries (the SAME canonical resolveOperativeDefinitionEvidence primitive
- * context-retrieval's own resolveDefinitionEvidenceState and semantic/
- * tools.ts's getDefinition already rely on). This is what keeps the
- * required end-to-end invariant true even for a bundle that was HAND-BUILT
- * or produced by code that predates this fix (no evidenceState on its own
- * items at all, `hasUnresolvedOperativeEvidence` never set) - a compiled
- * definition can never be silently trusted merely because the upstream
- * bundle construction step happened to skip trust annotation. Mirrors
- * semantic-verification/verify.ts's OWN independent copy of this exact
- * check (deliberately duplicated, never imported, per that module's own
- * independence-from-compile.ts contract) rather than a shared helper.
- */
-function hasStaleReferencedDefinition(input: SemanticCompilerInput, definitions: IRDefinition[]): boolean {
-  const { operativeState, structuralIndex } = input.toolAccess;
-  if (definitions.length === 0) return false;
-  const supersessionIndex = operativeState ? buildNodeSupersessionIndex([{ baseDocumentId: input.sourceDocumentId, state: operativeState }]) : EMPTY_SUPERSESSION_INDEX;
-  return definitions.some((def) => {
-    const resolution = resolveOperativeDefinitionEvidence({ index: structuralIndex, operativeState, term: def.termName, searchDocumentIds: [def.sourceDocumentId ?? input.sourceDocumentId], supersessionIndex });
-    return resolution.outcome !== "FOUND" || !resolution.isCurrentTruth;
-  });
-}
-
-/** Phase 3F.1 §33/F6 - builds a structured FAILED result for a genuinely thrown exception, so compileCovenantToIR never lets a caller's own try/catch discard the failure's real content (the exact gap the DSGR first-blind run exposed: 2 compile failures preserved only `{candidateRef, status: "FAILED"}`). Never cached - a thrown exception is more likely transient (network blip, timeout) than a structured, deterministic model/schema failure, and caching it would incorrectly treat a transient condition as a permanent verdict for this cache key's lifetime. */
-function buildTransportFailureResult(err: unknown, caller: SemanticCaller, cacheKey: string, retryCount: number | null, evidenceFlags: Pick<SemanticCompilationResult, "inputHasUnresolvedOperativeEvidence" | "unresolvedEvidenceItemIds">): SemanticCompilationResult {
-  const errorClass = err instanceof Error ? err.constructor.name : "UnknownError";
-  const rawMessage = err instanceof Error ? err.message : String(err);
-  const sanitizedMessage = sanitizeErrorMessage(rawMessage);
-  const errorDetail: SemanticCompilerErrorDetail = {
-    errorClass,
-    sanitizedMessage,
-    failureCategory: classifyFailureCategory(errorClass, rawMessage),
-    retryCount,
-    hadPartialOutput: false,
-  };
-  return {
-    status: "FAILED",
-    failureReasons: ["TRANSPORT_OR_INTERNAL_ERROR"],
-    errorDetail,
-    rules: [],
-    definitions: [],
-    sharedCapacities: [],
-    irExtensionCandidates: [],
-    unresolvedIssues: [`Compilation threw ${errorClass}: ${sanitizedMessage}`],
-    toolCallLog: [],
-    ...evidenceFlags,
-    definitionCompletenessCheck: null,
-    rawModelOutput: null,
-    provider: caller.providerName,
-    model: caller.model,
-    telemetry: null,
-    cacheKey,
-    compiledAt: new Date().toISOString(),
-  };
-}
-
-function determineStatus(failureReasons: SemanticCompilerFailureReason[], ruleCount: number, hasReviewRequiredSufficiency: boolean, hasUnresolvedIssues: boolean): SemanticCompilationStatus {
-  if (ruleCount === 0 && failureReasons.length > 0) return "FAILED";
-  // Phase 3B.1 (task §10): OUTPUT_TRUNCATED belongs alongside IR_VALIDATION_FAILURE/
-  // MODEL_SCHEMA_FAILURE here - a response cut off at the output-token ceiling is a
-  // degraded attempt (PARTIAL when a validated prefix was recovered) even when every
-  // recovered rule/definition itself validates cleanly, never a plain REVIEW_REQUIRED.
-  if (failureReasons.includes("IR_VALIDATION_FAILURE") || failureReasons.includes("MODEL_SCHEMA_FAILURE") || failureReasons.includes("OUTPUT_TRUNCATED")) return ruleCount > 0 ? "PARTIAL" : "FAILED";
-  if (failureReasons.length > 0 || hasReviewRequiredSufficiency || hasUnresolvedIssues) return "REVIEW_REQUIRED";
-  return "COMPLETED";
-}
+/** F-7C: bounded per-shard retry for genuine provider failure only (one retry - the certified F-7B.3E policy). */
+const DEFAULT_SHARD_MAX_ATTEMPTS = 2;
 
 export interface CompileOptions {
   caller?: SemanticCaller;
@@ -162,6 +90,91 @@ export interface CompileOptions {
   sourceContextBudget?: { budgetChars?: number; maxExpansionRegionChars?: number; maxOperativeUnitChars?: number };
   /** SEMANTIC ACCOUNTABILITY: set false to skip source-context sufficiency + Pass A + Pass C entirely (result.accountability === null). Default true. */
   accountability?: boolean;
+  /**
+   * F-7C RESUME: an already-FROZEN Pass A inventory for exactly this candidateRef (content-hashed, immutable). When
+   * supplied, Pass A is not executed again - the frozen inventory is whole-unit truth and freezing it once is the
+   * whole point of freezing. The hash enters the outer cache key. A candidateRef mismatch is refused, never silently
+   * accepted. Used by resumable orchestration and by zero-cost replay of certified runs; never a way to skip Pass A for
+   * a unit that has no frozen inventory.
+   */
+  frozenInventory?: FrozenSemanticInventory;
+  /** F-7C: shard budget override (defaults to the certified DEFAULT_SHARD_BUDGET). Part of the execution identity. */
+  shardBudget?: Partial<ShardBudget>;
+  /** F-7C: prior per-shard terminal results keyed by shardHash, reused without a call under the explicit reuse contract (shard-execution.ts). */
+  priorShardResults?: Map<string, ShardExecutionResult>;
+  /** F-7C: total attempts per shard, retried only on SHARD_PROVIDER_FAILURE (default 2). */
+  shardMaxAttempts?: number;
+  /** F-7C (tests / offline replay only): replaces the production bounded shard executor. Production never sets this. */
+  shardExecutor?: ShardExecutor;
+}
+
+interface WholeUnitSignals { failureReasons: SemanticCompilerFailureReason[]; issues: string[] }
+
+/**
+ * The whole-unit accountability signals that belong to the UNIT, not to any one bounded conversation. For the
+ * monolithic path they are derived inside compileBoundedComposition (unchanged); for the sharded path they are layered
+ * here on top of the stitcher's own shard-level + global-Pass-C reasons, so a sharded unit is never judged more
+ * leniently than a monolithic one.
+ */
+function wholeUnitAccountabilitySignals(sourceContext: SourceContextResult | null, frozenInventory: FrozenSemanticInventory | null, accountability: StitchedCompilation["accountability"]): WholeUnitSignals {
+  const failureReasons: SemanticCompilerFailureReason[] = [];
+  const issues: string[] = [];
+  if (sourceContext && (sourceContext.state === "TRUNCATED_SOURCE" || sourceContext.state === "STRUCTURALLY_INCOMPLETE_SOURCE")) {
+    failureReasons.push("SOURCE_CONTEXT_TRUNCATED");
+    issues.push(`[source-context] ${sourceContext.state}: ${sourceContext.reasons.join("; ")}`);
+  }
+  if (frozenInventory && (frozenInventory.inventoryStatus === "INVENTORY_FAILED" || frozenInventory.inventoryStatus === "INVENTORY_EMPTY_SUSPECT")) {
+    failureReasons.push("SEMANTIC_INVENTORY_UNAVAILABLE");
+    issues.push(`[inventory] ${frozenInventory.inventoryStatus}: ${frozenInventory.inventoryStatusReason}`);
+  }
+  if (frozenInventory && (frozenInventory.inventoryStatus === "INVENTORY_COVERAGE_GAP" || frozenInventory.unaccountedSource.length > 0)) {
+    failureReasons.push("SEMANTIC_INVENTORY_COVERAGE_GAP");
+    issues.push(`[inventory] ${frozenInventory.inventoryStatus === "INVENTORY_COVERAGE_GAP" ? "INVENTORY_COVERAGE_GAP" : "unaccounted source"}: ${frozenInventory.inventoryStatusReason}`);
+    for (const seg of frozenInventory.unaccountedSource) issues.push(`[inventory] unaccounted source ${seg.regionId}:${seg.charStart}-${seg.charEnd}: "${seg.excerpt.slice(0, 160)}" - ${seg.reason}`);
+  }
+  if ((frozenInventory?.ensemble?.supportReviewRequired ?? false) || accountability.supportReviewRequired) {
+    failureReasons.push("SEMANTIC_SUPPORT_REVIEW_REQUIRED");
+    const e = frozenInventory?.ensemble;
+    issues.push(`[support] ${e ? `${e.counts.materialSingleRun} CRITICAL/MATERIAL single-run and ${e.counts.materialConflicted} conflicted item(s) across passes ${e.passIds.join("+")}` : `${accountability.support?.materialSingleRun ?? 0} CRITICAL/MATERIAL single-run and ${accountability.support?.materialConflicted ?? 0} conflicted item(s)`} carry independent-pass support asymmetry - review required; never resolved by composition`);
+    for (const cf of frozenInventory?.ensemble?.conflicts ?? []) issues.push(`[support] conflict ${cf.itemIds.join(" vs ")}: ${cf.reason}`);
+  }
+  return { failureReasons, issues };
+}
+
+/** F-7B.2 proof-class census over the retained definitions - the three authoritative classes, no shard-position fallback. */
+function attributionProofCounts(plan: ShardPlan, stitched: StitchedCompilation): SemanticExecutionMetadata["sharded"] extends infer S ? S extends { attributionProofCounts: infer C } ? C : never : never {
+  const defUnits = new Set(plan.units.filter((u) => u.kind === "DEFINITION").map((u) => u.normalizedTermName));
+  const anchored = new Set(stitched.definitionAttribution.filter((a) => a.anchor).map((a) => a.objectId));
+  const lineageOf = (o: unknown): boolean => { let found = false; const walk = (x: unknown): void => { if (found || !x || typeof x !== "object") return; if (Array.isArray(x)) { x.forEach(walk); return; } const r = x as Record<string, unknown>; if (Array.isArray(r.inventoryItemIds) && (r.inventoryItemIds as unknown[]).length > 0) { found = true; return; } for (const v of Object.values(r)) if (v && typeof v === "object") walk(v); }; walk(o); return found; };
+  const counts = { PLANNER_DEFINITION_UNIT: 0, OWNED_INVENTORY_LINEAGE: 0, UNIQUE_PRIMARY_SOURCE_DECLARATION: 0, NONE: 0 };
+  for (const d of stitched.definitions) {
+    let n = 0;
+    if (defUnits.has(normalizeDefinedTermRef(d.termName))) { counts.PLANNER_DEFINITION_UNIT++; n++; }
+    if (lineageOf(d)) { counts.OWNED_INVENTORY_LINEAGE++; n++; }
+    if (anchored.has(d.definitionId)) { counts.UNIQUE_PRIMARY_SOURCE_DECLARATION++; n++; }
+    if (n === 0) counts.NONE++;
+  }
+  return counts;
+}
+
+/** §32 - deterministic, never optimistic: the stitcher's own status is the floor; whole-unit signals can only demote. */
+function mapStitchedStatus(stitchedStatus: StitchedCompilation["status"], extraReasons: SemanticCompilerFailureReason[], hasReviewSufficiency: boolean): SemanticCompilationStatus {
+  if (stitchedStatus === "COMPLETED" && (extraReasons.length > 0 || hasReviewSufficiency)) return "REVIEW_REQUIRED";
+  return stitchedStatus;
+}
+
+function aggregateTelemetry(caller: SemanticCaller, results: ShardExecutionResult[], stats: { executed: number; retries: number }, latencyMs: number, promptVersion: string, schemaVersion: string): AnalyzerCallTelemetry {
+  const sum = (pick: (t: NonNullable<ShardExecutionResult["telemetry"]>) => number | null): number | null => {
+    let any = false; let total = 0;
+    for (const r of results) { const v = r.telemetry ? pick(r.telemetry) : null; if (v !== null && v !== undefined) { any = true; total += v; } }
+    return any ? total : null;
+  };
+  return {
+    provider: caller.providerName, model: caller.model, promptVersion, schemaVersion, stage: "semantic_compile_sharded", timestamp: new Date().toISOString(),
+    inputTokens: sum((t) => t.inputTokens), outputTokens: sum((t) => t.outputTokens), cachedInputTokens: null, cacheCreationInputTokens: null,
+    attemptCount: stats.executed, retryCount: stats.retries, rateLimitFailures: 0, latencyMs,
+    providerCost: undefined, calculatedCostUsd: sum((t) => t.costUsd),
+  };
 }
 
 export async function compileCovenantToIR(input: SemanticCompilerInput, options: CompileOptions = {}): Promise<SemanticCompilationResult> {
@@ -171,23 +184,14 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
   // for a dual-pass request (or vice versa).
   const inventoryMode: SemanticInventoryMode | null = options.accountability !== false ? resolveSemanticInventoryMode(options.inventoryMode) : null;
   const providerIdentity = `${caller.providerName}::${caller.model}${inventoryMode ? `::inventory=${inventoryMode}` : ""}`;
-  const cacheKey = computeCacheKey(input, providerIdentity);
-
-  const cached = cache.get(cacheKey);
-  if (cached) return cached;
-
   const evidenceFlags = contextBundleEvidenceFlags(input);
 
-  // SEMANTIC ACCOUNTABILITY (mission §12 -> §3 -> §7): source-context
-  // sufficiency, then the source-only Pass A inventory, BOTH before the
-  // composition model ever runs. The inventory is frozen (content-hashed)
-  // here and handed to Pass B read-only, so Pass C's reconciliation can
-  // never be circular. Disabled only by an explicit options.accountability
-  // === false (zero-cost previews / legacy callers), never silently.
+  // F-7C.1: the CURRENT source context is resolved before the cache lookup. It is deterministic and free, and its
+  // identity (computeSourceContextHash - every region's id/document/offsets/text plus the sufficiency state, the
+  // same canonical hash Pass A records) enters the outer key, so a request whose expansion regions changed while
+  // its operative text and bundle identity did not can never be served a result compiled over the old source - and
+  // no cache hit can ever bypass the frozen-inventory compatibility gate below.
   let sourceContext: SourceContextResult | null = null;
-  let frozenInventory: FrozenSemanticInventory | null = null;
-  let inventoryPasses: SemanticCompilationResult["inventoryPasses"] = null;
-  let callerInput: SemanticCompilerInput = input;
   if (options.accountability !== false) {
     const index = input.toolAccess.structuralIndex;
     sourceContext = resolveSourceContext({
@@ -199,7 +203,57 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       documentText: index.getDocumentText(input.sourceDocumentId) ?? null,
       ...(options.sourceContextBudget ?? {}),
     });
-    if (inventoryMode === "DUAL_PASS_ENSEMBLE") {
+  }
+  // F-7C: how the unit is executed is part of its identity too (cache.ts explains why it must be in the key before
+  // Pass A runs). A resumed frozen inventory contributes its own hash; the resolved source context contributes its
+  // identity.
+  const executionIdentity = `${executionPolicyIdentity(options.shardBudget)}${sourceContext ? `|source:${computeSourceContextHash(sourceContext)}` : ""}${options.frozenInventory ? `|frozen:${options.frozenInventory.frozenContentHash}` : ""}`;
+  const cacheKey = computeCacheKey(input, providerIdentity, executionIdentity);
+
+  const cached = cache.get(cacheKey);
+  if (cached) return cached;
+
+  // SEMANTIC ACCOUNTABILITY (mission §12 -> §3 -> §7): source-context
+  // sufficiency, then the source-only Pass A inventory, BOTH before the
+  // composition model ever runs. The inventory is frozen (content-hashed)
+  // here and handed to Pass B read-only, so Pass C's reconciliation can
+  // never be circular. Disabled only by an explicit options.accountability
+  // === false (zero-cost previews / legacy callers), never silently.
+  // F-7C: Pass A runs ONCE for the whole unit here - never per shard.
+  let frozenInventory: FrozenSemanticInventory | null = null;
+  let inventoryPasses: SemanticCompilationResult["inventoryPasses"] = null;
+  let frozenInventoryResume: FrozenInventoryResumeRecord | null = null;
+  let callerInput: SemanticCompilerInput = input;
+  if (sourceContext) {
+    const index = input.toolAccess.structuralIndex;
+    if (options.frozenInventory) {
+      // F-7C.1: the presence of a frozen inventory is a request, not an authorization. It is resumed only once it is
+      // proven - against the source context resolved for THIS request - to belong to exactly this source. Otherwise
+      // the compilation fails here, structurally and deterministically, before any model call: Pass A is never
+      // silently rerun and the stale inventory is never used.
+      const decision = validateFrozenInventoryResume({ candidateRef: input.candidateRef, sourceDocumentId: input.sourceDocumentId, frozenInventory: options.frozenInventory, sourceContext, structuralIndex: index });
+      if (!decision.ok) {
+        return {
+          status: "FAILED",
+          failureReasons: ["FROZEN_INVENTORY_SOURCE_MISMATCH"],
+          errorDetail: null,
+          rules: [], definitions: [], sharedCapacities: [], irExtensionCandidates: [],
+          unresolvedIssues: decision.failures.map((f) => `[frozen-inventory-resume] ${f.check}: ${f.detail}`),
+          toolCallLog: [],
+          ...evidenceFlags,
+          definitionCompletenessCheck: null,
+          sourceContext, frozenInventory: null, inventoryMode, inventoryPasses: null,
+          accountability: null,
+          rawModelOutput: null,
+          provider: caller.providerName, model: caller.model,
+          telemetry: null,
+          cacheKey, compiledAt: new Date().toISOString(),
+          execution: null,
+        };
+      }
+      frozenInventory = decision.inventory;
+      frozenInventoryResume = decision.record;
+    } else if (inventoryMode === "DUAL_PASS_ENSEMBLE") {
       // F-5.3B: two independent Pass A executions -> deterministic ensemble (STRICT compatibility). The second paid
       // call is made here, visibly, by the orchestration module - never inside ensemble.ts, never a third pass.
       const passCallers = options.inventoryPassCallers ?? (options.inventoryCaller ? ([options.inventoryCaller, options.inventoryCaller] as [StageCaller, StageCaller]) : undefined);
@@ -216,224 +270,106 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
     const operativeRegion = sourceContext.regions[0]!;
     callerInput = { ...input, operativeSourceText: operativeRegion.text, operativeCharStart: operativeRegion.charStart >= 0 ? operativeRegion.charStart : input.operativeCharStart, sourceContext, frozenInventory };
   }
-  const accountabilityFields = { sourceContext, frozenInventory, inventoryMode, inventoryPasses };
+  const accountabilityFields: AccountabilityFields = { sourceContext, frozenInventory, inventoryMode, inventoryPasses };
 
-  // Phase 3F.1 §33/F6 - this call is never allowed to throw out of
-  // compileCovenantToIR uncaught: a genuine transport/internal exception is
-  // converted into the same structured SemanticCompilationResult shape every
-  // other failure path already returns, so no caller can silently discard a
-  // real failure's content the way the pre-remediation run script's own
-  // try/catch did.
-  let callResult: Awaited<ReturnType<SemanticCaller["compile"]>>;
-  try {
-    callResult = await caller.compile(callerInput);
-  } catch (err) {
-    return { ...buildTransportFailureResult(err, caller, cacheKey, null, evidenceFlags), ...accountabilityFields, accountability: null };
+  // ---- F-7C: THE BRANCH POINT. Everything above is unchanged; the deterministic plan is built from already-resolved
+  // facts (resolved source context, frozen inventory, structural index) and the mode chosen before any model call.
+  const plan: ShardPlan | null = sourceContext && frozenInventory
+    ? planCompilationShards({ candidateRef: input.candidateRef, companyId: input.companyId, instrumentKey: input.instrumentKey, documentId: input.sourceDocumentId, sourceContext, frozenInventory, structuralIndex: input.toolAccess.structuralIndex, budget: options.shardBudget, generation: { algorithmVersion: input.compilerAlgorithmVersion, promptVersion: input.compilerPromptVersion } })
+    : null;
+  const decision: ExecutionModeDecision = selectCompilationExecutionMode(plan);
+  const executionBase = { mode: decision.mode, reason: decision.reason, policyVersion: SEMANTIC_EXECUTION_POLICY_VERSION, plannerAlgorithmVersion: decision.plannerAlgorithmVersion, planHash: decision.planHash, plannedShards: decision.shardCount, oversizedShards: decision.oversizedShards, frozenInventoryResume };
+
+  if (decision.mode === "MONOLITHIC" || !plan) {
+    // ---- the pre-F-7 bounded path, byte-for-byte the same machinery (bounded-composition.ts).
+    const outcome = await compileBoundedComposition(callerInput, input, { caller, cacheKey, evidenceFlags, accountability: accountabilityFields });
+    const result: SemanticCompilationResult = { ...outcome.result, execution: { ...executionBase, sharded: null } };
+    if (outcome.cacheable) cache.set(cacheKey, result);
+    return result;
   }
+
+  // ---- SHARDED: certified planner -> bounded per-shard composition -> certified stitcher -> GLOBAL Pass C.
+  const started = Date.now();
+  const executor = options.shardExecutor ?? createBoundedShardExecutor({ baseInput: callerInput, plan, caller });
+  const run = await executeShardPlan({
+    plan, executor, frozenInventory: frozenInventory!, sourceContextState: sourceContext!.state,
+    companyId: input.companyId, instrumentKey: input.instrumentKey, candidateRef: input.candidateRef,
+    priorResults: options.priorShardResults, maxAttemptsPerShard: options.shardMaxAttempts ?? DEFAULT_SHARD_MAX_ATTEMPTS,
+    sourceRegions: sourceContext!.regions.map((r) => ({ regionId: r.regionId, text: r.text })),
+  });
+  const stitched = run.stitched;
   const compiledAt = new Date().toISOString();
 
-  if (!callResult.submission) {
-    const result: SemanticCompilationResult = {
-      status: "FAILED",
-      failureReasons: [callResult.failureReason ?? "MODEL_SCHEMA_FAILURE"],
-      errorDetail: null,
-      rules: [],
-      definitions: [],
-      sharedCapacities: [],
-      irExtensionCandidates: [],
-      unresolvedIssues: callResult.failureDetail ? [callResult.failureDetail] : [],
-      toolCallLog: callResult.toolCallLog,
-      ...evidenceFlags,
-      definitionCompletenessCheck: null,
-      ...accountabilityFields,
-      accountability: null,
-      rawModelOutput: callResult.rawSubmission,
-      provider: caller.providerName,
-      model: caller.model,
-      telemetry: callResult.telemetry,
-      cacheKey,
-      compiledAt,
-    };
-    cache.set(cacheKey, result);
-    return result;
-  }
+  // Whole-unit signals the stitcher does not own, layered exactly as the monolithic path derives them.
+  const failureReasons: SemanticCompilerFailureReason[] = [...stitched.failureReasons];
+  const push = (r: SemanticCompilerFailureReason) => { if (!failureReasons.includes(r)) failureReasons.push(r); };
+  const extra: SemanticCompilerFailureReason[] = [];
+  const addExtra = (r: SemanticCompilerFailureReason) => { if (!failureReasons.includes(r)) { extra.push(r); push(r); } };
+  // Operative-state safety (FIX-2 / OPEN-2): the context-bundle flag and the stale-definition re-check apply to the unit
+  // as a whole; per-shard toolCallLog evidenceUnresolved signals already arrived through each shard's failure reasons.
+  if (evidenceFlags.inputHasUnresolvedOperativeEvidence || hasStaleReferencedDefinition(input, stitched.definitions)) addExtra("OPERATIVE_STATE_UNRESOLVED");
+  // §35 - whole-unit definition-completeness layer: each shard already ran the check against its OWN primary text
+  // (inside compileBoundedComposition) and any finding travelled through its failure reasons; this is the additional
+  // whole-unit pass - the stitched definitions against the whole operative text - and is review evidence only.
+  // Global Pass C, not this heuristic, remains the completeness authority.
+  const definitionCompletenessCheck = checkDefinitionCompleteness(callerInput.operativeSourceText, stitched.definitions);
+  if (definitionCompletenessCheck.fired) addExtra("DEFINITION_COMPLETENESS_SUSPECT");
+  const whole = wholeUnitAccountabilitySignals(sourceContext, frozenInventory, stitched.accountability);
+  for (const r of whole.failureReasons) addExtra(r);
+  const hasReviewSufficiency = stitched.rules.some((r) => r.sufficiency !== "COMPLETE") || stitched.definitions.some((d) => d.sufficiency !== "COMPLETE");
+  const status = mapStitchedStatus(stitched.status, extra, hasReviewSufficiency);
 
-  // Phase 3F.1 §33/F6 - normalization/validation is deterministic post-
-  // processing over a real model response, but a bug here must still
-  // surface as a structured, diagnosable failure rather than an uncaught
-  // exception that would abort whatever loop called compileCovenantToIR (a
-  // partial submission was already assembled at this point, so
-  // hadPartialOutput is true on this path).
-  try {
-    const normalized = normalizeSubmission(callResult.submission, input);
+  const collisionsByKind: Record<string, number> = {};
+  for (const c of stitched.collisions) collisionsByKind[c.kind] = (collisionsByKind[c.kind] ?? 0) + 1;
+  const statusCounts: Record<string, number> = {};
+  for (const r of run.results) statusCounts[r.status] = (statusCounts[r.status] ?? 0) + 1;
+  const shardByHash = new Map(plan.shards.map((s) => [s.shardHash, s]));
+  const anyProviderFailure = run.results.some((r) => r.status === "SHARD_PROVIDER_FAILURE");
 
-    const validation = validateCompilationUnit({
-      irSchemaVersion: input.irSchemaVersion,
-      companyId: input.companyId,
-      instrumentKey: input.instrumentKey,
-      rules: normalized.rules,
-      definitions: normalized.definitions,
-      sharedCapacities: normalized.sharedCapacities,
-    });
+  const execution: SemanticExecutionMetadata = {
+    ...executionBase,
+    sharded: {
+      budget: plan.budget,
+      executed: run.stats.executed, reused: run.stats.reused, retries: run.stats.retries, providerCalls: run.stats.executed,
+      statusCounts, collisions: stitched.collisions.length, collisionsByKind,
+      definitionConflicts: stitched.definitionConflicts.length, conflictVariants: stitched.definitionConflicts.reduce((a, c) => a + c.variants.length, 0),
+      contextualEmissions: stitched.contextualEmissions.length, unresolvedOwnedItems: stitched.unresolvedOwnedItems.length,
+      stitchedStatus: stitched.status, stitchedFailureReasons: stitched.failureReasons,
+      definitionConflictEvidence: stitched.definitionConflicts,
+      unresolvedOwnedItemList: stitched.unresolvedOwnedItems,
+      attributionProofCounts: attributionProofCounts(plan, stitched),
+      shards: run.results.map((r) => { const s = shardByHash.get(r.shardHash)!; return { shardId: r.shardId, shardHash: r.shardHash, ordinal: s.ordinal, status: r.status, attempts: r.attempts, reusedFromHash: r.reusedFromHash, failureReasons: r.failureReasons, ownedMaterialItems: s.ownedMaterialItemIds.length, oversized: s.oversized, telemetry: r.telemetry }; }),
+      telemetryNote: `${plan.shards.length} bounded conversations (${run.stats.executed} executed, ${run.stats.reused} reused by shardHash, ${run.stats.retries} provider-failure retries); rawModelOutput and toolCallLog are null/empty at the top level because no single transcript exists - per-shard telemetry is listed under execution.sharded.shards`,
+    },
+  };
 
-    const failureReasons: SemanticCompilerFailureReason[] = [];
-    // Phase 3B.1 (task §10): a submission can be non-null yet still carry a caller-level
-    // failureReason - the partial-output-recovery path (caller.ts's recoverPartialSubmission)
-    // returns a validated, truncated-but-usable submission alongside OUTPUT_TRUNCATED. That
-    // must not be silently dropped just because normalization/validation otherwise succeeds.
-    if (callResult.failureReason) failureReasons.push(callResult.failureReason);
-    if (!validation.ok) failureReasons.push("IR_VALIDATION_FAILURE");
-    if (normalized.rules.length === 0 && normalized.definitions.length === 0) failureReasons.push("PARTIAL_COMPILATION");
-    if (normalized.rules.some((r) => r.sufficiency === "MISSING_CONTEXT") || normalized.definitions.some((d) => d.sufficiency === "MISSING_CONTEXT")) failureReasons.push("MISSING_CONTEXT");
-    if (normalized.rules.some((r) => r.sufficiency === "CONFLICTED")) failureReasons.push("OPERATIVE_STATE_UNRESOLVED");
-    if (normalized.rules.some((r) => r.sufficiency === "UNSUPPORTED") || normalized.definitions.some((d) => d.sufficiency === "UNSUPPORTED")) failureReasons.push("UNSUPPORTED_SEMANTICS");
-    // Phase 3F.1.6-terminal Part A (OPEN-2 / BLOCKER-5 / BLOCKER-6) -
-    // deterministic propagation, independent of the model's own
-    // self-reported `sufficiency` above (task's own "must NOT become
-    // trusted verified current truth solely from [an unresolved]
-    // definition" requirement): if ANY evidence tool call this attempt
-    // actually made (getDefinition chief among them - see
-    // ToolExecutionOutcome.evidenceUnresolved in semantic/tools.ts) itself
-    // returned evidence that could not be confirmed current operative
-    // truth, this attempt can never be COMPLETED merely because the model
-    // happened to mark every rule/definition it produced sufficiency
-    // COMPLETE - determineStatus below already treats any non-empty
-    // failureReasons as at least REVIEW_REQUIRED (never silently upgraded
-    // by ruleCount>0 alone). Never suppressed even when the model's own
-    // narrative text made no mention of the issue.
-    //
-    // Phase 3F.1 FIX-2 ("the actual safety gate must not require any tool
-    // call") - `evidenceFlags.inputHasUnresolvedOperativeEvidence` is an
-    // INDEPENDENT second source for this exact same gate, computed from the
-    // context bundle handed to the model on turn 1 (context-retrieval/
-    // pipeline.ts's own hasUnresolvedOperativeEvidence), never from anything
-    // the model did. This is the fix for the reproduced exploit: a model
-    // that submits sufficiency COMPLETE on turn 1 with a completely EMPTY
-    // toolCallLog can no longer reach COMPLETED/REVIEW_REQUIRED-free status
-    // when the bundle it was given already embedded a CONFLICTED/AMBIGUOUS/
-    // PARTIAL/superseded definition or section excerpt - determineStatus
-    // below already treats any non-empty failureReasons as at least
-    // REVIEW_REQUIRED regardless of the model's own self-reported
-    // sufficiency, exactly mirroring the pre-existing toolCallLog-derived
-    // check this is threaded alongside (never instead of).
-    if (
-      !failureReasons.includes("OPERATIVE_STATE_UNRESOLVED") &&
-      (callResult.toolCallLog.some((entry) => entry.evidenceUnresolved) || evidenceFlags.inputHasUnresolvedOperativeEvidence || hasStaleReferencedDefinition(input, normalized.definitions))
-    )
-      failureReasons.push("OPERATIVE_STATE_UNRESOLVED");
-
-    // POST-3F.2 remediation (Unit A3, S7) - a definition/qualifier read off
-    // a tool result truncated at semantic/tools.ts's MAX_TEXT_RESULT_CHARS
-    // ceiling must never be silently treated as complete evidence merely
-    // because it happened to validate against the IR schema. Independent
-    // of OPERATIVE_STATE_UNRESOLVED above (truncation is a COMPLETENESS
-    // concern, not a CURRENCY/staleness concern) and threaded the same way
-    // every other deterministic safety signal in this function is: into
-    // failureReasons, so determineStatus below can never upgrade this
-    // attempt past REVIEW_REQUIRED regardless of the model's own
-    // self-reported sufficiency.
-    if (callResult.toolCallLog.some((entry) => entry.evidenceTruncated)) failureReasons.push("TRUNCATED_EVIDENCE_USED");
-
-    // POST-3F.2 remediation (Unit A2) - deterministic, model-independent
-    // completeness cross-check (see completeness-check.ts's own header for
-    // the full scope/conservatism contract). Run against the SAME source
-    // text the model itself was given (input.operativeSourceText), never a
-    // wider span, so a "missing" finding always means "missing from what
-    // this attempt actually saw." Diagnostic-safety-net only: a `fired`
-    // result never manufactures IR content, never silently marks the
-    // attempt complete, and routes through the exact same failureReasons ->
-    // determineStatus safe-failure machinery as every other signal here.
-    const definitionCompletenessCheck = checkDefinitionCompleteness(input.operativeSourceText, normalized.definitions);
-    if (definitionCompletenessCheck.fired) failureReasons.push("DEFINITION_COMPLETENESS_SUSPECT");
-
-    // SEMANTIC ACCOUNTABILITY - Pass C (mission §9/§10): deterministic
-    // reconciliation of the FROZEN Pass A inventory against the composed IR.
-    // No model decides this. Every signal below routes through the SAME
-    // failureReasons -> determineStatus machinery as every other safety
-    // signal (never a new status kind): a known-truncated source unit, a
-    // material inventory item/value with no lineage and no disposition, or
-    // an inventory that failed/came back suspiciously empty can never yield
-    // COMPLETED. INVENTORY_SKIPPED_NO_PROVIDER (no real provider configured)
-    // is disclosed on result.accountability instead of forcing review, so
-    // zero-cost/synthetic orchestration tests keep their meaning.
-    const accountabilityIssues: string[] = [];
-    const accountability = frozenInventory
-      ? reconcileInventoryWithComposition({
-          inventory: frozenInventory,
-          composition: { rules: normalized.rules, definitions: normalized.definitions, sharedCapacities: normalized.sharedCapacities },
-          dispositions: normalized.inventoryDispositions,
-          sourceContextState: sourceContext?.state ?? "UNKNOWN_SOURCE_COMPLETENESS",
-        })
-      : null;
-    if (sourceContext && (sourceContext.state === "TRUNCATED_SOURCE" || sourceContext.state === "STRUCTURALLY_INCOMPLETE_SOURCE")) {
-      failureReasons.push("SOURCE_CONTEXT_TRUNCATED");
-      accountabilityIssues.push(`[source-context] ${sourceContext.state}: ${sourceContext.reasons.join("; ")}`);
-    }
-    if (frozenInventory && (frozenInventory.inventoryStatus === "INVENTORY_FAILED" || frozenInventory.inventoryStatus === "INVENTORY_EMPTY_SUSPECT")) {
-      failureReasons.push("SEMANTIC_INVENTORY_UNAVAILABLE");
-      accountabilityIssues.push(`[inventory] ${frozenInventory.inventoryStatus}: ${frozenInventory.inventoryStatusReason}`);
-    }
-    // NO_SEMANTIC_COMPLETE_WITH_UNACCOUNTED_SOURCE, enforced here independently of the inventory's own status
-    // string and independently of reconciliation's boolean: either signal alone raises the failure.
-    if (frozenInventory && (frozenInventory.inventoryStatus === "INVENTORY_COVERAGE_GAP" || frozenInventory.unaccountedSource.length > 0)) {
-      failureReasons.push("SEMANTIC_INVENTORY_COVERAGE_GAP");
-      accountabilityIssues.push(`[inventory] ${frozenInventory.inventoryStatus === "INVENTORY_COVERAGE_GAP" ? "INVENTORY_COVERAGE_GAP" : "unaccounted source"}: ${frozenInventory.inventoryStatusReason}`);
-      for (const seg of frozenInventory.unaccountedSource) accountabilityIssues.push(`[inventory] unaccounted source ${seg.regionId}:${seg.charStart}-${seg.charEnd}: "${seg.excerpt.slice(0, 160)}" - ${seg.reason}`);
-    }
-    if (accountability && (accountability.counts.materialMissingFromComposition > 0 || accountability.counts.materialQuantitativeValuesMissing > 0)) {
-      failureReasons.push("INVENTORY_ITEM_MISSING_FROM_COMPOSITION");
-      accountabilityIssues.push(...accountability.reasons.filter((r) => /MISSING_FROM_COMPOSITION|absent from the composed IR/.test(r)).map((r) => `[accountability] ${r}`));
-    }
-    // F-5.3B - SUPPORT TRUST PROPAGATION: enforced here on the ensemble record AND on reconciliation's own field, each
-    // sufficient alone. inventoryStatus (raw source coverage) may read INVENTORY_OK while a CRITICAL/MATERIAL item is
-    // SINGLE_RUN or CONFLICTED; that combination is REVIEW_REQUIRED, never COMPLETED.
-    if ((frozenInventory?.ensemble?.supportReviewRequired ?? false) || (accountability?.supportReviewRequired ?? false)) {
-      failureReasons.push("SEMANTIC_SUPPORT_REVIEW_REQUIRED");
-      const e = frozenInventory?.ensemble;
-      accountabilityIssues.push(`[support] ${e ? `${e.counts.materialSingleRun} CRITICAL/MATERIAL single-run and ${e.counts.materialConflicted} conflicted item(s) across passes ${e.passIds.join("+")}` : `${accountability?.support?.materialSingleRun ?? 0} CRITICAL/MATERIAL single-run and ${accountability?.support?.materialConflicted ?? 0} conflicted item(s)`} carry independent-pass support asymmetry - review required; never resolved by composition`);
-      for (const cf of frozenInventory?.ensemble?.conflicts ?? []) accountabilityIssues.push(`[support] conflict ${cf.itemIds.join(" vs ")}: ${cf.reason}`);
-    }
-
-    if (accountability && !accountability.semanticallyComplete && frozenInventory && frozenInventory.inventoryStatus !== "INVENTORY_SKIPPED_NO_PROVIDER" && !failureReasons.some((r) => r === "INVENTORY_ITEM_MISSING_FROM_COMPOSITION" || r === "SEMANTIC_INVENTORY_UNAVAILABLE" || r === "SEMANTIC_INVENTORY_COVERAGE_GAP" || r === "SOURCE_CONTEXT_TRUNCATED" || r === "SEMANTIC_SUPPORT_REVIEW_REQUIRED")) {
-      // Re-audit finding B2': every remaining way accountability can be incomplete (uninventoried operative money/percent/ratio values, a REVIEW_UNCERTAIN item missing from the composition, dangling lineage) must be visible on the attempt status, never left as a reason string only.
-      failureReasons.push("SEMANTIC_ACCOUNTABILITY_INCOMPLETE");
-      accountabilityIssues.push(...accountability.reasons.map((r) => `[accountability] ${r}`));
-    }
-
-    const hasReviewRequiredSufficiency = normalized.rules.some((r) => r.sufficiency !== "COMPLETE") || normalized.definitions.some((d) => d.sufficiency !== "COMPLETE");
-    const unresolvedIssues = [
-      ...(callResult.failureDetail ? [callResult.failureDetail] : []),
-      ...validation.issues.map((i) => `[${i.kind}]${i.ruleId ? ` (${i.ruleId})` : ""} ${i.message}`),
-      ...normalized.warnings.map((w) => `[${w.scope}] ${w.message}`),
-      ...callResult.submission.overallNotes,
-      ...accountabilityIssues,
-    ];
-
-    const result: SemanticCompilationResult = {
-      status: determineStatus(failureReasons, normalized.rules.length + normalized.definitions.length, hasReviewRequiredSufficiency, unresolvedIssues.length > 0),
-      failureReasons,
-      errorDetail: null,
-      rules: normalized.rules,
-      definitions: normalized.definitions,
-      sharedCapacities: normalized.sharedCapacities,
-      irExtensionCandidates: normalized.irExtensionCandidates,
-      unresolvedIssues,
-      toolCallLog: callResult.toolCallLog,
-      ...evidenceFlags,
-      definitionCompletenessCheck: definitionCompletenessCheck.fired ? definitionCompletenessCheck : null,
-      ...accountabilityFields,
-      accountability,
-      rawModelOutput: callResult.rawSubmission,
-      provider: caller.providerName,
-      model: caller.model,
-      telemetry: callResult.telemetry,
-      cacheKey,
-      compiledAt,
-    };
-    cache.set(cacheKey, result);
-    return result;
-  } catch (err) {
-    const failure = buildTransportFailureResult(err, caller, cacheKey, null, evidenceFlags);
-    return { ...failure, ...accountabilityFields, accountability: null, errorDetail: failure.errorDetail ? { ...failure.errorDetail, hadPartialOutput: true } : null };
-  }
+  const result: SemanticCompilationResult = {
+    status,
+    failureReasons,
+    errorDetail: null,
+    rules: stitched.rules,
+    definitions: stitched.definitions,
+    sharedCapacities: stitched.sharedCapacities,
+    // IR extension candidates are per-conversation proposals; ShardComposition does not carry them (they never affect IR content).
+    irExtensionCandidates: [],
+    unresolvedIssues: [...stitched.unresolvedIssues, ...whole.issues],
+    // §36 - a sharded compile is many model conversations: no single transcript is faked.
+    toolCallLog: [],
+    ...evidenceFlags,
+    definitionCompletenessCheck: definitionCompletenessCheck.fired ? definitionCompletenessCheck : null,
+    ...accountabilityFields,
+    // §12 - global Pass C over the full frozen inventory and the stitched canonical IR, computed once by the stitcher.
+    accountability: stitched.accountability,
+    rawModelOutput: null,
+    provider: caller.providerName,
+    model: caller.model,
+    telemetry: aggregateTelemetry(caller, run.results, run.stats, Date.now() - started, input.compilerPromptVersion, input.irSchemaVersion),
+    cacheKey,
+    compiledAt,
+    execution,
+  };
+  // A provider failure on any shard is transient (mirrors the monolithic never-cache-a-transport-failure rule): the
+  // partial result is returned in full but not pinned in the cache for this key's lifetime.
+  if (!anyProviderFailure) cache.set(cacheKey, result);
+  return result;
 }

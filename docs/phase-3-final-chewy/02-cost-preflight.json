@@ -1,0 +1,213 @@
+{
+ "artifact": "PHASE 3 FINAL §15/§16 - deterministic pre-run cost model from observed rates (0 model calls; one gateway balance read)",
+ "at": "2026-09-14T23:54:18.066Z",
+ "rates": {
+  "passASemanticInventoryPerBatch": {
+   "meanUsd": 0.4313,
+   "worstUsd": 0.6274,
+   "calls": 38,
+   "source": "F-5 certification ledgers (current batched Pass A, 6,000-char batches, ~11k input / ~41k output tokens per call)"
+  },
+  "passAGapReinventoryPerCall": {
+   "meanUsd": 0.353,
+   "worstUsd": 0.4753,
+   "calls": 5,
+   "source": "same ledgers; one gap call per unit-pass observed"
+  },
+  "passBPerPlannerEstimatedInputToken": {
+   "meanUsd": 0.00001726,
+   "worstUsd": 0.00003215,
+   "source": "the 36 certified Section 1.01 shards (F-7B.3E): $13.8961 over 804,892 planner-estimated tokens; mean $0.386 / shard"
+  },
+  "verifierSemanticReviewPerCandidate": {
+   "usd": 0.3293,
+   "source": "Phase 3 validation paid run, unit 6.08 (85,458 in / 15,838 out)"
+  },
+  "conditionSuspicionPerCall": {
+   "usd": 0.0114,
+   "callsAssumedPerUnit": 5,
+   "source": "OPEN-4 real-model holdout, 22 calls"
+  },
+  "discoveryPhase2B": {
+   "usd": 4.6551,
+   "calls": 112,
+   "treatment": "frozen Phase 2B output over this exact source is reused as the candidate/context-bundle input (zero cost); shown here only so a fresh run is not hidden"
+  }
+ },
+ "callPlan": {
+  "units": 12,
+  "monolithicUnits": 1,
+  "shardedUnits": 11,
+  "projectedShards": 88,
+  "oversizedShards": 1,
+  "passACalls": {
+   "batchesPerPass": 103,
+   "gapCallsPerPass": 12,
+   "passes": 2,
+   "total": 230
+  },
+  "passBCalls": {
+   "conversations": 88,
+   "note": "one bounded conversation per shard (or per monolithic unit); the certified 36-shard run averaged 2.44 turns per conversation - turns are inside the per-shard rate"
+  },
+  "verifierCalls": {
+   "semanticReview": 12,
+   "conditionSuspicion": 60
+  },
+  "discovery": {
+   "reuseFrozenPhase2BOutput": true,
+   "freshCostIfRequiredUsd": 4.6551
+  }
+ },
+ "perUnit": [
+  {
+   "section": "1.01",
+   "chars": 353523,
+   "mode": "SHARDED",
+   "shards": 36,
+   "passABatchesPerPass": 59,
+   "plannerEstimatedInputTokens": 767048,
+   "referenceItems": 16
+  },
+  {
+   "section": "1.08",
+   "chars": 21312,
+   "mode": "SHARDED",
+   "shards": 3,
+   "passABatchesPerPass": 4,
+   "plannerEstimatedInputTokens": 61602,
+   "referenceItems": 1
+  },
+  {
+   "section": "2.09",
+   "chars": 16486,
+   "mode": "SHARDED",
+   "shards": 4,
+   "passABatchesPerPass": 4,
+   "plannerEstimatedInputTokens": 78848,
+   "referenceItems": 4
+  },
+  {
+   "section": "2.18",
+   "chars": 13978,
+   "mode": "SHARDED",
+   "shards": 7,
+   "passABatchesPerPass": 4,
+   "plannerEstimatedInputTokens": 131276,
+   "referenceItems": 1
+  },
+  {
+   "section": "5.01",
+   "chars": 14082,
+   "mode": "SHARDED",
+   "shards": 6,
+   "passABatchesPerPass": 4,
+   "plannerEstimatedInputTokens": 114126,
+   "referenceItems": 1
+  },
+  {
+   "section": "5.18",
+   "chars": 13716,
+   "mode": "SHARDED",
+   "shards": 4,
+   "passABatchesPerPass": 4,
+   "plannerEstimatedInputTokens": 79574,
+   "referenceItems": 1
+  },
+  {
+   "section": "6.01",
+   "chars": 33623,
+   "mode": "SHARDED",
+   "shards": 6,
+   "passABatchesPerPass": 6,
+   "plannerEstimatedInputTokens": 118179,
+   "referenceItems": 8
+  },
+  {
+   "section": "6.02",
+   "chars": 2168,
+   "mode": "MONOLITHIC",
+   "shards": 1,
+   "passABatchesPerPass": 1,
+   "plannerEstimatedInputTokens": 18192,
+   "referenceItems": 1
+  },
+  {
+   "section": "6.03",
+   "chars": 5763,
+   "mode": "SHARDED",
+   "shards": 4,
+   "passABatchesPerPass": 3,
+   "plannerEstimatedInputTokens": 76483,
+   "referenceItems": 1
+  },
+  {
+   "section": "6.05",
+   "chars": 8493,
+   "mode": "SHARDED",
+   "shards": 3,
+   "passABatchesPerPass": 3,
+   "plannerEstimatedInputTokens": 58168,
+   "referenceItems": 2
+  },
+  {
+   "section": "6.08",
+   "chars": 38529,
+   "mode": "SHARDED",
+   "shards": 7,
+   "passABatchesPerPass": 7,
+   "plannerEstimatedInputTokens": 137666,
+   "referenceItems": 7
+  },
+  {
+   "section": "7.01",
+   "chars": 17057,
+   "mode": "SHARDED",
+   "shards": 7,
+   "passABatchesPerPass": 4,
+   "plannerEstimatedInputTokens": 131290,
+   "referenceItems": 3
+  }
+ ],
+ "estimates": {
+  "meanRate": {
+   "passAUsd": 97.33,
+   "passBUsd": 30.6,
+   "verifierUsd": 4.64,
+   "totalUsd": 132.56
+  },
+  "worstObservedRate": {
+   "passAUsd": 140.64,
+   "passBUsd": 56.99,
+   "verifierUsd": 4.64,
+   "totalUsd": 202.26
+  },
+  "conservative": {
+   "passAUsd": 175.8,
+   "passBUsd": 71.23,
+   "verifierUsd": 5.79,
+   "totalUsd": 252.83,
+   "safetyFactor": 1.25
+  }
+ },
+ "cheapestSingleUnitAtMeanRate": {
+  "section": "6.02",
+  "meanUsd": 2.27
+ },
+ "largestSingleUnitAtMeanRate": {
+  "section": "1.01",
+  "meanUsd": 65.23
+ },
+ "bound": {
+  "hardCapUsd": 20,
+  "gatewayBalanceUsd": 12.559204,
+  "conservativeFitsCap": false,
+  "conservativeFitsBalance": false,
+  "meanFitsCap": false,
+  "ratioConservativeToCap": 12.6,
+  "ratioMeanToBalance": 10.6
+ },
+ "decision": "PHASE3_FINAL_COST_BOUND_BEFORE_START",
+ "paidCallsMade": 0,
+ "spendUsd": 0
+}

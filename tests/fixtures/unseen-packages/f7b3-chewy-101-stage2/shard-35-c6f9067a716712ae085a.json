@@ -1,0 +1,556 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:c6f9067a716712ae085a",
+  "shardHash": "8c0ad1ed342cc215fa087f6049978954b7dd224e874af71de352c44ac743ae60",
+  "ordinal": 35,
+  "ownedUnits": 4,
+  "sourceChars": 1774,
+  "contextEntries": 1,
+  "contextChars": 225,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 0,
+  "ownedMaterialItems": 0,
+  "estimatedFirstTurnInputTokens": 18326,
+  "preCallEstimate": {
+   "inputTokens": 60293,
+   "outputTokens": 11500,
+   "usd": 0.23558600000000002
+  },
+  "actual": {
+   "inputTokens": 18847,
+   "outputTokens": 6894,
+   "turns": 1,
+   "latencyMs": 65557,
+   "costUsd": 0.106634,
+   "attemptCount": 1,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_COMPLETE",
+  "failureReasons": [],
+  "toolCalls": 0,
+  "toolCallNames": [],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 4,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 0,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "valuesRepresented": 0,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {}
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [],
+  "unresolvedIssues": [
+   "This submission compiles four sibling glossary definitions from §1.01 ('wholly owned subsidiary', 'Withdrawal Liability', 'Withholding Agent', 'Write-Down and Conversion Powers') - none contain an independently operative covenant rule (no WireRule emitted).",
+   "The deterministically-detected PERCENT 100% value is accounted for: it is the ownership threshold defining 'wholly owned subsidiary' and is represented as a PERCENT(1.0) literal in that definition's calculationExpression, with the two named carve-outs (directors' qualifying shares; shares issued to foreign nationals) preserved in the excerpt.",
+   "The reported INVENTORY_COVERAGE_GAP and large UNACCOUNTED_SOURCE ranges pertain to other stretches of the broader §1.01 definitions article outside the four terms in this operative excerpt; they do not indicate missing text within the four definitions actually compiled here, each of which is a self-contained, complete sentence.",
+   "Six LOW-severity UNRESOLVED_DEFINED_TERM flags were noted in Phase 2 context but were not chased further: each of the four compiled definitions is fully intelligible from its own stated text, and the undefined cross-referenced terms (e.g. Equity Interests, Multiemployer Plan, Bail-In Legislation, Resolution Authority) serve only to fix scope/jurisdiction rather than supplying an additional operative number that would change these definitions' represented economics."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:c6f9067a716712ae085a",
+  "shardHash": "8c0ad1ed342cc215fa087f6049978954b7dd224e874af71de352c44ac743ae60",
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:63f29ffd1bfc5c13501f2bb8",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "wholly owned subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "PERCENT",
+      "type": "PERCENT",
+      "value": 1,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": "100% of the outstanding Equity Interests of which (other than directors’ qualifying shares and shares issued to foreign nationals as required by applicable law) at the time are owned by such Person or by one or more wholly owned subsidiaries of such Person."
+      },
+      "exprId": "ir-expr:660871a88c04cd222cf1e1ae"
+     },
+     "dependsOnTerms": [
+      "Equity Interests",
+      "subsidiary",
+      "Person"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The operative 100% ownership threshold and its two named carve-outs (directors' qualifying shares; shares issued to foreign nationals as required by applicable law) are fully stated in the local source text and captured via the PERCENT literal plus excerpt.",
+      "Dependent terms (Equity Interests, subsidiary, Person) are standard glossary cross-references whose own definitions do not alter the 100%-ownership economics being defined here."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"wholly owned subsidiary\" means, with respect to any Person, a subsidiary of such Person, 100% of the outstanding Equity Interests of which (other than directors’ qualifying shares and shares issued to foreign nationals as required by applicable law) at the time are owned by such Person or by one or more wholly owned subsidiaries of such Person."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:bb0849a06355176d0ef25849",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Withdrawal Liability",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Multiemployer Plan",
+      "ERISA"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The definition is purely descriptive (liability arising from complete or partial withdrawal from a Multiemployer Plan, as defined under ERISA Title IV, Subtitle E, Part I) and contains no separate quantitative threshold to model computationally.",
+      "The cross-referenced ERISA statutory provision and 'Multiemployer Plan' are incorporated by reference only to fix the meaning of the withdrawal event, not to supply an additional operative number."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Withdrawal Liability\" means liability to a Multiemployer Plan as a result of a complete or partial withdrawal from such Multiemployer Plan, as such terms are defined in Part I of Subtitle E of Title IV of ERISA."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:11fff2967c68d935c51970a0",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Withholding Agent",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Loan Party",
+      "Administrative Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive/status definition (identifies which persons act as withholding agents); no dollar amount, percentage, or ratio is involved.",
+      "Full definitional text, including the qualifying clause for U.S. federal or non-U.S. withholding tax, is captured in the excerpt."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Withholding Agent\" shall mean any Loan Party, the Administrative Agent and, in the case of any U.S. federal or non-U.S. withholding tax, any other withholding agent, if applicable."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e3822ad1f2f4571bdcb15ba6",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Write-Down and Conversion Powers",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "EEA Resolution Authority",
+      "Bail-In Legislation",
+      "EEA Member Country",
+      "EU Bail-In Legislation Schedule",
+      "Resolution Authority",
+      "UK Financial Institution"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The definition is a wholly descriptive, two-part (jurisdiction-specific) enumeration of statutory bail-in powers (clause (a) EEA Resolution Authority powers under the EU Bail-In Legislation Schedule; clause (b) UK Resolution Authority powers under the Bail-In Legislation) with no dollar amount, percentage, or ratio to represent computationally.",
+      "Dependent defined terms (Bail-In Legislation, Resolution Authority, EEA Member Country, UK Financial Institution, EU Bail-In Legislation Schedule) are incorporated by reference to fix scope/jurisdiction but do not add a separate operative numeric threshold; their own texts were not required to faithfully capture this definition's stated meaning."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "\"Write-Down and Conversion Powers\" means, (a) with respect to any EEA Resolution Authority, the write-down and conversion powers of such EEA Resolution Authority from time to time under the Bail-In Legislation for the applicable EEA Member Country, which write-down and conversion powers are described in the EU Bail-In Legislation Schedule, and (b) with respect to the United Kingdom, any powers of the applicable Resolution Authority under the Bail-In Legislation to cancel, reduce, modify or change the form of a liability of any UK Financial Institution or any contract or instrument under which that liability arises, to convert all or part of that liability into shares, securities or obligations of that person or any other person, to provide that any such contract or instrument is to have effect as if a right had been exercised under it or to suspend any obligation in respect of that liability or any of the powers under that Bail-In Legislation that are related to or ancillary to any of those powers."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [],
+  "unresolvedIssues": [
+   "This submission compiles four sibling glossary definitions from §1.01 ('wholly owned subsidiary', 'Withdrawal Liability', 'Withholding Agent', 'Write-Down and Conversion Powers') - none contain an independently operative covenant rule (no WireRule emitted).",
+   "The deterministically-detected PERCENT 100% value is accounted for: it is the ownership threshold defining 'wholly owned subsidiary' and is represented as a PERCENT(1.0) literal in that definition's calculationExpression, with the two named carve-outs (directors' qualifying shares; shares issued to foreign nationals) preserved in the excerpt.",
+   "The reported INVENTORY_COVERAGE_GAP and large UNACCOUNTED_SOURCE ranges pertain to other stretches of the broader §1.01 definitions article outside the four terms in this operative excerpt; they do not indicate missing text within the four definitions actually compiled here, each of which is a self-contained, complete sentence.",
+   "Six LOW-severity UNRESOLVED_DEFINED_TERM flags were noted in Phase 2 context but were not chased further: each of the four compiled definitions is fully intelligible from its own stated text, and the undefined cross-referenced terms (e.g. Equity Interests, Multiemployer Plan, Bail-In Legislation, Resolution Authority) serve only to fix scope/jurisdiction rather than supplying an additional operative number that would change these definitions' represented economics."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 18847,
+   "outputTokens": 6894,
+   "costUsd": 0.106634
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:63f29ffd1bfc5c13501f2bb8",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "wholly owned subsidiary",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "PERCENT",
+     "type": "PERCENT",
+     "value": 1,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "100% of the outstanding Equity Interests of which (other than directors’ qualifying shares and shares issued to foreign nationals as required by applicable law) at the time are owned by such Person or by one or more wholly owned subsidiaries of such Person."
+     },
+     "exprId": "ir-expr:660871a88c04cd222cf1e1ae"
+    },
+    "dependsOnTerms": [
+     "Equity Interests",
+     "subsidiary",
+     "Person"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The operative 100% ownership threshold and its two named carve-outs (directors' qualifying shares; shares issued to foreign nationals as required by applicable law) are fully stated in the local source text and captured via the PERCENT literal plus excerpt.",
+     "Dependent terms (Equity Interests, subsidiary, Person) are standard glossary cross-references whose own definitions do not alter the 100%-ownership economics being defined here."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"wholly owned subsidiary\" means, with respect to any Person, a subsidiary of such Person, 100% of the outstanding Equity Interests of which (other than directors’ qualifying shares and shares issued to foreign nationals as required by applicable law) at the time are owned by such Person or by one or more wholly owned subsidiaries of such Person."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:bb0849a06355176d0ef25849",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Withdrawal Liability",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Multiemployer Plan",
+     "ERISA"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The definition is purely descriptive (liability arising from complete or partial withdrawal from a Multiemployer Plan, as defined under ERISA Title IV, Subtitle E, Part I) and contains no separate quantitative threshold to model computationally.",
+     "The cross-referenced ERISA statutory provision and 'Multiemployer Plan' are incorporated by reference only to fix the meaning of the withdrawal event, not to supply an additional operative number."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Withdrawal Liability\" means liability to a Multiemployer Plan as a result of a complete or partial withdrawal from such Multiemployer Plan, as such terms are defined in Part I of Subtitle E of Title IV of ERISA."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:11fff2967c68d935c51970a0",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Withholding Agent",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Loan Party",
+     "Administrative Agent"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive/status definition (identifies which persons act as withholding agents); no dollar amount, percentage, or ratio is involved.",
+     "Full definitional text, including the qualifying clause for U.S. federal or non-U.S. withholding tax, is captured in the excerpt."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Withholding Agent\" shall mean any Loan Party, the Administrative Agent and, in the case of any U.S. federal or non-U.S. withholding tax, any other withholding agent, if applicable."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e3822ad1f2f4571bdcb15ba6",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Write-Down and Conversion Powers",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "EEA Resolution Authority",
+     "Bail-In Legislation",
+     "EEA Member Country",
+     "EU Bail-In Legislation Schedule",
+     "Resolution Authority",
+     "UK Financial Institution"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "The definition is a wholly descriptive, two-part (jurisdiction-specific) enumeration of statutory bail-in powers (clause (a) EEA Resolution Authority powers under the EU Bail-In Legislation Schedule; clause (b) UK Resolution Authority powers under the Bail-In Legislation) with no dollar amount, percentage, or ratio to represent computationally.",
+     "Dependent defined terms (Bail-In Legislation, Resolution Authority, EEA Member Country, UK Financial Institution, EU Bail-In Legislation Schedule) are incorporated by reference to fix scope/jurisdiction but do not add a separate operative numeric threshold; their own texts were not required to faithfully capture this definition's stated meaning."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "\"Write-Down and Conversion Powers\" means, (a) with respect to any EEA Resolution Authority, the write-down and conversion powers of such EEA Resolution Authority from time to time under the Bail-In Legislation for the applicable EEA Member Country, which write-down and conversion powers are described in the EU Bail-In Legislation Schedule, and (b) with respect to the United Kingdom, any powers of the applicable Resolution Authority under the Bail-In Legislation to cancel, reduce, modify or change the form of a liability of any UK Financial Institution or any contract or instrument under which that liability arises, to convert all or part of that liability into shares, securities or obligations of that person or any other person, to provide that any such contract or instrument is to have effect as if a right had been exercised under it or to suspend any obligation in respect of that liability or any of the powers under that Bail-In Legislation that are related to or ancillary to any of those powers."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [],
+  "unresolvedIssues": [
+   "This submission compiles four sibling glossary definitions from §1.01 ('wholly owned subsidiary', 'Withdrawal Liability', 'Withholding Agent', 'Write-Down and Conversion Powers') - none contain an independently operative covenant rule (no WireRule emitted).",
+   "The deterministically-detected PERCENT 100% value is accounted for: it is the ownership threshold defining 'wholly owned subsidiary' and is represented as a PERCENT(1.0) literal in that definition's calculationExpression, with the two named carve-outs (directors' qualifying shares; shares issued to foreign nationals) preserved in the excerpt.",
+   "The reported INVENTORY_COVERAGE_GAP and large UNACCOUNTED_SOURCE ranges pertain to other stretches of the broader §1.01 definitions article outside the four terms in this operative excerpt; they do not indicate missing text within the four definitions actually compiled here, each of which is a self-contained, complete sentence.",
+   "Six LOW-severity UNRESOLVED_DEFINED_TERM flags were noted in Phase 2 context but were not chased further: each of the four compiled definitions is fully intelligible from its own stated text, and the undefined cross-referenced terms (e.g. Equity Interests, Multiemployer Plan, Bail-In Legislation, Resolution Authority) serve only to fix scope/jurisdiction rather than supplying an additional operative number that would change these definitions' represented economics."
+  ],
+  "toolCallLog": [],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "wholly owned subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "PERCENT",
+      "value": 1,
+      "citation": "§1.01",
+      "excerpt": "100% of the outstanding Equity Interests of which (other than directors’ qualifying shares and shares issued to foreign nationals as required by applicable law) at the time are owned by such Person or by one or more wholly owned subsidiaries of such Person."
+     },
+     "dependsOnTerms": [
+      "Equity Interests",
+      "subsidiary",
+      "Person"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The operative 100% ownership threshold and its two named carve-outs (directors' qualifying shares; shares issued to foreign nationals as required by applicable law) are fully stated in the local source text and captured via the PERCENT literal plus excerpt.",
+      "Dependent terms (Equity Interests, subsidiary, Person) are standard glossary cross-references whose own definitions do not alter the 100%-ownership economics being defined here."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"wholly owned subsidiary\" means, with respect to any Person, a subsidiary of such Person, 100% of the outstanding Equity Interests of which (other than directors’ qualifying shares and shares issued to foreign nationals as required by applicable law) at the time are owned by such Person or by one or more wholly owned subsidiaries of such Person."
+    },
+    {
+     "localRef": "d2",
+     "termName": "Withdrawal Liability",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Multiemployer Plan",
+      "ERISA"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The definition is purely descriptive (liability arising from complete or partial withdrawal from a Multiemployer Plan, as defined under ERISA Title IV, Subtitle E, Part I) and contains no separate quantitative threshold to model computationally.",
+      "The cross-referenced ERISA statutory provision and 'Multiemployer Plan' are incorporated by reference only to fix the meaning of the withdrawal event, not to supply an additional operative number."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Withdrawal Liability\" means liability to a Multiemployer Plan as a result of a complete or partial withdrawal from such Multiemployer Plan, as such terms are defined in Part I of Subtitle E of Title IV of ERISA."
+    },
+    {
+     "localRef": "d3",
+     "termName": "Withholding Agent",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Loan Party",
+      "Administrative Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive/status definition (identifies which persons act as withholding agents); no dollar amount, percentage, or ratio is involved.",
+      "Full definitional text, including the qualifying clause for U.S. federal or non-U.S. withholding tax, is captured in the excerpt."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Withholding Agent\" shall mean any Loan Party, the Administrative Agent and, in the case of any U.S. federal or non-U.S. withholding tax, any other withholding agent, if applicable."
+    },
+    {
+     "localRef": "d4",
+     "termName": "Write-Down and Conversion Powers",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "EEA Resolution Authority",
+      "Bail-In Legislation",
+      "EEA Member Country",
+      "EU Bail-In Legislation Schedule",
+      "Resolution Authority",
+      "UK Financial Institution"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The definition is a wholly descriptive, two-part (jurisdiction-specific) enumeration of statutory bail-in powers (clause (a) EEA Resolution Authority powers under the EU Bail-In Legislation Schedule; clause (b) UK Resolution Authority powers under the Bail-In Legislation) with no dollar amount, percentage, or ratio to represent computationally.",
+      "Dependent defined terms (Bail-In Legislation, Resolution Authority, EEA Member Country, UK Financial Institution, EU Bail-In Legislation Schedule) are incorporated by reference to fix scope/jurisdiction but do not add a separate operative numeric threshold; their own texts were not required to faithfully capture this definition's stated meaning."
+     ],
+     "citation": "§1.01",
+     "excerpt": "\"Write-Down and Conversion Powers\" means, (a) with respect to any EEA Resolution Authority, the write-down and conversion powers of such EEA Resolution Authority from time to time under the Bail-In Legislation for the applicable EEA Member Country, which write-down and conversion powers are described in the EU Bail-In Legislation Schedule, and (b) with respect to the United Kingdom, any powers of the applicable Resolution Authority under the Bail-In Legislation to cancel, reduce, modify or change the form of a liability of any UK Financial Institution or any contract or instrument under which that liability arises, to convert all or part of that liability into shares, securities or obligations of that person or any other person, to provide that any such contract or instrument is to have effect as if a right had been exercised under it or to suspend any obligation in respect of that liability or any of the powers under that Bail-In Legislation that are related to or ancillary to any of those powers."
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "inventoryDispositions": [],
+   "irExtensionCandidates": [],
+   "overallNotes": [
+    "This submission compiles four sibling glossary definitions from §1.01 ('wholly owned subsidiary', 'Withdrawal Liability', 'Withholding Agent', 'Write-Down and Conversion Powers') - none contain an independently operative covenant rule (no WireRule emitted).",
+    "The deterministically-detected PERCENT 100% value is accounted for: it is the ownership threshold defining 'wholly owned subsidiary' and is represented as a PERCENT(1.0) literal in that definition's calculationExpression, with the two named carve-outs (directors' qualifying shares; shares issued to foreign nationals) preserved in the excerpt.",
+    "The reported INVENTORY_COVERAGE_GAP and large UNACCOUNTED_SOURCE ranges pertain to other stretches of the broader §1.01 definitions article outside the four terms in this operative excerpt; they do not indicate missing text within the four definitions actually compiled here, each of which is a self-contained, complete sentence.",
+    "Six LOW-severity UNRESOLVED_DEFINED_TERM flags were noted in Phase 2 context but were not chased further: each of the four compiled definitions is fully intelligible from its own stated text, and the undefined cross-referenced terms (e.g. Equity Interests, Multiemployer Plan, Bail-In Legislation, Resolution Authority) serve only to fix scope/jurisdiction rather than supplying an additional operative number that would change these definitions' represented economics."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T22:00:58.552Z",
+   "inputTokens": 18847,
+   "outputTokens": 6894,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 1,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 65554,
+   "calculatedCostUsd": 0.106634
+  },
+  "cacheKey": "4ccc70e0ea1ac5dc45e3d3493920cf46120835f82914f3346c46d41c144d261f",
+  "compiledAt": "2026-09-14T22:00:58.552Z"
+ },
+ "wave": "C",
+ "attemptsSoFar": 1
+}

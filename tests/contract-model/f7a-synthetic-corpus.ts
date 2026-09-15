@@ -44,6 +44,8 @@ export interface DefinitionsCorpusOptions {
   candidateRef?: string;
   /** make each definition long (padding words) */
   padWords?: number;
+  /** F-7C.1: extra document text appended AFTER Section 1.01 (e.g. a "SECTION 6.04." a definition cross-references), so the production source-context resolver produces a real CROSS_REFERENCE_EXPANSION region outside the operative window */
+  appendText?: string;
 }
 
 export function termName(i: number): string {
@@ -64,7 +66,7 @@ export function buildDefinitionsCorpus(opts: DefinitionsCorpusOptions): Syntheti
     const override = opts.overrideText?.get(i);
     lines.push(override ?? `“${t}” means the greater of (a) ${amount} and (b) ${i % 9 + 1}% of ${ref ? termName(ref) : "Consolidated EBITDA"}${pad}.`);
   }
-  const text = lines.join("\n");
+  const text = [...lines, ...(opts.appendText ? [opts.appendText] : [])].join("\n");
   const index = buildTestIndex([{ documentId: DOC, label: "CA", text }]);
   const section = index.resolveUniqueNodeByRef(DOC, "1.01");
   if (section.status !== "UNIQUE") throw new Error("synthetic corpus: section 1.01 not unique");
@@ -82,7 +84,10 @@ export function buildDefinitionsCorpus(opts: DefinitionsCorpusOptions): Syntheti
     const ref = opts.references?.get(i);
     const id = `inv-item:${String(i).padStart(3, "0")}`;
     const lineEnd = regionText.indexOf("\n", at);
-    items.push(item(id, "operative", at, lineEnd < 0 ? regionText.length : lineEnd, regionText.slice(at, Math.min(regionText.length, at + 80)), { proposition: `${t} is the greater of a fixed amount and a percentage of a metric`, quantitativeValues: amountAt >= 0 ? [{ kind: "MONEY", rawText: amountText, normalizedValue: i * 1_000_000, unit: "USD", charStart: amountAt, charEnd: amountAt + amountText.length }] : [], referencedTerms: [ref ? termName(ref) : "Consolidated EBITDA"] }));
+    // F-7C.1: the excerpt is the exact text at the span - the contract real Pass A guarantees (inventory.ts stores the
+    // located slice), which the source re-anchoring verifier relies on. A truncated excerpt over a longer span is not a
+    // shape Pass A ever produces.
+    items.push(item(id, "operative", at, lineEnd < 0 ? regionText.length : lineEnd, regionText.slice(at, lineEnd < 0 ? regionText.length : lineEnd), { proposition: `${t} is the greater of a fixed amount and a percentage of a metric`, quantitativeValues: amountAt >= 0 ? [{ kind: "MONEY", rawText: amountText, normalizedValue: i * 1_000_000, unit: "USD", charStart: amountAt, charEnd: amountAt + amountText.length }] : [], referencedTerms: [ref ? termName(ref) : "Consolidated EBITDA"] }));
     itemsByTerm.set(t.toLowerCase(), [id]);
   }
   if (opts.sharedCapGroup && opts.sharedCapGroup.length > 1) {

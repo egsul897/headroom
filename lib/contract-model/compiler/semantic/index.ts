@@ -14,3 +14,7 @@ export * from "./shard-planner";
 export * from "./shard-stitcher";
 export * from "./shard-execution";
 export * from "./definition-source-anchor";
+export * from "./bounded-composition";
+export * from "./execution-mode";
+export * from "./shard-executor";
+export * from "./frozen-inventory-resume";

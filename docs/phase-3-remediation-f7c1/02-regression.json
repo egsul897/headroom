@@ -1,0 +1,77 @@
+{
+ "artifact": "F-7C.1 §22 - regression: full suite at the starting SHA (the recorded F-7C run) vs the F-7C.1 tree, failing identities diffed; targeted suites; tsc; lint; build",
+ "startingSha": "2cfb6b3f8e8a99b6ff9010307726ffa8f7b6a2ac",
+ "fullSuite": {
+  "before": {
+   "testFilesFailed": 107,
+   "testsFailed": 162,
+   "testsPassed": 3152,
+   "testsTotal": 3838
+  },
+  "after": {
+   "testFilesFailed": 107,
+   "testsFailed": 162,
+   "testsPassed": 3167,
+   "testsTotal": 3853
+  },
+  "failingFileSetDiff": {
+   "onlyBefore": [],
+   "onlyAfter": []
+  },
+  "failingTestIdentityDiff": {
+   "onlyBefore": [],
+   "onlyAfter": []
+  },
+  "missionBaseline": {
+   "failingFiles": 107,
+   "failingTests": 162
+  }
+ },
+ "failingSetUnchanged": true,
+ "f7c1Tests": {
+  "passed": 15,
+  "failed": 0
+ },
+ "f7cTests": {
+  "passed": 26,
+  "failed": 0
+ },
+ "f7aTests": {
+  "passed": 31,
+  "failed": 0
+ },
+ "f7b2Tests": {
+  "passed": 16,
+  "failed": 0
+ },
+ "f7b3bTests": {
+  "passed": 15,
+  "failed": 0
+ },
+ "f7b3dTests": {
+  "passed": 13,
+  "failed": 0
+ },
+ "transportTests": {
+  "passed": 21,
+  "failed": 0
+ },
+ "targetedRun": "25 files / 321 tests green before the full suite (F-7C, F-7A, F-7B.2, F-7B.3B, F-7B.3D, semantic-compiler dir incl. F-7B transport, F-5.3A/B ensemble + support-trust, accountability independence, cache cross-tenant, failure observability)",
+ "monolithicDifferential": {
+  "identical": true,
+  "projectionBytes": 21364,
+  "note": "8 scripted bounded scenarios, starting-SHA worktree vs F-7C.1 tree, same fixture in both"
+ },
+ "typecheck": {
+  "nonFoundationAuditErrors": 0
+ },
+ "lint": {
+  "exit": 0
+ },
+ "build": {
+  "exit": 0,
+  "compiledSuccessfully": true
+ },
+ "paidCalls": 0,
+ "spendUsd": 0
+}

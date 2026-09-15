@@ -1,0 +1,2432 @@
+{
+ "artifact": "F-7B.3E §7-§11 Wave-C paid execution ledger and per-shard terminal records",
+ "at": "2026-09-14T22:00:58.913Z",
+ "gitSha": "b28b7834451e110735de392a7484b0f8ae8a96ca",
+ "planHash": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+ "baseline": {
+  "startingShaScope": {
+   "expected": "76e76a1781f381f360950255960dc182f9d01f69",
+   "head": "c351cb7ab4b7749cc6c437267bedad7bc2a8f214",
+   "startingShaIsAncestor": true,
+   "changedFiles": [
+    "docs/phase-3-remediation-f7b3e/00-baseline-frozen25-and-wavec-precheck.json",
+    "scripts/f7b3e-precheck.ts"
+   ],
+   "productionChanged": [],
+   "pass": true
+  },
+  "planHash": {
+   "expected": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+   "actual": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+   "pass": true
+  },
+  "shardCount": {
+   "actual": 36,
+   "pass": true
+  },
+  "ownership": {
+   "actual": {
+    "materialItems": 108,
+    "ownedOnce": 108,
+    "unowned": 0,
+    "multiplyOwned": 0
+   },
+   "pass": true
+  },
+  "committedManifestValid": {
+   "pass": true
+  },
+  "shardHashesMatchManifest": {
+   "pass": true
+  },
+  "frozen25": {
+   "count": 25,
+   "pass": true
+  }
+ },
+ "precheck": {
+  "wave": "C",
+  "shards": 11,
+  "alreadyExecuted": 0,
+  "waveConservativeEstimateUsd": 9.3335,
+  "spentSoFarUsd": 0,
+  "remainingCapUsd": 9.5,
+  "gatewayBalanceUsd": 16.468556,
+  "fitsCap": true,
+  "fitsBalance": true
+ },
+ "guards": [
+  {
+   "ordinal": 23,
+   "shardId": "shard:2804206d37b6f769705a",
+   "expectedRenderedInput": 21779,
+   "conservativeShardUsd": 0.7751,
+   "cumulativeActualUsd": 0,
+   "remainingCapUsd": 9.5,
+   "conservativeRestOfWaveUsd": 9.3335,
+   "proceeds": true
+  },
+  {
+   "ordinal": 24,
+   "shardId": "shard:8b21b0018e4a6cedd585",
+   "expectedRenderedInput": 21327,
+   "conservativeShardUsd": 0.759,
+   "cumulativeActualUsd": 0.2924,
+   "remainingCapUsd": 9.2076,
+   "conservativeRestOfWaveUsd": 8.5584,
+   "proceeds": true
+  },
+  {
+   "ordinal": 25,
+   "shardId": "shard:f048973d2e9a58498b81",
+   "expectedRenderedInput": 30016,
+   "conservativeShardUsd": 1.0683,
+   "cumulativeActualUsd": 0.7449,
+   "remainingCapUsd": 8.7551,
+   "conservativeRestOfWaveUsd": 7.7994,
+   "proceeds": true
+  },
+  {
+   "ordinal": 28,
+   "shardId": "shard:6248230fa539039e625f",
+   "expectedRenderedInput": 26023,
+   "conservativeShardUsd": 0.9262,
+   "cumulativeActualUsd": 1.1203,
+   "remainingCapUsd": 8.3797,
+   "conservativeRestOfWaveUsd": 6.7311,
+   "proceeds": true
+  },
+  {
+   "ordinal": 29,
+   "shardId": "shard:5bbdd9026aa0eefb73f0",
+   "expectedRenderedInput": 24990,
+   "conservativeShardUsd": 0.8894,
+   "cumulativeActualUsd": 1.6302,
+   "remainingCapUsd": 7.8698,
+   "conservativeRestOfWaveUsd": 5.805,
+   "proceeds": true
+  },
+  {
+   "ordinal": 30,
+   "shardId": "shard:42a0ee858a3457c23f47",
+   "expectedRenderedInput": 21147,
+   "conservativeShardUsd": 0.7526,
+   "cumulativeActualUsd": 1.9162,
+   "remainingCapUsd": 7.5838,
+   "conservativeRestOfWaveUsd": 4.9156,
+   "proceeds": true
+  },
+  {
+   "ordinal": 31,
+   "shardId": "shard:2b74338b4b2dc108057c",
+   "expectedRenderedInput": 22731,
+   "conservativeShardUsd": 0.809,
+   "cumulativeActualUsd": 2.2728,
+   "remainingCapUsd": 7.2272,
+   "conservativeRestOfWaveUsd": 4.1629,
+   "proceeds": true
+  },
+  {
+   "ordinal": 32,
+   "shardId": "shard:d8e77df4fadace785588",
+   "expectedRenderedInput": 24526,
+   "conservativeShardUsd": 0.8729,
+   "cumulativeActualUsd": 2.7715,
+   "remainingCapUsd": 6.7285,
+   "conservativeRestOfWaveUsd": 3.3539,
+   "proceeds": true
+  },
+  {
+   "ordinal": 33,
+   "shardId": "shard:50e26ec2fb25035a3b7b",
+   "expectedRenderedInput": 24755,
+   "conservativeShardUsd": 0.881,
+   "cumulativeActualUsd": 3.1213,
+   "remainingCapUsd": 6.3787,
+   "conservativeRestOfWaveUsd": 2.4811,
+   "proceeds": true
+  },
+  {
+   "ordinal": 34,
+   "shardId": "shard:e9d1223d90cc2dd9c683",
+   "expectedRenderedInput": 26632,
+   "conservativeShardUsd": 0.9478,
+   "cumulativeActualUsd": 3.4427,
+   "remainingCapUsd": 6.0573,
+   "conservativeRestOfWaveUsd": 1.6,
+   "proceeds": true
+  },
+  {
+   "ordinal": 35,
+   "shardId": "shard:c6f9067a716712ae085a",
+   "expectedRenderedInput": 18326,
+   "conservativeShardUsd": 0.6522,
+   "cumulativeActualUsd": 3.8027,
+   "remainingCapUsd": 5.6973,
+   "conservativeRestOfWaveUsd": 0.6522,
+   "proceeds": true
+  }
+ ],
+ "waveShardIds": [
+  {
+   "ordinal": 23,
+   "shardId": "shard:2804206d37b6f769705a",
+   "shardHash": "295194e683bbffe1a4170d4e67a9c1ff40abacadf899027e952aa3c709b01106"
+  },
+  {
+   "ordinal": 24,
+   "shardId": "shard:8b21b0018e4a6cedd585",
+   "shardHash": "4cd2f84d10958b7f104e38a1dc583a781d19e50d70ab8a08d059f3a190b54e04"
+  },
+  {
+   "ordinal": 25,
+   "shardId": "shard:f048973d2e9a58498b81",
+   "shardHash": "732123dea5d25e5612fe4e3b4761a079a07dd3187200c0c2047c38ae6bddf595"
+  },
+  {
+   "ordinal": 28,
+   "shardId": "shard:6248230fa539039e625f",
+   "shardHash": "917fead02cf8fb0b05717f81ca2c4d6574f6664a4776c4607700d16e36281769"
+  },
+  {
+   "ordinal": 29,
+   "shardId": "shard:5bbdd9026aa0eefb73f0",
+   "shardHash": "6ae7768f98f41902d5c7c11f542d870c8f15ddcb186a9858815d6e674b12991d"
+  },
+  {
+   "ordinal": 30,
+   "shardId": "shard:42a0ee858a3457c23f47",
+   "shardHash": "867efe57fd1ce295e84d6748ba9f1a9e9effa0f969d51df3468112ecd961f21a"
+  },
+  {
+   "ordinal": 31,
+   "shardId": "shard:2b74338b4b2dc108057c",
+   "shardHash": "ee58b2e5782a89d8008d115ac62448eebfaeaa49042b6d19e60bea095320cc61"
+  },
+  {
+   "ordinal": 32,
+   "shardId": "shard:d8e77df4fadace785588",
+   "shardHash": "906bb9bf2b37febd2ac350c2e06c10b2ea11014234010318ea411fe87b08f1ec"
+  },
+  {
+   "ordinal": 33,
+   "shardId": "shard:50e26ec2fb25035a3b7b",
+   "shardHash": "fe4747230a2a39c766c1141d493a8122875d8b1edc3d66087521d01404c2a075"
+  },
+  {
+   "ordinal": 34,
+   "shardId": "shard:e9d1223d90cc2dd9c683",
+   "shardHash": "5363f1f7b6d7bf682f24cc09a4a785da31c8f01e5652fbb06d16e4615747c209"
+  },
+  {
+   "ordinal": 35,
+   "shardId": "shard:c6f9067a716712ae085a",
+   "shardHash": "8c0ad1ed342cc215fa087f6049978954b7dd224e874af71de352c44ac743ae60"
+  }
+ ],
+ "executedCount": 11,
+ "calls": 28,
+ "waveCostUsd": 3.909352,
+ "cumulativeLedgerUsd": 3.909352,
+ "capUsd": 9.5,
+ "records": [
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:2804206d37b6f769705a",
+   "shardHash": "295194e683bbffe1a4170d4e67a9c1ff40abacadf899027e952aa3c709b01106",
+   "ordinal": 23,
+   "ownedUnits": 16,
+   "sourceChars": 7617,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "ownedItems": 0,
+   "ownedMaterialItems": 0,
+   "estimatedFirstTurnInputTokens": 21779,
+   "preCallEstimate": {
+    "inputTokens": 71653,
+    "outputTokens": 41500,
+    "usd": 0.558306
+   },
+   "actual": {
+    "inputTokens": 75905,
+    "outputTokens": 14057,
+    "turns": 3,
+    "latencyMs": 133166,
+    "costUsd": 0.29238000000000003,
+    "attemptCount": 3,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED"
+   ],
+   "toolCalls": 4,
+   "toolCallNames": [
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getDefinition"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 17,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 0,
+    "dispositioned": 0,
+    "missingMaterial": 0,
+    "valuesRepresented": 0,
+    "valuesMissing": 0,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {}
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [
+    "OFAC",
+    "Other Applicable Indebtedness"
+   ],
+   "unresolvedIssues": [
+    "[definition[d3]] Section 3.17(c) was retrieved but the returned text is truncated before it reaches the point where the term 'OFAC' is actually substantively used/defined (text cuts off at 'is:' introducing a list of sanctioned-person categories); the acronym's operative content (presumably 'Office of Foreign Assets Control' and its sanctions-list scope) is not established from the evidence obtained.",
+    "This submission compiles Section 1.01 defined terms from 'NYFRB Rate' through 'Overnight Bank Funding Rate' (17 terms). No independently operative WireRule (permission/prohibition/ratio-test) appears in this source region - it is purely a definitions article - so the 'rules' array is empty, consistent with the source content.",
+    "The FROZEN SEMANTIC INVENTORY for this submission reported an INVENTORY_COVERAGE_GAP (109 items accepted, 0 added by a failed targeted gap re-inventory due to a tool timeout, with 721 stretches of source left UNACCOUNTED_SOURCE) and no explicit inventoryItemId list was included in the supplied context. Because no concrete item IDs were provided to consume or disposition, the inventoryDispositions array is left empty here; this gap itself is flagged for review rather than silently assumed complete.",
+    "Three cross-references (Section 3.17(c) for 'OFAC', Section 2.09(g) for 'Other Applicable Indebtedness', and Section 2.17(b) for the 'Other Taxes' assignment carve-back) were actively resolved via getReferencedProvision per the mandatory retrieval-before-giving-up rule. Section 2.09(g) fully resolved the 'Other Applicable Indebtedness' definition (COMPLETE). Section 3.17(c) returned only a truncated fragment that did not reach the substantive OFAC-defining text, so 'OFAC' is marked MISSING_CONTEXT. Section 2.17(b) also returned a truncated fragment, but the 'Other Taxes' definition's own carve-back structure is fully stated on its face independent of 2.17(b)'s substance, so it remains COMPLETE.",
+    "'Federal Funds Effective Rate' (an operand of the NYFRB Rate MAX formula) was separately confirmed via getDefinition to be a materially similar greater-of-zero-floored published rate, supporting the MAX(...,0) representation of NYFRB Rate's own zero floor."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": false,
+    "decodedFields": [],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": false,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "absent",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "absent - left absent for the schema's own default/optional handling"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:8b21b0018e4a6cedd585",
+   "shardHash": "4cd2f84d10958b7f104e38a1dc583a781d19e50d70ab8a08d059f3a190b54e04",
+   "ordinal": 24,
+   "ownedUnits": 5,
+   "sourceChars": 4653,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "ownedItems": 0,
+   "ownedMaterialItems": 0,
+   "estimatedFirstTurnInputTokens": 21327,
+   "preCallEstimate": {
+    "inputTokens": 70166,
+    "outputTokens": 14000,
+    "usd": 0.280332
+   },
+   "actual": {
+    "inputTokens": 147593,
+    "outputTokens": 15729,
+    "turns": 5,
+    "latencyMs": 150238,
+    "costUsd": 0.452476,
+    "attemptCount": 5,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED",
+    "TRUNCATED_EVIDENCE_USED"
+   ],
+   "toolCalls": 9,
+   "toolCallNames": [
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getDefinition",
+    "getDefinition",
+    "getDefinition",
+    "getChildren",
+    "getOperativeProvision",
+    "getReferencedProvision"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 12,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 0,
+    "dispositioned": 0,
+    "missingMaterial": 0,
+    "valuesRepresented": 0,
+    "valuesMissing": 0,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {}
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [
+    "Participant",
+    "Participant Register",
+    "Payable Contracts",
+    "Payment",
+    "Payment Notice",
+    "Periodic Term CORRA Determination Day",
+    "Permitted Acquisition"
+   ],
+   "unresolvedIssues": [
+    "[definition[d5]] getReferencedProvision returned Article VIII text (Administrative Agent appointment/duties provisions) but the response was truncated before reaching the specific defining sentence for 'Payment'; the precise operative definition could not be located within the retrieved span and no narrower-span tool was available after budget exhaustion.",
+    "[definition[d6]] Same Article VIII retrieval as 'Payment' was attempted and was truncated before reaching the specific defining sentence for 'Payment Notice'.",
+    "[definition[d11]] This is a qualitative timing/good-faith-determination test anchored to an event (execution of a binding LOI/sale agreement), not a monetary or ratio formula; the IR's arithmetic/comparison primitives do not have a structured way to express an N-day window measured from a triggering event (see irExtensionCandidate).",
+    "This provision (§1.01 excerpt) is a pure defined-terms glossary fragment, not a quantitative covenant; accordingly no WireRule or WireSharedCapacity outputs were produced - only WireDefinition outputs for the 12 distinct defined terms found: Parent Entity, Participant, Participant Register, Payable Contracts, Payment, Payment Notice, PBGC, Periodic Term CORRA Determination Day, Permitted Acquisition, Permitted Amendment, Permitted Asset Swap, and Permitted Holder.",
+    "Several terms in §1.01 are pure pointer definitions ('has the meaning assigned to such term in Section X'); per the retrieval-before-giving-up policy, getReferencedProvision/getDefinition was attempted for each before any sufficiency downgrade, and successfully resolved for Participant (§9.04(c)(i)), Participant Register (§9.04(c)(iii)), Payable Contracts (within \"Ordinary Course Non-Recourse Third Party Financing Transaction\"), Periodic Term CORRA Determination Day (within \"Term CORRA\"), and Permitted Acquisition (within clause (3) of \"Permitted Investments\").",
+    "Payment and Payment Notice both point to Article VIII; Article VIII was retrieved but the response was truncated before reaching the specific defining sentences for either term (Article VIII is a long Administrative-Agent article), so both are marked MISSING_CONTEXT rather than guessed.",
+    "The Section 6.05 cross-reference in the 'Permitted Asset Swap' proviso (governing application of received cash/Cash Equivalents) could not be independently retrieved because the tool-call budget was exhausted on that request; it is preserved as an explicit unresolved dependency in that definition's sufficiencyReasons rather than assumed or dropped.",
+    "The 'Article V', 'Article VI', and 'Article VII' cross-references flagged as ambiguous by Phase 2 do not actually appear in this §1.01 excerpt's operative text and were therefore not relevant to any of the 12 terms compiled here.",
+    "No explicit per-item inventoryItemIds were supplied in this task's context bundle (only aggregate counts/gap statistics were reported), so no item-level inventoryItemIds or inventoryDispositions could be attached; the one specifically flagged uncovered quantitative value (the 180-day figure in 'Permitted Asset Swap') was addressed via an UNSUPPORTED node quoting the exact source text plus a corresponding irExtensionCandidate."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": false,
+    "decodedFields": [],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": false,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:f048973d2e9a58498b81",
+   "shardHash": "732123dea5d25e5612fe4e3b4761a079a07dd3187200c0c2047c38ae6bddf595",
+   "ordinal": 25,
+   "ownedUnits": 1,
+   "sourceChars": 14121,
+   "contextEntries": 7,
+   "contextChars": 6210,
+   "unresolvedContext": 1,
+   "oversized": false,
+   "ownedItems": 6,
+   "ownedMaterialItems": 6,
+   "estimatedFirstTurnInputTokens": 30016,
+   "preCallEstimate": {
+    "inputTokens": 98753,
+    "outputTokens": 4000,
+    "usd": 0.237506
+   },
+   "actual": {
+    "inputTokens": 29585,
+    "outputTokens": 31628,
+    "turns": 1,
+    "latencyMs": 274708,
+    "costUsd": 0.37545,
+    "attemptCount": 1,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_COMPLETE",
+   "failureReasons": [
+    "OPERATIVE_STATE_UNRESOLVED"
+   ],
+   "toolCalls": 0,
+   "toolCallNames": [],
+   "rawSubmissionRetained": true,
+   "rules": 6,
+   "definitions": 3,
+   "sharedCapacities": 1,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 6,
+    "dispositioned": 0,
+    "missingMaterial": 0,
+    "valuesRepresented": 12,
+    "valuesMissing": 0,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {
+     "REPRESENTED": 6
+    }
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [
+    "Permitted Acquisition",
+    "General Basket Amount"
+   ],
+   "unresolvedIssues": [
+    "[sharedCap[sc-8-22-30]] The IR's shared-capacity primitive models a single static ceiling shared among members; this text instead grants each of three baskets its own independent greater-of base PLUS access to whatever capacity remains unused under the other two, which is circular (each basket's 'available' amount depends on the others' usage) and has no closed-form ceiling value stated in the text.",
+    "Scope decision: given the frozen inventory flags only clauses (8), (13)/General Basket Amount, (15), (22), (27) and (30) as CRITICAL quantitative/conditional components, and no deterministic quantitative value was detected outside those six clauses, the remaining 24 purely categorical clauses of the 'Permitted Investments' definition (clauses (1)-(7), (9)-(12), (14), (16)-(21), (23)-(26), (28)-(29)) were preserved within the top-level 'Permitted Investments' WireDefinition (d-pi) rather than separately modeled as individual quantitative WireRules, since they impose no stated dollar cap or ratio gate.",
+    "Several categorical clauses cross-reference other covenant sections (6.01, 6.01(b)(10), 6.02, 6.05, 6.08, 6.08(a)(3), 5.16, 5.18(b) and enumerated sub-clauses thereof) that Phase 2's region retrieval reported as OUT_OF_SCOPE due to source-context budget exhaustion; these are noted only as unresolved dependencies in d-pi's sufficiencyReasons and were not independently re-fetched because they do not affect the economics of the six CRITICAL inventory items.",
+    "The dependency-context definitions of Consolidated EBITDA, First Lien Leverage Ratio, Interest Coverage Ratio, Joint Venture, Unrestricted Subsidiary and Similar Business were used only to interpret metric names and gating logic in the compiled rules, per their READ-ONLY status; no WireDefinition or inventory claim was made against them.",
+    "The Consolidated EBITDA definition region was itself reported TRUNCATED_AT_BUDGET; because Consolidated EBITDA is referenced here only by METRIC_REFERENCE name (not recomputed), this truncation does not affect the sufficiency of rules r-8/r-13/r-15/r-22/r-30, but any future compilation of the Consolidated EBITDA definition itself should not be treated as COMPLETE from this bundle alone."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": false,
+    "decodedFields": [],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": false,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:6248230fa539039e625f",
+   "shardHash": "917fead02cf8fb0b05717f81ca2c4d6574f6664a4776c4607700d16e36281769",
+   "ordinal": 28,
+   "ownedUnits": 16,
+   "sourceChars": 9729,
+   "contextEntries": 5,
+   "contextChars": 1815,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "ownedItems": 3,
+   "ownedMaterialItems": 3,
+   "estimatedFirstTurnInputTokens": 26023,
+   "preCallEstimate": {
+    "inputTokens": 85616,
+    "outputTokens": 41500,
+    "usd": 0.5862320000000001
+   },
+   "actual": {
+    "inputTokens": 69183,
+    "outputTokens": 37155,
+    "turns": 2,
+    "latencyMs": 321483,
+    "costUsd": 0.509916,
+    "attemptCount": 2,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED"
+   ],
+   "toolCalls": 8,
+   "toolCallNames": [
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getDefinition"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 26,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 0,
+    "dispositioned": 0,
+    "missingMaterial": 3,
+    "valuesRepresented": 0,
+    "valuesMissing": 5,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {
+     "MISSING_FROM_COMPOSITION": 3
+    }
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [
+    "Public Lender",
+    "QFC",
+    "QFC Credit Support",
+    "Reference Time",
+    "Refinanced",
+    "Refinancing",
+    "Refinanced Debt",
+    "Refinancing Indebtedness",
+    "Refunding Capital Stock",
+    "Register"
+   ],
+   "unresolvedIssues": [
+    "[definition[d-ria].IF.then] unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+    "[definition[d-ria].IF.else.IF.then] unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+    "[definition[d-ria].IF.else.IF.else] unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+    "[definition[d-ria].IF.else] IF condition must be BOOLEAN and both branches must resolve to the same type: no operand carries a determinable type (every operand is itself unsupported)",
+    "[definition[d-ria]] IF condition must be BOOLEAN and both branches must resolve to the same type: no operand carries a determinable type (every operand is itself unsupported)",
+    "[definition[d-refi-debt]] getReferencedProvision('Section 6.01(b)(13)') was attempted; the returned text supplied the core defining sentence (Indebtedness that serves to Refinance other permitted debt) but ended at 'provided, however, that such Refinancing Indebtedness:' - the lettered proviso sub-conditions were not included in the returned span",
+    "[definition[d-refunding-cs]] getReferencedProvision('Section 6.08(b)(2)') was attempted; the tool returned only the empty enumerator marker '(2)' with no substantive text, so the definition's content could not be resolved",
+    "This submission compiles the batch of independently-defined terms appearing in the supplied §1.01 excerpt (PTE through Register). Every distinct defined term found in the supplied source was extracted as its own WireDefinition; none were dropped as 'non-salient'.",
+    "The only term carrying material quantitative/ratio economics is 'Ratio Incremental Amount' (clauses (a)-(c)), which corresponds to all three Frozen Semantic Inventory items; all three are consumed directly on the RATIO literal and UNLIMITED_CAPACITY nodes that carry their respective values (2.00:1.00, 3.00:1.00/1.75:1.00, 4.00:1.00/1.75:1.00).",
+    "All quantitative values flagged by the deterministic scan (RATIO 2.00, 3.00, 1.75, 4.00, 1.75) correspond exactly to the three inventory items' own stated values and are consumed on the corresponding literal nodes - no additional uncovered material values were found.",
+    "Several terms in §1.01 are pure forward pointers to other sections of the same agreement (Public Lender -> §5.01; QFC Credit Support -> §9.22; Refinanced Debt -> definition of Credit Agreement Refinancing Indebtedness; Refinancing Indebtedness -> §6.01(b)(13); Refunding Capital Stock -> §6.08(b)(2); Register -> §9.04(b)(iv)). Per the mandatory-retrieval rule, each was attempted via getReferencedProvision/getDefinition before any MISSING_CONTEXT/PARTIAL/UNSUPPORTED determination. QFC Credit Support, Refinanced Debt and Register were fully resolved and marked COMPLETE; Refinancing Indebtedness was partially resolved (core sentence captured, lettered proviso conditions not returned by the tool) and marked PARTIAL; Public Lender and Refunding Capital Stock could not be substantively resolved (tool returned only an unrelated heading or an empty numbering marker) and are marked MISSING_CONTEXT.",
+    "Section 1.08 (the pro forma calculation methodology incorporated by reference into 'Ratio Incremental Amount') was also attempted; only its heading was returned, not its substantive sub-clauses, which is reflected in that definition's PARTIAL sufficiency rather than a confident COMPLETE claim.",
+    "No independently operative WireRule (permission/prohibition/ratio test) is present in this source excerpt - it is purely a definitions article - so the rules array is empty."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": false,
+    "decodedFields": [],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": false,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:5bbdd9026aa0eefb73f0",
+   "shardHash": "6ae7768f98f41902d5c7c11f542d870c8f15ddcb186a9858815d6e674b12991d",
+   "ordinal": 29,
+   "ownedUnits": 16,
+   "sourceChars": 9851,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "ownedItems": 1,
+   "ownedMaterialItems": 1,
+   "estimatedFirstTurnInputTokens": 24990,
+   "preCallEstimate": {
+    "inputTokens": 82218,
+    "outputTokens": 41500,
+    "usd": 0.5794360000000001
+   },
+   "actual": {
+    "inputTokens": 58243,
+    "outputTokens": 16952,
+    "turns": 2,
+    "latencyMs": 137922,
+    "costUsd": 0.286006,
+    "attemptCount": 2,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED",
+    "TRUNCATED_EVIDENCE_USED"
+   ],
+   "toolCalls": 4,
+   "toolCallNames": [
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 22,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 1,
+   "ownedAccountability": {
+    "represented": 1,
+    "dispositioned": 0,
+    "missingMaterial": 0,
+    "valuesRepresented": 1,
+    "valuesMissing": 0,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {
+     "REPRESENTED": 1
+    }
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [
+    "Relevant Date",
+    "Removal Effective Date",
+    "Replacement Rate",
+    "Resignation Effective Date",
+    "Restricted Debt Payment",
+    "Restricted Payments"
+   ],
+   "unresolvedIssues": [
+    "[definition[d1].AND[1]] categorical entity-type/regulatory-status classification is not expressible with the arithmetic/comparison IR primitives; no computable value attaches to this alternative test",
+    "[definition[d1]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d5]] Section 1.13 was retrieved but resolved only to the 'Guarantors' section heading/lead-in ('From:'), which does not contain the actual defining language for 'Relevant Date'; the substantive text could not be located within tool budget",
+    "[definition[d7]] Article VIII was retrieved but the returned span was truncated before reaching the specific agent-removal mechanics defining this term; the defining language could not be located within tool budget",
+    "[definition[d8]] Section 2.12(b) was retrieved but the returned span describes the amendment mechanism for replacing a benchmark rate without reciting the specific defined term 'Replacement Rate' verbatim within the retrieved (truncated) excerpt",
+    "[definition[d11].AND[1]] the exclusion mechanic adjusts both the numerator and denominator populations of lenders and is not a simple arithmetic operand combinable with the ratio comparison above without risking a mis-stated formula",
+    "[definition[d11]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d12].AND[1]] the exclusion mechanic adjusts the population counted and is not a simple arithmetic operand combinable with the ratio comparison above",
+    "[definition[d12]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d13].AND[1]] the exclusion mechanic adjusts the population counted and is not a simple arithmetic operand combinable with the ratio comparison above",
+    "[definition[d13]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d15]] Article VIII was retrieved but the returned span was truncated before reaching the specific agent-resignation mechanics defining this term; the defining language could not be located within tool budget",
+    "[definition[d19]] Section 6.08(a) was retrieved but resolved only to the prohibition chapeau ('The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:') without the specific enumerated clause defining 'Restricted Debt Payment'",
+    "[definition[d22]] Section 6.08(a) was retrieved but resolved only to the prohibition chapeau ('The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:') without the specific enumerated clause defining 'Restricted Payments'",
+    "Source is a definitions block (§1.01) containing 22 independent defined terms (Regulated Bank through Restricted Payments); one WireDefinition was emitted per term per the multiple-definitions extraction requirement.",
+    "Five terms (Relevant Date, Removal Effective Date, Replacement Rate, Resignation Effective Date, Restricted Debt Payment, Restricted Payments) are defined purely by cross-reference to Section 1.13, Article VIII, Section 2.12(b), and Section 6.08(a) respectively; getReferencedProvision was affirmatively attempted for each target section, but the returned spans were headings/chapeaus/truncated fragments that did not contain the actual defining language, so these five are marked MISSING_CONTEXT rather than guessed.",
+    "The 'Regulated Bank' $5,000,000,000 threshold (the sole FROZEN INVENTORY item) is captured as a COMPARE/MONEY node; the accompanying categorical institution-type alternatives (a)-(e) are carried as a nested UNSUPPORTED node, yielding an overall PARTIAL sufficiency for that definition.",
+    "The three deterministically-detected 50% values correspond to the majority-lender thresholds in 'Required Lenders', 'Required Revolving Lenders', and 'Required Term Lenders' and are each represented as PERCENT 0.5 operands within their respective COMPARE/MULTIPLY expressions; the accompanying exclusion provisos in each are carried as nested UNSUPPORTED nodes (population-adjustment mechanics not expressible with current arithmetic primitives), yielding PARTIAL sufficiency for each of those three definitions.",
+    "No WireRule outputs were produced: this source region is exclusively a definitions section with no independently operative permission/prohibition/ratio-test rule text."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": false,
+    "decodedFields": [],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": false,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:42a0ee858a3457c23f47",
+   "shardHash": "867efe57fd1ce295e84d6748ba9f1a9e9effa0f969d51df3468112ecd961f21a",
+   "ordinal": 30,
+   "ownedUnits": 16,
+   "sourceChars": 4565,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "ownedItems": 0,
+   "ownedMaterialItems": 0,
+   "estimatedFirstTurnInputTokens": 21147,
+   "preCallEstimate": {
+    "inputTokens": 69574,
+    "outputTokens": 41500,
+    "usd": 0.5541480000000001
+   },
+   "actual": {
+    "inputTokens": 78520,
+    "outputTokens": 19949,
+    "turns": 3,
+    "latencyMs": 171952,
+    "costUsd": 0.35653,
+    "attemptCount": 3,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED"
+   ],
+   "toolCalls": 9,
+   "toolCallNames": [
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getDefinition",
+    "getDefinition",
+    "getDefinition",
+    "getDefinition"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 22,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 0,
+    "dispositioned": 0,
+    "missingMaterial": 0,
+    "valuesRepresented": 0,
+    "valuesMissing": 0,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {}
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [
+    "Retained Declined Proceeds",
+    "RFR Interest Day",
+    "RFR Lookback Day",
+    "S&P",
+    "Sanctioned Country",
+    "Second Commitment Application Period"
+   ],
+   "unresolvedIssues": [
+    "[definition[d4].ADD[0]] requires summation across a variable/unbounded number of historical Excess Cash Flow Periods (the IR's SUM/ADD nodes take a fixed operand list, not an open-ended 'for each period' aggregation), and depends on the Section 2.09(c) ECF-Percentage prepayment mechanics only partially retrieved",
+    "[definition[d4].ADD[1]] MULTIPLY operands do not type-check together under the IR's own composition rules: MULTIPLY operands must be any number of PERCENT/NUMBER scaling factors plus at most one MONEY or RATIO operand",
+    "[definition[d4]] ADD operands do not type-check together under the IR's own composition rules: no operand carries a determinable type (every operand is itself unsupported)",
+    "[definition[d14]] getDefinition('Daily Simple RFR') was attempted but the tool-call budget was exhausted before it could be served; the term's actual content was never retrieved",
+    "[definition[d16]] getDefinition('Daily Simple RFR') was attempted but the tool-call budget was exhausted before it could be served; the term's actual content was never retrieved",
+    "[definition[d19]] getReferencedProvision('Section 3.17(a)') was attempted and returned text, but the returned excerpt is truncated before reaching the clause that actually names/defines 'Sanctioned Country' - the defining language itself was not retrievable",
+    "Source is a contiguous run of alphabetically-ordered defined terms from the Section 1.01 glossary ('Restricted Subsidiary' through 'Second Commitment Application Period'); 22 independent WireDefinition entries were extracted, one per distinct defined term, per the multiple-definitions extraction requirement.",
+    "For terms whose entire operative meaning is 'has the meaning provided in Section X' (Retained Asset Sale Proceeds, Retained Declined Proceeds, Second Commitment Application Period), the cross-referenced sections were successfully retrieved via getReferencedProvision and are reflected as COMPLETE. For 'Sanctioned Country' the cross-referenced Section 3.17(a) was retrieved but truncated before the defining clause, so it is MISSING_CONTEXT. For 'RFR Interest Day' and 'RFR Lookback Day', the internal cross-reference to 'Daily Simple RFR' could not be retrieved because the tool-call budget was exhausted after other, higher-priority retrievals - marked MISSING_CONTEXT rather than guessed.",
+    "The Frozen Semantic Inventory for this unit reported an INVENTORY_COVERAGE_GAP with only aggregate statistics (counts and unaccounted character ranges) and did not surface individually addressable inventoryItemIds in the material supplied to this compiler, so no inventoryItemIds could be attached to nodes and inventoryDispositions is empty; the only deterministically-flagged quantitative value (MONEY $0) was located and consumed in the 'Revolving Commitment' definition (d6).",
+    "The 30 generic 'UNRESOLVED_DEFINED_TERM (LOW)' flags supplied in context correspond to numerous ordinary dependent terms used across this glossary run (e.g. Unrestricted Subsidiary, Foreign Subsidiary, SONIA, Daily Simple RFR, Incremental Revolving Facility, Other Revolving Facility, OFAC, Governmental Authority, Prepayment Event, Loan, Lender, Person, etc.) that are declared elsewhere in the instrument's own alphabetical glossary outside the text supplied to this compiler; they are listed in each definition's dependsOnTerms and did not block compiling the categorical definitions themselves, since most of these definitions are non-computational cross-references rather than formulas dependent on those terms' own numeric content.",
+    "'Retained Excess Cash Flow' (d4) is the only genuinely formulaic definition in this batch; it is PARTIAL because (i) 'Retained Excess Cash Flow Percentage' was confirmed via getDefinition to be undefined anywhere in this instrument, and (ii) clause (a)'s multi-period summation exceeds the fixed-arity SUM/ADD primitives (see irExtensionCandidates)."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": false,
+    "decodedFields": [],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": false,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:2b74338b4b2dc108057c",
+   "shardHash": "ee58b2e5782a89d8008d115ac62448eebfaeaa49042b6d19e60bea095320cc61",
+   "ordinal": 31,
+   "ownedUnits": 16,
+   "sourceChars": 9340,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "ownedItems": 0,
+   "ownedMaterialItems": 0,
+   "estimatedFirstTurnInputTokens": 22731,
+   "preCallEstimate": {
+    "inputTokens": 74785,
+    "outputTokens": 41500,
+    "usd": 0.56457
+   },
+   "actual": {
+    "inputTokens": 151291,
+    "outputTokens": 19619,
+    "turns": 5,
+    "latencyMs": 173240,
+    "costUsd": 0.498772,
+    "attemptCount": 5,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED",
+    "TRUNCATED_EVIDENCE_USED",
+    "DEFINITION_COMPLETENESS_SUSPECT"
+   ],
+   "toolCalls": 4,
+   "toolCallNames": [
+    "getDefinition",
+    "getDefinition",
+    "getDefinition",
+    "getDefinition"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 17,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 0,
+    "dispositioned": 0,
+    "missingMaterial": 0,
+    "valuesRepresented": 0,
+    "valuesMissing": 0,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {}
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [
+    "SOFR Administrator's Website",
+    "Sold Entity or Business"
+   ],
+   "unresolvedIssues": [
+    "[definition[d3]] the term 'Excluded Swap Obligations' is used but not declared anywhere in this instrument or related package documents (confirmed via definition lookup), so the scope of the carve-out cannot be faithfully represented",
+    "[definition[d15]] attempted retrieval of 'Sold Entity or Business' directly (not independently declared) and of 'Consolidated EBITDA' (the cross-referenced source); the Consolidated EBITDA definition is extremely long and the returned text was truncated before reaching the sub-clause that actually defines 'Sold Entity or Business', so its operative meaning could not be confirmed from available evidence",
+    "This §1.01 excerpt is a pure Definitions article batch (Secured Cash Management Obligations through SONIA); no independently operative permission/prohibition/ratio-test rules appear in the supplied text, so no WireRule or WireSharedCapacity outputs were produced - only WireDefinition outputs.",
+    "The FROZEN SEMANTIC INVENTORY for this submission reported an INVENTORY_COVERAGE_GAP (721 stretches unaccounted, gap re-inventory call failed with a gateway timeout) and supplied no resolvable inventoryItemIds to this compiler; consequently no inventoryItemIds could be attached to any node and inventoryDispositions is empty. This gap should be treated as an open accountability item for review, not as evidence that the definitions below are complete against the frozen inventory.",
+    "Cross-reference 'Section 4.01(a)(ii)' (within Security Documents) was already reported by Phase 2 as OUT_OF_SCOPE due to source-context budget exhaustion; not re-requested per the no-duplicate-request policy. It does not affect the represented meaning of 'Security Documents' itself, which merely names it as one of several qualifying sections.",
+    "Cross-reference 'Article 1, Rule 1-02(w)(2) of Regulation S-X' (within Significant Subsidiary) is an external SEC regulation, not an internal document section (confirmed NOT_FOUND as an internal structural node), and is represented as-is via the definition's own excerpt.",
+    "'Sold Entity or Business' required retrieving the very large 'Consolidated EBITDA' definition; the returned text was truncated before reaching the sub-clause that defines this term, so its substantive meaning is MISSING_CONTEXT despite two good-faith retrieval attempts.",
+    "'Excluded Swap Obligations' (a carve-out inside 'Secured Obligations') and standalone lookup of 'Sold Entity or Business' were both confirmed not independently declared anywhere in the instrument package via direct tool lookup."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": false,
+    "decodedFields": [],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": false,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:d8e77df4fadace785588",
+   "shardHash": "906bb9bf2b37febd2ac350c2e06c10b2ea11014234010318ea411fe87b08f1ec",
+   "ordinal": 32,
+   "ownedUnits": 16,
+   "sourceChars": 10967,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "ownedItems": 0,
+   "ownedMaterialItems": 0,
+   "estimatedFirstTurnInputTokens": 24526,
+   "preCallEstimate": {
+    "inputTokens": 80691,
+    "outputTokens": 41500,
+    "usd": 0.5763820000000001
+   },
+   "actual": {
+    "inputTokens": 59755,
+    "outputTokens": 23029,
+    "turns": 2,
+    "latencyMs": 210994,
+    "costUsd": 0.3498,
+    "attemptCount": 2,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED",
+    "DEFINITION_COMPLETENESS_SUSPECT"
+   ],
+   "toolCalls": 4,
+   "toolCallNames": [
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision",
+    "getReferencedProvision"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 22,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 0,
+    "dispositioned": 0,
+    "missingMaterial": 0,
+    "valuesRepresented": 0,
+    "valuesMissing": 0,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {}
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [
+    "SONIA Administrator's Website",
+    "Specified Transaction Adjustments",
+    "Sponsor",
+    "SPV",
+    "Sterling",
+    "Successor Borrower",
+    "Supported QFC",
+    "Master Agreement"
+   ],
+   "unresolvedIssues": [
+    "[definition[d13].OR[1].AND[1]] qualitative control determination has no arithmetic/comparison representation in the IR node set",
+    "[definition[d13].OR[1]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d13].OR[2]] election-based qualitative control test, not an arithmetic/comparison primitive",
+    "[definition[d13].OR[3]] qualitative GAAP-consolidation test, not an arithmetic/comparison primitive",
+    "[definition[d13]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+    "This provision (§1.01 excerpt) is a pure Definitions section; no independently operative permission/prohibition/ratio-test rules exist here, so the rules array is empty and all output is WireDefinitions.",
+    "22 distinct defined terms were extracted, including 'Master Agreement' which is coined inline inside the 'Swap Agreement' definition rather than appearing as its own headword.",
+    "For four terms whose entire content in §1.01 is a pointer ('has the meaning assigned to such term in Section X'), getReferencedProvision was used to retrieve the target section: Specified Transaction Adjustments (§1.08(d)) and SPV (§9.04(e)) and Supported QFC (§9.22) resolved successfully; Successor Borrower (§6.03(d)) resolved to text that was cut off immediately before the clause coining the term, so that definition is marked MISSING_CONTEXT.",
+    "The two orphan 50% values flagged by the deterministic scan are both consumed in the 'subsidiary' definition's calculationExpression as PERCENT(0.5) thresholds inside COMPARE nodes; the qualitative control/consolidation alternatives in the same definition are UNSUPPORTED because they have no numeric content to represent.",
+    "The orphan 'two (2) Business Days' value is part of the Spot Rate fallback methodology description (§1.01) and is preserved in that definition's excerpt; it is a descriptive settlement-timing detail within a rate-determination waterfall, not itself a separately computable capacity, so no separate node was created for it.",
+    "No inventory item IDs were supplied in the context bundle for this submission (the frozen inventory summary described gaps and orphan values only in prose, without itemIds), so inventoryItemIds arrays are empty throughout and inventoryDispositions is empty; all flagged orphan values were nonetheless addressed narratively above and, where computational, structurally in the 'subsidiary' definition."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": false,
+    "decodedFields": [],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": false,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:50e26ec2fb25035a3b7b",
+   "shardHash": "fe4747230a2a39c766c1141d493a8122875d8b1edc3d66087521d01404c2a075",
+   "ordinal": 33,
+   "ownedUnits": 16,
+   "sourceChars": 6520,
+   "contextEntries": 4,
+   "contextChars": 3378,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "ownedItems": 2,
+   "ownedMaterialItems": 2,
+   "estimatedFirstTurnInputTokens": 24755,
+   "preCallEstimate": {
+    "inputTokens": 81444,
+    "outputTokens": 41500,
+    "usd": 0.5778880000000001
+   },
+   "actual": {
+    "inputTokens": 55994,
+    "outputTokens": 20942,
+    "turns": 2,
+    "latencyMs": 178001,
+    "costUsd": 0.321408,
+    "attemptCount": 2,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED"
+   ],
+   "toolCalls": 3,
+   "toolCallNames": [
+    "getReferencedProvision",
+    "getDefinition",
+    "getDefinition"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 21,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 2,
+    "dispositioned": 0,
+    "missingMaterial": 0,
+    "valuesRepresented": 2,
+    "valuesMissing": 0,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {
+     "REPRESENTED": 2
+    }
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [
+    "Tax Amount",
+    "Tax Distribution",
+    "Tax Group",
+    "Term SOFR",
+    "Term SOFR Determination Day"
+   ],
+   "unresolvedIssues": [
+    "[definition[d2]] Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+    "[definition[d3]] Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+    "[definition[d4]] Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+    "[definition[d7].MAX[0]] day-count lookback/fallback publication mechanics have no IR node type for representing a bounded backward-looking rate substitution",
+    "[definition[d7]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+    "[definition[d12]] The ABL Intercreditor Agreement is confirmed absent from this document package (no INTERCREDITOR_AGREEMENT document exists in the package), so the substantive scope of 'CF Debt Priority Collateral' cannot be retrieved.",
+    "[definition[d17].MAX[0]] day-count sampling mechanics have no IR primitive for a bounded, time-stamped rate sampling rule",
+    "[definition[d17]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+    "[definition[d18]] bounded backward-looking rate substitution/fallback mechanics have no IR node type",
+    "Source is Section 1.01 definitions; all 21 distinct defined terms present in the supplied text were extracted as separate WireDefinitions per the multiple-definitions rule.",
+    "Tax Amount, Tax Distribution, and Tax Group are each defined solely by cross-reference to Section 6.08(b)(16)(b); getReferencedProvision was attempted and returned only an empty/truncated stub ('(b) ') with UNKNOWN_SUPERSESSION_STATUS, so these remain MISSING_CONTEXT.",
+    "Term Priority Collateral is defined solely by reference to 'CF Debt Priority Collateral' in the ABL Intercreditor Agreement; that agreement is confirmed absent from the document package (REFERENCED_DOCUMENT_ABSENT), so this remains MISSING_CONTEXT even though the ABL Intercreditor Agreement's own top-level definition was available.",
+    "Consolidated Total Debt and Excluded Revolving Loans were independently fetched via getDefinition to properly compose the Total Leverage Ratio formula; both resolved as CURRENT operative text, supporting a COMPLETE sufficiency for Total Leverage Ratio.",
+    "The two frozen-inventory items (Threshold Amount MAX formula; Term Priority Collateral cross-reference dependency) were both consumed on their respective WireDefinitions; no inventory dispositions were needed beyond that consumption.",
+    "Deterministically-detected quantitative values (Nov 19 2007 launch date, 2/5 Business Day windows, four instances of a 0.00% floor) were addressed: the 0.00% floors are represented via MAX(...,PERCENT 0) nodes on Term CORRA and Term SOFR Rate; the Business Day sampling/lookback windows are captured within nested UNSUPPORTED nodes (no clean IR primitive exists for bounded rate-fallback mechanics - see irExtensionCandidates); the TARGET2 launch date is non-operative descriptive color not feeding any calculation and was left un-consumed."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": false,
+    "decodedFields": [],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": false,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "absent",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "absent - left absent for the schema's own default/optional handling"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:e9d1223d90cc2dd9c683",
+   "shardHash": "5363f1f7b6d7bf682f24cc09a4a785da31c8f01e5652fbb06d16e4615747c209",
+   "ordinal": 34,
+   "ownedUnits": 16,
+   "sourceChars": 10314,
+   "contextEntries": 4,
+   "contextChars": 2227,
+   "unresolvedContext": 3,
+   "oversized": false,
+   "ownedItems": 3,
+   "ownedMaterialItems": 3,
+   "estimatedFirstTurnInputTokens": 26632,
+   "preCallEstimate": {
+    "inputTokens": 87620,
+    "outputTokens": 41500,
+    "usd": 0.59024
+   },
+   "actual": {
+    "inputTokens": 61740,
+    "outputTokens": 23650,
+    "turns": 2,
+    "latencyMs": 213667,
+    "costUsd": 0.35998,
+    "attemptCount": 2,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED",
+    "DEFINITION_COMPLETENESS_SUSPECT"
+   ],
+   "toolCalls": 1,
+   "toolCallNames": [
+    "getDefinition"
+   ],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 21,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 3,
+   "ownedAccountability": {
+    "represented": 2,
+    "dispositioned": 1,
+    "missingMaterial": 0,
+    "valuesRepresented": 0,
+    "valuesMissing": 0,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {
+     "REPRESENTED": 2,
+     "INTENTIONALLY_NON_COMPUTATIONAL": 1
+    }
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [
+    "Transaction Threshold",
+    "Treasury Capital Stock",
+    "Type",
+    "U.S. Dollars",
+    "U.S. Special Resolution Regimes",
+    "U.S. Tax Compliance Certificate",
+    "UCC"
+   ],
+   "unresolvedIssues": [
+    "[definition[d5].OR[0]] qualitative legal-permission determination, not reducible to the IR's numeric/boolean primitives",
+    "[definition[d5].OR[2]] qualitative categorical classification, not a computable quantity or comparison",
+    "[definition[d5].OR[3]] subjective, forward-looking business-flexibility determination left to the Initial Borrower's good-faith judgment; not reducible to IR primitives",
+    "[definition[d5]] OR keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+    "[definition[d6]] the referenced section could not be retrieved (source-context budget exhausted before expansion) and its substantive meaning is unknown from the evidence supplied",
+    "[definition[d10]] the referenced section could not be retrieved (source-context budget exhausted before expansion)",
+    "[definition[d11]] the referenced section could not be retrieved (source-context budget exhausted before expansion)",
+    "[definition[d15]] these are qualitative eligibility/status gates dependent on undefined terms not resolvable from the supplied evidence ('Restricted Party' and 'Event of Default' have no detected definition anywhere in the document package) and on Section 6.08, which is out of scope/unretrieved (ambiguous section match); not reducible to the IR's numeric/boolean primitives without those dependencies",
+    "This §1.01 excerpt is a definitions block containing 21 independent defined terms (Total Revolving Commitments through Weighted Average Life to Maturity); each was compiled as its own WireDefinition per the multiple-definitions extraction requirement.",
+    "No independently operative WireRule (permission/prohibition/ratio test) exists in this excerpt - it is purely defined-term content - so the rules array is empty.",
+    "Three cross-referenced sections (6.08(b)(2), 9.22, 2.15(e)(i)(2)(C)) could not be retrieved (out-of-scope per Phase 2's source-context budget); the affected definitions (Treasury Capital Stock, U.S. Special Resolution Regimes, U.S. Tax Compliance Certificate) are marked MISSING_CONTEXT rather than guessed.",
+    "The cross-reference for 'Transaction Threshold' to the definition of 'Prepayment Event' WAS successfully resolved via getDefinition, yielding a complete quantitative (greater-of) representation.",
+    "'Unrestricted Subsidiary' carries the three FROZEN SEMANTIC INVENTORY items for this shard; the two CRITICAL designation/redesignation conditions are consumed via an UNSUPPORTED node (blocked by the undefined terms 'Restricted Party' and 'Event of Default', which the package confirms have no definition anywhere in the document set, and by out-of-scope Section 6.08), and the MATERIAL notice/filing requirement is dispositioned as intentionally non-computational.",
+    "The detected but inventory-uncovered 50% figure in 'Transformative Transaction' clause (b) was represented quantitatively (MULTIPLY of PERCENT 0.5 and Consolidated EBITDA) within an OR alongside three UNSUPPORTED qualitative/discretionary clauses, yielding an overall PARTIAL sufficiency for that definition."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": false,
+    "decodedFields": [],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": false,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "stage": 2,
+   "attempt": 1,
+   "shardId": "shard:c6f9067a716712ae085a",
+   "shardHash": "8c0ad1ed342cc215fa087f6049978954b7dd224e874af71de352c44ac743ae60",
+   "ordinal": 35,
+   "ownedUnits": 4,
+   "sourceChars": 1774,
+   "contextEntries": 1,
+   "contextChars": 225,
+   "unresolvedContext": 0,
+   "oversized": false,
+   "ownedItems": 0,
+   "ownedMaterialItems": 0,
+   "estimatedFirstTurnInputTokens": 18326,
+   "preCallEstimate": {
+    "inputTokens": 60293,
+    "outputTokens": 11500,
+    "usd": 0.23558600000000002
+   },
+   "actual": {
+    "inputTokens": 18847,
+    "outputTokens": 6894,
+    "turns": 1,
+    "latencyMs": 65557,
+    "costUsd": 0.106634,
+    "attemptCount": 1,
+    "retryCount": 0,
+    "rateLimitFailures": 0
+   },
+   "compileStatus": "REVIEW_REQUIRED",
+   "shardStatus": "SHARD_COMPLETE",
+   "failureReasons": [],
+   "toolCalls": 0,
+   "toolCallNames": [],
+   "rawSubmissionRetained": true,
+   "rules": 0,
+   "definitions": 4,
+   "sharedCapacities": 0,
+   "dispositionsEmitted": 0,
+   "ownedAccountability": {
+    "represented": 0,
+    "dispositioned": 0,
+    "missingMaterial": 0,
+    "valuesRepresented": 0,
+    "valuesMissing": 0,
+    "danglingLineage": 0,
+    "semanticallyComplete": false,
+    "byDisposition": {}
+   },
+   "lineageClaimsOnUnownedItems": 0,
+   "definitionsOutsideOwnedUnits": [],
+   "unresolvedIssues": [
+    "This submission compiles four sibling glossary definitions from §1.01 ('wholly owned subsidiary', 'Withdrawal Liability', 'Withholding Agent', 'Write-Down and Conversion Powers') - none contain an independently operative covenant rule (no WireRule emitted).",
+    "The deterministically-detected PERCENT 100% value is accounted for: it is the ownership threshold defining 'wholly owned subsidiary' and is represented as a PERCENT(1.0) literal in that definition's calculationExpression, with the two named carve-outs (directors' qualifying shares; shares issued to foreign nationals) preserved in the excerpt.",
+    "The reported INVENTORY_COVERAGE_GAP and large UNACCOUNTED_SOURCE ranges pertain to other stretches of the broader §1.01 definitions article outside the four terms in this operative excerpt; they do not indicate missing text within the four definitions actually compiled here, each of which is a self-contained, complete sentence.",
+    "Six LOW-severity UNRESOLVED_DEFINED_TERM flags were noted in Phase 2 context but were not chased further: each of the four compiled definitions is fully intelligible from its own stated text, and the undefined cross-referenced terms (e.g. Equity Interests, Multiemployer Plan, Bail-In Legislation, Resolution Authority) serve only to fix scope/jurisdiction rather than supplying an additional operative number that would change these definitions' represented economics."
+   ],
+   "errorSummary": null,
+   "transportNormalization": {
+    "applied": false,
+    "decodedFields": [],
+    "audit": {
+     "version": "submit-transport-normalization.v1",
+     "applied": false,
+     "fields": [
+      {
+       "field": "rules",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "definitions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "sharedCapacities",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "irExtensionCandidates",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "inventoryDispositions",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      },
+      {
+       "field": "overallNotes",
+       "originalType": "array",
+       "originalStringSha256": null,
+       "originalStringLength": null,
+       "parseAttempted": false,
+       "parseSuccess": false,
+       "decodedType": null,
+       "decodedArrayLength": null,
+       "applied": false,
+       "reason": "already an array - untouched"
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "retries": 0,
+ "providerFailures": 0,
+ "perTurnCalls": [
+  {
+   "n": 1,
+   "stage": 2,
+   "shardId": "shard:2804206d37b6f769705a",
+   "turn": 1,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 21844,
+   "outputTokens": 1218,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.055868,
+   "estimatedBeforeTurnUsd": 0.45869800000000005,
+   "at": "2026-09-14T21:27:21.006Z"
+  },
+  {
+   "n": 2,
+   "stage": 2,
+   "shardId": "shard:2804206d37b6f769705a",
+   "turn": 2,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 24346,
+   "outputTokens": 5076,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.09945200000000001,
+   "estimatedBeforeTurnUsd": 0.464936,
+   "at": "2026-09-14T21:28:16.995Z"
+  },
+  {
+   "n": 3,
+   "stage": 2,
+   "shardId": "shard:2804206d37b6f769705a",
+   "turn": 3,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 29715,
+   "outputTokens": 7763,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.13706000000000002,
+   "estimatedBeforeTurnUsd": 0.48001000000000005,
+   "at": "2026-09-14T21:29:20.714Z"
+  },
+  {
+   "n": 4,
+   "stage": 2,
+   "shardId": "shard:8b21b0018e4a6cedd585",
+   "turn": 1,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 21655,
+   "outputTokens": 3167,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.07498,
+   "estimatedBeforeTurnUsd": 0.182814,
+   "at": "2026-09-14T21:29:52.922Z"
+  },
+  {
+   "n": 5,
+   "stage": 2,
+   "shardId": "shard:8b21b0018e4a6cedd585",
+   "turn": 2,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 30391,
+   "outputTokens": 305,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.063832,
+   "estimatedBeforeTurnUsd": 0.204914,
+   "at": "2026-09-14T21:29:58.376Z"
+  },
+  {
+   "n": 6,
+   "stage": 2,
+   "shardId": "shard:8b21b0018e4a6cedd585",
+   "turn": 3,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 30949,
+   "outputTokens": 104,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.062938,
+   "estimatedBeforeTurnUsd": 0.206648,
+   "at": "2026-09-14T21:30:01.005Z"
+  },
+  {
+   "n": 7,
+   "stage": 2,
+   "shardId": "shard:8b21b0018e4a6cedd585",
+   "turn": 4,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 31297,
+   "outputTokens": 1934,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.081934,
+   "estimatedBeforeTurnUsd": 0.207816,
+   "at": "2026-09-14T21:30:20.614Z"
+  },
+  {
+   "n": 8,
+   "stage": 2,
+   "shardId": "shard:8b21b0018e4a6cedd585",
+   "turn": 5,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 33301,
+   "outputTokens": 10219,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.168792,
+   "estimatedBeforeTurnUsd": 0.213902,
+   "at": "2026-09-14T21:31:50.956Z"
+  },
+  {
+   "n": 9,
+   "stage": 2,
+   "shardId": "shard:f048973d2e9a58498b81",
+   "turn": 1,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 29585,
+   "outputTokens": 31628,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.37545,
+   "estimatedBeforeTurnUsd": 0.100336,
+   "at": "2026-09-14T21:36:25.662Z"
+  },
+  {
+   "n": 10,
+   "stage": 2,
+   "shardId": "shard:6248230fa539039e625f",
+   "turn": 1,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 26309,
+   "outputTokens": 11346,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.166078,
+   "estimatedBeforeTurnUsd": 0.467262,
+   "at": "2026-09-14T21:38:17.727Z"
+  },
+  {
+   "n": 11,
+   "stage": 2,
+   "shardId": "shard:6248230fa539039e625f",
+   "turn": 2,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 42874,
+   "outputTokens": 25809,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.34383800000000003,
+   "estimatedBeforeTurnUsd": 0.509658,
+   "at": "2026-09-14T21:41:47.178Z"
+  },
+  {
+   "n": 12,
+   "stage": 2,
+   "shardId": "shard:5bbdd9026aa0eefb73f0",
+   "turn": 1,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 25008,
+   "outputTokens": 5336,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.103376,
+   "estimatedBeforeTurnUsd": 0.46517400000000003,
+   "at": "2026-09-14T21:42:38.770Z"
+  },
+  {
+   "n": 13,
+   "stage": 2,
+   "shardId": "shard:5bbdd9026aa0eefb73f0",
+   "turn": 2,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 33235,
+   "outputTokens": 11616,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.18263000000000001,
+   "estimatedBeforeTurnUsd": 0.486528,
+   "at": "2026-09-14T21:44:05.097Z"
+  },
+  {
+   "n": 14,
+   "stage": 2,
+   "shardId": "shard:42a0ee858a3457c23f47",
+   "turn": 1,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 21646,
+   "outputTokens": 2866,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.071952,
+   "estimatedBeforeTurnUsd": 0.457446,
+   "at": "2026-09-14T21:44:31.687Z"
+  },
+  {
+   "n": 15,
+   "stage": 2,
+   "shardId": "shard:42a0ee858a3457c23f47",
+   "turn": 2,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 27666,
+   "outputTokens": 648,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.061812,
+   "estimatedBeforeTurnUsd": 0.471924,
+   "at": "2026-09-14T21:44:39.416Z"
+  },
+  {
+   "n": 16,
+   "stage": 2,
+   "shardId": "shard:42a0ee858a3457c23f47",
+   "turn": 3,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 29208,
+   "outputTokens": 16435,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.22276600000000002,
+   "estimatedBeforeTurnUsd": 0.475764,
+   "at": "2026-09-14T21:46:57.065Z"
+  },
+  {
+   "n": 17,
+   "stage": 2,
+   "shardId": "shard:2b74338b4b2dc108057c",
+   "turn": 1,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 22833,
+   "outputTokens": 5061,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.096276,
+   "estimatedBeforeTurnUsd": 0.46063200000000004,
+   "at": "2026-09-14T21:47:45.310Z"
+  },
+  {
+   "n": 18,
+   "stage": 2,
+   "shardId": "shard:2b74338b4b2dc108057c",
+   "turn": 2,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 27933,
+   "outputTokens": 204,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.057906,
+   "estimatedBeforeTurnUsd": 0.475546,
+   "at": "2026-09-14T21:47:49.166Z"
+  },
+  {
+   "n": 19,
+   "stage": 2,
+   "shardId": "shard:2b74338b4b2dc108057c",
+   "turn": 3,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 29592,
+   "outputTokens": 5471,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.113894,
+   "estimatedBeforeTurnUsd": 0.48000800000000005,
+   "at": "2026-09-14T21:48:39.700Z"
+  },
+  {
+   "n": 20,
+   "stage": 2,
+   "shardId": "shard:2b74338b4b2dc108057c",
+   "turn": 4,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 35105,
+   "outputTokens": 127,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.07147999999999999,
+   "estimatedBeforeTurnUsd": 0.49578600000000006,
+   "at": "2026-09-14T21:48:42.516Z"
+  },
+  {
+   "n": 21,
+   "stage": 2,
+   "shardId": "shard:2b74338b4b2dc108057c",
+   "turn": 5,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 35828,
+   "outputTokens": 8756,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.15921600000000002,
+   "estimatedBeforeTurnUsd": 0.49793200000000004,
+   "at": "2026-09-14T21:49:50.309Z"
+  },
+  {
+   "n": 22,
+   "stage": 2,
+   "shardId": "shard:d8e77df4fadace785588",
+   "turn": 1,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 24473,
+   "outputTokens": 8182,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.130766,
+   "estimatedBeforeTurnUsd": 0.464268,
+   "at": "2026-09-14T21:51:14.633Z"
+  },
+  {
+   "n": 23,
+   "stage": 2,
+   "shardId": "shard:d8e77df4fadace785588",
+   "turn": 2,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 35282,
+   "outputTokens": 14847,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.219034,
+   "estimatedBeforeTurnUsd": 0.49417200000000006,
+   "at": "2026-09-14T21:53:21.311Z"
+  },
+  {
+   "n": 24,
+   "stage": 2,
+   "shardId": "shard:50e26ec2fb25035a3b7b",
+   "turn": 1,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 25132,
+   "outputTokens": 4177,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.092034,
+   "estimatedBeforeTurnUsd": 0.46469600000000005,
+   "at": "2026-09-14T21:54:00.911Z"
+  },
+  {
+   "n": 25,
+   "stage": 2,
+   "shardId": "shard:50e26ec2fb25035a3b7b",
+   "turn": 2,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 30862,
+   "outputTokens": 16765,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.22937400000000002,
+   "estimatedBeforeTurnUsd": 0.479926,
+   "at": "2026-09-14T21:56:19.317Z"
+  },
+  {
+   "n": 26,
+   "stage": 2,
+   "shardId": "shard:e9d1223d90cc2dd9c683",
+   "turn": 1,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 26431,
+   "outputTokens": 8202,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.134882,
+   "estimatedBeforeTurnUsd": 0.46849,
+   "at": "2026-09-14T21:57:45.271Z"
+  },
+  {
+   "n": 27,
+   "stage": 2,
+   "shardId": "shard:e9d1223d90cc2dd9c683",
+   "turn": 2,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 35309,
+   "outputTokens": 15448,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.22509800000000002,
+   "estimatedBeforeTurnUsd": 0.49387800000000004,
+   "at": "2026-09-14T21:59:52.987Z"
+  },
+  {
+   "n": 28,
+   "stage": 2,
+   "shardId": "shard:c6f9067a716712ae085a",
+   "turn": 1,
+   "model": "anthropic/claude-sonnet-5",
+   "inputTokens": 18847,
+   "outputTokens": 6894,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "costUsd": 0.106634,
+   "estimatedBeforeTurnUsd": 0.15173,
+   "at": "2026-09-14T22:00:58.551Z"
+  }
+ ],
+ "refusals": [],
+ "costBounded": null,
+ "gatewayBalanceBefore": 16.468556,
+ "gatewayBalanceAfter": 12.559204
+}

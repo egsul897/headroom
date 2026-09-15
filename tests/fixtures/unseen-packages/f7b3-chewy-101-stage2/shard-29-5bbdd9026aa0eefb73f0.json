@@ -1,0 +1,2835 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:5bbdd9026aa0eefb73f0",
+  "shardHash": "6ae7768f98f41902d5c7c11f542d870c8f15ddcb186a9858815d6e674b12991d",
+  "ordinal": 29,
+  "ownedUnits": 16,
+  "sourceChars": 9851,
+  "contextEntries": 1,
+  "contextChars": 225,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 1,
+  "ownedMaterialItems": 1,
+  "estimatedFirstTurnInputTokens": 24990,
+  "preCallEstimate": {
+   "inputTokens": 82218,
+   "outputTokens": 41500,
+   "usd": 0.5794360000000001
+  },
+  "actual": {
+   "inputTokens": 58243,
+   "outputTokens": 16952,
+   "turns": 2,
+   "latencyMs": 137922,
+   "costUsd": 0.286006,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "toolCalls": 4,
+  "toolCallNames": [
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 22,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 1,
+  "ownedAccountability": {
+   "represented": 1,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "valuesRepresented": 1,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "REPRESENTED": 1
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Relevant Date",
+   "Removal Effective Date",
+   "Replacement Rate",
+   "Resignation Effective Date",
+   "Restricted Debt Payment",
+   "Restricted Payments"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].AND[1]] categorical entity-type/regulatory-status classification is not expressible with the arithmetic/comparison IR primitives; no computable value attaches to this alternative test",
+   "[definition[d1]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d5]] Section 1.13 was retrieved but resolved only to the 'Guarantors' section heading/lead-in ('From:'), which does not contain the actual defining language for 'Relevant Date'; the substantive text could not be located within tool budget",
+   "[definition[d7]] Article VIII was retrieved but the returned span was truncated before reaching the specific agent-removal mechanics defining this term; the defining language could not be located within tool budget",
+   "[definition[d8]] Section 2.12(b) was retrieved but the returned span describes the amendment mechanism for replacing a benchmark rate without reciting the specific defined term 'Replacement Rate' verbatim within the retrieved (truncated) excerpt",
+   "[definition[d11].AND[1]] the exclusion mechanic adjusts both the numerator and denominator populations of lenders and is not a simple arithmetic operand combinable with the ratio comparison above without risking a mis-stated formula",
+   "[definition[d11]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12].AND[1]] the exclusion mechanic adjusts the population counted and is not a simple arithmetic operand combinable with the ratio comparison above",
+   "[definition[d12]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d13].AND[1]] the exclusion mechanic adjusts the population counted and is not a simple arithmetic operand combinable with the ratio comparison above",
+   "[definition[d13]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d15]] Article VIII was retrieved but the returned span was truncated before reaching the specific agent-resignation mechanics defining this term; the defining language could not be located within tool budget",
+   "[definition[d19]] Section 6.08(a) was retrieved but resolved only to the prohibition chapeau ('The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:') without the specific enumerated clause defining 'Restricted Debt Payment'",
+   "[definition[d22]] Section 6.08(a) was retrieved but resolved only to the prohibition chapeau ('The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:') without the specific enumerated clause defining 'Restricted Payments'",
+   "Source is a definitions block (§1.01) containing 22 independent defined terms (Regulated Bank through Restricted Payments); one WireDefinition was emitted per term per the multiple-definitions extraction requirement.",
+   "Five terms (Relevant Date, Removal Effective Date, Replacement Rate, Resignation Effective Date, Restricted Debt Payment, Restricted Payments) are defined purely by cross-reference to Section 1.13, Article VIII, Section 2.12(b), and Section 6.08(a) respectively; getReferencedProvision was affirmatively attempted for each target section, but the returned spans were headings/chapeaus/truncated fragments that did not contain the actual defining language, so these five are marked MISSING_CONTEXT rather than guessed.",
+   "The 'Regulated Bank' $5,000,000,000 threshold (the sole FROZEN INVENTORY item) is captured as a COMPARE/MONEY node; the accompanying categorical institution-type alternatives (a)-(e) are carried as a nested UNSUPPORTED node, yielding an overall PARTIAL sufficiency for that definition.",
+   "The three deterministically-detected 50% values correspond to the majority-lender thresholds in 'Required Lenders', 'Required Revolving Lenders', and 'Required Term Lenders' and are each represented as PERCENT 0.5 operands within their respective COMPARE/MULTIPLY expressions; the accompanying exclusion provisos in each are carried as nested UNSUPPORTED nodes (population-adjustment mechanics not expressible with current arithmetic primitives), yielding PARTIAL sufficiency for each of those three definitions.",
+   "No WireRule outputs were produced: this source region is exclusively a definitions section with no independently operative permission/prohibition/ratio-test rule text."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:5bbdd9026aa0eefb73f0",
+  "shardHash": "6ae7768f98f41902d5c7c11f542d870c8f15ddcb186a9858815d6e674b12991d",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:6dd197eebbcebc842ef2647f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Regulated Bank",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AND",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:2a33af80190d8205d3abf2ea",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:3f0237b6da699c21becd3b45",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "consolidated combined capital and surplus",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:429507e09b4a67d315040f48"
+        },
+        "operator": "GTE",
+        "right": {
+         "kind": "MONEY",
+         "type": "MONEY",
+         "amount": 5000000000,
+         "currency": "USD",
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (\"Regulated Bank\")",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:897346be8dc377c352148e10",
+         "inventoryItemIds": [
+          "inv-item:fe8e892ff61ce8e57714f3e1"
+         ]
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (\"Regulated Bank\")",
+         "excerpt": null
+        },
+        "inventoryItemIds": [
+         "inv-item:fe8e892ff61ce8e57714f3e1"
+        ]
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 (\"Regulated Bank\"), clauses (a)-(e)",
+        "semanticDescription": "categorical membership test that the bank must fall within one of five alternative institution-type categories: (a) FDIC-insured U.S. depository institution, (b) a section 25A Federal Reserve Act corporation, (c) a Board-supervised branch/agency/commercial lending company of a foreign bank, (d) a non-U.S. branch of a foreign bank managed/controlled by such a U.S. branch, or (e) any other U.S./non-U.S. depository institution or branch/agency/office supervised by a bank regulatory authority",
+        "reason": "categorical entity-type/regulatory-status classification is not expressible with the arithmetic/comparison IR primitives; no computable value attaches to this alternative test",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (\"Regulated Bank\")",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:4a980a86bd7eccaf7510a257"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01 (\"Regulated Bank\")",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The $5,000,000,000 capital-and-surplus threshold is fully captured.",
+      "The five alternative institution-type categories (a)-(e) are categorical/regulatory-status classifications that cannot be represented with IR arithmetic/comparison primitives and are carried as UNSUPPORTED.",
+      "categorical entity-type/regulatory-status classification is not expressible with the arithmetic/comparison IR primitives; no computable value attaches to this alternative test",
+      "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means a commercial bank with a consolidated combined capital and surplus of at least $5,000,000,000 that is (a) ... (e) any other U.S. or non-U.S. depository institution ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:c461411fe3653e8b06e9f8c0",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Related Business Assets",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Cash Equivalents",
+      "Similar Business",
+      "Equity Interests",
+      "Subsidiary",
+      "Borrower"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means assets (other than cash or Cash Equivalents) used or useful in a Similar Business (which may consist of securities of a Person, including the Equity Interests of any Subsidiary (other than a Borrower))"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:1d4861c2e47525b2c7996ef2",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Related Parties",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Affiliates"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, with respect to any specified Person, such Person's Affiliates and the partners, directors, officers, employees, trustees, agents, controlling persons, shareholders, advisors and other representatives of such Person and of each of such Person's Affiliates and permitted successors and assigns"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:37fa210b5576b63484751cc0",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Release",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means any release, spill, emission, leaking, dumping, injection, pouring, deposit, disposal, discharge, dispersal, leaching or migration into the environment ... including the environment within any building or other structure"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:bc150ffd7a29b62fb24f2541",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Relevant Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01 (\"Relevant Date\"); attempted retrieval of Section 1.13 returned only a heading fragment",
+      "semanticDescription": "cross-referenced defined term whose substantive meaning is assigned in Section 1.13",
+      "reason": "Section 1.13 was retrieved but resolved only to the 'Guarantors' section heading/lead-in ('From:'), which does not contain the actual defining language for 'Relevant Date'; the substantive text could not be located within tool budget",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:b1dee577b3229dd66869921a"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced Section 1.13 was retrieved but did not contain the operative defining text for this term.",
+      "Section 1.13 was retrieved but resolved only to the 'Guarantors' section heading/lead-in ('From:'), which does not contain the actual defining language for 'Relevant Date'; the substantive text could not be located within tool budget"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 1.13"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3794b15392ab63359d82e0e0",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Relevant Governmental Body",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the Federal Reserve Board and/or the NYFRB, or a committee officially endorsed or convened by the Federal Reserve Board and/or the NYFRB or, in each case, any successor thereto for U.S. Dollars and for Canadian Dollars, the Bank of Canada, or a committee officially endorsed or convened by the Bank of Canada, or any successor thereto"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d7c7be39243791f8abd5567b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Removal Effective Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01 (\"Removal Effective Date\"); attempted retrieval of Article VIII returned only the introductory administrative-agent appointment provisions, truncated",
+      "semanticDescription": "cross-referenced defined term whose substantive meaning is assigned in Article VIII (Administrative Agent resignation/removal provisions)",
+      "reason": "Article VIII was retrieved but the returned span was truncated before reaching the specific agent-removal mechanics defining this term; the defining language could not be located within tool budget",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:3ba87241dbfb680d098c3fa7"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced Article VIII was retrieved but truncated before reaching the operative defining text for this term.",
+      "Article VIII was retrieved but the returned span was truncated before reaching the specific agent-removal mechanics defining this term; the defining language could not be located within tool budget"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Article VIII"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:48a7231a60b76e3ffe074fe1",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Replacement Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01 (\"Replacement Rate\"); attempted retrieval of Section 2.12(b) returned related benchmark-transition mechanics but not the specific defining sentence",
+      "semanticDescription": "cross-referenced defined term whose substantive meaning is assigned in Section 2.12(b) (benchmark replacement mechanics)",
+      "reason": "Section 2.12(b) was retrieved but the returned span describes the amendment mechanism for replacing a benchmark rate without reciting the specific defined term 'Replacement Rate' verbatim within the retrieved (truncated) excerpt",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:3130d29658d14cbfebe36d9c"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced Section 2.12(b) was retrieved but did not contain the precise defining text for this term within the available excerpt.",
+      "Section 2.12(b) was retrieved but the returned span describes the amendment mechanism for replacing a benchmark rate without reciting the specific defined term 'Replacement Rate' verbatim within the retrieved (truncated) excerpt"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 2.12(b)"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:68dd69dd1595a2d8cbc96ba6",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Repricing Transaction",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Effective Yield",
+      "Initial Term Loans",
+      "Change of Control",
+      "Material Acquisition",
+      "Transformative Transaction",
+      "Facilities"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full defining text (including the primary-purpose carve-out and enumerated excluded events) is quoted in the operative source and is non-quantitative/categorical; dependent defined terms not separately resolved do not affect faithful representation of this definition's own structure."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means (a) the incurrence by the Borrowers or any Subsidiary of any Indebtedness in the form of term loans ... having an Effective Yield that is less than the Effective Yield for the Initial Term Loans ... or (b) any effective reduction in the Effective Yield for the Initial Term Loans ... provided that a Repricing Transaction will not include any event described in clause (a) or (b) above (x) that is not consummated for the primary purpose of lowering the Effective Yield ... or (y) occurring or consummated in connection with a Change of Control, a Material Acquisition, ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:66165fffb21e0b499eac28d3",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Repurchase Obligation",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Receivables Assets",
+      "Permitted Receivables Financing"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means (a) any obligation of a seller, transferor, pledgor or servicer of Receivables Assets in a Permitted Receivables Financing to repurchase or purchase or otherwise make payments with respect to Receivables Assets ... or (b) any right of a seller, transferor or servicer of Receivables Assets in a Permitted Receivables Financing to repurchase defaulted Receivables Assets"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3cf4b87d8f94de1c9cfaed77",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Required Lenders",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AND",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:e066f403d00659340f837ac9",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:85c620c8ad9d1a9750d59604",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "Dollar Amount of Term Loans, Revolving Exposures and unused Commitments held by a given Lender",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:a12b53d320e47c47bfc8a9fd"
+        },
+        "operator": "GT",
+        "right": {
+         "kind": "MULTIPLY",
+         "type": "MONEY",
+         "exprId": "ir-expr:3cc620492f8e15b980509169",
+         "operands": [
+          {
+           "kind": "PERCENT",
+           "type": "PERCENT",
+           "value": 0.5,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01 (\"Required Lenders\")",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:51a6e35e5121bd6bd903d598"
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "aggregate Dollar Amount of Term Loans, Revolving Exposures and unused Commitments",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:8931ff6a8b636993794bfef6"
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (\"Required Lenders\")",
+          "excerpt": null
+         }
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (\"Required Lenders\")",
+         "excerpt": null
+        }
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 (\"Required Lenders\"), provisos (a) and (b)",
+        "semanticDescription": "exclusion provisos: (a) Loans held by the Borrowers or any Affiliate thereof (other than Affiliated Debt Funds) are excluded from the determination, and (b) outstanding Loans/Revolving Exposures/unused Commitments of Defaulting Lenders and Disqualified Lenders are excluded",
+        "reason": "the exclusion mechanic adjusts both the numerator and denominator populations of lenders and is not a simple arithmetic operand combinable with the ratio comparison above without risking a mis-stated formula",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (\"Required Lenders\")",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:4e7e049588462e233f6f59b6"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01 (\"Required Lenders\")",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Dollar Amount",
+      "Term Loans",
+      "Revolving Exposures",
+      "Commitments",
+      "Affiliated Debt Funds",
+      "Defaulting Lender",
+      "Disqualified Lender"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The core >50% aggregate threshold is captured; the (a)/(b) exclusion provisos affecting the population of Loans/Lenders counted are carried as UNSUPPORTED rather than force-fit into arithmetic.",
+      "the exclusion mechanic adjusts both the numerator and denominator populations of lenders and is not a simple arithmetic operand combinable with the ratio comparison above without risking a mis-stated formula",
+      "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, at any time, Lenders having Term Loans, Revolving Exposures and unused Commitments representing more than 50% of the aggregate Dollar Amount of Term Loans, Revolving Exposures and unused Commitments at such time; provided that (a) Loans held by the Borrowers or any Affiliate thereof (other than Affiliated Debt Funds) shall be excluded ... and (b) whenever there are one or more Defaulting Lenders or Disqualified Lenders ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3ac13dbd555ae24a9cf90bd0",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Required Revolving Lenders",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AND",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:a3e7e8fbfccff98e32d7b4ca",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:013ec8b555c876f25f5b0630",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "Dollar Amount of Revolving Exposures and unused Revolving Commitments held by a given Revolving Lender",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:4d56e70e773d2852faa2f6b6"
+        },
+        "operator": "GT",
+        "right": {
+         "kind": "MULTIPLY",
+         "type": "MONEY",
+         "exprId": "ir-expr:dfbc0165700f486f948ebe9a",
+         "operands": [
+          {
+           "kind": "PERCENT",
+           "type": "PERCENT",
+           "value": 0.5,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01 (\"Required Revolving Lenders\")",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:7e78e88404fa2bb6ebd65b81"
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "aggregate Dollar Amount of Revolving Exposures and unused Revolving Commitments",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:9b745f9bb8cad4d4fcfefb87"
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (\"Required Revolving Lenders\")",
+          "excerpt": null
+         }
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (\"Required Revolving Lenders\")",
+         "excerpt": null
+        }
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 (\"Required Revolving Lenders\") proviso",
+        "semanticDescription": "exclusion proviso: outstanding Revolving Exposures/unused Revolving Commitments of Defaulting Lenders and Disqualified Lenders are excluded from the determination",
+        "reason": "the exclusion mechanic adjusts the population counted and is not a simple arithmetic operand combinable with the ratio comparison above",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (\"Required Revolving Lenders\")",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:baa6946d7b0a5fff2263f276"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01 (\"Required Revolving Lenders\")",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Dollar Amount",
+      "Revolving Exposures",
+      "Revolving Commitments",
+      "Defaulting Lender",
+      "Disqualified Lender"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The core >50% aggregate threshold is captured; the Defaulting/Disqualified Lender exclusion proviso is carried as UNSUPPORTED rather than force-fit into arithmetic.",
+      "the exclusion mechanic adjusts the population counted and is not a simple arithmetic operand combinable with the ratio comparison above",
+      "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, at any time, Revolving Lenders have[ing] Revolving Exposures and unused Revolving Commitments representing more than 50% of the aggregate Dollar Amount of Revolving Exposures and unused Revolving Commitments at such time; provided that whenever there are one or more Defaulting Lenders or Disqualified Lenders ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:efe8f51199fbd8293576e625",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Required Term Lenders",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AND",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:fa824f65e1a39d62508d8d9f",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:629e69d2ceeffb92e3646416",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "Dollar Amount of Term Loans held by a given Lender",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:af83f6f424de0aba26bd6e74"
+        },
+        "operator": "GT",
+        "right": {
+         "kind": "MULTIPLY",
+         "type": "MONEY",
+         "exprId": "ir-expr:663e095d7f305fb8d0cb969c",
+         "operands": [
+          {
+           "kind": "PERCENT",
+           "type": "PERCENT",
+           "value": 0.5,
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01 (\"Required Term Lenders\")",
+            "excerpt": null
+           },
+           "exprId": "ir-expr:99c9826d24dea5ff78c0d0af"
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "aggregate Dollar Amount of Term Loans",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:1386bd019c5b284880ff5052"
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (\"Required Term Lenders\")",
+          "excerpt": null
+         }
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (\"Required Term Lenders\")",
+         "excerpt": null
+        }
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01 (\"Required Term Lenders\"), provisos (a) and (b)",
+        "semanticDescription": "exclusion provisos: (a) Term Loans held by the Borrowers or any Affiliate thereof (other than Affiliated Debt Funds) are excluded, and (b) outstanding Term Loans of Defaulting Lenders and Disqualified Lenders are excluded",
+        "reason": "the exclusion mechanic adjusts the population counted and is not a simple arithmetic operand combinable with the ratio comparison above",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (\"Required Term Lenders\")",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:aba8035f15a2da5cdc1fc89d"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01 (\"Required Term Lenders\")",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Dollar Amount",
+      "Term Loans",
+      "Affiliated Debt Funds",
+      "Defaulting Lender",
+      "Disqualified Lender"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The core >50% aggregate threshold is captured; the (a)/(b) exclusion provisos are carried as UNSUPPORTED rather than force-fit into arithmetic.",
+      "the exclusion mechanic adjusts the population counted and is not a simple arithmetic operand combinable with the ratio comparison above",
+      "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, at any time, Lenders having Term Loans representing more than 50% of the aggregate Dollar Amount of Term Loans at such time; provided that (a) Loans held by the Borrowers or any Affiliate thereof (other than Affiliated Debt Funds) shall be excluded ... and (b) whenever there are one or more Defaulting Lenders or Disqualified Lenders ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:9ca6b6becb8af06cbb6d5d61",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Requirements of Law",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Governmental Authority"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, with respect to any Person, any statutes, laws, legally binding treaties, rules, regulations, orders, decrees, writs, injunctions or other determinations of any arbitrator or court or other Governmental Authority, in each case applicable to or legally binding upon such Person or any of its property or to which such Person or any of its property is subject"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:036e27dc410ed98b5bc3aed4",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Resignation Effective Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01 (\"Resignation Effective Date\"); attempted retrieval of Article VIII returned only the introductory administrative-agent appointment provisions, truncated",
+      "semanticDescription": "cross-referenced defined term whose substantive meaning is assigned in Article VIII (Administrative Agent resignation provisions)",
+      "reason": "Article VIII was retrieved but the returned span was truncated before reaching the specific agent-resignation mechanics defining this term; the defining language could not be located within tool budget",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:7b9a3f29e9fa1942f3d0577e"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced Article VIII was retrieved but truncated before reaching the operative defining text for this term.",
+      "Article VIII was retrieved but the returned span was truncated before reaching the specific agent-resignation mechanics defining this term; the defining language could not be located within tool budget"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Article VIII"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:c9b439bffe879735af4868d1",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Resolution Authority",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "EEA Resolution Authority",
+      "UK Financial Institution",
+      "UK Resolution Authority"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means an EEA Resolution Authority or, with respect to any UK Financial Institution, a UK Resolution Authority"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:ee9bc8f9375b11034f9c0cef",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Responsible Officer",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Loan Party",
+      "Collateral and Guarantee Requirement",
+      "Administrative Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the chief executive officer, president, vice president, chief financial officer, treasurer or assistant treasurer, or other similar officer, manager or a director of a Loan Party and with respect to certain limited liability companies or partnerships that do not have officers, any manager, sole member, managing member or general partner thereof ... Any document delivered hereunder that is signed by a Responsible Officer of a Loan Party shall be conclusively presumed to have been authorized ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:1f7a2f480fe9e5e920e673de",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Restricted",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Cash Equivalents",
+      "Restricted Party",
+      "Loan Documents",
+      "Liens",
+      "Obligations",
+      "Permitted Liens",
+      "Section 6.02"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "This is a qualitative/descriptive classification test (what counts as 'restricted' cash) rather than a computable formula; the full descriptive text, including the Section 6.02 carve-out reference, is quoted."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, as of any date of determination when referring to cash or Cash Equivalents of the Restricted Parties, cash or Cash Equivalents that appear (or would be required to appear) as \"restricted\" on a consolidated balance sheet ... (it being agreed that cash and Cash Equivalents subject to Permitted Liens related to any such Indebtedness (including, without limitation, pursuant to any control agreement, lockbox or any Liens permitted under Section 6.02) shall not be deemed to be restricted by virtue of such Liens) ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:dc65820454cd8d140a074d26",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Restricted Debt Payment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01 (\"Restricted Debt Payment\"); attempted retrieval of Section 6.08(a) returned only the lead-in chapeau, not the defining sub-clause",
+      "semanticDescription": "cross-referenced defined term whose substantive meaning is assigned in Section 6.08(a)",
+      "reason": "Section 6.08(a) was retrieved but resolved only to the prohibition chapeau ('The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:') without the specific enumerated clause defining 'Restricted Debt Payment'",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:e4da3b18c6e41c0bf90d0af1"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced Section 6.08(a) was retrieved but did not contain the operative defining text for this term.",
+      "Section 6.08(a) was retrieved but resolved only to the prohibition chapeau ('The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:') without the specific enumerated clause defining 'Restricted Debt Payment'"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 6.08(a)"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:10e55700f43b9b7d84f3188d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Restricted Investment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Investment",
+      "Permitted Investment"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means an Investment other than a Permitted Investment"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:0c27a3339b73d3a89b36610b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Restricted Parties",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Borrowers",
+      "Restricted Subsidiaries"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the Borrowers and the Restricted Subsidiaries"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:dece6d64041241f6c5110f88",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Restricted Payments",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01 (\"Restricted Payments\"); attempted retrieval of Section 6.08(a) returned only the lead-in chapeau, not the defining sub-clause",
+      "semanticDescription": "cross-referenced defined term whose substantive meaning is assigned in Section 6.08(a)",
+      "reason": "Section 6.08(a) was retrieved but resolved only to the prohibition chapeau ('The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:') without the specific enumerated clause defining 'Restricted Payments'",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:0279a77feb3e42e646418be4"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced Section 6.08(a) was retrieved but did not contain the operative defining text for this term.",
+      "Section 6.08(a) was retrieved but resolved only to the prohibition chapeau ('The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:') without the specific enumerated clause defining 'Restricted Payments'"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 6.08(a)"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": [
+    {
+     "inventoryItemId": "inv-item:fe8e892ff61ce8e57714f3e1",
+     "disposition": "AMBIGUOUS",
+     "note": "Consumed on the COMPARE/MONEY nodes within the 'Regulated Bank' definition (d1) representing the $5,000,000,000 capital-and-surplus threshold; disposition tag here is only to flag that the surrounding categorical (a)-(e) test is separately UNSUPPORTED, not that the value itself is unresolved."
+    }
+   ]
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].AND[1]] categorical entity-type/regulatory-status classification is not expressible with the arithmetic/comparison IR primitives; no computable value attaches to this alternative test",
+   "[definition[d1]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d5]] Section 1.13 was retrieved but resolved only to the 'Guarantors' section heading/lead-in ('From:'), which does not contain the actual defining language for 'Relevant Date'; the substantive text could not be located within tool budget",
+   "[definition[d7]] Article VIII was retrieved but the returned span was truncated before reaching the specific agent-removal mechanics defining this term; the defining language could not be located within tool budget",
+   "[definition[d8]] Section 2.12(b) was retrieved but the returned span describes the amendment mechanism for replacing a benchmark rate without reciting the specific defined term 'Replacement Rate' verbatim within the retrieved (truncated) excerpt",
+   "[definition[d11].AND[1]] the exclusion mechanic adjusts both the numerator and denominator populations of lenders and is not a simple arithmetic operand combinable with the ratio comparison above without risking a mis-stated formula",
+   "[definition[d11]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12].AND[1]] the exclusion mechanic adjusts the population counted and is not a simple arithmetic operand combinable with the ratio comparison above",
+   "[definition[d12]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d13].AND[1]] the exclusion mechanic adjusts the population counted and is not a simple arithmetic operand combinable with the ratio comparison above",
+   "[definition[d13]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d15]] Article VIII was retrieved but the returned span was truncated before reaching the specific agent-resignation mechanics defining this term; the defining language could not be located within tool budget",
+   "[definition[d19]] Section 6.08(a) was retrieved but resolved only to the prohibition chapeau ('The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:') without the specific enumerated clause defining 'Restricted Debt Payment'",
+   "[definition[d22]] Section 6.08(a) was retrieved but resolved only to the prohibition chapeau ('The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:') without the specific enumerated clause defining 'Restricted Payments'",
+   "Source is a definitions block (§1.01) containing 22 independent defined terms (Regulated Bank through Restricted Payments); one WireDefinition was emitted per term per the multiple-definitions extraction requirement.",
+   "Five terms (Relevant Date, Removal Effective Date, Replacement Rate, Resignation Effective Date, Restricted Debt Payment, Restricted Payments) are defined purely by cross-reference to Section 1.13, Article VIII, Section 2.12(b), and Section 6.08(a) respectively; getReferencedProvision was affirmatively attempted for each target section, but the returned spans were headings/chapeaus/truncated fragments that did not contain the actual defining language, so these five are marked MISSING_CONTEXT rather than guessed.",
+   "The 'Regulated Bank' $5,000,000,000 threshold (the sole FROZEN INVENTORY item) is captured as a COMPARE/MONEY node; the accompanying categorical institution-type alternatives (a)-(e) are carried as a nested UNSUPPORTED node, yielding an overall PARTIAL sufficiency for that definition.",
+   "The three deterministically-detected 50% values correspond to the majority-lender thresholds in 'Required Lenders', 'Required Revolving Lenders', and 'Required Term Lenders' and are each represented as PERCENT 0.5 operands within their respective COMPARE/MULTIPLY expressions; the accompanying exclusion provisos in each are carried as nested UNSUPPORTED nodes (population-adjustment mechanics not expressible with current arithmetic primitives), yielding PARTIAL sufficiency for each of those three definitions.",
+   "No WireRule outputs were produced: this source region is exclusively a definitions section with no independently operative permission/prohibition/ratio-test rule text."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 58243,
+   "outputTokens": 16952,
+   "costUsd": 0.286006
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED",
+   "TRUNCATED_EVIDENCE_USED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:6dd197eebbcebc842ef2647f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Regulated Bank",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "AND",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:2a33af80190d8205d3abf2ea",
+     "operands": [
+      {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:3f0237b6da699c21becd3b45",
+       "left": {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "consolidated combined capital and surplus",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:429507e09b4a67d315040f48"
+       },
+       "operator": "GTE",
+       "right": {
+        "kind": "MONEY",
+        "type": "MONEY",
+        "amount": 5000000000,
+        "currency": "USD",
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (\"Regulated Bank\")",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:897346be8dc377c352148e10",
+        "inventoryItemIds": [
+         "inv-item:fe8e892ff61ce8e57714f3e1"
+        ]
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 (\"Regulated Bank\")",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:fe8e892ff61ce8e57714f3e1"
+       ]
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01 (\"Regulated Bank\"), clauses (a)-(e)",
+       "semanticDescription": "categorical membership test that the bank must fall within one of five alternative institution-type categories: (a) FDIC-insured U.S. depository institution, (b) a section 25A Federal Reserve Act corporation, (c) a Board-supervised branch/agency/commercial lending company of a foreign bank, (d) a non-U.S. branch of a foreign bank managed/controlled by such a U.S. branch, or (e) any other U.S./non-U.S. depository institution or branch/agency/office supervised by a bank regulatory authority",
+       "reason": "categorical entity-type/regulatory-status classification is not expressible with the arithmetic/comparison IR primitives; no computable value attaches to this alternative test",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 (\"Regulated Bank\")",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:4a980a86bd7eccaf7510a257"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01 (\"Regulated Bank\")",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The $5,000,000,000 capital-and-surplus threshold is fully captured.",
+     "The five alternative institution-type categories (a)-(e) are categorical/regulatory-status classifications that cannot be represented with IR arithmetic/comparison primitives and are carried as UNSUPPORTED.",
+     "categorical entity-type/regulatory-status classification is not expressible with the arithmetic/comparison IR primitives; no computable value attaches to this alternative test",
+     "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means a commercial bank with a consolidated combined capital and surplus of at least $5,000,000,000 that is (a) ... (e) any other U.S. or non-U.S. depository institution ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:c461411fe3653e8b06e9f8c0",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Related Business Assets",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Cash Equivalents",
+     "Similar Business",
+     "Equity Interests",
+     "Subsidiary",
+     "Borrower"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means assets (other than cash or Cash Equivalents) used or useful in a Similar Business (which may consist of securities of a Person, including the Equity Interests of any Subsidiary (other than a Borrower))"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:1d4861c2e47525b2c7996ef2",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Related Parties",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Affiliates"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, with respect to any specified Person, such Person's Affiliates and the partners, directors, officers, employees, trustees, agents, controlling persons, shareholders, advisors and other representatives of such Person and of each of such Person's Affiliates and permitted successors and assigns"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:37fa210b5576b63484751cc0",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Release",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means any release, spill, emission, leaking, dumping, injection, pouring, deposit, disposal, discharge, dispersal, leaching or migration into the environment ... including the environment within any building or other structure"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:bc150ffd7a29b62fb24f2541",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Relevant Date",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01 (\"Relevant Date\"); attempted retrieval of Section 1.13 returned only a heading fragment",
+     "semanticDescription": "cross-referenced defined term whose substantive meaning is assigned in Section 1.13",
+     "reason": "Section 1.13 was retrieved but resolved only to the 'Guarantors' section heading/lead-in ('From:'), which does not contain the actual defining language for 'Relevant Date'; the substantive text could not be located within tool budget",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:b1dee577b3229dd66869921a"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Cross-referenced Section 1.13 was retrieved but did not contain the operative defining text for this term.",
+     "Section 1.13 was retrieved but resolved only to the 'Guarantors' section heading/lead-in ('From:'), which does not contain the actual defining language for 'Relevant Date'; the substantive text could not be located within tool budget"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 1.13"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3794b15392ab63359d82e0e0",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Relevant Governmental Body",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the Federal Reserve Board and/or the NYFRB, or a committee officially endorsed or convened by the Federal Reserve Board and/or the NYFRB or, in each case, any successor thereto for U.S. Dollars and for Canadian Dollars, the Bank of Canada, or a committee officially endorsed or convened by the Bank of Canada, or any successor thereto"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d7c7be39243791f8abd5567b",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Removal Effective Date",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01 (\"Removal Effective Date\"); attempted retrieval of Article VIII returned only the introductory administrative-agent appointment provisions, truncated",
+     "semanticDescription": "cross-referenced defined term whose substantive meaning is assigned in Article VIII (Administrative Agent resignation/removal provisions)",
+     "reason": "Article VIII was retrieved but the returned span was truncated before reaching the specific agent-removal mechanics defining this term; the defining language could not be located within tool budget",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:3ba87241dbfb680d098c3fa7"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Cross-referenced Article VIII was retrieved but truncated before reaching the operative defining text for this term.",
+     "Article VIII was retrieved but the returned span was truncated before reaching the specific agent-removal mechanics defining this term; the defining language could not be located within tool budget"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Article VIII"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:48a7231a60b76e3ffe074fe1",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Replacement Rate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01 (\"Replacement Rate\"); attempted retrieval of Section 2.12(b) returned related benchmark-transition mechanics but not the specific defining sentence",
+     "semanticDescription": "cross-referenced defined term whose substantive meaning is assigned in Section 2.12(b) (benchmark replacement mechanics)",
+     "reason": "Section 2.12(b) was retrieved but the returned span describes the amendment mechanism for replacing a benchmark rate without reciting the specific defined term 'Replacement Rate' verbatim within the retrieved (truncated) excerpt",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:3130d29658d14cbfebe36d9c"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Cross-referenced Section 2.12(b) was retrieved but did not contain the precise defining text for this term within the available excerpt.",
+     "Section 2.12(b) was retrieved but the returned span describes the amendment mechanism for replacing a benchmark rate without reciting the specific defined term 'Replacement Rate' verbatim within the retrieved (truncated) excerpt"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 2.12(b)"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:68dd69dd1595a2d8cbc96ba6",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Repricing Transaction",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Effective Yield",
+     "Initial Term Loans",
+     "Change of Control",
+     "Material Acquisition",
+     "Transformative Transaction",
+     "Facilities"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Full defining text (including the primary-purpose carve-out and enumerated excluded events) is quoted in the operative source and is non-quantitative/categorical; dependent defined terms not separately resolved do not affect faithful representation of this definition's own structure."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means (a) the incurrence by the Borrowers or any Subsidiary of any Indebtedness in the form of term loans ... having an Effective Yield that is less than the Effective Yield for the Initial Term Loans ... or (b) any effective reduction in the Effective Yield for the Initial Term Loans ... provided that a Repricing Transaction will not include any event described in clause (a) or (b) above (x) that is not consummated for the primary purpose of lowering the Effective Yield ... or (y) occurring or consummated in connection with a Change of Control, a Material Acquisition, ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:66165fffb21e0b499eac28d3",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Repurchase Obligation",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Receivables Assets",
+     "Permitted Receivables Financing"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means (a) any obligation of a seller, transferor, pledgor or servicer of Receivables Assets in a Permitted Receivables Financing to repurchase or purchase or otherwise make payments with respect to Receivables Assets ... or (b) any right of a seller, transferor or servicer of Receivables Assets in a Permitted Receivables Financing to repurchase defaulted Receivables Assets"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3cf4b87d8f94de1c9cfaed77",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Required Lenders",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "AND",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:e066f403d00659340f837ac9",
+     "operands": [
+      {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:85c620c8ad9d1a9750d59604",
+       "left": {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "Dollar Amount of Term Loans, Revolving Exposures and unused Commitments held by a given Lender",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:a12b53d320e47c47bfc8a9fd"
+       },
+       "operator": "GT",
+       "right": {
+        "kind": "MULTIPLY",
+        "type": "MONEY",
+        "exprId": "ir-expr:3cc620492f8e15b980509169",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "type": "PERCENT",
+          "value": 0.5,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01 (\"Required Lenders\")",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:51a6e35e5121bd6bd903d598"
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "aggregate Dollar Amount of Term Loans, Revolving Exposures and unused Commitments",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:8931ff6a8b636993794bfef6"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (\"Required Lenders\")",
+         "excerpt": null
+        }
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 (\"Required Lenders\")",
+        "excerpt": null
+       }
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01 (\"Required Lenders\"), provisos (a) and (b)",
+       "semanticDescription": "exclusion provisos: (a) Loans held by the Borrowers or any Affiliate thereof (other than Affiliated Debt Funds) are excluded from the determination, and (b) outstanding Loans/Revolving Exposures/unused Commitments of Defaulting Lenders and Disqualified Lenders are excluded",
+       "reason": "the exclusion mechanic adjusts both the numerator and denominator populations of lenders and is not a simple arithmetic operand combinable with the ratio comparison above without risking a mis-stated formula",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 (\"Required Lenders\")",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:4e7e049588462e233f6f59b6"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01 (\"Required Lenders\")",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Dollar Amount",
+     "Term Loans",
+     "Revolving Exposures",
+     "Commitments",
+     "Affiliated Debt Funds",
+     "Defaulting Lender",
+     "Disqualified Lender"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The core >50% aggregate threshold is captured; the (a)/(b) exclusion provisos affecting the population of Loans/Lenders counted are carried as UNSUPPORTED rather than force-fit into arithmetic.",
+     "the exclusion mechanic adjusts both the numerator and denominator populations of lenders and is not a simple arithmetic operand combinable with the ratio comparison above without risking a mis-stated formula",
+     "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, at any time, Lenders having Term Loans, Revolving Exposures and unused Commitments representing more than 50% of the aggregate Dollar Amount of Term Loans, Revolving Exposures and unused Commitments at such time; provided that (a) Loans held by the Borrowers or any Affiliate thereof (other than Affiliated Debt Funds) shall be excluded ... and (b) whenever there are one or more Defaulting Lenders or Disqualified Lenders ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3ac13dbd555ae24a9cf90bd0",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Required Revolving Lenders",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "AND",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:a3e7e8fbfccff98e32d7b4ca",
+     "operands": [
+      {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:013ec8b555c876f25f5b0630",
+       "left": {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "Dollar Amount of Revolving Exposures and unused Revolving Commitments held by a given Revolving Lender",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:4d56e70e773d2852faa2f6b6"
+       },
+       "operator": "GT",
+       "right": {
+        "kind": "MULTIPLY",
+        "type": "MONEY",
+        "exprId": "ir-expr:dfbc0165700f486f948ebe9a",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "type": "PERCENT",
+          "value": 0.5,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01 (\"Required Revolving Lenders\")",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:7e78e88404fa2bb6ebd65b81"
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "aggregate Dollar Amount of Revolving Exposures and unused Revolving Commitments",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:9b745f9bb8cad4d4fcfefb87"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (\"Required Revolving Lenders\")",
+         "excerpt": null
+        }
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 (\"Required Revolving Lenders\")",
+        "excerpt": null
+       }
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01 (\"Required Revolving Lenders\") proviso",
+       "semanticDescription": "exclusion proviso: outstanding Revolving Exposures/unused Revolving Commitments of Defaulting Lenders and Disqualified Lenders are excluded from the determination",
+       "reason": "the exclusion mechanic adjusts the population counted and is not a simple arithmetic operand combinable with the ratio comparison above",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 (\"Required Revolving Lenders\")",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:baa6946d7b0a5fff2263f276"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01 (\"Required Revolving Lenders\")",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Dollar Amount",
+     "Revolving Exposures",
+     "Revolving Commitments",
+     "Defaulting Lender",
+     "Disqualified Lender"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The core >50% aggregate threshold is captured; the Defaulting/Disqualified Lender exclusion proviso is carried as UNSUPPORTED rather than force-fit into arithmetic.",
+     "the exclusion mechanic adjusts the population counted and is not a simple arithmetic operand combinable with the ratio comparison above",
+     "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, at any time, Revolving Lenders have[ing] Revolving Exposures and unused Revolving Commitments representing more than 50% of the aggregate Dollar Amount of Revolving Exposures and unused Revolving Commitments at such time; provided that whenever there are one or more Defaulting Lenders or Disqualified Lenders ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:efe8f51199fbd8293576e625",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Required Term Lenders",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "AND",
+     "type": "BOOLEAN",
+     "exprId": "ir-expr:fa824f65e1a39d62508d8d9f",
+     "operands": [
+      {
+       "kind": "COMPARE",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:629e69d2ceeffb92e3646416",
+       "left": {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "Dollar Amount of Term Loans held by a given Lender",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:af83f6f424de0aba26bd6e74"
+       },
+       "operator": "GT",
+       "right": {
+        "kind": "MULTIPLY",
+        "type": "MONEY",
+        "exprId": "ir-expr:663e095d7f305fb8d0cb969c",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "type": "PERCENT",
+          "value": 0.5,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01 (\"Required Term Lenders\")",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:99c9826d24dea5ff78c0d0af"
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "aggregate Dollar Amount of Term Loans",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:1386bd019c5b284880ff5052"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01 (\"Required Term Lenders\")",
+         "excerpt": null
+        }
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 (\"Required Term Lenders\")",
+        "excerpt": null
+       }
+      },
+      {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "§1.01 (\"Required Term Lenders\"), provisos (a) and (b)",
+       "semanticDescription": "exclusion provisos: (a) Term Loans held by the Borrowers or any Affiliate thereof (other than Affiliated Debt Funds) are excluded, and (b) outstanding Term Loans of Defaulting Lenders and Disqualified Lenders are excluded",
+       "reason": "the exclusion mechanic adjusts the population counted and is not a simple arithmetic operand combinable with the ratio comparison above",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 (\"Required Term Lenders\")",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:aba8035f15a2da5cdc1fc89d"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01 (\"Required Term Lenders\")",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Dollar Amount",
+     "Term Loans",
+     "Affiliated Debt Funds",
+     "Defaulting Lender",
+     "Disqualified Lender"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The core >50% aggregate threshold is captured; the (a)/(b) exclusion provisos are carried as UNSUPPORTED rather than force-fit into arithmetic.",
+     "the exclusion mechanic adjusts the population counted and is not a simple arithmetic operand combinable with the ratio comparison above",
+     "AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, at any time, Lenders having Term Loans representing more than 50% of the aggregate Dollar Amount of Term Loans at such time; provided that (a) Loans held by the Borrowers or any Affiliate thereof (other than Affiliated Debt Funds) shall be excluded ... and (b) whenever there are one or more Defaulting Lenders or Disqualified Lenders ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:9ca6b6becb8af06cbb6d5d61",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Requirements of Law",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Governmental Authority"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, with respect to any Person, any statutes, laws, legally binding treaties, rules, regulations, orders, decrees, writs, injunctions or other determinations of any arbitrator or court or other Governmental Authority, in each case applicable to or legally binding upon such Person or any of its property or to which such Person or any of its property is subject"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:036e27dc410ed98b5bc3aed4",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Resignation Effective Date",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01 (\"Resignation Effective Date\"); attempted retrieval of Article VIII returned only the introductory administrative-agent appointment provisions, truncated",
+     "semanticDescription": "cross-referenced defined term whose substantive meaning is assigned in Article VIII (Administrative Agent resignation provisions)",
+     "reason": "Article VIII was retrieved but the returned span was truncated before reaching the specific agent-resignation mechanics defining this term; the defining language could not be located within tool budget",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:7b9a3f29e9fa1942f3d0577e"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Cross-referenced Article VIII was retrieved but truncated before reaching the operative defining text for this term.",
+     "Article VIII was retrieved but the returned span was truncated before reaching the specific agent-resignation mechanics defining this term; the defining language could not be located within tool budget"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Article VIII"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:c9b439bffe879735af4868d1",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Resolution Authority",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "EEA Resolution Authority",
+     "UK Financial Institution",
+     "UK Resolution Authority"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means an EEA Resolution Authority or, with respect to any UK Financial Institution, a UK Resolution Authority"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:ee9bc8f9375b11034f9c0cef",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Responsible Officer",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Loan Party",
+     "Collateral and Guarantee Requirement",
+     "Administrative Agent"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the chief executive officer, president, vice president, chief financial officer, treasurer or assistant treasurer, or other similar officer, manager or a director of a Loan Party and with respect to certain limited liability companies or partnerships that do not have officers, any manager, sole member, managing member or general partner thereof ... Any document delivered hereunder that is signed by a Responsible Officer of a Loan Party shall be conclusively presumed to have been authorized ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:1f7a2f480fe9e5e920e673de",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Restricted",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Cash Equivalents",
+     "Restricted Party",
+     "Loan Documents",
+     "Liens",
+     "Obligations",
+     "Permitted Liens",
+     "Section 6.02"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "This is a qualitative/descriptive classification test (what counts as 'restricted' cash) rather than a computable formula; the full descriptive text, including the Section 6.02 carve-out reference, is quoted."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, as of any date of determination when referring to cash or Cash Equivalents of the Restricted Parties, cash or Cash Equivalents that appear (or would be required to appear) as \"restricted\" on a consolidated balance sheet ... (it being agreed that cash and Cash Equivalents subject to Permitted Liens related to any such Indebtedness (including, without limitation, pursuant to any control agreement, lockbox or any Liens permitted under Section 6.02) shall not be deemed to be restricted by virtue of such Liens) ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:dc65820454cd8d140a074d26",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Restricted Debt Payment",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01 (\"Restricted Debt Payment\"); attempted retrieval of Section 6.08(a) returned only the lead-in chapeau, not the defining sub-clause",
+     "semanticDescription": "cross-referenced defined term whose substantive meaning is assigned in Section 6.08(a)",
+     "reason": "Section 6.08(a) was retrieved but resolved only to the prohibition chapeau ('The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:') without the specific enumerated clause defining 'Restricted Debt Payment'",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:e4da3b18c6e41c0bf90d0af1"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Cross-referenced Section 6.08(a) was retrieved but did not contain the operative defining text for this term.",
+     "Section 6.08(a) was retrieved but resolved only to the prohibition chapeau ('The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:') without the specific enumerated clause defining 'Restricted Debt Payment'"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 6.08(a)"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:10e55700f43b9b7d84f3188d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Restricted Investment",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Investment",
+     "Permitted Investment"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means an Investment other than a Permitted Investment"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:0c27a3339b73d3a89b36610b",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Restricted Parties",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Borrowers",
+     "Restricted Subsidiaries"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the Borrowers and the Restricted Subsidiaries"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:dece6d64041241f6c5110f88",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Restricted Payments",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01 (\"Restricted Payments\"); attempted retrieval of Section 6.08(a) returned only the lead-in chapeau, not the defining sub-clause",
+     "semanticDescription": "cross-referenced defined term whose substantive meaning is assigned in Section 6.08(a)",
+     "reason": "Section 6.08(a) was retrieved but resolved only to the prohibition chapeau ('The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:') without the specific enumerated clause defining 'Restricted Payments'",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:0279a77feb3e42e646418be4"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Cross-referenced Section 6.08(a) was retrieved but did not contain the operative defining text for this term.",
+     "Section 6.08(a) was retrieved but resolved only to the prohibition chapeau ('The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:') without the specific enumerated clause defining 'Restricted Payments'"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 6.08(a)"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01 (\"Regulated Bank\") clauses (a)-(e); §1.01 (\"Required Lenders\"/\"Required Revolving Lenders\"/\"Required Term Lenders\") exclusion provisos (a)/(b)",
+    "semanticRequirement": "A way to express categorical/qualitative alternative-membership tests (e.g. 'is one of five listed institution types') and population-exclusion adjustments to a ratio's numerator/denominator population (e.g. 'excluding Loans held by Affiliates or Defaulting Lenders from both sides of a >50% test') without either forcing them into arithmetic COMPARE/MULTIPLY nodes that would misstate the mechanic or discarding them as free text.",
+    "whyExistingPrimitivesFail": "COMPARE/AND/OR/MULTIPLY operate on numeric MONEY/NUMBER/RATIO/PERCENT values or boolean comparisons of such values; there is no primitive for 'Person/entity is a member of category X' or for 'exclude members matching predicate P from the population underlying both sides of a ratio comparison' short of an UNSUPPORTED escape hatch.",
+    "candidateGeneralizedPrimitive": "A CATEGORY_MEMBERSHIP node (entity tested against a named enumerated category list) and a POPULATION_FILTER node (wraps a metric/ratio computation with an exclusion predicate applied to the counted population) would let these recurring definitional shapes be represented compositionally instead of via UNSUPPORTED."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d1].AND[1]] categorical entity-type/regulatory-status classification is not expressible with the arithmetic/comparison IR primitives; no computable value attaches to this alternative test",
+   "[definition[d1]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d5]] Section 1.13 was retrieved but resolved only to the 'Guarantors' section heading/lead-in ('From:'), which does not contain the actual defining language for 'Relevant Date'; the substantive text could not be located within tool budget",
+   "[definition[d7]] Article VIII was retrieved but the returned span was truncated before reaching the specific agent-removal mechanics defining this term; the defining language could not be located within tool budget",
+   "[definition[d8]] Section 2.12(b) was retrieved but the returned span describes the amendment mechanism for replacing a benchmark rate without reciting the specific defined term 'Replacement Rate' verbatim within the retrieved (truncated) excerpt",
+   "[definition[d11].AND[1]] the exclusion mechanic adjusts both the numerator and denominator populations of lenders and is not a simple arithmetic operand combinable with the ratio comparison above without risking a mis-stated formula",
+   "[definition[d11]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d12].AND[1]] the exclusion mechanic adjusts the population counted and is not a simple arithmetic operand combinable with the ratio comparison above",
+   "[definition[d12]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d13].AND[1]] the exclusion mechanic adjusts the population counted and is not a simple arithmetic operand combinable with the ratio comparison above",
+   "[definition[d13]] AND keeps its structure with at least one UNSUPPORTED operand in place - typed BOOLEAN from its represented operands; PARTIAL, never executable (F-6)",
+   "[definition[d15]] Article VIII was retrieved but the returned span was truncated before reaching the specific agent-resignation mechanics defining this term; the defining language could not be located within tool budget",
+   "[definition[d19]] Section 6.08(a) was retrieved but resolved only to the prohibition chapeau ('The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:') without the specific enumerated clause defining 'Restricted Debt Payment'",
+   "[definition[d22]] Section 6.08(a) was retrieved but resolved only to the prohibition chapeau ('The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:') without the specific enumerated clause defining 'Restricted Payments'",
+   "Source is a definitions block (§1.01) containing 22 independent defined terms (Regulated Bank through Restricted Payments); one WireDefinition was emitted per term per the multiple-definitions extraction requirement.",
+   "Five terms (Relevant Date, Removal Effective Date, Replacement Rate, Resignation Effective Date, Restricted Debt Payment, Restricted Payments) are defined purely by cross-reference to Section 1.13, Article VIII, Section 2.12(b), and Section 6.08(a) respectively; getReferencedProvision was affirmatively attempted for each target section, but the returned spans were headings/chapeaus/truncated fragments that did not contain the actual defining language, so these five are marked MISSING_CONTEXT rather than guessed.",
+   "The 'Regulated Bank' $5,000,000,000 threshold (the sole FROZEN INVENTORY item) is captured as a COMPARE/MONEY node; the accompanying categorical institution-type alternatives (a)-(e) are carried as a nested UNSUPPORTED node, yielding an overall PARTIAL sufficiency for that definition.",
+   "The three deterministically-detected 50% values correspond to the majority-lender thresholds in 'Required Lenders', 'Required Revolving Lenders', and 'Required Term Lenders' and are each represented as PERCENT 0.5 operands within their respective COMPARE/MULTIPLY expressions; the accompanying exclusion provisos in each are carried as nested UNSUPPORTED nodes (population-adjustment mechanics not expressible with current arithmetic primitives), yielding PARTIAL sufficiency for each of those three definitions.",
+   "No WireRule outputs were produced: this source region is exclusively a definitions section with no independently operative permission/prohibition/ratio-test rule text."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 1.13"
+    },
+    "outputSummary": "resolved reference \"Section 1.13\" -> 1.13 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 33,
+    "timestamp": "2026-09-14T21:42:38.770Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 1.13",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:3a0f7514dcd530d3ddb0c066",
+     "sourceNodeKey": "doc-a::1.13",
+     "charStart": 400354,
+     "charEnd": 400387,
+     "rawText": "Section 1.13 Guarantors . From:\n\n",
+     "contentHash": "e4472cbbe25a44f574f2b84d6e6a38ad6a2804a5a51db86d85cd87de7bfa0f4b",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Article VIII"
+    },
+    "outputSummary": "resolved reference \"Article VIII\" -> VIII [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 4059,
+    "timestamp": "2026-09-14T21:42:38.771Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": true,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Article VIII",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:c901395e1d39fed13e59d7aa",
+     "sourceNodeKey": "doc-a::VIII",
+     "charStart": 718226,
+     "charEnd": 743390,
+     "rawText": "ARTICLE VIII\n\nTHE ADMINISTRATIVE AGENT\nEach of\nthe Lenders (including in its capacities as a Person to whom any Secured Cash Management Obligations are owed or a counterparty to any Swap Agreement the obligations under which constitute Secured Swap Obligations) hereby irrevocably appoints\nJPMorgan Chase Bank, N.A. to serve as Administrative Agent and Collateral Agent under the Loan Documents, and authorizes the Administrative Agent and Collateral Agent to take such actions and to exercise such powers as are delegated to the\nAdministrative Agent and/or the Collateral Agent, as applicable, by the terms of the Loan Documents, together with such actions and powers as are reasonably incidental thereto. The Collateral Agent and any\nco-agents, sub-agents, trustees and attorneys-in-fact appointed by the Collateral Agent\npursuant to this Article VIII for purposes of holding or enforcing any Lien on the Collateral (or any portion thereof) granted under the Security Documents, or for exercising any rights and remedies thereunder at the direction of the Administrative\nAgent or the Collateral Agent shall be entitled to the benefits of all provisions of this Article VIII (including paragraph 13 hereof) and Article IX (as though such co-agents, sub-agents and attorneys-in-fact were the “collateral agent” under the Loan Documents) as if set forth in full herein with\nrespect thereto.\n\n-155-\n\nThe provisions of this Article are solely for the benefit of the Administrative Agent, the\nLenders and the other Secured Parties, and none of the Borrowers or any other Loan Party shall have any rights as a third-party beneficiary of any such provisions.\n\nThe Persons serving as an Administrative Agent and/or Collateral Agent hereunder shall have the same rights and powers in its capacity as a\nLender as any other Lender and may exercise the same as though it were not the Administrative Agent, and such Person and its Affiliates may accept deposits from, lend money to, act as the financial advisor or in any other advisory capacity for and\ngenerally engage in any kind of business with the Borrowers or any other Subsidiary or other Affiliate thereof as if such Person were not an Administrative Agent or Collateral Agent hereunder and without any duty to account therefor to the Lenders.\n\nThe Administrative Agent shall not have any duties or obligations except those expressly set forth in the Loan Documents. Without\nlimiting the generality of the foregoing, (a) the Administrative Agent shall not be subject to any fiduciary or other implied duties, regardless of whether a Default has occurred and is continuing, (b) the Administrative Agent shall not\nhave any duty to take any discretionary action or to exercise any discretionary power, except discretionary rights and powers expressly contemplated by the Loan Documents that the Administrative Agent is required to exercise as directed in writing\nby the Required Lenders (or such other number or percentage of the Lenders as shall be necessary under the circumstances as provided in the Loan Documents); provided that the Administrative Agent shall not be required to take any action that,\nin its opinion, may expose the Administrative Agent to liability or that is contrary to any Loan Document or applicable law; and (c) except as expressly set forth in the Loan Documents, the Administrative Agent shall not have any duty to\ndisclose, and the Administrative Agent shall not be liable for the failure to disclose, any information relating to the Borrowers any other Subsidiary or any other Affiliate of any of the foregoing that is communicated to or obtained by the Person\nserving as the Administrative Agent or any of its Affiliates in any capacity. The Administrative Agent shall not be liable for any action taken or not taken by it with the consent or at the request of the Required Lenders (or such other number or\npercentage of the Lenders as shall be necessary, or as the Administrative Agent shall believe in good faith to be necessary, under the circumstances as provided in Section 9.02) or in the absence of its own gross negligence or willful\nmisconduct. The Administrative Agent shall be deemed not to have knowledge of any Default unless and until written notice thereof is given to the Administrative Agent by the Initial Borrower or a Lender and the Administrative Agent shall not be\nresponsible for or have any duty to ascertain or inquire into (i) any statement, warranty or representation made in or in connection with any Loan Document, (ii) the contents of any certificate, report or other document delivered\nthereunder or in connection therewith, (iii) the performance or observance of any of the covenants, agreements or other terms or conditions set forth in any Loan Document or the occurrence of any Default, (iv) the validity, enforceability,\neffectiveness or genuineness of any Loan Document or any other agreement, instrument or document, (v) the creation, perfection or priority of any Lien on the Collateral, or the existence, value or sufficiency of the Collateral or (vi) the\nsatisfaction of any condition set forth in Article IV or elsewhere in any Loan Document, other than to confirm receipt of items expressly required to be delivered to the Administrative Agent or satisfaction of any condition that expressly refers to\nthe matters described therein being acceptable or satisfactory to the Administrative Agent.\nThe Administrative Agent shall be entitled to\nrely, and shall not incur any liability for relying, upon any notice, request, certificate, consent, statement, instrument, document or other writing (including any electronic message, Internet or intranet website posting or other distribution)\nbelieved by it to be genuine and to have been signed, sent or otherwise authenticated by the proper Person (including, if applicable, a Responsible Officer or Financial Officer of such Person). The Administrative Agent also may rely, and shall not\nincur any liability for relying, upon any statement made to it orally or by telephone and believed by it to be made by the proper Person (including, if applicable, a Financial Officer or a Responsible Officer of such Person). The Administrative\nAgent may consult with legal counsel (who may be counsel for the Borrowers), independent accountants and other experts selected by it, and shall not be liable for any action taken or not taken by it in accordance with the advice of any such counsel,\naccountants or experts.\nThe Administrative Agent may perform any of and all its duties and exercise its rights and powers hereunder or\nunder any other Loan Document by or through any one or more sub-agents appointed by the Administrative Agent. The Administrative Agent and any such sub-agent may perform\nany of and all their duties and exercise their rights and powers through their respective Related Parties. The exculpatory provisions of this Article shall apply to any such sub-agent and to the Related\nParties of the Administrative Agent and any such sub-agent, and shall apply to their respective activities in connection with the syndication of the credit facilities provided for herein as well as activities\nas an Administrative Agent.\n\n-156-\n\nSubject to the appointment and acceptance of a successor Administrative Agent and/or\nCollateral Agent as provided in this paragraph, the Administrative Agent and the Collateral Agent may resign upon thirty (30) days’ notice in the case of the Administrative Agent, to the Term Lenders, Revolving Lenders and the Initial\nBorrower. Upon receipt of any such notice of resignation, the Administrative Agent or the Collateral Agent and the Required Lenders shall have the right, with the Initial Borrower’s consent (unless a Specified Event of Default has occurred and\nis continuing), to appoint a successor, which shall be a bank with an office in the United States, or an Affiliate of any such bank with an office in the United States. If no such successor shall have been so appointed by the Required Lenders and\nshall have accepted such appointment within thirty (30) days after the retiring Administrative Agent gives notice of its resignation, then the retiring Administrative Agent may (but shall not be obligated to) on behalf of the Lenders, appoint a\nsuccessor Administrative Agent, which shall be (a) an Approved Bank with an office in New York, New York, or an Affiliate of any such Approved Bank and (b) approved by the Initial Borrower (unless a Specified Event of Default has occurred\nand is continuing) (the date upon which the retiring Administrative Agent is replaced, the “ Resignation Effective Date ”); provided , that if no such successor shall have been appointed (and shall have accepted such\nappointment) within forty-five (45) days after the retiring Administrative Agent gives notice of its resignation, such resignation shall nevertheless become effective, and the Resignation Effective Date shall occur on such date. If neither\nthe Required Lenders nor the Administrative Agent have appointed a successor Administrative Agent that has accepted such appointment, the Required Lenders shall be deemed to have succeeded to and become vested with all the rights, powers, privileges\nand duties of the retiring Administrative Agent or Collateral Agent.\nIf the Person serving as the Administrative Agent or the Collateral\nAgent is a Defaulting Lender, the Required Lenders and the Initial Borrower may, to the extent permitted by applicable law, by notice in writing to such Person remove such Person as an Administrative Agent and/or Collateral Agent and, with the\nconsent of the Initial Borrower, appoint a successor. If no such successor shall have been so appointed by the Required Lenders and shall have accepted such appointment within thirty (30) days (the “ Removal Effective Date ”),\nthen such removal shall nonetheless become effective in accordance with such notice on the Removal Effective Date.\nWith effect from the\nResignation Effective Date or the Removal Effective Date (as applicable) (1) such retiring or removed Administrative Agent or Collateral Agent shall be discharged from its duties and obligations hereunder and under the other Loan Documents\n(except (i) that in the case of any collateral security held by the Administrative Agent or Collateral Agent on behalf of the Lenders under any of the Loan Documents, such retiring or removed Administrative Agent or Collateral Agent shall\ncontinue to hold such collateral security until such time as a successor Administrative Agent is appointed and (ii) with respect to any outstanding payment obligations) and (2) except for any indemnity payments or other amounts then owed\nto such retiring or removed Administrative Agent or Collateral Agent, all payments, communications and determinations provided to be made by, to or through the Administrative Agent or Collateral Agent shall instead be made by or to each Lender\ndirectly, until such time, if any, as the Required Lenders appoint a successor Administrative Agent as provided for above. Upon the acceptance of a successor’s appointment as Administrative Agent or Collateral Agent hereunder, such successor\nshall succeed to and become vested with all of the rights, powers, privileges and duties of the retiring (or removed) Administrative Agent or Collateral Agent (other than any rights to indemnity payments or other amounts owed to the retiring or\nremoved Administrative Agent or Collateral Agent as of the Resignation Effective Date or the Removal Effective Date, as applicable), and the retiring or removed Administrative Agent or Collateral Agent shall be discharged from all of its duties and\nobligations hereunder and under the other Loan Documents as set forth in this Article VIII. The fees payable by the Initial Borrower to a successor Administrative Agent or Collateral Agent shall be the same as those payable to its predecessor unless\notherwise agreed between the Initial Borrower and such successor. After the retiring or removed Administrative Agent’s or Collateral Agent’s resignation or removal hereunder and under the other Loan Documents, the provisions of this\nArticle and Section 9.03 shall continue in effect for the benefit of such retiring or removed Administrative Agent or Collateral Agent, its sub agents and their respective Related Parties in respect of any actions taken or omitted to be taken\nby any of them while the retiring or removed Administrative Agent was acting as Administrative Agent or the retiring or removed Collateral Agent was acting as the Collateral Agent.\n\nEach Lender acknowledges that it has, independently and without reliance upon the Administrative Agent, any Lead Arrangers or any other\nLender, or any of the Related Parties of any of the foregoing, and based on such documents and information as it has deemed appropriate, made its own credit analysis and decision to enter into this\n\n-157-\n\nAgreement. Each Lender also acknowledges that it will, independently and without reliance upon the Administrative Agent, any Lead Arrangers or any other Lender, or any of the Related Parties of\nany of the foregoing, and based on such documents and information as it shall from time to time deem appropriate, continue to make its own decisions in taking or not taking action under or based upon this Agreement, any other Loan Document or any\nrelated agreement or any document furnished hereunder or thereunder.\nEach Lender, by delivering its signature page to this Agreement and\nfunding its Loans on the Effective Date, or delivering its signature page to an Assignment and Assumption, Incremental Facility Amendment or Refinancing Amendment pursuant to which it shall become a Lender hereunder, shall be deemed to have\nacknowledged receipt of, and consented to and approved, each Loan Document and each other document required to be delivered to, or be approved by or satisfactory to, the Administrative Agent or the Lenders on the Effective Date.\n\nEach Lender hereby agrees that (x) if the Administrative Agent notifies such Lender that the Administrative Agent has determined in its\nsole discretion that any funds received by such Lender from the Administrative Agent or any of its Affiliates (whether as a payment, prepayment or repayment of principal, interest, fees or otherwise, individually and collectively, a\n“ Payment ”) were erroneously transmitted to such Lender (whether or not known to such Lender), and demands the return of such Payment (or a portion thereof), such Lender shall promptly, but in no event later than one\n(1) Business Day thereafter (or such later date as the Administrative Agent may, in its sole discretion, specify in writing), return to the Administrative Agent the amount of any such Payment (or portion thereof) as to which such a demand was\nmade in same day funds, together with interest thereon (except to the extent waived in writing by the Administrative Agent) in respect of each day from and including the date such Payment (or portion thereof) was received by such Lender to the date\nsuch amount is repaid to the Administrative Agent at the greater of the NYFRB Rate and a rate determined by the Administrative Agent in accordance with banking industry rules on interbank compensation from time to time in effect, and (y) to the\nextent permitted by applicable law, such Lender shall not assert, and hereby waives, as to Administrative Agent, any claim, counterclaim, defense or right of set-off or recoupment with respect to any demand,\nclaim or counterclaim by the Administrative Agent for the return or any Payments received, including without limitation any defense based on “discharge for value” or any similar doctrine. A notice of an Administrative Agent to any Lender\nunder this paragraph shall be conclusive, absent manifest error.\nEach Lender hereby further agrees that if it receives a Payment from an\nAdministrative Agent or any of its Affiliates (x) that is in a different amount than, or on a different date from, that specified in a notice of payment sent by the Administrative Agent (or any of its Affiliates) with respect to such Payment (a\n“ Payment Notice ”) or (y) that was not preceded or accompanied by a Payment Notice, it shall be on notice, in each such case, that an error has been made with respect to such Payment. Each Lender agrees that, in each such\ncase, or if it otherwise becomes aware a Payment (or portion thereof) may have been sent in error, such Lender shall promptly notify the Administrative Agent of such occurrence and, upon demand from the Administrative Agent, it shall promptly, but\nin no event later than one (1) Business Day thereafter (or such later date as the Administrative Agent, may, in its sole discretion, specify in writing), return to the Administrative Agent the amount of any such Payment (or portion thereof) as\nto which such a demand was made in same day funds, together with interest thereon (except to the extent waived in writing by the Administrative Agent) in respect of each day from and including the date such Payment (or portion thereof) was received\nby such Lender to the date such amount is repaid to the Administrative Agent at the greater of the NYFRB Rate and a rate determined by the Administrative Agent in accordance with banking industry rules on interbank compensation from time to time in\neffect.\nThe Borrowers and each other Loan Party agrees that (x) in the event an erroneous Payment (or portion thereof) are not\nrecovered from any Lender that has received such Payment (or portion thereof) for any reason, the Administrative Agent shall be subrogated to all the rights of such Lender with respect to such amount and (y) an erroneous Payment shall not pay,\nprepay, repay, discharge or otherwise satisfy any Obligations owed by the Borrowers or any other Loan Party.\nNo Lender shall have any\nright individually to realize upon any of the Collateral or to enforce any Guarantee of the Secured Obligations, it being understood and agreed that all powers, rights and remedies under the Loan Documents may be exercised solely by the\nAdministrative Agent and the Collateral Agent on behalf of the Lenders in accordance with the terms thereof. In the event of a foreclosure by the Administrative Agent or the Collateral Agent on any of the Collateral pursuant to a public or private\nsale or other disposition, the Administrative Agent or any Lender may be the purchaser or licensor of any or all of such Collateral at any such sale or other disposition, and the\n\n-158-\n\nAdministrative Agent or the Collateral Agent, as agent for and representative of the Lenders (but not any Lender or Lenders in its or their respective individual capacities unless the Required\nLenders shall otherwise agree in writing) shall be entitled, for the purpose of bidding and making settlement or payment of the purchase price for all or any portion of the Collateral sold at any such public sale, to use and apply any of the Secured\nObligations as a credit on account of the purchase price for any collateral payable by the Administrative Agent or the Collateral Agent on behalf of the Lenders at such sale or other disposition. Each Lender and each other Secured Party, whether or\nnot a party hereto, will be deemed, by its acceptance of the benefits of the Collateral and of the Guarantees of the Secured Obligations, to have agreed to the foregoing provisions.\n\nNotwithstanding anything herein to the contrary, no Lead Arranger shall have any duties or obligations under this Agreement or any other Loan\nDocument (except in its capacity as a Lender), but all such Persons shall have the benefit of the indemnities provided for hereunder, including under Section 9.03, fully as if named as an Indemnitee or indemnified person therein and\nirrespective of whether the indemnified losses, claims, damages, liabilities and/or related expenses arise out of, in connection with or as a result of matters arising prior to, on or after the effective date of any Loan Document.\n\nTo the extent required by any applicable law, the Administrative Agent may withhold from any payment to any Lender an amount equivalent to any\napplicable withholding tax. Without limiting or expanding the provisions of Section 2.15, each Lender shall, and does hereby, indemnify the Administrative Agent against, and shall make payable in respect thereof within thirty (30) days\nafter demand therefor, any and all Taxes and any and all related losses, claims, liabilities and expenses (including fees, charges and disbursements of any counsel for the Administrative Agent) incurred by or asserted against the Administrative\nAgent by the U.S. Internal Revenue Service or any other Governmental Authority as a result of the failure of the Administrative Agent to properly withhold tax from amounts paid to or for the account of such Lender for any reason (including, without\nlimitation, because the appropriate form was not delivered or not property executed, or because such Lender failed to notify the Administrative Agent of a change in circumstance that rendered the exemption from, or reduction of withholding tax\nineffective). A certificate as to the amount of such payment or liability delivered to any Lender by the Administrative Agent shall be conclusive absent manifest error. Each Lender hereby authorizes the Administrative Agent to set off and apply any\nand all amounts at any time owing to such Lender under this Agreement or any other Loan Document against any amount due to the Administrative Agent under this paragraph. The agreements in this paragraph shall survive the resignation and/or\nreplacement of the Administrative Agent, any assignment of rights by, or the replacement of, a Lender and the repayment, satisfaction or discharge of all other obligations under any Loan Document.\n\nEach Secured Party hereby appoints the Collateral Agent to act as its agent under and in connection with the relevant Security Documents and\nacknowledges that the Collateral Agent is the beneficiary of the security interests granted thereunder and the Collateral Agent will accept such grants of security interests under the relevant Security Documents on its behalf and will enter into the\nrelevant Security Documents as secured party, lienholder or pledgee in its own name.\nThe Lenders acknowledge that there may be a constant\nflow of information (including information which may be subject to confidentiality obligations in favor of the Loan Parties) between the Loan Parties and their Affiliates, on the one hand, and JPMorgan Chase Bank, N.A. and its Affiliates, on the\nother hand. Without limiting the foregoing, the Loan Parties or their Affiliates may provide information, including updates to previously provided information to JPMorgan Chase Bank, N.A. and its Affiliates acting in different capacities, including\nas Lender, lead bank, arranger or potential securities investor, independent of such entity’s role as administrative agent hereunder. The Lenders acknowledge that neither JPMorgan Chase Bank, N.A. nor its Affiliates shall be under any\nobligation to provide any of the foregoing information to them. Notwithstanding anything to the contrary set forth herein or in any other Loan Document, except for notices, reports and other documents expressly required to be furnished to the\nLenders by the Administrative Agent herein, the Administrative Agent shall not have any duty or responsibility to provide, and shall not be liable for the failure to provide, any Lender with any credit or other information concerning the Loans, the\nLenders, the business, prospects, operations, property, financial and other condition or creditworthiness of any of the Loan Parties or any of their respective Affiliates that is communicated to, obtained by, or in the possession of, the\nAdministrative Agent or any of its Affiliates in any capacity, including any information obtained by the Administrative Agent in the course of communications among the Administrative Agent and any Loan Party, any Affiliate thereof or any other\nPerson. Notwithstanding the foregoing, any such information may (but shall not be required to) be shared by the Administrative Agent with one or more Lenders, or any formal or informal committee or ad hoc group of such Lenders, including at the\ndirection of a Loan Party.\n\n-159-\n\nFor the avoidance of doubt, the Administrative Agent may (but shall not be obligated to)\ndeliver calculations to the Borrowers from time to time of amounts under this Agreement, and the Administrative Agent shall have no liability to the Lenders with respect thereto. If the Administrative Agent identifies or becomes aware of an update\nor revision to any calculation previously delivered, the Administrative Agent may (but shall not be obligated to, unless directed by the Required Lenders) deliver an updated or revised calculation with respect to any amount due hereunder. For\navoidance of doubt, if there is a dispute among the Administrative Agent and any Lender as to any amount due and owing hereunder, any calculation or any updated or revised calculation of the Administrative Agent shall control as between the\nAdministrative Agent and such Lender absent manifest error.\n",
+     "contentHash": "899c35a09f8872679af7877c3e2a567ea171833b83d28068ee77ff3b374b1aef",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.12(b)"
+    },
+    "outputSummary": "resolved reference \"Section 2.12(b)\" -> 2.12(b) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 797,
+    "timestamp": "2026-09-14T21:42:38.771Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 2.12(b)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:660bb093c5247f58fdb560b0",
+     "sourceNodeKey": "doc-a::2.12(b)",
+     "charStart": 455315,
+     "charEnd": 456112,
+     "rawText": "(b) Notwithstanding the foregoing, if the Administrative Agent or the Initial Borrower reasonably determines in good faith,\nwith consent by the other not to be unreasonably withheld, that the circumstances described in clause (a)(i) of this Section 2.12 have arisen (other than with respect to the Term SOFR Rate or Term CORRA) (and such circumstances are unlikely to\nbe temporary), then, in each case, reasonably promptly after such determination or receipt by the Administrative Agent of such notice, the Administrative Agent and the Borrowers may amend this Agreement solely for the purpose of replacing the\nAlternative Currency Term Benchmark Rate with an alternate benchmark rate (including any mathematical or other adjustments to the benchmark (if any) incorporated therein) that is either ",
+     "contentHash": "9537508943b801118622b0c3d84f164d7fa1d179607028ebf9f6fe60d55a725a",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 6.08(a)"
+    },
+    "outputSummary": "resolved reference \"Section 6.08(a)\" -> 6.08(a) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 92,
+    "timestamp": "2026-09-14T21:42:38.771Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 6.08(a)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:af5180f13ee818c2b50146e1",
+     "sourceNodeKey": "doc-a::6.08(a)",
+     "charStart": 659092,
+     "charEnd": 659184,
+     "rawText": "(a) The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:\n\n",
+     "contentHash": "dd7ecfef622627cb1b3b79e50ff31bfda9f5414c3dcc38ec53047d14fea7ead1",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "rules": [],
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "Regulated Bank",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AND",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "consolidated combined capital and surplus"
+        },
+        "operator": "GTE",
+        "right": {
+         "kind": "MONEY",
+         "amount": 5000000000,
+         "currency": "USD",
+         "citation": "§1.01 (\"Regulated Bank\")",
+         "inventoryItemIds": [
+          "inv-item:fe8e892ff61ce8e57714f3e1"
+         ]
+        },
+        "citation": "§1.01 (\"Regulated Bank\")",
+        "inventoryItemIds": [
+         "inv-item:fe8e892ff61ce8e57714f3e1"
+        ]
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "categorical membership test that the bank must fall within one of five alternative institution-type categories: (a) FDIC-insured U.S. depository institution, (b) a section 25A Federal Reserve Act corporation, (c) a Board-supervised branch/agency/commercial lending company of a foreign bank, (d) a non-U.S. branch of a foreign bank managed/controlled by such a U.S. branch, or (e) any other U.S./non-U.S. depository institution or branch/agency/office supervised by a bank regulatory authority",
+        "reason": "categorical entity-type/regulatory-status classification is not expressible with the arithmetic/comparison IR primitives; no computable value attaches to this alternative test",
+        "sourceEvidence": "§1.01 (\"Regulated Bank\"), clauses (a)-(e)"
+       }
+      ],
+      "citation": "§1.01 (\"Regulated Bank\")"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The $5,000,000,000 capital-and-surplus threshold is fully captured.",
+      "The five alternative institution-type categories (a)-(e) are categorical/regulatory-status classifications that cannot be represented with IR arithmetic/comparison primitives and are carried as UNSUPPORTED."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means a commercial bank with a consolidated combined capital and surplus of at least $5,000,000,000 that is (a) ... (e) any other U.S. or non-U.S. depository institution ..."
+    },
+    {
+     "localRef": "d2",
+     "termName": "Related Business Assets",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Cash Equivalents",
+      "Similar Business",
+      "Equity Interests",
+      "Subsidiary",
+      "Borrower"
+     ],
+     "sufficiency": "COMPLETE",
+     "citation": "§1.01",
+     "excerpt": "means assets (other than cash or Cash Equivalents) used or useful in a Similar Business (which may consist of securities of a Person, including the Equity Interests of any Subsidiary (other than a Borrower))"
+    },
+    {
+     "localRef": "d3",
+     "termName": "Related Parties",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Affiliates"
+     ],
+     "sufficiency": "COMPLETE",
+     "citation": "§1.01",
+     "excerpt": "means, with respect to any specified Person, such Person's Affiliates and the partners, directors, officers, employees, trustees, agents, controlling persons, shareholders, advisors and other representatives of such Person and of each of such Person's Affiliates and permitted successors and assigns"
+    },
+    {
+     "localRef": "d4",
+     "termName": "Release",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "citation": "§1.01",
+     "excerpt": "means any release, spill, emission, leaking, dumping, injection, pouring, deposit, disposal, discharge, dispersal, leaching or migration into the environment ... including the environment within any building or other structure"
+    },
+    {
+     "localRef": "d5",
+     "termName": "Relevant Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "cross-referenced defined term whose substantive meaning is assigned in Section 1.13",
+      "reason": "Section 1.13 was retrieved but resolved only to the 'Guarantors' section heading/lead-in ('From:'), which does not contain the actual defining language for 'Relevant Date'; the substantive text could not be located within tool budget",
+      "sourceEvidence": "§1.01 (\"Relevant Date\"); attempted retrieval of Section 1.13 returned only a heading fragment"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced Section 1.13 was retrieved but did not contain the operative defining text for this term."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 1.13"
+    },
+    {
+     "localRef": "d6",
+     "termName": "Relevant Governmental Body",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "citation": "§1.01",
+     "excerpt": "means the Federal Reserve Board and/or the NYFRB, or a committee officially endorsed or convened by the Federal Reserve Board and/or the NYFRB or, in each case, any successor thereto for U.S. Dollars and for Canadian Dollars, the Bank of Canada, or a committee officially endorsed or convened by the Bank of Canada, or any successor thereto"
+    },
+    {
+     "localRef": "d7",
+     "termName": "Removal Effective Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "cross-referenced defined term whose substantive meaning is assigned in Article VIII (Administrative Agent resignation/removal provisions)",
+      "reason": "Article VIII was retrieved but the returned span was truncated before reaching the specific agent-removal mechanics defining this term; the defining language could not be located within tool budget",
+      "sourceEvidence": "§1.01 (\"Removal Effective Date\"); attempted retrieval of Article VIII returned only the introductory administrative-agent appointment provisions, truncated"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced Article VIII was retrieved but truncated before reaching the operative defining text for this term."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Article VIII"
+    },
+    {
+     "localRef": "d8",
+     "termName": "Replacement Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "cross-referenced defined term whose substantive meaning is assigned in Section 2.12(b) (benchmark replacement mechanics)",
+      "reason": "Section 2.12(b) was retrieved but the returned span describes the amendment mechanism for replacing a benchmark rate without reciting the specific defined term 'Replacement Rate' verbatim within the retrieved (truncated) excerpt",
+      "sourceEvidence": "§1.01 (\"Replacement Rate\"); attempted retrieval of Section 2.12(b) returned related benchmark-transition mechanics but not the specific defining sentence"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced Section 2.12(b) was retrieved but did not contain the precise defining text for this term within the available excerpt."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 2.12(b)"
+    },
+    {
+     "localRef": "d9",
+     "termName": "Repricing Transaction",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Effective Yield",
+      "Initial Term Loans",
+      "Change of Control",
+      "Material Acquisition",
+      "Transformative Transaction",
+      "Facilities"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full defining text (including the primary-purpose carve-out and enumerated excluded events) is quoted in the operative source and is non-quantitative/categorical; dependent defined terms not separately resolved do not affect faithful representation of this definition's own structure."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means (a) the incurrence by the Borrowers or any Subsidiary of any Indebtedness in the form of term loans ... having an Effective Yield that is less than the Effective Yield for the Initial Term Loans ... or (b) any effective reduction in the Effective Yield for the Initial Term Loans ... provided that a Repricing Transaction will not include any event described in clause (a) or (b) above (x) that is not consummated for the primary purpose of lowering the Effective Yield ... or (y) occurring or consummated in connection with a Change of Control, a Material Acquisition, ..."
+    },
+    {
+     "localRef": "d10",
+     "termName": "Repurchase Obligation",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Receivables Assets",
+      "Permitted Receivables Financing"
+     ],
+     "sufficiency": "COMPLETE",
+     "citation": "§1.01",
+     "excerpt": "means (a) any obligation of a seller, transferor, pledgor or servicer of Receivables Assets in a Permitted Receivables Financing to repurchase or purchase or otherwise make payments with respect to Receivables Assets ... or (b) any right of a seller, transferor or servicer of Receivables Assets in a Permitted Receivables Financing to repurchase defaulted Receivables Assets"
+    },
+    {
+     "localRef": "d11",
+     "termName": "Required Lenders",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AND",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "Dollar Amount of Term Loans, Revolving Exposures and unused Commitments held by a given Lender"
+        },
+        "operator": "GT",
+        "right": {
+         "kind": "MULTIPLY",
+         "operands": [
+          {
+           "kind": "PERCENT",
+           "value": 0.5,
+           "citation": "§1.01 (\"Required Lenders\")"
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "metricName": "aggregate Dollar Amount of Term Loans, Revolving Exposures and unused Commitments"
+          }
+         ],
+         "citation": "§1.01 (\"Required Lenders\")"
+        },
+        "citation": "§1.01 (\"Required Lenders\")"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "exclusion provisos: (a) Loans held by the Borrowers or any Affiliate thereof (other than Affiliated Debt Funds) are excluded from the determination, and (b) outstanding Loans/Revolving Exposures/unused Commitments of Defaulting Lenders and Disqualified Lenders are excluded",
+        "reason": "the exclusion mechanic adjusts both the numerator and denominator populations of lenders and is not a simple arithmetic operand combinable with the ratio comparison above without risking a mis-stated formula",
+        "sourceEvidence": "§1.01 (\"Required Lenders\"), provisos (a) and (b)"
+       }
+      ],
+      "citation": "§1.01 (\"Required Lenders\")"
+     },
+     "dependsOnTerms": [
+      "Dollar Amount",
+      "Term Loans",
+      "Revolving Exposures",
+      "Commitments",
+      "Affiliated Debt Funds",
+      "Defaulting Lender",
+      "Disqualified Lender"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The core >50% aggregate threshold is captured; the (a)/(b) exclusion provisos affecting the population of Loans/Lenders counted are carried as UNSUPPORTED rather than force-fit into arithmetic."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, at any time, Lenders having Term Loans, Revolving Exposures and unused Commitments representing more than 50% of the aggregate Dollar Amount of Term Loans, Revolving Exposures and unused Commitments at such time; provided that (a) Loans held by the Borrowers or any Affiliate thereof (other than Affiliated Debt Funds) shall be excluded ... and (b) whenever there are one or more Defaulting Lenders or Disqualified Lenders ..."
+    },
+    {
+     "localRef": "d12",
+     "termName": "Required Revolving Lenders",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AND",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "Dollar Amount of Revolving Exposures and unused Revolving Commitments held by a given Revolving Lender"
+        },
+        "operator": "GT",
+        "right": {
+         "kind": "MULTIPLY",
+         "operands": [
+          {
+           "kind": "PERCENT",
+           "value": 0.5,
+           "citation": "§1.01 (\"Required Revolving Lenders\")"
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "metricName": "aggregate Dollar Amount of Revolving Exposures and unused Revolving Commitments"
+          }
+         ],
+         "citation": "§1.01 (\"Required Revolving Lenders\")"
+        },
+        "citation": "§1.01 (\"Required Revolving Lenders\")"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "exclusion proviso: outstanding Revolving Exposures/unused Revolving Commitments of Defaulting Lenders and Disqualified Lenders are excluded from the determination",
+        "reason": "the exclusion mechanic adjusts the population counted and is not a simple arithmetic operand combinable with the ratio comparison above",
+        "sourceEvidence": "§1.01 (\"Required Revolving Lenders\") proviso"
+       }
+      ],
+      "citation": "§1.01 (\"Required Revolving Lenders\")"
+     },
+     "dependsOnTerms": [
+      "Dollar Amount",
+      "Revolving Exposures",
+      "Revolving Commitments",
+      "Defaulting Lender",
+      "Disqualified Lender"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The core >50% aggregate threshold is captured; the Defaulting/Disqualified Lender exclusion proviso is carried as UNSUPPORTED rather than force-fit into arithmetic."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, at any time, Revolving Lenders have[ing] Revolving Exposures and unused Revolving Commitments representing more than 50% of the aggregate Dollar Amount of Revolving Exposures and unused Revolving Commitments at such time; provided that whenever there are one or more Defaulting Lenders or Disqualified Lenders ..."
+    },
+    {
+     "localRef": "d13",
+     "termName": "Required Term Lenders",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "AND",
+      "operands": [
+       {
+        "kind": "COMPARE",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "Dollar Amount of Term Loans held by a given Lender"
+        },
+        "operator": "GT",
+        "right": {
+         "kind": "MULTIPLY",
+         "operands": [
+          {
+           "kind": "PERCENT",
+           "value": 0.5,
+           "citation": "§1.01 (\"Required Term Lenders\")"
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "metricName": "aggregate Dollar Amount of Term Loans"
+          }
+         ],
+         "citation": "§1.01 (\"Required Term Lenders\")"
+        },
+        "citation": "§1.01 (\"Required Term Lenders\")"
+       },
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "exclusion provisos: (a) Term Loans held by the Borrowers or any Affiliate thereof (other than Affiliated Debt Funds) are excluded, and (b) outstanding Term Loans of Defaulting Lenders and Disqualified Lenders are excluded",
+        "reason": "the exclusion mechanic adjusts the population counted and is not a simple arithmetic operand combinable with the ratio comparison above",
+        "sourceEvidence": "§1.01 (\"Required Term Lenders\"), provisos (a) and (b)"
+       }
+      ],
+      "citation": "§1.01 (\"Required Term Lenders\")"
+     },
+     "dependsOnTerms": [
+      "Dollar Amount",
+      "Term Loans",
+      "Affiliated Debt Funds",
+      "Defaulting Lender",
+      "Disqualified Lender"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The core >50% aggregate threshold is captured; the (a)/(b) exclusion provisos are carried as UNSUPPORTED rather than force-fit into arithmetic."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, at any time, Lenders having Term Loans representing more than 50% of the aggregate Dollar Amount of Term Loans at such time; provided that (a) Loans held by the Borrowers or any Affiliate thereof (other than Affiliated Debt Funds) shall be excluded ... and (b) whenever there are one or more Defaulting Lenders or Disqualified Lenders ..."
+    },
+    {
+     "localRef": "d14",
+     "termName": "Requirements of Law",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Governmental Authority"
+     ],
+     "sufficiency": "COMPLETE",
+     "citation": "§1.01",
+     "excerpt": "means, with respect to any Person, any statutes, laws, legally binding treaties, rules, regulations, orders, decrees, writs, injunctions or other determinations of any arbitrator or court or other Governmental Authority, in each case applicable to or legally binding upon such Person or any of its property or to which such Person or any of its property is subject"
+    },
+    {
+     "localRef": "d15",
+     "termName": "Resignation Effective Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "cross-referenced defined term whose substantive meaning is assigned in Article VIII (Administrative Agent resignation provisions)",
+      "reason": "Article VIII was retrieved but the returned span was truncated before reaching the specific agent-resignation mechanics defining this term; the defining language could not be located within tool budget",
+      "sourceEvidence": "§1.01 (\"Resignation Effective Date\"); attempted retrieval of Article VIII returned only the introductory administrative-agent appointment provisions, truncated"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced Article VIII was retrieved but truncated before reaching the operative defining text for this term."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Article VIII"
+    },
+    {
+     "localRef": "d16",
+     "termName": "Resolution Authority",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "EEA Resolution Authority",
+      "UK Financial Institution",
+      "UK Resolution Authority"
+     ],
+     "sufficiency": "COMPLETE",
+     "citation": "§1.01",
+     "excerpt": "means an EEA Resolution Authority or, with respect to any UK Financial Institution, a UK Resolution Authority"
+    },
+    {
+     "localRef": "d17",
+     "termName": "Responsible Officer",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Loan Party",
+      "Collateral and Guarantee Requirement",
+      "Administrative Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "citation": "§1.01",
+     "excerpt": "means the chief executive officer, president, vice president, chief financial officer, treasurer or assistant treasurer, or other similar officer, manager or a director of a Loan Party and with respect to certain limited liability companies or partnerships that do not have officers, any manager, sole member, managing member or general partner thereof ... Any document delivered hereunder that is signed by a Responsible Officer of a Loan Party shall be conclusively presumed to have been authorized ..."
+    },
+    {
+     "localRef": "d18",
+     "termName": "Restricted",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Cash Equivalents",
+      "Restricted Party",
+      "Loan Documents",
+      "Liens",
+      "Obligations",
+      "Permitted Liens",
+      "Section 6.02"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "This is a qualitative/descriptive classification test (what counts as 'restricted' cash) rather than a computable formula; the full descriptive text, including the Section 6.02 carve-out reference, is quoted."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, as of any date of determination when referring to cash or Cash Equivalents of the Restricted Parties, cash or Cash Equivalents that appear (or would be required to appear) as \"restricted\" on a consolidated balance sheet ... (it being agreed that cash and Cash Equivalents subject to Permitted Liens related to any such Indebtedness (including, without limitation, pursuant to any control agreement, lockbox or any Liens permitted under Section 6.02) shall not be deemed to be restricted by virtue of such Liens) ..."
+    },
+    {
+     "localRef": "d19",
+     "termName": "Restricted Debt Payment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "cross-referenced defined term whose substantive meaning is assigned in Section 6.08(a)",
+      "reason": "Section 6.08(a) was retrieved but resolved only to the prohibition chapeau ('The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:') without the specific enumerated clause defining 'Restricted Debt Payment'",
+      "sourceEvidence": "§1.01 (\"Restricted Debt Payment\"); attempted retrieval of Section 6.08(a) returned only the lead-in chapeau, not the defining sub-clause"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced Section 6.08(a) was retrieved but did not contain the operative defining text for this term."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 6.08(a)"
+    },
+    {
+     "localRef": "d20",
+     "termName": "Restricted Investment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Investment",
+      "Permitted Investment"
+     ],
+     "sufficiency": "COMPLETE",
+     "citation": "§1.01",
+     "excerpt": "means an Investment other than a Permitted Investment"
+    },
+    {
+     "localRef": "d21",
+     "termName": "Restricted Parties",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Borrowers",
+      "Restricted Subsidiaries"
+     ],
+     "sufficiency": "COMPLETE",
+     "citation": "§1.01",
+     "excerpt": "means the Borrowers and the Restricted Subsidiaries"
+    },
+    {
+     "localRef": "d22",
+     "termName": "Restricted Payments",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "cross-referenced defined term whose substantive meaning is assigned in Section 6.08(a)",
+      "reason": "Section 6.08(a) was retrieved but resolved only to the prohibition chapeau ('The Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to:') without the specific enumerated clause defining 'Restricted Payments'",
+      "sourceEvidence": "§1.01 (\"Restricted Payments\"); attempted retrieval of Section 6.08(a) returned only the lead-in chapeau, not the defining sub-clause"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Cross-referenced Section 6.08(a) was retrieved but did not contain the operative defining text for this term."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 6.08(a)"
+    }
+   ],
+   "sharedCapacities": [],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01 (\"Regulated Bank\") clauses (a)-(e); §1.01 (\"Required Lenders\"/\"Required Revolving Lenders\"/\"Required Term Lenders\") exclusion provisos (a)/(b)",
+     "semanticRequirement": "A way to express categorical/qualitative alternative-membership tests (e.g. 'is one of five listed institution types') and population-exclusion adjustments to a ratio's numerator/denominator population (e.g. 'excluding Loans held by Affiliates or Defaulting Lenders from both sides of a >50% test') without either forcing them into arithmetic COMPARE/MULTIPLY nodes that would misstate the mechanic or discarding them as free text.",
+     "whyExistingPrimitivesFail": "COMPARE/AND/OR/MULTIPLY operate on numeric MONEY/NUMBER/RATIO/PERCENT values or boolean comparisons of such values; there is no primitive for 'Person/entity is a member of category X' or for 'exclude members matching predicate P from the population underlying both sides of a ratio comparison' short of an UNSUPPORTED escape hatch.",
+     "candidateGeneralizedPrimitive": "A CATEGORY_MEMBERSHIP node (entity tested against a named enumerated category list) and a POPULATION_FILTER node (wraps a metric/ratio computation with an exclusion predicate applied to the counted population) would let these recurring definitional shapes be represented compositionally instead of via UNSUPPORTED."
+    }
+   ],
+   "inventoryDispositions": [
+    {
+     "inventoryItemId": "inv-item:fe8e892ff61ce8e57714f3e1",
+     "disposition": "AMBIGUOUS",
+     "note": "Consumed on the COMPARE/MONEY nodes within the 'Regulated Bank' definition (d1) representing the $5,000,000,000 capital-and-surplus threshold; disposition tag here is only to flag that the surrounding categorical (a)-(e) test is separately UNSUPPORTED, not that the value itself is unresolved."
+    }
+   ],
+   "overallNotes": [
+    "Source is a definitions block (§1.01) containing 22 independent defined terms (Regulated Bank through Restricted Payments); one WireDefinition was emitted per term per the multiple-definitions extraction requirement.",
+    "Five terms (Relevant Date, Removal Effective Date, Replacement Rate, Resignation Effective Date, Restricted Debt Payment, Restricted Payments) are defined purely by cross-reference to Section 1.13, Article VIII, Section 2.12(b), and Section 6.08(a) respectively; getReferencedProvision was affirmatively attempted for each target section, but the returned spans were headings/chapeaus/truncated fragments that did not contain the actual defining language, so these five are marked MISSING_CONTEXT rather than guessed.",
+    "The 'Regulated Bank' $5,000,000,000 threshold (the sole FROZEN INVENTORY item) is captured as a COMPARE/MONEY node; the accompanying categorical institution-type alternatives (a)-(e) are carried as a nested UNSUPPORTED node, yielding an overall PARTIAL sufficiency for that definition.",
+    "The three deterministically-detected 50% values correspond to the majority-lender thresholds in 'Required Lenders', 'Required Revolving Lenders', and 'Required Term Lenders' and are each represented as PERCENT 0.5 operands within their respective COMPARE/MULTIPLY expressions; the accompanying exclusion provisos in each are carried as nested UNSUPPORTED nodes (population-adjustment mechanics not expressible with current arithmetic primitives), yielding PARTIAL sufficiency for each of those three definitions.",
+    "No WireRule outputs were produced: this source region is exclusively a definitions section with no independently operative permission/prohibition/ratio-test rule text."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T21:44:05.105Z",
+   "inputTokens": 58243,
+   "outputTokens": 16952,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 137917,
+   "calculatedCostUsd": 0.286006
+  },
+  "cacheKey": "d05a3a67a8605dcd7ca90f32481da29eef9a847f082e95ca670da5fb6989bcc7",
+  "compiledAt": "2026-09-14T21:44:05.105Z"
+ },
+ "wave": "C",
+ "attemptsSoFar": 1
+}

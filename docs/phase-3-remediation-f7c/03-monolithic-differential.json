@@ -1,0 +1,153 @@
+{
+ "artifact": "F-7C §24 - ordinary bounded-unit differential: starting SHA vs activated code over the same provider-free scripted matrix (0 model calls)",
+ "startingSha": "c9b28224e118f6a5e54f99da88715da110ad7dee",
+ "method": "scripts/f7c-monolithic-differential.ts run in a detached worktree at the starting SHA and on the activated tree; the normalized projection of every semantic field (status, failure reasons, error detail, rules, definitions, shared capacities, IR extension candidates, unresolved issues, tool log, evidence flags, completeness check, source-context state, inventory status, accountability counts+items, inventory mode, raw model output, provider/model) diffed byte-for-byte",
+ "projectionBytes": 21364,
+ "identical": true,
+ "executionModeOnActivatedTree": "MONOLITHIC for every scenario (all bounded units)",
+ "scenarios": [
+  {
+   "scenario": "A success one rule, accountability off",
+   "status": "COMPLETED",
+   "failureReasons": [],
+   "rules": 1,
+   "definitions": 0,
+   "unresolvedIssues": 0,
+   "accountability": null,
+   "projectionSha256Before": "acdbd1b896981f18413f0325ecfa7aab932561c17f69fc8dd0e9499bbe38004e",
+   "projectionSha256After": "acdbd1b896981f18413f0325ecfa7aab932561c17f69fc8dd0e9499bbe38004e",
+   "identical": true
+  },
+  {
+   "scenario": "B no submission -> MODEL_SCHEMA_FAILURE",
+   "status": "FAILED",
+   "failureReasons": [
+    "MODEL_SCHEMA_FAILURE"
+   ],
+   "rules": 0,
+   "definitions": 0,
+   "unresolvedIssues": 1,
+   "accountability": null,
+   "projectionSha256Before": "4cfb755cff03298ac0030cfa228700e0c42b0116cc68d3efed892d4af177404a",
+   "projectionSha256After": "4cfb755cff03298ac0030cfa228700e0c42b0116cc68d3efed892d4af177404a",
+   "identical": true
+  },
+  {
+   "scenario": "C caller throws -> TRANSPORT_OR_INTERNAL_ERROR (never cached)",
+   "status": "FAILED",
+   "failureReasons": [
+    "TRANSPORT_OR_INTERNAL_ERROR"
+   ],
+   "rules": 0,
+   "definitions": 0,
+   "unresolvedIssues": 1,
+   "accountability": null,
+   "projectionSha256Before": "ad53e7170028c59a9d384d7370db129bc9c72185b256e81fa5c74d667b103c34",
+   "projectionSha256After": "ad53e7170028c59a9d384d7370db129bc9c72185b256e81fa5c74d667b103c34",
+   "identical": true
+  },
+  {
+   "scenario": "D MISSING_CONTEXT definition -> REVIEW_REQUIRED",
+   "status": "REVIEW_REQUIRED",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED"
+   ],
+   "rules": 1,
+   "definitions": 1,
+   "unresolvedIssues": 0,
+   "accountability": null,
+   "projectionSha256Before": "c6614aff5ad00e8e05dbe769c5ec5d1e0afbca46e84993a8b1c5fac864b44bec",
+   "projectionSha256After": "c6614aff5ad00e8e05dbe769c5ec5d1e0afbca46e84993a8b1c5fac864b44bec",
+   "identical": true
+  },
+  {
+   "scenario": "E unresolved operative evidence in the bundle -> OPERATIVE_STATE_UNRESOLVED",
+   "status": "REVIEW_REQUIRED",
+   "failureReasons": [
+    "OPERATIVE_STATE_UNRESOLVED"
+   ],
+   "rules": 1,
+   "definitions": 0,
+   "unresolvedIssues": 0,
+   "accountability": null,
+   "projectionSha256Before": "ef7f4e845cff3c62a28992a5669af73eb9e86b0ff4e1999433e77324acc0a647",
+   "projectionSha256After": "ef7f4e845cff3c62a28992a5669af73eb9e86b0ff4e1999433e77324acc0a647",
+   "identical": true
+  },
+  {
+   "scenario": "F accountability on, synthetic Pass A (INVENTORY_SKIPPED_NO_PROVIDER), stub index",
+   "status": "REVIEW_REQUIRED",
+   "failureReasons": [
+    "SEMANTIC_INVENTORY_COVERAGE_GAP"
+   ],
+   "rules": 1,
+   "definitions": 0,
+   "unresolvedIssues": 3,
+   "accountability": {
+    "inventoried": 0,
+    "material": 0,
+    "represented": 0,
+    "intentionallyNonComputational": 0,
+    "unsupported": 0,
+    "ambiguous": 0,
+    "missingFromComposition": 0,
+    "materialMissingFromComposition": 0,
+    "criticalMissingFromComposition": 0,
+    "materialQuantitativeValues": 0,
+    "materialQuantitativeValuesMissing": 0,
+    "uninventoriedValues": 0,
+    "unaccountedSource": 1,
+    "danglingLineageReferences": 0,
+    "canonicalizedLineageReferences": 0
+   },
+   "projectionSha256Before": "39c5e0f67c413d6cbf0ede73cb215d8c2c077e889413f263ee89da4acf33488b",
+   "projectionSha256After": "39c5e0f67c413d6cbf0ede73cb215d8c2c077e889413f263ee89da4acf33488b",
+   "identical": true
+  },
+  {
+   "scenario": "G accountability on over a real small structural corpus, synthetic Pass A",
+   "status": "REVIEW_REQUIRED",
+   "failureReasons": [
+    "OPERATIVE_STATE_UNRESOLVED",
+    "DEFINITION_COMPLETENESS_SUSPECT",
+    "SEMANTIC_INVENTORY_COVERAGE_GAP"
+   ],
+   "rules": 0,
+   "definitions": 1,
+   "unresolvedIssues": 2,
+   "accountability": {
+    "inventoried": 0,
+    "material": 0,
+    "represented": 0,
+    "intentionallyNonComputational": 0,
+    "unsupported": 0,
+    "ambiguous": 0,
+    "missingFromComposition": 0,
+    "materialMissingFromComposition": 0,
+    "criticalMissingFromComposition": 0,
+    "materialQuantitativeValues": 0,
+    "materialQuantitativeValuesMissing": 0,
+    "uninventoriedValues": 12,
+    "unaccountedSource": 1,
+    "danglingLineageReferences": 0,
+    "canonicalizedLineageReferences": 0
+   },
+   "projectionSha256Before": "a4ff82010674a9499cf7c60e78c00ad51ad862ae37d7e666e069ea8a5cf439c8",
+   "projectionSha256After": "a4ff82010674a9499cf7c60e78c00ad51ad862ae37d7e666e069ea8a5cf439c8",
+   "identical": true
+  },
+  {
+   "scenario": "H two rules with a dangling dependsOn -> validation issues surfaced",
+   "status": "REVIEW_REQUIRED",
+   "failureReasons": [],
+   "rules": 2,
+   "definitions": 0,
+   "unresolvedIssues": 1,
+   "accountability": null,
+   "projectionSha256Before": "1d9293ba1b76a21752b8e4bcfd0d6f55ec7179fa075a0ddcb2abbd051368dfc9",
+   "projectionSha256After": "1d9293ba1b76a21752b8e4bcfd0d6f55ec7179fa075a0ddcb2abbd051368dfc9",
+   "identical": true
+  }
+ ]
+}

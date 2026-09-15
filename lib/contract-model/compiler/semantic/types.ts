@@ -231,7 +231,9 @@ export type SemanticCompilerFailureReason =
   /** F-7A (bounded compilation shards): at least one shard of a sharded compilation did not end SHARD_COMPLETE (provider / schema / missing-context / partial) - the stitched candidate is PARTIAL at best and its owned material items are listed as unresolved; never COMPLETED. */
   | "SHARD_INCOMPLETE"
   /** F-7A: independently compiled shards emitted incompatible representations of the same source (or an emission owned by another shard, or a dangling cross-shard reference) - explicit review, never a silent choice. */
-  | "SHARD_CONFLICT";
+  | "SHARD_CONFLICT"
+  /** F-7C.1: a caller asked to resume a frozen Pass A inventory (CompileOptions.frozenInventory) that could not be proven to belong to the exact source context being compiled - candidate, document, recorded source-context hash or legacy re-anchoring failed. Local, deterministic, pre-model: never PROVIDER_FAILURE or MODEL_SCHEMA_FAILURE. Pass A was NOT silently rerun and the stale inventory was NOT used; the compilation is FAILED so the caller can decide. */
+  | "FROZEN_INVENTORY_SOURCE_MISMATCH";
 
 /** Phase 3F.1 §33/F6 - preserved for every FAILED result whose failureReasons includes TRANSPORT_OR_INTERNAL_ERROR (never populated for any other failure path, which already carries its own structured detail via failureReasons/unresolvedIssues). Bounded and sanitized - never a raw stack dump, never a credential/token value, per task §33's explicit "no secrets/unrestricted stack dumps" instruction. */
 export interface SemanticCompilerErrorDetail {
@@ -256,6 +258,67 @@ export interface IRExtensionCandidate {
   semanticRequirement: string;
   whyExistingPrimitivesFail: string;
   candidateGeneralizedPrimitive: string;
+}
+
+// ---------------------------------------------------------------------------
+// F-7C - execution-mode metadata (additive). Callers never choose a mode; this
+// says which one the deterministic policy chose and, for a sharded unit, gives
+// the bounded audit trail needed to trust the result without the raw payloads.
+// ---------------------------------------------------------------------------
+
+export type SemanticExecutionModeKind = "MONOLITHIC" | "SHARDED";
+
+export interface SemanticShardExecutionSummary {
+  shardId: string;
+  shardHash: string;
+  ordinal: number;
+  status: string;
+  attempts: number;
+  reusedFromHash: boolean;
+  failureReasons: SemanticCompilerFailureReason[];
+  ownedMaterialItems: number;
+  oversized: boolean;
+  telemetry: { inputTokens: number | null; outputTokens: number | null; costUsd: number | null } | null;
+}
+
+export interface SemanticExecutionMetadata {
+  mode: SemanticExecutionModeKind;
+  /** Why the policy chose this mode (execution-mode.ts). */
+  reason: string;
+  policyVersion: string;
+  plannerAlgorithmVersion: string;
+  /** Present whenever a plan was built (accountability on), even in MONOLITHIC mode - it is the proof the unit fit one bounded shard. */
+  planHash: string | null;
+  /** F-7C.1: how a resumed frozen inventory was proven to belong to this exact source context; null when Pass A ran. */
+  frozenInventoryResume?: import("./frozen-inventory-resume").FrozenInventoryResumeRecord | null;
+  plannedShards: number;
+  oversizedShards: number;
+  /** SHARDED only. */
+  sharded: {
+    budget: { targetPrimaryChars: number; maxPrimaryChars: number; maxContextChars: number; maxContextEntryChars: number; maxUnitsPerShard: number };
+    executed: number;
+    reused: number;
+    retries: number;
+    providerCalls: number;
+    statusCounts: Record<string, number>;
+    collisions: number;
+    collisionsByKind: Record<string, number>;
+    definitionConflicts: number;
+    conflictVariants: number;
+    contextualEmissions: number;
+    unresolvedOwnedItems: number;
+    /** The stitcher's own status/reasons before whole-unit signals were layered on - the certified stitch outcome. */
+    stitchedStatus: string;
+    stitchedFailureReasons: SemanticCompilerFailureReason[];
+    /** F-7B.3B review evidence, carried whole: every distinct owner-emitted representation of a conflicted definition. Never consulted by Pass C. */
+    definitionConflictEvidence: import("./shard-types").DefinitionConflictEvidence[];
+    unresolvedOwnedItemList: { inventoryItemId: string; shardId: string; shardStatus: string }[];
+    /** F-7B.2 proof-class census of the retained definitions. */
+    attributionProofCounts: { PLANNER_DEFINITION_UNIT: number; OWNED_INVENTORY_LINEAGE: number; UNIQUE_PRIMARY_SOURCE_DECLARATION: number; NONE: number };
+    shards: SemanticShardExecutionSummary[];
+    /** Honest telemetry note: a sharded compile is many model conversations; top-level rawModelOutput/toolCallLog are not one transcript. */
+    telemetryNote: string;
+  } | null;
 }
 
 export interface SemanticCompilationResult {
@@ -325,4 +388,6 @@ export interface SemanticCompilationResult {
   /** Content-hash cache identity (task §31) - see cache.ts's own computeCacheKey. */
   cacheKey: string;
   compiledAt: string;
+  /** F-7C: which execution mode the deterministic policy selected and, for SHARDED, the bounded audit trail. Undefined on results built by pre-F-7C fixtures. */
+  execution?: SemanticExecutionMetadata | null;
 }

@@ -1,0 +1,55 @@
+{
+ "artifact": "PHASE 3 FINAL \u00a746 - regression after run",
+ "at": "2026-09-14T23:59:38.253217Z",
+ "paidRunOccurred": false,
+ "productionFilesChangedDuringMission": 0,
+ "filesAddedByMission": [
+  "scripts/phase-3-final-preflight.ts (zero-cost preflight script; not imported by production code)",
+  "docs/phase-3-final-chewy/* (evidence only)"
+ ],
+ "note": "No production source changed since starting SHA a474ab3; the full-suite baseline recorded at a474ab3 (docs/phase-3-remediation-f7c1/02-regression.json) therefore stands unchanged. Only the repository-wide static checks were re-run at this head.",
+ "fullSuiteBaselineAtStartingSha": {
+  "source": "docs/phase-3-remediation-f7c1/02-regression.json",
+  "testFilesFailed": 107,
+  "testsFailed": 162,
+  "testsPassed": 3167,
+  "testsTotal": 3853,
+  "failingSetUnchangedVsMissionBaseline": true
+ },
+ "fullSuiteAfter": {
+  "rerun": false,
+  "reason": "zero production-file delta; identities unchanged by construction",
+  "testFilesFailed": 107,
+  "testsFailed": 162
+ },
+ "failingIdentitiesUnchanged": true,
+ "tsc": {
+  "command": "npx tsc --noEmit -p tsconfig.json",
+  "errors": 6,
+  "errorsInMissionFiles": 0,
+  "errorFiles": [
+   "tests/foundation-audit/cascade-and-concurrency.test.ts",
+   "tests/foundation-audit/discovery-fault-injection.test.ts",
+   "tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts"
+  ],
+  "note": "all 6 errors are in tracked test files untouched by this mission (identical content at a474ab3); scripts/phase-3-final-preflight.ts typechecks clean"
+ },
+ "lint": {
+  "command": "npm run lint",
+  "exit": 0,
+  "result": "No ESLint warnings or errors"
+ },
+ "build": {
+  "command": "npm run build",
+  "exit": 0,
+  "result": "PASS"
+ },
+ "credentialScan": {
+  "pattern": "gateway key prefix (literal omitted from committed artifacts by standing rule)",
+  "paths": [
+   "docs/phase-3-final-chewy",
+   "scripts/phase-3-final-preflight.ts"
+  ],
+  "matches": 0
+ }
+}

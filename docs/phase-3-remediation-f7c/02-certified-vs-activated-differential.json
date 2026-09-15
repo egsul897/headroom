@@ -1,0 +1,384 @@
+{
+ "artifact": "F-7C §44 - CERTIFIED_CANARY_RESULT vs NEW_PRODUCTION_ACTIVATION_REPLAY, every trust-significant field classified",
+ "at": "2026-09-14T23:29:16.086Z",
+ "rows": [
+  {
+   "field": "executionMode",
+   "certified": "SHARDED",
+   "replay": "SHARDED",
+   "classification": "equal"
+  },
+  {
+   "field": "frozenInventoryResume.method",
+   "certified": "VERIFIED_BY_RE_ANCHORING",
+   "replay": "VERIFIED_BY_RE_ANCHORING",
+   "classification": "equal"
+  },
+  {
+   "field": "planHash",
+   "certified": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+   "replay": "67d9f086341b4677ca35697fcfb6878cb88ef92b9c0418ea32be96be741cfe36",
+   "classification": "equal"
+  },
+  {
+   "field": "plannedShards",
+   "certified": 36,
+   "replay": 36,
+   "classification": "equal"
+  },
+  {
+   "field": "reusedShards",
+   "certified": 36,
+   "replay": 36,
+   "classification": "equal"
+  },
+  {
+   "field": "executedShards",
+   "certified": 0,
+   "replay": 0,
+   "classification": "equal"
+  },
+  {
+   "field": "providerCalls",
+   "certified": 0,
+   "replay": 0,
+   "classification": "equal"
+  },
+  {
+   "field": "rules",
+   "certified": 17,
+   "replay": 17,
+   "classification": "equal"
+  },
+  {
+   "field": "definitions",
+   "certified": 487,
+   "replay": 487,
+   "classification": "equal"
+  },
+  {
+   "field": "sharedCapacities",
+   "certified": 1,
+   "replay": 1,
+   "classification": "equal"
+  },
+  {
+   "field": "definitionConflicts",
+   "certified": 5,
+   "replay": 5,
+   "classification": "equal"
+  },
+  {
+   "field": "conflictVariants",
+   "certified": 10,
+   "replay": 10,
+   "classification": "equal"
+  },
+  {
+   "field": "contextualEmissions",
+   "certified": 30,
+   "replay": 30,
+   "classification": "equal"
+  },
+  {
+   "field": "collisionsByKind",
+   "certified": {
+    "CONTEXTUAL_UNOWNED_DEFINITION": 29,
+    "DEFINITION_CONFLICT": 5,
+    "DEFINITION_ATTRIBUTION_AMBIGUOUS": 1
+   },
+   "replay": {
+    "CONTEXTUAL_UNOWNED_DEFINITION": 29,
+    "DEFINITION_CONFLICT": 5,
+    "DEFINITION_ATTRIBUTION_AMBIGUOUS": 1
+   },
+   "classification": "equal"
+  },
+  {
+   "field": "unresolvedOwnedItems",
+   "certified": 68,
+   "replay": 68,
+   "classification": "equal"
+  },
+  {
+   "field": "stitchedStatus",
+   "certified": "PARTIAL",
+   "replay": "PARTIAL",
+   "classification": "equal"
+  },
+  {
+   "field": "stitchedFailureReasons",
+   "certified": [
+    "MISSING_CONTEXT",
+    "SHARD_INCOMPLETE",
+    "OPERATIVE_STATE_UNRESOLVED",
+    "TRUNCATED_EVIDENCE_USED",
+    "DEFINITION_COMPLETENESS_SUSPECT",
+    "SHARD_CONFLICT",
+    "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+   ],
+   "replay": [
+    "MISSING_CONTEXT",
+    "SHARD_INCOMPLETE",
+    "OPERATIVE_STATE_UNRESOLVED",
+    "TRUNCATED_EVIDENCE_USED",
+    "DEFINITION_COMPLETENESS_SUSPECT",
+    "SHARD_CONFLICT",
+    "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+   ],
+   "classification": "equal"
+  },
+  {
+   "field": "materialTotal",
+   "certified": 108,
+   "replay": 108,
+   "classification": "equal"
+  },
+  {
+   "field": "represented",
+   "certified": 64,
+   "replay": 64,
+   "classification": "equal"
+  },
+  {
+   "field": "intentionallyNonComputational",
+   "certified": 2,
+   "replay": 2,
+   "classification": "equal"
+  },
+  {
+   "field": "unsupported",
+   "certified": 26,
+   "replay": 26,
+   "classification": "equal"
+  },
+  {
+   "field": "ambiguous",
+   "certified": 0,
+   "replay": 0,
+   "classification": "equal"
+  },
+  {
+   "field": "materialMissing",
+   "certified": 16,
+   "replay": 16,
+   "classification": "equal"
+  },
+  {
+   "field": "globalPassC.counts",
+   "certified": {
+    "inventoried": 109,
+    "material": 108,
+    "represented": 64,
+    "intentionallyNonComputational": 2,
+    "unsupported": 26,
+    "ambiguous": 0,
+    "missingFromComposition": 17,
+    "materialMissingFromComposition": 16,
+    "criticalMissingFromComposition": 3,
+    "materialQuantitativeValues": 142,
+    "materialQuantitativeValuesMissing": 20,
+    "uninventoriedValues": 95,
+    "unaccountedSource": 721,
+    "danglingLineageReferences": 0,
+    "canonicalizedLineageReferences": 0
+   },
+   "replay": {
+    "inventoried": 109,
+    "material": 108,
+    "represented": 64,
+    "intentionallyNonComputational": 2,
+    "unsupported": 26,
+    "ambiguous": 0,
+    "missingFromComposition": 17,
+    "materialMissingFromComposition": 16,
+    "criticalMissingFromComposition": 3,
+    "materialQuantitativeValues": 142,
+    "materialQuantitativeValuesMissing": 20,
+    "uninventoriedValues": 95,
+    "unaccountedSource": 721,
+    "danglingLineageReferences": 0,
+    "canonicalizedLineageReferences": 0
+   },
+   "classification": "equal"
+  },
+  {
+   "field": "attributionProofCounts",
+   "certified": {
+    "PLANNER_DEFINITION_UNIT": 368,
+    "OWNED_INVENTORY_LINEAGE": 47,
+    "UNIQUE_PRIMARY_SOURCE_DECLARATION": 118,
+    "NONE": 0
+   },
+   "replay": {
+    "PLANNER_DEFINITION_UNIT": 368,
+    "OWNED_INVENTORY_LINEAGE": 47,
+    "UNIQUE_PRIMARY_SOURCE_DECLARATION": 118,
+    "NONE": 0
+   },
+   "classification": "equal"
+  },
+  {
+   "field": "rules.deepEqualToCertifiedStitch",
+   "certified": "bd75e8a3c6ae49c67a5dc09baf172a4a036b67c165fd0cf2d437ce5b787f3d74",
+   "replay": "bd75e8a3c6ae49c67a5dc09baf172a4a036b67c165fd0cf2d437ce5b787f3d74",
+   "classification": "equal"
+  },
+  {
+   "field": "definitions.deepEqualToCertifiedStitch",
+   "certified": "c488486bedb109a500876ad1d4d29336f478e058625073d6fb3dee2220acd7ba",
+   "replay": "c488486bedb109a500876ad1d4d29336f478e058625073d6fb3dee2220acd7ba",
+   "classification": "equal"
+  },
+  {
+   "field": "sharedCapacities.deepEqualToCertifiedStitch",
+   "certified": "b59ba4ca448ff919adab37ae5993c699f354d21013d7a110691026ccad63ff38",
+   "replay": "b59ba4ca448ff919adab37ae5993c699f354d21013d7a110691026ccad63ff38",
+   "classification": "equal"
+  },
+  {
+   "field": "accountability.deepEqualToCertifiedStitch",
+   "certified": "4df9cedf6405a0b62789fd86bf7b72ec82828c38248bca0a3f308ed58d9c4ed2",
+   "replay": "4df9cedf6405a0b62789fd86bf7b72ec82828c38248bca0a3f308ed58d9c4ed2",
+   "classification": "equal"
+  },
+  {
+   "field": "definitionConflictEvidence.deepEqualToCertifiedStitch",
+   "certified": "4cbb040df8921481a9400ed2b2957f45f6ff6fe0ab256a4eed3cba9ec50b6f39",
+   "replay": "4cbb040df8921481a9400ed2b2957f45f6ff6fe0ab256a4eed3cba9ec50b6f39",
+   "classification": "equal"
+  },
+  {
+   "field": "unresolvedOwnedItemList.deepEqualToCertifiedStitch",
+   "certified": "836a7138fec2da116f794d218bd02d235262e75e163dd1b2b569e39107ba4236",
+   "replay": "836a7138fec2da116f794d218bd02d235262e75e163dd1b2b569e39107ba4236",
+   "classification": "equal"
+  },
+  {
+   "field": "trust.ownedValuesLost",
+   "certified": 0,
+   "replay": 0,
+   "classification": "equal"
+  },
+  {
+   "field": "trust.distinctOwnedLineageLost",
+   "certified": 0,
+   "replay": 0,
+   "classification": "equal"
+  },
+  {
+   "field": "trust.sourceUnverifiableAuthoritativeIr",
+   "certified": 0,
+   "replay": 0,
+   "classification": "equal"
+  },
+  {
+   "field": "trust.contextualOwnershipCredit",
+   "certified": 0,
+   "replay": 0,
+   "classification": "equal"
+  },
+  {
+   "field": "trust.dangerousSilentOmissions",
+   "certified": 0,
+   "replay": 0,
+   "classification": "equal"
+  },
+  {
+   "field": "trust.falseCompleteness",
+   "certified": 0,
+   "replay": 0,
+   "classification": "equal"
+  },
+  {
+   "field": "trust.silentIncompatibleMerges",
+   "certified": 0,
+   "replay": 0,
+   "classification": "equal"
+  },
+  {
+   "field": "trust.newDanglingRefs",
+   "certified": 0,
+   "replay": 0,
+   "classification": "equal"
+  },
+  {
+   "field": "trust.hiddenFailedShards",
+   "certified": 0,
+   "replay": 0,
+   "classification": "equal"
+  },
+  {
+   "field": "trust.hiddenMissingMaterial",
+   "certified": 0,
+   "replay": 0,
+   "classification": "equal"
+  },
+  {
+   "field": "failureReasons",
+   "certified": [
+    "MISSING_CONTEXT",
+    "SHARD_INCOMPLETE",
+    "OPERATIVE_STATE_UNRESOLVED",
+    "TRUNCATED_EVIDENCE_USED",
+    "DEFINITION_COMPLETENESS_SUSPECT",
+    "SHARD_CONFLICT",
+    "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+   ],
+   "replay": [
+    "MISSING_CONTEXT",
+    "SHARD_INCOMPLETE",
+    "OPERATIVE_STATE_UNRESOLVED",
+    "TRUNCATED_EVIDENCE_USED",
+    "DEFINITION_COMPLETENESS_SUSPECT",
+    "SHARD_CONFLICT",
+    "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+    "SEMANTIC_INVENTORY_COVERAGE_GAP"
+   ],
+   "classification": "intentionally_additive",
+   "note": "production adds whole-unit signals on top of the certified stitch reasons: [\"SEMANTIC_INVENTORY_COVERAGE_GAP\"] (frozen inventory status INVENTORY_COVERAGE_GAP; whole-unit definition-completeness check fired)"
+  },
+  {
+   "field": "status",
+   "certified": "PARTIAL",
+   "replay": "PARTIAL",
+   "classification": "intentionally_additive",
+   "note": "the stitcher's status is the floor; whole-unit signals can only demote, and PARTIAL is not demotable"
+  },
+  {
+   "field": "cacheKey.includesExecutionIdentity",
+   "certified": null,
+   "replay": "4e1bca29459a636716fa03783782cf267124e38d145bea454de4bde00787c286",
+   "classification": "intentionally_additive",
+   "note": "outer cache key now folds in the execution-policy identity and the resumed frozen-inventory hash"
+  },
+  {
+   "field": "telemetry.aggregate",
+   "certified": null,
+   "replay": {
+    "provider": "vercel-ai-gateway",
+    "model": "replay-model",
+    "promptVersion": "semantic-accountability-compiler-prompt.v4",
+    "schemaVersion": "headroom-covenant-ir.v1",
+    "stage": "semantic_compile_sharded",
+    "timestamp": "2026-09-14T23:29:15.806Z",
+    "inputTokens": 2695669,
+    "outputTokens": 850475,
+    "cachedInputTokens": null,
+    "cacheCreationInputTokens": null,
+    "attemptCount": 0,
+    "retryCount": 0,
+    "rateLimitFailures": 0,
+    "latencyMs": 93,
+    "calculatedCostUsd": 13.896088000000002
+   },
+   "classification": "intentionally_additive",
+   "note": "summed across the 36 reused results; attemptCount = executed = 0"
+  }
+ ],
+ "equal": 41,
+ "intentionallyAdditive": 4,
+ "mismatches": 0,
+ "mismatchList": [],
+ "verdict": "REPLAY_EQUIVALENT"
+}

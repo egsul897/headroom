@@ -1,0 +1,2854 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:6248230fa539039e625f",
+  "shardHash": "917fead02cf8fb0b05717f81ca2c4d6574f6664a4776c4607700d16e36281769",
+  "ordinal": 28,
+  "ownedUnits": 16,
+  "sourceChars": 9729,
+  "contextEntries": 5,
+  "contextChars": 1815,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 3,
+  "ownedMaterialItems": 3,
+  "estimatedFirstTurnInputTokens": 26023,
+  "preCallEstimate": {
+   "inputTokens": 85616,
+   "outputTokens": 41500,
+   "usd": 0.5862320000000001
+  },
+  "actual": {
+   "inputTokens": 69183,
+   "outputTokens": 37155,
+   "turns": 2,
+   "latencyMs": 321483,
+   "costUsd": 0.509916,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "toolCalls": 8,
+  "toolCallNames": [
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getReferencedProvision",
+   "getDefinition"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 26,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 0,
+   "dispositioned": 0,
+   "missingMaterial": 3,
+   "valuesRepresented": 0,
+   "valuesMissing": 5,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "MISSING_FROM_COMPOSITION": 3
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Public Lender",
+   "QFC",
+   "QFC Credit Support",
+   "Reference Time",
+   "Refinanced",
+   "Refinancing",
+   "Refinanced Debt",
+   "Refinancing Indebtedness",
+   "Refunding Capital Stock",
+   "Register"
+  ],
+  "unresolvedIssues": [
+   "[definition[d-ria].IF.then] unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+   "[definition[d-ria].IF.else.IF.then] unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+   "[definition[d-ria].IF.else.IF.else] unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+   "[definition[d-ria].IF.else] IF condition must be BOOLEAN and both branches must resolve to the same type: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d-ria]] IF condition must be BOOLEAN and both branches must resolve to the same type: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d-refi-debt]] getReferencedProvision('Section 6.01(b)(13)') was attempted; the returned text supplied the core defining sentence (Indebtedness that serves to Refinance other permitted debt) but ended at 'provided, however, that such Refinancing Indebtedness:' - the lettered proviso sub-conditions were not included in the returned span",
+   "[definition[d-refunding-cs]] getReferencedProvision('Section 6.08(b)(2)') was attempted; the tool returned only the empty enumerator marker '(2)' with no substantive text, so the definition's content could not be resolved",
+   "This submission compiles the batch of independently-defined terms appearing in the supplied §1.01 excerpt (PTE through Register). Every distinct defined term found in the supplied source was extracted as its own WireDefinition; none were dropped as 'non-salient'.",
+   "The only term carrying material quantitative/ratio economics is 'Ratio Incremental Amount' (clauses (a)-(c)), which corresponds to all three Frozen Semantic Inventory items; all three are consumed directly on the RATIO literal and UNLIMITED_CAPACITY nodes that carry their respective values (2.00:1.00, 3.00:1.00/1.75:1.00, 4.00:1.00/1.75:1.00).",
+   "All quantitative values flagged by the deterministic scan (RATIO 2.00, 3.00, 1.75, 4.00, 1.75) correspond exactly to the three inventory items' own stated values and are consumed on the corresponding literal nodes - no additional uncovered material values were found.",
+   "Several terms in §1.01 are pure forward pointers to other sections of the same agreement (Public Lender -> §5.01; QFC Credit Support -> §9.22; Refinanced Debt -> definition of Credit Agreement Refinancing Indebtedness; Refinancing Indebtedness -> §6.01(b)(13); Refunding Capital Stock -> §6.08(b)(2); Register -> §9.04(b)(iv)). Per the mandatory-retrieval rule, each was attempted via getReferencedProvision/getDefinition before any MISSING_CONTEXT/PARTIAL/UNSUPPORTED determination. QFC Credit Support, Refinanced Debt and Register were fully resolved and marked COMPLETE; Refinancing Indebtedness was partially resolved (core sentence captured, lettered proviso conditions not returned by the tool) and marked PARTIAL; Public Lender and Refunding Capital Stock could not be substantively resolved (tool returned only an unrelated heading or an empty numbering marker) and are marked MISSING_CONTEXT.",
+   "Section 1.08 (the pro forma calculation methodology incorporated by reference into 'Ratio Incremental Amount') was also attempted; only its heading was returned, not its substantive sub-clauses, which is reflected in that definition's PARTIAL sufficiency rather than a confident COMPLETE claim.",
+   "No independently operative WireRule (permission/prohibition/ratio test) is present in this source excerpt - it is purely a definitions article - so the rules array is empty."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:6248230fa539039e625f",
+  "shardHash": "917fead02cf8fb0b05717f81ca2c4d6574f6664a4776c4607700d16e36281769",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:76eb8f3d3eb5b729fd10b209",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "PTE",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained, non-quantitative descriptive definition fully stated in the source text."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "a prohibited transaction class exemption issued by the U.S. Department of Labor, as any such exemption may be amended from time to time."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:1c30dfb2cbddcb162197fc94",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Public Company Costs",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive, non-computational list of cost categories; no dollar figures or formulas are stated in this defined term itself."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "costs associated with or in anticipation of ... compliance with the requirements of the Sarbanes-Oxley Act of 2002 ... to the extent arising as a result of becoming ... a public company."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:51203f534831c055069f4f5d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Public Lender",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "This is a forward pointer to Section 5.01. getReferencedProvision('Section 5.01') was attempted, but the resolved node returned only the top-level heading/lead-in of Section 5.01 ('Financial Statements and Other Information...'), not the specific sub-clause that actually defines 'Public Lender'; the substantive meaning remains unresolved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to such term in Section 5.01."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:a0fd45416015d381f24063cd",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Purchase Money Obligations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Indebtedness",
+      "Capital Stock"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition fully stated in the source text."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any Indebtedness incurred to finance or refinance the acquisition, leasing, construction or improvement of property ... or assets (other than Capital Stock)..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:81d92e3698280def3d7937ac",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Purchasing Borrower Party",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Borrowers"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained, fully stated."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the Borrowers or any subsidiary of the Borrowers."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3e801a2ae35a86495fabfc99",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "QFC",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition is fully stated as an incorporation-by-reference to an external statute (12 U.S.C. 5390(c)(8)(D)); the statute itself is not a section of this instrument and is not retrievable via the available tools, but the operative text of the DEFINITION in this agreement is complete as written."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to the term \"qualified financial contract\" in, and shall be interpreted in accordance with, 12 U.S.C. 5390(c)(8)(D)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:7f62dd1cba1eb6c028fd5f85",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "QFC Credit Support",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "QFC"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "§1.01 pointer resolved via getReferencedProvision('Section 9.22'), which supplies the substantive definition: support (through a guarantee or otherwise) provided under the Loan Documents for Swap Agreements or any other QFC."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §9.22",
+      "excerpt": "has the meaning set forth in Section 9.22. [§9.22: 'such support, \"QFC Credit Support,\" and each such QFC, a \"Supported QFC\"' - support, through a guarantee or otherwise, for Swap Agreements or any other agreement or instrument that is a QFC.]"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:53f89e910e866d50902ee7ff",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Qualified Equity Interests",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Equity Interests",
+      "Disqualified Stock",
+      "Borrowers"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition; depends on 'Disqualified Stock' by exclusion but the definitional scope itself is fully stated."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "Equity Interests in the Borrowers or any parent of the Borrowers other than Disqualified Stock."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:fc3e65fbf26321446b493c21",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Qualified Restricted Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Subsidiary",
+      "Capital Stock",
+      "Loan Party",
+      "Restricted Party"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Eligibility criteria (a)-(d) fully stated as descriptive/qualitative conditions; no dollar or ratio computation is involved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any Restricted Subsidiary that satisfies the following requirements: (a) there are no consensual restrictions ... (b) the Capital Stock ... (c) such Restricted Subsidiary is engaged in the same business ... (d) such Restricted Subsidiary is managed or controlled by a Loan Party or another Qualified Restricted Subsidiary."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:42adf10bc0097a310e23746b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Qualified Jurisdiction",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Additional Borrower",
+      "Commitments"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition fully stated."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "each of (i) the United States and Canada ... and (ii) any other jurisdiction reasonably acceptable to each Lender providing, making or maintaining Commitments or Loans to any Additional Borrower organized in such jurisdiction."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3be2e02858edf5b944d0208e",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Ratio Incremental Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "(no evidence captured)",
+      "semanticDescription": "unrecognized or malformed expression (kind=\"IF\")",
+      "reason": "IF condition must be BOOLEAN and both branches must resolve to the same type: no operand carries a determinable type (every operand is itself unsupported)",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "attemptedStructure": {
+       "kind": "IF",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:b87ce8e7566cb6a6348d2eb4",
+       "condition": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "type": "BOOLEAN",
+        "inputName": "Indebtedness is secured by all or a material portion of the Collateral on a pari passu basis with the Secured Obligations (clause (a) category)",
+        "exprId": "ir-expr:8e806697401ef297b02de4f2"
+       },
+       "then": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "(no evidence captured)",
+        "semanticDescription": "unrecognized or malformed expression (kind=\"UNLIMITED_CAPACITY\")",
+        "reason": "unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(a)",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:9b46d9fb01bc60f45cad640f",
+        "inventoryItemIds": [
+         "inv-item:0919eeb8c68cf9ee5844cc9d"
+        ]
+       },
+       "else": {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "(no evidence captured)",
+        "semanticDescription": "unrecognized or malformed expression (kind=\"IF\")",
+        "reason": "IF condition must be BOOLEAN and both branches must resolve to the same type: no operand carries a determinable type (every operand is itself unsupported)",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(b)-(c)",
+         "excerpt": null
+        },
+        "attemptedStructure": {
+         "kind": "IF",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:604953071dd1cda72213229d",
+         "condition": {
+          "kind": "TRANSACTION_INPUT_REFERENCE",
+          "type": "BOOLEAN",
+          "inputName": "Indebtedness is secured by all or a material portion of the Collateral on a Junior Lien Priority basis (clause (b) category)",
+          "exprId": "ir-expr:1c8f04adc368ff030c813b6f"
+         },
+         "then": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "(no evidence captured)",
+          "semanticDescription": "unrecognized or malformed expression (kind=\"UNLIMITED_CAPACITY\")",
+          "reason": "unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(b)",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:c52412e81be40e7b551b45f1",
+          "inventoryItemIds": [
+           "inv-item:cf5d0d1981f56a0478bad80a"
+          ]
+         },
+         "else": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "(no evidence captured)",
+          "semanticDescription": "unrecognized or malformed expression (kind=\"UNLIMITED_CAPACITY\")",
+          "reason": "unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+          "requiredReview": true,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01(c)",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:2754237996faf5e5c32f6029",
+          "inventoryItemIds": [
+           "inv-item:5f126ce5217a759268f65339"
+          ]
+         },
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(b)-(c)",
+          "excerpt": null
+         }
+        },
+        "exprId": "ir-expr:c67d6eac83d3c4bbb7fa3cc5"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "exprId": "ir-expr:e288a2c78980ba7afcf3f39f"
+     },
+     "dependsOnTerms": [
+      "First Lien Leverage Ratio",
+      "Senior Secured Leverage Ratio",
+      "Total Leverage Ratio",
+      "Interest Coverage Ratio",
+      "Pro Forma Basis",
+      "Test Period",
+      "Secured Obligations",
+      "Collateral",
+      "Junior Lien Priority"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The categorical dispatch among clauses (a)/(b)/(c) is modeled via TRANSACTION_INPUT_REFERENCE proxies for the lien/security category of the Indebtedness, since the IR node set has no native categorical (non-numeric) dispatch primitive; this is a faithful but proxy representation.",
+      "getReferencedProvision('Section 1.08') was attempted (the pro forma calculation mechanics this definition incorporates 'in accordance with Section 1.08'); only the section's heading/lead-in was returned, not its substantive sub-clauses, so the precise pro forma computation mechanics remain unresolved.",
+      "The 'immediately prior to such issuance, incurrence or assumption' comparator reuses the same METRIC_REFERENCE metricName as the pro forma value; the IR lacks a transaction-relative temporal snapshot qualifier to formally distinguish the two points in time within one expression (captured only via excerpt text on each node).",
+      "unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+      "unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+      "unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+      "IF condition must be BOOLEAN and both branches must resolve to the same type: no operand carries a determinable type (every operand is itself unsupported)",
+      "IF condition must be BOOLEAN and both branches must resolve to the same type: no operand carries a determinable type (every operand is itself unsupported)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, at any date, an aggregate principal amount that, after giving [effect] to the issuance, incurrence or assumption thereof on a Pro Forma Basis, in accordance with Section 1.08, so long as: (a) ... (b) ... (c) ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:0919eeb8c68cf9ee5844cc9d",
+      "inv-item:cf5d0d1981f56a0478bad80a",
+      "inv-item:5f126ce5217a759268f65339"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:c137db8e9744192b79be5f0f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Receivables Assets",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive/enumerative definition fully stated."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) any accounts receivable, mortgage receivables, equipment receivables ... and (b) all collateral securing such receivable or asset ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:a2024f04d6842f3debcf3141",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Receivables Fees",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Receivables Assets",
+      "Permitted Receivables Financing",
+      "Restricted Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive definition fully stated; 'Permitted Receivables Financing' is referenced adjectivally but is not needed to represent this definition's own descriptive scope."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "distributions or payments made directly or by means of discounts with respect to any Receivables Assets ... in connection with any Permitted Receivables Financing."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:7028ff7c5d08c53d5e564fe5",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Receivables Non-Recourse Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Receivables Assets",
+      "Restricted Party",
+      "Receivables Subsidiary",
+      "Standard Securitization Undertakings",
+      "Limited Originator Recourse"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive, structural definition fully stated in the source text; dependent terms are used descriptively, not quantitatively."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any of one or more receivables financing facilities ... the obligations of which are non-recourse (except for Standard Securitization Undertakings or Limited Originator Recourse) to any Restricted Party ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:72981cd0f6ea7590371a30c1",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Receivables Recourse Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Receivables Assets"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive definition fully stated."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any of one or more receivables financing facilities ... of Receivable Assets that has financing terms, covenants, termination events and other material provisions on market terms for similar transactions."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:385750b0d51a9ec77078a13c",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Receivables Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Subsidiary",
+      "Permitted Receivables Financing"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive definition fully stated."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "any Subsidiary formed for the purpose of facilitating or entering into, one or more Permitted Receivables Financings and in each case engages only in activities reasonably related or incidental thereto."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:1cde432af091f22c0be44043",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Recipient",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Administrative Agent",
+      "Lender"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained, fully stated."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the Administrative Agent or any Lender, as applicable."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:4add173092d81d0c2df15916",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Reference Time",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Benchmark",
+      "Term SOFR Rate",
+      "U.S. Government Securities Business Day",
+      "Administrative Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive/procedural timing definition fully stated; not itself a dollar/ratio computation."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "(a) if such Benchmark is the Term SOFR Rate, 5:00 a.m. (Chicago time) on the day that is two (2) U.S. Government Securities Business Days preceding the date of such setting or (b) if such Benchmark is other than the Term SOFR Rate, the time determined by the Administrative Agent in its reasonable discretion."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:62c2996fa6acb14a90708398",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Refinance",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Indebtedness",
+      "Disqualified Stock",
+      "Preferred Stock"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained verb definition fully stated."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "to refinance, extend, renew, refund, repay, prepay, purchase, redeem, defease or retire, or to issue other Indebtedness, Disqualified Stock or Preferred Stock in exchange or replacement for, such Indebtedness, Disqualified Stock or Preferred Stock, in whole or in part."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:ee12e9350183b8534a351169",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Refinanced",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Refinance"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Trivially declared as a correlative form of 'Refinance'."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "shall have correlative meanings."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:ee0e0d06506c1795c4f04ef5",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Refinancing",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Refinance"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Trivially declared as a correlative form of 'Refinance'."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "shall have correlative meanings."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:985e7b9d5dacdf799d6ac36f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Refinanced Debt",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Credit Agreement Refinancing Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "§1.01 pointer resolved via getDefinition('Credit Agreement Refinancing Indebtedness'): 'Refinanced Debt' means the existing Loans (including any successive Credit Agreement Refinancing Indebtedness) being exchanged, extended, renewed, replaced or refinanced."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; definition of \"Credit Agreement Refinancing Indebtedness\"",
+      "excerpt": "has the meaning assigned to such term in the definition of \"Credit Agreement Refinancing Indebtedness.\" [there: 'existing Loans (including any successive Credit Agreement Refinancing Indebtedness) (\"Refinanced Debt\")']"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f59ed8a68e8dc6e23db4aa8a",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Refinancing Amendment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Additional Lender",
+      "Credit Agreement Refinancing Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definitional scope (who must execute it, and that it relates to Credit Agreement Refinancing Indebtedness) is fully stated in §1.01; the reference to Section 2.19 concerns only the procedural mechanics of effecting such an amendment, not the definitional scope itself. getReferencedProvision('Section 2.19') was attempted and returned only the section heading, confirming no additional definitional content was omitted from §1.01's own text."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "an amendment to this Agreement executed by each of (a) the Borrowers, (b) the Administrative Agent and (c) each Additional Lender and Lender that agrees to provide all or any portion of the Credit Agreement Refinancing Indebtedness being incurred pursuant thereto, in accordance with Section 2.19."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:2bd9a6bcda1e5e36e0bbb281",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Refinancing Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§6.01(b)(13)",
+      "semanticDescription": "the substantive proviso conditions attached to 'Refinancing Indebtedness' in Section 6.01(b)(13) (e.g., principal amount, maturity/weighted average life, guarantee and security limitations)",
+      "reason": "getReferencedProvision('Section 6.01(b)(13)') was attempted; the returned text supplied the core defining sentence (Indebtedness that serves to Refinance other permitted debt) but ended at 'provided, however, that such Refinancing Indebtedness:' - the lettered proviso sub-conditions were not included in the returned span",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:4b72530a81a28b9429fef1df"
+     },
+     "dependsOnTerms": [
+      "Refinance",
+      "Indebtedness",
+      "Disqualified Stock",
+      "Preferred Stock"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Core concept (debt that serves to Refinance other permitted debt under enumerated basket clauses) is captured; the detailed proviso conditions limiting such Refinancing Indebtedness were not retrievable within the returned section span.",
+      "getReferencedProvision('Section 6.01(b)(13)') was attempted; the returned text supplied the core defining sentence (Indebtedness that serves to Refinance other permitted debt) but ended at 'provided, however, that such Refinancing Indebtedness:' - the lettered proviso sub-conditions were not included in the returned span"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §6.01(b)(13)",
+      "excerpt": "has the meaning assigned to such term in Section 6.01(b)(13). [there: 'the incurrence or issuance ... of Indebtedness ... which serves to Refinance any Indebtedness ... (the \"Refinancing Indebtedness\") on or prior to its respective maturity; provided, however, that such Refinancing Indebtedness:']"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:e8a685e70e1567a64ef44d35",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Refunding Capital Stock",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§6.08(b)(2)",
+      "semanticDescription": "the substantive definition of 'Refunding Capital Stock' located in Section 6.08(b)(2)",
+      "reason": "getReferencedProvision('Section 6.08(b)(2)') was attempted; the tool returned only the empty enumerator marker '(2)' with no substantive text, so the definition's content could not be resolved",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:fbb53352974d011796622f5b"
+     },
+     "dependsOnTerms": [
+      "Capital Stock"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "§1.01 is a pure forward pointer to Section 6.08(b)(2); retrieval was attempted but returned no substantive content.",
+      "getReferencedProvision('Section 6.08(b)(2)') was attempted; the tool returned only the empty enumerator marker '(2)' with no substantive text, so the definition's content could not be resolved"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §6.08(b)(2)",
+      "excerpt": "has the meaning assigned to such term in Section 6.08(b)(2)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3327de5f5ead55095a885c5a",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Register",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Administrative Agent",
+      "Lender",
+      "Commitment",
+      "Assignment and Assumption",
+      "Defaulting Lender"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "§1.01 pointer resolved via getReferencedProvision('Section 9.04(b)(iv)'), which supplies the full substantive definition: the register maintained by the Administrative Agent recording Lenders' names, addresses, Commitments and Loan amounts."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01; §9.04(b)(iv)",
+      "excerpt": "has the meaning assigned to such term in Section 9.04(b)(iv). [there: '...a register for the recordation of the names and addresses of the Lenders, and the Commitment of, and principal and stated interest amount of the Loans owing to, each Lender ... (the \"Register\").']"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d-ria].IF.then] unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+   "[definition[d-ria].IF.else.IF.then] unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+   "[definition[d-ria].IF.else.IF.else] unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+   "[definition[d-ria].IF.else] IF condition must be BOOLEAN and both branches must resolve to the same type: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d-ria]] IF condition must be BOOLEAN and both branches must resolve to the same type: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d-refi-debt]] getReferencedProvision('Section 6.01(b)(13)') was attempted; the returned text supplied the core defining sentence (Indebtedness that serves to Refinance other permitted debt) but ended at 'provided, however, that such Refinancing Indebtedness:' - the lettered proviso sub-conditions were not included in the returned span",
+   "[definition[d-refunding-cs]] getReferencedProvision('Section 6.08(b)(2)') was attempted; the tool returned only the empty enumerator marker '(2)' with no substantive text, so the definition's content could not be resolved",
+   "This submission compiles the batch of independently-defined terms appearing in the supplied §1.01 excerpt (PTE through Register). Every distinct defined term found in the supplied source was extracted as its own WireDefinition; none were dropped as 'non-salient'.",
+   "The only term carrying material quantitative/ratio economics is 'Ratio Incremental Amount' (clauses (a)-(c)), which corresponds to all three Frozen Semantic Inventory items; all three are consumed directly on the RATIO literal and UNLIMITED_CAPACITY nodes that carry their respective values (2.00:1.00, 3.00:1.00/1.75:1.00, 4.00:1.00/1.75:1.00).",
+   "All quantitative values flagged by the deterministic scan (RATIO 2.00, 3.00, 1.75, 4.00, 1.75) correspond exactly to the three inventory items' own stated values and are consumed on the corresponding literal nodes - no additional uncovered material values were found.",
+   "Several terms in §1.01 are pure forward pointers to other sections of the same agreement (Public Lender -> §5.01; QFC Credit Support -> §9.22; Refinanced Debt -> definition of Credit Agreement Refinancing Indebtedness; Refinancing Indebtedness -> §6.01(b)(13); Refunding Capital Stock -> §6.08(b)(2); Register -> §9.04(b)(iv)). Per the mandatory-retrieval rule, each was attempted via getReferencedProvision/getDefinition before any MISSING_CONTEXT/PARTIAL/UNSUPPORTED determination. QFC Credit Support, Refinanced Debt and Register were fully resolved and marked COMPLETE; Refinancing Indebtedness was partially resolved (core sentence captured, lettered proviso conditions not returned by the tool) and marked PARTIAL; Public Lender and Refunding Capital Stock could not be substantively resolved (tool returned only an unrelated heading or an empty numbering marker) and are marked MISSING_CONTEXT.",
+   "Section 1.08 (the pro forma calculation methodology incorporated by reference into 'Ratio Incremental Amount') was also attempted; only its heading was returned, not its substantive sub-clauses, which is reflected in that definition's PARTIAL sufficiency rather than a confident COMPLETE claim.",
+   "No independently operative WireRule (permission/prohibition/ratio test) is present in this source excerpt - it is purely a definitions article - so the rules array is empty."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 69183,
+   "outputTokens": 37155,
+   "costUsd": 0.509916
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:76eb8f3d3eb5b729fd10b209",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "PTE",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Self-contained, non-quantitative descriptive definition fully stated in the source text."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "a prohibited transaction class exemption issued by the U.S. Department of Labor, as any such exemption may be amended from time to time."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:1c30dfb2cbddcb162197fc94",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Public Company Costs",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Descriptive, non-computational list of cost categories; no dollar figures or formulas are stated in this defined term itself."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "costs associated with or in anticipation of ... compliance with the requirements of the Sarbanes-Oxley Act of 2002 ... to the extent arising as a result of becoming ... a public company."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:51203f534831c055069f4f5d",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Public Lender",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "This is a forward pointer to Section 5.01. getReferencedProvision('Section 5.01') was attempted, but the resolved node returned only the top-level heading/lead-in of Section 5.01 ('Financial Statements and Other Information...'), not the specific sub-clause that actually defines 'Public Lender'; the substantive meaning remains unresolved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 5.01."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:a0fd45416015d381f24063cd",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Purchase Money Obligations",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Indebtedness",
+     "Capital Stock"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Self-contained descriptive definition fully stated in the source text."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any Indebtedness incurred to finance or refinance the acquisition, leasing, construction or improvement of property ... or assets (other than Capital Stock)..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:81d92e3698280def3d7937ac",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Purchasing Borrower Party",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Borrowers"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Self-contained, fully stated."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the Borrowers or any subsidiary of the Borrowers."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3e801a2ae35a86495fabfc99",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "QFC",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definition is fully stated as an incorporation-by-reference to an external statute (12 U.S.C. 5390(c)(8)(D)); the statute itself is not a section of this instrument and is not retrievable via the available tools, but the operative text of the DEFINITION in this agreement is complete as written."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to the term \"qualified financial contract\" in, and shall be interpreted in accordance with, 12 U.S.C. 5390(c)(8)(D)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:7f62dd1cba1eb6c028fd5f85",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "QFC Credit Support",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "QFC"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "§1.01 pointer resolved via getReferencedProvision('Section 9.22'), which supplies the substantive definition: support (through a guarantee or otherwise) provided under the Loan Documents for Swap Agreements or any other QFC."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §9.22",
+     "excerpt": "has the meaning set forth in Section 9.22. [§9.22: 'such support, \"QFC Credit Support,\" and each such QFC, a \"Supported QFC\"' - support, through a guarantee or otherwise, for Swap Agreements or any other agreement or instrument that is a QFC.]"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:53f89e910e866d50902ee7ff",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Qualified Equity Interests",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Equity Interests",
+     "Disqualified Stock",
+     "Borrowers"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Self-contained descriptive definition; depends on 'Disqualified Stock' by exclusion but the definitional scope itself is fully stated."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "Equity Interests in the Borrowers or any parent of the Borrowers other than Disqualified Stock."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:fc3e65fbf26321446b493c21",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Qualified Restricted Subsidiary",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Restricted Subsidiary",
+     "Capital Stock",
+     "Loan Party",
+     "Restricted Party"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Eligibility criteria (a)-(d) fully stated as descriptive/qualitative conditions; no dollar or ratio computation is involved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any Restricted Subsidiary that satisfies the following requirements: (a) there are no consensual restrictions ... (b) the Capital Stock ... (c) such Restricted Subsidiary is engaged in the same business ... (d) such Restricted Subsidiary is managed or controlled by a Loan Party or another Qualified Restricted Subsidiary."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:42adf10bc0097a310e23746b",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Qualified Jurisdiction",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Additional Borrower",
+     "Commitments"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Self-contained descriptive definition fully stated."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "each of (i) the United States and Canada ... and (ii) any other jurisdiction reasonably acceptable to each Lender providing, making or maintaining Commitments or Loans to any Additional Borrower organized in such jurisdiction."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3be2e02858edf5b944d0208e",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Ratio Incremental Amount",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "(no evidence captured)",
+     "semanticDescription": "unrecognized or malformed expression (kind=\"IF\")",
+     "reason": "IF condition must be BOOLEAN and both branches must resolve to the same type: no operand carries a determinable type (every operand is itself unsupported)",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "attemptedStructure": {
+      "kind": "IF",
+      "type": "BOOLEAN",
+      "exprId": "ir-expr:b87ce8e7566cb6a6348d2eb4",
+      "condition": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "type": "BOOLEAN",
+       "inputName": "Indebtedness is secured by all or a material portion of the Collateral on a pari passu basis with the Secured Obligations (clause (a) category)",
+       "exprId": "ir-expr:8e806697401ef297b02de4f2"
+      },
+      "then": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "(no evidence captured)",
+       "semanticDescription": "unrecognized or malformed expression (kind=\"UNLIMITED_CAPACITY\")",
+       "reason": "unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(a)",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:9b46d9fb01bc60f45cad640f",
+       "inventoryItemIds": [
+        "inv-item:0919eeb8c68cf9ee5844cc9d"
+       ]
+      },
+      "else": {
+       "kind": "UNSUPPORTED",
+       "type": null,
+       "sourceEvidence": "(no evidence captured)",
+       "semanticDescription": "unrecognized or malformed expression (kind=\"IF\")",
+       "reason": "IF condition must be BOOLEAN and both branches must resolve to the same type: no operand carries a determinable type (every operand is itself unsupported)",
+       "requiredReview": true,
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01(b)-(c)",
+        "excerpt": null
+       },
+       "attemptedStructure": {
+        "kind": "IF",
+        "type": "BOOLEAN",
+        "exprId": "ir-expr:604953071dd1cda72213229d",
+        "condition": {
+         "kind": "TRANSACTION_INPUT_REFERENCE",
+         "type": "BOOLEAN",
+         "inputName": "Indebtedness is secured by all or a material portion of the Collateral on a Junior Lien Priority basis (clause (b) category)",
+         "exprId": "ir-expr:1c8f04adc368ff030c813b6f"
+        },
+        "then": {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "(no evidence captured)",
+         "semanticDescription": "unrecognized or malformed expression (kind=\"UNLIMITED_CAPACITY\")",
+         "reason": "unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(b)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:c52412e81be40e7b551b45f1",
+         "inventoryItemIds": [
+          "inv-item:cf5d0d1981f56a0478bad80a"
+         ]
+        },
+        "else": {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "(no evidence captured)",
+         "semanticDescription": "unrecognized or malformed expression (kind=\"UNLIMITED_CAPACITY\")",
+         "reason": "unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01(c)",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:2754237996faf5e5c32f6029",
+         "inventoryItemIds": [
+          "inv-item:5f126ce5217a759268f65339"
+         ]
+        },
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01(b)-(c)",
+         "excerpt": null
+        }
+       },
+       "exprId": "ir-expr:c67d6eac83d3c4bbb7fa3cc5"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "exprId": "ir-expr:e288a2c78980ba7afcf3f39f"
+    },
+    "dependsOnTerms": [
+     "First Lien Leverage Ratio",
+     "Senior Secured Leverage Ratio",
+     "Total Leverage Ratio",
+     "Interest Coverage Ratio",
+     "Pro Forma Basis",
+     "Test Period",
+     "Secured Obligations",
+     "Collateral",
+     "Junior Lien Priority"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "The categorical dispatch among clauses (a)/(b)/(c) is modeled via TRANSACTION_INPUT_REFERENCE proxies for the lien/security category of the Indebtedness, since the IR node set has no native categorical (non-numeric) dispatch primitive; this is a faithful but proxy representation.",
+     "getReferencedProvision('Section 1.08') was attempted (the pro forma calculation mechanics this definition incorporates 'in accordance with Section 1.08'); only the section's heading/lead-in was returned, not its substantive sub-clauses, so the precise pro forma computation mechanics remain unresolved.",
+     "The 'immediately prior to such issuance, incurrence or assumption' comparator reuses the same METRIC_REFERENCE metricName as the pro forma value; the IR lacks a transaction-relative temporal snapshot qualifier to formally distinguish the two points in time within one expression (captured only via excerpt text on each node).",
+     "unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+     "unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+     "unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+     "IF condition must be BOOLEAN and both branches must resolve to the same type: no operand carries a determinable type (every operand is itself unsupported)",
+     "IF condition must be BOOLEAN and both branches must resolve to the same type: no operand carries a determinable type (every operand is itself unsupported)"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, at any date, an aggregate principal amount that, after giving [effect] to the issuance, incurrence or assumption thereof on a Pro Forma Basis, in accordance with Section 1.08, so long as: (a) ... (b) ... (c) ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:0919eeb8c68cf9ee5844cc9d",
+     "inv-item:cf5d0d1981f56a0478bad80a",
+     "inv-item:5f126ce5217a759268f65339"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:c137db8e9744192b79be5f0f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Receivables Assets",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Self-contained descriptive/enumerative definition fully stated."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) any accounts receivable, mortgage receivables, equipment receivables ... and (b) all collateral securing such receivable or asset ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:a2024f04d6842f3debcf3141",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Receivables Fees",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Receivables Assets",
+     "Permitted Receivables Financing",
+     "Restricted Subsidiary"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Descriptive definition fully stated; 'Permitted Receivables Financing' is referenced adjectivally but is not needed to represent this definition's own descriptive scope."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "distributions or payments made directly or by means of discounts with respect to any Receivables Assets ... in connection with any Permitted Receivables Financing."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:7028ff7c5d08c53d5e564fe5",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Receivables Non-Recourse Facility",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Receivables Assets",
+     "Restricted Party",
+     "Receivables Subsidiary",
+     "Standard Securitization Undertakings",
+     "Limited Originator Recourse"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Descriptive, structural definition fully stated in the source text; dependent terms are used descriptively, not quantitatively."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any of one or more receivables financing facilities ... the obligations of which are non-recourse (except for Standard Securitization Undertakings or Limited Originator Recourse) to any Restricted Party ..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:72981cd0f6ea7590371a30c1",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Receivables Recourse Facility",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Receivables Assets"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Descriptive definition fully stated."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any of one or more receivables financing facilities ... of Receivable Assets that has financing terms, covenants, termination events and other material provisions on market terms for similar transactions."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:385750b0d51a9ec77078a13c",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Receivables Subsidiary",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Subsidiary",
+     "Permitted Receivables Financing"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Descriptive definition fully stated."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "any Subsidiary formed for the purpose of facilitating or entering into, one or more Permitted Receivables Financings and in each case engages only in activities reasonably related or incidental thereto."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:1cde432af091f22c0be44043",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Recipient",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Administrative Agent",
+     "Lender"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Self-contained, fully stated."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the Administrative Agent or any Lender, as applicable."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:4add173092d81d0c2df15916",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Reference Time",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Benchmark",
+     "Term SOFR Rate",
+     "U.S. Government Securities Business Day",
+     "Administrative Agent"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Descriptive/procedural timing definition fully stated; not itself a dollar/ratio computation."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "(a) if such Benchmark is the Term SOFR Rate, 5:00 a.m. (Chicago time) on the day that is two (2) U.S. Government Securities Business Days preceding the date of such setting or (b) if such Benchmark is other than the Term SOFR Rate, the time determined by the Administrative Agent in its reasonable discretion."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:62c2996fa6acb14a90708398",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Refinance",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Indebtedness",
+     "Disqualified Stock",
+     "Preferred Stock"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Self-contained verb definition fully stated."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "to refinance, extend, renew, refund, repay, prepay, purchase, redeem, defease or retire, or to issue other Indebtedness, Disqualified Stock or Preferred Stock in exchange or replacement for, such Indebtedness, Disqualified Stock or Preferred Stock, in whole or in part."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:ee12e9350183b8534a351169",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Refinanced",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Refinance"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Trivially declared as a correlative form of 'Refinance'."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "shall have correlative meanings."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:ee0e0d06506c1795c4f04ef5",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Refinancing",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Refinance"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Trivially declared as a correlative form of 'Refinance'."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "shall have correlative meanings."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:985e7b9d5dacdf799d6ac36f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Refinanced Debt",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Credit Agreement Refinancing Indebtedness"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "§1.01 pointer resolved via getDefinition('Credit Agreement Refinancing Indebtedness'): 'Refinanced Debt' means the existing Loans (including any successive Credit Agreement Refinancing Indebtedness) being exchanged, extended, renewed, replaced or refinanced."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; definition of \"Credit Agreement Refinancing Indebtedness\"",
+     "excerpt": "has the meaning assigned to such term in the definition of \"Credit Agreement Refinancing Indebtedness.\" [there: 'existing Loans (including any successive Credit Agreement Refinancing Indebtedness) (\"Refinanced Debt\")']"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f59ed8a68e8dc6e23db4aa8a",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Refinancing Amendment",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Additional Lender",
+     "Credit Agreement Refinancing Indebtedness"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Definitional scope (who must execute it, and that it relates to Credit Agreement Refinancing Indebtedness) is fully stated in §1.01; the reference to Section 2.19 concerns only the procedural mechanics of effecting such an amendment, not the definitional scope itself. getReferencedProvision('Section 2.19') was attempted and returned only the section heading, confirming no additional definitional content was omitted from §1.01's own text."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "an amendment to this Agreement executed by each of (a) the Borrowers, (b) the Administrative Agent and (c) each Additional Lender and Lender that agrees to provide all or any portion of the Credit Agreement Refinancing Indebtedness being incurred pursuant thereto, in accordance with Section 2.19."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:2bd9a6bcda1e5e36e0bbb281",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Refinancing Indebtedness",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§6.01(b)(13)",
+     "semanticDescription": "the substantive proviso conditions attached to 'Refinancing Indebtedness' in Section 6.01(b)(13) (e.g., principal amount, maturity/weighted average life, guarantee and security limitations)",
+     "reason": "getReferencedProvision('Section 6.01(b)(13)') was attempted; the returned text supplied the core defining sentence (Indebtedness that serves to Refinance other permitted debt) but ended at 'provided, however, that such Refinancing Indebtedness:' - the lettered proviso sub-conditions were not included in the returned span",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:4b72530a81a28b9429fef1df"
+    },
+    "dependsOnTerms": [
+     "Refinance",
+     "Indebtedness",
+     "Disqualified Stock",
+     "Preferred Stock"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Core concept (debt that serves to Refinance other permitted debt under enumerated basket clauses) is captured; the detailed proviso conditions limiting such Refinancing Indebtedness were not retrievable within the returned section span.",
+     "getReferencedProvision('Section 6.01(b)(13)') was attempted; the returned text supplied the core defining sentence (Indebtedness that serves to Refinance other permitted debt) but ended at 'provided, however, that such Refinancing Indebtedness:' - the lettered proviso sub-conditions were not included in the returned span"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §6.01(b)(13)",
+     "excerpt": "has the meaning assigned to such term in Section 6.01(b)(13). [there: 'the incurrence or issuance ... of Indebtedness ... which serves to Refinance any Indebtedness ... (the \"Refinancing Indebtedness\") on or prior to its respective maturity; provided, however, that such Refinancing Indebtedness:']"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:e8a685e70e1567a64ef44d35",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Refunding Capital Stock",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§6.08(b)(2)",
+     "semanticDescription": "the substantive definition of 'Refunding Capital Stock' located in Section 6.08(b)(2)",
+     "reason": "getReferencedProvision('Section 6.08(b)(2)') was attempted; the tool returned only the empty enumerator marker '(2)' with no substantive text, so the definition's content could not be resolved",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:fbb53352974d011796622f5b"
+    },
+    "dependsOnTerms": [
+     "Capital Stock"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "§1.01 is a pure forward pointer to Section 6.08(b)(2); retrieval was attempted but returned no substantive content.",
+     "getReferencedProvision('Section 6.08(b)(2)') was attempted; the tool returned only the empty enumerator marker '(2)' with no substantive text, so the definition's content could not be resolved"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §6.08(b)(2)",
+     "excerpt": "has the meaning assigned to such term in Section 6.08(b)(2)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3327de5f5ead55095a885c5a",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Register",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Administrative Agent",
+     "Lender",
+     "Commitment",
+     "Assignment and Assumption",
+     "Defaulting Lender"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "§1.01 pointer resolved via getReferencedProvision('Section 9.04(b)(iv)'), which supplies the full substantive definition: the register maintained by the Administrative Agent recording Lenders' names, addresses, Commitments and Loan amounts."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01; §9.04(b)(iv)",
+     "excerpt": "has the meaning assigned to such term in Section 9.04(b)(iv). [there: '...a register for the recordation of the names and addresses of the Lenders, and the Commitment of, and principal and stated interest amount of the Loans owing to, each Lender ... (the \"Register\").']"
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01, 'Ratio Incremental Amount' clauses (a)-(c): distinct ratio tests apply depending on whether new Indebtedness is (a) pari passu first-lien secured, (b) junior-lien secured, or (c) unsecured/junior-priority - three mutually exclusive categories keyed on the security/lien attribute of the Indebtedness, not on a numeric or date value.",
+    "semanticRequirement": "A primitive to dispatch among mutually-exclusive alternative sub-expressions keyed on a categorical (non-numeric, non-temporal) attribute of the transaction being tested (e.g., lien priority/security category of new Indebtedness).",
+    "whyExistingPrimitivesFail": "SCHEDULE only keys on date ranges. IF only carries a single boolean-like condition per branch, forcing a manually-nested chain of TRANSACTION_INPUT_REFERENCE proxies rather than a single construct that declares all N mutually-exclusive categories and their associated tests together.",
+    "candidateGeneralizedPrimitive": "CASE_DISPATCH(operand: a categorical TRANSACTION_INPUT_REFERENCE or METRIC_REFERENCE; cases: [{matchValue, value}]; defaultValue) - a categorical analogue to SCHEDULE."
+   },
+   {
+    "sourceEvidence": "§1.01, clauses (a)-(c): each compares a pro forma (post-incurrence) ratio against the greater/lesser of a fixed threshold and 'the [Ratio] immediately prior to such issuance, incurrence or assumption of such Indebtedness' - the same metric referenced at two different transaction-relative points in time within a single expression.",
+    "semanticRequirement": "A way to reference the same metric at a specific transaction-relative temporal snapshot (e.g. 'immediately prior to this transaction') distinct from its pro forma/current value, within one expression tree.",
+    "whyExistingPrimitivesFail": "AS_OF only supports a fixed ISO calendar date, not a transaction-relative point in time ('immediately prior to the incurrence being tested'); reusing the same METRIC_REFERENCE metricName twice loses the formal distinction between the two snapshots.",
+    "candidateGeneralizedPrimitive": "RELATIVE_SNAPSHOT(operand: METRIC_REFERENCE, relativeReference: enum e.g. 'IMMEDIATELY_PRIOR_TO_TRANSACTION' | 'PRO_FORMA_POST_TRANSACTION')."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d-ria].IF.then] unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+   "[definition[d-ria].IF.else.IF.then] unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+   "[definition[d-ria].IF.else.IF.else] unrecognized expression kind \"UNLIMITED_CAPACITY\" - not a real IR node type",
+   "[definition[d-ria].IF.else] IF condition must be BOOLEAN and both branches must resolve to the same type: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d-ria]] IF condition must be BOOLEAN and both branches must resolve to the same type: no operand carries a determinable type (every operand is itself unsupported)",
+   "[definition[d-refi-debt]] getReferencedProvision('Section 6.01(b)(13)') was attempted; the returned text supplied the core defining sentence (Indebtedness that serves to Refinance other permitted debt) but ended at 'provided, however, that such Refinancing Indebtedness:' - the lettered proviso sub-conditions were not included in the returned span",
+   "[definition[d-refunding-cs]] getReferencedProvision('Section 6.08(b)(2)') was attempted; the tool returned only the empty enumerator marker '(2)' with no substantive text, so the definition's content could not be resolved",
+   "This submission compiles the batch of independently-defined terms appearing in the supplied §1.01 excerpt (PTE through Register). Every distinct defined term found in the supplied source was extracted as its own WireDefinition; none were dropped as 'non-salient'.",
+   "The only term carrying material quantitative/ratio economics is 'Ratio Incremental Amount' (clauses (a)-(c)), which corresponds to all three Frozen Semantic Inventory items; all three are consumed directly on the RATIO literal and UNLIMITED_CAPACITY nodes that carry their respective values (2.00:1.00, 3.00:1.00/1.75:1.00, 4.00:1.00/1.75:1.00).",
+   "All quantitative values flagged by the deterministic scan (RATIO 2.00, 3.00, 1.75, 4.00, 1.75) correspond exactly to the three inventory items' own stated values and are consumed on the corresponding literal nodes - no additional uncovered material values were found.",
+   "Several terms in §1.01 are pure forward pointers to other sections of the same agreement (Public Lender -> §5.01; QFC Credit Support -> §9.22; Refinanced Debt -> definition of Credit Agreement Refinancing Indebtedness; Refinancing Indebtedness -> §6.01(b)(13); Refunding Capital Stock -> §6.08(b)(2); Register -> §9.04(b)(iv)). Per the mandatory-retrieval rule, each was attempted via getReferencedProvision/getDefinition before any MISSING_CONTEXT/PARTIAL/UNSUPPORTED determination. QFC Credit Support, Refinanced Debt and Register were fully resolved and marked COMPLETE; Refinancing Indebtedness was partially resolved (core sentence captured, lettered proviso conditions not returned by the tool) and marked PARTIAL; Public Lender and Refunding Capital Stock could not be substantively resolved (tool returned only an unrelated heading or an empty numbering marker) and are marked MISSING_CONTEXT.",
+   "Section 1.08 (the pro forma calculation methodology incorporated by reference into 'Ratio Incremental Amount') was also attempted; only its heading was returned, not its substantive sub-clauses, which is reflected in that definition's PARTIAL sufficiency rather than a confident COMPLETE claim.",
+   "No independently operative WireRule (permission/prohibition/ratio test) is present in this source excerpt - it is purely a definitions article - so the rules array is empty."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 1.08"
+    },
+    "outputSummary": "resolved reference \"Section 1.08\" -> 1.08 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 174,
+    "timestamp": "2026-09-14T21:38:17.727Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 1.08",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:8e5099b139aa4f9508e66f35",
+     "sourceNodeKey": "doc-a::1.08",
+     "charStart": 376281,
+     "charEnd": 376455,
+     "rawText": "Section 1.08 Limited Condition Transactions, Pro Forma Calculations and Other Calculations . Notwithstanding anything\nto the contrary in this Agreement or any Loan Document:\n",
+     "contentHash": "292b03df36e4dbcab949ae1b7ac4230cd4a6c2d1c672d665516946d63e0de913",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 5.01"
+    },
+    "outputSummary": "resolved reference \"Section 5.01\" -> 5.01 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 188,
+    "timestamp": "2026-09-14T21:38:17.728Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 5.01",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:65ab3a0a1f9dc108193f45ca",
+     "sourceNodeKey": "doc-a::5.01",
+     "charStart": 561978,
+     "charEnd": 562166,
+     "rawText": "Section 5.01 Financial Statements and Other Information . The Initial Borrower will furnish to the Administrative Agent (for\ndistribution to each Lender through the Administrative Agent):\n",
+     "contentHash": "6af63dd432be6a3d4b16e966391d333dc8df66bdf478e8cf863dfc88b4ea8367",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 9.22"
+    },
+    "outputSummary": "resolved reference \"Section 9.22\" -> 9.22 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 2509,
+    "timestamp": "2026-09-14T21:38:17.729Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 9.22",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:bbf01c0035d8db5b4012a733",
+     "sourceNodeKey": "doc-a::9.22",
+     "charStart": 855796,
+     "charEnd": 858305,
+     "rawText": "Section 9.22\nAcknowledgement Regarding Any Supported QFCs . To the extent that the Loan Documents provide support, through a guarantee or otherwise, for Swap Agreements or any other agreement or instrument that is a QFC (such support, “ QFC Credit\nSupport ,” and each such QFC, a “ Supported QFC ”), the parties acknowledge and agree as follows with respect to the resolution power of the Federal Deposit Insurance Corporation under the Federal Deposit Insurance Act and\nTitle II of the Dodd-Frank Wall Street Reform and Consumer Protection Act (together with the regulations promulgated thereunder, the “ U.S. Special Resolution Regimes ”) in respect of such Supported QFC and QFC Credit Support (with\nthe provisions below applicable notwithstanding that the Loan Documents and any Supported QFC may in fact be stated to be governed by the laws of the State of New York and/or of the United States or any other state of the United States):\n\nIn the event a Covered Entity that is party to a Supported QFC (each, a “ Covered Party ”) becomes subject to a proceeding\nunder a U.S. Special Resolution Regime, the transfer of such Supported QFC and the benefit of such QFC Credit Support (and any interest and obligation in or under such Supported QFC and such QFC Credit Support, and any rights in property securing\nsuch Supported QFC or such QFC Credit Support) from such Covered Party will be effective to the same extent as the transfer would be effective under the U.S. Special Resolution Regime if the Supported QFC and such QFC Credit Support (and any such\ninterest, obligation and rights in property) were governed by the laws of the United States or a state of the United States. In the event a Covered Party or a BHC Act Affiliate of a Covered Party becomes subject to a proceeding under a U.S. Special\nResolution Regime, Default Rights under the Loan Documents that might otherwise apply to such Supported QFC or any QFC Credit Support that may be exercised against such Covered Party are permitted to be exercised to no greater extent than such\nDefault Rights could be exercised under the U.S. Special Resolution Regime if the Supported QFC and the Loan Documents were governed by the laws of the United States or a state of the United States. Without limitation of the foregoing, it is\nunderstood and agreed that rights and remedies of the parties with respect to a Defaulting Lender shall in no event affect the rights of any Covered Party with respect to a Supported QFC or any QFC Credit Support.\n\n",
+     "contentHash": "77f06ae129b5981561f8dd65ad14e7837aa4430faeedc5d12b3b9a880d54f602",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 2.19"
+    },
+    "outputSummary": "resolved reference \"Section 2.19\" -> 2.19 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 39,
+    "timestamp": "2026-09-14T21:38:17.729Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 2.19",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:878e41f39998a4bdbd2ffce3",
+     "sourceNodeKey": "doc-a::2.19",
+     "charStart": 510874,
+     "charEnd": 510913,
+     "rawText": "Section 2.19 Refinancing Amendments .\n\n",
+     "contentHash": "5330a62a477bcd3c101b7a3dc2380b1d4a9b453ab01e8fcdd7ce8459f3a447d3",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 6.01(b)(13)"
+    },
+    "outputSummary": "resolved reference \"Section 6.01(b)(13)\" -> 6.01(b)(13) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 1183,
+    "timestamp": "2026-09-14T21:38:17.729Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 6.01(b)(13)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:6b4b1c2147219fd9d8fba72b",
+     "sourceNodeKey": "doc-a::6.01(b)(13)",
+     "charStart": 623092,
+     "charEnd": 624275,
+     "rawText": "(13) the incurrence or issuance by any Restricted Party, of Indebtedness, Disqualified Stock or Preferred Stock which serves to\nRefinance any Indebtedness (or unutilized commitment in respect of Indebtedness), Disqualified Stock or Preferred Stock, incurred or issued as permitted under Section 6.01(a) hereof and Sections 6.01(b)(1)(Y), (3), (4), (5)(b) and\n(12) hereof, this Section 6.01(b)(13) and Sections 6.01(b)(14), (18), (19), (27) and (31) hereof or any Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party, issued to so Refinance such Indebtedness (or\nunutilized commitment in respect of Indebtedness), Disqualified Stock or Preferred Stock, including, in each case, additional Indebtedness, Disqualified Stock or Preferred Stock incurred to pay accrued but unpaid interest, dividends, premiums\n(including tender premiums), defeasance costs, underwriting discounts, fees, costs and expenses (including upfront fees, original issue discount (in lieu of customary upfront fees) or similar fees) in connection therewith (the “ Refinancing\nIndebtedness ”) on or prior to its respective maturity; provided , however , that such Refinancing Indebtedness:\n\n",
+     "contentHash": "c77e38ad4da98e1dc3df9f6827b075878cdd1394f53192780a1cce8df3cde267",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 6.08(b)(2)"
+    },
+    "outputSummary": "resolved reference \"Section 6.08(b)(2)\" -> 6.08(b)(2) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 4,
+    "timestamp": "2026-09-14T21:38:17.730Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 6.08(b)(2)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:4639f9cb48391e8318e3ea10",
+     "sourceNodeKey": "doc-a::6.08(b)(2)",
+     "charStart": 670628,
+     "charEnd": 670632,
+     "rawText": "(2) ",
+     "contentHash": "a3bef1330369be28503eecb97926f03409ff2b366a91a54371439d89aa89d77f",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 9.04(b)(iv)"
+    },
+    "outputSummary": "resolved reference \"Section 9.04(b)(iv)\" -> 9.04(b)(iv) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 1761,
+    "timestamp": "2026-09-14T21:38:17.730Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 9.04(b)(iv)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:6ba283733c306e180a2b634c",
+     "sourceNodeKey": "doc-a::9.04(b)(iv)",
+     "charStart": 793787,
+     "charEnd": 795548,
+     "rawText": "(iv) The Administrative Agent, acting for this purpose as a non-fiduciary agent of the\nBorrowers, shall, with respect to each Facility for which it has been appointed an Administrative Agent hereunder, maintain at one (1) of its offices in the United States a copy of each Assignment and Assumption delivered to it (including each\nAffiliated Lender Assignment and Assumption delivered to it) and a register for the recordation of the names and addresses of the Lenders, and the Commitment of, and principal and stated interest amount of the Loans owing to, each Lender pursuant to\nthe terms hereof from time to time (individually and collectively with respect to one or more Facilities, as context requires, the “ Register ”). The entries in the Register shall be conclusive absent manifest error, and the\nBorrowers, the Administrative Agent and the Lenders shall treat each Person whose name is recorded in the Register pursuant to the terms hereof as a Lender hereunder for all purposes of this Agreement, notwithstanding notice to the contrary. In\naddition, the Administrative Agent shall maintain on the Register information regarding the designation, and revocation of designation, of any Lender as a Defaulting Lender. The Register shall be available for inspection by the Borrowers and any\nLender, at any reasonable time and from time to time upon reasonable prior notice. Notwithstanding the foregoing, in no event shall the Administrative Agent be obligated to ascertain, monitor or inquire as to whether any Lender is an Affiliated\nLender, nor shall the Administrative Agent be obligated to monitor the aggregate amount of the Loans or Incremental Loans held by Affiliated Lenders. Upon request by the Administrative Agent, the Initial Borrower shall ",
+     "contentHash": "7b952d4ea787a69ae35ca9e6876f79c877a3f502644b6880f409c48528e6cf1e",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Credit Agreement Refinancing Indebtedness"
+    },
+    "outputSummary": "definition \"Credit Agreement Refinancing Indebtedness\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 2228,
+    "timestamp": "2026-09-14T21:38:17.730Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Credit Agreement Refinancing Indebtedness",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:440fa005fb310d0f0d268cc0",
+     "sourceNodeKey": "doc-a::1.01(2)(v)(III)(c)",
+     "charStart": 122405,
+     "charEnd": 124633,
+     "rawText": "“ Credit Agreement Refinancing Indebtedness ” means Indebtedness issued, incurred or otherwise obtained (including by\nmeans of the exchange, extension, renewal, replacement, retirement or refinance, in whole or in part, of existing Indebtedness) in exchange for, or to extend, renew, replace or refinance, in whole or part, existing Loans (including any successive\nCredit Agreement Refinancing Indebtedness) (“ Refinanced Debt ”); provided that such exchanging, extending, renewing, replacing, retirement or refinancing Indebtedness:\n\n(a)\nis in an original aggregate principal amount (or accreted value, if applicable) not greater than the aggregate\nprincipal amount (or accreted value, if applicable) of the Refinanced Debt (and in the case of Refinanced Debt consisting in whole or in part of unused Revolving Commitments or Other Revolving Commitments, the amount thereof) ( plus any\npremium, accrued interest and fees and expenses incurred in connection with such exchange, extension, renewal, replacement or refinancing) plus (without duplication) an amount equal to any existing commitment unutilized thereunder and letters\nof credit undrawn thereunder;\n\n-26-\n\n(b)\ndoes not (i) mature earlier than or have a Weighted Average Life to Maturity shorter than the Refinanced\nDebt or (ii) have mandatory redemption features (other than Customary Exceptions) that could result in redemptions of such Indebtedness prior to the maturity of the Refinanced Debt except this clause (b) shall not apply to any Maturity\nException Facility;\n\n(c)\nshall not be guaranteed by any Restricted Subsidiary that is not a Loan Party;\n\n(d)\nin the case of any secured Credit Agreement Refinancing Indebtedness (i) is not secured by any Collateral\nthat is not securing the Secured Obligations, (ii) is secured on a pari passu basis with respect to the Collateral or junior basis with respect to the Collateral to the Secured Obligations and (iii) is subject to the relevant\nIntercreditor Agreement(s); and\n\n(e)\notherwise has terms and conditions that shall be reasonably satisfactory to the Borrowers and the lenders\nproviding such Credit Agreement Refinancing Indebtedness.\n\n“ Cured Default ” has the meaning assigned to such term in\nSection 7.01.\n",
+     "contentHash": "bf28386ac60972d667aa60b9ce75a82d880593640e830f98c1ece05677c6dcb0",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "rules": [],
+   "definitions": [
+    {
+     "localRef": "d-pte",
+     "termName": "PTE",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained, non-quantitative descriptive definition fully stated in the source text."
+     ],
+     "citation": "§1.01",
+     "excerpt": "a prohibited transaction class exemption issued by the U.S. Department of Labor, as any such exemption may be amended from time to time.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-pcc",
+     "termName": "Public Company Costs",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive, non-computational list of cost categories; no dollar figures or formulas are stated in this defined term itself."
+     ],
+     "citation": "§1.01",
+     "excerpt": "costs associated with or in anticipation of ... compliance with the requirements of the Sarbanes-Oxley Act of 2002 ... to the extent arising as a result of becoming ... a public company.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-public-lender",
+     "termName": "Public Lender",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "This is a forward pointer to Section 5.01. getReferencedProvision('Section 5.01') was attempted, but the resolved node returned only the top-level heading/lead-in of Section 5.01 ('Financial Statements and Other Information...'), not the specific sub-clause that actually defines 'Public Lender'; the substantive meaning remains unresolved."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to such term in Section 5.01.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-pmo",
+     "termName": "Purchase Money Obligations",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Indebtedness",
+      "Capital Stock"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition fully stated in the source text."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any Indebtedness incurred to finance or refinance the acquisition, leasing, construction or improvement of property ... or assets (other than Capital Stock)...",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-pbp",
+     "termName": "Purchasing Borrower Party",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Borrowers"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained, fully stated."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the Borrowers or any subsidiary of the Borrowers.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-qfc",
+     "termName": "QFC",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definition is fully stated as an incorporation-by-reference to an external statute (12 U.S.C. 5390(c)(8)(D)); the statute itself is not a section of this instrument and is not retrievable via the available tools, but the operative text of the DEFINITION in this agreement is complete as written."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to the term \"qualified financial contract\" in, and shall be interpreted in accordance with, 12 U.S.C. 5390(c)(8)(D).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-qfc-cs",
+     "termName": "QFC Credit Support",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "QFC"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "§1.01 pointer resolved via getReferencedProvision('Section 9.22'), which supplies the substantive definition: support (through a guarantee or otherwise) provided under the Loan Documents for Swap Agreements or any other QFC."
+     ],
+     "citation": "§1.01; §9.22",
+     "excerpt": "has the meaning set forth in Section 9.22. [§9.22: 'such support, \"QFC Credit Support,\" and each such QFC, a \"Supported QFC\"' - support, through a guarantee or otherwise, for Swap Agreements or any other agreement or instrument that is a QFC.]",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-qei",
+     "termName": "Qualified Equity Interests",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Equity Interests",
+      "Disqualified Stock",
+      "Borrowers"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition; depends on 'Disqualified Stock' by exclusion but the definitional scope itself is fully stated."
+     ],
+     "citation": "§1.01",
+     "excerpt": "Equity Interests in the Borrowers or any parent of the Borrowers other than Disqualified Stock.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-qrs",
+     "termName": "Qualified Restricted Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Restricted Subsidiary",
+      "Capital Stock",
+      "Loan Party",
+      "Restricted Party"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Eligibility criteria (a)-(d) fully stated as descriptive/qualitative conditions; no dollar or ratio computation is involved."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any Restricted Subsidiary that satisfies the following requirements: (a) there are no consensual restrictions ... (b) the Capital Stock ... (c) such Restricted Subsidiary is engaged in the same business ... (d) such Restricted Subsidiary is managed or controlled by a Loan Party or another Qualified Restricted Subsidiary.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-qj",
+     "termName": "Qualified Jurisdiction",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Additional Borrower",
+      "Commitments"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive definition fully stated."
+     ],
+     "citation": "§1.01",
+     "excerpt": "each of (i) the United States and Canada ... and (ii) any other jurisdiction reasonably acceptable to each Lender providing, making or maintaining Commitments or Loans to any Additional Borrower organized in such jurisdiction.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-ria",
+     "termName": "Ratio Incremental Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "IF",
+      "citation": "§1.01",
+      "condition": {
+       "kind": "TRANSACTION_INPUT_REFERENCE",
+       "inputName": "Indebtedness is secured by all or a material portion of the Collateral on a pari passu basis with the Secured Obligations (clause (a) category)",
+       "citation": "§1.01(a)"
+      },
+      "then": {
+       "kind": "UNLIMITED_CAPACITY",
+       "citation": "§1.01(a)",
+       "inventoryItemIds": [
+        "inv-item:0919eeb8c68cf9ee5844cc9d"
+       ],
+       "gatedBy": {
+        "kind": "COMPARE",
+        "citation": "§1.01(a)",
+        "left": {
+         "kind": "METRIC_REFERENCE",
+         "metricName": "First Lien Leverage Ratio",
+         "valueType": "RATIO",
+         "excerpt": "on a Pro Forma Basis, for the applicable Test Period"
+        },
+        "operator": "LTE",
+        "right": {
+         "kind": "MAX",
+         "citation": "§1.01(a)",
+         "operands": [
+          {
+           "kind": "RATIO",
+           "value": 2,
+           "citation": "§1.01(a)",
+           "excerpt": "2.00:1.00",
+           "inventoryItemIds": [
+            "inv-item:0919eeb8c68cf9ee5844cc9d"
+           ]
+          },
+          {
+           "kind": "METRIC_REFERENCE",
+           "metricName": "First Lien Leverage Ratio",
+           "valueType": "RATIO",
+           "excerpt": "the First Lien Leverage Ratio immediately prior to such issuance, incurrence or assumption of such Indebtedness"
+          }
+         ]
+        }
+       }
+      },
+      "else": {
+       "kind": "IF",
+       "citation": "§1.01(b)-(c)",
+       "condition": {
+        "kind": "TRANSACTION_INPUT_REFERENCE",
+        "inputName": "Indebtedness is secured by all or a material portion of the Collateral on a Junior Lien Priority basis (clause (b) category)",
+        "citation": "§1.01(b)"
+       },
+       "then": {
+        "kind": "UNLIMITED_CAPACITY",
+        "citation": "§1.01(b)",
+        "inventoryItemIds": [
+         "inv-item:cf5d0d1981f56a0478bad80a"
+        ],
+        "gatedBy": {
+         "kind": "OR",
+         "citation": "§1.01(b)",
+         "operands": [
+          {
+           "kind": "COMPARE",
+           "citation": "§1.01(b)",
+           "left": {
+            "kind": "METRIC_REFERENCE",
+            "metricName": "Senior Secured Leverage Ratio",
+            "valueType": "RATIO",
+            "excerpt": "on a Pro Forma Basis, for the applicable Test Period"
+           },
+           "operator": "LTE",
+           "right": {
+            "kind": "MAX",
+            "citation": "§1.01(b)",
+            "operands": [
+             {
+              "kind": "RATIO",
+              "value": 3,
+              "citation": "§1.01(b)",
+              "excerpt": "3.00:1.00",
+              "inventoryItemIds": [
+               "inv-item:cf5d0d1981f56a0478bad80a"
+              ]
+             },
+             {
+              "kind": "METRIC_REFERENCE",
+              "metricName": "Senior Secured Leverage Ratio",
+              "valueType": "RATIO",
+              "excerpt": "the Senior Secured Leverage Ratio immediately prior to such issuance, incurrence or assumption of such Indebtedness"
+             }
+            ]
+           }
+          },
+          {
+           "kind": "COMPARE",
+           "citation": "§1.01(b)",
+           "left": {
+            "kind": "METRIC_REFERENCE",
+            "metricName": "Interest Coverage Ratio",
+            "valueType": "RATIO",
+            "excerpt": "for the applicable Test Period"
+           },
+           "operator": "GTE",
+           "right": {
+            "kind": "MIN",
+            "citation": "§1.01(b)",
+            "operands": [
+             {
+              "kind": "RATIO",
+              "value": 1.75,
+              "citation": "§1.01(b)",
+              "excerpt": "1.75:1.00",
+              "inventoryItemIds": [
+               "inv-item:cf5d0d1981f56a0478bad80a"
+              ]
+             },
+             {
+              "kind": "METRIC_REFERENCE",
+              "metricName": "Interest Coverage Ratio",
+              "valueType": "RATIO",
+              "excerpt": "the Interest Coverage Ratio immediately prior to such issuance, incurrence or assumption of such Indebtedness"
+             }
+            ]
+           }
+          }
+         ]
+        }
+       },
+       "else": {
+        "kind": "UNLIMITED_CAPACITY",
+        "citation": "§1.01(c)",
+        "inventoryItemIds": [
+         "inv-item:5f126ce5217a759268f65339"
+        ],
+        "gatedBy": {
+         "kind": "OR",
+         "citation": "§1.01(c)",
+         "operands": [
+          {
+           "kind": "COMPARE",
+           "citation": "§1.01(c)",
+           "left": {
+            "kind": "METRIC_REFERENCE",
+            "metricName": "Total Leverage Ratio",
+            "valueType": "RATIO",
+            "excerpt": "on a Pro Forma Basis"
+           },
+           "operator": "LTE",
+           "right": {
+            "kind": "MAX",
+            "citation": "§1.01(c)",
+            "operands": [
+             {
+              "kind": "RATIO",
+              "value": 4,
+              "citation": "§1.01(c)",
+              "excerpt": "4.00:1.00",
+              "inventoryItemIds": [
+               "inv-item:5f126ce5217a759268f65339"
+              ]
+             },
+             {
+              "kind": "METRIC_REFERENCE",
+              "metricName": "Total Leverage Ratio",
+              "valueType": "RATIO",
+              "excerpt": "the Total Leverage Ratio immediately prior to such issuance, incurrence or assumption of such Indebtedness"
+             }
+            ]
+           }
+          },
+          {
+           "kind": "COMPARE",
+           "citation": "§1.01(c)",
+           "left": {
+            "kind": "METRIC_REFERENCE",
+            "metricName": "Interest Coverage Ratio",
+            "valueType": "RATIO"
+           },
+           "operator": "GTE",
+           "right": {
+            "kind": "MIN",
+            "citation": "§1.01(c)",
+            "operands": [
+             {
+              "kind": "RATIO",
+              "value": 1.75,
+              "citation": "§1.01(c)",
+              "excerpt": "1.75:1.00",
+              "inventoryItemIds": [
+               "inv-item:5f126ce5217a759268f65339"
+              ]
+             },
+             {
+              "kind": "METRIC_REFERENCE",
+              "metricName": "Interest Coverage Ratio",
+              "valueType": "RATIO",
+              "excerpt": "the Interest Coverage Ratio immediately prior to such issuance, incurrence or assumption of such Indebtedness"
+             }
+            ]
+           }
+          }
+         ]
+        }
+       }
+      }
+     },
+     "dependsOnTerms": [
+      "First Lien Leverage Ratio",
+      "Senior Secured Leverage Ratio",
+      "Total Leverage Ratio",
+      "Interest Coverage Ratio",
+      "Pro Forma Basis",
+      "Test Period",
+      "Secured Obligations",
+      "Collateral",
+      "Junior Lien Priority"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The categorical dispatch among clauses (a)/(b)/(c) is modeled via TRANSACTION_INPUT_REFERENCE proxies for the lien/security category of the Indebtedness, since the IR node set has no native categorical (non-numeric) dispatch primitive; this is a faithful but proxy representation.",
+      "getReferencedProvision('Section 1.08') was attempted (the pro forma calculation mechanics this definition incorporates 'in accordance with Section 1.08'); only the section's heading/lead-in was returned, not its substantive sub-clauses, so the precise pro forma computation mechanics remain unresolved.",
+      "The 'immediately prior to such issuance, incurrence or assumption' comparator reuses the same METRIC_REFERENCE metricName as the pro forma value; the IR lacks a transaction-relative temporal snapshot qualifier to formally distinguish the two points in time within one expression (captured only via excerpt text on each node)."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, at any date, an aggregate principal amount that, after giving [effect] to the issuance, incurrence or assumption thereof on a Pro Forma Basis, in accordance with Section 1.08, so long as: (a) ... (b) ... (c) ...",
+     "inventoryItemIds": [
+      "inv-item:0919eeb8c68cf9ee5844cc9d",
+      "inv-item:cf5d0d1981f56a0478bad80a",
+      "inv-item:5f126ce5217a759268f65339"
+     ]
+    },
+    {
+     "localRef": "d-ra",
+     "termName": "Receivables Assets",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained descriptive/enumerative definition fully stated."
+     ],
+     "citation": "§1.01",
+     "excerpt": "(a) any accounts receivable, mortgage receivables, equipment receivables ... and (b) all collateral securing such receivable or asset ...",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-rf",
+     "termName": "Receivables Fees",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Receivables Assets",
+      "Permitted Receivables Financing",
+      "Restricted Subsidiary"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive definition fully stated; 'Permitted Receivables Financing' is referenced adjectivally but is not needed to represent this definition's own descriptive scope."
+     ],
+     "citation": "§1.01",
+     "excerpt": "distributions or payments made directly or by means of discounts with respect to any Receivables Assets ... in connection with any Permitted Receivables Financing.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-rnrf",
+     "termName": "Receivables Non-Recourse Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Receivables Assets",
+      "Restricted Party",
+      "Receivables Subsidiary",
+      "Standard Securitization Undertakings",
+      "Limited Originator Recourse"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive, structural definition fully stated in the source text; dependent terms are used descriptively, not quantitatively."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any of one or more receivables financing facilities ... the obligations of which are non-recourse (except for Standard Securitization Undertakings or Limited Originator Recourse) to any Restricted Party ...",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-rrf",
+     "termName": "Receivables Recourse Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Receivables Assets"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive definition fully stated."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any of one or more receivables financing facilities ... of Receivable Assets that has financing terms, covenants, termination events and other material provisions on market terms for similar transactions.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-rs",
+     "termName": "Receivables Subsidiary",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Subsidiary",
+      "Permitted Receivables Financing"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive definition fully stated."
+     ],
+     "citation": "§1.01",
+     "excerpt": "any Subsidiary formed for the purpose of facilitating or entering into, one or more Permitted Receivables Financings and in each case engages only in activities reasonably related or incidental thereto.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-recipient",
+     "termName": "Recipient",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Administrative Agent",
+      "Lender"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained, fully stated."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the Administrative Agent or any Lender, as applicable.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-reftime",
+     "termName": "Reference Time",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Benchmark",
+      "Term SOFR Rate",
+      "U.S. Government Securities Business Day",
+      "Administrative Agent"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive/procedural timing definition fully stated; not itself a dollar/ratio computation."
+     ],
+     "citation": "§1.01",
+     "excerpt": "(a) if such Benchmark is the Term SOFR Rate, 5:00 a.m. (Chicago time) on the day that is two (2) U.S. Government Securities Business Days preceding the date of such setting or (b) if such Benchmark is other than the Term SOFR Rate, the time determined by the Administrative Agent in its reasonable discretion.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-refinance",
+     "termName": "Refinance",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Indebtedness",
+      "Disqualified Stock",
+      "Preferred Stock"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained verb definition fully stated."
+     ],
+     "citation": "§1.01",
+     "excerpt": "to refinance, extend, renew, refund, repay, prepay, purchase, redeem, defease or retire, or to issue other Indebtedness, Disqualified Stock or Preferred Stock in exchange or replacement for, such Indebtedness, Disqualified Stock or Preferred Stock, in whole or in part.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-refinanced",
+     "termName": "Refinanced",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Refinance"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Trivially declared as a correlative form of 'Refinance'."
+     ],
+     "citation": "§1.01",
+     "excerpt": "shall have correlative meanings.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-refinancing",
+     "termName": "Refinancing",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Refinance"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Trivially declared as a correlative form of 'Refinance'."
+     ],
+     "citation": "§1.01",
+     "excerpt": "shall have correlative meanings.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-refinanced-debt",
+     "termName": "Refinanced Debt",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Credit Agreement Refinancing Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "§1.01 pointer resolved via getDefinition('Credit Agreement Refinancing Indebtedness'): 'Refinanced Debt' means the existing Loans (including any successive Credit Agreement Refinancing Indebtedness) being exchanged, extended, renewed, replaced or refinanced."
+     ],
+     "citation": "§1.01; definition of \"Credit Agreement Refinancing Indebtedness\"",
+     "excerpt": "has the meaning assigned to such term in the definition of \"Credit Agreement Refinancing Indebtedness.\" [there: 'existing Loans (including any successive Credit Agreement Refinancing Indebtedness) (\"Refinanced Debt\")']",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-refi-amend",
+     "termName": "Refinancing Amendment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Additional Lender",
+      "Credit Agreement Refinancing Indebtedness"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Definitional scope (who must execute it, and that it relates to Credit Agreement Refinancing Indebtedness) is fully stated in §1.01; the reference to Section 2.19 concerns only the procedural mechanics of effecting such an amendment, not the definitional scope itself. getReferencedProvision('Section 2.19') was attempted and returned only the section heading, confirming no additional definitional content was omitted from §1.01's own text."
+     ],
+     "citation": "§1.01",
+     "excerpt": "an amendment to this Agreement executed by each of (a) the Borrowers, (b) the Administrative Agent and (c) each Additional Lender and Lender that agrees to provide all or any portion of the Credit Agreement Refinancing Indebtedness being incurred pursuant thereto, in accordance with Section 2.19.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-refi-debt",
+     "termName": "Refinancing Indebtedness",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "the substantive proviso conditions attached to 'Refinancing Indebtedness' in Section 6.01(b)(13) (e.g., principal amount, maturity/weighted average life, guarantee and security limitations)",
+      "reason": "getReferencedProvision('Section 6.01(b)(13)') was attempted; the returned text supplied the core defining sentence (Indebtedness that serves to Refinance other permitted debt) but ended at 'provided, however, that such Refinancing Indebtedness:' - the lettered proviso sub-conditions were not included in the returned span",
+      "sourceEvidence": "§6.01(b)(13)"
+     },
+     "dependsOnTerms": [
+      "Refinance",
+      "Indebtedness",
+      "Disqualified Stock",
+      "Preferred Stock"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Core concept (debt that serves to Refinance other permitted debt under enumerated basket clauses) is captured; the detailed proviso conditions limiting such Refinancing Indebtedness were not retrievable within the returned section span."
+     ],
+     "citation": "§1.01; §6.01(b)(13)",
+     "excerpt": "has the meaning assigned to such term in Section 6.01(b)(13). [there: 'the incurrence or issuance ... of Indebtedness ... which serves to Refinance any Indebtedness ... (the \"Refinancing Indebtedness\") on or prior to its respective maturity; provided, however, that such Refinancing Indebtedness:']",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-refunding-cs",
+     "termName": "Refunding Capital Stock",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "the substantive definition of 'Refunding Capital Stock' located in Section 6.08(b)(2)",
+      "reason": "getReferencedProvision('Section 6.08(b)(2)') was attempted; the tool returned only the empty enumerator marker '(2)' with no substantive text, so the definition's content could not be resolved",
+      "sourceEvidence": "§6.08(b)(2)"
+     },
+     "dependsOnTerms": [
+      "Capital Stock"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "§1.01 is a pure forward pointer to Section 6.08(b)(2); retrieval was attempted but returned no substantive content."
+     ],
+     "citation": "§1.01; §6.08(b)(2)",
+     "excerpt": "has the meaning assigned to such term in Section 6.08(b)(2).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d-register",
+     "termName": "Register",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Administrative Agent",
+      "Lender",
+      "Commitment",
+      "Assignment and Assumption",
+      "Defaulting Lender"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "§1.01 pointer resolved via getReferencedProvision('Section 9.04(b)(iv)'), which supplies the full substantive definition: the register maintained by the Administrative Agent recording Lenders' names, addresses, Commitments and Loan amounts."
+     ],
+     "citation": "§1.01; §9.04(b)(iv)",
+     "excerpt": "has the meaning assigned to such term in Section 9.04(b)(iv). [there: '...a register for the recordation of the names and addresses of the Lenders, and the Commitment of, and principal and stated interest amount of the Loans owing to, each Lender ... (the \"Register\").']",
+     "inventoryItemIds": []
+    }
+   ],
+   "sharedCapacities": [],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01, 'Ratio Incremental Amount' clauses (a)-(c): distinct ratio tests apply depending on whether new Indebtedness is (a) pari passu first-lien secured, (b) junior-lien secured, or (c) unsecured/junior-priority - three mutually exclusive categories keyed on the security/lien attribute of the Indebtedness, not on a numeric or date value.",
+     "semanticRequirement": "A primitive to dispatch among mutually-exclusive alternative sub-expressions keyed on a categorical (non-numeric, non-temporal) attribute of the transaction being tested (e.g., lien priority/security category of new Indebtedness).",
+     "whyExistingPrimitivesFail": "SCHEDULE only keys on date ranges. IF only carries a single boolean-like condition per branch, forcing a manually-nested chain of TRANSACTION_INPUT_REFERENCE proxies rather than a single construct that declares all N mutually-exclusive categories and their associated tests together.",
+     "candidateGeneralizedPrimitive": "CASE_DISPATCH(operand: a categorical TRANSACTION_INPUT_REFERENCE or METRIC_REFERENCE; cases: [{matchValue, value}]; defaultValue) - a categorical analogue to SCHEDULE."
+    },
+    {
+     "sourceEvidence": "§1.01, clauses (a)-(c): each compares a pro forma (post-incurrence) ratio against the greater/lesser of a fixed threshold and 'the [Ratio] immediately prior to such issuance, incurrence or assumption of such Indebtedness' - the same metric referenced at two different transaction-relative points in time within a single expression.",
+     "semanticRequirement": "A way to reference the same metric at a specific transaction-relative temporal snapshot (e.g. 'immediately prior to this transaction') distinct from its pro forma/current value, within one expression tree.",
+     "whyExistingPrimitivesFail": "AS_OF only supports a fixed ISO calendar date, not a transaction-relative point in time ('immediately prior to the incurrence being tested'); reusing the same METRIC_REFERENCE metricName twice loses the formal distinction between the two snapshots.",
+     "candidateGeneralizedPrimitive": "RELATIVE_SNAPSHOT(operand: METRIC_REFERENCE, relativeReference: enum e.g. 'IMMEDIATELY_PRIOR_TO_TRANSACTION' | 'PRO_FORMA_POST_TRANSACTION')."
+    }
+   ],
+   "overallNotes": [
+    "This submission compiles the batch of independently-defined terms appearing in the supplied §1.01 excerpt (PTE through Register). Every distinct defined term found in the supplied source was extracted as its own WireDefinition; none were dropped as 'non-salient'.",
+    "The only term carrying material quantitative/ratio economics is 'Ratio Incremental Amount' (clauses (a)-(c)), which corresponds to all three Frozen Semantic Inventory items; all three are consumed directly on the RATIO literal and UNLIMITED_CAPACITY nodes that carry their respective values (2.00:1.00, 3.00:1.00/1.75:1.00, 4.00:1.00/1.75:1.00).",
+    "All quantitative values flagged by the deterministic scan (RATIO 2.00, 3.00, 1.75, 4.00, 1.75) correspond exactly to the three inventory items' own stated values and are consumed on the corresponding literal nodes - no additional uncovered material values were found.",
+    "Several terms in §1.01 are pure forward pointers to other sections of the same agreement (Public Lender -> §5.01; QFC Credit Support -> §9.22; Refinanced Debt -> definition of Credit Agreement Refinancing Indebtedness; Refinancing Indebtedness -> §6.01(b)(13); Refunding Capital Stock -> §6.08(b)(2); Register -> §9.04(b)(iv)). Per the mandatory-retrieval rule, each was attempted via getReferencedProvision/getDefinition before any MISSING_CONTEXT/PARTIAL/UNSUPPORTED determination. QFC Credit Support, Refinanced Debt and Register were fully resolved and marked COMPLETE; Refinancing Indebtedness was partially resolved (core sentence captured, lettered proviso conditions not returned by the tool) and marked PARTIAL; Public Lender and Refunding Capital Stock could not be substantively resolved (tool returned only an unrelated heading or an empty numbering marker) and are marked MISSING_CONTEXT.",
+    "Section 1.08 (the pro forma calculation methodology incorporated by reference into 'Ratio Incremental Amount') was also attempted; only its heading was returned, not its substantive sub-clauses, which is reflected in that definition's PARTIAL sufficiency rather than a confident COMPLETE claim.",
+    "No independently operative WireRule (permission/prohibition/ratio test) is present in this source excerpt - it is purely a definitions article - so the rules array is empty."
+   ],
+   "inventoryDispositions": []
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T21:41:47.179Z",
+   "inputTokens": 69183,
+   "outputTokens": 37155,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 321477,
+   "calculatedCostUsd": 0.509916
+  },
+  "cacheKey": "e4ca42337a1133b7b1a7f595a6e6c7a0a5ea2a63d6196e9890c25548c954fda3",
+  "compiledAt": "2026-09-14T21:41:47.179Z"
+ },
+ "wave": "C",
+ "attemptsSoFar": 1
+}

@@ -1,0 +1,2637 @@
+{
+ "record": {
+  "stage": 2,
+  "attempt": 1,
+  "shardId": "shard:50e26ec2fb25035a3b7b",
+  "shardHash": "fe4747230a2a39c766c1141d493a8122875d8b1edc3d66087521d01404c2a075",
+  "ordinal": 33,
+  "ownedUnits": 16,
+  "sourceChars": 6520,
+  "contextEntries": 4,
+  "contextChars": 3378,
+  "unresolvedContext": 0,
+  "oversized": false,
+  "ownedItems": 2,
+  "ownedMaterialItems": 2,
+  "estimatedFirstTurnInputTokens": 24755,
+  "preCallEstimate": {
+   "inputTokens": 81444,
+   "outputTokens": 41500,
+   "usd": 0.5778880000000001
+  },
+  "actual": {
+   "inputTokens": 55994,
+   "outputTokens": 20942,
+   "turns": 2,
+   "latencyMs": 178001,
+   "costUsd": 0.321408,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0
+  },
+  "compileStatus": "REVIEW_REQUIRED",
+  "shardStatus": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "toolCalls": 3,
+  "toolCallNames": [
+   "getReferencedProvision",
+   "getDefinition",
+   "getDefinition"
+  ],
+  "rawSubmissionRetained": true,
+  "rules": 0,
+  "definitions": 21,
+  "sharedCapacities": 0,
+  "dispositionsEmitted": 0,
+  "ownedAccountability": {
+   "represented": 2,
+   "dispositioned": 0,
+   "missingMaterial": 0,
+   "valuesRepresented": 2,
+   "valuesMissing": 0,
+   "danglingLineage": 0,
+   "semanticallyComplete": false,
+   "byDisposition": {
+    "REPRESENTED": 2
+   }
+  },
+  "lineageClaimsOnUnownedItems": 0,
+  "definitionsOutsideOwnedUnits": [
+   "Tax Amount",
+   "Tax Distribution",
+   "Tax Group",
+   "Term SOFR",
+   "Term SOFR Determination Day"
+  ],
+  "unresolvedIssues": [
+   "[definition[d2]] Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+   "[definition[d3]] Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+   "[definition[d4]] Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+   "[definition[d7].MAX[0]] day-count lookback/fallback publication mechanics have no IR node type for representing a bounded backward-looking rate substitution",
+   "[definition[d7]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+   "[definition[d12]] The ABL Intercreditor Agreement is confirmed absent from this document package (no INTERCREDITOR_AGREEMENT document exists in the package), so the substantive scope of 'CF Debt Priority Collateral' cannot be retrieved.",
+   "[definition[d17].MAX[0]] day-count sampling mechanics have no IR primitive for a bounded, time-stamped rate sampling rule",
+   "[definition[d17]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+   "[definition[d18]] bounded backward-looking rate substitution/fallback mechanics have no IR node type",
+   "Source is Section 1.01 definitions; all 21 distinct defined terms present in the supplied text were extracted as separate WireDefinitions per the multiple-definitions rule.",
+   "Tax Amount, Tax Distribution, and Tax Group are each defined solely by cross-reference to Section 6.08(b)(16)(b); getReferencedProvision was attempted and returned only an empty/truncated stub ('(b) ') with UNKNOWN_SUPERSESSION_STATUS, so these remain MISSING_CONTEXT.",
+   "Term Priority Collateral is defined solely by reference to 'CF Debt Priority Collateral' in the ABL Intercreditor Agreement; that agreement is confirmed absent from the document package (REFERENCED_DOCUMENT_ABSENT), so this remains MISSING_CONTEXT even though the ABL Intercreditor Agreement's own top-level definition was available.",
+   "Consolidated Total Debt and Excluded Revolving Loans were independently fetched via getDefinition to properly compose the Total Leverage Ratio formula; both resolved as CURRENT operative text, supporting a COMPLETE sufficiency for Total Leverage Ratio.",
+   "The two frozen-inventory items (Threshold Amount MAX formula; Term Priority Collateral cross-reference dependency) were both consumed on their respective WireDefinitions; no inventory dispositions were needed beyond that consumption.",
+   "Deterministically-detected quantitative values (Nov 19 2007 launch date, 2/5 Business Day windows, four instances of a 0.00% floor) were addressed: the 0.00% floors are represented via MAX(...,PERCENT 0) nodes on Term CORRA and Term SOFR Rate; the Business Day sampling/lookback windows are captured within nested UNSUPPORTED nodes (no clean IR primitive exists for bounded rate-fallback mechanics - see irExtensionCandidates); the TARGET2 launch date is non-operative descriptive color not feeding any calculation and was left un-consumed."
+  ],
+  "errorSummary": null,
+  "transportNormalization": {
+   "applied": false,
+   "decodedFields": [],
+   "audit": {
+    "version": "submit-transport-normalization.v1",
+    "applied": false,
+    "fields": [
+     {
+      "field": "rules",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "definitions",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "sharedCapacities",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "irExtensionCandidates",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     },
+     {
+      "field": "inventoryDispositions",
+      "originalType": "absent",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "absent - left absent for the schema's own default/optional handling"
+     },
+     {
+      "field": "overallNotes",
+      "originalType": "array",
+      "originalStringSha256": null,
+      "originalStringLength": null,
+      "parseAttempted": false,
+      "parseSuccess": false,
+      "decodedType": null,
+      "decodedArrayLength": null,
+      "applied": false,
+      "reason": "already an array - untouched"
+     }
+    ]
+   }
+  }
+ },
+ "result": {
+  "shardId": "shard:50e26ec2fb25035a3b7b",
+  "shardHash": "fe4747230a2a39c766c1141d493a8122875d8b1edc3d66087521d01404c2a075",
+  "status": "SHARD_MISSING_CONTEXT",
+  "composition": {
+   "rules": [],
+   "definitions": [
+    {
+     "definitionId": "ir-definition:dcff188e6f144488b33056bd",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "TARGET2",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive, non-computational identification of a payment system; launch date is historical/contextual and does not feed any calculation."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "the Trans-European Automated Real-time Gross Settlement Express Transfer payment system which utilizes a single shared platform and which was launched on November 19, 2007."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:91416fc108e32a73143fee51",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Tax Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning set forth in Section 6.08(b)(16)(b)\"",
+      "semanticDescription": "Tax Amount is defined entirely by cross-reference to Section 6.08(b)(16)(b)",
+      "reason": "Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:5c945170f225d412c3541ee9"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition is wholly by cross-reference; referenced Section 6.08(b)(16)(b) text could not be retrieved despite attempted lookup.",
+      "Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning set forth in Section 6.08(b)(16)(b)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:197fa6d753826b0e3fab3d33",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Tax Distribution",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning set forth in Section 6.08(b)(16)(b)\"",
+      "semanticDescription": "Tax Distribution is defined entirely by cross-reference to Section 6.08(b)(16)(b)",
+      "reason": "Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:3390d50908960b45fc569e54"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition is wholly by cross-reference; referenced Section 6.08(b)(16)(b) text could not be retrieved despite attempted lookup.",
+      "Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning set forth in Section 6.08(b)(16)(b)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:62b2a4f7b2d47f06df70ca8b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Tax Group",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"has the meaning set forth in Section 6.08(b)(16)(b)\"",
+      "semanticDescription": "Tax Group is defined entirely by cross-reference to Section 6.08(b)(16)(b)",
+      "reason": "Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:37ce97b2e384dd4bdb2046d9"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition is wholly by cross-reference; referenced Section 6.08(b)(16)(b) text could not be retrieved despite attempted lookup.",
+      "Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning set forth in Section 6.08(b)(16)(b)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:09f4e37bf78a1d7ac71bca62",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Taxes",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained descriptive definition; not a numeric formula."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means any and all present or future taxes, levies, imposts, duties, deductions, charges or withholdings imposed by any Governmental Authority, including any interest, additions to tax or penalties applicable thereto."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:d10982d83f9f08fd15eb6138",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Term Commitment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUM",
+      "type": "MONEY",
+      "exprId": "ir-expr:99a8c9ec9370cbd9baa2e689",
+      "operands": [
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "MONEY",
+        "termName": "Initial Term Commitment",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:96b1e0a8c568b9912ab7db7f"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "MONEY",
+        "termName": "Incremental Term Commitment",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:b0ddc83a8b561b2b7bbd79d7"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "MONEY",
+        "termName": "Other Term Commitment",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:a3437f05709542f7aa103698"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Initial Term Commitment",
+      "Incremental Term Commitment",
+      "Other Term Commitment"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Term is fully quoted as a composite of three other defined commitment terms; underlying component terms are not themselves needed to represent this term's own structure."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, with respect to each Term Lender, its Initial Term Commitment, Incremental Term Commitment and/or Other Term Commitment."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f0d89f7ed22d4919107c52b8",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Term CORRA",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "(no evidence captured)",
+      "semanticDescription": "unrecognized or malformed expression (kind=\"MAX\")",
+      "reason": "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "attemptedStructure": {
+       "kind": "MAX",
+       "type": "NUMBER",
+       "exprId": "ir-expr:57ed43f295e541f73fab3b46",
+       "operands": [
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01: \"...the Term CORRA Reference Rate for a tenor comparable to the applicable Interest Period on the day...that is two (2) Business Days prior...; provided, however, that if...has not been published...then Term CORRA will be the Term CORRA Reference Rate...as published...on the first (1st) preceding Business Day...so long as such first preceding Business Day is not more than five (5) Business Days prior...\"",
+         "semanticDescription": "Procedural determination of Term CORRA: the Term CORRA Reference Rate for a tenor comparable to the applicable Interest Period, sampled two (2) Business Days prior to the first day of such Interest Period, with a fallback to the first preceding Business Day's published rate (not more than five (5) Business Days prior) if unpublished and no Benchmark Replacement Date has occurred",
+         "reason": "day-count lookback/fallback publication mechanics have no IR node type for representing a bounded backward-looking rate substitution",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:3c8828eac61aae5b11fc72e2"
+        },
+        {
+         "kind": "PERCENT",
+         "type": "PERCENT",
+         "value": 0,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:1af56cb36f2e70927f67e005"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "exprId": "ir-expr:7980be150dbe25920d689be3"
+     },
+     "dependsOnTerms": [
+      "Term CORRA Reference Rate",
+      "Term CORRA Administrator",
+      "Benchmark Replacement Date"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "0.00% floor faithfully represented via MAX; the underlying day-count sampling/fallback mechanics are UNSUPPORTED as no IR primitive expresses bounded backward-looking rate lookback.",
+      "day-count lookback/fallback publication mechanics have no IR node type for representing a bounded backward-looking rate substitution",
+      "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "provided, further, that if Term CORRA shall ever be less than 0.00%, then Term CORRA shall be deemed to be 0.00%."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:fc6a2742c7579c6989ca92b7",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Term CORRA Administrator",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive identification of an administrator entity."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means CanDeal Benchmark Administration Services Inc., TSX Inc., or any successor administrator."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:9a8b7f2299e2f36abb455082",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Term CORRA Reference Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully quoted single-sentence descriptive definition; no numeric threshold to represent."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the forward-looking term rate based on CORRA."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:3b3ba3941cce640c3fea9e1f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Term Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Term Loans"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the Term Loans provided to or for the benefit of the Borrowers pursuant to the terms of this Agreement."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:f4b22d02aa6494c12d73a34f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Term Lenders",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive, non-numeric definition of a class of Persons."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means initially the Persons listed on Schedule 2.01(b) and as of any date of determination from and after the Effective Date, any other Person that shall have become a party hereto pursuant to an Assignment and Assumption in respect of any Term Loans..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:86fb961dccc60ecb222d902f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Term Priority Collateral",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"shall mean \\\"CF Debt Priority Collateral\\\" (as defined in the ABL Intercreditor Agreement)\"",
+      "semanticDescription": "Term Priority Collateral is defined solely by reference to 'CF Debt Priority Collateral' as defined in the ABL Intercreditor Agreement",
+      "reason": "The ABL Intercreditor Agreement is confirmed absent from this document package (no INTERCREDITOR_AGREEMENT document exists in the package), so the substantive scope of 'CF Debt Priority Collateral' cannot be retrieved.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:be641e9e8e1831707388a2bb"
+     },
+     "dependsOnTerms": [
+      "CF Debt Priority Collateral",
+      "ABL Intercreditor Agreement"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition is wholly by reference to a term in an external agreement not included in this document package.",
+      "The ABL Intercreditor Agreement is confirmed absent from this document package (no INTERCREDITOR_AGREEMENT document exists in the package), so the substantive scope of 'CF Debt Priority Collateral' cannot be retrieved."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "shall mean \"CF Debt Priority Collateral\" (as defined in the ABL Intercreditor Agreement)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:8241a7f6a6e0fda7298c06d8"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:317808e57687852d9345374f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Term Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUM",
+      "type": "MONEY",
+      "exprId": "ir-expr:ee1bdeae47b07bd9d27960c2",
+      "operands": [
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "MONEY",
+        "termName": "Initial Term Loans",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:c9bd9b78037762892870c622"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "MONEY",
+        "termName": "Incremental Term Loans",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:a5a562c5cb59df78abb6542e"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "MONEY",
+        "termName": "Other Term Loans",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:8f67938bfb319568711230af"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Initial Term Loans",
+      "Incremental Term Loans",
+      "Other Term Loans"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully quoted composite definition of three other defined loan terms."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the Initial Term Loans, any Incremental Term Loans and any Other Term Loans."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:a05a5940b33842df576cbba1",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Term Maturity Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Initial Term Loan Maturity Date",
+      "Incremental Facility Amendment",
+      "Refinancing Amendment"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive categorization by loan type rather than a numeric/date formula; fully quoted."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means (a) with respect to the Initial Term Loans, the Initial Term Loan Maturity Date, (b) with respect to any Incremental Term Loans, the maturity date specified for such Incremental Term Loans in the applicable Incremental Facility Amendment and (c) with respect to any Other Term Loans, the maturity date specified for such Other Term Loans in the applicable Refinancing Amendment."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:5474cd65871a786cf08ebb62",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Term SOFR",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Term SOFR Rate"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive - identifies which rate-basis a Loan bears interest at, not a numeric formula."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "when used in reference to any Loan or Borrowing, refers to whether such Loan, or the Loans comprising such Borrowing, are bearing interest at a rate determined by reference to the Term SOFR Rate."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:fc0cebe39692cbd4d8dd1693",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Term SOFR Determination Day",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Term SOFR Reference Rate"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pointer definition; substantive content is inline within the Term SOFR Reference Rate definition, which is included in the source and captured as d18."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "has the meaning assigned to it under the definition of \"Term SOFR Reference Rate.\""
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:ab04e6ef4eb731861b24ee10",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Term SOFR Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "(no evidence captured)",
+      "semanticDescription": "unrecognized or malformed expression (kind=\"MAX\")",
+      "reason": "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "attemptedStructure": {
+       "kind": "MAX",
+       "type": "NUMBER",
+       "exprId": "ir-expr:7e2ab5bd79894ef5bf2b0541",
+       "operands": [
+        {
+         "kind": "UNSUPPORTED",
+         "type": null,
+         "sourceEvidence": "§1.01: \"the Term SOFR Reference Rate at approximately 5:00 a.m., Chicago time, two (2) U.S. Government Securities Business Days prior to the commencement of such tenor...as such rate is published by the CME Term SOFR Administrator\"",
+         "semanticDescription": "The Term SOFR Reference Rate at approximately 5:00 a.m. Chicago time, two (2) U.S. Government Securities Business Days prior to the commencement of the comparable tenor, as published by the CME Term SOFR Administrator",
+         "reason": "day-count sampling mechanics have no IR primitive for a bounded, time-stamped rate sampling rule",
+         "requiredReview": true,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:0d28fe9485780b278d28aec8"
+        },
+        {
+         "kind": "PERCENT",
+         "type": "PERCENT",
+         "value": 0,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:1af56cb36f2e70927f67e005"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "exprId": "ir-expr:b795eaf0b3a6cc5dc20d8383"
+     },
+     "dependsOnTerms": [
+      "Term SOFR Reference Rate"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "0.00% floor faithfully represented via MAX; the underlying sampling-time mechanics are UNSUPPORTED as no IR primitive expresses time-stamped rate sampling.",
+      "day-count sampling mechanics have no IR primitive for a bounded, time-stamped rate sampling rule",
+      "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "provided, that if the Term SOFR Rate shall ever be less than 0.00%, then the Term SOFR Rate shall be deemed to be 0.00%."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:564527843029153887c443cd",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Term SOFR Reference Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§1.01: \"If by 5:00 pm (New York City time) on such Term SOFR Determination Day, the 'Term SOFR Reference Rate' for the applicable tenor has not been published...then...the Term SOFR Reference Rate...will be the Term SOFR Reference Rate as published in respect of the first preceding U.S. Government Securities Business Day...so long as such first preceding...Business Day is not more than five (5) U.S. Government Securities Business Days prior...\"",
+      "semanticDescription": "Rate per annum published by the CME Term SOFR Administrator as the forward-looking term rate based on SOFR, with a fallback to the first preceding U.S. Government Securities Business Day's published rate (not more than five (5) such Business Days prior) if unpublished by 5:00pm NY time and no Benchmark Replacement Date has occurred",
+      "reason": "bounded backward-looking rate substitution/fallback mechanics have no IR node type",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:55ca07a5e5839ac7567a4b89"
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Core identification of the rate (CME-published forward-looking SOFR term rate) is captured in the excerpt; the fallback/lookback mechanics are UNSUPPORTED.",
+      "bounded backward-looking rate substitution/fallback mechanics have no IR node type"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, for any day and time (such day, the \"Term SOFR Determination Day\"), ...the rate per annum published by the CME Term SOFR Administrator and identified by the Administrative Agent as the forward-looking term rate based on SOFR."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:ad37218e21b5283f41ac28b9",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Test Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully quoted, self-contained descriptive definition of the measurement period; cross-references to Section 5.01(a)/(b) merely identify which sections govern delivery of the referenced financial statements and do not alter the period's own meaning."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, at any date of determination, (a) the period of four (4) consecutive fiscal quarters of the Initial Borrower or (b) twelve (12)-month period, in the case of clauses (a) and (b), then most recently ended on or prior to such time (taken as one (1) accounting period), in respect of which financial statements are, at the election of the Initial Borrower, (x) internally available...or (y) have been delivered pursuant to Section 5.01(a) or Section 5.01(b)."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "definitionId": "ir-definition:930efa2b63880d3f6f0afef3",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Threshold Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MAX",
+      "type": "MONEY",
+      "exprId": "ir-expr:b6ce4ce99823b3987ebf28c2",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "type": "MONEY",
+        "amount": 324000000,
+        "currency": "USD",
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:4b5532830c3dc83a9dadfd89"
+       },
+       {
+        "kind": "MULTIPLY",
+        "type": "MONEY",
+        "exprId": "ir-expr:18929b73ca238676f72f8431",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "type": "PERCENT",
+          "value": 0.45,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§1.01",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:eff837f88b7dead4096adc42"
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "type": "MONEY",
+          "metricName": "Consolidated EBITDA",
+          "companyId": "phase-3-validation-chwy",
+          "instrumentKey": "chwy-2026-revolving-credit-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        }
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Both prongs of the greater-of formula are explicit dollar/percentage values tied to a defined metric; 'Pro Forma Basis' qualifier on Consolidated EBITDA is preserved in the excerpt."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means the greater of (a) $324.0 million and (b) 45% of Consolidated EBITDA on a Pro Forma Basis as of the applicable date of determination."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:2a6efbcd8e47268fccc5081f"
+     ]
+    },
+    {
+     "definitionId": "ir-definition:fbe9ccdeac8db94e1947c3ac",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "termName": "Total Leverage Ratio",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DIVIDE",
+      "type": "NUMBER",
+      "exprId": "ir-expr:4c735fd17084c2e23b7d3a6d",
+      "numerator": {
+       "kind": "SUBTRACT",
+       "type": "MONEY",
+       "exprId": "ir-expr:54aab0e63c4d82465ab97f98",
+       "left": {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "Consolidated Total Debt",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:f56a4ac7c82bd3ff33c57d96"
+       },
+       "right": {
+        "kind": "METRIC_REFERENCE",
+        "type": "MONEY",
+        "metricName": "Excluded Revolving Loans",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:3ff4caef616f1fb43552ed42"
+       },
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      },
+      "denominator": {
+       "kind": "METRIC_REFERENCE",
+       "type": "MONEY",
+       "metricName": "Consolidated EBITDA",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "dependsOnTerms": [
+      "Consolidated Total Debt",
+      "Excluded Revolving Loans",
+      "Consolidated EBITDA",
+      "Test Period"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Ratio formula's two components (Consolidated Total Debt net of Excluded Revolving Loans, and Consolidated EBITDA for the Test Period) were both independently confirmed via getDefinition; the ratio itself is a straightforward DIVIDE."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": "means, on any date, the ratio of (a) Consolidated Total Debt (excluding any Excluded Revolving Loans) as of such date and to (b) Consolidated EBITDA for the Test Period as of such date."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    }
+   ],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "unresolvedIssues": [
+   "[definition[d2]] Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+   "[definition[d3]] Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+   "[definition[d4]] Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+   "[definition[d7].MAX[0]] day-count lookback/fallback publication mechanics have no IR node type for representing a bounded backward-looking rate substitution",
+   "[definition[d7]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+   "[definition[d12]] The ABL Intercreditor Agreement is confirmed absent from this document package (no INTERCREDITOR_AGREEMENT document exists in the package), so the substantive scope of 'CF Debt Priority Collateral' cannot be retrieved.",
+   "[definition[d17].MAX[0]] day-count sampling mechanics have no IR primitive for a bounded, time-stamped rate sampling rule",
+   "[definition[d17]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+   "[definition[d18]] bounded backward-looking rate substitution/fallback mechanics have no IR node type",
+   "Source is Section 1.01 definitions; all 21 distinct defined terms present in the supplied text were extracted as separate WireDefinitions per the multiple-definitions rule.",
+   "Tax Amount, Tax Distribution, and Tax Group are each defined solely by cross-reference to Section 6.08(b)(16)(b); getReferencedProvision was attempted and returned only an empty/truncated stub ('(b) ') with UNKNOWN_SUPERSESSION_STATUS, so these remain MISSING_CONTEXT.",
+   "Term Priority Collateral is defined solely by reference to 'CF Debt Priority Collateral' in the ABL Intercreditor Agreement; that agreement is confirmed absent from the document package (REFERENCED_DOCUMENT_ABSENT), so this remains MISSING_CONTEXT even though the ABL Intercreditor Agreement's own top-level definition was available.",
+   "Consolidated Total Debt and Excluded Revolving Loans were independently fetched via getDefinition to properly compose the Total Leverage Ratio formula; both resolved as CURRENT operative text, supporting a COMPLETE sufficiency for Total Leverage Ratio.",
+   "The two frozen-inventory items (Threshold Amount MAX formula; Term Priority Collateral cross-reference dependency) were both consumed on their respective WireDefinitions; no inventory dispositions were needed beyond that consumption.",
+   "Deterministically-detected quantitative values (Nov 19 2007 launch date, 2/5 Business Day windows, four instances of a 0.00% floor) were addressed: the 0.00% floors are represented via MAX(...,PERCENT 0) nodes on Term CORRA and Term SOFR Rate; the Business Day sampling/lookback windows are captured within nested UNSUPPORTED nodes (no clean IR primitive exists for bounded rate-fallback mechanics - see irExtensionCandidates); the TARGET2 launch date is non-operative descriptive color not feeding any calculation and was left un-consumed."
+  ],
+  "reusedFromHash": false,
+  "attempts": 1,
+  "telemetry": {
+   "inputTokens": 55994,
+   "outputTokens": 20942,
+   "costUsd": 0.321408
+  }
+ },
+ "compile": {
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "MISSING_CONTEXT",
+   "OPERATIVE_STATE_UNRESOLVED"
+  ],
+  "errorDetail": null,
+  "rules": [],
+  "definitions": [
+   {
+    "definitionId": "ir-definition:dcff188e6f144488b33056bd",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "TARGET2",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive, non-computational identification of a payment system; launch date is historical/contextual and does not feed any calculation."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "the Trans-European Automated Real-time Gross Settlement Express Transfer payment system which utilizes a single shared platform and which was launched on November 19, 2007."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:91416fc108e32a73143fee51",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Tax Amount",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning set forth in Section 6.08(b)(16)(b)\"",
+     "semanticDescription": "Tax Amount is defined entirely by cross-reference to Section 6.08(b)(16)(b)",
+     "reason": "Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:5c945170f225d412c3541ee9"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Definition is wholly by cross-reference; referenced Section 6.08(b)(16)(b) text could not be retrieved despite attempted lookup.",
+     "Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning set forth in Section 6.08(b)(16)(b)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:197fa6d753826b0e3fab3d33",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Tax Distribution",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning set forth in Section 6.08(b)(16)(b)\"",
+     "semanticDescription": "Tax Distribution is defined entirely by cross-reference to Section 6.08(b)(16)(b)",
+     "reason": "Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:3390d50908960b45fc569e54"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Definition is wholly by cross-reference; referenced Section 6.08(b)(16)(b) text could not be retrieved despite attempted lookup.",
+     "Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning set forth in Section 6.08(b)(16)(b)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:62b2a4f7b2d47f06df70ca8b",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Tax Group",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"has the meaning set forth in Section 6.08(b)(16)(b)\"",
+     "semanticDescription": "Tax Group is defined entirely by cross-reference to Section 6.08(b)(16)(b)",
+     "reason": "Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:37ce97b2e384dd4bdb2046d9"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Definition is wholly by cross-reference; referenced Section 6.08(b)(16)(b) text could not be retrieved despite attempted lookup.",
+     "Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning set forth in Section 6.08(b)(16)(b)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:09f4e37bf78a1d7ac71bca62",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Taxes",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully self-contained descriptive definition; not a numeric formula."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means any and all present or future taxes, levies, imposts, duties, deductions, charges or withholdings imposed by any Governmental Authority, including any interest, additions to tax or penalties applicable thereto."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:d10982d83f9f08fd15eb6138",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Term Commitment",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "SUM",
+     "type": "MONEY",
+     "exprId": "ir-expr:99a8c9ec9370cbd9baa2e689",
+     "operands": [
+      {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "MONEY",
+       "termName": "Initial Term Commitment",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:96b1e0a8c568b9912ab7db7f"
+      },
+      {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "MONEY",
+       "termName": "Incremental Term Commitment",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:b0ddc83a8b561b2b7bbd79d7"
+      },
+      {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "MONEY",
+       "termName": "Other Term Commitment",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:a3437f05709542f7aa103698"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Initial Term Commitment",
+     "Incremental Term Commitment",
+     "Other Term Commitment"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Term is fully quoted as a composite of three other defined commitment terms; underlying component terms are not themselves needed to represent this term's own structure."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, with respect to each Term Lender, its Initial Term Commitment, Incremental Term Commitment and/or Other Term Commitment."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f0d89f7ed22d4919107c52b8",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Term CORRA",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "(no evidence captured)",
+     "semanticDescription": "unrecognized or malformed expression (kind=\"MAX\")",
+     "reason": "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "attemptedStructure": {
+      "kind": "MAX",
+      "type": "NUMBER",
+      "exprId": "ir-expr:57ed43f295e541f73fab3b46",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01: \"...the Term CORRA Reference Rate for a tenor comparable to the applicable Interest Period on the day...that is two (2) Business Days prior...; provided, however, that if...has not been published...then Term CORRA will be the Term CORRA Reference Rate...as published...on the first (1st) preceding Business Day...so long as such first preceding Business Day is not more than five (5) Business Days prior...\"",
+        "semanticDescription": "Procedural determination of Term CORRA: the Term CORRA Reference Rate for a tenor comparable to the applicable Interest Period, sampled two (2) Business Days prior to the first day of such Interest Period, with a fallback to the first preceding Business Day's published rate (not more than five (5) Business Days prior) if unpublished and no Benchmark Replacement Date has occurred",
+        "reason": "day-count lookback/fallback publication mechanics have no IR node type for representing a bounded backward-looking rate substitution",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:3c8828eac61aae5b11fc72e2"
+       },
+       {
+        "kind": "PERCENT",
+        "type": "PERCENT",
+        "value": 0,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:1af56cb36f2e70927f67e005"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "exprId": "ir-expr:7980be150dbe25920d689be3"
+    },
+    "dependsOnTerms": [
+     "Term CORRA Reference Rate",
+     "Term CORRA Administrator",
+     "Benchmark Replacement Date"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "0.00% floor faithfully represented via MAX; the underlying day-count sampling/fallback mechanics are UNSUPPORTED as no IR primitive expresses bounded backward-looking rate lookback.",
+     "day-count lookback/fallback publication mechanics have no IR node type for representing a bounded backward-looking rate substitution",
+     "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "provided, further, that if Term CORRA shall ever be less than 0.00%, then Term CORRA shall be deemed to be 0.00%."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:fc6a2742c7579c6989ca92b7",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Term CORRA Administrator",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive identification of an administrator entity."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means CanDeal Benchmark Administration Services Inc., TSX Inc., or any successor administrator."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:9a8b7f2299e2f36abb455082",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Term CORRA Reference Rate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully quoted single-sentence descriptive definition; no numeric threshold to represent."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the forward-looking term rate based on CORRA."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:3b3ba3941cce640c3fea9e1f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Term Facility",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Term Loans"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the Term Loans provided to or for the benefit of the Borrowers pursuant to the terms of this Agreement."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:f4b22d02aa6494c12d73a34f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Term Lenders",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive, non-numeric definition of a class of Persons."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means initially the Persons listed on Schedule 2.01(b) and as of any date of determination from and after the Effective Date, any other Person that shall have become a party hereto pursuant to an Assignment and Assumption in respect of any Term Loans..."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:86fb961dccc60ecb222d902f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Term Priority Collateral",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"shall mean \\\"CF Debt Priority Collateral\\\" (as defined in the ABL Intercreditor Agreement)\"",
+     "semanticDescription": "Term Priority Collateral is defined solely by reference to 'CF Debt Priority Collateral' as defined in the ABL Intercreditor Agreement",
+     "reason": "The ABL Intercreditor Agreement is confirmed absent from this document package (no INTERCREDITOR_AGREEMENT document exists in the package), so the substantive scope of 'CF Debt Priority Collateral' cannot be retrieved.",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:be641e9e8e1831707388a2bb"
+    },
+    "dependsOnTerms": [
+     "CF Debt Priority Collateral",
+     "ABL Intercreditor Agreement"
+    ],
+    "sufficiency": "MISSING_CONTEXT",
+    "sufficiencyReasons": [
+     "Definition is wholly by reference to a term in an external agreement not included in this document package.",
+     "The ABL Intercreditor Agreement is confirmed absent from this document package (no INTERCREDITOR_AGREEMENT document exists in the package), so the substantive scope of 'CF Debt Priority Collateral' cannot be retrieved."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "shall mean \"CF Debt Priority Collateral\" (as defined in the ABL Intercreditor Agreement)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:8241a7f6a6e0fda7298c06d8"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:317808e57687852d9345374f",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Term Loans",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "SUM",
+     "type": "MONEY",
+     "exprId": "ir-expr:ee1bdeae47b07bd9d27960c2",
+     "operands": [
+      {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "MONEY",
+       "termName": "Initial Term Loans",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:c9bd9b78037762892870c622"
+      },
+      {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "MONEY",
+       "termName": "Incremental Term Loans",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:a5a562c5cb59df78abb6542e"
+      },
+      {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "MONEY",
+       "termName": "Other Term Loans",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:8f67938bfb319568711230af"
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Initial Term Loans",
+     "Incremental Term Loans",
+     "Other Term Loans"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully quoted composite definition of three other defined loan terms."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the Initial Term Loans, any Incremental Term Loans and any Other Term Loans."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:a05a5940b33842df576cbba1",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Term Maturity Date",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Initial Term Loan Maturity Date",
+     "Incremental Facility Amendment",
+     "Refinancing Amendment"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Descriptive categorization by loan type rather than a numeric/date formula; fully quoted."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means (a) with respect to the Initial Term Loans, the Initial Term Loan Maturity Date, (b) with respect to any Incremental Term Loans, the maturity date specified for such Incremental Term Loans in the applicable Incremental Facility Amendment and (c) with respect to any Other Term Loans, the maturity date specified for such Other Term Loans in the applicable Refinancing Amendment."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:5474cd65871a786cf08ebb62",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Term SOFR",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Term SOFR Rate"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Purely descriptive - identifies which rate-basis a Loan bears interest at, not a numeric formula."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "when used in reference to any Loan or Borrowing, refers to whether such Loan, or the Loans comprising such Borrowing, are bearing interest at a rate determined by reference to the Term SOFR Rate."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:fc0cebe39692cbd4d8dd1693",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Term SOFR Determination Day",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [
+     "Term SOFR Reference Rate"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Pointer definition; substantive content is inline within the Term SOFR Reference Rate definition, which is included in the source and captured as d18."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "has the meaning assigned to it under the definition of \"Term SOFR Reference Rate.\""
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:ab04e6ef4eb731861b24ee10",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Term SOFR Rate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "(no evidence captured)",
+     "semanticDescription": "unrecognized or malformed expression (kind=\"MAX\")",
+     "reason": "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "attemptedStructure": {
+      "kind": "MAX",
+      "type": "NUMBER",
+      "exprId": "ir-expr:7e2ab5bd79894ef5bf2b0541",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "type": null,
+        "sourceEvidence": "§1.01: \"the Term SOFR Reference Rate at approximately 5:00 a.m., Chicago time, two (2) U.S. Government Securities Business Days prior to the commencement of such tenor...as such rate is published by the CME Term SOFR Administrator\"",
+        "semanticDescription": "The Term SOFR Reference Rate at approximately 5:00 a.m. Chicago time, two (2) U.S. Government Securities Business Days prior to the commencement of the comparable tenor, as published by the CME Term SOFR Administrator",
+        "reason": "day-count sampling mechanics have no IR primitive for a bounded, time-stamped rate sampling rule",
+        "requiredReview": true,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:0d28fe9485780b278d28aec8"
+       },
+       {
+        "kind": "PERCENT",
+        "type": "PERCENT",
+        "value": 0,
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§1.01",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:1af56cb36f2e70927f67e005"
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "exprId": "ir-expr:b795eaf0b3a6cc5dc20d8383"
+    },
+    "dependsOnTerms": [
+     "Term SOFR Reference Rate"
+    ],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "0.00% floor faithfully represented via MAX; the underlying sampling-time mechanics are UNSUPPORTED as no IR primitive expresses time-stamped rate sampling.",
+     "day-count sampling mechanics have no IR primitive for a bounded, time-stamped rate sampling rule",
+     "MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "provided, that if the Term SOFR Rate shall ever be less than 0.00%, then the Term SOFR Rate shall be deemed to be 0.00%."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:564527843029153887c443cd",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Term SOFR Reference Rate",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "UNSUPPORTED",
+     "type": null,
+     "sourceEvidence": "§1.01: \"If by 5:00 pm (New York City time) on such Term SOFR Determination Day, the 'Term SOFR Reference Rate' for the applicable tenor has not been published...then...the Term SOFR Reference Rate...will be the Term SOFR Reference Rate as published in respect of the first preceding U.S. Government Securities Business Day...so long as such first preceding...Business Day is not more than five (5) U.S. Government Securities Business Days prior...\"",
+     "semanticDescription": "Rate per annum published by the CME Term SOFR Administrator as the forward-looking term rate based on SOFR, with a fallback to the first preceding U.S. Government Securities Business Day's published rate (not more than five (5) such Business Days prior) if unpublished by 5:00pm NY time and no Benchmark Replacement Date has occurred",
+     "reason": "bounded backward-looking rate substitution/fallback mechanics have no IR node type",
+     "requiredReview": true,
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     },
+     "exprId": "ir-expr:55ca07a5e5839ac7567a4b89"
+    },
+    "dependsOnTerms": [],
+    "sufficiency": "PARTIAL",
+    "sufficiencyReasons": [
+     "Core identification of the rate (CME-published forward-looking SOFR term rate) is captured in the excerpt; the fallback/lookback mechanics are UNSUPPORTED.",
+     "bounded backward-looking rate substitution/fallback mechanics have no IR node type"
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, for any day and time (such day, the \"Term SOFR Determination Day\"), ...the rate per annum published by the CME Term SOFR Administrator and identified by the Administrative Agent as the forward-looking term rate based on SOFR."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:ad37218e21b5283f41ac28b9",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Test Period",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": null,
+    "dependsOnTerms": [],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Fully quoted, self-contained descriptive definition of the measurement period; cross-references to Section 5.01(a)/(b) merely identify which sections govern delivery of the referenced financial statements and do not alter the period's own meaning."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, at any date of determination, (a) the period of four (4) consecutive fiscal quarters of the Initial Borrower or (b) twelve (12)-month period, in the case of clauses (a) and (b), then most recently ended on or prior to such time (taken as one (1) accounting period), in respect of which financial statements are, at the election of the Initial Borrower, (x) internally available...or (y) have been delivered pursuant to Section 5.01(a) or Section 5.01(b)."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   },
+   {
+    "definitionId": "ir-definition:930efa2b63880d3f6f0afef3",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Threshold Amount",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "MAX",
+     "type": "MONEY",
+     "exprId": "ir-expr:b6ce4ce99823b3987ebf28c2",
+     "operands": [
+      {
+       "kind": "MONEY",
+       "type": "MONEY",
+       "amount": 324000000,
+       "currency": "USD",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       },
+       "exprId": "ir-expr:4b5532830c3dc83a9dadfd89"
+      },
+      {
+       "kind": "MULTIPLY",
+       "type": "MONEY",
+       "exprId": "ir-expr:18929b73ca238676f72f8431",
+       "operands": [
+        {
+         "kind": "PERCENT",
+         "type": "PERCENT",
+         "value": 0.45,
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": null
+         },
+         "exprId": "ir-expr:eff837f88b7dead4096adc42"
+        },
+        {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "Consolidated EBITDA",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01",
+        "excerpt": null
+       }
+      }
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Consolidated EBITDA"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Both prongs of the greater-of formula are explicit dollar/percentage values tied to a defined metric; 'Pro Forma Basis' qualifier on Consolidated EBITDA is preserved in the excerpt."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means the greater of (a) $324.0 million and (b) 45% of Consolidated EBITDA on a Pro Forma Basis as of the applicable date of determination."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null,
+    "inventoryItemIds": [
+     "inv-item:2a6efbcd8e47268fccc5081f"
+    ]
+   },
+   {
+    "definitionId": "ir-definition:fbe9ccdeac8db94e1947c3ac",
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "companyId": "phase-3-validation-chwy",
+    "instrumentKey": "chwy-2026-revolving-credit-instrument",
+    "sourceDocumentId": "doc-a",
+    "termName": "Total Leverage Ratio",
+    "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "calculationExpression": {
+     "kind": "DIVIDE",
+     "type": "NUMBER",
+     "exprId": "ir-expr:4c735fd17084c2e23b7d3a6d",
+     "numerator": {
+      "kind": "SUBTRACT",
+      "type": "MONEY",
+      "exprId": "ir-expr:54aab0e63c4d82465ab97f98",
+      "left": {
+       "kind": "METRIC_REFERENCE",
+       "type": "MONEY",
+       "metricName": "Consolidated Total Debt",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:f56a4ac7c82bd3ff33c57d96"
+      },
+      "right": {
+       "kind": "METRIC_REFERENCE",
+       "type": "MONEY",
+       "metricName": "Excluded Revolving Loans",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:3ff4caef616f1fb43552ed42"
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§1.01",
+       "excerpt": null
+      }
+     },
+     "denominator": {
+      "kind": "METRIC_REFERENCE",
+      "type": "MONEY",
+      "metricName": "Consolidated EBITDA",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+     },
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§1.01",
+      "excerpt": null
+     }
+    },
+    "dependsOnTerms": [
+     "Consolidated Total Debt",
+     "Excluded Revolving Loans",
+     "Consolidated EBITDA",
+     "Test Period"
+    ],
+    "sufficiency": "COMPLETE",
+    "sufficiencyReasons": [
+     "Ratio formula's two components (Consolidated Total Debt net of Excluded Revolving Loans, and Consolidated EBITDA for the Test Period) were both independently confirmed via getDefinition; the ratio itself is a straightforward DIVIDE."
+    ],
+    "provenance": {
+     "documentId": "doc-a",
+     "sourceNodeKey": null,
+     "sourceCitation": "§1.01",
+     "excerpt": "means, on any date, the ratio of (a) Consolidated Total Debt (excluding any Excluded Revolving Loans) as of such date and to (b) Consolidated EBITDA for the Test Period as of such date."
+    },
+    "compilerVersion": "semantic-accountability-compiler.v4",
+    "sourceContentVersion": null
+   }
+  ],
+  "sharedCapacities": [],
+  "irExtensionCandidates": [
+   {
+    "sourceEvidence": "§1.01 Term CORRA, Term CORRA Reference Rate, Term SOFR Rate, Term SOFR Reference Rate - each defines a benchmark rate by reference to a specific sampling time/day and a bounded backward-looking fallback ('first preceding Business Day...not more than five (5) Business Days prior') if the rate is unpublished on the primary determination day.",
+    "semanticRequirement": "A way to express 'use the most recently published value of X as of determination day D, or if unavailable, the value as of the most recent prior business day within an N-business-day lookback window' as a first-class temporal/fallback primitive.",
+    "whyExistingPrimitivesFail": "AS_OF only dates a single value; SCHEDULE handles date-ranged fixed thresholds, not a dynamic bounded lookback over a published external series; EVENT_ACTIVE's activeDuration is a free-text string not a computable window, and none of these compose to express 'go back up to N business days to find the last published value'.",
+    "candidateGeneralizedPrimitive": "A BENCHMARK_RATE_WITH_FALLBACK node (or a generalized LOOKBACK primitive) taking a primary observation rule, a maximum lookback count/unit (e.g. business days), and a fallback source, so that fallback-on-unavailability rate mechanics common to LIBOR/SOFR/CORRA-style definitions can be represented rather than escaped to UNSUPPORTED."
+   }
+  ],
+  "unresolvedIssues": [
+   "[definition[d2]] Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+   "[definition[d3]] Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+   "[definition[d4]] Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+   "[definition[d7].MAX[0]] day-count lookback/fallback publication mechanics have no IR node type for representing a bounded backward-looking rate substitution",
+   "[definition[d7]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+   "[definition[d12]] The ABL Intercreditor Agreement is confirmed absent from this document package (no INTERCREDITOR_AGREEMENT document exists in the package), so the substantive scope of 'CF Debt Priority Collateral' cannot be retrieved.",
+   "[definition[d17].MAX[0]] day-count sampling mechanics have no IR primitive for a bounded, time-stamped rate sampling rule",
+   "[definition[d17]] MAX operands do not type-check together under the IR's own composition rules: MAX operands must all share the same type (MONEY, NUMBER, or RATIO) - mixed types are not comparable",
+   "[definition[d18]] bounded backward-looking rate substitution/fallback mechanics have no IR node type",
+   "Source is Section 1.01 definitions; all 21 distinct defined terms present in the supplied text were extracted as separate WireDefinitions per the multiple-definitions rule.",
+   "Tax Amount, Tax Distribution, and Tax Group are each defined solely by cross-reference to Section 6.08(b)(16)(b); getReferencedProvision was attempted and returned only an empty/truncated stub ('(b) ') with UNKNOWN_SUPERSESSION_STATUS, so these remain MISSING_CONTEXT.",
+   "Term Priority Collateral is defined solely by reference to 'CF Debt Priority Collateral' in the ABL Intercreditor Agreement; that agreement is confirmed absent from the document package (REFERENCED_DOCUMENT_ABSENT), so this remains MISSING_CONTEXT even though the ABL Intercreditor Agreement's own top-level definition was available.",
+   "Consolidated Total Debt and Excluded Revolving Loans were independently fetched via getDefinition to properly compose the Total Leverage Ratio formula; both resolved as CURRENT operative text, supporting a COMPLETE sufficiency for Total Leverage Ratio.",
+   "The two frozen-inventory items (Threshold Amount MAX formula; Term Priority Collateral cross-reference dependency) were both consumed on their respective WireDefinitions; no inventory dispositions were needed beyond that consumption.",
+   "Deterministically-detected quantitative values (Nov 19 2007 launch date, 2/5 Business Day windows, four instances of a 0.00% floor) were addressed: the 0.00% floors are represented via MAX(...,PERCENT 0) nodes on Term CORRA and Term SOFR Rate; the Business Day sampling/lookback windows are captured within nested UNSUPPORTED nodes (no clean IR primitive exists for bounded rate-fallback mechanics - see irExtensionCandidates); the TARGET2 launch date is non-operative descriptive color not feeding any calculation and was left un-consumed."
+  ],
+  "toolCallLog": [
+   {
+    "toolName": "getReferencedProvision",
+    "input": {
+     "ref": "Section 6.08(b)(16)(b)"
+    },
+    "outputSummary": "resolved reference \"Section 6.08(b)(16)(b)\" -> 6.08(b)(16)(b) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+    "charsReturned": 4,
+    "timestamp": "2026-09-14T21:54:00.911Z",
+    "evidenceUnresolved": true,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "PROVISION",
+     "requestKey": "Section 6.08(b)(16)(b)",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:f4ce2f0e5600fa5d00f308ac",
+     "sourceNodeKey": "doc-a::6.08(b)(16)(b)",
+     "charStart": 685336,
+     "charEnd": 685340,
+     "rawText": "(b) ",
+     "contentHash": "d3253577c5c0edc81e0f3af5fb9ed7b38812f50bf91af7f8adeff9dc25c572a8",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "UNKNOWN_SUPERSESSION_STATUS",
+     "isCurrentTruth": false
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Consolidated Total Debt"
+    },
+    "outputSummary": "definition \"Consolidated Total Debt\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 2457,
+    "timestamp": "2026-09-14T21:54:00.911Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Consolidated Total Debt",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:9fcff1d7516df9b4a24d692f",
+     "sourceNodeKey": "doc-a::1.01(2)(v)(II)(B)(1)(xii)",
+     "charStart": 114736,
+     "charEnd": 117193,
+     "rawText": "“ Consolidated Total Debt ” means, as of any date of determination (i) the outstanding\nprincipal amount of all third-party Indebtedness for borrowed money (including purchase money Indebtedness), unreimbursed drawings under letters of credit that are outstanding more than five (5) Business Days after the date such amount is drawn\n(to the extent not cash collateralized), and third-party Indebtedness obligations evidenced by notes or similar instruments (but excluding surety bonds, performance bonds or other similar instruments) to the extent not paid within ten\n(10) Business Days of becoming due (unless subject to a good faith dispute), in each case of the Restricted Parties on such date, on a consolidated basis and determined in accordance with GAAP (excluding, in any event, the effects of any\ndiscounting of Indebtedness resulting from the application of acquisition method or pushdown accounting in connection with the Transactions or any Permitted Acquisition or other Investment); provided that Consolidated Total Debt will not\ninclude Indebtedness in respect of (a) any Permitted Receivables Financing, (b) any letter of credit or bank guarantees, except to the extent of unreimbursed obligations in respect of drawn letters of credit (including any unreimbursed\namount under any Letter of Credit (as defined in the ABL Credit Agreement)) or bank guarantees that are not reimbursed within five (5) Business Days after such amount is drawn (it being understood that any borrowing, whether automatic or\notherwise, to fund such reimbursement will be counted), (c) Hedging Obligations, (d) performance bonds, surety bonds or any similar instruments, (e) Cash Management Obligations, (f) any lease obligations (including, in respect of\nany capital lease, sale and lease back arrangements or similar arrangements) and (g) any lease obligations for which an irrevocable deposit of necessary funds for the payment, redemption or satisfaction of such Indebtedness has been made, minus\n(ii) the aggregate amount of cash and Cash Equivalents on the consolidated balance sheet of the Restricted Parties on such date that is not Restricted. For the avoidance of doubt, the outstanding principal amount of any particular Indebtedness\nfor borrowed money shall be counted only once in the Consolidated Total Debt, and the guarantees of, or obligations in respect of letters of credit or bank guarantees relating to, such Indebtedness shall be disregarded.\n\n",
+     "contentHash": "69eca9f8a7e0fe08923459414e4acd208af80c31a0b352133b9079f056096e01",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   },
+   {
+    "toolName": "getDefinition",
+    "input": {
+     "term": "Excluded Revolving Loans"
+    },
+    "outputSummary": "definition \"Excluded Revolving Loans\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "charsReturned": 592,
+    "timestamp": "2026-09-14T21:54:00.911Z",
+    "evidenceUnresolved": false,
+    "evidenceTruncated": false,
+    "retrievedSource": {
+     "requestKind": "DEFINITION",
+     "requestKey": "Excluded Revolving Loans",
+     "documentId": "doc-a",
+     "sourceNodeId": "structural-node:1162f07cb139f04b37b77045",
+     "sourceNodeKey": "doc-a::1.01(3)",
+     "charStart": 172324,
+     "charEnd": 172916,
+     "rawText": "“ Excluded Revolving Loans ” means as of any date of determination (i) [reserved], (ii) the\naggregate principal amount of any revolving loans (including any ABL Loans) incurred after the Effective Date to fund working capital and (iii) the aggregate principal amount of any revolving loans (including any ABL Loans) that are incurred\nsubstantially concurrently or, if not substantially concurrently, such incurrences or transactions are related to a series of transactions (as determined by the Initial Borrower in good faith) with the transaction for which such determination is\nbeing made.\n",
+     "contentHash": "764a9818e8fa4261aff5609cb179b063bf0789a4a5a2160af94d265a1884d0a0",
+     "textOrigin": "BASE_DOCUMENT_TEXT",
+     "evidenceStatus": "CURRENT",
+     "isCurrentTruth": true
+    }
+   }
+  ],
+  "inputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "definitionCompletenessCheck": null,
+  "inventoryMode": null,
+  "inventoryPasses": null,
+  "accountability": null,
+  "rawModelOutput": {
+   "definitions": [
+    {
+     "localRef": "d1",
+     "termName": "TARGET2",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive, non-computational identification of a payment system; launch date is historical/contextual and does not feed any calculation."
+     ],
+     "citation": "§1.01",
+     "excerpt": "the Trans-European Automated Real-time Gross Settlement Express Transfer payment system which utilizes a single shared platform and which was launched on November 19, 2007.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d2",
+     "termName": "Tax Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Tax Amount is defined entirely by cross-reference to Section 6.08(b)(16)(b)",
+      "reason": "Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+      "sourceEvidence": "§1.01: \"has the meaning set forth in Section 6.08(b)(16)(b)\""
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition is wholly by cross-reference; referenced Section 6.08(b)(16)(b) text could not be retrieved despite attempted lookup."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning set forth in Section 6.08(b)(16)(b).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d3",
+     "termName": "Tax Distribution",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Tax Distribution is defined entirely by cross-reference to Section 6.08(b)(16)(b)",
+      "reason": "Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+      "sourceEvidence": "§1.01: \"has the meaning set forth in Section 6.08(b)(16)(b)\""
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition is wholly by cross-reference; referenced Section 6.08(b)(16)(b) text could not be retrieved despite attempted lookup."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning set forth in Section 6.08(b)(16)(b).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d4",
+     "termName": "Tax Group",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Tax Group is defined entirely by cross-reference to Section 6.08(b)(16)(b)",
+      "reason": "Attempted to resolve Section 6.08(b)(16)(b) via getReferencedProvision; the region returned only an empty stub ('(b) ') with unresolved supersession status, so the substantive definition could not be retrieved.",
+      "sourceEvidence": "§1.01: \"has the meaning set forth in Section 6.08(b)(16)(b)\""
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition is wholly by cross-reference; referenced Section 6.08(b)(16)(b) text could not be retrieved despite attempted lookup."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning set forth in Section 6.08(b)(16)(b).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d5",
+     "termName": "Taxes",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully self-contained descriptive definition; not a numeric formula."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means any and all present or future taxes, levies, imposts, duties, deductions, charges or withholdings imposed by any Governmental Authority, including any interest, additions to tax or penalties applicable thereto.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d6",
+     "termName": "Term Commitment",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUM",
+      "operands": [
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "termName": "Initial Term Commitment"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "termName": "Incremental Term Commitment"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "termName": "Other Term Commitment"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Initial Term Commitment",
+      "Incremental Term Commitment",
+      "Other Term Commitment"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Term is fully quoted as a composite of three other defined commitment terms; underlying component terms are not themselves needed to represent this term's own structure."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, with respect to each Term Lender, its Initial Term Commitment, Incremental Term Commitment and/or Other Term Commitment.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d7",
+     "termName": "Term CORRA",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MAX",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "Procedural determination of Term CORRA: the Term CORRA Reference Rate for a tenor comparable to the applicable Interest Period, sampled two (2) Business Days prior to the first day of such Interest Period, with a fallback to the first preceding Business Day's published rate (not more than five (5) Business Days prior) if unpublished and no Benchmark Replacement Date has occurred",
+        "reason": "day-count lookback/fallback publication mechanics have no IR node type for representing a bounded backward-looking rate substitution",
+        "sourceEvidence": "§1.01: \"...the Term CORRA Reference Rate for a tenor comparable to the applicable Interest Period on the day...that is two (2) Business Days prior...; provided, however, that if...has not been published...then Term CORRA will be the Term CORRA Reference Rate...as published...on the first (1st) preceding Business Day...so long as such first preceding Business Day is not more than five (5) Business Days prior...\""
+       },
+       {
+        "kind": "PERCENT",
+        "value": 0,
+        "citation": "§1.01"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Term CORRA Reference Rate",
+      "Term CORRA Administrator",
+      "Benchmark Replacement Date"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "0.00% floor faithfully represented via MAX; the underlying day-count sampling/fallback mechanics are UNSUPPORTED as no IR primitive expresses bounded backward-looking rate lookback."
+     ],
+     "citation": "§1.01",
+     "excerpt": "provided, further, that if Term CORRA shall ever be less than 0.00%, then Term CORRA shall be deemed to be 0.00%.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d8",
+     "termName": "Term CORRA Administrator",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive identification of an administrator entity."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means CanDeal Benchmark Administration Services Inc., TSX Inc., or any successor administrator.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d9",
+     "termName": "Term CORRA Reference Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully quoted single-sentence descriptive definition; no numeric threshold to represent."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means the forward-looking term rate based on CORRA.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d10",
+     "termName": "Term Facility",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Term Loans"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means the Term Loans provided to or for the benefit of the Borrowers pursuant to the terms of this Agreement.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d11",
+     "termName": "Term Lenders",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive, non-numeric definition of a class of Persons."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means initially the Persons listed on Schedule 2.01(b) and as of any date of determination from and after the Effective Date, any other Person that shall have become a party hereto pursuant to an Assignment and Assumption in respect of any Term Loans...",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d12",
+     "termName": "Term Priority Collateral",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Term Priority Collateral is defined solely by reference to 'CF Debt Priority Collateral' as defined in the ABL Intercreditor Agreement",
+      "reason": "The ABL Intercreditor Agreement is confirmed absent from this document package (no INTERCREDITOR_AGREEMENT document exists in the package), so the substantive scope of 'CF Debt Priority Collateral' cannot be retrieved.",
+      "sourceEvidence": "§1.01: \"shall mean \\\"CF Debt Priority Collateral\\\" (as defined in the ABL Intercreditor Agreement)\""
+     },
+     "dependsOnTerms": [
+      "CF Debt Priority Collateral",
+      "ABL Intercreditor Agreement"
+     ],
+     "sufficiency": "MISSING_CONTEXT",
+     "sufficiencyReasons": [
+      "Definition is wholly by reference to a term in an external agreement not included in this document package."
+     ],
+     "citation": "§1.01",
+     "excerpt": "shall mean \"CF Debt Priority Collateral\" (as defined in the ABL Intercreditor Agreement).",
+     "inventoryItemIds": [
+      "inv-item:8241a7f6a6e0fda7298c06d8"
+     ]
+    },
+    {
+     "localRef": "d13",
+     "termName": "Term Loans",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "SUM",
+      "operands": [
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "termName": "Initial Term Loans"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "termName": "Incremental Term Loans"
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "termName": "Other Term Loans"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Initial Term Loans",
+      "Incremental Term Loans",
+      "Other Term Loans"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully quoted composite definition of three other defined loan terms."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means the Initial Term Loans, any Incremental Term Loans and any Other Term Loans.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d14",
+     "termName": "Term Maturity Date",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Initial Term Loan Maturity Date",
+      "Incremental Facility Amendment",
+      "Refinancing Amendment"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Descriptive categorization by loan type rather than a numeric/date formula; fully quoted."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means (a) with respect to the Initial Term Loans, the Initial Term Loan Maturity Date, (b) with respect to any Incremental Term Loans, the maturity date specified for such Incremental Term Loans in the applicable Incremental Facility Amendment and (c) with respect to any Other Term Loans, the maturity date specified for such Other Term Loans in the applicable Refinancing Amendment.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d15",
+     "termName": "Term SOFR",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Term SOFR Rate"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Purely descriptive - identifies which rate-basis a Loan bears interest at, not a numeric formula."
+     ],
+     "citation": "§1.01",
+     "excerpt": "when used in reference to any Loan or Borrowing, refers to whether such Loan, or the Loans comprising such Borrowing, are bearing interest at a rate determined by reference to the Term SOFR Rate.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d16",
+     "termName": "Term SOFR Determination Day",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [
+      "Term SOFR Reference Rate"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Pointer definition; substantive content is inline within the Term SOFR Reference Rate definition, which is included in the source and captured as d18."
+     ],
+     "citation": "§1.01",
+     "excerpt": "has the meaning assigned to it under the definition of \"Term SOFR Reference Rate.\"",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d17",
+     "termName": "Term SOFR Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MAX",
+      "operands": [
+       {
+        "kind": "UNSUPPORTED",
+        "semanticDescription": "The Term SOFR Reference Rate at approximately 5:00 a.m. Chicago time, two (2) U.S. Government Securities Business Days prior to the commencement of the comparable tenor, as published by the CME Term SOFR Administrator",
+        "reason": "day-count sampling mechanics have no IR primitive for a bounded, time-stamped rate sampling rule",
+        "sourceEvidence": "§1.01: \"the Term SOFR Reference Rate at approximately 5:00 a.m., Chicago time, two (2) U.S. Government Securities Business Days prior to the commencement of such tenor...as such rate is published by the CME Term SOFR Administrator\""
+       },
+       {
+        "kind": "PERCENT",
+        "value": 0,
+        "citation": "§1.01"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Term SOFR Reference Rate"
+     ],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "0.00% floor faithfully represented via MAX; the underlying sampling-time mechanics are UNSUPPORTED as no IR primitive expresses time-stamped rate sampling."
+     ],
+     "citation": "§1.01",
+     "excerpt": "provided, that if the Term SOFR Rate shall ever be less than 0.00%, then the Term SOFR Rate shall be deemed to be 0.00%.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d18",
+     "termName": "Term SOFR Reference Rate",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "UNSUPPORTED",
+      "semanticDescription": "Rate per annum published by the CME Term SOFR Administrator as the forward-looking term rate based on SOFR, with a fallback to the first preceding U.S. Government Securities Business Day's published rate (not more than five (5) such Business Days prior) if unpublished by 5:00pm NY time and no Benchmark Replacement Date has occurred",
+      "reason": "bounded backward-looking rate substitution/fallback mechanics have no IR node type",
+      "sourceEvidence": "§1.01: \"If by 5:00 pm (New York City time) on such Term SOFR Determination Day, the 'Term SOFR Reference Rate' for the applicable tenor has not been published...then...the Term SOFR Reference Rate...will be the Term SOFR Reference Rate as published in respect of the first preceding U.S. Government Securities Business Day...so long as such first preceding...Business Day is not more than five (5) U.S. Government Securities Business Days prior...\""
+     },
+     "dependsOnTerms": [],
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "Core identification of the rate (CME-published forward-looking SOFR term rate) is captured in the excerpt; the fallback/lookback mechanics are UNSUPPORTED."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, for any day and time (such day, the \"Term SOFR Determination Day\"), ...the rate per annum published by the CME Term SOFR Administrator and identified by the Administrative Agent as the forward-looking term rate based on SOFR.",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d19",
+     "termName": "Test Period",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": null,
+     "dependsOnTerms": [],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Fully quoted, self-contained descriptive definition of the measurement period; cross-references to Section 5.01(a)/(b) merely identify which sections govern delivery of the referenced financial statements and do not alter the period's own meaning."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, at any date of determination, (a) the period of four (4) consecutive fiscal quarters of the Initial Borrower or (b) twelve (12)-month period, in the case of clauses (a) and (b), then most recently ended on or prior to such time (taken as one (1) accounting period), in respect of which financial statements are, at the election of the Initial Borrower, (x) internally available...or (y) have been delivered pursuant to Section 5.01(a) or Section 5.01(b).",
+     "inventoryItemIds": []
+    },
+    {
+     "localRef": "d20",
+     "termName": "Threshold Amount",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "MAX",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "amount": 324000000,
+        "currency": "USD",
+        "citation": "§1.01"
+       },
+       {
+        "kind": "MULTIPLY",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "value": 0.45,
+          "citation": "§1.01"
+         },
+         {
+          "kind": "METRIC_REFERENCE",
+          "metricName": "Consolidated EBITDA",
+          "valueType": "MONEY"
+         }
+        ],
+        "citation": "§1.01"
+       }
+      ],
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Consolidated EBITDA"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Both prongs of the greater-of formula are explicit dollar/percentage values tied to a defined metric; 'Pro Forma Basis' qualifier on Consolidated EBITDA is preserved in the excerpt."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means the greater of (a) $324.0 million and (b) 45% of Consolidated EBITDA on a Pro Forma Basis as of the applicable date of determination.",
+     "inventoryItemIds": [
+      "inv-item:2a6efbcd8e47268fccc5081f"
+     ]
+    },
+    {
+     "localRef": "d21",
+     "termName": "Total Leverage Ratio",
+     "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+     "calculationExpression": {
+      "kind": "DIVIDE",
+      "numerator": {
+       "kind": "SUBTRACT",
+       "left": {
+        "kind": "METRIC_REFERENCE",
+        "metricName": "Consolidated Total Debt",
+        "valueType": "MONEY"
+       },
+       "right": {
+        "kind": "METRIC_REFERENCE",
+        "metricName": "Excluded Revolving Loans",
+        "valueType": "MONEY"
+       },
+       "citation": "§1.01"
+      },
+      "denominator": {
+       "kind": "METRIC_REFERENCE",
+       "metricName": "Consolidated EBITDA",
+       "valueType": "MONEY"
+      },
+      "citation": "§1.01"
+     },
+     "dependsOnTerms": [
+      "Consolidated Total Debt",
+      "Excluded Revolving Loans",
+      "Consolidated EBITDA",
+      "Test Period"
+     ],
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Ratio formula's two components (Consolidated Total Debt net of Excluded Revolving Loans, and Consolidated EBITDA for the Test Period) were both independently confirmed via getDefinition; the ratio itself is a straightforward DIVIDE."
+     ],
+     "citation": "§1.01",
+     "excerpt": "means, on any date, the ratio of (a) Consolidated Total Debt (excluding any Excluded Revolving Loans) as of such date and to (b) Consolidated EBITDA for the Test Period as of such date.",
+     "inventoryItemIds": []
+    }
+   ],
+   "rules": [],
+   "sharedCapacities": [],
+   "irExtensionCandidates": [
+    {
+     "sourceEvidence": "§1.01 Term CORRA, Term CORRA Reference Rate, Term SOFR Rate, Term SOFR Reference Rate - each defines a benchmark rate by reference to a specific sampling time/day and a bounded backward-looking fallback ('first preceding Business Day...not more than five (5) Business Days prior') if the rate is unpublished on the primary determination day.",
+     "semanticRequirement": "A way to express 'use the most recently published value of X as of determination day D, or if unavailable, the value as of the most recent prior business day within an N-business-day lookback window' as a first-class temporal/fallback primitive.",
+     "whyExistingPrimitivesFail": "AS_OF only dates a single value; SCHEDULE handles date-ranged fixed thresholds, not a dynamic bounded lookback over a published external series; EVENT_ACTIVE's activeDuration is a free-text string not a computable window, and none of these compose to express 'go back up to N business days to find the last published value'.",
+     "candidateGeneralizedPrimitive": "A BENCHMARK_RATE_WITH_FALLBACK node (or a generalized LOOKBACK primitive) taking a primary observation rule, a maximum lookback count/unit (e.g. business days), and a fallback source, so that fallback-on-unavailability rate mechanics common to LIBOR/SOFR/CORRA-style definitions can be represented rather than escaped to UNSUPPORTED."
+    }
+   ],
+   "overallNotes": [
+    "Source is Section 1.01 definitions; all 21 distinct defined terms present in the supplied text were extracted as separate WireDefinitions per the multiple-definitions rule.",
+    "Tax Amount, Tax Distribution, and Tax Group are each defined solely by cross-reference to Section 6.08(b)(16)(b); getReferencedProvision was attempted and returned only an empty/truncated stub ('(b) ') with UNKNOWN_SUPERSESSION_STATUS, so these remain MISSING_CONTEXT.",
+    "Term Priority Collateral is defined solely by reference to 'CF Debt Priority Collateral' in the ABL Intercreditor Agreement; that agreement is confirmed absent from the document package (REFERENCED_DOCUMENT_ABSENT), so this remains MISSING_CONTEXT even though the ABL Intercreditor Agreement's own top-level definition was available.",
+    "Consolidated Total Debt and Excluded Revolving Loans were independently fetched via getDefinition to properly compose the Total Leverage Ratio formula; both resolved as CURRENT operative text, supporting a COMPLETE sufficiency for Total Leverage Ratio.",
+    "The two frozen-inventory items (Threshold Amount MAX formula; Term Priority Collateral cross-reference dependency) were both consumed on their respective WireDefinitions; no inventory dispositions were needed beyond that consumption.",
+    "Deterministically-detected quantitative values (Nov 19 2007 launch date, 2/5 Business Day windows, four instances of a 0.00% floor) were addressed: the 0.00% floors are represented via MAX(...,PERCENT 0) nodes on Term CORRA and Term SOFR Rate; the Business Day sampling/lookback windows are captured within nested UNSUPPORTED nodes (no clean IR primitive exists for bounded rate-fallback mechanics - see irExtensionCandidates); the TARGET2 launch date is non-operative descriptive color not feeding any calculation and was left un-consumed."
+   ]
+  },
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetry": {
+   "provider": "vercel-ai-gateway",
+   "model": "anthropic/claude-sonnet-5",
+   "promptVersion": "semantic-accountability-compiler-prompt.v4",
+   "schemaVersion": "headroom-covenant-ir.v1",
+   "stage": "semantic_compilation",
+   "timestamp": "2026-09-14T21:56:19.319Z",
+   "inputTokens": 55994,
+   "outputTokens": 20942,
+   "cachedInputTokens": 0,
+   "cacheCreationInputTokens": 0,
+   "attemptCount": 2,
+   "retryCount": 0,
+   "rateLimitFailures": 0,
+   "latencyMs": 177997,
+   "calculatedCostUsd": 0.321408
+  },
+  "cacheKey": "51ed23b523ffd12ad4f5d11d4cddaa23e6f52142b9b1a7bdbb8467a7249ac17e",
+  "compiledAt": "2026-09-14T21:56:19.319Z"
+ },
+ "wave": "C",
+ "attemptsSoFar": 1
+}
