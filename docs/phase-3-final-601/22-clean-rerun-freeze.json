@@ -1,0 +1,225 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 CLEAN RERUN §1/§2 - frozen head, identities and versions",
+ "at": "2026-09-15T02:09:51.505Z",
+ "idChecks": {
+  "startingShaPin": {
+   "expected": "f108ba24886e689830a3e3ddff421013e8f20d36",
+   "actual": "20113fe7a335d6a79ad74aea172b870faa4ea19b",
+   "exactMatch": false,
+   "isDescendantOfPin": true,
+   "filesAddedSincePin": [
+    "scripts/phase-3-601-clean-certify.ts",
+    "scripts/phase-3-601-guard.ts"
+   ],
+   "allAddedFilesAreHarness": true,
+   "productionCompilerTreeShaAtPin": "3d363d0bf29e7da5ab1332fbf9097fdfa59257bac1eb960d9bf0d7c228806e03",
+   "productionCompilerTreeShaAtHead": "3d363d0bf29e7da5ab1332fbf9097fdfa59257bac1eb960d9bf0d7c228806e03",
+   "productionTreeIdentical": true,
+   "match": true,
+   "note": "exact-SHA equality is impossible once §3's mandatory certification harness is committed; the pin is honoured as ancestry + harness-only delta + identical production compiler tree"
+  },
+  "workingTreeClean": {
+   "expected": "",
+   "actual": "",
+   "match": true
+  },
+  "productionSemanticChangesSinceD51e7f2": {
+   "expected": 0,
+   "actual": 0,
+   "match": true
+  },
+  "hd1FixConfinedToHarness": {
+   "nonDocNonFixtureFilesChanged": [
+    "scripts/phase-3-601-clean-certify.ts",
+    "scripts/phase-3-601-funded-finalize.ts",
+    "scripts/phase-3-601-funded-run.ts",
+    "scripts/phase-3-601-funded-score.ts",
+    "scripts/phase-3-601-guard.ts"
+   ],
+   "match": true
+  },
+  "sourceSha256": {
+   "expected": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+   "actual": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+   "match": true
+  },
+  "sectionTextSha256": {
+   "expected": "6b79685c94a08a9d27b484aaac52282ce92dbe9a7c3321bc38ff6504d12ec02a",
+   "actual": "6b79685c94a08a9d27b484aaac52282ce92dbe9a7c3321bc38ff6504d12ec02a",
+   "match": true
+  },
+  "sectionSpan": {
+   "expected": [
+    608901,
+    642524
+   ],
+   "actual": [
+    608901,
+    642524
+   ],
+   "match": true
+  },
+  "sectionChars": {
+   "expected": 33623,
+   "actual": 33623,
+   "match": true
+  },
+  "referenceSha256": {
+   "expected": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036",
+   "actual": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036",
+   "match": true
+  },
+  "referenceSlice": {
+   "expected": {
+    "total": 8,
+    "critical": 4,
+    "material": 4
+   },
+   "actual": {
+    "total": 8,
+    "critical": 4,
+    "material": 4
+   },
+   "match": true
+  },
+  "labelSpanAgreement": {
+   "byLabel": 8,
+   "bySpan": 8,
+   "match": true
+  }
+ },
+ "allIdentityChecksMatch": true,
+ "productionCompilerTreeSha256": "2c8deb633489d619488a68362f0d68854e15f6558091fc060d0175a46738e632",
+ "priorVoidAttempt": {
+  "spendUsd": 3.501676,
+  "creditedToThisMission": false,
+  "retainedAs": [
+   "harness-defect evidence",
+   "incidental safe-failure evidence"
+  ],
+  "artifacts": "docs/phase-3-final-601/11-21"
+ },
+ "versions": {
+  "compilerAlgorithm": "semantic-accountability-compiler.v4",
+  "compilerPrompt": "semantic-accountability-compiler-prompt.v4",
+  "toolPolicy": "phase-3b1-tool-policy.v2",
+  "accountabilityAlgorithm": "semantic-accountability.v5",
+  "inventoryPrompt": "semantic-inventory-prompt.v5",
+  "sourceIdentityMigration": "source-identity-migration.v1",
+  "executionPolicy": "semantic-execution-mode.v1",
+  "shardPlanner": "semantic-compilation-shards.v1",
+  "shardBudget": {
+   "targetPrimaryChars": 12000,
+   "maxPrimaryChars": 24000,
+   "maxContextChars": 10000,
+   "maxContextEntryChars": 1800,
+   "maxUnitsPerShard": 16
+  },
+  "irSchema": "headroom-covenant-ir.v1",
+  "verifier": null
+ },
+ "section601": {
+  "nodeId": "structural-node:4feea9391572c23efd068db4",
+  "nodeKey": "doc-a::6.01",
+  "sectionRef": "6.01",
+  "charStart": 608901,
+  "charEnd": 642524,
+  "chars": 33623,
+  "textSha256": "6b79685c94a08a9d27b484aaac52282ce92dbe9a7c3321bc38ff6504d12ec02a"
+ },
+ "referenceItems": {
+  "total": 8,
+  "critical": 4,
+  "material": 4,
+  "exposedToModel": false,
+  "items": [
+   {
+    "id": "A1",
+    "section": "6.01(a)",
+    "materiality": "CRITICAL",
+    "span": [
+     608901,
+     612151
+    ]
+   },
+   {
+    "id": "B1",
+    "section": "6.01(b)(1)",
+    "materiality": "CRITICAL",
+    "span": [
+     612837,
+     613535
+    ]
+   },
+   {
+    "id": "B2",
+    "section": "6.01(b)(4)",
+    "materiality": "MATERIAL",
+    "span": [
+     613535,
+     614500
+    ]
+   },
+   {
+    "id": "B3",
+    "section": "6.01(b)(12)",
+    "materiality": "CRITICAL",
+    "span": [
+     621202,
+     623379
+    ]
+   },
+   {
+    "id": "B4",
+    "section": "6.01(b)(18)",
+    "materiality": "MATERIAL",
+    "span": [
+     630144,
+     630700
+    ]
+   },
+   {
+    "id": "B5",
+    "section": "6.01(b)(19)",
+    "materiality": "MATERIAL",
+    "span": [
+     630700,
+     631400
+    ]
+   },
+   {
+    "id": "B6",
+    "section": "6.01(b)(27)",
+    "materiality": "MATERIAL",
+    "span": [
+     634000,
+     634400
+    ]
+   },
+   {
+    "id": "B7",
+    "section": "6.01(b)(31)/(32)/(33)",
+    "materiality": "CRITICAL",
+    "span": [
+     634400,
+     636112
+    ]
+   }
+  ]
+ },
+ "deterministicPlan": {
+  "mode": "SHARDED",
+  "reason": "MULTIPLE_SHARDS_REQUIRED",
+  "planHash": "7be17413609ebdbda88ee601750bf1b21e015d790ce583f7572eb75c0083c5e9",
+  "shards": 6,
+  "oversizedShards": 0,
+  "plannerEstimatedInputTokens": 118179,
+  "passABatchesPerPass": 6,
+  "sourceContext": {
+   "state": "COMPLETE_LOCAL_SOURCE",
+   "regions": 1,
+   "totalChars": 33623,
+   "unresolvedReferences": 7
+  }
+ }
+}
