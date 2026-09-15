@@ -144,3 +144,26 @@ export function guardedCompileClient(real: Anthropic, guard: Guard, onTurn: () =
     } };
   } } };
 }
+
+// ---------------------------------------------------------------------------
+// §4 Pass-A prerequisite (HD-2 closure). ONE predicate, imported by both the paid run and its certification.
+// ---------------------------------------------------------------------------
+
+export interface PassALike { inventoryStatus: string; items: { length: number } | unknown[] }
+
+/**
+ * A pass is USABLE when it actually produced an inventory. §4's stop conditions are: refused by the cost guard,
+ * throws, INVENTORY_FAILED, or no usable inventory. INVENTORY_COVERAGE_GAP is NOT a stop condition - it is a
+ * successful Pass A that discloses unaccounted source, and HD-2 was exactly the error of treating it as failure.
+ */
+export function passAUsable(p: PassALike | null | undefined): boolean {
+  if (!p) return false;
+  if (p.inventoryStatus === "INVENTORY_FAILED") return false;
+  const n = Array.isArray(p.items) ? p.items.length : (p.items as { length: number } | undefined)?.length ?? 0;
+  return n > 0;
+}
+
+/** The whole §4 gate: both passes usable, ensemble built, and the authoritative inventory non-empty. */
+export function passAPrerequisiteSatisfied(input: { pass1: PassALike | null | undefined; pass2: PassALike | null | undefined; ensembleBuilt: boolean; authoritativeItemCount: number }): boolean {
+  return passAUsable(input.pass1) && passAUsable(input.pass2) && input.ensembleBuilt === true && input.authoritativeItemCount > 0;
+}

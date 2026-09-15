@@ -15,7 +15,7 @@ import { existsSync, readFileSync } from "node:fs";
 if (!process.env.AI_GATEWAY_API_KEY) { try { const m = readFileSync(".env.local", "utf-8").match(/AI_GATEWAY_API_KEY=(.+)/); if (m) process.env.AI_GATEWAY_API_KEY = m[1]!.trim(); } catch { /* no key file */ } }
 import Anthropic from "@anthropic-ai/sdk";
 import { OUT, CLEAN_RAW, CAP_USD, PRIOR_VOID_SPEND_USD, buildCleanRunPlan, newGuard } from "./phase-3-601-clean-certify";
-import { BudgetExhaustedError, PassAPrerequisiteError, GuardedStageCaller, guardedCompileClient, CONDITION_SUSPICION_CALLS } from "./phase-3-601-guard";
+import { BudgetExhaustedError, PassAPrerequisiteError, GuardedStageCaller, guardedCompileClient, passAPrerequisiteSatisfied, CONDITION_SUSPICION_CALLS } from "./phase-3-601-guard";
 import { gatewayCredits, writeJson } from "./f7b-lib";
 import { runDualPassSemanticInventory } from "../lib/contract-model/compiler/semantic-accountability/dual-pass";
 import { compileCovenantToIR } from "../lib/contract-model/compiler/semantic/compile";
@@ -69,8 +69,12 @@ void (async () => {
   // §4's enumerated stop conditions are: refused by the cost guard, throws, INVENTORY_FAILED, or no usable inventory
   // due to harness/environment failure. The gate must test exactly those and nothing stricter: a gate that is stricter
   // than its specification destroys runs instead of protecting them, which is the same failure shape as HD-1.
-  const usable = (i: typeof p1) => !!i && i.inventoryStatus !== "INVENTORY_FAILED" && i.items.length > 0;
-  const passAOk = !!dual && usable(p1) && usable(p2) && dual.ensembleBuilt === true && (inv?.items.length ?? 0) > 0;
+  const passAOk = !!dual && passAPrerequisiteSatisfied({ pass1: p1, pass2: p2, ensembleBuilt: dual.ensembleBuilt, authoritativeItemCount: inv?.items.length ?? 0 });
+  // HARNESS DEFECT HD-3, fixed after the 2026-09-15 run: the frozen inventory was previously written only inside the
+  // §17 post-compile freeze block, so when HD-2 aborted before Pass B the 322-item truth layer - the most expensive and
+  // least reproducible artifact in the mission ($5.29 of paid Pass A) - died with the process and could not be resumed.
+  // Expensive, irreplaceable evidence is now persisted the instant it exists, BEFORE any gate that can abort.
+  if (dual) { writeJson(`${CLEAN_RAW}/frozen-inventory.json`, inv); writeJson(`${CLEAN_RAW}/pass-a-passes.json`, dual.passes); }
   if (dual) console.log(`  -> pass1 ${p1?.inventoryStatus} items=${p1?.items.length} | pass2 ${p2?.inventoryStatus} items=${p2?.items.length} | ensembleBuilt=${dual.ensembleBuilt} canonical=${inv?.items.length}`);
 
   const writePassA = (stopped: boolean, reason: string | null) => {
