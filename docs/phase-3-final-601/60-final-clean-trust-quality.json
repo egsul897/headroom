@@ -1,0 +1,149 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 FINAL CLEAN RUN §20/§30/§31 - shard trust, hard trust counters, quality gate",
+ "at": "2026-09-15T15:08:53.060Z",
+ "runValidity": {
+  "passAExecuted": true,
+  "ensembleBuilt": false,
+  "persistedAndReloaded": false,
+  "resumeProofOk": false,
+  "compileUsedReloaded": false,
+  "compileStatus": null,
+  "inventoried": 0,
+  "materialItems": 0,
+  "substantiveRun": false
+ },
+ "inventoryLimitationsPreserved": {
+  "inventoryStatusCarried": null,
+  "unaccountedSource": null,
+  "uninventoriedValues": null,
+  "supportReviewRequired": null,
+  "semanticallyComplete": null
+ },
+ "shardTrustGate": {
+  "executionMode": null,
+  "applicable": false,
+  "ownedValuesLost": null,
+  "distinctOwnedLineageLost": null,
+  "sourceUnverifiableAuthoritativeIr": null,
+  "contextualOwnershipCreditViolations": 0,
+  "silentIncompatibleMerges": null,
+  "newDanglingRefs": null,
+  "census": {
+   "collisions": null,
+   "collisionsByKind": {},
+   "definitionConflicts": null,
+   "conflictVariants": null,
+   "contextualEmissions": 0,
+   "contextualEmissionsWithoutOwner": 0,
+   "attributionProofCounts": null,
+   "unresolvedOwnedItemList": [],
+   "statusCounts": {},
+   "shards": []
+  }
+ },
+ "hardTrustCounters": [
+  {
+   "counter": "dangerous silent omissions",
+   "value": null,
+   "state": "NOT_MEASURABLE",
+   "rule": "reference items with no covering inventory item AND no explicit review signal on the unit (58)"
+  },
+  {
+   "counter": "false completeness",
+   "value": null,
+   "state": "NOT_MEASURABLE",
+   "rule": "Pass C claiming semanticallyComplete while material items are MISSING (complete=null, materialMissing=0)"
+  },
+  {
+   "counter": "source-unverifiable authoritative IR",
+   "value": null,
+   "state": "NOT_MEASURABLE",
+   "rule": "F-7B.2 proof-class census: retained definitions with proof class NONE, over 0 retained definitions"
+  },
+  {
+   "counter": "contextual ownership-credit violations",
+   "value": null,
+   "state": "NOT_MEASURABLE",
+   "rule": "contextual emissions retained WITHOUT an identified owner shard, over 0 contextual emissions and 0 detected collisions"
+  },
+  {
+   "counter": "silent incompatible merges",
+   "value": null,
+   "state": "NOT_MEASURABLE",
+   "rule": "conflicts recorded with zero retained variants (conflicts=0, variants=0); measured over the whole stitched unit"
+  },
+  {
+   "counter": "owned values lost",
+   "value": null,
+   "state": "NOT_MEASURABLE",
+   "rule": "Pass C materialQuantitativeValuesMissing over 0 material quantitative values"
+  },
+  {
+   "counter": "distinct owned lineage lost",
+   "value": null,
+   "state": "NOT_MEASURABLE",
+   "rule": "owned inventory items no shard resolved (55.execution.sharded.unresolvedOwnedItems)"
+  },
+  {
+   "counter": "new dangling refs",
+   "value": null,
+   "state": "NOT_MEASURABLE",
+   "rule": "Pass C danglingLineageReferences"
+  },
+  {
+   "counter": "hidden provider/schema failures",
+   "value": null,
+   "state": "NOT_MEASURABLE",
+   "rule": "shard provider/schema failures (0/0) not surfaced in unit status (null)"
+  },
+  {
+   "counter": "hidden material omissions",
+   "value": null,
+   "state": "NOT_MEASURABLE",
+   "rule": "material MISSING items not reflected in the completeness verdict"
+  },
+  {
+   "counter": "authoritative hallucinations",
+   "value": null,
+   "state": "NOT_MEASURABLE",
+   "rule": "every inventory item is excerpt-anchored; Pass A discarded ? unverifiable proposals at freeze"
+  },
+  {
+   "counter": "silent CRITICAL misses",
+   "value": null,
+   "state": "NOT_MEASURABLE",
+   "rule": "CRITICAL reference items neither discovered nor disclosed (58)"
+  },
+  {
+   "counter": "incorrect authoritative CRITICAL claims",
+   "value": null,
+   "state": "NOT_MEASURABLE",
+   "rule": "CRITICAL reference items whose IR values contradict the source numbers of the same unit (58)"
+  },
+  {
+   "counter": "silent quantitative corruption",
+   "value": null,
+   "state": "NOT_MEASURABLE",
+   "rule": "reference items FOUND_BUT_INCORRECT while the unit carried no review signal (59)"
+  }
+ ],
+ "allCountersZero": false,
+ "allCountersMeasured": false,
+ "trustGatePassed": false,
+ "qualityGate": {
+  "evaluated": false,
+  "conclusion": "NOT_EVALUABLE"
+ },
+ "performanceWindow": {
+  "maxSingleTurnInputTokens": 15399,
+  "maxSingleTurnOutputTokens": 51191,
+  "totalInputTokens": 125214,
+  "totalOutputTokens": 409619,
+  "outputTruncations": 0,
+  "providerFailures": 0,
+  "schemaFailures": 0,
+  "retries": 0,
+  "shardsExecuted": 0,
+  "oversizedShards": 0
+ }
+}

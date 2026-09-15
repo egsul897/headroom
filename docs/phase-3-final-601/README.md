@@ -290,3 +290,66 @@ Resuming is no longer possible, so the $8.792974 spent on Section 6.01 buys no s
 fresh end-to-end mission under the corrected harness at a cap covering the full $15.8309 conservative estimate.
 The structural causes of all three defects are now closed, so that run should reach Pass B, Pass C and the
 verifier on its first attempt.
+
+# Final clean end-to-end attempt (artifacts 47-62)
+
+**Verdict: `PHASE3_601_ENVIRONMENT_BLOCKED`** — $4.732104 spent, Phase 3 not closed, Phase 4 not started.
+
+## What happened
+
+The zero-cost triple certification passed (48): HD-1 live guard $15.830939 bit-identical to the frozen estimator
+with the first call admissible; HD-2 5/5 predicate shapes; HD-3 write → fsync → reload → hash + structural
+equality → exists before the simulated gate. The cost gate cleared (49: $15.8309 ≤ $15.84 cap, $23.77 balance).
+The certified paid run started at 14:09:59Z and ran correctly: every one of 12 admission checks passed under the
+conservative rule, pass 1 completed all 6 batch calls and its gap call ($2.8183), and pass 2 completed 4 of 6
+batch calls ($1.5283).
+
+At ~15:02Z the session worker/container restarted and SIGKILLed the run (exit 137) with pass 2 batch 5 in
+flight. The host did not reboot; the harness worker was restarted and took its child processes with it. Nothing
+in the run, the guard or production raised or returned. The provider completed the in-flight call server-side and
+billed it after the client died ($0.385486 — a balance read at 15:04:45Z showed no charge, a later read did), so
+the gateway-authoritative spend is **$4.732104** against the guard ledger's $4.346618 for the 11 completed calls.
+
+## Why nothing was resumed and nothing was rerun
+
+`runDualPassSemanticInventory` had not returned, so the HD-3 persistence (which fires the instant it returns) never
+executed and no inventory object exists on disk. Pass 1's inventory lived only in process memory. A fresh
+end-to-end run needs the full $15.8309 conservative estimate against $11.1079 of cap remaining, which §7 forbids
+starting. So the run stopped at zero further cost.
+
+## HD-4 (candidate): persistence granularity
+
+The HD-3 closure persists at ensemble granularity (after both passes). It cannot protect against a process kill
+during Pass A itself. Pass 1 (7 calls, $2.8183) would have survived under per-pass or per-call persistence of raw
+provider responses, which a replaying `StageCaller` could feed back into the production
+`runDualPassSemanticInventory` at zero cost. This is classified **environment-caused, harness-amplified**: no gate
+refused, no gate mis-fired, production behaved correctly up to the kill. It is a design observation for the next
+mission, not a fix applied here — no harness or production change was made after paid execution began. The only
+new script, `scripts/phase-3-601-final-postmortem.ts`, reconstructs 50-57 from the two durable traces the guard
+wrote synchronously (guard-state.ndjson, run.log) plus one gateway balance read; it makes no model call.
+
+## Scorecard
+
+§34: 25 conditions, **9 PASS / 16 FAIL**. Passing: identities frozen, HD-1/HD-2/HD-3 certified, no historical
+Pass-B reuse, spend ≤ cap, no fix-and-continue, no new regression, build passes. All 14 hard trust counters are
+**NOT_MEASURABLE** (none VACUOUS, none MEASURED) because no compiled unit exists; the quality gate is
+NOT_EVALUABLE.
+
+## Regression
+
+107 failing files / 162 failing tests / 3,167 passing — the exact mission baseline count, with one substitution:
+`part-b-terminal-recert-open3-independent` (a wall-clock O(n) scaling probe) failed only because tsc, eslint and
+next build were run concurrently with vitest, and the previously characterised `finding4` flake passed. Both pass in
+isolation (22/22). Zero production files changed. `tsc` shows the same 6 pre-existing errors; lint clean; build
+passes.
+
+## Cumulative Section 6.01 spend
+
+$3.501676 (HD-1 void) + $5.291298 (HD-2 lost Pass A) + $4.732104 (this run, killed) = **$13.525078**.
+
+## Next step
+
+The harness is certified and production is unchanged; the only unaddressed loss channel is a process kill
+during Pass A. The next attempt should (a) persist every raw Pass-A provider response the moment it returns and
+run Pass A through a replaying caller so a kill costs at most one call, and (b) be funded at a cap covering the
+full $15.8309 conservative estimate.

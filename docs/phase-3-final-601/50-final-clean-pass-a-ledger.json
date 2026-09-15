@@ -1,0 +1,60 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 FINAL CLEAN RUN §8/§9 - fresh DUAL_PASS_ENSEMBLE Pass A (RECONSTRUCTED POST-MORTEM: run killed before Pass A returned)",
+ "at": "2026-09-15T15:07:36.437Z",
+ "reconstructedBy": "scripts/phase-3-601-final-postmortem.ts from guard-state.ndjson + run.log",
+ "freshExecution": true,
+ "historicalInventoryReused": false,
+ "completed": false,
+ "killed": {
+  "event": "session worker / container restart",
+  "signalObserved": "SIGKILL (background task exit code 137)",
+  "lastDurableWriteAt": "2026-09-15T15:01:20.943Z",
+  "hostUptimeUnbroken": true,
+  "note": "the host did not reboot (uptime continuous); the harness worker process was restarted and its child processes, including the paid run, were killed. Nothing in the run, the guard or production raised or returned."
+ },
+ "pass1": {
+  "calls": 7,
+  "batches": 6,
+  "gapCalls": 1,
+  "costUsd": 2.818282,
+  "completedAllCalls": true,
+  "items": null,
+  "inventoryStatus": null,
+  "inventoryStatusReason": "pass 1 finished its 6 batch calls and 1 gap call; its inventory object was in memory only and was lost with the process",
+  "sourceCoverage": null,
+  "frozenContentHash": null
+ },
+ "pass2": {
+  "calls": 4,
+  "batches": 4,
+  "gapCalls": 0,
+  "costUsd": 1.528336,
+  "completedAllCalls": false,
+  "items": null,
+  "inventoryStatus": null,
+  "inventoryStatusReason": "pass 2 completed 4 of 6 batch calls; batch 5 was in flight at the kill",
+  "inFlightCall": {
+   "stage": "passA-2:semantic_inventory",
+   "admittedAt": "2026-09-15T15:01:20.943Z",
+   "spentBefore": 4.346618,
+   "conservativeRemainingBefore": 7.3949,
+   "completed": false
+  },
+  "frozenContentHash": null
+ },
+ "ensembleBuilt": false,
+ "ensembleRefusal": null,
+ "authoritative": null,
+ "ensemble": null,
+ "lostWork": {
+  "pass1": {
+   "batches": 6,
+   "gapCalls": 1,
+   "costUsd": 2.818282,
+   "state": "completed inside runDualPassSemanticInventory and held only in process memory; the ensemble-level persistAndReload (HD-3 closure) runs after BOTH passes return, so pass 1 was never written"
+  },
+  "pass2PartialCostUsd": 1.528336,
+  "inFlightCallBilledUsd": 0.385486,
+  "totalLostUsd": 4.732104
+ }
+}
