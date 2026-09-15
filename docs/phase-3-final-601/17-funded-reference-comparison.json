@@ -1,0 +1,13 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE \u00a718/\u00a719/\u00a720 - human reference comparison",
+ "at": "2026-09-15T01:22:52.984809Z",
+ "produced": false,
+ "reason": "VOID - this mission's paid run did not execute Pass A. Harness defect HD-1 made the in-run \u00a77 affordability guard stricter than the \u00a74 frozen estimator (it added a per-shard Pass B term the methodology does not contain), so the guard refused the first Pass A call of BOTH passes at $16.6405 conservative-remaining against the \u00a76 gate's own $15.8309. Both passes returned INVENTORY_FAILED with 0 items, the dual-pass ensemble was never built, and the compilation ran over an EMPTY inventory. Scoring the 8 frozen reference items against a run with no semantic inventory would measure the harness defect, not the system's semantic quality, and would produce 8 vacuous NOT_DISCOVERED rows that could be mistaken for a recall finding. This artifact is therefore deliberately NOT produced.",
+ "referenceSetReachedNoPrompt": true,
+ "referenceItemsFrozen": {
+  "total": 8,
+  "critical": 4,
+  "material": 4
+ },
+ "whatWouldBeRequired": "a re-run in which both DUAL_PASS_ENSEMBLE passes actually execute, which \u00a77 forbids within the remaining cap (see 21-funded-final-verdict.json)"
+}

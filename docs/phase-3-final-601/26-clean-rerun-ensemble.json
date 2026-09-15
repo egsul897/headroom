@@ -1,0 +1,209 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 CLEAN RERUN §9 - dual-pass ensemble",
+ "at": "2026-09-15T03:14:31.395Z",
+ "ensembleBuilt": true,
+ "ensembleRefusal": null,
+ "authoritativeInventory": {
+  "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+  "inventoryStatusReason": "322 canonical item(s) from 2 independent passes: 252 corroborated, 70 single-run (64 CRITICAL/MATERIAL), 0 conflicted; 16 stretch(es) of source remain UNACCOUNTED_SOURCE after the union - accountability for that text is not established by either pass; 64 CRITICAL/MATERIAL item(s) carry support asymmetry or conflict - REVIEW_REQUIRED unless independently resolved later",
+  "canonicalItems": 322,
+  "frozenContentHash": "25203003989dda12a9e8a26d3953d6668e2b0ff0907988b9db1f3e0b452d75e3",
+  "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+  "rejectedUnverifiableItems": 0,
+  "rejectedDuplicateItems": 252,
+  "provider": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-sonnet-5"
+ },
+ "ensemble": {
+  "algorithmVersion": "semantic-ensemble.v1",
+  "policy": "SUPPORT_AWARE_CANONICAL_UNION",
+  "passIds": [
+   "pass-1",
+   "pass-2"
+  ],
+  "passHashes": {
+   "pass-1": "46b82d97e98aacb61049345047ed70690b931f262169260f82a4076af2d7235f",
+   "pass-2": "55b377275f046987747ed5acd833384c31a5e6a196d353af836ba791649d574b"
+  },
+  "counts": {
+   "canonicalItems": 322,
+   "corroborated": 252,
+   "singleRun": 70,
+   "singleRunByPass": {
+    "pass-1": 32,
+    "pass-2": 38
+   },
+   "conflicted": 0,
+   "materialSingleRun": 64,
+   "informationalSingleRun": 6,
+   "materialConflicted": 0,
+   "rejectedUnverifiable": 0
+  },
+  "supportReviewRequired": true,
+  "supportReviewFraction": 0.1988,
+  "conflicts": [],
+  "compatibility": {
+   "mode": "STRICT",
+   "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+   "partitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+   "documentIds": [
+    "doc-a"
+   ],
+   "passes": {
+    "pass-1": {
+     "algorithmVersion": "semantic-accountability.v5",
+     "promptVersion": "semantic-inventory-prompt.v5",
+     "provider": "VERCEL_AI_GATEWAY",
+     "model": "anthropic/claude-sonnet-5",
+     "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+     "sourceIdentityMethod": "RECORDED_AT_FREEZE",
+     "partitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+     "documentId": "doc-a"
+    },
+    "pass-2": {
+     "algorithmVersion": "semantic-accountability.v5",
+     "promptVersion": "semantic-inventory-prompt.v5",
+     "provider": "VERCEL_AI_GATEWAY",
+     "model": "anthropic/claude-sonnet-5",
+     "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+     "sourceIdentityMethod": "RECORDED_AT_FREEZE",
+     "partitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+     "documentId": "doc-a"
+    }
+   },
+   "checks": [
+    {
+     "check": "candidate-ref",
+     "pass": true,
+     "detail": "pass-1: candidateRef phase-3-final-601:chwy:6.01 matches"
+    },
+    {
+     "check": "source-identity-recorded",
+     "pass": true,
+     "detail": "pass-1: source identity RECORDED_AT_FREEZE"
+    },
+    {
+     "check": "source-context-hash",
+     "pass": true,
+     "detail": "pass-1: source-context hash 08752002dcea9074 vs ensemble 08752002dcea9074"
+    },
+    {
+     "check": "partition",
+     "pass": true,
+     "detail": "pass-1: slot partition 271ed1589981c852 vs ensemble 271ed1589981c852"
+    },
+    {
+     "check": "document",
+     "pass": true,
+     "detail": "pass-1: document doc-a vs ensemble doc-a"
+    },
+    {
+     "check": "algorithm-generation",
+     "pass": true,
+     "detail": "pass-1: algorithm semantic-accountability.v5 supported"
+    },
+    {
+     "check": "prompt-generation",
+     "pass": true,
+     "detail": "pass-1: prompt semantic-inventory-prompt.v5 supported"
+    },
+    {
+     "check": "pass-status",
+     "pass": true,
+     "detail": "pass-1: INVENTORY_COVERAGE_GAP"
+    },
+    {
+     "check": "candidate-ref",
+     "pass": true,
+     "detail": "pass-2: candidateRef phase-3-final-601:chwy:6.01 matches"
+    },
+    {
+     "check": "source-identity-recorded",
+     "pass": true,
+     "detail": "pass-2: source identity RECORDED_AT_FREEZE"
+    },
+    {
+     "check": "source-context-hash",
+     "pass": true,
+     "detail": "pass-2: source-context hash 08752002dcea9074 vs ensemble 08752002dcea9074"
+    },
+    {
+     "check": "partition",
+     "pass": true,
+     "detail": "pass-2: slot partition 271ed1589981c852 vs ensemble 271ed1589981c852"
+    },
+    {
+     "check": "document",
+     "pass": true,
+     "detail": "pass-2: document doc-a vs ensemble doc-a"
+    },
+    {
+     "check": "algorithm-generation",
+     "pass": true,
+     "detail": "pass-2: algorithm semantic-accountability.v5 supported"
+    },
+    {
+     "check": "prompt-generation",
+     "pass": true,
+     "detail": "pass-2: prompt semantic-inventory-prompt.v5 supported"
+    },
+    {
+     "check": "pass-status",
+     "pass": true,
+     "detail": "pass-2: INVENTORY_COVERAGE_GAP"
+    },
+    {
+     "check": "algorithm-generation",
+     "pass": true,
+     "detail": "pass-2 vs pass-1: algorithm semantic-accountability.v5 vs semantic-accountability.v5"
+    },
+    {
+     "check": "prompt-generation",
+     "pass": true,
+     "detail": "pass-2 vs pass-1: prompt semantic-inventory-prompt.v5 vs semantic-inventory-prompt.v5"
+    },
+    {
+     "check": "provider-model",
+     "pass": true,
+     "detail": "pass-2 vs pass-1: VERCEL_AI_GATEWAY/anthropic/claude-sonnet-5 vs VERCEL_AI_GATEWAY/anthropic/claude-sonnet-5"
+    }
+   ],
+   "declaredExceptions": []
+  }
+ },
+ "sourceCoverage": {
+  "regionsConsidered": [
+   "operative"
+  ],
+  "countsByDisposition": {
+   "COVERED_BY_INVENTORY": 255,
+   "COVERED_BY_CHILD_DESCENT": 1,
+   "COVERED_BY_CONNECTIVE_OWNERSHIP": 1,
+   "ACCOUNTED_BY_EXTERNAL_UNIT": 0,
+   "STRUCTURAL_NOISE": 13,
+   "HEADING_OR_LABEL": 1,
+   "CITATION_ONLY": 0,
+   "DEFINED_TERM_LABEL": 0,
+   "PUNCTUATION_OR_DELIMITER": 248,
+   "NON_SEMANTIC_FORMATTING": 6,
+   "UNACCOUNTED_SOURCE": 16
+  },
+  "charsByDisposition": {
+   "COVERED_BY_INVENTORY": 27916,
+   "COVERED_BY_CHILD_DESCENT": 13,
+   "COVERED_BY_CONNECTIVE_OWNERSHIP": 15,
+   "ACCOUNTED_BY_EXTERNAL_UNIT": 0,
+   "STRUCTURAL_NOISE": 46,
+   "HEADING_OR_LABEL": 50,
+   "CITATION_ONLY": 0,
+   "DEFINED_TERM_LABEL": 0,
+   "PUNCTUATION_OR_DELIMITER": 4,
+   "NON_SEMANTIC_FORMATTING": 30,
+   "UNACCOUNTED_SOURCE": 469
+  },
+  "accountedCharFraction": 0.9836,
+  "externallyAccountedRegions": []
+ },
+ "unaccountedSource": 16,
+ "uninventoriedValues": 2
+}

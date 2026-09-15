@@ -1,0 +1,123 @@
+{
+ "candidateRef": "phase-3-final-601:chwy:6.01",
+ "documentId": "doc-a",
+ "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+ "frozenContentHash": "synthetic-8c9ae3fd43a2287d06ead19c61559774a2ff01461910ab0631eceaf2303f9c73",
+ "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+ "items": [
+  {
+   "inventoryItemId": "syn-1",
+   "sourceSpan": {
+    "regionId": "operative",
+    "documentId": "doc-a",
+    "sourceNodeId": null,
+    "sectionRef": "6.01",
+    "charStart": 0,
+    "charEnd": 40,
+    "sourceCitation": "syn"
+   },
+   "semanticRole": "RESTRICTION",
+   "proposition": "synthetic proposition one",
+   "quantitativeValues": [
+    {
+     "kind": "RATIO",
+     "rawText": "2.00x",
+     "normalizedValue": 2,
+     "unit": "x",
+     "charStart": 10,
+     "charEnd": 15
+    }
+   ],
+   "referencedTerms": [
+    "Term A"
+   ],
+   "referencedSections": [],
+   "parentItemId": null,
+   "relatedItemIds": [],
+   "materiality": "CRITICAL",
+   "ambiguity": "NONE",
+   "ambiguityReason": null,
+   "support": {
+    "supportingPasses": [
+     "pass-1",
+     "pass-2"
+    ],
+    "supportStatus": "CORROBORATED",
+    "memberItemIds": {
+     "pass-1": [
+      "a"
+     ],
+     "pass-2": [
+      "b"
+     ]
+    }
+   }
+  },
+  {
+   "inventoryItemId": "syn-2",
+   "sourceSpan": {
+    "regionId": "operative",
+    "documentId": "doc-a",
+    "sourceNodeId": null,
+    "sectionRef": "6.01",
+    "charStart": 41,
+    "charEnd": 90,
+    "sourceCitation": "syn"
+   },
+   "semanticRole": "PERMISSION",
+   "proposition": "synthetic proposition two",
+   "quantitativeValues": [],
+   "referencedTerms": [],
+   "referencedSections": [
+    "Section 1.01"
+   ],
+   "parentItemId": null,
+   "relatedItemIds": [
+    "syn-1"
+   ],
+   "materiality": "MATERIAL",
+   "ambiguity": "NONE",
+   "ambiguityReason": null,
+   "support": {
+    "supportingPasses": [
+     "pass-1"
+    ],
+    "supportStatus": "SINGLE_RUN",
+    "memberItemIds": {
+     "pass-1": [
+      "c"
+     ]
+    }
+   }
+  }
+ ],
+ "unaccountedSource": [
+  {
+   "regionId": "operative",
+   "charStart": 91,
+   "charEnd": 120,
+   "reason": "synthetic"
+  }
+ ],
+ "uninventoriedValues": [],
+ "ensemble": {
+  "policy": "SUPPORT_AWARE_CANONICAL_UNION",
+  "counts": {
+   "canonicalItems": 2,
+   "corroborated": 1,
+   "singleRun": 1,
+   "conflicted": 0
+  },
+  "supportReviewRequired": true,
+  "compatibility": {
+   "mode": "STRICT",
+   "sourceContextHash": "syn",
+   "partitionHash": "syn"
+  }
+ },
+ "sourceIdentity": {
+  "method": "RECORDED_AT_FREEZE",
+  "sourceContextHash": "syn",
+  "partitionHash": "syn"
+ }
+}

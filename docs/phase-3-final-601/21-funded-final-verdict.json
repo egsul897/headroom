@@ -1,0 +1,137 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE \u00a729 - final verdict",
+ "at": "2026-09-15T01:25:05.402696Z",
+ "startingSha": "d51e7f275f6a7ffbaa2f61c19dd823b9da143b23",
+ "conditions": [
+  {
+   "id": 1,
+   "condition": "balance >= $15.84 before start",
+   "status": "PASS",
+   "evidence": "$32.559204"
+  },
+  {
+   "id": 2,
+   "condition": "conservative estimate <= $15.84",
+   "status": "PASS",
+   "evidence": "$15.8309, reproduced identically to the prior preflight"
+  },
+  {
+   "id": 3,
+   "condition": "fresh DUAL_PASS Pass A executed",
+   "status": "FAIL",
+   "evidence": "both passes INVENTORY_FAILED with 0 calls and 0 items; refused by harness defect HD-1"
+  },
+  {
+   "id": 4,
+   "condition": "actual production entry used",
+   "status": "PASS",
+   "evidence": "compileCovenantToIR, no shardExecutor override"
+  },
+  {
+   "id": 5,
+   "condition": "execution mode chosen automatically",
+   "status": "PASS",
+   "evidence": "SHARDED / MULTIPLE_SHARDS_REQUIRED, planHash bf321d3c..., 6 shards, 0 oversized"
+  },
+  {
+   "id": 6,
+   "condition": "no old Pass-A inventory reused",
+   "status": "PASS",
+   "evidence": "no frozenInventory supplied"
+  },
+  {
+   "id": 7,
+   "condition": "no historical shard results reused",
+   "status": "PASS",
+   "evidence": "priorShardResults empty; reused shards = 0, executed = 6"
+  },
+  {
+   "id": 8,
+   "condition": "global Pass C used",
+   "status": "PASS",
+   "evidence": "ran and reported semanticallyComplete=false over 0 inventoried items"
+  },
+  {
+   "id": 9,
+   "condition": "independent verifier used",
+   "status": "PASS",
+   "evidence": "MATERIAL_DISCREPANCY, 10 findings, semantic review invoked"
+  },
+  {
+   "id": 10,
+   "condition": "all hard trust counters = 0",
+   "status": "FAIL",
+   "evidence": "6 MEASURED at zero, 3 VACUOUS, 5 NOT_MEASURABLE without Pass A; cannot be asserted"
+  },
+  {
+   "id": 11,
+   "condition": "no silent CRITICAL miss",
+   "status": "FAIL",
+   "evidence": "NOT_MEASURABLE - reference comparison is void"
+  },
+  {
+   "id": 12,
+   "condition": "no incorrect authoritative CRITICAL claim",
+   "status": "FAIL",
+   "evidence": "NOT_MEASURABLE - reference comparison is void"
+  },
+  {
+   "id": 13,
+   "condition": "quality gate operationally credible",
+   "status": "FAIL",
+   "evidence": "NOT_EVALUABLE - no semantic inventory was produced"
+  },
+  {
+   "id": 14,
+   "condition": "spend <= $15.84",
+   "status": "PASS",
+   "evidence": "$3.5017 of $15.84"
+  },
+  {
+   "id": 15,
+   "condition": "no production change during paid run",
+   "status": "PASS",
+   "evidence": "0 files under lib/, tests/, app/, prisma/"
+  },
+  {
+   "id": 16,
+   "condition": "no new regression failures",
+   "status": "PASS",
+   "evidence": "107 files / 162 tests, failing identities unchanged"
+  },
+  {
+   "id": 17,
+   "condition": "build passes",
+   "status": "PASS",
+   "evidence": "npm run build exit 0"
+  }
+ ],
+ "summary": {
+  "PASS": 12,
+  "FAIL": 5,
+  "total": 17
+ },
+ "verdict": "PHASE3_601_COST_BOUND_DURING_RUN",
+ "verdictBasis": "The \u00a76 gate passed and the paid run started legitimately. Harness defect HD-1 then made the \u00a77 in-run guard stricter than the \u00a74 frozen estimator by adding a per-shard Pass B term the methodology does not contain, inflating conservative-remaining to $16.6405 against the gate's own $15.8309. The guard therefore refused the first Pass A call of both passes, and the run continued with no semantic inventory, which voids it as a \u00a78/\u00a79 validation. $3.5017 is spent, leaving $12.3383 of the $15.84 cap. A complete fresh valid run costs $15.8309 conservative under the unchanged methodology, which exceeds the remaining cap, so \u00a77 forbids proceeding: \"Proceed only if remaining required work fits BOTH remaining cap and remaining gateway balance.\" Substituting mean x 1.25 ($10.3857, which would fit) is exactly the estimator substitution \u00a76 prohibits. All completed outputs are preserved.",
+ "rootCause": {
+  "id": "HD-1",
+  "layer": "HARNESS",
+  "productionDefect": false,
+  "statement": "scripts/phase-3-601-funded-run.ts Guard.conservativeRemaining() priced Pass B as max(tokens x worstTokenRate, shards x worstSingleShardUsd). The \u00a74 methodology prices Pass B solely per planner-estimated input token. The extra term added $0.647, and the guard and the gate disagreed.",
+  "fixedAfterRun": true,
+  "paidCallsAfterFix": 0,
+  "productionCodeTouched": 0
+ },
+ "spend": {
+  "capUsd": 15.84,
+  "spentUsd": 3.5017,
+  "remainingCapUsd": 12.3383,
+  "conservativeCostOfAValidRerunUsd": 15.8309,
+  "fitsRemainingCap": false,
+  "gatewayBalanceBefore": 32.559204,
+  "gatewayBalanceAfter": 29.057528
+ },
+ "phase3Closed": false,
+ "phase4Started": false,
+ "nextStep": "a new pre-registered mission with a cap that again covers the full $15.8309 conservative estimate. The harness defect is fixed and the frozen identities, plan and cost tiers all reproduced exactly, so that mission should reach a real Pass A on its first attempt."
+}

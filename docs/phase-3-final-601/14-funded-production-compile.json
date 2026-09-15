@@ -1,0 +1,213 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE §8/§10/§14/§15 - production compileCovenantToIR execution",
+ "at": "2026-09-15T01:19:32.912Z",
+ "entryPoint": "compileCovenantToIR",
+ "frozenInventoryReused": false,
+ "priorShardResultsReused": false,
+ "shardExecutorOverridden": false,
+ "status": "PARTIAL",
+ "failureReasons": [
+  "MISSING_CONTEXT",
+  "SHARD_INCOMPLETE",
+  "OPERATIVE_STATE_UNRESOLVED",
+  "UNSUPPORTED_SEMANTICS",
+  "SHARD_CONFLICT",
+  "SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+  "SEMANTIC_INVENTORY_UNAVAILABLE",
+  "SEMANTIC_INVENTORY_COVERAGE_GAP"
+ ],
+ "errorDetail": null,
+ "compileError": null,
+ "costBoundDuringRun": false,
+ "costUsd": 3.153986,
+ "execution": {
+  "mode": "SHARDED",
+  "reason": "MULTIPLE_SHARDS_REQUIRED",
+  "policyVersion": "semantic-execution-mode.v1",
+  "plannerAlgorithmVersion": "semantic-compilation-shards.v1",
+  "planHash": "bf321d3ce300f4761b818494475fb37d7b8782e860208ab5706ddec14654e547",
+  "plannedShards": 6,
+  "oversizedShards": 0,
+  "frozenInventoryResume": null,
+  "sharded": {
+   "budget": {
+    "targetPrimaryChars": 12000,
+    "maxPrimaryChars": 24000,
+    "maxContextChars": 10000,
+    "maxContextEntryChars": 1800,
+    "maxUnitsPerShard": 16
+   },
+   "executed": 6,
+   "reused": 0,
+   "retries": 0,
+   "providerCalls": 6,
+   "statusCounts": {
+    "SHARD_MISSING_CONTEXT": 2,
+    "SHARD_COMPLETE": 4
+   },
+   "collisions": 11,
+   "collisionsByKind": {
+    "CONTEXTUAL_UNOWNED_DEFINITION": 7,
+    "RULE_EMITTED_OUT_OF_SCOPE": 4
+   },
+   "definitionConflicts": 0,
+   "conflictVariants": 0,
+   "contextualEmissions": 11,
+   "unresolvedOwnedItems": 0,
+   "stitchedStatus": "PARTIAL",
+   "stitchedFailureReasons": [
+    "MISSING_CONTEXT",
+    "SHARD_INCOMPLETE",
+    "OPERATIVE_STATE_UNRESOLVED",
+    "UNSUPPORTED_SEMANTICS",
+    "SHARD_CONFLICT",
+    "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+   ],
+   "definitionConflictEvidence": [],
+   "unresolvedOwnedItemList": [],
+   "attributionProofCounts": {
+    "PLANNER_DEFINITION_UNIT": 0,
+    "OWNED_INVENTORY_LINEAGE": 0,
+    "UNIQUE_PRIMARY_SOURCE_DECLARATION": 0,
+    "NONE": 0
+   },
+   "shards": [
+    {
+     "shardId": "shard:a40cdcb86aac2e9f3dc9",
+     "shardHash": "2afbece044bdea219f3812ca347dea1d56178438159ad1c05420fbd043dce8ba",
+     "ordinal": 0,
+     "status": "SHARD_MISSING_CONTEXT",
+     "attempts": 1,
+     "reusedFromHash": false,
+     "failureReasons": [
+      "MISSING_CONTEXT",
+      "OPERATIVE_STATE_UNRESOLVED"
+     ],
+     "ownedMaterialItems": 0,
+     "oversized": false,
+     "telemetry": {
+      "inputTokens": 86401,
+      "outputTokens": 31774,
+      "costUsd": 0.49054200000000003
+     }
+    },
+    {
+     "shardId": "shard:13474dae01d45633d673",
+     "shardHash": "8dcc57f4a4bdd154d9fabbd7ffdb7a7352441e0f051b35eca5cca6e22b1cd695",
+     "ordinal": 1,
+     "status": "SHARD_COMPLETE",
+     "attempts": 1,
+     "reusedFromHash": false,
+     "failureReasons": [
+      "OPERATIVE_STATE_UNRESOLVED"
+     ],
+     "ownedMaterialItems": 0,
+     "oversized": false,
+     "telemetry": {
+      "inputTokens": 121496,
+      "outputTokens": 31840,
+      "costUsd": 0.561392
+     }
+    },
+    {
+     "shardId": "shard:e43a67ba2e460496ded0",
+     "shardHash": "5187de5bf1782f7d8edb0e002188d31bb3aa99685233ec9af9c4c20201e935f5",
+     "ordinal": 2,
+     "status": "SHARD_COMPLETE",
+     "attempts": 1,
+     "reusedFromHash": false,
+     "failureReasons": [
+      "OPERATIVE_STATE_UNRESOLVED"
+     ],
+     "ownedMaterialItems": 0,
+     "oversized": false,
+     "telemetry": {
+      "inputTokens": 172669,
+      "outputTokens": 37483,
+      "costUsd": 0.720168
+     }
+    },
+    {
+     "shardId": "shard:8b0b0aa3f219ea8aa340",
+     "shardHash": "cef42ed3d8e0859355786cd89569700f746d7c4c4b77d6e8082dda32b88e2fe0",
+     "ordinal": 3,
+     "status": "SHARD_COMPLETE",
+     "attempts": 1,
+     "reusedFromHash": false,
+     "failureReasons": [
+      "OPERATIVE_STATE_UNRESOLVED"
+     ],
+     "ownedMaterialItems": 0,
+     "oversized": false,
+     "telemetry": {
+      "inputTokens": 140391,
+      "outputTokens": 22830,
+      "costUsd": 0.509082
+     }
+    },
+    {
+     "shardId": "shard:85ad2259e0e12cc53c8a",
+     "shardHash": "0110d1036cc3572669d11ab4ebd184c85c842a7174ded89f5f492e5ab7689363",
+     "ordinal": 4,
+     "status": "SHARD_MISSING_CONTEXT",
+     "attempts": 1,
+     "reusedFromHash": false,
+     "failureReasons": [
+      "MISSING_CONTEXT",
+      "OPERATIVE_STATE_UNRESOLVED"
+     ],
+     "ownedMaterialItems": 0,
+     "oversized": false,
+     "telemetry": {
+      "inputTokens": 95029,
+      "outputTokens": 30871,
+      "costUsd": 0.49876800000000004
+     }
+    },
+    {
+     "shardId": "shard:39d85fa6fe45deec4e3a",
+     "shardHash": "06cd15a33209f11c76e6838942f07668441bbe2d418975bba81894e0e98a069c",
+     "ordinal": 5,
+     "status": "SHARD_COMPLETE",
+     "attempts": 1,
+     "reusedFromHash": false,
+     "failureReasons": [
+      "UNSUPPORTED_SEMANTICS",
+      "OPERATIVE_STATE_UNRESOLVED"
+     ],
+     "ownedMaterialItems": 0,
+     "oversized": false,
+     "telemetry": {
+      "inputTokens": 121857,
+      "outputTokens": 13032,
+      "costUsd": 0.374034
+     }
+    }
+   ],
+   "telemetryNote": "6 bounded conversations (6 executed, 0 reused by shardHash, 0 provider-failure retries); rawModelOutput and toolCallLog are null/empty at the top level because no single transcript exists - per-shard telemetry is listed under execution.sharded.shards"
+  }
+ },
+ "planComparisonVsPreflight": {
+  "preflightPlanHash": "7be17413609ebdbda88ee601750bf1b21e015d790ce583f7572eb75c0083c5e9",
+  "preflightShards": 6,
+  "actualPlanHash": "bf321d3ce300f4761b818494475fb37d7b8782e860208ab5706ddec14654e547",
+  "actualShards": 6,
+  "identical": false,
+  "note": "the preflight plan was built with an EMPTY inventory; the production plan was built with the REAL fresh Pass A inventory, so ownership assignment differs even when the shard structure matches"
+ },
+ "output": {
+  "rules": 56,
+  "definitions": 0,
+  "sharedCapacities": 3,
+  "irExtensionCandidates": 0
+ },
+ "sourceContext": {
+  "state": "COMPLETE_LOCAL_SOURCE",
+  "regions": 1,
+  "totalChars": 33623,
+  "unresolvedReferences": 7
+ },
+ "provider": "vercel-ai-gateway",
+ "model": "anthropic/claude-sonnet-5",
+ "rawEvidence": "tests/fixtures/unseen-packages/phase-3-final-601-funded-run/compile-result.json"
+}

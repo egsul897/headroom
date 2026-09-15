@@ -1,0 +1,161 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE §1-§6 - funded-run freeze, identity verification and the cost gate (0 model calls in this step; one gateway balance read)",
+ "at": "2026-09-15T00:51:21.092Z",
+ "idChecks": {
+  "startingSha": {
+   "expected": "d51e7f275f6a7ffbaa2f61c19dd823b9da143b23",
+   "actual": "d51e7f275f6a7ffbaa2f61c19dd823b9da143b23",
+   "match": true
+  },
+  "sourceSha256": {
+   "expected": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+   "actual": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+   "match": true
+  },
+  "sectionTextSha256": {
+   "expected": "6b79685c94a08a9d27b484aaac52282ce92dbe9a7c3321bc38ff6504d12ec02a",
+   "actual": "6b79685c94a08a9d27b484aaac52282ce92dbe9a7c3321bc38ff6504d12ec02a",
+   "match": true
+  },
+  "sectionSpan": {
+   "expected": [
+    608901,
+    642524
+   ],
+   "actual": [
+    608901,
+    642524
+   ],
+   "match": true
+  },
+  "sectionChars": {
+   "expected": 33623,
+   "actual": 33623,
+   "match": true
+  },
+  "referenceSha256": {
+   "expected": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036",
+   "actual": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036",
+   "match": true
+  },
+  "referenceSlice": {
+   "expected": {
+    "total": 8,
+    "critical": 4,
+    "material": 4
+   },
+   "actual": {
+    "total": 8,
+    "critical": 4,
+    "material": 4
+   },
+   "match": true
+  },
+  "labelSpanAgreement": {
+   "byLabel": 8,
+   "bySpan": 8,
+   "match": true
+  }
+ },
+ "allIdentityChecksMatch": true,
+ "productionCompilerTreeSha256": "2c8deb633489d619488a68362f0d68854e15f6558091fc060d0175a46738e632",
+ "productionSemanticChangeSincePriorPreflight": {
+  "filesChangedUnderLibTestsAppPrisma": 0,
+  "note": "compared against a013ffd, the SHA at which artifacts 00-10 were produced"
+ },
+ "versions": {
+  "compilerAlgorithm": "semantic-accountability-compiler.v4",
+  "compilerPrompt": "semantic-accountability-compiler-prompt.v4",
+  "toolPolicy": "phase-3b1-tool-policy.v2",
+  "accountabilityAlgorithm": "semantic-accountability.v5",
+  "inventoryPrompt": "semantic-inventory-prompt.v5",
+  "sourceIdentityMigration": "source-identity-migration.v1",
+  "executionPolicy": "semantic-execution-mode.v1",
+  "shardPlanner": "semantic-compilation-shards.v1",
+  "irSchema": "headroom-covenant-ir.v1",
+  "verifier": null
+ },
+ "costMethodology": {
+  "source": "docs/phase-3-final-601/01-cost-preflight.json",
+  "conservativeDefinition": "worstObservedRate x 1.25",
+  "redefined": false,
+  "ratesRecomputedFromLedgers": true
+ },
+ "rates": {
+  "passABatchMean": 0.431337,
+  "passABatchWorst": 0.627356,
+  "passABatchCalls": 38,
+  "passAGapMean": 0.3529920000000001,
+  "passAGapWorst": 0.47530800000000006,
+  "passAGapCalls": 5,
+  "passBMean": 0.000017264537354079804,
+  "passBWorst": 0.00003215094994361066,
+  "passBShards": 36,
+  "verifierSemanticReview": 0.32929600000000003,
+  "verifierCalls": 1
+ },
+ "deterministicPlan": {
+  "mode": "SHARDED",
+  "reason": "MULTIPLE_SHARDS_REQUIRED",
+  "planHash": "7be17413609ebdbda88ee601750bf1b21e015d790ce583f7572eb75c0083c5e9",
+  "shards": 6,
+  "oversizedShards": 0,
+  "plannerEstimatedInputTokens": 118179,
+  "passABatchesPerPass": 6,
+  "plannedWithEmptyInventory": true
+ },
+ "estimates": {
+  "meanRate": {
+   "passAUsd": 5.882,
+   "passBUsd": 2.0403,
+   "verifierUsd": 0.3863,
+   "totalUsd": 8.3086
+  },
+  "worstObservedRate": {
+   "passAUsd": 8.4789,
+   "passBUsd": 3.7996,
+   "verifierUsd": 0.3863,
+   "totalUsd": 12.6648
+  },
+  "conservative": {
+   "passAUsd": 10.5986,
+   "passBUsd": 4.7495,
+   "verifierUsd": 0.4829,
+   "totalUsd": 15.8309,
+   "safetyFactor": 1.25
+  }
+ },
+ "reproductionOfPriorPreflight": {
+  "prior": {
+   "meanRate": {
+    "passAUsd": 5.882,
+    "passBUsd": 2.0403,
+    "verifierUsd": 0.3863,
+    "totalUsd": 8.3086
+   },
+   "worstObservedRate": {
+    "passAUsd": 8.4789,
+    "passBUsd": 3.7996,
+    "verifierUsd": 0.3863,
+    "totalUsd": 12.6648
+   },
+   "conservative": {
+    "passAUsd": 10.5986,
+    "passBUsd": 4.7495,
+    "verifierUsd": 0.4829,
+    "totalUsd": 15.8309,
+    "safetyFactor": 1.25
+   }
+  },
+  "identical": true,
+  "note": "same SHA family, same ledgers, same plan - the tiers reproduce exactly; no rate or assumption was altered"
+ },
+ "gate": {
+  "hardCapUsd": 15.84,
+  "gatewayBalanceUsd": 32.559204,
+  "balanceCoversCap": true,
+  "conservativeFitsCap": true,
+  "passed": true
+ },
+ "decision": "CLEAR_TO_EXECUTE"
+}

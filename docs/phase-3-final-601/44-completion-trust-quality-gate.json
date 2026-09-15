@@ -1,0 +1,107 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 COMPLETION \u00a720/\u00a729/\u00a730 - trust and quality gates",
+ "at": "2026-09-15T03:39:13.876281Z",
+ "runValidity": "NO PAID EXECUTION - blocked at the \u00a75 resume proof by HD-3",
+ "stitchingTrustGate": {
+  "applicable": false,
+  "reason": "no compilation occurred"
+ },
+ "hardTrustCounters": [
+  {
+   "counter": "dangerous silent omissions",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist. \u00a729 forbids counting NOT_MEASURABLE as zero."
+  },
+  {
+   "counter": "false completeness",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist. \u00a729 forbids counting NOT_MEASURABLE as zero."
+  },
+  {
+   "counter": "source-unverifiable authoritative IR",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist. \u00a729 forbids counting NOT_MEASURABLE as zero."
+  },
+  {
+   "counter": "contextual ownership-credit violations",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist. \u00a729 forbids counting NOT_MEASURABLE as zero."
+  },
+  {
+   "counter": "silent incompatible merges",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist. \u00a729 forbids counting NOT_MEASURABLE as zero."
+  },
+  {
+   "counter": "owned values lost",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist. \u00a729 forbids counting NOT_MEASURABLE as zero."
+  },
+  {
+   "counter": "distinct owned lineage lost",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist. \u00a729 forbids counting NOT_MEASURABLE as zero."
+  },
+  {
+   "counter": "new dangling refs",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist. \u00a729 forbids counting NOT_MEASURABLE as zero."
+  },
+  {
+   "counter": "hidden provider/schema failures",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist. \u00a729 forbids counting NOT_MEASURABLE as zero."
+  },
+  {
+   "counter": "hidden material omissions",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist. \u00a729 forbids counting NOT_MEASURABLE as zero."
+  },
+  {
+   "counter": "authoritative hallucinations",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist. \u00a729 forbids counting NOT_MEASURABLE as zero."
+  },
+  {
+   "counter": "silent CRITICAL misses",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist. \u00a729 forbids counting NOT_MEASURABLE as zero."
+  },
+  {
+   "counter": "incorrect authoritative CRITICAL claims",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist. \u00a729 forbids counting NOT_MEASURABLE as zero."
+  },
+  {
+   "counter": "silent quantitative corruption",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist. \u00a729 forbids counting NOT_MEASURABLE as zero."
+  }
+ ],
+ "trustGatePassed": false,
+ "qualityGate": {
+  "evaluated": false,
+  "conclusion": "NOT_EVALUABLE",
+  "note": "explicitly NOT PHASE3_601_NEEDS_SEMANTIC_ITERATION. \u00a730 is right that INVENTORY_COVERAGE_GAP alone would not justify that verdict, but this mission gathered no semantic-recovery evidence at all, so no quality claim of any kind is made."
+ },
+ "whatWasProvedAtZeroCost": {
+  "hd2ClosureCertification": "PASSED - 6/6 cases against the exact predicate the paid run imports, including all three required negative tests (INVENTORY_FAILED, absent inventory, zero usable items) plus ensemble-not-built and an INVENTORY_OK positive control",
+  "bankedStatisticsIntegrity": "PASSED - every \u00a74 figure matches the recorded evidence exactly: 322 canonical, 252 corroborated, 70 single-run, 0 conflicted, 64 material single-run, 0 material conflicted, 0 rejected unverifiable, INVENTORY_COVERAGE_GAP, 16 unaccounted, 2 uninventoried, STRICT",
+  "remainingCostModel": "$5.2323 conservative against the $5.30 cap and a $23.77 balance - the mission was affordable and would have proceeded but for HD-3",
+  "identities": "source, Section 6.01 span and text hash, and the 8-item reference slice all verified"
+ }
+}

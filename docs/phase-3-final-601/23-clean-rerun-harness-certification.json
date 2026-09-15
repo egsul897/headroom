@@ -1,0 +1,103 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 CLEAN RERUN §3 - mandatory zero-cost HD-1 harness certification (0 model calls)",
+ "at": "2026-09-15T02:09:51.506Z",
+ "guardUnderTest": {
+  "module": "scripts/phase-3-601-guard.ts",
+  "sha256": "f918a649f2e464f4a57cd77479664b5a6d4cc482c94663014ba878b2b963e8ff",
+  "sameInstanceUsedByPaidRun": true,
+  "note": "the certification and the paid run import ONE Guard implementation, so the formula proved here is the formula that runs"
+ },
+ "hd1": {
+  "defect": "the void run's in-run guard added a per-shard Pass B term (max(tokens x rate, shards x worstSingleShardUsd)) absent from the frozen §5 estimator, inflating conservative-remaining by $0.6472 and refusing both Pass A passes",
+  "closed": true,
+  "perShardTermPresent": false
+ },
+ "frozenEstimator": {
+  "passA": "remaining batch calls x worst batch rate + remaining gap calls x worst gap rate",
+  "passB": "remaining plannerEstimatedInputTokens x worst per-token rate",
+  "verifier": "reviews x worst review cost + condition-suspicion calls x rate",
+  "safetyFactor": 1.25
+ },
+ "rates": {
+  "passABatchMean": 0.431337,
+  "passABatchWorst": 0.627356,
+  "passABatchCalls": 38,
+  "passAGapMean": 0.3529920000000001,
+  "passAGapWorst": 0.47530800000000006,
+  "passAGapCalls": 5,
+  "passBMean": 0.000017264537354079804,
+  "passBWorst": 0.00003215094994361066,
+  "passBShards": 36,
+  "verifierSemanticReview": 0.32929600000000003,
+  "verifierCalls": 1
+ },
+ "preRunEstimator": {
+  "meanRate": {
+   "passAUsd": 5.882,
+   "passBUsd": 2.0403,
+   "verifierUsd": 0.3863,
+   "totalUsd": 8.3086
+  },
+  "worstObservedRate": {
+   "passAUsd": 8.4789,
+   "passBUsd": 3.7996,
+   "verifierUsd": 0.3863,
+   "totalUsd": 12.6648
+  },
+  "conservative": {
+   "passAUsd": 10.5986,
+   "passBUsd": 4.7495,
+   "verifierUsd": 0.4829,
+   "totalUsd": 15.8309,
+   "safetyFactor": 1.25
+  }
+ },
+ "liveGuardInitialConservativeRemainingUsd": 15.830939,
+ "preRunConservativeUnroundedUsd": 15.830939,
+ "preRunConservativeStoredUsd": 15.8309,
+ "deltaVsUnroundedEstimatorUsd": 0,
+ "deltaVsStoredRoundedUsd": 0.000038892,
+ "agreesToFloatingPointRounding": true,
+ "agreementNote": "the live guard is bit-identical to the unrounded frozen estimator; the $0.0000389 gap against the committed artifact is only that artifact storing the tier rounded to 4 decimals",
+ "initialGuardState": {
+  "spent": 0,
+  "passABatchesRemaining": 12,
+  "passAGapRemaining": 2,
+  "passBTokensRemaining": 118179,
+  "verifierReviewRemaining": 1,
+  "conditionSuspicionRemaining": 5,
+  "conservativeRemaining": 15.830938891732458,
+  "capRemaining": 15.84,
+  "balanceRemaining": 29.057528
+ },
+ "firstPassACheck": {
+  "path": "passA-1:first-call-preflight",
+  "admitted": true,
+  "conservativeRemaining": 15.830938891732458,
+  "capRemaining": 15.84,
+  "balanceRemaining": 29.057528,
+  "passed": true
+ },
+ "secondPassACheck": {
+  "path": "passA-2:first-call-preflight",
+  "stateAssumed": "pass 1 fully consumed at WORST observed rates; pass 2 not started",
+  "spentAssumedUsd": 4.2394,
+  "admitted": true,
+  "conservativeRemaining": 10.531633891732454,
+  "capRemaining": 11.600556,
+  "balanceRemaining": 24.818084,
+  "passed": true
+ },
+ "gate": {
+  "capUsd": 15.84,
+  "gatewayBalanceUsd": 29.057528,
+  "balanceCoversCap": true,
+  "conservativeFitsCap": true
+ },
+ "priorVoidSpendUsd": 3.501676,
+ "priorVoidSpendConsumesThisCap": false,
+ "certified": true,
+ "decision": "CERTIFIED_CLEAR_TO_EXECUTE",
+ "paidCallsMade": 0,
+ "spendUsd": 0
+}

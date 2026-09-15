@@ -1,0 +1,2784 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE §9 - fresh DUAL_PASS_ENSEMBLE Pass A",
+ "at": "2026-09-15T01:19:32.909Z",
+ "mode": "DUAL_PASS_ENSEMBLE",
+ "freshExecution": true,
+ "frozenInventorySupplied": false,
+ "passes": [
+  {
+   "passId": "pass-1",
+   "frozenContentHash": "69afc433f8f9a1b7debadcdb992f6b26e980caa2732b64746679a6611fd1f366",
+   "inventoryStatus": "INVENTORY_FAILED",
+   "items": 0,
+   "telemetryCostUsd": null,
+   "calls": 0,
+   "costUsd": 0
+  },
+  {
+   "passId": "pass-2",
+   "frozenContentHash": "69afc433f8f9a1b7debadcdb992f6b26e980caa2732b64746679a6611fd1f366",
+   "inventoryStatus": "INVENTORY_FAILED",
+   "items": 0,
+   "telemetryCostUsd": null,
+   "calls": 0,
+   "costUsd": 0
+  }
+ ],
+ "authoritativeInventory": {
+  "inventoryStatus": "INVENTORY_FAILED",
+  "inventoryStatusReason": "dual-pass ensemble not built: pass-1 INVENTORY_FAILED, pass-2 INVENTORY_FAILED - a pass that did not run cannot corroborate or be corroborated; inventory call failed on batch 1/6: PHASE3_601_COST_BOUND_DURING_RUN before passA-1:semantic_inventory: full remaining mission no longer fits: conservative remaining $16.6405 > cap remaining $15.8400",
+  "items": 0,
+  "frozenContentHash": "69afc433f8f9a1b7debadcdb992f6b26e980caa2732b64746679a6611fd1f366",
+  "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+  "rejectedUnverifiableItems": 0,
+  "rejectedDuplicateItems": 0,
+  "provider": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-sonnet-5",
+  "telemetryCostUsd": null,
+  "partition": {
+   "methods": {
+    "operative": "STRUCTURAL_NODES"
+   },
+   "slots": [
+    {
+     "slotId": "operative:6.01#1",
+     "regionId": "operative",
+     "sectionRef": "6.01",
+     "charStart": 0,
+     "charEnd": 113
+    },
+    {
+     "slotId": "operative:6.01(a)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)",
+     "charStart": 113,
+     "charEnd": 256
+    },
+    {
+     "slotId": "operative:6.01(a)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)",
+     "charStart": 256,
+     "charEnd": 471
+    },
+    {
+     "slotId": "operative:6.01(a)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)",
+     "charStart": 471,
+     "charEnd": 661
+    },
+    {
+     "slotId": "operative:6.01(a)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)",
+     "charStart": 661,
+     "charEnd": 705
+    },
+    {
+     "slotId": "operative:6.01(a)#5",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)",
+     "charStart": 705,
+     "charEnd": 955
+    },
+    {
+     "slotId": "operative:6.01(a)#6",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)",
+     "charStart": 955,
+     "charEnd": 1194
+    },
+    {
+     "slotId": "operative:6.01(a)#7",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)",
+     "charStart": 1194,
+     "charEnd": 1432
+    },
+    {
+     "slotId": "operative:6.01(a)#8",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)",
+     "charStart": 1432,
+     "charEnd": 1676
+    },
+    {
+     "slotId": "operative:6.01(a)#9",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)",
+     "charStart": 1676,
+     "charEnd": 1916
+    },
+    {
+     "slotId": "operative:6.01(a)#10",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)",
+     "charStart": 1916,
+     "charEnd": 1959
+    },
+    {
+     "slotId": "operative:6.01(a)(i)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)(i)",
+     "charStart": 1959,
+     "charEnd": 2140
+    },
+    {
+     "slotId": "operative:6.01(a)(i)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)(i)",
+     "charStart": 2140,
+     "charEnd": 2214
+    },
+    {
+     "slotId": "operative:6.01(a)(ii)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)(ii)",
+     "charStart": 2214,
+     "charEnd": 2378
+    },
+    {
+     "slotId": "operative:6.01(a)(ii)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)(ii)",
+     "charStart": 2378,
+     "charEnd": 2606
+    },
+    {
+     "slotId": "operative:6.01(a)(ii)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)(ii)",
+     "charStart": 2606,
+     "charEnd": 2625
+    },
+    {
+     "slotId": "operative:6.01(a)(ii)(i)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)(ii)(i)",
+     "charStart": 2625,
+     "charEnd": 2823
+    },
+    {
+     "slotId": "operative:6.01(a)(ii)(ii)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)(ii)(ii)",
+     "charStart": 2823,
+     "charEnd": 2841
+    },
+    {
+     "slotId": "operative:6.01(a)(ii)(ii)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)(ii)(ii)",
+     "charStart": 2841,
+     "charEnd": 3083
+    },
+    {
+     "slotId": "operative:6.01(a)(ii)(ii)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(a)(ii)(ii)",
+     "charStart": 3083,
+     "charEnd": 3221
+    },
+    {
+     "slotId": "operative:6.01(b)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)",
+     "charStart": 3221,
+     "charEnd": 3294
+    },
+    {
+     "slotId": "operative:6.01(b)(1)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(1)",
+     "charStart": 3294,
+     "charEnd": 3410
+    },
+    {
+     "slotId": "operative:6.01(b)(1)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(1)",
+     "charStart": 3410,
+     "charEnd": 3596
+    },
+    {
+     "slotId": "operative:6.01(b)(1)(a)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(1)(a)",
+     "charStart": 3596,
+     "charEnd": 3619
+    },
+    {
+     "slotId": "operative:6.01(b)(1)(b)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(1)(b)",
+     "charStart": 3619,
+     "charEnd": 3642
+    },
+    {
+     "slotId": "operative:6.01(b)(1)(b)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(1)(b)",
+     "charStart": 3642,
+     "charEnd": 3855
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 3855,
+     "charEnd": 3872
+    },
+    {
+     "slotId": "operative:6.01(b)(3)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(3)",
+     "charStart": 3872,
+     "charEnd": 3957
+    },
+    {
+     "slotId": "operative:6.01(b)(4)(a)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(4)(a)",
+     "charStart": 3957,
+     "charEnd": 4085
+    },
+    {
+     "slotId": "operative:6.01(b)(4)(a)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(4)(a)",
+     "charStart": 4085,
+     "charEnd": 4332
+    },
+    {
+     "slotId": "operative:6.01(b)(4)(a)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(4)(a)",
+     "charStart": 4332,
+     "charEnd": 4472
+    },
+    {
+     "slotId": "operative:6.01(b)(4)(a)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(4)(a)",
+     "charStart": 4472,
+     "charEnd": 4571
+    },
+    {
+     "slotId": "operative:6.01(b)(4)(a)#5",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(4)(a)",
+     "charStart": 4571,
+     "charEnd": 4792
+    },
+    {
+     "slotId": "operative:6.01(b)(4)(a)#6",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(4)(a)",
+     "charStart": 4792,
+     "charEnd": 4859
+    },
+    {
+     "slotId": "operative:6.01(b)(4)(a)(i)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(4)(a)(i)",
+     "charStart": 4859,
+     "charEnd": 5027
+    },
+    {
+     "slotId": "operative:6.01(b)(4)(a)(i)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(4)(a)(i)",
+     "charStart": 5027,
+     "charEnd": 5144
+    },
+    {
+     "slotId": "operative:6.01(b)(4)(a)(ii)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(4)(a)(ii)",
+     "charStart": 5144,
+     "charEnd": 5255
+    },
+    {
+     "slotId": "operative:6.01(b)(4)(a)(ii)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(4)(a)(ii)",
+     "charStart": 5255,
+     "charEnd": 5453
+    },
+    {
+     "slotId": "operative:6.01(b)(4)(a)(ii)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(4)(a)(ii)",
+     "charStart": 5453,
+     "charEnd": 5494
+    },
+    {
+     "slotId": "operative:6.01(b)(4)(a)(ii)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(4)(a)(ii)",
+     "charStart": 5494,
+     "charEnd": 5736
+    },
+    {
+     "slotId": "operative:6.01(b)(4)(a)(ii)#5",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(4)(a)(ii)",
+     "charStart": 5736,
+     "charEnd": 5814
+    },
+    {
+     "slotId": "operative:6.01(b)(4)(a)(iii)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(4)(a)(iii)",
+     "charStart": 5814,
+     "charEnd": 5967
+    },
+    {
+     "slotId": "operative:6.01(b)(4)(a)(iii)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(4)(a)(iii)",
+     "charStart": 5967,
+     "charEnd": 6153
+    },
+    {
+     "slotId": "operative:6.01(b)(5)(a)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(5)(a)",
+     "charStart": 6153,
+     "charEnd": 6281
+    },
+    {
+     "slotId": "operative:6.01(b)(5)(a)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(5)(a)",
+     "charStart": 6281,
+     "charEnd": 6525
+    },
+    {
+     "slotId": "operative:6.01(b)(5)(a)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(5)(a)",
+     "charStart": 6525,
+     "charEnd": 6767
+    },
+    {
+     "slotId": "operative:6.01(b)(5)(a)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(5)(a)",
+     "charStart": 6767,
+     "charEnd": 6970
+    },
+    {
+     "slotId": "operative:6.01(b)(5)(a)#5",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(5)(a)",
+     "charStart": 6970,
+     "charEnd": 6996
+    },
+    {
+     "slotId": "operative:6.01(b)(5)(a)#6",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(5)(a)",
+     "charStart": 6996,
+     "charEnd": 7176
+    },
+    {
+     "slotId": "operative:6.01(b)(5)(b)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(5)(b)",
+     "charStart": 7176,
+     "charEnd": 7231
+    },
+    {
+     "slotId": "operative:6.01(b)(5)(b)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(5)(b)",
+     "charStart": 7231,
+     "charEnd": 7476
+    },
+    {
+     "slotId": "operative:6.01(b)(5)(b)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(5)(b)",
+     "charStart": 7476,
+     "charEnd": 7539
+    },
+    {
+     "slotId": "operative:6.01(b)(6)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(6)",
+     "charStart": 7539,
+     "charEnd": 7616
+    },
+    {
+     "slotId": "operative:6.01(b)(6)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(6)",
+     "charStart": 7616,
+     "charEnd": 7860
+    },
+    {
+     "slotId": "operative:6.01(b)(6)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(6)",
+     "charStart": 7860,
+     "charEnd": 8087
+    },
+    {
+     "slotId": "operative:6.01(b)(7)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(7)",
+     "charStart": 8087,
+     "charEnd": 8201
+    },
+    {
+     "slotId": "operative:6.01(b)(7)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(7)",
+     "charStart": 8201,
+     "charEnd": 8437
+    },
+    {
+     "slotId": "operative:6.01(b)(7)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(7)",
+     "charStart": 8437,
+     "charEnd": 8687
+    },
+    {
+     "slotId": "operative:6.01(b)(7)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(7)",
+     "charStart": 8687,
+     "charEnd": 8827
+    },
+    {
+     "slotId": "operative:6.01(b)(7)#5",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(7)",
+     "charStart": 8827,
+     "charEnd": 8921
+    },
+    {
+     "slotId": "operative:6.01(b)(7)#6",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(7)",
+     "charStart": 8921,
+     "charEnd": 9171
+    },
+    {
+     "slotId": "operative:6.01(b)(7)#7",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(7)",
+     "charStart": 9171,
+     "charEnd": 9421
+    },
+    {
+     "slotId": "operative:6.01(b)(7)#8",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(7)",
+     "charStart": 9421,
+     "charEnd": 9595
+    },
+    {
+     "slotId": "operative:6.01(b)(8)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(8)",
+     "charStart": 9595,
+     "charEnd": 9691
+    },
+    {
+     "slotId": "operative:6.01(b)(8)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(8)",
+     "charStart": 9691,
+     "charEnd": 9710
+    },
+    {
+     "slotId": "operative:6.01(b)(8)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(8)",
+     "charStart": 9710,
+     "charEnd": 9955
+    },
+    {
+     "slotId": "operative:6.01(b)(8)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(8)",
+     "charStart": 9955,
+     "charEnd": 10200
+    },
+    {
+     "slotId": "operative:6.01(b)(8)#5",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(8)",
+     "charStart": 10200,
+     "charEnd": 10294
+    },
+    {
+     "slotId": "operative:6.01(b)(8)#6",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(8)",
+     "charStart": 10294,
+     "charEnd": 10438
+    },
+    {
+     "slotId": "operative:6.01(b)(8)#7",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(8)",
+     "charStart": 10438,
+     "charEnd": 10687
+    },
+    {
+     "slotId": "operative:6.01(b)(8)#8",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(8)",
+     "charStart": 10687,
+     "charEnd": 10863
+    },
+    {
+     "slotId": "operative:6.01(b)(9)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(9)",
+     "charStart": 10863,
+     "charEnd": 10988
+    },
+    {
+     "slotId": "operative:6.01(b)(9)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(9)",
+     "charStart": 10988,
+     "charEnd": 10995
+    },
+    {
+     "slotId": "operative:6.01(b)(9)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(9)",
+     "charStart": 10995,
+     "charEnd": 11229
+    },
+    {
+     "slotId": "operative:6.01(b)(9)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(9)",
+     "charStart": 11229,
+     "charEnd": 11472
+    },
+    {
+     "slotId": "operative:6.01(b)(9)#5",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(9)",
+     "charStart": 11472,
+     "charEnd": 11656
+    },
+    {
+     "slotId": "operative:6.01(b)(10)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(10)",
+     "charStart": 11656,
+     "charEnd": 11753
+    },
+    {
+     "slotId": "operative:6.01(b)(11)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(11)",
+     "charStart": 11753,
+     "charEnd": 11874
+    },
+    {
+     "slotId": "operative:6.01(b)(11)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(11)",
+     "charStart": 11874,
+     "charEnd": 12110
+    },
+    {
+     "slotId": "operative:6.01(b)(11)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(11)",
+     "charStart": 12110,
+     "charEnd": 12294
+    },
+    {
+     "slotId": "operative:6.01(b)(12)(a)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(12)(a)",
+     "charStart": 12294,
+     "charEnd": 12370
+    },
+    {
+     "slotId": "operative:6.01(b)(12)(a)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(12)(a)",
+     "charStart": 12370,
+     "charEnd": 12579
+    },
+    {
+     "slotId": "operative:6.01(b)(12)(a)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(12)(a)",
+     "charStart": 12579,
+     "charEnd": 12827
+    },
+    {
+     "slotId": "operative:6.01(b)(12)(a)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(12)(a)",
+     "charStart": 12827,
+     "charEnd": 13066
+    },
+    {
+     "slotId": "operative:6.01(b)(12)(a)#5",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(12)(a)",
+     "charStart": 13066,
+     "charEnd": 13306
+    },
+    {
+     "slotId": "operative:6.01(b)(12)(a)#6",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(12)(a)",
+     "charStart": 13306,
+     "charEnd": 13397
+    },
+    {
+     "slotId": "operative:6.01(b)(12)(b)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(12)(b)",
+     "charStart": 13397,
+     "charEnd": 13537
+    },
+    {
+     "slotId": "operative:6.01(b)(12)(b)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(12)(b)",
+     "charStart": 13537,
+     "charEnd": 13769
+    },
+    {
+     "slotId": "operative:6.01(b)(12)(b)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(12)(b)",
+     "charStart": 13769,
+     "charEnd": 13994
+    },
+    {
+     "slotId": "operative:6.01(b)(12)(b)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(12)(b)",
+     "charStart": 13994,
+     "charEnd": 14191
+    },
+    {
+     "slotId": "operative:6.01(b)(13)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)",
+     "charStart": 14191,
+     "charEnd": 14319
+    },
+    {
+     "slotId": "operative:6.01(b)(13)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)",
+     "charStart": 14319,
+     "charEnd": 14550
+    },
+    {
+     "slotId": "operative:6.01(b)(13)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)",
+     "charStart": 14550,
+     "charEnd": 14776
+    },
+    {
+     "slotId": "operative:6.01(b)(13)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)",
+     "charStart": 14776,
+     "charEnd": 15019
+    },
+    {
+     "slotId": "operative:6.01(b)(13)#5",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)",
+     "charStart": 15019,
+     "charEnd": 15260
+    },
+    {
+     "slotId": "operative:6.01(b)(13)#6",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)",
+     "charStart": 15260,
+     "charEnd": 15316
+    },
+    {
+     "slotId": "operative:6.01(b)(13)#7",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)",
+     "charStart": 15316,
+     "charEnd": 15374
+    },
+    {
+     "slotId": "operative:6.01(b)(13)(a)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)(a)",
+     "charStart": 15374,
+     "charEnd": 15500
+    },
+    {
+     "slotId": "operative:6.01(b)(13)(a)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)(a)",
+     "charStart": 15500,
+     "charEnd": 15747
+    },
+    {
+     "slotId": "operative:6.01(b)(13)(a)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)(a)",
+     "charStart": 15747,
+     "charEnd": 15834
+    },
+    {
+     "slotId": "operative:6.01(b)(13)(b)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)(b)",
+     "charStart": 15834,
+     "charEnd": 15893
+    },
+    {
+     "slotId": "operative:6.01(b)(13)(b)(i)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)(b)(i)",
+     "charStart": 15893,
+     "charEnd": 15956
+    },
+    {
+     "slotId": "operative:6.01(b)(13)(b)(i)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)(b)(i)",
+     "charStart": 15956,
+     "charEnd": 16146
+    },
+    {
+     "slotId": "operative:6.01(b)(13)(b)(ii)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)(b)(ii)",
+     "charStart": 16146,
+     "charEnd": 16195
+    },
+    {
+     "slotId": "operative:6.01(b)(13)(b)(ii)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)(b)(ii)",
+     "charStart": 16195,
+     "charEnd": 16285
+    },
+    {
+     "slotId": "operative:6.01(b)(13)(c)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)(c)",
+     "charStart": 16285,
+     "charEnd": 16309
+    },
+    {
+     "slotId": "operative:6.01(b)(13)(c)(i)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)(c)(i)",
+     "charStart": 16309,
+     "charEnd": 16427
+    },
+    {
+     "slotId": "operative:6.01(b)(13)(c)(i)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)(c)(i)",
+     "charStart": 16427,
+     "charEnd": 16523
+    },
+    {
+     "slotId": "operative:6.01(b)(13)(c)(ii)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)(c)(ii)",
+     "charStart": 16523,
+     "charEnd": 16540
+    },
+    {
+     "slotId": "operative:6.01(b)(13)(c)(ii)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)(c)(ii)",
+     "charStart": 16540,
+     "charEnd": 16544
+    },
+    {
+     "slotId": "operative:6.01(b)(13)(c)(iii)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)(c)(iii)",
+     "charStart": 16544,
+     "charEnd": 16627
+    },
+    {
+     "slotId": "operative:6.01(b)(13)(c)(iii)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)(c)(iii)",
+     "charStart": 16627,
+     "charEnd": 16732
+    },
+    {
+     "slotId": "operative:6.01(b)(13)(c)(iii)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)(c)(iii)",
+     "charStart": 16732,
+     "charEnd": 16747
+    },
+    {
+     "slotId": "operative:6.01(b)(13)(c)(iii)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(13)(c)(iii)",
+     "charStart": 16747,
+     "charEnd": 16856
+    },
+    {
+     "slotId": "operative:6.01(b)(14)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)",
+     "charStart": 16856,
+     "charEnd": 17091
+    },
+    {
+     "slotId": "operative:6.01(b)(14)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)",
+     "charStart": 17091,
+     "charEnd": 17253
+    },
+    {
+     "slotId": "operative:6.01(b)(14)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)",
+     "charStart": 17253,
+     "charEnd": 17269
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(a)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(a)",
+     "charStart": 17269,
+     "charEnd": 17374
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(a)(i)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(a)(i)",
+     "charStart": 17374,
+     "charEnd": 17391
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(a)(i)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(a)(i)",
+     "charStart": 17391,
+     "charEnd": 17545
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(a)(ii)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(a)(ii)",
+     "charStart": 17545,
+     "charEnd": 17631
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(a)(ii)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(a)(ii)",
+     "charStart": 17631,
+     "charEnd": 17740
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(b)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(b)",
+     "charStart": 17740,
+     "charEnd": 17750
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(b)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(b)",
+     "charStart": 17750,
+     "charEnd": 17845
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(b)(i)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(b)(i)",
+     "charStart": 17845,
+     "charEnd": 17985
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(b)(i)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(b)(i)",
+     "charStart": 17985,
+     "charEnd": 18011
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(b)(ii)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(b)(ii)",
+     "charStart": 18011,
+     "charEnd": 18201
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(c)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(c)",
+     "charStart": 18201,
+     "charEnd": 18310
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(c)(i)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(c)(i)",
+     "charStart": 18310,
+     "charEnd": 18481
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(c)(ii)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(c)(ii)",
+     "charStart": 18481,
+     "charEnd": 18553
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(c)(ii)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(c)(ii)",
+     "charStart": 18553,
+     "charEnd": 18782
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(c)(ii)(i)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(c)(ii)(i)",
+     "charStart": 18782,
+     "charEnd": 18957
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(c)(ii)(ii)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(c)(ii)(ii)",
+     "charStart": 18957,
+     "charEnd": 19028
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(c)(ii)(ii)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(c)(ii)(ii)",
+     "charStart": 19028,
+     "charEnd": 19155
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(c)(ii)(ii)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(c)(ii)(ii)",
+     "charStart": 19155,
+     "charEnd": 19159
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(d)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(d)",
+     "charStart": 19159,
+     "charEnd": 19285
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(d)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(d)",
+     "charStart": 19285,
+     "charEnd": 19430
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(d)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(d)",
+     "charStart": 19430,
+     "charEnd": 19535
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(d)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(d)",
+     "charStart": 19535,
+     "charEnd": 19658
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(e)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(e)",
+     "charStart": 19658,
+     "charEnd": 19775
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(e)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(e)",
+     "charStart": 19775,
+     "charEnd": 19911
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(e)(1)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(e)(1)",
+     "charStart": 19911,
+     "charEnd": 20010
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(e)(1)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(e)(1)",
+     "charStart": 20010,
+     "charEnd": 20023
+    },
+    {
+     "slotId": "operative:6.01(b)(14)(e)(2)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(14)(e)(2)",
+     "charStart": 20023,
+     "charEnd": 20087
+    },
+    {
+     "slotId": "operative:6.01(b)(15)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(15)",
+     "charStart": 20087,
+     "charEnd": 20122
+    },
+    {
+     "slotId": "operative:6.01(b)(15)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(15)",
+     "charStart": 20122,
+     "charEnd": 20281
+    },
+    {
+     "slotId": "operative:6.01(b)(15)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(15)",
+     "charStart": 20281,
+     "charEnd": 20359
+    },
+    {
+     "slotId": "operative:6.01(b)(15)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(15)",
+     "charStart": 20359,
+     "charEnd": 20379
+    },
+    {
+     "slotId": "operative:6.01(b)(16)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(16)",
+     "charStart": 20379,
+     "charEnd": 20461
+    },
+    {
+     "slotId": "operative:6.01(b)(16)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(16)",
+     "charStart": 20461,
+     "charEnd": 20659
+    },
+    {
+     "slotId": "operative:6.01(b)(17)(i)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(17)(i)",
+     "charStart": 20659,
+     "charEnd": 20768
+    },
+    {
+     "slotId": "operative:6.01(b)(17)(i)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(17)(i)",
+     "charStart": 20768,
+     "charEnd": 20771
+    },
+    {
+     "slotId": "operative:6.01(b)(17)(ii)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(17)(ii)",
+     "charStart": 20771,
+     "charEnd": 20780
+    },
+    {
+     "slotId": "operative:6.01(b)(17)(ii)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(17)(ii)",
+     "charStart": 20780,
+     "charEnd": 20982
+    },
+    {
+     "slotId": "operative:6.01(b)(17)(ii)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(17)(ii)",
+     "charStart": 20982,
+     "charEnd": 21026
+    },
+    {
+     "slotId": "operative:6.01(b)(18)(i)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(18)(i)",
+     "charStart": 21026,
+     "charEnd": 21101
+    },
+    {
+     "slotId": "operative:6.01(b)(18)(i)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(18)(i)",
+     "charStart": 21101,
+     "charEnd": 21344
+    },
+    {
+     "slotId": "operative:6.01(b)(18)(i)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(18)(i)",
+     "charStart": 21344,
+     "charEnd": 21563
+    },
+    {
+     "slotId": "operative:6.01(b)(18)(i)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(18)(i)",
+     "charStart": 21563,
+     "charEnd": 21587
+    },
+    {
+     "slotId": "operative:6.01(b)(18)(ii)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(18)(ii)",
+     "charStart": 21587,
+     "charEnd": 21745
+    },
+    {
+     "slotId": "operative:6.01(b)(19)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(19)",
+     "charStart": 21745,
+     "charEnd": 21870
+    },
+    {
+     "slotId": "operative:6.01(b)(19)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(19)",
+     "charStart": 21870,
+     "charEnd": 22115
+    },
+    {
+     "slotId": "operative:6.01(b)(19)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(19)",
+     "charStart": 22115,
+     "charEnd": 22349
+    },
+    {
+     "slotId": "operative:6.01(b)(19)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(19)",
+     "charStart": 22349,
+     "charEnd": 22444
+    },
+    {
+     "slotId": "operative:6.01(b)(20)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(20)",
+     "charStart": 22444,
+     "charEnd": 22465
+    },
+    {
+     "slotId": "operative:6.01(b)(20)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(20)",
+     "charStart": 22465,
+     "charEnd": 22500
+    },
+    {
+     "slotId": "operative:6.01(b)(20)(i)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(20)(i)",
+     "charStart": 22500,
+     "charEnd": 22543
+    },
+    {
+     "slotId": "operative:6.01(b)(20)(ii)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(20)(ii)",
+     "charStart": 22543,
+     "charEnd": 22619
+    },
+    {
+     "slotId": "operative:6.01(b)(20)(ii)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(20)(ii)",
+     "charStart": 22619,
+     "charEnd": 22697
+    },
+    {
+     "slotId": "operative:6.01(b)(21)(a)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(21)(a)",
+     "charStart": 22697,
+     "charEnd": 22735
+    },
+    {
+     "slotId": "operative:6.01(b)(21)(b)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(21)(b)",
+     "charStart": 22735,
+     "charEnd": 22971
+    },
+    {
+     "slotId": "operative:6.01(b)(21)(b)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(21)(b)",
+     "charStart": 22971,
+     "charEnd": 23209
+    },
+    {
+     "slotId": "operative:6.01(b)(21)(b)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(21)(b)",
+     "charStart": 23209,
+     "charEnd": 23457
+    },
+    {
+     "slotId": "operative:6.01(b)(21)(b)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(21)(b)",
+     "charStart": 23457,
+     "charEnd": 23479
+    },
+    {
+     "slotId": "operative:6.01(b)(21)(c)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(21)(c)",
+     "charStart": 23479,
+     "charEnd": 23584
+    },
+    {
+     "slotId": "operative:6.01(b)(22)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(22)",
+     "charStart": 23584,
+     "charEnd": 23710
+    },
+    {
+     "slotId": "operative:6.01(b)(22)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(22)",
+     "charStart": 23710,
+     "charEnd": 23959
+    },
+    {
+     "slotId": "operative:6.01(b)(22)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(22)",
+     "charStart": 23959,
+     "charEnd": 24031
+    },
+    {
+     "slotId": "operative:6.01(b)(23)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(23)",
+     "charStart": 24031,
+     "charEnd": 24075
+    },
+    {
+     "slotId": "operative:6.01(b)(23)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(23)",
+     "charStart": 24075,
+     "charEnd": 24190
+    },
+    {
+     "slotId": "operative:6.01(b)(24)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(24)",
+     "charStart": 24190,
+     "charEnd": 24207
+    },
+    {
+     "slotId": "operative:6.01(b)(25)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(25)",
+     "charStart": 24207,
+     "charEnd": 24311
+    },
+    {
+     "slotId": "operative:6.01(b)(25)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(25)",
+     "charStart": 24311,
+     "charEnd": 24374
+    },
+    {
+     "slotId": "operative:6.01(b)(26)(a)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(26)(a)",
+     "charStart": 24374,
+     "charEnd": 24455
+    },
+    {
+     "slotId": "operative:6.01(b)(26)(a)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(26)(a)",
+     "charStart": 24455,
+     "charEnd": 24692
+    },
+    {
+     "slotId": "operative:6.01(b)(26)(a)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(26)(a)",
+     "charStart": 24692,
+     "charEnd": 24705
+    },
+    {
+     "slotId": "operative:6.01(b)(26)(b)(i)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(26)(b)(i)",
+     "charStart": 24705,
+     "charEnd": 24774
+    },
+    {
+     "slotId": "operative:6.01(b)(26)(b)(ii)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(26)(b)(ii)",
+     "charStart": 24774,
+     "charEnd": 24887
+    },
+    {
+     "slotId": "operative:6.01(b)(26)(b)(ii)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(26)(b)(ii)",
+     "charStart": 24887,
+     "charEnd": 24963
+    },
+    {
+     "slotId": "operative:6.01(b)(27)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(27)",
+     "charStart": 24963,
+     "charEnd": 25008
+    },
+    {
+     "slotId": "operative:6.01(b)(27)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(27)",
+     "charStart": 25008,
+     "charEnd": 25082
+    },
+    {
+     "slotId": "operative:6.01(b)(27)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(27)",
+     "charStart": 25082,
+     "charEnd": 25241
+    },
+    {
+     "slotId": "operative:6.01(b)(27)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(27)",
+     "charStart": 25241,
+     "charEnd": 25468
+    },
+    {
+     "slotId": "operative:6.01(b)(27)#5",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(27)",
+     "charStart": 25468,
+     "charEnd": 25612
+    },
+    {
+     "slotId": "operative:6.01(b)(28)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(28)",
+     "charStart": 25612,
+     "charEnd": 25648
+    },
+    {
+     "slotId": "operative:6.01(b)(29)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(29)",
+     "charStart": 25648,
+     "charEnd": 25666
+    },
+    {
+     "slotId": "operative:6.01(b)(30)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(30)",
+     "charStart": 25666,
+     "charEnd": 25786
+    },
+    {
+     "slotId": "operative:6.01(b)(31)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(31)",
+     "charStart": 25786,
+     "charEnd": 25909
+    },
+    {
+     "slotId": "operative:6.01(b)(31)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(31)",
+     "charStart": 25909,
+     "charEnd": 26106
+    },
+    {
+     "slotId": "operative:6.01(b)(31)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(31)",
+     "charStart": 26106,
+     "charEnd": 26111
+    },
+    {
+     "slotId": "operative:6.01(b)(32)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(32)",
+     "charStart": 26111,
+     "charEnd": 26233
+    },
+    {
+     "slotId": "operative:6.01(b)(32)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(32)",
+     "charStart": 26233,
+     "charEnd": 26242
+    },
+    {
+     "slotId": "operative:6.01(b)(32)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(32)",
+     "charStart": 26242,
+     "charEnd": 26246
+    },
+    {
+     "slotId": "operative:6.01(b)(33)#1",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(33)",
+     "charStart": 26246,
+     "charEnd": 26281
+    },
+    {
+     "slotId": "operative:6.01(b)(33)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(33)",
+     "charStart": 26281,
+     "charEnd": 26420
+    },
+    {
+     "slotId": "operative:6.01(b)(33)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(33)",
+     "charStart": 26420,
+     "charEnd": 26657
+    },
+    {
+     "slotId": "operative:6.01(b)(33)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(33)",
+     "charStart": 26657,
+     "charEnd": 26899
+    },
+    {
+     "slotId": "operative:6.01(b)(33)#5",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(33)",
+     "charStart": 26899,
+     "charEnd": 27145
+    },
+    {
+     "slotId": "operative:6.01(b)(33)#6",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(33)",
+     "charStart": 27145,
+     "charEnd": 27162
+    },
+    {
+     "slotId": "operative:6.01(b)(33)#7",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(33)",
+     "charStart": 27162,
+     "charEnd": 27226
+    },
+    {
+     "slotId": "operative:6.01(b)(1)#1~2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(1)",
+     "charStart": 27226,
+     "charEnd": 27346
+    },
+    {
+     "slotId": "operative:6.01(b)(1)#2~2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(1)",
+     "charStart": 27346,
+     "charEnd": 27586
+    },
+    {
+     "slotId": "operative:6.01(b)(1)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(1)",
+     "charStart": 27586,
+     "charEnd": 27831
+    },
+    {
+     "slotId": "operative:6.01(b)(1)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(1)",
+     "charStart": 27831,
+     "charEnd": 28012
+    },
+    {
+     "slotId": "operative:6.01(b)(1)#5",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(1)",
+     "charStart": 28012,
+     "charEnd": 28059
+    },
+    {
+     "slotId": "operative:6.01(b)(1)#6",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(1)",
+     "charStart": 28059,
+     "charEnd": 28293
+    },
+    {
+     "slotId": "operative:6.01(b)(1)#7",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(1)",
+     "charStart": 28293,
+     "charEnd": 28425
+    },
+    {
+     "slotId": "operative:6.01(b)(1)#8",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(1)",
+     "charStart": 28425,
+     "charEnd": 28430
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#1~2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 28430,
+     "charEnd": 28511
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 28511,
+     "charEnd": 28755
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 28755,
+     "charEnd": 28819
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#4",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 28819,
+     "charEnd": 28890
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#5",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 28890,
+     "charEnd": 29135
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#6",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 29135,
+     "charEnd": 29208
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#7",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 29208,
+     "charEnd": 29377
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#8",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 29377,
+     "charEnd": 29616
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#9",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 29616,
+     "charEnd": 29862
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#10",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 29862,
+     "charEnd": 30098
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#11",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 30098,
+     "charEnd": 30154
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#12",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 30154,
+     "charEnd": 30338
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#13",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 30338,
+     "charEnd": 30575
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#14",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 30575,
+     "charEnd": 30758
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#15",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 30758,
+     "charEnd": 30811
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#16",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 30811,
+     "charEnd": 30899
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#17",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 30899,
+     "charEnd": 30925
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#18",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 30925,
+     "charEnd": 31145
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#19",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 31145,
+     "charEnd": 31349
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#20",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 31349,
+     "charEnd": 31385
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#21",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 31385,
+     "charEnd": 31594
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#22",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 31594,
+     "charEnd": 31631
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#23",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 31631,
+     "charEnd": 31746
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#24",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 31746,
+     "charEnd": 31871
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#25",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 31871,
+     "charEnd": 32117
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#26",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 32117,
+     "charEnd": 32360
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#27",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 32360,
+     "charEnd": 32406
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#28",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 32406,
+     "charEnd": 32486
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#29",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 32486,
+     "charEnd": 32665
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#30",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 32665,
+     "charEnd": 32803
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#31",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 32803,
+     "charEnd": 33050
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#32",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 33050,
+     "charEnd": 33223
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#33",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 33223,
+     "charEnd": 33260
+    },
+    {
+     "slotId": "operative:6.01(b)(1)#1~3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(1)",
+     "charStart": 33260,
+     "charEnd": 33316
+    },
+    {
+     "slotId": "operative:6.01(b)(1)#2~3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(1)",
+     "charStart": 33316,
+     "charEnd": 33371
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#1~3",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 33371,
+     "charEnd": 33558
+    },
+    {
+     "slotId": "operative:6.01(b)(2)#2~2",
+     "regionId": "operative",
+     "sectionRef": "6.01(b)(2)",
+     "charStart": 33558,
+     "charEnd": 33623
+    }
+   ],
+   "batches": 6,
+   "batchChars": 6000,
+   "gapBatches": 0,
+   "firstPassCalls": 6,
+   "gapCalls": 0
+  },
+  "sourceIdentity": {
+   "method": "RECORDED_AT_FREEZE",
+   "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+   "partitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e"
+  }
+ },
+ "sourceCoverage": {
+  "regionsConsidered": [
+   "operative"
+  ],
+  "countsByDisposition": {
+   "COVERED_BY_INVENTORY": 0,
+   "COVERED_BY_CHILD_DESCENT": 0,
+   "COVERED_BY_CONNECTIVE_OWNERSHIP": 0,
+   "ACCOUNTED_BY_EXTERNAL_UNIT": 0,
+   "STRUCTURAL_NOISE": 40,
+   "HEADING_OR_LABEL": 0,
+   "CITATION_ONLY": 3,
+   "DEFINED_TERM_LABEL": 0,
+   "PUNCTUATION_OR_DELIMITER": 0,
+   "NON_SEMANTIC_FORMATTING": 8,
+   "UNACCOUNTED_SOURCE": 47
+  },
+  "charsByDisposition": {
+   "COVERED_BY_INVENTORY": 0,
+   "COVERED_BY_CHILD_DESCENT": 0,
+   "COVERED_BY_CONNECTIVE_OWNERSHIP": 0,
+   "ACCOUNTED_BY_EXTERNAL_UNIT": 0,
+   "STRUCTURAL_NOISE": 256,
+   "HEADING_OR_LABEL": 0,
+   "CITATION_ONLY": 57,
+   "DEFINED_TERM_LABEL": 0,
+   "PUNCTUATION_OR_DELIMITER": 0,
+   "NON_SEMANTIC_FORMATTING": 40,
+   "UNACCOUNTED_SOURCE": 28190
+  },
+  "accountedCharFraction": 0.0124,
+  "externallyAccountedRegions": []
+ },
+ "unaccountedSource": [
+  {
+   "regionId": "operative",
+   "charStart": 0,
+   "charEnd": 954,
+   "excerpt": "Section 6.01 Limitation on Incurrence of Indebtedness and Issuance of Disqualified Stock and Preferred Stoc k .\n\n(a) the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to create, incur, issue, assume, guarantee or otherwise\nbecome liable, contingently or otherwise (collectively, “ incur ” and collectively, an “ incurrence ”) with respect to any Indebtedness (including Acquired Indebtedness) and the Borrowers shall not issue any shares\nof Disqualified Stock and shall not permit any Restricted Subsidiary to issue any shares of Disqualified Stock or any Restricted Subsidiary that is not a Guarantor to issue Preferred Stock; provided , however , that the Borrowers may\nincur Indebtedness (including Acquired Indebtedness) and issue shares of Disqualified Stock, and any of their Restricted Subsidiaries may incur Indebtedness (including Acquired Indebtedness) and issue shares of Disqualified Stock and Preferred Stock",
+   "reason": "carries a number that no inventory item anchors, that the quantitative extractor did not recognise, and that no deterministic rule establishes as pagination - a bare number may be a basket, a threshold, a period or a page number, and its shape does not say which",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 964,
+   "charEnd": 1908,
+   "excerpt": "in each case, secured by all or a material portion of the Collateral on a pari passu basis with the Secured Obligations, secured by all or a material portion of the Collateral on a Junior Lien Priority basis or not secured by the\nCollateral, in an unlimited amount if, after giving effect thereto, (1) with respect to any Indebtedness, Disqualified Stock or Preferred Stock that is secured by all or a material portion of the Collateral on a pari passu basis with the\nSecured Obligations, on a Pro Forma Basis the First Lien Leverage Ratio for the applicable Test Period does not exceed the greater of (x) 2.00:1.00 and (y) the First Lien Leverage Ratio immediately prior to the incurrence of such Indebtedness,\nDisqualified Stock or Preferred Stock, (2) with respect to any Indebtedness, Disqualified Stock or Preferred Stock that is secured by all or a material portion of the Collateral on a Junior Lien Priority basis, on a Pro Forma Basis,",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": [
+    {
+     "kind": "RATIO",
+     "rawText": "2.00:1.00",
+     "normalizedValue": 2,
+     "unit": "x",
+     "charStart": 1570,
+     "charEnd": 1579
+    }
+   ]
+  },
+  {
+   "regionId": "operative",
+   "charStart": 1916,
+   "charEnd": 1951,
+   "excerpt": "Initial Borrower’s sole discretion,",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 1959,
+   "charEnd": 2617,
+   "excerpt": "(i) the Senior Secured Leverage Ratio for the applicable Test Period does not exceed the greater of (x) 3.00:1.00 and (y) the Senior Secured Leverage Ratio immediately prior to the\nincurrence of such Indebtedness, Disqualified Stock or Preferred Stock or (ii) the Interest Coverage Ratio is greater than or equal to the lesser of (x) 1.75:1.00 and (y) the Interest Coverage Ratio immediately prior to the incurrence of\nsuch Indebtedness, Disqualified Stock or Preferred Stock or (3) with respect to any Indebtedness, Disqualified Stock or Preferred Stock that is not secured by the Collateral, on a Pro Forma Basis, at the Initial Borrower’s sole\ndiscretion,",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": [
+    {
+     "kind": "RATIO",
+     "rawText": "3.00:1.00",
+     "normalizedValue": 3,
+     "unit": "x",
+     "charStart": 2063,
+     "charEnd": 2072
+    },
+    {
+     "kind": "RATIO",
+     "rawText": "1.75:1.00",
+     "normalizedValue": 1.75,
+     "unit": "x",
+     "charStart": 2293,
+     "charEnd": 2302
+    }
+   ]
+  },
+  {
+   "regionId": "operative",
+   "charStart": 2625,
+   "charEnd": 3146,
+   "excerpt": "(i) the Total Leverage Ratio for the applicable Test Period does not exceed the greater of (x) 4.00:1.00 and (y) the Total Leverage Ratio immediately prior to the incurrence of such Indebtedness or (ii) the Interest\nCoverage Ratio is greater than or equal to the lesser of (x) 1.75:1.00 and (y) the Interest Coverage Ratio immediately prior to the incurrence of such Indebtedness, Disqualified Stock or Preferred Stock (such Indebtedness, Disqualified Stock\nand Preferred Stock incurred under this Section 6.01(a)(ii)(1),",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": [
+    {
+     "kind": "RATIO",
+     "rawText": "4.00:1.00",
+     "normalizedValue": 4,
+     "unit": "x",
+     "charStart": 2720,
+     "charEnd": 2729
+    },
+    {
+     "kind": "RATIO",
+     "rawText": "1.75:1.00",
+     "normalizedValue": 1.75,
+     "unit": "x",
+     "charStart": 2902,
+     "charEnd": 2911
+    }
+   ]
+  },
+  {
+   "regionId": "operative",
+   "charStart": 3174,
+   "charEnd": 3219,
+   "excerpt": "as applicable, the “ Permitted Ratio Debt ”).",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 3228,
+   "charEnd": 3955,
+   "excerpt": "(b) The provisions of Section 6.01(a) hereof shall not apply to:\n\n(1) Indebtedness incurred pursuant to (X) the Loan Documents (including pursuant to Section 2.18, 2.19 or 2.22) and\nany Credit Agreement Refinancing Indebtedness in respect thereof, (Y) the ABL Loan Documents up to an aggregate principal amount outstanding at any one time not to exceed the greater of (a) $800.0 million and (b) the Borrowing Base\n(as defined in the ABL Credit Agreement) as of the date of such incurrence and (Z) Indebtedness in an aggregate principal amount at the time of incurrence not exceeding the Fixed Incremental Amount at such time;\n\n(2) [Reserved];\n\n(3) Existing Indebtedness (other than Indebtedness described in Section 6.01(b)(1);",
+   "reason": "carries a number that no inventory item anchors, that the quantitative extractor did not recognise, and that no deterministic rule establishes as pagination - a bare number may be a basket, a threshold, a period or a page number, and its shape does not say which",
+   "values": [
+    {
+     "kind": "MONEY",
+     "rawText": "$800.0 million",
+     "normalizedValue": 800000000,
+     "unit": "USD",
+     "charStart": 3600,
+     "charEnd": 3614
+    }
+   ]
+  },
+  {
+   "regionId": "operative",
+   "charStart": 3961,
+   "charEnd": 4471,
+   "excerpt": "(a) Indebtedness (including Capitalized Lease Obligations and Purchase Money Obligations), Disqualified Stock and Preferred\nStock incurred by any Restricted Party, to finance the purchase, lease, expansion, construction, development, relocation, renewal, maintenance, upgrade, installation, replacement, repair or improvement of property (real or personal), equipment or\nother assets (including through the purchase of assets or the Capital Stock of any Person owning such property, equipment or other assets);",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 4479,
+   "charEnd": 4791,
+   "excerpt": "when aggregated with the principal amount of all other Indebtedness, Disqualified Stock and\nPreferred Stock then outstanding and incurred pursuant to this Section 6.01(b)(4), and all Refinancing Indebtedness incurred to Refinance any Indebtedness, Disqualified Stock and Preferred Stock incurred pursuant to this",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 4812,
+   "charEnd": 5553,
+   "excerpt": "does not at the time of such incurrence exceed (i) the greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis (for the avoidance of\ndoubt, Unsecured Capitalized Leases shall be permitted in an unlimited amount pursuant to Section 6.01(b)(28)), plus (ii) at the time of such incurrence, an amount equal to the maximum principal amount of such Indebtedness that\ncould be incurred such that after giving effect to the incurrence of such Indebtedness, the First Lien Leverage Ratio of the Initial Borrower for the Test Period would be no greater than 2.50:1.00; provided that, solely for the purpose of\ndetermining the First Lien Leverage Ratio under this clause",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": [
+    {
+     "kind": "MONEY",
+     "rawText": "$360.0 million",
+     "normalizedValue": 360000000,
+     "unit": "USD",
+     "charStart": 4882,
+     "charEnd": 4896
+    },
+    {
+     "kind": "PERCENT",
+     "rawText": "50%",
+     "normalizedValue": 0.5,
+     "unit": "%",
+     "charStart": 4905,
+     "charEnd": 4908
+    },
+    {
+     "kind": "RATIO",
+     "rawText": "2.50:1.00",
+     "normalizedValue": 2.5,
+     "unit": "x",
+     "charStart": 5442,
+     "charEnd": 5451
+    }
+   ]
+  },
+  {
+   "regionId": "operative",
+   "charStart": 5560,
+   "charEnd": 5802,
+   "excerpt": "Capitalized Lease Obligations being incurred in reliance on this clause (ii) shall be counted as Consolidated First Lien Debt in the numerator of the First Lien Leverage Ratio\nsolely for the purpose of determining such ratio under this clause",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 5809,
+   "charEnd": 6151,
+   "excerpt": "plus (iii) an amount equal to the aggregate amount of all Capitalized Lease Obligations outstanding as of the Effective Date, (b) Indebtedness in the form of\nCapitalized Lease Obligations arising out of any Sale and Lease-Back Transactions and (c) Indebtedness for vehicle and equipment financings incurred in the ordinary course of business;",
+   "reason": "carries an arithmetic or compositional operator that no inventory item anchors - the operator says how covered components combine, so it is standalone content and not the glue left over from splitting a parent unit",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 6157,
+   "charEnd": 6990,
+   "excerpt": "(a) Indebtedness incurred by any Restricted Party constituting reimbursement obligations with respect to letters of credit,\nbankers’ acceptances, bank guarantees, warehouse receipts or similar instruments issued or entered into, or relating to obligations or liabilities incurred, in the ordinary course of business or consistent with past practice, including letters\nof credit in respect of workers’ compensation claims, performance, completion or surety bonds, health, disability or other employee benefits or property, casualty or liability insurance or self-insurance or other Indebtedness with respect to\nobligations regarding workers’ compensation claims, performance, completion or surety bonds, health, disability or other employee benefits or property, casualty or liability insurance or self-insurance; provided , however ,",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 6996,
+   "charEnd": 7537,
+   "excerpt": "upon the drawing of such letters of credit or the incurrence of such Indebtedness, such obligations are reimbursed within thirty (30) days following such drawing or incurrence and (b) Indebtedness of any Restricted Party as an account\nparty in respect of letters of credit, bank guarantees or similar instruments or other guarantee obligations in favor of suppliers, customers, franchisees, lessors, licensees, sublicensees, distribution partners or other creditors issued in the\nordinary course of business or consistent with past practice;",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": [
+    {
+     "kind": "DAYS",
+     "rawText": "thirty (30) days",
+     "normalizedValue": 30,
+     "unit": "days",
+     "charStart": 7118,
+     "charEnd": 7134
+    }
+   ]
+  },
+  {
+   "regionId": "operative",
+   "charStart": 7546,
+   "charEnd": 12292,
+   "excerpt": "(6) Indebtedness, Disqualified Stock and Preferred Stock arising from\nagreements of any Restricted Party providing for indemnification, adjustment of purchase price, earnout or similar obligations, in each case, incurred or assumed in connection with the Transactions or with the acquisition or disposition of any\nbusiness, assets or a Subsidiary or Investment, other than guarantees of Indebtedness incurred by any Person acquiring all or any portion of such business, assets or a Subsidiary for the purpose of financing such acquisition;\n\n(7) Indebtedness, Disqualified Stock and Preferred Stock of a Restricted Party owing to another Restricted Party;\nprovided that if any such Indebtedness, Disqualified Stock or Preferred Stock is owing to a Restricted Subsidiary that is not a Guarantor, excluding any Indebtedness, Disqualified Stock or Preferred Stock in respect of accounts payable\nincurred or issued in connection with goods and services rendered in the ordinary course of business or consistent with past practice (and not in connection with the borrowing of money), is expressly subordinated in right of payment (but only to the\nextent permitted by applicable law and to the extent such subordination does not result in material adverse tax consequences) to the Loans; provided , further , that any subsequent issuance or transfer (other than the incurrence of a\nPermitted Lien) of any Capital Stock or any other event which results in any such Restricted Subsidiary ceasing to be a Restricted Subsidiary or any other subsequent transfer of any such Indebtedness, Disqualified Stock or Preferred Stock (except to\nthe Borrowers or another Restricted Party or any pledge of such Indebtedness, Disqualified Stock or Preferred Stock constituting a Permitted Lien (but not foreclosure thereon)) shall be deemed, in each case, to be an incurrence of such Indebtedness,\nDisqualified Stock or Preferred Stock (to the extent such Indebtedness, Disqualified Stock or Preferred Stock is then outstanding) not permitted by this Section 6.01(b)(7);\n\n(8) Indebtedness of a Restricted Subsidiary owing to the Borrowers or another Restricted Party; provided that if a\nGuarantor incurs such Indebtedness owing to a Restricted Subsidiary that is not a Guarantor, excluding any Indebtedness in respect of accounts payable incurred in connection with goods and services rendered in the ordinary course of business or\nconsistent with past practice (and not in connection with the borrowing of money), such Indebtedness is expressly subordinated in right of payment (but only to the extent permitted by applicable law and to the extent such subordination does not\nresult in material adverse tax consequences) to the Guarantee of the Loans of such Guarantor; provided , further , that any subsequent issuance or transfer (other than the incurrence of a Permitted Lien) of any Capital Stock or any other\nevent that results in any such Restricted Subsidiary to which such Indebtedness is owed ceasing to be a Restricted Subsidiary or any other subsequent transfer of any such Indebtedness (except to a Restricted Party or any pledge of such Indebtedness\nconstituting a Permitted Lien (but not foreclosure thereon)) shall be deemed, in each case, to be an incurrence of such Indebtedness not permitted by this Section 6.01(b)(8);\n\n(9) shares of Preferred Stock or Disqualified Stock of a Restricted Subsidiary issued to the Borrowers or another Restricted\nParty; provided that any subsequent issuance or transfer of any Capital Stock or any other event which results in any such Restricted Subsidiary that holds such Preferred Stock or Disqualified Stock, ceasing to be a Restricted Subsidiary or\nany other subsequent transfer (other than the incurrence of a Permitted Lien) of any such shares of Preferred Stock or Disqualified Stock (except to a Restricted Party or any pledge of such Capital Stock constituting a Permitted Lien (but not\nforeclosure thereon)) shall be deemed in each case to be an issuance of such shares of Preferred Stock or Disqualified Stock, as applicable, not permitted by this Section 6.01(b)(9);\n\n(10) Hedging Obligations (excluding Hedging Obligations entered into for speculative purposes);\n\n(11) obligations in respect of self-insurance and obligations in respect of stays, customs, performance, indemnity, bid,\nappeal, judgment, surety and other similar bonds or instruments and performance, bankers’ acceptance facilities and completion guarantees, customs, VAT or other tax guarantees and similar obligations provided by any Restricted Party or\nobligations in respect of letters of credit, bank guarantees or similar instruments related thereto, in each case in the ordinary course of business or consistent with past practice;",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 12306,
+   "charEnd": 13044,
+   "excerpt": "(a) Indebtedness, Disqualified Stock and Preferred Stock of any\nRestricted Party in an aggregate principal amount or liquidation preference up to 200% of the gross unutilized cash and Cash Equivalents and other in-kind equity contributions received by any Restricted Party\non or following the Effective Date from the issue or sale of Equity Interests of the Initial Borrower or cash contributed to the capital of the Initial Borrower or any Parent Entity (which proceeds are contributed to any Restricted Party) (in each\ncase, other than Excluded Contributions or proceeds of Disqualified Stock or sales of Equity Interests to the Borrowers or any of their Subsidiaries) as determined in accordance with Sections Section 6.08(a)(3)(b) and",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": [
+    {
+     "kind": "PERCENT",
+     "rawText": "200%",
+     "normalizedValue": 2,
+     "unit": "%",
+     "charStart": 12452,
+     "charEnd": 12456
+    }
+   ]
+  },
+  {
+   "regionId": "operative",
+   "charStart": 13066,
+   "charEnd": 13348,
+   "excerpt": "extent such Net Proceeds or cash have not been applied pursuant to such clauses to make Restricted Payments or to make other Investments, payments or exchanges pursuant to Section 6.08(b) hereof or to make Permitted Investments (other than\nPermitted Investments specified in clauses",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 13362,
+   "charEnd": 13989,
+   "excerpt": "(3) of the definition thereof) and (b) Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party not otherwise permitted hereunder in an aggregate principal\namount or liquidation preference, which when aggregated with the principal amount and liquidation preference of all other Indebtedness, Disqualified Stock and Preferred Stock then outstanding and incurred or issued pursuant to this\nSection 6.01(b)(12)(b) (together with any outstanding Indebtedness under Section 6.01(b)(13) hereof incurred to Refinance Indebtedness initially incurred under this Section 6.01(b)(12)(b)), does not exceed the greater of",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 13994,
+   "charEnd": 14528,
+   "excerpt": "$720.0 million and (y) 100% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of any incurrence pursuant to this Section 6.01(b)(12)(b);\n\n(13) the incurrence or issuance by any Restricted Party, of Indebtedness, Disqualified Stock or Preferred Stock which serves to\nRefinance any Indebtedness (or unutilized commitment in respect of Indebtedness), Disqualified Stock or Preferred Stock, incurred or issued as permitted under Section 6.01(a) hereof and Sections 6.01(b)(1)(Y),",
+   "reason": "no inventory item anchors this text, and it carries 1 quantitative value(s) ($720.0 million) - materiality undetermined, never assumed immaterial",
+   "values": [
+    {
+     "kind": "MONEY",
+     "rawText": "$720.0 million",
+     "normalizedValue": 720000000,
+     "unit": "USD",
+     "charStart": 13994,
+     "charEnd": 14008
+    },
+    {
+     "kind": "PERCENT",
+     "rawText": "100%",
+     "normalizedValue": 1,
+     "unit": "%",
+     "charStart": 14017,
+     "charEnd": 14021
+    }
+   ]
+  },
+  {
+   "regionId": "operative",
+   "charStart": 14563,
+   "charEnd": 14613,
+   "excerpt": "this Section 6.01(b)(13) and Sections 6.01(b)(14),",
+   "reason": "carries a number that no inventory item anchors, that the quantitative extractor did not recognise, and that no deterministic rule establishes as pagination - a bare number may be a basket, a threshold, a period or a page number, and its shape does not say which",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 14635,
+   "charEnd": 16189,
+   "excerpt": "(31) hereof or any Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party, issued to so Refinance such Indebtedness (or\nunutilized commitment in respect of Indebtedness), Disqualified Stock or Preferred Stock, including, in each case, additional Indebtedness, Disqualified Stock or Preferred Stock incurred to pay accrued but unpaid interest, dividends, premiums\n(including tender premiums), defeasance costs, underwriting discounts, fees, costs and expenses (including upfront fees, original issue discount (in lieu of customary upfront fees) or similar fees) in connection therewith (the “ Refinancing\nIndebtedness ”) on or prior to its respective maturity; provided , however , that such Refinancing Indebtedness:\n\n(a) except in the case of a Maturity Exception Facility, has a Weighted Average Life to Maturity at the time such Refinancing\nIndebtedness is incurred which is not less than the remaining Weighted Average Life to Maturity of the Indebtedness, Disqualified Stock or Preferred Stock being Refinanced (or requires no or nominal payments in cash (other than interest payments)\nprior to the date that is ninety-one (91) days after the maturity date of the Loans),\n\n(b) to the extent such Refinancing Indebtedness Refinances (i) Indebtedness subordinated in right of payment to the Loans\nor any Guarantee thereof, such Refinancing Indebtedness is subordinated in right of payment to the Loans or the Guarantee at least to the same extent as the Indebtedness being Refinanced or (ii) Disqualified Stock or Preferred Stock,",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": [
+    {
+     "kind": "DAYS",
+     "rawText": "ninety-one (91) days",
+     "normalizedValue": 91,
+     "unit": "days",
+     "charStart": 15773,
+     "charEnd": 15793
+    }
+   ]
+  },
+  {
+   "regionId": "operative",
+   "charStart": 16195,
+   "charEnd": 16280,
+   "excerpt": "Refinancing Indebtedness must be Disqualified Stock or Preferred Stock, respectively,",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 16285,
+   "charEnd": 16539,
+   "excerpt": "(c) shall not include:\n\n(i) Indebtedness, Disqualified Stock or Preferred Stock of a Subsidiary of the Borrowers that is not a Guarantor that\nRefinances Indebtedness, Disqualified Stock or Preferred Stock of the Borrowers or a Guarantor;\n(ii) [reserved];",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 16551,
+   "charEnd": 16855,
+   "excerpt": "(iii) Indebtedness, Disqualified Stock or Preferred Stock of any Restricted\nParty that refinances Indebtedness, Disqualified Stock or Preferred Stock of an Unrestricted Subsidiary;\nand provided ,\nfurther , that Section 6.01(b)(13)(a) hereof shall not apply to any Refinancing of any Secured Indebtedness;",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 16861,
+   "charEnd": 18199,
+   "excerpt": "Indebtedness, Disqualified Stock or Preferred Stock of (x) a Restricted Party incurred or issued to finance an acquisition or Investment or (y) Persons that are acquired by any Restricted Party or merged into, amalgamated with or\nconsolidated with a Restricted Party in accordance with the terms of this Agreement (including designating an Unrestricted Subsidiary as a Restricted Subsidiary; provided that:\n\n(a) after giving pro forma effect to such Investment, acquisition, merger, amalgamation or consolidation (i) any Borrower\nwould be permitted to incur at least $1.00 of additional Indebtedness pursuant to the Interest Coverage Ratio test set forth in Section 6.01(a) hereof or (ii) the Interest Coverage Ratio of the Initial Borrower for the Test Period is equal\nto or greater than immediately prior to such Investment, acquisition, merger, amalgamation or consolidation;\n(b) after\ngiving pro forma effect to such Investment, acquisition, merger, amalgamation or consolidation (i) a Borrower would be permitted to incur at least $1.00 of additional Indebtedness pursuant to the Total Leverage Ratio test set forth in\nSection 6.01(a) hereof or (ii) the Total Leverage Ratio of the Initial Borrower for the Test Period is equal to or less than immediately prior to such Investment, acquisition, merger, amalgamation or consolidation;",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": [
+    {
+     "kind": "MONEY",
+     "rawText": "$1.00",
+     "normalizedValue": 1,
+     "unit": "USD",
+     "charStart": 17428,
+     "charEnd": 17433
+    },
+    {
+     "kind": "MONEY",
+     "rawText": "$1.00",
+     "normalizedValue": 1,
+     "unit": "USD",
+     "charStart": 17897,
+     "charEnd": 17902
+    }
+   ]
+  },
+  {
+   "regionId": "operative",
+   "charStart": 18205,
+   "charEnd": 18309,
+   "excerpt": "(X) after giving pro forma effect to such Investment, acquisition, merger, amalgamation or consolidation",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 18316,
+   "charEnd": 18781,
+   "excerpt": "Borrower would be permitted to incur at least $1.00 of additional Indebtedness pursuant to the First Lien Leverage Ratio test set forth in Section 6.01(a) hereof or (ii) the First Lien Leverage Ratio of the Initial Borrower for the Test\nPeriod is equal to or less than immediately prior to such Investment, acquisition, merger, amalgamation or consolidation or (Y) after giving pro forma effect to such Investment, acquisition, merger, amalgamation or consolidation",
+   "reason": "no inventory item anchors this text, and it carries 1 quantitative value(s) ($1.00) - materiality undetermined, never assumed immaterial",
+   "values": [
+    {
+     "kind": "MONEY",
+     "rawText": "$1.00",
+     "normalizedValue": 1,
+     "unit": "USD",
+     "charStart": 18362,
+     "charEnd": 18367
+    }
+   ]
+  },
+  {
+   "regionId": "operative",
+   "charStart": 18788,
+   "charEnd": 19154,
+   "excerpt": "Borrower would be permitted to incur at least $1.00 of additional Indebtedness pursuant to the Senior Secured Leverage Ratio test set forth in Section 6.01(a) hereof or (ii) the Senior Secured Leverage Ratio of the Initial Borrower for the\nTest Period is equal to or less than immediately prior to such Investment, acquisition, merger, amalgamation or consolidation;",
+   "reason": "no inventory item anchors this text, and it carries 1 quantitative value(s) ($1.00) - materiality undetermined, never assumed immaterial",
+   "values": [
+    {
+     "kind": "MONEY",
+     "rawText": "$1.00",
+     "normalizedValue": 1,
+     "unit": "USD",
+     "charStart": 18834,
+     "charEnd": 18839
+    }
+   ]
+  },
+  {
+   "regionId": "operative",
+   "charStart": 19159,
+   "charEnd": 19471,
+   "excerpt": "(d) such Indebtedness constitutes Acquired Indebtedness (other than Indebtedness incurred in contemplation of the transaction\nor series of related transactions pursuant to which such Person became a Restricted Subsidiary or was otherwise acquired by a Restricted Party); provided that, in the case of this clause",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 19477,
+   "charEnd": 20377,
+   "excerpt": "the only obligors with respect to such Indebtedness shall\nbe those Persons who were obligors of such Indebtedness prior to such acquisition, merger, amalgamation or consolidation;\n\n(e) solely to the extent not permitted to be incurred in reliance on clauses (a) through (d) above, after giving pro\nforma effect to such Investment, acquisition, merger, amalgamation or consolidation, Indebtedness in an amount not exceeding the sum of (1) the greater of $720.0 million and 100% of Consolidated EBITDA for the most recently ended Test\nPeriod, plus (2) an additional amount equal to the Fixed Incremental Amount;\n(15) Indebtedness arising from the\nhonoring by a bank or other financial institution of a check, draft or similar instrument drawn against insufficient funds in the ordinary course of business; provided that such Indebtedness is extinguished within five (5) Business Days\nof its incurrence;",
+   "reason": "carries an adverbial adjunct that no inventory item anchors - a modifier changes the scope, allocation, directness or distribution of what it attaches to, so it is standalone content and not the glue left over from splitting a parent unit",
+   "values": [
+    {
+     "kind": "MONEY",
+     "rawText": "$720.0 million",
+     "normalizedValue": 720000000,
+     "unit": "USD",
+     "charStart": 19930,
+     "charEnd": 19944
+    },
+    {
+     "kind": "PERCENT",
+     "rawText": "100%",
+     "normalizedValue": 1,
+     "unit": "%",
+     "charStart": 19949,
+     "charEnd": 19953
+    },
+    {
+     "kind": "DAYS",
+     "rawText": "five (5) Business Days",
+     "normalizedValue": 5,
+     "unit": "business days",
+     "charStart": 20336,
+     "charEnd": 20358
+    }
+   ]
+  },
+  {
+   "regionId": "operative",
+   "charStart": 20386,
+   "charEnd": 20657,
+   "excerpt": "(16) Indebtedness of any Restricted Party supported by a letter of credit,\nbank guarantee or other instrument issued pursuant to any credit facility, in a principal amount not in excess of the face amount of such letter of credit, bank guarantee or such other instrument;",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 20664,
+   "charEnd": 20767,
+   "excerpt": "(i) any guarantee by any Restricted Party of Indebtedness or other obligations of any Restricted Party;",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 20780,
+   "charEnd": 21025,
+   "excerpt": "guarantee or co-borrower obligations of a Restricted Party of Indebtedness or other obligations of the Borrowers so long as the incurrence of such Indebtedness or other obligations by the Borrowers was\npermitted under the terms of the Agreement;",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 21031,
+   "charEnd": 21343,
+   "excerpt": "(i) Indebtedness, Disqualified Stock or Preferred Stock of Restricted\nParties that are not Guarantors at any one time outstanding not to exceed, in the aggregate (together with any outstanding Indebtedness under Section 6.01(b)(13) hereof incurred to Refinance Indebtedness initially incurred in reliance on this",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 21366,
+   "charEnd": 22107,
+   "excerpt": "the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of any incurrence or issuance under this\nSection 6.01(b)(18) and (ii) Indebtedness of Restricted Parties that are not Guarantors in respect of any working capital facilities to the extent non-recourse to the Loan Parties;\n\n(19) Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party incurred or issued to finance or assumed in\nconnection with an acquisition or Investment in an aggregate principal amount not to exceed the greater of (x) $720.0 million and (y) 100.0% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis,",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": [
+    {
+     "kind": "MONEY",
+     "rawText": "$720.0 million",
+     "normalizedValue": 720000000,
+     "unit": "USD",
+     "charStart": 21385,
+     "charEnd": 21399
+    },
+    {
+     "kind": "PERCENT",
+     "rawText": "100%",
+     "normalizedValue": 1,
+     "unit": "%",
+     "charStart": 21408,
+     "charEnd": 21412
+    },
+    {
+     "kind": "MONEY",
+     "rawText": "$720.0 million",
+     "normalizedValue": 720000000,
+     "unit": "USD",
+     "charStart": 21981,
+     "charEnd": 21995
+    },
+    {
+     "kind": "PERCENT",
+     "rawText": "100.0%",
+     "normalizedValue": 1,
+     "unit": "%",
+     "charStart": 22004,
+     "charEnd": 22010
+    }
+   ]
+  },
+  {
+   "regionId": "operative",
+   "charStart": 22115,
+   "charEnd": 22696,
+   "excerpt": "aggregate at any one time outstanding together with all other outstanding Indebtedness, Disqualified Stock and/or Preferred Stock issued under this Section 6.01(b)(19) and any outstanding Indebtedness under Section 6.01(b)(13) hereof\nincurred to Refinance Indebtedness initially incurred in reliance on this Section 6.01(b)(19);\n(20) Indebtedness of\nany Restricted Party consisting of (i) the financing of insurance premiums or (ii) take-or-pay obligations contained in supply arrangements in each case,\nincurred in the ordinary course of business or consistent with past practice;",
+   "reason": "carries an adverbial adjunct that no inventory item anchors - a modifier changes the scope, allocation, directness or distribution of what it attaches to, so it is standalone content and not the glue left over from splitting a parent unit",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 22702,
+   "charEnd": 24189,
+   "excerpt": "(a) Cash Management Obligations,\n(b) Indebtedness of any Restricted Party in respect of netting services, automatic clearing house arrangements, employees’ credit or purchase cards, overdraft protections and similar arrangements and other Indebtedness arising from the\nhonoring by a bank or other financial institution of a check, draft or similar instrument drawn against insufficient funds (including Indebtedness owed on a short term basis of no longer than thirty (30) days to banks and other financial\ninstitutions incurred in the ordinary course of business or consistent with past practice of any Restricted Party with such banks or financial institutions that arises in connection with ordinary banking arrangements to manage cash balances of any\nRestricted Party) and (c) Indebtedness of any Restricted Party in respect of any working capital lines and asset-based lines;\n\n(22) Indebtedness consisting of Indebtedness issued by any Restricted Party to future, current or former officers, directors,\nmanagers, and employees thereof (or their respective Controlled Investment Affiliates or Immediate Family Members, or any Permitted Transferee thereof), in each case to finance the purchase or redemption of Equity Interests of a Restricted Party or\nany Parent Entity to the extent described in Section 6.08(b)(4) hereof;\n(23) customer deposits and advance payments\nreceived in the ordinary course of business from customers for goods purchased in the ordinary course of business;",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": [
+    {
+     "kind": "DAYS",
+     "rawText": "thirty (30) days",
+     "normalizedValue": 30,
+     "unit": "days",
+     "charStart": 23163,
+     "charEnd": 23179
+    }
+   ]
+  },
+  {
+   "regionId": "operative",
+   "charStart": 24195,
+   "charEnd": 24372,
+   "excerpt": "[reserved];\n(25) unfunded pension fund and other employee benefits plan obligations and liabilities incurred in the\nordinary course of business or consistent with past practice;",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 24386,
+   "charEnd": 24704,
+   "excerpt": "(a) Indebtedness incurred by any Restricted Party in connection with\nbankers’ acceptances, discounted bills of exchange or the discounting or factoring of receivables or payables for credit management purposes, in each case incurred or undertaken consistent with past practice or in the ordinary course of\nbusiness and",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 24709,
+   "charEnd": 24886,
+   "excerpt": "(i) Indebtedness under any Receivables Non-Recourse Facility and (ii) Indebtedness under any Receivables Recourse Facility that does not exceed the greater of (x) $360.0 million",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": [
+    {
+     "kind": "MONEY",
+     "rawText": "$360.0 million",
+     "normalizedValue": 360000000,
+     "unit": "USD",
+     "charStart": 24872,
+     "charEnd": 24886
+    }
+   ]
+  },
+  {
+   "regionId": "operative",
+   "charStart": 24891,
+   "charEnd": 26105,
+   "excerpt": "(y) 50% of Consolidated EBITDA for the most recently ended Test Period;\n(27) Indebtedness incurred by any Restricted\nParty on behalf of, or Guarantees of Indebtedness of, any Joint Ventures; provided that the aggregate principal amount of such Indebtedness incurred pursuant to this Section 6.01(b)(27) and together with any outstanding Indebtedness\nunder Section 6.01(b)(13) hereof incurred to Refinance Indebtedness initially incurred in reliance on this Section 6.01(b)(27), shall not exceed, at the time of the incurrence thereof and after giving pro forma effect thereto,\nthe greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis;\n\n(28) Unsecured Capitalized Leases;\n\n(29) [reserved];\n\n(30) Indebtedness of any Restricted Party arising pursuant to any Permitted Tax Restructuring or related transactions;\n\n(31) Indebtedness of any Restricted Party in an aggregate outstanding principal amount which, when taken together with the\nprincipal amount of all other Indebtedness incurred pursuant to this clause (31) and then outstanding, will not exceed the Available RP Capacity Amount (determined on the date of such incurrence);",
+   "reason": "no inventory item anchors this text, and it carries 1 quantitative value(s) (50%) - materiality undetermined, never assumed immaterial",
+   "values": [
+    {
+     "kind": "PERCENT",
+     "rawText": "50%",
+     "normalizedValue": 0.5,
+     "unit": "%",
+     "charStart": 24895,
+     "charEnd": 24898
+    },
+    {
+     "kind": "MONEY",
+     "rawText": "$360.0 million",
+     "normalizedValue": 360000000,
+     "unit": "USD",
+     "charStart": 25487,
+     "charEnd": 25501
+    },
+    {
+     "kind": "PERCENT",
+     "rawText": "50%",
+     "normalizedValue": 0.5,
+     "unit": "%",
+     "charStart": 25510,
+     "charEnd": 25513
+    }
+   ]
+  },
+  {
+   "regionId": "operative",
+   "charStart": 26111,
+   "charEnd": 26241,
+   "excerpt": "(32) Indebtedness of any Restricted Party in an aggregate amount not to exceed the Available Amount that is Not Otherwise\nApplied;",
+   "reason": "carries an adverbial adjunct that no inventory item anchors - a modifier changes the scope, allocation, directness or distribution of what it attaches to, so it is standalone content and not the glue left over from splitting a parent unit",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 26246,
+   "charEnd": 28424,
+   "excerpt": "(33) Incremental Equivalent Debt.\n\nThe Borrowers may incur Indebtedness (including Acquired Indebtedness) and issue shares of Disqualified Stock, and any of their Restricted\nParties may incur Indebtedness (including Acquired Indebtedness) and issue shares of Disqualified Stock and Preferred Stock, permitted by this Section 6.01 (including, to the extent permitted by this Section 6.01, through the use of the\nsame basket or other exception used to originally incur the debt securities being satisfied and discharged), to satisfy and discharge any debt securities permitted to be incurred by this Section 6.01, at the same time as such debt securities\nare outstanding, so long as the net proceeds of such Indebtedness, Disqualified Stock or Preferred Stock, as applicable, are promptly deposited with the applicable trustee to satisfy and discharge the applicable indenture in accordance with such\ndebt securities.\nFor purposes of determining compliance with this Section 6.01:\n\n(1) in the event that an item of Indebtedness, Disqualified Stock or Preferred Stock (or any portion thereof) meets the\ncriteria of more than one of the categories of permitted Indebtedness, Disqualified Stock or Preferred Stock described in Sections 6.01(b)(1) through (33) hereof or is entitled to be incurred pursuant to Section 6.01(a) hereof, the Initial\nBorrower, in its sole discretion, shall allocate, classify and reclassify all or a portion of such item of Indebtedness, Disqualified Stock or Preferred Stock (or any portion thereof) in any manner that complies with this Section 6.01 and shall\nonly be required to include the amount and type of such Indebtedness, Disqualified Stock or Preferred Stock (or any portion thereof) in one (1) of the above clauses or subsections; provided that (X) all Indebtedness outstanding\nunder this Agreement on the Effective Date after giving effect to the Transactions shall be treated as incurred under Section 6.01(b)(1)(X) hereof and (Y) all Indebtedness represented by the ABL Credit Agreement on the Effective Date\n(including any guarantee thereof) after giving effect to the Transactions shall be treated as incurred under Section 6.01(b)(1)(Y);",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 28437,
+   "charEnd": 28885,
+   "excerpt": "(2) the principal amount of Indebtedness or the liquidation preference of\nDisqualified Stock or Preferred Stock outstanding under any subsection of this Section 6.01 shall be determined after giving effect to the application of proceeds of any such Indebtedness, Disqualified Stock or Preferred Stock to refinance any\nsuch other Indebtedness, Disqualified Stock or Preferred Stock.\nAccrual of interest or dividends, the accretion of accreted value,",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 28890,
+   "charEnd": 30337,
+   "excerpt": "accretion or amortization of original issue discount and the payment of interest or dividends in the form of additional Indebtedness, Disqualified Stock or Preferred Stock, as applicable, shall not be deemed to be an incurrence of Indebtedness,\nDisqualified Stock or Preferred Stock for purposes of this Section 6.01. If Indebtedness, Disqualified Stock or Preferred Stock originally incurred in reliance upon a percentage of Consolidated EBITDA for the most recently ended Test Period,\ncalculated on a Pro Forma Basis, or a financial ratio under Section 6.01(a) hereof is being Refinanced under Section 6.01(a) hereof and such Refinancing would cause the maximum amount of Indebtedness, Disqualified Stock or Preferred Stock\nthereunder to be exceeded at such time, then such Refinancing shall nevertheless be permitted thereunder and such additional Indebtedness, Disqualified Stock or Preferred Stock shall be deemed to have been incurred, and permitted to be incurred,\nunder such Section 6.01(a) hereof so long as the principal amount of such Refinancing Indebtedness, Disqualified Stock or Preferred Stock does not exceed the principal amount of Indebtedness, Disqualified Stock or Preferred Stock being\nRefinanced plus amounts permitted by the next sentence. Any Refinancing Indebtedness, Disqualified Stock or Preferred Stock and any Indebtedness incurred to Refinance Indebtedness, Disqualified Stock or Preferred Stock incurred pursuant to",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 30385,
+   "charEnd": 33221,
+   "excerpt": "(33) hereof shall be permitted to include additional Indebtedness, Disqualified Stock or Preferred Stock incurred to pay premiums (including tender premiums), defeasance costs, underwriting\ndiscounts, accrued and unpaid interest, dividends and fees, costs and expenses (including upfront fees, original issue discount or similar fees) in connection with such Refinancing.\n\nFor purposes of determining compliance with any U.S. dollar-denominated restriction on the incurrence of Indebtedness, Disqualified Stock or\nPreferred Stock, the U.S. dollar-equivalent principal amount of Indebtedness or liquidation preference of Disqualified Stock or Preferred Stock denominated in a foreign currency shall be calculated by the Borrowers based on the relevant currency\nexchange rate in effect on the date such Indebtedness, Disqualified Stock or Preferred Stock was deemed to be incurred, in the case of term debt, or first committed, in the case of revolving credit debt; provided that if such Indebtedness,\nDisqualified Stock or Preferred Stock is incurred to Refinance other Indebtedness, Disqualified Stock or Preferred Stock denominated in a foreign currency, and such Refinancing would cause the applicable U.S. dollar-denominated restriction to be\nexceeded if calculated at the relevant currency exchange rate in effect on the date of such Refinancing, such U.S. dollar-denominated restriction shall be deemed not to have been exceeded so long as the principal amount of such Refinancing\nIndebtedness or the liquidation preference of such Disqualified Stock or Preferred Stock does not exceed the principal amount of such Indebtedness or the liquidation preference of such Disqualified Stock or such Preferred Stock being Refinanced,\nplus the aggregate amount of premiums (including tender premiums), defeasance costs, underwriting discounts, accrued and unpaid interest, dividends and fees, costs and expenses (including upfront fees, original issue discount or similar fees)\nincurred in connection with such Refinancing.\nNotwithstanding any other provision of this Section 6.01, the maximum amount of\nIndebtedness that the Borrowers may incur pursuant to this Section 6.01 shall not be deemed to be exceeded solely as a result of fluctuations in the exchange rate of currencies.\n\nThe principal amount of any Indebtedness or the liquidation preference of any Disqualified Stock or Preferred Stock incurred to Refinance\nother Indebtedness, Disqualified Stock or Preferred Stock, if incurred in a different currency from the Indebtedness, Disqualified Stock or Preferred Stock being Refinanced, shall be calculated by the Borrowers based on the currency exchange rate\napplicable to the currencies in which such respective Indebtedness, Disqualified Stock or Preferred Stock is denominated that is in effect on the date of such Refinancing.",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  },
+  {
+   "regionId": "operative",
+   "charStart": 33230,
+   "charEnd": 33622,
+   "excerpt": "This Agreement will not treat (1) unsecured Indebtedness as subordinated or junior to\nSecured Indebtedness merely because it is unsecured or (2) Senior Indebtedness as subordinated or junior to any other Senior Indebtedness merely because it has a junior priority with respect to the same collateral or because it is secured by\nsufficient collateral or issued or guaranteed by other obligors.",
+   "reason": "no inventory item anchors this text and no deterministic rule classifies it as non-semantic - materiality undetermined, never assumed immaterial",
+   "values": []
+  }
+ ],
+ "uninventoriedValues": [
+  {
+   "kind": "RATIO",
+   "rawText": "2.00:1.00",
+   "normalizedValue": 2,
+   "unit": "x",
+   "charStart": 1570,
+   "charEnd": 1579,
+   "regionId": "operative"
+  },
+  {
+   "kind": "RATIO",
+   "rawText": "3.00:1.00",
+   "normalizedValue": 3,
+   "unit": "x",
+   "charStart": 2063,
+   "charEnd": 2072,
+   "regionId": "operative"
+  },
+  {
+   "kind": "RATIO",
+   "rawText": "1.75:1.00",
+   "normalizedValue": 1.75,
+   "unit": "x",
+   "charStart": 2293,
+   "charEnd": 2302,
+   "regionId": "operative"
+  },
+  {
+   "kind": "RATIO",
+   "rawText": "4.00:1.00",
+   "normalizedValue": 4,
+   "unit": "x",
+   "charStart": 2720,
+   "charEnd": 2729,
+   "regionId": "operative"
+  },
+  {
+   "kind": "RATIO",
+   "rawText": "1.75:1.00",
+   "normalizedValue": 1.75,
+   "unit": "x",
+   "charStart": 2902,
+   "charEnd": 2911,
+   "regionId": "operative"
+  },
+  {
+   "kind": "MONEY",
+   "rawText": "$800.0 million",
+   "normalizedValue": 800000000,
+   "unit": "USD",
+   "charStart": 3600,
+   "charEnd": 3614,
+   "regionId": "operative"
+  },
+  {
+   "kind": "MONEY",
+   "rawText": "$360.0 million",
+   "normalizedValue": 360000000,
+   "unit": "USD",
+   "charStart": 4882,
+   "charEnd": 4896,
+   "regionId": "operative"
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "50%",
+   "normalizedValue": 0.5,
+   "unit": "%",
+   "charStart": 4905,
+   "charEnd": 4908,
+   "regionId": "operative"
+  },
+  {
+   "kind": "RATIO",
+   "rawText": "2.50:1.00",
+   "normalizedValue": 2.5,
+   "unit": "x",
+   "charStart": 5442,
+   "charEnd": 5451,
+   "regionId": "operative"
+  },
+  {
+   "kind": "DAYS",
+   "rawText": "thirty (30) days",
+   "normalizedValue": 30,
+   "unit": "days",
+   "charStart": 7118,
+   "charEnd": 7134,
+   "regionId": "operative"
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "200%",
+   "normalizedValue": 2,
+   "unit": "%",
+   "charStart": 12452,
+   "charEnd": 12456,
+   "regionId": "operative"
+  },
+  {
+   "kind": "MONEY",
+   "rawText": "$720.0 million",
+   "normalizedValue": 720000000,
+   "unit": "USD",
+   "charStart": 13994,
+   "charEnd": 14008,
+   "regionId": "operative"
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "100%",
+   "normalizedValue": 1,
+   "unit": "%",
+   "charStart": 14017,
+   "charEnd": 14021,
+   "regionId": "operative"
+  },
+  {
+   "kind": "DAYS",
+   "rawText": "ninety-one (91) days",
+   "normalizedValue": 91,
+   "unit": "days",
+   "charStart": 15773,
+   "charEnd": 15793,
+   "regionId": "operative"
+  },
+  {
+   "kind": "MONEY",
+   "rawText": "$1.00",
+   "normalizedValue": 1,
+   "unit": "USD",
+   "charStart": 17428,
+   "charEnd": 17433,
+   "regionId": "operative"
+  },
+  {
+   "kind": "MONEY",
+   "rawText": "$1.00",
+   "normalizedValue": 1,
+   "unit": "USD",
+   "charStart": 17897,
+   "charEnd": 17902,
+   "regionId": "operative"
+  },
+  {
+   "kind": "MONEY",
+   "rawText": "$1.00",
+   "normalizedValue": 1,
+   "unit": "USD",
+   "charStart": 18362,
+   "charEnd": 18367,
+   "regionId": "operative"
+  },
+  {
+   "kind": "MONEY",
+   "rawText": "$1.00",
+   "normalizedValue": 1,
+   "unit": "USD",
+   "charStart": 18834,
+   "charEnd": 18839,
+   "regionId": "operative"
+  },
+  {
+   "kind": "MONEY",
+   "rawText": "$720.0 million",
+   "normalizedValue": 720000000,
+   "unit": "USD",
+   "charStart": 19930,
+   "charEnd": 19944,
+   "regionId": "operative"
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "100%",
+   "normalizedValue": 1,
+   "unit": "%",
+   "charStart": 19949,
+   "charEnd": 19953,
+   "regionId": "operative"
+  },
+  {
+   "kind": "DAYS",
+   "rawText": "five (5) Business Days",
+   "normalizedValue": 5,
+   "unit": "business days",
+   "charStart": 20336,
+   "charEnd": 20358,
+   "regionId": "operative"
+  },
+  {
+   "kind": "MONEY",
+   "rawText": "$720.0 million",
+   "normalizedValue": 720000000,
+   "unit": "USD",
+   "charStart": 21385,
+   "charEnd": 21399,
+   "regionId": "operative"
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "100%",
+   "normalizedValue": 1,
+   "unit": "%",
+   "charStart": 21408,
+   "charEnd": 21412,
+   "regionId": "operative"
+  },
+  {
+   "kind": "MONEY",
+   "rawText": "$720.0 million",
+   "normalizedValue": 720000000,
+   "unit": "USD",
+   "charStart": 21981,
+   "charEnd": 21995,
+   "regionId": "operative"
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "100.0%",
+   "normalizedValue": 1,
+   "unit": "%",
+   "charStart": 22004,
+   "charEnd": 22010,
+   "regionId": "operative"
+  },
+  {
+   "kind": "DAYS",
+   "rawText": "thirty (30) days",
+   "normalizedValue": 30,
+   "unit": "days",
+   "charStart": 23163,
+   "charEnd": 23179,
+   "regionId": "operative"
+  },
+  {
+   "kind": "MONEY",
+   "rawText": "$360.0 million",
+   "normalizedValue": 360000000,
+   "unit": "USD",
+   "charStart": 24872,
+   "charEnd": 24886,
+   "regionId": "operative"
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "50%",
+   "normalizedValue": 0.5,
+   "unit": "%",
+   "charStart": 24895,
+   "charEnd": 24898,
+   "regionId": "operative"
+  },
+  {
+   "kind": "MONEY",
+   "rawText": "$360.0 million",
+   "normalizedValue": 360000000,
+   "unit": "USD",
+   "charStart": 25487,
+   "charEnd": 25501,
+   "regionId": "operative"
+  },
+  {
+   "kind": "PERCENT",
+   "rawText": "50%",
+   "normalizedValue": 0.5,
+   "unit": "%",
+   "charStart": 25510,
+   "charEnd": 25513,
+   "regionId": "operative"
+  }
+ ],
+ "gapReinventory": null,
+ "ensemble": null,
+ "batchesPredictedPerPass": 6
+}

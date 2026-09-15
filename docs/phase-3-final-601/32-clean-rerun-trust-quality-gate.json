@@ -1,0 +1,161 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 CLEAN RERUN \u00a715/\u00a723/\u00a724 - trust and quality gates",
+ "at": "2026-09-15T03:16:17.656611Z",
+ "runValidity": "VOID_AS_A_FULL_VALIDATION - Pass A and the ensemble completed; Pass B, Pass C and the verifier never ran (HD-2)",
+ "stitchingTrustGate": {
+  "applicable": false,
+  "reason": "no sharded execution occurred"
+ },
+ "hardTrustCounters": [
+  {
+   "counter": "dangerous silent omissions",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist"
+  },
+  {
+   "counter": "false completeness",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist"
+  },
+  {
+   "counter": "source-unverifiable authoritative IR",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist"
+  },
+  {
+   "counter": "contextual ownership-credit violations",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist"
+  },
+  {
+   "counter": "silent incompatible merges",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist"
+  },
+  {
+   "counter": "owned values lost",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist"
+  },
+  {
+   "counter": "distinct owned lineage lost",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist"
+  },
+  {
+   "counter": "new dangling refs",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist"
+  },
+  {
+   "counter": "hidden provider/schema failures",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist"
+  },
+  {
+   "counter": "hidden material omissions",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist"
+  },
+  {
+   "counter": "authoritative hallucinations",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist"
+  },
+  {
+   "counter": "silent CRITICAL misses",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist"
+  },
+  {
+   "counter": "incorrect authoritative CRITICAL claims",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist"
+  },
+  {
+   "counter": "silent quantitative corruption",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires production compilation output, which does not exist"
+  }
+ ],
+ "trustGatePassed": false,
+ "trustGateNote": "\u00a723 requires every counter MEASURED and zero. None is measurable without Pass B/C output. Recorded as NOT PASSED rather than passed on unmeasurable values.",
+ "qualityGate": {
+  "evaluated": false,
+  "conclusion": "NOT_EVALUABLE",
+  "note": "explicitly NOT a finding of PHASE3_601_NEEDS_SEMANTIC_ITERATION, which would be a claim about semantic recovery this run did not gather evidence to make"
+ },
+ "passAEvidenceObtained": {
+  "weight": "REAL and usable - the first complete DUAL_PASS_ENSEMBLE Pass A over Section 6.01 in this mission series",
+  "pass1": {
+   "status": "INVENTORY_COVERAGE_GAP",
+   "items": 284,
+   "calls": 7,
+   "costUsd": 2.6008
+  },
+  "pass2": {
+   "status": "INVENTORY_COVERAGE_GAP",
+   "items": 290,
+   "calls": 7,
+   "costUsd": 2.6905
+  },
+  "ensemble": {
+   "built": true,
+   "canonicalItems": 322,
+   "corroborated": 252,
+   "singleRun": 70,
+   "singleRunByPass": {
+    "pass-1": 32,
+    "pass-2": 38
+   },
+   "conflicted": 0,
+   "materialSingleRun": 64,
+   "materialConflicted": 0,
+   "informationalSingleRun": 6,
+   "supportReviewRequired": true,
+   "supportReviewFraction": 0.1988,
+   "compatibilityMode": "STRICT",
+   "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+   "partitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+   "frozenContentHash": "25203003989dda12a9e8a26d3953d6668e2b0ff0907988b9db1f3e0b452d75e3"
+  },
+  "sourceAccountability": {
+   "coveredByInventory": 255,
+   "coveredByChildDescent": 1,
+   "coveredByConnectiveOwnership": 1,
+   "structuralNoise": 13,
+   "headingOrLabel": 1,
+   "unaccountedStretches": 16,
+   "uninventoriedValues": 2
+  },
+  "antiHallucination": {
+   "rejectedUnverifiableItems": 0,
+   "rejectedDuplicateItems": 252,
+   "meaning": "zero model-proposed items failed the verbatim-excerpt gate across both passes; 252 same-identity wordings were merged"
+  },
+  "interpretation": "two independent passes agreed on 252 of 322 canonical propositions with zero conflicts, and every retained item is anchored to verbatim source. The 70 single-run items and 16 unaccounted stretches are exactly the support-asymmetry and coverage disclosures the architecture is designed to surface, and they correctly set supportReviewRequired."
+ },
+ "performanceWindow": {
+  "maxSingleTurnInputTokens": 13088,
+  "maxSingleTurnOutputTokens": 47076,
+  "outputTruncations": 0,
+  "providerFailures": 0,
+  "retries": 0,
+  "passACallsTotal": 14,
+  "shardsExecuted": 0
+ }
+}
