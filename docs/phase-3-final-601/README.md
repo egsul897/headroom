@@ -79,3 +79,80 @@ The next mission remains the zero-cost Phase 3 closure synthesis described in §
 evidence is still wanted first, it needs one of the levers above — most cleanly, a balance of $15.84 and a
 matching cap, or an explicit pre-registered statement that the conservative tier is mean × 1.25. Re-run
 `scripts/phase-3-601-preflight.ts` at the new head so `00` and `01` are re-frozen before any paid call.
+
+---
+
+# Funded resume run (artifacts 11-21)
+
+**Verdict: `PHASE3_601_COST_BOUND_DURING_RUN`** — $3.5017 spent of a $15.84 cap, Phase 3 not closed, Phase 4 not
+started. Starting SHA `d51e7f275f6a7ffbaa2f61c19dd823b9da143b23`. Production files changed: **0**.
+
+## The gate passed; the run then voided itself
+
+Funding cleared §6 exactly as intended. Balance $32.559204 against the $15.84 cap, and the conservative estimate
+reproduced the earlier preflight **to the cent** at $15.8309 (mean $8.3086, worst-observed $12.6648). Every frozen
+identity matched, including the Section 6.01 text hash `6b79685c…`, the span 608,901–642,524 at 33,623 chars, and
+the 8-item reference slice at 4 CRITICAL / 4 MATERIAL with label and span selection in exact agreement.
+
+Then the run voided itself through **harness defect HD-1**, in my scaffolding, not in production.
+
+The §7 in-run affordability guard priced remaining Pass B work as
+`max(tokensRemaining × worstTokenRate, shardsRemaining × worstSingleShardUsd)`. The §4 frozen methodology prices
+Pass B **solely** per planner-estimated input token. That extra per-shard term added $0.647 and pushed
+conservative-remaining to **$16.6405** against the gate's own **$15.8309**. The guard and the gate disagreed, so the
+guard refused the very first Pass A call of *both* passes before either could run.
+
+Consequences: both passes returned `INVENTORY_FAILED` with 0 calls and 0 items, the dual-pass ensemble was never
+built, and the compilation proceeded over an **empty inventory**. That is not the validation that was commissioned.
+
+## What production did, which was correct
+
+Starved of its inventory layer, the system degraded safely and loudly at every level:
+
+- both Pass A passes recorded `INVENTORY_FAILED` carrying the refusal reason verbatim, never silently skipped
+- the ensemble refused to build: *a pass that did not run cannot corroborate or be corroborated*
+- unit status **PARTIAL** with 8 failure reasons including `SEMANTIC_INVENTORY_UNAVAILABLE` and `SEMANTIC_ACCOUNTABILITY_INCOMPLETE`
+- Pass C reported `semanticallyComplete=false`, 0 inventoried, 47 unaccounted source spans, 30 uninventoried values
+- **0 definitions** retained as authoritative: all 7 unowned definitions and 4 out-of-scope rules were demoted by the stitcher rather than credited
+- the independent verifier returned `MATERIAL_DISCREPANCY` with 5 MATERIAL findings
+
+This is real evidence about safe failure, and it is incidental. It does not substitute for the commissioned run.
+
+## Why the mission stops here rather than re-running
+
+| | |
+|---|---|
+| Spent | $3.5017 |
+| Cap | $15.84 |
+| Remaining cap | $12.3383 |
+| Conservative cost of a valid fresh run | $15.8309 |
+| Fits remaining cap | **No** |
+
+§7 permits another call only if all remaining required work fits both the remaining cap and the remaining balance.
+It does not. Using mean × 1.25 ($10.3857, which would fit) is precisely the estimator substitution §6 forbids, so I
+did not make it. All completed outputs are preserved.
+
+## Scoring was deliberately not attempted
+
+Artifacts `17` and `18` are committed as `produced: false`. Scoring 8 reference items against a run with no semantic
+inventory would measure HD-1, not semantic quality, and would emit 8 vacuous `NOT_DISCOVERED` rows that read like a
+recall finding. `19` records the trust counters honestly: 6 genuinely **MEASURED** at zero on real output, 3
+**VACUOUS** zeros where nothing existed to lose, and 5 **NOT_MEASURABLE** without Pass A. The quality gate is
+`NOT_EVALUABLE`, which is deliberately not the claim `PHASE3_601_NEEDS_SEMANTIC_ITERATION` would make.
+
+§29 scorecard: 17 conditions, 12 PASS, 5 FAIL.
+
+## Regression and the harness fix
+
+Full suite 107 failing files / 162 failing tests / 3,167 passing, with the failing identities compared as exact sets
+before and after and found unchanged. Build passes, lint is clean, `tsc` shows the same 6 pre-existing errors in
+untouched foundation-audit files. Zero production files changed.
+
+HD-1 is fixed in `scripts/phase-3-601-funded-run.ts`, with the reasoning recorded at the call site. The fix was
+applied **after** the run, touches no production code, produced no evidence in this mission, and cost 0 paid calls.
+
+## Next step
+
+A new pre-registered mission whose cap again covers the full $15.8309 conservative estimate. The identities, the
+deterministic plan and all three cost tiers reproduced exactly, and the guard now uses the same estimator as the
+gate, so that mission should reach a real Pass A on its first attempt.

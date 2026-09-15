@@ -56,14 +56,24 @@ class Guard {
   refusals: { stage: string; reason: string; spentUsd: number; conservativeRemainingUsd: number; capUsd: number; balanceUsd: number; at: string }[] = [];
   passABatchesRemaining: number; passAGapRemaining: number; passBTokensRemaining: number; passBShardsRemaining: number;
   verifierReviewRemaining = 1; conditionSuspicionRemaining = CONDITION_SUSPICION_CALLS;
-  constructor(private r: ReturnType<typeof observedRates>, private worstShardUsd: number, batchesPerPass: number, plannerTokens: number, shards: number, private capUsd: number, private balanceUsd: number) {
+  constructor(private r: ReturnType<typeof observedRates>, readonly worstShardUsd: number, batchesPerPass: number, plannerTokens: number, shards: number, private capUsd: number, private balanceUsd: number) {
     this.passABatchesRemaining = batchesPerPass * 2; this.passAGapRemaining = 2;
     this.passBTokensRemaining = plannerTokens; this.passBShardsRemaining = shards;
   }
-  /** Conservative (worst observed x 1.25) cost of ALL required remaining work. */
+  /**
+   * Conservative (worst observed x 1.25) cost of ALL required remaining work.
+   *
+   * HARNESS DEFECT HD-1, fixed after the 2026-09-15 run (see docs/phase-3-final-601/README.md): this method
+   * previously priced Pass B as Math.max(tokensRemaining * worstTokenRate, shardsRemaining * worstSingleShardUsd).
+   * The per-shard term is NOT part of the cost methodology frozen by §4, which prices Pass B solely per
+   * planner-estimated input token. That extra term inflated conservative-remaining to $16.6405 against the §6
+   * gate's own $15.8309, so the guard refused the first Pass A call of BOTH passes and the run proceeded with no
+   * inventory at all. The guard must use exactly the frozen estimator the gate uses - no stricter, no looser -
+   * or the two disagree and the mission voids itself. worstShardUsd is retained only as recorded telemetry.
+   */
   conservativeRemaining(): number {
     const passA = this.passABatchesRemaining * this.r.passABatchWorst + this.passAGapRemaining * this.r.passAGapWorst;
-    const passB = Math.max(this.passBTokensRemaining * this.r.passBWorst, this.passBShardsRemaining * this.worstShardUsd);
+    const passB = this.passBTokensRemaining * this.r.passBWorst;
     const ver = this.verifierReviewRemaining * this.r.verifierSemanticReview + this.conditionSuspicionRemaining * CONDITION_SUSPICION_PER_CALL;
     return (passA + passB + ver) * 1.25;
   }

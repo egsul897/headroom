@@ -1,0 +1,157 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE \u00a715/\u00a716/\u00a724/\u00a725 - stitching trust, hard trust counters, quality gate",
+ "at": "2026-09-15T01:22:52.984809Z",
+ "runValidity": "VOID_AS_A_VALIDATION - Pass A did not execute (harness defect HD-1); the compilation ran over an empty inventory",
+ "hardTrustCounters": [
+  {
+   "counter": "dangerous silent omissions",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires the reference comparison, which is void. Note the unit was NOT silent: status PARTIAL, semanticallyComplete=false, verifier MATERIAL_DISCREPANCY."
+  },
+  {
+   "counter": "false completeness",
+   "state": "MEASURED",
+   "value": 0,
+   "basis": "Pass C reported semanticallyComplete=false with 0 material items; no completeness was claimed over an absent inventory"
+  },
+  {
+   "counter": "source-unverifiable authoritative IR",
+   "state": "MEASURED",
+   "value": 0,
+   "basis": "attributionProofCounts.NONE = 0; with no owned inventory no definition earned authoritative retention, so definitions = 0"
+  },
+  {
+   "counter": "contextual ownership-credit violations",
+   "state": "MEASURED",
+   "value": 0,
+   "basis": "11 collisions were all detected and demoted (7 CONTEXTUAL_UNOWNED_DEFINITION, 4 RULE_EMITTED_OUT_OF_SCOPE); 0 definitions survived as authoritative, which is the demotion working"
+  },
+  {
+   "counter": "silent incompatible merges",
+   "state": "MEASURED",
+   "value": 0,
+   "basis": "definitionConflicts = 0, conflictVariants = 0"
+  },
+  {
+   "counter": "owned values lost",
+   "state": "VACUOUS",
+   "value": 0,
+   "basis": "materialQuantitativeValuesMissing = 0 only because 0 material items were inventoried"
+  },
+  {
+   "counter": "distinct owned lineage lost",
+   "state": "VACUOUS",
+   "value": 0,
+   "basis": "unresolvedOwnedItems = 0 only because no shard owned any item"
+  },
+  {
+   "counter": "new dangling refs",
+   "state": "MEASURED",
+   "value": 0,
+   "basis": "danglingLineageReferences = 0; no IR node claimed lineage the inventory never had"
+  },
+  {
+   "counter": "hidden provider/schema failures",
+   "state": "MEASURED",
+   "value": 0,
+   "basis": "0 provider failures, 0 schema failures, and the Pass A refusal surfaced verbatim in inventoryStatusReason and in 8 failure reasons on the unit"
+  },
+  {
+   "counter": "hidden material omissions",
+   "state": "VACUOUS",
+   "value": 0,
+   "basis": "0 material items existed to omit"
+  },
+  {
+   "counter": "authoritative hallucinations",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "Pass A's excerpt-anchoring gate is the anti-hallucination mechanism and it never ran"
+  },
+  {
+   "counter": "silent CRITICAL misses",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires the reference comparison, which is void"
+  },
+  {
+   "counter": "incorrect authoritative CRITICAL claims",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires the reference comparison, which is void"
+  },
+  {
+   "counter": "silent quantitative corruption",
+   "state": "NOT_MEASURABLE",
+   "value": null,
+   "basis": "requires the reference comparison, which is void"
+  }
+ ],
+ "trustGatePassed": false,
+ "trustGateNote": "6 counters are genuinely MEASURED at zero on real production output, 3 are VACUOUS zeros (nothing existed to lose) and 5 are NOT_MEASURABLE without Pass A. \u00a729 condition 10 requires all 14 to be zero on a valid run; that cannot be asserted here, so the gate is recorded as NOT PASSED rather than passed on a mixture of vacuous and unmeasurable values.",
+ "stitching": {
+  "executionMode": "SHARDED",
+  "shardsExecuted": 6,
+  "reused": 0,
+  "retries": 0,
+  "providerCalls": 6,
+  "statusCounts": {
+   "SHARD_COMPLETE": 4,
+   "SHARD_MISSING_CONTEXT": 2
+  },
+  "collisions": 11,
+  "collisionsByKind": {
+   "CONTEXTUAL_UNOWNED_DEFINITION": 7,
+   "RULE_EMITTED_OUT_OF_SCOPE": 4
+  },
+  "definitionConflicts": 0,
+  "conflictVariants": 0,
+  "unresolvedOwnedItems": 0,
+  "attributionProofCounts": {
+   "PLANNER_DEFINITION_UNIT": 0,
+   "OWNED_INVENTORY_LINEAGE": 0,
+   "UNIQUE_PRIMARY_SOURCE_DECLARATION": 0,
+   "NONE": 0
+  }
+ },
+ "qualityGate": {
+  "evaluated": false,
+  "conclusion": "NOT_EVALUABLE",
+  "note": "CRITICAL/MATERIAL/quantitative recovery all require Pass A. This is explicitly NOT a finding of PHASE3_601_NEEDS_SEMANTIC_ITERATION, which would be a claim about the system that this run did not gather evidence to make."
+ },
+ "incidentalSafeFailureEvidence": {
+  "finding": "production degraded safely and loudly when its inventory layer was starved",
+  "evidence": [
+   "both Pass A passes recorded INVENTORY_FAILED with the refusal reason verbatim, never silently skipped",
+   "the dual-pass ensemble refused to build: a pass that did not run cannot corroborate or be corroborated",
+   "unit status PARTIAL with 8 failure reasons including SEMANTIC_INVENTORY_UNAVAILABLE and SEMANTIC_ACCOUNTABILITY_INCOMPLETE",
+   "Pass C reported semanticallyComplete=false, 0 inventoried, 47 unaccounted source spans, 30 uninventoried values",
+   "0 definitions retained as authoritative: every unowned definition was demoted rather than credited",
+   "the independent verifier returned MATERIAL_DISCREPANCY with 5 MATERIAL findings"
+  ],
+  "weight": "incidental and unplanned; it is NOT the commissioned validation and does not substitute for one"
+ },
+ "verifier": {
+  "status": "MATERIAL_DISCREPANCY",
+  "semanticReviewInvoked": true,
+  "findings": {
+   "total": 10,
+   "MATERIAL": 5,
+   "UNCERTAIN": 2,
+   "NON_MATERIAL": 3
+  },
+  "conditionSuspicionCalls": 0
+ },
+ "performanceWindow": {
+  "maxSingleTurnInputTokens": 88850,
+  "maxSingleTurnOutputTokens": 28279,
+  "outputTruncations": 0,
+  "providerFailures": 0,
+  "schemaFailures": 0,
+  "retries": 0,
+  "shardsExecuted": 6,
+  "oversizedShards": 0,
+  "boundedShardingConfirmed": true
+ }
+}
