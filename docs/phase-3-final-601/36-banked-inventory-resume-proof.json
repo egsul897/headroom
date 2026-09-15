@@ -1,0 +1,47 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 COMPLETION §4/§5 - banked inventory location and F-7C.1 resume proof",
+ "at": "2026-09-15T03:39:20.792Z",
+ "bankedIdentity": {
+  "expectedFrozenContentHash": "25203003989dda12a9e8a26d3953d6668e2b0ff0907988b9db1f3e0b452d75e3",
+  "recordedFrozenContentHash": "25203003989dda12a9e8a26d3953d6668e2b0ff0907988b9db1f3e0b452d75e3",
+  "statisticsMatch": true,
+  "recordedStatistics": {
+   "canonicalItems": 322,
+   "corroborated": 252,
+   "singleRun": 70,
+   "conflicted": 0,
+   "materialSingleRun": 64,
+   "materialConflicted": 0,
+   "rejectedUnverifiable": 0,
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "unaccountedSource": 16,
+   "uninventoriedValues": 2,
+   "compatibilityMode": "STRICT"
+  }
+ },
+ "inventoryObjectSearch": {
+  "candidatePaths": [
+   "tests/fixtures/unseen-packages/phase-3-final-601-clean-rerun/frozen-inventory.json",
+   "tests/fixtures/unseen-packages/phase-3-final-601-clean-rerun/compile-result.json",
+   "tests/fixtures/unseen-packages/phase-3-final-601-clean-rerun/pass-a-passes.json"
+  ],
+  "found": [],
+  "recoverable": false,
+  "exhaustiveSearch": "grep for the frozen hash across docs/, scripts/ and tests/ returns only this mission's own SUMMARY artifacts (26, 32, 34), which record the hash as a string. grep for 'inventoryItemId' across the clean-rerun evidence directory returns NOTHING, so no inventory item object survives anywhere."
+ },
+ "resumeProof": {
+  "attempted": false,
+  "reason": "impossible - the §5 proof requires passing the banked frozen inventory OBJECT through the production resume-compatibility logic, and no such object exists to pass. Only its content hash and aggregate statistics were persisted."
+ },
+ "rootCause": {
+  "id": "HD-3",
+  "layer": "HARNESS",
+  "productionDefect": false,
+  "statement": "scripts/phase-3-601-clean-rerun.ts wrote the frozen inventory only inside the §17 post-compile freeze block (line 161), which executes AFTER compileCovenantToIR (line 130). HD-2 aborted the run before the compile, so the write never ran and the 322-item truth layer - the most expensive and least reproducible artifact in the chain, representing $5.291298 of paid Pass A - existed only in process memory and was lost on exit.",
+  "lesson": "expensive, irreplaceable evidence must be persisted the instant it exists, before any downstream gate that can abort. Summary statistics are not a substitute for the object.",
+  "fixedAfterDiscovery": true,
+  "fixLocation": "scripts/phase-3-601-clean-rerun.ts now writes frozen-inventory.json and pass-a-passes.json immediately after the ensemble is validated, before the §4 gate",
+  "paidCallsThisMission": 0
+ },
+ "decision": "PHASE3_601_BANKED_INVENTORY_NOT_RESUMABLE"
+}

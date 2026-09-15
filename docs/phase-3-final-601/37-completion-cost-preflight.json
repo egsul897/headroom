@@ -1,0 +1,90 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 COMPLETION §7/§8/§9/§10 - HD-2 certification and remaining-work cost",
+ "at": "2026-09-15T03:39:21.416Z",
+ "hd2Certification": {
+  "predicateModule": "scripts/phase-3-601-guard.ts",
+  "predicateSha256": "c09756d4b78d63b0c3c6ee67af88674849cc9fa3e613888c3c465372b8ee6022",
+  "sameFunctionImportedByPaidRun": true,
+  "cases": [
+   {
+    "name": "banked shape: INVENTORY_COVERAGE_GAP + items>0 + ensembleBuilt",
+    "expected": true,
+    "actual": true,
+    "passed": true
+   },
+   {
+    "name": "negative: INVENTORY_FAILED",
+    "expected": false,
+    "actual": false,
+    "passed": true
+   },
+   {
+    "name": "negative: absent inventory",
+    "expected": false,
+    "actual": false,
+    "passed": true
+   },
+   {
+    "name": "negative: zero usable items",
+    "expected": false,
+    "actual": false,
+    "passed": true
+   },
+   {
+    "name": "negative: ensemble not built",
+    "expected": false,
+    "actual": false,
+    "passed": true
+   },
+   {
+    "name": "positive control: INVENTORY_OK",
+    "expected": true,
+    "actual": true,
+    "passed": true
+   }
+  ],
+  "certified": true,
+  "note": "the §4 predicate is now ONE exported function imported by both the paid run and this certification, so the behaviour proved here is the behaviour that runs - the same structural closure applied to HD-1"
+ },
+ "costMethodology": {
+  "passA": "$0 - already validly completed and frozen; no phantom Pass-A work priced",
+  "passB": "planner-estimated remaining input tokens x worst observed per-token rate",
+  "verifier": "one semantic review at worst observed cost + 5 condition-suspicion calls",
+  "safetyFactor": 1.25,
+  "perShardFloor": false
+ },
+ "rates": {
+  "passABatchMean": 0.431337,
+  "passABatchWorst": 0.627356,
+  "passABatchCalls": 38,
+  "passAGapMean": 0.3529920000000001,
+  "passAGapWorst": 0.47530800000000006,
+  "passAGapCalls": 5,
+  "passBMean": 0.000017264537354079804,
+  "passBWorst": 0.00003215094994361066,
+  "passBShards": 36,
+  "verifierSemanticReview": 0.32929600000000003,
+  "verifierCalls": 1
+ },
+ "plannerEstimatedInputTokens": 118179,
+ "plannedShards": 6,
+ "mode": "SHARDED",
+ "remainingConservative": {
+  "passBUsd": 4.7495,
+  "verifierUsd": 0.4829,
+  "totalUsd": 5.2323
+ },
+ "missionExpectation": {
+  "passBUsd": 4.7495,
+  "verifierUsd": 0.4829,
+  "totalUsd": 5.2324,
+  "reproduced": true
+ },
+ "cap": {
+  "hardCapUsd": 5.3,
+  "gatewayBalanceUsd": 23.76623,
+  "fitsCap": true,
+  "fitsBalance": true
+ },
+ "note": "this preflight is recorded for completeness; it is moot because §5 cannot be satisfied - see 36"
+}

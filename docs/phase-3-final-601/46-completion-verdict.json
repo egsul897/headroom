@@ -1,0 +1,145 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 COMPLETION \u00a733 - final verdict",
+ "at": "2026-09-15T03:39:13.876281Z",
+ "conditions": [
+  {
+   "id": 1,
+   "condition": "exact banked inventory hash verified",
+   "status": "PARTIAL",
+   "evidence": "the recorded hash and every \u00a74 statistic match exactly, but the inventory OBJECT does not exist to verify against"
+  },
+  {
+   "id": 2,
+   "condition": "F-7C.1 source-bound resume proof passes",
+   "status": "FAIL",
+   "evidence": "impossible - no inventory object to pass through the resume logic (HD-3)"
+  },
+  {
+   "id": 3,
+   "condition": "HD-2 certification passes",
+   "status": "PASS",
+   "evidence": "6/6 cases against the exact predicate the paid run imports"
+  },
+  {
+   "id": 4,
+   "condition": "zero new Pass-A calls",
+   "status": "PASS",
+   "evidence": "0 new Pass-A calls; 0 paid calls of any kind"
+  },
+  {
+   "id": 5,
+   "condition": "production entry point used",
+   "status": "FAIL",
+   "evidence": "not reached"
+  },
+  {
+   "id": 6,
+   "condition": "no old Pass-B result reused",
+   "status": "PASS",
+   "evidence": "vacuously - no Pass B ran, and none was ever available to reuse"
+  },
+  {
+   "id": 7,
+   "condition": "automatic mode selection runs on the real inventory",
+   "status": "FAIL",
+   "evidence": "not reached"
+  },
+  {
+   "id": 8,
+   "condition": "real-plan affordability fits the $5.30 cap",
+   "status": "PASS",
+   "evidence": "$5.2323 conservative recomputed, against a $23.77 balance"
+  },
+  {
+   "id": 9,
+   "condition": "global Pass C executes",
+   "status": "FAIL",
+   "evidence": "not reached"
+  },
+  {
+   "id": 10,
+   "condition": "independent verifier executes",
+   "status": "FAIL",
+   "evidence": "not reached"
+  },
+  {
+   "id": 11,
+   "condition": "all hard trust counters MEASURED and zero",
+   "status": "FAIL",
+   "evidence": "all 14 NOT_MEASURABLE; \u00a729 forbids counting those as zero"
+  },
+  {
+   "id": 12,
+   "condition": "silent CRITICAL misses = 0",
+   "status": "FAIL",
+   "evidence": "NOT_MEASURABLE"
+  },
+  {
+   "id": 13,
+   "condition": "incorrect authoritative CRITICAL claims = 0",
+   "status": "FAIL",
+   "evidence": "NOT_MEASURABLE"
+  },
+  {
+   "id": 14,
+   "condition": "quality operationally credible",
+   "status": "FAIL",
+   "evidence": "NOT_EVALUABLE"
+  },
+  {
+   "id": 15,
+   "condition": "new mission spend <= $5.30",
+   "status": "PASS",
+   "evidence": "$0.00"
+  },
+  {
+   "id": 16,
+   "condition": "no mid-run fix",
+   "status": "PASS",
+   "evidence": "no paid execution began; the HD-3 fix and predicate extraction preceded any spend"
+  },
+  {
+   "id": 17,
+   "condition": "no new regression",
+   "status": "PASS",
+   "evidence": "0 new failures vs the 107/162 baseline; identical to the previous run"
+  },
+  {
+   "id": 18,
+   "condition": "build passes",
+   "status": "PASS",
+   "evidence": "npm run build exit 0"
+  }
+ ],
+ "summary": {
+  "PASS": 8,
+  "PARTIAL": 1,
+  "FAIL": 9,
+  "total": 18
+ },
+ "verdict": "PHASE3_601_BANKED_INVENTORY_NOT_RESUMABLE",
+ "rootCause": {
+  "id": "HD-3",
+  "layer": "HARNESS",
+  "productionDefect": false,
+  "statement": "the frozen inventory was written only inside the post-compile freeze block, so when HD-2 aborted before the compile the 322-item truth layer was lost with the process. Only its hash and statistics were persisted.",
+  "costOfTheLoss": "$5.291298 of paid Pass A cannot be reused and would have to be re-earned",
+  "fixedBeforeAnySpendThisMission": true,
+  "paidCallsThisMission": 0
+ },
+ "defectSeries": {
+  "HD-1": "in-run guard stricter than the frozen estimator; refused both Pass A passes",
+  "HD-2": "Pass-A prerequisite gate stricter than \u00a74; stopped Pass B after a successful Pass A",
+  "HD-3": "expensive evidence persisted after a gate that could abort, instead of when it was produced",
+  "commonShape": "all three were harness defects in scaffolding I wrote, not production defects. HD-1 and HD-2 were gates stricter than their specifications; HD-3 was an ordering error that let HD-2 destroy irreplaceable evidence. Production behaved correctly throughout all three."
+ },
+ "cumulativeCost": {
+  "thisMissionUsd": 0,
+  "priorVoidMissionUsd": 3.501676,
+  "priorBankedPassAMissionUsd": 5.291298,
+  "cumulativeSection601Usd": 8.792974
+ },
+ "phase3Closed": false,
+ "phase4Started": false,
+ "recommendedNextStep": "a single fresh mission that runs the whole Section 6.01 path end to end under the now-corrected harness, at a cap covering the full $15.8309 conservative estimate. Resuming is no longer possible, so the $8.79 already spent on this section buys no shortcut. The harness now persists Pass A the instant it exists, so a repeat of this loss is structurally prevented."
+}

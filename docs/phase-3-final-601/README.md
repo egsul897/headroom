@@ -227,3 +227,66 @@ since the pin. Build passes, lint clean, `tsc` shows the same 6 pre-existing err
 The 322-item ensemble inventory is frozen and directly reusable under §11. A follow-up mission can resume
 from it for roughly $4.75 conservative, covering Pass B, Pass C and the verifier, which is well inside a
 fresh $15.84 cap. Cumulative Section 6.01 spend so far is $8.792976 across the void run and this one.
+
+---
+
+# Completion attempt (artifacts 35-46)
+
+**Verdict: `PHASE3_601_BANKED_INVENTORY_NOT_RESUMABLE`** — zero paid calls, $0.00 spent, Phase 3 not closed,
+Phase 4 not started.
+
+## The banked inventory does not exist
+
+This mission was to resume the 322-item Pass A ensemble and finish Pass B, Pass C and the verifier. It cannot,
+because **the inventory object was never written to disk.**
+
+`scripts/phase-3-601-clean-rerun.ts` wrote `frozen-inventory.json` only inside the post-compile freeze block,
+after `compileCovenantToIR`. HD-2 aborted that run before the compile, so the write never executed. The
+322-item truth layer, representing **$5.291298 of paid Pass A**, existed only in process memory and died with
+the process. Call this **HD-3**.
+
+The negative is proved, not assumed. Searching for the frozen hash across the repository returns only three of
+my own summary artifacts, which record it as a string. Searching the clean-rerun evidence directory for
+`inventoryItemId` returns nothing. The evidence directory contains one file: the guard-state log.
+
+§5 requires passing the banked inventory **object** through the production resume logic before any paid call.
+There is no object to pass. §6 forbids rerunning Pass A. So the truth layer cannot be reconstituted here at
+any price, and the correct outcome is zero spend.
+
+## What was proved at zero cost
+
+- **HD-2 closure certified: 6/6.** The §4 predicate is now one exported function imported by both the paid run and its certification. All three required negative tests pass (`INVENTORY_FAILED`, absent inventory, zero usable items), plus ensemble-not-built and an `INVENTORY_OK` positive control, plus the banked `INVENTORY_COVERAGE_GAP` shape returning **true**.
+- **Banked statistics intact.** Every §4 figure matches exactly: 322 canonical, 252 corroborated, 70 single-run, 0 conflicted, 64 material single-run, 0 material conflicted, 0 rejected unverifiable, `INVENTORY_COVERAGE_GAP`, 16 unaccounted, 2 uninventoried, STRICT.
+- **Remaining cost recomputed: $5.2323** conservative, against the mission's expected ~$5.2324, the $5.30 cap and a $23.77 balance. The mission was affordable and would have proceeded but for HD-3.
+- **Identities verified.** Source hash, Section 6.01 span and text hash, and the 8-item reference slice.
+
+## The defect series
+
+| | Defect | Shape |
+|---|---|---|
+| HD-1 | In-run guard stricter than the frozen estimator | Refused both Pass A passes |
+| HD-2 | Pass-A gate stricter than §4 | Stopped Pass B after a *successful* Pass A |
+| HD-3 | Expensive evidence persisted after an abortable gate | Let HD-2 destroy irreplaceable output |
+
+All three were in scaffolding I wrote. Production behaved correctly throughout. HD-1 and HD-2 were gates
+stricter than their own specifications; HD-3 was the ordering error that turned HD-2 from a wasted run into a
+destroyed one.
+
+HD-3 is fixed: the harness now writes the inventory and both pass records the instant the ensemble is
+validated, before any gate that can abort. The §4 predicate is defined once and imported, so HD-2's class of
+defect is structurally prevented too.
+
+§33 scorecard: 18 conditions, 7 PASS, 1 PARTIAL, 10 FAIL.
+
+## Regression
+
+106 failing files / 161 failing tests / 3,168 passing. **Zero new failures** against the 107/162 baseline, and
+identical to the previous run. Build passes, lint clean, `tsc` shows the same 6 pre-existing errors. Zero
+production files changed.
+
+## Next step
+
+Resuming is no longer possible, so the $8.792974 spent on Section 6.01 buys no shortcut. The honest path is one
+fresh end-to-end mission under the corrected harness at a cap covering the full $15.8309 conservative estimate.
+The structural causes of all three defects are now closed, so that run should reach Pass B, Pass C and the
+verifier on its first attempt.

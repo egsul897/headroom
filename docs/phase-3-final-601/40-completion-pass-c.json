@@ -1,0 +1,9 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 COMPLETION - global Pass C (\u00a719)",
+ "at": "2026-09-15T03:39:13.876281Z",
+ "produced": false,
+ "reason": "NOT PRODUCED - zero paid calls were made. \u00a75 requires the banked frozen inventory OBJECT to be passed through the production F-7C.1 resume-compatibility logic before any paid call, and no such object exists: harness defect HD-3 wrote the inventory only inside the post-compile freeze block, which never ran because HD-2 aborted the previous mission before the compile. Only the content hash and aggregate statistics survived. \u00a76 forbids rerunning Pass A, so the truth layer cannot be reconstituted in this mission at any price.",
+ "paidCalls": 0,
+ "referenceSetReachedNoPrompt": true,
+ "note": "\u00a722 requires the compiler, Pass C and verifier results to be frozen before the reference descriptions are read for scoring; none exist, so no scoring was attempted"
+}
