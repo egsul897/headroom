@@ -1,0 +1,12 @@
+{
+ "artifact": "PHASE 3 FINAL - whole-agreement comparison against the frozen 46-item human reference set",
+ "at": "2026-09-14T23:59:38.253217Z",
+ "produced": false,
+ "reason": "PHASE3_FINAL_COST_BOUND_BEFORE_START - the \u00a716 pre-run gate failed (conservative estimate $252.83 > hard cap $20.00 and > gateway balance $12.559204), so zero paid calls were made. This artifact requires paid production execution and is therefore intentionally NOT produced. It is committed as an explicit placeholder so the \u00a747 artifact list is complete and no absent result can be mistaken for a lost one.",
+ "paidCallsMade": 0,
+ "spendUsd": 0,
+ "dependsOn": [
+  "02-cost-preflight.json bound decision",
+  "03-paid-call-ledger.json (0 calls)"
+ ]
+}

@@ -1,0 +1,260 @@
+{
+ "artifact": "PHASE 3 FINAL \u00a748 - Phase-3 closure gate",
+ "at": "2026-09-14T23:59:38.253217Z",
+ "startingSha": "a474ab3ba42c2518b1dabe552b73dd37712c43e6",
+ "conditions": [
+  {
+   "id": 1,
+   "condition": "exact starting production SHA frozen",
+   "status": "PASS",
+   "evidence": "a474ab3ba42c2518b1dabe552b73dd37712c43e6 (00)"
+  },
+  {
+   "id": 2,
+   "condition": "exact Chewy source/package identity frozen",
+   "status": "PASS",
+   "evidence": "extracted text sha256 f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb; matches Phase 3 validation manifest (00)"
+  },
+  {
+   "id": 3,
+   "condition": "human reference set frozen before paid calls",
+   "status": "PASS",
+   "evidence": "docs/phase-3-validation/04-human-reference-set.json sha256 e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036; 46 items (00)"
+  },
+  {
+   "id": 4,
+   "condition": "human reference set never supplied to compiler/verifier",
+   "status": "PASS",
+   "evidence": "no compiler or verifier invocation occurred; preflight reads the set only to derive required unit list (00.exposedToCompilerOrVerifier=false)"
+  },
+  {
+   "id": 5,
+   "condition": "structural/package/operative preflight passes",
+   "status": "PASS",
+   "evidence": "1548 nodes, 381 definitions, 0 orphans, single-document package graph, operative state null = no amendment layer (01)"
+  },
+  {
+   "id": 6,
+   "condition": "conservative cost estimate fits hard cap",
+   "status": "FAIL",
+   "evidence": "conservative $252.83 (mean $132.56, worst-observed-rate $202.26) vs cap $20.00 and gateway balance $12.559204 (02)"
+  },
+  {
+   "id": 7,
+   "condition": "production compileCovenantToIR is used",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 8,
+   "condition": "fresh Pass A runs",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 9,
+   "condition": "production execution-mode selection is automatic",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 10,
+   "condition": "production sharding is used where selected",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 11,
+   "condition": "global Pass C is final accountability authority",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 12,
+   "condition": "independent verifier runs on actual production output",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 13,
+   "condition": "zero dangerous silent omissions",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 14,
+   "condition": "zero false completeness",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 15,
+   "condition": "zero source-unverifiable authoritative IR",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 16,
+   "condition": "zero contextual ownership-credit violations",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 17,
+   "condition": "zero silent incompatible merges",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 18,
+   "condition": "zero owned-value loss",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 19,
+   "condition": "zero distinct-owned-lineage loss",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 20,
+   "condition": "zero dangling refs caused by compilation/stitching",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 21,
+   "condition": "zero hidden provider/schema failures",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 22,
+   "condition": "zero hidden material omissions",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 23,
+   "condition": "zero authoritative hallucinations",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 24,
+   "condition": "zero silent CRITICAL reference misses",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 25,
+   "condition": "operative-state trust remains sound",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 26,
+   "condition": "quantitative recovery has no silent material number corruption",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 27,
+   "condition": "remaining explicit limitations are bounded rather than systemic",
+   "status": "NOT_EVALUATED",
+   "evidence": "requires paid production execution; none occurred (\u00a716 bound)"
+  },
+  {
+   "id": 28,
+   "condition": "no production changes occurred during paid execution",
+   "status": "PASS",
+   "evidence": "no paid execution; production file delta since a474ab3 = 0 (13)"
+  },
+  {
+   "id": 29,
+   "condition": "no new regression failures",
+   "status": "PASS",
+   "evidence": "zero production delta; a474ab3 baseline 107 files / 162 tests stands; tsc 6 pre-existing errors in untouched test files, 0 in mission files (13)"
+  },
+  {
+   "id": 30,
+   "condition": "build passes",
+   "status": "PASS",
+   "evidence": "npm run build exit 0 (13)"
+  },
+  {
+   "id": 31,
+   "condition": "total spend <= $20.00",
+   "status": "PASS",
+   "evidence": "$0.00 spent; 0 paid calls; balance 12.559204 before and after (03)"
+  }
+ ],
+ "summary": {
+  "PASS": 9,
+  "FAIL": 1,
+  "NOT_EVALUATED": 21,
+  "total": 31
+ },
+ "phase3Closed": false,
+ "verdict": "PHASE3_FINAL_COST_BOUND_BEFORE_START",
+ "verdictBasis": "Mission \u00a716: before the first call, the conservative estimate must be <= $20.00 AND <= the current gateway balance. Both fail (252.83 > 20.00; 252.83 > 12.559204). Even the mean-rate estimate ($132.56) exceeds both bounds by ~6.6x / ~10.6x, and the single largest required unit (Section 1.01, $65.23 mean) alone exceeds both. The estimator was not weakened and no partial run was attempted because the mission forbids fix-and-continue and pre-registers this exact outcome.",
+ "paidCalls": 0,
+ "spendUsd": 0,
+ "gatewayBalanceUsd": {
+  "before": 12.559204,
+  "after": 12.559204
+ },
+ "estimate": {
+  "meanRate": {
+   "passAUsd": 97.33,
+   "passBUsd": 30.6,
+   "verifierUsd": 4.64,
+   "totalUsd": 132.56
+  },
+  "worstObservedRate": {
+   "passAUsd": 140.64,
+   "passBUsd": 56.99,
+   "verifierUsd": 4.64,
+   "totalUsd": 202.26
+  },
+  "conservative": {
+   "passAUsd": 175.8,
+   "passBUsd": 71.23,
+   "verifierUsd": 5.79,
+   "totalUsd": 252.83,
+   "safetyFactor": 1.25
+  }
+ },
+ "callPlan": {
+  "units": 12,
+  "monolithicUnits": 1,
+  "shardedUnits": 11,
+  "projectedShards": 88,
+  "oversizedShards": 1,
+  "passACalls": {
+   "batchesPerPass": 103,
+   "gapCallsPerPass": 12,
+   "passes": 2,
+   "total": 230
+  },
+  "passBCalls": {
+   "conversations": 88,
+   "note": "one bounded conversation per shard (or per monolithic unit); the certified 36-shard run averaged 2.44 turns per conversation - turns are inside the per-shard rate"
+  },
+  "verifierCalls": {
+   "semanticReview": 12,
+   "conditionSuspicion": 60
+  },
+  "discovery": {
+   "reuseFrozenPhase2BOutput": true,
+   "freshCostIfRequiredUsd": 4.6551
+  }
+ },
+ "phase4Started": false,
+ "closureConditionsForRetry": [
+  "fund the gateway so that balance >= conservative estimate of the pre-registered scope, or",
+  "open a NEW pre-registered mission with an explicitly narrowed scope whose conservative estimate fits its cap (e.g. per-unit tranches: cheapest unit 6.02 $2.27 mean; 1.01 alone $65.23 mean is out of reach at any cap <= $20)",
+  "in either case, re-run scripts/phase-3-final-preflight.ts at the new head so 00-03 are re-frozen before the first paid call"
+ ]
+}
