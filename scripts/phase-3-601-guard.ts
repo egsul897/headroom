@@ -167,3 +167,38 @@ export function passAUsable(p: PassALike | null | undefined): boolean {
 export function passAPrerequisiteSatisfied(input: { pass1: PassALike | null | undefined; pass2: PassALike | null | undefined; ensembleBuilt: boolean; authoritativeItemCount: number }): boolean {
   return passAUsable(input.pass1) && passAUsable(input.pass2) && input.ensembleBuilt === true && input.authoritativeItemCount > 0;
 }
+
+// ---------------------------------------------------------------------------
+// §10 durable persistence (HD-3 closure). ONE helper, used by the paid run and by its zero-cost certification.
+// ---------------------------------------------------------------------------
+import { closeSync, existsSync, fsyncSync, mkdirSync as mkdirSyncP, openSync, readFileSync as readFileSyncP, writeFileSync as writeFileSyncP } from "node:fs";
+import { createHash as createHashP } from "node:crypto";
+
+const sha256P = (s: string) => createHashP("sha256").update(s).digest("hex");
+
+/** Write JSON, fsync the file, close. Returns the sha256 of the exact bytes written. */
+export function writeJsonDurable(path: string, data: unknown): string {
+  mkdirSyncP(path.slice(0, path.lastIndexOf("/")), { recursive: true });
+  const text = JSON.stringify(data, null, 1);
+  writeFileSyncP(path, text);
+  const fd = openSync(path, "r+");
+  try { fsyncSync(fd); } finally { closeSync(fd); }
+  return sha256P(text);
+}
+
+export interface PersistProof<T> { path: string; existsAfterWrite: boolean; writtenSha256: string; readSha256: string; hashEqual: boolean; structurallyEqual: boolean; reloaded: T }
+
+/**
+ * Persist, then prove the persisted bytes are a complete substitute for the in-memory object: file exists, the bytes
+ * read back hash to the bytes written, and the reloaded object is structurally identical to the JSON projection of
+ * the original. Callers MUST use `reloaded`, never the original, for anything downstream (§11).
+ */
+export function persistAndReload<T>(path: string, obj: T): PersistProof<T> {
+  const writtenSha256 = writeJsonDurable(path, obj);
+  const existsAfterWrite = existsSync(path);
+  const raw = readFileSyncP(path, "utf8");
+  const readSha256 = sha256P(raw);
+  const reloaded = JSON.parse(raw) as T;
+  const structurallyEqual = JSON.stringify(reloaded) === JSON.stringify(JSON.parse(JSON.stringify(obj)));
+  return { path, existsAfterWrite, writtenSha256, readSha256, hashEqual: writtenSha256 === readSha256, structurallyEqual, reloaded };
+}
