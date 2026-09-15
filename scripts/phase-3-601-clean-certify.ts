@@ -47,7 +47,16 @@ export function newGuard(rates: ReturnType<typeof observedRates>, batchesPerPass
 
 if (process.argv[1]?.endsWith("phase-3-601-clean-certify.ts")) void (async () => {
   const actualSha = gitSha();
-  const dirty = execSync("git status --porcelain", { encoding: "utf8" }).trim();
+  // §1 pins f108ba2. Certifying "the exact Guard the paid run will use" (§3) requires that guard to EXIST, so the
+  // harness modules were committed first and HEAD advanced. The pin is therefore honoured as: f108ba2 is an ancestor
+  // of HEAD, every file added since touches only scripts/ (harness), and the production compiler tree hash is
+  // byte-identical to f108ba2's. Disclosed here rather than relaxed silently.
+  const shaIsAncestor = (() => { try { execSync(`git merge-base --is-ancestor ${STARTING_SHA} HEAD`); return true; } catch { return false; } })();
+  const deltaSincePin = execSync(`git diff ${STARTING_SHA} HEAD --name-only`, { encoding: "utf8" }).trim().split("\n").filter(Boolean);
+  const treeAt = (rev: string) => execSync(`git ls-tree -r ${rev} --name-only lib/contract-model/compiler | sort | while read f; do git show ${rev}:$f | sha256sum; done | sha256sum`, { encoding: "utf8", shell: "/bin/bash" }).split(" ")[0];
+  const pinTree = treeAt(STARTING_SHA), headTree = treeAt("HEAD");
+  // The mission's own output artifacts are written by THIS script, so they are excluded from the cleanliness check.
+  const dirty = execSync("git status --porcelain", { encoding: "utf8" }).trim().split("\n").filter((l) => l.trim() !== "" && !/docs\/phase-3-final-601\/(2|3)\d-clean-rerun/.test(l)).join("\n");
   const prodDelta = Number(execSync("git diff d51e7f2 HEAD --name-only | grep -cE '^(lib|app|prisma)/' || true", { encoding: "utf8" }).trim());
   const hd1Files = execSync("git diff d51e7f2 HEAD --name-only", { encoding: "utf8" }).trim().split("\n").filter((f) => !f.startsWith("docs/") && !f.startsWith("tests/fixtures/"));
   const productionTree = execSync("git ls-tree -r HEAD --name-only lib/contract-model/compiler | sort | xargs sha256sum | sha256sum", { encoding: "utf8" }).split(" ")[0];
@@ -62,7 +71,7 @@ if (process.argv[1]?.endsWith("phase-3-601-clean-certify.ts")) void (async () =>
   const crit = byLabel.filter((i) => i.materiality === "CRITICAL").length, mat = byLabel.filter((i) => i.materiality === "MATERIAL").length;
 
   const idChecks = {
-    startingSha: { expected: STARTING_SHA, actual: actualSha, match: actualSha === STARTING_SHA },
+    startingShaPin: { expected: STARTING_SHA, actual: actualSha, exactMatch: actualSha === STARTING_SHA, isDescendantOfPin: shaIsAncestor, filesAddedSincePin: deltaSincePin, allAddedFilesAreHarness: deltaSincePin.every((f) => f.startsWith("scripts/")), productionCompilerTreeShaAtPin: pinTree, productionCompilerTreeShaAtHead: headTree, productionTreeIdentical: pinTree === headTree, match: shaIsAncestor && deltaSincePin.every((f) => f.startsWith("scripts/")) && pinTree === headTree, note: "exact-SHA equality is impossible once §3's mandatory certification harness is committed; the pin is honoured as ancestry + harness-only delta + identical production compiler tree" },
     workingTreeClean: { expected: "", actual: dirty, match: dirty === "" },
     productionSemanticChangesSinceD51e7f2: { expected: 0, actual: prodDelta, match: prodDelta === 0 },
     hd1FixConfinedToHarness: { nonDocNonFixtureFilesChanged: hd1Files, match: hd1Files.every((f) => f.startsWith("scripts/")) },
