@@ -1,0 +1,92 @@
+{
+ "identity": {
+  "recordVersion": "hd4-durable-call-record.v1",
+  "replayAlgorithmVersion": "hd4-durable-replay.v1",
+  "missionId": "phase-3-final-601-final-paid",
+  "passId": "verifier",
+  "sourceDocumentId": "doc-a",
+  "candidateRef": "phase-3-final-601:chwy:6.01",
+  "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+  "algorithmVersion": "phase-3c-semantic-verifier.v1",
+  "promptVersion": "phase-3c-semantic-verifier-prompt.v1",
+  "stage": "semantic_verification",
+  "provider": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-sonnet-5",
+  "schemaId": "semantic-verification/wire-schema#SubmitVerificationFindingsSchema",
+  "schemaFingerprint": "6074963b933fa202d4cdf28e415a6c1c76af3c0c236115ed322e7a4eebee7fb9",
+  "systemPromptSha256": "82ae5365baf374a6bd02350e2aa6e09fac0e1088bcc75c0a9f3b2ee9c4f4bd32",
+  "userContentSha256": "636ec3633d6da8cb085aa98865f640072daee221e355ffdae57aaee84b242e4d"
+ },
+ "requestHash": "c2de0683c6d93ef26d7c95e502ae8fd59d54e35ac451f35c16f1c57e5c080f5e",
+ "occurrence": 0,
+ "callOrdinal": 0,
+ "batchRef": null,
+ "payload": {
+  "findings": [
+   {
+    "findingType": "MISSING_CONDITION",
+    "severity": "MATERIAL",
+    "ruleOrDefinitionId": "ir-rule:170e314ceb35e54072b7ddba / ir-rule:49f22aee601dde5b8b8162d5 / ir-rule:fe4849964b2e4426f637e78a / ir-rule:9e3a05885d5fe4f53be23b1d / ir-rule:681d1a7845898826a4059fbd",
+    "irPath": "rules[].entityScope / rules[].exceptions[].conditions",
+    "sourceEvidence": "the Borrowers shall not issue any shares of Disqualified Stock and shall not permit any Restricted Subsidiary to issue any shares of Disqualified Stock or any Restricted Subsidiary that is not a Guarantor to issue Preferred Stock",
+    "sourceCitation": "\\u00a76.01(a)",
+    "proposedIrEvidence": "entityScope: [] and entityScopeExcluded: [] on every 6.01(a)-related rule; no condition anywhere restricting the Preferred Stock prohibition (or its Permitted Ratio Debt carve-out) to Restricted Subsidiaries that are not Guarantors",
+    "reasoning": "The source text creates a materially narrower scope for the Preferred Stock prohibition than for the Indebtedness/Disqualified Stock prohibitions: only a Restricted Subsidiary that is NOT a Guarantor is prohibited from issuing Preferred Stock (implying a Guarantor Restricted Subsidiary can issue Preferred Stock without needing to satisfy the Permitted Ratio Debt tests in 6.01(a) at all, since the general prohibition simply does not reach it). The proposed IR's prohibition rules for 6.01(a) and its Permitted Ratio Debt permission rules never capture this Guarantor/non-Guarantor distinction anywhere (entityScope is empty on every relevant rule, and no condition mentions Guarantor status for the Preferred Stock branch specifically). A reviewer relying on this IR could wrongly conclude that a Guarantor's issuance of Preferred Stock requires ratio-test compliance (or conversely could wrongly conclude a non-Guarantor's Preferred Stock issuance is unrestricted), which changes the actual permission/prohibition conclusion for a real transaction. This also matches the deterministic AMBIGUOUS signal that the IR records no entity-scope restriction despite the source distinguishing 6 entity-scope terms including 'guarantor' and 'restricted subsidiary'."
+   },
+   {
+    "findingType": "STRUCTURAL_REDUNDANCY_OR_AMBIGUITY",
+    "severity": "UNCERTAIN",
+    "ruleOrDefinitionId": "ir-rule:170e314ceb35e54072b7ddba, ir-rule:49f22aee601dde5b8b8162d5, ir-rule:b97d565eb6127a49b4f8b1e5",
+    "irPath": "rules[]",
+    "sourceEvidence": "the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to create, incur, issue, assume, guarantee or otherwise become liable...with respect to any Indebtedness...and the Borrowers shall not issue any shares of Disqualified Stock and shall not permit any Restricted Subsidiary to issue any shares of Disqualified Stock or any Restricted Subsidiary that is not a Guarantor to issue Preferred Stock",
+    "sourceCitation": "\\u00a76.01(a)",
+    "proposedIrEvidence": "Three separate top-level PROHIBITION rules (170e314..., 49f22aee..., b97d565eb...) all cite sourceSectionRef '6.01(a)' with overlapping but non-identical exception lists (two list only the 3 Permitted Ratio Debt exceptions; the third additionally lists the 6.01(b)(1)-(3) exceptions), and none carries a description or scope field clarifying which prohibited act (Indebtedness incurrence, Disqualified Stock issuance, or Preferred Stock issuance) each one represents",
+    "reasoning": "The source text actually creates three distinct prohibited acts (incurring Indebtedness, issuing Disqualified Stock, issuing Preferred Stock) with different entity scopes (Preferred Stock is narrower, applying only to non-Guarantor Restricted Subsidiaries) and different available exception sets (only the Indebtedness prohibition is exempted by 6.01(b)(1)-(3) baskets like the Loan Documents/ABL/Fixed Incremental Amount baskets, which are debt-specific, not stock-issuance-specific). The proposed IR appears to attempt this three-way split (two 'OTHER' action rules plus one 'INCUR_DEBT' rule) but does not label which rule maps to which prohibited act, and neither 'OTHER' rule carries the Guarantor carve-out condition that should differentiate the Preferred Stock rule from the Disqualified Stock rule. If a downstream compliance engine evaluates all three rules independently against a single incurrence, an incurrence relying on a debt-specific basket (e.g., 6.01(b)(4) Purchase Money debt) could be incorrectly flagged as violating the two under-inclusive 'OTHER' prohibition rules, which only recognize the Permitted Ratio Debt exceptions. This is a genuine structural risk, though I cannot be fully certain how the downstream engine reconciles multiple prohibition rules for the same source section, hence UNCERTAIN rather than definitively MATERIAL."
+   },
+   {
+    "findingType": "INCORRECT_MISSING_CONTEXT_CLAIM",
+    "severity": "MATERIAL",
+    "ruleOrDefinitionId": "ir-rule:7f270fdb6a33289cb4f27d7a",
+    "irPath": "rules[].capacityExpression.gatedBy.operands[].operands[0] (the four UNSUPPORTED '$1.00' sub-expressions)",
+    "sourceEvidence": "(a) after giving pro forma effect to such Investment, acquisition, merger, amalgamation or consolidation (i) any Borrower would be permitted to incur at least $1.00 of additional Indebtedness pursuant to the Interest Coverage Ratio test set forth in Section 6.01(a) hereof...",
+    "sourceCitation": "\\u00a76.01(b)(14)(a)-(c)",
+    "proposedIrEvidence": "Four sub-expressions (for the Interest Coverage Ratio, Total Leverage Ratio, First Lien Leverage Ratio, and Senior Secured Leverage Ratio '$1.00 incurrence' prongs) are each marked kind: 'UNSUPPORTED' with reason 'Full [X] Ratio test/threshold under Section 6.01(a) was not included in the retrieved evidence'",
+    "reasoning": "The full text of Section 6.01(a), including the exact First Lien Leverage Ratio (\\u2264 greater of 2.00:1.00), Senior Secured Leverage Ratio (\\u2264 greater of 3.00:1.00), Interest Coverage Ratio (\\u2265 lesser of 1.75:1.00), and Total Leverage Ratio (\\u2264 greater of 4.00:1.00) thresholds, is present in the very operative source text supplied for this compilation, and is in fact already correctly modeled elsewhere in this same proposed IR (ir-rule:fe4849964b2e4426f637e78a, ir-rule:9e3a05885d5fe4f53be23b1d, ir-rule:681d1a7845898826a4059fbd). The claim that this evidence 'was not included in the retrieved evidence' is therefore factually incorrect, not an honest disclosure of a real gap. Because the '$1.00 of additional Indebtedness' test is functionally equivalent to satisfying the same ratio thresholds already available, marking it UNSUPPORTED means a downstream compliance check on the 6.01(b)(14) acquisition-debt basket will likely treat this OR-prong as false/unknown, potentially denying capacity for an acquisition-financing incurrence that should be permitted because the borrower could in fact incur $1.00 of debt under the pro forma ratio test. This is a resolvable gap masquerading as a genuine evidentiary limitation, matching the deterministic 'source AMOUNT 1 (from \"$1.00\") does not appear... anywhere in the compiled IR' signals (which recur 4 times, matching each of the four UNSUPPORTED prongs)."
+   }
+  ],
+  "overallNotes": [
+   "The RATIO 2.5 (from '2.50:1.00' in \\u00a76.01(b)(4)(a)(ii)) deterministic signal was investigated and found to be an honestly-disclosed limitation: the source describes a genuine 'solve for the maximum incurrable amount such that a ratio is not exceeded' mechanic that is not a simple threshold and is reasonably difficult to express without fabricating a value; the IR's UNSUPPORTED marking with clear reasoning is appropriate and not a finding.",
+   "The deterministic signal about a missing RECLASSIFIABLE_TO/REDESIGNATES_TO dependency (the Section 6.01(b) reclassification right) was investigated: the substantive reclassification right is disclosed in prose as a condition on ir-rule:b1834fd3db27e41fd5e9cce7, so the underlying economics are not silently dropped, even though it is not modeled as a formal graph edge. This is judged non-material.",
+   "The overall COMPLETE markings on the many individual basket rules (baskets (5) through (33) and various sub-clauses) appear substantially faithful to the source text on independent spot-check; the concerns raised above are concentrated in entity-scope omission and in two specific rules where UNSUPPORTED/duplicate-rule modeling choices create real risk of misapplication."
+  ]
+ },
+ "payloadSha256": "160bc111f5ade2f55c5d2bd649f71b54536f61551ddb586918461c580f10d9bf",
+ "telemetry": {
+  "inputTokens": 98366,
+  "outputTokens": 14561,
+  "cacheRead": null,
+  "cacheWrite": null,
+  "originalCostUsd": 0.34234200000000004,
+  "latencyMs": 154516
+ },
+ "stageTelemetry": {
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "promptVersion": "phase-c0.1",
+  "schemaVersion": "phase-c0.1",
+  "stage": "semantic_verification",
+  "timestamp": "2026-09-16T14:14:49.366Z",
+  "inputTokens": 98366,
+  "outputTokens": 14561,
+  "cachedInputTokens": null,
+  "cacheCreationInputTokens": null,
+  "attemptCount": 1,
+  "retryCount": 0,
+  "rateLimitFailures": 0,
+  "latencyMs": 154516,
+  "calculatedCostUsd": 0.34234200000000004
+ },
+ "rawProviderOutput": null,
+ "completedAt": "2026-09-16T14:17:23.882Z",
+ "recordSha256": "ff18f270abaf59a3062db542d433086c339eb44f2edb81dcac891e1e36e15969"
+}
