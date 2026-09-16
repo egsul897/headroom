@@ -1,0 +1,352 @@
+{
+ "identity": {
+  "recordVersion": "hd4-durable-call-record.v1",
+  "replayAlgorithmVersion": "hd4-durable-replay.v1",
+  "missionId": "phase-3-final-601-final-paid",
+  "passId": "pass-1",
+  "sourceDocumentId": "doc-a",
+  "candidateRef": "phase-3-final-601:chwy:6.01",
+  "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+  "algorithmVersion": "semantic-accountability.v5",
+  "promptVersion": "semantic-inventory-prompt.v5",
+  "stage": "semantic_inventory_gap",
+  "provider": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-sonnet-5",
+  "schemaId": "semantic-accountability/wire-schema#SubmitSemanticInventorySchema",
+  "schemaFingerprint": "1dbf6197de45d09a5498a57011ce316ce7560b879dbdf11cbb7fb13f2f8a441d",
+  "systemPromptSha256": "e393cf49ce2ebf2a159e4f5fbf5d230c0172b97240c2119bbffeb3adccbfd0af",
+  "userContentSha256": "d3b2ebfadf58017617120a593d5ed2899c92c1eff05958ce58f9ad4559a28f05"
+ },
+ "requestHash": "506dbc86b06fcdf9540ed512f268a1558567e6e80093b2911387f0c91bf5e6e4",
+ "occurrence": 0,
+ "callOrdinal": 6,
+ "batchRef": null,
+ "payload": {
+  "items": [
+   {
+    "localRef": "i1",
+    "semanticRole": "FORMULA_COMPONENT",
+    "additionalRoles": [
+     "ALTERNATIVE"
+    ],
+    "proposition": "A further category, denoted (b), of Indebtedness is includible within this permitted basket, described as 'Indebtedness in the form of' — the specific type of Indebtedness this letter (b) refers to is not completed within this slot's text.",
+    "excerpt": "(b) Indebtedness in the form of",
+    "regionId": "§6.01(b)(4)(a)(iii)",
+    "slotId": "operative:6.01(b)(4)(a)(iii)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "REVIEW_UNCERTAIN",
+    "ambiguity": "AMBIGUOUS_DRAFTING",
+    "ambiguityReason": "The slot text is truncated before identifying which specific type of Indebtedness item (b) covers.",
+    "operative": "DEFINITIONAL"
+   },
+   {
+    "localRef": "i2",
+    "semanticRole": "EXCEPTION",
+    "additionalRoles": [
+     "ALTERNATIVE"
+    ],
+    "proposition": "A further sub-clause (iii) identifies Indebtedness, Disqualified Stock or Preferred Stock of any Restricted [Party/Subsidiary, etc.] as part of this exception; the remainder of the description is not shown within this slot.",
+    "excerpt": "(iii) Indebtedness, Disqualified Stock or Preferred Stock of any Restricted",
+    "regionId": "§6.01(b)(13)(c)(iii)",
+    "slotId": "operative:6.01(b)(13)(c)(iii)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "REVIEW_UNCERTAIN",
+    "ambiguity": "AMBIGUOUS_DRAFTING",
+    "ambiguityReason": "The slot text is truncated before completing the description of sub-clause (iii).",
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i3",
+    "semanticRole": "EXCEPTION",
+    "additionalRoles": [
+     "PERMISSION"
+    ],
+    "proposition": "Basket (22) permits Indebtedness issued by any Restricted Party to future, current or former officers, directors [and other persons, the full list of which is not completed within this slot].",
+    "excerpt": "(22) Indebtedness consisting of Indebtedness issued by any Restricted Party to future, current or former officers, directors,",
+    "regionId": "§6.01(b)(22)",
+    "slotId": "operative:6.01(b)(22)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "AMBIGUOUS_DRAFTING",
+    "ambiguityReason": "The slot text is truncated before completing the list of persons to whom such Indebtedness may be issued.",
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i4",
+    "semanticRole": "CONDITION",
+    "proposition": "The permission under Section 6.01(b)(14) is conditioned on giving pro forma effect to the relevant Investment, acquisition, merger, amalgamation or consolidation.",
+    "excerpt": "giving pro forma effect to such Investment, acquisition, merger, amalgamation or consolidation",
+    "regionId": "§6.01(b)(14)(b)",
+    "slotId": "operative:6.01(b)(14)(b)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i5",
+    "semanticRole": "ALTERNATIVE",
+    "additionalRoles": [
+     "THRESHOLD",
+     "REFERENCE"
+    ],
+    "proposition": "Alternative branch (i) of the pro forma test: a Borrower would be permitted to incur at least $1.00 of additional Indebtedness pursuant to the First Lien Leverage Ratio test.",
+    "excerpt": "Borrower would be permitted to incur at least $1.00 of additional Indebtedness pursuant to the First Lien Leverage Ratio test set forth in",
+    "regionId": "§6.01(b)(14)(c)(i)",
+    "slotId": "operative:6.01(b)(14)(c)(i)#1",
+    "quantitativeValues": [
+     {
+      "kind": "MONEY",
+      "rawText": "$1.00",
+      "normalizedValue": 1,
+      "unit": "USD"
+     }
+    ],
+    "referencedTerms": [
+     "First Lien Leverage Ratio"
+    ],
+    "referencedSections": [
+     "Section 6.01(a)"
+    ],
+    "parentRef": "i4",
+    "relatedRefs": [
+     "i6"
+    ],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i6",
+    "semanticRole": "ALTERNATIVE",
+    "additionalRoles": [
+     "THRESHOLD",
+     "REFERENCE"
+    ],
+    "proposition": "Alternative branch (ii) of the pro forma test: a Borrower would be permitted to incur at least $1.00 of additional Indebtedness pursuant to the Senior Secured Leverage Ratio test.",
+    "excerpt": "Borrower would be permitted to incur at least $1.00 of additional Indebtedness pursuant to the Senior Secured Leverage Ratio test set forth in",
+    "regionId": "§6.01(b)(14)(c)(ii)(i)",
+    "slotId": "operative:6.01(b)(14)(c)(ii)(i)#1",
+    "quantitativeValues": [
+     {
+      "kind": "MONEY",
+      "rawText": "$1.00",
+      "normalizedValue": 1,
+      "unit": "USD"
+     }
+    ],
+    "referencedTerms": [
+     "Senior Secured Leverage Ratio"
+    ],
+    "referencedSections": [
+     "Section 6.01(a)"
+    ],
+    "parentRef": "i4",
+    "relatedRefs": [
+     "i5"
+    ],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i7",
+    "semanticRole": "EXCEPTION",
+    "additionalRoles": [
+     "PERMISSION"
+    ],
+    "proposition": "Permitted Indebtedness under this exception includes bankers' acceptances, bank guarantees, warehouse receipts or similar instruments issued or entered into, or relating to obligations or liabilities incurred, in the ordinary course of business or consistent with past practice, including letters [of credit, continued in the next slot].",
+    "excerpt": "bankers’ acceptances, bank guarantees, warehouse receipts or similar instruments issued or entered into, or relating to obligations or liabilities incurred, in the ordinary course of business or consistent with past practice, including letters",
+    "regionId": "§6.01(b)(5)(a)",
+    "slotId": "operative:6.01(b)(5)(a)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [
+     "i8",
+     "i9"
+    ],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i8",
+    "semanticRole": "EXCEPTION",
+    "additionalRoles": [
+     "PERMISSION"
+    ],
+    "proposition": "The permitted instruments include letters of credit in respect of workers' compensation claims, performance, completion or surety bonds, health, disability or other employee benefits, or property, casualty or liability insurance or self-insurance, or other Indebtedness with respect to [obligations continued in the next slot].",
+    "excerpt": "of credit in respect of workers’ compensation claims, performance, completion or surety bonds, health, disability or other employee benefits or property, casualty or liability insurance or self-insurance or other Indebtedness with respect to",
+    "regionId": "§6.01(b)(5)(a)",
+    "slotId": "operative:6.01(b)(5)(a)#3",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i7",
+    "relatedRefs": [
+     "i9"
+    ],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i9",
+    "semanticRole": "EXCEPTION",
+    "additionalRoles": [
+     "PERMISSION"
+    ],
+    "proposition": "The permitted 'other Indebtedness' extends to obligations regarding workers' compensation claims, performance, completion or surety bonds, health, disability or other employee benefits, or property, casualty or liability insurance or self-insurance.",
+    "excerpt": "obligations regarding workers’ compensation claims, performance, completion or surety bonds, health, disability or other employee benefits or property, casualty or liability insurance or self-insurance;",
+    "regionId": "§6.01(b)(5)(a)",
+    "slotId": "operative:6.01(b)(5)(a)#4",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i7",
+    "relatedRefs": [
+     "i8"
+    ],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i10",
+    "semanticRole": "REQUIREMENT",
+    "additionalRoles": [
+     "CONDITION"
+    ],
+    "proposition": "Establishes a rule for determining compliance with any U.S. dollar-denominated restriction on the incurrence of Indebtedness, Disqualified Stock or Preferred Stock; the specific methodology is continued in subsequent slots.",
+    "excerpt": "For purposes of determining compliance with any U.S.",
+    "regionId": "§6.01(b)(2)",
+    "slotId": "operative:6.01(b)(2)#15",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [
+     "i11",
+     "i12"
+    ],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i11",
+    "semanticRole": "REQUIREMENT",
+    "proposition": "Continuation identifying the restriction type as a U.S. dollar-denominated restriction on the incurrence of Indebtedness, Disqualified Stock or Preferred Stock.",
+    "excerpt": "dollar-denominated restriction on the incurrence of Indebtedness, Disqualified Stock or",
+    "regionId": "§6.01(b)(2)",
+    "slotId": "operative:6.01(b)(2)#16",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i10",
+    "relatedRefs": [
+     "i12"
+    ],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i12",
+    "semanticRole": "REQUIREMENT",
+    "proposition": "Continuation of the compliance-determination rule, introducing the U.S. dollar equivalent calculation methodology; the remainder of the rule is not shown within this slot.",
+    "excerpt": "Preferred Stock, the U.S.",
+    "regionId": "§6.01(b)(2)",
+    "slotId": "operative:6.01(b)(2)#17",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i10",
+    "relatedRefs": [
+     "i11"
+    ],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i13",
+    "semanticRole": "REQUIREMENT",
+    "proposition": "A further, later reference to the U.S. dollar-denominated restriction, apparently addressing how the restriction is to be measured or recalculated; the content beyond this fragment is not shown within this slot.",
+    "excerpt": "dollar-denominated restriction to be",
+    "regionId": "§6.01(b)(2)",
+    "slotId": "operative:6.01(b)(2)#22",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "REVIEW_UNCERTAIN",
+    "ambiguity": "AMBIGUOUS_DRAFTING",
+    "ambiguityReason": "Text is truncated at the slot boundary; the full context of this later reference to the dollar-denominated restriction is not shown.",
+    "operative": "OPERATIVE"
+   }
+  ],
+  "overallNotes": [
+   "Several unaccounted stretches were pure connective glue, section-heading fragments, or [Reserved]/[reserved] placeholders carrying no independently meaningful contractual component and were therefore not inventoried: the §6.01 heading fragment 'Issuance of Disqualified Stock and Preferred Stoc k .'; 'in each case,' in §6.01(a)#6; the trailing noun phrase 'Disqualified Stock or Preferred Stock,' in §6.01(a)#9; '(2) [Reserved];' in §6.01(b)(2)#1; the trailing fragment 'such other Indebtedness, Disqualified Stock or Preferred Stock.' in §6.01(b)(2)#3; 'Party;' in §6.01(b)(9)#2; '(ii) [reserved];' in §6.01(b)(13)(c)(ii)#1; 'and provided ,' in §6.01(b)(13)(c)(iii)#3; the lead-in letter fragment '(b) after' in §6.01(b)(14)(b)#1; '(24)\\n[reserved];' in §6.01(b)(24)#1; 'business and' in §6.01(b)(26)(a)#3; '(29) [reserved];' in §6.01(b)(29)#1; 'Applied;' in §6.01(b)(32)#2; and 'debt securities.' in §6.01(b)(33)#6; and 'provided , however , that' in §6.01(b)(5)(a)#5 (a bare proviso lead-in whose substantive content lies beyond this slot).",
+   "Several inventoried items (i1, i2, i3, i13) are themselves truncated at the boundary of the slot supplied; their full operative effect cannot be assessed without the continuation text, which lies outside the given slots.",
+   "The First Lien Leverage Ratio and Senior Secured Leverage Ratio alternative branches (i5, i6) both reference 'Section 6.01(a)', which is noted in the unresolved cross-reference list as ambiguous/out-of-scope in other contexts within this unit; here the reference appears to be to the First Lien Leverage Ratio/Senior Secured Leverage Ratio test itself set forth in Section 6.01(a), recorded for completeness."
+  ]
+ },
+ "payloadSha256": "010bfbab2b63cd02f7a9536cf0081f32f9cca4f5137d1fc4e0eaf34a52366cc8",
+ "telemetry": {
+  "inputTokens": 12238,
+  "outputTokens": 20301,
+  "cacheRead": null,
+  "cacheWrite": null,
+  "originalCostUsd": 0.22748600000000002,
+  "latencyMs": 173321
+ },
+ "stageTelemetry": {
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "promptVersion": "phase-c0.1",
+  "schemaVersion": "phase-c0.1",
+  "stage": "semantic_inventory_gap",
+  "timestamp": "2026-09-16T13:14:02.704Z",
+  "inputTokens": 12238,
+  "outputTokens": 20301,
+  "cachedInputTokens": null,
+  "cacheCreationInputTokens": null,
+  "attemptCount": 1,
+  "retryCount": 0,
+  "rateLimitFailures": 0,
+  "latencyMs": 173321,
+  "calculatedCostUsd": 0.22748600000000002
+ },
+ "rawProviderOutput": null,
+ "completedAt": "2026-09-16T13:16:56.026Z",
+ "recordSha256": "f22416020a8e5fbeeb699e50d5c458b9aad0f511ef01552dbc7bdee269439708"
+}
