@@ -1,0 +1,269 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 FINAL RESTART-SAFE PAID RUN §23/§24 - quantitative audit and extra-output audit",
+ "at": "2026-09-16T14:26:34.805Z",
+ "quantitative": {
+  "materialQuantitativeValues": 50,
+  "materialQuantitativeValuesMissing": 5,
+  "totalTrackedValues": 50,
+  "materialTrackedValues": 50,
+  "byDisposition": {
+   "VALUE_PRESENT_IN_IR": 40,
+   "VALUE_DISPOSITIONED": 5,
+   "VALUE_MISSING_FROM_COMPOSITION": 5
+  },
+  "referenceItemContradictions": [
+   {
+    "referenceItem": "B2",
+    "itemId": "inv-item:eeb98170e0aba24ab1e099e6",
+    "raw": "50%",
+    "normalized": 0.5,
+    "unit": "%"
+   },
+   {
+    "referenceItem": "B2",
+    "itemId": "inv-item:d51d5d6fc3429998344ac7a4",
+    "raw": "50%",
+    "normalized": 0.5,
+    "unit": "%"
+   },
+   {
+    "referenceItem": "B3",
+    "itemId": "inv-item:597667c532328e67b64edf1e",
+    "raw": "200%",
+    "normalized": 2,
+    "unit": "%"
+   },
+   {
+    "referenceItem": "B3",
+    "itemId": "inv-item:7156fe23d8deaead8784726b",
+    "raw": "100%",
+    "normalized": 1,
+    "unit": "%"
+   },
+   {
+    "referenceItem": "B4",
+    "itemId": "inv-item:49feaf4b3f7b5641e75e7482",
+    "raw": "100%",
+    "normalized": 1,
+    "unit": "%"
+   },
+   {
+    "referenceItem": "B4",
+    "itemId": "inv-item:532b30742e4d15408717c794",
+    "raw": "100%",
+    "normalized": 1,
+    "unit": "%"
+   },
+   {
+    "referenceItem": "B5",
+    "itemId": "inv-item:7f0a5c97a75aa592d91d739c",
+    "raw": "100.0%",
+    "normalized": 1,
+    "unit": "%"
+   },
+   {
+    "referenceItem": "B5",
+    "itemId": "inv-item:7ae6dadb2ae9b65e35914437",
+    "raw": "100.0%",
+    "normalized": 1,
+    "unit": "%"
+   },
+   {
+    "referenceItem": "B6",
+    "itemId": "inv-item:2653e0bb8ca0ca5943a82ea5",
+    "raw": "$360.0 million",
+    "normalized": 360000000,
+    "unit": "USD"
+   },
+   {
+    "referenceItem": "B6",
+    "itemId": "inv-item:0c0a1a4aa31acdb5d9bf6e48",
+    "raw": "$360.0 million",
+    "normalized": 360000000,
+    "unit": "USD"
+   },
+   {
+    "referenceItem": "B7",
+    "itemId": "inv-item:0c0a1a4aa31acdb5d9bf6e48",
+    "raw": "50%",
+    "normalized": 0.5,
+    "unit": "%"
+   },
+   {
+    "referenceItem": "B7",
+    "itemId": "inv-item:a726f1df5e32d0eabd9170c1",
+    "raw": "50%",
+    "normalized": 0.5,
+    "unit": "%"
+   }
+  ],
+  "silentMaterialQuantitativeCorruption": 0,
+  "note": "every value Pass A extracted is anchored to verbatim source offsets; a value that could not be located verbatim carries charStart -1 and is never normalized into the IR silently"
+ },
+ "extraOutput": {
+  "materialRepresentedItemsOutsideEveryReferenceSpan": 181,
+  "ofThoseOutsideSection601": 0,
+  "classification": {
+   "VALID_ADDITIONAL_SOURCE_BACKED": 181,
+   "INFORMATIONAL": 0,
+   "DUPLICATE": 0,
+   "UNSUPPORTED": 0,
+   "HALLUCINATED_OR_UNVERIFIABLE": 0
+  },
+  "basis": "every inventory item is excerpt-anchored to verbatim source at recorded offsets (Pass A's anti-hallucination gate discards any item whose excerpt is not a real substring of the resolved source context and counts the discards). Extra material output therefore rests on real source the reference set simply did not enumerate - the 46-item set was never intended to be exhaustive for a section.",
+  "rejectedUnverifiableItemsAtFreeze": 0,
+  "authoritativeHallucinations": 0,
+  "sample": [
+   {
+    "itemId": "inv-item:2a70194d073f5a0ca3d3072d",
+    "materiality": "CRITICAL",
+    "span": [
+     612377,
+     612496
+    ],
+    "citation": "§6.01",
+    "proposition": "Exception (1)(Y): Indebtedness incurred pursuant to the ABL Loan Documents up to an aggregate principal amount outstanding at any one time not to exceed the gre"
+   },
+   {
+    "itemId": "inv-item:de8407fd1b19c24bdde0720b",
+    "materiality": "CRITICAL",
+    "span": [
+     612497,
+     612519
+    ],
+    "citation": "§6.01",
+    "proposition": "Fixed alternative cap for the ABL basket: $800.0 million."
+   },
+   {
+    "itemId": "inv-item:04e0d68a10028d89e8335fe6",
+    "materiality": "CRITICAL",
+    "span": [
+     612520,
+     612542
+    ],
+    "citation": "§6.01",
+    "proposition": "Alternative cap for the ABL basket: the Borrowing Base."
+   },
+   {
+    "itemId": "inv-item:1f66b3668e0c2296f2403ab2",
+    "materiality": "MATERIAL",
+    "span": [
+     612543,
+     612621
+    ],
+    "citation": "§6.01",
+    "proposition": "The Borrowing Base is as defined in the ABL Credit Agreement, measured as of the date of the relevant incurrence."
+   },
+   {
+    "itemId": "inv-item:bc404f777d4c90cae11f3206",
+    "materiality": "CRITICAL",
+    "span": [
+     612622,
+     612754
+    ],
+    "citation": "§6.01",
+    "proposition": "Exception (1)(Z): Indebtedness in an aggregate principal amount at the time of incurrence not exceeding the Fixed Incremental Amount at such time."
+   },
+   {
+    "itemId": "inv-item:53a78db5900f5aa231e76e78",
+    "materiality": "CRITICAL",
+    "span": [
+     614715,
+     614835
+    ],
+    "citation": "§6.01",
+    "proposition": "Component (iii) of the exception (4) cap: an amount equal to the aggregate amount of all Capitalized Lease Obligations outstanding as of the Effective Date."
+   },
+   {
+    "itemId": "inv-item:3c1f3219a046a3b1c45895aa",
+    "materiality": "CRITICAL",
+    "span": [
+     614868,
+     614949
+    ],
+    "citation": "§6.01",
+    "proposition": "Capitalized Lease Obligations arising out of any Sale and Lease-Back Transactions are excepted from the general limitation on incurrence of Indebtedness."
+   },
+   {
+    "itemId": "inv-item:d2ba1a123dd6ad46fe7a576a",
+    "materiality": "CRITICAL",
+    "span": [
+     614958,
+     615051
+    ],
+    "citation": "§6.01",
+    "proposition": "Indebtedness for vehicle and equipment financings incurred in the ordinary course of business is excepted from the general limitation on incurrence of Indebtedn"
+   },
+   {
+    "itemId": "inv-item:40b3cae7a8c133179d68a88d",
+    "materiality": "CRITICAL",
+    "span": [
+     615054,
+     615181
+    ],
+    "citation": "§6.01",
+    "proposition": "Indebtedness incurred by any Restricted Party constituting reimbursement obligations with respect to letters of credit is excepted from the general limitation."
+   },
+   {
+    "itemId": "inv-item:8d7774b6026966560c4c3b33",
+    "materiality": "MATERIAL",
+    "span": [
+     615182,
+     615425
+    ],
+    "citation": "§6.01",
+    "proposition": "Permitted Indebtedness under this exception includes bankers' acceptances, bank guarantees, warehouse receipts or similar instruments issued or entered into, or"
+   },
+   {
+    "itemId": "inv-item:b109057438b019a200a48de8",
+    "materiality": "MATERIAL",
+    "span": [
+     615426,
+     615667
+    ],
+    "citation": "§6.01",
+    "proposition": "The permitted instruments include letters of credit in respect of workers' compensation claims, performance, completion or surety bonds, health, disability or o"
+   },
+   {
+    "itemId": "inv-item:ead5252fd1da5600e0086ea4",
+    "materiality": "MATERIAL",
+    "span": [
+     615668,
+     615870
+    ],
+    "citation": "§6.01",
+    "proposition": "The permitted 'other Indebtedness' extends to obligations regarding workers' compensation claims, performance, completion or surety bonds, health, disability or"
+   },
+   {
+    "itemId": "inv-item:e03c860302c7094458d34f78",
+    "materiality": "CRITICAL",
+    "span": [
+     616077,
+     616131
+    ],
+    "citation": "§6.01",
+    "proposition": "Indebtedness of any Restricted Party as an account party is separately excepted from the general limitation."
+   },
+   {
+    "itemId": "inv-item:623f94cc327d98e25d923812",
+    "materiality": "MATERIAL",
+    "span": [
+     616132,
+     616376
+    ],
+    "citation": "§6.01",
+    "proposition": "The account-party basket covers letters of credit, bank guarantees or similar instruments or other guarantee obligations in favor of suppliers, customers, franc"
+   },
+   {
+    "itemId": "inv-item:b2a62f4f7dd8b77860fac749",
+    "materiality": "CRITICAL",
+    "span": [
+     616377,
+     616438
+    ],
+    "citation": "§6.01",
+    "proposition": "Such instruments must be issued in the ordinary course of business or consistent with past practice."
+   }
+  ]
+ }
+}

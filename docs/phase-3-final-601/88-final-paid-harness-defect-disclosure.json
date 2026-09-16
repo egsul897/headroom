@@ -1,0 +1,460 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 FINAL RESTART-SAFE PAID RUN \u00a727 - discovered harness defect disclosure (HD-5: scorer quantitative-contradiction normalization)",
+ "at": "2026-09-16T14:28:15.468956Z",
+ "defect": {
+  "id": "HD-5",
+  "location": "scripts/phase-3-601-final-paid-score.ts (derived unchanged from the pinned scripts/phase-3-601-final-score.ts, never before exercised on real output because no earlier attempt reached scoring)",
+  "statement": "numbersIn() parses a source percent \"50%\" as value 50 with unit \"%\", while Pass A normalizes the same verbatim \"50%\" to the fraction 0.5; near(0.5, 50) is false, so every percent value is flagged as a contradiction and the item is classified FOUND_BUT_INCORRECT. A second artifact: reference span B6 ends at \"$360.0\" (the word \"million\" lies outside the frozen span), so the scorer compares 360 against the IR value 360,000,000 taken from the full source phrase \"$360.0 million\".",
+  "effect": "6 of 8 reference items (2 CRITICAL, 4 MATERIAL) classified FOUND_BUT_INCORRECT; incorrect authoritative CRITICAL claims counted as 2; silentQuantitativeCorruption stayed 0 only because the unit carried review signals",
+  "classification": "harness (analysis/scoring code) defect; not a production defect; not a paid-run harness defect",
+  "patched": false,
+  "rule": "mission \u00a727: a discovered code defect is STOP, never patch-and-continue; the pinned scorer and finalizer were run unmodified and their outputs (83/84/85/87) stand as produced"
+ },
+ "evidence": [
+  {
+   "id": "A1",
+   "materiality": "CRITICAL",
+   "pinnedClassification": "FOUND_AND_REPRESENTED",
+   "contradictionEvidence": [],
+   "dispositionPool": [
+    "INTENTIONALLY_NON_COMPUTATIONAL",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED"
+   ],
+   "readingWithoutTheArtifact": "FOUND_AND_REPRESENTED"
+  },
+  {
+   "id": "B1",
+   "materiality": "CRITICAL",
+   "pinnedClassification": "FOUND_BUT_AMBIGUOUS",
+   "contradictionEvidence": [],
+   "dispositionPool": [
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "AMBIGUOUS"
+   ],
+   "readingWithoutTheArtifact": "FOUND_BUT_AMBIGUOUS"
+  },
+  {
+   "id": "B2",
+   "materiality": "MATERIAL",
+   "pinnedClassification": "FOUND_BUT_INCORRECT",
+   "contradictionEvidence": [
+    {
+     "itemId": "inv-item:eeb98170e0aba24ab1e099e6",
+     "irRawText": "50%",
+     "irNormalized": 0.5,
+     "irUnit": "%",
+     "scorerSourceNumbers": [
+      [
+       "$360.0 million",
+       360000000,
+       "USD"
+      ],
+      [
+       "50%",
+       50,
+       "%"
+      ]
+     ],
+     "rawTextPresentVerbatimInSource": true
+    },
+    {
+     "itemId": "inv-item:d51d5d6fc3429998344ac7a4",
+     "irRawText": "50%",
+     "irNormalized": 0.5,
+     "irUnit": "%",
+     "scorerSourceNumbers": [
+      [
+       "$360.0 million",
+       360000000,
+       "USD"
+      ],
+      [
+       "50%",
+       50,
+       "%"
+      ]
+     ],
+     "rawTextPresentVerbatimInSource": true
+    }
+   ],
+   "dispositionPool": [
+    "AMBIGUOUS",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "UNSUPPORTED",
+    "UNSUPPORTED",
+    "UNSUPPORTED",
+    "UNSUPPORTED"
+   ],
+   "readingWithoutTheArtifact": "FOUND_BUT_AMBIGUOUS"
+  },
+  {
+   "id": "B3",
+   "materiality": "CRITICAL",
+   "pinnedClassification": "FOUND_BUT_INCORRECT",
+   "contradictionEvidence": [
+    {
+     "itemId": "inv-item:597667c532328e67b64edf1e",
+     "irRawText": "200%",
+     "irNormalized": 2,
+     "irUnit": "%",
+     "scorerSourceNumbers": [
+      [
+       "$720.0 million",
+       720000000,
+       "USD"
+      ],
+      [
+       "200%",
+       200,
+       "%"
+      ],
+      [
+       "100%",
+       100,
+       "%"
+      ]
+     ],
+     "rawTextPresentVerbatimInSource": true
+    },
+    {
+     "itemId": "inv-item:7156fe23d8deaead8784726b",
+     "irRawText": "100%",
+     "irNormalized": 1,
+     "irUnit": "%",
+     "scorerSourceNumbers": [
+      [
+       "$720.0 million",
+       720000000,
+       "USD"
+      ],
+      [
+       "200%",
+       200,
+       "%"
+      ],
+      [
+       "100%",
+       100,
+       "%"
+      ]
+     ],
+     "rawTextPresentVerbatimInSource": true
+    }
+   ],
+   "dispositionPool": [
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "AMBIGUOUS",
+    "REPRESENTED",
+    "AMBIGUOUS",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "UNSUPPORTED",
+    "AMBIGUOUS"
+   ],
+   "readingWithoutTheArtifact": "FOUND_BUT_AMBIGUOUS"
+  },
+  {
+   "id": "B4",
+   "materiality": "MATERIAL",
+   "pinnedClassification": "FOUND_BUT_INCORRECT",
+   "contradictionEvidence": [
+    {
+     "itemId": "inv-item:49feaf4b3f7b5641e75e7482",
+     "irRawText": "100%",
+     "irNormalized": 1,
+     "irUnit": "%",
+     "scorerSourceNumbers": [
+      [
+       "$720.0 million",
+       720000000,
+       "USD"
+      ],
+      [
+       "100%",
+       100,
+       "%"
+      ]
+     ],
+     "rawTextPresentVerbatimInSource": true
+    },
+    {
+     "itemId": "inv-item:532b30742e4d15408717c794",
+     "irRawText": "100%",
+     "irNormalized": 1,
+     "irUnit": "%",
+     "scorerSourceNumbers": [
+      [
+       "$720.0 million",
+       720000000,
+       "USD"
+      ],
+      [
+       "100%",
+       100,
+       "%"
+      ]
+     ],
+     "rawTextPresentVerbatimInSource": true
+    }
+   ],
+   "dispositionPool": [
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED"
+   ],
+   "readingWithoutTheArtifact": "FOUND_AND_REPRESENTED"
+  },
+  {
+   "id": "B5",
+   "materiality": "MATERIAL",
+   "pinnedClassification": "FOUND_BUT_INCORRECT",
+   "contradictionEvidence": [
+    {
+     "itemId": "inv-item:7f0a5c97a75aa592d91d739c",
+     "irRawText": "100.0%",
+     "irNormalized": 1,
+     "irUnit": "%",
+     "scorerSourceNumbers": [
+      [
+       "$720.0 million",
+       720000000,
+       "USD"
+      ],
+      [
+       "100.0%",
+       100,
+       "%"
+      ]
+     ],
+     "rawTextPresentVerbatimInSource": true
+    },
+    {
+     "itemId": "inv-item:7ae6dadb2ae9b65e35914437",
+     "irRawText": "100.0%",
+     "irNormalized": 1,
+     "irUnit": "%",
+     "scorerSourceNumbers": [
+      [
+       "$720.0 million",
+       720000000,
+       "USD"
+      ],
+      [
+       "100.0%",
+       100,
+       "%"
+      ]
+     ],
+     "rawTextPresentVerbatimInSource": true
+    }
+   ],
+   "dispositionPool": [
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED"
+   ],
+   "readingWithoutTheArtifact": "FOUND_AND_REPRESENTED"
+  },
+  {
+   "id": "B6",
+   "materiality": "MATERIAL",
+   "pinnedClassification": "FOUND_BUT_INCORRECT",
+   "contradictionEvidence": [
+    {
+     "itemId": "inv-item:2653e0bb8ca0ca5943a82ea5",
+     "irRawText": "$360.0 million",
+     "irNormalized": 360000000,
+     "irUnit": "USD",
+     "scorerSourceNumbers": [
+      [
+       "$360.0",
+       360,
+       "USD"
+      ]
+     ],
+     "rawTextPresentVerbatimInSource": true
+    },
+    {
+     "itemId": "inv-item:0c0a1a4aa31acdb5d9bf6e48",
+     "irRawText": "$360.0 million",
+     "irNormalized": 360000000,
+     "irUnit": "USD",
+     "scorerSourceNumbers": [
+      [
+       "$360.0",
+       360,
+       "USD"
+      ]
+     ],
+     "rawTextPresentVerbatimInSource": true
+    }
+   ],
+   "dispositionPool": [
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED"
+   ],
+   "readingWithoutTheArtifact": "FOUND_AND_REPRESENTED"
+  },
+  {
+   "id": "B7",
+   "materiality": "CRITICAL",
+   "pinnedClassification": "FOUND_BUT_INCORRECT",
+   "contradictionEvidence": [
+    {
+     "itemId": "inv-item:0c0a1a4aa31acdb5d9bf6e48",
+     "irRawText": "50%",
+     "irNormalized": 0.5,
+     "irUnit": "%",
+     "scorerSourceNumbers": [
+      [
+       "50%",
+       50,
+       "%"
+      ]
+     ],
+     "rawTextPresentVerbatimInSource": true
+    },
+    {
+     "itemId": "inv-item:a726f1df5e32d0eabd9170c1",
+     "irRawText": "50%",
+     "irNormalized": 0.5,
+     "irUnit": "%",
+     "scorerSourceNumbers": [
+      [
+       "50%",
+       50,
+       "%"
+      ]
+     ],
+     "rawTextPresentVerbatimInSource": true
+    }
+   ],
+   "dispositionPool": [
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "INTENTIONALLY_NON_COMPUTATIONAL",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "UNSUPPORTED",
+    "REPRESENTED",
+    "UNSUPPORTED",
+    "UNSUPPORTED",
+    "UNSUPPORTED",
+    "REPRESENTED",
+    "REPRESENTED"
+   ],
+   "readingWithoutTheArtifact": "FOUND_AND_REPRESENTED"
+  }
+ ],
+ "diagnosticReadingNotVerdict": {
+  "note": "READING OF THE FROZEN EVIDENCE ONLY - not a re-score, not the verdict basis. With the percent/scale artifact removed, the pinned scorer's own disposition pool would classify the items as listed in readingWithoutTheArtifact.",
+  "critical": {
+   "correct": 2,
+   "explicitSafeLimitation": 2,
+   "incorrect": 0,
+   "silentMisses": 0
+  },
+  "material": {
+   "correct": 3,
+   "explicitSafeLimitation": 1,
+   "incorrect": 0,
+   "silentMisses": 0
+  }
+ },
+ "independentTrustFailure": {
+  "counter": "distinct owned lineage lost",
+  "value": 317,
+  "source": "execution.sharded.unresolvedOwnedItems - every owned material item of the two SHARD_MISSING_CONTEXT shards (shard-stitcher.ts: a shard that did not end SHARD_COMPLETE leaves all its owned items unresolved)",
+  "meaning": "production disclosed the limitation (status PARTIAL, MISSING_CONTEXT, semanticallyComplete=false, 4 CRITICAL items MISSING_FROM_COMPOSITION); the hard trust gate fails on this MEASURED counter independently of HD-5, so a corrected scorer would not have produced PHASE3_601_INTEGRATED_VALIDATION_PASSED"
+ },
+ "additionalDefect": {
+  "id": "HD-6",
+  "location": "scripts/phase-3-601-final-paid-finalize.ts (and the pinned scripts/phase-3-601-final-finalize.ts it was derived from)",
+  "statement": "the finalizer assumed execution.sharded.contextualEmissions is a list of {ownerShardId}; the production result exposes it as a count (2) and records the unowned subset under collisionsByKind.CONTEXTUAL_UNOWNED_DEFINITION (2). The finalizer threw before writing 85/87.",
+  "patched": true,
+  "patchScope": "read-shape only: a number is read as a count and the unowned subset is taken from collisionsByKind.CONTEXTUAL_UNOWNED_DEFINITION, counted CONSERVATIVELY as violations whether or not the stitcher demoted them (attributionProofCounts.NONE = 0 shows none was retained without proof). No threshold, rule or classification changed; the paid run, its evidence and the scorer outputs are untouched.",
+  "why": "without this read-shape fix no 21-condition artifact (85/87) could be produced at all; the fix can only make the trust gate stricter, never looser"
+ }
+}

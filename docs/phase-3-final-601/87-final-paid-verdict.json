@@ -1,0 +1,154 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 FINAL RESTART-SAFE PAID RUN §29 - final verdict",
+ "at": "2026-09-16T14:32:08.953Z",
+ "startingSha": "e6baf51b6a1211323a2926daaba21ed4a3facd1c",
+ "missionId": "phase-3-final-601-final-paid",
+ "evidenceDir": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid",
+ "launches": 1,
+ "conditions": [
+  {
+   "id": 1,
+   "condition": "starting identities frozen",
+   "status": "PASS",
+   "evidence": "74"
+  },
+  {
+   "id": 2,
+   "condition": "HD-4 certification intact",
+   "status": "PASS",
+   "evidence": "HD4_DURABLE_REPLAY_CERTIFIED 21/21; certified imports verified"
+  },
+  {
+   "id": 3,
+   "condition": "cost gate passes",
+   "status": "PASS",
+   "evidence": "conservative $15.8309 <= cap $15.84, balance $19.034126"
+  },
+  {
+   "id": 4,
+   "condition": "fresh Pass A completes",
+   "status": "PASS",
+   "evidence": "pass-1 INVENTORY_COVERAGE_GAP 289; pass-2 INVENTORY_COVERAGE_GAP 289"
+  },
+  {
+   "id": 5,
+   "condition": "all successful Pass-A calls durable",
+   "status": "PASS",
+   "evidence": "14 logical = 14 live + 0 replayed; every live call persisted before return (DurableReplayStageCaller)"
+  },
+  {
+   "id": 6,
+   "condition": "ensemble builds",
+   "status": "PASS",
+   "evidence": "326 canonical"
+  },
+  {
+   "id": 7,
+   "condition": "inventory persisted/reloaded",
+   "status": "PASS",
+   "evidence": "hash 9ab4ca8422b77c3f..."
+  },
+  {
+   "id": 8,
+   "condition": "source-bound resume proof passes",
+   "status": "PASS",
+   "evidence": "RECORDED_SOURCE_CONTEXT_HASH 08752002dcea9074..."
+  },
+  {
+   "id": 9,
+   "condition": "automatic real plan created",
+   "status": "PASS",
+   "evidence": "SHARDED / OVERSIZED_ATOMIC_UNIT 3 shards 119261 tokens"
+  },
+  {
+   "id": 10,
+   "condition": "production compiler executes",
+   "status": "PASS",
+   "evidence": "status PARTIAL"
+  },
+  {
+   "id": 11,
+   "condition": "only same-mission exact-hash shard reuse",
+   "status": "PASS",
+   "evidence": "reused 0 = store 0; rejected records 0"
+  },
+  {
+   "id": 12,
+   "condition": "global Pass C executes",
+   "status": "PASS",
+   "evidence": "semanticallyComplete=false, inventoried 326"
+  },
+  {
+   "id": 13,
+   "condition": "verifier executes",
+   "status": "PASS",
+   "evidence": "MATERIAL_DISCREPANCY"
+  },
+  {
+   "id": 14,
+   "condition": "all hard trust counters measured and zero",
+   "status": "FAIL",
+   "evidence": "contextual ownership-credit violations=2, owned values lost=5, distinct owned lineage lost=317, incorrect authoritative CRITICAL claims=2"
+  },
+  {
+   "id": 15,
+   "condition": "silent CRITICAL misses zero",
+   "status": "PASS",
+   "evidence": "0"
+  },
+  {
+   "id": 16,
+   "condition": "incorrect authoritative CRITICAL claims zero",
+   "status": "FAIL",
+   "evidence": "2"
+  },
+  {
+   "id": 17,
+   "condition": "quality operationally credible",
+   "status": "FAIL",
+   "evidence": "CRITICAL 1 represented + 1 explicit limitation of 4; MATERIAL 0 + 0 of 4"
+  },
+  {
+   "id": 18,
+   "condition": "spend <= $15.84",
+   "status": "PASS",
+   "evidence": "$8.5537"
+  },
+  {
+   "id": 19,
+   "condition": "no code fix-and-continue",
+   "status": "PASS",
+   "evidence": "no harness or production change after paid execution began"
+  },
+  {
+   "id": 20,
+   "condition": "no new regression",
+   "status": "PASS",
+   "evidence": "106 files / 161 tests, 0 new"
+  },
+  {
+   "id": 21,
+   "condition": "build passes",
+   "status": "PASS",
+   "evidence": "Compiled successfully"
+  }
+ ],
+ "summary": {
+  "PASS": 18,
+  "FAIL": 3,
+  "total": 21
+ },
+ "verdict": "PHASE3_601_NOT_SAFE",
+ "phase3Closed": false,
+ "phase4Started": false,
+ "cost": {
+  "thisMissionUsd": 8.553656,
+  "historicalReplayedUsd": 0,
+  "priorSection601Usd": 13.525078,
+  "cumulativeSection601Usd": 22.078734,
+  "capUsd": 15.84,
+  "gatewayBefore": 19.034126,
+  "gatewayAfter": 10.48047
+ },
+ "note": "§31: Phase 3 remains OPEN even on a pass. Next is the zero-cost Phase 3 closure synthesis."
+}

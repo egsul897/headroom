@@ -1,0 +1,57 @@
+{
+ "artifact": "HD-4 restart-safe run - real plan, durable shard store, affordability recheck",
+ "at": "2026-09-16T13:51:41.389Z",
+ "mode": "SHARDED",
+ "reason": "OVERSIZED_ATOMIC_UNIT",
+ "planHash": "eab77c1aad1d941440f0d412e20578902c6744a5e100a0306153ea02e1720552",
+ "shards": 3,
+ "plannerEstimatedInputTokens": 119261,
+ "priorShardsFromStore": 0,
+ "priorShardTokensExcludedFromPaidWork": 0,
+ "rejectedStoreRecords": [],
+ "passBDurability": "PER_SHARD_DURABLE_ON_PRIOR_SHARD_RESULTS_CONTRACT",
+ "shardTable": [
+  {
+   "ordinal": 0,
+   "shardId": "shard:f266a61ab75f65592b9d",
+   "shardHash": "4b97a4f01be352664f66d7165e37f3b0a42600a829e306f819c7b3489123fc2f",
+   "ownedItems": 54,
+   "estimatedInputTokens": 29879,
+   "inStore": false
+  },
+  {
+   "ordinal": 1,
+   "shardId": "shard:9c94d27339b0f37fb71c",
+   "shardHash": "f422344546f42e86dd6951848772cf0f832347a84eb324e561bf6ca912d6881c",
+   "ownedItems": 270,
+   "estimatedInputTokens": 70793,
+   "inStore": false
+  },
+  {
+   "ordinal": 2,
+   "shardId": "shard:6b6e808a01e1dcd22a81",
+   "shardHash": "22cc2abe2bc60728a737b17828c0fbabca2ac3a67d51146e78dffab801dccfd2",
+   "ownedItems": 2,
+   "estimatedInputTokens": 18589,
+   "inStore": false
+  }
+ ],
+ "guardState": {
+  "spent": 5.754422,
+  "passABatchesRemaining": 0,
+  "passAGapRemaining": 0,
+  "passBTokensRemaining": 119261,
+  "verifierReviewRemaining": 1,
+  "conditionSuspicionRemaining": 5,
+  "conservativeRemaining": 5.2758130515311885,
+  "capRemaining": 10.085578,
+  "balanceRemaining": 13.279704
+ },
+ "recheck": {
+  "admitted": true,
+  "conservativeRemaining": 5.2758130515311885,
+  "capRemaining": 10.085578,
+  "balanceRemaining": 13.279704
+ },
+ "fits": true
+}

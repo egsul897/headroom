@@ -408,3 +408,56 @@ after restart the identical call is served from that record with provider calls 
 
 Gateway balance $19.034126 ≥ the $15.84 cap: **no additional funding required.** The $4.732104 charged at
 `5bd15c2` is historical; nothing from that run is reused. Cumulative Section 6.01 spend remains $13.525078.
+
+# Final restart-safe paid run (artifacts 74-88)
+
+**Verdict (pinned finalizer, 87): `PHASE3_601_NOT_SAFE`** — 18/21 conditions; $8.553656 spent in one launch, zero
+restarts, zero replays needed; Phase 3 not closed, Phase 4 not started.
+
+## The run
+
+Mission `phase-3-final-601-final-paid`, evidence `tests/fixtures/unseen-packages/phase-3-final-601-final-paid`.
+Preflight (74/75): SHA `e6baf51` exact, lib tree identical to the HD-4 certification, HD-4 gate 21/21, certified
+imports verified, conservative $15.8309 ≤ $15.84, balance $19.034126. The certified restart-safe runner completed
+in a single launch: Pass A 14 live / 0 replayed calls ($5.75), both passes `INVENTORY_COVERAGE_GAP` with 289
+items each, ensemble 326 canonical, persisted and reloaded (hash + structural equality), F-7C.1 resume proof
+`RECORDED_SOURCE_CONTEXT_HASH`. Production chose **SHARDED / OVERSIZED_ATOMIC_UNIT, 3 shards** (not the
+historical six-shard assumption). Pass B ($2.46): 2 shards `SHARD_MISSING_CONTEXT`, 1 `SHARD_COMPLETE`, all three
+persisted durably; compile `PARTIAL`, 60 rules / 1 definition / 4 shared capacities. Global Pass C: 326
+inventoried, 319 material, 283 represented, 6 intentionally non-computational, 23 unsupported, 9 ambiguous, 5
+missing (4 CRITICAL), 50 material quantitative values / 5 missing, 0 dangling refs, `semanticallyComplete=false`.
+Verifier ($0.34): review invoked (deterministic routing), `MATERIAL_DISCREPANCY`, 10 findings (7 MATERIAL, 1
+UNCERTAIN, 2 NON_MATERIAL). Gateway-confirmed spend $8.553656; $10.480470 remains.
+
+## Why it is NOT_SAFE
+
+The hard trust gate fails on measured counters: **distinct owned lineage lost = 317** (every owned material item
+of the two `SHARD_MISSING_CONTEXT` shards — production disclosed this as PARTIAL/MISSING_CONTEXT), owned values
+lost = 5, contextual ownership-credit violations = 2 (counted conservatively). Silent counters are all zero:
+no silent omission, no silent CRITICAL miss, no hallucination, no hidden failure, no silent quantitative
+corruption. Every failure is disclosed by production itself.
+
+## Two harness defects discovered during scoring (88)
+
+- **HD-5 (scorer, not patched):** the pinned scorer parses a source "50%" as 50 while Pass A normalizes it to
+  0.5, so every percent — and a reference span cut before "million" — is flagged as a contradiction. Six of eight
+  items are therefore `FOUND_BUT_INCORRECT` and "incorrect authoritative CRITICAL claims" reads 2. The IR values are
+  verbatim the source values. Per §27 the scorer was not patched; 83/84/85/87 stand as produced. A reading of the
+  same frozen evidence without the artifact gives CRITICAL 2 represented + 2 explicit limitation, MATERIAL 3 + 1,
+  0 incorrect, 0 silent — recorded in 88 as diagnostic, not verdict.
+- **HD-6 (finalizer, read-shape only):** the finalizer expected `contextualEmissions` as a list; production
+  exposes a count. Fixed only to read the real shape, conservatively (unowned emissions count as violations
+  whether or not demoted). Without it no 85/87 could be written; it can only make the gate stricter.
+
+Under §27 either defect also supports `PHASE3_601_HARNESS_DEFECT`; the pinned finalizer's `PHASE3_601_NOT_SAFE` is
+reported because the trust gate fails on production-measured counters independently of both.
+
+## Regression
+
+106 / 161 failing, zero new against the 107/162 baseline; targeted HD-4, F-7C.1, F-7C, shard planner/stitcher,
+semantic compiler, semantic verifier, operative-state suites clean; semantic-accountability's 18 failures are all
+inside the baseline. tsc 6 pre-existing; lint clean; build passes. Zero production files changed.
+
+## Cumulative Section 6.01 spend
+
+$13.525078 prior + $8.553656 = **$22.078734**.
