@@ -1,0 +1,4030 @@
+{
+ "artifact": "HD-4 restart-safe run - Pass A",
+ "at": "2026-09-16T13:51:41.338Z",
+ "source": "EXECUTED",
+ "usable": true,
+ "accounting": {
+  "perPass": {
+   "pass-1": {
+    "logicalCalls": 7,
+    "liveCalls": 7,
+    "replayedCalls": 0,
+    "liveCostUsd": 2.7991,
+    "historicalReplayedCostUsd": 0,
+    "providerCallsAvoided": 0
+   },
+   "pass-2": {
+    "logicalCalls": 7,
+    "liveCalls": 7,
+    "replayedCalls": 0,
+    "liveCostUsd": 2.955322,
+    "historicalReplayedCostUsd": 0,
+    "providerCallsAvoided": 0
+   }
+  },
+  "total": {
+   "logicalCalls": 14,
+   "liveCalls": 14,
+   "replayedCalls": 0,
+   "liveCostUsd": 5.754422,
+   "historicalReplayedCostUsd": 0,
+   "providerCallsAvoided": 0
+  },
+  "log": [
+   {
+    "origin": "LIVE_PROVIDER",
+    "passId": "pass-1",
+    "stage": "semantic_inventory",
+    "requestHash": "b7179278b0e5f3dc29d73f871778f22f191ffe004c66de89a59a7d524d3a2d7f",
+    "occurrence": 0,
+    "callOrdinal": 0,
+    "at": "2026-09-16T12:50:27.273Z",
+    "originalCompletedAt": "2026-09-16T12:50:27.273Z",
+    "originalCostUsd": 0.6024120000000001,
+    "newCostUsd": 0.6024120000000001,
+    "providerCallsAvoided": 0,
+    "recordPath": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/b7179278b0e5f3dc29d73f871778f22f191ffe004c66de89a59a7d524d3a2d7f-0.json"
+   },
+   {
+    "origin": "LIVE_PROVIDER",
+    "passId": "pass-1",
+    "stage": "semantic_inventory",
+    "requestHash": "a27a07ae903deca8af1299b092d19e87ec753ce4e4f8035cff877b05fcd26359",
+    "occurrence": 0,
+    "callOrdinal": 1,
+    "at": "2026-09-16T12:54:39.216Z",
+    "originalCompletedAt": "2026-09-16T12:54:39.216Z",
+    "originalCostUsd": 0.35921800000000004,
+    "newCostUsd": 0.35921800000000004,
+    "providerCallsAvoided": 0,
+    "recordPath": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/a27a07ae903deca8af1299b092d19e87ec753ce4e4f8035cff877b05fcd26359-0.json"
+   },
+   {
+    "origin": "LIVE_PROVIDER",
+    "passId": "pass-1",
+    "stage": "semantic_inventory",
+    "requestHash": "c4087e5caa9191b3323a016b1f988561056db39ac038c3d5288f848675168133",
+    "occurrence": 0,
+    "callOrdinal": 2,
+    "at": "2026-09-16T12:58:54.768Z",
+    "originalCompletedAt": "2026-09-16T12:58:54.768Z",
+    "originalCostUsd": 0.383126,
+    "newCostUsd": 0.383126,
+    "providerCallsAvoided": 0,
+    "recordPath": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/c4087e5caa9191b3323a016b1f988561056db39ac038c3d5288f848675168133-0.json"
+   },
+   {
+    "origin": "LIVE_PROVIDER",
+    "passId": "pass-1",
+    "stage": "semantic_inventory",
+    "requestHash": "f7344f819a115f489f7371b466ad3c70d7cf8de2e36b85582bdcffd9eb5f7e2f",
+    "occurrence": 0,
+    "callOrdinal": 3,
+    "at": "2026-09-16T13:04:16.029Z",
+    "originalCompletedAt": "2026-09-16T13:04:16.029Z",
+    "originalCostUsd": 0.44079000000000007,
+    "newCostUsd": 0.44079000000000007,
+    "providerCallsAvoided": 0,
+    "recordPath": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/f7344f819a115f489f7371b466ad3c70d7cf8de2e36b85582bdcffd9eb5f7e2f-0.json"
+   },
+   {
+    "origin": "LIVE_PROVIDER",
+    "passId": "pass-1",
+    "stage": "semantic_inventory",
+    "requestHash": "1112c40728b16a8d5dab43eab72ff46e7d07a6368af850ae64a9b1f604f5e2e6",
+    "occurrence": 0,
+    "callOrdinal": 4,
+    "at": "2026-09-16T13:09:46.103Z",
+    "originalCompletedAt": "2026-09-16T13:09:46.103Z",
+    "originalCostUsd": 0.46062600000000004,
+    "newCostUsd": 0.46062600000000004,
+    "providerCallsAvoided": 0,
+    "recordPath": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/1112c40728b16a8d5dab43eab72ff46e7d07a6368af850ae64a9b1f604f5e2e6-0.json"
+   },
+   {
+    "origin": "LIVE_PROVIDER",
+    "passId": "pass-1",
+    "stage": "semantic_inventory",
+    "requestHash": "d334bc0cf35aa3e5f14a101502eb324436167e1ec797c96a8fe9c0567426ff92",
+    "occurrence": 0,
+    "callOrdinal": 5,
+    "at": "2026-09-16T13:14:02.606Z",
+    "originalCompletedAt": "2026-09-16T13:14:02.606Z",
+    "originalCostUsd": 0.32544200000000006,
+    "newCostUsd": 0.32544200000000006,
+    "providerCallsAvoided": 0,
+    "recordPath": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/d334bc0cf35aa3e5f14a101502eb324436167e1ec797c96a8fe9c0567426ff92-0.json"
+   },
+   {
+    "origin": "LIVE_PROVIDER",
+    "passId": "pass-1",
+    "stage": "semantic_inventory_gap",
+    "requestHash": "506dbc86b06fcdf9540ed512f268a1558567e6e80093b2911387f0c91bf5e6e4",
+    "occurrence": 0,
+    "callOrdinal": 6,
+    "at": "2026-09-16T13:16:56.026Z",
+    "originalCompletedAt": "2026-09-16T13:16:56.026Z",
+    "originalCostUsd": 0.22748600000000002,
+    "newCostUsd": 0.22748600000000002,
+    "providerCallsAvoided": 0,
+    "recordPath": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/506dbc86b06fcdf9540ed512f268a1558567e6e80093b2911387f0c91bf5e6e4-0.json"
+   },
+   {
+    "origin": "LIVE_PROVIDER",
+    "passId": "pass-2",
+    "stage": "semantic_inventory",
+    "requestHash": "0fa2c9250dfd6bda3b0ea31831ad04ad27943287c2475e60b148198b86d4c206",
+    "occurrence": 0,
+    "callOrdinal": 0,
+    "at": "2026-09-16T13:23:09.294Z",
+    "originalCompletedAt": "2026-09-16T13:23:09.294Z",
+    "originalCostUsd": 0.553152,
+    "newCostUsd": 0.553152,
+    "providerCallsAvoided": 0,
+    "recordPath": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/0fa2c9250dfd6bda3b0ea31831ad04ad27943287c2475e60b148198b86d4c206-0.json"
+   },
+   {
+    "origin": "LIVE_PROVIDER",
+    "passId": "pass-2",
+    "stage": "semantic_inventory",
+    "requestHash": "ed634a2d898324118633d1a66597c9aa8dd070743714854df7c2685fa8521fc0",
+    "occurrence": 0,
+    "callOrdinal": 1,
+    "at": "2026-09-16T13:26:46.018Z",
+    "originalCompletedAt": "2026-09-16T13:26:46.018Z",
+    "originalCostUsd": 0.306568,
+    "newCostUsd": 0.306568,
+    "providerCallsAvoided": 0,
+    "recordPath": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/ed634a2d898324118633d1a66597c9aa8dd070743714854df7c2685fa8521fc0-0.json"
+   },
+   {
+    "origin": "LIVE_PROVIDER",
+    "passId": "pass-2",
+    "stage": "semantic_inventory",
+    "requestHash": "e95dc94383d17c57805d0152bd6c4c38fd0f6e279df4b2c63827b1246259e69e",
+    "occurrence": 0,
+    "callOrdinal": 2,
+    "at": "2026-09-16T13:32:20.738Z",
+    "originalCompletedAt": "2026-09-16T13:32:20.738Z",
+    "originalCostUsd": 0.492406,
+    "newCostUsd": 0.492406,
+    "providerCallsAvoided": 0,
+    "recordPath": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/e95dc94383d17c57805d0152bd6c4c38fd0f6e279df4b2c63827b1246259e69e-0.json"
+   },
+   {
+    "origin": "LIVE_PROVIDER",
+    "passId": "pass-2",
+    "stage": "semantic_inventory",
+    "requestHash": "90fced3f263a31f4131ad1bd9f9f1059609b25066f2ee9a6a1b38e6a2eda62d4",
+    "occurrence": 0,
+    "callOrdinal": 3,
+    "at": "2026-09-16T13:37:05.028Z",
+    "originalCompletedAt": "2026-09-16T13:37:05.028Z",
+    "originalCostUsd": 0.40802000000000005,
+    "newCostUsd": 0.40802000000000005,
+    "providerCallsAvoided": 0,
+    "recordPath": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/90fced3f263a31f4131ad1bd9f9f1059609b25066f2ee9a6a1b38e6a2eda62d4-0.json"
+   },
+   {
+    "origin": "LIVE_PROVIDER",
+    "passId": "pass-2",
+    "stage": "semantic_inventory",
+    "requestHash": "cf555c63853598fc2de5067892eda871d9c5888d19fc7419ffb963974c4eb27a",
+    "occurrence": 0,
+    "callOrdinal": 4,
+    "at": "2026-09-16T13:41:37.506Z",
+    "originalCompletedAt": "2026-09-16T13:41:37.506Z",
+    "originalCostUsd": 0.40322600000000003,
+    "newCostUsd": 0.40322600000000003,
+    "providerCallsAvoided": 0,
+    "recordPath": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/cf555c63853598fc2de5067892eda871d9c5888d19fc7419ffb963974c4eb27a-0.json"
+   },
+   {
+    "origin": "LIVE_PROVIDER",
+    "passId": "pass-2",
+    "stage": "semantic_inventory",
+    "requestHash": "fcd45a5a6028f07724b67dbfce0cbfa949397d1f3a512c05b0dd2f79792d3fe0",
+    "occurrence": 0,
+    "callOrdinal": 5,
+    "at": "2026-09-16T13:46:51.543Z",
+    "originalCompletedAt": "2026-09-16T13:46:51.543Z",
+    "originalCostUsd": 0.41607200000000005,
+    "newCostUsd": 0.41607200000000005,
+    "providerCallsAvoided": 0,
+    "recordPath": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/fcd45a5a6028f07724b67dbfce0cbfa949397d1f3a512c05b0dd2f79792d3fe0-0.json"
+   },
+   {
+    "origin": "LIVE_PROVIDER",
+    "passId": "pass-2",
+    "stage": "semantic_inventory_gap",
+    "requestHash": "a840ccdcf02ebfa6f9fc71ce4e8a92eea4fc0fe4c93b03c90196144aeba378f1",
+    "occurrence": 0,
+    "callOrdinal": 6,
+    "at": "2026-09-16T13:51:41.054Z",
+    "originalCompletedAt": "2026-09-16T13:51:41.054Z",
+    "originalCostUsd": 0.37587800000000005,
+    "newCostUsd": 0.37587800000000005,
+    "providerCallsAvoided": 0,
+    "recordPath": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/a840ccdcf02ebfa6f9fc71ce4e8a92eea4fc0fe4c93b03c90196144aeba378f1-0.json"
+   }
+  ]
+ },
+ "passes": [
+  {
+   "passId": "pass-1",
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "items": 289,
+   "frozenContentHash": "57edaf1c2d889cedac9298116a84c33acd82b1ab3b037cbf33ec0a341d812e73",
+   "partition": {
+    "methods": {
+     "operative": "STRUCTURAL_NODES"
+    },
+    "slots": [
+     {
+      "slotId": "operative:6.01#1",
+      "regionId": "operative",
+      "sectionRef": "6.01",
+      "charStart": 0,
+      "charEnd": 113
+     },
+     {
+      "slotId": "operative:6.01(a)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 113,
+      "charEnd": 256
+     },
+     {
+      "slotId": "operative:6.01(a)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 256,
+      "charEnd": 471
+     },
+     {
+      "slotId": "operative:6.01(a)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 471,
+      "charEnd": 661
+     },
+     {
+      "slotId": "operative:6.01(a)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 661,
+      "charEnd": 705
+     },
+     {
+      "slotId": "operative:6.01(a)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 705,
+      "charEnd": 955
+     },
+     {
+      "slotId": "operative:6.01(a)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 955,
+      "charEnd": 1194
+     },
+     {
+      "slotId": "operative:6.01(a)#7",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 1194,
+      "charEnd": 1432
+     },
+     {
+      "slotId": "operative:6.01(a)#8",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 1432,
+      "charEnd": 1676
+     },
+     {
+      "slotId": "operative:6.01(a)#9",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 1676,
+      "charEnd": 1916
+     },
+     {
+      "slotId": "operative:6.01(a)#10",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 1916,
+      "charEnd": 1959
+     },
+     {
+      "slotId": "operative:6.01(a)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)(i)",
+      "charStart": 1959,
+      "charEnd": 2140
+     },
+     {
+      "slotId": "operative:6.01(a)(i)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)(i)",
+      "charStart": 2140,
+      "charEnd": 2214
+     },
+     {
+      "slotId": "operative:6.01(a)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)(ii)",
+      "charStart": 2214,
+      "charEnd": 2378
+     },
+     {
+      "slotId": "operative:6.01(a)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)(ii)",
+      "charStart": 2378,
+      "charEnd": 2606
+     },
+     {
+      "slotId": "operative:6.01(a)(ii)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)(ii)",
+      "charStart": 2606,
+      "charEnd": 2625
+     },
+     {
+      "slotId": "operative:6.01(a)(ii)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)(ii)(i)",
+      "charStart": 2625,
+      "charEnd": 2823
+     },
+     {
+      "slotId": "operative:6.01(a)(ii)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)(ii)(ii)",
+      "charStart": 2823,
+      "charEnd": 2841
+     },
+     {
+      "slotId": "operative:6.01(a)(ii)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)(ii)(ii)",
+      "charStart": 2841,
+      "charEnd": 3083
+     },
+     {
+      "slotId": "operative:6.01(a)(ii)(ii)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)(ii)(ii)",
+      "charStart": 3083,
+      "charEnd": 3221
+     },
+     {
+      "slotId": "operative:6.01(b)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)",
+      "charStart": 3221,
+      "charEnd": 3294
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 3294,
+      "charEnd": 3410
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 3410,
+      "charEnd": 3596
+     },
+     {
+      "slotId": "operative:6.01(b)(1)(a)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)(a)",
+      "charStart": 3596,
+      "charEnd": 3619
+     },
+     {
+      "slotId": "operative:6.01(b)(1)(b)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)(b)",
+      "charStart": 3619,
+      "charEnd": 3642
+     },
+     {
+      "slotId": "operative:6.01(b)(1)(b)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)(b)",
+      "charStart": 3642,
+      "charEnd": 3855
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 3855,
+      "charEnd": 3872
+     },
+     {
+      "slotId": "operative:6.01(b)(3)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(3)",
+      "charStart": 3872,
+      "charEnd": 3957
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)",
+      "charStart": 3957,
+      "charEnd": 4085
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)",
+      "charStart": 4085,
+      "charEnd": 4332
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)",
+      "charStart": 4332,
+      "charEnd": 4472
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)",
+      "charStart": 4472,
+      "charEnd": 4571
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)",
+      "charStart": 4571,
+      "charEnd": 4792
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)",
+      "charStart": 4792,
+      "charEnd": 4859
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)(i)",
+      "charStart": 4859,
+      "charEnd": 5027
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)(i)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)(i)",
+      "charStart": 5027,
+      "charEnd": 5144
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)(ii)",
+      "charStart": 5144,
+      "charEnd": 5255
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)(ii)",
+      "charStart": 5255,
+      "charEnd": 5453
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)(ii)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)(ii)",
+      "charStart": 5453,
+      "charEnd": 5494
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)(ii)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)(ii)",
+      "charStart": 5494,
+      "charEnd": 5736
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)(ii)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)(ii)",
+      "charStart": 5736,
+      "charEnd": 5814
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)(iii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)(iii)",
+      "charStart": 5814,
+      "charEnd": 5967
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)(iii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)(iii)",
+      "charStart": 5967,
+      "charEnd": 6153
+     },
+     {
+      "slotId": "operative:6.01(b)(5)(a)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(5)(a)",
+      "charStart": 6153,
+      "charEnd": 6281
+     },
+     {
+      "slotId": "operative:6.01(b)(5)(a)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(5)(a)",
+      "charStart": 6281,
+      "charEnd": 6525
+     },
+     {
+      "slotId": "operative:6.01(b)(5)(a)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(5)(a)",
+      "charStart": 6525,
+      "charEnd": 6767
+     },
+     {
+      "slotId": "operative:6.01(b)(5)(a)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(5)(a)",
+      "charStart": 6767,
+      "charEnd": 6970
+     },
+     {
+      "slotId": "operative:6.01(b)(5)(a)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(5)(a)",
+      "charStart": 6970,
+      "charEnd": 6996
+     },
+     {
+      "slotId": "operative:6.01(b)(5)(a)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(5)(a)",
+      "charStart": 6996,
+      "charEnd": 7176
+     },
+     {
+      "slotId": "operative:6.01(b)(5)(b)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(5)(b)",
+      "charStart": 7176,
+      "charEnd": 7231
+     },
+     {
+      "slotId": "operative:6.01(b)(5)(b)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(5)(b)",
+      "charStart": 7231,
+      "charEnd": 7476
+     },
+     {
+      "slotId": "operative:6.01(b)(5)(b)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(5)(b)",
+      "charStart": 7476,
+      "charEnd": 7539
+     },
+     {
+      "slotId": "operative:6.01(b)(6)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(6)",
+      "charStart": 7539,
+      "charEnd": 7616
+     },
+     {
+      "slotId": "operative:6.01(b)(6)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(6)",
+      "charStart": 7616,
+      "charEnd": 7860
+     },
+     {
+      "slotId": "operative:6.01(b)(6)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(6)",
+      "charStart": 7860,
+      "charEnd": 8087
+     },
+     {
+      "slotId": "operative:6.01(b)(7)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(7)",
+      "charStart": 8087,
+      "charEnd": 8201
+     },
+     {
+      "slotId": "operative:6.01(b)(7)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(7)",
+      "charStart": 8201,
+      "charEnd": 8437
+     },
+     {
+      "slotId": "operative:6.01(b)(7)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(7)",
+      "charStart": 8437,
+      "charEnd": 8687
+     },
+     {
+      "slotId": "operative:6.01(b)(7)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(7)",
+      "charStart": 8687,
+      "charEnd": 8827
+     },
+     {
+      "slotId": "operative:6.01(b)(7)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(7)",
+      "charStart": 8827,
+      "charEnd": 8921
+     },
+     {
+      "slotId": "operative:6.01(b)(7)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(7)",
+      "charStart": 8921,
+      "charEnd": 9171
+     },
+     {
+      "slotId": "operative:6.01(b)(7)#7",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(7)",
+      "charStart": 9171,
+      "charEnd": 9421
+     },
+     {
+      "slotId": "operative:6.01(b)(7)#8",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(7)",
+      "charStart": 9421,
+      "charEnd": 9595
+     },
+     {
+      "slotId": "operative:6.01(b)(8)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(8)",
+      "charStart": 9595,
+      "charEnd": 9691
+     },
+     {
+      "slotId": "operative:6.01(b)(8)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(8)",
+      "charStart": 9691,
+      "charEnd": 9710
+     },
+     {
+      "slotId": "operative:6.01(b)(8)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(8)",
+      "charStart": 9710,
+      "charEnd": 9955
+     },
+     {
+      "slotId": "operative:6.01(b)(8)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(8)",
+      "charStart": 9955,
+      "charEnd": 10200
+     },
+     {
+      "slotId": "operative:6.01(b)(8)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(8)",
+      "charStart": 10200,
+      "charEnd": 10294
+     },
+     {
+      "slotId": "operative:6.01(b)(8)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(8)",
+      "charStart": 10294,
+      "charEnd": 10438
+     },
+     {
+      "slotId": "operative:6.01(b)(8)#7",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(8)",
+      "charStart": 10438,
+      "charEnd": 10687
+     },
+     {
+      "slotId": "operative:6.01(b)(8)#8",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(8)",
+      "charStart": 10687,
+      "charEnd": 10863
+     },
+     {
+      "slotId": "operative:6.01(b)(9)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(9)",
+      "charStart": 10863,
+      "charEnd": 10988
+     },
+     {
+      "slotId": "operative:6.01(b)(9)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(9)",
+      "charStart": 10988,
+      "charEnd": 10995
+     },
+     {
+      "slotId": "operative:6.01(b)(9)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(9)",
+      "charStart": 10995,
+      "charEnd": 11229
+     },
+     {
+      "slotId": "operative:6.01(b)(9)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(9)",
+      "charStart": 11229,
+      "charEnd": 11472
+     },
+     {
+      "slotId": "operative:6.01(b)(9)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(9)",
+      "charStart": 11472,
+      "charEnd": 11656
+     },
+     {
+      "slotId": "operative:6.01(b)(10)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(10)",
+      "charStart": 11656,
+      "charEnd": 11753
+     },
+     {
+      "slotId": "operative:6.01(b)(11)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(11)",
+      "charStart": 11753,
+      "charEnd": 11874
+     },
+     {
+      "slotId": "operative:6.01(b)(11)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(11)",
+      "charStart": 11874,
+      "charEnd": 12110
+     },
+     {
+      "slotId": "operative:6.01(b)(11)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(11)",
+      "charStart": 12110,
+      "charEnd": 12294
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(a)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(a)",
+      "charStart": 12294,
+      "charEnd": 12370
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(a)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(a)",
+      "charStart": 12370,
+      "charEnd": 12579
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(a)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(a)",
+      "charStart": 12579,
+      "charEnd": 12827
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(a)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(a)",
+      "charStart": 12827,
+      "charEnd": 13066
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(a)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(a)",
+      "charStart": 13066,
+      "charEnd": 13306
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(a)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(a)",
+      "charStart": 13306,
+      "charEnd": 13397
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(b)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(b)",
+      "charStart": 13397,
+      "charEnd": 13537
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(b)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(b)",
+      "charStart": 13537,
+      "charEnd": 13769
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(b)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(b)",
+      "charStart": 13769,
+      "charEnd": 13994
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(b)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(b)",
+      "charStart": 13994,
+      "charEnd": 14191
+     },
+     {
+      "slotId": "operative:6.01(b)(13)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)",
+      "charStart": 14191,
+      "charEnd": 14319
+     },
+     {
+      "slotId": "operative:6.01(b)(13)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)",
+      "charStart": 14319,
+      "charEnd": 14550
+     },
+     {
+      "slotId": "operative:6.01(b)(13)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)",
+      "charStart": 14550,
+      "charEnd": 14776
+     },
+     {
+      "slotId": "operative:6.01(b)(13)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)",
+      "charStart": 14776,
+      "charEnd": 15019
+     },
+     {
+      "slotId": "operative:6.01(b)(13)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)",
+      "charStart": 15019,
+      "charEnd": 15260
+     },
+     {
+      "slotId": "operative:6.01(b)(13)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)",
+      "charStart": 15260,
+      "charEnd": 15316
+     },
+     {
+      "slotId": "operative:6.01(b)(13)#7",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)",
+      "charStart": 15316,
+      "charEnd": 15374
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(a)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(a)",
+      "charStart": 15374,
+      "charEnd": 15500
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(a)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(a)",
+      "charStart": 15500,
+      "charEnd": 15747
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(a)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(a)",
+      "charStart": 15747,
+      "charEnd": 15834
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(b)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(b)",
+      "charStart": 15834,
+      "charEnd": 15893
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(b)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(b)(i)",
+      "charStart": 15893,
+      "charEnd": 15956
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(b)(i)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(b)(i)",
+      "charStart": 15956,
+      "charEnd": 16146
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(b)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(b)(ii)",
+      "charStart": 16146,
+      "charEnd": 16195
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(b)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(b)(ii)",
+      "charStart": 16195,
+      "charEnd": 16285
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(c)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(c)",
+      "charStart": 16285,
+      "charEnd": 16309
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(c)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(c)(i)",
+      "charStart": 16309,
+      "charEnd": 16427
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(c)(i)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(c)(i)",
+      "charStart": 16427,
+      "charEnd": 16523
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(c)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(c)(ii)",
+      "charStart": 16523,
+      "charEnd": 16540
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(c)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(c)(ii)",
+      "charStart": 16540,
+      "charEnd": 16544
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(c)(iii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(c)(iii)",
+      "charStart": 16544,
+      "charEnd": 16627
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(c)(iii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(c)(iii)",
+      "charStart": 16627,
+      "charEnd": 16732
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(c)(iii)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(c)(iii)",
+      "charStart": 16732,
+      "charEnd": 16747
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(c)(iii)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(c)(iii)",
+      "charStart": 16747,
+      "charEnd": 16856
+     },
+     {
+      "slotId": "operative:6.01(b)(14)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)",
+      "charStart": 16856,
+      "charEnd": 17091
+     },
+     {
+      "slotId": "operative:6.01(b)(14)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)",
+      "charStart": 17091,
+      "charEnd": 17253
+     },
+     {
+      "slotId": "operative:6.01(b)(14)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)",
+      "charStart": 17253,
+      "charEnd": 17269
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(a)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(a)",
+      "charStart": 17269,
+      "charEnd": 17374
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(a)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(a)(i)",
+      "charStart": 17374,
+      "charEnd": 17391
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(a)(i)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(a)(i)",
+      "charStart": 17391,
+      "charEnd": 17545
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(a)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(a)(ii)",
+      "charStart": 17545,
+      "charEnd": 17631
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(a)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(a)(ii)",
+      "charStart": 17631,
+      "charEnd": 17740
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(b)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(b)",
+      "charStart": 17740,
+      "charEnd": 17750
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(b)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(b)",
+      "charStart": 17750,
+      "charEnd": 17845
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(b)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(b)(i)",
+      "charStart": 17845,
+      "charEnd": 17985
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(b)(i)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(b)(i)",
+      "charStart": 17985,
+      "charEnd": 18011
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(b)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(b)(ii)",
+      "charStart": 18011,
+      "charEnd": 18201
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(c)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(c)",
+      "charStart": 18201,
+      "charEnd": 18310
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(c)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(c)(i)",
+      "charStart": 18310,
+      "charEnd": 18481
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(c)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(c)(ii)",
+      "charStart": 18481,
+      "charEnd": 18553
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(c)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(c)(ii)",
+      "charStart": 18553,
+      "charEnd": 18782
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(c)(ii)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(c)(ii)(i)",
+      "charStart": 18782,
+      "charEnd": 18957
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(c)(ii)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(c)(ii)(ii)",
+      "charStart": 18957,
+      "charEnd": 19028
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(c)(ii)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(c)(ii)(ii)",
+      "charStart": 19028,
+      "charEnd": 19155
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(c)(ii)(ii)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(c)(ii)(ii)",
+      "charStart": 19155,
+      "charEnd": 19159
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(d)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(d)",
+      "charStart": 19159,
+      "charEnd": 19285
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(d)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(d)",
+      "charStart": 19285,
+      "charEnd": 19430
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(d)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(d)",
+      "charStart": 19430,
+      "charEnd": 19535
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(d)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(d)",
+      "charStart": 19535,
+      "charEnd": 19658
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(e)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(e)",
+      "charStart": 19658,
+      "charEnd": 19775
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(e)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(e)",
+      "charStart": 19775,
+      "charEnd": 19911
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(e)(1)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(e)(1)",
+      "charStart": 19911,
+      "charEnd": 20010
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(e)(1)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(e)(1)",
+      "charStart": 20010,
+      "charEnd": 20023
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(e)(2)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(e)(2)",
+      "charStart": 20023,
+      "charEnd": 20087
+     },
+     {
+      "slotId": "operative:6.01(b)(15)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(15)",
+      "charStart": 20087,
+      "charEnd": 20122
+     },
+     {
+      "slotId": "operative:6.01(b)(15)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(15)",
+      "charStart": 20122,
+      "charEnd": 20281
+     },
+     {
+      "slotId": "operative:6.01(b)(15)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(15)",
+      "charStart": 20281,
+      "charEnd": 20359
+     },
+     {
+      "slotId": "operative:6.01(b)(15)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(15)",
+      "charStart": 20359,
+      "charEnd": 20379
+     },
+     {
+      "slotId": "operative:6.01(b)(16)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(16)",
+      "charStart": 20379,
+      "charEnd": 20461
+     },
+     {
+      "slotId": "operative:6.01(b)(16)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(16)",
+      "charStart": 20461,
+      "charEnd": 20659
+     },
+     {
+      "slotId": "operative:6.01(b)(17)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(17)(i)",
+      "charStart": 20659,
+      "charEnd": 20768
+     },
+     {
+      "slotId": "operative:6.01(b)(17)(i)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(17)(i)",
+      "charStart": 20768,
+      "charEnd": 20771
+     },
+     {
+      "slotId": "operative:6.01(b)(17)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(17)(ii)",
+      "charStart": 20771,
+      "charEnd": 20780
+     },
+     {
+      "slotId": "operative:6.01(b)(17)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(17)(ii)",
+      "charStart": 20780,
+      "charEnd": 20982
+     },
+     {
+      "slotId": "operative:6.01(b)(17)(ii)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(17)(ii)",
+      "charStart": 20982,
+      "charEnd": 21026
+     },
+     {
+      "slotId": "operative:6.01(b)(18)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(18)(i)",
+      "charStart": 21026,
+      "charEnd": 21101
+     },
+     {
+      "slotId": "operative:6.01(b)(18)(i)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(18)(i)",
+      "charStart": 21101,
+      "charEnd": 21344
+     },
+     {
+      "slotId": "operative:6.01(b)(18)(i)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(18)(i)",
+      "charStart": 21344,
+      "charEnd": 21563
+     },
+     {
+      "slotId": "operative:6.01(b)(18)(i)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(18)(i)",
+      "charStart": 21563,
+      "charEnd": 21587
+     },
+     {
+      "slotId": "operative:6.01(b)(18)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(18)(ii)",
+      "charStart": 21587,
+      "charEnd": 21745
+     },
+     {
+      "slotId": "operative:6.01(b)(19)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(19)",
+      "charStart": 21745,
+      "charEnd": 21870
+     },
+     {
+      "slotId": "operative:6.01(b)(19)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(19)",
+      "charStart": 21870,
+      "charEnd": 22115
+     },
+     {
+      "slotId": "operative:6.01(b)(19)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(19)",
+      "charStart": 22115,
+      "charEnd": 22349
+     },
+     {
+      "slotId": "operative:6.01(b)(19)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(19)",
+      "charStart": 22349,
+      "charEnd": 22444
+     },
+     {
+      "slotId": "operative:6.01(b)(20)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(20)",
+      "charStart": 22444,
+      "charEnd": 22465
+     },
+     {
+      "slotId": "operative:6.01(b)(20)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(20)",
+      "charStart": 22465,
+      "charEnd": 22500
+     },
+     {
+      "slotId": "operative:6.01(b)(20)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(20)(i)",
+      "charStart": 22500,
+      "charEnd": 22543
+     },
+     {
+      "slotId": "operative:6.01(b)(20)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(20)(ii)",
+      "charStart": 22543,
+      "charEnd": 22619
+     },
+     {
+      "slotId": "operative:6.01(b)(20)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(20)(ii)",
+      "charStart": 22619,
+      "charEnd": 22697
+     },
+     {
+      "slotId": "operative:6.01(b)(21)(a)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(21)(a)",
+      "charStart": 22697,
+      "charEnd": 22735
+     },
+     {
+      "slotId": "operative:6.01(b)(21)(b)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(21)(b)",
+      "charStart": 22735,
+      "charEnd": 22971
+     },
+     {
+      "slotId": "operative:6.01(b)(21)(b)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(21)(b)",
+      "charStart": 22971,
+      "charEnd": 23209
+     },
+     {
+      "slotId": "operative:6.01(b)(21)(b)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(21)(b)",
+      "charStart": 23209,
+      "charEnd": 23457
+     },
+     {
+      "slotId": "operative:6.01(b)(21)(b)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(21)(b)",
+      "charStart": 23457,
+      "charEnd": 23479
+     },
+     {
+      "slotId": "operative:6.01(b)(21)(c)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(21)(c)",
+      "charStart": 23479,
+      "charEnd": 23584
+     },
+     {
+      "slotId": "operative:6.01(b)(22)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(22)",
+      "charStart": 23584,
+      "charEnd": 23710
+     },
+     {
+      "slotId": "operative:6.01(b)(22)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(22)",
+      "charStart": 23710,
+      "charEnd": 23959
+     },
+     {
+      "slotId": "operative:6.01(b)(22)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(22)",
+      "charStart": 23959,
+      "charEnd": 24031
+     },
+     {
+      "slotId": "operative:6.01(b)(23)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(23)",
+      "charStart": 24031,
+      "charEnd": 24075
+     },
+     {
+      "slotId": "operative:6.01(b)(23)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(23)",
+      "charStart": 24075,
+      "charEnd": 24190
+     },
+     {
+      "slotId": "operative:6.01(b)(24)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(24)",
+      "charStart": 24190,
+      "charEnd": 24207
+     },
+     {
+      "slotId": "operative:6.01(b)(25)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(25)",
+      "charStart": 24207,
+      "charEnd": 24311
+     },
+     {
+      "slotId": "operative:6.01(b)(25)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(25)",
+      "charStart": 24311,
+      "charEnd": 24374
+     },
+     {
+      "slotId": "operative:6.01(b)(26)(a)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(26)(a)",
+      "charStart": 24374,
+      "charEnd": 24455
+     },
+     {
+      "slotId": "operative:6.01(b)(26)(a)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(26)(a)",
+      "charStart": 24455,
+      "charEnd": 24692
+     },
+     {
+      "slotId": "operative:6.01(b)(26)(a)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(26)(a)",
+      "charStart": 24692,
+      "charEnd": 24705
+     },
+     {
+      "slotId": "operative:6.01(b)(26)(b)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(26)(b)(i)",
+      "charStart": 24705,
+      "charEnd": 24774
+     },
+     {
+      "slotId": "operative:6.01(b)(26)(b)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(26)(b)(ii)",
+      "charStart": 24774,
+      "charEnd": 24887
+     },
+     {
+      "slotId": "operative:6.01(b)(26)(b)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(26)(b)(ii)",
+      "charStart": 24887,
+      "charEnd": 24963
+     },
+     {
+      "slotId": "operative:6.01(b)(27)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(27)",
+      "charStart": 24963,
+      "charEnd": 25008
+     },
+     {
+      "slotId": "operative:6.01(b)(27)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(27)",
+      "charStart": 25008,
+      "charEnd": 25082
+     },
+     {
+      "slotId": "operative:6.01(b)(27)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(27)",
+      "charStart": 25082,
+      "charEnd": 25241
+     },
+     {
+      "slotId": "operative:6.01(b)(27)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(27)",
+      "charStart": 25241,
+      "charEnd": 25468
+     },
+     {
+      "slotId": "operative:6.01(b)(27)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(27)",
+      "charStart": 25468,
+      "charEnd": 25612
+     },
+     {
+      "slotId": "operative:6.01(b)(28)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(28)",
+      "charStart": 25612,
+      "charEnd": 25648
+     },
+     {
+      "slotId": "operative:6.01(b)(29)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(29)",
+      "charStart": 25648,
+      "charEnd": 25666
+     },
+     {
+      "slotId": "operative:6.01(b)(30)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(30)",
+      "charStart": 25666,
+      "charEnd": 25786
+     },
+     {
+      "slotId": "operative:6.01(b)(31)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(31)",
+      "charStart": 25786,
+      "charEnd": 25909
+     },
+     {
+      "slotId": "operative:6.01(b)(31)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(31)",
+      "charStart": 25909,
+      "charEnd": 26106
+     },
+     {
+      "slotId": "operative:6.01(b)(31)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(31)",
+      "charStart": 26106,
+      "charEnd": 26111
+     },
+     {
+      "slotId": "operative:6.01(b)(32)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(32)",
+      "charStart": 26111,
+      "charEnd": 26233
+     },
+     {
+      "slotId": "operative:6.01(b)(32)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(32)",
+      "charStart": 26233,
+      "charEnd": 26242
+     },
+     {
+      "slotId": "operative:6.01(b)(32)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(32)",
+      "charStart": 26242,
+      "charEnd": 26246
+     },
+     {
+      "slotId": "operative:6.01(b)(33)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(33)",
+      "charStart": 26246,
+      "charEnd": 26281
+     },
+     {
+      "slotId": "operative:6.01(b)(33)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(33)",
+      "charStart": 26281,
+      "charEnd": 26420
+     },
+     {
+      "slotId": "operative:6.01(b)(33)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(33)",
+      "charStart": 26420,
+      "charEnd": 26657
+     },
+     {
+      "slotId": "operative:6.01(b)(33)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(33)",
+      "charStart": 26657,
+      "charEnd": 26899
+     },
+     {
+      "slotId": "operative:6.01(b)(33)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(33)",
+      "charStart": 26899,
+      "charEnd": 27145
+     },
+     {
+      "slotId": "operative:6.01(b)(33)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(33)",
+      "charStart": 27145,
+      "charEnd": 27162
+     },
+     {
+      "slotId": "operative:6.01(b)(33)#7",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(33)",
+      "charStart": 27162,
+      "charEnd": 27226
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#1~2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 27226,
+      "charEnd": 27346
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#2~2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 27346,
+      "charEnd": 27586
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 27586,
+      "charEnd": 27831
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 27831,
+      "charEnd": 28012
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 28012,
+      "charEnd": 28059
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 28059,
+      "charEnd": 28293
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#7",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 28293,
+      "charEnd": 28425
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#8",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 28425,
+      "charEnd": 28430
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#1~2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 28430,
+      "charEnd": 28511
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 28511,
+      "charEnd": 28755
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 28755,
+      "charEnd": 28819
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 28819,
+      "charEnd": 28890
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 28890,
+      "charEnd": 29135
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 29135,
+      "charEnd": 29208
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#7",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 29208,
+      "charEnd": 29377
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#8",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 29377,
+      "charEnd": 29616
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#9",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 29616,
+      "charEnd": 29862
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#10",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 29862,
+      "charEnd": 30098
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#11",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 30098,
+      "charEnd": 30154
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#12",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 30154,
+      "charEnd": 30338
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#13",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 30338,
+      "charEnd": 30575
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#14",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 30575,
+      "charEnd": 30758
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#15",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 30758,
+      "charEnd": 30811
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#16",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 30811,
+      "charEnd": 30899
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#17",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 30899,
+      "charEnd": 30925
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#18",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 30925,
+      "charEnd": 31145
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#19",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 31145,
+      "charEnd": 31349
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#20",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 31349,
+      "charEnd": 31385
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#21",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 31385,
+      "charEnd": 31594
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#22",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 31594,
+      "charEnd": 31631
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#23",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 31631,
+      "charEnd": 31746
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#24",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 31746,
+      "charEnd": 31871
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#25",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 31871,
+      "charEnd": 32117
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#26",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 32117,
+      "charEnd": 32360
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#27",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 32360,
+      "charEnd": 32406
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#28",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 32406,
+      "charEnd": 32486
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#29",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 32486,
+      "charEnd": 32665
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#30",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 32665,
+      "charEnd": 32803
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#31",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 32803,
+      "charEnd": 33050
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#32",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 33050,
+      "charEnd": 33223
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#33",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 33223,
+      "charEnd": 33260
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#1~3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 33260,
+      "charEnd": 33316
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#2~3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 33316,
+      "charEnd": 33371
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#1~3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 33371,
+      "charEnd": 33558
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#2~2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 33558,
+      "charEnd": 33623
+     }
+    ],
+    "batches": 6,
+    "batchChars": 6000,
+    "gapBatches": 1,
+    "firstPassCalls": 6,
+    "gapCalls": 1
+   },
+   "telemetryCostUsd": 2.7991
+  },
+  {
+   "passId": "pass-2",
+   "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+   "items": 289,
+   "frozenContentHash": "ee34b44fad8ca038146adcd6a65c07ccb3f48d5d0adbe50d96d55be5f821070f",
+   "partition": {
+    "methods": {
+     "operative": "STRUCTURAL_NODES"
+    },
+    "slots": [
+     {
+      "slotId": "operative:6.01#1",
+      "regionId": "operative",
+      "sectionRef": "6.01",
+      "charStart": 0,
+      "charEnd": 113
+     },
+     {
+      "slotId": "operative:6.01(a)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 113,
+      "charEnd": 256
+     },
+     {
+      "slotId": "operative:6.01(a)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 256,
+      "charEnd": 471
+     },
+     {
+      "slotId": "operative:6.01(a)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 471,
+      "charEnd": 661
+     },
+     {
+      "slotId": "operative:6.01(a)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 661,
+      "charEnd": 705
+     },
+     {
+      "slotId": "operative:6.01(a)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 705,
+      "charEnd": 955
+     },
+     {
+      "slotId": "operative:6.01(a)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 955,
+      "charEnd": 1194
+     },
+     {
+      "slotId": "operative:6.01(a)#7",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 1194,
+      "charEnd": 1432
+     },
+     {
+      "slotId": "operative:6.01(a)#8",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 1432,
+      "charEnd": 1676
+     },
+     {
+      "slotId": "operative:6.01(a)#9",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 1676,
+      "charEnd": 1916
+     },
+     {
+      "slotId": "operative:6.01(a)#10",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)",
+      "charStart": 1916,
+      "charEnd": 1959
+     },
+     {
+      "slotId": "operative:6.01(a)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)(i)",
+      "charStart": 1959,
+      "charEnd": 2140
+     },
+     {
+      "slotId": "operative:6.01(a)(i)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)(i)",
+      "charStart": 2140,
+      "charEnd": 2214
+     },
+     {
+      "slotId": "operative:6.01(a)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)(ii)",
+      "charStart": 2214,
+      "charEnd": 2378
+     },
+     {
+      "slotId": "operative:6.01(a)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)(ii)",
+      "charStart": 2378,
+      "charEnd": 2606
+     },
+     {
+      "slotId": "operative:6.01(a)(ii)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)(ii)",
+      "charStart": 2606,
+      "charEnd": 2625
+     },
+     {
+      "slotId": "operative:6.01(a)(ii)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)(ii)(i)",
+      "charStart": 2625,
+      "charEnd": 2823
+     },
+     {
+      "slotId": "operative:6.01(a)(ii)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)(ii)(ii)",
+      "charStart": 2823,
+      "charEnd": 2841
+     },
+     {
+      "slotId": "operative:6.01(a)(ii)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)(ii)(ii)",
+      "charStart": 2841,
+      "charEnd": 3083
+     },
+     {
+      "slotId": "operative:6.01(a)(ii)(ii)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(a)(ii)(ii)",
+      "charStart": 3083,
+      "charEnd": 3221
+     },
+     {
+      "slotId": "operative:6.01(b)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)",
+      "charStart": 3221,
+      "charEnd": 3294
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 3294,
+      "charEnd": 3410
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 3410,
+      "charEnd": 3596
+     },
+     {
+      "slotId": "operative:6.01(b)(1)(a)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)(a)",
+      "charStart": 3596,
+      "charEnd": 3619
+     },
+     {
+      "slotId": "operative:6.01(b)(1)(b)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)(b)",
+      "charStart": 3619,
+      "charEnd": 3642
+     },
+     {
+      "slotId": "operative:6.01(b)(1)(b)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)(b)",
+      "charStart": 3642,
+      "charEnd": 3855
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 3855,
+      "charEnd": 3872
+     },
+     {
+      "slotId": "operative:6.01(b)(3)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(3)",
+      "charStart": 3872,
+      "charEnd": 3957
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)",
+      "charStart": 3957,
+      "charEnd": 4085
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)",
+      "charStart": 4085,
+      "charEnd": 4332
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)",
+      "charStart": 4332,
+      "charEnd": 4472
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)",
+      "charStart": 4472,
+      "charEnd": 4571
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)",
+      "charStart": 4571,
+      "charEnd": 4792
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)",
+      "charStart": 4792,
+      "charEnd": 4859
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)(i)",
+      "charStart": 4859,
+      "charEnd": 5027
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)(i)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)(i)",
+      "charStart": 5027,
+      "charEnd": 5144
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)(ii)",
+      "charStart": 5144,
+      "charEnd": 5255
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)(ii)",
+      "charStart": 5255,
+      "charEnd": 5453
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)(ii)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)(ii)",
+      "charStart": 5453,
+      "charEnd": 5494
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)(ii)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)(ii)",
+      "charStart": 5494,
+      "charEnd": 5736
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)(ii)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)(ii)",
+      "charStart": 5736,
+      "charEnd": 5814
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)(iii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)(iii)",
+      "charStart": 5814,
+      "charEnd": 5967
+     },
+     {
+      "slotId": "operative:6.01(b)(4)(a)(iii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(4)(a)(iii)",
+      "charStart": 5967,
+      "charEnd": 6153
+     },
+     {
+      "slotId": "operative:6.01(b)(5)(a)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(5)(a)",
+      "charStart": 6153,
+      "charEnd": 6281
+     },
+     {
+      "slotId": "operative:6.01(b)(5)(a)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(5)(a)",
+      "charStart": 6281,
+      "charEnd": 6525
+     },
+     {
+      "slotId": "operative:6.01(b)(5)(a)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(5)(a)",
+      "charStart": 6525,
+      "charEnd": 6767
+     },
+     {
+      "slotId": "operative:6.01(b)(5)(a)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(5)(a)",
+      "charStart": 6767,
+      "charEnd": 6970
+     },
+     {
+      "slotId": "operative:6.01(b)(5)(a)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(5)(a)",
+      "charStart": 6970,
+      "charEnd": 6996
+     },
+     {
+      "slotId": "operative:6.01(b)(5)(a)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(5)(a)",
+      "charStart": 6996,
+      "charEnd": 7176
+     },
+     {
+      "slotId": "operative:6.01(b)(5)(b)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(5)(b)",
+      "charStart": 7176,
+      "charEnd": 7231
+     },
+     {
+      "slotId": "operative:6.01(b)(5)(b)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(5)(b)",
+      "charStart": 7231,
+      "charEnd": 7476
+     },
+     {
+      "slotId": "operative:6.01(b)(5)(b)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(5)(b)",
+      "charStart": 7476,
+      "charEnd": 7539
+     },
+     {
+      "slotId": "operative:6.01(b)(6)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(6)",
+      "charStart": 7539,
+      "charEnd": 7616
+     },
+     {
+      "slotId": "operative:6.01(b)(6)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(6)",
+      "charStart": 7616,
+      "charEnd": 7860
+     },
+     {
+      "slotId": "operative:6.01(b)(6)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(6)",
+      "charStart": 7860,
+      "charEnd": 8087
+     },
+     {
+      "slotId": "operative:6.01(b)(7)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(7)",
+      "charStart": 8087,
+      "charEnd": 8201
+     },
+     {
+      "slotId": "operative:6.01(b)(7)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(7)",
+      "charStart": 8201,
+      "charEnd": 8437
+     },
+     {
+      "slotId": "operative:6.01(b)(7)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(7)",
+      "charStart": 8437,
+      "charEnd": 8687
+     },
+     {
+      "slotId": "operative:6.01(b)(7)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(7)",
+      "charStart": 8687,
+      "charEnd": 8827
+     },
+     {
+      "slotId": "operative:6.01(b)(7)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(7)",
+      "charStart": 8827,
+      "charEnd": 8921
+     },
+     {
+      "slotId": "operative:6.01(b)(7)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(7)",
+      "charStart": 8921,
+      "charEnd": 9171
+     },
+     {
+      "slotId": "operative:6.01(b)(7)#7",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(7)",
+      "charStart": 9171,
+      "charEnd": 9421
+     },
+     {
+      "slotId": "operative:6.01(b)(7)#8",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(7)",
+      "charStart": 9421,
+      "charEnd": 9595
+     },
+     {
+      "slotId": "operative:6.01(b)(8)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(8)",
+      "charStart": 9595,
+      "charEnd": 9691
+     },
+     {
+      "slotId": "operative:6.01(b)(8)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(8)",
+      "charStart": 9691,
+      "charEnd": 9710
+     },
+     {
+      "slotId": "operative:6.01(b)(8)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(8)",
+      "charStart": 9710,
+      "charEnd": 9955
+     },
+     {
+      "slotId": "operative:6.01(b)(8)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(8)",
+      "charStart": 9955,
+      "charEnd": 10200
+     },
+     {
+      "slotId": "operative:6.01(b)(8)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(8)",
+      "charStart": 10200,
+      "charEnd": 10294
+     },
+     {
+      "slotId": "operative:6.01(b)(8)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(8)",
+      "charStart": 10294,
+      "charEnd": 10438
+     },
+     {
+      "slotId": "operative:6.01(b)(8)#7",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(8)",
+      "charStart": 10438,
+      "charEnd": 10687
+     },
+     {
+      "slotId": "operative:6.01(b)(8)#8",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(8)",
+      "charStart": 10687,
+      "charEnd": 10863
+     },
+     {
+      "slotId": "operative:6.01(b)(9)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(9)",
+      "charStart": 10863,
+      "charEnd": 10988
+     },
+     {
+      "slotId": "operative:6.01(b)(9)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(9)",
+      "charStart": 10988,
+      "charEnd": 10995
+     },
+     {
+      "slotId": "operative:6.01(b)(9)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(9)",
+      "charStart": 10995,
+      "charEnd": 11229
+     },
+     {
+      "slotId": "operative:6.01(b)(9)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(9)",
+      "charStart": 11229,
+      "charEnd": 11472
+     },
+     {
+      "slotId": "operative:6.01(b)(9)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(9)",
+      "charStart": 11472,
+      "charEnd": 11656
+     },
+     {
+      "slotId": "operative:6.01(b)(10)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(10)",
+      "charStart": 11656,
+      "charEnd": 11753
+     },
+     {
+      "slotId": "operative:6.01(b)(11)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(11)",
+      "charStart": 11753,
+      "charEnd": 11874
+     },
+     {
+      "slotId": "operative:6.01(b)(11)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(11)",
+      "charStart": 11874,
+      "charEnd": 12110
+     },
+     {
+      "slotId": "operative:6.01(b)(11)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(11)",
+      "charStart": 12110,
+      "charEnd": 12294
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(a)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(a)",
+      "charStart": 12294,
+      "charEnd": 12370
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(a)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(a)",
+      "charStart": 12370,
+      "charEnd": 12579
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(a)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(a)",
+      "charStart": 12579,
+      "charEnd": 12827
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(a)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(a)",
+      "charStart": 12827,
+      "charEnd": 13066
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(a)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(a)",
+      "charStart": 13066,
+      "charEnd": 13306
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(a)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(a)",
+      "charStart": 13306,
+      "charEnd": 13397
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(b)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(b)",
+      "charStart": 13397,
+      "charEnd": 13537
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(b)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(b)",
+      "charStart": 13537,
+      "charEnd": 13769
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(b)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(b)",
+      "charStart": 13769,
+      "charEnd": 13994
+     },
+     {
+      "slotId": "operative:6.01(b)(12)(b)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(12)(b)",
+      "charStart": 13994,
+      "charEnd": 14191
+     },
+     {
+      "slotId": "operative:6.01(b)(13)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)",
+      "charStart": 14191,
+      "charEnd": 14319
+     },
+     {
+      "slotId": "operative:6.01(b)(13)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)",
+      "charStart": 14319,
+      "charEnd": 14550
+     },
+     {
+      "slotId": "operative:6.01(b)(13)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)",
+      "charStart": 14550,
+      "charEnd": 14776
+     },
+     {
+      "slotId": "operative:6.01(b)(13)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)",
+      "charStart": 14776,
+      "charEnd": 15019
+     },
+     {
+      "slotId": "operative:6.01(b)(13)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)",
+      "charStart": 15019,
+      "charEnd": 15260
+     },
+     {
+      "slotId": "operative:6.01(b)(13)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)",
+      "charStart": 15260,
+      "charEnd": 15316
+     },
+     {
+      "slotId": "operative:6.01(b)(13)#7",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)",
+      "charStart": 15316,
+      "charEnd": 15374
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(a)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(a)",
+      "charStart": 15374,
+      "charEnd": 15500
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(a)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(a)",
+      "charStart": 15500,
+      "charEnd": 15747
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(a)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(a)",
+      "charStart": 15747,
+      "charEnd": 15834
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(b)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(b)",
+      "charStart": 15834,
+      "charEnd": 15893
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(b)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(b)(i)",
+      "charStart": 15893,
+      "charEnd": 15956
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(b)(i)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(b)(i)",
+      "charStart": 15956,
+      "charEnd": 16146
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(b)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(b)(ii)",
+      "charStart": 16146,
+      "charEnd": 16195
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(b)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(b)(ii)",
+      "charStart": 16195,
+      "charEnd": 16285
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(c)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(c)",
+      "charStart": 16285,
+      "charEnd": 16309
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(c)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(c)(i)",
+      "charStart": 16309,
+      "charEnd": 16427
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(c)(i)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(c)(i)",
+      "charStart": 16427,
+      "charEnd": 16523
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(c)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(c)(ii)",
+      "charStart": 16523,
+      "charEnd": 16540
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(c)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(c)(ii)",
+      "charStart": 16540,
+      "charEnd": 16544
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(c)(iii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(c)(iii)",
+      "charStart": 16544,
+      "charEnd": 16627
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(c)(iii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(c)(iii)",
+      "charStart": 16627,
+      "charEnd": 16732
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(c)(iii)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(c)(iii)",
+      "charStart": 16732,
+      "charEnd": 16747
+     },
+     {
+      "slotId": "operative:6.01(b)(13)(c)(iii)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(13)(c)(iii)",
+      "charStart": 16747,
+      "charEnd": 16856
+     },
+     {
+      "slotId": "operative:6.01(b)(14)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)",
+      "charStart": 16856,
+      "charEnd": 17091
+     },
+     {
+      "slotId": "operative:6.01(b)(14)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)",
+      "charStart": 17091,
+      "charEnd": 17253
+     },
+     {
+      "slotId": "operative:6.01(b)(14)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)",
+      "charStart": 17253,
+      "charEnd": 17269
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(a)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(a)",
+      "charStart": 17269,
+      "charEnd": 17374
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(a)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(a)(i)",
+      "charStart": 17374,
+      "charEnd": 17391
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(a)(i)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(a)(i)",
+      "charStart": 17391,
+      "charEnd": 17545
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(a)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(a)(ii)",
+      "charStart": 17545,
+      "charEnd": 17631
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(a)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(a)(ii)",
+      "charStart": 17631,
+      "charEnd": 17740
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(b)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(b)",
+      "charStart": 17740,
+      "charEnd": 17750
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(b)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(b)",
+      "charStart": 17750,
+      "charEnd": 17845
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(b)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(b)(i)",
+      "charStart": 17845,
+      "charEnd": 17985
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(b)(i)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(b)(i)",
+      "charStart": 17985,
+      "charEnd": 18011
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(b)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(b)(ii)",
+      "charStart": 18011,
+      "charEnd": 18201
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(c)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(c)",
+      "charStart": 18201,
+      "charEnd": 18310
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(c)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(c)(i)",
+      "charStart": 18310,
+      "charEnd": 18481
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(c)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(c)(ii)",
+      "charStart": 18481,
+      "charEnd": 18553
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(c)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(c)(ii)",
+      "charStart": 18553,
+      "charEnd": 18782
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(c)(ii)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(c)(ii)(i)",
+      "charStart": 18782,
+      "charEnd": 18957
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(c)(ii)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(c)(ii)(ii)",
+      "charStart": 18957,
+      "charEnd": 19028
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(c)(ii)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(c)(ii)(ii)",
+      "charStart": 19028,
+      "charEnd": 19155
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(c)(ii)(ii)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(c)(ii)(ii)",
+      "charStart": 19155,
+      "charEnd": 19159
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(d)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(d)",
+      "charStart": 19159,
+      "charEnd": 19285
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(d)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(d)",
+      "charStart": 19285,
+      "charEnd": 19430
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(d)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(d)",
+      "charStart": 19430,
+      "charEnd": 19535
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(d)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(d)",
+      "charStart": 19535,
+      "charEnd": 19658
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(e)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(e)",
+      "charStart": 19658,
+      "charEnd": 19775
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(e)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(e)",
+      "charStart": 19775,
+      "charEnd": 19911
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(e)(1)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(e)(1)",
+      "charStart": 19911,
+      "charEnd": 20010
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(e)(1)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(e)(1)",
+      "charStart": 20010,
+      "charEnd": 20023
+     },
+     {
+      "slotId": "operative:6.01(b)(14)(e)(2)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(14)(e)(2)",
+      "charStart": 20023,
+      "charEnd": 20087
+     },
+     {
+      "slotId": "operative:6.01(b)(15)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(15)",
+      "charStart": 20087,
+      "charEnd": 20122
+     },
+     {
+      "slotId": "operative:6.01(b)(15)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(15)",
+      "charStart": 20122,
+      "charEnd": 20281
+     },
+     {
+      "slotId": "operative:6.01(b)(15)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(15)",
+      "charStart": 20281,
+      "charEnd": 20359
+     },
+     {
+      "slotId": "operative:6.01(b)(15)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(15)",
+      "charStart": 20359,
+      "charEnd": 20379
+     },
+     {
+      "slotId": "operative:6.01(b)(16)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(16)",
+      "charStart": 20379,
+      "charEnd": 20461
+     },
+     {
+      "slotId": "operative:6.01(b)(16)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(16)",
+      "charStart": 20461,
+      "charEnd": 20659
+     },
+     {
+      "slotId": "operative:6.01(b)(17)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(17)(i)",
+      "charStart": 20659,
+      "charEnd": 20768
+     },
+     {
+      "slotId": "operative:6.01(b)(17)(i)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(17)(i)",
+      "charStart": 20768,
+      "charEnd": 20771
+     },
+     {
+      "slotId": "operative:6.01(b)(17)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(17)(ii)",
+      "charStart": 20771,
+      "charEnd": 20780
+     },
+     {
+      "slotId": "operative:6.01(b)(17)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(17)(ii)",
+      "charStart": 20780,
+      "charEnd": 20982
+     },
+     {
+      "slotId": "operative:6.01(b)(17)(ii)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(17)(ii)",
+      "charStart": 20982,
+      "charEnd": 21026
+     },
+     {
+      "slotId": "operative:6.01(b)(18)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(18)(i)",
+      "charStart": 21026,
+      "charEnd": 21101
+     },
+     {
+      "slotId": "operative:6.01(b)(18)(i)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(18)(i)",
+      "charStart": 21101,
+      "charEnd": 21344
+     },
+     {
+      "slotId": "operative:6.01(b)(18)(i)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(18)(i)",
+      "charStart": 21344,
+      "charEnd": 21563
+     },
+     {
+      "slotId": "operative:6.01(b)(18)(i)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(18)(i)",
+      "charStart": 21563,
+      "charEnd": 21587
+     },
+     {
+      "slotId": "operative:6.01(b)(18)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(18)(ii)",
+      "charStart": 21587,
+      "charEnd": 21745
+     },
+     {
+      "slotId": "operative:6.01(b)(19)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(19)",
+      "charStart": 21745,
+      "charEnd": 21870
+     },
+     {
+      "slotId": "operative:6.01(b)(19)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(19)",
+      "charStart": 21870,
+      "charEnd": 22115
+     },
+     {
+      "slotId": "operative:6.01(b)(19)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(19)",
+      "charStart": 22115,
+      "charEnd": 22349
+     },
+     {
+      "slotId": "operative:6.01(b)(19)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(19)",
+      "charStart": 22349,
+      "charEnd": 22444
+     },
+     {
+      "slotId": "operative:6.01(b)(20)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(20)",
+      "charStart": 22444,
+      "charEnd": 22465
+     },
+     {
+      "slotId": "operative:6.01(b)(20)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(20)",
+      "charStart": 22465,
+      "charEnd": 22500
+     },
+     {
+      "slotId": "operative:6.01(b)(20)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(20)(i)",
+      "charStart": 22500,
+      "charEnd": 22543
+     },
+     {
+      "slotId": "operative:6.01(b)(20)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(20)(ii)",
+      "charStart": 22543,
+      "charEnd": 22619
+     },
+     {
+      "slotId": "operative:6.01(b)(20)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(20)(ii)",
+      "charStart": 22619,
+      "charEnd": 22697
+     },
+     {
+      "slotId": "operative:6.01(b)(21)(a)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(21)(a)",
+      "charStart": 22697,
+      "charEnd": 22735
+     },
+     {
+      "slotId": "operative:6.01(b)(21)(b)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(21)(b)",
+      "charStart": 22735,
+      "charEnd": 22971
+     },
+     {
+      "slotId": "operative:6.01(b)(21)(b)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(21)(b)",
+      "charStart": 22971,
+      "charEnd": 23209
+     },
+     {
+      "slotId": "operative:6.01(b)(21)(b)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(21)(b)",
+      "charStart": 23209,
+      "charEnd": 23457
+     },
+     {
+      "slotId": "operative:6.01(b)(21)(b)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(21)(b)",
+      "charStart": 23457,
+      "charEnd": 23479
+     },
+     {
+      "slotId": "operative:6.01(b)(21)(c)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(21)(c)",
+      "charStart": 23479,
+      "charEnd": 23584
+     },
+     {
+      "slotId": "operative:6.01(b)(22)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(22)",
+      "charStart": 23584,
+      "charEnd": 23710
+     },
+     {
+      "slotId": "operative:6.01(b)(22)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(22)",
+      "charStart": 23710,
+      "charEnd": 23959
+     },
+     {
+      "slotId": "operative:6.01(b)(22)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(22)",
+      "charStart": 23959,
+      "charEnd": 24031
+     },
+     {
+      "slotId": "operative:6.01(b)(23)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(23)",
+      "charStart": 24031,
+      "charEnd": 24075
+     },
+     {
+      "slotId": "operative:6.01(b)(23)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(23)",
+      "charStart": 24075,
+      "charEnd": 24190
+     },
+     {
+      "slotId": "operative:6.01(b)(24)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(24)",
+      "charStart": 24190,
+      "charEnd": 24207
+     },
+     {
+      "slotId": "operative:6.01(b)(25)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(25)",
+      "charStart": 24207,
+      "charEnd": 24311
+     },
+     {
+      "slotId": "operative:6.01(b)(25)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(25)",
+      "charStart": 24311,
+      "charEnd": 24374
+     },
+     {
+      "slotId": "operative:6.01(b)(26)(a)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(26)(a)",
+      "charStart": 24374,
+      "charEnd": 24455
+     },
+     {
+      "slotId": "operative:6.01(b)(26)(a)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(26)(a)",
+      "charStart": 24455,
+      "charEnd": 24692
+     },
+     {
+      "slotId": "operative:6.01(b)(26)(a)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(26)(a)",
+      "charStart": 24692,
+      "charEnd": 24705
+     },
+     {
+      "slotId": "operative:6.01(b)(26)(b)(i)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(26)(b)(i)",
+      "charStart": 24705,
+      "charEnd": 24774
+     },
+     {
+      "slotId": "operative:6.01(b)(26)(b)(ii)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(26)(b)(ii)",
+      "charStart": 24774,
+      "charEnd": 24887
+     },
+     {
+      "slotId": "operative:6.01(b)(26)(b)(ii)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(26)(b)(ii)",
+      "charStart": 24887,
+      "charEnd": 24963
+     },
+     {
+      "slotId": "operative:6.01(b)(27)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(27)",
+      "charStart": 24963,
+      "charEnd": 25008
+     },
+     {
+      "slotId": "operative:6.01(b)(27)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(27)",
+      "charStart": 25008,
+      "charEnd": 25082
+     },
+     {
+      "slotId": "operative:6.01(b)(27)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(27)",
+      "charStart": 25082,
+      "charEnd": 25241
+     },
+     {
+      "slotId": "operative:6.01(b)(27)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(27)",
+      "charStart": 25241,
+      "charEnd": 25468
+     },
+     {
+      "slotId": "operative:6.01(b)(27)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(27)",
+      "charStart": 25468,
+      "charEnd": 25612
+     },
+     {
+      "slotId": "operative:6.01(b)(28)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(28)",
+      "charStart": 25612,
+      "charEnd": 25648
+     },
+     {
+      "slotId": "operative:6.01(b)(29)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(29)",
+      "charStart": 25648,
+      "charEnd": 25666
+     },
+     {
+      "slotId": "operative:6.01(b)(30)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(30)",
+      "charStart": 25666,
+      "charEnd": 25786
+     },
+     {
+      "slotId": "operative:6.01(b)(31)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(31)",
+      "charStart": 25786,
+      "charEnd": 25909
+     },
+     {
+      "slotId": "operative:6.01(b)(31)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(31)",
+      "charStart": 25909,
+      "charEnd": 26106
+     },
+     {
+      "slotId": "operative:6.01(b)(31)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(31)",
+      "charStart": 26106,
+      "charEnd": 26111
+     },
+     {
+      "slotId": "operative:6.01(b)(32)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(32)",
+      "charStart": 26111,
+      "charEnd": 26233
+     },
+     {
+      "slotId": "operative:6.01(b)(32)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(32)",
+      "charStart": 26233,
+      "charEnd": 26242
+     },
+     {
+      "slotId": "operative:6.01(b)(32)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(32)",
+      "charStart": 26242,
+      "charEnd": 26246
+     },
+     {
+      "slotId": "operative:6.01(b)(33)#1",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(33)",
+      "charStart": 26246,
+      "charEnd": 26281
+     },
+     {
+      "slotId": "operative:6.01(b)(33)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(33)",
+      "charStart": 26281,
+      "charEnd": 26420
+     },
+     {
+      "slotId": "operative:6.01(b)(33)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(33)",
+      "charStart": 26420,
+      "charEnd": 26657
+     },
+     {
+      "slotId": "operative:6.01(b)(33)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(33)",
+      "charStart": 26657,
+      "charEnd": 26899
+     },
+     {
+      "slotId": "operative:6.01(b)(33)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(33)",
+      "charStart": 26899,
+      "charEnd": 27145
+     },
+     {
+      "slotId": "operative:6.01(b)(33)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(33)",
+      "charStart": 27145,
+      "charEnd": 27162
+     },
+     {
+      "slotId": "operative:6.01(b)(33)#7",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(33)",
+      "charStart": 27162,
+      "charEnd": 27226
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#1~2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 27226,
+      "charEnd": 27346
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#2~2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 27346,
+      "charEnd": 27586
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 27586,
+      "charEnd": 27831
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 27831,
+      "charEnd": 28012
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 28012,
+      "charEnd": 28059
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 28059,
+      "charEnd": 28293
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#7",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 28293,
+      "charEnd": 28425
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#8",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 28425,
+      "charEnd": 28430
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#1~2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 28430,
+      "charEnd": 28511
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 28511,
+      "charEnd": 28755
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 28755,
+      "charEnd": 28819
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#4",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 28819,
+      "charEnd": 28890
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#5",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 28890,
+      "charEnd": 29135
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#6",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 29135,
+      "charEnd": 29208
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#7",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 29208,
+      "charEnd": 29377
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#8",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 29377,
+      "charEnd": 29616
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#9",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 29616,
+      "charEnd": 29862
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#10",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 29862,
+      "charEnd": 30098
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#11",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 30098,
+      "charEnd": 30154
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#12",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 30154,
+      "charEnd": 30338
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#13",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 30338,
+      "charEnd": 30575
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#14",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 30575,
+      "charEnd": 30758
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#15",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 30758,
+      "charEnd": 30811
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#16",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 30811,
+      "charEnd": 30899
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#17",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 30899,
+      "charEnd": 30925
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#18",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 30925,
+      "charEnd": 31145
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#19",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 31145,
+      "charEnd": 31349
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#20",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 31349,
+      "charEnd": 31385
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#21",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 31385,
+      "charEnd": 31594
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#22",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 31594,
+      "charEnd": 31631
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#23",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 31631,
+      "charEnd": 31746
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#24",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 31746,
+      "charEnd": 31871
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#25",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 31871,
+      "charEnd": 32117
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#26",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 32117,
+      "charEnd": 32360
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#27",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 32360,
+      "charEnd": 32406
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#28",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 32406,
+      "charEnd": 32486
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#29",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 32486,
+      "charEnd": 32665
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#30",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 32665,
+      "charEnd": 32803
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#31",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 32803,
+      "charEnd": 33050
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#32",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 33050,
+      "charEnd": 33223
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#33",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 33223,
+      "charEnd": 33260
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#1~3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 33260,
+      "charEnd": 33316
+     },
+     {
+      "slotId": "operative:6.01(b)(1)#2~3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(1)",
+      "charStart": 33316,
+      "charEnd": 33371
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#1~3",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 33371,
+      "charEnd": 33558
+     },
+     {
+      "slotId": "operative:6.01(b)(2)#2~2",
+      "regionId": "operative",
+      "sectionRef": "6.01(b)(2)",
+      "charStart": 33558,
+      "charEnd": 33623
+     }
+    ],
+    "batches": 6,
+    "batchChars": 6000,
+    "gapBatches": 1,
+    "firstPassCalls": 6,
+    "gapCalls": 1
+   },
+   "telemetryCostUsd": 2.9553220000000007
+  }
+ ],
+ "authoritative": {
+  "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+  "canonicalItems": 326,
+  "frozenContentHash": "88e7419f61f96b827db31d91e9047e699fb54685d11d94d432b081e0d7eb1b0c",
+  "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+  "unaccountedSource": 17,
+  "uninventoriedValues": 2,
+  "ensemble": {
+   "algorithmVersion": "semantic-ensemble.v1",
+   "policy": "SUPPORT_AWARE_CANONICAL_UNION",
+   "passIds": [
+    "pass-1",
+    "pass-2"
+   ],
+   "passHashes": {
+    "pass-1": "57edaf1c2d889cedac9298116a84c33acd82b1ab3b037cbf33ec0a341d812e73",
+    "pass-2": "ee34b44fad8ca038146adcd6a65c07ccb3f48d5d0adbe50d96d55be5f821070f"
+   },
+   "counts": {
+    "canonicalItems": 326,
+    "corroborated": 252,
+    "singleRun": 74,
+    "singleRunByPass": {
+     "pass-1": 37,
+     "pass-2": 37
+    },
+    "conflicted": 0,
+    "materialSingleRun": 72,
+    "informationalSingleRun": 2,
+    "materialConflicted": 0,
+    "rejectedUnverifiable": 0
+   },
+   "supportReviewRequired": true,
+   "supportReviewFraction": 0.2209,
+   "conflicts": [],
+   "compatibility": {
+    "mode": "STRICT",
+    "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+    "partitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+    "documentIds": [
+     "doc-a"
+    ],
+    "passes": {
+     "pass-1": {
+      "algorithmVersion": "semantic-accountability.v5",
+      "promptVersion": "semantic-inventory-prompt.v5",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+      "sourceIdentityMethod": "RECORDED_AT_FREEZE",
+      "partitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+      "documentId": "doc-a"
+     },
+     "pass-2": {
+      "algorithmVersion": "semantic-accountability.v5",
+      "promptVersion": "semantic-inventory-prompt.v5",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+      "sourceIdentityMethod": "RECORDED_AT_FREEZE",
+      "partitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+      "documentId": "doc-a"
+     }
+    },
+    "checks": [
+     {
+      "check": "candidate-ref",
+      "pass": true,
+      "detail": "pass-1: candidateRef phase-3-final-601:chwy:6.01 matches"
+     },
+     {
+      "check": "source-identity-recorded",
+      "pass": true,
+      "detail": "pass-1: source identity RECORDED_AT_FREEZE"
+     },
+     {
+      "check": "source-context-hash",
+      "pass": true,
+      "detail": "pass-1: source-context hash 08752002dcea9074 vs ensemble 08752002dcea9074"
+     },
+     {
+      "check": "partition",
+      "pass": true,
+      "detail": "pass-1: slot partition 271ed1589981c852 vs ensemble 271ed1589981c852"
+     },
+     {
+      "check": "document",
+      "pass": true,
+      "detail": "pass-1: document doc-a vs ensemble doc-a"
+     },
+     {
+      "check": "algorithm-generation",
+      "pass": true,
+      "detail": "pass-1: algorithm semantic-accountability.v5 supported"
+     },
+     {
+      "check": "prompt-generation",
+      "pass": true,
+      "detail": "pass-1: prompt semantic-inventory-prompt.v5 supported"
+     },
+     {
+      "check": "pass-status",
+      "pass": true,
+      "detail": "pass-1: INVENTORY_COVERAGE_GAP"
+     },
+     {
+      "check": "candidate-ref",
+      "pass": true,
+      "detail": "pass-2: candidateRef phase-3-final-601:chwy:6.01 matches"
+     },
+     {
+      "check": "source-identity-recorded",
+      "pass": true,
+      "detail": "pass-2: source identity RECORDED_AT_FREEZE"
+     },
+     {
+      "check": "source-context-hash",
+      "pass": true,
+      "detail": "pass-2: source-context hash 08752002dcea9074 vs ensemble 08752002dcea9074"
+     },
+     {
+      "check": "partition",
+      "pass": true,
+      "detail": "pass-2: slot partition 271ed1589981c852 vs ensemble 271ed1589981c852"
+     },
+     {
+      "check": "document",
+      "pass": true,
+      "detail": "pass-2: document doc-a vs ensemble doc-a"
+     },
+     {
+      "check": "algorithm-generation",
+      "pass": true,
+      "detail": "pass-2: algorithm semantic-accountability.v5 supported"
+     },
+     {
+      "check": "prompt-generation",
+      "pass": true,
+      "detail": "pass-2: prompt semantic-inventory-prompt.v5 supported"
+     },
+     {
+      "check": "pass-status",
+      "pass": true,
+      "detail": "pass-2: INVENTORY_COVERAGE_GAP"
+     },
+     {
+      "check": "algorithm-generation",
+      "pass": true,
+      "detail": "pass-2 vs pass-1: algorithm semantic-accountability.v5 vs semantic-accountability.v5"
+     },
+     {
+      "check": "prompt-generation",
+      "pass": true,
+      "detail": "pass-2 vs pass-1: prompt semantic-inventory-prompt.v5 vs semantic-inventory-prompt.v5"
+     },
+     {
+      "check": "provider-model",
+      "pass": true,
+      "detail": "pass-2 vs pass-1: VERCEL_AI_GATEWAY/anthropic/claude-sonnet-5 vs VERCEL_AI_GATEWAY/anthropic/claude-sonnet-5"
+     }
+    ],
+    "declaredExceptions": []
+   }
+  }
+ },
+ "persistence": {
+  "inventory": {
+   "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/frozen-inventory.json",
+   "existsAfterWrite": true,
+   "writtenSha256": "9ab4ca8422b77c3f39bad4f0715ab21af3d80fb4225c32c8f29095e94b69bdc7",
+   "readSha256": "9ab4ca8422b77c3f39bad4f0715ab21af3d80fb4225c32c8f29095e94b69bdc7",
+   "hashEqual": true,
+   "structurallyEqual": true
+  },
+  "passes": {
+   "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/pass-a-passes.json",
+   "existsAfterWrite": true,
+   "writtenSha256": "a16d7d7e7d50cfc814ae95f9c3eca4baa8aa6e74ad6dbe79140a5ecf88dc9bd5",
+   "readSha256": "a16d7d7e7d50cfc814ae95f9c3eca4baa8aa6e74ad6dbe79140a5ecf88dc9bd5",
+   "hashEqual": true,
+   "structurallyEqual": true
+  }
+ },
+ "paths": {
+  "inventory": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/frozen-inventory.json",
+  "passes": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/pass-a-passes.json",
+  "calls": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls"
+ }
+}
