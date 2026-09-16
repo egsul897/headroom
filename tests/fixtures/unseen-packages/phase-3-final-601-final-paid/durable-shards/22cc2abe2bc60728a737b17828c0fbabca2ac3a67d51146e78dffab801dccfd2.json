@@ -1,0 +1,131 @@
+{
+ "version": "hd4-durable-shard-record.v1",
+ "missionId": "phase-3-final-601-final-paid",
+ "planHash": "eab77c1aad1d941440f0d412e20578902c6744a5e100a0306153ea02e1720552",
+ "shardId": "shard:6b6e808a01e1dcd22a81",
+ "shardHash": "22cc2abe2bc60728a737b17828c0fbabca2ac3a67d51146e78dffab801dccfd2",
+ "result": {
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [
+    {
+     "ruleId": "ir-rule:4f95738f8d6758f232361f41",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(2)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUALITATIVE_OBLIGATION",
+     "posture": "N_A",
+     "action": null,
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": null,
+     "conditions": [
+      {
+       "conditionId": "rule[r1].condition[0]",
+       "conditionType": "UNSUPPORTED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Junior lien priority with respect to the same collateral does not, by itself, cause Senior Indebtedness to be characterized as subordinated or junior to other Senior Indebtedness.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(2)",
+        "excerpt": "Senior Indebtedness as subordinated or junior to any other Senior Indebtedness merely because it has a junior priority with respect to the same collateral"
+       },
+       "inventoryItemIds": [
+        "inv-item:34da551faaf6742c01c21cbe"
+       ]
+      },
+      {
+       "conditionId": "rule[r1].condition[1]",
+       "conditionType": "UNSUPPORTED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Being secured by sufficient collateral does not, by itself, cause such Senior Indebtedness to be characterized as subordinated or junior to other Senior Indebtedness.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(2)",
+        "excerpt": "or because it is secured by sufficient collateral"
+       },
+       "inventoryItemIds": [
+        "inv-item:c5a91a77df1c7cd2bf2b39ac"
+       ]
+      },
+      {
+       "conditionId": "rule[r1].condition[2]",
+       "conditionType": "UNSUPPORTED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Such Senior Indebtedness being issued or guaranteed by other obligors does not, by itself, cause it to be characterized as subordinated or junior to other Senior Indebtedness.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(2)",
+        "excerpt": "or issued or guaranteed by other obligors"
+       },
+       "inventoryItemIds": [
+        "inv-item:c5a91a77df1c7cd2bf2b39ac"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full operative text of clause (2) supplied and its interpretive lead-in ('This Agreement will not treat...') confirmed via read-only parent-item context, allowing faithful, unambiguous representation of the characterization rule.",
+      "No numeric threshold, dollar amount, or ratio is involved - the clause is a definitional/interpretive carve-out (what facts do NOT, by themselves, make Senior Indebtedness 'subordinated or junior'), so no capacityExpression is applicable; this is reflected by a null capacityExpression rather than a forced/invented computation.",
+      "ruleType \"CHARACTERIZATION_RULE\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "condition[0].conditionType \"OTHER\" not recognized - normalized to UNSUPPORTED",
+      "condition[1].conditionType \"OTHER\" not recognized - normalized to UNSUPPORTED",
+      "condition[2].conditionType \"OTHER\" not recognized - normalized to UNSUPPORTED"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(2)",
+      "excerpt": "(2) Senior Indebtedness as subordinated or junior to any other Senior Indebtedness merely because it has a junior priority with respect to the same collateral or because it is secured by sufficient collateral or issued or guaranteed by other obligors."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:34da551faaf6742c01c21cbe",
+      "inv-item:c5a91a77df1c7cd2bf2b39ac"
+     ]
+    }
+   ],
+   "definitions": [],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [],
+  "unresolvedIssues": [
+   "[rule[r1]] ruleType \"CHARACTERIZATION_RULE\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+   "[rule[r1]] condition[0].conditionType \"OTHER\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r1]] condition[1].conditionType \"OTHER\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r1]] condition[2].conditionType \"OTHER\" not recognized - normalized to UNSUPPORTED",
+   "Source provision (§6.01(b)(2)) is a purely interpretive/characterization carve-out, not a quantitative permission, prohibition, or ratio test: it clarifies that Senior Indebtedness is not deemed 'subordinated or junior' to other Senior Indebtedness merely because of (i) junior lien priority on the same collateral, (ii) being secured by sufficient collateral, or (iii) being issued or guaranteed by other obligors.",
+   "The enclosing lead-in ('This Agreement will not treat...') was supplied only as read-only parent-item context per instructions; it was used solely to interpret clause (2)'s own text and no inventory item or new finding was extracted from it.",
+   "The 'Senior Indebtedness' definition (partially supplied, marked TRUNCATED AT BUDGET) was reviewed for interpretive context only; the clause's own operative meaning does not depend on the full definition text, so no MISSING_CONTEXT downgrade was applied on that basis.",
+   "No amendment history exists for this provision (confirmed never amended), so no supersession-related uncertainty applies.",
+   "Both frozen inventory items (inv-item:34da551faaf6742c01c21cbe, inv-item:c5a91a77df1c7cd2bf2b39ac) were consumed at both the rule level and via the three decomposed conditions matching their respective excerpt boundaries; no disposition entries were needed."
+  ],
+  "telemetry": {
+   "inputTokens": 74469,
+   "outputTokens": 12270,
+   "costUsd": 0.271638
+  },
+  "shardId": "shard:6b6e808a01e1dcd22a81",
+  "shardHash": "22cc2abe2bc60728a737b17828c0fbabca2ac3a67d51146e78dffab801dccfd2",
+  "reusedFromHash": false,
+  "attempts": 1
+ },
+ "resultSha256": "0776d51a021b0541f4b48c03348843af684431e3adcf1d007aaa9e7e9ad08d3b",
+ "completedAt": "2026-09-16T14:14:49.228Z",
+ "recordSha256": "870e756c3aa86b8628229be4229229bdc455b089afd080d6e0f54748d644d503"
+}
