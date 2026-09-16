@@ -1,0 +1,58 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 FINAL RESTART-SAFE PAID RUN §5 - cost gate (frozen methodology, live balance)",
+ "at": "2026-09-16T12:40:44.573Z",
+ "rates": {
+  "passABatchMean": 0.431337,
+  "passABatchWorst": 0.627356,
+  "passABatchCalls": 38,
+  "passAGapMean": 0.3529920000000001,
+  "passAGapWorst": 0.47530800000000006,
+  "passAGapCalls": 5,
+  "passBMean": 0.000017264537354079804,
+  "passBWorst": 0.00003215094994361066,
+  "passBShards": 36,
+  "verifierSemanticReview": 0.32929600000000003,
+  "verifierCalls": 1
+ },
+ "deterministicPlan": {
+  "mode": "SHARDED",
+  "reason": "MULTIPLE_SHARDS_REQUIRED",
+  "planHash": "7be17413609ebdbda88ee601750bf1b21e015d790ce583f7572eb75c0083c5e9",
+  "shards": 6,
+  "plannerEstimatedInputTokens": 118179,
+  "passABatchesPerPass": 6,
+  "plannedWithEmptyInventory": true
+ },
+ "estimates": {
+  "mean": {
+   "passAUsd": 5.882,
+   "passBUsd": 2.0403,
+   "verifierUsd": 0.3863,
+   "totalUsd": 8.3086
+  },
+  "worst": {
+   "passAUsd": 8.4789,
+   "passBUsd": 3.7996,
+   "verifierUsd": 0.3863,
+   "totalUsd": 12.6648
+  },
+  "conservative": {
+   "passAUsd": 10.5986,
+   "passBUsd": 4.7495,
+   "verifierUsd": 0.4829,
+   "totalUsd": 15.8309
+  }
+ },
+ "liveGuardInitialUsd": 15.830939,
+ "frozenEstimatorUnroundedUsd": 15.830939,
+ "guardAgreesWithEstimator": true,
+ "gate": {
+  "capUsd": 15.84,
+  "gatewayBalanceUsd": 19.034126,
+  "conservativeFitsCap": true,
+  "balanceCoversConservative": true,
+  "firstCallAdmissible": true
+ },
+ "decision": "CLEAR_TO_EXECUTE",
+ "paidCallsMade": 0
+}

@@ -11,7 +11,7 @@
  * (Guard.recordReplay); for Pass B the planner tokens of shards served from the store are removed from the paid
  * remaining work before admission. Run: HD4_PAID_RUN_AUTHORIZED=1 npx tsx scripts/phase-3-601-hd4-run.ts
  */
-import { existsSync, readFileSync } from "node:fs";
+import { appendFileSync, existsSync, readFileSync } from "node:fs";
 if (!process.env.AI_GATEWAY_API_KEY) { try { const m = readFileSync(".env.local", "utf-8").match(/AI_GATEWAY_API_KEY=(.+)/); if (m) process.env.AI_GATEWAY_API_KEY = m[1]!.trim(); } catch { /* no key file */ } }
 import Anthropic from "@anthropic-ai/sdk";
 import { CAP_USD, PRIOR, buildPlanContext, newGuard } from "./phase-3-601-final-certify";
@@ -53,14 +53,27 @@ void (async () => {
   console.log(`======= PHASE 3 FINAL-BRIDGE / 6.01 HD-4 RESTART-SAFE RUN (mission ${HD4_MISSION_ID}, evidence ${HD4_RAW}) =======`);
   const { built, prePlan, batchesPerPass, rates } = buildPlanContext();
   const creditsBefore = await gatewayCredits();
-  const balanceBefore = creditsBefore ? Number(creditsBefore.balance) : 0;
+  const balanceNow = creditsBefore ? Number(creditsBefore.balance) : 0;
+  // MISSION-LEVEL cap across launches: the FIRST launch pins the mission's starting balance; every later launch of the
+  // same mission charges (startBalance - balanceNow) - the gateway-authoritative spend so far, including any in-flight
+  // call the provider billed after a kill - against the SAME $15.84 cap before it makes a single new call.
+  const missionStartPath = `${HD4_RAW}/mission-start.json`;
+  const restart = existsSync(missionStartPath);
+  if (!restart) writeJsonDurable(missionStartPath, { missionId: HD4_MISSION_ID, evidenceDir: HD4_RAW, startedAt: new Date().toISOString(), gatewayBalanceAtMissionStart: balanceNow, capUsd: CAP_USD });
+  const missionStart = JSON.parse(readFileSync(missionStartPath, "utf8")) as { missionId: string; gatewayBalanceAtMissionStart: number; startedAt: string };
+  if (missionStart.missionId !== HD4_MISSION_ID) throw new Error(`FATAL: evidence dir belongs to mission ${missionStart.missionId}, not ${HD4_MISSION_ID}`);
+  const balanceBefore = missionStart.gatewayBalanceAtMissionStart;
+  const priorLaunchSpend = restart ? Math.max(0, +(balanceBefore - balanceNow).toFixed(6)) : 0;
+  const launches = existsSync(`${HD4_RAW}/launches.ndjson`) ? readFileSync(`${HD4_RAW}/launches.ndjson`, "utf8").trim().split("\n").filter(Boolean).length : 0;
+  appendFileSync(`${HD4_RAW}/launches.ndjson`, JSON.stringify({ launch: launches + 1, restart, at: new Date().toISOString(), pid: process.pid, gatewayBalanceNow: balanceNow, priorLaunchSpendUsd: priorLaunchSpend }) + "\n");
   const guard = newGuard(rates, batchesPerPass, prePlan.totals.estimatedInputTokens, balanceBefore, STATE);
+  guard.spent = priorLaunchSpend; // charged against the mission cap; the durable replays then decrement the remaining work for $0
   const model = process.env.ANALYZER_MODEL ?? DEFAULT_GATEWAY_ANALYZER_MODEL;
   const probe = getStageCaller(); if (probe.isSynthetic) throw new Error("FATAL: no real credential");
-  console.log(`  models: inventory=${probe.model}  cap $${CAP_USD}  balance $${balanceBefore}  restart=${existsSync(`${HD4_RAW}/durable-calls`) || existsSync(`${HD4_RAW}/frozen-inventory.json`)}`);
+  console.log(`  models: inventory=${probe.model}  cap $${CAP_USD}  mission-start balance $${balanceBefore}  balance now $${balanceNow}  launch #${launches + 1} restart=${restart} priorLaunchSpend=$${priorLaunchSpend}`);
   const startedAt = new Date().toISOString();
   const counts = { p1: { batch: 0, gap: 0, replayBatch: 0, replayGap: 0 }, p2: { batch: 0, gap: 0, replayBatch: 0, replayGap: 0 }, compileTurns: 0, shardsExecuted: 0, shardsReused: 0 };
-  const ledger = (extra: Record<string, unknown>) => writeJson(`${SUMMARY}/ledger.json`, { artifact: "HD-4 restart-safe run - paid ledger", at: new Date().toISOString(), startedAt, missionId: HD4_MISSION_ID, capUsd: CAP_USD, liveCalls: guard.liveCount(), replayedCalls: guard.replayCount(), logicalCalls: guard.calls.length, spendUsd: +guard.spent.toFixed(6), historicalReplayedUsd: +guard.historicalReplayedUsd.toFixed(6), costBreakdown: { passAPass1Usd: +guard.costByPrefix("passA-1").toFixed(6), passAPass2Usd: +guard.costByPrefix("passA-2").toFixed(6), passBUsd: +guard.costByPrefix("compile:").toFixed(6), conditionSuspicionUsd: +guard.costByPrefix("verify-suspicion").toFixed(6), semanticReviewUsd: +guard.costByPrefix("verify-review").toFixed(6), totalUsd: +guard.spent.toFixed(6) }, callCounts: counts, gatewayBalanceBefore: balanceBefore, guardRefusals: guard.refusals, guardStateLog: STATE, calls: guard.calls, priorSpend: PRIOR, ...extra });
+  const ledger = (extra: Record<string, unknown>) => writeJson(`${SUMMARY}/ledger.json`, { artifact: "HD-4 restart-safe run - paid ledger", at: new Date().toISOString(), startedAt, missionStartedAt: missionStart.startedAt, launch: launches + 1, restart, priorLaunchSpendUsd: priorLaunchSpend, thisLaunchSpendUsd: +(guard.spent - priorLaunchSpend).toFixed(6), missionId: HD4_MISSION_ID, capUsd: CAP_USD, liveCalls: guard.liveCount(), replayedCalls: guard.replayCount(), logicalCalls: guard.calls.length, spendUsd: +guard.spent.toFixed(6), historicalReplayedUsd: +guard.historicalReplayedUsd.toFixed(6), costBreakdown: { passAPass1Usd: +guard.costByPrefix("passA-1").toFixed(6), passAPass2Usd: +guard.costByPrefix("passA-2").toFixed(6), passBUsd: +guard.costByPrefix("compile:").toFixed(6), conditionSuspicionUsd: +guard.costByPrefix("verify-suspicion").toFixed(6), semanticReviewUsd: +guard.costByPrefix("verify-review").toFixed(6), totalUsd: +guard.spent.toFixed(6) }, callCounts: counts, gatewayBalanceBefore: balanceBefore, guardRefusals: guard.refusals, guardStateLog: STATE, calls: guard.calls, priorSpend: PRIOR, ...extra });
   const stop = async (verdict: string, msg: string) => { const c = await gatewayCredits(); ledger({ stoppedEarly: true, stopVerdict: verdict, stopReason: msg, gatewayBalanceAfter: c ? Number(c.balance) : null }); console.log(`\n======= STOPPED: ${verdict} - ${msg} (spent $${guard.spent.toFixed(4)}) =======`); throw new StopError(verdict, msg); };
   const classify = (e: unknown) => e instanceof BudgetExhaustedError ? "PHASE3_601_COST_BOUND_DURING_RUN" : e instanceof DurablePersistenceError ? "PHASE3_601_DURABLE_PERSISTENCE_FAILED" : e instanceof DurableReplayRecordInvalidError ? "PHASE3_601_REPLAY_RECORD_INVALID" : "PHASE3_601_ENVIRONMENT_BLOCKED";
 
