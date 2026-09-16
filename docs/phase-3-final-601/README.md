@@ -353,3 +353,58 @@ The harness is certified and production is unchanged; the only unaddressed loss 
 during Pass A. The next attempt should (a) persist every raw Pass-A provider response the moment it returns and
 run Pass A through a replaying caller so a kill costs at most one call, and (b) be funded at a cap covering the
 full $15.8309 conservative estimate.
+
+# HD-4 durable Pass-A call replay (artifacts 63-73)
+
+**Verdict: `HD4_DURABLE_REPLAY_CERTIFIED`** — 21/21 gate conditions, zero paid calls, $0.00 spent, zero production
+files changed, Phase 3 not closed, Phase 4 not started, Section 6.01 not run.
+
+## What HD-4 is
+
+A successful paid `StageCaller` call made during Pass A was not durable until `runDualPassSemanticInventory`
+returned. The worker restart at `5bd15c2` therefore destroyed 11 completed paid calls ($4.73). Closure invariant:
+**after every successful Pass-A model call a validated replayable record is durably written before control proceeds;
+after restart the identical call is served from that record with provider calls = 0 and new spend = $0.**
+
+## How it is closed (harness only)
+
+- `scripts/phase-3-601-durable-replay.ts` — `DurableReplayStageCaller` (a `StageCaller` wrapper; production Pass A,
+  prompts, batching, gap logic, ensemble untouched). Order per call: guard → provider → schema validation → atomic
+  durable write (temp → fsync → rename → fsync dir → read-back hash) → return. Persistence failure = STOP.
+  Exact identity over 16 fields (mission, pass, stage, provider, model, explicit schema id + structural JSON-Schema
+  fingerprint, system-prompt hash, user-content hash, document, candidate, source-context hash, algorithm and prompt
+  versions); never by ordinal, section, batch number or candidateRef. A present-but-invalid record **fails closed**;
+  any identity change is a **miss**. Replay re-validates the stored payload with the current Zod schema and returns
+  the original telemetry so production's own cost bookkeeping equals the uninterrupted run.
+- `scripts/phase-3-601-hd4-resume.ts` — the ONE resumable orchestration (`resumablePassA`) used by both the paid run
+  and the certification: per-call replay → production dual pass → HD-3 ensemble persistence (unchanged) → resume.
+  A usable persisted ensemble is resumed with no Pass-A caller constructed; an unusable one is never resumed.
+- Pass B: the audit found the previous harness's per-shard files were **not** replayable (they lacked the
+  `inventoryDispositions` a `ShardExecutionResult` needs). `durableShardExecutor` now wraps the production executor
+  and persists every terminal reusable outcome by `shardHash`; `DurableShardStore.loadPriorResults` feeds the
+  existing `priorShardResults` contract on restart. Shard semantics unchanged.
+- Verifier: `durableVerifierCallers` — the same primitive for semantic review and condition suspicion.
+- Guard: `Guard.recordReplay()` decrements remaining logical work and charges $0; historical cost is reported
+  separately; Pass-B tokens of shards already in the store are excluded from paid remaining work.
+- `scripts/phase-3-601-hd4-run.ts` — the restart-safe paid run for the next mission (refuses to start without
+  `HD4_PAID_RUN_AUTHORIZED=1`; not executed here).
+
+## Proof
+
+- Crash matrix A–F over the real `runDualPassSemanticInventory` (synthetic I35 at batchChars 600 = 6 batches + 1 gap
+  per pass, the 6.01 shape) with a kill switch: persisted calls replay, the interrupted call executes, no persisted
+  call re-executes, result equals the uninterrupted control, replays cost $0, ordering deterministic. Pass 2's
+  byte-identical prompts are never served from pass-1 records.
+- **Real SIGKILL**: a single node child process persisted 5 calls, was SIGKILLed, relaunched: 5 replayed, 9 live,
+  hash and projection equal to control; a third launch resumed the ensemble with zero calls.
+- Corruption: truncated file, payload/record hash mismatch, schema-rejected payload, version mismatch, planted
+  identity → fail closed. Changed prompt / source / model / schema id / schema structure / prompt version /
+  algorithm version / pass / candidate / document / mission / user content → miss.
+- Pass B G/H, verifier I/I′, cost accounting 10 logical = 6 replayed + 4 live (guard prices 4).
+- 42 new tests, all passing; full suite 106 files / 161 tests failing, zero new failures against the 107/162
+  baseline; tsc 6 pre-existing errors; lint clean; build passes.
+
+## Next paid mission
+
+Gateway balance $19.034126 ≥ the $15.84 cap: **no additional funding required.** The $4.732104 charged at
+`5bd15c2` is historical; nothing from that run is reused. Cumulative Section 6.01 spend remains $13.525078.

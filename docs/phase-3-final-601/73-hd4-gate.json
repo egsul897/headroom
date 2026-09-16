@@ -1,0 +1,195 @@
+{
+ "artifact": "HD-4 §26 - closure gate",
+ "at": "2026-09-16T02:30:36.364Z",
+ "startingSha": "5bd15c263b1e8fdadd16b908d5037f298af0d1e2",
+ "headSha": "5bd15c263b1e8fdadd16b908d5037f298af0d1e2",
+ "conditions": [
+  {
+   "id": 1,
+   "condition": "every successful Pass-A call persists before returning",
+   "status": "PASS",
+   "evidence": "DurableReplayStageCaller.call: store.write before return; persistence failure -> STOP"
+  },
+  {
+   "id": 2,
+   "condition": "write is atomic/durable",
+   "status": "PASS",
+   "evidence": "temp -> fsync -> rename -> fsync dir -> read-back hash; no temp files remain"
+  },
+  {
+   "id": 3,
+   "condition": "exact request identity is bound to record",
+   "status": "PASS",
+   "evidence": "16 identity fields; identity mismatch on the exact key fails closed"
+  },
+  {
+   "id": 4,
+   "condition": "payload revalidates against expected schema",
+   "status": "PASS",
+   "evidence": "current Zod safeParse over the stored payload on every replay"
+  },
+  {
+   "id": 5,
+   "condition": "pass identity prevents cross-pass reuse",
+   "status": "PASS",
+   "evidence": "pass-2's byte-identical prompts executed live after a complete pass 1"
+  },
+  {
+   "id": 6,
+   "condition": "gap calls are supported",
+   "status": "PASS",
+   "evidence": "semantic_inventory_gap persisted (B) and replayed (C)"
+  },
+  {
+   "id": 7,
+   "condition": "replay makes zero provider calls",
+   "status": "PASS",
+   "evidence": "E: 14 replays, 0 live; SIGKILL restart live = total - persisted"
+  },
+  {
+   "id": 8,
+   "condition": "replay makes zero new spend",
+   "status": "PASS",
+   "evidence": "newCostUsd = 0 on every replay; guard.spent prices only live calls"
+  },
+  {
+   "id": 9,
+   "condition": "interrupted call is not falsely reused",
+   "status": "PASS",
+   "evidence": "the (persisted+1)-th logical call is LIVE in every row and in the SIGKILL proof"
+  },
+  {
+   "id": 10,
+   "condition": "synthetic restart reproduces uninterrupted result",
+   "status": "PASS",
+   "evidence": "frozenContentHash + full projection + telemetry cost equal to control in A-F"
+  },
+  {
+   "id": 11,
+   "condition": "real SIGKILL subprocess recovery passes",
+   "status": "PASS",
+   "evidence": "signal SIGKILL, 5 persisted at kill, replayed 5, live 9, hash equal true"
+  },
+  {
+   "id": 12,
+   "condition": "corrupt records fail closed",
+   "status": "PASS",
+   "evidence": "truncated / payload hash / record hash / schema-rejected / version / planted identity"
+  },
+  {
+   "id": 13,
+   "condition": "source/prompt/model/schema/version changes invalidate replay",
+   "status": "PASS",
+   "evidence": "10 identity-change cases + user content + schema structure -> MISS, live, original record untouched"
+  },
+  {
+   "id": 14,
+   "condition": "ensemble HD-3 persistence remains",
+   "status": "PASS",
+   "evidence": "persistAndReload unchanged; F resumes the ensemble without constructing a caller"
+  },
+  {
+   "id": 15,
+   "condition": "terminal shard resilience certified or narrowly added",
+   "status": "PASS",
+   "evidence": "audit: NO before HD-4; durableShardExecutor + DurableShardStore on the priorShardResults contract; G/H pass"
+  },
+  {
+   "id": 16,
+   "condition": "verifier call resilience certified or narrowly added",
+   "status": "PASS",
+   "evidence": "durableVerifierCallers; I and I' pass"
+  },
+  {
+   "id": 17,
+   "condition": "cost guard prices only live remaining work",
+   "status": "PASS",
+   "evidence": "10/6/4 example + admission-by-paid-remaining case"
+  },
+  {
+   "id": 18,
+   "condition": "zero paid calls used for this mission",
+   "status": "PASS",
+   "evidence": "every proof uses scripted callers; the only network access is one gateway balance read"
+  },
+  {
+   "id": 19,
+   "condition": "zero production semantic files changed",
+   "status": "PASS",
+   "evidence": "lib tree cd6de064876b identical to the pin; lib/app/prisma clean"
+  },
+  {
+   "id": 20,
+   "condition": "no new regressions",
+   "status": "PASS",
+   "evidence": "106 files / 161 tests, 0 new"
+  },
+  {
+   "id": 21,
+   "condition": "build passes",
+   "status": "PASS",
+   "evidence": "Compiled successfully"
+  }
+ ],
+ "summary": {
+  "PASS": 21,
+  "FAIL": 0,
+  "total": 21
+ },
+ "verdict": "HD4_DURABLE_REPLAY_CERTIFIED",
+ "vitest": {
+  "total": 41,
+  "passed": 41,
+  "failed": 0,
+  "orderingAndIdentityRows": [
+   {
+    "test": "§5/§6: provider success + persistence failure = STOP (nothing returned, no further call)",
+    "status": "passed",
+    "ms": 1.59986600000002,
+    "failure": null
+   },
+   {
+    "test": "§6: writes are atomic - a record file exists only complete, read-back hash verified, no temp files left",
+    "status": "passed",
+    "ms": 1.7155700000000706,
+    "failure": null
+   },
+   {
+    "test": "§7: replay only on exact identity; two byte-identical logical calls are two records (occurrence), replayed in order",
+    "status": "passed",
+    "ms": 3.8090219999999135,
+    "failure": null
+   },
+   {
+    "test": "§8: schema identity = explicit id + structural fingerprint (JSON-Schema projection), never object identity; unmapped stage refused",
+    "status": "passed",
+    "ms": 1.8090170000000398,
+    "failure": null
+   },
+   {
+    "test": "§10: every attempt records exactly one origin with the required replay report fields",
+    "status": "passed",
+    "ms": 2.3535639999997784,
+    "failure": null
+   },
+   {
+    "test": "replay returns the same lastTelemetry() the live call produced (production cost bookkeeping unchanged)",
+    "status": "passed",
+    "ms": 1.9411350000000311,
+    "failure": null
+   }
+  ]
+ },
+ "paidCalls": 0,
+ "spendUsd": 0,
+ "nextPaidMission": {
+  "requiredCapUsd": 15.84,
+  "gatewayBalanceUsd": 19.034126,
+  "additionalFundingRequired": false,
+  "note": "live balance $19.034126 >= $15.84: NO additional funding required",
+  "runScript": "HD4_PAID_RUN_AUTHORIZED=1 npx tsx scripts/phase-3-601-hd4-run.ts (not executed in this mission)"
+ },
+ "historical5bdOutputsReused": false,
+ "phase3Closed": false,
+ "phase4Started": false
+}

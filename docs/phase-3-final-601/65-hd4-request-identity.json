@@ -1,0 +1,80 @@
+{
+ "artifact": "HD-4 §4/§7/§8 - record format and exact request identity",
+ "at": "2026-09-16T02:30:30.873Z",
+ "recordVersion": "hd4-durable-call-record.v1",
+ "replayAlgorithmVersion": "hd4-durable-replay.v1",
+ "shardRecordVersion": "hd4-durable-shard-record.v1",
+ "requestIdentityFields": [
+  "recordVersion",
+  "replayAlgorithmVersion",
+  "missionId",
+  "passId",
+  "stage",
+  "provider",
+  "model",
+  "schemaId",
+  "schemaFingerprint",
+  "systemPromptSha256",
+  "userContentSha256",
+  "sourceDocumentId",
+  "candidateRef",
+  "sourceContextHash",
+  "algorithmVersion",
+  "promptVersion"
+ ],
+ "neverKeyedOn": [
+  "call ordinal",
+  "section name",
+  "batch number",
+  "candidateRef alone"
+ ],
+ "occurrence": "n-th occurrence of the same request hash within a caller's sequence - two byte-identical logical calls remain two records, replayed in order",
+ "recordFields": [
+  "identity (16 fields)",
+  "requestHash",
+  "occurrence",
+  "callOrdinal (informational)",
+  "batchRef (informational; batch identity is bound through userContentSha256)",
+  "payload (validated parsed StageCaller result)",
+  "payloadSha256",
+  "telemetry {inputTokens, outputTokens, cacheRead, cacheWrite, originalCostUsd, latencyMs}",
+  "stageTelemetry (verbatim AnalyzerCallTelemetry)",
+  "rawProviderOutput (null: not exposed by the abstraction)",
+  "completedAt",
+  "recordSha256"
+ ],
+ "schemaIdentity": {
+  "method": "explicit harness-level schema id per stage (unmapped stage refused) + structural fingerprint = sha256(canonical JSON of z.toJSONSchema(schema)); never JS object identity",
+  "stageMap": {
+   "semantic_inventory": "semantic-accountability/wire-schema#SubmitSemanticInventorySchema",
+   "semantic_inventory_gap": "semantic-accountability/wire-schema#SubmitSemanticInventorySchema",
+   "semantic_verification": "semantic-verification/wire-schema#SubmitVerificationFindingsSchema",
+   "condition_suspicion_classification": "semantic-verification/wire-schema#SubmitConditionSuspicionSchema"
+  },
+  "fingerprints": {
+   "SubmitSemanticInventorySchema": "1dbf6197de45d09a5498a57011ce316ce7560b879dbdf11cbb7fb13f2f8a441d",
+   "SubmitVerificationFindingsSchema": "6074963b933fa202d4cdf28e415a6c1c76af3c0c236115ed322e7a4eebee7fb9",
+   "SubmitConditionSuspicionSchema": "85b377885e853e672b83a554919388ee99d39ea40a5502c21e8b046120ac84f8"
+  },
+  "zodVersion": "4.x"
+ },
+ "sampleIdentity": {
+  "recordVersion": "hd4-durable-call-record.v1",
+  "replayAlgorithmVersion": "hd4-durable-replay.v1",
+  "missionId": "phase-3-final-601-hd4-run",
+  "passId": "pass-1",
+  "stage": "semantic_inventory",
+  "provider": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-sonnet-5",
+  "schemaId": "semantic-accountability/wire-schema#SubmitSemanticInventorySchema",
+  "schemaFingerprint": "1dbf6197de45d09a5498a57011ce316ce7560b879dbdf11cbb7fb13f2f8a441d",
+  "systemPromptSha256": "72badaa1f402087e1e4ffcd8a7f6a92704c66c0b12e9ccf4899baa5bbee3ffa8",
+  "userContentSha256": "17bc4a4c2737b3e409fa804c5367221b1b3ccb02f180ada2007fa23444fd76af",
+  "sourceDocumentId": "doc-a",
+  "candidateRef": "cand:6.01",
+  "sourceContextHash": "c2697a9e0987a170f80c23c05de5aaa2ab89561f655d9f19d1b52290dd7264be",
+  "algorithmVersion": "semantic-accountability.v5",
+  "promptVersion": "semantic-inventory-prompt.v5"
+ },
+ "sampleRequestHash": "15ad5dbebfbbe0250f267f9c87eef75b3c46697e60c2b93853f196a39790aa06"
+}

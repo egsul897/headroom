@@ -1,0 +1,20 @@
+{
+ "artifact": "HD-4 §17 - verifier call resilience",
+ "at": "2026-09-16T02:30:35.979Z",
+ "remedy": "durableVerifierCallers wraps the review and condition-suspicion StageCallers with the same durable-call primitive (schema ids for semantic_verification and condition_suspicion_classification; scope passId 'verifier', verifier algorithm/prompt versions)",
+ "rows": [
+  {
+   "test": "I - kill after the semantic review (all verifier calls persisted): restart replays every call, 0 live, identical verdict",
+   "status": "passed",
+   "ms": 22.749865999999884,
+   "failure": null
+  },
+  {
+   "test": "I' - kill DURING the semantic review (nothing persisted for it): restart executes exactly that call live",
+   "status": "passed",
+   "ms": 14.886909999999943,
+   "failure": null
+  }
+ ],
+ "allPassed": true
+}

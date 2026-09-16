@@ -1,0 +1,28 @@
+{
+ "artifact": "HD-4 §11/§21 - cost accounting",
+ "at": "2026-09-16T02:30:35.979Z",
+ "syntheticExample": {
+  "logicalCalls": 10,
+  "replayedCalls": 6,
+  "liveProviderCalls": 4,
+  "newSpendPricesOnly": "the 4 live calls (guard rate card)",
+  "historicalReplayedUsdReportedSeparately": true,
+  "guardRemainingWorkAfter": 0
+ },
+ "admissionSemantics": "with 9 of 10 calls replayable and a cap that fits only one live call, the guard admits (paid remaining = 1 call); before the replays are credited it would refuse",
+ "rows": [
+  {
+   "test": "10 logical calls: 6 durable replays + 4 live -> new spend prices only the 4 live calls; historical reported separately; guard counters decremented for all 10",
+   "status": "passed",
+   "ms": 13.038450000000012,
+   "failure": null
+  },
+  {
+   "test": "the guard admits by PAID remaining work: with 9 of 10 calls replayable, a cap that only fits one live call admits",
+   "status": "passed",
+   "ms": 13.665060999999923,
+   "failure": null
+  }
+ ],
+ "allPassed": true
+}

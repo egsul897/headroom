@@ -1,0 +1,125 @@
+{
+ "artifact": "HD-4 §20 - corruption fails closed; identity changes invalidate replay",
+ "at": "2026-09-16T02:30:35.979Z",
+ "failClosed": [
+  {
+   "test": "truncated replay file -> fail closed",
+   "status": "passed",
+   "ms": 2.483504000000039,
+   "failure": null
+  },
+  {
+   "test": "payload hash mismatch -> fail closed",
+   "status": "passed",
+   "ms": 2.1043719999997847,
+   "failure": null
+  },
+  {
+   "test": "record hash mismatch (any field edited) -> fail closed",
+   "status": "passed",
+   "ms": 2.216081999999915,
+   "failure": null
+  },
+  {
+   "test": "stored payload rejected by the CURRENT schema -> fail closed (hashes consistent, content incompatible)",
+   "status": "passed",
+   "ms": 3.491908000000194,
+   "failure": null
+  },
+  {
+   "test": "record version mismatch -> fail closed",
+   "status": "passed",
+   "ms": 2.2181490000000395,
+   "failure": null
+  },
+  {
+   "test": "a record planted at the exact key with a different identity inside -> fail closed",
+   "status": "passed",
+   "ms": 2.8519329999999172,
+   "failure": null
+  }
+ ],
+ "miss": [
+  {
+   "test": "changed system prompt -> MISS, executes live, original record untouched",
+   "status": "passed",
+   "ms": 2.0311510000001363,
+   "failure": null
+  },
+  {
+   "test": "changed source context -> MISS, executes live, original record untouched",
+   "status": "passed",
+   "ms": 2.062293999999838,
+   "failure": null
+  },
+  {
+   "test": "changed model -> MISS, executes live, original record untouched",
+   "status": "passed",
+   "ms": 2.0520080000001144,
+   "failure": null
+  },
+  {
+   "test": "changed schema identity -> MISS, executes live, original record untouched",
+   "status": "passed",
+   "ms": 1.9203509999999824,
+   "failure": null
+  },
+  {
+   "test": "changed Pass-A prompt version -> MISS, executes live, original record untouched",
+   "status": "passed",
+   "ms": 2.2487750000000233,
+   "failure": null
+  },
+  {
+   "test": "changed Pass-A algorithm version -> MISS, executes live, original record untouched",
+   "status": "passed",
+   "ms": 2.12142300000005,
+   "failure": null
+  },
+  {
+   "test": "wrong pass id -> MISS, executes live, original record untouched",
+   "status": "passed",
+   "ms": 1.835299999999961,
+   "failure": null
+  },
+  {
+   "test": "wrong candidate -> MISS, executes live, original record untouched",
+   "status": "passed",
+   "ms": 2.2131259999998747,
+   "failure": null
+  },
+  {
+   "test": "wrong document -> MISS, executes live, original record untouched",
+   "status": "passed",
+   "ms": 1.9886539999999968,
+   "failure": null
+  },
+  {
+   "test": "wrong mission -> MISS, executes live, original record untouched",
+   "status": "passed",
+   "ms": 2.1056599999999435,
+   "failure": null
+  },
+  {
+   "test": "changed user content (a different batch) -> MISS",
+   "status": "passed",
+   "ms": 1.8376160000000255,
+   "failure": null
+  },
+  {
+   "test": "changed schema STRUCTURE with the same explicit id -> MISS (fingerprint is structural)",
+   "status": "passed",
+   "ms": 1.9979520000001685,
+   "failure": null
+  }
+ ],
+ "historical5bdTraces": [
+  {
+   "test": "the interrupted run's evidence directory holds no durable call records; guard-state/run.log cannot be loaded as records",
+   "status": "passed",
+   "ms": 1.5965249999999287,
+   "failure": null
+  }
+ ],
+ "allPassed": true
+}
