@@ -6,7 +6,9 @@
  */
 import { readFileSync } from "node:fs";
 import { section601ReferenceItems } from "./phase-3-601-preflight";
+import { existsSync } from "node:fs";
 import { writeJson } from "./f7b-lib";
+import { numbersIn, contradictsSource } from "./phase-3-601-score-numeric";
 
 const OUT = "docs/phase-3-final-601";
 const RAW = process.env.HD4_RUN_EVIDENCE_DIR ?? "tests/fixtures/unseen-packages/phase-3-final-601-final-paid";
@@ -19,6 +21,10 @@ type RootCause = "SOURCE_COVERAGE" | "STRUCTURAL_NAVIGATION" | "OPERATIVE_STATE"
 interface InvItem { inventoryItemId: string; sourceSpan: { regionId: string; charStart: number; charEnd: number; sourceCitation: string }; materiality: string; proposition: string; quantitativeValues: { rawText: string; normalizedValue: number | null; unit: string | null; kind: string }[]; referencedTerms: string[]; referencedSections: string[]; semanticRole: string; support?: { supportStatus: string } }
 interface RecItem { inventoryItemId: string; materiality: string; disposition: Disp; lineageIrPaths: string[]; reason: string; quantitative: { value: { rawText: string; normalizedValue: number | null; unit: string | null }; disposition: string; irPaths: string[] }[]; support?: { supportStatus: string } }
 
+// The pinned 83/84 artifacts of the paid run are immutable evidence (mission §1): this scorer refuses to overwrite them.
+if (existsSync(`${OUT}/83-final-paid-reference-comparison.json`) && process.env.PHASE3_601_ALLOW_OVERWRITE_PINNED !== "1") {
+  throw new Error("83/84 are pinned immutable paid-run artifacts; use scripts/phase-3-601-corrected-score.ts for the CORRECTED_DIAGNOSTIC_SCORE (101), or set PHASE3_601_ALLOW_OVERWRITE_PINNED=1 for a NEW evidence directory");
+}
 const compile = JSON.parse(readFileSync(`${RAW}/compile-result.json`, "utf8"));
 const verify = JSON.parse(readFileSync(`${RAW}/verify-result.json`, "utf8"));
 const { byLabel: refItems } = section601ReferenceItems();
@@ -35,16 +41,9 @@ const absSpan = (i: InvItem): [number, number] => { const base = regionStart.get
 const overlaps = (a: [number, number], b: [number, number]) => a[0] < b[1] && b[0] < a[1];
 const isMaterial = (m: string) => m === "CRITICAL" || m === "MATERIAL";
 
-/** Numbers a reader would have to get right: ratios like 2.00x / 4.50 to 1.00, percents, and money. */
-function numbersIn(text: string): { raw: string; value: number; unit: string }[] {
-  const out: { raw: string; value: number; unit: string }[] = [];
-  for (const m of text.matchAll(/\$\s?([\d,]+(?:\.\d+)?)\s*(million|billion)?/gi)) { const n = Number(m[1]!.replace(/,/g, "")) * (/million/i.test(m[2] ?? "") ? 1e6 : /billion/i.test(m[2] ?? "") ? 1e9 : 1); out.push({ raw: m[0]!.trim(), value: n, unit: "USD" }); }
-  for (const m of text.matchAll(/(\d+(?:\.\d+)?)\s*%/g)) out.push({ raw: m[0]!.trim(), value: Number(m[1]), unit: "%" });
-  for (const m of text.matchAll(/(\d+\.\d+)\s*(?:x\b|to\s*1(?:\.00)?)/gi)) out.push({ raw: m[0]!.trim(), value: Number(m[1]), unit: "x" });
-  return out;
-}
-const near = (a: number, b: number) => Math.abs(a - b) < 1e-6 || (b !== 0 && Math.abs(a - b) / Math.abs(b) < 1e-9);
-
+// HD-5 FIX (PHASE 3 / 6.01 remediation §19): numeric correspondence lives in ONE shared module
+// (scripts/phase-3-601-score-numeric.ts): percents as fractions on both sides, money fully scaled, unit-aware
+// comparison, raw text preserved, and span truncation can never manufacture a contradiction.
 // ---------------------------------------------------------------------------
 // §18 reference comparison - span first, then proposition/values/dependencies.
 // ---------------------------------------------------------------------------
@@ -68,12 +67,8 @@ const rows = refItems.map((R) => {
   const quantPresent = coveredQuant.filter((q) => q.disposition === "VALUE_PRESENT_IN_IR");
   const quantDispositioned = coveredQuant.filter((q) => q.disposition === "VALUE_DISPOSITIONED");
   const quantMissing = coveredQuant.filter((q) => q.disposition === "VALUE_MISSING_FROM_COMPOSITION");
-  // an IR-side number that contradicts every source number of the same unit is a corruption
-  const contradictions = coveredQuant.filter((q) => {
-    const v = q.value.normalizedValue; if (v === null) return false;
-    const sameUnit = sourceNumbers.filter((s) => (q.value.unit ?? "") === s.unit);
-    return sameUnit.length > 0 && !sameUnit.some((s) => near(v, s.value));
-  });
+  // an IR-side number that contradicts every same-unit source number (unit-aware, scale-normalized, truncation-safe) is a corruption
+  const contradictions = coveredQuant.filter((q) => contradictsSource({ normalizedValue: q.value.normalizedValue, unit: q.value.unit, rawText: q.value.rawText }, sourceNumbers, { fullSourceText: srcText, spanStart: span[0], spanEnd: span[1] }).contradiction);
 
   let classification: Classification;
   if (covering.length === 0) classification = "NOT_DISCOVERED";

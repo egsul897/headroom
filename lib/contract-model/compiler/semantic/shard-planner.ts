@@ -15,6 +15,7 @@
  */
 import { normalizeDefinedTermRef } from "../amendment/operative-state";
 import { computeSourceContentHash, hashParts } from "../hashing";
+import { resolveReferenceTarget } from "../semantic-accountability/reference-resolver";
 import { partitionSourceSlots } from "../semantic-accountability/slots";
 import { independentSegmentBounds } from "../semantic-accountability/source-coverage";
 import type { FrozenSemanticInventory, SemanticInventoryItem, SourceContextRegion, SourceContextResult, UnresolvedSourceReference } from "../semantic-accountability/types";
@@ -67,7 +68,8 @@ function definitionUnits(region: SourceContextRegion, index: StructuralIndex): R
   if (region.charStart < 0) return null;
   const defs = index
     .allDefinitions()
-    .filter((d) => d.documentId === region.documentId && d.charStart >= region.charStart && d.charStart < region.charEnd)
+    // a NESTED declaration (inside another definition's own sentence) is not its own unit - F-7B.2 anchors it to the enclosing unit
+    .filter((d) => d.documentId === region.documentId && d.charStart >= region.charStart && d.charStart < region.charEnd && !d.nested)
     .sort((a, b) => a.charStart - b.charStart);
   if (defs.length < 2) return null;
   const covered = region.charEnd - defs[0]!.charStart;
@@ -251,7 +253,14 @@ class UnionFind {
   }
 }
 
-function buildMustLinkGroups(units: SemanticSourceUnit[], inventory: FrozenSemanticInventory, itemOwnerUnit: Map<string, string>, crossingLinks: { itemId: string; from: string; to: string }[]): MustLinkGroup[] {
+/** True when a unit's text has real content and does not end with terminal punctuation (optionally followed by closing quotes/brackets/footnote markers). */
+export function continuesIntoNext(text: string): boolean {
+  const t = text.replace(/\s+$/, "");
+  if (!CONTENT_WORD.test(t)) return false;
+  return !/[.;:!?][\s"”'’)\]]*$/.test(t);
+}
+
+function buildMustLinkGroups(units: SemanticSourceUnit[], inventory: FrozenSemanticInventory, itemOwnerUnit: Map<string, string>, crossingLinks: { itemId: string; from: string; to: string }[], unitTextOf: (u: SemanticSourceUnit) => string): MustLinkGroup[] {
   const uf = new UnionFind();
   const links: MustLinkGroup["links"] = [];
   const byId = new Map(inventory.items.map((i) => [i.inventoryItemId, i]));
@@ -272,6 +281,18 @@ function buildMustLinkGroups(units: SemanticSourceUnit[], inventory: FrozenSeman
       uf.union(owner, other);
       links.push({ kind: "SHARED_CAP", itemId: it.inventoryItemId, fromUnitKey: owner, toUnitKey: other, reason: `shared-capacity item ${it.inventoryItemId} is linked to ${rid} (${byId.get(rid)?.semanticRole ?? "?"}) owned by another unit - the capacity and its members compile together` });
     }
+  }
+  // v2 (PHASE 3 / 6.01 remediation): a structural child unit whose own text ends mid-sentence ("... merely because it is
+  // unsecured or") continues in its next sibling ("(2) Senior Indebtedness ..."); splitting the sentence across shards
+  // made the paid shard 1 characterization rule PARTIAL ("the provided operative text ... is cut off mid-sentence").
+  // Generic drafting property, no content test: terminal punctuation (optionally followed by a closing quote/bracket).
+  for (let i = 0; i + 1 < units.length; i++) {
+    const a = units[i]!; const b = units[i + 1]!;
+    if (a.regionId !== b.regionId || a.kind === "LEAD_IN" || a.kind === "EXPANSION_REGION" || b.kind === "EXPANSION_REGION") continue;
+    if (a.parentUnitKey !== b.parentUnitKey && a.parentUnitKey !== b.unitKey && b.parentUnitKey !== a.unitKey) continue;
+    if (!continuesIntoNext(unitTextOf(a))) continue;
+    uf.union(a.unitKey, b.unitKey);
+    links.push({ kind: "SENTENCE_CONTINUATION", itemId: null, fromUnitKey: a.unitKey, toUnitKey: b.unitKey, reason: `unit ${a.unitKey} ends mid-sentence; its sentence continues in the next sibling unit ${b.unitKey} - one shard must see the whole sentence` });
   }
   // An expansion region (a cross-referenced section Pass A inventoried) is compiled with the first operative unit whose items reference it.
   for (const u of units.filter((x) => x.kind === "EXPANSION_REGION")) {
@@ -300,40 +321,33 @@ function buildMustLinkGroups(units: SemanticSourceUnit[], inventory: FrozenSeman
 
 interface Block { unitOrdinals: number[]; chars: number; regionId: string }
 
-/** Blocks = maximal contiguous ranges of unit ordinals implied by the must-link groups (a group spanning ordinals 3 and 17 forces 3..17 into one block), else single units. Never crosses a region. */
+/**
+ * Blocks = the must-link groups' MEMBER units (v2: a group spanning ordinals 3 and 17 forces {3, 17} - the units in
+ * between stay free), else single units. Ordered by first member ordinal. Never crosses a region: a group's members in
+ * a second region form their own block (the expansion-region link is then honoured only by adjacency).
+ *
+ * WHY (PHASE 3 / 6.01 remediation §8): v1 closed every group over its whole ordinal RANGE. Five two-to-four-member
+ * SHARED_CAP groups whose members sat at ordinals {12,59} {13,60} {25,57,71,79} {55,78} {75,80} therefore fused
+ * ordinals 12..80 (69 units, 29,414 chars, 270 owned items) into one irreducible "atomic" block - 57 of those units
+ * (18,857 chars) were forced only by the range closure, not by any link. Member closure preserves every link
+ * invariant (the capacity and its members still compile together) without inventing adjacency constraints.
+ */
 function buildBlocks(units: SemanticSourceUnit[], groups: MustLinkGroup[]): Block[] {
   const ordinalOf = new Map(units.map((u) => [u.unitKey, u.ordinal]));
-  const ranges: { start: number; end: number }[] = groups
-    .map((g) => {
-      const ords = g.unitKeys.map((k) => ordinalOf.get(k)!);
-      return { start: Math.min(...ords), end: Math.max(...ords) };
-    })
-    .sort((a, b) => a.start - b.start);
-  const merged: { start: number; end: number }[] = [];
-  for (const r of ranges) {
-    const last = merged[merged.length - 1];
-    if (last && r.start <= last.end) last.end = Math.max(last.end, r.end);
-    else merged.push({ ...r });
-  }
+  const claimed = new Set<number>();
   const blocks: Block[] = [];
-  let i = 0;
-  while (i < units.length) {
-    const range = merged.find((r) => r.start === i);
-    const end = range ? range.end : i;
-    // A forced range may not cross a region boundary: split at region changes (the expansion-region link is then honoured only by adjacency of the appended unit).
-    let j = i;
-    while (j <= end) {
-      const regionId = units[j]!.regionId;
-      let k = j;
-      while (k + 1 <= end && units[k + 1]!.regionId === regionId) k++;
-      const ords = [];
-      for (let o = j; o <= k; o++) ords.push(o);
-      blocks.push({ unitOrdinals: ords, chars: ords.reduce((a, o) => a + units[o]!.chars, 0), regionId });
-      j = k + 1;
+  for (const g of groups) {
+    const ords = g.unitKeys.map((k) => ordinalOf.get(k)!).filter((o) => !claimed.has(o)).sort((a, b) => a - b);
+    // split by region, preserving source order within each region
+    const byRegion = new Map<string, number[]>();
+    for (const o of ords) { const r = units[o]!.regionId; if (!byRegion.has(r)) byRegion.set(r, []); byRegion.get(r)!.push(o); }
+    for (const [regionId, members] of byRegion) {
+      for (const o of members) claimed.add(o);
+      blocks.push({ unitOrdinals: members, chars: members.reduce((a, o) => a + units[o]!.chars, 0), regionId });
     }
-    i = end + 1;
   }
-  return blocks;
+  for (const u of units) if (!claimed.has(u.ordinal)) blocks.push({ unitOrdinals: [u.ordinal], chars: u.chars, regionId: u.regionId });
+  return blocks.sort((a, b) => a.unitOrdinals[0]! - b.unitOrdinals[0]!);
 }
 
 function packBlocks(blocks: Block[], budget: ShardBudget): { unitOrdinals: number[]; oversized: boolean; regionId: string }[] {
@@ -397,7 +411,9 @@ function collectContextCandidates(shardUnits: SemanticSourceUnit[], allUnits: Se
       hops++;
     }
   }
-  // (b) PARENT_ITEM: an owned item's parent item owned elsewhere.
+  // (b) PARENT_ITEM: an owned item's parent item owned elsewhere. v2 priority 6 (after referenced terms/sections):
+  // the paid 6.01 shard 0 spent 8,855 of its 10,000 context chars on 25 parent propositions and starved every
+  // referenced definition/section the owned items' economics actually depend on (17 BUDGET exclusions).
   for (const u of shardUnits) for (const id of u.ownedItemIds) {
     const it = byId.get(id);
     if (!it?.parentItemId) continue;
@@ -405,7 +421,7 @@ function collectContextCandidates(shardUnits: SemanticSourceUnit[], allUnits: Se
     if (!parentOwner || ownedSet.has(parentOwner)) continue;
     const parent = byId.get(it.parentItemId);
     if (!parent) continue;
-    add({ kind: "PARENT_ITEM", key: `parent-item:${it.parentItemId}`, sourceUnitKey: parentOwner, documentId: parent.sourceSpan.documentId, absCharStart: null, absCharEnd: null, fullText: `[${parent.semanticRole}/${parent.materiality}] ${parent.proposition} (${parent.sourceSpan.sourceCitation}: "${parent.sourceSpan.excerpt}")`, requiredBy: [id], reason: `parent proposition of owned item ${id}`, priority: 2 });
+    add({ kind: "PARENT_ITEM", key: `parent-item:${it.parentItemId}`, sourceUnitKey: parentOwner, documentId: parent.sourceSpan.documentId, absCharStart: null, absCharEnd: null, fullText: `[${parent.semanticRole}/${parent.materiality}] ${parent.proposition} (${parent.sourceSpan.sourceCitation}: "${parent.sourceSpan.excerpt}")`, requiredBy: [id], reason: `parent proposition of owned item ${id}`, priority: 6 });
   }
   // (c) REFERENCED_TERM: terms the owned items reference, resolved to a definition unit of this plan first, else the structural index.
   const termCounts = new Map<string, { term: string; requiredBy: string[] }>();
@@ -417,49 +433,80 @@ function collectContextCandidates(shardUnits: SemanticSourceUnit[], allUnits: Se
     termCounts.set(key, e);
   }
   const ownedTerms = new Set(shardUnits.map((u) => u.normalizedTermName).filter((x): x is string => !!x));
+  const ownedRefs = new Set(shardUnits.map((u) => (u.sectionRef ? normalizeSectionRef(u.sectionRef) : null)).filter((x): x is string => !!x));
+  // (d) REFERENCED_SECTION: sections the owned items reference - an expansion region of the source context first, else
+  // the generic reference resolver (v2: heading-only table-of-contents duplicates excluded with disclosure, an inline
+  // sub-clause resolved to its enclosing node; two substantive occurrences stay AMBIGUOUS). Text = the node's own text
+  // plus its descendants (a section whose body lives in children is otherwise a 47-char heading), capped downstream.
+  const secCounts = new Map<string, { ref: string; requiredBy: string[]; reasonPrefix: string }>();
+  const requireSection = (ref: string, requiredBy: string[], reasonPrefix: string) => {
+    const key = normalizeSectionRef(ref);
+    if (!key) return;
+    const e = secCounts.get(key) ?? { ref, requiredBy: [], reasonPrefix };
+    for (const id of requiredBy) if (!e.requiredBy.includes(id)) e.requiredBy.push(id);
+    secCounts.set(key, e);
+  };
+  for (const u of shardUnits) for (const id of u.ownedItemIds) for (const s of byId.get(id)?.referencedSections ?? []) requireSection(s, [id], "section");
   const sortedTerms = [...termCounts.entries()].sort((a, b) => b[1].requiredBy.length - a[1].requiredBy.length || a[0].localeCompare(b[0]));
+  const forwardedTerms = new Map<string, { term: string; requiredBy: string[]; via: string }>();
   for (const [key, e] of sortedTerms) {
     if (ownedTerms.has(key)) continue;
     const unit = allUnits.find((x) => x.kind === "DEFINITION" && x.normalizedTermName === key);
     if (unit) {
-      add({ kind: "REFERENCED_TERM", key: `term:${key}`, sourceUnitKey: unit.unitKey, documentId: unit.documentId, absCharStart: unit.absCharStart, absCharEnd: unit.absCharEnd, fullText: unitText(unit), requiredBy: e.requiredBy, reason: `definition of "${e.term}" referenced by ${e.requiredBy.length} owned item(s)`, priority: 3 });
+      add({ kind: "REFERENCED_TERM", key: `term:${key}`, sourceUnitKey: unit.unitKey, documentId: unit.documentId, absCharStart: unit.absCharStart, absCharEnd: unit.absCharEnd, fullText: unitText(unit), requiredBy: e.requiredBy, reason: `definition of "${e.term}" referenced by ${e.requiredBy.length} owned item(s)`, priority: 2 });
       continue;
     }
     const def = index?.getDefinition(e.term, documentId);
     const full = def ? index!.getDefinitionFullText(def.exactTerm, documentId) : undefined;
-    if (def && full) add({ kind: "REFERENCED_TERM", key: `term:${key}`, sourceUnitKey: null, documentId, absCharStart: def.charStart, absCharEnd: def.charStart + full.length, fullText: full, requiredBy: e.requiredBy, reason: `definition of "${e.term}" (outside this unit) referenced by ${e.requiredBy.length} owned item(s)`, priority: 4 });
-    else notFound.push({ kind: "REFERENCED_TERM", key, reason: "NOT_FOUND", detail: `no detected definition of "${e.term}" in document ${documentId}`, requiredBy: e.requiredBy });
+    if (def && full) {
+      add({ kind: "REFERENCED_TERM", key: `term:${key}`, sourceUnitKey: null, documentId, absCharStart: def.charStart, absCharEnd: def.charStart + full.length, fullText: full, requiredBy: e.requiredBy, reason: `definition of "${e.term}" (outside this unit) referenced by ${e.requiredBy.length} owned item(s)${def.forwardingTarget ? ` - FORWARDING declaration, target ${def.forwardingTarget.kind} ${def.forwardingTarget.ref} supplied separately` : ""}`, priority: 3 });
+      // v2: a FORWARDING declaration carries no body - its target is a typed dependency of the same owned items (one hop).
+      if (def.forwardingTarget?.kind === "SECTION") requireSection(def.forwardingTarget.ref, e.requiredBy, `forwarding target of the definition of "${e.term}"`);
+      else if (def.forwardingTarget?.kind === "DEFINITION") { const k2 = normalizeDefinedTermRef(def.forwardingTarget.ref); if (k2 && !termCounts.has(k2) && !ownedTerms.has(k2)) forwardedTerms.set(k2, { term: def.forwardingTarget.ref, requiredBy: e.requiredBy, via: e.term }); }
+    } else notFound.push({ kind: "REFERENCED_TERM", key, reason: "NOT_FOUND", detail: `no detected definition of "${e.term}" in document ${documentId}`, requiredBy: e.requiredBy });
   }
-  // (d) REFERENCED_SECTION: sections the owned items reference - an expansion region of the source context first, else the unique node.
-  const secCounts = new Map<string, { ref: string; requiredBy: string[] }>();
-  for (const u of shardUnits) for (const id of u.ownedItemIds) for (const s of byId.get(id)?.referencedSections ?? []) {
-    const key = normalizeSectionRef(s);
-    if (!key) continue;
-    const e = secCounts.get(key) ?? { ref: s, requiredBy: [] };
-    e.requiredBy.push(id);
-    secCounts.set(key, e);
+  for (const [k2, f] of forwardedTerms) {
+    const def = index?.getDefinition(f.term, documentId);
+    const full = def ? index!.getDefinitionFullText(def.exactTerm, documentId) : undefined;
+    if (def && full) add({ kind: "REFERENCED_TERM", key: `term:${k2}`, sourceUnitKey: null, documentId, absCharStart: def.charStart, absCharEnd: def.charStart + full.length, fullText: full, requiredBy: f.requiredBy, reason: `definition of "${f.term}" - forwarding target of the definition of "${f.via}" referenced by ${f.requiredBy.length} owned item(s)`, priority: 3 });
+    else notFound.push({ kind: "REFERENCED_TERM", key: k2, reason: "NOT_FOUND", detail: `no detected definition of "${f.term}" (forwarding target of "${f.via}") in document ${documentId}`, requiredBy: f.requiredBy });
   }
-  const ownedRefs = new Set(shardUnits.map((u) => (u.sectionRef ? normalizeSectionRef(u.sectionRef) : null)).filter((x): x is string => !!x));
   for (const [key, e] of [...secCounts.entries()].sort((a, b) => b[1].requiredBy.length - a[1].requiredBy.length || a[0].localeCompare(b[0]))) {
     if (ownedRefs.has(key)) continue;
     const region = sourceContext.regions.find((r) => r.kind !== "OPERATIVE" && r.sectionRef && normalizeSectionRef(r.sectionRef) === key);
     if (region) {
       const unit = allUnits.find((x) => x.regionId === region.regionId);
       if (unit && ownedSet.has(unit.unitKey)) continue;
-      add({ kind: "REFERENCED_SECTION", key: `section:${key}`, sourceUnitKey: unit?.unitKey ?? null, documentId: region.documentId, absCharStart: region.charStart, absCharEnd: region.charEnd, fullText: region.text, requiredBy: e.requiredBy, reason: `section ${e.ref} (source-context expansion) referenced by ${e.requiredBy.length} owned item(s)`, priority: 5 });
+      add({ kind: "REFERENCED_SECTION", key: `section:${key}`, sourceUnitKey: unit?.unitKey ?? null, documentId: region.documentId, absCharStart: region.charStart, absCharEnd: region.charEnd, fullText: region.text, requiredBy: e.requiredBy, reason: `${e.reasonPrefix} ${e.ref} (source-context expansion) referenced by ${e.requiredBy.length} owned item(s)`, priority: 4 });
       continue;
     }
     if (!index) { notFound.push({ kind: "REFERENCED_SECTION", key, reason: "NOT_FOUND", detail: "no structural index", requiredBy: e.requiredBy }); continue; }
-    const r = index.resolveUniqueNodeByRef(documentId, key);
-    if (r.status === "UNIQUE") add({ kind: "REFERENCED_SECTION", key: `section:${key}`, sourceUnitKey: null, documentId, absCharStart: r.node.charStart, absCharEnd: r.node.charStart + index.getNodeText(r.node.nodeId, "OWN").length, fullText: index.getNodeText(r.node.nodeId, "OWN"), requiredBy: e.requiredBy, reason: `section ${e.ref} referenced by ${e.requiredBy.length} owned item(s)`, priority: 6 });
-    else notFound.push({ kind: "REFERENCED_SECTION", key, reason: r.status === "AMBIGUOUS" ? "AMBIGUOUS" : "NOT_FOUND", detail: r.status === "AMBIGUOUS" ? `section ${e.ref} matches ${r.candidates.length} physical locations` : `section ${e.ref} not found in document ${documentId}`, requiredBy: e.requiredBy });
+    const referrerUnit = e.requiredBy.map((id) => itemOwnerUnit.get(id)).map((k) => (k ? unitByKey.get(k) : undefined)).find((u) => u?.sourceNodeId);
+    const r = resolveReferenceTarget(index, documentId, key, { fromNodeId: referrerUnit?.sourceNodeId ?? null });
+    if (r.node) {
+      const ownedNode = shardUnits.some((u) => u.sourceNodeId === r.node!.nodeId);
+      if (ownedNode) continue;
+      const text = index.getNodeText(r.node.nodeId, "DESCENDANTS");
+      add({ kind: "REFERENCED_SECTION", key: `section:${key}`, sourceUnitKey: null, documentId, absCharStart: r.node.charStart, absCharEnd: r.node.charStart + text.length, fullText: text, requiredBy: e.requiredBy, reason: `${e.reasonPrefix} ${e.ref} referenced by ${e.requiredBy.length} owned item(s) [${r.status}${r.excludedDegenerateNodeIds.length ? `, ${r.excludedDegenerateNodeIds.length} heading-only occurrence(s) excluded` : ""}]`, priority: 5 });
+    } else notFound.push({ kind: "REFERENCED_SECTION", key, reason: r.status === "AMBIGUOUS" ? "AMBIGUOUS" : "NOT_FOUND", detail: r.status === "AMBIGUOUS" ? `section ${e.ref} matches ${r.candidateNodeIds.length} substantive physical locations (${r.note})` : `section ${e.ref} not found in document ${documentId}`, requiredBy: e.requiredBy });
   }
-  return { candidates: [...candidates.values()].sort((a, b) => a.priority - b.priority || a.key.localeCompare(b.key)), notFound };
+  return { candidates: [...candidates.values()].sort((a, b) => a.priority - b.priority || b.requiredBy.length - a.requiredBy.length || a.key.localeCompare(b.key)), notFound };
 }
 
 // ---------------------------------------------------------------------------
 // 6. The plan
 // ---------------------------------------------------------------------------
+
+/** v2: the owned units (source order) as maximal contiguous region-relative runs. */
+export function contiguousSlices(shardUnits: SemanticSourceUnit[]): CompilationShard["primarySlices"] {
+  const slices: CompilationShard["primarySlices"] = [];
+  for (const u of [...shardUnits].sort((a, b) => a.ordinal - b.ordinal)) {
+    const last = slices[slices.length - 1];
+    if (last && last.charEnd === u.charStart) { last.charEnd = u.charEnd; last.unitKeys.push(u.unitKey); }
+    else slices.push({ charStart: u.charStart, charEnd: u.charEnd, unitKeys: [u.unitKey] });
+  }
+  return slices;
+}
 
 /** Approximation of caller.ts's per-item inventory line (used for estimates only - the exact rendering is what the caller produces). */
 export function approximateInventoryLineChars(it: SemanticInventoryItem): number {
@@ -472,7 +519,8 @@ export function planCompilationShards(input: ShardPlanInput): ShardPlan {
   const budget: ShardBudget = { ...DEFAULT_SHARD_BUDGET, ...(input.budget ?? {}) };
   const { units, derivation } = deriveUnits(input.sourceContext, input.structuralIndex);
   const { itemOwnerUnit, unplaced, crossingLinks } = assignOwnership(units, input.frozenInventory);
-  const mustLinkGroups = buildMustLinkGroups(units, input.frozenInventory, itemOwnerUnit, crossingLinks);
+  const regionTextById = new Map(input.sourceContext.regions.map((r) => [r.regionId, r.text]));
+  const mustLinkGroups = buildMustLinkGroups(units, input.frozenInventory, itemOwnerUnit, crossingLinks, (u) => regionTextById.get(u.regionId)?.slice(u.charStart, u.charEnd) ?? "");
   const blocks = buildBlocks(units, mustLinkGroups);
   const packed = packBlocks(blocks, budget);
   const byId = new Map(input.frozenInventory.items.map((i) => [i.inventoryItemId, i]));
@@ -481,7 +529,7 @@ export function planCompilationShards(input: ShardPlanInput): ShardPlan {
 
   const unitOwnerShard: Record<string, string> = {};
   const shards: CompilationShard[] = packed.map((p, ordinal) => {
-    const shardUnits = p.unitOrdinals.map((o) => units[o]!);
+    const shardUnits = [...p.unitOrdinals].sort((a, b) => a - b).map((o) => units[o]!);
     const shardId = `shard:${hashParts([input.candidateRef, ...shardUnits.map((u) => u.unitKey)]).slice(0, 20)}`;
     for (const u of shardUnits) unitOwnerShard[u.unitKey] = shardId;
     return { shardId, ordinal, units: shardUnits, oversized: p.oversized, regionId: p.regionId };
@@ -491,20 +539,40 @@ export function planCompilationShards(input: ShardPlanInput): ShardPlan {
     const context: ShardContextEntry[] = [];
     const unresolvedContext: UnresolvedShardContext[] = [...notFound];
     let contextChars = 0;
+    // v2 fair-share admission (mission §13, bounded and deduplicated): every dependency KIND present gets a reserved
+    // floor of the context budget (budget / kinds present) in priority order first, then whatever remains is admitted
+    // in global priority order. One kind (25 parent propositions in the paid shard 0) can no longer consume the whole
+    // budget and starve the referenced definitions/sections the owned items' economics depend on. Deterministic.
+    const kindsPresent = [...new Set(candidates.map((c) => c.kind))];
+    const floor = kindsPresent.length > 0 ? Math.floor(budget.maxContextChars / kindsPresent.length) : 0;
+    const usedByKind = new Map<ShardContextKind, number>();
+    const admitted = new Set<string>();
+    const admit = (c: ContextCandidate, capped: { text: string; truncated: boolean }, allocation: "KIND_FLOOR" | "REMAINING_BUDGET") => {
+      context.push({ contextKey: c.key, kind: c.kind, sourceUnitKey: c.sourceUnitKey, ownerShardId: c.sourceUnitKey ? unitOwnerShard[c.sourceUnitKey] ?? null : null, documentId: c.documentId, absCharStart: c.absCharStart, absCharEnd: c.absCharEnd, text: capped.text, truncated: capped.truncated, fullTextHash: computeSourceContentHash(c.fullText), chars: capped.text.length, requiredBy: c.requiredBy, reason: `${c.reason} [admitted: ${allocation}]` });
+      contextChars += capped.text.length;
+      usedByKind.set(c.kind, (usedByKind.get(c.kind) ?? 0) + capped.text.length);
+      admitted.add(c.key);
+    };
     for (const c of candidates) {
+      const capped = capText(c.fullText, budget.maxContextEntryChars);
+      if ((usedByKind.get(c.kind) ?? 0) + capped.text.length <= floor && contextChars + capped.text.length <= budget.maxContextChars) admit(c, capped, "KIND_FLOOR");
+    }
+    for (const c of candidates) {
+      if (admitted.has(c.key)) continue;
       const capped = capText(c.fullText, budget.maxContextEntryChars);
       if (contextChars + capped.text.length > budget.maxContextChars) {
         unresolvedContext.push({ kind: c.kind, key: c.key, reason: "BUDGET", detail: `context budget (${budget.maxContextChars} chars) exhausted before this ${c.kind.toLowerCase()} could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call`, requiredBy: c.requiredBy });
         continue;
       }
-      context.push({ contextKey: c.key, kind: c.kind, sourceUnitKey: c.sourceUnitKey, ownerShardId: c.sourceUnitKey ? unitOwnerShard[c.sourceUnitKey] ?? null : null, documentId: c.documentId, absCharStart: c.absCharStart, absCharEnd: c.absCharEnd, text: capped.text, truncated: capped.truncated, fullTextHash: computeSourceContentHash(c.fullText), chars: capped.text.length, requiredBy: c.requiredBy, reason: c.reason });
-      contextChars += capped.text.length;
+      admit(c, capped, "REMAINING_BUDGET");
     }
+    context.sort((a, b) => candidates.findIndex((c) => c.key === a.contextKey) - candidates.findIndex((c) => c.key === b.contextKey));
     const ownedItemIds = shardUnits.flatMap((u) => u.ownedItemIds);
     const ownedMaterialItemIds = shardUnits.flatMap((u) => u.ownedMaterialItemIds);
     const primaryCharStart = Math.min(...shardUnits.map((u) => u.charStart));
     const primaryCharEnd = Math.max(...shardUnits.map((u) => u.charEnd));
-    const primaryChars = primaryCharEnd - primaryCharStart;
+    const primarySlices = contiguousSlices(shardUnits);
+    const primaryChars = primarySlices.reduce((a, sl) => a + (sl.charEnd - sl.charStart), 0);
     const inventoryRenderedChars = ownedItemIds.reduce((a, id) => a + (byId.get(id) ? approximateInventoryLineChars(byId.get(id)!) : 0), 0);
     const totalChars = primaryChars + contextChars + inventoryRenderedChars + FIXED_CALL_OVERHEAD_CHARS;
     const shardHash = hashParts([
@@ -514,7 +582,7 @@ export function planCompilationShards(input: ShardPlanInput): ShardPlan {
       ...context.map((c) => `ctx:${c.contextKey}|${c.fullTextHash}`).sort(),
       `gen:${generation.algorithmVersion}|${generation.promptVersion}|${SHARD_PLANNER_ALGORITHM_VERSION}`,
     ]);
-    return { shardId, shardHash, ordinal, regionId, ownedUnitKeys: shardUnits.map((u) => u.unitKey), primaryCharStart, primaryCharEnd, primaryChars, ownedItemIds, ownedMaterialItemIds, context, contextChars, unresolvedContext, oversized, estimate: { primaryChars, contextChars, inventoryRenderedChars, fixedOverheadChars: FIXED_CALL_OVERHEAD_CHARS, totalChars, inputTokens: estimateTokensFromChars(totalChars), outputTokens: estimateOutputTokens(shardUnits.filter((u) => u.kind !== "LEAD_IN").length) } };
+    return { shardId, shardHash, ordinal, regionId, ownedUnitKeys: shardUnits.map((u) => u.unitKey), primaryCharStart, primaryCharEnd, primaryChars, primarySlices, ownedItemIds, ownedMaterialItemIds, context, contextChars, unresolvedContext, oversized, estimate: { primaryChars, contextChars, inventoryRenderedChars, fixedOverheadChars: FIXED_CALL_OVERHEAD_CHARS, totalChars, inputTokens: estimateTokensFromChars(totalChars), outputTokens: estimateOutputTokens(shardUnits.filter((u) => u.kind !== "LEAD_IN").length) } };
   });
 
   const itemOwnerShard: Record<string, string> = {};
@@ -564,8 +632,10 @@ export function buildShardCompilerInput(base: SemanticCompilerInput, plan: Shard
   const inv = base.frozenInventory;
   if (!sc || !inv) throw new Error("buildShardCompilerInput requires a base input carrying sourceContext and frozenInventory (compile.ts's callerInput)");
   const region = sc.regions.find((r) => r.regionId === shard.regionId)!;
-  const primaryText = region.text.slice(shard.primaryCharStart, shard.primaryCharEnd);
+  const slices = shard.primarySlices ?? [{ charStart: shard.primaryCharStart, charEnd: shard.primaryCharEnd, unitKeys: shard.ownedUnitKeys }];
+  const primaryText = renderPrimarySlices(region.text, slices, plan, shard);
   const absStart = region.charStart >= 0 ? region.charStart + shard.primaryCharStart : -1;
+  const inSlices = (charStart: number) => slices.some((sl) => charStart >= sl.charStart && charStart < sl.charEnd);
   const owned = new Set(shard.ownedItemIds);
   const contextRegions = shard.context.map((c) => ({
     regionId: `context:${c.contextKey}`,
@@ -586,8 +656,8 @@ export function buildShardCompilerInput(base: SemanticCompilerInput, plan: Shard
   const shardInventory = {
     ...inv,
     items: inv.items.filter((i) => owned.has(i.inventoryItemId)),
-    uninventoriedValues: inv.uninventoriedValues.filter((v) => v.regionId === shard.regionId && v.charStart >= shard.primaryCharStart && v.charStart < shard.primaryCharEnd),
-    unaccountedSource: inv.unaccountedSource.filter((s) => s.regionId === shard.regionId && s.charStart >= shard.primaryCharStart && s.charStart < shard.primaryCharEnd),
+    uninventoriedValues: inv.uninventoriedValues.filter((v) => v.regionId === shard.regionId && inSlices(v.charStart)),
+    unaccountedSource: inv.unaccountedSource.filter((s) => s.regionId === shard.regionId && inSlices(s.charStart)),
   };
   const contextBundle = {
     ...base.contextBundle,
@@ -595,6 +665,28 @@ export function buildShardCompilerInput(base: SemanticCompilerInput, plan: Shard
     unresolvedDependencies: base.contextBundle.unresolvedDependencies.filter((u) => !u.sourceText || primaryText.includes(u.sourceText)),
   };
   return { ...base, candidateRef: `${base.candidateRef}#${shard.shardId}`, operativeSourceText: primaryText, operativeCharStart: absStart >= 0 ? absStart : base.operativeCharStart, sourceContext: shardSourceContext, frozenInventory: shardInventory, contextBundle, toolAccess: { ...base.toolAccess, contextBundle } };
+}
+
+/**
+ * v2 compositional rendering (mission §14): the owned slices in source order; between two non-adjacent slices an
+ * explicit gap marker names how many units were omitted and which shard(s) own them, so the model can never mistake
+ * the gap for continuous drafting and never claims anything from it. A single slice renders exactly as v1 did.
+ */
+export function renderPrimarySlices(regionText: string, slices: CompilationShard["primarySlices"], plan: ShardPlan, shard: CompilationShard): string {
+  if (slices.length <= 1) return regionText.slice(slices[0]?.charStart ?? shard.primaryCharStart, slices[0]?.charEnd ?? shard.primaryCharEnd);
+  const parts: string[] = [];
+  for (let i = 0; i < slices.length; i++) {
+    const sl = slices[i]!;
+    if (i > 0) {
+      const prev = slices[i - 1]!;
+      const omitted = plan.units.filter((u) => u.regionId === shard.regionId && u.charStart >= prev.charEnd && u.charEnd <= sl.charStart);
+      const owners = [...new Set(omitted.map((u) => plan.unitOwnerShard[u.unitKey]).filter((x): x is string => !!x))];
+      const refs = [...new Set(omitted.map((u) => u.sectionRef).filter((x): x is string => !!x))];
+      parts.push(`\n\n[SOURCE OMITTED HERE: ${omitted.length} unit(s)${refs.length ? ` (${refs.slice(0, 6).join(", ")}${refs.length > 6 ? ", ..." : ""})` : ""} covering region chars ${prev.charEnd}-${sl.charStart} are owned and compiled by shard(s) ${owners.join(", ") || "(none)"} - not part of this shard's operative text; compile nothing from the gap and claim no inventory item from it]\n\n`);
+    }
+    parts.push(regionText.slice(sl.charStart, sl.charEnd));
+  }
+  return parts.join("");
 }
 
 /** Sensitivity study helper: the aggregate figures a plan yields under one budget (mission §16/§17). */

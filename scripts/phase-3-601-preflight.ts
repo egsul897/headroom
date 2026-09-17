@@ -22,6 +22,8 @@ import { SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION, SEMANTIC_INVENTORY_PROMPT_VE
 import { SOURCE_IDENTITY_MIGRATION_VERSION } from "../lib/contract-model/compiler/semantic-accountability/source-identity";
 import { IR_SCHEMA_VERSION } from "../lib/contract-model/ir/types";
 import type { DiscoveredCandidate } from "../lib/contract-model/compiler/discovery/types";
+import { computeOperativeContractState } from "../lib/contract-model/compiler/amendment/operative-state";
+import type { OperativeContractState } from "../lib/contract-model/compiler/amendment/types";
 
 const OUT = "docs/phase-3-final-601";
 const STARTING_SHA = "a013ffdc4195257505a2e6546e984e7153cbf5bb";
@@ -43,6 +45,23 @@ export interface Preflight601 {
   decision: string;
 }
 
+/** The document date of the Chewy base agreement fixture (doc-a-2026-06-23-credit-agreement.txt) - the as-of date the harness computes operative state for. */
+export const CHWY_AS_OF_DATE = "2026-06-23";
+
+/**
+ * Deterministic operative-state fact for the validation package: refuses (throws) unless the package graph proves a
+ * single-document instrument with zero modification candidates, in which case the production
+ * computeOperativeContractState over an EMPTY effect set yields OPERATIVE_STATE_RESOLVED with zero provisions -
+ * exactly what production's orchestrator would compute for this package.
+ */
+export function computeHarnessOperativeState(chewy: ReturnType<typeof buildChewy>): OperativeContractState {
+  const graph = chewy.access.packageGraph;
+  const documentIds = graph?.instruments.find((i) => i.documentIds.includes("doc-a"))?.documentIds ?? ["doc-a"];
+  const modifications = graph?.modificationCandidates.length ?? 0;
+  if (documentIds.length !== 1 || modifications !== 0) throw new Error(`harness operative-state wiring requires a single-document, never-amended package; graph shows ${documentIds.length} document(s) and ${modifications} modification candidate(s) - run the amendment pipeline instead`);
+  return computeOperativeContractState({ instrumentKey: INSTRUMENT, baseDocumentId: "doc-a", asOfDate: CHWY_AS_OF_DATE, index: chewy.index, allEffects: [] });
+}
+
 export function buildSection601() {
   const chewy = buildChewy();
   const idx = chewy.index as unknown as { findNodesByRef: (d: string, r: string) => { nodeId: string; charStart: number; charEnd: number }[]; getNodeById: (id: string) => { nodeId: string; nodeKey: string; sectionRef: string; heading: string; charStart: number; charEnd: number } | undefined; getNodeText: (id: string, m: "DESCENDANTS") => string; getDocumentText: (d: string) => string | undefined };
@@ -54,7 +73,15 @@ export function buildSection601() {
   // The SAME deterministic candidate shape the prior Chewy paid run used (no discovery output is an input here).
   const candidate = { discoveryId: candidateRef, documentId: "doc-a", structuralNodeKeys: [sec.nodeKey], structuralNodeIds: [sec.nodeId], normalizedSourceRef: sec.sectionRef, families: [], role: "GENERAL_PROHIBITION", roleRaw: "", roleNormalizationStatus: "VALID_CANONICAL", familiesRaw: [], familiesNormalizationStatus: "VALID_CANONICAL", description: sec.heading, multipleRulesLikely: true, definedTermDependencyLikely: true, discoveryMethods: ["DETERMINISTIC_SIGNAL"], evidenceSignals: ["headline_heading"], reviewStatus: "NEEDS_REVIEW", confidence: 1, sourceCitation: operativeSourceText.slice(0, 200), discoveryRunVersion: "phase-3-final-601.v1", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", supersessionReason: "single-document package, no amendment effects", valueAnchors: [] } as unknown as DiscoveredCandidate;
   const contextBundle = buildCovenantContextBundle({ candidate, packageKey: "phase-3-validation-chwy-package", companyId: COMPANY, instrumentKey: INSTRUMENT }, chewy.access);
-  const input = { companyId: COMPANY, instrumentKey: INSTRUMENT, sourceDocumentId: "doc-a", candidateRef, sourceSectionRef: SECTION, operativeSourceText, operativeCharStart: sec.charStart, contextBundle, operativeLineage: null, toolAccess: { structuralIndex: chewy.index, operativeState: null, packageGraph: chewy.access.packageGraph, amendmentEffects: [], contextBundle }, irSchemaVersion: IR_SCHEMA_VERSION, compilerAlgorithmVersion: SEMANTIC_COMPILER_ALGORITHM_VERSION, compilerPromptVersion: SEMANTIC_COMPILER_PROMPT_VERSION, toolPolicyVersion: SEMANTIC_COMPILER_TOOL_POLICY_VERSION };
+  // PHASE 3 / 6.01 remediation §9/§15 (OPERATIVE_STATE_WIRING_WRONG - harness layer): the paid run passed
+  // operativeState: null. Production tools treat a document with NO operative-state computation as
+  // UNKNOWN_SUPERSESSION_STATUS (fail-closed), so every successful section-reading tool call returned
+  // evidenceUnresolved=true and shard 0 was flagged OPERATIVE_STATE_UNRESOLVED although nothing was ever amended.
+  // Production (analysis/orchestrator.ts) never passes null: it computes the state from the package's real effect set.
+  // The same deterministic fact is wired here from the package graph - one document, no modification candidates,
+  // no amendment effects - through the SAME production function; nothing is inferred by a model.
+  const operativeState = computeHarnessOperativeState(chewy);
+  const input = { companyId: COMPANY, instrumentKey: INSTRUMENT, sourceDocumentId: "doc-a", candidateRef, sourceSectionRef: SECTION, operativeSourceText, operativeCharStart: sec.charStart, contextBundle, operativeLineage: null, toolAccess: { structuralIndex: chewy.index, operativeState, packageGraph: chewy.access.packageGraph, amendmentEffects: [], contextBundle }, irSchemaVersion: IR_SCHEMA_VERSION, compilerAlgorithmVersion: SEMANTIC_COMPILER_ALGORITHM_VERSION, compilerPromptVersion: SEMANTIC_COMPILER_PROMPT_VERSION, toolPolicyVersion: SEMANTIC_COMPILER_TOOL_POLICY_VERSION };
   const sourceContext = resolveSourceContext({ index: chewy.index, documentId: "doc-a", operativeSourceText, anchorNodeId: contextBundle.originatingStructuralNodeIds?.[0] ?? null, operativeCharStart: sec.charStart, documentText: idx.getDocumentText("doc-a") ?? null });
   return { chewy, sec, operativeSourceText, candidateRef, contextBundle, input, sourceContext };
 }

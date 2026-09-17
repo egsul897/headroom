@@ -305,7 +305,14 @@ export interface SemanticExecutionMetadata {
     collisionsByKind: Record<string, number>;
     definitionConflicts: number;
     conflictVariants: number;
+    /** Contextual emissions DETECTED by the stitcher (a shard emitted an object it does not own) - every one is demoted and kept out of the stitched IR. Detection is not a violation. */
     contextualEmissions: number;
+    /**
+     * PHASE 3 / 6.01 remediation §18 - contextual emissions actually CREDITED: detected contextual objects that
+     * nevertheless survived into the stitched IR. This is the only "contextual ownership-credit violation" count;
+     * it is 0 by construction of the stitcher and is measured (never assumed) so a trust audit can read it directly.
+     */
+    contextualEmissionsCredited: number;
     unresolvedOwnedItems: number;
     /** The stitcher's own status/reasons before whole-unit signals were layered on - the certified stitch outcome. */
     stitchedStatus: string;

@@ -162,11 +162,27 @@ describe("F-7A §19 C - shared-capacity construct whose members span a packing b
     expect(shards.size).toBeGreaterThan(1);
   });
 
-  it("a must-link block larger than the max is still one shard, flagged oversized - never split", () => {
+  it("v2 member closure: a group whose members sit far apart forces only its MEMBERS together (one shard, two slices), never the whole range - and is not oversized", () => {
     const wide = buildDefinitionsCorpus({ count: 30, sharedCapGroup: [2, 25] });
     const p = planFor(wide, "cand:1.01");
     const shard = p.shards.find((s) => s.shardId === p.itemOwnerShard["inv-item:002"])!;
     expect(shard.shardId).toBe(p.itemOwnerShard["inv-item:025"]);
+    // units 3..24 are NOT all dragged into the shard by the {2, 25} link (the v1 range closure fused 2..25 into one block)
+    const between = [...Array(22).keys()].map((k) => k + 3).filter((i) => p.itemOwnerShard[`inv-item:${String(i).padStart(3, "0")}`] === shard.shardId);
+    expect(between.length).toBeLessThan(22);
+    expect(shard.primarySlices.length).toBeGreaterThanOrEqual(2);
+    expect(shard.primaryChars).toBe(shard.primarySlices.reduce((a, sl) => a + (sl.charEnd - sl.charStart), 0));
+    expect(shard.oversized).toBe(false);
+    expect(p.totals.oversizedShards).toBe(0);
+    // every unit is still owned exactly once
+    expect(p.ownershipProof).toEqual({ materialItems: 30, ownedOnce: 30, unowned: 0, multiplyOwned: 0 });
+  });
+
+  it("a must-link block whose MEMBERS alone exceed the max is still one shard, flagged oversized - never split", () => {
+    const wide = buildDefinitionsCorpus({ count: 30, sharedCapGroup: [2, 5, 8, 11, 14, 17, 20, 23, 25] });
+    const p = planFor(wide, "cand:1.01", { ...SMALL, maxUnitsPerShard: 4 });
+    const shard = p.shards.find((s) => s.shardId === p.itemOwnerShard["inv-item:002"])!;
+    for (const i of [5, 8, 11, 14, 17, 20, 23, 25]) expect(p.itemOwnerShard[`inv-item:${String(i).padStart(3, "0")}`]).toBe(shard.shardId);
     expect(shard.oversized).toBe(true);
     expect(p.totals.oversizedShards).toBe(1);
   });

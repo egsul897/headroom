@@ -1,0 +1,764 @@
+{
+ "artifact": "PHASE 3 / 6.01 TRUST-FAILURE REMEDIATION §19/§21 - CORRECTED_DIAGNOSTIC_SCORE (HD-5-fixed re-score of the FROZEN paid outputs)",
+ "label": "CORRECTED_DIAGNOSTIC_SCORE",
+ "at": "2026-09-17T16:19:05.396Z",
+ "diagnosticOnly": true,
+ "doesNotReplace": [
+  "83-final-paid-reference-comparison.json",
+  "84-final-paid-quantitative-extra-audit.json",
+  "85-final-paid-trust-quality.json",
+  "87-final-paid-verdict.json (PHASE3_601_NOT_SAFE stands)"
+ ],
+ "cannotMakePaidTrustGatePass": "the production trust failure (317 unresolved owned items, 5 values lost, 2 SHARD_MISSING_CONTEXT shards) is independent of the scorer and is unchanged by this re-score",
+ "inputs": {
+  "compileResult": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/compile-result.json",
+  "verifyResult": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/verify-result.json",
+  "referenceSet": "frozen Section 6.01 reference items (unmodified)",
+  "numericModule": "scripts/phase-3-601-score-numeric.ts"
+ },
+ "unitFlaggedForReview": true,
+ "compileStatus": "PARTIAL",
+ "verifyStatus": "MATERIAL_DISCREPANCY",
+ "pinned": {
+  "critical": {
+   "correct": 1,
+   "explicitSafeLimitation": 1,
+   "incorrect": 2,
+   "silentMisses": 0
+  },
+  "material": {
+   "correct": 0,
+   "explicitSafeLimitation": 0,
+   "incorrect": 4,
+   "silentMisses": 0
+  }
+ },
+ "CRITICAL": {
+  "correct": 2,
+  "explicitLimitation": 2,
+  "incorrect": 0,
+  "silent": 0
+ },
+ "MATERIAL": {
+  "correct": 3,
+  "explicitLimitation": 1,
+  "incorrect": 0,
+  "silent": 0
+ },
+ "items": [
+  {
+   "id": "A1",
+   "section": "6.01(a)",
+   "materiality": "CRITICAL",
+   "span": [
+    608901,
+    612151
+   ],
+   "description": "Ratio debt incurrence test: pari passu secured FLLR <= greater of 2.00x and prior; junior secured SSLR <= greater of 3.00x/prior OR ICR >= lesser of 1.75x/prior; unsecured TLR <= greater of 4.00x/prior OR ICR >= lesser of 1.75x/prior (Permitted Ratio Debt)",
+   "pinnedClassification": "FOUND_AND_REPRESENTED",
+   "classification": "FOUND_AND_REPRESENTED",
+   "changed": false,
+   "recovered": true,
+   "explicitLimitation": false,
+   "incorrect": false,
+   "silentMiss": false,
+   "coveringInventoryItems": 43,
+   "coveringMaterialItems": 42,
+   "dispositionPool": [
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED"
+   ],
+   "quantitative": {
+    "sourceNumbers": [],
+    "checks": [
+     {
+      "itemId": "inv-item:0d04271f84bce8c4ebee33a4",
+      "raw": "2.00:1.00",
+      "normalized": 2,
+      "unit": "x",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     },
+     {
+      "itemId": "inv-item:b436b3ade9823c4bc9cf1f41",
+      "raw": "2.00:1.00",
+      "normalized": 2,
+      "unit": "x",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     },
+     {
+      "itemId": "inv-item:71e20dc5fe30ee0ef7f3514e",
+      "raw": "3.00:1.00",
+      "normalized": 3,
+      "unit": "x",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     },
+     {
+      "itemId": "inv-item:57dbc556de9b2638ec4a1b51",
+      "raw": "1.75:1.00",
+      "normalized": 1.75,
+      "unit": "x",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     },
+     {
+      "itemId": "inv-item:c9bdb9430a07d644e6d0d9ec",
+      "raw": "1.75:1.00",
+      "normalized": 1.75,
+      "unit": "x",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     },
+     {
+      "itemId": "inv-item:bff1642b93868b4343863ff3",
+      "raw": "4.00:1.00",
+      "normalized": 4,
+      "unit": "x",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     },
+     {
+      "itemId": "inv-item:f664073a067b3e5c55db0d21",
+      "raw": "1.75:1.00",
+      "normalized": 1.75,
+      "unit": "x",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     },
+     {
+      "itemId": "inv-item:73bb247edd14c81cea0fb058",
+      "raw": "1.75:1.00",
+      "normalized": 1.75,
+      "unit": "x",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     }
+    ],
+    "contradictions": 0
+   },
+   "referenceSpan": {
+    "originalSpanPreserved": true,
+    "boundaryDefect": {
+     "erroneous": false,
+     "detail": "span boundaries fall between tokens"
+    },
+    "referenceSetErrorRecorded": false
+   }
+  },
+  {
+   "id": "B1",
+   "section": "6.01(b)(1)",
+   "materiality": "CRITICAL",
+   "span": [
+    612837,
+    613535
+   ],
+   "description": "Loan Document debt plus ABL facility debt capped at greater of $800.0M and the Borrowing Base, plus Fixed Incremental Amount (clause (Z))",
+   "pinnedClassification": "FOUND_BUT_AMBIGUOUS",
+   "classification": "FOUND_BUT_AMBIGUOUS",
+   "changed": false,
+   "recovered": false,
+   "explicitLimitation": true,
+   "incorrect": false,
+   "silentMiss": false,
+   "coveringInventoryItems": 7,
+   "coveringMaterialItems": 7,
+   "dispositionPool": [
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "AMBIGUOUS"
+   ],
+   "quantitative": {
+    "sourceNumbers": [],
+    "checks": [],
+    "contradictions": 0
+   },
+   "referenceSpan": {
+    "originalSpanPreserved": true,
+    "boundaryDefect": {
+     "erroneous": false,
+     "detail": "span boundaries fall between tokens"
+    },
+    "referenceSetErrorRecorded": false
+   }
+  },
+  {
+   "id": "B2",
+   "section": "6.01(b)(4)",
+   "materiality": "MATERIAL",
+   "span": [
+    613535,
+    614500
+   ],
+   "description": "Capital lease / purchase money / sale-leaseback debt: greater of $360.0M and 50% EBITDA, plus amount incurrable with pro forma FLLR <= 2.50x, plus closing-date capital leases",
+   "pinnedClassification": "FOUND_BUT_INCORRECT",
+   "classification": "FOUND_BUT_AMBIGUOUS",
+   "changed": true,
+   "recovered": false,
+   "explicitLimitation": true,
+   "incorrect": false,
+   "silentMiss": false,
+   "coveringInventoryItems": 12,
+   "coveringMaterialItems": 12,
+   "dispositionPool": [
+    "AMBIGUOUS",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "UNSUPPORTED",
+    "UNSUPPORTED",
+    "UNSUPPORTED",
+    "UNSUPPORTED"
+   ],
+   "quantitative": {
+    "sourceNumbers": [
+     {
+      "raw": "$360.0 million",
+      "value": 360000000,
+      "unit": "USD"
+     },
+     {
+      "raw": "50%",
+      "value": 0.5,
+      "unit": "%"
+     }
+    ],
+    "checks": [
+     {
+      "itemId": "inv-item:eeb98170e0aba24ab1e099e6",
+      "raw": "$360.0 million",
+      "normalized": 360000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:eeb98170e0aba24ab1e099e6",
+      "raw": "50%",
+      "normalized": 0.5,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:d0633f26f6f96164af087544",
+      "raw": "$360.0 million",
+      "normalized": 360000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:d51d5d6fc3429998344ac7a4",
+      "raw": "50%",
+      "normalized": 0.5,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:35e2dca58384f2f9d4375add",
+      "raw": "2.50:1.00",
+      "normalized": 2.5,
+      "unit": "x:1",
+      "contradiction": false,
+      "reason": "unit x:1 is not compared"
+     }
+    ],
+    "contradictions": 0
+   },
+   "referenceSpan": {
+    "originalSpanPreserved": true,
+    "boundaryDefect": {
+     "erroneous": true,
+     "detail": "span end 614500 bisects a token: \"...ations being inc\" | \"urred in...\""
+    },
+    "referenceSetErrorRecorded": true
+   }
+  },
+  {
+   "id": "B3",
+   "section": "6.01(b)(12)",
+   "materiality": "CRITICAL",
+   "span": [
+    621202,
+    623379
+   ],
+   "description": "(a) contribution debt up to 200% of net cash equity contributions (Contribution Indebtedness); (b) general debt basket greater of $720.0M and 100% EBITDA",
+   "pinnedClassification": "FOUND_BUT_INCORRECT",
+   "classification": "FOUND_BUT_AMBIGUOUS",
+   "changed": true,
+   "recovered": false,
+   "explicitLimitation": true,
+   "incorrect": false,
+   "silentMiss": false,
+   "coveringInventoryItems": 16,
+   "coveringMaterialItems": 16,
+   "dispositionPool": [
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "AMBIGUOUS",
+    "REPRESENTED",
+    "AMBIGUOUS",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "UNSUPPORTED",
+    "AMBIGUOUS"
+   ],
+   "quantitative": {
+    "sourceNumbers": [
+     {
+      "raw": "$720.0 million",
+      "value": 720000000,
+      "unit": "USD"
+     },
+     {
+      "raw": "200%",
+      "value": 2,
+      "unit": "%"
+     },
+     {
+      "raw": "100%",
+      "value": 1,
+      "unit": "%"
+     }
+    ],
+    "checks": [
+     {
+      "itemId": "inv-item:597667c532328e67b64edf1e",
+      "raw": "200%",
+      "normalized": 2,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:73c267362035042b134286f3",
+      "raw": "$720.0 million",
+      "normalized": 720000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:7156fe23d8deaead8784726b",
+      "raw": "100%",
+      "normalized": 1,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     }
+    ],
+    "contradictions": 0
+   },
+   "referenceSpan": {
+    "originalSpanPreserved": true,
+    "boundaryDefect": {
+     "erroneous": false,
+     "detail": "span boundaries fall between tokens"
+    },
+    "referenceSetErrorRecorded": false
+   }
+  },
+  {
+   "id": "B4",
+   "section": "6.01(b)(18)",
+   "materiality": "MATERIAL",
+   "span": [
+    630144,
+    630700
+   ],
+   "description": "Non-Guarantor Restricted Party debt basket: greater of $720.0M and 100% EBITDA (with refinancings)",
+   "pinnedClassification": "FOUND_BUT_INCORRECT",
+   "classification": "FOUND_AND_REPRESENTED",
+   "changed": true,
+   "recovered": true,
+   "explicitLimitation": false,
+   "incorrect": false,
+   "silentMiss": false,
+   "coveringInventoryItems": 12,
+   "coveringMaterialItems": 12,
+   "dispositionPool": [
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED"
+   ],
+   "quantitative": {
+    "sourceNumbers": [
+     {
+      "raw": "$720.0 million",
+      "value": 720000000,
+      "unit": "USD"
+     },
+     {
+      "raw": "100%",
+      "value": 1,
+      "unit": "%"
+     }
+    ],
+    "checks": [
+     {
+      "itemId": "inv-item:49feaf4b3f7b5641e75e7482",
+      "raw": "$720.0 million",
+      "normalized": 720000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:49feaf4b3f7b5641e75e7482",
+      "raw": "100%",
+      "normalized": 1,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:14bf30c684d85e867453b9a2",
+      "raw": "$720.0 million",
+      "normalized": 720000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:532b30742e4d15408717c794",
+      "raw": "100%",
+      "normalized": 1,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     }
+    ],
+    "contradictions": 0
+   },
+   "referenceSpan": {
+    "originalSpanPreserved": true,
+    "boundaryDefect": {
+     "erroneous": true,
+     "detail": "span end 630700 bisects a token: \"...or Preferred Sto\" | \"ck of an...\""
+    },
+    "referenceSetErrorRecorded": true
+   }
+  },
+  {
+   "id": "B5",
+   "section": "6.01(b)(19)",
+   "materiality": "MATERIAL",
+   "span": [
+    630700,
+    631400
+   ],
+   "description": "Acquired / acquisition debt: greater of $720.0M and 100% EBITDA, or ratio-neutral / no-worse tests",
+   "pinnedClassification": "FOUND_BUT_INCORRECT",
+   "classification": "FOUND_AND_REPRESENTED",
+   "changed": true,
+   "recovered": true,
+   "explicitLimitation": false,
+   "incorrect": false,
+   "silentMiss": false,
+   "coveringInventoryItems": 11,
+   "coveringMaterialItems": 11,
+   "dispositionPool": [
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED"
+   ],
+   "quantitative": {
+    "sourceNumbers": [
+     {
+      "raw": "$720.0 million",
+      "value": 720000000,
+      "unit": "USD"
+     },
+     {
+      "raw": "100.0%",
+      "value": 1,
+      "unit": "%"
+     }
+    ],
+    "checks": [
+     {
+      "itemId": "inv-item:7f0a5c97a75aa592d91d739c",
+      "raw": "$720.0 million",
+      "normalized": 720000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:7f0a5c97a75aa592d91d739c",
+      "raw": "100.0%",
+      "normalized": 1,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:c5635cbf1a48f1825d0d547a",
+      "raw": "$720.0 million",
+      "normalized": 720000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:7ae6dadb2ae9b65e35914437",
+      "raw": "100.0%",
+      "normalized": 1,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     }
+    ],
+    "contradictions": 0
+   },
+   "referenceSpan": {
+    "originalSpanPreserved": true,
+    "boundaryDefect": {
+     "erroneous": false,
+     "detail": "span boundaries fall between tokens"
+    },
+    "referenceSetErrorRecorded": false
+   }
+  },
+  {
+   "id": "B6",
+   "section": "6.01(b)(27)",
+   "materiality": "MATERIAL",
+   "span": [
+    634000,
+    634400
+   ],
+   "description": "Joint venture debt: greater of $360.0M and 50% EBITDA",
+   "pinnedClassification": "FOUND_BUT_INCORRECT",
+   "classification": "FOUND_AND_REPRESENTED",
+   "changed": true,
+   "recovered": true,
+   "explicitLimitation": false,
+   "incorrect": false,
+   "silentMiss": false,
+   "coveringInventoryItems": 4,
+   "coveringMaterialItems": 4,
+   "dispositionPool": [
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED"
+   ],
+   "quantitative": {
+    "sourceNumbers": [
+     {
+      "raw": "$360.0",
+      "value": 360,
+      "unit": "USD"
+     }
+    ],
+    "checks": [
+     {
+      "itemId": "inv-item:2653e0bb8ca0ca5943a82ea5",
+      "raw": "$360.0 million",
+      "normalized": 360000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "source number \"$360.0\" is a span-cut prefix of the IR raw text \"$360.0 million\""
+     },
+     {
+      "itemId": "inv-item:0c0a1a4aa31acdb5d9bf6e48",
+      "raw": "$360.0 million",
+      "normalized": 360000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "source number \"$360.0\" is a span-cut prefix of the IR raw text \"$360.0 million\""
+     },
+     {
+      "itemId": "inv-item:0c0a1a4aa31acdb5d9bf6e48",
+      "raw": "50%",
+      "normalized": 0.5,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     }
+    ],
+    "contradictions": 0
+   },
+   "referenceSpan": {
+    "originalSpanPreserved": true,
+    "boundaryDefect": {
+     "erroneous": true,
+     "detail": "span end 634400 bisects a token: \"...(x) $360.0 milli\" | \"on and (...\" (a money scale word is cut - the pinned scorer read the amount without its scale)"
+    },
+    "referenceSetErrorRecorded": true
+   }
+  },
+  {
+   "id": "B7",
+   "section": "6.01(b)(31)/(32)/(33)",
+   "materiality": "CRITICAL",
+   "span": [
+    634400,
+    636112
+   ],
+   "description": "Debt in reliance on Available RP Capacity Amount; Available Amount; Incremental Equivalent Debt within Incremental Cap",
+   "pinnedClassification": "FOUND_BUT_INCORRECT",
+   "classification": "FOUND_AND_REPRESENTED",
+   "changed": true,
+   "recovered": true,
+   "explicitLimitation": false,
+   "incorrect": false,
+   "silentMiss": false,
+   "coveringInventoryItems": 15,
+   "coveringMaterialItems": 14,
+   "dispositionPool": [
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "REPRESENTED",
+    "UNSUPPORTED",
+    "REPRESENTED",
+    "UNSUPPORTED",
+    "UNSUPPORTED",
+    "UNSUPPORTED",
+    "REPRESENTED",
+    "REPRESENTED"
+   ],
+   "quantitative": {
+    "sourceNumbers": [
+     {
+      "raw": "50%",
+      "value": 0.5,
+      "unit": "%"
+     }
+    ],
+    "checks": [
+     {
+      "itemId": "inv-item:2653e0bb8ca0ca5943a82ea5",
+      "raw": "$360.0 million",
+      "normalized": 360000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     },
+     {
+      "itemId": "inv-item:0c0a1a4aa31acdb5d9bf6e48",
+      "raw": "$360.0 million",
+      "normalized": 360000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     },
+     {
+      "itemId": "inv-item:0c0a1a4aa31acdb5d9bf6e48",
+      "raw": "50%",
+      "normalized": 0.5,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:a726f1df5e32d0eabd9170c1",
+      "raw": "50%",
+      "normalized": 0.5,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     }
+    ],
+    "contradictions": 0
+   },
+   "referenceSpan": {
+    "originalSpanPreserved": true,
+    "boundaryDefect": {
+     "erroneous": false,
+     "detail": "span boundaries fall between tokens"
+    },
+    "referenceSetErrorRecorded": false
+   }
+  }
+ ],
+ "b6ReferenceSpanVerdict": {
+  "originalSpanPreserved": true,
+  "boundaryDefect": {
+   "erroneous": true,
+   "detail": "span end 634400 bisects a token: \"...(x) $360.0 milli\" | \"on and (...\" (a money scale word is cut - the pinned scorer read the amount without its scale)"
+  },
+  "referenceSetErrorRecorded": true
+ }
+}

@@ -328,7 +328,7 @@ export interface SourceContextRegion {
   unitExtension: { originalCharStart: number; originalCharEnd: number; unitBoundary: "ANCHOR_NODE" | "DEFINITION_SPAN"; note: string } | null;
 }
 
-export type ReferenceResolutionStatus = "UNIQUE" | "UNIQUE_AFTER_DEGENERATE_EXCLUSION" | "RESOLVED_VIA_ENCLOSING_NODE" | "AMBIGUOUS" | "NOT_FOUND" | "OUT_OF_SCOPE";
+export type ReferenceResolutionStatus = "UNIQUE" | "UNIQUE_AFTER_DEGENERATE_EXCLUSION" | "RESOLVED_VIA_ENCLOSING_NODE" | "RESOLVED_WITHIN_ENUMERATION_RUN" | "AMBIGUOUS" | "NOT_FOUND" | "OUT_OF_SCOPE";
 
 export interface UnresolvedSourceReference {
   referenceText: string;

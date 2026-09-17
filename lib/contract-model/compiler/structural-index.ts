@@ -479,6 +479,28 @@ export function buildStructuralIndex(nodesByDocument: Map<string, { text: string
     definitionsByDocumentSorted.set(d.documentId, list);
   }
   for (const list of definitionsByDocumentSorted.values()) list.sort((a, b) => a.charStart - b.charStart);
+  /**
+   * PHASE 3 / 6.01 remediation: exact normalized match first; when none exists, the singular of a plural query
+   * ("Incremental Facilities" -> "Incremental Facility", "Subsidiaries" -> "Subsidiary") is tried ONCE. Credit
+   * agreements define terms in the singular and cite them in the plural; a plural query previously returned nothing
+   * ("no defined term matching"), which the compiler read as "not defined". Exact matches always win; never fuzzy.
+   */
+  const singularCandidates = (normalized: string): string[] => {
+    const out: string[] = [];
+    if (/ies$/.test(normalized)) out.push(normalized.replace(/ies$/, "y"));
+    if (/(?:ss|us|is)$/.test(normalized)) return out;
+    if (/es$/.test(normalized)) out.push(normalized.replace(/es$/, ""));
+    if (/s$/.test(normalized)) out.push(normalized.replace(/s$/, ""));
+    return out.filter((c) => c.length > 1);
+  };
+  const lookupDefinition = (term: string, documentId?: string): DetectedDefinition | undefined => {
+    const normalized = term.toLowerCase().replace(/\s+/g, " ").trim();
+    const find = (n: string) => (documentId ? (definitionsByDocumentSorted.get(documentId) ?? []).find((d) => d.normalizedTerm === n) : definitionsByNormalizedTerm.get(n));
+    const exact = find(normalized);
+    if (exact) return exact;
+    for (const c of singularCandidates(normalized)) { const hit = find(c); if (hit) return hit; }
+    return undefined;
+  };
 
   const referencesBySourceId = new Map<string, DetectedReference[]>();
   const referencesByTargetId = new Map<string, DetectedReference[]>();
@@ -560,20 +582,16 @@ export function buildStructuralIndex(nodesByDocument: Map<string, { text: string
       return pool.filter((n) => n.nodeId !== nodeId);
     },
     getDescendants,
-    getDefinition: (term, documentId) => {
-      const normalized = term.toLowerCase().replace(/\s+/g, " ").trim();
-      if (documentId) return (definitionsByDocumentSorted.get(documentId) ?? []).find((d) => d.normalizedTerm === normalized);
-      return definitionsByNormalizedTerm.get(normalized);
-    },
+    getDefinition: (term, documentId) => lookupDefinition(term, documentId),
     getDefinitionFullText: (term, documentId) => {
-      const normalized = term.toLowerCase().replace(/\s+/g, " ").trim();
-      const def = documentId ? (definitionsByDocumentSorted.get(documentId) ?? []).find((d) => d.normalizedTerm === normalized) : definitionsByNormalizedTerm.get(normalized);
+      const def = lookupDefinition(term, documentId);
       if (!def) return undefined;
       const doc = nodesByDocument.get(def.documentId);
       if (!doc) return undefined;
       const sameDocumentDefs = definitionsByDocumentSorted.get(def.documentId) ?? [];
       const ownIndex = sameDocumentDefs.findIndex((d) => d.charStart === def.charStart && d.normalizedTerm === def.normalizedTerm);
-      const next = ownIndex >= 0 ? sameDocumentDefs[ownIndex + 1] : undefined;
+      // A NESTED declaration (one inside another definition's sentence) never ends the enclosing definition's span.
+      const next = ownIndex >= 0 ? sameDocumentDefs.slice(ownIndex + 1).find((d) => !d.nested) : undefined;
       const spanEnd = next ? next.charStart : doc.text.length;
       return doc.text.slice(def.charStart, spanEnd);
     },

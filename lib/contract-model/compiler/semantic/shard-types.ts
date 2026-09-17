@@ -18,7 +18,14 @@ import type { IRDefinition, IRRule, IRSharedCapacity } from "../../ir/types";
 import type { FrozenSemanticInventory, SemanticAccountabilityResult, SemanticInventoryItem, SourceContextResult, SourceContextState } from "../semantic-accountability/types";
 import type { SemanticCompilerFailureReason, SemanticCompilerInput } from "./types";
 
-export const SHARD_PLANNER_ALGORITHM_VERSION = "semantic-compilation-shards.v1";
+/**
+ * v2 (PHASE 3 / 6.01 trust-failure remediation): must-link groups close over their MEMBER units only (no contiguous
+ * range fusion), a unit that ends mid-sentence links to its next sibling, cross-references resolve through the generic
+ * reference resolver (heading-only duplicates excluded with disclosure), forwarding definitions carry their target,
+ * and dependency context is prioritised by what the owned items require (terms/sections) ahead of parent propositions.
+ * Every shardHash and planHash produced under v1 is therefore invalid for reuse (mission §22).
+ */
+export const SHARD_PLANNER_ALGORITHM_VERSION = "semantic-compilation-shards.v2";
 
 /**
  * Deterministic token estimate for a rendered compiler conversation: tokens per rendered character, CALIBRATED on the
@@ -134,10 +141,10 @@ export interface ShardBudget {
 }
 
 export interface MustLinkGroup {
-  /** Unit keys forced into one shard, in source order (the forced block covers the whole contiguous range). */
+  /** Unit keys forced into one shard, in source order. v2: ONLY the member units are forced together (a group spanning ordinals 3 and 17 forces {3, 17}, never 3..17). */
   unitKeys: string[];
-  /** Every link that caused the grouping. */
-  links: { kind: "SHARED_CAP" | "ITEM_SPAN_CROSSES_UNITS" | "EXPANSION_ATTACHED_TO_REFERRER"; itemId: string | null; fromUnitKey: string; toUnitKey: string; reason: string }[];
+  /** Every link that caused the grouping. SENTENCE_CONTINUATION (v2): a unit whose text ends mid-sentence and its next sibling unit. */
+  links: { kind: "SHARED_CAP" | "ITEM_SPAN_CROSSES_UNITS" | "EXPANSION_ATTACHED_TO_REFERRER" | "SENTENCE_CONTINUATION"; itemId: string | null; fromUnitKey: string; toUnitKey: string; reason: string }[];
 }
 
 export interface CompilationShard {
@@ -148,10 +155,18 @@ export interface CompilationShard {
   ordinal: number;
   regionId: string;
   ownedUnitKeys: string[];
-  /** Region-relative contiguous primary span. */
+  /** Region-relative extremes of the owned units (first owned unit start, last owned unit end). v2: NOT necessarily one contiguous run - see primarySlices. */
   primaryCharStart: number;
   primaryCharEnd: number;
+  /** v2: sum of the owned units' chars (the text actually rendered as this shard's operative source), never the span extremes' difference. */
   primaryChars: number;
+  /**
+   * v2 compositional sub-shard representation (mission §14): the owned units as maximal contiguous region-relative
+   * runs, in source order. A shard whose must-link group is non-contiguous renders every run as its own slice with an
+   * explicit, provenance-carrying gap marker between runs (the omitted units name their owner shards); ownership is
+   * per unit, so no item is ever duplicated or lost by the representation.
+   */
+  primarySlices: { charStart: number; charEnd: number; unitKeys: string[] }[];
   ownedItemIds: string[];
   ownedMaterialItemIds: string[];
   context: ShardContextEntry[];
