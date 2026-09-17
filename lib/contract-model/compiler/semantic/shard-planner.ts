@@ -19,7 +19,7 @@ import { resolveReferenceTarget } from "../semantic-accountability/reference-res
 import { partitionSourceSlots } from "../semantic-accountability/slots";
 import { independentSegmentBounds } from "../semantic-accountability/source-coverage";
 import type { FrozenSemanticInventory, SemanticInventoryItem, SourceContextRegion, SourceContextResult, UnresolvedSourceReference } from "../semantic-accountability/types";
-import type { StructuralIndex } from "../structural-index";
+import { findDefinedTermVariant, type StructuralIndex } from "../structural-index";
 import type { StructuralNode } from "../types";
 import { CALIBRATED_TOKENS_PER_CHAR, FIXED_CALL_OVERHEAD_CHARS, SHARD_PLANNER_ALGORITHM_VERSION, estimateOutputTokens, estimateTokensFromChars } from "./shard-types";
 import type { CompilationShard, MustLinkGroup, SemanticSourceUnit, ShardBudget, ShardContextEntry, ShardContextKind, ShardPlan, ShardPlanInput, UnitDerivationMethod, UnresolvedShardContext } from "./shard-types";
@@ -463,7 +463,12 @@ function collectContextCandidates(shardUnits: SemanticSourceUnit[], allUnits: Se
       // v2: a FORWARDING declaration carries no body - its target is a typed dependency of the same owned items (one hop).
       if (def.forwardingTarget?.kind === "SECTION") requireSection(def.forwardingTarget.ref, e.requiredBy, `forwarding target of the definition of "${e.term}"`);
       else if (def.forwardingTarget?.kind === "DEFINITION") { const k2 = normalizeDefinedTermRef(def.forwardingTarget.ref); if (k2 && !termCounts.has(k2) && !ownedTerms.has(k2)) forwardedTerms.set(k2, { term: def.forwardingTarget.ref, requiredBy: e.requiredBy, via: e.term }); }
-    } else notFound.push({ kind: "REFERENCED_TERM", key, reason: "NOT_FOUND", detail: `no detected definition of "${e.term}" in document ${documentId}`, requiredBy: e.requiredBy });
+    } else {
+      const variant = index ? findDefinedTermVariant(index, e.term, documentId) : undefined;
+      const variantFull = variant ? index!.getDefinitionFullText(variant.exactTerm, documentId) : undefined;
+      if (variant && variantFull) add({ kind: "REFERENCED_TERM", key: `term:${variant.normalizedTerm}`, sourceUnitKey: null, documentId, absCharStart: variant.charStart, absCharEnd: variant.charStart + variantFull.length, fullText: variantFull, requiredBy: e.requiredBy, reason: `definition of "${variant.exactTerm}" - the owned items cite "${e.term}", which is not itself defined; the defined grammatical-number variant is supplied read-only and disclosed as such`, priority: 3 });
+      else notFound.push({ kind: "REFERENCED_TERM", key, reason: "NOT_FOUND", detail: `no detected definition of "${e.term}" in document ${documentId}`, requiredBy: e.requiredBy });
+    }
   }
   for (const [k2, f] of forwardedTerms) {
     const def = index?.getDefinition(f.term, documentId);

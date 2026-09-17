@@ -479,27 +479,9 @@ export function buildStructuralIndex(nodesByDocument: Map<string, { text: string
     definitionsByDocumentSorted.set(d.documentId, list);
   }
   for (const list of definitionsByDocumentSorted.values()) list.sort((a, b) => a.charStart - b.charStart);
-  /**
-   * PHASE 3 / 6.01 remediation: exact normalized match first; when none exists, the singular of a plural query
-   * ("Incremental Facilities" -> "Incremental Facility", "Subsidiaries" -> "Subsidiary") is tried ONCE. Credit
-   * agreements define terms in the singular and cite them in the plural; a plural query previously returned nothing
-   * ("no defined term matching"), which the compiler read as "not defined". Exact matches always win; never fuzzy.
-   */
-  const singularCandidates = (normalized: string): string[] => {
-    const out: string[] = [];
-    if (/ies$/.test(normalized)) out.push(normalized.replace(/ies$/, "y"));
-    if (/(?:ss|us|is)$/.test(normalized)) return out;
-    if (/es$/.test(normalized)) out.push(normalized.replace(/es$/, ""));
-    if (/s$/.test(normalized)) out.push(normalized.replace(/s$/, ""));
-    return out.filter((c) => c.length > 1);
-  };
   const lookupDefinition = (term: string, documentId?: string): DetectedDefinition | undefined => {
     const normalized = term.toLowerCase().replace(/\s+/g, " ").trim();
-    const find = (n: string) => (documentId ? (definitionsByDocumentSorted.get(documentId) ?? []).find((d) => d.normalizedTerm === n) : definitionsByNormalizedTerm.get(n));
-    const exact = find(normalized);
-    if (exact) return exact;
-    for (const c of singularCandidates(normalized)) { const hit = find(c); if (hit) return hit; }
-    return undefined;
+    return documentId ? (definitionsByDocumentSorted.get(documentId) ?? []).find((d) => d.normalizedTerm === normalized) : definitionsByNormalizedTerm.get(normalized);
   };
 
   const referencesBySourceId = new Map<string, DetectedReference[]>();
@@ -628,4 +610,26 @@ export function buildStructuralIndex(nodesByDocument: Map<string, { text: string
       return result.status === "UNIQUE" ? result.node : undefined;
     },
   };
+}
+
+/**
+ * PHASE 3 / 6.01 remediation - a DISCLOSED grammatical-number variant of a term that is NOT itself defined
+ * ("Incremental Facilities" cited, "Incremental Facility" defined). Never used as a silent match: the certified OPEN-2
+ * invariant (tests/certification/part-b-terminal-recert-open2-independent.test.ts) requires a plural query to be refused
+ * as NOT_FOUND rather than served the singular's own text/amendment history under a different name. Callers use this
+ * only to NAME the defined variant in a refusal or a read-only context reason, so the exact term can then be queried.
+ */
+export function findDefinedTermVariant(index: StructuralIndex, term: string, documentId?: string): DetectedDefinition | undefined {
+  const normalized = term.toLowerCase().replace(/\s+/g, " ").trim();
+  if (index.getDefinition(normalized, documentId)) return undefined;
+  const candidates: string[] = [];
+  if (/ies$/.test(normalized)) candidates.push(normalized.replace(/ies$/, "y"));
+  if (!/(?:ss|us|is)$/.test(normalized)) {
+    if (/es$/.test(normalized)) candidates.push(normalized.replace(/es$/, ""));
+    if (/s$/.test(normalized)) candidates.push(normalized.replace(/s$/, ""));
+  }
+  if (/y$/.test(normalized)) candidates.push(normalized.replace(/y$/, "ies"));
+  if (!/s$/.test(normalized)) candidates.push(`${normalized}s`);
+  for (const c of candidates) { if (c.length < 2) continue; const hit = index.getDefinition(c, documentId); if (hit) return hit; }
+  return undefined;
 }

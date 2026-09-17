@@ -19,7 +19,7 @@ import { DEFAULT_TOOL_BUDGET, SEMANTIC_COMPILER_ALGORITHM_VERSION, SEMANTIC_COMP
 import type { CompilationShard, ShardExecutionResult, ShardPlan, ShardComposition } from "../lib/contract-model/compiler/semantic/shard-types";
 import type { FrozenSemanticInventory, SemanticInventoryItem, SourceContextResult } from "../lib/contract-model/compiler/semantic-accountability/types";
 import type { IRRule, IRExpression, IRCondition } from "../lib/contract-model/ir/types";
-import type { StructuralIndex } from "../lib/contract-model/compiler/structural-index";
+import { findDefinedTermVariant, type StructuralIndex } from "../lib/contract-model/compiler/structural-index";
 
 export const RAW = "tests/fixtures/unseen-packages/phase-3-final-601-final-paid";
 export const PAID_PLAN_HASH = "eab77c1aad1d941440f0d412e20578902c6744a5e100a0306153ea02e1720552";
@@ -104,7 +104,7 @@ export function runRoute(access: SemanticToolAccess, tool: string, input: Record
   return { tool, input, ok: o.ok, evidenceUnresolved: o.evidenceUnresolved ?? null, charsReturned: o.charsReturned, summary: o.outputSummary.slice(0, 300) };
 }
 
-export type ClosureResolution = "PLANNER_CONTEXT" | "OWNED_PRIMARY" | "BOUNDED_TOOL_ROUTE" | "PROVEN_EXTERNAL_TO_PACKAGE" | "STILL_UNRESOLVED";
+export type ClosureResolution = "PLANNER_CONTEXT" | "OWNED_PRIMARY" | "BOUNDED_TOOL_ROUTE" | "DISCLOSED_VARIANT_POINTER" | "PROVEN_EXTERNAL_TO_PACKAGE" | "STILL_UNRESOLVED";
 export interface ClosureRow {
   key: string; kind: OldRequestKind; oldShard: 0 | 1; oldEffect: OldRequest["oldEffect"]; whyNeeded: string; requestedBy: string[];
   requestingItemIds: string[]; newOwnerShards: string[];
@@ -150,11 +150,12 @@ export function computeClosure(env: RemediationEnv): { rows: ClosureRow[]; count
     if (req.kind === "EXTERNAL_DOCUMENT" || (req.kind === "TERM" && req.key === "Borrowing Base" && !idx.getDefinition(req.key, "doc-a"))) { resolution = "PROVEN_EXTERNAL_TO_PACKAGE"; resolvedBy = "getInstrumentDocuments proves a single-document instrument; the term/document is not in the package - the rule kept it as an explicit unresolved cross-unit dependency (COMPLETE sufficiency), never guessed"; }
     else if (ownedInPrimary.length > 0) { resolution = "OWNED_PRIMARY"; resolvedBy = `the requested source is inside the requesting shard's own operative text (shard ${ownedInPrimary.join(", ")})`; }
     else if (plannerContext.length > 0) { resolution = "PLANNER_CONTEXT"; resolvedBy = plannerContext.map((c) => `${c.shardId} context ${c.contextKey} (${c.kind}, ${c.chars} chars${c.truncated ? ", head/tail" : ""})`).join("; "); }
+    else if (req.kind === "TERM" && !idx.getDefinition(req.key, "doc-a") && findDefinedTermVariant(idx, req.key, "doc-a") && routes.some((r) => !r.ok && /grammatical-number variant/.test(r.summary))) { const v = findDefinedTermVariant(idx, req.key, "doc-a")!; const exact = runRoute(access, "getDefinition", { term: v.exactTerm }); resolution = exact.ok && exact.evidenceUnresolved !== true ? "DISCLOSED_VARIANT_POINTER" : "STILL_UNRESOLVED"; resolvedBy = `"${req.key}" is not itself a defined term; getDefinition refuses (OPEN-2 invariant: never served under a different name) and names the defined variant "${v.exactTerm}", which then resolves: ${exact.summary.slice(0, 120)}`; routes.push(exact); }
     else if (usableRoutes > 0) { resolution = "BOUNDED_TOOL_ROUTE"; resolvedBy = routes.filter((r) => r.ok && r.evidenceUnresolved !== true).map((r) => `${r.tool}(${JSON.stringify(r.input).slice(0, 60)}) -> ${r.summary.slice(0, 120)}`).join("; ") + (plannerUnresolved.length ? ` [planner: ${plannerUnresolved.map((u) => u.reason).join(", ")} - disclosed to the shard as a bounded-retrieval dependency]` : ""); }
     else { resolution = "STILL_UNRESOLVED"; resolvedBy = plannerUnresolved.map((u) => `${u.reason}: ${u.detail}`).join("; ") || "no route"; }
     return { key: req.key, kind: req.kind, oldShard: req.oldShard, oldEffect: req.oldEffect, whyNeeded: req.whyNeeded, requestedBy: req.requestedBy, requestingItemIds, newOwnerShards, old, new: { resolution, resolvedBy, plannerContext, plannerUnresolved, ownedInPrimary, routes, usableRoutes } };
   });
-  const counts = { total: rows.length, PLANNER_CONTEXT: 0, OWNED_PRIMARY: 0, BOUNDED_TOOL_ROUTE: 0, PROVEN_EXTERNAL_TO_PACKAGE: 0, STILL_UNRESOLVED: 0 } as Record<ClosureResolution | "total", number>;
+  const counts = { total: rows.length, PLANNER_CONTEXT: 0, OWNED_PRIMARY: 0, BOUNDED_TOOL_ROUTE: 0, DISCLOSED_VARIANT_POINTER: 0, PROVEN_EXTERNAL_TO_PACKAGE: 0, STILL_UNRESOLVED: 0 } as Record<ClosureResolution | "total", number>;
   for (const r of rows) counts[r.new.resolution]++;
   return { rows, counts };
 }

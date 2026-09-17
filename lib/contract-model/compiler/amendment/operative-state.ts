@@ -133,14 +133,7 @@ export type DefinitionResolution = { status: "UNIQUE"; definition: DetectedDefin
 
 export function resolveUniqueDefinitionByRef(index: StructuralIndex, documentId: string, term: string): DefinitionResolution {
   const normalized = normalizeDefinedTermRef(term);
-  let matches = index.allDefinitions().filter((d) => d.documentId === documentId && d.normalizedTerm === normalized);
-  if (matches.length === 0) {
-    // PHASE 3 / 6.01 remediation: the index's own lookup applies the singular-of-a-plural fallback ("Incremental
-    // Facilities" -> "Incremental Facility"); exact matches above always win, and every physical occurrence of the
-    // fallback term is still collected so a colliding definition stays AMBIGUOUS rather than first-match.
-    const fallback = index.getDefinition(term, documentId);
-    if (fallback) matches = index.allDefinitions().filter((d) => d.documentId === documentId && d.normalizedTerm === fallback.normalizedTerm);
-  }
+  const matches = index.allDefinitions().filter((d) => d.documentId === documentId && d.normalizedTerm === normalized);
   if (matches.length === 0) return { status: "NOT_FOUND" };
   if (matches.length === 1) return { status: "UNIQUE", definition: matches[0]! };
   return { status: "AMBIGUOUS", candidates: matches };

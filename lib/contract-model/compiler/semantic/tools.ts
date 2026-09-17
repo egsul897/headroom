@@ -22,6 +22,7 @@ import type { DefinitionEvidenceFound } from "../amendment/operative-state";
 import type { ContextItem } from "../context-retrieval/types";
 import { computeSourceContentHash } from "../hashing";
 import { resolveReferenceTarget } from "../semantic-accountability/reference-resolver";
+import { findDefinedTermVariant } from "../structural-index";
 import type { RetrievedSourceRecord, SemanticToolAccess, ToolBudget, ToolCallLogEntry } from "./types";
 
 export interface ToolExecutionOutcome {
@@ -750,7 +751,11 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
           return refuse(`${resolution.reason} - cannot serve this as uniquely-resolved evidence; try getSourceSpan on a specific candidate node, or narrow which occurrence you mean`);
         }
         if (resolution.outcome === "NOT_FOUND") {
-          return refuse(resolution.reason);
+          // PHASE 3 / 6.01 remediation: a plural/singular citation of a term defined in the other grammatical number is
+          // still refused (OPEN-2 certified invariant - never served the variant's text or amendment history under a
+          // different name), but the refusal NAMES the defined variant so the exact term can be queried next.
+          const variant = findDefinedTermVariant(access.structuralIndex, term, homeDocumentId);
+          return refuse(variant ? `${resolution.reason}; the instrument defines "${variant.exactTerm}" (a grammatical-number variant of the requested term) - query that exact term to read it` : resolution.reason);
         }
 
         const { text, truncated } = truncate(resolution.text ?? "(no current text recorded)");

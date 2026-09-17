@@ -1,0 +1,1954 @@
+{
+ "artifact": "pre-fix forensic probe output (production code at 51fda653, planner semantic-compilation-shards.v1, operativeState null as run)",
+ "capturedAt": "2026-09-17",
+ "planHash": "eab77c1aad1d941440f0d412e20578902c6744a5e100a0306153ea02e1720552",
+ "expectedPlanHash": "eab77c1aad1d941440f0d412e20578902c6744a5e100a0306153ea02e1720552",
+ "planMatches": true,
+ "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+ "regions": [
+  {
+   "regionId": "operative",
+   "kind": "OPERATIVE",
+   "sectionRef": "6.01",
+   "chars": 33623,
+   "charStart": 608901
+  }
+ ],
+ "shards": [
+  {
+   "ordinal": 0,
+   "shardId": "shard:f266a61ab75f65592b9d",
+   "shardHash": "4b97a4f01be352664f66d7165e37f3b0a42600a829e306f819c7b3489123fc2f",
+   "regionId": "operative",
+   "ownedUnits": 12,
+   "ownedItems": 54,
+   "ownedMaterial": 52,
+   "primary": [
+    0,
+    3957,
+    3957
+   ],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 3957,
+    "contextChars": 9892,
+    "inventoryRenderedChars": 17854,
+    "fixedOverheadChars": 43806,
+    "totalChars": 75509,
+    "inputTokens": 29879,
+    "outputTokens": 31500
+   },
+   "context": [
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:086c324db11b3dd22d42f114",
+     "chars": 120,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:0b22c2ee21fe2430a846f33c",
+     "chars": 253,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:0ff627e29e4a61d571afc63c",
+     "chars": 166,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:11424b6a6fc4c19ed6f130a1",
+     "chars": 380,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:1b0f7ef386c40fd837006ab1",
+     "chars": 280,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:1dee7122d205d68d75ac0bde",
+     "chars": 486,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:34da551faaf6742c01c21cbe",
+     "chars": 437,
+     "truncated": false,
+     "ownerShardId": "shard:6b6e808a01e1dcd22a81"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:5530c73c8e7ccadbc9c9fd03",
+     "chars": 593,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:7e52ce5055f1cc99a1d9ae13",
+     "chars": 231,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:8bdf6f27df2f7f897ba785e6",
+     "chars": 373,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:8d7774b6026966560c4c3b33",
+     "chars": 613,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:8fbec5b2484250201d894592",
+     "chars": 351,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:9bbd17ceea139986b0011a7c",
+     "chars": 505,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:a46f824b5e06aaf4dab5f647",
+     "chars": 245,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:aa975c6a2d2cb1df730c3e3f",
+     "chars": 302,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:ab6e4b139f41fe52bca75ad0",
+     "chars": 461,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:b1915b8224a4458ec5078996",
+     "chars": 534,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:b7e15a341ae4d9a43f20e6be",
+     "chars": 269,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:b9fcc281a56b3493a89e3589",
+     "chars": 507,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:c478c68a86624119630cabe3",
+     "chars": 132,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:c5a91a77df1c7cd2bf2b39ac",
+     "chars": 219,
+     "truncated": false,
+     "ownerShardId": "shard:6b6e808a01e1dcd22a81"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:d1af9ef1cc4e8f2d59ddf533",
+     "chars": 410,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:e65ab06ead9285cda71423d5",
+     "chars": 199,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:ed2c892732eca6bcba3e44a2",
+     "chars": 282,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:f5d7299a2ad070c723b9f58f",
+     "chars": 507,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:abl credit agreement",
+     "chars": 1037,
+     "truncated": false,
+     "ownerShardId": null
+    }
+   ],
+   "unresolvedContext": [
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "borrowing base",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Borrowing Base\" in document doc-a",
+     "requiredBy": [
+      "inv-item:04e0d68a10028d89e8335fe6",
+      "inv-item:1f66b3668e0c2296f2403ab2"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "incur",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"incur\" in document doc-a",
+     "requiredBy": [
+      "inv-item:9e120de351f707c0ec3b0662",
+      "inv-item:4f7c5a7a1cf0e23ca40916b7"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "restricted subsidiaries",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Restricted Subsidiaries\" in document doc-a",
+     "requiredBy": [
+      "inv-item:e10e617b96b8348d5455be28",
+      "inv-item:f617cb1f11c920845ecf7f8b"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "guarantor",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Guarantor\" in document doc-a",
+     "requiredBy": [
+      "inv-item:bc63a0ab69b24741cc397217"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "incurrence",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"incurrence\" in document doc-a",
+     "requiredBy": [
+      "inv-item:4f7c5a7a1cf0e23ca40916b7"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "initial borrower",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Initial Borrower\" in document doc-a",
+     "requiredBy": [
+      "inv-item:7af0754f7ac3707a4907b706"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "junior lien priority",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Junior Lien Priority\" in document doc-a",
+     "requiredBy": [
+      "inv-item:c00c9c8ac21e79894fd8a270"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "permitted ratio debt",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Permitted Ratio Debt\" in document doc-a",
+     "requiredBy": [
+      "inv-item:bf7636da3fa0b563029530b3"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "2.18",
+     "reason": "AMBIGUOUS",
+     "detail": "section Section 2.18 matches 2 physical locations",
+     "requiredBy": [
+      "inv-item:1317b29a2957072ca6653789",
+      "inv-item:3fcc36910b60f56a6a795e99"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "2.19",
+     "reason": "AMBIGUOUS",
+     "detail": "section Section 2.19 matches 2 physical locations",
+     "requiredBy": [
+      "inv-item:1317b29a2957072ca6653789",
+      "inv-item:3fcc36910b60f56a6a795e99"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "2.22",
+     "reason": "AMBIGUOUS",
+     "detail": "section Section 2.22 matches 2 physical locations",
+     "requiredBy": [
+      "inv-item:1317b29a2957072ca6653789",
+      "inv-item:3fcc36910b60f56a6a795e99"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "6.01(a)(ii)(1)",
+     "reason": "NOT_FOUND",
+     "detail": "section Section 6.01(a)(ii)(1) not found in document doc-a",
+     "requiredBy": [
+      "inv-item:bf7636da3fa0b563029530b3"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "6.01(a)(ii)(2)",
+     "reason": "NOT_FOUND",
+     "detail": "section Section 6.01(a)(ii)(2) not found in document doc-a",
+     "requiredBy": [
+      "inv-item:bf7636da3fa0b563029530b3"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "6.01(a)(ii)(3)",
+     "reason": "NOT_FOUND",
+     "detail": "section Section 6.01(a)(ii)(3) not found in document doc-a",
+     "requiredBy": [
+      "inv-item:bf7636da3fa0b563029530b3"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:abl loan documents",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:2a70194d073f5a0ca3d3072d"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:acquired indebtedness",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:d330a64ee8f87f346d67e08a",
+      "inv-item:ff79495c723f146ca01743c2",
+      "inv-item:dd4c6c1069555ceb17a531fc",
+      "inv-item:77f0943a8595e7e84a24de3d"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:collateral",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:a628d61256ad0c924f2924df"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:credit agreement refinancing indebtedness",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:541f731308847c7320aa28bd"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:disqualified stock",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:d330a64ee8f87f346d67e08a",
+      "inv-item:baff56f9884545e7760cccf4",
+      "inv-item:dd4c6c1069555ceb17a531fc"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:existing indebtedness",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:b86c43a5fa39249735e51b7a"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:first lien leverage ratio",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:0d04271f84bce8c4ebee33a4",
+      "inv-item:b436b3ade9823c4bc9cf1f41",
+      "inv-item:8981140c2dd0849a3fb5ae83"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:fixed incremental amount",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:bc404f777d4c90cae11f3206"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:interest coverage ratio",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:57dbc556de9b2638ec4a1b51",
+      "inv-item:f664073a067b3e5c55db0d21"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:loan documents",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:1317b29a2957072ca6653789"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:preferred stock",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:bc63a0ab69b24741cc397217",
+      "inv-item:f617cb1f11c920845ecf7f8b"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:restricted subsidiary",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:baff56f9884545e7760cccf4"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:secured obligations",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:a628d61256ad0c924f2924df"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:senior secured leverage ratio",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:71e20dc5fe30ee0ef7f3514e"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:test period",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:0d04271f84bce8c4ebee33a4",
+      "inv-item:b436b3ade9823c4bc9cf1f41",
+      "inv-item:71e20dc5fe30ee0ef7f3514e",
+      "inv-item:bff1642b93868b4343863ff3"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:total leverage ratio",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:bff1642b93868b4343863ff3"
+     ]
+    }
+   ],
+   "shardInput": {
+    "operativeChars": 3957,
+    "operativeCharStart": 608901,
+    "contextRegions": 27,
+    "frozenItems": 54,
+    "inputSha256": "73d78f4eee9895885139c895bf29f368f3b0adfc70ae7f5cbfd3d2a69d254f3c"
+   }
+  },
+  {
+   "ordinal": 1,
+   "shardId": "shard:9c94d27339b0f37fb71c",
+   "shardHash": "f422344546f42e86dd6951848772cf0f832347a84eb324e561bf6ca912d6881c",
+   "regionId": "operative",
+   "ownedUnits": 69,
+   "ownedItems": 270,
+   "ownedMaterial": 265,
+   "primary": [
+    3957,
+    33371,
+    29414
+   ],
+   "oversized": true,
+   "estimate": {
+    "primaryChars": 29414,
+    "contextChars": 9937,
+    "inventoryRenderedChars": 95748,
+    "fixedOverheadChars": 43806,
+    "totalChars": 178905,
+    "inputTokens": 70793,
+    "outputTokens": 174000
+   },
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "key": "chapeau:operative:NODE_OWN_TEXT:6.01",
+     "chars": 111,
+     "truncated": false,
+     "ownerShardId": "shard:f266a61ab75f65592b9d"
+    },
+    {
+     "kind": "CHAPEAU",
+     "key": "chapeau:operative:NODE_OWN_TEXT:6.01(b)",
+     "chars": 64,
+     "truncated": false,
+     "ownerShardId": "shard:f266a61ab75f65592b9d"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:34da551faaf6742c01c21cbe",
+     "chars": 437,
+     "truncated": false,
+     "ownerShardId": "shard:6b6e808a01e1dcd22a81"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:9e120de351f707c0ec3b0662",
+     "chars": 253,
+     "truncated": false,
+     "ownerShardId": "shard:f266a61ab75f65592b9d"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:c5a91a77df1c7cd2bf2b39ac",
+     "chars": 219,
+     "truncated": false,
+     "ownerShardId": "shard:6b6e808a01e1dcd22a81"
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:abl credit agreement",
+     "chars": 1037,
+     "truncated": false,
+     "ownerShardId": null
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:acquired indebtedness",
+     "chars": 742,
+     "truncated": false,
+     "ownerShardId": null
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:agreement",
+     "chars": 117,
+     "truncated": false,
+     "ownerShardId": null
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:available rp capacity amount",
+     "chars": 1506,
+     "truncated": false,
+     "ownerShardId": null
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:capital stock",
+     "chars": 553,
+     "truncated": false,
+     "ownerShardId": null
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:capitalized leases",
+     "chars": 188,
+     "truncated": false,
+     "ownerShardId": null
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:cash equivalents",
+     "chars": 1800,
+     "truncated": true,
+     "ownerShardId": null
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:cash management obligations",
+     "chars": 793,
+     "truncated": false,
+     "ownerShardId": null
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:consolidated ebitda",
+     "chars": 1800,
+     "truncated": true,
+     "ownerShardId": null
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:effective date",
+     "chars": 39,
+     "truncated": false,
+     "ownerShardId": null
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:equity interests",
+     "chars": 202,
+     "truncated": false,
+     "ownerShardId": null
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:loan parties",
+     "chars": 65,
+     "truncated": false,
+     "ownerShardId": null
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "section:6.01(b)(12)",
+     "chars": 4,
+     "truncated": false,
+     "ownerShardId": null
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "section:6.01(b)(18)",
+     "chars": 4,
+     "truncated": false,
+     "ownerShardId": null
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "section:6.01(b)(4)",
+     "chars": 3,
+     "truncated": false,
+     "ownerShardId": null
+    }
+   ],
+   "unresolvedContext": [
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "restricted party",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Restricted Party\" in document doc-a",
+     "requiredBy": [
+      "inv-item:b8cdbab10e5c1e063ef8cffc",
+      "inv-item:40b3cae7a8c133179d68a88d",
+      "inv-item:e03c860302c7094458d34f78",
+      "inv-item:36721ee251853eb61780f7ed",
+      "inv-item:755b0ac9601ff3ad724ef1e7",
+      "inv-item:b2996acabde573ec3845d7f3",
+      "inv-item:1949885f0165c509356a32e1",
+      "inv-item:51e934f9e89906466cd207fd",
+      "inv-item:040c95872e41722240b17ba5",
+      "inv-item:f15a749df531ea7c0efab257",
+      "inv-item:d16bc95ae430cf19f401e504"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "guarantor",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Guarantor\" in document doc-a",
+     "requiredBy": [
+      "inv-item:be408fb0db6ad9a17fe8418d",
+      "inv-item:8b300572e1a04d6e1fe3dc27",
+      "inv-item:c11c3b93a8e204af82222569",
+      "inv-item:fd6d564e07601095e41512bf",
+      "inv-item:31e4b42e6587ceff92e310d3",
+      "inv-item:f26bc1ffb0641b43a90ea4b3"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "initial borrower",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Initial Borrower\" in document doc-a",
+     "requiredBy": [
+      "inv-item:35e2dca58384f2f9d4375add",
+      "inv-item:805052a570cf10b0912412d8",
+      "inv-item:b21d0e504a001260d9153d68",
+      "inv-item:417d16c94c24cf6a3690f9d6",
+      "inv-item:02186e94fbbe1b704d7465e3",
+      "inv-item:9f6611f4ba18782bb11b4d41"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "permitted lien",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Permitted Lien\" in document doc-a",
+     "requiredBy": [
+      "inv-item:350161f0a6e072072fc1cab6",
+      "inv-item:9be15917686c2620a2ca4fbf",
+      "inv-item:b2996acabde573ec3845d7f3",
+      "inv-item:015fe85af5e3bbaf03f3fa29",
+      "inv-item:cb432861c2c5137519b7dc00",
+      "inv-item:040c95872e41722240b17ba5"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "pro forma basis",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Pro Forma Basis\" in document doc-a",
+     "requiredBy": [
+      "inv-item:7156fe23d8deaead8784726b",
+      "inv-item:532b30742e4d15408717c794",
+      "inv-item:7ae6dadb2ae9b65e35914437",
+      "inv-item:a726f1df5e32d0eabd9170c1",
+      "inv-item:fde5520c10fba19050ed80d6"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "capitalized lease obligations",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Capitalized Lease Obligations\" in document doc-a",
+     "requiredBy": [
+      "inv-item:d7c98f9e0feadf05d4c207ab",
+      "inv-item:59315d4d02e6e65cea866b70",
+      "inv-item:53a78db5900f5aa231e76e78",
+      "inv-item:3c1f3219a046a3b1c45895aa"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "refinancing indebtedness",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Refinancing Indebtedness\" in document doc-a",
+     "requiredBy": [
+      "inv-item:5686fdb6b309f85b367dd886",
+      "inv-item:8d10be25830d1f5ab0f3ee70",
+      "inv-item:fce543d6b7ac8b0dc5aaaf78"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "guarantee",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Guarantee\" in document doc-a",
+     "requiredBy": [
+      "inv-item:fd6d564e07601095e41512bf",
+      "inv-item:92ce110a65e199006bb2dc2f"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "available amount",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Available Amount\" in document doc-a",
+     "requiredBy": [
+      "inv-item:69e3fde4c0647df023747773"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "controlled investment affiliates",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Controlled Investment Affiliates\" in document doc-a",
+     "requiredBy": [
+      "inv-item:d16bc95ae430cf19f401e504"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "excluded contributions",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Excluded Contributions\" in document doc-a",
+     "requiredBy": [
+      "inv-item:e5d3460295d5383c2300f586"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "investment",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Investment\" in document doc-a",
+     "requiredBy": [
+      "inv-item:2feb9c20c9bd5c0f035eb1a7"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "joint ventures",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Joint Ventures\" in document doc-a",
+     "requiredBy": [
+      "inv-item:91a85151df5270a318efbb66"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "net proceeds",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Net Proceeds\" in document doc-a",
+     "requiredBy": [
+      "inv-item:4a638ab9cdad3d676457a030"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "permitted transferee",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Permitted Transferee\" in document doc-a",
+     "requiredBy": [
+      "inv-item:d16bc95ae430cf19f401e504"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "refinanced",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Refinanced\" in document doc-a",
+     "requiredBy": [
+      "inv-item:fde5520c10fba19050ed80d6"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "refinancing",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Refinancing\" in document doc-a",
+     "requiredBy": [
+      "inv-item:5530c73c8e7ccadbc9c9fd03"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "restricted payments",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Restricted Payments\" in document doc-a",
+     "requiredBy": [
+      "inv-item:4a638ab9cdad3d676457a030"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "sale and lease-back transactions",
+     "reason": "NOT_FOUND",
+     "detail": "no detected definition of \"Sale and Lease-Back Transactions\" in document doc-a",
+     "requiredBy": [
+      "inv-item:3c1f3219a046a3b1c45895aa"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "6.01",
+     "reason": "AMBIGUOUS",
+     "detail": "section Section 6.01 matches 2 physical locations",
+     "requiredBy": [
+      "inv-item:b9fcc281a56b3493a89e3589",
+      "inv-item:419d7531db39e0d4d2b7de81",
+      "inv-item:0ff627e29e4a61d571afc63c",
+      "inv-item:9bbd17ceea139986b0011a7c",
+      "inv-item:d99557baec41071747279045",
+      "inv-item:d43ef58e95994084de4e70bc",
+      "inv-item:77a23db6854579fe1447fe29",
+      "inv-item:a46f824b5e06aaf4dab5f647",
+      "inv-item:8bdf6f27df2f7f897ba785e6"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "6.01(b)(1)(y)",
+     "reason": "NOT_FOUND",
+     "detail": "section Section 6.01(b)(1)(Y) not found in document doc-a",
+     "requiredBy": [
+      "inv-item:7212829be604e98955d1a3cd",
+      "inv-item:7a5172f545b8f084d9e9e7b0",
+      "inv-item:11424b6a6fc4c19ed6f130a1"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "6.01(b)(1)(x)",
+     "reason": "NOT_FOUND",
+     "detail": "section Section 6.01(b)(1)(X) not found in document doc-a",
+     "requiredBy": [
+      "inv-item:94b316f6f39dfb19d8b84218"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:consolidated first lien debt",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:59315d4d02e6e65cea866b70"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:disqualified stock",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:7a632be4521640b7ceda566f",
+      "inv-item:755b0ac9601ff3ad724ef1e7",
+      "inv-item:3b866dd750b7a109c077f6a4",
+      "inv-item:8792663b7cf5b00d35eb864c",
+      "inv-item:454cb1cfec429f6c43232a70",
+      "inv-item:e5d3460295d5383c2300f586",
+      "inv-item:8fa7496d86c553c73287dab6",
+      "inv-item:5530c73c8e7ccadbc9c9fd03"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:first lien leverage ratio",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:35e2dca58384f2f9d4375add",
+      "inv-item:59315d4d02e6e65cea866b70",
+      "inv-item:0c50bc888e69734d4b7f2af3",
+      "inv-item:a2cf62b18bc1155dee2a54c9",
+      "inv-item:02186e94fbbe1b704d7465e3",
+      "inv-item:1d3c9ad43b575a3941c9b616",
+      "inv-item:9f6611f4ba18782bb11b4d41"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:fixed incremental amount",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:3bd87249d4aa5336391454a2"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:hedging obligations",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:62fbc66217622dbc78844583",
+      "inv-item:a22b5c23bd38038206e217f9"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:immediate family members",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:d16bc95ae430cf19f401e504"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:incremental equivalent debt",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:c478c68a86624119630cabe3"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:indebtedness",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:5530c73c8e7ccadbc9c9fd03"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:interest coverage ratio",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:36e3f70f763a9a8241032958",
+      "inv-item:b21d0e504a001260d9153d68",
+      "inv-item:fca701a37b4cfac8375e8cbd"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:loans",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:95b3a33cf4db578e8a4b47fb",
+      "inv-item:00c517c9b1353e73c40c8516",
+      "inv-item:fd6d564e07601095e41512bf",
+      "inv-item:1bb7cfb02694abc42a022b20",
+      "inv-item:7c469b480bbea90460275591",
+      "inv-item:92ce110a65e199006bb2dc2f"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:maturity exception facility",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:2794cccc15e25fe9bb642f78",
+      "inv-item:c76087d2943991a64afc8aa3"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:not otherwise applied",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:69e3fde4c0647df023747773"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:parent entity",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:805052a570cf10b0912412d8",
+      "inv-item:39536088a5117cf036b8817d"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:permitted investments",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:4a638ab9cdad3d676457a030",
+      "inv-item:d0f3cc1c3379d2005ffa73ba"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:permitted tax restructuring",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:ee74cc2bb2e6a5ae28b05a6f"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:person",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:b0fd9c020de91b1b0a85873a"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:preferred stock",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:7a632be4521640b7ceda566f",
+      "inv-item:755b0ac9601ff3ad724ef1e7",
+      "inv-item:3b866dd750b7a109c077f6a4",
+      "inv-item:8792663b7cf5b00d35eb864c",
+      "inv-item:454cb1cfec429f6c43232a70",
+      "inv-item:8fa7496d86c553c73287dab6",
+      "inv-item:5530c73c8e7ccadbc9c9fd03"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:purchase money obligations",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:d7c98f9e0feadf05d4c207ab"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:receivables non-recourse facility",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:c719f9c76827c20325834862"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:receivables recourse facility",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:61abbf63515a2c309a3a6823"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:refinance",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:ccea1a5cdc779a5774c91188"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:restricted subsidiary",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:be408fb0db6ad9a17fe8418d",
+      "inv-item:9be15917686c2620a2ca4fbf",
+      "inv-item:1949885f0165c509356a32e1",
+      "inv-item:c11c3b93a8e204af82222569",
+      "inv-item:51e934f9e89906466cd207fd",
+      "inv-item:3b866dd750b7a109c077f6a4",
+      "inv-item:8792663b7cf5b00d35eb864c",
+      "inv-item:33551ba7940f9a29b5c616c4",
+      "inv-item:f15a749df531ea7c0efab257"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:secured indebtedness",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:a53da352bdb6a36c3181089c",
+      "inv-item:db393fa6fece87653c1b5a8b",
+      "inv-item:a1217166fcdd281f29444a1c"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:senior secured leverage ratio",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:93b14b090f50c7e8a3d2f7d9",
+      "inv-item:9f6611f4ba18782bb11b4d41",
+      "inv-item:caa4073731175a5b2a7318e3"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:test period",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:eeb98170e0aba24ab1e099e6",
+      "inv-item:d51d5d6fc3429998344ac7a4",
+      "inv-item:35e2dca58384f2f9d4375add",
+      "inv-item:7156fe23d8deaead8784726b",
+      "inv-item:b21d0e504a001260d9153d68",
+      "inv-item:417d16c94c24cf6a3690f9d6",
+      "inv-item:02186e94fbbe1b704d7465e3",
+      "inv-item:1d3c9ad43b575a3941c9b616",
+      "inv-item:caa4073731175a5b2a7318e3",
+      "inv-item:98a1702227919fa5253eb40a",
+      "inv-item:e57e6046da980300b1555752",
+      "inv-item:49feaf4b3f7b5641e75e7482",
+      "inv-item:532b30742e4d15408717c794",
+      "inv-item:7f0a5c97a75aa592d91d739c",
+      "inv-item:7ae6dadb2ae9b65e35914437",
+      "inv-item:3506b09b672297d14e4f0800",
+      "inv-item:a726f1df5e32d0eabd9170c1",
+      "inv-item:d1af9ef1cc4e8f2d59ddf533"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:total leverage ratio",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:e0fc38079036e8835b2b02d6",
+      "inv-item:417d16c94c24cf6a3690f9d6"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:transactions",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:36721ee251853eb61780f7ed",
+      "inv-item:94b316f6f39dfb19d8b84218",
+      "inv-item:11424b6a6fc4c19ed6f130a1"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:unrestricted subsidiary",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:ad5256daf7626e4c5f5aa707",
+      "inv-item:33551ba7940f9a29b5c616c4"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:unsecured capitalized leases",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:0739bdbe93621958f51f9537",
+      "inv-item:67e035c8cfd44416d619fbdf",
+      "inv-item:94bd7d52de9d5ac5a187912e"
+     ]
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:weighted average life to maturity",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:c76087d2943991a64afc8aa3",
+      "inv-item:2f7d367c68b9d243f45d5942"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "section:6.01(a)",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:7212829be604e98955d1a3cd",
+      "inv-item:7a5172f545b8f084d9e9e7b0",
+      "inv-item:36e3f70f763a9a8241032958",
+      "inv-item:2f83723131eade7aa7bd4257",
+      "inv-item:a2cf62b18bc1155dee2a54c9",
+      "inv-item:d0951318524225bb91f93044",
+      "inv-item:93b14b090f50c7e8a3d2f7d9",
+      "inv-item:6945ef29efa8e8f68f79cdc3",
+      "inv-item:d0af3d694e9768f159e2f636",
+      "inv-item:fde5520c10fba19050ed80d6",
+      "inv-item:5530c73c8e7ccadbc9c9fd03",
+      "inv-item:02187f64ee1d27b4dd05f98b"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "section:6.01(b)(3)",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:7212829be604e98955d1a3cd",
+      "inv-item:7a5172f545b8f084d9e9e7b0"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "section:6.08(a)(3)(b)",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:659e9216825c7831d706458e"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "section:6.08(a)(3)(c)",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:659e9216825c7831d706458e"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "section:6.08(b)",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:fed9e0690db9217a5bf9ce45"
+     ]
+    },
+    {
+     "kind": "REFERENCED_SECTION",
+     "key": "section:6.08(b)(4)",
+     "reason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+     "requiredBy": [
+      "inv-item:39536088a5117cf036b8817d"
+     ]
+    }
+   ],
+   "shardInput": {
+    "operativeChars": 29414,
+    "operativeCharStart": 612858,
+    "contextRegions": 21,
+    "frozenItems": 270,
+    "inputSha256": "4291c6631903d5bad038f6de86fa5febfdc5766c1d1ee65e22472d3bcd3d9f6a"
+   }
+  },
+  {
+   "ordinal": 2,
+   "shardId": "shard:6b6e808a01e1dcd22a81",
+   "shardHash": "22cc2abe2bc60728a737b17828c0fbabca2ac3a67d51146e78dffab801dccfd2",
+   "regionId": "operative",
+   "ownedUnits": 1,
+   "ownedItems": 2,
+   "ownedMaterial": 2,
+   "primary": [
+    33371,
+    33623,
+    252
+   ],
+   "oversized": false,
+   "estimate": {
+    "primaryChars": 252,
+    "contextChars": 2188,
+    "inventoryRenderedChars": 730,
+    "fixedOverheadChars": 43806,
+    "totalChars": 46976,
+    "inputTokens": 18589,
+    "outputTokens": 4000
+   },
+   "context": [
+    {
+     "kind": "CHAPEAU",
+     "key": "chapeau:operative:NODE_OWN_TEXT:6.01",
+     "chars": 111,
+     "truncated": false,
+     "ownerShardId": "shard:f266a61ab75f65592b9d"
+    },
+    {
+     "kind": "CHAPEAU",
+     "key": "chapeau:operative:NODE_OWN_TEXT:6.01(b)",
+     "chars": 64,
+     "truncated": false,
+     "ownerShardId": "shard:f266a61ab75f65592b9d"
+    },
+    {
+     "kind": "PARENT_ITEM",
+     "key": "parent-item:inv-item:6b07b80fe81ab62c06636822",
+     "chars": 213,
+     "truncated": false,
+     "ownerShardId": "shard:9c94d27339b0f37fb71c"
+    },
+    {
+     "kind": "REFERENCED_TERM",
+     "key": "term:senior indebtedness",
+     "chars": 1800,
+     "truncated": true,
+     "ownerShardId": null
+    }
+   ],
+   "unresolvedContext": [],
+   "shardInput": {
+    "operativeChars": 252,
+    "operativeCharStart": 642272,
+    "contextRegions": 5,
+    "frozenItems": 2,
+    "inputSha256": "2802c2a03c98eca7e95b8b730b6869fc848d793be41ab5e7573f212f680b00da"
+   }
+  }
+ ],
+ "references": [
+  {
+   "ref": "2.18",
+   "status": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+   "note": "2 occurrences share \"2.18\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken",
+   "node": {
+    "nodeId": "structural-node:222fc4644c331e99b9038761",
+    "sectionRef": "2.18",
+    "charStart": 496896,
+    "heading": "Increased"
+   },
+   "candidates": [
+    {
+     "nodeId": "structural-node:4c09c6f8e94f47b0491a79dc",
+     "sectionRef": "2.18",
+     "charStart": 2138,
+     "heading": "Increased Loans and Commitments",
+     "textChars": 52
+    },
+    {
+     "nodeId": "structural-node:222fc4644c331e99b9038761",
+     "sectionRef": "2.18",
+     "charStart": 496896,
+     "heading": "Increased",
+     "textChars": 47
+    }
+   ]
+  },
+  {
+   "ref": "2.19",
+   "status": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+   "note": "2 occurrences share \"2.19\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken",
+   "node": {
+    "nodeId": "structural-node:878e41f39998a4bdbd2ffce3",
+    "sectionRef": "2.19",
+    "charStart": 510874,
+    "heading": "Refinancing Amendments"
+   },
+   "candidates": [
+    {
+     "nodeId": "structural-node:e23c3523957142acdec1c40c",
+     "sectionRef": "2.19",
+     "charStart": 2190,
+     "heading": "Refinancing Amendments",
+     "textChars": 43
+    },
+    {
+     "nodeId": "structural-node:878e41f39998a4bdbd2ffce3",
+     "sectionRef": "2.19",
+     "charStart": 510874,
+     "heading": "Refinancing Amendments",
+     "textChars": 39
+    }
+   ]
+  },
+  {
+   "ref": "2.22",
+   "status": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+   "note": "2 occurrences share \"2.22\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken",
+   "node": {
+    "nodeId": "structural-node:14cd99342cae80d61cbc30f9",
+    "sectionRef": "2.22",
+    "charStart": 523123,
+    "heading": "Loan Modification Offers"
+   },
+   "candidates": [
+    {
+     "nodeId": "structural-node:fcfbc1f728ad1d1f247e724c",
+     "sectionRef": "2.22",
+     "charStart": 2303,
+     "heading": "Loan Modification Offers",
+     "textChars": 45
+    },
+    {
+     "nodeId": "structural-node:14cd99342cae80d61cbc30f9",
+     "sectionRef": "2.22",
+     "charStart": 523123,
+     "heading": "Loan Modification Offers",
+     "textChars": 41
+    }
+   ]
+  },
+  {
+   "ref": "Section 2.18",
+   "status": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+   "note": "2 occurrences share \"2.18\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken",
+   "node": {
+    "nodeId": "structural-node:222fc4644c331e99b9038761",
+    "sectionRef": "2.18",
+    "charStart": 496896,
+    "heading": "Increased"
+   },
+   "candidates": [
+    {
+     "nodeId": "structural-node:4c09c6f8e94f47b0491a79dc",
+     "sectionRef": "2.18",
+     "charStart": 2138,
+     "heading": "Increased Loans and Commitments",
+     "textChars": 52
+    },
+    {
+     "nodeId": "structural-node:222fc4644c331e99b9038761",
+     "sectionRef": "2.18",
+     "charStart": 496896,
+     "heading": "Increased",
+     "textChars": 47
+    }
+   ]
+  },
+  {
+   "ref": "6.01(b)(1)",
+   "status": "AMBIGUOUS",
+   "note": "2 substantive occurrences share \"6.01(b)(1)\" - genuinely ambiguous, not resolved (never guessed)",
+   "node": null,
+   "candidates": [
+    {
+     "nodeId": "structural-node:92f63513af858665ccd831e4",
+     "sectionRef": "6.01(b)(1)",
+     "charStart": 612195,
+     "heading": "",
+     "textChars": 302
+    },
+    {
+     "nodeId": "structural-node:545dbedbd4d8e5cfe287b17b",
+     "sectionRef": "6.01(b)(1)",
+     "charStart": 636127,
+     "heading": "",
+     "textChars": 1211
+    },
+    {
+     "nodeId": "structural-node:b3017907ec99fb5afab06060",
+     "sectionRef": "6.01(b)(1)",
+     "charStart": 642161,
+     "heading": "",
+     "textChars": 111
+    }
+   ]
+  },
+  {
+   "ref": "6.01(a)",
+   "status": "UNIQUE",
+   "note": "unique occurrence of \"6.01(a)\"",
+   "node": {
+    "nodeId": "structural-node:fad6958ae495921ac1b462c5",
+    "sectionRef": "6.01(a)",
+    "charStart": 609014,
+    "heading": ""
+   },
+   "candidates": [
+    {
+     "nodeId": "structural-node:fad6958ae495921ac1b462c5",
+     "sectionRef": "6.01(a)",
+     "charStart": 609014,
+     "heading": "",
+     "textChars": 1846
+    }
+   ]
+  },
+  {
+   "ref": "6.01(b)(4)",
+   "status": "UNIQUE",
+   "note": "unique occurrence of \"6.01(b)(4)\"",
+   "node": {
+    "nodeId": "structural-node:0fdbcbc40a895760b735d6be",
+    "sectionRef": "6.01(b)(4)",
+    "charStart": 612858,
+    "heading": ""
+   },
+   "candidates": [
+    {
+     "nodeId": "structural-node:0fdbcbc40a895760b735d6be",
+     "sectionRef": "6.01(b)(4)",
+     "charStart": 612858,
+     "heading": "",
+     "textChars": 4
+    }
+   ]
+  },
+  {
+   "ref": "6.01(b)(13)",
+   "status": "UNIQUE",
+   "note": "unique occurrence of \"6.01(b)(13)\"",
+   "node": {
+    "nodeId": "structural-node:6b4b1c2147219fd9d8fba72b",
+    "sectionRef": "6.01(b)(13)",
+    "charStart": 623092,
+    "heading": ""
+   },
+   "candidates": [
+    {
+     "nodeId": "structural-node:6b4b1c2147219fd9d8fba72b",
+     "sectionRef": "6.01(b)(13)",
+     "charStart": 623092,
+     "heading": "",
+     "textChars": 1183
+    }
+   ]
+  },
+  {
+   "ref": "6.08(a)(3)(b)",
+   "status": "UNIQUE",
+   "note": "unique occurrence of \"6.08(a)(3)(b)\"",
+   "node": {
+    "nodeId": "structural-node:e32e3c6e1f2b0e1b4aa20120",
+    "sectionRef": "6.08(a)(3)(b)",
+    "charStart": 664123,
+    "heading": ""
+   },
+   "candidates": [
+    {
+     "nodeId": "structural-node:e32e3c6e1f2b0e1b4aa20120",
+     "sectionRef": "6.08(a)(3)(b)",
+     "charStart": 664123,
+     "heading": "",
+     "textChars": 2082
+    }
+   ]
+  },
+  {
+   "ref": "6.08(b)",
+   "status": "UNIQUE",
+   "note": "unique occurrence of \"6.08(b)\"",
+   "node": {
+    "nodeId": "structural-node:7008bd65e657a6a9eb23ff93",
+    "sectionRef": "6.08(b)",
+    "charStart": 670039,
+    "heading": ""
+   },
+   "candidates": [
+    {
+     "nodeId": "structural-node:7008bd65e657a6a9eb23ff93",
+     "sectionRef": "6.08(b)",
+     "charStart": 670039,
+     "heading": "",
+     "textChars": 69
+    }
+   ]
+  },
+  {
+   "ref": "6.08(b)(4)",
+   "status": "UNIQUE",
+   "note": "unique occurrence of \"6.08(b)(4)\"",
+   "node": {
+    "nodeId": "structural-node:2a8c37f5f98e55eea45cf73d",
+    "sectionRef": "6.08(b)(4)",
+    "charStart": 672768,
+    "heading": ""
+   },
+   "candidates": [
+    {
+     "nodeId": "structural-node:2a8c37f5f98e55eea45cf73d",
+     "sectionRef": "6.08(b)(4)",
+     "charStart": 672768,
+     "heading": "",
+     "textChars": 2177
+    }
+   ]
+  },
+  {
+   "ref": "6.01",
+   "status": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+   "note": "2 occurrences share \"6.01\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken",
+   "node": {
+    "nodeId": "structural-node:4feea9391572c23efd068db4",
+    "sectionRef": "6.01",
+    "charStart": 608901,
+    "heading": "Limitation on Incurrence of Indebtedness and Issuance of Dis"
+   },
+   "candidates": [
+    {
+     "nodeId": "structural-node:65c0e947a1989385dcaff713",
+     "sectionRef": "6.01",
+     "charStart": 4573,
+     "heading": "Limitation on Incurrence of Indebtedness and Issuance of Dis",
+     "textChars": 116
+    },
+    {
+     "nodeId": "structural-node:4feea9391572c23efd068db4",
+     "sectionRef": "6.01",
+     "charStart": 608901,
+     "heading": "Limitation on Incurrence of Indebtedness and Issuance of Dis",
+     "textChars": 113
+    }
+   ]
+  },
+  {
+   "ref": "Section 6.01",
+   "status": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+   "note": "2 occurrences share \"6.01\"; 1 are heading-only (no children, <200 chars - e.g. a table-of-contents entry) and were excluded; the single substantive occurrence was taken",
+   "node": {
+    "nodeId": "structural-node:4feea9391572c23efd068db4",
+    "sectionRef": "6.01",
+    "charStart": 608901,
+    "heading": "Limitation on Incurrence of Indebtedness and Issuance of Dis"
+   },
+   "candidates": [
+    {
+     "nodeId": "structural-node:65c0e947a1989385dcaff713",
+     "sectionRef": "6.01",
+     "charStart": 4573,
+     "heading": "Limitation on Incurrence of Indebtedness and Issuance of Dis",
+     "textChars": 116
+    },
+    {
+     "nodeId": "structural-node:4feea9391572c23efd068db4",
+     "sectionRef": "6.01",
+     "charStart": 608901,
+     "heading": "Limitation on Incurrence of Indebtedness and Issuance of Dis",
+     "textChars": 113
+    }
+   ]
+  },
+  {
+   "ref": "6.01(b)(12)",
+   "status": "UNIQUE",
+   "note": "unique occurrence of \"6.01(b)(12)\"",
+   "node": {
+    "nodeId": "structural-node:5c110583d2684d9f423c0d27",
+    "sectionRef": "6.01(b)(12)",
+    "charStart": 621202,
+    "heading": ""
+   },
+   "candidates": [
+    {
+     "nodeId": "structural-node:5c110583d2684d9f423c0d27",
+     "sectionRef": "6.01(b)(12)",
+     "charStart": 621202,
+     "heading": "",
+     "textChars": 5
+    }
+   ]
+  },
+  {
+   "ref": "6.01(b)(18)",
+   "status": "UNIQUE",
+   "note": "unique occurrence of \"6.01(b)(18)\"",
+   "node": {
+    "nodeId": "structural-node:fa507a5ec548c47101383304",
+    "sectionRef": "6.01(b)(18)",
+    "charStart": 629927,
+    "heading": ""
+   },
+   "candidates": [
+    {
+     "nodeId": "structural-node:fa507a5ec548c47101383304",
+     "sectionRef": "6.01(b)(18)",
+     "charStart": 629927,
+     "heading": "",
+     "textChars": 5
+    }
+   ]
+  },
+  {
+   "ref": "6.01(b)(19)",
+   "status": "UNIQUE",
+   "note": "unique occurrence of \"6.01(b)(19)\"",
+   "node": {
+    "nodeId": "structural-node:0eb7d46b4d65b07261857f9e",
+    "sectionRef": "6.01(b)(19)",
+    "charStart": 630646,
+    "heading": ""
+   },
+   "candidates": [
+    {
+     "nodeId": "structural-node:0eb7d46b4d65b07261857f9e",
+     "sectionRef": "6.01(b)(19)",
+     "charStart": 630646,
+     "heading": "",
+     "textChars": 699
+    }
+   ]
+  },
+  {
+   "ref": "6.01(b)(27)",
+   "status": "UNIQUE",
+   "note": "unique occurrence of \"6.01(b)(27)\"",
+   "node": {
+    "nodeId": "structural-node:3ad0b17c95c7e977b9d57d8d",
+    "sectionRef": "6.01(b)(27)",
+    "charStart": 633864,
+    "heading": ""
+   },
+   "candidates": [
+    {
+     "nodeId": "structural-node:3ad0b17c95c7e977b9d57d8d",
+     "sectionRef": "6.01(b)(27)",
+     "charStart": 633864,
+     "heading": "",
+     "textChars": 649
+    }
+   ]
+  }
+ ],
+ "definitions": [
+  {
+   "term": "Available Amount",
+   "indexed": false,
+   "exactTerm": null,
+   "fullTextChars": null,
+   "definedInRawText": false,
+   "rawTextOffset": null,
+   "rawOccurrences": 9
+  },
+  {
+   "term": "Not Otherwise Applied",
+   "indexed": true,
+   "exactTerm": "Not Otherwise Applied",
+   "fullTextChars": 217,
+   "definedInRawText": false,
+   "rawTextOffset": null,
+   "rawOccurrences": 2
+  },
+  {
+   "term": "Fixed Incremental Amount",
+   "indexed": true,
+   "exactTerm": "Fixed\nIncremental Amount",
+   "fullTextChars": 948,
+   "definedInRawText": false,
+   "rawTextOffset": null,
+   "rawOccurrences": 9
+  },
+  {
+   "term": "Incremental Cap",
+   "indexed": true,
+   "exactTerm": "Incremental Cap",
+   "fullTextChars": 223,
+   "definedInRawText": false,
+   "rawTextOffset": null,
+   "rawOccurrences": 3
+  },
+  {
+   "term": "Voluntary Prepayment Incremental Amount",
+   "indexed": true,
+   "exactTerm": "Voluntary Prepayment Incremental Amount",
+   "fullTextChars": 1009,
+   "definedInRawText": false,
+   "rawTextOffset": null,
+   "rawOccurrences": 3
+  },
+  {
+   "term": "Ratio Incremental Amount",
+   "indexed": true,
+   "exactTerm": "Ratio Incremental Amount",
+   "fullTextChars": 2071,
+   "definedInRawText": false,
+   "rawTextOffset": null,
+   "rawOccurrences": 6
+  },
+  {
+   "term": "Extension Amount",
+   "indexed": true,
+   "exactTerm": "Extension Amount",
+   "fullTextChars": 601,
+   "definedInRawText": false,
+   "rawTextOffset": null,
+   "rawOccurrences": 2
+  },
+  {
+   "term": "General Lien Basket Reallocated Amount",
+   "indexed": true,
+   "exactTerm": "General Lien Basket Reallocated Amount",
+   "fullTextChars": 468,
+   "definedInRawText": false,
+   "rawTextOffset": null,
+   "rawOccurrences": 1
+  },
+  {
+   "term": "Available RP Capacity Amount",
+   "indexed": true,
+   "exactTerm": "Available RP Capacity Amount",
+   "fullTextChars": 1507,
+   "definedInRawText": false,
+   "rawTextOffset": null,
+   "rawOccurrences": 10
+  },
+  {
+   "term": "Incremental Facilities",
+   "indexed": false,
+   "exactTerm": null,
+   "fullTextChars": null,
+   "definedInRawText": false,
+   "rawTextOffset": null,
+   "rawOccurrences": 2
+  },
+  {
+   "term": "Incremental Equivalent Debt",
+   "indexed": true,
+   "exactTerm": "Incremental Equivalent Debt",
+   "fullTextChars": 1103,
+   "definedInRawText": false,
+   "rawTextOffset": null,
+   "rawOccurrences": 10
+  },
+  {
+   "term": "Loan Documents",
+   "indexed": true,
+   "exactTerm": "Loan Documents",
+   "fullTextChars": 366,
+   "definedInRawText": false,
+   "rawTextOffset": null,
+   "rawOccurrences": 118
+  },
+  {
+   "term": "Permitted Ratio Debt",
+   "indexed": false,
+   "exactTerm": null,
+   "fullTextChars": null,
+   "definedInRawText": false,
+   "rawTextOffset": null,
+   "rawOccurrences": 2
+  },
+  {
+   "term": "Senior Indebtedness",
+   "indexed": true,
+   "exactTerm": "Senior\nIndebtedness",
+   "fullTextChars": 2186,
+   "definedInRawText": false,
+   "rawTextOffset": null,
+   "rawOccurrences": 12
+  },
+  {
+   "term": "Interest Coverage Ratio",
+   "indexed": true,
+   "exactTerm": "Interest Coverage\nRatio",
+   "fullTextChars": 850,
+   "definedInRawText": false,
+   "rawTextOffset": null,
+   "rawOccurrences": 31
+  },
+  {
+   "term": "Total Leverage Ratio",
+   "indexed": true,
+   "exactTerm": "Total Leverage Ratio",
+   "fullTextChars": 212,
+   "definedInRawText": false,
+   "rawTextOffset": null,
+   "rawOccurrences": 21
+  },
+  {
+   "term": "First Lien Leverage Ratio",
+   "indexed": true,
+   "exactTerm": "First Lien Leverage Ratio",
+   "fullTextChars": 309,
+   "definedInRawText": false,
+   "rawTextOffset": null,
+   "rawOccurrences": 39
+  }
+ ]
+}

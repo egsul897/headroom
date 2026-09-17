@@ -35,8 +35,12 @@ describe("§16 closure - every context request the two failed shards recorded is
     expect(def.evidenceUnresolved).toBe(false);
     expect(def.summary).toMatch(/forwarding target Section 6\.08\(a\)\(3\)/);
     expect(runRoute(env.access, "getDefinition", { term: "Not Otherwise Applied" }).ok).toBe(true);
-    // the plural citation resolves to the singular definition instead of "not defined"
-    expect(runRoute(env.access, "getDefinition", { term: "Incremental Facilities" }).ok).toBe(true);
+    // a plural citation of a singular definition is still refused (OPEN-2 invariant) but the refusal names the defined term
+    const plural = runRoute(env.access, "getDefinition", { term: "Incremental Facilities" });
+    expect(plural.ok).toBe(false);
+    expect(plural.summary).toMatch(/no defined term matching/);
+    expect(plural.summary).toMatch(/defines "Incremental Facility"/);
+    expect(runRoute(env.access, "getDefinition", { term: "Incremental Facility" }).ok).toBe(true);
   });
 
   it("requests proven external to the package are handled explicitly (never guessed)", () => {
