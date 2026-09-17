@@ -1,0 +1,33 @@
+/** Zero-cost forensic probe over the frozen paid evidence (no model calls). */
+import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { buildSection601 } from "./phase-3-601-preflight";
+import { resolveSourceContext } from "../lib/contract-model/compiler/semantic-accountability/source-context";
+import { validateFrozenInventoryResume } from "../lib/contract-model/compiler/semantic/frozen-inventory-resume";
+import { planCompilationShards, buildShardCompilerInput } from "../lib/contract-model/compiler/semantic/shard-planner";
+import { resolveReferenceTarget } from "../lib/contract-model/compiler/semantic-accountability/reference-resolver";
+import { SEMANTIC_COMPILER_ALGORITHM_VERSION, SEMANTIC_COMPILER_PROMPT_VERSION, type SemanticCompilerInput } from "../lib/contract-model/compiler/semantic/types";
+import type { FrozenSemanticInventory } from "../lib/contract-model/compiler/semantic-accountability/types";
+const RAW = "tests/fixtures/unseen-packages/phase-3-final-601-final-paid";
+const sha = (s: string) => createHash("sha256").update(s).digest("hex");
+const built = buildSection601();
+const idx = built.chewy.index;
+const inv = JSON.parse(readFileSync(`${RAW}/frozen-inventory.json`, "utf8")) as FrozenSemanticInventory;
+const ctx = resolveSourceContext({ index: idx, documentId: "doc-a", operativeSourceText: built.input.operativeSourceText, anchorNodeId: built.input.contextBundle.originatingStructuralNodeIds?.[0] ?? null, operativeCharStart: built.input.operativeCharStart ?? null, documentText: (idx as unknown as { getDocumentText: (d: string) => string | undefined }).getDocumentText("doc-a") ?? null });
+const dec = validateFrozenInventoryResume({ candidateRef: built.candidateRef, sourceDocumentId: "doc-a", frozenInventory: inv, sourceContext: ctx, structuralIndex: idx });
+if (!dec.ok) throw new Error("resume failed: " + JSON.stringify(dec.failures));
+const plan = planCompilationShards({ candidateRef: built.candidateRef, companyId: built.input.companyId, instrumentKey: built.input.instrumentKey, documentId: "doc-a", sourceContext: ctx, frozenInventory: dec.inventory, structuralIndex: idx, generation: { algorithmVersion: SEMANTIC_COMPILER_ALGORITHM_VERSION, promptVersion: SEMANTIC_COMPILER_PROMPT_VERSION } });
+const mode = process.argv[2] ?? "summary";
+const out: Record<string, unknown> = { planHash: plan.planHash, expectedPlanHash: "eab77c1aad1d941440f0d412e20578902c6744a5e100a0306153ea02e1720552", planMatches: plan.planHash === "eab77c1aad1d941440f0d412e20578902c6744a5e100a0306153ea02e1720552", sourceContextState: ctx.state, regions: ctx.regions.map((r) => ({ regionId: r.regionId, kind: r.kind, sectionRef: r.sectionRef, chars: r.text.length, charStart: r.charStart })) };
+out.shards = plan.shards.map((s) => {
+  const region0 = ctx.regions[0]!;
+  const base: SemanticCompilerInput = { ...(built.input as SemanticCompilerInput), operativeSourceText: region0.text, operativeCharStart: region0.charStart, sourceContext: ctx, frozenInventory: dec.inventory };
+  const si = buildShardCompilerInput(base, plan, s);
+  return { ordinal: s.ordinal, shardId: s.shardId, shardHash: s.shardHash, regionId: s.regionId, ownedUnits: s.ownedUnitKeys.length, ownedItems: s.ownedItemIds.length, ownedMaterial: s.ownedMaterialItemIds.length, primary: [s.primaryCharStart, s.primaryCharEnd, s.primaryChars], oversized: s.oversized, estimate: s.estimate, context: s.context.map((c) => ({ kind: c.kind, key: c.contextKey, chars: c.chars, truncated: (c as unknown as { truncated?: boolean }).truncated ?? null, ownerShardId: c.ownerShardId })), unresolvedContext: s.unresolvedContext, shardInput: { operativeChars: si.operativeSourceText.length, operativeCharStart: si.operativeCharStart, contextRegions: si.sourceContext?.regions.length ?? null, frozenItems: si.frozenInventory?.items.length ?? null, inputSha256: sha(JSON.stringify({ t: si.operativeSourceText, s: si.operativeCharStart, ctx: si.sourceContext?.regions.map((r) => [r.regionId, r.text]), owned: si.frozenInventory?.items.map((i) => i.inventoryItemId).sort() })) } };
+});
+const refs = ["2.18", "2.19", "2.22", "Section 2.18", "6.01(b)(1)", "6.01(a)", "6.01(b)(4)", "6.01(b)(13)", "6.08(a)(3)(b)", "6.08(b)", "6.08(b)(4)", "6.01", "Section 6.01", "6.01(b)(12)", "6.01(b)(18)", "6.01(b)(19)", "6.01(b)(27)"];
+out.references = refs.map((r) => { const res = resolveReferenceTarget(idx, "doc-a", r) as unknown as { status: string; node?: { nodeId: string; sectionRef: string; charStart: number; heading: string }; candidateNodeIds?: string[]; note?: string }; return { ref: r, status: res.status, note: res.note ?? null, node: res.node ? { nodeId: res.node.nodeId, sectionRef: res.node.sectionRef, charStart: res.node.charStart, heading: res.node.heading?.slice(0, 60) } : null, candidates: (res.candidateNodeIds ?? []).map((id) => { const n = idx.getNodeById(id); return n ? { nodeId: id, sectionRef: n.sectionRef, charStart: n.charStart, heading: n.heading.slice(0, 60), textChars: idx.getNodeText(id, "SELF").length } : id; }) }; });
+const terms = ["Available Amount", "Not Otherwise Applied", "Fixed Incremental Amount", "Incremental Cap", "Voluntary Prepayment Incremental Amount", "Ratio Incremental Amount", "Extension Amount", "General Lien Basket Reallocated Amount", "Available RP Capacity Amount", "Incremental Facilities", "Incremental Equivalent Debt", "Loan Documents", "Permitted Ratio Debt", "Senior Indebtedness", "Interest Coverage Ratio", "Total Leverage Ratio", "First Lien Leverage Ratio"];
+const docText = idx.getDocumentText("doc-a") ?? "";
+out.definitions = terms.map((t) => { const d = idx.getDefinition(t, "doc-a"); const full = idx.getDefinitionFullText(t, "doc-a"); const re = new RegExp(`[“"]${t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}[”"]\\s+(means|shall mean|has the meaning)`, "i"); const m = re.exec(docText); return { term: t, indexed: !!d, exactTerm: d?.exactTerm ?? null, fullTextChars: full?.length ?? null, definedInRawText: !!m, rawTextOffset: m ? m.index : null, rawOccurrences: (docText.match(new RegExp(t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g")) ?? []).length }; });
+console.log(JSON.stringify(mode === "full" ? out : { ...out, shards: (out.shards as unknown[]).map((s) => { const x = s as Record<string, unknown>; return { ...x, context: (x.context as unknown[]).length + " entries", unresolvedContext: x.unresolvedContext }; }) }, null, 1));

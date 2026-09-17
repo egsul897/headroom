@@ -1,0 +1,30 @@
+/** Zero-cost forensic probe 2: must-link fusion, unit table, reference routes, term occurrences. */
+import { readFileSync } from "node:fs";
+import { buildSection601 } from "./phase-3-601-preflight";
+import { resolveSourceContext } from "../lib/contract-model/compiler/semantic-accountability/source-context";
+import { validateFrozenInventoryResume } from "../lib/contract-model/compiler/semantic/frozen-inventory-resume";
+import { planCompilationShards } from "../lib/contract-model/compiler/semantic/shard-planner";
+import { SEMANTIC_COMPILER_ALGORITHM_VERSION, SEMANTIC_COMPILER_PROMPT_VERSION } from "../lib/contract-model/compiler/semantic/types";
+import type { FrozenSemanticInventory } from "../lib/contract-model/compiler/semantic-accountability/types";
+const RAW = "tests/fixtures/unseen-packages/phase-3-final-601-final-paid";
+const built = buildSection601(); const idx = built.chewy.index;
+const inv = JSON.parse(readFileSync(`${RAW}/frozen-inventory.json`, "utf8")) as FrozenSemanticInventory;
+const ctx = resolveSourceContext({ index: idx, documentId: "doc-a", operativeSourceText: built.input.operativeSourceText, anchorNodeId: built.input.contextBundle.originatingStructuralNodeIds?.[0] ?? null, operativeCharStart: built.input.operativeCharStart ?? null, documentText: idx.getDocumentText("doc-a") ?? null });
+const dec = validateFrozenInventoryResume({ candidateRef: built.candidateRef, sourceDocumentId: "doc-a", frozenInventory: inv, sourceContext: ctx, structuralIndex: idx });
+if (!dec.ok) throw new Error("resume failed");
+const plan = planCompilationShards({ candidateRef: built.candidateRef, companyId: built.input.companyId, instrumentKey: built.input.instrumentKey, documentId: "doc-a", sourceContext: ctx, frozenInventory: dec.inventory, structuralIndex: idx, generation: { algorithmVersion: SEMANTIC_COMPILER_ALGORITHM_VERSION, promptVersion: SEMANTIC_COMPILER_PROMPT_VERSION } });
+const byId = new Map(inv.items.map((i) => [i.inventoryItemId, i]));
+const out: Record<string, unknown> = {};
+out.units = plan.units.map((u) => ({ ord: u.ordinal, key: u.unitKey.replace("operative:", ""), kind: u.kind, ref: u.sectionRef, chars: u.chars, items: u.ownedItemIds.length, mat: u.ownedMaterialItemIds.length, shard: plan.unitOwnerShard[u.unitKey]?.slice(6, 14) }));
+out.groups = plan.mustLinkGroups.map((g) => ({ size: g.unitKeys.length, span: [Math.min(...g.unitKeys.map((k) => plan.units.find((u) => u.unitKey === k)!.ordinal)), Math.max(...g.unitKeys.map((k) => plan.units.find((u) => u.unitKey === k)!.ordinal))], links: g.links.map((l) => ({ kind: l.kind, item: l.itemId, from: l.fromUnitKey.replace("operative:", ""), to: l.toUnitKey.replace("operative:", ""), itemRole: l.itemId ? byId.get(l.itemId)?.semanticRole : null, itemCite: l.itemId ? byId.get(l.itemId)?.sourceSpan.sourceCitation : null })) }));
+// reference route used by getReferencedProvision with fromNodeId: detected references from the node holding 6.01(b)(1)
+const b1 = idx.findNodesByRef("doc-a", "6.01(b)(1)").sort((a, b) => a.charStart - b.charStart)[0]!;
+out.fromNodeRoute = { node: { nodeId: b1.nodeId, charStart: b1.charStart, chars: idx.getNodeText(b1.nodeId, "SELF").length }, refs: idx.findReferencesFrom(b1.nodeId, true).filter((r) => /2\.1[89]|2\.22|6\.01/.test(r.referenceText)).map((r) => ({ text: r.referenceText, normalized: r.normalizedTarget, resolved: r.resolved, targetNodeId: r.targetNodeId, ambiguous: r.targetAmbiguous, candidates: (r as unknown as { candidateNodeIds?: string[] }).candidateNodeIds?.length ?? null })) };
+const doc = idx.getDocumentText("doc-a") ?? "";
+const occ = (t: string) => { const o: { at: number; ctx: string }[] = []; let i = doc.indexOf(t); while (i >= 0 && o.length < 12) { o.push({ at: i, ctx: doc.slice(Math.max(0, i - 90), i + t.length + 90).replace(/\s+/g, " ") }); i = doc.indexOf(t, i + 1); } return o; };
+out.availableAmount = occ("Available Amount");
+out.incrementalFacilit = { singular: !!idx.getDefinition("Incremental Facility", "doc-a"), plural: !!idx.getDefinition("Incremental Facilities", "doc-a"), occ: occ("Incremental Facilities").slice(0, 3) };
+out.permittedRatioDebt = occ("Permitted Ratio Debt");
+out.notOtherwiseApplied = { def: idx.getDefinitionFullText("Not Otherwise Applied", "doc-a") };
+out.sec601b1Nodes = idx.findNodesByRef("doc-a", "6.01(b)(1)").map((n) => ({ nodeId: n.nodeId, charStart: n.charStart, parent: idx.getParent(n.nodeId)?.sectionRef ?? null, text: idx.getNodeText(n.nodeId, "OWN").slice(0, 100).replace(/\s+/g, " ") }));
+process.stdout.write(JSON.stringify(out, null, 1));
