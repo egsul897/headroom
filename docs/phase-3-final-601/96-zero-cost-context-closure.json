@@ -1,0 +1,1530 @@
+{
+ "artifact": "PHASE 3 / 6.01 TRUST-FAILURE REMEDIATION §16 - zero-cost closure: every OLD missing request against the NEW deterministic topology",
+ "at": "2026-09-17T16:33:56.731Z",
+ "paidCalls": 0,
+ "method": "for each request the two failed shards recorded: locate the requesting rule's inventory items in the remediated plan, check the owner shard's own operative text (OWNED_PRIMARY), its planner context (PLANNER_CONTEXT), then execute the REAL production tool set against the remediated tool access (BOUNDED_TOOL_ROUTE - counted only when the route returns confirmed-current evidence), else prove the request external to the package",
+ "counts": {
+  "total": 29,
+  "PLANNER_CONTEXT": 2,
+  "OWNED_PRIMARY": 0,
+  "BOUNDED_TOOL_ROUTE": 24,
+  "DISCLOSED_VARIANT_POINTER": 1,
+  "PROVEN_EXTERNAL_TO_PACKAGE": 2,
+  "STILL_UNRESOLVED": 0
+ },
+ "stillUnresolved": 0,
+ "requests": [
+  {
+   "key": "2.18",
+   "kind": "SECTION",
+   "oldShard": 0,
+   "oldEffect": "MISSING_CONTEXT_TRIGGER",
+   "whyNeeded": "6.01(b)(1)(X): Indebtedness under the Loan Documents 'including pursuant to Section 2.18, 2.19 and 2.22'",
+   "requestedBy": [
+    "ir-rule:f8040ca894957f7bb7a0121c"
+   ],
+   "requestingItemIds": [],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "AMBIGUOUS: section Section 2.18 matches 2 physical locations"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getOperativeProvision({\"sectionRef\":\"2.18\"}) -> base-document provision 2.18 (never individually amended, CURRENT_OPERATIVE, UNIQUE_AFTER_DEGENERATE_EXCLUSION); getReferencedProvision({\"ref\":\"Section 2.18\"}) -> resolved reference \"Section 2.18\" -> 2.18 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (CURRENT_OPERATIVE)",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getOperativeProvision",
+      "input": {
+       "sectionRef": "2.18"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 47,
+      "summary": "base-document provision 2.18 (never individually amended, CURRENT_OPERATIVE, UNIQUE_AFTER_DEGENERATE_EXCLUSION)"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 2.18"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 47,
+      "summary": "resolved reference \"Section 2.18\" -> 2.18 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (CURRENT_OPERATIVE)"
+     }
+    ],
+    "usableRoutes": 2
+   }
+  },
+  {
+   "key": "2.19",
+   "kind": "SECTION",
+   "oldShard": 0,
+   "oldEffect": "MISSING_CONTEXT_TRIGGER",
+   "whyNeeded": "same as 2.18",
+   "requestedBy": [
+    "ir-rule:f8040ca894957f7bb7a0121c"
+   ],
+   "requestingItemIds": [],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "AMBIGUOUS: section Section 2.19 matches 2 physical locations"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getOperativeProvision({\"sectionRef\":\"2.19\"}) -> base-document provision 2.19 (never individually amended, CURRENT_OPERATIVE, UNIQUE_AFTER_DEGENERATE_EXCLUSION); getReferencedProvision({\"ref\":\"Section 2.19\"}) -> resolved reference \"Section 2.19\" -> 2.19 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (CURRENT_OPERATIVE)",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getOperativeProvision",
+      "input": {
+       "sectionRef": "2.19"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 39,
+      "summary": "base-document provision 2.19 (never individually amended, CURRENT_OPERATIVE, UNIQUE_AFTER_DEGENERATE_EXCLUSION)"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 2.19"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 39,
+      "summary": "resolved reference \"Section 2.19\" -> 2.19 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (CURRENT_OPERATIVE)"
+     }
+    ],
+    "usableRoutes": 2
+   }
+  },
+  {
+   "key": "2.22",
+   "kind": "SECTION",
+   "oldShard": 0,
+   "oldEffect": "MISSING_CONTEXT_TRIGGER",
+   "whyNeeded": "same as 2.18",
+   "requestedBy": [
+    "ir-rule:f8040ca894957f7bb7a0121c"
+   ],
+   "requestingItemIds": [],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "AMBIGUOUS: section Section 2.22 matches 2 physical locations"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getOperativeProvision({\"sectionRef\":\"2.22\"}) -> base-document provision 2.22 (never individually amended, CURRENT_OPERATIVE, UNIQUE_AFTER_DEGENERATE_EXCLUSION); getReferencedProvision({\"ref\":\"Section 2.22\"}) -> resolved reference \"Section 2.22\" -> 2.22 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (CURRENT_OPERATIVE)",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getOperativeProvision",
+      "input": {
+       "sectionRef": "2.22"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 41,
+      "summary": "base-document provision 2.22 (never individually amended, CURRENT_OPERATIVE, UNIQUE_AFTER_DEGENERATE_EXCLUSION)"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 2.22"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 41,
+      "summary": "resolved reference \"Section 2.22\" -> 2.22 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (CURRENT_OPERATIVE)"
+     }
+    ],
+    "usableRoutes": 2
+   }
+  },
+  {
+   "key": "Loan Documents",
+   "kind": "TERM",
+   "oldShard": 0,
+   "oldEffect": "MISSING_CONTEXT_TRIGGER",
+   "whyNeeded": "the umbrella term the (X) basket is sized by",
+   "requestedBy": [
+    "ir-rule:f8040ca894957f7bb7a0121c"
+   ],
+   "requestingItemIds": [],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "BUDGET: context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getDefinition({\"term\":\"Loan Documents\"}) -> definition \"Loan Documents\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT); getDefinitionDependencies({\"term\":\"Loan Documents\"}) -> 11 dependency term(s) found in \"Loan Documents\"'s own text",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "Loan Documents"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 366,
+      "summary": "definition \"Loan Documents\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)"
+     },
+     {
+      "tool": "getDefinitionDependencies",
+      "input": {
+       "term": "Loan Documents"
+      },
+      "ok": true,
+      "evidenceUnresolved": null,
+      "charsReturned": 58,
+      "summary": "11 dependency term(s) found in \"Loan Documents\"'s own text"
+     }
+    ],
+    "usableRoutes": 2
+   }
+  },
+  {
+   "key": "6.01(b)(1)",
+   "kind": "SECTION",
+   "oldShard": 0,
+   "oldEffect": "AMBIGUOUS_SUFFICIENCY",
+   "whyNeeded": "6.01(b)(3) carve-out 'other than Indebtedness described in Section 6.01(b)(1)'",
+   "requestedBy": [
+    "ir-rule:487a86ed915f18f337fe04e1"
+   ],
+   "requestingItemIds": [],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "not a Pass A referenced term/section of the requesting items (one-hop planner)"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getReferencedProvision({\"ref\":\"Section 6.01(b)(1)\",\"fromNodeId\":\"structural-node:a8) -> resolved reference \"Section 6.01(b)(1)\" -> 6.01(b)(1) [RESOLVED_WITHIN_ENUMERATION_RUN] (CURRENT_OPERATIVE)",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getOperativeProvision",
+      "input": {
+       "sectionRef": "6.01(b)(1)"
+      },
+      "ok": false,
+      "evidenceUnresolved": null,
+      "charsReturned": 327,
+      "summary": "refused: section reference \"6.01(b)(1)\" matches 3 distinct physical locations in this document (e.g. a cross-reference mention and the section's real header can share the same number) - cannot serve this as uniquely-resolved evidence; try getReferencedProvision with a fromNodeId for a context-scoped"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.01(b)(1)"
+      },
+      "ok": false,
+      "evidenceUnresolved": null,
+      "charsReturned": 694,
+      "summary": "refused: reference \"Section 6.01(b)(1)\" matches 3 substantive physical locations within this instrument's documents - ambiguous, not resolved (never guessed). Candidates: [{\"documentId\":\"doc-a\",\"nodeId\":\"structural-node:92f63513af858665ccd831e4\",\"sectionRef\":\"6.01(b)(1)\",\"charStart\":612195,\"heading\""
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.01(b)(1)",
+       "fromNodeId": "structural-node:a8e2383304c2e3800a5c3494"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 302,
+      "summary": "resolved reference \"Section 6.01(b)(1)\" -> 6.01(b)(1) [RESOLVED_WITHIN_ENUMERATION_RUN] (CURRENT_OPERATIVE)"
+     }
+    ],
+    "usableRoutes": 1
+   }
+  },
+  {
+   "key": "Permitted Ratio Debt",
+   "kind": "TERM",
+   "oldShard": 0,
+   "oldEffect": "UNRESOLVED_CROSS_UNIT_DEPENDENCY",
+   "whyNeeded": "the ratio baskets are collectively 'Permitted Ratio Debt' (defined inline in 6.01(a), forwarded from Article I)",
+   "requestedBy": [
+    "ir-rule:e21b76beb1594ddeb06234d8",
+    "ir-rule:f2972befd147ab4956a952f6",
+    "ir-rule:3a8ec278d265d62f22f2b373",
+    "ir-rule:80d9015af4b70e18f048d4c8"
+   ],
+   "requestingItemIds": [
+    "e10e617b96b8348d5455be28",
+    "9e120de351f707c0ec3b0662",
+    "d330a64ee8f87f346d67e08a",
+    "4f7c5a7a1cf0e23ca40916b7",
+    "ff79495c723f146ca01743c2"
+   ],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "NOT_FOUND: no detected definition of \"Permitted Ratio Debt\" in document doc-a"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getDefinition({\"term\":\"Permitted Ratio Debt\"}) -> definition \"Permitted Ratio Debt\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT) -> forwarding target Section 6.01(; getDefinitionDependencies({\"term\":\"Permitted Ratio Debt\"}) -> 0 dependency term(s) found in \"Permitted Ratio Debt\"'s own text",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "Permitted Ratio Debt"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 1930,
+      "summary": "definition \"Permitted Ratio Debt\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT) -> forwarding target Section 6.01(a) -> 6.01(a) [UNIQUE] (CURRENT_OPERATIVE)"
+     },
+     {
+      "tool": "getDefinitionDependencies",
+      "input": {
+       "term": "Permitted Ratio Debt"
+      },
+      "ok": true,
+      "evidenceUnresolved": null,
+      "charsReturned": 63,
+      "summary": "0 dependency term(s) found in \"Permitted Ratio Debt\"'s own text"
+     }
+    ],
+    "usableRoutes": 2
+   }
+  },
+  {
+   "key": "Fixed Incremental Amount",
+   "kind": "TERM",
+   "oldShard": 0,
+   "oldEffect": "PARTIAL_SUFFICIENCY",
+   "whyNeeded": "6.01(b)(1)(Z) capacity equals the Fixed Incremental Amount",
+   "requestedBy": [
+    "ir-rule:dd8291b9cbac4044a9c24f04",
+    "ir-definition:f1861139cbbbb349d818f1da"
+   ],
+   "requestingItemIds": [],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "BUDGET: context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getDefinition({\"term\":\"Fixed Incremental Amount\"}) -> definition \"Fixed Incremental Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT); getDefinitionDependencies({\"term\":\"Fixed Incremental Amount\"}) -> 7 dependency term(s) found in \"Fixed Incremental Amount\"'s own text",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "Fixed Incremental Amount"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 948,
+      "summary": "definition \"Fixed Incremental Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)"
+     },
+     {
+      "tool": "getDefinitionDependencies",
+      "input": {
+       "term": "Fixed Incremental Amount"
+      },
+      "ok": true,
+      "evidenceUnresolved": null,
+      "charsReturned": 67,
+      "summary": "7 dependency term(s) found in \"Fixed Incremental Amount\"'s own text"
+     }
+    ],
+    "usableRoutes": 2
+   }
+  },
+  {
+   "key": "General Lien Basket Reallocated Amount",
+   "kind": "TERM",
+   "oldShard": 0,
+   "oldEffect": "PARTIAL_SUFFICIENCY",
+   "whyNeeded": "additive component of Fixed Incremental Amount",
+   "requestedBy": [
+    "ir-definition:f1861139cbbbb349d818f1da"
+   ],
+   "requestingItemIds": [],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "not a Pass A referenced term/section of the requesting items (one-hop planner)"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getDefinition({\"term\":\"General Lien Basket Reallocated Amount\"}) -> definition \"General Lien Basket Reallocated Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT); getDefinitionDependencies({\"term\":\"General Lien Basket Reallocated Amount\"}) -> 7 dependency term(s) found in \"General Lien Basket Reallocated Amount\"'s own text",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "General Lien Basket Reallocated Amount"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 468,
+      "summary": "definition \"General Lien Basket Reallocated Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)"
+     },
+     {
+      "tool": "getDefinitionDependencies",
+      "input": {
+       "term": "General Lien Basket Reallocated Amount"
+      },
+      "ok": true,
+      "evidenceUnresolved": null,
+      "charsReturned": 81,
+      "summary": "7 dependency term(s) found in \"General Lien Basket Reallocated Amount\"'s own text"
+     }
+    ],
+    "usableRoutes": 2
+   }
+  },
+  {
+   "key": "Available RP Capacity Amount",
+   "kind": "TERM",
+   "oldShard": 0,
+   "oldEffect": "PARTIAL_SUFFICIENCY",
+   "whyNeeded": "additive component of Fixed Incremental Amount",
+   "requestedBy": [
+    "ir-definition:f1861139cbbbb349d818f1da"
+   ],
+   "requestingItemIds": [],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "not a Pass A referenced term/section of the requesting items (one-hop planner)"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getDefinition({\"term\":\"Available RP Capacity Amount\"}) -> definition \"Available RP Capacity Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT); getDefinitionDependencies({\"term\":\"Available RP Capacity Amount\"}) -> 11 dependency term(s) found in \"Available RP Capacity Amount\"'s own text",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "Available RP Capacity Amount"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 1507,
+      "summary": "definition \"Available RP Capacity Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)"
+     },
+     {
+      "tool": "getDefinitionDependencies",
+      "input": {
+       "term": "Available RP Capacity Amount"
+      },
+      "ok": true,
+      "evidenceUnresolved": null,
+      "charsReturned": 72,
+      "summary": "11 dependency term(s) found in \"Available RP Capacity Amount\"'s own text"
+     }
+    ],
+    "usableRoutes": 2
+   }
+  },
+  {
+   "key": "Incremental Facilities",
+   "kind": "TERM",
+   "oldShard": 0,
+   "oldEffect": "PARTIAL_SUFFICIENCY",
+   "whyNeeded": "subtractive prior-usage component (cited in the plural; defined in the singular)",
+   "requestedBy": [
+    "ir-definition:f1861139cbbbb349d818f1da"
+   ],
+   "requestingItemIds": [],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "not a Pass A referenced term/section of the requesting items (one-hop planner)"
+   },
+   "new": {
+    "resolution": "DISCLOSED_VARIANT_POINTER",
+    "resolvedBy": "\"Incremental Facilities\" is not itself a defined term; getDefinition refuses (OPEN-2 invariant: never served under a different name) and names the defined variant \"Incremental Facility\", which then resolves: definition \"Incremental Facility\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "Incremental Facilities"
+      },
+      "ok": false,
+      "evidenceUnresolved": null,
+      "charsReturned": 221,
+      "summary": "refused: no defined term matching \"Incremental Facilities\" found in this instrument's documents; the instrument defines \"Incremental Facility\" (a grammatical-number variant of the requested term) - query that exact term to read it"
+     },
+     {
+      "tool": "getDefinitionDependencies",
+      "input": {
+       "term": "Incremental Facilities"
+      },
+      "ok": false,
+      "evidenceUnresolved": null,
+      "charsReturned": 89,
+      "summary": "refused: no defined term matching \"Incremental Facilities\" found - cannot inspect its dependencies"
+     },
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "Incremental Facility"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 107,
+      "summary": "definition \"Incremental Facility\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)"
+     }
+    ],
+    "usableRoutes": 0
+   }
+  },
+  {
+   "key": "Incremental Equivalent Debt",
+   "kind": "TERM",
+   "oldShard": 0,
+   "oldEffect": "PARTIAL_SUFFICIENCY",
+   "whyNeeded": "subtractive prior-usage component; the clause (33) basket",
+   "requestedBy": [
+    "ir-definition:f1861139cbbbb349d818f1da",
+    "ir-rule:24d3f241cead64be62a2019c"
+   ],
+   "requestingItemIds": [
+    "inv-item:c478c68a86624119630cabe3"
+   ],
+   "newOwnerShards": [
+    "shard:86cc5e439f113d6053a9"
+   ],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "not a Pass A referenced term/section of the requesting items (one-hop planner)"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getDefinition({\"term\":\"Incremental Equivalent Debt\"}) -> definition \"Incremental Equivalent Debt\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT); getDefinitionDependencies({\"term\":\"Incremental Equivalent Debt\"}) -> 7 dependency term(s) found in \"Incremental Equivalent Debt\"'s own text [planner: BUDGET - disclosed to the shard as a bounded-retrieval dependency]",
+    "plannerContext": [],
+    "plannerUnresolved": [
+     {
+      "shardId": "shard:86cc5e439f113d6053a9",
+      "reason": "BUDGET",
+      "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call"
+     }
+    ],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "Incremental Equivalent Debt"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 1103,
+      "summary": "definition \"Incremental Equivalent Debt\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)"
+     },
+     {
+      "tool": "getDefinitionDependencies",
+      "input": {
+       "term": "Incremental Equivalent Debt"
+      },
+      "ok": true,
+      "evidenceUnresolved": null,
+      "charsReturned": 70,
+      "summary": "7 dependency term(s) found in \"Incremental Equivalent Debt\"'s own text"
+     }
+    ],
+    "usableRoutes": 2
+   }
+  },
+  {
+   "key": "ABL Credit Agreement",
+   "kind": "EXTERNAL_DOCUMENT",
+   "oldShard": 0,
+   "oldEffect": "UNRESOLVED_CROSS_UNIT_DEPENDENCY",
+   "whyNeeded": "'Borrowing Base' is defined in the ABL Credit Agreement, a document outside this instrument",
+   "requestedBy": [
+    "ir-rule:5bf474b6ae440e22e62b168e"
+   ],
+   "requestingItemIds": [],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "not a package document"
+   },
+   "new": {
+    "resolution": "PROVEN_EXTERNAL_TO_PACKAGE",
+    "resolvedBy": "getInstrumentDocuments proves a single-document instrument; the term/document is not in the package - the rule kept it as an explicit unresolved cross-unit dependency (COMPLETE sufficiency), never guessed",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getInstrumentDocuments",
+      "input": {},
+      "ok": true,
+      "evidenceUnresolved": null,
+      "charsReturned": 32,
+      "summary": "1 document(s) in this instrument"
+     }
+    ],
+    "usableRoutes": 1
+   }
+  },
+  {
+   "key": "Borrowing Base",
+   "kind": "TERM",
+   "oldShard": 0,
+   "oldEffect": "UNRESOLVED_CROSS_UNIT_DEPENDENCY",
+   "whyNeeded": "the (Y) cap is the greater of a fixed amount and the Borrowing Base",
+   "requestedBy": [
+    "ir-rule:5bf474b6ae440e22e62b168e"
+   ],
+   "requestingItemIds": [],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "NOT_FOUND: no detected definition of \"Borrowing Base\" in document doc-a"
+   },
+   "new": {
+    "resolution": "PROVEN_EXTERNAL_TO_PACKAGE",
+    "resolvedBy": "getInstrumentDocuments proves a single-document instrument; the term/document is not in the package - the rule kept it as an explicit unresolved cross-unit dependency (COMPLETE sufficiency), never guessed",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "Borrowing Base"
+      },
+      "ok": false,
+      "evidenceUnresolved": null,
+      "charsReturned": 78,
+      "summary": "refused: no defined term matching \"Borrowing Base\" found in this instrument's documents"
+     },
+     {
+      "tool": "getDefinitionDependencies",
+      "input": {
+       "term": "Borrowing Base"
+      },
+      "ok": false,
+      "evidenceUnresolved": null,
+      "charsReturned": 81,
+      "summary": "refused: no defined term matching \"Borrowing Base\" found - cannot inspect its dependencies"
+     }
+    ],
+    "usableRoutes": 0
+   }
+  },
+  {
+   "key": "Available Amount",
+   "kind": "TERM",
+   "oldShard": 1,
+   "oldEffect": "MISSING_CONTEXT_TRIGGER",
+   "whyNeeded": "6.01(b)(32): Indebtedness 'not to exceed the Available Amount that is Not Otherwise Applied'",
+   "requestedBy": [
+    "ir-rule:aebc09fce0c0397c1d57ff37"
+   ],
+   "requestingItemIds": [],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "NOT_FOUND: no detected definition of \"Available Amount\" in document doc-a"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getDefinition({\"term\":\"Available Amount\"}) -> definition \"Available Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT) -> forwarding target Section 6.08(a)(3; getDefinitionDependencies({\"term\":\"Available Amount\"}) -> 0 dependency term(s) found in \"Available Amount\"'s own text",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "Available Amount"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 627,
+      "summary": "definition \"Available Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT) -> forwarding target Section 6.08(a)(3) -> 6.08(a)(3) [UNIQUE] (CURRENT_OPERATIVE)"
+     },
+     {
+      "tool": "getDefinitionDependencies",
+      "input": {
+       "term": "Available Amount"
+      },
+      "ok": true,
+      "evidenceUnresolved": null,
+      "charsReturned": 59,
+      "summary": "0 dependency term(s) found in \"Available Amount\"'s own text"
+     }
+    ],
+    "usableRoutes": 2
+   }
+  },
+  {
+   "key": "Not Otherwise Applied",
+   "kind": "TERM",
+   "oldShard": 1,
+   "oldEffect": "MISSING_CONTEXT_TRIGGER",
+   "whyNeeded": "qualifier of the clause (32) basket",
+   "requestedBy": [
+    "ir-rule:aebc09fce0c0397c1d57ff37"
+   ],
+   "requestingItemIds": [],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "BUDGET: context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getDefinition({\"term\":\"Not Otherwise Applied\"}) -> definition \"Not Otherwise Applied\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT); getDefinitionDependencies({\"term\":\"Not Otherwise Applied\"}) -> 3 dependency term(s) found in \"Not Otherwise Applied\"'s own text",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "Not Otherwise Applied"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 217,
+      "summary": "definition \"Not Otherwise Applied\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)"
+     },
+     {
+      "tool": "getDefinitionDependencies",
+      "input": {
+       "term": "Not Otherwise Applied"
+      },
+      "ok": true,
+      "evidenceUnresolved": null,
+      "charsReturned": 64,
+      "summary": "3 dependency term(s) found in \"Not Otherwise Applied\"'s own text"
+     }
+    ],
+    "usableRoutes": 2
+   }
+  },
+  {
+   "key": "6.08(a)(3)",
+   "kind": "SECTION",
+   "oldShard": 1,
+   "oldEffect": "MISSING_CONTEXT_TRIGGER",
+   "whyNeeded": "forwarding target of 'Available Amount' (the inline definition lives here)",
+   "requestedBy": [
+    "ir-rule:aebc09fce0c0397c1d57ff37"
+   ],
+   "requestingItemIds": [],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "not a Pass A referenced term/section of the requesting items (one-hop planner)"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getOperativeProvision({\"sectionRef\":\"6.08(a)(3)\"}) -> base-document provision 6.08(a)(3) (never individually amended, CURRENT_OPERATIVE); getReferencedProvision({\"ref\":\"Section 6.08(a)(3)\"}) -> resolved reference \"Section 6.08(a)(3)\" -> 6.08(a)(3) [UNIQUE] (CURRENT_OPERATIVE); getReferencedProvision({\"ref\":\"Section 6.08(a)(3)\",\"fromNodeId\":\"structural-node:ea) -> resolved reference \"Section 6.08(a)(3)\" -> 6.08(a)(3) [UNIQUE] (CURRENT_OPERATIVE)",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getOperativeProvision",
+      "input": {
+       "sectionRef": "6.08(a)(3)"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 544,
+      "summary": "base-document provision 6.08(a)(3) (never individually amended, CURRENT_OPERATIVE)"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.08(a)(3)"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 544,
+      "summary": "resolved reference \"Section 6.08(a)(3)\" -> 6.08(a)(3) [UNIQUE] (CURRENT_OPERATIVE)"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.08(a)(3)",
+       "fromNodeId": "structural-node:eaf33425b7fabd21343c1813"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 544,
+      "summary": "resolved reference \"Section 6.08(a)(3)\" -> 6.08(a)(3) [UNIQUE] (CURRENT_OPERATIVE)"
+     }
+    ],
+    "usableRoutes": 3
+   }
+  },
+  {
+   "key": "6.08(a)(3)(b)",
+   "kind": "SECTION",
+   "oldShard": 1,
+   "oldEffect": "PARTIAL_SUFFICIENCY",
+   "whyNeeded": "6.01(b)(12)(a): counted contributions per 6.08(a)(3)(b)/(c)",
+   "requestedBy": [
+    "ir-rule:dc232af10c47ae17c479fac7"
+   ],
+   "requestingItemIds": [
+    "inv-item:5985fbc163bc921fa4711e57"
+   ],
+   "newOwnerShards": [
+    "shard:86cc5e439f113d6053a9"
+   ],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "BUDGET: context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getOperativeProvision({\"sectionRef\":\"6.08(a)(3)(b)\"}) -> base-document provision 6.08(a)(3)(b) (never individually amended, CURRENT_OPERATIVE); getReferencedProvision({\"ref\":\"Section 6.08(a)(3)(b)\"}) -> resolved reference \"Section 6.08(a)(3)(b)\" -> 6.08(a)(3)(b) [UNIQUE] (CURRENT_OPERATIVE); getReferencedProvision({\"ref\":\"Section 6.08(a)(3)(b)\",\"fromNodeId\":\"structural-node) -> resolved reference \"Section 6.08(a)(3)(b)\" -> 6.08(a)(3)(b) (CURRENT_OPERATIVE) [planner: BUDGET - disclosed to the shard as a bounded-retrieval dependency]",
+    "plannerContext": [],
+    "plannerUnresolved": [
+     {
+      "shardId": "shard:86cc5e439f113d6053a9",
+      "reason": "BUDGET",
+      "detail": "context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call"
+     }
+    ],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getOperativeProvision",
+      "input": {
+       "sectionRef": "6.08(a)(3)(b)"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 2082,
+      "summary": "base-document provision 6.08(a)(3)(b) (never individually amended, CURRENT_OPERATIVE)"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.08(a)(3)(b)"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 2082,
+      "summary": "resolved reference \"Section 6.08(a)(3)(b)\" -> 6.08(a)(3)(b) [UNIQUE] (CURRENT_OPERATIVE)"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.08(a)(3)(b)",
+       "fromNodeId": "structural-node:cdc4cacff24f5cce12ec87a3"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 2082,
+      "summary": "resolved reference \"Section 6.08(a)(3)(b)\" -> 6.08(a)(3)(b) (CURRENT_OPERATIVE)"
+     }
+    ],
+    "usableRoutes": 3
+   }
+  },
+  {
+   "key": "6.08(a)(3)(c)",
+   "kind": "SECTION",
+   "oldShard": 1,
+   "oldEffect": "PARTIAL_SUFFICIENCY",
+   "whyNeeded": "same",
+   "requestedBy": [
+    "ir-rule:dc232af10c47ae17c479fac7"
+   ],
+   "requestingItemIds": [
+    "inv-item:5985fbc163bc921fa4711e57"
+   ],
+   "newOwnerShards": [
+    "shard:86cc5e439f113d6053a9"
+   ],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "BUDGET: context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call"
+   },
+   "new": {
+    "resolution": "PLANNER_CONTEXT",
+    "resolvedBy": "shard:86cc5e439f113d6053a9 context section:6.08(a)(3)(c) (REFERENCED_SECTION, 499 chars)",
+    "plannerContext": [
+     {
+      "shardId": "shard:86cc5e439f113d6053a9",
+      "contextKey": "section:6.08(a)(3)(c)",
+      "kind": "REFERENCED_SECTION",
+      "chars": 499,
+      "truncated": false
+     }
+    ],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getOperativeProvision",
+      "input": {
+       "sectionRef": "6.08(a)(3)(c)"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 500,
+      "summary": "base-document provision 6.08(a)(3)(c) (never individually amended, CURRENT_OPERATIVE)"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.08(a)(3)(c)"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 500,
+      "summary": "resolved reference \"Section 6.08(a)(3)(c)\" -> 6.08(a)(3)(c) [UNIQUE] (CURRENT_OPERATIVE)"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.08(a)(3)(c)",
+       "fromNodeId": "structural-node:cdc4cacff24f5cce12ec87a3"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 500,
+      "summary": "resolved reference \"Section 6.08(a)(3)(c)\" -> 6.08(a)(3)(c) [UNIQUE] (CURRENT_OPERATIVE)"
+     }
+    ],
+    "usableRoutes": 3
+   }
+  },
+  {
+   "key": "6.08(b)",
+   "kind": "SECTION",
+   "oldShard": 1,
+   "oldEffect": "PARTIAL_SUFFICIENCY",
+   "whyNeeded": "no-double-counting cross-reference",
+   "requestedBy": [
+    "ir-rule:dc232af10c47ae17c479fac7"
+   ],
+   "requestingItemIds": [
+    "inv-item:5985fbc163bc921fa4711e57"
+   ],
+   "newOwnerShards": [
+    "shard:86cc5e439f113d6053a9"
+   ],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "BUDGET: context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getOperativeProvision({\"sectionRef\":\"6.08(b)\"}) -> base-document provision 6.08(b) (never individually amended, CURRENT_OPERATIVE); getReferencedProvision({\"ref\":\"Section 6.08(b)\"}) -> resolved reference \"Section 6.08(b)\" -> 6.08(b) [UNIQUE] (CURRENT_OPERATIVE); getReferencedProvision({\"ref\":\"Section 6.08(b)\",\"fromNodeId\":\"structural-node:cdc4c) -> resolved reference \"Section 6.08(b)\" -> 6.08(b) (CURRENT_OPERATIVE) [planner: BUDGET - disclosed to the shard as a bounded-retrieval dependency]",
+    "plannerContext": [],
+    "plannerUnresolved": [
+     {
+      "shardId": "shard:86cc5e439f113d6053a9",
+      "reason": "BUDGET",
+      "detail": "context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call"
+     }
+    ],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getOperativeProvision",
+      "input": {
+       "sectionRef": "6.08(b)"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 69,
+      "summary": "base-document provision 6.08(b) (never individually amended, CURRENT_OPERATIVE)"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.08(b)"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 69,
+      "summary": "resolved reference \"Section 6.08(b)\" -> 6.08(b) [UNIQUE] (CURRENT_OPERATIVE)"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.08(b)",
+       "fromNodeId": "structural-node:cdc4cacff24f5cce12ec87a3"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 69,
+      "summary": "resolved reference \"Section 6.08(b)\" -> 6.08(b) (CURRENT_OPERATIVE)"
+     }
+    ],
+    "usableRoutes": 3
+   }
+  },
+  {
+   "key": "6.08(b)(4)",
+   "kind": "SECTION",
+   "oldShard": 1,
+   "oldEffect": "PARTIAL_SUFFICIENCY",
+   "whyNeeded": "6.01(b)(22): scope of Parent Entity equity purchases",
+   "requestedBy": [
+    "ir-rule:ace8a49182ef7336eb6fe566"
+   ],
+   "requestingItemIds": [
+    "inv-item:d969b824d7e36bcc256e482c"
+   ],
+   "newOwnerShards": [
+    "shard:7c4d3d2ae3e0a522b99e"
+   ],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "BUDGET: context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call"
+   },
+   "new": {
+    "resolution": "PLANNER_CONTEXT",
+    "resolvedBy": "shard:7c4d3d2ae3e0a522b99e context section:6.08(b)(4) (REFERENCED_SECTION, 1800 chars, head/tail)",
+    "plannerContext": [
+     {
+      "shardId": "shard:7c4d3d2ae3e0a522b99e",
+      "contextKey": "section:6.08(b)(4)",
+      "kind": "REFERENCED_SECTION",
+      "chars": 1800,
+      "truncated": true
+     }
+    ],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getOperativeProvision",
+      "input": {
+       "sectionRef": "6.08(b)(4)"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 2177,
+      "summary": "base-document provision 6.08(b)(4) (never individually amended, CURRENT_OPERATIVE)"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.08(b)(4)"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 2177,
+      "summary": "resolved reference \"Section 6.08(b)(4)\" -> 6.08(b)(4) [UNIQUE] (CURRENT_OPERATIVE)"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.08(b)(4)",
+       "fromNodeId": "structural-node:3e8b1739e867ded33cb097f9"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 2177,
+      "summary": "resolved reference \"Section 6.08(b)(4)\" -> 6.08(b)(4) (CURRENT_OPERATIVE)"
+     }
+    ],
+    "usableRoutes": 3
+   }
+  },
+  {
+   "key": "6.01(a)",
+   "kind": "SECTION",
+   "oldShard": 1,
+   "oldEffect": "PARTIAL_SUFFICIENCY",
+   "whyNeeded": "6.01(b)(14): '$1.00 of additional Indebtedness permitted under the Section 6.01(a) ratio test'",
+   "requestedBy": [
+    "ir-rule:63c803fd30a19edd679fc7ee",
+    "ir-rule:682fedbe08ac3985f898943d"
+   ],
+   "requestingItemIds": [],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "BUDGET: context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getOperativeProvision({\"sectionRef\":\"6.01(a)\"}) -> base-document provision 6.01(a) (never individually amended, CURRENT_OPERATIVE); getReferencedProvision({\"ref\":\"Section 6.01(a)\"}) -> resolved reference \"Section 6.01(a)\" -> 6.01(a) [UNIQUE] (CURRENT_OPERATIVE)",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getOperativeProvision",
+      "input": {
+       "sectionRef": "6.01(a)"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 1846,
+      "summary": "base-document provision 6.01(a) (never individually amended, CURRENT_OPERATIVE)"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.01(a)"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 1846,
+      "summary": "resolved reference \"Section 6.01(a)\" -> 6.01(a) [UNIQUE] (CURRENT_OPERATIVE)"
+     }
+    ],
+    "usableRoutes": 2
+   }
+  },
+  {
+   "key": "Interest Coverage Ratio",
+   "kind": "TERM",
+   "oldShard": 1,
+   "oldEffect": "PARTIAL_SUFFICIENCY",
+   "whyNeeded": "ratio test threshold",
+   "requestedBy": [
+    "ir-rule:63c803fd30a19edd679fc7ee"
+   ],
+   "requestingItemIds": [],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "BUDGET: context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getDefinition({\"term\":\"Interest Coverage Ratio\"}) -> definition \"Interest Coverage Ratio\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT); getDefinitionDependencies({\"term\":\"Interest Coverage Ratio\"}) -> 8 dependency term(s) found in \"Interest Coverage Ratio\"'s own text",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "Interest Coverage Ratio"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 850,
+      "summary": "definition \"Interest Coverage Ratio\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)"
+     },
+     {
+      "tool": "getDefinitionDependencies",
+      "input": {
+       "term": "Interest Coverage Ratio"
+      },
+      "ok": true,
+      "evidenceUnresolved": null,
+      "charsReturned": 66,
+      "summary": "8 dependency term(s) found in \"Interest Coverage Ratio\"'s own text"
+     }
+    ],
+    "usableRoutes": 2
+   }
+  },
+  {
+   "key": "Total Leverage Ratio",
+   "kind": "TERM",
+   "oldShard": 1,
+   "oldEffect": "PARTIAL_SUFFICIENCY",
+   "whyNeeded": "ratio test threshold",
+   "requestedBy": [
+    "ir-rule:63c803fd30a19edd679fc7ee"
+   ],
+   "requestingItemIds": [],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "BUDGET: context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getDefinition({\"term\":\"Total Leverage Ratio\"}) -> definition \"Total Leverage Ratio\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT); getDefinitionDependencies({\"term\":\"Total Leverage Ratio\"}) -> 6 dependency term(s) found in \"Total Leverage Ratio\"'s own text",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "Total Leverage Ratio"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 212,
+      "summary": "definition \"Total Leverage Ratio\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)"
+     },
+     {
+      "tool": "getDefinitionDependencies",
+      "input": {
+       "term": "Total Leverage Ratio"
+      },
+      "ok": true,
+      "evidenceUnresolved": null,
+      "charsReturned": 63,
+      "summary": "6 dependency term(s) found in \"Total Leverage Ratio\"'s own text"
+     }
+    ],
+    "usableRoutes": 2
+   }
+  },
+  {
+   "key": "6.01",
+   "kind": "SECTION",
+   "oldShard": 1,
+   "oldEffect": "PARTIAL_SUFFICIENCY",
+   "whyNeeded": "closing paragraph borrows capacity from whichever basket under Section 6.01 was used",
+   "requestedBy": [
+    "ir-rule:991acb3b933f4da5666ed3f2"
+   ],
+   "requestingItemIds": [],
+   "newOwnerShards": [],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "AMBIGUOUS: section Section 6.01 matches 2 physical locations"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getOperativeProvision({\"sectionRef\":\"6.01\"}) -> base-document provision 6.01 (never individually amended, CURRENT_OPERATIVE, UNIQUE_AFTER_DEGENERATE_EXCLUSION); getReferencedProvision({\"ref\":\"Section 6.01\"}) -> resolved reference \"Section 6.01\" -> 6.01 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (CURRENT_OPERATIVE); getReferencedProvision({\"ref\":\"Section 6.01\",\"fromNodeId\":\"structural-node:85ee54c3) -> resolved reference \"Section 6.01\" -> 6.01 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (CURRENT_OPERATIVE)",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getOperativeProvision",
+      "input": {
+       "sectionRef": "6.01"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 113,
+      "summary": "base-document provision 6.01 (never individually amended, CURRENT_OPERATIVE, UNIQUE_AFTER_DEGENERATE_EXCLUSION)"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.01"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 113,
+      "summary": "resolved reference \"Section 6.01\" -> 6.01 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (CURRENT_OPERATIVE)"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.01",
+       "fromNodeId": "structural-node:85ee54c312ce2a2526bc705b"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 113,
+      "summary": "resolved reference \"Section 6.01\" -> 6.01 [UNIQUE_AFTER_DEGENERATE_EXCLUSION] (CURRENT_OPERATIVE)"
+     }
+    ],
+    "usableRoutes": 3
+   }
+  },
+  {
+   "key": "6.01(b)(13)",
+   "kind": "SECTION",
+   "oldShard": 1,
+   "oldEffect": "UNRESOLVED_CROSS_UNIT_DEPENDENCY",
+   "whyNeeded": "6.01(b)(4)(a) SHARES_CAPACITY_WITH refinancing debt under clause (13)",
+   "requestedBy": [
+    "ir-rule:ba94defd3335602af0c396f6"
+   ],
+   "requestingItemIds": [
+    "inv-item:d7c98f9e0feadf05d4c207ab"
+   ],
+   "newOwnerShards": [
+    "shard:fe26b4996ab543b0a066"
+   ],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "not a Pass A referenced term/section of the requesting items (one-hop planner)"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getOperativeProvision({\"sectionRef\":\"6.01(b)(13)\"}) -> base-document provision 6.01(b)(13) (never individually amended, CURRENT_OPERATIVE); getReferencedProvision({\"ref\":\"Section 6.01(b)(13)\"}) -> resolved reference \"Section 6.01(b)(13)\" -> 6.01(b)(13) [UNIQUE] (CURRENT_OPERATIVE); getReferencedProvision({\"ref\":\"Section 6.01(b)(13)\",\"fromNodeId\":\"structural-node:d) -> resolved reference \"Section 6.01(b)(13)\" -> 6.01(b)(13) [UNIQUE] (CURRENT_OPERATIVE) [planner: BUDGET - disclosed to the shard as a bounded-retrieval dependency]",
+    "plannerContext": [],
+    "plannerUnresolved": [
+     {
+      "shardId": "shard:fe26b4996ab543b0a066",
+      "reason": "BUDGET",
+      "detail": "context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call"
+     }
+    ],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getOperativeProvision",
+      "input": {
+       "sectionRef": "6.01(b)(13)"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 1183,
+      "summary": "base-document provision 6.01(b)(13) (never individually amended, CURRENT_OPERATIVE)"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.01(b)(13)"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 1183,
+      "summary": "resolved reference \"Section 6.01(b)(13)\" -> 6.01(b)(13) [UNIQUE] (CURRENT_OPERATIVE)"
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.01(b)(13)",
+       "fromNodeId": "structural-node:d0023a47d7d2a0aa6a6e1865"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 1183,
+      "summary": "resolved reference \"Section 6.01(b)(13)\" -> 6.01(b)(13) [UNIQUE] (CURRENT_OPERATIVE)"
+     }
+    ],
+    "usableRoutes": 3
+   }
+  },
+  {
+   "key": "Incremental Cap",
+   "kind": "TERM",
+   "oldShard": 1,
+   "oldEffect": "PARTIAL_SUFFICIENCY",
+   "whyNeeded": "Incremental Equivalent Debt is capped by the Incremental Cap",
+   "requestedBy": [
+    "ir-rule:24d3f241cead64be62a2019c"
+   ],
+   "requestingItemIds": [
+    "inv-item:c478c68a86624119630cabe3"
+   ],
+   "newOwnerShards": [
+    "shard:86cc5e439f113d6053a9"
+   ],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "not a Pass A referenced term/section of the requesting items (one-hop planner)"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getDefinition({\"term\":\"Incremental Cap\"}) -> definition \"Incremental Cap\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT); getDefinitionDependencies({\"term\":\"Incremental Cap\"}) -> 3 dependency term(s) found in \"Incremental Cap\"'s own text",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "Incremental Cap"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 223,
+      "summary": "definition \"Incremental Cap\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)"
+     },
+     {
+      "tool": "getDefinitionDependencies",
+      "input": {
+       "term": "Incremental Cap"
+      },
+      "ok": true,
+      "evidenceUnresolved": null,
+      "charsReturned": 58,
+      "summary": "3 dependency term(s) found in \"Incremental Cap\"'s own text"
+     }
+    ],
+    "usableRoutes": 2
+   }
+  },
+  {
+   "key": "Voluntary Prepayment Incremental Amount",
+   "kind": "TERM",
+   "oldShard": 1,
+   "oldEffect": "PARTIAL_SUFFICIENCY",
+   "whyNeeded": "component of the Incremental Cap",
+   "requestedBy": [
+    "ir-rule:24d3f241cead64be62a2019c"
+   ],
+   "requestingItemIds": [
+    "inv-item:c478c68a86624119630cabe3"
+   ],
+   "newOwnerShards": [
+    "shard:86cc5e439f113d6053a9"
+   ],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "not a Pass A referenced term/section of the requesting items (one-hop planner)"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getDefinition({\"term\":\"Voluntary Prepayment Incremental Amount\"}) -> definition \"Voluntary Prepayment Incremental Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT); getDefinitionDependencies({\"term\":\"Voluntary Prepayment Incremental Amount\"}) -> 8 dependency term(s) found in \"Voluntary Prepayment Incremental Amount\"'s own text",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "Voluntary Prepayment Incremental Amount"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 1009,
+      "summary": "definition \"Voluntary Prepayment Incremental Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)"
+     },
+     {
+      "tool": "getDefinitionDependencies",
+      "input": {
+       "term": "Voluntary Prepayment Incremental Amount"
+      },
+      "ok": true,
+      "evidenceUnresolved": null,
+      "charsReturned": 82,
+      "summary": "8 dependency term(s) found in \"Voluntary Prepayment Incremental Amount\"'s own text"
+     }
+    ],
+    "usableRoutes": 2
+   }
+  },
+  {
+   "key": "Ratio Incremental Amount",
+   "kind": "TERM",
+   "oldShard": 1,
+   "oldEffect": "PARTIAL_SUFFICIENCY",
+   "whyNeeded": "component of the Incremental Cap",
+   "requestedBy": [
+    "ir-rule:24d3f241cead64be62a2019c"
+   ],
+   "requestingItemIds": [
+    "inv-item:c478c68a86624119630cabe3"
+   ],
+   "newOwnerShards": [
+    "shard:86cc5e439f113d6053a9"
+   ],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "not a Pass A referenced term/section of the requesting items (one-hop planner)"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getDefinition({\"term\":\"Ratio Incremental Amount\"}) -> definition \"Ratio Incremental Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT); getDefinitionDependencies({\"term\":\"Ratio Incremental Amount\"}) -> 11 dependency term(s) found in \"Ratio Incremental Amount\"'s own text",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "Ratio Incremental Amount"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 2071,
+      "summary": "definition \"Ratio Incremental Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)"
+     },
+     {
+      "tool": "getDefinitionDependencies",
+      "input": {
+       "term": "Ratio Incremental Amount"
+      },
+      "ok": true,
+      "evidenceUnresolved": null,
+      "charsReturned": 68,
+      "summary": "11 dependency term(s) found in \"Ratio Incremental Amount\"'s own text"
+     }
+    ],
+    "usableRoutes": 2
+   }
+  },
+  {
+   "key": "Extension Amount",
+   "kind": "TERM",
+   "oldShard": 1,
+   "oldEffect": "PARTIAL_SUFFICIENCY",
+   "whyNeeded": "component of the Incremental Cap",
+   "requestedBy": [
+    "ir-rule:24d3f241cead64be62a2019c"
+   ],
+   "requestingItemIds": [
+    "inv-item:c478c68a86624119630cabe3"
+   ],
+   "newOwnerShards": [
+    "shard:86cc5e439f113d6053a9"
+   ],
+   "old": {
+    "plannerSupplied": false,
+    "reason": "not a Pass A referenced term/section of the requesting items (one-hop planner)"
+   },
+   "new": {
+    "resolution": "BOUNDED_TOOL_ROUTE",
+    "resolvedBy": "getDefinition({\"term\":\"Extension Amount\"}) -> definition \"Extension Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT); getDefinitionDependencies({\"term\":\"Extension Amount\"}) -> 5 dependency term(s) found in \"Extension Amount\"'s own text",
+    "plannerContext": [],
+    "plannerUnresolved": [],
+    "ownedInPrimary": [],
+    "routes": [
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "Extension Amount"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "charsReturned": 601,
+      "summary": "definition \"Extension Amount\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)"
+     },
+     {
+      "tool": "getDefinitionDependencies",
+      "input": {
+       "term": "Extension Amount"
+      },
+      "ok": true,
+      "evidenceUnresolved": null,
+      "charsReturned": 59,
+      "summary": "5 dependency term(s) found in \"Extension Amount\"'s own text"
+     }
+    ],
+    "usableRoutes": 2
+   }
+  }
+ ]
+}

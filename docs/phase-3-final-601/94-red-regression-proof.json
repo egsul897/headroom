@@ -1,0 +1,57 @@
+{
+ "artifact": "PHASE 3 / 6.01 TRUST-FAILURE REMEDIATION §10 - failure-preserving red baseline (exact frozen inventory, plan, shard identities and terminal results through the real stitcher)",
+ "at": "2026-09-17T16:33:56.679Z",
+ "paidCalls": 0,
+ "fixture": {
+  "frozenPreFixPlan": "tests/fixtures/phase-3-601-remediation/frozen-pre-fix-plan.json",
+  "sha256": "5e1058a9dc19cb72c22303c4207e40137dc50c7d1ae77a5fd766552a03b5d032",
+  "planHash": "eab77c1aad1d941440f0d412e20578902c6744a5e100a0306153ea02e1720552",
+  "hashVerifiedAgainstPaidRun": true
+ },
+ "reproduces": [
+  "shard 0 SHARD_MISSING_CONTEXT [MISSING_CONTEXT, OPERATIVE_STATE_UNRESOLVED] with exactly one MISSING_CONTEXT rule (6.01(b)(1)(X): Sections 2.18/2.19/2.22)",
+  "shard 1 SHARD_MISSING_CONTEXT [MISSING_CONTEXT] with exactly one MISSING_CONTEXT rule (6.01(b)(32): Available Amount / Not Otherwise Applied)",
+  "317 owned material items unresolved at stitch (52 + 265)",
+  "5 owned material quantitative values lost",
+  "5 material items MISSING_FROM_COMPOSITION (4 CRITICAL)",
+  "the pre-fix planner's exclusions (AMBIGUOUS 2.18/2.19/2.22, NOT_FOUND available amount, BUDGET not otherwise applied, 25 PARENT_ITEM entries, oversized 69-unit shard)"
+ ],
+ "humanReferenceUsedAsInput": false,
+ "result": {
+  "file": "tests/contract-model/phase-3-601-remediation-red-baseline.test.ts",
+  "numTotalTests": 7,
+  "numPassedTests": 7,
+  "numFailedTests": 0,
+  "tests": [
+   {
+    "title": "§10 red baseline - frozen identities the frozen pre-fix plan IS the paid plan (planHash) and its shard identities are the paid shard identities",
+    "status": "passed"
+   },
+   {
+    "title": "§10 red baseline - frozen identities shard 0 and shard 1 ended SHARD_MISSING_CONTEXT; shard 2 SHARD_COMPLETE (the control)",
+    "status": "passed"
+   },
+   {
+    "title": "§10 red baseline - frozen identities exactly ONE rule per failed shard carries sufficiency MISSING_CONTEXT - the single escalation trigger of each shard",
+    "status": "passed"
+   },
+   {
+    "title": "§10 red baseline - frozen identities the pre-fix planner left the exact requested facts out of both shards (AMBIGUOUS sections, NOT_FOUND definition, BUDGET-starved term)",
+    "status": "passed"
+   },
+   {
+    "title": "§10 red baseline - the real stitcher over the frozen results reproduces the paid trust failure all 317 owned material items of the two incomplete shards are left unresolved (52 + 265) - the stitcher is correct to do so",
+    "status": "passed"
+   },
+   {
+    "title": "§10 red baseline - the real stitcher over the frozen results reproduces the paid trust failure 5 owned material quantitative values lost and 5 material items missing from the composition (4 CRITICAL)",
+    "status": "passed"
+   },
+   {
+    "title": "§10 red baseline - the real stitcher over the frozen results reproduces the paid trust failure stitched status PARTIAL with MISSING_CONTEXT / SHARD_INCOMPLETE / OPERATIVE_STATE_UNRESOLVED carried, and the paid census (3 collisions: 2 CONTEXTUAL_UNOWNED_DEFINITION demoted, 1 RULE_POSSIBLE_DUPLICATE)",
+    "status": "passed"
+   }
+  ]
+ },
+ "stability": "these assertions replay the frozen plan and records, so they keep reproducing the failure after the production fix (the fix changes the plan identity, never the frozen evidence)"
+}

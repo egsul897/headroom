@@ -26,6 +26,7 @@ const at = () => new Date().toISOString();
 const gitSha = () => execSync("git rev-parse HEAD").toString().trim();
 type Rec = Record<string, unknown>;
 
+async function main() {
 // ---------------------------------------------------------------------------
 const env = loadRemediationEnv();
 const pre = { probe: J(`${FIX}/pre-fix-forensics/probe.json`), probe2: J(`${FIX}/pre-fix-forensics/probe2.json`), probe3: J(`${FIX}/pre-fix-forensics/probe3.json`) };
@@ -278,3 +279,6 @@ writeJson(`${OUT}/103-remediation-gate.json`, {
   nextPaidRun: "NOT this mission - a later mission may run the corrected topology under HD-4 durability, fresh Pass A only if production identity requires it, corrected HD-5 scoring, all trust counters measured zero",
 });
 console.log(JSON.stringify({ verdict, summary: { PASS: twenty.filter((c) => c[2]).length, FAIL: twenty.filter((c) => !c[2]).length }, failing: twenty.filter((c) => !c[2]).map((c) => `${c[0]}. ${c[1]}`), closure: closure.counts, projection: { ownedValuesLost: projection.ownedValuesLost, distinctOwnedLineageLost: projection.distinctOwnedLineageLost, contextual: projection.contextualOwnershipCreditViolations, unverifiable: projection.sourceUnverifiableAuthoritativeIr, silentMerges: projection.silentIncompatibleMerges, dangling: projection.newDanglingRefs }, audit: audit.verdict, corrected: { CRITICAL: corrected.critical, MATERIAL: corrected.material }, full: full ? { files: full.testFilesFailed, tests: full.testsFailed, newVsPrev: newFailingFiles?.length } : "pending" }, null, 1));
+}
+
+main().catch((e) => { console.error(e); process.exit(1); });

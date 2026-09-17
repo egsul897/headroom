@@ -461,3 +461,77 @@ inside the baseline. tsc 6 pre-existing; lint clean; build passes. Zero producti
 ## Cumulative Section 6.01 spend
 
 $13.525078 prior + $8.553656 = **$22.078734**.
+
+# PHASE 3 / 6.01 TRUST-FAILURE REMEDIATION (89-103) - zero-cost forensic + deterministic fix
+
+Starting SHA `51fda653190d6859096be145245406b1c9329c58`. Zero paid calls, $0 spend. The paid evidence
+(`tests/fixtures/unseen-packages/phase-3-final-601-final-paid`) and artifacts 74-88 are untouched (89 hashes them).
+
+## What actually failed (90/91/92)
+
+Exactly ONE rule per failed shard carried `sufficiency: MISSING_CONTEXT`, and that single rule escalated the whole
+shard (bounded composition -> `SHARD_MISSING_CONTEXT` -> every owned material item unresolved at stitch: 52 + 265 = 317).
+
+- **Shard 0** (`6.01(b)(1)(X)`): Sections 2.18/2.19/2.22 are each indexed twice (a table-of-contents entry plus the
+  body section). The planner's strict resolver marked them AMBIGUOUS and excluded them; `getOperativeProvision` and
+  the context-scoped `getReferencedProvision` refused; only the absolute route resolved and it served a 39-47 char
+  heading. Root cause `RETRIEVAL_ROUTE_PRESENT_BUT_NOT_USABLE` + `PLANNER_OMITTED_REQUIRED_LOCAL_CONTEXT`.
+  Contributing: 25 parent propositions consumed 8,855 of the 10,000 context chars ahead of every referenced term.
+- **Shard 1** (`6.01(b)(32)`): "Available Amount" is defined by a *forwarding* declaration ("has the meaning assigned
+  to such term in Section 6.08(a)(3)"). The detector accepted only means / shall mean / shall have the meaning, so
+  the term was not indexed; planner NOT_FOUND, `getDefinition` refused, the model concluded "not defined anywhere".
+  Root cause `PLANNER_OMITTED_REQUIRED_DEFINITION` + `RETRIEVAL_ROUTE_PRESENT_BUT_NOT_USABLE`. Its second claim
+  ("Not Otherwise Applied" not defined) was false: indexed, retrievable, budget-starved.
+- **OPERATIVE_STATE_UNRESOLVED** (shard 0): the validation harness passed `operativeState: null`; the tools treat an
+  uncovered document as UNKNOWN_SUPERSESSION_STATUS, so every successful section read returned
+  `evidenceUnresolved=true`. `OPERATIVE_STATE_WIRING_WRONG` in the harness; production's orchestrator already
+  computes the state. Not causal for the shard status.
+- **Oversized shard 1** (69 units, 29,414 chars, 270 items) was structural: must-link groups closed over their whole
+  ordinal RANGE, so five 2-4 member SHARED_CAP groups fused ordinals 12..80; 57 units (18,857 chars) were adjacency
+  victims. Causal for context starvation (58 unresolved entries, 8 PARTIAL rules), not for the MISSING_CONTEXT trigger.
+
+29 recorded requests in total: 16 definitions, 12 source units, 1 operative-state fact; 3 invalid/false (2 external
+document, 1 false claim). Root-cause counts are in 90.
+
+## Red baseline (94) and closure (96/97/98)
+
+`tests/contract-model/phase-3-601-remediation-red-baseline.test.ts` replays the frozen pre-fix plan (hash-verified
+against the paid run) and the three persisted shard records through the real stitcher: 2 MISSING_CONTEXT shards,
+317 unresolved, 5 values lost, 5 material misses (4 CRITICAL). It stays red-for-the-record forever.
+
+`tests/contract-model/phase-3-601-remediation-closure.test.ts` runs the remediated production layers over the same
+frozen inventory: all 29 old requests are supplied (2 planner context), retrievable through a confirmed-current
+production tool route (24), disclosed as a defined variant (1) or proven external to the package (2) - **still
+unresolved 0**. The scripted faithful projection gives ownedValuesLost 0, distinctOwnedLineageLost 0,
+contextualOwnershipCreditViolations 0, sourceUnverifiableAuthoritativeIr 0, silentIncompatibleMerges 0,
+newDanglingRefs 0. The paid `contextualOwnershipCreditViolations = 2` was an audit-counter defect (detection counted as
+credit; re-stitching proves 2 detected/demoted, 0 credited). The old shard records are rejected by identity under the
+new plan (§22).
+
+## Production remediation (95) - general, minimal
+
+Planner v2 (`semantic-compilation-shards.v2`): member closure of must-link groups, sentence-continuation links,
+resolver-backed section context with descendants text, forwarding-aware term context, dependency-first priorities
+with fair-share admission per kind, compositional multi-slice rendering with provenance gap markers. Definition
+detector: "has the meaning" FORWARDING declarations with typed targets; nested declarations never cut the enclosing
+definition. Reference resolver: `RESOLVED_WITHIN_ENUMERATION_RUN` for restarted enumerations. Tools: degenerate
+duplicates fall through to the generic resolver, `getDefinition` follows a forwarding declaration one bounded hop, a
+plural citation is refused with a disclosed variant pointer (OPEN-2 invariant kept). `contextualEmissionsCredited`
+added to execution metadata. No limit raised; Pass A, stitcher trust rules, Pass C, verifier thresholds and the
+reference set untouched. 6.01 now plans as 6 shards, none oversized, none ending mid-sentence, within the unchanged
+default budget.
+
+## HD-5 / HD-6 (99/100/101)
+
+Shared numeric module: percents as fractions, money scaled, unit-aware, truncation-safe. B6's frozen span ends inside
+"$360.0 million" ("...$360.0 milli") - recorded as REFERENCE_SET_ERROR, span preserved. CORRECTED_DIAGNOSTIC_SCORE
+(101): CRITICAL 2 correct + 2 explicit limitation, 0 incorrect, 0 silent; MATERIAL 3 + 1, 0, 0. Diagnostic only; 87's
+`PHASE3_601_NOT_SAFE` stands. The finalizer reads the canonical shape through one reader; a missing counter is
+NOT_MEASURABLE, never 0.
+
+## Regression (102) and gate (103)
+
+Full suite 106 files / 161 tests failing - the identical set as the previous run (0 new, 0 fixed); targeted suites
+clean except the baseline semantic-accountability/DB failures; tsc 6 pre-existing; lint clean; build passes.
+Gate: 20/20 - **PHASE3_601_REMEDIATION_READY_FOR_PAID_REVALIDATION**. Phase 3 not closed; Phase 4 not started; no paid
+revalidation authorized by this mission.

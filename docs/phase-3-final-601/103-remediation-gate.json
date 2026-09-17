@@ -1,0 +1,139 @@
+{
+ "artifact": "PHASE 3 / 6.01 TRUST-FAILURE REMEDIATION §24 - paid revalidation authorization gate",
+ "at": "2026-09-17T16:33:59.199Z",
+ "startingSha": "51fda653190d6859096be145245406b1c9329c58",
+ "endingSha": "e38bbc3cad3854f1826cdd0e9d4231b32de00ca1",
+ "paidCalls": 0,
+ "spendUsd": 0,
+ "conditions": [
+  {
+   "id": 1,
+   "condition": "exact root cause of both MISSING_CONTEXT shards identified",
+   "status": "PASS",
+   "evidence": "91/92: shard 0 RETRIEVAL_ROUTE_PRESENT_BUT_NOT_USABLE + PLANNER_OMITTED_REQUIRED_LOCAL_CONTEXT (2.18/2.19/2.22 heading-only duplicates); shard 1 PLANNER_OMITTED_REQUIRED_DEFINITION + RETRIEVAL_ROUTE_PRESENT_BUT_NOT_USABLE (forwarding definition of Available Amount)"
+  },
+  {
+   "id": 2,
+   "condition": "every model-requested missing dependency enumerated",
+   "status": "PASS",
+   "evidence": "90: 29 requests with owner items, existence, planner, retrieval, malformation and primary cause"
+  },
+  {
+   "id": 3,
+   "condition": "deterministic reproduction exists",
+   "status": "PASS",
+   "evidence": "94: red baseline 7/7 reproducing the paid failure through the real stitcher"
+  },
+  {
+   "id": 4,
+   "condition": "production fix is general, not Chewy-specific",
+   "status": "PASS",
+   "evidence": "95: structural relationships / dependency edges / typed context / generic retrieval only; special-case grep empty"
+  },
+  {
+   "id": 5,
+   "condition": "old missing requests satisfied by the new topology or proven invalid",
+   "status": "PASS",
+   "evidence": "96: 2 planner context, 0 owned primary, 24 bounded tool route, 1 disclosed variant pointer, 2 proven external"
+  },
+  {
+   "id": 6,
+   "condition": "remaining missing dependency count = 0",
+   "status": "PASS",
+   "evidence": "0"
+  },
+  {
+   "id": 7,
+   "condition": "synthetic ownedValuesLost = 0",
+   "status": "PASS",
+   "evidence": "0"
+  },
+  {
+   "id": 8,
+   "condition": "synthetic distinctOwnedLineageLost = 0",
+   "status": "PASS",
+   "evidence": "0"
+  },
+  {
+   "id": 9,
+   "condition": "synthetic contextualOwnershipCreditViolations = 0",
+   "status": "PASS",
+   "evidence": "0"
+  },
+  {
+   "id": 10,
+   "condition": "no source-unverifiable authoritative IR",
+   "status": "PASS",
+   "evidence": "0"
+  },
+  {
+   "id": 11,
+   "condition": "no silent merges",
+   "status": "PASS",
+   "evidence": "0"
+  },
+  {
+   "id": 12,
+   "condition": "no dangling refs",
+   "status": "PASS",
+   "evidence": "0"
+  },
+  {
+   "id": 13,
+   "condition": "HD-5 fixed and tested",
+   "status": "PASS",
+   "evidence": "99: 7/7"
+  },
+  {
+   "id": 14,
+   "condition": "HD-6 fixed and tested",
+   "status": "PASS",
+   "evidence": "100: 4/4"
+  },
+  {
+   "id": 15,
+   "condition": "corrected diagnostic human score produced",
+   "status": "PASS",
+   "evidence": "101: CRITICAL {\"correct\":2,\"explicitLimitation\":2,\"incorrect\":0,\"silent\":0} MATERIAL {\"correct\":3,\"explicitLimitation\":1,\"incorrect\":0,\"silent\":0}"
+  },
+  {
+   "id": 16,
+   "condition": "HD-4 remains green",
+   "status": "PASS",
+   "evidence": "targeted run: hd4 files failing = 0"
+  },
+  {
+   "id": 17,
+   "condition": "no new regressions",
+   "status": "PASS",
+   "evidence": "106 files / 161 tests failing; new vs previous run: 0"
+  },
+  {
+   "id": 18,
+   "condition": "build passes",
+   "status": "PASS",
+   "evidence": "  ├ chunks/941-3c5649027b061a29.js                  31.7 kB |   ├ chunks/fd9d1056-e54f2cd9530cb396.js             53.6 kB |   └ other shared chunks (total)                     1.89 kB |  |  | ƒ  (Dyna"
+  },
+  {
+   "id": 19,
+   "condition": "zero paid calls used",
+   "status": "PASS",
+   "evidence": "no provider client constructed anywhere in this mission; every script is deterministic replay/reconstruction"
+  },
+  {
+   "id": 20,
+   "condition": "Phase 4 not started",
+   "status": "PASS",
+   "evidence": "no Phase 4 work; Phase 3 not closed"
+  }
+ ],
+ "summary": {
+  "PASS": 20,
+  "FAIL": 0
+ },
+ "verdict": "PHASE3_601_REMEDIATION_READY_FOR_PAID_REVALIDATION",
+ "phase3Closed": false,
+ "phase4Started": false,
+ "paidRevalidationAuthorizedByThisMission": false,
+ "nextPaidRun": "NOT this mission - a later mission may run the corrected topology under HD-4 durability, fresh Pass A only if production identity requires it, corrected HD-5 scoring, all trust counters measured zero"
+}

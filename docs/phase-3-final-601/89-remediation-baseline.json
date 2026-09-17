@@ -1,0 +1,232 @@
+{
+ "artifact": "PHASE 3 / 6.01 TRUST-FAILURE REMEDIATION §1/§3/§4 - baseline (frozen paid evidence, measured facts, three independent defect categories)",
+ "at": "2026-09-17T16:33:55.189Z",
+ "startingSha": "51fda653190d6859096be145245406b1c9329c58",
+ "workingSha": "e38bbc3cad3854f1826cdd0e9d4231b32de00ca1",
+ "paidCalls": 0,
+ "spendUsd": 0,
+ "frozenEvidence": {
+  "dir": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid",
+  "files": [
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/frozen-inventory.json",
+    "sha256": "9ab4ca8422b77c3f39bad4f0715ab21af3d80fb4225c32c8f29095e94b69bdc7"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/pass-a-passes.json",
+    "sha256": "a16d7d7e7d50cfc814ae95f9c3eca4baa8aa6e74ad6dbe79140a5ecf88dc9bd5"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/compile-result.json",
+    "sha256": "c070e9ee765c9b87a0e8cf35a0b4b2cec809ed180e9954a952710f4e8a328a60"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/verify-result.json",
+    "sha256": "ecbe9990321467311c20a4fbd02c302629f7d7155d41bd8d8715b163c331ad21"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/guard-state.ndjson",
+    "sha256": "169486c2575765e58a429031287ed87bfa023077f501b1eb3e4c1ed23a8b8c88"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/launches.ndjson",
+    "sha256": "252b85548c7c9ffcbc7bb60f95667fe0b40bf0997999228b02e9ba26e2ca0990"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/mission-start.json",
+    "sha256": "9bed23bff07e8ce010ac1f03d0a47bb414891586af5525fb3fa138d3a21d3e88"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/run.log",
+    "sha256": "bb3de0dbd04c1f06d87184eaaf297b1daea70affa0186f3ec70fe43e4e604d5f"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-shards/22cc2abe2bc60728a737b17828c0fbabca2ac3a67d51146e78dffab801dccfd2.json",
+    "sha256": "f5b5546845c04ade9c6c52cd7326565fa4051ca934907206cbef6a3c4e138265"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-shards/4b97a4f01be352664f66d7165e37f3b0a42600a829e306f819c7b3489123fc2f.json",
+    "sha256": "b06e8d3546e9483f6b2445996293be292b34389283d7aee11abda4c31e98913f"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-shards/f422344546f42e86dd6951848772cf0f832347a84eb324e561bf6ca912d6881c.json",
+    "sha256": "036c83aee5f4699e5be97b5c04ebaf2f3f84e49338410e0c73927b79cedec6a1"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/0fa2c9250dfd6bda3b0ea31831ad04ad27943287c2475e60b148198b86d4c206-0.json",
+    "sha256": "72741e4e9f41a6fc7ae7a66d16492928ca814f6f6cad26416c861b181be5891c"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/1112c40728b16a8d5dab43eab72ff46e7d07a6368af850ae64a9b1f604f5e2e6-0.json",
+    "sha256": "895f373c0ec81d5b5c765b2140a5827bd40022f090ab6db6f59699eb713dc348"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/506dbc86b06fcdf9540ed512f268a1558567e6e80093b2911387f0c91bf5e6e4-0.json",
+    "sha256": "b3ac830f27a0804dec46aa695b4f03020665b51b0af004ff8e5823a1a22d65cb"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/90fced3f263a31f4131ad1bd9f9f1059609b25066f2ee9a6a1b38e6a2eda62d4-0.json",
+    "sha256": "2d3959d65641ff393bd776c7c2df2660f8aae0bffd0a3211d3aedeb8ebb7f9c0"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/a27a07ae903deca8af1299b092d19e87ec753ce4e4f8035cff877b05fcd26359-0.json",
+    "sha256": "8d19cab2856e166939d8b46a56796a11fddf1d18adbecee83f5bae37b7e89fd3"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/a840ccdcf02ebfa6f9fc71ce4e8a92eea4fc0fe4c93b03c90196144aeba378f1-0.json",
+    "sha256": "b7ad0952966abc378b92fc70625a3550fdbb3980efe49fc92b91129ce7dc5064"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/b7179278b0e5f3dc29d73f871778f22f191ffe004c66de89a59a7d524d3a2d7f-0.json",
+    "sha256": "f75d3dfe0c3bed7a9c9e0aa378523ae2fedaaf2c1fd9572933c0f4a88205fa70"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/c4087e5caa9191b3323a016b1f988561056db39ac038c3d5288f848675168133-0.json",
+    "sha256": "9021c4db15547c5a6340d969e5a9293fe8a5b2717decb6665e038aeb90ce5264"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/cf555c63853598fc2de5067892eda871d9c5888d19fc7419ffb963974c4eb27a-0.json",
+    "sha256": "6edd4f675ecc624eee0bbb781d66626a8b207c79613576e8fe2a835bce11fa0d"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/d334bc0cf35aa3e5f14a101502eb324436167e1ec797c96a8fe9c0567426ff92-0.json",
+    "sha256": "7d7f1e53bb883df5f70ef54fa677274badda0be732902227b7f798b5a84dc12b"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/e95dc94383d17c57805d0152bd6c4c38fd0f6e279df4b2c63827b1246259e69e-0.json",
+    "sha256": "8d9f23df221f0b5c933990aff319166b47b3d7f1c4783ed5cca2f4f338520ae6"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/ed634a2d898324118633d1a66597c9aa8dd070743714854df7c2685fa8521fc0-0.json",
+    "sha256": "990d71d64b9589266e770b13a7a1671f8fe021736afa09f908082b392490aca6"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/f7344f819a115f489f7371b466ad3c70d7cf8de2e36b85582bdcffd9eb5f7e2f-0.json",
+    "sha256": "647ca5696287c82fcbdfe2e9d88d2ee19447aca3d6b1b4241f585f46d9b1f724"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/fcd45a5a6028f07724b67dbfce0cbfa949397d1f3a512c05b0dd2f79792d3fe0-0.json",
+    "sha256": "945cf1b05ff24cf77a0304d0d57d09bd4ab7c0d6cfc0ff6710ada83fac94ddfa"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-calls/origin-log.ndjson",
+    "sha256": "ec6e25b193ae8239183bdf662b9e32cf1501d48fded8f00479a2265ca2bff110"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-verifier-calls/c2de0683c6d93ef26d7c95e502ae8fd59d54e35ac451f35c16f1c57e5c080f5e-0.json",
+    "sha256": "3a995a945c68ed2d78e892a01326fa1cd504e7cd5bc3b3b4273980b6143f86de"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-verifier-calls/origin-log.ndjson",
+    "sha256": "41612ec88c45db496d1aa88531eb2a5901a03b23dbf993a7936a08137a62ac91"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/summary/compile.json",
+    "sha256": "4e058467dc6ff8279d6432f9702aac50b3890a9390092860ab96e7aff2f3f2cb"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/summary/ledger.json",
+    "sha256": "20c0c26449738a414aff51e0151933ae13c4c18c107bd3658942dc2b1f30111d"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/summary/pass-a.json",
+    "sha256": "50a1d8e3351e7c81a4f94bc44ce855c0790f8b4638c24d3550e80a991c6bd95c"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/summary/plan.json",
+    "sha256": "11701b922c05b8e2c4b17232814091a82946d7c1930edc371f9efc0832966d9c"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/summary/resume-proof.json",
+    "sha256": "eae7b8a037725d4536e93acf49af8303230096eaf5605a494b6fd7d22ab182db"
+   },
+   {
+    "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/summary/verifier.json",
+    "sha256": "85783f7d7f0161359b854ebee8210bf8ee750520941c7b7c52c4ca5a27d99c98"
+   }
+  ],
+  "preservedArtifacts": "docs/phase-3-final-601/74-88 unchanged",
+  "unchangedSinceStartingSha": true
+ },
+ "prefixPlan": {
+  "fixture": "tests/fixtures/phase-3-601-remediation/frozen-pre-fix-plan.json",
+  "sha256": "5e1058a9dc19cb72c22303c4207e40137dc50c7d1ae77a5fd766552a03b5d032",
+  "planHash": "eab77c1aad1d941440f0d412e20578902c6744a5e100a0306153ea02e1720552",
+  "equalsPaidPlanHash": true,
+  "plannerAlgorithmVersion": "semantic-compilation-shards.v1"
+ },
+ "shards": [
+  {
+   "shardId": "shard:f266a61ab75f65592b9d",
+   "shardHash": "4b97a4f01be352664f66d7165e37f3b0a42600a829e306f819c7b3489123fc2f",
+   "status": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT",
+    "OPERATIVE_STATE_UNRESOLVED"
+   ],
+   "ownedMaterialItems": 52,
+   "oversized": false,
+   "primaryChars": 3957,
+   "units": 12
+  },
+  {
+   "shardId": "shard:9c94d27339b0f37fb71c",
+   "shardHash": "f422344546f42e86dd6951848772cf0f832347a84eb324e561bf6ca912d6881c",
+   "status": "SHARD_MISSING_CONTEXT",
+   "failureReasons": [
+    "MISSING_CONTEXT"
+   ],
+   "ownedMaterialItems": 265,
+   "oversized": true,
+   "primaryChars": 29414,
+   "units": 69
+  },
+  {
+   "shardId": "shard:6b6e808a01e1dcd22a81",
+   "shardHash": "22cc2abe2bc60728a737b17828c0fbabca2ac3a67d51146e78dffab801dccfd2",
+   "status": "SHARD_COMPLETE",
+   "failureReasons": [],
+   "ownedMaterialItems": 2,
+   "oversized": false,
+   "primaryChars": 252,
+   "units": 1
+  }
+ ],
+ "categories": {
+  "A_productionTrustFailure": {
+   "distinctOwnedLineageLost": 317,
+   "ownedValuesLost": 5,
+   "shardsMissingContext": 2,
+   "materialMissingFromComposition": 5,
+   "criticalMissingFromComposition": 4,
+   "compileStatus": "PARTIAL",
+   "semanticallyComplete": false,
+   "note": "cannot be waived by fixing the scorer; reproduced by tests/contract-model/phase-3-601-remediation-red-baseline.test.ts"
+  },
+  "B_hd5ScorerDefect": {
+   "statement": "numbersIn() parses a source percent \"50%\" as value 50 with unit \"%\", while Pass A normalizes the same verbatim \"50%\" to the fraction 0.5; near(0.5, 50) is false, so every percent value is flagged as a contradiction and the item is classified FOUND_BUT_INCORRECT. A second artifact: reference span B6 ends at \"$360.0\" (the word \"million\" lies outside the frozen span), so the scorer compares 360 against the IR value 360,000,000 taken from the full source phrase \"$360.0 million\".",
+   "effect": "6 of 8 reference items (2 CRITICAL, 4 MATERIAL) classified FOUND_BUT_INCORRECT; incorrect authoritative CRITICAL claims counted as 2; silentQuantitativeCorruption stayed 0 only because the unit carried review signals",
+   "fixedIn": "scripts/phase-3-601-score-numeric.ts (99, 101)"
+  },
+  "C_hd6FinalizerReadShapeDefect": {
+   "statement": "execution.sharded.contextualEmissions read as a list (production exposes a count); the conservative substitute counted collisionsByKind.CONTEXTUAL_UNOWNED_DEFINITION (detection) as violations",
+   "fixedIn": "scripts/phase-3-601-trust-read.ts (100)"
+  }
+ },
+ "regressionBaseline": {
+  "missionBaseline": {
+   "testFilesFailed": 107,
+   "testsFailed": 162
+  },
+  "previousRun": {
+   "testFilesFailed": 106,
+   "testsFailed": 161,
+   "testsPassed": 3210,
+   "testsTotal": 3895
+  },
+  "knownFlakes": [
+   "part-b-recert-finding4-independent (characterised; inside the baseline set)",
+   "part-b-terminal-recert-open3-independent fails only when tsc/lint/build run concurrently with vitest"
+  ]
+ }
+}

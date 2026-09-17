@@ -1,0 +1,461 @@
+{
+ "artifact": "PHASE 3 / 6.01 TRUST-FAILURE REMEDIATION §13/§14 - context/dependency topology, pre-fix vs remediated",
+ "at": "2026-09-17T16:33:55.219Z",
+ "preFix": {
+  "plannerAlgorithmVersion": "semantic-compilation-shards.v1",
+  "planHash": "eab77c1aad1d941440f0d412e20578902c6744a5e100a0306153ea02e1720552",
+  "units": 82,
+  "mustLinkGroups": [
+   {
+    "size": 2,
+    "span": [
+     12,
+     59
+    ],
+    "links": [
+     {
+      "kind": "SHARED_CAP",
+      "item": "inv-item:5686fdb6b309f85b367dd886",
+      "from": "NODE_OWN_TEXT:6.01(b)(4)(a)",
+      "to": "NODE_OWN_TEXT:6.01(b)(20)(i)",
+      "itemRole": "CONDITION",
+      "itemCite": "§6.01"
+     }
+    ]
+   },
+   {
+    "size": 2,
+    "span": [
+     13,
+     60
+    ],
+    "links": [
+     {
+      "kind": "SHARED_CAP",
+      "item": "inv-item:eeb98170e0aba24ab1e099e6",
+      "from": "NODE_OWN_TEXT:6.01(b)(4)(a)(i)",
+      "to": "NODE_OWN_TEXT:6.01(b)(20)(ii)",
+      "itemRole": "ALTERNATIVE",
+      "itemCite": "§6.01"
+     }
+    ]
+   },
+   {
+    "size": 4,
+    "span": [
+     25,
+     79
+    ],
+    "links": [
+     {
+      "kind": "SHARED_CAP",
+      "item": "inv-item:d31f00c365b249274a3d8d2d",
+      "from": "NODE_OWN_TEXT:6.01(b)(12)(b)",
+      "to": "NODE_OWN_TEXT:6.01(b)(2)~2",
+      "itemRole": "SHARED_CAP",
+      "itemCite": "§6.01"
+     },
+     {
+      "kind": "SHARED_CAP",
+      "item": "inv-item:3894f106903c1a257c788a6f",
+      "from": "NODE_OWN_TEXT:6.01(b)(19)",
+      "to": "NODE_OWN_TEXT:6.01(b)(2)~2",
+      "itemRole": "SHARED_CAP",
+      "itemCite": "§6.01"
+     },
+     {
+      "kind": "SHARED_CAP",
+      "item": "inv-item:510cd4dda4287969090827a8",
+      "from": "NODE_OWN_TEXT:6.01(b)(27)",
+      "to": "NODE_OWN_TEXT:6.01(b)(2)~2",
+      "itemRole": "CONDITION",
+      "itemCite": "§6.01"
+     },
+     {
+      "kind": "SHARED_CAP",
+      "item": "inv-item:ccea1a5cdc779a5774c91188",
+      "from": "NODE_OWN_TEXT:6.01(b)(27)",
+      "to": "NODE_OWN_TEXT:6.01(b)(2)~2",
+      "itemRole": "CONDITION",
+      "itemCite": "§6.01"
+     }
+    ]
+   },
+   {
+    "size": 2,
+    "span": [
+     55,
+     78
+    ],
+    "links": [
+     {
+      "kind": "SHARED_CAP",
+      "item": "inv-item:94710633b7e3c96e1c69f3fc",
+      "from": "NODE_OWN_TEXT:6.01(b)(18)(i)",
+      "to": "NODE_OWN_TEXT:6.01(b)(1)~2",
+      "itemRole": "SHARED_CAP",
+      "itemCite": "§6.01"
+     }
+    ]
+   },
+   {
+    "size": 2,
+    "span": [
+     75,
+     80
+    ],
+    "links": [
+     {
+      "kind": "SHARED_CAP",
+      "item": "inv-item:c14aa35f6d87ae929a3534c2",
+      "from": "NODE_OWN_TEXT:6.01(b)(31)",
+      "to": "NODE_OWN_TEXT:6.01(b)(1)~3",
+      "itemRole": "THRESHOLD",
+      "itemCite": "§6.01"
+     }
+    ]
+   }
+  ],
+  "shards": [
+   {
+    "shardId": "shard:f266a61ab75f65592b9d",
+    "ordinal": 0,
+    "units": 12,
+    "items": 54,
+    "material": 52,
+    "primaryChars": 3957,
+    "slices": 1,
+    "oversized": false,
+    "contextChars": 9892,
+    "contextByKind": {
+     "PARENT_ITEM": 25,
+     "REFERENCED_TERM": 1
+    },
+    "unresolvedByReason": {
+     "NOT_FOUND": 11,
+     "AMBIGUOUS": 3,
+     "BUDGET": 16
+    },
+    "estimatedInputTokens": 29879
+   },
+   {
+    "shardId": "shard:9c94d27339b0f37fb71c",
+    "ordinal": 1,
+    "units": 69,
+    "items": 270,
+    "material": 265,
+    "primaryChars": 29414,
+    "slices": 1,
+    "oversized": true,
+    "contextChars": 9937,
+    "contextByKind": {
+     "CHAPEAU": 2,
+     "PARENT_ITEM": 3,
+     "REFERENCED_TERM": 12,
+     "REFERENCED_SECTION": 3
+    },
+    "unresolvedByReason": {
+     "NOT_FOUND": 21,
+     "AMBIGUOUS": 1,
+     "BUDGET": 36
+    },
+    "estimatedInputTokens": 70793
+   },
+   {
+    "shardId": "shard:6b6e808a01e1dcd22a81",
+    "ordinal": 2,
+    "units": 1,
+    "items": 2,
+    "material": 2,
+    "primaryChars": 252,
+    "slices": 1,
+    "oversized": false,
+    "contextChars": 2188,
+    "contextByKind": {
+     "CHAPEAU": 2,
+     "PARENT_ITEM": 1,
+     "REFERENCED_TERM": 1
+    },
+    "unresolvedByReason": {},
+    "estimatedInputTokens": 18589
+   }
+  ],
+  "contextPriorities": "CHAPEAU 0/1, PARENT_ITEM 2, REFERENCED_TERM 3/4, REFERENCED_SECTION 5/6; first-come flat 10k budget; REFERENCED_SECTION via strict resolveUniqueNodeByRef (OWN text)",
+  "blockClosure": "must-link group -> whole ordinal range"
+ },
+ "remediated": {
+  "plannerAlgorithmVersion": "semantic-compilation-shards.v2",
+  "planHash": "e3f9e8e83c2f0c71991070e27eaa2f5bfea185ad367a82948e41e1d41e9783a3",
+  "units": 82,
+  "mustLinkGroups": [
+   {
+    "members": 5,
+    "links": [
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION"
+    ]
+   },
+   {
+    "members": 3,
+    "links": [
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION"
+    ]
+   },
+   {
+    "members": 7,
+    "links": [
+     "SHARED_CAP",
+     "SHARED_CAP",
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION"
+    ]
+   },
+   {
+    "members": 2,
+    "links": [
+     "SENTENCE_CONTINUATION"
+    ]
+   },
+   {
+    "members": 13,
+    "links": [
+     "SHARED_CAP",
+     "SHARED_CAP",
+     "SHARED_CAP",
+     "SHARED_CAP",
+     "SHARED_CAP",
+     "SHARED_CAP",
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION"
+    ]
+   },
+   {
+    "members": 5,
+    "links": [
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION"
+    ]
+   },
+   {
+    "members": 2,
+    "links": [
+     "SENTENCE_CONTINUATION"
+    ]
+   },
+   {
+    "members": 3,
+    "links": [
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION"
+    ]
+   },
+   {
+    "members": 3,
+    "links": [
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION"
+    ]
+   },
+   {
+    "members": 6,
+    "links": [
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION"
+    ]
+   },
+   {
+    "members": 3,
+    "links": [
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION"
+    ]
+   },
+   {
+    "members": 2,
+    "links": [
+     "SENTENCE_CONTINUATION"
+    ]
+   },
+   {
+    "members": 3,
+    "links": [
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION"
+    ]
+   },
+   {
+    "members": 3,
+    "links": [
+     "SENTENCE_CONTINUATION",
+     "SENTENCE_CONTINUATION"
+    ]
+   }
+  ],
+  "shards": [
+   {
+    "shardId": "shard:f266a61ab75f65592b9d",
+    "ordinal": 0,
+    "units": 12,
+    "items": 54,
+    "material": 52,
+    "primaryChars": 3957,
+    "slices": 1,
+    "oversized": false,
+    "contextChars": 9966,
+    "contextByKind": {
+     "REFERENCED_TERM": 9,
+     "REFERENCED_SECTION": 1,
+     "PARENT_ITEM": 9
+    },
+    "unresolvedByReason": {
+     "NOT_FOUND": 4,
+     "BUDGET": 29
+    },
+    "estimatedInputTokens": 29909
+   },
+   {
+    "shardId": "shard:fe26b4996ab543b0a066",
+    "ordinal": 1,
+    "units": 15,
+    "items": 70,
+    "material": 69,
+    "primaryChars": 8590,
+    "slices": 2,
+    "oversized": false,
+    "contextChars": 9870,
+    "contextByKind": {
+     "CHAPEAU": 2,
+     "REFERENCED_TERM": 14,
+     "REFERENCED_SECTION": 2,
+     "PARENT_ITEM": 7
+    },
+    "unresolvedByReason": {
+     "NOT_FOUND": 1,
+     "BUDGET": 13
+    },
+    "estimatedInputTokens": 35072
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "ordinal": 2,
+    "units": 13,
+    "items": 99,
+    "material": 98,
+    "primaryChars": 11801,
+    "slices": 4,
+    "oversized": false,
+    "contextChars": 9946,
+    "contextByKind": {
+     "CHAPEAU": 2,
+     "REFERENCED_TERM": 8,
+     "REFERENCED_SECTION": 2,
+     "PARENT_ITEM": 4
+    },
+    "unresolvedByReason": {
+     "NOT_FOUND": 4,
+     "AMBIGUOUS": 2,
+     "BUDGET": 25
+    },
+    "estimatedInputTokens": 40212
+   },
+   {
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "ordinal": 3,
+    "units": 16,
+    "items": 45,
+    "material": 44,
+    "primaryChars": 4010,
+    "slices": 1,
+    "oversized": false,
+    "contextChars": 9965,
+    "contextByKind": {
+     "CHAPEAU": 2,
+     "REFERENCED_TERM": 10,
+     "REFERENCED_SECTION": 3,
+     "PARENT_ITEM": 6
+    },
+    "unresolvedByReason": {
+     "NOT_FOUND": 1,
+     "BUDGET": 28
+    },
+    "estimatedInputTokens": 29230
+   },
+   {
+    "shardId": "shard:e10ed610ecff8b399619",
+    "ordinal": 4,
+    "units": 16,
+    "items": 42,
+    "material": 42,
+    "primaryChars": 3712,
+    "slices": 2,
+    "oversized": false,
+    "contextChars": 9980,
+    "contextByKind": {
+     "CHAPEAU": 3,
+     "REFERENCED_TERM": 9,
+     "REFERENCED_SECTION": 3,
+     "PARENT_ITEM": 8
+    },
+    "unresolvedByReason": {
+     "BUDGET": 12
+    },
+    "estimatedInputTokens": 27849
+   },
+   {
+    "shardId": "shard:7c4d3d2ae3e0a522b99e",
+    "ordinal": 5,
+    "units": 10,
+    "items": 16,
+    "material": 14,
+    "primaryChars": 1553,
+    "slices": 2,
+    "oversized": false,
+    "contextChars": 9802,
+    "contextByKind": {
+     "CHAPEAU": 2,
+     "REFERENCED_TERM": 12,
+     "REFERENCED_SECTION": 1,
+     "PARENT_ITEM": 5
+    },
+    "unresolvedByReason": {
+     "BUDGET": 1
+    },
+    "estimatedInputTokens": 23837
+   }
+  ],
+  "contextPriorities": "CHAPEAU 0/1, REFERENCED_TERM 2/3, REFERENCED_SECTION 4/5, PARENT_ITEM 6; within a kind by requiredBy count; fair-share floor per kind (budget / kinds present) then remaining budget in priority order; REFERENCED_SECTION via the generic resolver (degenerate exclusion, enclosing node, enumeration run) with DESCENDANTS text; FORWARDING definitions add their target as a typed dependency",
+  "blockClosure": "must-link group -> member units only; SENTENCE_CONTINUATION links; multi-slice rendering with gap markers",
+  "boundedness": {
+   "contextBudgetChars": 10000,
+   "perEntryChars": 1800,
+   "toolBudget": {
+    "maxToolCalls": 8,
+    "maxRecursionDepth": 3,
+    "maxAdditionalSourceChars": 20000
+   },
+   "wholeDocumentFallback": false,
+   "deduplication": "one entry per context key; forwarding targets merge into the same section key"
+  }
+ },
+ "identity": {
+  "oldPlanHash": "eab77c1aad1d941440f0d412e20578902c6744a5e100a0306153ea02e1720552",
+  "newPlanHash": "e3f9e8e83c2f0c71991070e27eaa2f5bfea185ad367a82948e41e1d41e9783a3",
+  "oldShardHashesReusable": false
+ }
+}

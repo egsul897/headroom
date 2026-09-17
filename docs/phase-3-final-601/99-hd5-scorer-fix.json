@@ -1,0 +1,92 @@
+{
+ "artifact": "PHASE 3 / 6.01 TRUST-FAILURE REMEDIATION §19 - HD-5 scorer fix",
+ "at": "2026-09-17T16:33:57.997Z",
+ "exactBug": [
+  "numbersIn() parsed a source percent '50%' as value 50 (unit %) while Pass A normalizes the same '50%' to 0.5; near(0.5, 50) was false, so every percent value became a contradiction and 6 of 8 items were FOUND_BUT_INCORRECT",
+  "reference span B6 [634000, 634400] ends inside '$360.0 million' ('...$360.0 milli' | 'on and (y) 50%...'), so the span parsed to 360 and was compared against the IR's 360,000,000"
+ ],
+ "fix": {
+  "module": "scripts/phase-3-601-score-numeric.ts",
+  "rules": [
+   "percents are fractions on both sides",
+   "money fully scaled (thousand/million/billion)",
+   "unit-aware: only same-unit numbers are compared; non-compared units never contradict",
+   "raw text preserved on every parsed number",
+   "span truncation cannot manufacture a contradiction: a span-cut source number that is a prefix of the IR raw text, or an IR raw text occurring verbatim at the span boundary, corroborates instead of contradicts"
+  ],
+  "wiredInto": [
+   "scripts/phase-3-601-final-paid-score.ts (now refuses to overwrite the pinned 83/84)",
+   "scripts/phase-3-601-corrected-score.ts (101)"
+  ]
+ },
+ "tests": {
+  "file": "tests/contract-model/phase-3-601-hd5-scorer.test.ts",
+  "numTotalTests": 7,
+  "numPassedTests": 7,
+  "numFailedTests": 0,
+  "tests": [
+   {
+    "title": "HD-5 - percent normalization source '50%' parses to the fraction 0.5 with unit % and raw text preserved; it equals the IR-normalized 0.5",
+    "status": "passed"
+   },
+   {
+    "title": "HD-5 - percent normalization a real percent contradiction is still detected (unit-aware, never silent)",
+    "status": "passed"
+   },
+   {
+    "title": "HD-5 - money scale and unit awareness money is fully scaled and only ever compared against money",
+    "status": "passed"
+   },
+   {
+    "title": "HD-5 - money scale and unit awareness a real money contradiction is still detected",
+    "status": "passed"
+   },
+   {
+    "title": "HD-5 - span truncation cannot manufacture a contradiction (frozen B6 span [634000, 634400] ends inside '$360.0 million') the frozen span is cut inside the money phrase: it ends with '$360.0 milli' and the source continues 'on and (y) 50% of Co...'",
+    "status": "passed"
+   },
+   {
+    "title": "HD-5 - span truncation cannot manufacture a contradiction (frozen B6 span [634000, 634400] ends inside '$360.0 million') the pinned scorer's reading (360 vs 360,000,000) is no longer a contradiction: the span-cut source number is a prefix of the IR raw text",
+    "status": "passed"
+   },
+   {
+    "title": "HD-5 - span truncation cannot manufacture a contradiction (frozen B6 span [634000, 634400] ends inside '$360.0 million') the guard is narrow: a genuinely different amount inside the same span is still a contradiction",
+    "status": "passed"
+   }
+  ]
+ },
+ "b6ReferenceSpanVerdict": {
+  "classification": "REFERENCE_SET_ERROR",
+  "originalSpanPreserved": true,
+  "originalSpan": [
+   634000,
+   634400
+  ],
+  "detail": {
+   "originalSpanPreserved": true,
+   "boundaryDefect": {
+    "erroneous": true,
+    "detail": "span end 634400 bisects a token: \"...(x) $360.0 milli\" | \"on and (...\" (a money scale word is cut - the pinned scorer read the amount without its scale)"
+   },
+   "referenceSetErrorRecorded": true
+  },
+  "rationale": "the frozen span boundary bisects the token 'million'; the reference set itself is not edited - the corrected scorer handles the truncation and the error is recorded here and in 101"
+ },
+ "correctedDiagnostic": {
+  "label": "CORRECTED_DIAGNOSTIC_SCORE",
+  "CRITICAL": {
+   "correct": 2,
+   "explicitLimitation": 2,
+   "incorrect": 0,
+   "silent": 0
+  },
+  "MATERIAL": {
+   "correct": 3,
+   "explicitLimitation": 1,
+   "incorrect": 0,
+   "silent": 0
+  },
+  "artifact": "101-corrected-reference-diagnostic.json",
+  "cannotMakePaidTrustGatePass": true
+ }
+}
