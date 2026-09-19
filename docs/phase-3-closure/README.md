@@ -30,7 +30,7 @@ with regression tests, then this synthesis re-run. No paid run is required for t
 | 04 | `04-final-601-critical-missing-audit.json` | the 9 CRITICAL missing items examined one by one (A: 5 bounded true omissions, C: 2, D: 2; 0 unbounded) |
 | 05 | `05-final-verifier-findings-audit.json` | 6 verifier findings classified (A, F, C, D, C, D) plus the entity-scope, (b)(14) proviso, 2.50:1.00 and reclassification boundary tests |
 | 06 | `06-generalization-and-anti-overfit.json` | production code grep for fixture identifiers: 0 non-comment hits |
-| 07 | `07-residual-risk-classification.json` | 15 residual risks (1 BLOCKING_PHASE3, 8 NONBLOCKING_PHASE3, 2 DEFER_TO_PHASE4, 1 DEFER_TO_PHASE5+, 4 TEST_INFRASTRUCTURE minus overlap; see file) |
+| 07 | `07-residual-risk-classification.json` | 15 residual risks (1 BLOCKING_PHASE3, 7 NONBLOCKING_PHASE3, 2 DEFER_TO_PHASE4, 1 DEFER_TO_PHASE5+, 4 TEST_INFRASTRUCTURE) |
 | 08 | `08-product-claim-boundary.json` | calibrated product claim (not in effect) |
 | 09 | `09-phase4-handoff-contract.json` | draft handoff (not in effect) |
 | 10 | `10-regression.json` | targeted 1179/1147/19 (0 new), full 3957/3271/162 (1 new identity = pre-existing timing-measurement flake, isolated 4 pass / 3 fail captured, direct hrtime medians linear), tsc 0 new, lint clean, build clean |
