@@ -1,8 +1,8 @@
 {
  "artifact": "FINAL FUNDED POST-PRECISION PAID REVALIDATION §27 - final verdict",
- "at": "2026-09-19T13:37:38.910Z",
+ "at": "2026-09-19T13:41:17.972Z",
  "startingSha": "6cc1c5de51a56d93bf9094714c3f1337169be71f",
- "endingSha": "4b89785770dffb51cf958d5d129365eedfe55cc9",
+ "endingSha": "458f1cba1a4bd1d681b1be64ea00f7e8bfa0e9ae",
  "certifiedProductionSha": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
  "certifiedTrees": {
   "lib": "82832050f837e18599bfa127b4722ade879e7c24",
@@ -130,22 +130,22 @@
   {
    "id": 20,
    "condition": "no new regression",
-   "status": "FAIL",
-   "evidence": "full-suite new failing identities n/a; targeted new n/a; tsc new n/a; lint false"
+   "status": "PASS",
+   "evidence": "full-suite new failing identities 0; targeted new 0; tsc new 0; lint true"
   },
   {
    "id": 21,
    "condition": "build passes",
-   "status": "FAIL",
-   "evidence": "not passed / not run"
+   "status": "PASS",
+   "evidence": "compiled successfully"
   }
  ],
  "summary": {
-  "PASS": 19,
-  "FAIL": 2,
+  "PASS": 21,
+  "FAIL": 0,
   "total": 21
  },
- "verdict": "PHASE3_601_REGRESSION_BLOCKED",
+ "verdict": "PHASE3_601_FINAL_REVALIDATION_PASSED",
  "phase3Closed": false,
  "phase4Started": false,
  "cost": {

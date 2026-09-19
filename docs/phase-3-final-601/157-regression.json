@@ -1,20 +1,56 @@
 {
  "artifact": "FINAL FUNDED POST-PRECISION PAID REVALIDATION §26 - regression after the outputs froze",
- "at": "2026-09-19T13:37:38.878Z",
- "sha": "4b89785770dffb51cf958d5d129365eedfe55cc9",
+ "at": "2026-09-19T13:41:17.943Z",
+ "sha": "458f1cba1a4bd1d681b1be64ea00f7e8bfa0e9ae",
  "targeted": {
-  "pending": "VITEST_TARGETED_JSON not provided"
+  "sha256": "f95910ed767e2e80bbf150bfd5ec8eb0ee060803a3ac9d86ea6b509ab1bb59c9",
+  "tests": 834,
+  "passed": 816,
+  "failed": 18,
+  "failingFiles": [
+   "tests/contract-model/semantic-accountability/pass-a-inventory.test.ts",
+   "tests/contract-model/semantic-accountability/pass-a-stability.test.ts",
+   "tests/contract-model/semantic-accountability/pass-bc-reconciliation.test.ts"
+  ],
+  "newFailingIdentitiesVsBase": []
  },
  "fullSuite": {
-  "pending": "VITEST_FULL_JSON / VITEST_FULL_BASE_JSON not provided"
+  "baseSha": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+  "base": {
+   "sha256": "b7cc5f63941670793971180d419003353d0d9cf3f4582b14754e819472e1876e",
+   "tests": 3957,
+   "passed": 3271,
+   "failed": 162
+  },
+  "after": {
+   "sha256": "321cf94da1652ae322b41f04d9a8385184e2f6ce2a0120ef5a4b06a32bd9e72e",
+   "tests": 3957,
+   "passed": 3272,
+   "failed": 161
+  },
+  "newFailingIdentities": [],
+  "newFailingFiles": [],
+  "fixedFiles": [
+   "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts"
+  ]
  },
  "tsc": {
-  "pending": "TSC_LOG not provided"
+  "errors": 6,
+  "newErrors": 0,
+  "preexisting": "tests/foundation-audit/ (unchanged)"
  },
  "lint": {
-  "pending": "LINT_LOG not provided"
+  "ok": true,
+  "tail": [
+   "✔ No ESLint warnings or errors",
+   "EXIT=0"
+  ]
  },
  "build": {
-  "pending": "BUILD_LOG not provided"
+  "ok": true,
+  "tail": [
+   "",
+   "EXIT=0"
+  ]
  }
 }

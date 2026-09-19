@@ -1,6 +1,6 @@
 {
  "artifact": "FINAL FUNDED POST-PRECISION PAID REVALIDATION §15-§18 - production compileCovenantToIR, per-shard dependency-delivery validation, MISSING_CONTEXT contract",
- "at": "2026-09-19T13:37:38.612Z",
+ "at": "2026-09-19T13:41:17.832Z",
  "compile": {
   "artifact": "6.01 final post-precision revalidation §15 - production compileCovenantToIR",
   "at": "2026-09-19T13:33:48.272Z",
@@ -2261,409 +2261,417 @@
  "shardsWithoutRecordedAudit": 0,
  "hardQuestion": {
   "question": "did any model report missing context for something already present in its initial required-context package?",
-  "requestsAgainstDeliveredContext": [
-   {
-    "shardId": "shard:7888717f06dfe736bf5b",
-    "targetRef": "Section 2.18",
-    "key": "section:2.18",
-    "classification": "PARTIAL_DELIVERY",
-    "deliveredChars": 1129,
-    "fullTextChars": 13978,
-    "detail": "delivered as a disclosed bounded excerpt (1129 of 13978 chars); retrieving the remainder with a bounded tool call is the designed route",
-    "requestingRuleId": "ir-rule:ddcde906c9918c1536641de8"
-   },
-   {
-    "shardId": "shard:7888717f06dfe736bf5b",
-    "targetRef": "Section 2.19",
-    "key": "section:2.19",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 2283,
-    "fullTextChars": 2283,
-    "detail": "delivered IN FULL in the initial context (2283 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:ddcde906c9918c1536641de8"
-   },
-   {
-    "shardId": "shard:7888717f06dfe736bf5b",
-    "targetRef": "Section 2.22",
-    "key": "section:2.22",
-    "classification": "PARTIAL_DELIVERY",
-    "deliveredChars": 1128,
-    "fullTextChars": 4991,
-    "detail": "delivered as a disclosed bounded excerpt (1128 of 4991 chars); retrieving the remainder with a bounded tool call is the designed route",
-    "requestingRuleId": "ir-rule:ddcde906c9918c1536641de8"
-   },
-   {
-    "shardId": "shard:7888717f06dfe736bf5b",
-    "targetRef": "ABL Credit Agreement",
-    "key": "term:abl credit agreement",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 941,
-    "fullTextChars": 941,
-    "detail": "delivered IN FULL in the initial context (941 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:5b37dcc87c9b7fb826ac6070"
-   },
-   {
-    "shardId": "shard:fe26b4996ab543b0a066",
-    "targetRef": "Section 6.01(b)(28)",
-    "key": "section:6.01(b)(28)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 36,
-    "fullTextChars": 36,
-    "detail": "delivered IN FULL in the initial context (36 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:3ba68953de46482879c625e8"
-   },
-   {
-    "shardId": "shard:fe26b4996ab543b0a066",
-    "targetRef": "Section 6.01(b)(13)",
-    "key": "section:6.01(b)(13)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 2665,
-    "fullTextChars": 2665,
-    "detail": "delivered IN FULL in the initial context (2665 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:3ba68953de46482879c625e8"
-   },
-   {
-    "shardId": "shard:86cc5e439f113d6053a9",
-    "targetRef": "Section 6.08(a)(3)(b)",
-    "key": "section:6.08(a)(3)(b)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 2082,
-    "fullTextChars": 2082,
-    "detail": "delivered IN FULL in the initial context (2082 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:4833ed7a5927e739dbe8c9ba"
-   },
-   {
-    "shardId": "shard:86cc5e439f113d6053a9",
-    "targetRef": "Section 6.08(a)(3)(c)",
-    "key": "section:6.08(a)(3)(c)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 500,
-    "fullTextChars": 500,
-    "detail": "delivered IN FULL in the initial context (500 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:4833ed7a5927e739dbe8c9ba"
-   },
-   {
-    "shardId": "shard:86cc5e439f113d6053a9",
-    "targetRef": "Section 6.08(b)",
-    "key": "section:6.08(b)",
-    "classification": "PARTIAL_DELIVERY",
-    "deliveredChars": 1129,
-    "fullTextChars": 27532,
-    "detail": "delivered as a disclosed bounded excerpt (1129 of 27532 chars); retrieving the remainder with a bounded tool call is the designed route",
-    "requestingRuleId": "ir-rule:4833ed7a5927e739dbe8c9ba"
-   },
-   {
-    "shardId": "shard:86cc5e439f113d6053a9",
-    "targetRef": "Section 6.01(b)(13)",
-    "key": "section:6.01(b)(13)",
-    "classification": "PARTIAL_DELIVERY",
-    "deliveredChars": 2606,
-    "fullTextChars": 2665,
-    "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
-    "requestingRuleId": "ir-rule:04db3c18afad9d5a03d3b27a"
-   },
-   {
-    "shardId": "shard:86cc5e439f113d6053a9",
-    "targetRef": "Section 6.01(b)(13)",
-    "key": "section:6.01(b)(13)",
-    "classification": "PARTIAL_DELIVERY",
-    "deliveredChars": 2606,
-    "fullTextChars": 2665,
-    "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
-    "requestingRuleId": "ir-rule:0a9f949ec890522698ca4bae"
-   },
-   {
-    "shardId": "shard:86cc5e439f113d6053a9",
-    "targetRef": "Section 6.01(b)(13)",
-    "key": "section:6.01(b)(13)",
-    "classification": "PARTIAL_DELIVERY",
-    "deliveredChars": 2606,
-    "fullTextChars": 2665,
-    "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
-    "requestingRuleId": "ir-rule:da45cc9662d707abc0a15042"
-   },
-   {
-    "shardId": "shard:86cc5e439f113d6053a9",
-    "targetRef": "Section 6.01(b)(13)",
-    "key": "section:6.01(b)(13)",
-    "classification": "PARTIAL_DELIVERY",
-    "deliveredChars": 2606,
-    "fullTextChars": 2665,
-    "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
-    "requestingRuleId": "ir-rule:402bdf35c149c057cf0e0652"
-   },
-   {
-    "shardId": "shard:86cc5e439f113d6053a9",
-    "targetRef": "Section 6.08",
-    "key": "section:6.08",
-    "classification": "PARTIAL_DELIVERY",
-    "deliveredChars": 1129,
-    "fullTextChars": 38529,
-    "detail": "delivered as a disclosed bounded excerpt (1129 of 38529 chars); retrieving the remainder with a bounded tool call is the designed route",
-    "requestingRuleId": "ir-rule:6af166aec23df2f60e6ded50"
-   },
-   {
-    "shardId": "shard:86cc5e439f113d6053a9",
-    "targetRef": "Section 6.08(a)(3)",
-    "key": "section:6.08(a)(3)",
-    "classification": "PARTIAL_DELIVERY",
-    "deliveredChars": 1128,
-    "fullTextChars": 7988,
-    "detail": "delivered as a disclosed bounded excerpt (1128 of 7988 chars); retrieving the remainder with a bounded tool call is the designed route",
-    "requestingRuleId": "ir-rule:ff2681666f514e20fc7ddeff"
-   },
-   {
-    "shardId": "shard:86cc5e439f113d6053a9",
-    "targetRef": "Section 6.01",
-    "key": "section:6.01",
-    "classification": "PARTIAL_DELIVERY",
-    "deliveredChars": 1129,
-    "fullTextChars": 33623,
-    "detail": "delivered as a disclosed bounded excerpt (1129 of 33623 chars); retrieving the remainder with a bounded tool call is the designed route",
-    "requestingRuleId": "ir-rule:3f1138da46659f440dc043ee"
-   },
-   {
-    "shardId": "shard:86cc5e439f113d6053a9",
-    "targetRef": "Section 6.01(b)(1)(X)",
-    "key": "section:6.01(b)(1)(x)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 561,
-    "fullTextChars": 561,
-    "detail": "delivered IN FULL in the initial context (561 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:850c26e2d91c5e92b7a18c97"
-   },
-   {
-    "shardId": "shard:86cc5e439f113d6053a9",
-    "targetRef": "Section 6.01(b)(1)(Y)",
-    "key": "section:6.01(b)(1)(y)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 561,
-    "fullTextChars": 561,
-    "detail": "delivered IN FULL in the initial context (561 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:850c26e2d91c5e92b7a18c97"
-   },
-   {
-    "shardId": "shard:86cc5e439f113d6053a9",
-    "targetRef": "Section 6.01(a)",
-    "key": "section:6.01(a)",
-    "classification": "PARTIAL_DELIVERY",
-    "deliveredChars": 2606,
-    "fullTextChars": 3115,
-    "detail": "delivered as a disclosed bounded excerpt (2606 of 3115 chars); retrieving the remainder with a bounded tool call is the designed route",
-    "requestingRuleId": "ir-rule:850c26e2d91c5e92b7a18c97"
-   },
-   {
-    "shardId": "shard:86cc5e439f113d6053a9",
-    "targetRef": "Section 6.01(a)",
-    "key": "section:6.01(a)",
-    "classification": "PARTIAL_DELIVERY",
-    "deliveredChars": 2606,
-    "fullTextChars": 3115,
-    "detail": "delivered as a disclosed bounded excerpt (2606 of 3115 chars); retrieving the remainder with a bounded tool call is the designed route",
-    "requestingRuleId": "ir-rule:9d0f52846f79387413d6b6bd"
-   },
-   {
-    "shardId": "shard:86cc5e439f113d6053a9",
-    "targetRef": "Section 6.01(b)(4)",
-    "key": "section:6.01(b)(4)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 2196,
-    "fullTextChars": 2196,
-    "detail": "delivered IN FULL in the initial context (2196 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
-   },
-   {
-    "shardId": "shard:86cc5e439f113d6053a9",
-    "targetRef": "Section 6.01(b)(12)",
-    "key": "section:6.01(b)(12)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 1890,
-    "fullTextChars": 1890,
-    "detail": "delivered IN FULL in the initial context (1890 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
-   },
-   {
-    "shardId": "shard:2eb6ff75386e45a57593",
-    "targetRef": "Section 6.01(a)",
-    "key": "section:6.01(a)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 3115,
-    "fullTextChars": 3115,
-    "detail": "delivered IN FULL in the initial context (3115 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
-   },
-   {
-    "shardId": "shard:2eb6ff75386e45a57593",
-    "targetRef": "Section 6.01(b)(1)(Y)",
-    "key": "section:6.01(b)(1)(y)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 561,
-    "fullTextChars": 561,
-    "detail": "delivered IN FULL in the initial context (561 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
-   },
-   {
-    "shardId": "shard:2eb6ff75386e45a57593",
-    "targetRef": "Section 6.01(b)(3)",
-    "key": "section:6.01(b)(3)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 85,
-    "fullTextChars": 85,
-    "detail": "delivered IN FULL in the initial context (85 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
-   },
-   {
-    "shardId": "shard:2eb6ff75386e45a57593",
-    "targetRef": "Section 6.01(b)(4)",
-    "key": "section:6.01(b)(4)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 2196,
-    "fullTextChars": 2196,
-    "detail": "delivered IN FULL in the initial context (2196 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
-   },
-   {
-    "shardId": "shard:2eb6ff75386e45a57593",
-    "targetRef": "Section 6.01(b)(5)(b)",
-    "key": "section:6.01(b)(5)(b)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 370,
-    "fullTextChars": 370,
-    "detail": "delivered IN FULL in the initial context (370 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
-   },
-   {
-    "shardId": "shard:2eb6ff75386e45a57593",
-    "targetRef": "Section 6.01(b)(12)",
-    "key": "section:6.01(b)(12)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 1890,
-    "fullTextChars": 1890,
-    "detail": "delivered IN FULL in the initial context (1890 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
-   },
-   {
-    "shardId": "shard:2eb6ff75386e45a57593",
-    "targetRef": "Section 6.01(b)(18)",
-    "key": "section:6.01(b)(18)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 719,
-    "fullTextChars": 719,
-    "detail": "delivered IN FULL in the initial context (719 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
-   },
-   {
-    "shardId": "shard:2eb6ff75386e45a57593",
-    "targetRef": "Section 6.01(b)(19)",
-    "key": "section:6.01(b)(19)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 699,
-    "fullTextChars": 699,
-    "detail": "delivered IN FULL in the initial context (699 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
-   },
-   {
-    "shardId": "shard:2eb6ff75386e45a57593",
-    "targetRef": "Section 6.01(b)(27)",
-    "key": "section:6.01(b)(27)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 649,
-    "fullTextChars": 649,
-    "detail": "delivered IN FULL in the initial context (649 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
-   },
-   {
-    "shardId": "shard:2eb6ff75386e45a57593",
-    "targetRef": "Section 6.01(b)(31)",
-    "key": "section:6.01(b)(31)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 325,
-    "fullTextChars": 325,
-    "detail": "delivered IN FULL in the initial context (325 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
-   },
-   {
-    "shardId": "shard:2eb6ff75386e45a57593",
-    "targetRef": "Section 6.01(a)",
-    "key": "section:6.01(a)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 3115,
-    "fullTextChars": 3115,
-    "detail": "delivered IN FULL in the initial context (3115 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:061aeee04268620c22333133"
-   },
-   {
-    "shardId": "shard:e10ed610ecff8b399619",
-    "targetRef": "Section 6.01(a)",
-    "key": "section:6.01(a)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 3115,
-    "fullTextChars": 3115,
-    "detail": "delivered IN FULL in the initial context (3115 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:5f3ed97f062fd5ce6530991f"
-   },
-   {
-    "shardId": "shard:e10ed610ecff8b399619",
-    "targetRef": "Section 6.01(b)(14)(a)",
-    "key": "section:6.01(b)(14)(a)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 105,
-    "fullTextChars": 105,
-    "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:5f3ed97f062fd5ce6530991f"
-   },
-   {
-    "shardId": "shard:e10ed610ecff8b399619",
-    "targetRef": "Section 6.01(b)(14)(b)",
-    "key": "section:6.01(b)(14)(b)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 105,
-    "fullTextChars": 105,
-    "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:5f3ed97f062fd5ce6530991f"
-   },
-   {
-    "shardId": "shard:e10ed610ecff8b399619",
-    "targetRef": "Section 6.01(b)(14)(a)",
-    "key": "section:6.01(b)(14)(a)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 105,
-    "fullTextChars": 105,
-    "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:9544f1b8bb599ded885deb38"
-   },
-   {
-    "shardId": "shard:e10ed610ecff8b399619",
-    "targetRef": "Section 6.01(b)(14)(b)",
-    "key": "section:6.01(b)(14)(b)",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 105,
-    "fullTextChars": 105,
-    "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:9544f1b8bb599ded885deb38"
-   },
-   {
-    "shardId": "shard:e10ed610ecff8b399619",
-    "targetRef": "Fixed Incremental Amount",
-    "key": "term:fixed incremental amount",
-    "classification": "FALSE_MISSING_CONTEXT",
-    "deliveredChars": 948,
-    "fullTextChars": 948,
-    "detail": "delivered IN FULL in the initial context (948 chars) before the first turn - the missing-context claim is not about delivery",
-    "requestingRuleId": "ir-rule:9544f1b8bb599ded885deb38"
-   },
-   {
-    "shardId": "shard:7c4d3d2ae3e0a522b99e",
-    "targetRef": "Section 6.08(b)(4)",
-    "key": "section:6.08(b)(4)",
-    "classification": "PARTIAL_DELIVERY",
-    "deliveredChars": 1128,
-    "fullTextChars": 4411,
-    "detail": "delivered as a disclosed bounded excerpt (1128 of 4411 chars); retrieving the remainder with a bounded tool call is the designed route",
-    "requestingRuleId": "ir-rule:c0fd7f9011257a2b98c1654b"
-   }
-  ],
-  "answer": "YES (40) - see requests"
+  "missingContextReports": {
+   "shardsMissingContext": 0,
+   "objectsWithMissingContextSufficiency": 0
+  },
+  "unresolvedDependencyEdgesAgainstDeliveredContext": {
+   "count": 40,
+   "note": "unresolvedDependencies[] the compositions left on rules whose target text WAS in the turn-1 required tier (FALSE_MISSING_CONTEXT) or was there as a disclosed bounded excerpt (PARTIAL_DELIVERY); none of them produced a MISSING_CONTEXT status - they are cross-reference edges the model recorded as unresolved rather than context it lacked",
+   "rows": [
+    {
+     "shardId": "shard:7888717f06dfe736bf5b",
+     "targetRef": "Section 2.18",
+     "key": "section:2.18",
+     "classification": "PARTIAL_DELIVERY",
+     "deliveredChars": 1129,
+     "fullTextChars": 13978,
+     "detail": "delivered as a disclosed bounded excerpt (1129 of 13978 chars); retrieving the remainder with a bounded tool call is the designed route",
+     "requestingRuleId": "ir-rule:ddcde906c9918c1536641de8"
+    },
+    {
+     "shardId": "shard:7888717f06dfe736bf5b",
+     "targetRef": "Section 2.19",
+     "key": "section:2.19",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 2283,
+     "fullTextChars": 2283,
+     "detail": "delivered IN FULL in the initial context (2283 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:ddcde906c9918c1536641de8"
+    },
+    {
+     "shardId": "shard:7888717f06dfe736bf5b",
+     "targetRef": "Section 2.22",
+     "key": "section:2.22",
+     "classification": "PARTIAL_DELIVERY",
+     "deliveredChars": 1128,
+     "fullTextChars": 4991,
+     "detail": "delivered as a disclosed bounded excerpt (1128 of 4991 chars); retrieving the remainder with a bounded tool call is the designed route",
+     "requestingRuleId": "ir-rule:ddcde906c9918c1536641de8"
+    },
+    {
+     "shardId": "shard:7888717f06dfe736bf5b",
+     "targetRef": "ABL Credit Agreement",
+     "key": "term:abl credit agreement",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 941,
+     "fullTextChars": 941,
+     "detail": "delivered IN FULL in the initial context (941 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:5b37dcc87c9b7fb826ac6070"
+    },
+    {
+     "shardId": "shard:fe26b4996ab543b0a066",
+     "targetRef": "Section 6.01(b)(28)",
+     "key": "section:6.01(b)(28)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 36,
+     "fullTextChars": 36,
+     "detail": "delivered IN FULL in the initial context (36 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:3ba68953de46482879c625e8"
+    },
+    {
+     "shardId": "shard:fe26b4996ab543b0a066",
+     "targetRef": "Section 6.01(b)(13)",
+     "key": "section:6.01(b)(13)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 2665,
+     "fullTextChars": 2665,
+     "detail": "delivered IN FULL in the initial context (2665 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:3ba68953de46482879c625e8"
+    },
+    {
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "targetRef": "Section 6.08(a)(3)(b)",
+     "key": "section:6.08(a)(3)(b)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 2082,
+     "fullTextChars": 2082,
+     "detail": "delivered IN FULL in the initial context (2082 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:4833ed7a5927e739dbe8c9ba"
+    },
+    {
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "targetRef": "Section 6.08(a)(3)(c)",
+     "key": "section:6.08(a)(3)(c)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 500,
+     "fullTextChars": 500,
+     "detail": "delivered IN FULL in the initial context (500 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:4833ed7a5927e739dbe8c9ba"
+    },
+    {
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "targetRef": "Section 6.08(b)",
+     "key": "section:6.08(b)",
+     "classification": "PARTIAL_DELIVERY",
+     "deliveredChars": 1129,
+     "fullTextChars": 27532,
+     "detail": "delivered as a disclosed bounded excerpt (1129 of 27532 chars); retrieving the remainder with a bounded tool call is the designed route",
+     "requestingRuleId": "ir-rule:4833ed7a5927e739dbe8c9ba"
+    },
+    {
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "targetRef": "Section 6.01(b)(13)",
+     "key": "section:6.01(b)(13)",
+     "classification": "PARTIAL_DELIVERY",
+     "deliveredChars": 2606,
+     "fullTextChars": 2665,
+     "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+     "requestingRuleId": "ir-rule:04db3c18afad9d5a03d3b27a"
+    },
+    {
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "targetRef": "Section 6.01(b)(13)",
+     "key": "section:6.01(b)(13)",
+     "classification": "PARTIAL_DELIVERY",
+     "deliveredChars": 2606,
+     "fullTextChars": 2665,
+     "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+     "requestingRuleId": "ir-rule:0a9f949ec890522698ca4bae"
+    },
+    {
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "targetRef": "Section 6.01(b)(13)",
+     "key": "section:6.01(b)(13)",
+     "classification": "PARTIAL_DELIVERY",
+     "deliveredChars": 2606,
+     "fullTextChars": 2665,
+     "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+     "requestingRuleId": "ir-rule:da45cc9662d707abc0a15042"
+    },
+    {
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "targetRef": "Section 6.01(b)(13)",
+     "key": "section:6.01(b)(13)",
+     "classification": "PARTIAL_DELIVERY",
+     "deliveredChars": 2606,
+     "fullTextChars": 2665,
+     "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+     "requestingRuleId": "ir-rule:402bdf35c149c057cf0e0652"
+    },
+    {
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "targetRef": "Section 6.08",
+     "key": "section:6.08",
+     "classification": "PARTIAL_DELIVERY",
+     "deliveredChars": 1129,
+     "fullTextChars": 38529,
+     "detail": "delivered as a disclosed bounded excerpt (1129 of 38529 chars); retrieving the remainder with a bounded tool call is the designed route",
+     "requestingRuleId": "ir-rule:6af166aec23df2f60e6ded50"
+    },
+    {
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "targetRef": "Section 6.08(a)(3)",
+     "key": "section:6.08(a)(3)",
+     "classification": "PARTIAL_DELIVERY",
+     "deliveredChars": 1128,
+     "fullTextChars": 7988,
+     "detail": "delivered as a disclosed bounded excerpt (1128 of 7988 chars); retrieving the remainder with a bounded tool call is the designed route",
+     "requestingRuleId": "ir-rule:ff2681666f514e20fc7ddeff"
+    },
+    {
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "targetRef": "Section 6.01",
+     "key": "section:6.01",
+     "classification": "PARTIAL_DELIVERY",
+     "deliveredChars": 1129,
+     "fullTextChars": 33623,
+     "detail": "delivered as a disclosed bounded excerpt (1129 of 33623 chars); retrieving the remainder with a bounded tool call is the designed route",
+     "requestingRuleId": "ir-rule:3f1138da46659f440dc043ee"
+    },
+    {
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "targetRef": "Section 6.01(b)(1)(X)",
+     "key": "section:6.01(b)(1)(x)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 561,
+     "fullTextChars": 561,
+     "detail": "delivered IN FULL in the initial context (561 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:850c26e2d91c5e92b7a18c97"
+    },
+    {
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "targetRef": "Section 6.01(b)(1)(Y)",
+     "key": "section:6.01(b)(1)(y)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 561,
+     "fullTextChars": 561,
+     "detail": "delivered IN FULL in the initial context (561 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:850c26e2d91c5e92b7a18c97"
+    },
+    {
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "targetRef": "Section 6.01(a)",
+     "key": "section:6.01(a)",
+     "classification": "PARTIAL_DELIVERY",
+     "deliveredChars": 2606,
+     "fullTextChars": 3115,
+     "detail": "delivered as a disclosed bounded excerpt (2606 of 3115 chars); retrieving the remainder with a bounded tool call is the designed route",
+     "requestingRuleId": "ir-rule:850c26e2d91c5e92b7a18c97"
+    },
+    {
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "targetRef": "Section 6.01(a)",
+     "key": "section:6.01(a)",
+     "classification": "PARTIAL_DELIVERY",
+     "deliveredChars": 2606,
+     "fullTextChars": 3115,
+     "detail": "delivered as a disclosed bounded excerpt (2606 of 3115 chars); retrieving the remainder with a bounded tool call is the designed route",
+     "requestingRuleId": "ir-rule:9d0f52846f79387413d6b6bd"
+    },
+    {
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "targetRef": "Section 6.01(b)(4)",
+     "key": "section:6.01(b)(4)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 2196,
+     "fullTextChars": 2196,
+     "detail": "delivered IN FULL in the initial context (2196 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+    },
+    {
+     "shardId": "shard:86cc5e439f113d6053a9",
+     "targetRef": "Section 6.01(b)(12)",
+     "key": "section:6.01(b)(12)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 1890,
+     "fullTextChars": 1890,
+     "detail": "delivered IN FULL in the initial context (1890 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+    },
+    {
+     "shardId": "shard:2eb6ff75386e45a57593",
+     "targetRef": "Section 6.01(a)",
+     "key": "section:6.01(a)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 3115,
+     "fullTextChars": 3115,
+     "detail": "delivered IN FULL in the initial context (3115 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+    },
+    {
+     "shardId": "shard:2eb6ff75386e45a57593",
+     "targetRef": "Section 6.01(b)(1)(Y)",
+     "key": "section:6.01(b)(1)(y)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 561,
+     "fullTextChars": 561,
+     "detail": "delivered IN FULL in the initial context (561 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+    },
+    {
+     "shardId": "shard:2eb6ff75386e45a57593",
+     "targetRef": "Section 6.01(b)(3)",
+     "key": "section:6.01(b)(3)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 85,
+     "fullTextChars": 85,
+     "detail": "delivered IN FULL in the initial context (85 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+    },
+    {
+     "shardId": "shard:2eb6ff75386e45a57593",
+     "targetRef": "Section 6.01(b)(4)",
+     "key": "section:6.01(b)(4)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 2196,
+     "fullTextChars": 2196,
+     "detail": "delivered IN FULL in the initial context (2196 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+    },
+    {
+     "shardId": "shard:2eb6ff75386e45a57593",
+     "targetRef": "Section 6.01(b)(5)(b)",
+     "key": "section:6.01(b)(5)(b)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 370,
+     "fullTextChars": 370,
+     "detail": "delivered IN FULL in the initial context (370 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+    },
+    {
+     "shardId": "shard:2eb6ff75386e45a57593",
+     "targetRef": "Section 6.01(b)(12)",
+     "key": "section:6.01(b)(12)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 1890,
+     "fullTextChars": 1890,
+     "detail": "delivered IN FULL in the initial context (1890 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+    },
+    {
+     "shardId": "shard:2eb6ff75386e45a57593",
+     "targetRef": "Section 6.01(b)(18)",
+     "key": "section:6.01(b)(18)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 719,
+     "fullTextChars": 719,
+     "detail": "delivered IN FULL in the initial context (719 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+    },
+    {
+     "shardId": "shard:2eb6ff75386e45a57593",
+     "targetRef": "Section 6.01(b)(19)",
+     "key": "section:6.01(b)(19)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 699,
+     "fullTextChars": 699,
+     "detail": "delivered IN FULL in the initial context (699 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+    },
+    {
+     "shardId": "shard:2eb6ff75386e45a57593",
+     "targetRef": "Section 6.01(b)(27)",
+     "key": "section:6.01(b)(27)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 649,
+     "fullTextChars": 649,
+     "detail": "delivered IN FULL in the initial context (649 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+    },
+    {
+     "shardId": "shard:2eb6ff75386e45a57593",
+     "targetRef": "Section 6.01(b)(31)",
+     "key": "section:6.01(b)(31)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 325,
+     "fullTextChars": 325,
+     "detail": "delivered IN FULL in the initial context (325 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+    },
+    {
+     "shardId": "shard:2eb6ff75386e45a57593",
+     "targetRef": "Section 6.01(a)",
+     "key": "section:6.01(a)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 3115,
+     "fullTextChars": 3115,
+     "detail": "delivered IN FULL in the initial context (3115 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:061aeee04268620c22333133"
+    },
+    {
+     "shardId": "shard:e10ed610ecff8b399619",
+     "targetRef": "Section 6.01(a)",
+     "key": "section:6.01(a)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 3115,
+     "fullTextChars": 3115,
+     "detail": "delivered IN FULL in the initial context (3115 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:5f3ed97f062fd5ce6530991f"
+    },
+    {
+     "shardId": "shard:e10ed610ecff8b399619",
+     "targetRef": "Section 6.01(b)(14)(a)",
+     "key": "section:6.01(b)(14)(a)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 105,
+     "fullTextChars": 105,
+     "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:5f3ed97f062fd5ce6530991f"
+    },
+    {
+     "shardId": "shard:e10ed610ecff8b399619",
+     "targetRef": "Section 6.01(b)(14)(b)",
+     "key": "section:6.01(b)(14)(b)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 105,
+     "fullTextChars": 105,
+     "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:5f3ed97f062fd5ce6530991f"
+    },
+    {
+     "shardId": "shard:e10ed610ecff8b399619",
+     "targetRef": "Section 6.01(b)(14)(a)",
+     "key": "section:6.01(b)(14)(a)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 105,
+     "fullTextChars": 105,
+     "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:9544f1b8bb599ded885deb38"
+    },
+    {
+     "shardId": "shard:e10ed610ecff8b399619",
+     "targetRef": "Section 6.01(b)(14)(b)",
+     "key": "section:6.01(b)(14)(b)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 105,
+     "fullTextChars": 105,
+     "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:9544f1b8bb599ded885deb38"
+    },
+    {
+     "shardId": "shard:e10ed610ecff8b399619",
+     "targetRef": "Fixed Incremental Amount",
+     "key": "term:fixed incremental amount",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 948,
+     "fullTextChars": 948,
+     "detail": "delivered IN FULL in the initial context (948 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:9544f1b8bb599ded885deb38"
+    },
+    {
+     "shardId": "shard:7c4d3d2ae3e0a522b99e",
+     "targetRef": "Section 6.08(b)(4)",
+     "key": "section:6.08(b)(4)",
+     "classification": "PARTIAL_DELIVERY",
+     "deliveredChars": 1128,
+     "fullTextChars": 4411,
+     "detail": "delivered as a disclosed bounded excerpt (1128 of 4411 chars); retrieving the remainder with a bounded tool call is the designed route",
+     "requestingRuleId": "ir-rule:c0fd7f9011257a2b98c1654b"
+    }
+   ]
+  },
+  "answer": "NO missing-context report; 40 unresolved-dependency edge(s) point at context that was delivered (disclosed, contract held on every shard)"
  },
  "missingContextObjects": [],
  "structuredRequests": [],

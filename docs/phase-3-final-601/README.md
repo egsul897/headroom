@@ -736,3 +736,49 @@ clean; build passes.
 Verdict **PHASE3_601_COST_BOUND_BEFORE_REVALIDATION** (149, 17/18): the committed tree is certified, the plan is
 stable, the ceiling is safe, but the gateway balance does not cover the conservative resumed estimate. Zero paid
 calls; no paid run authorized; Phase 3 open; Phase 4 not started.
+
+## Final funded post-precision paid revalidation (150-158)
+
+Mission `phase-3-final-601-precision-revalidation`, evidence in
+`tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/`. The certified production tree (80671aa;
+tree objects `82832050…` / `365c6fd7…` / `84a70905…`) was untouched; the only deltas are harness and evidence. One live
+balance read before execution: $26.061242 against the frozen conservative estimate $12.153745 and the $12.20 hard cap.
+The frozen inventory (`88e7419f…`, 326 items) resumed by `RECORDED_SOURCE_CONTEXT_HASH`; the live Pass-A caller
+throws, and 0 Pass-A calls were made. The plan built by current production was the certified one - hash
+`b2b9540a…`, SHARDED, 7 shards, 0 oversized, 290,402 planner tokens, 5 CONTEXT_COMPLETE + 2 explicit internal
+limitation, the thin-cap shard at 63,998 / 64,000 with 61,670 turn-1 tokens - and production's own plan hash was
+identical. Historical stores: 9 records inspected, 0 accepted (150, 151).
+
+Pass B: 7 of 7 shards SHARD_COMPLETE in one attempt each (0 provider failures, 0 schema failures, 0 retries); the
+98-item shard that failed the original run ended SHARD_COMPLETE with every audit witness in its turn-1 required tier.
+Tool telemetry across the run: 6 calls, all source-reading, 0 refusals, 2,393 chars. No shard and no rule or
+definition reported MISSING_CONTEXT; the contract held on every shard with PLANNER_DELIVERY_GAP = 0. The
+compositions did leave 40 unresolved-dependency edges pointing at context that was in the package (27 delivered in
+full, 13 as disclosed bounded excerpts) plus 17 optional-context edges - recorded, not a delivery failure. The stitcher
+linked 135 cross-shard carve-out exceptions onto the three §6.01(a) prohibition rules (7/3/3 in the frozen run) and
+resolved 21 section-reference dependencies (unresolved 57 → 36); 17 of 63 rules now carry `entityScope` (0 before).
+Output: 63 rules, 4 definitions, 0 shared capacities, compile status REVIEW_REQUIRED (the carried inventory
+coverage gap, a possible-duplicate shard conflict, an operative-state flag on one shard and 9 items missing from
+composition - all explicit). Pass C over 326 items: 319 material, 294 represented, 6 intentionally non-computational,
+8 unsupported, 9 ambiguous, 9 missing from composition (all CRITICAL, clustered in the (4)(a) lead-in, the (13)
+refinancing provisos and the (14)(x)/(y) branches), 50 material quantitative values with 0 missing, 0 dangling
+lineage, semanticallyComplete=false (152).
+
+Trust gate through the canonical HD-6 reader: all 14 hard counters MEASURED and zero (153). The independent
+verifier: MATERIAL_DISCREPANCY, 6 findings (4 MATERIAL, 2 NON_MATERIAL; 2 deterministic, 4 semantic) at $0.50; the
+11 historical findings: 8 RESOLVED (carve-out linkage, dependency resolution, the $1.00 ratio-test constructs, the
+delivery-caused discrepancy), 2 RECURRED with identical ids (MISSING_RULE for the 2.50:1.00 ratio threshold,
+MISSING_RECLASSIFICATION), 1 NEW_RELATED_FINDING (entity scope: the prohibition rules now carry `entityScope:
+["BORROWER"]`, which the verifier rates MATERIAL because the source also binds Restricted Subsidiaries - the fix
+made the field observable and the model filled it under-inclusively); 3 genuinely new findings (154). Corrected
+HD-5 score on the 8 frozen reference items (155): CRITICAL 2 correct + 2 explicit limitation, 0 incorrect, 0 silent;
+MATERIAL 4 correct, 0 incorrect, 0 silent (previous run: 1+3 and 0+4). 187 material represented items outside every
+reference span, 0 hallucinations, 0 reference contradictions; B6 remains REFERENCE_SET_ERROR.
+
+Spend $4.606744 (13 compile turns + 1 verifier review, 14 live calls, 0 replays), gateway 26.061242 → 21.454498,
+gateway-reported spend identical to the guard's. Regression after freeze: targeted suites 816/834 with the 18
+pre-existing Pass-A baseline failures only; full suite 3,957 tests, 161 failed (base 162), 0 new failing identities;
+tsc 0 new errors; lint clean; build passes (157). Verdict **PHASE3_601_FINAL_REVALIDATION_PASSED** (158, 21/21).
+Phase 3 stays open; the next mission is the zero-cost closure synthesis, which must weigh the disclosed semantic
+gaps (9 CRITICAL composition misses, the 4 MATERIAL verifier findings, 2 of 4 CRITICAL reference items still only
+explicitly missing).

@@ -282,8 +282,8 @@
     "severity": "NON_MATERIAL",
     "sourceCitation": "6.01",
     "triageClass": "D_EXPLICIT_SAFE_LIMITATION (downgraded NON_MATERIAL by Layer 2) with the same root as finding 3",
-    "status": "RESOLVED",
-    "evidence": "17/63 rules carry entityScope (frozen 0); no fresh WRONG_ENTITY_SCOPE / scope finding"
+    "status": "NEW_RELATED_FINDING",
+    "evidence": "fresh finding(s) of the same type on the same source: 96dd0fc7c578"
    },
    {
     "ordinal": 10,
@@ -297,20 +297,12 @@
    }
   ],
   "counts": {
-   "RESOLVED": 9,
-   "RECURRED": 2
+   "RESOLVED": 8,
+   "RECURRED": 2,
+   "NEW_RELATED_FINDING": 1
   }
  },
  "genuinelyNewFindings": [
-  {
-   "findingId": "96dd0fc7c578276da8caf72205b40ad0e3506bbc99abd9e20f5fd865710ffd42",
-   "findingType": "WRONG_ENTITY_SCOPE",
-   "severity": "MATERIAL",
-   "sourceCitation": "\f(unforward not used",
-   "irPath": "rules[*].entityScope",
-   "method": "SEMANTIC_ONLY",
-   "summary": "ir-rule:170e314ceb35e54072b7ddba: \"entityScope\": [\"BORROWER\"]; ir-rule:49f22aee601dde5b8b8162d5: \"entityScope\": [\"BORROWER\"]; ir-rule:31ef4cb0be0026182f97f8ea: \"entityScope\": []; ir-rule:01c9a005fd9c7649ddc26012 / 6d2acc86b7f3dede7305f5df / b21ac832418c33bcf91d0625: \"entityScope\": [\"BORROWER\"]"
-  },
   {
    "findingId": "750429e8556687067d380fb40812057ac58950f3bebaaa60e05a674ed44840df",
    "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
