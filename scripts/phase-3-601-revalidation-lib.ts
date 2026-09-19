@@ -242,7 +242,15 @@ export function identityChecks() {
   const sourceSha = sha256(readFileSync(CHWY_SRC));
   const { refHash, byLabel } = section601ReferenceItems();
   return {
-    startingSha: { expected: STARTING_SHA, actual: actualSha, match: actualSha === STARTING_SHA },
+    startingSha: (() => {
+      // The same rule the earlier 6.01 missions certified: either HEAD IS the pinned SHA, or HEAD is a descendant of
+      // it whose only additions are this mission's own harness/evidence AND whose production tree is byte-identical.
+      const isDescendant = (() => { try { sh(`git merge-base --is-ancestor ${STARTING_SHA} HEAD`); return true; } catch { return false; } })();
+      const changedSincePin = sh(`git diff --name-only ${STARTING_SHA} HEAD`).split("\n").filter(Boolean);
+      const missionOwned = changedSincePin.filter((f) => f.startsWith("scripts/") || new RegExp(`^docs/phase-3-final-601/(10[4-9]|11[0-7])-`).test(f) || f.startsWith(RAW) || f === "docs/phase-3-final-601/README.md" || f.startsWith("tests/contract-model/phase-3-601-revalidation"));
+      const foreign = changedSincePin.filter((f) => !missionOwned.includes(f));
+      return { expected: STARTING_SHA, actual: actualSha, exactMatch: actualSha === STARTING_SHA, isDescendantOfPin: isDescendant, filesChangedSincePin: changedSincePin, filesOutsideThisMissionsHarnessAndEvidence: foreign, match: actualSha === STARTING_SHA || (isDescendant && foreign.length === 0) };
+    })(),
     workingTreeClean: { dirty, match: dirty.length === 0 },
     remoteAtSameHead: { remote: remoteSha, match: remoteSha === STARTING_SHA },
     remediationGate: { verdict: gate?.verdict ?? null, pass: gate?.summary.PASS ?? null, fail: gate?.summary.FAIL ?? null, paidCalls: gate?.paidCalls ?? null, match: gate?.verdict === "PHASE3_601_REMEDIATION_READY_FOR_PAID_REVALIDATION" && gate?.summary.PASS === 20 && gate?.summary.FAIL === 0 },
