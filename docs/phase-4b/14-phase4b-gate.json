@@ -1,0 +1,263 @@
+{
+ "artifact": "PHASE 4B §43 - gate",
+ "at": "2026-09-19T19:50:28.952Z",
+ "startingSha": "4da8bc04da3d42bcfb917b3efff7d227811c4df4",
+ "headAtRun": "10fb2c8bd1d5fcf9ec0011697dd45a39df563a24",
+ "contractVersion": "financial-input-contract.v1",
+ "runtimeVersion": "contract-runtime.v1",
+ "phase3Trees": {
+  "frozen": {
+   "lib/contract-model/compiler/": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
+   "lib/contract-model/compiler/semantic/": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12"
+  },
+  "atHead": {
+   "lib/contract-model/compiler/": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
+   "lib/contract-model/compiler/semantic/": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12"
+  },
+  "semanticFrozen": true
+ },
+ "productionFilesChanged": [
+  "lib/contract-model/runtime/evaluate-expression.ts",
+  "lib/contract-model/runtime/input/identity.ts",
+  "lib/contract-model/runtime/input/index.ts",
+  "lib/contract-model/runtime/input/manifest.ts",
+  "lib/contract-model/runtime/input/resolve.ts",
+  "lib/contract-model/runtime/input/snapshot-resolver.ts",
+  "lib/contract-model/runtime/input/snapshot.ts",
+  "lib/contract-model/runtime/input/types.ts",
+  "lib/contract-model/runtime/input/version.ts",
+  "lib/contract-model/runtime/types.ts"
+ ],
+ "onlyRuntimeFilesChanged": true,
+ "testCounts": {
+  "phase4bInputTests": 88,
+  "phase4bInputFailed": 0,
+  "allRuntimeTests": 170,
+  "allRuntimeFailed": 0
+ },
+ "conditions": [
+  {
+   "n": 1,
+   "condition": "Phase 4A is complete and its gate passed",
+   "status": "PASS",
+   "evidence": "phase-4a verdict PHASE4A_EXPRESSION_RUNTIME_READY"
+  },
+  {
+   "n": 2,
+   "condition": "the Phase-3 semantic and compiler trees remain frozen",
+   "status": "PASS",
+   "evidence": "semantic f79bc12dd479e9b803bf9e37092d76b6aedb8c12; compiler b4e6a9da496a23b9f98607355520a456e6c48e1f; dirty 0"
+  },
+  {
+   "n": 3,
+   "condition": "only runtime production files changed",
+   "status": "PASS",
+   "evidence": "lib/contract-model/runtime/evaluate-expression.ts, lib/contract-model/runtime/input/identity.ts, lib/contract-model/runtime/input/index.ts, lib/contract-model/runtime/input/manifest.ts, lib/contract-model/runtime/input/resolve.ts, lib/contract-model/runtime/input/snapshot-resolver.ts, lib/contract-model/runtime/input/snapshot.ts, lib/contract-model/runtime/input/types.ts, lib/contract-model/runtime/input/version.ts, lib/contract-model/runtime/types.ts"
+  },
+  {
+   "n": 4,
+   "condition": "a financial input identity is defined and two facts differing in any identity field are different facts",
+   "status": "PASS",
+   "evidence": "02"
+  },
+  {
+   "n": 5,
+   "condition": "identity strength is explicit",
+   "status": "PASS",
+   "evidence": "02"
+  },
+  {
+   "n": 6,
+   "condition": "instrument scope is explicit and company-level reuse is opt-in",
+   "status": "PASS",
+   "evidence": "10 B/C"
+  },
+  {
+   "n": 7,
+   "condition": "a fact for another company never satisfies a reference",
+   "status": "PASS",
+   "evidence": "10 A"
+  },
+  {
+   "n": 8,
+   "condition": "period is part of identity with no wildcard",
+   "status": "PASS",
+   "evidence": "03"
+  },
+  {
+   "n": 9,
+   "condition": "as-of is exact by default",
+   "status": "PASS",
+   "evidence": "03"
+  },
+  {
+   "n": 10,
+   "condition": "a looser as-of mode exists only when the caller names it, and a value it admitted says so",
+   "status": "PASS",
+   "evidence": "03"
+  },
+  {
+   "n": 11,
+   "condition": "contract period and as-of wording is carried verbatim, never converted",
+   "status": "PASS",
+   "evidence": "03"
+  },
+  {
+   "n": 12,
+   "condition": "snapshots are immutable and versioned",
+   "status": "PASS",
+   "evidence": "04"
+  },
+  {
+   "n": 13,
+   "condition": "supersession is explicit, never a latest-looking guess",
+   "status": "FAIL",
+   "evidence": "04/10 H"
+  },
+  {
+   "n": 14,
+   "condition": "every unsafe supersession shape is detected",
+   "status": "PASS",
+   "evidence": "04"
+  },
+  {
+   "n": 15,
+   "condition": "an unsafe snapshot set blocks resolution rather than guessing",
+   "status": "PASS",
+   "evidence": "04/09"
+  },
+  {
+   "n": 16,
+   "condition": "a non-approved snapshot is never silently used",
+   "status": "PASS",
+   "evidence": "10 I"
+  },
+  {
+   "n": 17,
+   "condition": "a widened status policy is recorded on the value it produced",
+   "status": "PASS",
+   "evidence": "06"
+  },
+  {
+   "n": 18,
+   "condition": "two competing facts are AMBIGUOUS, never a pick",
+   "status": "PASS",
+   "evidence": "10 G"
+  },
+  {
+   "n": 19,
+   "condition": "a declared type conflict is an error, not a coercion",
+   "status": "PASS",
+   "evidence": "10 N"
+  },
+  {
+   "n": 20,
+   "condition": "currency is part of identity: a named currency rejects another, and two currencies without a named one are ambiguous",
+   "status": "PASS",
+   "evidence": "10 M"
+  },
+  {
+   "n": 21,
+   "condition": "rejections are reported with a reason",
+   "status": "PASS",
+   "evidence": "10 P"
+  },
+  {
+   "n": 22,
+   "condition": "resolution does not depend on array order",
+   "status": "PASS",
+   "evidence": "05/10 T"
+  },
+  {
+   "n": 23,
+   "condition": "no first match, positional pick or null-wildcard in the resolution path",
+   "status": "PASS",
+   "evidence": "11"
+  },
+  {
+   "n": 24,
+   "condition": "every resolved value carries snapshot, review and selection provenance",
+   "status": "PASS",
+   "evidence": "06"
+  },
+  {
+   "n": 25,
+   "condition": "a term resolves to its definition when one exists",
+   "status": "PASS",
+   "evidence": "07"
+  },
+  {
+   "n": 26,
+   "condition": "a stable definition id never falls back to a name",
+   "status": "PASS",
+   "evidence": "07"
+  },
+  {
+   "n": 27,
+   "condition": "two definitions with the same identity are AMBIGUOUS",
+   "status": "PASS",
+   "evidence": "07"
+  },
+  {
+   "n": 28,
+   "condition": "a supplied value competing with an evaluable definition is a conflict unless it says what it overrides",
+   "status": "PASS",
+   "evidence": "07"
+  },
+  {
+   "n": 29,
+   "condition": "a dependency manifest is produced before evaluation and is complete for the expression",
+   "status": "PASS",
+   "evidence": "08"
+  },
+  {
+   "n": 30,
+   "condition": "conditional dependencies are marked conditional, not required",
+   "status": "PASS",
+   "evidence": "08"
+  },
+  {
+   "n": 31,
+   "condition": "the manifest refuses to pick between competing Phase-3 objects",
+   "status": "PASS",
+   "evidence": "08"
+  },
+  {
+   "n": 32,
+   "condition": "manifests and resolutions are deterministic",
+   "status": "PASS",
+   "evidence": "11"
+  },
+  {
+   "n": 33,
+   "condition": "no metric name, covenant form, agreement or ingestion surface in the input contract",
+   "status": "PASS",
+   "evidence": "11 forbidden 0, ingestion 0"
+  },
+  {
+   "n": 34,
+   "condition": "real Phase-3 IR resolves through the contract, and the same facts under another company do not",
+   "status": "PASS",
+   "evidence": "11"
+  },
+  {
+   "n": 35,
+   "condition": "no regression attributable to Phase 4B; tsc, lint and build clean; zero paid calls",
+   "status": "PASS",
+   "evidence": "full-suite new failing 0; targeted new 1 (wall-clock scaling assertion over frozen-tree code, isolation 5 pass / 1 fail, direct log-log slope 1.02); tsc new 0; lint true; build true"
+  }
+ ],
+ "summary": {
+  "PASS": 34,
+  "FAIL": 1,
+  "total": 35
+ },
+ "verdict": "SNAPSHOT_SUPERSESSION_UNSAFE",
+ "phase4bComplete": false,
+ "paidCalls": 0,
+ "spendUsd": 0,
+ "modelCalls": 0,
+ "ingestionImplemented": false,
+ "capacityLedgerImplemented": false,
+ "solverImplemented": false
+}

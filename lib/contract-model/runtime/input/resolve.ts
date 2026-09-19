@@ -35,6 +35,9 @@ function firstRejection(input: FinancialInput, q: InputQuery, policy: Resolution
   if (id.inputKind !== q.inputKind) return "KIND_MISMATCH";
   if (id.key !== q.key) return "KEY_MISMATCH";
   if (!periodEquals(id.period, q.period)) return "PERIOD_MISMATCH";
+  // Currency is part of identity. When the reference site knows which currency it means, a fact in
+  // another currency is not a weaker match - it is a different fact.
+  if (q.currency !== undefined && q.currency !== null && id.currency !== q.currency) return "CURRENCY_NOT_REQUESTED";
   if (policy.asOfMode === "EXACT" && !asOfEquals(id.asOf, q.asOf)) return "AS_OF_MISMATCH";
   if (policy.asOfMode === "LATEST_ON_OR_BEFORE") {
     // Only meaningful when both sides are real dates; anything else must still match exactly.
@@ -109,11 +112,17 @@ export function resolveInput({ query, snapshots, policy = DEFAULT_RESOLUTION_POL
 
   // 6. as-of selection mode, when the caller explicitly asked for it.
   let method: SelectionMethod = supersessionApplied ? "EXACT_IDENTITY_AFTER_SUPERSESSION" : "EXACT_IDENTITY";
-  if (policy.asOfMode === "LATEST_ON_OR_BEFORE" && query.asOf.kind === "EXACT_DATE" && surviving.length > 1) {
-    const dates = surviving.map((s) => (s.input.identity.asOf.kind === "EXACT_DATE" ? s.input.identity.asOf.isoDate : ""));
-    const latest = [...dates].sort().at(-1)!;
-    const keep = surviving.filter((s, i) => dates[i] === latest);
-    if (keep.length < surviving.length) { method = "LATEST_ON_OR_BEFORE_AS_OF"; surviving = keep; }
+  if (policy.asOfMode === "LATEST_ON_OR_BEFORE" && query.asOf.kind === "EXACT_DATE") {
+    if (surviving.length > 1) {
+      const dates = surviving.map((s) => (s.input.identity.asOf.kind === "EXACT_DATE" ? s.input.identity.asOf.isoDate : ""));
+      const latest = [...dates].sort().at(-1)!;
+      const keep = surviving.filter((s, i) => dates[i] === latest);
+      if (keep.length < surviving.length) { method = "LATEST_ON_OR_BEFORE_AS_OF"; surviving = keep; }
+    }
+    // A single survivor whose as-of is EARLIER than the one asked for was admitted by the looser
+    // mode, not by an exact match. Calling that EXACT_IDENTITY would misreport how the number was
+    // chosen, which is the same class of error as choosing it wrongly in the first place.
+    if (surviving.length === 1 && !asOfEquals(surviving[0]!.input.identity.asOf, query.asOf)) method = "LATEST_ON_OR_BEFORE_AS_OF";
   }
 
   if (surviving.length === 0) return { ...base, state: "MISSING", reason: `no input matches ${query.inputKind} "${query.key}" for company ${query.companyId}${query.instrumentKey ? ` / instrument ${query.instrumentKey}` : ""} at the requested period and as-of identity`, candidates };

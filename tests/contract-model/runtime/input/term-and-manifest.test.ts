@@ -288,7 +288,7 @@ describe("the manifest refuses to pick between competing Phase-3 objects", () =>
       provenance: null, compilerVersion: null, sourceContentVersion: null,
     });
     const rules = [mk(METRIC("metric-x")), mk(METRIC("metric-y"))];
-    const ref: IRExpression = { kind: "RULE_REFERENCE", type: "MONEY", ruleId: "ir-rule:dup", exprId: id() };
+    const ref: IRExpression = { kind: "RULE_REFERENCE", type: "CAPACITY", ruleId: "ir-rule:dup", companyId: CO_A, instrumentKey: INST_1, exprId: id() };
     const m = buildFinancialDependencyManifest({ expression: ref, rules, ...ctx });
     expect(m.ambiguousExpansions.length).toBe(1);
     expect(m.ambiguousExpansions[0]!.kind).toBe("RULE");

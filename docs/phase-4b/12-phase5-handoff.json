@@ -1,0 +1,44 @@
+{
+ "artifact": "PHASE 4B §42 - what Phase 5 must satisfy to supply financial truth to this runtime",
+ "at": "2026-09-19T19:50:28.952Z",
+ "inEffect": false,
+ "blockedBy": [
+  "13 supersession is explicit, never a latest-looking guess"
+ ],
+ "contractVersion": "financial-input-contract.v1",
+ "runtimeVersion": "contract-runtime.v1",
+ "phase4bHead": "10fb2c8bd1d5fcf9ec0011697dd45a39df563a24",
+ "whatPhase5Produces": [
+  "FinancialSnapshot objects, immutable once written, each with an explicit status and review record",
+  "FinancialInput rows whose identity is complete: company, scope, kind, key, period, as-of, value type, currency",
+  "an explicit supersedesSnapshotId whenever a snapshot replaces another",
+  "a source and sourceVersion for every fact",
+  "an as-of on every fact matching the as-of the dependency manifest states for it, because the evaluation as-of is part of reference identity"
+ ],
+ "whatPhase5MustNeverDo": [
+  "reuse a snapshot id",
+  "mutate a published snapshot",
+  "mark a snapshot superseded without naming its successor",
+  "emit a MONEY fact without a currency",
+  "emit two facts with the same identity inside one snapshot",
+  "reinterpret a contract's period or as-of wording into a date on the runtime's behalf"
+ ],
+ "howTheRuntimeConsumesIt": "snapshotInputResolver({ snapshots, definitions, rules, policy, companyId, instrumentKey }) is passed to evaluateExpression as `inputs`. Nothing else needs to change.",
+ "resolutionPolicy": {
+  "default": {
+   "acceptableStatuses": [
+    "APPROVED"
+   ],
+   "asOfMode": "EXACT"
+  },
+  "wideningIsExplicit": "any other policy is the caller's decision and is recorded on every value it produces"
+ },
+ "notInScope": [
+  "ingestion",
+  "ERP, bank, spreadsheet, PDF or compliance-certificate parsing",
+  "capacity ledger",
+  "reclassification",
+  "the capacity solver",
+  "persistence and UI"
+ ]
+}

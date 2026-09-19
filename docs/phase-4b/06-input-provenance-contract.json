@@ -1,0 +1,77 @@
+{
+ "artifact": "PHASE 4B §22-§24 - every number carried into an evaluation says where it came from and who approved it",
+ "at": "2026-09-19T19:50:28.700Z",
+ "providedFields": [
+  "source",
+  "sourceVersion",
+  "snapshotId",
+  "snapshotVersion",
+  "snapshotStatus",
+  "reviewedBy",
+  "reviewedAt",
+  "approvalRef",
+  "selectionMethod",
+  "inputContractVersion",
+  "reliedOnNonApprovedSnapshot",
+  "identityStrength",
+  "currency"
+ ],
+ "workedExample": {
+  "status": "EXECUTABLE",
+  "value": {
+   "type": "MONEY",
+   "amount": "500",
+   "currency": "USD",
+   "lineage": {
+    "exprId": "e1",
+    "inputKeys": [
+     "metric-p"
+    ]
+   }
+  },
+  "inputsUsed": [
+   {
+    "kind": "METRIC",
+    "key": "metric-p",
+    "period": null,
+    "asOf": "2026-06-30",
+    "provenance": {
+     "source": "gate synthetic snapshot",
+     "sourceVersion": "src-v1",
+     "snapshotId": "s1",
+     "snapshotVersion": "1",
+     "snapshotStatus": "APPROVED",
+     "reviewedBy": "gate-reviewer",
+     "reviewedAt": "2026-07-01T00:00:00Z",
+     "approvalRef": "gate-approval",
+     "selectionMethod": "EXACT_IDENTITY",
+     "inputContractVersion": "financial-input-contract.v1",
+     "reliedOnNonApprovedSnapshot": false,
+     "identityStrength": "CONTRACT_NAME_ONLY",
+     "currency": "USD"
+    },
+    "value": {
+     "type": "MONEY",
+     "amount": "500",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "e1",
+      "inputKeys": [
+       "metric-p"
+      ]
+     }
+    }
+   }
+  ],
+  "inputContractVersion": "financial-input-contract.v1"
+ },
+ "reliedOnNonApprovedSnapshotFlag": "true only when the caller widened acceptableStatuses beyond APPROVED; it travels with the value so a downstream reader can see the evaluation rested on unapproved data",
+ "evaluationIdentityInputs": [
+  "IR expression content and exprIds",
+  "resolved input identities and values",
+  "snapshot set hash",
+  "resolution policy",
+  "runtime version",
+  "input contract version"
+ ]
+}

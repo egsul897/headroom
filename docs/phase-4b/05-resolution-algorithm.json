@@ -1,0 +1,122 @@
+{
+ "artifact": "PHASE 4B §19-§21 - the one resolution path, its states and why order cannot decide",
+ "at": "2026-09-19T19:50:28.697Z",
+ "pipeline": [
+  "reject an unsafe snapshot set outright",
+  "canonically sort every (snapshot, input) pair",
+  "filter by company, scope, kind, key, period and as-of",
+  "check the declared type and currency",
+  "apply the acceptable-status policy",
+  "drop snapshots explicitly superseded within the surviving scope",
+  "apply the optional LATEST_ON_OR_BEFORE as-of mode",
+  "0 candidates is MISSING, more than 1 is AMBIGUOUS, exactly 1 is RESOLVED"
+ ],
+ "states": [
+  "RESOLVED",
+  "MISSING",
+  "AMBIGUOUS",
+  "INCOMPATIBLE",
+  "NOT_APPROVED"
+ ],
+ "rejectionReasons": [
+  "COMPANY_MISMATCH",
+  "INSTRUMENT_SCOPE_MISMATCH",
+  "KIND_MISMATCH",
+  "KEY_MISMATCH",
+  "PERIOD_MISMATCH",
+  "AS_OF_MISMATCH",
+  "VALUE_TYPE_MISMATCH",
+  "CURRENCY_NOT_REQUESTED",
+  "SNAPSHOT_STATUS_NOT_ACCEPTABLE",
+  "SUPERSEDED_BY_ANOTHER_SNAPSHOT_IN_SCOPE"
+ ],
+ "selectionMethods": [
+  "EXACT_IDENTITY",
+  "EXACT_IDENTITY_AFTER_SUPERSESSION",
+  "EXACT_IDENTITY_VIA_COMPANY_LEVEL_APPLICABILITY",
+  "LATEST_ON_OR_BEFORE_AS_OF",
+  "NONE"
+ ],
+ "defaultPolicy": {
+  "acceptableStatuses": [
+   "APPROVED"
+  ],
+  "asOfMode": "EXACT"
+ },
+ "worked": {
+  "resolved": {
+   "state": "RESOLVED",
+   "reason": "exactly one candidate matches; selected by EXACT_IDENTITY",
+   "selectionMethod": "EXACT_IDENTITY",
+   "snapshotId": "s1",
+   "candidates": 1,
+   "rejections": []
+  },
+  "missing": {
+   "state": "MISSING",
+   "reason": "no input matches METRIC \"absent\" for company gate-company / instrument gate-instrument at the requested period and as-of identity",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 1,
+   "rejections": [
+    "KEY_MISMATCH"
+   ]
+  },
+  "ambiguous": {
+   "state": "AMBIGUOUS",
+   "reason": "2 candidates match this identity exactly (s1@1, s2@1); no supersession relation distinguishes them",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 2,
+   "rejections": []
+  },
+  "incompatible": {
+   "state": "INCOMPATIBLE",
+   "reason": "the input identity exists but every candidate has value type RATIO where the IR declares MONEY",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 1,
+   "rejections": [
+    "VALUE_TYPE_MISMATCH"
+   ]
+  },
+  "notApproved": {
+   "state": "NOT_APPROVED",
+   "reason": "the fact exists but only in snapshots with status DRAFT; this evaluation accepts APPROVED",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 1,
+   "rejections": [
+    "SNAPSHOT_STATUS_NOT_ACCEPTABLE"
+   ]
+  },
+  "crossCompany": {
+   "state": "MISSING",
+   "reason": "no input matches METRIC \"m\" for company gate-other-company / instrument gate-instrument at the requested period and as-of identity",
+   "selectionMethod": null,
+   "snapshotId": null,
+   "candidates": 1,
+   "rejections": [
+    "COMPANY_MISMATCH"
+   ]
+  },
+  "companyLevelReuse": {
+   "state": "RESOLVED",
+   "reason": "exactly one candidate matches; selected by EXACT_IDENTITY_VIA_COMPANY_LEVEL_APPLICABILITY",
+   "selectionMethod": "EXACT_IDENTITY_VIA_COMPANY_LEVEL_APPLICABILITY",
+   "snapshotId": "s1",
+   "candidates": 1,
+   "rejections": []
+  }
+ },
+ "orderInvariance": {
+  "permutationHashes": [
+   "dcc0b6ead751b4f955d10f630b02d760ab89781369d9e8677037bea2189a61fe",
+   "dcc0b6ead751b4f955d10f630b02d760ab89781369d9e8677037bea2189a61fe",
+   "dcc0b6ead751b4f955d10f630b02d760ab89781369d9e8677037bea2189a61fe",
+   "dcc0b6ead751b4f955d10f630b02d760ab89781369d9e8677037bea2189a61fe",
+   "dcc0b6ead751b4f955d10f630b02d760ab89781369d9e8677037bea2189a61fe"
+  ],
+  "allIdentical": true
+ }
+}

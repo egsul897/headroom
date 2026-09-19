@@ -287,3 +287,69 @@ describe("snapshot immutability and integrity", () => {
     expect(j(s)).toBe(before);
   });
 });
+
+describe("selection method tells the truth about how a fact was chosen", () => {
+  const dated = (isoDate: string, value = money("1")) => snapshot({ snapshotId: `s-${isoDate}`, inputs: [input({ identity: identity({ key: "m", asOf: exactAsOf(isoDate) }), value })] });
+  const ask = (snaps: FinancialSnapshot[], policy?: ResolutionPolicy) =>
+    resolveInput({ query: { companyId: CO_A, instrumentKey: INST_1, inputKind: "METRIC", key: "m", period: noPeriod(), asOf: exactAsOf("2026-06-30"), expectedType: "MONEY" }, snapshots: snaps, graph: buildSnapshotGraph(snaps), ...(policy ? { policy } : {}) });
+  const LOOSE: ResolutionPolicy = { acceptableStatuses: ["APPROVED"], asOfMode: "LATEST_ON_OR_BEFORE" };
+
+  it("a lone earlier-dated fact admitted by the looser mode is reported as LATEST_ON_OR_BEFORE_AS_OF, not EXACT_IDENTITY", () => {
+    const r = ask([dated("2026-03-31")], LOOSE);
+    expect(r.state).toBe("RESOLVED");
+    expect(r.provenance!.selectionMethod).toBe("LATEST_ON_OR_BEFORE_AS_OF");
+  });
+
+  it("a fact on the requested date is still an exact match even under the looser mode", () => {
+    const r = ask([dated("2026-06-30")], LOOSE);
+    expect(r.state).toBe("RESOLVED");
+    expect(r.provenance!.selectionMethod).toBe("EXACT_IDENTITY");
+  });
+
+  it("the looser mode never reaches forward past the requested date", () => {
+    expect(ask([dated("2026-09-30")], LOOSE).state).toBe("MISSING");
+  });
+
+  it("with several earlier facts the latest one wins and says so", () => {
+    const r = ask([dated("2026-03-31", money("1")), dated("2026-05-31", money("2"))], LOOSE);
+    expect(r.state).toBe("RESOLVED");
+    expect(r.provenance!.selectionMethod).toBe("LATEST_ON_OR_BEFORE_AS_OF");
+    expect(r.input!.identity.asOf).toEqual(exactAsOf("2026-05-31"));
+  });
+
+  it("under the default exact mode an earlier-dated fact is simply missing", () => {
+    expect(ask([dated("2026-03-31")]).state).toBe("MISSING");
+  });
+});
+
+describe("currency at the reference site", () => {
+  const eur = snapshot({ snapshotId: "s1", inputs: [input({ identity: identity({ key: "m", currency: "EUR" }), value: money("1", "EUR") })] });
+  const both = snapshot({ snapshotId: "s1", inputs: [input({ identity: identity({ key: "m", currency: "USD" }), value: money("1") }), input({ identity: identity({ key: "m", currency: "EUR" }), value: money("2", "EUR") })] });
+  const ask = (snaps: FinancialSnapshot[], currency?: string) =>
+    resolveInput({ query: { companyId: CO_A, instrumentKey: INST_1, inputKind: "METRIC", key: "m", period: noPeriod(), asOf: noAsOf(), expectedType: "MONEY", ...(currency ? { currency } : {}) }, snapshots: snaps, graph: buildSnapshotGraph(snaps) });
+
+  it("a reference that names its currency rejects a fact in another one", () => {
+    const r = ask([eur], "USD");
+    expect(r.state).toBe("MISSING");
+    expect(r.candidates.some((c) => c.rejectedBecause === "CURRENCY_NOT_REQUESTED")).toBe(true);
+  });
+
+  it("a reference that names its currency accepts the matching fact", () => {
+    expect(ask([eur], "EUR").state).toBe("RESOLVED");
+  });
+
+  it("a reference that names no currency accepts a single-currency fact and carries its currency through", () => {
+    const r = ask([eur]);
+    expect(r.state).toBe("RESOLVED");
+    expect(r.provenance!.identity.currency).toBe("EUR");
+  });
+
+  it("two facts differing only in currency are two identities, so an unqualified reference is AMBIGUOUS", () => {
+    expect(ask([both]).state).toBe("AMBIGUOUS");
+  });
+
+  it("naming the currency resolves that ambiguity without choosing for the caller", () => {
+    expect(ask([both], "USD").input!.value).toMatchObject({ currency: "USD" });
+    expect(ask([both], "EUR").input!.value).toMatchObject({ currency: "EUR" });
+  });
+});

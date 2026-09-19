@@ -1,0 +1,168 @@
+{
+ "artifact": "PHASE 4B §29-§32 - what a rule or expression needs, known before anything is evaluated",
+ "at": "2026-09-19T19:50:28.705Z",
+ "dependencyStatuses": {
+  "REQUIRED": "needed on every path",
+  "CONDITIONAL": "needed only if a branch is selected",
+  "OPTIONAL_FOR_BOUND_ONLY": "reserved for facts that only sharpen a bound"
+ },
+ "recordFields": [
+  "inputKind",
+  "key",
+  "displayNameFromContract",
+  "identityStrength",
+  "companyId",
+  "instrumentKey",
+  "scopeHint",
+  "period",
+  "asOf",
+  "expectedType",
+  "status",
+  "conditionalOn",
+  "safeBoundAvailableWithoutThis",
+  "via",
+  "exprIds"
+ ],
+ "examples": {
+  "maxWithLiteralSibling": {
+   "counts": {
+    "total": 1,
+    "required": 1,
+    "conditional": 0,
+    "optionalForBoundOnly": 0
+   },
+   "dependencies": [
+    {
+     "key": "metric-bound",
+     "inputKind": "METRIC",
+     "expectedType": "MONEY",
+     "status": "REQUIRED",
+     "conditionalOn": null,
+     "safeBoundAvailableWithoutThis": true,
+     "via": {
+      "kind": "EXPRESSION"
+     }
+    }
+   ],
+   "expandedObjects": [],
+   "ambiguousExpansions": [],
+   "cycles": [],
+   "manifestHash": "09a8dcd02d748af41199ced609a1f514ffa3e94eb3ee84e4eacc0b00e0dc990f"
+  },
+  "conditionalBranches": {
+   "counts": {
+    "total": 3,
+    "required": 1,
+    "conditional": 2,
+    "optionalForBoundOnly": 0
+   },
+   "dependencies": [
+    {
+     "key": "metric-cond",
+     "inputKind": "METRIC",
+     "expectedType": "RATIO",
+     "status": "REQUIRED",
+     "conditionalOn": null,
+     "safeBoundAvailableWithoutThis": false,
+     "via": {
+      "kind": "EXPRESSION"
+     }
+    },
+    {
+     "key": "metric-else",
+     "inputKind": "METRIC",
+     "expectedType": "MONEY",
+     "status": "CONDITIONAL",
+     "conditionalOn": "IF e20 else-branch",
+     "safeBoundAvailableWithoutThis": false,
+     "via": {
+      "kind": "EXPRESSION"
+     }
+    },
+    {
+     "key": "metric-then",
+     "inputKind": "METRIC",
+     "expectedType": "MONEY",
+     "status": "CONDITIONAL",
+     "conditionalOn": "IF e20 then-branch",
+     "safeBoundAvailableWithoutThis": false,
+     "via": {
+      "kind": "EXPRESSION"
+     }
+    }
+   ],
+   "expandedObjects": [],
+   "ambiguousExpansions": [],
+   "cycles": [],
+   "manifestHash": "e21e1bbee02413cff39d950f4c2dbcd8c015c77ba6940e21bd1ce932b602d84a"
+  },
+  "definitionExpanded": {
+   "counts": {
+    "total": 1,
+    "required": 1,
+    "conditional": 0,
+    "optionalForBoundOnly": 0
+   },
+   "dependencies": [
+    {
+     "key": "metric-inner",
+     "inputKind": "METRIC",
+     "expectedType": "MONEY",
+     "status": "REQUIRED",
+     "conditionalOn": null,
+     "safeBoundAvailableWithoutThis": false,
+     "via": {
+      "kind": "DEFINITION",
+      "definitionId": "ir-definition:t"
+     }
+    }
+   ],
+   "expandedObjects": [
+    {
+     "kind": "DEFINITION",
+     "id": "ir-definition:t"
+    }
+   ],
+   "ambiguousExpansions": [],
+   "cycles": [],
+   "manifestHash": "0c20c64ad22e90e7d2c0a1058e8336ba60406769f0a03e2bf72e1acd6dc87421"
+  },
+  "competingDefinitionsRefused": {
+   "counts": {
+    "total": 1,
+    "required": 1,
+    "conditional": 0,
+    "optionalForBoundOnly": 0
+   },
+   "dependencies": [
+    {
+     "key": "term-t",
+     "inputKind": "TERM_VALUE",
+     "expectedType": "MONEY",
+     "status": "REQUIRED",
+     "conditionalOn": null,
+     "safeBoundAvailableWithoutThis": false,
+     "via": {
+      "kind": "EXPRESSION"
+     }
+    }
+   ],
+   "expandedObjects": [],
+   "ambiguousExpansions": [
+    {
+     "exprId": "e22",
+     "kind": "DEFINITION",
+     "key": "term-t",
+     "candidateIds": [
+      "ir-definition:a",
+      "ir-definition:b"
+     ]
+    }
+   ],
+   "cycles": [],
+   "manifestHash": "eb3b79dc07b721718e3d512b35ed0c3c6087aeb63b0e116470f974857ad7cbc8"
+  }
+ },
+ "boundSemantics": "safeBoundAvailableWithoutThis records only that a literal sibling of an enclosing MAX or MIN gives a bound without this fact. The fact stays REQUIRED, because a bound is never complete input coverage.",
+ "ambiguityRule": "a reference matching more than one definition or rule is reported in ambiguousExpansions and never expanded; the manifest does not pick one"
+}

@@ -1,0 +1,32 @@
+{
+ "artifact": "PHASE 4B §5-§9 - what makes one financial fact a different fact from another",
+ "at": "2026-09-19T19:50:28.689Z",
+ "contractVersion": "financial-input-contract.v1",
+ "identityFields": [
+  "companyId",
+  "scope (INSTRUMENT_LEVEL | COMPANY_LEVEL with instrumentApplicability)",
+  "inputKind",
+  "key",
+  "period",
+  "asOf",
+  "valueType",
+  "currency"
+ ],
+ "identityStrength": {
+  "STABLE_KEY": "the key is a stable identifier the supplier guarantees",
+  "CONTRACT_NAME_ONLY": "the key is the contract's own wording; it identifies nothing outside this company and instrument"
+ },
+ "scopeModel": {
+  "INSTRUMENT_LEVEL": "belongs to one instrument",
+  "COMPANY_LEVEL": "a company-wide fact, reusable across instruments only when its instrumentApplicability says so (ALL_INSTRUMENTS, or LISTED with explicit keys)"
+ },
+ "distinctIdentityHashes": {
+  "base": "gate-company::INSTRUMENT_LEVEL:gate-instrument::METRIC::k::NOT_PERIOD_SPECIFIC::NOT_AS_OF_SPECIFIC::MONEY::USD",
+  "differentCompany": "gate-other-company::INSTRUMENT_LEVEL:gate-instrument::METRIC::k::NOT_PERIOD_SPECIFIC::NOT_AS_OF_SPECIFIC::MONEY::USD",
+  "differentInstrument": "gate-company::INSTRUMENT_LEVEL:gate-other-instrument::METRIC::k::NOT_PERIOD_SPECIFIC::NOT_AS_OF_SPECIFIC::MONEY::USD",
+  "differentCurrency": "gate-company::INSTRUMENT_LEVEL:gate-instrument::METRIC::k::NOT_PERIOD_SPECIFIC::NOT_AS_OF_SPECIFIC::MONEY::EUR",
+  "companyLevelScope": "gate-company::COMPANY_LEVEL:ALL::METRIC::k::NOT_PERIOD_SPECIFIC::NOT_AS_OF_SPECIFIC::MONEY::USD"
+ },
+ "allDistinct": true,
+ "nameEqualityIsNotIdentity": "two facts with the same key but a different company, instrument, period, as-of, type or currency are different facts, and one never satisfies a reference to the other"
+}

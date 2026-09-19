@@ -1,0 +1,48 @@
+{
+ "artifact": "PHASE 4B §3-§4 - what the Phase-4A reference resolver actually did, and what Phase 4B replaced it with",
+ "at": "2026-09-19T19:50:28.687Z",
+ "legacyResolverFile": "lib/contract-model/runtime/input-resolver.ts",
+ "legacyResolverStatus": "RETAINED for Phase-4A fixtures and tests; never used when a strict resolver is supplied",
+ "unsafeConstructsInLegacyResolver": [
+  {
+   "construct": "period wildcard",
+   "found": true,
+   "why": "a null period on either side matched anything, so a fact from the wrong period could satisfy a period-specific reference"
+  },
+  {
+   "construct": "first match",
+   "found": true,
+   "why": "the first array element that matched won, so array order decided which fact was used"
+  },
+  {
+   "construct": "no company or instrument check",
+   "found": true,
+   "why": "identity was a bare name, so two companies' facts were interchangeable"
+  },
+  {
+   "construct": "no snapshot or approval status",
+   "found": true,
+   "why": "an unreviewed number was indistinguishable from an approved one"
+  }
+ ],
+ "replacement": {
+  "module": "lib/contract-model/runtime/input",
+  "contractVersion": "financial-input-contract.v1",
+  "entryPoints": [
+   "resolveInput",
+   "snapshotInputResolver",
+   "buildFinancialDependencyManifest",
+   "buildRuleDependencyManifest"
+  ]
+ },
+ "integration": "InputResolver gained an optional `strict` member. The evaluator prefers it and falls back to the legacy resolver, so every Phase-4A test keeps passing unchanged.",
+ "whatPhase4BDoesNotDo": [
+  "ingestion",
+  "ERP/bank/spreadsheet/PDF/certificate parsing",
+  "capacity ledger",
+  "reclassification",
+  "solver",
+  "model or provider calls",
+  "persistence"
+ ]
+}

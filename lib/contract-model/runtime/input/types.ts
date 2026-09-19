@@ -159,6 +159,12 @@ export interface InputQuery {
   asOf: AsOfSelector;
   /** The type the IR declares at the reference site. */
   expectedType: IRValueType | "CAPACITY";
+  /**
+   * The currency the reference site demands, when it knows one. Omitted or null means the reference
+   * states no currency: a single-currency match is then accepted, and two facts differing only in
+   * currency remain two identities, so both survive and the answer is AMBIGUOUS rather than a pick.
+   */
+  currency?: string | null;
 }
 
 export interface ResolutionResult {
