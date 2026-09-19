@@ -1,13 +1,13 @@
 {
  "artifact": "PHASE 3 CLOSURE §10-§14 - the 6 current verifier findings examined against frozen source and frozen IR",
- "at": "2026-09-19T15:22:59.694Z",
+ "at": "2026-09-19T15:27:08.822Z",
  "source": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/verify-result.json (frozen)",
  "findings": [
   {
    "ordinal": 0,
    "findingType": "WRONG_ENTITY_SCOPE",
    "severity": "MATERIAL",
-   "classification": "A_PHASE3_CLOSURE_BLOCKER",
+   "classification": "E_RESOLVED_BY_DETERMINISTIC_GUARD (was A_PHASE3_CLOSURE_BLOCKER at the closure baseline)",
    "postGuard": {
     "verdict": "F0_NO_LONGER_A_CONFIDENTLY_WRONG_AUTHORITATIVE_CONCLUSION",
     "rows": [
@@ -248,7 +248,7 @@
     "noDeterministicScopeCrossCheck": "the provenance excerpt of the prohibition rules literally reads 'the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to ...' and no deterministic layer compares emitted entityScope against that text"
    },
    "rootCauseClass": "SEMANTIC_MODEL_DEFECT (model fill) compounded by a DETERMINISTIC PRODUCTION GAP: unrecognized entity tags are dropped silently and emitted scope is never cross-checked against the rule's own source text",
-   "blocking": true
+   "blocking": false
   },
   {
    "ordinal": 1,
@@ -406,9 +406,7 @@
    "blocking": false
   }
  ],
- "closureBlockingFindings": [
-  "F0 WRONG_ENTITY_SCOPE"
- ],
+ "closureBlockingFindings": [],
  "entityScopeClosureTest": {
   "consumerWouldBelieveBorrowerOnly": true,
   "authoritativeRuleMarkedComplete": [
@@ -454,7 +452,7 @@
    },
    "verdict": "F0_NO_LONGER_A_CONFIDENTLY_WRONG_AUTHORITATIVE_CONCLUSION"
   },
-  "resolved": false
+  "resolved": true
  },
  "cumulativeProvisoTest": {
   "verifierReading": "cumulative (a) AND (b) AND ((c) OR (d))",

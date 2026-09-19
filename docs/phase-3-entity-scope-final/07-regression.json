@@ -1,11 +1,11 @@
 {
  "artifact": "ENTITY-SCOPE FINAL §16, §20 - regression at the new production head",
- "at": "2026-09-19T15:22:56.862Z",
- "headAtRun": "995bed37dcc6d1111cec59c966f1d7e1321e71aa",
+ "at": "2026-09-19T15:27:07.053Z",
+ "headAtRun": "5c914558a30e2e1709f16b6d0aaca1bc9bf8e789",
  "guardTests": {
   "file": "tests/contract-model/entity-scope-guard.test.ts",
-  "total": 0,
-  "passed": 0,
+  "total": 24,
+  "passed": 24,
   "failed": 0,
   "covers": [
    "1 unknown tag never silently dropped",
@@ -23,9 +23,42 @@
   "before": "asserted that an unrecognized tag is dropped silently",
   "after": "asserts the loud contract (warning + audit + non-authoritative scope + PARTIAL)"
  },
- "targeted": "NOT_SUPPLIED",
- "fullSuite": "NOT_SUPPLIED",
- "tsc": "NOT_SUPPLIED",
- "lint": "NOT_SUPPLIED",
- "build": "NOT_SUPPLIED"
+ "targeted": {
+  "sha256": "4cafeda3e3631d05fe172319fada9078c89f0fcdd6cfbf8a41092bfb4c88ade3",
+  "files": 761,
+  "tests": 2499,
+  "passed": 2293,
+  "failed": 34,
+  "newFailingIdentitiesVsBase": []
+ },
+ "fullSuite": {
+  "base": {
+   "note": "the previous full run on the pre-change tree",
+   "sha256": "321cf94da1652ae322b41f04d9a8385184e2f6ce2a0120ef5a4b06a32bd9e72e",
+   "tests": 3957,
+   "passed": 3272,
+   "failed": 161
+  },
+  "now": {
+   "sha256": "28e9b5fadc780a7ef84b39a0d49649ecfb1a8d8832988adb6523d278670507da",
+   "tests": 3981,
+   "passed": 3295,
+   "failed": 162
+  },
+  "newFailingIdentities": [
+   "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows"
+  ],
+  "newFailingOnlyTheKnownTimingFlake": true
+ },
+ "tsc": {
+  "errors": 6,
+  "newErrors": 0,
+  "preexisting": "tests/foundation-audit/"
+ },
+ "lint": {
+  "ok": true
+ },
+ "build": {
+  "ok": true
+ }
 }

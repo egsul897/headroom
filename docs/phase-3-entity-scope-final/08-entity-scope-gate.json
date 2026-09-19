@@ -1,8 +1,8 @@
 {
  "artifact": "ENTITY-SCOPE FINAL - the gate the closure synthesis reads for invariant 31 and closure conditions 13/14",
- "at": "2026-09-19T15:22:56.891Z",
+ "at": "2026-09-19T15:27:07.076Z",
  "startingSha": "995bed37dcc6d1111cec59c966f1d7e1321e71aa",
- "headAtRun": "995bed37dcc6d1111cec59c966f1d7e1321e71aa",
+ "headAtRun": "5c914558a30e2e1709f16b6d0aaca1bc9bf8e789",
  "guardVersion": "entity-scope-consistency-guard.v1",
  "productionFiles": [
   {
@@ -71,7 +71,7 @@
    "id": 9,
    "condition": "G9 no other semantic change: lib/ diff limited to the guard module, normalize.ts wiring and the IR audit type",
    "status": "PASS",
-   "evidence": "lib files changed: lib/contract-model/compiler/semantic/normalize.ts, lib/contract-model/ir/types.ts, lib/contract-model/compiler/semantic/entity-scope-guard.ts"
+   "evidence": "lib files changed: lib/contract-model/compiler/semantic/entity-scope-guard.ts, lib/contract-model/compiler/semantic/normalize.ts, lib/contract-model/ir/types.ts"
   },
   {
    "id": 10,
@@ -82,8 +82,8 @@
   {
    "id": 11,
    "condition": "G11 regression: 0 new failing identities beyond the known timing flake; tsc 0 new; lint ok; build ok",
-   "status": "FAIL",
-   "evidence": "targeted new n/a, full new n/a (known flake only: true), tsc new n/a, lint false, build false"
+   "status": "PASS",
+   "evidence": "targeted new 0, full new 1 (known flake only: true), tsc new 0, lint true, build true"
   },
   {
    "id": 12,
@@ -93,8 +93,8 @@
   }
  ],
  "summary": {
-  "PASS": 11,
-  "FAIL": 1,
+  "PASS": 12,
+  "FAIL": 0,
   "total": 12
  },
  "frozenReplay": {
@@ -114,7 +114,7 @@
   "widened": 0
  },
  "blockerReplayVerdict": "F0_NO_LONGER_A_CONFIDENTLY_WRONG_AUTHORITATIVE_CONCLUSION",
- "verdict": "ENTITY_SCOPE_GATE_FAILED",
+ "verdict": "ENTITY_SCOPE_GATE_PASSED",
  "paidCalls": 0,
  "spendUsd": 0,
  "phase4Started": false

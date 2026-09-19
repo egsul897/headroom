@@ -1,6 +1,6 @@
 {
  "artifact": "PHASE 3 CLOSURE §19 - every defect class with root cause, fix SHA, post-fix evidence, current risk",
- "at": "2026-09-19T15:22:59.695Z",
+ "at": "2026-09-19T15:27:08.823Z",
  "rows": [
   {
    "defect": "F-1 compiler caller tool-protocol defect",
@@ -127,16 +127,14 @@
    "rootCause": "stitcher did not link 6.01(b) baskets as exceptions of 6.01(a); prompt never asked for entityScope",
    "fixSha": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
    "postFixEvidence": "154: findings 0 and 2 RESOLVED (135 stitched exceptions, unresolved 57 -> 36); entityScope now populated on 17/63 rules BUT under-inclusively (F0 MATERIAL) - see 05",
-   "currentRisk": "OPEN: entityScope under-inclusion is the closure blocker",
-   "closed": false
+   "currentRisk": "CLOSED by the deterministic entity-scope consistency guard (docs/phase-3-entity-scope-final/08 ENTITY_SCOPE_GATE_PASSED (12/12); production file hashes match the current tree; 05 F0_NO_LONGER_A_CONFIDENTLY_WRONG_AUTHORITATIVE_CONCLUSION; replay {\"UNDERINCLUSIVE_VS_SOURCE\":5,\"UNSPECIFIED\":46,\"UNWITNESSED\":9,\"SOURCE_MATCH_CONFIRMED\":3})",
+   "closed": true
   }
  ],
  "counts": {
   "total": 16,
-  "closed": 15,
-  "open": [
-   "Cross-shard carve-out linkage / unique section-reference resolution / entityScope never requested (frozen verifier findings 0, 2, 3, 9)"
-  ]
+  "closed": 16,
+  "open": []
  },
  "rule": "a defect is CLOSED only with direct post-fix evidence; 'probably fixed' is not accepted"
 }

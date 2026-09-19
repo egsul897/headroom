@@ -1,6 +1,6 @@
 {
  "artifact": "PHASE 3 CLOSURE §6 - the Phase-3 invariant matrix",
- "at": "2026-09-19T15:22:59.752Z",
+ "at": "2026-09-19T15:27:08.859Z",
  "rows": [
   {
    "n": 1,
@@ -305,18 +305,18 @@
   {
    "n": 31,
    "invariant": "entity-scope semantics (who a rule binds / who may rely)",
-   "currentEvidence": "154 F0 MATERIAL: prohibition and Permitted Ratio Debt rules carry entityScope [\"BORROWER\"] against source that binds Restricted Subsidiaries; no explicit scope limitation; raw wire not persisted; normalizer drops unrecognized tags silently",
-   "shaOrArtifact": "docs/phase-3-closure/05",
+   "currentEvidence": "deterministic entity-scope consistency guard in production (normalize.ts + entity-scope-guard.ts): unrecognized tags fail loudly, under-inclusive scope is reset to unspecified + PARTIAL with reason; frozen replay docs/phase-3-entity-scope-final/08 ENTITY_SCOPE_GATE_PASSED (12/12); production file hashes match the current tree; 05 F0_NO_LONGER_A_CONFIDENTLY_WRONG_AUTHORITATIVE_CONCLUSION; replay {\"UNDERINCLUSIVE_VS_SOURCE\":5,\"UNSPECIFIED\":46,\"UNWITNESSED\":9,\"SOURCE_MATCH_CONFIRMED\":3}",
+   "shaOrArtifact": "docs/phase-3-entity-scope-final/04, 05, 08",
    "scope": "6.01 + synthetic A-F",
-   "postFix": false,
-   "limitation": "the one authoritative field observed to be confidently wrong",
-   "status": "FAIL"
+   "postFix": true,
+   "limitation": "the guard proves consistency, not precision: an UNWITNESSED scope is kept with safeToRely=false; the raw wire of the frozen run is not recoverable",
+   "status": "PASS"
   }
  ],
  "counts": {
   "total": 31,
-  "PASS": 30,
-  "FAIL": 1,
+  "PASS": 31,
+  "FAIL": 0,
   "INSUFFICIENT": 0
  },
  "rule": "no invariant passes because tests exist; each names its evidence"

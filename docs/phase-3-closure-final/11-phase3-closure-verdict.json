@@ -1,37 +1,31 @@
 {
  "artifact": "PHASE 3 CLOSURE §23-§25 - the closure decision",
- "at": "2026-09-19T15:22:59.753Z",
+ "at": "2026-09-19T15:27:08.952Z",
  "freeze": {
   "startingSha": "995bed37dcc6d1111cec59c966f1d7e1321e71aa",
-  "head": "995bed37dcc6d1111cec59c966f1d7e1321e71aa",
-  "headIsStarting": true,
-  "workingTreeClean": false,
-  "dirtyOutsideThisMission": [
-   "M lib/contract-model/compiler/semantic/normalize.ts",
-   "M lib/contract-model/ir/types.ts",
-   "M tests/contract-model/semantic-compiler/normalize.test.ts",
-   "?? lib/contract-model/compiler/semantic/entity-scope-guard.ts",
-   "?? scripts/phase-3-entity-scope-final.ts",
-   "?? tests/contract-model/entity-scope-guard.test.ts"
-  ],
+  "head": "5c914558a30e2e1709f16b6d0aaca1bc9bf8e789",
+  "headIsStarting": false,
+  "workingTreeClean": true,
+  "dirtyOutsideThisMission": [],
   "remote": {
    "url": "https://github.com/egsul897/headroom",
    "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
-   "sha": "995bed37dcc6d1111cec59c966f1d7e1321e71aa",
+   "sha": "5c914558a30e2e1709f16b6d0aaca1bc9bf8e789",
    "source": "git ls-remote"
   },
   "remoteAtHead": true,
   "productionTreeHashes": {
-   "lib/": "82832050f837e18599bfa127b4722ade879e7c24",
-   "lib/contract-model/compiler/": "365c6fd79324816e1473d9857d642cf8fa146518",
-   "lib/contract-model/compiler/semantic/": "84a709051ed7d959407b286d34e75ebae442891d"
+   "lib/": "806b2e3b6f9c006aae184453c6122a0fbd7d554e",
+   "lib/contract-model/compiler/": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
+   "lib/contract-model/compiler/semantic/": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12"
   },
   "closureBaselineSha": "7c18b3eac834c85539e05b613b0a80b04da02c19",
-  "libChangedSinceClosureBaseline": [],
-  "productionChangedByThisMission": [
+  "libChangedSinceClosureBaseline": [
+   "lib/contract-model/compiler/semantic/entity-scope-guard.ts",
    "lib/contract-model/compiler/semantic/normalize.ts",
    "lib/contract-model/ir/types.ts"
   ],
+  "productionChangedByThisMission": [],
   "paidCalls": 0,
   "spendUsd": 0,
   "phase4Started": false
@@ -114,14 +108,14 @@
   {
    "n": 13,
    "condition": "no verifier MATERIAL finding represents a confidently-wrong authoritative legal conclusion left unresolved",
-   "status": "FAIL",
-   "evidence": "F0 WRONG_ENTITY_SCOPE: entityScope [\"BORROWER\"] on the 6.01(a) prohibition and Permitted Ratio Debt rules against source binding Restricted Subsidiaries; no scope limitation stated anywhere"
+   "status": "PASS",
+   "evidence": "F0 resolved by the deterministic guard (docs/phase-3-entity-scope-final/08 ENTITY_SCOPE_GATE_PASSED (12/12); production file hashes match the current tree; 05 F0_NO_LONGER_A_CONFIDENTLY_WRONG_AUTHORITATIVE_CONCLUSION; replay {\"UNDERINCLUSIVE_VS_SOURCE\":5,\"UNSPECIFIED\":46,\"UNWITNESSED\":9,\"SOURCE_MATCH_CONFIRMED\":3}); F1-F5 bounded / Phase-4 / non-material"
   },
   {
    "n": 14,
    "condition": "remaining limitations are explicit/bounded",
-   "status": "FAIL",
-   "evidence": "all except the entity-scope field, which is stated as an authoritative value with no limitation"
+   "status": "PASS",
+   "evidence": "every scope field now carries an explicit audit status (confirmed / unspecified / unwitnessed-not-safe-to-rely / limited with reason); other limitations unchanged from the baseline"
   },
   {
    "n": 15,
@@ -132,20 +126,20 @@
   {
    "n": 16,
    "condition": "every relevant historical defect has post-fix evidence",
-   "status": "FAIL",
-   "evidence": "15/16 closed; open: Cross-shard carve-out linkage / unique section-reference res"
+   "status": "PASS",
+   "evidence": "16/16 closed"
   },
   {
    "n": 17,
    "condition": "no new regression",
-   "status": "FAIL",
-   "evidence": "full new n/a (timing flake explained false); targeted new n/a"
+   "status": "PASS",
+   "evidence": "full new 1 (timing flake explained true); targeted new 0"
   },
   {
    "n": 18,
    "condition": "build passes",
-   "status": "FAIL",
-   "evidence": "not passed"
+   "status": "PASS",
+   "evidence": "compiled successfully"
   },
   {
    "n": 19,
@@ -161,8 +155,8 @@
   }
  ],
  "summary": {
-  "PASS": 15,
-  "FAIL": 5,
+  "PASS": 20,
+  "FAIL": 0,
   "total": 20
  },
  "finalRunTrustFacts": {
@@ -292,45 +286,8 @@
   },
   "gate158": "PHASE3_601_FINAL_REVALIDATION_PASSED"
  },
- "verdict": "PHASE3_CLOSURE_EVIDENCE_INSUFFICIENT",
- "insufficientEvidence": {
-  "failingConditions": [
-   {
-    "n": 13,
-    "condition": "no verifier MATERIAL finding represents a confidently-wrong authoritative legal conclusion left unresolved",
-    "evidence": "F0 WRONG_ENTITY_SCOPE: entityScope [\"BORROWER\"] on the 6.01(a) prohibition and Permitted Ratio Debt rules against source binding Restricted Subsidiaries; no scope limitation stated anywhere"
-   },
-   {
-    "n": 14,
-    "condition": "remaining limitations are explicit/bounded",
-    "evidence": "all except the entity-scope field, which is stated as an authoritative value with no limitation"
-   },
-   {
-    "n": 16,
-    "condition": "every relevant historical defect has post-fix evidence",
-    "evidence": "15/16 closed; open: Cross-shard carve-out linkage / unique section-reference res"
-   },
-   {
-    "n": 17,
-    "condition": "no new regression",
-    "evidence": "full new n/a (timing flake explained false); targeted new n/a"
-   },
-   {
-    "n": 18,
-    "condition": "build passes",
-    "evidence": "not passed"
-   }
-  ],
-  "failingInvariants": [
-   "31 entity-scope semantics (who a rule binds / who may rely)"
-  ],
-  "entityScopeGate": "docs/phase-3-entity-scope-final/08 ENTITY_SCOPE_GATE_FAILED (11/12); production file hashes match the current tree; 05 F0_NO_LONGER_A_CONFIDENTLY_WRONG_AUTHORITATIVE_CONCLUSION; replay {\"UNDERINCLUSIVE_VS_SOURCE\":5,\"UNSPECIFIED\":46,\"UNWITNESSED\":9,\"SOURCE_MATCH_CONFIRMED\":3}",
-  "blockingInvariant": "31 entity-scope semantics (05 entityScopeClosureTest; closure standard 13 and 14)",
-  "artifactProvingTheGap": "docs/phase-3-final-601/154-verifier.json finding 0 (WRONG_ENTITY_SCOPE, MATERIAL) + tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/compile-result.json rules ir-rule:170e314c.., 49f22aee.., 01c9a005.., 6d2acc86.., b21ac832.. (entityScope [\"BORROWER\"]) against their own provenance excerpts",
-  "natureOfTheGap": "SEMANTIC MODEL DEFECT (the model filled entityScope under-inclusively) that the DETERMINISTIC layer failed to guard: normalize.ts drops unrecognized entity tags silently with no warning and no sufficiency change, and no deterministic check compares an emitted scope against the binding language in the rule's own excerpt ('shall not permit any of their Restricted Subsidiaries', 'any of their Restricted Subsidiaries may incur'). Whether the tag was never emitted or was emitted and dropped is unknowable from the frozen evidence because the raw wire output is not persisted - itself an evidence gap.",
-  "singleCheapestAction": "a deterministic ENTITY-SCOPE CONSISTENCY GUARD, general and zero-cost: (1) an unrecognized entity tag on the wire becomes a normalization warning and a PARTIAL sufficiency reason instead of a silent drop; (2) after composition, when a rule's own provenance excerpt/owned source contains restricted-subsidiary binding language and the emitted entityScope omits every restricted-subsidiary tag, the scope is reset to [] (unspecified) and the rule is marked PARTIAL with reason ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE - never widened by guess. Then replay the guard over the FROZEN 6.01 IR at zero cost to show the 7 affected rules become explicit, add the regression tests, and re-run this closure synthesis. No paid run and no whole-agreement run is required for the closure decision; a later paid observation of a corrected positive scope is optional.",
-  "notAuthorizedHere": true
- },
- "phase3Closed": false,
+ "verdict": "PHASE_3_CLOSED",
+ "insufficientEvidence": null,
+ "phase3Closed": true,
  "phase4Started": false
 }

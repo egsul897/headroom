@@ -1,11 +1,204 @@
 {
  "artifact": "PHASE 3 CLOSURE §27 - zero-cost regression at the starting SHA",
- "at": "2026-09-19T15:22:59.753Z",
- "sha": "995bed37dcc6d1111cec59c966f1d7e1321e71aa",
- "targeted": "NOT_SUPPLIED",
- "fullSuite": "NOT_SUPPLIED",
- "tsc": "NOT_SUPPLIED",
- "lint": "NOT_SUPPLIED",
- "build": "NOT_SUPPLIED",
- "noNewRegression": false
+ "at": "2026-09-19T15:27:08.951Z",
+ "sha": "5c914558a30e2e1709f16b6d0aaca1bc9bf8e789",
+ "targeted": {
+  "sha256": "4cafeda3e3631d05fe172319fada9078c89f0fcdd6cfbf8a41092bfb4c88ade3",
+  "files": 761,
+  "tests": 2499,
+  "passed": 2293,
+  "failed": 34,
+  "newFailingIdentitiesVsBase": [],
+  "knownPreexisting": "18 Pass-A synthetic-corpus failures (see 07)"
+ },
+ "fullSuite": {
+  "base": {
+   "sha": "995bed37dcc6d1111cec59c966f1d7e1321e71aa",
+   "note": "the previous mission's full run on the identical tree",
+   "sha256": "321cf94da1652ae322b41f04d9a8385184e2f6ce2a0120ef5a4b06a32bd9e72e",
+   "tests": 3957,
+   "passed": 3272,
+   "failed": 161
+  },
+  "now": {
+   "sha256": "28e9b5fadc780a7ef84b39a0d49649ecfb1a8d8832988adb6523d278670507da",
+   "tests": 3981,
+   "passed": 3295,
+   "failed": 162
+  },
+  "newFailingIdentities": [
+   "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows"
+  ],
+  "newFailingIdentitiesExplainedAsTimingFlake": true,
+  "flakeIsolatedReruns": [
+   {
+    "file": "cl-flake.json",
+    "tests": 12,
+    "passed": 11,
+    "failed": 1,
+    "failedIdentities": [
+     "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows"
+    ]
+   },
+   {
+    "file": "cl-flake2.json",
+    "tests": 12,
+    "passed": 11,
+    "failed": 1,
+    "failedIdentities": [
+     "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows"
+    ]
+   },
+   {
+    "file": "cl-flake-r1.json",
+    "tests": 12,
+    "passed": 12,
+    "failed": 0,
+    "failedIdentities": []
+   },
+   {
+    "file": "cl-flake-r2.json",
+    "tests": 12,
+    "passed": 12,
+    "failed": 0,
+    "failedIdentities": []
+   },
+   {
+    "file": "cl-flake-r3.json",
+    "tests": 12,
+    "passed": 11,
+    "failed": 1,
+    "failedIdentities": [
+     "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows"
+    ]
+   },
+   {
+    "file": "cl-flake-r4.json",
+    "tests": 12,
+    "passed": 12,
+    "failed": 0,
+    "failedIdentities": []
+   },
+   {
+    "file": "cl-flake-r5.json",
+    "tests": 12,
+    "passed": 12,
+    "failed": 0,
+    "failedIdentities": []
+   }
+  ],
+  "flakeIsolatedTally": {
+   "passes": 4,
+   "fails": 3,
+   "note": "two further isolated passes were observed earlier in this mission but not captured to JSON; only captured runs are tallied"
+  },
+  "flakeDirectTiming": {
+   "method": "process.hrtime measurement of segmentCoordinateClauses on the test's own bareOrChain input at n=4000/16000/64000, JIT warm-up then 9 recorded trials, no production change; criterion = median time ratio for the 16x size step (n=4000 to 64000) below 64x, the test's own 8x-per-4x bound compounded; a quadratic algorithm would show ~256x. The 4000-token input runs in well under 1 ms, so the test's Date.now() measurement of it is floored to 1 ms and any GC pause on the larger call inflates the ratio past 8",
+   "trials": [
+    {
+     "trial": 0,
+     "ms4000": 3.8,
+     "ms16000": 7.52,
+     "ms64000": 24.38,
+     "ratio16k_4k": 1.98,
+     "ratio64k_16k": 3.24,
+     "ratio64k_4k": 6.41
+    },
+    {
+     "trial": 1,
+     "ms4000": 1.1,
+     "ms16000": 4.13,
+     "ms64000": 11.17,
+     "ratio16k_4k": 3.76,
+     "ratio64k_16k": 2.7,
+     "ratio64k_4k": 10.15
+    },
+    {
+     "trial": 2,
+     "ms4000": 0.68,
+     "ms16000": 3.29,
+     "ms64000": 10.73,
+     "ratio16k_4k": 4.87,
+     "ratio64k_16k": 3.26,
+     "ratio64k_4k": 15.88
+    },
+    {
+     "trial": 3,
+     "ms4000": 1.25,
+     "ms16000": 2.47,
+     "ms64000": 13.86,
+     "ratio16k_4k": 1.97,
+     "ratio64k_16k": 5.61,
+     "ratio64k_4k": 11.05
+    },
+    {
+     "trial": 4,
+     "ms4000": 0.67,
+     "ms16000": 2.46,
+     "ms64000": 14.33,
+     "ratio16k_4k": 3.67,
+     "ratio64k_16k": 5.83,
+     "ratio64k_4k": 21.37
+    },
+    {
+     "trial": 5,
+     "ms4000": 0.58,
+     "ms16000": 2.7,
+     "ms64000": 11,
+     "ratio16k_4k": 4.64,
+     "ratio64k_16k": 4.08,
+     "ratio64k_4k": 18.91
+    },
+    {
+     "trial": 6,
+     "ms4000": 0.76,
+     "ms16000": 2.54,
+     "ms64000": 10.36,
+     "ratio16k_4k": 3.34,
+     "ratio64k_16k": 4.07,
+     "ratio64k_4k": 13.6
+    },
+    {
+     "trial": 7,
+     "ms4000": 0.62,
+     "ms16000": 3.04,
+     "ms64000": 14.33,
+     "ratio16k_4k": 4.89,
+     "ratio64k_16k": 4.71,
+     "ratio64k_4k": 23.04
+    },
+    {
+     "trial": 8,
+     "ms4000": 0.71,
+     "ms16000": 2.56,
+     "ms64000": 14.81,
+     "ratio16k_4k": 3.63,
+     "ratio64k_16k": 5.78,
+     "ratio64k_4k": 20.95
+    }
+   ],
+   "medians": {
+    "ratio16k_4k": 3.67,
+    "ratio64k_16k": 4.08,
+    "ratio64k_4k": 15.88,
+    "trialsOver8": 0
+   },
+   "linearGrowthConfirmed": true
+  },
+  "flakeRootCause": "the test measures a ~1 ms small input with Date.now() (1 ms granularity, floored to 1) against a ~3-11 ms large input; the ratio is timer-granularity noise, not algorithmic growth. The timed production function (lib/.../semantic-coverage/unit-hypothesis.ts) is inside the certified lib tree hash, unchanged; the test file was last changed at 223aa64 and the same assertion failed at dd-base 1fd2388",
+  "flakeClassification": "PRE_EXISTING_TIMING_MEASUREMENT_FLAKE_IN_TEST_NOT_A_PRODUCTION_REGRESSION",
+  "flakeHistory": "failed at 1fd2388 (dd-base), passed at 80671aa and 7c18b3e full runs, failed under load in this run, then 1 fail / 2 passes in isolation - a wall-clock ratio assertion"
+ },
+ "tsc": {
+  "errors": 6,
+  "newErrors": 0,
+  "preexisting": "tests/foundation-audit/"
+ },
+ "lint": {
+  "ok": true
+ },
+ "build": {
+  "ok": true
+ },
+ "noNewRegression": true
 }
