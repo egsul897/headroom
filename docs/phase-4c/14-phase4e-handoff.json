@@ -1,0 +1,27 @@
+{
+ "artifact": "PHASE 4C §44 - what the later solver will do",
+ "at": "2026-09-19T21:52:38.108Z",
+ "phase4eWillDo": [
+  "enumerate legal permission paths",
+  "choose and evaluate allocations across capacities",
+  "solve for a maximum amount",
+  "compare alternatives"
+ ],
+ "phase4cRemainsNeutral": [
+  "independent capacities are exposed separately and never summed",
+  "an ambiguous historical allocation is reported, never resolved",
+  "effectiveRemaining states what a pool leaves available, not how to use it",
+  "no API names a best, maximum or optimal anything"
+ ],
+ "forbiddenInPhase4C": [
+  "maximumTransactionAmount(",
+  "bestBasket",
+  "optimalAllocation",
+  "findPermissionPath",
+  "solveFor",
+  "chooseBasket",
+  "simulateTransaction"
+ ],
+ "observedSolverHits": [],
+ "notStarted": true
+}

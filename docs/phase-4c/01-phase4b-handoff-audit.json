@@ -1,0 +1,56 @@
+{
+ "artifact": "PHASE 4C §1, §22, §31 - what Phase 4C consumes from Phase 4B, and how snapshot identity binds to a capacity state",
+ "at": "2026-09-19T21:52:37.884Z",
+ "phase4aVerdict": "PHASE4A_EXPRESSION_RUNTIME_READY",
+ "phase4bVerdict": "PHASE4B_INPUT_CONTRACT_READY",
+ "phase4bHandoffInEffect": true,
+ "runtimeVersion": "contract-runtime.v1",
+ "inputContractVersion": "financial-input-contract.v1",
+ "capacityGraphVersion": "capacity-graph.v1",
+ "consumed": [
+  "strict financial-input resolution",
+  "snapshot status, version and explicit supersession",
+  "term and rule resolution",
+  "dependency manifests",
+  "the exact temporal contract"
+ ],
+ "dependencyManifestBeforeEvaluation": {
+  "keys": [
+   "metric-alpha",
+   "metric-beta"
+  ],
+  "counts": {
+   "total": 2,
+   "required": 2,
+   "conditional": 0,
+   "optionalForBoundOnly": 0
+  },
+  "manifestHash": "0cfef1ba25429f7d216c3a6d864141b87708a2345784881f705435ddcc3838d6"
+ },
+ "snapshotBindingExample": {
+  "singleSnapshot": {
+   "snapshotIds": [
+    "gate-snap"
+   ],
+   "snapshotVersions": [
+    "1"
+   ],
+   "snapshotSetHash": "57a82aa676df569469f9d630b705decfcfc045b4a8b43747bf3cf7fad9a38f6e",
+   "inputContractVersion": "financial-input-contract.v1",
+   "ambiguous": false
+  }
+ },
+ "incompatibleSnapshots": {
+  "binding": {
+   "snapshotIds": [],
+   "snapshotVersions": [],
+   "snapshotSetHash": null,
+   "inputContractVersion": "financial-input-contract.v1",
+   "ambiguous": false
+  },
+  "capacityStatus": "AMBIGUOUS",
+  "limitations": []
+ },
+ "phase4aSemanticsUnchanged": true,
+ "runtimeFilesChangedOutsideCapacity": []
+}

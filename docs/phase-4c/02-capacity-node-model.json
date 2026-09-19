@@ -1,0 +1,85 @@
+{
+ "artifact": "PHASE 4C §4, §5 - the typed capacity node and the statuses it can carry",
+ "at": "2026-09-19T21:52:37.888Z",
+ "nodeKinds": [
+  "RULE_CAPACITY",
+  "SHARED_CAPACITY",
+  "LEDGER_USAGE",
+  "BUILDER_COMPONENT",
+  "GROWER_COMPONENT"
+ ],
+ "nodeKindsAreStructuralNotCovenantForms": "a node is a thing that bears or consumes capacity, or a labelled component of an expression; nothing is named after a basket type",
+ "nodeFields": [
+  "capacityNodeId",
+  "kind",
+  "companyId",
+  "instrumentKey",
+  "ruleId",
+  "sharedCapacityId",
+  "sourceIdentity",
+  "expressionId",
+  "componentRole",
+  "entityScope",
+  "phase3",
+  "dependsOnNodeIds"
+ ],
+ "statuses": [
+  "AVAILABLE",
+  "NEEDS_INPUT",
+  "UNSUPPORTED",
+  "AMBIGUOUS",
+  "REVIEW_REQUIRED",
+  "ERROR"
+ ],
+ "statusesNeverCollapse": {
+  "missingFact": "NEEDS_INPUT",
+  "unsupportedSemantics": "UNSUPPORTED",
+  "ambiguousLegalState": "AMBIGUOUS",
+  "reviewRequiredLegalState": "REVIEW_REQUIRED",
+  "runtimeError": "ERROR"
+ },
+ "capacityAmountKinds": [
+  "AMOUNT",
+  "UNLIMITED",
+  "GATE_NOT_SATISFIED",
+  "NOT_DETERMINED"
+ ],
+ "workedNodes": [
+  {
+   "capacityNodeId": "capacity:rule:rule-a",
+   "kind": "RULE_CAPACITY",
+   "componentRole": null,
+   "expressionId": "g18",
+   "sourceIdentity": {
+    "kind": "RULE",
+    "id": "rule-a",
+    "sourceSectionRef": "section-rule-a",
+    "sourceCitation": "citation-rule-a"
+   }
+  },
+  {
+   "capacityNodeId": "capacity:rule:rule-a#component:g16",
+   "kind": "GROWER_COMPONENT",
+   "componentRole": "GROWER_COMPONENT",
+   "expressionId": "g16",
+   "sourceIdentity": {
+    "kind": "RULE",
+    "id": "rule-a",
+    "sourceSectionRef": "section-rule-a",
+    "sourceCitation": "citation-rule-a"
+   }
+  },
+  {
+   "capacityNodeId": "capacity:rule:rule-a#component:g17",
+   "kind": "BUILDER_COMPONENT",
+   "componentRole": "BUILDER_COMPONENT",
+   "expressionId": "g17",
+   "sourceIdentity": {
+    "kind": "RULE",
+    "id": "rule-a",
+    "sourceSectionRef": "section-rule-a",
+    "sourceCitation": "citation-rule-a"
+   }
+  }
+ ]
+}

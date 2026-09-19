@@ -1,0 +1,288 @@
+{
+ "artifact": "PHASE 4C §13, §14, §15, §23, §36 - the shared cap as an explicit constraint node",
+ "at": "2026-09-19T21:52:37.925Z",
+ "representation": "an IRSharedCapacity becomes one SHARED_CAPACITY node with its own cap expression; each member gets MEMBER_OF_SHARED_CAP and CONSTRAINED_BY edges and keeps its own rule capacity",
+ "limitNeverCopiedOntoMembers": true,
+ "sharedRemaining": "shared gross minus the sum of eligible member consumption plus usage recorded directly against the pool",
+ "memberEffectiveRemaining": "the tighter of the member's own remaining and each applicable pool's remaining; this is current state, never an allocation decision",
+ "currencyPolicy": "a mixed-currency pool is an ERROR with CURRENCY_MISMATCH_NO_CONVERSION_MODELED; no conversion is ever applied",
+ "matrix": {
+  "A. pool tracks the sum of member usage": {
+   "poolGross": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "150",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g108",
+      "inputKeys": [],
+      "rawSource": 150
+     }
+    }
+   },
+   "poolUsage": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "70",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": [
+       "u1",
+       "u2"
+      ]
+     }
+    }
+   },
+   "poolRemaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "80",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": []
+     }
+    }
+   },
+   "memberGross": {
+    "a": {
+     "kind": "AMOUNT",
+     "value": {
+      "type": "MONEY",
+      "amount": "100",
+      "currency": "USD",
+      "lineage": {
+       "exprId": "g106",
+       "inputKeys": [],
+       "rawSource": 100
+      }
+     }
+    },
+    "b": {
+     "kind": "AMOUNT",
+     "value": {
+      "type": "MONEY",
+      "amount": "100",
+      "currency": "USD",
+      "lineage": {
+       "exprId": "g107",
+       "inputKeys": [],
+       "rawSource": 100
+      }
+     }
+    }
+   },
+   "memberUsage": [
+    {
+     "ruleId": "rule-a",
+     "usage": {
+      "kind": "AMOUNT",
+      "value": {
+       "type": "MONEY",
+       "amount": "40",
+       "currency": "USD",
+       "lineage": {
+        "exprId": null,
+        "inputKeys": [
+         "u1"
+        ]
+       }
+      }
+     },
+     "usageIds": [
+      "u1"
+     ]
+    },
+    {
+     "ruleId": "rule-b",
+     "usage": {
+      "kind": "AMOUNT",
+      "value": {
+       "type": "MONEY",
+       "amount": "30",
+       "currency": "USD",
+       "lineage": {
+        "exprId": null,
+        "inputKeys": [
+         "u2"
+        ]
+       }
+      }
+     },
+     "usageIds": [
+      "u2"
+     ]
+    }
+   ]
+  },
+  "B. member tighter than pool": {
+   "memberRemaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "60",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": []
+     }
+    }
+   },
+   "poolRemaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "80",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": []
+     }
+    }
+   },
+   "effective": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "60",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": []
+     }
+    }
+   }
+  },
+  "C. pool tighter than member": {
+   "memberRemaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "200",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "g112",
+      "inputKeys": [],
+      "rawSource": 200
+     }
+    }
+   },
+   "poolRemaining": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "80",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": []
+     }
+    }
+   },
+   "effective": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "80",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": []
+     }
+    }
+   }
+  },
+  "D. one capacity in two pools": {
+   "constraintIds": [
+    "pool-s1",
+    "pool-s2"
+   ],
+   "effective": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "100",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": []
+     }
+    }
+   }
+  },
+  "E. ambiguous historical consumption path": {
+   "status": "AMBIGUOUS",
+   "gross": {
+    "kind": "NOT_DETERMINED",
+    "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+   },
+   "usage": {
+    "kind": "NOT_DETERMINED",
+    "reason": "usage could have consumed this capacity but the record does not establish that it did; the runtime does not choose a path"
+   },
+   "remaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "the legal state of this rule is not safe to rely on"
+   },
+   "effectiveRemaining": {
+    "kind": "NOT_DETERMINED",
+    "reason": "the legal state of this rule is not safe to rely on"
+   },
+   "limitations": [
+    "AMBIGUOUS_CONSUMPTION_ALLOCATION"
+   ],
+   "appliedUsageIds": []
+  },
+  "F. shared-cap cycle": {
+   "limitations": [
+    "SHARED_CAPACITY_NOT_QUANTIFIED"
+   ],
+   "sharedNodes": 2,
+   "memberEdges": 1
+  },
+  "G. different currencies in one pool": {
+   "memberStatus": "ERROR",
+   "limitations": [
+    "CURRENCY_MISMATCH_NO_CONVERSION_MODELED"
+   ]
+  },
+  "H. missing metric feeding the pool": {
+   "poolStatus": "NEEDS_INPUT",
+   "poolGross": {
+    "kind": "NOT_DETERMINED",
+    "reason": "a financial fact the shared cap depends on is missing"
+   },
+   "memberStatus": "NEEDS_INPUT"
+  },
+  "I. a shared relationship with no quantified pool": {
+   "limitations": [
+    "SHARED_CAPACITY_NOT_QUANTIFIED"
+   ],
+   "sharedNodes": 0
+  },
+  "J. usage recorded directly against the pool": {
+   "poolUsage": {
+    "kind": "AMOUNT",
+    "value": {
+     "type": "MONEY",
+     "amount": "50",
+     "currency": "USD",
+     "lineage": {
+      "exprId": null,
+      "inputKeys": [
+       "u1",
+       "u3"
+      ]
+     }
+    }
+   },
+   "directUsageIds": [
+    "u3"
+   ]
+  }
+ }
+}

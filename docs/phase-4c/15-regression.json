@@ -1,0 +1,186 @@
+{
+ "artifact": "PHASE 4C §45 - regression at the Phase-4C head",
+ "at": "2026-09-19T21:52:38.204Z",
+ "headAtRun": "a3325535b4e30d85448e840c7ca27b8286d623f6",
+ "suites": {
+  "Phase-4C capacity": {
+   "tests": 95,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "Phase-4B input contract": {
+   "tests": 98,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "Phase-4A runtime": {
+   "tests": 275,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "entity-scope guard": {
+   "tests": 24,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "semantic compiler": {
+   "tests": 164,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "semantic verification": {
+   "tests": 150,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "semantic accountability": {
+   "tests": 366,
+   "failed": 18,
+   "newFailingVsBase": 0
+  },
+  "Phase-3 closure-critical": {
+   "tests": 69,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "IR core": {
+   "tests": 54,
+   "failed": 0,
+   "newFailingVsBase": 0
+  }
+ },
+ "targeted": {
+  "tests": 2774,
+  "passed": 2567,
+  "failed": 35,
+  "newFailingIdentitiesVsBase": [
+   "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts :: OPEN-3 independent probe 4: re-measured scaling behavior (fresh construction, not merely Part A's own numbers) measured multi-point scaling is consistent with O(n), not O(n^2)"
+  ]
+ },
+ "fullSuite": {
+  "base": {
+   "sha256": "321cf94da1652ae322b41f04d9a8385184e2f6ce2a0120ef5a4b06a32bd9e72e",
+   "tests": 3957,
+   "passed": 3272,
+   "failed": 161
+  },
+  "now": {
+   "sha256": "1b604cfa635987befc9762c161d7088b2385af4c46aed0bda396f8f25e80dbb2",
+   "tests": 4256,
+   "passed": 3569,
+   "failed": 163
+  },
+  "newFailingIdentities": [
+   "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows",
+   "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts :: OPEN-3 independent probe 4: re-measured scaling behavior (fresh construction, not merely Part A's own numbers) measured multi-point scaling is consistent with O(n), not O(n^2)"
+  ]
+ },
+ "timingCharacterisation": {
+  "newFailingIdentities": [
+   "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows",
+   "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts :: OPEN-3 independent probe 4: re-measured scaling behavior (fresh construction, not merely Part A's own numbers) measured multi-point scaling is consistent with O(n), not O(n^2)",
+   "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts :: OPEN-3 independent probe 4: re-measured scaling behavior (fresh construction, not merely Part A's own numbers) measured multi-point scaling is consistent with O(n), not O(n^2)"
+  ],
+  "fullSuiteClean": false,
+  "allAreWallClockScalingAssertions": true,
+  "measuredFunction": "segmentCoordinateClauses (lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts)",
+  "measuredFunctionInsideFrozenPhase3Tree": true,
+  "isolationRuns": [
+   {
+    "file": "iso1.json",
+    "tests": 22,
+    "failed": 1
+   },
+   {
+    "file": "iso2.json",
+    "tests": 22,
+    "failed": 0
+   },
+   {
+    "file": "iso3.json",
+    "tests": 22,
+    "failed": 0
+   },
+   {
+    "file": "iso4.json",
+    "tests": 22,
+    "failed": 1
+   },
+   {
+    "file": "iso5.json",
+    "tests": 22,
+    "failed": 0
+   },
+   {
+    "file": "iso6.json",
+    "tests": 22,
+    "failed": 0
+   }
+  ],
+  "isolationPasses": 4,
+  "isolationFails": 2,
+  "flakeIsIndependentOfPhase4C": true,
+  "directMeasurement": {
+   "trials": 9,
+   "points": [
+    {
+     "n": 4000,
+     "ms": 7.7473,
+     "ratioVsPreviousDoubling": null,
+     "subQuadratic": true
+    },
+    {
+     "n": 8000,
+     "ms": 11.7737,
+     "ratioVsPreviousDoubling": 1.52,
+     "subQuadratic": true
+    },
+    {
+     "n": 16000,
+     "ms": 24.4342,
+     "ratioVsPreviousDoubling": 2.075,
+     "subQuadratic": true
+    },
+    {
+     "n": 32000,
+     "ms": 48.96,
+     "ratioVsPreviousDoubling": 2.004,
+     "subQuadratic": true
+    },
+    {
+     "n": 64000,
+     "ms": 101.5035,
+     "ratioVsPreviousDoubling": 2.073,
+     "subQuadratic": true
+    },
+    {
+     "n": 128000,
+     "ms": 217.3126,
+     "ratioVsPreviousDoubling": 2.141,
+     "subQuadratic": true
+    }
+   ],
+   "logLogSlope": 0.982,
+   "linearPredictsSlope": 1,
+   "quadraticPredictsSlope": 2,
+   "allStepsSubQuadratic": true,
+   "slopeBelow1point5": true
+  },
+  "directMeasurementLinear": true,
+  "rootCause": "the assertion compares wall-clock medians across size buckets over code in the frozen Phase-3 tree. It was root-caused during Phase 3 closure, before Phase 4A, 4B or 4C existed.",
+  "attribution": "NOT_ATTRIBUTABLE_TO_PHASE_4C"
+ },
+ "noRegressionAttributableToPhase4C": true,
+ "honestCaveat": "the full suite is NOT clean against base: two wall-clock scaling identities fail. They are not waived. They are characterised: both are wall-clock assertions over code in the frozen Phase-3 tree, both also fail intermittently in isolation on that unchanged tree, and a direct measurement of the same function is linear. Phase 4C added tests to the shared parallel runner; it changed no file those assertions exercise.",
+ "tsc": {
+  "errors": 6,
+  "newErrors": 0,
+  "preexisting": "tests/foundation-audit/"
+ },
+ "lint": {
+  "ok": true
+ },
+ "build": {
+  "ok": true
+ }
+}
