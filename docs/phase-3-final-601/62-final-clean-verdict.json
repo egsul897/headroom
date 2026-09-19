@@ -1,0 +1,187 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 FINAL CLEAN RUN §34 - final verdict",
+ "at": "2026-09-15T15:08:53.061Z",
+ "startingShaPin": {
+  "expected": "f3b885b12f5bc91fcf886b7b3f77e84ed26661c3",
+  "actual": "3df2210c27e4275b18cb646eae577976861be19e",
+  "exactMatch": false,
+  "isDescendantOfPin": true,
+  "filesChangedSincePin": [
+   "scripts/phase-3-601-final-certify.ts",
+   "scripts/phase-3-601-final-run.ts",
+   "scripts/phase-3-601-final-score.ts",
+   "scripts/phase-3-601-guard.ts"
+  ],
+  "allHarnessOnly": true,
+  "productionTreeIdentical": true,
+  "match": true
+ },
+ "conditions": [
+  {
+   "id": 1,
+   "condition": "exact source/reference identities frozen",
+   "status": "PASS",
+   "evidence": "47"
+  },
+  {
+   "id": 2,
+   "condition": "HD-1 certification passes",
+   "status": "PASS",
+   "evidence": "live $15.830939 vs frozen $15.830939, delta 0"
+  },
+  {
+   "id": 3,
+   "condition": "HD-2 certification passes",
+   "status": "PASS",
+   "evidence": "5/5 cases"
+  },
+  {
+   "id": 4,
+   "condition": "HD-3 persistence certification passes",
+   "status": "PASS",
+   "evidence": "write -> fsync -> reload -> hash+structural equality -> exists before simulated gate"
+  },
+  {
+   "id": 5,
+   "condition": "fresh two-pass Pass A executes",
+   "status": "FAIL",
+   "evidence": "pass1 null null items / 7 calls; pass2 null null items / 4 calls"
+  },
+  {
+   "id": 6,
+   "condition": "ensemble builds",
+   "status": "FAIL",
+   "evidence": "undefined canonical"
+  },
+  {
+   "id": 7,
+   "condition": "inventory is written immediately",
+   "status": "FAIL",
+   "evidence": "persisted before the §9 gate, resume proof, plan, compile and verifier"
+  },
+  {
+   "id": 8,
+   "condition": "persisted inventory reloads exactly",
+   "status": "FAIL",
+   "evidence": "sha undefined..., undefined items"
+  },
+  {
+   "id": 9,
+   "condition": "compile uses the reloaded inventory",
+   "status": "FAIL",
+   "evidence": null
+  },
+  {
+   "id": 10,
+   "condition": "source-bound resume proof passes",
+   "status": "FAIL",
+   "evidence": "[]"
+  },
+  {
+   "id": 11,
+   "condition": "real-plan cost fits remaining cap",
+   "status": "FAIL",
+   "evidence": "$undefined of $undefined"
+  },
+  {
+   "id": 12,
+   "condition": "actual production entry point used",
+   "status": "FAIL",
+   "evidence": "status null"
+  },
+  {
+   "id": 13,
+   "condition": "no historical Pass-B reuse",
+   "status": "PASS",
+   "evidence": "reused 0"
+  },
+  {
+   "id": 14,
+   "condition": "automatic execution mode selected",
+   "status": "FAIL",
+   "evidence": "undefined / undefined"
+  },
+  {
+   "id": 15,
+   "condition": "Pass B completes",
+   "status": "FAIL",
+   "evidence": "0 shards executed, status null"
+  },
+  {
+   "id": 16,
+   "condition": "global Pass C completes",
+   "status": "FAIL",
+   "evidence": "semanticallyComplete=null, inventoried 0"
+  },
+  {
+   "id": 17,
+   "condition": "independent verifier completes",
+   "status": "FAIL",
+   "evidence": "null"
+  },
+  {
+   "id": 18,
+   "condition": "hard trust counters all MEASURED and zero",
+   "status": "FAIL",
+   "evidence": "dangerous silent omissions=null, false completeness=null, source-unverifiable authoritative IR=null, contextual ownership-credit violations=null, silent incompatible merges=null, owned values lost=null, distinct owned lineage lost=null, new dangling refs=null, hidden provider/schema failures=null, hidden material omissions=null, authoritative hallucinations=null, silent CRITICAL misses=null, incorrect authoritative CRITICAL claims=null, silent quantitative corruption=null; not MEASURED: dangerous silent omissions (NOT_MEASURABLE), false completeness (NOT_MEASURABLE), source-unverifiable authoritative IR (NOT_MEASURABLE), contextual ownership-credit violations (NOT_MEASURABLE), silent incompatible merges (NOT_MEASURABLE), owned values lost (NOT_MEASURABLE), distinct owned lineage lost (NOT_MEASURABLE), new dangling refs (NOT_MEASURABLE), hidden provider/schema failures (NOT_MEASURABLE), hidden material omissions (NOT_MEASURABLE), authoritative hallucinations (NOT_MEASURABLE), silent CRITICAL misses (NOT_MEASURABLE), incorrect authoritative CRITICAL claims (NOT_MEASURABLE), silent quantitative corruption (NOT_MEASURABLE)"
+  },
+  {
+   "id": 19,
+   "condition": "no silent CRITICAL miss",
+   "status": "FAIL",
+   "evidence": "n/a"
+  },
+  {
+   "id": 20,
+   "condition": "no incorrect authoritative CRITICAL claim",
+   "status": "FAIL",
+   "evidence": "n/a"
+  },
+  {
+   "id": 21,
+   "condition": "semantic quality operationally credible",
+   "status": "FAIL",
+   "evidence": "not scored"
+  },
+  {
+   "id": 22,
+   "condition": "spend <= $15.84",
+   "status": "PASS",
+   "evidence": "$4.7321"
+  },
+  {
+   "id": 23,
+   "condition": "no fix-and-continue",
+   "status": "PASS",
+   "evidence": "no harness or production change after paid execution began"
+  },
+  {
+   "id": 24,
+   "condition": "no new regression",
+   "status": "PASS",
+   "evidence": "107 files / 162 tests, 0 new"
+  },
+  {
+   "id": 25,
+   "condition": "build passes",
+   "status": "PASS",
+   "evidence": "Compiled successfully"
+  }
+ ],
+ "summary": {
+  "PASS": 9,
+  "FAIL": 16,
+  "total": 25
+ },
+ "verdict": "PHASE3_601_ENVIRONMENT_BLOCKED",
+ "phase3Closed": false,
+ "phase4Started": false,
+ "cost": {
+  "thisMissionUsd": 4.732104,
+  "priorVoidUsd": 3.501676,
+  "priorLostPassAUsd": 5.291298,
+  "cumulativeSection601Usd": 13.525078,
+  "capUsd": 15.84
+ },
+ "note": "§35: Phase 3 remains OPEN even on a pass. Next is the zero-cost Phase 3 closure synthesis."
+}

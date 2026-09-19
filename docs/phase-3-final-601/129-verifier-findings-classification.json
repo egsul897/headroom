@@ -1,0 +1,170 @@
+{
+ "artifact": "PHASE 3 / 6.01 DEPENDENCY-DELIVERY REMEDIATION §25/§26 - every verifier finding of the failed run, classified against the delivery hypothesis",
+ "at": "2026-09-19T03:02:34.715Z",
+ "paidCalls": 0,
+ "source": "docs/phase-3-final-601/113-verifier.json (frozen, not re-run)",
+ "counts": {
+  "total": 11,
+  "MATERIAL": 8,
+  "UNCERTAIN": 1,
+  "NON_MATERIAL": 2,
+  "deterministic": 7,
+  "semantic": 4
+ },
+ "findings": [
+  {
+   "ordinal": 0,
+   "findingId": "5cdae40b83930f7ba8216f5094376ef6d7f22916f510049c506dac963b707215",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "MATERIAL",
+   "irPath": "rules[].exceptions",
+   "ruleOrDefinitionId": "ir-rule:170e314ceb35e54072b7ddba; ir-rule:49f22aee601dde5b8b8162d5; ir-rule:31ef4cb0be0026182f97f8ea",
+   "verificationMethod": "SEMANTIC_ONLY",
+   "touchesARuleThatReportedMissingContext": false,
+   "classification": "NOT_ATTRIBUTABLE_TO_DELIVERY_FROM_THE_FROZEN_EVIDENCE",
+   "rationale": "the finding is attached to rules that did not report missing context; nothing in the frozen evidence ties it to the delivery gap. It is neither closed nor excused by this remediation.",
+   "resolutionStatus": "OPEN"
+  },
+  {
+   "ordinal": 1,
+   "findingId": "912e4ba0fce2e6ce4e51186060abe577242ed53362b92af1df6cb8a873146035",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "MATERIAL",
+   "irPath": "rules[].capacityExpression.gatedBy.operands[].operands[]",
+   "ruleOrDefinitionId": "ir-rule:4e35da6548219132151835ea; ir-rule:7adc1ed7ad97b916a91ee39a",
+   "verificationMethod": "SEMANTIC_ONLY",
+   "touchesARuleThatReportedMissingContext": false,
+   "classification": "NOT_ATTRIBUTABLE_TO_DELIVERY_FROM_THE_FROZEN_EVIDENCE",
+   "rationale": "the finding is attached to rules that did not report missing context; nothing in the frozen evidence ties it to the delivery gap. It is neither closed nor excused by this remediation.",
+   "resolutionStatus": "OPEN"
+  },
+  {
+   "ordinal": 2,
+   "findingId": "74ce23bc8a8f70914c04cc994c4438fe02703af41c45f0839e7a53c682b300dc",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "MATERIAL",
+   "irPath": "rules[].dependsOn",
+   "ruleOrDefinitionId": "ir-rule:40a36af71a396edc636637b5",
+   "verificationMethod": "SEMANTIC_ONLY",
+   "touchesARuleThatReportedMissingContext": false,
+   "classification": "NOT_ATTRIBUTABLE_TO_DELIVERY_FROM_THE_FROZEN_EVIDENCE",
+   "rationale": "the finding is attached to rules that did not report missing context; nothing in the frozen evidence ties it to the delivery gap. It is neither closed nor excused by this remediation.",
+   "resolutionStatus": "OPEN"
+  },
+  {
+   "ordinal": 3,
+   "findingId": "fe2b53b7626ddb0ba36a2e0b1299a9203e338715c8ddd3f557976a03cc2628a6",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "UNCERTAIN",
+   "irPath": "rules[].entityScope / rules[].entityScopeExcluded",
+   "ruleOrDefinitionId": null,
+   "verificationMethod": "SEMANTIC_ONLY",
+   "touchesARuleThatReportedMissingContext": false,
+   "classification": "NOT_ATTRIBUTABLE_TO_DELIVERY_FROM_THE_FROZEN_EVIDENCE",
+   "rationale": "the finding is attached to rules that did not report missing context; nothing in the frozen evidence ties it to the delivery gap. It is neither closed nor excused by this remediation.",
+   "resolutionStatus": "OPEN"
+  },
+  {
+   "ordinal": 4,
+   "findingId": "408497d17f4d0467d62a5217064db4aa50a70397faed87daed397b5dc94e1923",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "ruleOrDefinitionId": null,
+   "verificationMethod": "DETERMINISTIC_ONLY",
+   "touchesARuleThatReportedMissingContext": false,
+   "classification": "NOT_ATTRIBUTABLE_TO_DELIVERY_FROM_THE_FROZEN_EVIDENCE",
+   "rationale": "the finding is attached to rules that did not report missing context; nothing in the frozen evidence ties it to the delivery gap. It is neither closed nor excused by this remediation.",
+   "resolutionStatus": "OPEN"
+  },
+  {
+   "ordinal": 5,
+   "findingId": "408497d17f4d0467d62a5217064db4aa50a70397faed87daed397b5dc94e1923",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "ruleOrDefinitionId": null,
+   "verificationMethod": "DETERMINISTIC_ONLY",
+   "touchesARuleThatReportedMissingContext": false,
+   "classification": "NOT_ATTRIBUTABLE_TO_DELIVERY_FROM_THE_FROZEN_EVIDENCE",
+   "rationale": "the finding is attached to rules that did not report missing context; nothing in the frozen evidence ties it to the delivery gap. It is neither closed nor excused by this remediation.",
+   "resolutionStatus": "OPEN"
+  },
+  {
+   "ordinal": 6,
+   "findingId": "408497d17f4d0467d62a5217064db4aa50a70397faed87daed397b5dc94e1923",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "ruleOrDefinitionId": null,
+   "verificationMethod": "DETERMINISTIC_ONLY",
+   "touchesARuleThatReportedMissingContext": false,
+   "classification": "NOT_ATTRIBUTABLE_TO_DELIVERY_FROM_THE_FROZEN_EVIDENCE",
+   "rationale": "the finding is attached to rules that did not report missing context; nothing in the frozen evidence ties it to the delivery gap. It is neither closed nor excused by this remediation.",
+   "resolutionStatus": "OPEN"
+  },
+  {
+   "ordinal": 7,
+   "findingId": "408497d17f4d0467d62a5217064db4aa50a70397faed87daed397b5dc94e1923",
+   "findingType": "MISSING_BASKET",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "ruleOrDefinitionId": null,
+   "verificationMethod": "DETERMINISTIC_ONLY",
+   "touchesARuleThatReportedMissingContext": false,
+   "classification": "NOT_ATTRIBUTABLE_TO_DELIVERY_FROM_THE_FROZEN_EVIDENCE",
+   "rationale": "the finding is attached to rules that did not report missing context; nothing in the frozen evidence ties it to the delivery gap. It is neither closed nor excused by this remediation.",
+   "resolutionStatus": "OPEN"
+  },
+  {
+   "ordinal": 8,
+   "findingId": "0737f17fd453024fedda146663cf161151bc752f17c1dea21760fbb287872dbc",
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "irPath": null,
+   "ruleOrDefinitionId": null,
+   "verificationMethod": "DETERMINISTIC_ONLY",
+   "touchesARuleThatReportedMissingContext": false,
+   "classification": "NOT_ATTRIBUTABLE_TO_DELIVERY_FROM_THE_FROZEN_EVIDENCE",
+   "rationale": "the finding is attached to rules that did not report missing context; nothing in the frozen evidence ties it to the delivery gap. It is neither closed nor excused by this remediation.",
+   "resolutionStatus": "OPEN"
+  },
+  {
+   "ordinal": 9,
+   "findingId": "1fe65efe2ee5c12b2a7085c10c1b07654401eb985c02b852cd80fd0d2f335527",
+   "findingType": "WRONG_ENTITY_SCOPE",
+   "severity": "NON_MATERIAL",
+   "irPath": null,
+   "ruleOrDefinitionId": null,
+   "verificationMethod": "DETERMINISTIC_ONLY",
+   "touchesARuleThatReportedMissingContext": false,
+   "classification": "NOT_ATTRIBUTABLE_TO_DELIVERY_FROM_THE_FROZEN_EVIDENCE",
+   "rationale": "the finding is attached to rules that did not report missing context; nothing in the frozen evidence ties it to the delivery gap. It is neither closed nor excused by this remediation.",
+   "resolutionStatus": "OPEN"
+  },
+  {
+   "ordinal": 10,
+   "findingId": "ea4b35d164fedb4fae7a504a71a20edd7145e54256831891874831ffea3ff34d",
+   "findingType": "MISSING_RECLASSIFICATION",
+   "severity": "NON_MATERIAL",
+   "irPath": null,
+   "ruleOrDefinitionId": null,
+   "verificationMethod": "DETERMINISTIC_ONLY",
+   "touchesARuleThatReportedMissingContext": false,
+   "classification": "NOT_ATTRIBUTABLE_TO_DELIVERY_FROM_THE_FROZEN_EVIDENCE",
+   "rationale": "the finding is attached to rules that did not report missing context; nothing in the frozen evidence ties it to the delivery gap. It is neither closed nor excused by this remediation.",
+   "resolutionStatus": "OPEN"
+  }
+ ],
+ "summary": {
+  "total": 11,
+  "plausiblyDeliveryCaused": 0,
+  "notAttributableToDelivery": 11
+ },
+ "section26_noGateWeakening": {
+  "passCUnchanged": "no change was made to Pass C reconciliation, its completeness rule or its material-missing accounting",
+  "trustGatesUnchanged": "no change was made to the trust gate, the verifier, the scorer or any threshold",
+  "whatChanged": "only what a shard is HANDED before it is called, plus two purely additive audit records (the MISSING_CONTEXT classification and the tool-usage counters)",
+  "verified": "the diff touches lib/contract-model/compiler/semantic/{required-dependencies,missing-context-contract,shard-planner,shard-types,shard-executor,compile,types}.ts and no verification module"
+ }
+}

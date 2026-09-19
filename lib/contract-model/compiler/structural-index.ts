@@ -479,6 +479,10 @@ export function buildStructuralIndex(nodesByDocument: Map<string, { text: string
     definitionsByDocumentSorted.set(d.documentId, list);
   }
   for (const list of definitionsByDocumentSorted.values()) list.sort((a, b) => a.charStart - b.charStart);
+  const lookupDefinition = (term: string, documentId?: string): DetectedDefinition | undefined => {
+    const normalized = term.toLowerCase().replace(/\s+/g, " ").trim();
+    return documentId ? (definitionsByDocumentSorted.get(documentId) ?? []).find((d) => d.normalizedTerm === normalized) : definitionsByNormalizedTerm.get(normalized);
+  };
 
   const referencesBySourceId = new Map<string, DetectedReference[]>();
   const referencesByTargetId = new Map<string, DetectedReference[]>();
@@ -560,20 +564,16 @@ export function buildStructuralIndex(nodesByDocument: Map<string, { text: string
       return pool.filter((n) => n.nodeId !== nodeId);
     },
     getDescendants,
-    getDefinition: (term, documentId) => {
-      const normalized = term.toLowerCase().replace(/\s+/g, " ").trim();
-      if (documentId) return (definitionsByDocumentSorted.get(documentId) ?? []).find((d) => d.normalizedTerm === normalized);
-      return definitionsByNormalizedTerm.get(normalized);
-    },
+    getDefinition: (term, documentId) => lookupDefinition(term, documentId),
     getDefinitionFullText: (term, documentId) => {
-      const normalized = term.toLowerCase().replace(/\s+/g, " ").trim();
-      const def = documentId ? (definitionsByDocumentSorted.get(documentId) ?? []).find((d) => d.normalizedTerm === normalized) : definitionsByNormalizedTerm.get(normalized);
+      const def = lookupDefinition(term, documentId);
       if (!def) return undefined;
       const doc = nodesByDocument.get(def.documentId);
       if (!doc) return undefined;
       const sameDocumentDefs = definitionsByDocumentSorted.get(def.documentId) ?? [];
       const ownIndex = sameDocumentDefs.findIndex((d) => d.charStart === def.charStart && d.normalizedTerm === def.normalizedTerm);
-      const next = ownIndex >= 0 ? sameDocumentDefs[ownIndex + 1] : undefined;
+      // A NESTED declaration (one inside another definition's sentence) never ends the enclosing definition's span.
+      const next = ownIndex >= 0 ? sameDocumentDefs.slice(ownIndex + 1).find((d) => !d.nested) : undefined;
       const spanEnd = next ? next.charStart : doc.text.length;
       return doc.text.slice(def.charStart, spanEnd);
     },
@@ -610,4 +610,26 @@ export function buildStructuralIndex(nodesByDocument: Map<string, { text: string
       return result.status === "UNIQUE" ? result.node : undefined;
     },
   };
+}
+
+/**
+ * PHASE 3 / 6.01 remediation - a DISCLOSED grammatical-number variant of a term that is NOT itself defined
+ * ("Incremental Facilities" cited, "Incremental Facility" defined). Never used as a silent match: the certified OPEN-2
+ * invariant (tests/certification/part-b-terminal-recert-open2-independent.test.ts) requires a plural query to be refused
+ * as NOT_FOUND rather than served the singular's own text/amendment history under a different name. Callers use this
+ * only to NAME the defined variant in a refusal or a read-only context reason, so the exact term can then be queried.
+ */
+export function findDefinedTermVariant(index: StructuralIndex, term: string, documentId?: string): DetectedDefinition | undefined {
+  const normalized = term.toLowerCase().replace(/\s+/g, " ").trim();
+  if (index.getDefinition(normalized, documentId)) return undefined;
+  const candidates: string[] = [];
+  if (/ies$/.test(normalized)) candidates.push(normalized.replace(/ies$/, "y"));
+  if (!/(?:ss|us|is)$/.test(normalized)) {
+    if (/es$/.test(normalized)) candidates.push(normalized.replace(/es$/, ""));
+    if (/s$/.test(normalized)) candidates.push(normalized.replace(/s$/, ""));
+  }
+  if (/y$/.test(normalized)) candidates.push(normalized.replace(/y$/, "ies"));
+  if (!/s$/.test(normalized)) candidates.push(`${normalized}s`);
+  for (const c of candidates) { if (c.length < 2) continue; const hit = index.getDefinition(c, documentId); if (hit) return hit; }
+  return undefined;
 }

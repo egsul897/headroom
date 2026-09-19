@@ -1,0 +1,62 @@
+{
+ "artifact": "HD-4 §19 - real subprocess SIGKILL recovery",
+ "at": "2026-09-16T02:30:35.979Z",
+ "child": "scripts/phase-3-601-hd4-crash-child.ts launched as ONE node process (node --import tsx), scripted provider with 120 ms per call",
+ "killAfterRecords": 5,
+ "delayMs": 120,
+ "control": {
+  "dir": "/tmp/hd4-sigkill-control-qUOXKU",
+  "hash": "716dc232aee0e181b21a9f7747af4d2d74d06072fe085af821c0ba5ddd3ca4b9",
+  "logicalCalls": 14,
+  "liveCalls": 14,
+  "ms": 545
+ },
+ "crash": {
+  "dir": "/tmp/hd4-sigkill-crash-1pmuNo",
+  "pid": 11318,
+  "recordsAtKill": 5,
+  "signal": "SIGKILL",
+  "exitCode": null,
+  "childResultWritten": false,
+  "frozenInventoryWritten": false,
+  "ms": 1117
+ },
+ "restart": {
+  "source": "EXECUTED",
+  "usable": true,
+  "hash": "716dc232aee0e181b21a9f7747af4d2d74d06072fe085af821c0ba5ddd3ca4b9",
+  "accounting": {
+   "logicalCalls": 14,
+   "liveCalls": 9,
+   "replayedCalls": 5,
+   "liveCostUsd": 0.484,
+   "historicalReplayedCostUsd": 0.258,
+   "providerCallsAvoided": 5
+  },
+  "liveCallSequence": [
+   "pass-1:semantic_inventory",
+   "pass-1:semantic_inventory_gap",
+   "pass-2:semantic_inventory",
+   "pass-2:semantic_inventory",
+   "pass-2:semantic_inventory",
+   "pass-2:semantic_inventory",
+   "pass-2:semantic_inventory",
+   "pass-2:semantic_inventory",
+   "pass-2:semantic_inventory_gap"
+  ],
+  "replayPrefixInOrder": true,
+  "interruptedCallExecutedLive": true,
+  "noPersistedCallReExecuted": true,
+  "hashEqualsControl": true,
+  "projectionEqualsControl": true,
+  "telemetryCostEqualsControl": true,
+  "ms": 530
+ },
+ "thirdLaunch": {
+  "source": "RESUMED_FROM_ENSEMBLE_PERSISTENCE",
+  "liveCalls": 0,
+  "hashEqualsControl": true
+ },
+ "passed": true,
+ "failures": []
+}

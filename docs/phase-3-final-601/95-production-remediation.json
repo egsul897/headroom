@@ -1,0 +1,102 @@
+{
+ "artifact": "PHASE 3 / 6.01 TRUST-FAILURE REMEDIATION §11-§15 - production remediation (minimum fix, general)",
+ "at": "2026-09-17T16:33:56.700Z",
+ "startingSha": "51fda653190d6859096be145245406b1c9329c58",
+ "sha": "e38bbc3cad3854f1826cdd0e9d4231b32de00ca1",
+ "productionFilesChanged": [
+  "lib/contract-model/compiler/semantic-accountability/reference-resolver.ts",
+  "lib/contract-model/compiler/semantic-accountability/types.ts",
+  "lib/contract-model/compiler/semantic/compile.ts",
+  "lib/contract-model/compiler/semantic/shard-planner.ts",
+  "lib/contract-model/compiler/semantic/shard-types.ts",
+  "lib/contract-model/compiler/semantic/tools.ts",
+  "lib/contract-model/compiler/semantic/types.ts",
+  "lib/contract-model/compiler/structural-definitions.ts",
+  "lib/contract-model/compiler/structural-index.ts"
+ ],
+ "diffStat": ".../semantic-accountability/reference-resolver.ts  |  61 +++++-\n .../compiler/semantic-accountability/types.ts      |   2 +-\n lib/contract-model/compiler/semantic/compile.ts    |   8 +-\n .../compiler/semantic/shard-planner.ts             | 217 +++++++++++++++------\n .../compiler/semantic/shard-types.ts               |  25 ++-\n lib/contract-model/compiler/semantic/tools.ts      |  87 +++++++--\n lib/contract-model/compiler/semantic/types.ts      |   7 +\n .../compiler/structural-definitions.ts             |  70 ++++++-\n lib/contract-model/compiler/structural-index.ts    |  38 +++-\n scripts/phase-3-601-preflight.ts                   |  29 ++-\n 10 files changed, 451 insertions(+), 93 deletions(-)",
+ "harnessFilesChanged": [
+  "scripts/phase-3-601-preflight.ts (deterministic operative-state fact wiring)",
+  "scripts/phase-3-601-final-paid-score.ts (HD-5, refuses to overwrite pinned 83/84)",
+  "scripts/phase-3-601-final-paid-finalize.ts (HD-6)"
+ ],
+ "fixes": [
+  {
+   "layer": "A planner/context composition",
+   "file": "lib/contract-model/compiler/semantic/shard-planner.ts",
+   "change": "REFERENCED_SECTION resolved through the generic reference resolver (heading-only duplicates excluded with disclosure, enclosing node, enumeration run) and served as DESCENDANTS text; REFERENCED_TERM forwarding-aware (target section/definition becomes a typed dependency of the same items); priorities CHAPEAU > REFERENCED_TERM > REFERENCED_SECTION > PARENT_ITEM with requiredBy ordering; fair-share admission per kind then remaining budget",
+   "rootCauses": [
+    "PLANNER_OMITTED_REQUIRED_LOCAL_CONTEXT",
+    "PLANNER_OMITTED_REQUIRED_DEFINITION",
+    "ATOMIC_UNIT_TOO_LARGE_FOR_CONTEXT_BUDGET (starvation)"
+   ]
+  },
+  {
+   "layer": "B dependency graph",
+   "file": "lib/contract-model/compiler/structural-definitions.ts",
+   "change": "'has the meaning' declarations detected; FORWARDING declarations carry a typed target (SECTION / DEFINITION / PREAMBLE); nested declarations flagged so they never cut the enclosing definition or become planner units",
+   "rootCauses": [
+    "PLANNER_OMITTED_REQUIRED_DEFINITION"
+   ]
+  },
+  {
+   "layer": "B dependency graph",
+   "file": "lib/contract-model/compiler/semantic-accountability/reference-resolver.ts",
+   "change": "RESOLVED_WITHIN_ENUMERATION_RUN: with a known referrer, a label shared by restarted sibling enumerations resolves to the occurrence in the referrer's own run; otherwise AMBIGUOUS as before",
+   "rootCauses": [
+    "SOURCE_CONTEXT_BOUNDARY_WRONG"
+   ]
+  },
+  {
+   "layer": "C bounded retrieval",
+   "file": "lib/contract-model/compiler/semantic/tools.ts",
+   "change": "getOperativeProvision falls through to the generic resolver on a heading-only duplicate; getReferencedProvision(fromNodeId) no longer refuses on a detected-reference ambiguity but resolves generically (candidates listed if still ambiguous); getDefinition follows a FORWARDING declaration one bounded hop (forwardedTo payload, same supersession discipline, budget accounted, served text/retrievedSource unchanged)",
+   "rootCauses": [
+    "RETRIEVAL_ROUTE_PRESENT_BUT_NOT_USABLE"
+   ]
+  },
+  {
+   "layer": "C bounded retrieval",
+   "file": "lib/contract-model/compiler/structural-index.ts (findDefinedTermVariant)",
+   "change": "a plural/singular citation of a term defined in the other grammatical number is still refused NOT_FOUND (OPEN-2 certified invariant: never served under a different name) but the refusal, and the planner's read-only context reason, NAME the defined variant so the exact term can be queried",
+   "rootCauses": [
+    "RETRIEVAL_ROUTE_PRESENT_BUT_NOT_USABLE"
+   ]
+  },
+  {
+   "layer": "D operative-state fact wiring",
+   "file": "scripts/phase-3-601-preflight.ts",
+   "change": "computeHarnessOperativeState: package graph must prove a single-document, never-amended instrument; the production computeOperativeContractState over the empty effect set supplies OPERATIVE_STATE_RESOLVED - production's own wiring (analysis/orchestrator.ts) was already correct",
+   "rootCauses": [
+    "OPERATIVE_STATE_WIRING_WRONG"
+   ]
+  },
+  {
+   "layer": "E shard decomposition",
+   "file": "lib/contract-model/compiler/semantic/shard-planner.ts + shard-types.ts",
+   "change": "must-link groups close over member units (no range fusion); SENTENCE_CONTINUATION links; compositional multi-slice primary rendering with provenance-carrying gap markers; primarySlices on every shard; SHARD_PLANNER_ALGORITHM_VERSION v2",
+   "rootCauses": [
+    "ATOMIC_UNIT_TOO_LARGE_FOR_CONTEXT_BUDGET"
+   ]
+  },
+  {
+   "layer": "trust audit (§18)",
+   "file": "lib/contract-model/compiler/semantic/compile.ts + types.ts",
+   "change": "execution.sharded.contextualEmissionsCredited: contextual emissions that survived into the stitched IR (0 by stitcher construction, now measured)",
+   "rootCauses": [
+    "audit-counter defect"
+   ]
+  }
+ ],
+ "notAltered": [
+  "Pass A semantic meaning / inventory contract",
+  "stitcher trust rules (owned items of an incomplete shard stay unresolved)",
+  "Pass C completeness definitions",
+  "verifier trust thresholds",
+  "the human reference set (B6 span preserved; its defect recorded, not edited)",
+  "scorer classification semantics beyond numeric correspondence",
+  "token/window limits (DEFAULT_SHARD_BUDGET and DEFAULT_TOOL_BUDGET unchanged)"
+ ],
+ "generality": "every fix operates on structural relationships (labels, parents, enumeration runs, declaration grammar), dependency edges (referenced terms/sections, forwarding targets), typed context requirements and generic retrieval rules; no section number, covenant name, term name, reference id or source string is special-cased (grep: none of 'Available Amount', '6.01', 'Chewy' appear in the changed production code as conditionals)",
+ "specialCaseGrep": []
+}

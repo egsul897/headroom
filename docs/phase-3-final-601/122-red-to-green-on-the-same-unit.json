@@ -1,0 +1,167 @@
+{
+ "artifact": "PHASE 3 / 6.01 DEPENDENCY-DELIVERY REMEDIATION §17/§18 - the same frozen inventory, the same owned material, the same shard identity: what the failed shard was handed before and after",
+ "at": "2026-09-19T03:02:29.684Z",
+ "paidCalls": 0,
+ "shardIdentityPreserved": {
+  "shardId": "shard:86cc5e439f113d6053a9",
+  "stillPresentInThePlan": true,
+  "ownedMaterialItemsBefore": 98,
+  "ownedMaterialItemsAfter": 98,
+  "ownedUnitsBefore": 13,
+  "ownedUnitsAfter": 13,
+  "primaryCharsBefore": 11801,
+  "primaryCharsAfter": 11801,
+  "note": "the shard was NOT split to make this green - it owns the same 13 units and the same material items it owned when it failed"
+ },
+ "contextBefore": {
+  "entries": 16,
+  "chars": 9946,
+  "budget": 10000,
+  "unresolvedEntries": 31,
+  "droppedForBudget": 25
+ },
+ "contextAfter": {
+  "requiredEntries": 63,
+  "requiredChars": 58774,
+  "requiredCeiling": 64000,
+  "interpretiveEntries": 2,
+  "interpretiveChars": 175,
+  "unresolvedEntries": 12,
+  "droppedForBudget": 0,
+  "certificate": {
+   "modelVersion": "required-dependency-delivery.v1",
+   "shardId": "shard:86cc5e439f113d6053a9",
+   "requiredDependenciesTotal": 69,
+   "requiredDependenciesResolved": 63,
+   "requiredDependenciesMaterialized": 53,
+   "requiredDependenciesBoundedExcerpt": 10,
+   "requiredDependenciesOwnedPrimarySource": 0,
+   "requiredDependenciesExternal": 0,
+   "requiredDependenciesUndeliverableDisclosed": 6,
+   "requiredDependenciesUnresolved": 0,
+   "requiredDependencyChars": 58774,
+   "optionalContextChars": 175,
+   "requiredTierAllocation": {
+    "ceilingChars": 64000,
+    "perEntryAllowanceChars": 3115,
+    "waterFilled": false
+   },
+   "undelivered": [],
+   "certificateStatus": "CERTIFIED_EXECUTABLE"
+  }
+ },
+ "theFiveKnownMissingDependencies": [
+  {
+   "dependency": "term:fixed incremental amount",
+   "before": {
+    "inInitialContext": false,
+    "unresolvedReason": null,
+    "result": "NOT_DERIVED_AT_ALL"
+   },
+   "after": {
+    "derived": true,
+    "evidence": [
+     "TRANSITIVE_DEFINITION_CLOSURE"
+    ],
+    "closureDepth": 3,
+    "via": "term:incremental cap",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "deliveredChars": 948,
+    "fullTextChars": 948,
+    "truncated": false,
+    "tier": "REQUIRED",
+    "result": "MATERIALIZED_IN_FULL_BEFORE_THE_MODEL"
+   }
+  },
+  {
+   "dependency": "term:voluntary prepayment incremental amount",
+   "before": {
+    "inInitialContext": false,
+    "unresolvedReason": null,
+    "result": "NOT_DERIVED_AT_ALL"
+   },
+   "after": {
+    "derived": true,
+    "evidence": [
+     "TRANSITIVE_DEFINITION_CLOSURE"
+    ],
+    "closureDepth": 3,
+    "via": "term:incremental cap",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "deliveredChars": 1009,
+    "fullTextChars": 1009,
+    "truncated": false,
+    "tier": "REQUIRED",
+    "result": "MATERIALIZED_IN_FULL_BEFORE_THE_MODEL"
+   }
+  },
+  {
+   "dependency": "term:ratio incremental amount",
+   "before": {
+    "inInitialContext": false,
+    "unresolvedReason": null,
+    "result": "NOT_DERIVED_AT_ALL"
+   },
+   "after": {
+    "derived": true,
+    "evidence": [
+     "TRANSITIVE_DEFINITION_CLOSURE"
+    ],
+    "closureDepth": 3,
+    "via": "term:incremental cap",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "deliveredChars": 2071,
+    "fullTextChars": 2071,
+    "truncated": false,
+    "tier": "REQUIRED",
+    "result": "MATERIALIZED_IN_FULL_BEFORE_THE_MODEL"
+   }
+  },
+  {
+   "dependency": "term:extension amount",
+   "before": {
+    "inInitialContext": false,
+    "unresolvedReason": null,
+    "result": "NOT_DERIVED_AT_ALL"
+   },
+   "after": {
+    "derived": true,
+    "evidence": [
+     "TRANSITIVE_DEFINITION_CLOSURE"
+    ],
+    "closureDepth": 3,
+    "via": "term:incremental cap",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "deliveredChars": 601,
+    "fullTextChars": 601,
+    "truncated": false,
+    "tier": "REQUIRED",
+    "result": "MATERIALIZED_IN_FULL_BEFORE_THE_MODEL"
+   }
+  },
+  {
+   "dependency": "section:2.18(b)",
+   "before": {
+    "inInitialContext": false,
+    "unresolvedReason": null,
+    "result": "NOT_DERIVED_AT_ALL"
+   },
+   "after": {
+    "derived": true,
+    "evidence": [
+     "CROSS_REFERENCE_IN_REQUIRED_DEFINITION"
+    ],
+    "closureDepth": 2,
+    "via": "term:incremental equivalent debt",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "deliveredChars": 572,
+    "fullTextChars": 572,
+    "truncated": false,
+    "tier": "REQUIRED",
+    "result": "MATERIALIZED_IN_FULL_BEFORE_THE_MODEL"
+   }
+  }
+ ],
+ "allFiveAccountedForBeforeExecution": true,
+ "honestLimit": "this is a planning measurement, not an execution result. It proves what the shard is HANDED, which is the property that failed. Whether the model then compiles it correctly is a separate question that only a paid run answers, and this mission does not authorize one."
+}

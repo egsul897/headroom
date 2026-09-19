@@ -1,0 +1,1900 @@
+{
+ "artifact": "PHASE 3 FINAL / 6.01 POST-REMEDIATION PAID REVALIDATION §21-§23 - corrected (HD-5) score against the 8 frozen Section 6.01 human reference items",
+ "at": "2026-09-19T01:01:26.369Z",
+ "scoredAfterOutputsFrozen": true,
+ "referenceSetReachedNoPrompt": true,
+ "referenceSetSha256": "e7f863e58ee53ca499598f2a8194ff98a0f8f74d2a8ced23b6f12b96c2a64036",
+ "referenceSetEdited": false,
+ "inputs": {
+  "compileResult": "tests/fixtures/unseen-packages/phase-3-final-601-revalidation/compile-result.json",
+  "verifyResult": "tests/fixtures/unseen-packages/phase-3-final-601-revalidation/verify-result.json",
+  "numericModule": "scripts/phase-3-601-score-numeric.ts (corrected HD-5)"
+ },
+ "scorer": {
+  "percentsAreFractionsOnBothSides": true,
+  "moneyFullyScaled": true,
+  "unitAware": true,
+  "rawSourcePreservedAsProvenance": true,
+  "spanTruncationCannotManufactureAContradiction": true
+ },
+ "matchingRule": "absolute source-span overlap between each frozen reference span and each Pass A inventory item's span (region base + region-relative offsets), then that item's Pass C disposition, IR lineage paths and quantitative dispositions. Section labels and numbers never establish a match.",
+ "silentMissRule": "a reference item is a SILENT miss only when no inventory item covers its span AND the unit carried no explicit review signal (compile REVIEW_REQUIRED/FAILED, Pass C semanticallyComplete=false, or verifier REVIEW_REQUIRED/FAILED).",
+ "unitFlaggedForReview": true,
+ "compileStatus": "PARTIAL",
+ "verifyStatus": "MATERIAL_DISCREPANCY",
+ "semanticallyComplete": false,
+ "CRITICAL": {
+  "total": 4,
+  "correct": 1,
+  "explicitSafeLimitation": 3,
+  "incorrect": 0,
+  "silentMisses": 0
+ },
+ "MATERIAL": {
+  "total": 4,
+  "correct": 0,
+  "explicitSafeLimitation": 4,
+  "incorrect": 0,
+  "silentMisses": 0
+ },
+ "counts": {
+  "EXPLICITLY_MISSING": 1,
+  "FOUND_BUT_AMBIGUOUS": 6,
+  "FOUND_AND_REPRESENTED": 1
+ },
+ "rootCauseCounts": {
+  "PASS_B_COMPOSITION": 1,
+  "PASS_C_ACCOUNTABILITY": 6
+ },
+ "b6ReferenceSpanVerdict": {
+  "erroneous": true,
+  "classification": "REFERENCE_SET_ERROR",
+  "detail": "span end 634400 bisects a token: \"...(x) $360.0 milli\" | \"on and (...\" (a money scale word is cut)",
+  "originalSpanPreserved": true
+ },
+ "referenceSetErrors": [
+  {
+   "id": "B2",
+   "erroneous": true,
+   "classification": "REFERENCE_SET_ERROR",
+   "detail": "span end 614500 bisects a token: \"...ations being inc\" | \"urred in...\"",
+   "originalSpanPreserved": true
+  },
+  {
+   "id": "B4",
+   "erroneous": true,
+   "classification": "REFERENCE_SET_ERROR",
+   "detail": "span end 630700 bisects a token: \"...or Preferred Sto\" | \"ck of an...\"",
+   "originalSpanPreserved": true
+  },
+  {
+   "id": "B6",
+   "erroneous": true,
+   "classification": "REFERENCE_SET_ERROR",
+   "detail": "span end 634400 bisects a token: \"...(x) $360.0 milli\" | \"on and (...\" (a money scale word is cut)",
+   "originalSpanPreserved": true
+  }
+ ],
+ "quantitative": {
+  "materialQuantitativeValues": 50,
+  "materialQuantitativeValuesMissing": 2,
+  "totalTrackedValues": 50,
+  "byDisposition": {
+   "VALUE_MISSING_FROM_COMPOSITION": 2,
+   "VALUE_PRESENT_IN_IR": 41,
+   "VALUE_DISPOSITIONED": 7
+  },
+  "referenceItemContradictions": [],
+  "silentMaterialQuantitativeCorruption": 0
+ },
+ "extraOutput": {
+  "materialRepresentedItemsOutsideEveryReferenceSpan": 180,
+  "ofThoseOutsideSection601": 0,
+  "classification": {
+   "VALID_ADDITIONAL_SOURCE_BACKED": 180,
+   "INFORMATIONAL": 0,
+   "DUPLICATE": 0,
+   "UNSUPPORTED": 0,
+   "HALLUCINATED_OR_UNVERIFIABLE": 0
+  },
+  "rejectedUnverifiableItemsAtFreeze": 0,
+  "authoritativeHallucinations": 0,
+  "basis": "every inventory item is excerpt-anchored to verbatim source at recorded offsets; Pass A discards any proposal whose excerpt is not a real substring of the resolved source context and counts the discards. Extra material output therefore rests on real source the 8-item reference slice never enumerated.",
+  "sample": [
+   {
+    "itemId": "inv-item:1317b29a2957072ca6653789",
+    "span": [
+     612195,
+     612310
+    ],
+    "citation": "§6.01",
+    "proposition": "Exception (1)(X): Indebtedness incurred pursuant to the Loan Documents (including pursuant to Section 2.18, 2.19 or 2.22)."
+   },
+   {
+    "itemId": "inv-item:2a70194d073f5a0ca3d3072d",
+    "span": [
+     612377,
+     612496
+    ],
+    "citation": "§6.01",
+    "proposition": "Exception (1)(Y): Indebtedness incurred pursuant to the ABL Loan Documents up to an aggregate principal amount outstanding at any one time n"
+   },
+   {
+    "itemId": "inv-item:de8407fd1b19c24bdde0720b",
+    "span": [
+     612497,
+     612519
+    ],
+    "citation": "§6.01",
+    "proposition": "Fixed alternative cap for the ABL basket: $800.0 million."
+   },
+   {
+    "itemId": "inv-item:04e0d68a10028d89e8335fe6",
+    "span": [
+     612520,
+     612542
+    ],
+    "citation": "§6.01",
+    "proposition": "Alternative cap for the ABL basket: the Borrowing Base."
+   },
+   {
+    "itemId": "inv-item:1f66b3668e0c2296f2403ab2",
+    "span": [
+     612543,
+     612621
+    ],
+    "citation": "§6.01",
+    "proposition": "The Borrowing Base is as defined in the ABL Credit Agreement, measured as of the date of the relevant incurrence."
+   },
+   {
+    "itemId": "inv-item:bc404f777d4c90cae11f3206",
+    "span": [
+     612622,
+     612754
+    ],
+    "citation": "§6.01",
+    "proposition": "Exception (1)(Z): Indebtedness in an aggregate principal amount at the time of incurrence not exceeding the Fixed Incremental Amount at such"
+   },
+   {
+    "itemId": "inv-item:4efaadf6a9c376b7b618a2f0",
+    "span": [
+     614637,
+     614714
+    ],
+    "citation": "§6.01",
+    "proposition": "This special numerator treatment applies solely for the purpose of determining the ratio under clause (ii); component (ii) then continues as"
+   },
+   {
+    "itemId": "inv-item:53a78db5900f5aa231e76e78",
+    "span": [
+     614715,
+     614835
+    ],
+    "citation": "§6.01",
+    "proposition": "Component (iii) of the exception (4) cap: an amount equal to the aggregate amount of all Capitalized Lease Obligations outstanding as of the"
+   },
+   {
+    "itemId": "inv-item:3c1f3219a046a3b1c45895aa",
+    "span": [
+     614868,
+     614949
+    ],
+    "citation": "§6.01",
+    "proposition": "Capitalized Lease Obligations arising out of any Sale and Lease-Back Transactions are excepted from the general limitation on incurrence of "
+   },
+   {
+    "itemId": "inv-item:d2ba1a123dd6ad46fe7a576a",
+    "span": [
+     614958,
+     615051
+    ],
+    "citation": "§6.01",
+    "proposition": "Indebtedness for vehicle and equipment financings incurred in the ordinary course of business is excepted from the general limitation on inc"
+   },
+   {
+    "itemId": "inv-item:40b3cae7a8c133179d68a88d",
+    "span": [
+     615054,
+     615181
+    ],
+    "citation": "§6.01",
+    "proposition": "Indebtedness incurred by any Restricted Party constituting reimbursement obligations with respect to letters of credit is excepted from the "
+   },
+   {
+    "itemId": "inv-item:8d7774b6026966560c4c3b33",
+    "span": [
+     615182,
+     615425
+    ],
+    "citation": "§6.01",
+    "proposition": "Permitted Indebtedness under this exception includes bankers' acceptances, bank guarantees, warehouse receipts or similar instruments issued"
+   }
+  ]
+ },
+ "items": [
+  {
+   "id": "A1",
+   "section": "6.01(a)",
+   "materiality": "CRITICAL",
+   "category": "A high-value restrictions",
+   "span": [
+    608901,
+    612151
+   ],
+   "description": "Ratio debt incurrence test: pari passu secured FLLR <= greater of 2.00x and prior; junior secured SSLR <= greater of 3.00x/prior OR ICR >= lesser of 1.75x/prior; unsecured TLR <= greater of 4.00x/prior OR ICR >= lesser of 1.75x/prior (Permitted Ratio Debt)",
+   "classification": "EXPLICITLY_MISSING",
+   "recovered": false,
+   "explicitLimitation": true,
+   "incorrect": false,
+   "silentMiss": false,
+   "rootCause": "PASS_B_COMPOSITION",
+   "coveringInventoryItems": 43,
+   "coveringMaterialItems": 42,
+   "dispositions": [
+    {
+     "id": "inv-item:98351c6c66ffdf64b6fe9c2d",
+     "materiality": "INFORMATIONAL",
+     "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+     "support": "SINGLE_RUN",
+     "irPaths": []
+    },
+    {
+     "id": "inv-item:e10e617b96b8348d5455be28",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[0]"
+     ]
+    },
+    {
+     "id": "inv-item:9e120de351f707c0ec3b0662",
+     "materiality": "MATERIAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "definitions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:d330a64ee8f87f346d67e08a",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[0]",
+      "rules[1]"
+     ]
+    },
+    {
+     "id": "inv-item:4f7c5a7a1cf0e23ca40916b7",
+     "materiality": "MATERIAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "definitions[0]",
+      "definitions[1]"
+     ]
+    },
+    {
+     "id": "inv-item:ff79495c723f146ca01743c2",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[0]"
+     ]
+    },
+    {
+     "id": "inv-item:269c7817cf165805ec1bd167",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[1]"
+     ]
+    },
+    {
+     "id": "inv-item:21b31143ccee9d52545456e2",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[1]"
+     ]
+    },
+    {
+     "id": "inv-item:baff56f9884545e7760cccf4",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[1]"
+     ]
+    },
+    {
+     "id": "inv-item:0ea5462c92c07f5e753e418c",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[1]"
+     ]
+    },
+    {
+     "id": "inv-item:bc63a0ab69b24741cc397217",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[2]"
+     ]
+    },
+    {
+     "id": "inv-item:c2d04cb6d339087b5bd9225b",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[2]"
+     ]
+    },
+    {
+     "id": "inv-item:98a0521946466433566bce8f",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[3]"
+     ]
+    },
+    {
+     "id": "inv-item:dd4c6c1069555ceb17a531fc",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[3]",
+      "rules[4]",
+      "rules[5]"
+     ]
+    },
+    {
+     "id": "inv-item:f617cb1f11c920845ecf7f8b",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[3]",
+      "rules[4]",
+      "rules[5]"
+     ]
+    },
+    {
+     "id": "inv-item:77f0943a8595e7e84a24de3d",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[3]",
+      "rules[4]",
+      "rules[5]"
+     ]
+    },
+    {
+     "id": "inv-item:0cd509fb5543eb1d6943a174",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[3].conditions[1]",
+      "rules[4].conditions[0]",
+      "rules[5].conditions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:a628d61256ad0c924f2924df",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[3].conditions[1]"
+     ]
+    },
+    {
+     "id": "inv-item:c00c9c8ac21e79894fd8a270",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[4].conditions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:474d946ee9a3b20980ec83d1",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[5].conditions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:8f453bfb173c866afde89d12",
+     "materiality": "CRITICAL",
+     "disposition": "MISSING_FROM_COMPOSITION",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[3].capacityExpression",
+      "rules[4].capacityExpression",
+      "rules[5].capacityExpression"
+     ]
+    },
+    {
+     "id": "inv-item:eca10098935883693745b440",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[3].capacityExpression",
+      "rules[4].capacityExpression",
+      "rules[5].capacityExpression"
+     ]
+    },
+    {
+     "id": "inv-item:e3ae30f19a02f68be24f231f",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[3].conditions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:0d04271f84bce8c4ebee33a4",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[3].capacityExpression.gatedBy.right.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:b436b3ade9823c4bc9cf1f41",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[3].capacityExpression.gatedBy.right.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:8981140c2dd0849a3fb5ae83",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[3].capacityExpression.gatedBy.right.operands[1]"
+     ]
+    },
+    {
+     "id": "inv-item:023052e0eb8213fde32f112d",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[4].capacityExpression.gatedBy"
+     ]
+    },
+    {
+     "id": "inv-item:7af0754f7ac3707a4907b706",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[4].capacityExpression.gatedBy",
+      "rules[4].conditions[1]"
+     ]
+    },
+    {
+     "id": "inv-item:71e20dc5fe30ee0ef7f3514e",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[4].capacityExpression.gatedBy.operands[0].right.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:e6156100fa21cb82087d2f54",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[4].capacityExpression.gatedBy.operands[0].right.operands[1]"
+     ]
+    },
+    {
+     "id": "inv-item:57dbc556de9b2638ec4a1b51",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[4].capacityExpression.gatedBy.operands[1].right.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:c9bdb9430a07d644e6d0d9ec",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[4].capacityExpression.gatedBy.operands[1].right.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:2e7dd6c77c568f02553d2b66",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[4].capacityExpression.gatedBy.operands[1].right.operands[1]"
+     ]
+    },
+    {
+     "id": "inv-item:e5bfd93736395dadd9b7ca55",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[5].capacityExpression.gatedBy"
+     ]
+    },
+    {
+     "id": "inv-item:f47cb72d119751bcdeb575aa",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[5].capacityExpression.gatedBy",
+      "rules[5].conditions[1]"
+     ]
+    },
+    {
+     "id": "inv-item:bff1642b93868b4343863ff3",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[5].capacityExpression.gatedBy.operands[0].right.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:c5946e06b4c24f2b9c3b758d",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[5].capacityExpression.gatedBy.operands[0].right.operands[1]"
+     ]
+    },
+    {
+     "id": "inv-item:9862026e8e57089d1de3bf33",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[5].capacityExpression.gatedBy.operands[1]"
+     ]
+    },
+    {
+     "id": "inv-item:f664073a067b3e5c55db0d21",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[5].capacityExpression.gatedBy.operands[1].right.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:73bb247edd14c81cea0fb058",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[5].capacityExpression.gatedBy.operands[1].right.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:799319b99c4db8711c4013bc",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[5].capacityExpression.gatedBy.operands[1].right.operands[1]"
+     ]
+    },
+    {
+     "id": "inv-item:bf7636da3fa0b563029530b3",
+     "materiality": "MATERIAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "definitions[2]"
+     ]
+    },
+    {
+     "id": "inv-item:6b492c95b92b3ab88326eae8",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[6]",
+      "rules[7]",
+      "rules[8]",
+      "rules[9]"
+     ]
+    }
+   ],
+   "quantitative": {
+    "sourceNumbers": [],
+    "checks": [
+     {
+      "itemId": "inv-item:0d04271f84bce8c4ebee33a4",
+      "raw": "2.00:1.00",
+      "normalized": 2,
+      "unit": "x",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     },
+     {
+      "itemId": "inv-item:b436b3ade9823c4bc9cf1f41",
+      "raw": "2.00:1.00",
+      "normalized": 2,
+      "unit": "x",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     },
+     {
+      "itemId": "inv-item:71e20dc5fe30ee0ef7f3514e",
+      "raw": "3.00:1.00",
+      "normalized": 3,
+      "unit": "x",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     },
+     {
+      "itemId": "inv-item:57dbc556de9b2638ec4a1b51",
+      "raw": "1.75:1.00",
+      "normalized": 1.75,
+      "unit": "x",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     },
+     {
+      "itemId": "inv-item:c9bdb9430a07d644e6d0d9ec",
+      "raw": "1.75:1.00",
+      "normalized": 1.75,
+      "unit": "x",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     },
+     {
+      "itemId": "inv-item:bff1642b93868b4343863ff3",
+      "raw": "4.00:1.00",
+      "normalized": 4,
+      "unit": "x",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     },
+     {
+      "itemId": "inv-item:f664073a067b3e5c55db0d21",
+      "raw": "1.75:1.00",
+      "normalized": 1.75,
+      "unit": "x",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     },
+     {
+      "itemId": "inv-item:73bb247edd14c81cea0fb058",
+      "raw": "1.75:1.00",
+      "normalized": 1.75,
+      "unit": "x",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     }
+    ],
+    "contradictions": 0
+   },
+   "referenceSpan": {
+    "erroneous": false,
+    "classification": "SPAN_OK",
+    "detail": "span boundaries fall between tokens",
+    "originalSpanPreserved": true
+   }
+  },
+  {
+   "id": "B1",
+   "section": "6.01(b)(1)",
+   "materiality": "CRITICAL",
+   "category": "B permissions/baskets",
+   "span": [
+    612837,
+    613535
+   ],
+   "description": "Loan Document debt plus ABL facility debt capped at greater of $800.0M and the Borrowing Base, plus Fixed Incremental Amount (clause (Z))",
+   "classification": "FOUND_BUT_AMBIGUOUS",
+   "recovered": false,
+   "explicitLimitation": true,
+   "incorrect": false,
+   "silentMiss": false,
+   "rootCause": "PASS_C_ACCOUNTABILITY",
+   "coveringInventoryItems": 7,
+   "coveringMaterialItems": 7,
+   "dispositions": [
+    {
+     "id": "inv-item:b86c43a5fa39249735e51b7a",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[9].capacityExpression"
+     ]
+    },
+    {
+     "id": "inv-item:f28de5c981ae9d743b14f788",
+     "materiality": "MATERIAL",
+     "disposition": "AMBIGUOUS",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[9].unresolvedDependencies[0]"
+     ]
+    },
+    {
+     "id": "inv-item:d7c98f9e0feadf05d4c207ab",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[10]"
+     ]
+    },
+    {
+     "id": "inv-item:b8cdbab10e5c1e063ef8cffc",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[10].conditions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:b9100fca67047bd04e478113",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[10].conditions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:760bb758be14f66e744f566c",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[10].capacityExpression"
+     ]
+    },
+    {
+     "id": "inv-item:5686fdb6b309f85b367dd886",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[10].capacityExpression",
+      "rules[10].unresolvedDependencies[0]"
+     ]
+    }
+   ],
+   "quantitative": {
+    "sourceNumbers": [],
+    "checks": [],
+    "contradictions": 0
+   },
+   "referenceSpan": {
+    "erroneous": false,
+    "classification": "SPAN_OK",
+    "detail": "span boundaries fall between tokens",
+    "originalSpanPreserved": true
+   }
+  },
+  {
+   "id": "B2",
+   "section": "6.01(b)(4)",
+   "materiality": "MATERIAL",
+   "category": "B permissions/baskets",
+   "span": [
+    613535,
+    614500
+   ],
+   "description": "Capital lease / purchase money / sale-leaseback debt: greater of $360.0M and 50% EBITDA, plus amount incurrable with pro forma FLLR <= 2.50x, plus closing-date capital leases",
+   "classification": "FOUND_BUT_AMBIGUOUS",
+   "recovered": false,
+   "explicitLimitation": true,
+   "incorrect": false,
+   "silentMiss": false,
+   "rootCause": "PASS_C_ACCOUNTABILITY",
+   "coveringInventoryItems": 12,
+   "coveringMaterialItems": 12,
+   "dispositions": [
+    {
+     "id": "inv-item:5686fdb6b309f85b367dd886",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[10].capacityExpression",
+      "rules[10].unresolvedDependencies[0]"
+     ]
+    },
+    {
+     "id": "inv-item:328909d3e7e4cba317d9ef4c",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[10].capacityExpression"
+     ]
+    },
+    {
+     "id": "inv-item:eeb98170e0aba24ab1e099e6",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[10].capacityExpression.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:d0633f26f6f96164af087544",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[10].capacityExpression.operands[0].operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:d51d5d6fc3429998344ac7a4",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[10].capacityExpression.operands[0].operands[1]",
+      "rules[10].capacityExpression.operands[0].operands[1].operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:0739bdbe93621958f51f9537",
+     "materiality": "MATERIAL",
+     "disposition": "AMBIGUOUS",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[10].unresolvedDependencies[1]"
+     ]
+    },
+    {
+     "id": "inv-item:67e035c8cfd44416d619fbdf",
+     "materiality": "CRITICAL",
+     "disposition": "AMBIGUOUS",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[10].unresolvedDependencies[1]"
+     ]
+    },
+    {
+     "id": "inv-item:3e6b1a653c23ce488fb6843a",
+     "materiality": "MATERIAL",
+     "disposition": "AMBIGUOUS",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[10].unresolvedDependencies[1]"
+     ]
+    },
+    {
+     "id": "inv-item:87bc061442d8fcfd2f13aaa6",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[10].capacityExpression.operands[1]"
+     ]
+    },
+    {
+     "id": "inv-item:35e2dca58384f2f9d4375add",
+     "materiality": "CRITICAL",
+     "disposition": "UNSUPPORTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[10].capacityExpression.operands[1]",
+      "rules[10].capacityExpression.operands[1].left.attemptedStructure.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:8e570959a9257ef3630230d2",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[10].conditions[1]"
+     ]
+    },
+    {
+     "id": "inv-item:59315d4d02e6e65cea866b70",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[10].conditions[1]"
+     ]
+    }
+   ],
+   "quantitative": {
+    "sourceNumbers": [
+     {
+      "raw": "$360.0 million",
+      "value": 360000000,
+      "unit": "USD"
+     },
+     {
+      "raw": "50%",
+      "value": 0.5,
+      "unit": "%"
+     }
+    ],
+    "checks": [
+     {
+      "itemId": "inv-item:eeb98170e0aba24ab1e099e6",
+      "raw": "$360.0 million",
+      "normalized": 360000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:eeb98170e0aba24ab1e099e6",
+      "raw": "50%",
+      "normalized": 0.5,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:d0633f26f6f96164af087544",
+      "raw": "$360.0 million",
+      "normalized": 360000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:d51d5d6fc3429998344ac7a4",
+      "raw": "50%",
+      "normalized": 0.5,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:35e2dca58384f2f9d4375add",
+      "raw": "2.50:1.00",
+      "normalized": 2.5,
+      "unit": "x:1",
+      "contradiction": false,
+      "reason": "unit x:1 is not compared"
+     }
+    ],
+    "contradictions": 0
+   },
+   "referenceSpan": {
+    "erroneous": true,
+    "classification": "REFERENCE_SET_ERROR",
+    "detail": "span end 614500 bisects a token: \"...ations being inc\" | \"urred in...\"",
+    "originalSpanPreserved": true
+   }
+  },
+  {
+   "id": "B3",
+   "section": "6.01(b)(12)",
+   "materiality": "CRITICAL",
+   "category": "B permissions/baskets",
+   "span": [
+    621202,
+    623379
+   ],
+   "description": "(a) contribution debt up to 200% of net cash equity contributions (Contribution Indebtedness); (b) general debt basket greater of $720.0M and 100% EBITDA",
+   "classification": "FOUND_BUT_AMBIGUOUS",
+   "recovered": false,
+   "explicitLimitation": true,
+   "incorrect": false,
+   "silentMiss": false,
+   "rootCause": "PASS_C_ACCOUNTABILITY",
+   "coveringInventoryItems": 16,
+   "coveringMaterialItems": 16,
+   "dispositions": [
+    {
+     "id": "inv-item:5985fbc163bc921fa4711e57",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[21].capacityExpression"
+     ]
+    },
+    {
+     "id": "inv-item:597667c532328e67b64edf1e",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[21].capacityExpression.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:805052a570cf10b0912412d8",
+     "materiality": "MATERIAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[21].capacityExpression.operands[1]",
+      "rules[21].conditions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:e5d3460295d5383c2300f586",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[21].exceptions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:659e9216825c7831d706458e",
+     "materiality": "MATERIAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[21].capacityExpression.operands[1]",
+      "rules[21].conditions[1]",
+      "rules[21].unresolvedDependencies[0]",
+      "rules[21].unresolvedDependencies[1]"
+     ]
+    },
+    {
+     "id": "inv-item:4a638ab9cdad3d676457a030",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[21].exceptions[1]"
+     ]
+    },
+    {
+     "id": "inv-item:fed9e0690db9217a5bf9ce45",
+     "materiality": "MATERIAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[21].exceptions[1]",
+      "rules[21].unresolvedDependencies[2]"
+     ]
+    },
+    {
+     "id": "inv-item:d0f3cc1c3379d2005ffa73ba",
+     "materiality": "MATERIAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[21].exceptions[1]"
+     ]
+    },
+    {
+     "id": "inv-item:5a2395c1ce03f9fdcc626c5d",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[22].capacityExpression"
+     ]
+    },
+    {
+     "id": "inv-item:bf427f065936f838c8efb68a",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[22].capacityExpression",
+      "rules[22].conditions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:d31f00c365b249274a3d8d2d",
+     "materiality": "CRITICAL",
+     "disposition": "AMBIGUOUS",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[22].unresolvedDependencies[0]"
+     ]
+    },
+    {
+     "id": "inv-item:e11f6afea8b4746d1e47de46",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[22].capacityExpression"
+     ]
+    },
+    {
+     "id": "inv-item:73c267362035042b134286f3",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[22].capacityExpression.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:7156fe23d8deaead8784726b",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[22].capacityExpression.operands[1]"
+     ]
+    },
+    {
+     "id": "inv-item:52cb99788593930951c703bc",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[23].capacityExpression.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:7212829be604e98955d1a3cd",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[23].conditions[1]"
+     ]
+    }
+   ],
+   "quantitative": {
+    "sourceNumbers": [
+     {
+      "raw": "$720.0 million",
+      "value": 720000000,
+      "unit": "USD"
+     },
+     {
+      "raw": "200%",
+      "value": 2,
+      "unit": "%"
+     },
+     {
+      "raw": "100%",
+      "value": 1,
+      "unit": "%"
+     }
+    ],
+    "checks": [
+     {
+      "itemId": "inv-item:597667c532328e67b64edf1e",
+      "raw": "200%",
+      "normalized": 2,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:73c267362035042b134286f3",
+      "raw": "$720.0 million",
+      "normalized": 720000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:7156fe23d8deaead8784726b",
+      "raw": "100%",
+      "normalized": 1,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     }
+    ],
+    "contradictions": 0
+   },
+   "referenceSpan": {
+    "erroneous": false,
+    "classification": "SPAN_OK",
+    "detail": "span boundaries fall between tokens",
+    "originalSpanPreserved": true
+   }
+  },
+  {
+   "id": "B4",
+   "section": "6.01(b)(18)",
+   "materiality": "MATERIAL",
+   "category": "B permissions/baskets",
+   "span": [
+    630144,
+    630700
+   ],
+   "description": "Non-Guarantor Restricted Party debt basket: greater of $720.0M and 100% EBITDA (with refinancings)",
+   "classification": "FOUND_BUT_AMBIGUOUS",
+   "recovered": false,
+   "explicitLimitation": true,
+   "incorrect": false,
+   "silentMiss": false,
+   "rootCause": "PASS_C_ACCOUNTABILITY",
+   "coveringInventoryItems": 12,
+   "coveringMaterialItems": 12,
+   "dispositions": [
+    {
+     "id": "inv-item:4c1d218ebdc56d31c9be3aeb",
+     "materiality": "CRITICAL",
+     "disposition": "AMBIGUOUS",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[32].unresolvedDependencies[0]"
+     ]
+    },
+    {
+     "id": "inv-item:679f8f38f028b097a97b423a",
+     "materiality": "MATERIAL",
+     "disposition": "AMBIGUOUS",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[32].unresolvedDependencies[0]"
+     ]
+    },
+    {
+     "id": "inv-item:5e990ea51d639e0099a112d2",
+     "materiality": "MATERIAL",
+     "disposition": "AMBIGUOUS",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[32].unresolvedDependencies[0]"
+     ]
+    },
+    {
+     "id": "inv-item:4b67e79f9aefe8108d1cf48b",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[32].capacityExpression"
+     ]
+    },
+    {
+     "id": "inv-item:49feaf4b3f7b5641e75e7482",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[32].capacityExpression"
+     ]
+    },
+    {
+     "id": "inv-item:14bf30c684d85e867453b9a2",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[32].capacityExpression.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:532b30742e4d15408717c794",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[32].capacityExpression.operands[1]"
+     ]
+    },
+    {
+     "id": "inv-item:d8b3ca5024fda6a89a5df026",
+     "materiality": "MATERIAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[32].conditions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:35fc17346c5dbb597ffae6fb",
+     "materiality": "MATERIAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[32].conditions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:03177bf7aadcbfbd58eb007e",
+     "materiality": "MATERIAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[32].conditions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:818d99e0aa82b1e5d76f0c18",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[33].capacityExpression",
+      "rules[33].conditions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:62be348eda8f6057d636f5ad",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[34].capacityExpression"
+     ]
+    }
+   ],
+   "quantitative": {
+    "sourceNumbers": [
+     {
+      "raw": "$720.0 million",
+      "value": 720000000,
+      "unit": "USD"
+     },
+     {
+      "raw": "100%",
+      "value": 1,
+      "unit": "%"
+     }
+    ],
+    "checks": [
+     {
+      "itemId": "inv-item:49feaf4b3f7b5641e75e7482",
+      "raw": "$720.0 million",
+      "normalized": 720000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:49feaf4b3f7b5641e75e7482",
+      "raw": "100%",
+      "normalized": 1,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:14bf30c684d85e867453b9a2",
+      "raw": "$720.0 million",
+      "normalized": 720000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:532b30742e4d15408717c794",
+      "raw": "100%",
+      "normalized": 1,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     }
+    ],
+    "contradictions": 0
+   },
+   "referenceSpan": {
+    "erroneous": true,
+    "classification": "REFERENCE_SET_ERROR",
+    "detail": "span end 630700 bisects a token: \"...or Preferred Sto\" | \"ck of an...\"",
+    "originalSpanPreserved": true
+   }
+  },
+  {
+   "id": "B5",
+   "section": "6.01(b)(19)",
+   "materiality": "MATERIAL",
+   "category": "B permissions/baskets",
+   "span": [
+    630700,
+    631400
+   ],
+   "description": "Acquired / acquisition debt: greater of $720.0M and 100% EBITDA, or ratio-neutral / no-worse tests",
+   "classification": "FOUND_BUT_AMBIGUOUS",
+   "recovered": false,
+   "explicitLimitation": true,
+   "incorrect": false,
+   "silentMiss": false,
+   "rootCause": "PASS_C_ACCOUNTABILITY",
+   "coveringInventoryItems": 11,
+   "coveringMaterialItems": 11,
+   "dispositions": [
+    {
+     "id": "inv-item:62be348eda8f6057d636f5ad",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[34].capacityExpression"
+     ]
+    },
+    {
+     "id": "inv-item:5368bcdeff62758878b2116d",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[34].capacityExpression"
+     ]
+    },
+    {
+     "id": "inv-item:7f0a5c97a75aa592d91d739c",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[34].capacityExpression"
+     ]
+    },
+    {
+     "id": "inv-item:17899370ac50de16795f53ad",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[34].capacityExpression"
+     ]
+    },
+    {
+     "id": "inv-item:c5635cbf1a48f1825d0d547a",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[34].capacityExpression.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:7ae6dadb2ae9b65e35914437",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[34].capacityExpression.operands[1]"
+     ]
+    },
+    {
+     "id": "inv-item:e65ab06ead9285cda71423d5",
+     "materiality": "MATERIAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[34].conditions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:3894f106903c1a257c788a6f",
+     "materiality": "CRITICAL",
+     "disposition": "AMBIGUOUS",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[34].unresolvedDependencies[0]"
+     ]
+    },
+    {
+     "id": "inv-item:af6e80a21436936e2c88fa52",
+     "materiality": "MATERIAL",
+     "disposition": "AMBIGUOUS",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[34].unresolvedDependencies[0]"
+     ]
+    },
+    {
+     "id": "inv-item:87318e7766378ea7f4552611",
+     "materiality": "MATERIAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[35]"
+     ]
+    },
+    {
+     "id": "inv-item:773d7a5855677c615256aafb",
+     "materiality": "MATERIAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[35]"
+     ]
+    }
+   ],
+   "quantitative": {
+    "sourceNumbers": [
+     {
+      "raw": "$720.0 million",
+      "value": 720000000,
+      "unit": "USD"
+     },
+     {
+      "raw": "100.0%",
+      "value": 1,
+      "unit": "%"
+     }
+    ],
+    "checks": [
+     {
+      "itemId": "inv-item:7f0a5c97a75aa592d91d739c",
+      "raw": "$720.0 million",
+      "normalized": 720000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:7f0a5c97a75aa592d91d739c",
+      "raw": "100.0%",
+      "normalized": 1,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:c5635cbf1a48f1825d0d547a",
+      "raw": "$720.0 million",
+      "normalized": 720000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:7ae6dadb2ae9b65e35914437",
+      "raw": "100.0%",
+      "normalized": 1,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     }
+    ],
+    "contradictions": 0
+   },
+   "referenceSpan": {
+    "erroneous": false,
+    "classification": "SPAN_OK",
+    "detail": "span boundaries fall between tokens",
+    "originalSpanPreserved": true
+   }
+  },
+  {
+   "id": "B6",
+   "section": "6.01(b)(27)",
+   "materiality": "MATERIAL",
+   "category": "B permissions/baskets",
+   "span": [
+    634000,
+    634400
+   ],
+   "description": "Joint venture debt: greater of $360.0M and 50% EBITDA",
+   "classification": "FOUND_BUT_AMBIGUOUS",
+   "recovered": false,
+   "explicitLimitation": true,
+   "incorrect": false,
+   "silentMiss": false,
+   "rootCause": "PASS_C_ACCOUNTABILITY",
+   "coveringInventoryItems": 4,
+   "coveringMaterialItems": 4,
+   "dispositions": [
+    {
+     "id": "inv-item:510cd4dda4287969090827a8",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[45].conditions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:ccea1a5cdc779a5774c91188",
+     "materiality": "CRITICAL",
+     "disposition": "AMBIGUOUS",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[45].unresolvedDependencies[0]"
+     ]
+    },
+    {
+     "id": "inv-item:2653e0bb8ca0ca5943a82ea5",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[45].capacityExpression.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:0c0a1a4aa31acdb5d9bf6e48",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[45].capacityExpression"
+     ]
+    }
+   ],
+   "quantitative": {
+    "sourceNumbers": [
+     {
+      "raw": "$360.0",
+      "value": 360,
+      "unit": "USD"
+     }
+    ],
+    "checks": [
+     {
+      "itemId": "inv-item:2653e0bb8ca0ca5943a82ea5",
+      "raw": "$360.0 million",
+      "normalized": 360000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "source number \"$360.0\" is a span-cut prefix of the IR raw text \"$360.0 million\""
+     },
+     {
+      "itemId": "inv-item:0c0a1a4aa31acdb5d9bf6e48",
+      "raw": "$360.0 million",
+      "normalized": 360000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "source number \"$360.0\" is a span-cut prefix of the IR raw text \"$360.0 million\""
+     },
+     {
+      "itemId": "inv-item:0c0a1a4aa31acdb5d9bf6e48",
+      "raw": "50%",
+      "normalized": 0.5,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     }
+    ],
+    "contradictions": 0
+   },
+   "referenceSpan": {
+    "erroneous": true,
+    "classification": "REFERENCE_SET_ERROR",
+    "detail": "span end 634400 bisects a token: \"...(x) $360.0 milli\" | \"on and (...\" (a money scale word is cut)",
+    "originalSpanPreserved": true
+   }
+  },
+  {
+   "id": "B7",
+   "section": "6.01(b)(31)/(32)/(33)",
+   "materiality": "CRITICAL",
+   "category": "B permissions/baskets",
+   "span": [
+    634400,
+    636112
+   ],
+   "description": "Debt in reliance on Available RP Capacity Amount; Available Amount; Incremental Equivalent Debt within Incremental Cap",
+   "classification": "FOUND_AND_REPRESENTED",
+   "recovered": true,
+   "explicitLimitation": false,
+   "incorrect": false,
+   "silentMiss": false,
+   "rootCause": null,
+   "coveringInventoryItems": 15,
+   "coveringMaterialItems": 14,
+   "dispositions": [
+    {
+     "id": "inv-item:2653e0bb8ca0ca5943a82ea5",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[45].capacityExpression.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:0c0a1a4aa31acdb5d9bf6e48",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "SINGLE_RUN",
+     "irPaths": [
+      "rules[45].capacityExpression"
+     ]
+    },
+    {
+     "id": "inv-item:a726f1df5e32d0eabd9170c1",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[45].capacityExpression.operands[1]"
+     ]
+    },
+    {
+     "id": "inv-item:94bd7d52de9d5ac5a187912e",
+     "materiality": "MATERIAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[46].conditions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:086c324db11b3dd22d42f114",
+     "materiality": "INFORMATIONAL",
+     "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+     "support": "CORROBORATED",
+     "irPaths": []
+    },
+    {
+     "id": "inv-item:ee74cc2bb2e6a5ae28b05a6f",
+     "materiality": "MATERIAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[47].conditions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:a27d6733af92612bdf9bcee3",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[48].capacityExpression"
+     ]
+    },
+    {
+     "id": "inv-item:c14aa35f6d87ae929a3534c2",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[48].capacityExpression"
+     ]
+    },
+    {
+     "id": "inv-item:69e3fde4c0647df023747773",
+     "materiality": "CRITICAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[49].capacityExpression",
+      "rules[49].conditions[0]"
+     ]
+    },
+    {
+     "id": "inv-item:c478c68a86624119630cabe3",
+     "materiality": "MATERIAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[50].capacityExpression"
+     ]
+    },
+    {
+     "id": "inv-item:f2d126c947adc8e728eba58f",
+     "materiality": "CRITICAL",
+     "disposition": "UNSUPPORTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[51].capacityExpression.gatedBy.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:b9fcc281a56b3493a89e3589",
+     "materiality": "CRITICAL",
+     "disposition": "UNSUPPORTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[51].capacityExpression.gatedBy.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:419d7531db39e0d4d2b7de81",
+     "materiality": "CRITICAL",
+     "disposition": "UNSUPPORTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[51].capacityExpression.gatedBy.operands[0]"
+     ]
+    },
+    {
+     "id": "inv-item:f5d7299a2ad070c723b9f58f",
+     "materiality": "CRITICAL",
+     "disposition": "UNSUPPORTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[51].capacityExpression.gatedBy.operands[1]"
+     ]
+    },
+    {
+     "id": "inv-item:0ff627e29e4a61d571afc63c",
+     "materiality": "MATERIAL",
+     "disposition": "REPRESENTED",
+     "support": "CORROBORATED",
+     "irPaths": [
+      "rules[52].conditions[0]"
+     ]
+    }
+   ],
+   "quantitative": {
+    "sourceNumbers": [
+     {
+      "raw": "50%",
+      "value": 0.5,
+      "unit": "%"
+     }
+    ],
+    "checks": [
+     {
+      "itemId": "inv-item:2653e0bb8ca0ca5943a82ea5",
+      "raw": "$360.0 million",
+      "normalized": 360000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     },
+     {
+      "itemId": "inv-item:0c0a1a4aa31acdb5d9bf6e48",
+      "raw": "$360.0 million",
+      "normalized": 360000000,
+      "unit": "USD",
+      "contradiction": false,
+      "reason": "no same-unit source number in span"
+     },
+     {
+      "itemId": "inv-item:0c0a1a4aa31acdb5d9bf6e48",
+      "raw": "50%",
+      "normalized": 0.5,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     },
+     {
+      "itemId": "inv-item:a726f1df5e32d0eabd9170c1",
+      "raw": "50%",
+      "normalized": 0.5,
+      "unit": "%",
+      "contradiction": false,
+      "reason": "matches a same-unit source number"
+     }
+    ],
+    "contradictions": 0
+   },
+   "referenceSpan": {
+    "erroneous": false,
+    "classification": "SPAN_OK",
+    "detail": "span boundaries fall between tokens",
+    "originalSpanPreserved": true
+   }
+  }
+ ],
+ "separateFromHistoricalPinnedScore": {
+  "pinned83": "docs/phase-3-final-601/83-final-paid-reference-comparison.json (immutable, unchanged)",
+  "correctedDiagnostic101": "docs/phase-3-final-601/101-corrected-reference-diagnostic.json (re-score of the FAILED run, unchanged)",
+  "thisArtifact": "the NEW paid run, scored with the corrected scorer"
+ }
+}

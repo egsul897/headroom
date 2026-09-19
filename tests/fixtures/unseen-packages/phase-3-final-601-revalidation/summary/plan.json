@@ -1,0 +1,168 @@
+{
+ "artifact": "6.01 post-remediation revalidation §13 - real plan, durable shard store, affordability",
+ "at": "2026-09-19T00:17:12.393Z",
+ "mode": "SHARDED",
+ "reason": "MULTIPLE_SHARDS_REQUIRED",
+ "planHash": "e3f9e8e83c2f0c71991070e27eaa2f5bfea185ad367a82948e41e1d41e9783a3",
+ "shards": 6,
+ "oversizedShards": 0,
+ "plannerEstimatedInputTokens": 186109,
+ "shape": {
+  "algorithmVersion": "semantic-compilation-shards.v2",
+  "plannerAlgorithmVersionConstant": "semantic-compilation-shards.v2",
+  "budget": {
+   "targetPrimaryChars": 12000,
+   "maxPrimaryChars": 24000,
+   "maxContextChars": 10000,
+   "maxContextEntryChars": 1800,
+   "maxUnitsPerShard": 16
+  },
+  "defaultBudget": {
+   "targetPrimaryChars": 12000,
+   "maxPrimaryChars": 24000,
+   "maxContextChars": 10000,
+   "maxContextEntryChars": 1800,
+   "maxUnitsPerShard": 16
+  },
+  "budgetIsDefault": true,
+  "mode": "SHARDED",
+  "reason": "MULTIPLE_SHARDS_REQUIRED",
+  "planHash": "e3f9e8e83c2f0c71991070e27eaa2f5bfea185ad367a82948e41e1d41e9783a3",
+  "shards": 6,
+  "oversizedShards": 0,
+  "plannerEstimatedInputTokens": 186109,
+  "maxShardInputTokens": 40212,
+  "maxPrimaryChars": 11801,
+  "maxUnitsPerShard": 16,
+  "midSentenceShards": 0,
+  "ownershipProof": {
+   "materialItems": 319,
+   "ownedOnce": 319,
+   "unowned": 0,
+   "multiplyOwned": 0
+  },
+  "mustLinkGroups": 14,
+  "shardTable": [
+   {
+    "ordinal": 0,
+    "shardId": "shard:f266a61ab75f65592b9d",
+    "shardHash": "b25611ece65e46a58ae2b24fb02347f329fbefc6e788d09274f0f47f8aa4ea85",
+    "ownedUnits": 12,
+    "ownedItems": 54,
+    "primaryChars": 3957,
+    "slices": 1,
+    "contextEntries": 19,
+    "contextChars": 9966,
+    "unresolvedContext": 33,
+    "estimatedInputTokens": 29909,
+    "oversized": false
+   },
+   {
+    "ordinal": 1,
+    "shardId": "shard:fe26b4996ab543b0a066",
+    "shardHash": "69ff16ab9a4e5a246bf0a45d8654529349bc5434ac7106f6a487944a2ff67b02",
+    "ownedUnits": 15,
+    "ownedItems": 70,
+    "primaryChars": 8590,
+    "slices": 2,
+    "contextEntries": 25,
+    "contextChars": 9870,
+    "unresolvedContext": 14,
+    "estimatedInputTokens": 35072,
+    "oversized": false
+   },
+   {
+    "ordinal": 2,
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "shardHash": "691cf0598278741ac4cefa845910b4274c7234c7ee3283ec17a46ce29b6ae5ed",
+    "ownedUnits": 13,
+    "ownedItems": 99,
+    "primaryChars": 11801,
+    "slices": 4,
+    "contextEntries": 16,
+    "contextChars": 9946,
+    "unresolvedContext": 31,
+    "estimatedInputTokens": 40212,
+    "oversized": false
+   },
+   {
+    "ordinal": 3,
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "shardHash": "9552aa3906cf4ab9c815b05dcbb16f05e92c55520c63edd2e053067378369b51",
+    "ownedUnits": 16,
+    "ownedItems": 45,
+    "primaryChars": 4010,
+    "slices": 1,
+    "contextEntries": 21,
+    "contextChars": 9965,
+    "unresolvedContext": 29,
+    "estimatedInputTokens": 29230,
+    "oversized": false
+   },
+   {
+    "ordinal": 4,
+    "shardId": "shard:e10ed610ecff8b399619",
+    "shardHash": "3c35a8e94b73b98a306bf16b6a43c9651c8c642f9d89ddf45497fca8aad03cf2",
+    "ownedUnits": 16,
+    "ownedItems": 42,
+    "primaryChars": 3712,
+    "slices": 2,
+    "contextEntries": 23,
+    "contextChars": 9980,
+    "unresolvedContext": 12,
+    "estimatedInputTokens": 27849,
+    "oversized": false
+   },
+   {
+    "ordinal": 5,
+    "shardId": "shard:7c4d3d2ae3e0a522b99e",
+    "shardHash": "1062323032becaf237dfc81159e419b24e31a6f5bc28b1d06b529670df163910",
+    "ownedUnits": 10,
+    "ownedItems": 16,
+    "primaryChars": 1553,
+    "slices": 2,
+    "contextEntries": 20,
+    "contextChars": 9802,
+    "unresolvedContext": 1,
+    "estimatedInputTokens": 23837,
+    "oversized": false
+   }
+  ],
+  "expected": {
+   "shards": 6,
+   "oversized": 0,
+   "maxPrimaryChars": 11801,
+   "maxUnitsPerShard": 16,
+   "midSentenceShards": 0,
+   "unowned": 0,
+   "multiplyOwned": 0
+  },
+  "matchesExpectedShape": true,
+  "oldPathologicalPlanReappeared": false
+ },
+ "priorShardsFromStore": 0,
+ "priorShardTokensExcludedFromPaidWork": 0,
+ "rejectedStoreRecords": [],
+ "oldPaidRunStore": {
+  "accepted": 0,
+  "rejected": []
+ },
+ "guardState": {
+  "spent": 0,
+  "passABatchesRemaining": 0,
+  "passAGapRemaining": 0,
+  "passBTokensRemaining": 186109,
+  "verifierReviewRemaining": 1,
+  "conditionSuspicionRemaining": 5,
+  "conservativeRemaining": 7.962346428819295,
+  "capRemaining": 7.97,
+  "balanceRemaining": 10.48047
+ },
+ "recheck": {
+  "admitted": true,
+  "conservativeRemaining": 7.962346428819295,
+  "capRemaining": 7.97,
+  "balanceRemaining": 10.48047
+ },
+ "fits": true
+}

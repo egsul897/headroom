@@ -29,7 +29,7 @@ const ASSUMED_OUTPUT_TOKENS = 12_000;
 export class BudgetExhaustedError extends Error { constructor(msg: string) { super(msg); this.name = "BudgetExhaustedError"; } }
 export class PassAPrerequisiteError extends Error { constructor(msg: string) { super(msg); this.name = "PassAPrerequisiteError"; } }
 
-export interface GuardCall { n: number; stage: string; model: string; inputTokens: number; outputTokens: number; cacheRead: number; cacheWrite: number; costUsd: number; conservativeRemainingBeforeUsd: number; at: string }
+export interface GuardCall { n: number; stage: string; model: string; inputTokens: number; outputTokens: number; cacheRead: number; cacheWrite: number; costUsd: number; conservativeRemainingBeforeUsd: number; at: string; origin: "LIVE_PROVIDER" | "DURABLE_REPLAY"; historicalCostUsd?: number | null }
 export interface GuardRefusal { stage: string; reason: string; spentUsd: number; conservativeRemainingUsd: number; capRemainingUsd: number; balanceRemainingUsd: number; at: string }
 
 export interface GuardInit {
@@ -47,6 +47,8 @@ export interface GuardInit {
 
 export class Guard {
   spent = 0;
+  /** HD-4: original cost of calls served from durable replay - reported separately, NEVER charged against the cap. */
+  historicalReplayedUsd = 0;
   calls: GuardCall[] = [];
   refusals: GuardRefusal[] = [];
   passABatchesRemaining: number;
@@ -107,9 +109,23 @@ export class Guard {
   record(stage: string, model: string, inT: number, outT: number, cr: number, cw: number, remainingBefore: number): void {
     const cost = calculateCostUsd(inT + cr + cw, outT, model) ?? 0;
     this.spent += cost;
-    this.calls.push({ n: this.calls.length + 1, stage, model, inputTokens: inT, outputTokens: outT, cacheRead: cr, cacheWrite: cw, costUsd: cost, conservativeRemainingBeforeUsd: +remainingBefore.toFixed(4), at: new Date().toISOString() });
+    this.calls.push({ n: this.calls.length + 1, stage, model, inputTokens: inT, outputTokens: outT, cacheRead: cr, cacheWrite: cw, costUsd: cost, conservativeRemainingBeforeUsd: +remainingBefore.toFixed(4), at: new Date().toISOString(), origin: "LIVE_PROVIDER" });
     console.log(`  [cost] ${stage}: in=${inT} out=${outT} +$${cost.toFixed(4)} (spent $${this.spent.toFixed(4)} / cap $${this.capUsd.toFixed(2)}; conservative remaining before call $${remainingBefore.toFixed(2)})`);
   }
+
+  /**
+   * HD-4 §11: a call served from a valid durable record. Logical work is done (the caller decrements the remaining-work
+   * counter through its own hook); paid work is $0; the historical cost is reported separately and never charged.
+   */
+  recordReplay(stage: string, model: string, historicalCostUsd: number | null): void {
+    this.historicalReplayedUsd += historicalCostUsd ?? 0;
+    const remaining = this.conservativeRemaining();
+    this.calls.push({ n: this.calls.length + 1, stage, model, inputTokens: 0, outputTokens: 0, cacheRead: 0, cacheWrite: 0, costUsd: 0, conservativeRemainingBeforeUsd: +remaining.toFixed(4), at: new Date().toISOString(), origin: "DURABLE_REPLAY", historicalCostUsd });
+    if (this.statePath) appendFileSync(this.statePath, JSON.stringify({ at: new Date().toISOString(), stage, origin: "DURABLE_REPLAY", historicalCostUsd, ...this.state() }) + "\n");
+    console.log(`  [replay] ${stage}: served from durable record, +$0.0000 (historical $${(historicalCostUsd ?? 0).toFixed(4)}; spent $${this.spent.toFixed(4)}; conservative remaining $${remaining.toFixed(2)})`);
+  }
+  liveCount(): number { return this.calls.filter((c) => c.origin === "LIVE_PROVIDER").length; }
+  replayCount(): number { return this.calls.filter((c) => c.origin === "DURABLE_REPLAY").length; }
 
   costByPrefix(p: string): number { return this.calls.filter((c) => c.stage.startsWith(p)).reduce((a, c) => a + c.costUsd, 0); }
   countByPrefix(p: string): number { return this.calls.filter((c) => c.stage.startsWith(p)).length; }

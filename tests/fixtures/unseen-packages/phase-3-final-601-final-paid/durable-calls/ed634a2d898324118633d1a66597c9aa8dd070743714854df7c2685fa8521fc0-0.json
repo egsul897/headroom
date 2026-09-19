@@ -1,0 +1,846 @@
+{
+ "identity": {
+  "recordVersion": "hd4-durable-call-record.v1",
+  "replayAlgorithmVersion": "hd4-durable-replay.v1",
+  "missionId": "phase-3-final-601-final-paid",
+  "passId": "pass-2",
+  "sourceDocumentId": "doc-a",
+  "candidateRef": "phase-3-final-601:chwy:6.01",
+  "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+  "algorithmVersion": "semantic-accountability.v5",
+  "promptVersion": "semantic-inventory-prompt.v5",
+  "stage": "semantic_inventory",
+  "provider": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-sonnet-5",
+  "schemaId": "semantic-accountability/wire-schema#SubmitSemanticInventorySchema",
+  "schemaFingerprint": "1dbf6197de45d09a5498a57011ce316ce7560b879dbdf11cbb7fb13f2f8a441d",
+  "systemPromptSha256": "e393cf49ce2ebf2a159e4f5fbf5d230c0172b97240c2119bbffeb3adccbfd0af",
+  "userContentSha256": "c6923b28433df57b26632822c35fe7184506d77f6c05e7ce4663a92a00115a99"
+ },
+ "requestHash": "ed634a2d898324118633d1a66597c9aa8dd070743714854df7c2685fa8521fc0",
+ "occurrence": 0,
+ "callOrdinal": 1,
+ "batchRef": null,
+ "payload": {
+  "items": [
+   {
+    "localRef": "i1",
+    "semanticRole": "EXCEPTION",
+    "proposition": "Indebtedness in the form of Capitalized Lease Obligations arising out of any Sale and Lease-Back Transactions is excepted from the prohibition on incurring Indebtedness under Section 6.01(a).",
+    "excerpt": "Capitalized Lease Obligations arising out of any Sale and Lease-Back Transactions",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(4)(a)(iii)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Capitalized Lease Obligations",
+     "Sale and Lease-Back Transactions"
+    ],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i2",
+    "semanticRole": "EXCEPTION",
+    "proposition": "Indebtedness for vehicle and equipment financings incurred in the ordinary course of business is excepted from the prohibition on incurring Indebtedness.",
+    "excerpt": "Indebtedness for vehicle and equipment financings incurred in the ordinary course of business",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(4)(a)(iii)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i3",
+    "semanticRole": "EXCEPTION",
+    "proposition": "Indebtedness incurred by any Restricted Party constituting reimbursement obligations with respect to letters of credit is excepted from the prohibition.",
+    "excerpt": "Indebtedness incurred by any Restricted Party constituting reimbursement obligations with respect to letters of credit",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(5)(a)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Restricted Party"
+    ],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i4",
+    "semanticRole": "CONDITION",
+    "additionalRoles": [
+     "EXCEPTION"
+    ],
+    "proposition": "The reimbursement-obligation exception extends to bankers' acceptances, bank guarantees, warehouse receipts or similar instruments, but only if issued or entered into, or relating to obligations incurred, in the ordinary course of business or consistent with past practice.",
+    "excerpt": "bankers\\u2019 acceptances, bank guarantees, warehouse receipts or similar instruments issued or entered into, or relating to obligations or liabilities incurred, in the ordinary course of business or consistent with past practice, including letters",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(5)(a)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i3",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i5",
+    "semanticRole": "EXCEPTION",
+    "proposition": "The scope of the letter-of-credit exception includes credit issued in respect of workers' compensation claims, performance, completion or surety bonds, health, disability or other employee benefits or property, casualty or liability insurance or self-insurance or other similar Indebtedness.",
+    "excerpt": "of credit in respect of workers\\u2019 compensation claims, performance, completion or surety bonds, health, disability or other employee benefits or property, casualty or liability insurance or self-insurance or other Indebtedness with respect to",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(5)(a)#3",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i3",
+    "relatedRefs": [
+     "i4"
+    ],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i6",
+    "semanticRole": "EXCEPTION",
+    "proposition": "The exception closes with obligations regarding workers' compensation claims, performance, completion or surety bonds, health, disability or other employee benefits or property, casualty or liability insurance or self-insurance.",
+    "excerpt": "obligations regarding workers\\u2019 compensation claims, performance, completion or surety bonds, health, disability or other employee benefits or property, casualty or liability insurance or self-insurance;",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(5)(a)#4",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i3",
+    "relatedRefs": [
+     "i5"
+    ],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i7",
+    "semanticRole": "CONDITION",
+    "additionalRoles": [
+     "CURE"
+    ],
+    "proposition": "The letter-of-credit/reimbursement exception is conditioned on such obligations being reimbursed within 30 days following the drawing or incurrence.",
+    "excerpt": "upon the drawing of such letters of credit or the incurrence of such Indebtedness, such obligations are reimbursed within thirty (30) days following such drawing or incurrence and",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(5)(a)#6",
+    "quantitativeValues": [
+     {
+      "kind": "TIME_PERIOD",
+      "rawText": "thirty (30) days",
+      "normalizedValue": 30,
+      "unit": "days"
+     }
+    ],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i3",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i8",
+    "semanticRole": "EXCEPTION",
+    "proposition": "Indebtedness of any Restricted Party as an account party in respect of certain guarantee-type instruments is excepted from the prohibition.",
+    "excerpt": "Indebtedness of any Restricted Party as an account",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(5)(b)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Restricted Party"
+    ],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i9",
+    "semanticRole": "EXCEPTION",
+    "proposition": "The account-party exception covers letters of credit, bank guarantees or similar instruments or other guarantee obligations in favor of suppliers, customers, franchisees, lessors, licensees, sublicensees, distribution partners or other creditors.",
+    "excerpt": "party in respect of letters of credit, bank guarantees or similar instruments or other guarantee obligations in favor of suppliers, customers, franchisees, lessors, licensees, sublicensees, distribution partners or other creditors issued in the",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(5)(b)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i8",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i10",
+    "semanticRole": "CONDITION",
+    "proposition": "The account-party guarantee-instrument exception applies only if issued in the ordinary course of business or consistent with past practice.",
+    "excerpt": "ordinary course of business or consistent with past practice;",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(5)(b)#3",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i8",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i11",
+    "semanticRole": "EXCEPTION",
+    "proposition": "Indebtedness, Disqualified Stock and Preferred Stock arising from certain agreements are excepted from the prohibition.",
+    "excerpt": "(6) Indebtedness, Disqualified Stock and Preferred Stock arising from",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(6)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Disqualified Stock",
+     "Preferred Stock"
+    ],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i12",
+    "semanticRole": "EXCEPTION",
+    "additionalRoles": [
+     "DEPENDENCY"
+    ],
+    "proposition": "The exception covers agreements providing for indemnification, adjustment of purchase price, earnout or similar obligations incurred or assumed in connection with the Transactions or with the acquisition or disposition of a business, assets, Subsidiary or Investment.",
+    "excerpt": "agreements of any Restricted Party providing for indemnification, adjustment of purchase price, earnout or similar obligations, in each case, incurred or assumed in connection with the Transactions or with the acquisition or disposition of any",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(6)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Transactions",
+     "Restricted Party"
+    ],
+    "referencedSections": [],
+    "parentRef": "i11",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i13",
+    "semanticRole": "EXCEPTION",
+    "proposition": "The exception applies where the acquisition or disposition involves a business, assets, a Subsidiary or an Investment.",
+    "excerpt": "business, assets or a Subsidiary or Investment,",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(6)#3",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Investment"
+    ],
+    "referencedSections": [],
+    "parentRef": "i11",
+    "relatedRefs": [
+     "i12"
+    ],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i14",
+    "semanticRole": "EXCEPTION",
+    "proposition": "The exception for indemnification/earnout obligations does not extend to guarantees of Indebtedness incurred by any Person acquiring all or any portion of such business, assets or a Subsidiary for the purpose of financing such acquisition.",
+    "excerpt": "other than guarantees of Indebtedness incurred by any Person acquiring all or any portion of such business, assets or a Subsidiary for the purpose of financing such acquisition;",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(6)#3",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Person"
+    ],
+    "referencedSections": [],
+    "parentRef": "i11",
+    "relatedRefs": [
+     "i13"
+    ],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i15",
+    "semanticRole": "EXCEPTION",
+    "proposition": "Indebtedness, Disqualified Stock and Preferred Stock of a Restricted Party owing to another Restricted Party is excepted from the prohibition.",
+    "excerpt": "Indebtedness, Disqualified Stock and Preferred Stock of a Restricted Party owing to another Restricted Party;",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(7)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Restricted Party",
+     "Disqualified Stock",
+     "Preferred Stock"
+    ],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i16",
+    "semanticRole": "CONDITION",
+    "proposition": "If such intercompany Indebtedness, Disqualified Stock or Preferred Stock is owing to a Restricted Subsidiary that is not a Guarantor, a subordination requirement applies (subject to an exclusion for accounts payable).",
+    "excerpt": "provided that if any such Indebtedness, Disqualified Stock or Preferred Stock is owing to a Restricted Subsidiary that is not a Guarantor, excluding any Indebtedness, Disqualified Stock or Preferred Stock in respect of accounts payable",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(7)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Restricted Subsidiary",
+     "Guarantor"
+    ],
+    "referencedSections": [],
+    "parentRef": "i15",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i17",
+    "semanticRole": "EXCEPTION",
+    "proposition": "Indebtedness, Disqualified Stock or Preferred Stock in respect of accounts payable is excluded from the subordination requirement.",
+    "excerpt": "excluding any Indebtedness, Disqualified Stock or Preferred Stock in respect of accounts payable",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(7)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i16",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i18",
+    "semanticRole": "EXCEPTION",
+    "proposition": "The accounts payable exclusion applies only to accounts payable incurred or issued in connection with goods and services rendered in the ordinary course of business or consistent with past practice, and not in connection with the borrowing of money.",
+    "excerpt": "incurred or issued in connection with goods and services rendered in the ordinary course of business or consistent with past practice (and not in connection with the borrowing of money)",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(7)#3",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i17",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i19",
+    "semanticRole": "CONDITION",
+    "proposition": "Except for accounts payable described above, such Indebtedness, Disqualified Stock or Preferred Stock owing to a non-Guarantor Restricted Subsidiary must be expressly subordinated in right of payment to the Loans.",
+    "excerpt": "is expressly subordinated in right of payment (but only to the",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(7)#3",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Loans"
+    ],
+    "referencedSections": [],
+    "parentRef": "i16",
+    "relatedRefs": [
+     "i18"
+    ],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i20",
+    "semanticRole": "CONDITION",
+    "proposition": "The subordination requirement to the Loans applies only to the extent permitted by applicable law and to the extent such subordination would not result in material adverse tax consequences.",
+    "excerpt": "extent permitted by applicable law and to the extent such subordination does not result in material adverse tax consequences) to the Loans;",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(7)#4",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Loans"
+    ],
+    "referencedSections": [],
+    "parentRef": "i16",
+    "relatedRefs": [
+     "i19"
+    ],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i21",
+    "semanticRole": "TRIGGER",
+    "proposition": "A further proviso applies to any subsequent issuance or transfer (other than incurrence of a Permitted Lien) affecting such intercompany Indebtedness, Disqualified Stock or Preferred Stock.",
+    "excerpt": "provided , further , that any subsequent issuance or transfer (other than the incurrence of a",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(7)#5",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Permitted Lien"
+    ],
+    "referencedSections": [],
+    "parentRef": "i15",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i22",
+    "semanticRole": "TRIGGER",
+    "proposition": "The proviso covers a Permitted Lien-related transfer of Capital Stock or any other event resulting in the relevant Restricted Subsidiary ceasing to be a Restricted Subsidiary, or any other subsequent transfer of such Indebtedness, Disqualified Stock or Preferred Stock, except to specified transferees.",
+    "excerpt": "Permitted Lien) of any Capital Stock or any other event which results in any such Restricted Subsidiary ceasing to be a Restricted Subsidiary or any other subsequent transfer of any such Indebtedness, Disqualified Stock or Preferred Stock (except to",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(7)#6",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Capital Stock",
+     "Restricted Subsidiary",
+     "Permitted Lien"
+    ],
+    "referencedSections": [],
+    "parentRef": "i21",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i23",
+    "semanticRole": "TRIGGER",
+    "additionalRoles": [
+     "EXCEPTION"
+    ],
+    "proposition": "Transfers to the Borrowers or another Restricted Party, or a pledge constituting a Permitted Lien (but not foreclosure thereon), are excepted from triggering deemed incurrence.",
+    "excerpt": "the Borrowers or another Restricted Party or any pledge of such Indebtedness, Disqualified Stock or Preferred Stock constituting a Permitted Lien (but not foreclosure thereon)) shall be deemed, in each case, to be an incurrence of such Indebtedness,",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(7)#7",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Restricted Party",
+     "Permitted Lien"
+    ],
+    "referencedSections": [],
+    "parentRef": "i21",
+    "relatedRefs": [
+     "i22"
+    ],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i24",
+    "semanticRole": "RECLASSIFICATION",
+    "additionalRoles": [
+     "REFERENCE"
+    ],
+    "proposition": "Such triggering events are deemed to be an incurrence of such Indebtedness, Disqualified Stock or Preferred Stock (to the extent then outstanding) not permitted by this Section 6.01(b)(7).",
+    "excerpt": "Disqualified Stock or Preferred Stock (to the extent such Indebtedness, Disqualified Stock or Preferred Stock is then outstanding) not permitted by this Section 6.01(b)(7);",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(7)#8",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [
+     "Section 6.01(b)(7)"
+    ],
+    "parentRef": "i21",
+    "relatedRefs": [
+     "i23"
+    ],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i25",
+    "semanticRole": "EXCEPTION",
+    "proposition": "Indebtedness of a Restricted Subsidiary owing to the Borrowers or another Restricted Party is excepted from the prohibition.",
+    "excerpt": "Indebtedness of a Restricted Subsidiary owing to the Borrowers or another Restricted Party;",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(8)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Restricted Subsidiary",
+     "Restricted Party"
+    ],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i26",
+    "semanticRole": "CONDITION",
+    "proposition": "If a Guarantor incurs such Indebtedness owing to a non-Guarantor Restricted Subsidiary, subordination is required, excluding accounts payable incurred in the ordinary course of business or consistent with past practice.",
+    "excerpt": "Guarantor incurs such Indebtedness owing to a Restricted Subsidiary that is not a Guarantor, excluding any Indebtedness in respect of accounts payable incurred in connection with goods and services rendered in the ordinary course of business or",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(8)#3",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Guarantor",
+     "Restricted Subsidiary"
+    ],
+    "referencedSections": [],
+    "parentRef": "i25",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i27",
+    "semanticRole": "CONDITION",
+    "proposition": "The accounts payable exclusion requires that such payables not be in connection with the borrowing of money, and requires such Indebtedness to be expressly subordinated in right of payment, subject to legal and tax limitations.",
+    "excerpt": "consistent with past practice (and not in connection with the borrowing of money), such Indebtedness is expressly subordinated in right of payment (but only to the extent permitted by applicable law and to the extent such subordination does not",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(8)#4",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i25",
+    "relatedRefs": [
+     "i26"
+    ],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i28",
+    "semanticRole": "CONDITION",
+    "proposition": "The subordination is limited to the extent it would not result in material adverse tax consequences, and runs to the Guarantee of the Loans of such Guarantor.",
+    "excerpt": "result in material adverse tax consequences) to the Guarantee of the Loans of such Guarantor;",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(8)#5",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Guarantee",
+     "Loans",
+     "Guarantor"
+    ],
+    "referencedSections": [],
+    "parentRef": "i25",
+    "relatedRefs": [
+     "i27"
+    ],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i29",
+    "semanticRole": "TRIGGER",
+    "proposition": "A further proviso applies to any subsequent issuance or transfer (other than incurrence of a Permitted Lien) of Capital Stock or any other event.",
+    "excerpt": "provided , further , that any subsequent issuance or transfer (other than the incurrence of a Permitted Lien) of any Capital Stock or any other",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(8)#6",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Permitted Lien",
+     "Capital Stock"
+    ],
+    "referencedSections": [],
+    "parentRef": "i25",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i30",
+    "semanticRole": "TRIGGER",
+    "proposition": "The proviso covers events resulting in the relevant Restricted Subsidiary ceasing to be a Restricted Subsidiary, or subsequent transfer of such Indebtedness, except to a Restricted Party or a pledge constituting a Permitted Lien.",
+    "excerpt": "event that results in any such Restricted Subsidiary to which such Indebtedness is owed ceasing to be a Restricted Subsidiary or any other subsequent transfer of any such Indebtedness (except to a Restricted Party or any pledge of such Indebtedness",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(8)#7",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Restricted Subsidiary",
+     "Restricted Party"
+    ],
+    "referencedSections": [],
+    "parentRef": "i29",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i31",
+    "semanticRole": "RECLASSIFICATION",
+    "additionalRoles": [
+     "REFERENCE"
+    ],
+    "proposition": "Excluding a pledge constituting a Permitted Lien (but not foreclosure thereon), such events are deemed to be an incurrence of Indebtedness not permitted by this Section 6.01(b)(8).",
+    "excerpt": "constituting a Permitted Lien (but not foreclosure thereon)) shall be deemed, in each case, to be an incurrence of such Indebtedness not permitted by this Section 6.01(b)(8);",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(8)#8",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Permitted Lien"
+    ],
+    "referencedSections": [
+     "Section 6.01(b)(8)"
+    ],
+    "parentRef": "i29",
+    "relatedRefs": [
+     "i30"
+    ],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i32",
+    "semanticRole": "EXCEPTION",
+    "proposition": "Shares of Preferred Stock or Disqualified Stock of a Restricted Subsidiary issued to the Borrowers or another Restricted Party are excepted from the prohibition.",
+    "excerpt": "shares of Preferred Stock or Disqualified Stock of a Restricted Subsidiary issued to the Borrowers or another Restricted",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(9)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Preferred Stock",
+     "Disqualified Stock",
+     "Restricted Subsidiary"
+    ],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i33",
+    "semanticRole": "TRIGGER",
+    "proposition": "A proviso applies to any subsequent issuance or transfer of Capital Stock or other event resulting in the relevant Restricted Subsidiary holding such Preferred Stock or Disqualified Stock ceasing to be a Restricted Subsidiary.",
+    "excerpt": "provided that any subsequent issuance or transfer of any Capital Stock or any other event which results in any such Restricted Subsidiary that holds such Preferred Stock or Disqualified Stock, ceasing to be a Restricted Subsidiary or",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(9)#3",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Capital Stock",
+     "Restricted Subsidiary",
+     "Preferred Stock",
+     "Disqualified Stock"
+    ],
+    "referencedSections": [],
+    "parentRef": "i32",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i34",
+    "semanticRole": "TRIGGER",
+    "additionalRoles": [
+     "EXCEPTION"
+    ],
+    "proposition": "The proviso also covers any other subsequent transfer (other than incurrence of a Permitted Lien) of such shares, except transfers to a Restricted Party or a pledge constituting a Permitted Lien.",
+    "excerpt": "any other subsequent transfer (other than the incurrence of a Permitted Lien) of any such shares of Preferred Stock or Disqualified Stock (except to a Restricted Party or any pledge of such Capital Stock constituting a Permitted Lien (but not",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(9)#4",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Permitted Lien",
+     "Restricted Party",
+     "Capital Stock"
+    ],
+    "referencedSections": [],
+    "parentRef": "i33",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i35",
+    "semanticRole": "RECLASSIFICATION",
+    "additionalRoles": [
+     "REFERENCE"
+    ],
+    "proposition": "Excluding foreclosure on a Permitted Lien pledge, such events are deemed to be an issuance of shares of Preferred Stock or Disqualified Stock not permitted by this Section 6.01(b)(9).",
+    "excerpt": "foreclosure thereon)) shall be deemed in each case to be an issuance of such shares of Preferred Stock or Disqualified Stock, as applicable, not permitted by this Section 6.01(b)(9);",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(9)#5",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Preferred Stock",
+     "Disqualified Stock"
+    ],
+    "referencedSections": [
+     "Section 6.01(b)(9)"
+    ],
+    "parentRef": "i33",
+    "relatedRefs": [
+     "i34"
+    ],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i36",
+    "semanticRole": "EXCEPTION",
+    "proposition": "Hedging Obligations are excepted from the prohibition on incurring Indebtedness.",
+    "excerpt": "Hedging Obligations",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(10)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Hedging Obligations"
+    ],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i37",
+    "semanticRole": "EXCEPTION",
+    "proposition": "Hedging Obligations entered into for speculative purposes are excluded from the Hedging Obligations exception.",
+    "excerpt": "excluding Hedging Obligations entered into for speculative purposes",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(10)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Hedging Obligations"
+    ],
+    "referencedSections": [],
+    "parentRef": "i36",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i38",
+    "semanticRole": "EXCEPTION",
+    "proposition": "Obligations in respect of self-insurance and obligations in respect of stays, customs, performance, indemnity, bid (and other bond-type obligations, continuing beyond this batch) are excepted from the prohibition.",
+    "excerpt": "obligations in respect of self-insurance and obligations in respect of stays, customs, performance, indemnity, bid,",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(11)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "REVIEW_UNCERTAIN",
+    "ambiguity": "UNCERTAIN_MATERIALITY",
+    "ambiguityReason": "Slot 6.01(b)(11)#1 is truncated at the end of the batch; the full scope and any conditions/provisos of exception (11) are not shown, so full materiality cannot be confirmed.",
+    "operative": "OPERATIVE"
+   }
+  ],
+  "overallNotes": [
+   "Slots consisting solely of connective/glue language with no independent substantive content ('provided , however , that' in 5(a)#5; 'provided that if a' in 8#2; 'Party;' in 9#2) were treated as glue and yielded no items, per instruction 12.",
+   "The page-break marker '-131-' preceding slot 6#1 was excluded from the excerpt as non-substantive pagination.",
+   "Cross-references to Section 6.01(b)(1), Section 6.01(b)(1)(X)/(Y), Section 6.08(a)(3)(b), Section 6.08(b), Section 6.08(b)(4), and Section 2.18 listed as unresolved in the provided context do not appear within the text of the 36 slots in this batch and were therefore not inventoried here.",
+   "Self-referential citations within clauses (7), (8) and (9) to their own subsection numbers ('this Section 6.01(b)(7)', 'this Section 6.01(b)(8)', 'this Section 6.01(b)(9)') were recorded via referencedSections on the deemed-incurrence/deemed-issuance items rather than as separate REFERENCE items, since they cite the enclosing clause itself.",
+   "Slot 6.01(b)(11)#1 is the last slot in the batch and is cut off mid-list; its exception (11) is only partially inventoried and will require continuation in a subsequent batch."
+  ]
+ },
+ "payloadSha256": "3d7908c0252bc9a51152dd3ab275cb3c5aaaf0bde48d4244d35427d7e31931fe",
+ "telemetry": {
+  "inputTokens": 10264,
+  "outputTokens": 28604,
+  "cacheRead": null,
+  "cacheWrite": null,
+  "originalCostUsd": 0.306568,
+  "latencyMs": 216715
+ },
+ "stageTelemetry": {
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "promptVersion": "phase-c0.1",
+  "schemaVersion": "phase-c0.1",
+  "stage": "semantic_inventory",
+  "timestamp": "2026-09-16T13:23:09.301Z",
+  "inputTokens": 10264,
+  "outputTokens": 28604,
+  "cachedInputTokens": null,
+  "cacheCreationInputTokens": null,
+  "attemptCount": 1,
+  "retryCount": 0,
+  "rateLimitFailures": 0,
+  "latencyMs": 216715,
+  "calculatedCostUsd": 0.306568
+ },
+ "rawProviderOutput": null,
+ "completedAt": "2026-09-16T13:26:46.018Z",
+ "recordSha256": "a13dd9d6b6db8f675853ea4e6e25580706782d854cc2b6d72b545e51ab55ece2"
+}

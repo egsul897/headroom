@@ -1,0 +1,474 @@
+{
+ "artifact": "PRECISION AUDIT §22 - the 20-condition readiness gate",
+ "at": "2026-09-19T04:24:48.953Z",
+ "paidCalls": 0,
+ "startingSha": "1fd23881fb9366b3730a06419a7b5dc33647384c",
+ "shaGateWasComputedAgainst": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+ "shaCertified": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+ "productionTreeHash": {
+  "lib/": "82832050f837e18599bfa127b4722ade879e7c24",
+  "lib/contract-model/compiler/": "365c6fd79324816e1473d9857d642cf8fa146518",
+  "workingTreeProductionFilesDifferingFromHead": []
+ },
+ "shaNote": "shaCertified is HEAD only when the working-tree production code is byte-identical to HEAD's; the commit that carries this artifact is that commit's child",
+ "conditions": [
+  {
+   "id": 1,
+   "condition": "all 26 current undeliverables classified",
+   "pass": true,
+   "evidence": {
+    "rows": 26,
+    "distinctShardKeyPairs": 26,
+    "distinctKeys": 21,
+    "counts": {
+     "PLURAL_SINGULAR_ALIAS": 15,
+     "DEFINED_TERM_DETECTOR_FALSE_NEGATIVE": 6,
+     "TRUE_NONDEFINED_TERM": 1,
+     "EXTERNAL_TO_PACKAGE": 1,
+     "AMBIGUOUS_REAL_REFERENCE": 1,
+     "NORMALIZATION_OR_INFLECTION_ALIAS": 2
+    }
+   },
+   "failureVerdict": "PHASE3_DEFINITION_RESOLUTION_INCOMPLETE"
+  },
+  {
+   "id": 2,
+   "condition": "no internal required dependency is falsely counted as delivered",
+   "pass": true,
+   "evidence": {
+    "isDeliveredFalseForEveryNonDeliveredState": true,
+    "internalProbe": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+    "v1Gap": "CERTIFICATE_SEMANTIC_GAP"
+   },
+   "failureVerdict": "PHASE3_REQUIRED_DEPENDENCY_CERTIFICATE_UNSAFE"
+  },
+  {
+   "id": 3,
+   "condition": "false Pass-A edges are filtered or safely classified",
+   "pass": true,
+   "evidence": {
+    "edges": 225,
+    "byMethod": {
+     "GRAMMATICAL_NUMBER_VARIANT": 36,
+     "INLINE_DECLARATION_IN_OWNED_SOURCE": 3,
+     "DEFINED_TERM": 173,
+     "UNKNOWN_CAPITALISED_TERM": 1,
+     "EXTERNAL_BY_SOURCE_DECLARATION": 2,
+     "DECLARATION_FOUND_IN_SOURCE_TEXT": 8,
+     "SOURCE_DECLARED_CORRELATIVE": 2
+    },
+    "falseEdgeCase": true
+   },
+   "failureVerdict": "PHASE3_REQUIRED_DEPENDENCY_MODEL_OVERINCLUSIVE"
+  },
+  {
+   "id": 4,
+   "condition": "certificate statuses distinguish complete vs limited",
+   "pass": true,
+   "evidence": {
+    "probes": {
+     "none": "CERTIFIED_CONTEXT_COMPLETE",
+     "external": "CERTIFIED_WITH_EXPLICIT_EXTERNAL_LIMITATION",
+     "internal": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+     "ambiguous": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+     "failed": "PLANNING_FAILED_REQUIRED_CONTEXT_UNDELIVERABLE"
+    }
+   },
+   "failureVerdict": "PHASE3_REQUIRED_DEPENDENCY_CERTIFICATE_UNSAFE"
+  },
+  {
+   "id": 5,
+   "condition": "ambiguous dependencies are explicit",
+   "pass": true,
+   "evidence": {
+    "ambiguousOnFrozenUnit": [
+     {
+      "shard": 1,
+      "key": "section:6.01(b)(1)(z)",
+      "disposition": "AMBIGUOUS_REQUIRED_DEPENDENCY",
+      "method": null,
+      "candidates": 3,
+      "reason": "section 6.01(b)(1)(Z) matches 3 substantive physical locations - candidates preserved with provenance, none guessed (2 substantive occurrences share \"6.01(b)(1)\" - genuinely ambiguous, not resolved (never guessed); the r"
+     }
+    ],
+    "syntheticCaseJ": "dd-anti-overfit.test.ts (duplicate-section shape) + dd-certificate-honesty.test.ts"
+   },
+   "failureVerdict": "PHASE3_REQUIRED_DEPENDENCY_CERTIFICATE_UNSAFE"
+  },
+  {
+   "id": 6,
+   "condition": "external dependencies are proven (from package identity, not from a name)",
+   "pass": true,
+   "evidence": {
+    "externalOnFrozenUnit": [
+     {
+      "shard": 1,
+      "key": "term:borrowing base",
+      "disposition": "EXTERNAL_REQUIRED_DEPENDENCY",
+      "method": "EXTERNAL_BY_SOURCE_DECLARATION",
+      "candidates": null,
+      "reason": "the source itself writes \"Borrowing Base (as defined in ABL Credit Agreement)\"; the package contains one document and \"ABL Credit Agreement\" is not it - externality proven from package identity; represented explicitly as"
+     }
+    ],
+    "syntheticCaseK": "dd-anti-overfit.test.ts (external-pointer shape: proven from package identity; a sounding-like name is never external)"
+   },
+   "failureVerdict": "PHASE3_REQUIRED_DEPENDENCY_CERTIFICATE_UNSAFE"
+  },
+  {
+   "id": 7,
+   "condition": "closure precision is stable across threshold sensitivity (0.25-0.75: no planning failure, all five targets reached, every synthetic case holds), threshold unchanged at 0.5",
+   "pass": true,
+   "evidence": {
+    "stableRange": [
+     0.25,
+     0.4,
+     0.5,
+     0.6,
+     0.75
+    ],
+    "deliveredInFullRange": [
+     0.5,
+     0.6,
+     0.75
+    ],
+    "sweep": [
+     {
+      "t": 0.25,
+      "deps": 642,
+      "chars": 463156,
+      "failures": 0,
+      "reached": 5,
+      "inFull": 4
+     },
+     {
+      "t": 0.4,
+      "deps": 404,
+      "chars": 306195,
+      "failures": 0,
+      "reached": 5,
+      "inFull": 4
+     },
+     {
+      "t": 0.5,
+      "deps": 378,
+      "chars": 277825,
+      "failures": 0,
+      "reached": 5,
+      "inFull": 5
+     },
+     {
+      "t": 0.6,
+      "deps": 355,
+      "chars": 268325,
+      "failures": 0,
+      "reached": 5,
+      "inFull": 5
+     },
+     {
+      "t": 0.75,
+      "deps": 349,
+      "chars": 264326,
+      "failures": 0,
+      "reached": 5,
+      "inFull": 5
+     }
+    ]
+   },
+   "failureVerdict": "PHASE3_REQUIRED_DEPENDENCY_MODEL_OVERINCLUSIVE"
+  },
+  {
+   "id": 8,
+   "condition": "no fixture-specific production logic in the mission diff of lib/",
+   "pass": true,
+   "evidence": {
+    "diffedAgainst": "1fd23881fb9366b3730a06419a7b5dc33647384c",
+    "addedLinesMatchingFixtureIdentifiers": 0,
+    "hits": []
+   },
+   "failureVerdict": "PHASE3_REQUIRED_DEPENDENCY_GENERALIZATION_NOT_PROVEN"
+  },
+  {
+   "id": 9,
+   "condition": "synthetic anti-overfit cases pass",
+   "pass": true,
+   "evidence": {
+    "live": {
+     "A_realDefinedDependencyDelivered": true,
+     "B_undefinedCapitalisedPhraseIsLimitationNotDelivery": true,
+     "C_pluralCitedAgainstSingularDefinition": true,
+     "D_singularCitedAgainstPluralDefinition": true,
+     "E_falseEdgeExcludedNotRequired": true,
+     "F_forwardingTargetDelivered": true,
+     "G_crossReferenceInsideRequiredDefinition": true,
+     "H_deepCompositionalChain": true,
+     "I_incidentalTermNotPulledIn": true,
+     "J_ambiguousSectionIsExplicit": true,
+     "L_arithmeticOperandsRequiredWhateverTheCoverage": true,
+     "K_externalProvenFromSource": true,
+     "Z_noPlanningFailure": true
+    },
+    "vitest": {
+     "dd-anti-overfit.test.ts": {
+      "status": "passed",
+      "tests": 11,
+      "failed": 0
+     },
+     "dd-certificate-honesty.test.ts": {
+      "status": "passed",
+      "tests": 8,
+      "failed": 0
+     },
+     "dd-cross-shard-links.test.ts": {
+      "status": "passed",
+      "tests": 4,
+      "failed": 0
+     },
+     "dd-entity-scope.test.ts": {
+      "status": "passed",
+      "tests": 3,
+      "failed": 0
+     },
+     "dd-required-dependency-generality.test.ts": {
+      "status": "passed",
+      "tests": 8,
+      "failed": 0
+     },
+     "f7a-shard-planner-stitcher.test.ts": {
+      "status": "passed",
+      "tests": 32,
+      "failed": 0
+     }
+    }
+   },
+   "failureVerdict": "PHASE3_REQUIRED_DEPENDENCY_GENERALIZATION_NOT_PROVEN"
+  },
+  {
+   "id": 10,
+   "condition": "cross-corpus deterministic sanity shows no pathological explosion",
+   "pass": true,
+   "evidence": {
+    "corpora": [
+     {
+      "corpus": "f7a definitions corpus (60 chained definitions)",
+      "deps": 10,
+      "chars": 2808,
+      "explosion": false
+     },
+     {
+      "corpus": "f7a chapeau corpus (26 clauses)",
+      "deps": 1,
+      "chars": 142,
+      "explosion": false
+     },
+     {
+      "corpus": "synthetic agreement (base)",
+      "deps": 11,
+      "chars": 1102,
+      "explosion": false
+     },
+     {
+      "corpus": "synthetic agreement (false edges + duplicate section)",
+      "deps": 11,
+      "chars": 906,
+      "explosion": false
+     },
+     {
+      "corpus": "synthetic agreement (external pointer)",
+      "deps": 12,
+      "chars": 1102,
+      "explosion": false
+     },
+     {
+      "corpus": "semantic-accountability synthetic corpus (45 scenarios planned, 0 could not be built deterministically)",
+      "deps": 24,
+      "chars": 960,
+      "explosion": false
+     }
+    ]
+   },
+   "failureVerdict": "PHASE3_REQUIRED_DEPENDENCY_MODEL_OVERINCLUSIVE"
+  },
+  {
+   "id": 11,
+   "condition": "lint evidence is internally consistent (exit code, ESLint marker, artifact 142 and this gate agree)",
+   "pass": true,
+   "evidence": {
+    "exitCode": 0,
+    "marker": "SUCCESS_MARKER",
+    "verdict": "CLEAN",
+    "artifact142FreshRunExit": 0
+   },
+   "failureVerdict": "PHASE3_REQUIRED_DEPENDENCY_MODEL_NOT_READY"
+  },
+  {
+   "id": 12,
+   "condition": "verifier findings are triaged before spend (all 11)",
+   "pass": true,
+   "evidence": {
+    "triaged": 11,
+    "classes": [
+     "A",
+     "F",
+     "A",
+     "A",
+     "F",
+     "F",
+     "F",
+     "F",
+     "B",
+     "D",
+     "D"
+    ]
+   },
+   "failureVerdict": "PHASE3_VERIFIER_BLOCKERS_REQUIRE_REMEDIATION"
+  },
+  {
+   "id": 13,
+   "condition": "no Phase-3 deterministic blocker identified and left knowingly unfixed",
+   "pass": true,
+   "evidence": {
+    "fixed": [
+     "cross-shard carve-out exception linkage (finding 0)",
+     "unique section-reference dependency resolution (finding 2, partial)",
+     "entityScope never requested from the model (findings 3/9)"
+    ],
+    "leftUnfixed": []
+   },
+   "failureVerdict": "PHASE3_VERIFIER_BLOCKERS_REQUIRE_REMEDIATION"
+  },
+  {
+   "id": 14,
+   "condition": "no new regressions (file-level, against the starting SHA's full suite)",
+   "pass": true,
+   "evidence": {
+    "base": {
+     "files": 1357,
+     "filesPassed": 1136,
+     "tests": 3923,
+     "passed": 3236,
+     "failed": 163
+    },
+    "current": {
+     "files": 1368,
+     "filesPassed": 1149,
+     "tests": 3957,
+     "passed": 3271,
+     "failed": 162
+    },
+    "fileLevelRegressions": [],
+    "newFailingTestIdentities": []
+   },
+   "failureVerdict": "PHASE3_REQUIRED_DEPENDENCY_MODEL_NOT_READY"
+  },
+  {
+   "id": 15,
+   "condition": "tsc has no new errors",
+   "pass": true,
+   "evidence": {
+    "newErrors": 0,
+    "preexisting": 6,
+    "preexistingScope": "tests/foundation-audit/ (unchanged by this mission)"
+   },
+   "failureVerdict": "PHASE3_REQUIRED_DEPENDENCY_MODEL_NOT_READY"
+  },
+  {
+   "id": 16,
+   "condition": "lint clean",
+   "pass": true,
+   "evidence": {
+    "exitCode": 0,
+    "tail": [
+     "",
+     "✔ No ESLint warnings or errors"
+    ]
+   },
+   "failureVerdict": "PHASE3_REQUIRED_DEPENDENCY_MODEL_NOT_READY"
+  },
+  {
+   "id": 17,
+   "condition": "build passes",
+   "pass": true,
+   "evidence": {
+    "build": "OK"
+   },
+   "failureVerdict": "PHASE3_REQUIRED_DEPENDENCY_MODEL_NOT_READY"
+  },
+  {
+   "id": 18,
+   "condition": "paid calls = 0",
+   "pass": true,
+   "evidence": {
+    "paidCalls": 0,
+    "spend": 0
+   },
+   "failureVerdict": "PHASE3_REQUIRED_DEPENDENCY_MODEL_NOT_READY"
+  },
+  {
+   "id": 19,
+   "condition": "Phase 3 remains open",
+   "pass": true,
+   "evidence": {
+    "phase3Closed": false,
+    "ceilingUnchanged": true,
+    "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty"
+   },
+   "failureVerdict": "PHASE3_REQUIRED_DEPENDENCY_MODEL_NOT_READY"
+  },
+  {
+   "id": 20,
+   "condition": "Phase 4 not started",
+   "pass": true,
+   "evidence": {
+    "phase4Started": false,
+    "changedProductionFiles": [
+     "lib/contract-model/compiler/semantic/missing-context-contract.ts",
+     "lib/contract-model/compiler/semantic/normalize.ts",
+     "lib/contract-model/compiler/semantic/prompt.ts",
+     "lib/contract-model/compiler/semantic/required-dependencies.ts",
+     "lib/contract-model/compiler/semantic/shard-planner.ts",
+     "lib/contract-model/compiler/semantic/shard-stitcher.ts",
+     "lib/contract-model/compiler/semantic/shard-types.ts",
+     "lib/contract-model/compiler/semantic/types.ts"
+    ]
+   },
+   "failureVerdict": "PHASE3_REQUIRED_DEPENDENCY_MODEL_NOT_READY"
+  }
+ ],
+ "summary": {
+  "total": 20,
+  "PASS": 20,
+  "FAIL": 0
+ },
+ "verdict": "PHASE3_REQUIRED_DEPENDENCY_MODEL_READY_FOR_PAID_REVALIDATION",
+ "verdictNote": "every condition passed",
+ "lint": {
+  "command": "npm run lint",
+  "exitCode": 0,
+  "marker": "SUCCESS_MARKER",
+  "verdict": "CLEAN"
+ },
+ "regression": {
+  "base": {
+   "files": 1357,
+   "filesPassed": 1136,
+   "tests": 3923,
+   "passed": 3236,
+   "failed": 163
+  },
+  "current": {
+   "files": 1368,
+   "filesPassed": 1149,
+   "tests": 3957,
+   "passed": 3271,
+   "failed": 162
+  },
+  "fileLevelRegressions": [],
+  "newFailingTestIdentities": [],
+  "newlyPassingFiles": 1,
+  "baselineFailuresNote": "failures present at the starting SHA (database-backed suites without a database, and the pre-existing foundation-audit typing) are not this mission's; only identities failing now that did not fail at the base count"
+ },
+ "whatThisVerdictMeans": "the corrected required-dependency model and certificate are ready to be revalidated by a future, separately authorized paid mission. It is NOT an authorization to spend money, NOT a claim that the 6.01 compilation now succeeds, and NOT a Phase 3 closure.",
+ "phase3Closed": false,
+ "phase4Started": false,
+ "paidRunAuthorized": false
+}

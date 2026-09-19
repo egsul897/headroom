@@ -1,0 +1,37 @@
+{
+ "artifact": "PHASE 3 / 6.01 TRUST-FAILURE REMEDIATION §18 - contextualOwnershipCreditViolations = 2 audit",
+ "at": "2026-09-17T16:33:56.811Z",
+ "paidArtifact": {
+  "value": 2,
+  "derivedFrom": "collisionsByKind.CONTEXTUAL_UNOWNED_DEFINITION (finalizer HD-6 substitute)",
+  "attributionProofCountsNONE": 0
+ },
+ "reStitchOfFrozenResults": {
+  "detected": 2,
+  "detectedByKind": {
+   "DEFINITION": 2
+  },
+  "demoted": 2,
+  "credited": 0,
+  "retainedDemotedObjects": 0,
+  "attributionRetainedFalse": true,
+  "collisionsByKind": {
+   "CONTEXTUAL_UNOWNED_DEFINITION": 2,
+   "RULE_POSSIBLE_DUPLICATE": 1
+  },
+  "paidCounterValue": 2,
+  "verdict": "AUDIT_COUNTER_DEFECT"
+ },
+ "verdict": "AUDIT_COUNTER_DEFECT",
+ "classification": "B - audit-counter defect: the counter measured contextual emissions DETECTED (and demoted, kept out of the stitched IR), not contextual output CREDITED authoritatively; no production ownership violation occurred",
+ "fix": {
+  "production": "execution.sharded.contextualEmissionsCredited (compile.ts contextualEmissionsCredited(): detected emissions whose object survived into the stitched IR, by emitted or remapped id)",
+  "harness": "finalizer reads contextualEmissionsCredited through scripts/phase-3-601-trust-read.ts; a missing field is NOT_MEASURABLE, never 0",
+  "trustRuleWeakened": false,
+  "tests": [
+   "tests/contract-model/phase-3-601-remediation-closure.test.ts (§18)",
+   "tests/contract-model/phase-3-601-hd6-finalizer.test.ts",
+   "tests/contract-model/phase-3-601-remediation-red-baseline.test.ts (demoted definitions never retained)"
+  ]
+ }
+}

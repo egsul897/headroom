@@ -1,0 +1,1198 @@
+{
+ "version": "hd4-durable-shard-record.v1",
+ "missionId": "phase-3-final-601-precision-revalidation",
+ "planHash": "b2b9540a144348dab91cc80eacd0d9b472e9e93a61a8fd359e1a507cf5cf17ce",
+ "shardId": "shard:e10ed610ecff8b399619",
+ "shardHash": "0da85a627f9eb0fd6813b66e3dcb2f171fa22680bfa91c790397cd206a3b5e08",
+ "result": {
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [
+    {
+     "ruleId": "ir-rule:5f3ed97f062fd5ce6530991f",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(14)(c)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "RATIO_TEST",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": {
+       "kind": "OR",
+       "type": "BOOLEAN",
+       "exprId": "ir-expr:a34d8378e9bed530659cfc0f",
+       "operands": [
+        {
+         "kind": "OR",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:e3a80e72ce63f95ee46fcfaa",
+         "operands": [
+          {
+           "kind": "COMPARE",
+           "type": "BOOLEAN",
+           "exprId": "ir-expr:4e14c936e5426767dfc69eed",
+           "left": {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Incremental Indebtedness Capacity under First Lien Leverage Ratio Test (Section 6.01(a))",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:2b10c267aa14491db0202f8f"
+           },
+           "operator": "GTE",
+           "right": {
+            "kind": "MONEY",
+            "type": "MONEY",
+            "amount": 1,
+            "currency": "USD",
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§6.01(b)(14)(c)(X)(i)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:3ffab3da8be0e90de0077529",
+            "inventoryItemIds": [
+             "inv-item:a2cf62b18bc1155dee2a54c9"
+            ]
+           },
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.01(b)(14)(c)(X)(i)",
+            "excerpt": null
+           },
+           "inventoryItemIds": [
+            "inv-item:a2cf62b18bc1155dee2a54c9",
+            "inv-item:d0951318524225bb91f93044"
+           ]
+          },
+          {
+           "kind": "COMPARE",
+           "type": "BOOLEAN",
+           "exprId": "ir-expr:d47c7870d724bcf93f1d3556",
+           "left": {
+            "kind": "DURING_PERIOD",
+            "type": "RATIO",
+            "exprId": "ir-expr:bbfe5bbac3c80310f08a54a8",
+            "value": {
+             "kind": "METRIC_REFERENCE",
+             "type": "RATIO",
+             "metricName": "First Lien Leverage Ratio",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+            },
+            "periodDescription": "pro forma for the applicable Test Period after giving effect to the transaction",
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§6.01(b)(14)(c)(X)(ii)",
+             "excerpt": null
+            }
+           },
+           "operator": "LTE",
+           "right": {
+            "kind": "DURING_PERIOD",
+            "type": "RATIO",
+            "exprId": "ir-expr:aeb314dd71d6697feb38f3c9",
+            "value": {
+             "kind": "METRIC_REFERENCE",
+             "type": "RATIO",
+             "metricName": "First Lien Leverage Ratio",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:627b2805d2fad89fbc9a8ad5"
+            },
+            "periodDescription": "immediately prior to such Investment, acquisition, merger, amalgamation or consolidation",
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§6.01(b)(14)(c)(X)(ii)",
+             "excerpt": null
+            }
+           },
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.01(b)(14)(c)(X)(ii)",
+            "excerpt": null
+           },
+           "inventoryItemIds": [
+            "inv-item:02186e94fbbe1b704d7465e3",
+            "inv-item:1d3c9ad43b575a3941c9b616"
+           ]
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.01(b)(14)(c)(X)",
+          "excerpt": null
+         },
+         "inventoryItemIds": [
+          "inv-item:a63f4374c0b3568738043a7c"
+         ]
+        },
+        {
+         "kind": "OR",
+         "type": "BOOLEAN",
+         "exprId": "ir-expr:f437a9d8705e801c467a4e7b",
+         "operands": [
+          {
+           "kind": "COMPARE",
+           "type": "BOOLEAN",
+           "exprId": "ir-expr:3934b9e85505217c4399b8a9",
+           "left": {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Incremental Indebtedness Capacity under Senior Secured Leverage Ratio Test (Section 6.01(a))",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:cb7e93c31ac33239ebbf584e"
+           },
+           "operator": "GTE",
+           "right": {
+            "kind": "MONEY",
+            "type": "MONEY",
+            "amount": 1,
+            "currency": "USD",
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§6.01(b)(14)(c)(Y)(i)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:9457c0d435fe2bbd789431bd",
+            "inventoryItemIds": [
+             "inv-item:93b14b090f50c7e8a3d2f7d9"
+            ]
+           },
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.01(b)(14)(c)(Y)(i)",
+            "excerpt": null
+           },
+           "inventoryItemIds": [
+            "inv-item:93b14b090f50c7e8a3d2f7d9",
+            "inv-item:6945ef29efa8e8f68f79cdc3"
+           ]
+          },
+          {
+           "kind": "COMPARE",
+           "type": "BOOLEAN",
+           "exprId": "ir-expr:a37bc8581d13b58522403114",
+           "left": {
+            "kind": "DURING_PERIOD",
+            "type": "RATIO",
+            "exprId": "ir-expr:f5c33b7393248a426153b603",
+            "value": {
+             "kind": "METRIC_REFERENCE",
+             "type": "RATIO",
+             "metricName": "Senior Secured Leverage Ratio",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:2fa3ec279186ee2bf73f0ff9"
+            },
+            "periodDescription": "pro forma for the applicable Test Period after giving effect to the transaction",
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§6.01(b)(14)(c)(Y)(ii)",
+             "excerpt": null
+            }
+           },
+           "operator": "LTE",
+           "right": {
+            "kind": "DURING_PERIOD",
+            "type": "RATIO",
+            "exprId": "ir-expr:3debb4960cd0b04347dc5887",
+            "value": {
+             "kind": "METRIC_REFERENCE",
+             "type": "RATIO",
+             "metricName": "Senior Secured Leverage Ratio",
+             "companyId": "phase-3-validation-chwy",
+             "instrumentKey": "chwy-2026-revolving-credit-instrument",
+             "resolvedDefinitionId": null,
+             "exprId": "ir-expr:2fa3ec279186ee2bf73f0ff9"
+            },
+            "periodDescription": "immediately prior to such Investment, acquisition, merger, amalgamation or consolidation",
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§6.01(b)(14)(c)(Y)(ii)",
+             "excerpt": null
+            }
+           },
+           "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.01(b)(14)(c)(Y)(ii)",
+            "excerpt": null
+           },
+           "inventoryItemIds": [
+            "inv-item:9f6611f4ba18782bb11b4d41",
+            "inv-item:caa4073731175a5b2a7318e3"
+           ]
+          }
+         ],
+         "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.01(b)(14)(c)(Y)",
+          "excerpt": null
+         },
+         "inventoryItemIds": [
+          "inv-item:0b22c2ee21fe2430a846f33c",
+          "inv-item:7d699ee536df969c3367a2b2"
+         ]
+        }
+       ],
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(14)(c)",
+        "excerpt": null
+       }
+      },
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(14)(c)",
+       "excerpt": null
+      }
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [
+      {
+       "relationshipType": "ALTERNATIVE_TO",
+       "targetRuleId": "ir-rule:90982bffb5aaa2ae7d5879c8",
+       "description": "alternative gate to the Acquired Indebtedness route under clause (d)"
+      },
+      {
+       "relationshipType": "ALTERNATIVE_TO",
+       "targetRuleId": "ir-rule:9544f1b8bb599ded885deb38",
+       "description": "clause (e)'s residual EBITDA/Fixed Incremental Amount basket applies only to amounts not permitted under this clause"
+      }
+     ],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(a)",
+       "description": "First Lien Leverage Ratio and Senior Secured Leverage Ratio tests referenced are those set forth in Section 6.01(a)",
+       "reason": "dependsOn[0].targetRef \"Section 6.01(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+       "inventoryItemIds": [
+        "inv-item:d0951318524225bb91f93044",
+        "inv-item:6945ef29efa8e8f68f79cdc3"
+       ]
+      },
+      {
+       "relationshipType": "ALTERNATIVE_TO",
+       "targetRef": "Section 6.01(b)(14)(a)",
+       "description": "alternative gate (a), outside this submission's owned source",
+       "reason": "dependsOn[3].targetRef \"Section 6.01(b)(14)(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      },
+      {
+       "relationshipType": "ALTERNATIVE_TO",
+       "targetRef": "Section 6.01(b)(14)(b)",
+       "description": "alternative gate (b), outside this submission's owned source",
+       "reason": "dependsOn[4].targetRef \"Section 6.01(b)(14)(b)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Disjunctive ratio-test gate structure (branches X/Y, each with two alternative sub-tests) fully captured from operative text; the underlying Section 6.01(a) ratio-test mechanics are represented as a proxy metric with citation rather than fully re-derived, which is a faithful, non-lossy representation of the cross-reference.",
+      "dependsOn[0].targetRef \"Section 6.01(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[3].targetRef \"Section 6.01(b)(14)(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[4].targetRef \"Section 6.01(b)(14)(b)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(14)(c)",
+      "excerpt": "(X) after giving pro forma effect ... (Y) after giving pro forma effect ... First Lien Leverage Ratio / Senior Secured Leverage Ratio tests"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "ruleId": "ir-rule:90982bffb5aaa2ae7d5879c8",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(14)(d)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUALITATIVE_OBLIGATION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(14)(d)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r2_clause_d].condition[0]",
+       "conditionType": "UNSUPPORTED",
+       "expression": {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "BOOLEAN",
+        "termName": "Acquired Indebtedness",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:30da1b0685a9b694d04db854"
+       },
+       "referencesDefinitionId": null,
+       "description": "such Indebtedness constitutes Acquired Indebtedness",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(14)(d)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:99a94ed0d383219497b87e4a",
+        "inv-item:7144ec226bd210a3db96704e"
+       ]
+      },
+      {
+       "conditionId": "rule[r2_clause_d].condition[1]",
+       "conditionType": "UNSUPPORTED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "excludes Indebtedness incurred in contemplation of the transaction or series of related transactions pursuant to which such Person became a Restricted Subsidiary or was otherwise acquired by a Restricted Party",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(14)(d)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:2c0b82ab1b6638e4c3c0b3a4",
+        "inv-item:f15a749df531ea7c0efab257"
+       ]
+      },
+      {
+       "conditionId": "rule[r2_clause_d].condition[2]",
+       "conditionType": "UNSUPPORTED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "provided that, in the case of this clause (d), the only obligors with respect to such Indebtedness shall be those Persons who were obligors of such Indebtedness prior to such acquisition, merger, amalgamation or consolidation",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(14)(d)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:4f2fe13078a0962bf4a9798c",
+        "inv-item:9876d7e074064249e529be8f"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [
+      {
+       "relationshipType": "ALTERNATIVE_TO",
+       "targetRuleId": "ir-rule:5f3ed97f062fd5ce6530991f",
+       "description": "alternative gate to the leverage-ratio route under clause (c)"
+      },
+      {
+       "relationshipType": "ALTERNATIVE_TO",
+       "targetRuleId": "ir-rule:9544f1b8bb599ded885deb38",
+       "description": "clause (e)'s residual basket applies only to amounts not permitted under this clause"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full qualitative gate (Acquired Indebtedness qualification, contemplation-of-transaction exclusion, and obligor restriction proviso) captured with citations; the 'incurred in contemplation of the transaction' determination is inherently qualitative/fact-specific and is represented descriptively rather than as a computable boolean, consistent with its non-formulaic nature in the source.",
+      "ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "condition[0].conditionType \"DEFINED_TERM_QUALIFICATION\" not recognized - normalized to UNSUPPORTED",
+      "condition[1].conditionType \"EXCLUSION\" not recognized - normalized to UNSUPPORTED",
+      "condition[2].conditionType \"OBLIGOR_RESTRICTION\" not recognized - normalized to UNSUPPORTED"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(14)(d)",
+      "excerpt": "such Indebtedness constitutes Acquired Indebtedness (other than Indebtedness incurred in contemplation of the transaction ...); provided that ... the only obligors ..."
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "ruleId": "ir-rule:9544f1b8bb599ded885deb38",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(14)(e)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "SUM",
+      "type": "MONEY",
+      "exprId": "ir-expr:6c2ce7f502b9b32dc88581b4",
+      "operands": [
+       {
+        "kind": "MAX",
+        "type": "MONEY",
+        "exprId": "ir-expr:fa0c1cafb129728ed3bc15f9",
+        "operands": [
+         {
+          "kind": "MONEY",
+          "type": "MONEY",
+          "amount": 720000000,
+          "currency": "USD",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§6.01(b)(14)(e)(1)",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:5d1fc5ffb4cf4e7353799dc9",
+          "inventoryItemIds": [
+           "inv-item:3035e586c9b73e6e504da868"
+          ]
+         },
+         {
+          "kind": "MULTIPLY",
+          "type": "MONEY",
+          "exprId": "ir-expr:8e81b63d2d4db33ee2108c40",
+          "operands": [
+           {
+            "kind": "PERCENT",
+            "type": "PERCENT",
+            "value": 1,
+            "provenance": {
+             "documentId": "doc-a",
+             "sourceNodeKey": null,
+             "sourceCitation": "§6.01(b)(14)(e)(1)",
+             "excerpt": null
+            },
+            "exprId": "ir-expr:5b3c09158404a97f5b9167da"
+           },
+           {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Consolidated EBITDA",
+            "companyId": "phase-3-validation-chwy",
+            "instrumentKey": "chwy-2026-revolving-credit-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+           }
+          ],
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§6.01(b)(14)(e)(1)",
+           "excerpt": null
+          },
+          "inventoryItemIds": [
+           "inv-item:98a1702227919fa5253eb40a"
+          ]
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§6.01(b)(14)(e)(1)",
+         "excerpt": null
+        },
+        "inventoryItemIds": [
+         "inv-item:35bf43d2845ac2da0f3ee29f",
+         "inv-item:6dfdb3087adfb3821a0ccc38",
+         "inv-item:e57e6046da980300b1555752"
+        ]
+       },
+       {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "MONEY",
+        "termName": "Fixed Incremental Amount",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:0e4a48262704a0f55719a1d1",
+        "inventoryItemIds": [
+         "inv-item:3bd87249d4aa5336391454a2"
+        ]
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(14)(e)",
+       "excerpt": null
+      },
+      "inventoryItemIds": [
+       "inv-item:c7906a49df71e3826158ea44",
+       "inv-item:4a034428db0d941ed694dd9d"
+      ]
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r3_clause_e].condition[0]",
+       "conditionType": "UNSUPPORTED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "solely to the extent not permitted to be incurred in reliance on clauses (a) through (d) above",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(14)(e)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:c992d568578db6ac1f347762"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [
+      {
+       "relationshipType": "LIMITED_BY",
+       "targetRuleId": "ir-rule:5f3ed97f062fd5ce6530991f",
+       "description": "residual basket applies only to amounts not permitted under clause (c)"
+      },
+      {
+       "relationshipType": "LIMITED_BY",
+       "targetRuleId": "ir-rule:90982bffb5aaa2ae7d5879c8",
+       "description": "residual basket applies only to amounts not permitted under clause (d)"
+      }
+     ],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "LIMITED_BY",
+       "targetRef": "Section 6.01(b)(14)(a)",
+       "description": "residual basket applies only to amounts not permitted under clause (a), outside this submission's owned source",
+       "reason": "dependsOn[0].targetRef \"Section 6.01(b)(14)(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      },
+      {
+       "relationshipType": "LIMITED_BY",
+       "targetRef": "Section 6.01(b)(14)(b)",
+       "description": "residual basket applies only to amounts not permitted under clause (b), outside this submission's owned source",
+       "reason": "dependsOn[1].targetRef \"Section 6.01(b)(14)(b)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Fixed Incremental Amount",
+       "description": "second addend equals the Fixed Incremental Amount, a defined term with its own internal cross-references (Sections 6.01(b)(12)(b), 6.01(b)(1)(Z), General Lien Basket Reallocated Amount, Available RP Capacity Amount) not separately modeled here",
+       "reason": "dependsOn[4].targetRef \"Fixed Incremental Amount\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Formula (greater of $720.0mm / 100% of Consolidated EBITDA, plus Fixed Incremental Amount) and its residual-basket condition are fully represented with citations.",
+      "condition[0].conditionType \"RESIDUAL_TO_OTHER_BASKETS\" not recognized - normalized to UNSUPPORTED",
+      "dependsOn[0].targetRef \"Section 6.01(b)(14)(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[1].targetRef \"Section 6.01(b)(14)(b)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[4].targetRef \"Fixed Incremental Amount\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(14)(e)",
+      "excerpt": "Indebtedness in an amount not exceeding the sum of (1) the greater of $720.0 million and 100% of Consolidated EBITDA ..., plus (2) an additional amount equal to the Fixed Incremental Amount"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "ruleId": "ir-rule:a5203c9bad6fe9884675eb27",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(15)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUALITATIVE_OBLIGATION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(15)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r4_clause_15].condition[0]",
+       "conditionType": "UNSUPPORTED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "such Indebtedness is extinguished within five (5) Business Days of its incurrence",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(15)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:8ce805c1454c976b06f28c6a",
+        "inv-item:1481673c67f124b49488992e"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Full exception text (insufficient-funds honoring, 5-Business-Day cure) captured with citation.",
+      "ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "condition[0].conditionType \"CURE_PERIOD\" not recognized - normalized to UNSUPPORTED"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(15)",
+      "excerpt": "Indebtedness arising from the honoring by a bank or other financial institution of a check, draft or similar instrument drawn against insufficient funds in the ordinary course of business; provided that such Indebtedness is extinguished within five (5) Business Days of its incurrence"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:0cbe792e4f8f194196592c9e",
+      "inv-item:7eab2a36b2efe6132acf4382"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:9bdcb7a5b0ef8600893131fa",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(16)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "TRANSACTION_INPUT_REFERENCE",
+      "type": "MONEY",
+      "inputName": "FaceAmountOfSupportingLetterOfCreditBankGuaranteeOrInstrument",
+      "exprId": "ir-expr:af01bf9a3effb876d3c99ea2",
+      "inventoryItemIds": [
+       "inv-item:6e4d0b2c621994d91eb104b7"
+      ]
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Cap is tied to the face amount of the specific supporting instrument, a transaction-specific input rather than a fixed or metric-derived figure; represented via TRANSACTION_INPUT_REFERENCE."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(16)",
+      "excerpt": "Indebtedness of any Restricted Party supported by a letter of credit, bank guarantee or other instrument issued pursuant to any credit facility, in a principal amount not in excess of the face amount of such letter of credit, bank guarantee or such other instrument"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:8173c0b016f7b68fd7d3b89a"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:4da258e0af2a8b5ffda50c7b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(17)(i)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUALITATIVE_OBLIGATION",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(17)(i)",
+       "excerpt": null
+      }
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Unconditional permission as drafted; no dollar cap or further condition stated.",
+      "ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(17)(i)",
+      "excerpt": "any guarantee by any Restricted Party of Indebtedness or other obligations of any Restricted Party"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:035094980b926857de7a748d"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:899d83e2aa9ed554604ace18",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(17)(ii)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUALITATIVE_OBLIGATION",
+     "posture": "PERMISSION",
+     "action": "OTHER",
+     "entityScope": [
+      "BORROWER"
+     ],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(17)(ii)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r7_clause_17ii].condition[0]",
+       "conditionType": "UNSUPPORTED",
+       "expression": {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "BOOLEAN",
+        "termName": "Agreement",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:2dfdd583b037e5f36fbe5b90"
+       },
+       "referencesDefinitionId": null,
+       "description": "guarantee or co-borrower obligations of a Restricted Party of Indebtedness or other obligations of the Borrowers, so long as the incurrence of such Indebtedness or other obligations by the Borrowers was permitted under the terms of the Agreement",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(17)(ii)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:25fa9954d1bfbad4800d633e",
+        "inv-item:521183615b10870ee0626a89"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Condition (underlying Indebtedness permitted under the Agreement) captured; 'Agreement' resolves unambiguously to 'this agreement' per its definition.",
+      "ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "condition[0].conditionType \"UNDERLYING_DEBT_PERMITTED\" not recognized - normalized to UNSUPPORTED"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(17)(ii)",
+      "excerpt": "any guarantee or co-borrower obligations of a Restricted Party of Indebtedness or other obligations of the Borrowers so long as the incurrence of such Indebtedness or other obligations by the Borrowers was permitted under the terms of the Agreement"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:d0cb819cf50c7c044c7b78ba"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:50aa4dbedee81e56ea5f19b9",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(21)(a)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUALITATIVE_OBLIGATION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(21)(a)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r8_clause_21a].condition[0]",
+       "conditionType": "UNSUPPORTED",
+       "expression": {
+        "kind": "DEFINED_TERM_REFERENCE",
+        "type": "BOOLEAN",
+        "termName": "Cash Management Obligations",
+        "companyId": "phase-3-validation-chwy",
+        "instrumentKey": "chwy-2026-revolving-credit-instrument",
+        "resolvedDefinitionId": null,
+        "exprId": "ir-expr:16378f82e5893666a23ca0e0"
+       },
+       "referencesDefinitionId": null,
+       "description": "Cash Management Obligations, as defined",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(21)(a)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:2518399eaf7199bd834fda32"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Unconditional permission for the defined term 'Cash Management Obligations'.",
+      "ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "condition[0].conditionType \"WITHIN_DEFINED_TERM\" not recognized - normalized to UNSUPPORTED"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(21)(a)",
+      "excerpt": "(21) (a) Cash Management Obligations"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "ruleId": "ir-rule:6951b88da1faa8d2c16057e5",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(21)(b)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUALITATIVE_OBLIGATION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(21)(b)",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r9_clause_21b].condition[0]",
+       "conditionType": "UNSUPPORTED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Indebtedness of any Restricted Party in respect of netting services, automatic clearing house arrangements, employees' credit or purchase cards, overdraft protections and similar arrangements and other Indebtedness arising from the honoring by a bank or other financial institution of a check, draft or similar instrument drawn against insufficient funds",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(21)(b)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:02e2e641da5755da8ffc981d"
+       ]
+      },
+      {
+       "conditionId": "rule[r9_clause_21b].condition[1]",
+       "conditionType": "UNSUPPORTED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "includes Indebtedness owed on a short term basis of no longer than thirty (30) days to banks and other financial institutions incurred in the ordinary course of business or consistent with past practice, arising in connection with ordinary banking arrangements to manage cash balances",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(21)(b)",
+        "excerpt": null
+       },
+       "inventoryItemIds": [
+        "inv-item:7c130b24ab1dc277570043e3",
+        "inv-item:eefb2d66f61b79358b7b83b6",
+        "inv-item:1691672f09b11156a91109d0"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Both the general scope and the 30-day short-term sub-category, with their qualifying conditions, are captured with citations.",
+      "ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+      "condition[0].conditionType \"SCOPE_DESCRIPTION\" not recognized - normalized to UNSUPPORTED",
+      "condition[1].conditionType \"SHORT_TERM_SUBLIMIT\" not recognized - normalized to UNSUPPORTED"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(21)(b)",
+      "excerpt": "Indebtedness of any Restricted Party in respect of netting services, automatic clearing house arrangements, employees' credit or purchase cards, overdraft protections and similar arrangements and other Indebtedness arising from the honoring by a bank or other financial institution of a check, draft or similar instrument drawn against insufficient funds (including Indebtedness owed on a short term basis of no longer than thirty (30) days ...)"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "ruleId": "ir-rule:586a1b96cc5367c9e8ec568a",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(21)(c)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUALITATIVE_OBLIGATION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(21)(c)",
+       "excerpt": null
+      }
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Unconditional permission as drafted.",
+      "ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(21)(c)",
+      "excerpt": "Indebtedness of any Restricted Party in respect of any working capital lines and asset-based lines"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:fe8974920983bd534a0aa082"
+     ]
+    }
+   ],
+   "definitions": [],
+   "sharedCapacities": [],
+   "inventoryDispositions": []
+  },
+  "failureReasons": [],
+  "unresolvedIssues": [
+   "[rule[r1_clause_c]] dependsOn[0].targetRef \"Section 6.01(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r1_clause_c]] dependsOn[3].targetRef \"Section 6.01(b)(14)(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r1_clause_c]] dependsOn[4].targetRef \"Section 6.01(b)(14)(b)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r2_clause_d]] ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+   "[rule[r2_clause_d]] condition[0].conditionType \"DEFINED_TERM_QUALIFICATION\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r2_clause_d]] condition[1].conditionType \"EXCLUSION\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r2_clause_d]] condition[2].conditionType \"OBLIGOR_RESTRICTION\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r3_clause_e]] condition[0].conditionType \"RESIDUAL_TO_OTHER_BASKETS\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r3_clause_e]] dependsOn[0].targetRef \"Section 6.01(b)(14)(a)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r3_clause_e]] dependsOn[1].targetRef \"Section 6.01(b)(14)(b)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r3_clause_e]] dependsOn[4].targetRef \"Fixed Incremental Amount\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r4_clause_15]] ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+   "[rule[r4_clause_15]] condition[0].conditionType \"CURE_PERIOD\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r6_clause_17i]] ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+   "[rule[r7_clause_17ii]] ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+   "[rule[r7_clause_17ii]] condition[0].conditionType \"UNDERLYING_DEBT_PERMITTED\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r8_clause_21a]] ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+   "[rule[r8_clause_21a]] condition[0].conditionType \"WITHIN_DEFINED_TERM\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r9_clause_21b]] ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+   "[rule[r9_clause_21b]] condition[0].conditionType \"SCOPE_DESCRIPTION\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r9_clause_21b]] condition[1].conditionType \"SHORT_TERM_SUBLIMIT\" not recognized - normalized to UNSUPPORTED",
+   "[rule[r10_clause_21c]] ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+   "This shard covers Section 6.01(b)(14) clauses (c), (d) and (e), plus the free-standing exceptions (15), (16), (17)(i)-(ii), and (21)(a)-(c). Clauses (a) and (b) of 6.01(b)(14), and exceptions (18)-(20), are owned by other shards and were not compiled here; they are preserved only as dependsOn cross-references (Section 6.01(b)(14)(a), Section 6.01(b)(14)(b)) per instructions.",
+   "Clauses (c), (d) and (e) of Section 6.01(b)(14) are mutually alternative gates for permitting the same underlying acquisition/investment-related Indebtedness (per the 'or' connectors and clause (e)'s own 'solely to the extent not permitted in reliance on clauses (a) through (d)' language); this alternative relationship is modeled via dependsOn (ALTERNATIVE_TO / LIMITED_BY) rather than as a shared dollar cap, since (c) and (d) are non-dollar qualitative/ratio gates and only (e) carries an actual dollar-denominated ceiling.",
+   "The Fixed Incremental Amount referenced in clause (e)(2) has its own internal cross-references to Sections 6.01(b)(12)(b), 6.01(b)(1)(Z), the General Lien Basket Reallocated Amount and the Available RP Capacity Amount (which in turn nets out other baskets' usage); these are not separately re-modeled as rules in this submission but are preserved via a dependsOn note, since the Fixed Incremental Amount is consumed here purely as a DEFINED_TERM_REFERENCE.",
+   "getSharedCapContext returned no flagged shared-capacity signals for this section; no WireSharedCapacity was emitted.",
+   "All 42 FROZEN SEMANTIC INVENTORY items for this shard were consumed by specific rule/expression/condition nodes; none required disposition as unconsumed."
+  ],
+  "telemetry": {
+   "inputTokens": 138798,
+   "outputTokens": 34550,
+   "costUsd": 0.6230960000000001
+  },
+  "toolUsage": {
+   "calls": 1,
+   "sourceReadingCalls": 1,
+   "refusals": 0,
+   "charsReturned": 28,
+   "maxToolCalls": 8,
+   "maxAdditionalSourceChars": 20000,
+   "remainingCallSlots": 7,
+   "remainingSourceChars": 19972,
+   "byTool": {
+    "getSharedCapContext": 1
+   },
+   "requestedTargets": [
+    "{}"
+   ],
+   "anyEvidenceUnresolved": false,
+   "anyEvidenceTruncated": false
+  },
+  "missingContextAudit": {
+   "contractVersion": "missing-context-contract.v1",
+   "shardId": "shard:e10ed610ecff8b399619",
+   "shardHash": "0da85a627f9eb0fd6813b66e3dcb2f171fa22680bfa91c790397cd206a3b5e08",
+   "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+   "requested": [
+    {
+     "targetRef": "Section 6.01(a)",
+     "key": "section:6.01(a)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 3115,
+     "fullTextChars": 3115,
+     "detail": "delivered IN FULL in the initial context (3115 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:5f3ed97f062fd5ce6530991f"
+    },
+    {
+     "targetRef": "Section 6.01(b)(14)(a)",
+     "key": "section:6.01(b)(14)(a)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 105,
+     "fullTextChars": 105,
+     "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:5f3ed97f062fd5ce6530991f"
+    },
+    {
+     "targetRef": "Section 6.01(b)(14)(b)",
+     "key": "section:6.01(b)(14)(b)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 105,
+     "fullTextChars": 105,
+     "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:5f3ed97f062fd5ce6530991f"
+    },
+    {
+     "targetRef": "Section 6.01(b)(14)(a)",
+     "key": "section:6.01(b)(14)(a)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 105,
+     "fullTextChars": 105,
+     "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:9544f1b8bb599ded885deb38"
+    },
+    {
+     "targetRef": "Section 6.01(b)(14)(b)",
+     "key": "section:6.01(b)(14)(b)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 105,
+     "fullTextChars": 105,
+     "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:9544f1b8bb599ded885deb38"
+    },
+    {
+     "targetRef": "Fixed Incremental Amount",
+     "key": "term:fixed incremental amount",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 948,
+     "fullTextChars": 948,
+     "detail": "delivered IN FULL in the initial context (948 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:9544f1b8bb599ded885deb38"
+    }
+   ],
+   "counts": {
+    "PLANNER_DELIVERY_GAP": 0,
+    "FALSE_MISSING_CONTEXT": 6,
+    "PARTIAL_DELIVERY": 0,
+    "INTERNAL_LIMITATION_DISCLOSED": 0,
+    "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+    "EXTERNAL_DEPENDENCY": 0,
+    "OPTIONAL_CONTEXT_MISS": 0
+   },
+   "contractHeld": true,
+   "violations": []
+  },
+  "shardId": "shard:e10ed610ecff8b399619",
+  "shardHash": "0da85a627f9eb0fd6813b66e3dcb2f171fa22680bfa91c790397cd206a3b5e08",
+  "reusedFromHash": false,
+  "attempts": 1
+ },
+ "resultSha256": "317e0b8aacc8f463808bc7c840ccc202ea9eb32f2c62bdbf899e82ef1ba2d08d",
+ "completedAt": "2026-09-19T13:29:50.089Z",
+ "recordSha256": "456186b792b4e6215f22cf571cdbcffd366501bf2ef8b41a3b76e1a41f9b889e"
+}

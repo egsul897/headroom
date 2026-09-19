@@ -1,0 +1,650 @@
+{
+ "artifact": "PHASE 3 / 6.01 DEPENDENCY-DELIVERY REMEDIATION §1/§2 - frozen paid-revalidation evidence and the exact failed shard",
+ "at": "2026-09-19T02:18:10.731Z",
+ "paidCalls": 0,
+ "startingSha": "1b36eb64f527740c8cf19f650152c7459b61441d",
+ "immutable": {
+  "artifacts": "docs/phase-3-final-601/104-117 (not edited by this mission)",
+  "rawEvidence": "tests/fixtures/unseen-packages/phase-3-final-601-revalidation (not edited by this mission)",
+  "humanReferenceSet": "audit-only; never used to construct production context"
+ },
+ "priorVerdict": {
+  "verdict": "PHASE3_601_REMEDIATION_FAILED",
+  "summary": {
+   "PASS": 18,
+   "FAIL": 6,
+   "total": 24
+  }
+ },
+ "failedShard": {
+  "shardId": "shard:86cc5e439f113d6053a9",
+  "shardHash": "691cf0598278741ac4cefa845910b4274c7234c7ee3283ec17a46ce29b6ae5ed",
+  "expectedShardHash": "691cf0598278741ac4cefa845910b4274c7234c7ee3283ec17a46ce29b6ae5ed",
+  "hashMatches": true,
+  "ordinal": 2,
+  "status": "SHARD_MISSING_CONTEXT",
+  "failureReasons": [
+   "MISSING_CONTEXT"
+  ],
+  "oversized": false,
+  "ownedUnits": [
+   "operative:NODE_OWN_TEXT:6.01(b)(12)(a)",
+   "operative:NODE_OWN_TEXT:6.01(b)(12)(b)",
+   "operative:NODE_OWN_TEXT:6.01(b)(18)(i)",
+   "operative:NODE_OWN_TEXT:6.01(b)(18)(ii)",
+   "operative:NODE_OWN_TEXT:6.01(b)(19)",
+   "operative:NODE_OWN_TEXT:6.01(b)(27)",
+   "operative:NODE_OWN_TEXT:6.01(b)(31)",
+   "operative:NODE_OWN_TEXT:6.01(b)(32)",
+   "operative:NODE_OWN_TEXT:6.01(b)(33)",
+   "operative:NODE_OWN_TEXT:6.01(b)(1)~2",
+   "operative:NODE_OWN_TEXT:6.01(b)(2)~2",
+   "operative:NODE_OWN_TEXT:6.01(b)(1)~3",
+   "operative:NODE_OWN_TEXT:6.01(b)(2)~3"
+  ],
+  "ownedUnitCount": 13,
+  "ownedItemIds": [
+   "inv-item:5985fbc163bc921fa4711e57",
+   "inv-item:597667c532328e67b64edf1e",
+   "inv-item:805052a570cf10b0912412d8",
+   "inv-item:e5d3460295d5383c2300f586",
+   "inv-item:659e9216825c7831d706458e",
+   "inv-item:4a638ab9cdad3d676457a030",
+   "inv-item:fed9e0690db9217a5bf9ce45",
+   "inv-item:d0f3cc1c3379d2005ffa73ba",
+   "inv-item:5a2395c1ce03f9fdcc626c5d",
+   "inv-item:bf427f065936f838c8efb68a",
+   "inv-item:d31f00c365b249274a3d8d2d",
+   "inv-item:e11f6afea8b4746d1e47de46",
+   "inv-item:73c267362035042b134286f3",
+   "inv-item:7156fe23d8deaead8784726b",
+   "inv-item:7aa5c89f237e2d027a64083c",
+   "inv-item:94710633b7e3c96e1c69f3fc",
+   "inv-item:4c1d218ebdc56d31c9be3aeb",
+   "inv-item:679f8f38f028b097a97b423a",
+   "inv-item:5e990ea51d639e0099a112d2",
+   "inv-item:4b67e79f9aefe8108d1cf48b",
+   "inv-item:49feaf4b3f7b5641e75e7482",
+   "inv-item:14bf30c684d85e867453b9a2",
+   "inv-item:532b30742e4d15408717c794",
+   "inv-item:d8b3ca5024fda6a89a5df026",
+   "inv-item:35fc17346c5dbb597ffae6fb",
+   "inv-item:03177bf7aadcbfbd58eb007e",
+   "inv-item:818d99e0aa82b1e5d76f0c18",
+   "inv-item:62be348eda8f6057d636f5ad",
+   "inv-item:5368bcdeff62758878b2116d",
+   "inv-item:7f0a5c97a75aa592d91d739c",
+   "inv-item:17899370ac50de16795f53ad",
+   "inv-item:c5635cbf1a48f1825d0d547a",
+   "inv-item:7ae6dadb2ae9b65e35914437",
+   "inv-item:e65ab06ead9285cda71423d5",
+   "inv-item:3894f106903c1a257c788a6f",
+   "inv-item:af6e80a21436936e2c88fa52",
+   "inv-item:90959a8643c73b0ba803a5f9",
+   "inv-item:91a85151df5270a318efbb66",
+   "inv-item:510cd4dda4287969090827a8",
+   "inv-item:ccea1a5cdc779a5774c91188",
+   "inv-item:2653e0bb8ca0ca5943a82ea5",
+   "inv-item:0c0a1a4aa31acdb5d9bf6e48",
+   "inv-item:a726f1df5e32d0eabd9170c1",
+   "inv-item:a27d6733af92612bdf9bcee3",
+   "inv-item:c14aa35f6d87ae929a3534c2",
+   "inv-item:69e3fde4c0647df023747773",
+   "inv-item:c478c68a86624119630cabe3",
+   "inv-item:f2d126c947adc8e728eba58f",
+   "inv-item:b9fcc281a56b3493a89e3589",
+   "inv-item:419d7531db39e0d4d2b7de81",
+   "inv-item:f5d7299a2ad070c723b9f58f",
+   "inv-item:0ff627e29e4a61d571afc63c",
+   "inv-item:12b45c166cbd0d16af084d7b",
+   "inv-item:d0af3d694e9768f159e2f636",
+   "inv-item:9bbd17ceea139986b0011a7c",
+   "inv-item:8fbec5b2484250201d894592",
+   "inv-item:790eef8eccd2eb38f8e421d4",
+   "inv-item:94b316f6f39dfb19d8b84218",
+   "inv-item:da191a7652540ce703d42a1c",
+   "inv-item:11424b6a6fc4c19ed6f130a1",
+   "inv-item:b7e15a341ae4d9a43f20e6be",
+   "inv-item:d99557baec41071747279045",
+   "inv-item:1e29d14fe95193e568242488",
+   "inv-item:d43ef58e95994084de4e70bc",
+   "inv-item:77a23db6854579fe1447fe29",
+   "inv-item:d1af9ef1cc4e8f2d59ddf533",
+   "inv-item:fde5520c10fba19050ed80d6",
+   "inv-item:5530c73c8e7ccadbc9c9fd03",
+   "inv-item:02187f64ee1d27b4dd05f98b",
+   "inv-item:25658a75327220c1a7dc0469",
+   "inv-item:a9d3cd606f0441ad5acdd02c",
+   "inv-item:b1915b8224a4458ec5078996",
+   "inv-item:ab6e4b139f41fe52bca75ad0",
+   "inv-item:7e6ed6197e96925e41a347f2",
+   "inv-item:f40f365adf9e580536439393",
+   "inv-item:7e52ce5055f1cc99a1d9ae13",
+   "inv-item:19f6df02bf0b1889ba2b6f81",
+   "inv-item:0f87027820caa6bc7b953175",
+   "inv-item:37c17f69be379ea02edc3f11",
+   "inv-item:55751698a0d2f4ad4cbf5a54",
+   "inv-item:1c6f2caa91e349638671536a",
+   "inv-item:411b46d1ea2f4ac0b5968400",
+   "inv-item:ed2c892732eca6bcba3e44a2",
+   "inv-item:1b0f7ef386c40fd837006ab1",
+   "inv-item:04ccfe7cb854f398492b8d98",
+   "inv-item:1dee7122d205d68d75ac0bde",
+   "inv-item:6d771383104089991c37ee2a",
+   "inv-item:b5a557a3128b5625ae16539f",
+   "inv-item:a46f824b5e06aaf4dab5f647",
+   "inv-item:8bdf6f27df2f7f897ba785e6",
+   "inv-item:aa975c6a2d2cb1df730c3e3f",
+   "inv-item:213c081de668ebbc0d611532",
+   "inv-item:0225af364894d156b3e8bb14",
+   "inv-item:c691c73e01f1d772eacf33a1",
+   "inv-item:6b07b80fe81ab62c06636822",
+   "inv-item:db393fa6fece87653c1b5a8b",
+   "inv-item:a1217166fcdd281f29444a1c",
+   "inv-item:34da551faaf6742c01c21cbe",
+   "inv-item:c5a91a77df1c7cd2bf2b39ac"
+  ],
+  "ownedItems": 99,
+  "ownedMaterialItems": 98,
+  "primaryChars": 11801,
+  "primarySlices": [
+   {
+    "charStart": 12294,
+    "charEnd": 14191,
+    "units": 2
+   },
+   {
+    "charStart": 21026,
+    "charEnd": 22444,
+    "units": 3
+   },
+   {
+    "charStart": 24963,
+    "charEnd": 25612,
+    "units": 1
+   },
+   {
+    "charStart": 25786,
+    "charEnd": 33623,
+    "units": 7
+   }
+  ],
+  "contextChars": 9946,
+  "contextEntries": 16,
+  "unresolvedContextEntries": 31,
+  "estimate": {
+   "primaryChars": 11801,
+   "contextChars": 9946,
+   "inventoryRenderedChars": 36069,
+   "fixedOverheadChars": 43806,
+   "totalChars": 101622,
+   "inputTokens": 40212,
+   "outputTokens": 34000
+  },
+  "telemetry": {
+   "inputTokens": 188874,
+   "outputTokens": 57146,
+   "costUsd": 0.949208
+  },
+  "initialContext": [
+   {
+    "key": "chapeau:operative:NODE_OWN_TEXT:6.01",
+    "kind": "CHAPEAU",
+    "chars": 111,
+    "truncated": false,
+    "requiredBy": 9,
+    "reason": "chapeau (enclosing node lead-in) that operative:NODE_OWN_TEXT:6.01(b)(19) hangs from [admitted: KIND_FLOOR]"
+   },
+   {
+    "key": "chapeau:operative:NODE_OWN_TEXT:6.01(b)",
+    "kind": "CHAPEAU",
+    "chars": 64,
+    "truncated": false,
+    "requiredBy": 9,
+    "reason": "chapeau (enclosing node lead-in) that operative:NODE_OWN_TEXT:6.01(b)(19) hangs from [admitted: KIND_FLOOR]"
+   },
+   {
+    "key": "term:consolidated ebitda",
+    "kind": "REFERENCED_TERM",
+    "chars": 1800,
+    "truncated": true,
+    "requiredBy": 7,
+    "reason": "definition of \"Consolidated EBITDA\" (outside this unit) referenced by 7 owned item(s) [admitted: KIND_FLOOR]"
+   },
+   {
+    "key": "term:test period",
+    "kind": "REFERENCED_TERM",
+    "chars": 579,
+    "truncated": false,
+    "requiredBy": 7,
+    "reason": "definition of \"Test Period\" (outside this unit) referenced by 7 owned item(s) [admitted: KIND_FLOOR]"
+   },
+   {
+    "key": "term:abl credit agreement",
+    "kind": "REFERENCED_TERM",
+    "chars": 939,
+    "truncated": false,
+    "requiredBy": 2,
+    "reason": "definition of \"ABL Credit Agreement\" (outside this unit) referenced by 2 owned item(s) [admitted: REMAINING_BUDGET]"
+   },
+   {
+    "key": "term:disqualified stock",
+    "kind": "REFERENCED_TERM",
+    "chars": 1800,
+    "truncated": true,
+    "requiredBy": 2,
+    "reason": "definition of \"Disqualified Stock\" (outside this unit) referenced by 2 owned item(s) [admitted: REMAINING_BUDGET]"
+   },
+   {
+    "key": "term:effective date",
+    "kind": "REFERENCED_TERM",
+    "chars": 39,
+    "truncated": false,
+    "requiredBy": 2,
+    "reason": "definition of \"Effective Date\" (outside this unit) referenced by 2 owned item(s) [admitted: KIND_FLOOR]"
+   },
+   {
+    "key": "term:equity interests",
+    "kind": "REFERENCED_TERM",
+    "chars": 202,
+    "truncated": false,
+    "requiredBy": 2,
+    "reason": "definition of \"Equity Interests\" (outside this unit) referenced by 2 owned item(s) [admitted: REMAINING_BUDGET]"
+   },
+   {
+    "key": "term:secured indebtedness",
+    "kind": "REFERENCED_TERM",
+    "chars": 90,
+    "truncated": false,
+    "requiredBy": 2,
+    "reason": "definition of \"Secured Indebtedness\" (outside this unit) referenced by 2 owned item(s) [admitted: REMAINING_BUDGET]"
+   },
+   {
+    "key": "term:available amount",
+    "kind": "REFERENCED_TERM",
+    "chars": 81,
+    "truncated": false,
+    "requiredBy": 1,
+    "reason": "definition of \"Available Amount\" (outside this unit) referenced by 1 owned item(s) - FORWARDING declaration, target SECTION 6.08(a)(3) supplied separately [admitted: KIND_FLOOR]"
+   },
+   {
+    "key": "section:6.01",
+    "kind": "REFERENCED_SECTION",
+    "chars": 1800,
+    "truncated": true,
+    "requiredBy": 9,
+    "reason": "section Section 6.01 referenced by 9 owned item(s) [UNIQUE_AFTER_DEGENERATE_EXCLUSION, 1 heading-only occurrence(s) excluded] [admitted: KIND_FLOOR]"
+   },
+   {
+    "key": "section:6.08(a)(3)(c)",
+    "kind": "REFERENCED_SECTION",
+    "chars": 499,
+    "truncated": false,
+    "requiredBy": 1,
+    "reason": "section Section 6.08(a)(3)(c) referenced by 1 owned item(s) [UNIQUE] [admitted: KIND_FLOOR]"
+   },
+   {
+    "key": "parent-item:inv-item:02e2e641da5755da8ffc981d",
+    "kind": "PARENT_ITEM",
+    "chars": 558,
+    "truncated": false,
+    "requiredBy": 3,
+    "reason": "parent proposition of owned item inv-item:7156fe23d8deaead8784726b [admitted: KIND_FLOOR]"
+   },
+   {
+    "key": "parent-item:inv-item:1d3c9ad43b575a3941c9b616",
+    "kind": "PARENT_ITEM",
+    "chars": 299,
+    "truncated": false,
+    "requiredBy": 2,
+    "reason": "parent proposition of owned item inv-item:37c17f69be379ea02edc3f11 [admitted: KIND_FLOOR]"
+   },
+   {
+    "key": "parent-item:inv-item:b109057438b019a200a48de8",
+    "kind": "PARENT_ITEM",
+    "chars": 601,
+    "truncated": false,
+    "requiredBy": 2,
+    "reason": "parent proposition of owned item inv-item:0f87027820caa6bc7b953175 [admitted: KIND_FLOOR]"
+   },
+   {
+    "key": "parent-item:inv-item:ead5252fd1da5600e0086ea4",
+    "kind": "PARENT_ITEM",
+    "chars": 484,
+    "truncated": false,
+    "requiredBy": 2,
+    "reason": "parent proposition of owned item inv-item:fed9e0690db9217a5bf9ce45 [admitted: KIND_FLOOR]"
+   }
+  ],
+  "unresolvedContext": [
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "pro forma basis",
+    "reason": "NOT_FOUND",
+    "detail": "no detected definition of \"Pro Forma Basis\" in document doc-a",
+    "requiredBy": [
+     "inv-item:7156fe23d8deaead8784726b",
+     "inv-item:532b30742e4d15408717c794",
+     "inv-item:7ae6dadb2ae9b65e35914437",
+     "inv-item:a726f1df5e32d0eabd9170c1",
+     "inv-item:fde5520c10fba19050ed80d6"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "net proceeds",
+    "reason": "NOT_FOUND",
+    "detail": "no detected definition of \"Net Proceeds\" in document doc-a",
+    "requiredBy": [
+     "inv-item:4a638ab9cdad3d676457a030"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "refinanced",
+    "reason": "NOT_FOUND",
+    "detail": "no detected definition of \"Refinanced\" in document doc-a",
+    "requiredBy": [
+     "inv-item:fde5520c10fba19050ed80d6"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "refinancing",
+    "reason": "NOT_FOUND",
+    "detail": "no detected definition of \"Refinancing\" in document doc-a",
+    "requiredBy": [
+     "inv-item:5530c73c8e7ccadbc9c9fd03"
+    ]
+   },
+   {
+    "kind": "REFERENCED_SECTION",
+    "key": "6.01(b)(1)(x)",
+    "reason": "AMBIGUOUS",
+    "detail": "section Section 6.01(b)(1)(X) matches 3 substantive physical locations (2 substantive occurrences share \"6.01(b)(1)\" - genuinely ambiguous, not resolved (never guessed); the referring node's own enumeration run does not single one out)",
+    "requiredBy": [
+     "inv-item:94b316f6f39dfb19d8b84218"
+    ]
+   },
+   {
+    "kind": "REFERENCED_SECTION",
+    "key": "6.01(b)(1)(y)",
+    "reason": "AMBIGUOUS",
+    "detail": "section Section 6.01(b)(1)(Y) matches 3 substantive physical locations (2 substantive occurrences share \"6.01(b)(1)\" - genuinely ambiguous, not resolved (never guessed); the referring node's own enumeration run does not single one out)",
+    "requiredBy": [
+     "inv-item:11424b6a6fc4c19ed6f130a1"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "term:permitted investments",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:4a638ab9cdad3d676457a030",
+     "inv-item:d0f3cc1c3379d2005ffa73ba"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "term:transactions",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:94b316f6f39dfb19d8b84218",
+     "inv-item:11424b6a6fc4c19ed6f130a1"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "term:available rp capacity amount",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:c14aa35f6d87ae929a3534c2"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "term:cash equivalents",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:597667c532328e67b64edf1e"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "term:excluded contribution",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:e5d3460295d5383c2300f586"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "term:incremental equivalent debt",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:c478c68a86624119630cabe3"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "term:indebtedness",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:5530c73c8e7ccadbc9c9fd03"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "term:initial borrower",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:805052a570cf10b0912412d8"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "term:joint venture",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:91a85151df5270a318efbb66"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "term:loan parties",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:818d99e0aa82b1e5d76f0c18"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "term:not otherwise applied",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:69e3fde4c0647df023747773"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "term:parent entity",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:805052a570cf10b0912412d8"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "term:preferred stock",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:5530c73c8e7ccadbc9c9fd03"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "term:refinance",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:ccea1a5cdc779a5774c91188"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "term:restricted payments",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:4a638ab9cdad3d676457a030"
+    ]
+   },
+   {
+    "kind": "REFERENCED_TERM",
+    "key": "term:senior indebtedness",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:34da551faaf6742c01c21cbe"
+    ]
+   },
+   {
+    "kind": "REFERENCED_SECTION",
+    "key": "section:6.01(b)(13)",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:d31f00c365b249274a3d8d2d",
+     "inv-item:94710633b7e3c96e1c69f3fc",
+     "inv-item:4c1d218ebdc56d31c9be3aeb",
+     "inv-item:679f8f38f028b097a97b423a",
+     "inv-item:3894f106903c1a257c788a6f",
+     "inv-item:af6e80a21436936e2c88fa52",
+     "inv-item:ccea1a5cdc779a5774c91188"
+    ]
+   },
+   {
+    "kind": "REFERENCED_SECTION",
+    "key": "section:6.01(a)",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:d0af3d694e9768f159e2f636",
+     "inv-item:fde5520c10fba19050ed80d6",
+     "inv-item:5530c73c8e7ccadbc9c9fd03",
+     "inv-item:02187f64ee1d27b4dd05f98b"
+    ]
+   },
+   {
+    "kind": "REFERENCED_SECTION",
+    "key": "section:6.01(b)(18)",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:94710633b7e3c96e1c69f3fc",
+     "inv-item:4c1d218ebdc56d31c9be3aeb",
+     "inv-item:5e990ea51d639e0099a112d2",
+     "inv-item:03177bf7aadcbfbd58eb007e"
+    ]
+   },
+   {
+    "kind": "REFERENCED_SECTION",
+    "key": "section:6.01(b)(12)",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:b1915b8224a4458ec5078996"
+    ]
+   },
+   {
+    "kind": "REFERENCED_SECTION",
+    "key": "section:6.01(b)(4)",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:b1915b8224a4458ec5078996"
+    ]
+   },
+   {
+    "kind": "REFERENCED_SECTION",
+    "key": "section:6.08(a)",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:4a638ab9cdad3d676457a030"
+    ]
+   },
+   {
+    "kind": "REFERENCED_SECTION",
+    "key": "section:6.08(a)(3)",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:69e3fde4c0647df023747773"
+    ]
+   },
+   {
+    "kind": "REFERENCED_SECTION",
+    "key": "section:6.08(a)(3)(b)",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:659e9216825c7831d706458e"
+    ]
+   },
+   {
+    "kind": "REFERENCED_SECTION",
+    "key": "section:6.08(b)",
+    "reason": "BUDGET",
+    "detail": "context budget (10000 chars) exhausted before this referenced_section could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call",
+    "requiredBy": [
+     "inv-item:fed9e0690db9217a5bf9ce45"
+    ]
+   }
+  ],
+  "terminalOutput": {
+   "rules": 21,
+   "definitions": 0,
+   "sharedCapacities": 0,
+   "unresolvedIssues": 53
+  },
+  "modelToolCallLog": {
+   "persisted": 0,
+   "note": "the durable shard record does not persist the per-shard tool-call log; §23 of this mission adds the telemetry that would have made the exact call sequence auditable"
+  }
+ },
+ "budgets": {
+  "shard": {
+   "targetPrimaryChars": 12000,
+   "maxPrimaryChars": 24000,
+   "maxContextChars": 10000,
+   "maxContextEntryChars": 1800,
+   "maxUnitsPerShard": 16
+  },
+  "defaultShard": {
+   "targetPrimaryChars": 12000,
+   "maxPrimaryChars": 24000,
+   "maxContextChars": 10000,
+   "maxContextEntryChars": 1800,
+   "maxUnitsPerShard": 16
+  },
+  "tool": {
+   "maxToolCalls": 8,
+   "maxRecursionDepth": 3,
+   "maxAdditionalSourceChars": 20000
+  }
+ }
+}

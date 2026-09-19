@@ -1,0 +1,316 @@
+{
+ "artifact": "PRECISION AUDIT §20 - the exact frozen 6.01 plan rebuilt under the corrected model",
+ "at": "2026-09-19T04:06:19.951Z",
+ "paidCalls": 0,
+ "versions": {
+  "planner": "semantic-compilation-shards.v4-required-dependency-precision",
+  "requiredDependencyModel": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+  "compilerPrompt": "semantic-accountability-compiler-prompt.v5"
+ },
+ "shards": 7,
+ "certification": {
+  "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+  "shardsContextComplete": 5,
+  "shardsLimitedExternal": 0,
+  "shardsLimitedInternal": 2,
+  "shardsPlanningFailed": 0,
+  "requiredDependenciesTotal": 378,
+  "deliveredFull": 333,
+  "deliveredBoundedExcerpt": 40,
+  "ownedPrimarySource": 2,
+  "external": 1,
+  "internalUnresolved": 1,
+  "ambiguous": 1,
+  "nonRequiredEdgesExcluded": 0,
+  "deliverableNotDelivered": 0,
+  "allShardsExecutable": true,
+  "allShardsContextComplete": false
+ },
+ "resharding": {
+  "splits": 1,
+  "maxDepthReached": 1,
+  "note": "shards split along must-link block boundaries BEFORE any provider call because their required-dependency closure did not fit the context budget (§10)"
+ },
+ "falseOrNonRequiredEdgesExcluded": 0,
+ "maxRequiredChars": 63998,
+ "maxTurn1Tokens": 61670,
+ "perShard": [
+  {
+   "ordinal": 0,
+   "shardId": "shard:7922314d9b00112aef21",
+   "ownedMaterialItems": 42,
+   "requiredChars": 35241,
+   "turn1Tokens": 38429,
+   "certificate": {
+    "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+    "shardId": "shard:7922314d9b00112aef21",
+    "requiredDependenciesTotal": 57,
+    "deliveredFull": 51,
+    "deliveredBoundedExcerpt": 3,
+    "ownedPrimarySource": 2,
+    "external": 0,
+    "internalUnresolved": 1,
+    "ambiguous": 0,
+    "nonRequiredEdgesExcluded": 0,
+    "deliverableNotDelivered": 0,
+    "requiredDependencyChars": 35241,
+    "optionalContextChars": 0,
+    "requiredTierAllocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 2639,
+     "waterFilled": false
+    },
+    "limitations": [
+     {
+      "key": "term:junior lien priority",
+      "disposition": "INTERNAL_REQUIRED_DEPENDENCY_UNRESOLVED",
+      "reason": "\"Junior Lien Priority\" is used as a capitalised term in doc-a but no declaration of it can be resolved - required, internal, unresolved",
+      "requiredBy": 1
+     }
+    ],
+    "undelivered": [],
+    "certificateStatus": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+    "executable": true,
+    "contextComplete": false
+   }
+  },
+  {
+   "ordinal": 1,
+   "shardId": "shard:7888717f06dfe736bf5b",
+   "ownedMaterialItems": 10,
+   "requiredChars": 35520,
+   "turn1Tokens": 32941,
+   "certificate": {
+    "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+    "shardId": "shard:7888717f06dfe736bf5b",
+    "requiredDependenciesTotal": 51,
+    "deliveredFull": 43,
+    "deliveredBoundedExcerpt": 6,
+    "ownedPrimarySource": 0,
+    "external": 1,
+    "internalUnresolved": 0,
+    "ambiguous": 1,
+    "nonRequiredEdgesExcluded": 0,
+    "deliverableNotDelivered": 0,
+    "requiredDependencyChars": 35520,
+    "optionalContextChars": 175,
+    "requiredTierAllocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 3004,
+     "waterFilled": false
+    },
+    "limitations": [
+     {
+      "key": "term:borrowing base",
+      "disposition": "EXTERNAL_REQUIRED_DEPENDENCY",
+      "reason": "the source itself writes \"Borrowing Base (as defined in ABL Credit Agreement)\"; the package contains one document and \"ABL Credit Agreement\" is not it - externality proven from package identity; represented explicitly as an external limitation and never fabricated (source: \"not to exceed the greater of (a) $800.0 million and (b) the Borrowing Base (as defined in the ABL Credit Agreement) as of the date of s\")",
+      "requiredBy": 2
+     },
+     {
+      "key": "section:6.01(b)(1)(z)",
+      "disposition": "AMBIGUOUS_REQUIRED_DEPENDENCY",
+      "reason": "section 6.01(b)(1)(Z) matches 3 substantive physical locations - candidates preserved with provenance, none guessed (2 substantive occurrences share \"6.01(b)(1)\" - genuinely ambiguous, not resolved (never guessed); the referring node's own enumeration run does not single one out)",
+      "requiredBy": 6
+     }
+    ],
+    "undelivered": [],
+    "certificateStatus": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+    "executable": true,
+    "contextComplete": false
+   }
+  },
+  {
+   "ordinal": 2,
+   "shardId": "shard:fe26b4996ab543b0a066",
+   "ownedMaterialItems": 69,
+   "requiredChars": 35630,
+   "turn1Tokens": 45335,
+   "certificate": {
+    "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+    "shardId": "shard:fe26b4996ab543b0a066",
+    "requiredDependenciesTotal": 47,
+    "deliveredFull": 42,
+    "deliveredBoundedExcerpt": 5,
+    "ownedPrimarySource": 0,
+    "external": 0,
+    "internalUnresolved": 0,
+    "ambiguous": 0,
+    "nonRequiredEdgesExcluded": 0,
+    "deliverableNotDelivered": 0,
+    "requiredDependencyChars": 35630,
+    "optionalContextChars": 175,
+    "requiredTierAllocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 2665,
+     "waterFilled": false
+    },
+    "limitations": [],
+    "undelivered": [],
+    "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+    "executable": true,
+    "contextComplete": true
+   }
+  },
+  {
+   "ordinal": 3,
+   "shardId": "shard:86cc5e439f113d6053a9",
+   "ownedMaterialItems": 98,
+   "requiredChars": 63998,
+   "turn1Tokens": 61670,
+   "certificate": {
+    "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "requiredDependenciesTotal": 72,
+    "deliveredFull": 58,
+    "deliveredBoundedExcerpt": 14,
+    "ownedPrimarySource": 0,
+    "external": 0,
+    "internalUnresolved": 0,
+    "ambiguous": 0,
+    "nonRequiredEdgesExcluded": 0,
+    "deliverableNotDelivered": 0,
+    "requiredDependencyChars": 63998,
+    "optionalContextChars": 175,
+    "requiredTierAllocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 2377,
+     "waterFilled": true
+    },
+    "limitations": [],
+    "undelivered": [],
+    "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+    "executable": true,
+    "contextComplete": true
+   }
+  },
+  {
+   "ordinal": 4,
+   "shardId": "shard:2eb6ff75386e45a57593",
+   "ownedMaterialItems": 44,
+   "requiredChars": 49756,
+   "turn1Tokens": 45044,
+   "certificate": {
+    "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "requiredDependenciesTotal": 67,
+    "deliveredFull": 63,
+    "deliveredBoundedExcerpt": 4,
+    "ownedPrimarySource": 0,
+    "external": 0,
+    "internalUnresolved": 0,
+    "ambiguous": 0,
+    "nonRequiredEdgesExcluded": 0,
+    "deliverableNotDelivered": 0,
+    "requiredDependencyChars": 49756,
+    "optionalContextChars": 175,
+    "requiredTierAllocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 3115,
+     "waterFilled": false
+    },
+    "limitations": [],
+    "undelivered": [],
+    "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+    "executable": true,
+    "contextComplete": true
+   }
+  },
+  {
+   "ordinal": 5,
+   "shardId": "shard:e10ed610ecff8b399619",
+   "ownedMaterialItems": 42,
+   "requiredChars": 42714,
+   "turn1Tokens": 41034,
+   "certificate": {
+    "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+    "shardId": "shard:e10ed610ecff8b399619",
+    "requiredDependenciesTotal": 60,
+    "deliveredFull": 55,
+    "deliveredBoundedExcerpt": 5,
+    "ownedPrimarySource": 0,
+    "external": 0,
+    "internalUnresolved": 0,
+    "ambiguous": 0,
+    "nonRequiredEdgesExcluded": 0,
+    "deliverableNotDelivered": 0,
+    "requiredDependencyChars": 42714,
+    "optionalContextChars": 586,
+    "requiredTierAllocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 3115,
+     "waterFilled": false
+    },
+    "limitations": [],
+    "undelivered": [],
+    "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+    "executable": true,
+    "contextComplete": true
+   }
+  },
+  {
+   "ordinal": 6,
+   "shardId": "shard:7c4d3d2ae3e0a522b99e",
+   "ownedMaterialItems": 14,
+   "requiredChars": 14966,
+   "turn1Tokens": 25949,
+   "certificate": {
+    "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+    "shardId": "shard:7c4d3d2ae3e0a522b99e",
+    "requiredDependenciesTotal": 24,
+    "deliveredFull": 21,
+    "deliveredBoundedExcerpt": 3,
+    "ownedPrimarySource": 0,
+    "external": 0,
+    "internalUnresolved": 0,
+    "ambiguous": 0,
+    "nonRequiredEdgesExcluded": 0,
+    "deliverableNotDelivered": 0,
+    "requiredDependencyChars": 14966,
+    "optionalContextChars": 175,
+    "requiredTierAllocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 2283,
+     "waterFilled": false
+    },
+    "limitations": [],
+    "undelivered": [],
+    "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+    "executable": true,
+    "contextComplete": true
+   }
+  }
+ ],
+ "failedShard": {
+  "shardId": "shard:86cc5e439f113d6053a9",
+  "stillPresent": true,
+  "ownedMaterialItems": 98,
+  "status": "CERTIFIED_CONTEXT_COMPLETE",
+  "fiveTargets": [
+   {
+    "key": "term:fixed incremental amount",
+    "deliveredInFull": true
+   },
+   {
+    "key": "term:voluntary prepayment incremental amount",
+    "deliveredInFull": true
+   },
+   {
+    "key": "term:ratio incremental amount",
+    "deliveredInFull": true
+   },
+   {
+    "key": "term:extension amount",
+    "deliveredInFull": true
+   },
+   {
+    "key": "section:2.18(b)",
+    "deliveredInFull": true
+   }
+  ]
+ },
+ "toolBudgetUnchanged": {
+  "maxToolCalls": 8,
+  "maxRecursionDepth": 3,
+  "maxAdditionalSourceChars": 20000
+ }
+}

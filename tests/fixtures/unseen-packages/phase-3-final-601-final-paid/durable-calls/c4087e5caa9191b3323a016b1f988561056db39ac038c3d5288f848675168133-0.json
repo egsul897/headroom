@@ -1,0 +1,1113 @@
+{
+ "identity": {
+  "recordVersion": "hd4-durable-call-record.v1",
+  "replayAlgorithmVersion": "hd4-durable-replay.v1",
+  "missionId": "phase-3-final-601-final-paid",
+  "passId": "pass-1",
+  "sourceDocumentId": "doc-a",
+  "candidateRef": "phase-3-final-601:chwy:6.01",
+  "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+  "algorithmVersion": "semantic-accountability.v5",
+  "promptVersion": "semantic-inventory-prompt.v5",
+  "stage": "semantic_inventory",
+  "provider": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-sonnet-5",
+  "schemaId": "semantic-accountability/wire-schema#SubmitSemanticInventorySchema",
+  "schemaFingerprint": "1dbf6197de45d09a5498a57011ce316ce7560b879dbdf11cbb7fb13f2f8a441d",
+  "systemPromptSha256": "e393cf49ce2ebf2a159e4f5fbf5d230c0172b97240c2119bbffeb3adccbfd0af",
+  "userContentSha256": "d59239d945da9bd77481c608495d4981d1a5da498eb0217d40202ad2f7a7a3fd"
+ },
+ "requestHash": "c4087e5caa9191b3323a016b1f988561056db39ac038c3d5288f848675168133",
+ "occurrence": 0,
+ "callOrdinal": 2,
+ "batchRef": null,
+ "payload": {
+  "items": [
+   {
+    "localRef": "i1",
+    "semanticRole": "EXCEPTION",
+    "additionalRoles": [
+     "PERMISSION"
+    ],
+    "proposition": "The exception in clause (11) also covers appeal, judgment, surety and other similar bonds or instruments, performance and bankers' acceptance facilities, completion guarantees, and customs, VAT or other tax guarantees and similar obligations provided by any Restricted Party.",
+    "excerpt": "appeal, judgment, surety and other similar bonds or instruments and performance, bankers’ acceptance facilities and completion guarantees, customs, VAT or other tax guarantees and similar obligations provided by any Restricted Party or",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(11)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i2",
+    "semanticRole": "EXCEPTION",
+    "additionalRoles": [
+     "PERMISSION"
+    ],
+    "proposition": "The exception also extends to obligations in respect of letters of credit, bank guarantees or similar instruments related to the foregoing bonds/guarantees.",
+    "excerpt": "obligations in respect of letters of credit, bank guarantees or similar instruments related thereto,",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(11)#3",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i1",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i3",
+    "semanticRole": "CONDITION",
+    "proposition": "The letter of credit/bank guarantee obligations must, in each case, be in the ordinary course of business or consistent with past practice.",
+    "excerpt": "in each case in the ordinary course of business or consistent with past practice;",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(11)#3",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i2",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i4",
+    "semanticRole": "PERMISSION",
+    "additionalRoles": [
+     "EXCEPTION"
+    ],
+    "proposition": "Clause (12)(a) permits Indebtedness, Disqualified Stock and Preferred Stock of any Restricted Party, subject to a cap described in the following text.",
+    "excerpt": "(12) (a) Indebtedness, Disqualified Stock and Preferred Stock of any",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(12)(a)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i5",
+    "semanticRole": "THRESHOLD",
+    "additionalRoles": [
+     "FORMULA_COMPONENT"
+    ],
+    "proposition": "The permitted amount under clause (12)(a) is up to 200% of the gross unutilized cash, Cash Equivalents and other in-kind equity contributions received by any Restricted Party.",
+    "excerpt": "Restricted Party in an aggregate principal amount or liquidation preference up to 200% of the gross unutilized cash and Cash Equivalents and other in-kind equity contributions received by any Restricted Party",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(12)(a)#2",
+    "quantitativeValues": [
+     {
+      "kind": "PERCENT",
+      "rawText": "200%",
+      "normalizedValue": 2,
+      "unit": "%"
+     }
+    ],
+    "referencedTerms": [
+     "Cash Equivalents"
+    ],
+    "referencedSections": [],
+    "parentRef": "i4",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i6",
+    "semanticRole": "FORMULA_COMPONENT",
+    "additionalRoles": [
+     "DEPENDENCY"
+    ],
+    "proposition": "The counted contributions are those received on or after the Effective Date from the issue or sale of Equity Interests of the Initial Borrower or cash contributed to the capital of the Initial Borrower or any Parent Entity, provided such proceeds are contributed to any Restricted Party.",
+    "excerpt": "on or following the Effective Date from the issue or sale of Equity Interests of the Initial Borrower or cash contributed to the capital of the Initial Borrower or any Parent Entity (which proceeds are contributed to any Restricted Party) (in each",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(12)(a)#3",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Effective Date",
+     "Equity Interests",
+     "Initial Borrower",
+     "Parent Entity"
+    ],
+    "referencedSections": [],
+    "parentRef": "i5",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i7",
+    "semanticRole": "EXCEPTION",
+    "proposition": "Excluded Contributions, proceeds of Disqualified Stock, and proceeds of sales of Equity Interests to the Borrowers or any of their Subsidiaries are excluded from the counted contributions.",
+    "excerpt": "case, other than Excluded Contributions or proceeds of Disqualified Stock or sales of Equity Interests to the Borrowers or any of their Subsidiaries)",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(12)(a)#4",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Excluded Contributions",
+     "Disqualified Stock",
+     "Equity Interests"
+    ],
+    "referencedSections": [],
+    "parentRef": "i5",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i8",
+    "semanticRole": "REFERENCE",
+    "additionalRoles": [
+     "DEPENDENCY"
+    ],
+    "proposition": "The counted contributions are determined in accordance with Sections 6.08(a)(3)(b) and (3)(c).",
+    "excerpt": "as determined in accordance with Sections Section 6.08(a)(3)(b) and (3)(c) hereof to the",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(12)(a)#4",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [
+     "Section 6.08(a)(3)(b)",
+     "Section 6.08(a)(3)(c)"
+    ],
+    "parentRef": "i5",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "AMBIGUOUS_REFERENCE",
+    "ambiguityReason": "Cross-reference to Section 6.08(a)(3)(b) (and by extension (3)(c)) could not be resolved to a region - out of scope of provided source context.",
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i9",
+    "semanticRole": "CONDITION",
+    "proposition": "The counted Net Proceeds or cash must not have already been applied to make Restricted Payments, other Investments, payments or exchanges under Section 6.08(b), or Permitted Investments.",
+    "excerpt": "extent such Net Proceeds or cash have not been applied pursuant to such clauses to make Restricted Payments or to make other Investments, payments or exchanges pursuant to Section 6.08(b) hereof or to make Permitted Investments (other than",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(12)(a)#5",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Net Proceeds",
+     "Restricted Payments",
+     "Permitted Investments"
+    ],
+    "referencedSections": [],
+    "parentRef": "i5",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i10",
+    "semanticRole": "REFERENCE",
+    "additionalRoles": [
+     "DEPENDENCY"
+    ],
+    "proposition": "The no-double-counting condition cross-references Section 6.08(b).",
+    "excerpt": "Section 6.08(b)",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(12)(a)#5",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [
+     "Section 6.08(b)"
+    ],
+    "parentRef": "i9",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "AMBIGUOUS_REFERENCE",
+    "ambiguityReason": "Cross-reference to Section 6.08(b) could not be resolved to a region - out of scope of provided source context.",
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i11",
+    "semanticRole": "EXCEPTION",
+    "proposition": "Permitted Investments specified in clauses (1), (2) and (3) of the definition thereof are carved out from the double-counting exclusion (i.e., they do not disqualify the contribution from being counted).",
+    "excerpt": "Permitted Investments specified in clauses (1), (2) and (3) of the definition thereof) and",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(12)(a)#6",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Permitted Investments"
+    ],
+    "referencedSections": [],
+    "parentRef": "i9",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i12",
+    "semanticRole": "PERMISSION",
+    "proposition": "Clause (12)(b) permits Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party not otherwise permitted hereunder, up to an aggregate amount described in following text.",
+    "excerpt": "(b) Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party not otherwise permitted hereunder in an aggregate principal",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(12)(b)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i13",
+    "semanticRole": "FORMULA_COMPONENT",
+    "proposition": "The amount permitted under (12)(b) is tested on an aggregated basis with all other Indebtedness, Disqualified Stock and Preferred Stock then outstanding and incurred or issued pursuant to this clause.",
+    "excerpt": "amount or liquidation preference, which when aggregated with the principal amount and liquidation preference of all other Indebtedness, Disqualified Stock and Preferred Stock then outstanding and incurred or issued pursuant to this",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(12)(b)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i12",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i14",
+    "semanticRole": "SHARED_CAP",
+    "proposition": "The cap under Section 6.01(b)(12)(b) is shared with (aggregated with) outstanding Indebtedness under Section 6.01(b)(13) incurred to Refinance Indebtedness initially incurred under Section 6.01(b)(12)(b).",
+    "excerpt": "Section 6.01(b)(12)(b) (together with any outstanding Indebtedness under Section 6.01(b)(13) hereof incurred to Refinance Indebtedness initially incurred under this Section 6.01(b)(12)(b)),",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(12)(b)#3",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [
+     "Section 6.01(b)(12)(b)",
+     "Section 6.01(b)(13)"
+    ],
+    "parentRef": "i12",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i15",
+    "semanticRole": "THRESHOLD",
+    "additionalRoles": [
+     "ALTERNATIVE"
+    ],
+    "proposition": "The aggregated amount under (12)(b) may not exceed the greater of two stated alternatives.",
+    "excerpt": "does not exceed the greater of (x)",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(12)(b)#3",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i12",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i16",
+    "semanticRole": "ALTERNATIVE",
+    "additionalRoles": [
+     "VALUE"
+    ],
+    "proposition": "Fixed alternative of the (12)(b) cap: $720.0 million.",
+    "excerpt": "$720.0 million",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(12)(b)#4",
+    "quantitativeValues": [
+     {
+      "kind": "MONEY",
+      "rawText": "$720.0 million",
+      "normalizedValue": 720000000,
+      "unit": "USD"
+     }
+    ],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i15",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i17",
+    "semanticRole": "ALTERNATIVE",
+    "additionalRoles": [
+     "FORMULA_COMPONENT"
+    ],
+    "proposition": "Metric-based alternative of the (12)(b) cap: 100% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of incurrence.",
+    "excerpt": "100% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of any incurrence pursuant to this Section 6.01(b)(12)(b);",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(12)(b)#4",
+    "quantitativeValues": [
+     {
+      "kind": "PERCENT",
+      "rawText": "100%",
+      "normalizedValue": 1,
+      "unit": "%"
+     }
+    ],
+    "referencedTerms": [
+     "Consolidated EBITDA",
+     "Test Period",
+     "Pro Forma Basis"
+    ],
+    "referencedSections": [],
+    "parentRef": "i15",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i18",
+    "semanticRole": "EXCEPTION",
+    "additionalRoles": [
+     "PERMISSION"
+    ],
+    "proposition": "Clause (13) permits the incurrence or issuance by any Restricted Party of Indebtedness, Disqualified Stock or Preferred Stock which serves to Refinance certain other Indebtedness, Disqualified Stock or Preferred Stock.",
+    "excerpt": "(13) the incurrence or issuance by any Restricted Party, of Indebtedness, Disqualified Stock or Preferred Stock which serves to",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i19",
+    "semanticRole": "REFERENCE",
+    "additionalRoles": [
+     "DEPENDENCY"
+    ],
+    "proposition": "The Refinancing permission applies to Indebtedness, Disqualified Stock or Preferred Stock incurred or issued as permitted under Section 6.01(a) and Sections 6.01(b)(1)(Y), (3), (4) and (5)(b).",
+    "excerpt": "Refinance any Indebtedness (or unutilized commitment in respect of Indebtedness), Disqualified Stock or Preferred Stock, incurred or issued as permitted under Section 6.01(a) hereof and Sections 6.01(b)(1)(Y), (3), (4), (5)(b) and",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [
+     "Section 6.01(a)",
+     "Section 6.01(b)(1)(Y)",
+     "Section 6.01(b)(3)",
+     "Section 6.01(b)(4)",
+     "Section 6.01(b)(5)(b)"
+    ],
+    "parentRef": "i18",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "AMBIGUOUS_REFERENCE",
+    "ambiguityReason": "Section 6.01(b)(1)(Y) reference is ambiguous - two substantive occurrences of 6.01(b)(1) exist in the source and the intended one could not be resolved.",
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i20",
+    "semanticRole": "REFERENCE",
+    "additionalRoles": [
+     "DEPENDENCY"
+    ],
+    "proposition": "The Refinancing permission also extends to amounts permitted under Section 6.01(b)(12), this Section 6.01(b)(13), and Sections 6.01(b)(14), (18), (19), (27) and (31).",
+    "excerpt": "(12) hereof, this Section 6.01(b)(13) and Sections 6.01(b)(14), (18), (19), (27) and (31) hereof or any Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party, issued to so Refinance such Indebtedness (or",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)#3",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [
+     "Section 6.01(b)(12)",
+     "Section 6.01(b)(13)",
+     "Section 6.01(b)(14)",
+     "Section 6.01(b)(18)",
+     "Section 6.01(b)(19)",
+     "Section 6.01(b)(27)",
+     "Section 6.01(b)(31)"
+    ],
+    "parentRef": "i18",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i21",
+    "semanticRole": "FORMULA_COMPONENT",
+    "proposition": "Refinancing Indebtedness may include additional Indebtedness, Disqualified Stock or Preferred Stock incurred to pay accrued but unpaid interest, dividends and premiums.",
+    "excerpt": "unutilized commitment in respect of Indebtedness), Disqualified Stock or Preferred Stock, including, in each case, additional Indebtedness, Disqualified Stock or Preferred Stock incurred to pay accrued but unpaid interest, dividends, premiums",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)#4",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i18",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i22",
+    "semanticRole": "FORMULA_COMPONENT",
+    "proposition": "Refinancing Indebtedness may also include tender premiums, defeasance costs, underwriting discounts, and fees/costs/expenses (including upfront fees or original issue discount in lieu thereof); the resulting Indebtedness is defined as \"Refinancing Indebtedness\".",
+    "excerpt": "(including tender premiums), defeasance costs, underwriting discounts, fees, costs and expenses (including upfront fees, original issue discount (in lieu of customary upfront fees) or similar fees) in connection therewith (the “ Refinancing",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)#5",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Refinancing Indebtedness"
+    ],
+    "referencedSections": [],
+    "parentRef": "i18",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "DEFINITIONAL"
+   },
+   {
+    "localRef": "i23",
+    "semanticRole": "TIME_PERIOD",
+    "additionalRoles": [
+     "CONDITION"
+    ],
+    "proposition": "The Refinancing Indebtedness definition closes and the Refinancing must occur on or prior to the respective maturity of the Indebtedness, Disqualified Stock or Preferred Stock being refinanced.",
+    "excerpt": "Indebtedness ”) on or prior to its respective maturity;",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)#6",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Refinancing Indebtedness"
+    ],
+    "referencedSections": [],
+    "parentRef": "i18",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i24",
+    "semanticRole": "CONDITION",
+    "proposition": "The Refinancing permission under (13) is subject to the provisos that follow.",
+    "excerpt": "provided , however , that such Refinancing Indebtedness:",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)#7",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i18",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i25",
+    "semanticRole": "CONDITION",
+    "additionalRoles": [
+     "EXCEPTION"
+    ],
+    "proposition": "Except in the case of a Maturity Exception Facility, the Refinancing Indebtedness must satisfy a Weighted Average Life to Maturity test.",
+    "excerpt": "except in the case of a Maturity Exception Facility, has a Weighted Average Life to Maturity at the time such Refinancing",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)(a)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Maturity Exception Facility",
+     "Weighted Average Life to Maturity"
+    ],
+    "referencedSections": [],
+    "parentRef": "i24",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i26",
+    "semanticRole": "ALTERNATIVE",
+    "additionalRoles": [
+     "CONDITION"
+    ],
+    "proposition": "First branch of the WAL test: the Weighted Average Life to Maturity of the Refinancing Indebtedness must not be less than the remaining Weighted Average Life to Maturity of the Indebtedness, Disqualified Stock or Preferred Stock being Refinanced.",
+    "excerpt": "Indebtedness is incurred which is not less than the remaining Weighted Average Life to Maturity of the Indebtedness, Disqualified Stock or Preferred Stock being Refinanced",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)(a)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Weighted Average Life to Maturity"
+    ],
+    "referencedSections": [],
+    "parentRef": "i25",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i27",
+    "semanticRole": "ALTERNATIVE",
+    "additionalRoles": [
+     "CONDITION"
+    ],
+    "proposition": "Second branch of the WAL test: alternatively, the Refinancing Indebtedness requires no or only nominal cash payments (other than interest payments), continued in the next slot with a specific day count.",
+    "excerpt": "(or requires no or nominal payments in cash (other than interest payments)",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)(a)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i25",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i28",
+    "semanticRole": "TIME_PERIOD",
+    "additionalRoles": [
+     "ALTERNATIVE"
+    ],
+    "proposition": "The nominal cash payments alternative requires no payments prior to the date that is 91 days after the maturity date of the Loans.",
+    "excerpt": "prior to the date that is ninety-one (91) days after the maturity date of the Loans),",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)(a)#3",
+    "quantitativeValues": [
+     {
+      "kind": "DAY_COUNT",
+      "rawText": "ninety-one (91) days",
+      "normalizedValue": 91,
+      "unit": "days"
+     }
+    ],
+    "referencedTerms": [
+     "Loans"
+    ],
+    "referencedSections": [],
+    "parentRef": "i27",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i29",
+    "semanticRole": "CONDITION",
+    "proposition": "Lead-in to subordination conditions applicable to the extent the Refinancing Indebtedness Refinances certain categories of Indebtedness, Disqualified Stock or Preferred Stock.",
+    "excerpt": "to the extent such Refinancing Indebtedness Refinances",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)(b)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i24",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i30",
+    "semanticRole": "ALTERNATIVE",
+    "additionalRoles": [
+     "CONDITION"
+    ],
+    "proposition": "Branch (i): applies where the Refinancing Indebtedness refinances Indebtedness subordinated in right of payment to the Loans.",
+    "excerpt": "(i) Indebtedness subordinated in right of payment to the Loans",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)(b)(i)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Loans"
+    ],
+    "referencedSections": [],
+    "parentRef": "i29",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i31",
+    "semanticRole": "CONDITION",
+    "proposition": "Where subordinated Indebtedness or a Guarantee thereof is refinanced, the Refinancing Indebtedness must be subordinated in right of payment to the Loans or the Guarantee at least to the same extent as the Indebtedness being Refinanced.",
+    "excerpt": "or any Guarantee thereof, such Refinancing Indebtedness is subordinated in right of payment to the Loans or the Guarantee at least to the same extent as the Indebtedness being Refinanced or",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)(b)(i)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Loans",
+     "Guarantee"
+    ],
+    "referencedSections": [],
+    "parentRef": "i30",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i32",
+    "semanticRole": "ALTERNATIVE",
+    "additionalRoles": [
+     "CONDITION"
+    ],
+    "proposition": "Branch (ii): applies where the Refinancing Indebtedness refinances Disqualified Stock or Preferred Stock.",
+    "excerpt": "(ii) Disqualified Stock or Preferred Stock, such",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)(b)(ii)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Disqualified Stock",
+     "Preferred Stock"
+    ],
+    "referencedSections": [],
+    "parentRef": "i29",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i33",
+    "semanticRole": "CONDITION",
+    "proposition": "Where Disqualified Stock or Preferred Stock is being refinanced, the Refinancing Indebtedness must itself be Disqualified Stock or Preferred Stock, respectively.",
+    "excerpt": "Refinancing Indebtedness must be Disqualified Stock or Preferred Stock, respectively, and",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)(b)(ii)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i32",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i34",
+    "semanticRole": "EXCEPTION",
+    "proposition": "Lead-in stating that Refinancing Indebtedness shall not include the categories described in the following sub-clauses.",
+    "excerpt": "shall not include:",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)(c)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i24",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i35",
+    "semanticRole": "EXCEPTION",
+    "proposition": "Refinancing Indebtedness excludes Indebtedness, Disqualified Stock or Preferred Stock of a Subsidiary of the Borrowers that is not a Guarantor, where such Subsidiary's Indebtedness refinances Indebtedness of the Borrowers or a Guarantor (continued in next slot).",
+    "excerpt": "Indebtedness, Disqualified Stock or Preferred Stock of a Subsidiary of the Borrowers that is not a Guarantor that",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)(c)(i)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Guarantor"
+    ],
+    "referencedSections": [],
+    "parentRef": "i34",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i36",
+    "semanticRole": "EXCEPTION",
+    "proposition": "The excluded category is Indebtedness of a non-Guarantor Subsidiary that refinances Indebtedness, Disqualified Stock or Preferred Stock of the Borrowers or a Guarantor.",
+    "excerpt": "Refinances Indebtedness, Disqualified Stock or Preferred Stock of the Borrowers or a Guarantor;",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)(c)(i)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Guarantor"
+    ],
+    "referencedSections": [],
+    "parentRef": "i35",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i37",
+    "semanticRole": "OTHER",
+    "proposition": "Sub-clause (ii) is reserved and contains no substantive content.",
+    "excerpt": "(ii) [reserved];",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)(c)(ii)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i34",
+    "relatedRefs": [],
+    "materiality": "INFORMATIONAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "UNKNOWN"
+   },
+   {
+    "localRef": "i38",
+    "semanticRole": "EXCEPTION",
+    "proposition": "Refinancing Indebtedness also excludes Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party (continued in next slot).",
+    "excerpt": "-133-\n\n(iii) Indebtedness, Disqualified Stock or Preferred Stock of any Restricted",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)(c)(iii)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i34",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i39",
+    "semanticRole": "EXCEPTION",
+    "proposition": "The excluded category (iii) is Indebtedness of any Restricted Party that refinances Indebtedness, Disqualified Stock or Preferred Stock of an Unrestricted Subsidiary.",
+    "excerpt": "Party that refinances Indebtedness, Disqualified Stock or Preferred Stock of an Unrestricted Subsidiary;",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)(c)(iii)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Unrestricted Subsidiary"
+    ],
+    "referencedSections": [],
+    "parentRef": "i38",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i40",
+    "semanticRole": "EXCEPTION",
+    "additionalRoles": [
+     "DEPENDENCY",
+     "CONDITION"
+    ],
+    "proposition": "A further proviso states that the Weighted Average Life to Maturity requirement in Section 6.01(b)(13)(a) does not apply to any Refinancing of any Secured Indebtedness.",
+    "excerpt": "further , that Section 6.01(b)(13)(a) hereof shall not apply to any Refinancing of any Secured Indebtedness;",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(13)(c)(iii)#4",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Secured Indebtedness"
+    ],
+    "referencedSections": [
+     "Section 6.01(b)(13)(a)"
+    ],
+    "parentRef": "i25",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i41",
+    "semanticRole": "ALTERNATIVE",
+    "additionalRoles": [
+     "PERMISSION"
+    ],
+    "proposition": "Branch (x) of clause (14): Indebtedness, Disqualified Stock or Preferred Stock of a Restricted Party incurred or issued to finance an acquisition or Investment.",
+    "excerpt": "Indebtedness, Disqualified Stock or Preferred Stock of (x) a Restricted Party incurred or issued to finance an acquisition or Investment",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(14)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": null,
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i42",
+    "semanticRole": "ALTERNATIVE",
+    "additionalRoles": [
+     "PERMISSION"
+    ],
+    "proposition": "Branch (y) of clause (14): Indebtedness, Disqualified Stock or Preferred Stock of Persons that are acquired by any Restricted Party or merged into, amalgamated with or consolidated with a Restricted Party (continued in next slot).",
+    "excerpt": "or (y) Persons that are acquired by any Restricted Party or merged into, amalgamated with or",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(14)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i41",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i43",
+    "semanticRole": "PERMISSION",
+    "proposition": "Branch (y) also covers consolidation with a Restricted Party in accordance with the Agreement, including designation of an Unrestricted Subsidiary as a Restricted Subsidiary.",
+    "excerpt": "consolidated with a Restricted Party in accordance with the terms of this Agreement (including designating an Unrestricted Subsidiary as a Restricted Subsidiary;",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(14)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Unrestricted Subsidiary",
+     "Restricted Subsidiary"
+    ],
+    "referencedSections": [],
+    "parentRef": "i42",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i44",
+    "semanticRole": "CONDITION",
+    "proposition": "The permission under clause (14) is subject to the provisos that follow.",
+    "excerpt": "provided that:",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(14)#3",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i41",
+    "relatedRefs": [],
+    "materiality": "MATERIAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i45",
+    "semanticRole": "CONDITION",
+    "proposition": "Condition (a): after giving pro forma effect to the Investment, acquisition, merger, amalgamation or consolidation, one of two alternative tests set out below must be satisfied.",
+    "excerpt": "after giving pro forma effect to such Investment, acquisition, merger, amalgamation or consolidation",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(14)(a)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i44",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i46",
+    "semanticRole": "ALTERNATIVE",
+    "additionalRoles": [
+     "CONDITION"
+    ],
+    "proposition": "Alternative (i): tested with respect to any Borrower (continued in next slot).",
+    "excerpt": "(i) any Borrower",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(14)(a)(i)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i45",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i47",
+    "semanticRole": "ALTERNATIVE",
+    "additionalRoles": [
+     "THRESHOLD",
+     "REFERENCE"
+    ],
+    "proposition": "Alternative (i) is satisfied if any Borrower would be permitted to incur at least $1.00 of additional Indebtedness pursuant to the Interest Coverage Ratio test set forth in Section 6.01(a).",
+    "excerpt": "would be permitted to incur at least $1.00 of additional Indebtedness pursuant to the Interest Coverage Ratio test set forth in Section 6.01(a) hereof or",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(14)(a)(i)#2",
+    "quantitativeValues": [
+     {
+      "kind": "MONEY",
+      "rawText": "$1.00",
+      "normalizedValue": 1,
+      "unit": "USD"
+     }
+    ],
+    "referencedTerms": [
+     "Interest Coverage Ratio"
+    ],
+    "referencedSections": [
+     "Section 6.01(a)"
+    ],
+    "parentRef": "i46",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i48",
+    "semanticRole": "ALTERNATIVE",
+    "additionalRoles": [
+     "THRESHOLD"
+    ],
+    "proposition": "Alternative (ii): the Interest Coverage Ratio of the Initial Borrower for the Test Period must be equal to or greater than a comparator (continued in next slot).",
+    "excerpt": "(ii) the Interest Coverage Ratio of the Initial Borrower for the Test Period is equal",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(14)(a)(ii)#1",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Interest Coverage Ratio",
+     "Initial Borrower",
+     "Test Period"
+    ],
+    "referencedSections": [],
+    "parentRef": "i45",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i49",
+    "semanticRole": "THRESHOLD",
+    "proposition": "Alternative (ii) requires the Interest Coverage Ratio to be equal to or greater than the ratio immediately prior to the Investment, acquisition, merger, amalgamation or consolidation.",
+    "excerpt": "to or greater than immediately prior to such Investment, acquisition, merger, amalgamation or consolidation;",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(14)(a)(ii)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [
+     "Interest Coverage Ratio"
+    ],
+    "referencedSections": [],
+    "parentRef": "i48",
+    "relatedRefs": [],
+    "materiality": "CRITICAL",
+    "ambiguity": "NONE",
+    "ambiguityReason": null,
+    "operative": "OPERATIVE"
+   },
+   {
+    "localRef": "i50",
+    "semanticRole": "CONDITION",
+    "proposition": "Condition (b) begins: after giving pro forma effect to the Investment, acquisition, merger, amalgamation or consolidation, a further requirement applies (text truncated at end of batch).",
+    "excerpt": "giving pro forma effect to such Investment, acquisition, merger, amalgamation or consolidation",
+    "regionId": "operative",
+    "slotId": "operative:6.01(b)(14)(b)#2",
+    "quantitativeValues": [],
+    "referencedTerms": [],
+    "referencedSections": [],
+    "parentRef": "i44",
+    "relatedRefs": [],
+    "materiality": "REVIEW_UNCERTAIN",
+    "ambiguity": "UNCERTAIN_MATERIALITY",
+    "ambiguityReason": "The text of condition (b) is cut off at the end of this batch; its substantive requirement is not yet stated.",
+    "operative": "OPERATIVE"
+   }
+  ],
+  "overallNotes": [
+   "Slots 'operative:6.01(b)(13)(c)(ii)#2' (text: 'or') and 'operative:6.01(b)(13)(c)(iii)#3' (text: 'and provided ,') and 'operative:6.01(b)(14)(b)#1' (text: 'after') were treated as pure connective glue with no independently meaningful content and were not given items, per the instruction that glue-only slots yield none.",
+   "Several cross-references (Section 2.18, Section 6.08(a)(3)(b), Section 6.08(b), Section 6.08(b)(4), and the ambiguous 6.01(b)(1)(X)/(Y) pair) could not be resolved within the provided source context; they are inventoried as REFERENCE/DEPENDENCY items with AMBIGUOUS_REFERENCE flags rather than guessed.",
+   "Clause 6.01(b)(14)(b) is truncated at the end of this batch; only its lead-in phrase is captured, and its substantive requirement is not yet available for inventory.",
+   "Clause (12) is composed of two independent sub-baskets, (a) (equity-contribution based, 200% of contributions) and (b) (fixed/EBITDA basket up to the greater of $720.0 million and 100% of Consolidated EBITDA), which are cumulative alternative baskets rather than a single greater-of test between (a) and (b)."
+  ]
+ },
+ "payloadSha256": "237239a4ade183c754bbf4d9a660fc948d08bb6b432c4daa979bf06412dc008d",
+ "telemetry": {
+  "inputTokens": 11733,
+  "outputTokens": 35966,
+  "cacheRead": null,
+  "cacheWrite": null,
+  "originalCostUsd": 0.383126,
+  "latencyMs": 255539
+ },
+ "stageTelemetry": {
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "promptVersion": "phase-c0.1",
+  "schemaVersion": "phase-c0.1",
+  "stage": "semantic_inventory",
+  "timestamp": "2026-09-16T12:54:39.226Z",
+  "inputTokens": 11733,
+  "outputTokens": 35966,
+  "cachedInputTokens": null,
+  "cacheCreationInputTokens": null,
+  "attemptCount": 1,
+  "retryCount": 0,
+  "rateLimitFailures": 0,
+  "latencyMs": 255539,
+  "calculatedCostUsd": 0.383126
+ },
+ "rawProviderOutput": null,
+ "completedAt": "2026-09-16T12:58:54.768Z",
+ "recordSha256": "39f50f5d897be9d38bf1a5be59cbf646be30b2339184a87972749b502398376a"
+}

@@ -1,0 +1,142 @@
+{
+ "artifact": "PHASE 3 FINAL / 6.01 POST-REMEDIATION PAID REVALIDATION §7 - zero-cost deterministic remediation recheck before spend",
+ "at": "2026-09-19T00:13:18.445Z",
+ "paidCalls": 0,
+ "vitest": {
+  "source": "/tmp/claude-0/-home-user-headroom/fe43ab40-ccca-5e2c-9b2f-8f264a45dc31/scratchpad/recheck.json",
+  "suites": 51,
+  "tests": 142,
+  "passed": 142,
+  "failed": 0,
+  "pending": 0,
+  "success": true,
+  "files": [
+   {
+    "file": "tests/contract-model/f7a-shard-planner-stitcher.test.ts",
+    "status": "passed",
+    "tests": 32,
+    "failed": []
+   },
+   {
+    "file": "tests/contract-model/f7c-production-activation.test.ts",
+    "status": "passed",
+    "tests": 26,
+    "failed": []
+   },
+   {
+    "file": "tests/contract-model/f7c1-frozen-inventory-resume.test.ts",
+    "status": "passed",
+    "tests": 15,
+    "failed": []
+   },
+   {
+    "file": "tests/contract-model/phase-3-601-hd4-durable-replay.test.ts",
+    "status": "passed",
+    "tests": 41,
+    "failed": []
+   },
+   {
+    "file": "tests/contract-model/phase-3-601-hd4-sigkill.test.ts",
+    "status": "passed",
+    "tests": 1,
+    "failed": []
+   },
+   {
+    "file": "tests/contract-model/phase-3-601-hd5-scorer.test.ts",
+    "status": "passed",
+    "tests": 7,
+    "failed": []
+   },
+   {
+    "file": "tests/contract-model/phase-3-601-hd6-finalizer.test.ts",
+    "status": "passed",
+    "tests": 4,
+    "failed": []
+   },
+   {
+    "file": "tests/contract-model/phase-3-601-remediation-closure.test.ts",
+    "status": "passed",
+    "tests": 9,
+    "failed": []
+   },
+   {
+    "file": "tests/contract-model/phase-3-601-remediation-red-baseline.test.ts",
+    "status": "passed",
+    "tests": 7,
+    "failed": []
+   }
+  ]
+ },
+ "requiredSuites": [
+  {
+   "suite": "phase-3-601-remediation-closure",
+   "present": true,
+   "passed": true
+  },
+  {
+   "suite": "phase-3-601-remediation-red-baseline",
+   "present": true,
+   "passed": true
+  },
+  {
+   "suite": "phase-3-601-hd5-scorer",
+   "present": true,
+   "passed": true
+  },
+  {
+   "suite": "phase-3-601-hd6-finalizer",
+   "present": true,
+   "passed": true
+  },
+  {
+   "suite": "phase-3-601-hd4-durable-replay",
+   "present": true,
+   "passed": true
+  },
+  {
+   "suite": "phase-3-601-hd4-sigkill",
+   "present": true,
+   "passed": true
+  },
+  {
+   "suite": "f7c1-frozen-inventory-resume",
+   "present": true,
+   "passed": true
+  },
+  {
+   "suite": "f7c-production-activation",
+   "present": true,
+   "passed": true
+  },
+  {
+   "suite": "f7a-shard-planner-stitcher",
+   "present": true,
+   "passed": true
+  }
+ ],
+ "closureArtifact96": {
+  "counts": {
+   "total": 29,
+   "PLANNER_CONTEXT": 2,
+   "OWNED_PRIMARY": 0,
+   "BOUNDED_TOOL_ROUTE": 24,
+   "DISCLOSED_VARIANT_POINTER": 1,
+   "PROVEN_EXTERNAL_TO_PACKAGE": 2,
+   "STILL_UNRESOLVED": 0
+  },
+  "stillUnresolved": 0,
+  "allTwentyNineClosed": true
+ },
+ "lineageArtifact97": {
+  "counters": {
+   "ownedValuesLost": 0,
+   "distinctOwnedLineageLost": 0,
+   "contextualOwnershipCreditViolations": 0,
+   "sourceUnverifiableAuthoritativeIr": 0,
+   "silentIncompatibleMerges": 0,
+   "newDanglingRefs": 0
+  },
+  "allZero": true
+ },
+ "decision": "REMEDIATION_GATE_GREEN"
+}

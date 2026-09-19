@@ -1,0 +1,213 @@
+{
+ "artifact": "PHASE 3 / 6.01 DEPENDENCY-DELIVERY REMEDIATION §10/§15/§16 - what the planner does when the required closure does not fit, and how sensitive the outcome is to the ceiling",
+ "at": "2026-09-19T03:02:34.712Z",
+ "paidCalls": 0,
+ "reactionOrder": [
+  {
+   "step": 1,
+   "reaction": "RE-SHARD",
+   "detail": "split the shard along its own must-link block boundaries (never inside a block, so must-link semantics and ownership survive) and re-derive the closure for each half, recursively, to a bounded depth"
+  },
+  {
+   "step": 2,
+   "reaction": "BOUNDED PROVABLE EXCERPT (water-filling)",
+   "detail": "when the shard is a single indivisible must-link block, reduce delivery by ONE per-entry allowance - the largest allowance for which the whole closure fits. Entries at or below it are still delivered in full, so the reduction falls on the largest dependencies first and never starves a small one. The allowance is searched, not chosen."
+  },
+  {
+   "step": 3,
+   "reaction": "EXPLICIT PLANNING FAILURE",
+   "detail": "if the closure still does not fit with every entry at the floor, the shard is marked PLANNING_FAILED_REQUIRED_CONTEXT_UNDELIVERABLE and each undelivered dependency is disclosed on the shard with reason BUDGET"
+  }
+ ],
+ "forbiddenReaction": {
+  "pattern": "put the dependency in unresolvedContext and hope the model spends a tool call on it",
+  "implemented": false,
+  "enforcedBy": "a required key is never re-admitted into the interpretive tier, and an undelivered required dependency sets certificateStatus to PLANNING_FAILED_REQUIRED_CONTEXT_UNDELIVERABLE rather than leaving the shard certified"
+ },
+ "ceilingIsACapacityBound": {
+  "maxFirstTurnInputTokens": 100000,
+  "calibratedTokensPerChar": 0.3957,
+  "fixedCallOverheadChars": 43806,
+  "derivation": "at most half of the 200,000-token window is spent on the first turn; the required tier gets what remains after the fixed call overhead, the shard's own primary material, its rendered inventory and the unchanged 10,000-char interpretive tier, capped by the declared maxRequiredContextChars",
+  "declaredCeiling": 64000,
+  "interpretiveBudgetUnchanged": true,
+  "toolBudgetUnchanged": {
+   "maxToolCalls": 8,
+   "maxRecursionDepth": 3,
+   "maxAdditionalSourceChars": 20000
+  }
+ },
+ "sensitivity": [
+  {
+   "maxRequiredContextChars": 4000,
+   "shards": 35,
+   "reshardSplits": 29,
+   "waterFilledShards": 25,
+   "materialized": 86,
+   "boundedExcerpt": 142,
+   "undeliverableDisclosed": 34,
+   "unresolved": 316,
+   "allShardsExecutable": false,
+   "maxTurn1InputTokens": 37929,
+   "theFiveKnownMissingDependenciesDeliveredInFull": 0
+  },
+  {
+   "maxRequiredContextChars": 8000,
+   "shards": 31,
+   "reshardSplits": 25,
+   "waterFilledShards": 18,
+   "materialized": 140,
+   "boundedExcerpt": 213,
+   "undeliverableDisclosed": 34,
+   "unresolved": 185,
+   "allShardsExecutable": false,
+   "maxTurn1InputTokens": 39498,
+   "theFiveKnownMissingDependenciesDeliveredInFull": 0
+  },
+  {
+   "maxRequiredContextChars": 12000,
+   "shards": 29,
+   "reshardSplits": 23,
+   "waterFilledShards": 15,
+   "materialized": 218,
+   "boundedExcerpt": 202,
+   "undeliverableDisclosed": 34,
+   "unresolved": 118,
+   "allShardsExecutable": false,
+   "maxTurn1InputTokens": 41080,
+   "theFiveKnownMissingDependenciesDeliveredInFull": 1
+  },
+  {
+   "maxRequiredContextChars": 16000,
+   "shards": 26,
+   "reshardSplits": 20,
+   "waterFilledShards": 12,
+   "materialized": 256,
+   "boundedExcerpt": 205,
+   "undeliverableDisclosed": 34,
+   "unresolved": 70,
+   "allShardsExecutable": false,
+   "maxTurn1InputTokens": 42660,
+   "theFiveKnownMissingDependenciesDeliveredInFull": 1
+  },
+  {
+   "maxRequiredContextChars": 24000,
+   "shards": 22,
+   "reshardSplits": 16,
+   "waterFilledShards": 6,
+   "materialized": 331,
+   "boundedExcerpt": 158,
+   "undeliverableDisclosed": 31,
+   "unresolved": 18,
+   "allShardsExecutable": false,
+   "maxTurn1InputTokens": 45823,
+   "theFiveKnownMissingDependenciesDeliveredInFull": 1
+  },
+  {
+   "maxRequiredContextChars": 32000,
+   "shards": 21,
+   "reshardSplits": 15,
+   "waterFilledShards": 5,
+   "materialized": 363,
+   "boundedExcerpt": 138,
+   "undeliverableDisclosed": 31,
+   "unresolved": 0,
+   "allShardsExecutable": true,
+   "maxTurn1InputTokens": 48996,
+   "theFiveKnownMissingDependenciesDeliveredInFull": 1
+  },
+  {
+   "maxRequiredContextChars": 48000,
+   "shards": 10,
+   "reshardSplits": 4,
+   "waterFilledShards": 2,
+   "materialized": 348,
+   "boundedExcerpt": 67,
+   "undeliverableDisclosed": 26,
+   "unresolved": 0,
+   "allShardsExecutable": true,
+   "maxTurn1InputTokens": 55336,
+   "theFiveKnownMissingDependenciesDeliveredInFull": 4
+  },
+  {
+   "maxRequiredContextChars": 64000,
+   "shards": 7,
+   "reshardSplits": 1,
+   "waterFilledShards": 0,
+   "materialized": 364,
+   "boundedExcerpt": 35,
+   "undeliverableDisclosed": 26,
+   "unresolved": 0,
+   "allShardsExecutable": true,
+   "maxTurn1InputTokens": 59603,
+   "theFiveKnownMissingDependenciesDeliveredInFull": 5
+  },
+  {
+   "maxRequiredContextChars": 96000,
+   "shards": 6,
+   "reshardSplits": 0,
+   "waterFilledShards": 0,
+   "materialized": 355,
+   "boundedExcerpt": 33,
+   "undeliverableDisclosed": 26,
+   "unresolved": 0,
+   "allShardsExecutable": true,
+   "maxTurn1InputTokens": 59603,
+   "theFiveKnownMissingDependenciesDeliveredInFull": 5
+  }
+ ],
+ "whatTheSweepShows": {
+  "deliveryIsCompleteFromThisCeilingDown": [
+   32000,
+   48000,
+   64000,
+   96000
+  ],
+  "deliveryIsIncompleteBelow": [
+   {
+    "ceiling": 4000,
+    "unresolved": 316,
+    "disclosedNotSilent": true
+   },
+   {
+    "ceiling": 8000,
+    "unresolved": 185,
+    "disclosedNotSilent": true
+   },
+   {
+    "ceiling": 12000,
+    "unresolved": 118,
+    "disclosedNotSilent": true
+   },
+   {
+    "ceiling": 16000,
+    "unresolved": 70,
+    "disclosedNotSilent": true
+   },
+   {
+    "ceiling": 24000,
+    "unresolved": 18,
+    "disclosedNotSilent": true
+   }
+  ],
+  "honestReading": "green does not depend on the exact ceiling: required delivery is complete at every ceiling at or above the lowest passing row, a wide margin below the declared value. Below that, the failure is an EXPLICIT, certified planning failure with every undelivered dependency named - never a silent hand-off to a tool call. The ceiling therefore governs FIDELITY (full text vs disclosed excerpt), not whether delivery is guaranteed.",
+  "whyThisIsNotBudgetTuning": "the interpretive budget and the tool budget are both unchanged. The required tier is a NEW tier introduced by this remediation; before it, required dependencies had no budget of their own at all, which is the defect. Its ceiling is derived from the model's context window, not from this document."
+ },
+ "toolBudgetIncreaseIsNotSufficientRemediation": {
+  "claim": "raising maxToolCalls or maxAdditionalSourceChars would not have fixed the failure",
+  "proof": [
+   "the 25 dependencies the old planner dropped for budget were derived BEFORE any call and were resolvable - more call slots would only have bought more chances to rediscover what the planner already knew",
+   "four of the five dependencies the model reported as missing were never DERIVED by the old planner at all: they are reachable only through a three-hop definition closure, so no number of tool calls would have told the model they existed",
+   "a tool call spends a turn and returns bounded text; a statically known dependency delivered at turn 1 costs no call at all"
+  ],
+  "toolBudgetInThisRemediation": {
+   "changed": false,
+   "value": {
+    "maxToolCalls": 8,
+    "maxRecursionDepth": 3,
+    "maxAdditionalSourceChars": 20000
+   }
+  },
+  "whatToolsAreStillFor": "genuinely unforeseeable retrieval - interpretive context that did not fit, the remainder of a disclosed bounded excerpt, and anything the owned semantics turn out to need that no static rule could predict"
+ }
+}

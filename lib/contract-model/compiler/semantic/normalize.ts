@@ -411,6 +411,26 @@ function normalizeCondition(wire: WireCondition, ctx: NormCtx, index: number): I
   );
 }
 
+
+/** §17 - every ENTITY_SCOPE_REFERENCE node's include/exclude tags, collected from an expression tree. */
+function collectEntityScopeNodes(roots: unknown[]): { include: string[]; exclude: string[] } {
+  const include = new Set<string>(); const exclude = new Set<string>();
+  const seen = new Set<unknown>();
+  const visit = (n: unknown) => {
+    if (!n || typeof n !== "object" || seen.has(n)) return; seen.add(n);
+    const o = n as Record<string, unknown>;
+    if (o.kind === "ENTITY_SCOPE_REFERENCE") {
+      // Normalized IR nodes carry `scope.include` / `scope.exclude`; wire nodes carry `entityScopeInclude` / `entityScopeExclude`.
+      const scope = (o.scope as { include?: string[]; exclude?: string[] } | undefined) ?? {};
+      for (const t of [...(scope.include ?? []), ...((o.entityScopeInclude as string[] | undefined) ?? [])]) include.add(t);
+      for (const t of [...(scope.exclude ?? []), ...((o.entityScopeExclude as string[] | undefined) ?? [])]) exclude.add(t);
+    }
+    for (const v of Object.values(o)) if (Array.isArray(v)) v.forEach(visit); else if (v && typeof v === "object") visit(v);
+  };
+  roots.forEach(visit);
+  return { include: [...include], exclude: [...exclude] };
+}
+
 function normalizeException(wire: WireException, ctx: NormCtx, index: number, appliesToRuleId: string): IRException {
   const prov = provenanceFor(ctx, wire.citation, wire.excerpt) ?? null;
   const permissionRuleId = wire.permissionRef ? ctx.resolveRuleRef(wire.permissionRef) : null;
@@ -521,11 +541,13 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
     if (!matchEnum(wireRule.ruleType, Object.values(ContractRuleType))) warn(ctx, `ruleType "${wireRule.ruleType}" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)`);
     const posture = matchEnum(wireRule.posture, Object.values(ContractRulePosture)) ?? "N_A";
     const action = wireRule.action ? matchEnum(wireRule.action, CONTRACT_ACTIONS) ?? "OTHER" : null;
-    const entityScope = (wireRule.entityScope ?? []).map((t) => matchEnum(t, ENTITY_CLASS_TAGS)).filter((t): t is string => !!t) as EntityClassTag[];
-    const entityScopeExcluded = (wireRule.entityScopeExcluded ?? []).map((t) => matchEnum(t, ENTITY_CLASS_TAGS)).filter((t): t is string => !!t) as EntityClassTag[];
-
     const capacityExpression = normalizeCapacityExpression(wireRule.capacityExpression, ctx);
     const conditions = wireRule.conditions.map((c, i) => normalizeCondition(c, ctx, i));
+    // §17: the rule-level fields when the model supplied them; otherwise the entity-scope tags the rule's own
+    // ENTITY_SCOPE_REFERENCE nodes already carry (deterministic, never invented).
+    const scopeNodes = collectEntityScopeNodes([capacityExpression, ...conditions.map((c) => c.expression)]);
+    const entityScope = ((wireRule.entityScope ?? []).length > 0 ? wireRule.entityScope! : scopeNodes.include).map((t) => matchEnum(t, ENTITY_CLASS_TAGS)).filter((t): t is string => !!t) as EntityClassTag[];
+    const entityScopeExcluded = ((wireRule.entityScopeExcluded ?? []).length > 0 ? wireRule.entityScopeExcluded! : scopeNodes.exclude).map((t) => matchEnum(t, ENTITY_CLASS_TAGS)).filter((t): t is string => !!t) as EntityClassTag[];
     const exceptions = wireRule.exceptions.map((e, i) => normalizeException(e, ctx, i, ruleId));
     const normalizedDependencies = wireRule.dependsOn.map((d, i) => normalizeDependency(d, ctx, i));
     const dependsOn = normalizedDependencies.flatMap((d) => ("resolved" in d ? [d.resolved] : []));

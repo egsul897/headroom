@@ -1,0 +1,142 @@
+{
+ "artifact": "PHASE 3 / 6.01 DEPENDENCY-DELIVERY REMEDIATION §6-§9 - required dependency prematerialization: the model, the typed context, the tiering and the closure",
+ "at": "2026-09-19T03:02:29.683Z",
+ "paidCalls": 0,
+ "versions": {
+  "requiredDependencyModel": "required-dependency-delivery.v1",
+  "shardPlanner": "semantic-compilation-shards.v3-required-dependency-delivery",
+  "missingContextContract": "missing-context-contract.v1"
+ },
+ "whatChanged": {
+  "before": "a dependency the planner itself derived competed with every other optional context entry for one 10,000-char budget; whatever did not fit was written to unresolvedContext and left to the model's own tool choice",
+  "after": "dependencies the planner can prove are REQUIRED for the owned semantics are admitted FIRST, into their own tier with its own ceiling, before any optional context is considered; delivery is a planning guarantee, and a shard that cannot deliver one is not certified executable",
+  "theDistinctionThatWasMissing": "RESOLVABLE != DELIVERED - a retrieval route existing is a different property from the text being present at turn 1 under a bounded tool budget"
+ },
+ "requiredIsDefinedGenerically": {
+  "statement": "a dependency is REQUIRED when the owned material's own semantics cannot be evaluated without it - never by naming a term, a section or an instrument",
+  "rules": [
+   {
+    "evidence": "DEFINED_TERM_OCCURRENCE_IN_OWNED_SOURCE",
+    "rule": "a defined term of the document occurs verbatim in the shard's own owned source"
+   },
+   {
+    "evidence": "STRUCTURAL_CROSS_REFERENCE_IN_OWNED_SOURCE",
+    "rule": "a section reference is written in the shard's own owned source"
+   },
+   {
+    "evidence": "INVENTORY_REFERENCED_TERM_EDGE",
+    "rule": "an owned inventory item declares the term as a referenced term"
+   },
+   {
+    "evidence": "INVENTORY_REFERENCED_SECTION_EDGE",
+    "rule": "an owned inventory item declares the section as a referenced section"
+   },
+   {
+    "evidence": "INVENTORY_PARENT_EDGE",
+    "rule": "an owned item's parent proposition is owned by a unit this shard does not own"
+   },
+   {
+    "evidence": "FORWARDING_DEFINITION_TARGET",
+    "rule": "a required definition is a forwarding declaration with no body of its own; its target is required, one bounded hop"
+   },
+   {
+    "evidence": "CROSS_REFERENCE_IN_REQUIRED_DEFINITION",
+    "rule": "a section reference written inside a delivered required definition is itself required"
+   },
+   {
+    "evidence": "TRANSITIVE_DEFINITION_CLOSURE",
+    "rule": "a defined term occurring in a delivered required definition is required when that definition is COMPOSITIONAL (>= 0.5 of its operative body is other defined terms) or the term sits in a LIMIT-BEARING position (within 90 chars after a bounding construction such as 'does not exceed', 'up to', 'the greater of', 'incurred within')"
+   }
+  ],
+  "noHardcodedIdentifiers": "the rules are computed from the document's own structural index and the frozen inventory's own edges; no term name, section number, company or instrument appears anywhere in lib/contract-model/compiler/semantic/required-dependencies.ts",
+  "bodyMeasuredAfterTheDefinitionalVerb": "compositional coverage is measured over a definition's OPERATIVE BODY (everything after 'means' / 'has the meaning' / 'refers to'), so the metric cannot depend on how long the drafter made the defined term's own name"
+ },
+ "typedContext": {
+  "kinds": [
+   "REQUIRED_DEFINITION",
+   "REQUIRED_REFERENCED_SECTION",
+   "REQUIRED_PARENT_CONTEXT",
+   "REQUIRED_OPERATIVE_STATE",
+   "CHAPEAU",
+   "PARENT_ITEM",
+   "REFERENCED_TERM",
+   "REFERENCED_SECTION",
+   "EXPANSION_REGION"
+  ],
+  "everyEntryCarries": [
+   "contextKey",
+   "kind",
+   "tier",
+   "ownership",
+   "documentId",
+   "absCharStart",
+   "absCharEnd",
+   "fullTextHash",
+   "chars",
+   "truncated",
+   "requiredBy",
+   "reason",
+   "requiredEvidence",
+   "closureDepth",
+   "sourceUnitKey",
+   "ownerShardId"
+  ],
+  "ownershipIsAlwaysReadOnly": "every context entry, required or interpretive, is ownership = READ_ONLY_CONTEXT; a shard never owns semantics it was given as context"
+ },
+ "tiering": {
+  "requiredTier": {
+   "ceiling": 64000,
+   "admittedBefore": "any optional context",
+   "perEntryFullDeliveryBound": 4000
+  },
+  "interpretiveTier": {
+   "ceiling": 10000,
+   "unchangedFromV2": true
+  },
+  "requiredNeverCompetes": "the interpretive tier's ceiling is applied to the chars it adds ON TOP of the required tier, and a required key is never re-admitted as interpretive context"
+ },
+ "closure": {
+  "maxDepth": 3,
+  "byDepth": {
+   "depth1": 279,
+   "depth2": 99,
+   "depth3": 43,
+   "depth4": 4
+  },
+  "byEvidence": {
+   "DEFINED_TERM_OCCURRENCE_IN_OWNED_SOURCE": 139,
+   "INVENTORY_REFERENCED_TERM_EDGE": 117,
+   "INVENTORY_PARENT_EDGE": 84,
+   "CROSS_REFERENCE_IN_REQUIRED_DEFINITION": 59,
+   "TRANSITIVE_DEFINITION_CLOSURE": 86,
+   "FORWARDING_DEFINITION_TARGET": 10,
+   "STRUCTURAL_CROSS_REFERENCE_IN_OWNED_SOURCE": 15,
+   "INVENTORY_REFERENCED_SECTION_EDGE": 30
+  },
+  "byDisposition": {
+   "MATERIALIZED_IN_INITIAL_CONTEXT": 364,
+   "BOUNDED_EXCERPT_DISCLOSED": 35,
+   "UNDELIVERABLE_DISCLOSED": 26
+  }
+ },
+ "measuredOnTheFrozenUnit": {
+  "documentId": "doc-a",
+  "candidateRef": "phase-3-final-601:chwy:6.01",
+  "frozenInventoryHash": "88e7419f61f96b827db31d91e9047e699fb54685d11d94d432b081e0d7eb1b0c",
+  "shards": 7,
+  "requiredDependencies": 425,
+  "distinctKeys": 231,
+  "certification": {
+   "modelVersion": "required-dependency-delivery.v1",
+   "shardsCertified": 7,
+   "shardsFailed": 0,
+   "requiredDependenciesTotal": 425,
+   "requiredDependenciesMaterialized": 364,
+   "requiredDependenciesBoundedExcerpt": 35,
+   "requiredDependenciesExternal": 0,
+   "requiredDependenciesUndeliverableDisclosed": 26,
+   "requiredDependenciesUnresolved": 0,
+   "allShardsExecutable": true
+  }
+ }
+}

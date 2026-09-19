@@ -1,0 +1,375 @@
+{
+ "artifact": "6.01 final post-precision revalidation §21 - independent verifier",
+ "at": "2026-09-19T13:36:56.937Z",
+ "status": "MATERIAL_DISCREPANCY",
+ "verifyError": null,
+ "semanticReviewInvoked": true,
+ "findings": [
+  {
+   "findingId": "96dd0fc7c578276da8caf72205b40ad0e3506bbc99abd9e20f5fd865710ffd42",
+   "companyId": "phase-3-validation-chwy",
+   "instrumentKey": "chwy-2026-revolving-credit-instrument",
+   "sourceDocumentId": "doc-a",
+   "candidateRef": "phase-3-final-601:chwy:6.01",
+   "ruleOrDefinitionId": "ir-rule:170e314ceb35e54072b7ddba, ir-rule:49f22aee601dde5b8b8162d5, ir-rule:31ef4cb0be0026182f97f8ea, ir-rule:01c9a005fd9c7649ddc26012, ir-rule:6d2acc86b7f3dede7305f5df, ir-rule:b21ac832418c33bcf91d0625, ir-rule:8df2fec30e5afda652c94c04",
+   "irPath": "rules[*].entityScope",
+   "findingType": "WRONG_ENTITY_SCOPE",
+   "severity": "MATERIAL",
+   "sourceEvidence": "\"the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to create, incur, issue, assume, guarantee or otherwise become liable... with respect to any Indebtedness... and the Borrowers shall not issue any shares of Disqualified Stock and shall not permit any Restricted Subsidiary to issue any shares of Disqualified Stock or any Restricted Subsidiary that is not a Guarantor to issue Preferred Stock; provided, however, that the Borrowers may incur Indebtedness ... and any of their Restricted Subsidiaries may incur Indebtedness ... and issue shares of Disqualified Stock and Preferred Stock\"",
+   "sourceCitation": "\f(unforward not used",
+   "proposedIrEvidence": "ir-rule:170e314ceb35e54072b7ddba: \"entityScope\": [\"BORROWER\"]; ir-rule:49f22aee601dde5b8b8162d5: \"entityScope\": [\"BORROWER\"]; ir-rule:31ef4cb0be0026182f97f8ea: \"entityScope\": []; ir-rule:01c9a005fd9c7649ddc26012 / 6d2acc86b7f3dede7305f5df / b21ac832418c33bcf91d0625: \"entityScope\": [\"BORROWER\"]",
+   "verifierReasoning": "Section 6.01(a) is explicitly a joint prohibition/permission on the Borrowers AND their Restricted Subsidiaries: the debt prohibition ('shall not permit any of their Restricted Subsidiaries to... incur'), the Disqualified Stock prohibition ('shall not permit any Restricted Subsidiary to issue'), and the Permitted Ratio Debt carve-out ('any of their Restricted Subsidiaries may incur Indebtedness... and issue shares of Disqualified Stock and Preferred Stock') all expressly extend beyond the Borrowers. Yet the IR's top-level debt-incurrence prohibition rule, the Disqualified-Stock prohibition rule, and all three Permitted Ratio Debt permission rules are scoped only to entityScope: [\"BORROWER\"], omitting Restricted Subsidiaries entirely (while sibling sub-basket rules elsewhere in the same IR leave entityScope empty, suggesting \"BORROWER\" is meant as a narrower, distinct category rather than a synonym for \"all obligors\"). Separately, the Preferred-Stock prohibition rule (which, per the source, applies only to \"any Restricted Subsidiary that is not a Guarantor\" - not to Borrowers at all) is left with an undifferentiated empty entityScope rather than being scoped to that specific class of obligor. A reviewer relying on this IR could wrongly conclude that Restricted Subsidiary debt/Disqualified Stock incurrence falls outside this covenant's prohibition (or outside the ratio-debt permission), or could wrongly treat the Preferred Stock restriction as applicable to Borrowers. This directly changes the scope of what is prohibited/permitted and by whom.",
+   "deterministicSignals": [],
+   "verificationMethod": "SEMANTIC_ONLY",
+   "provider": "VERCEL_AI_GATEWAY",
+   "model": "anthropic/claude-sonnet-5",
+   "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+   "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+   "resolutionStatus": "OPEN",
+   "createdAt": "2026-09-19T13:36:56.925Z"
+  },
+  {
+   "findingId": "750429e8556687067d380fb40812057ac58950f3bebaaa60e05a674ed44840df",
+   "companyId": "phase-3-validation-chwy",
+   "instrumentKey": "chwy-2026-revolving-credit-instrument",
+   "sourceDocumentId": "doc-a",
+   "candidateRef": "phase-3-final-601:chwy:6.01",
+   "ruleOrDefinitionId": "ir-rule:e0669a810b36ddf5bff018b3, ir-rule:c0feca0b818c734f33a23962, ir-rule:0de044975c1ddc20616dbf84",
+   "irPath": "rules[*].capacityExpression.gatedBy; rules[*].dependsOn",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "MATERIAL",
+   "sourceEvidence": "\"(x) a Restricted Party incurred or issued to finance an acquisition or Investment... provided that: (a) after giving pro forma effect... (i)... or (ii)...; (b) after giving pro forma effect... (i)... or (ii)...; (c) (X)... or (Y)...; or (d) such Indebtedness constitutes Acquired Indebtedness...; (e) solely to the extent not permitted to be incurred in reliance on clauses (a) through (d) above...\"",
+   "sourceCitation": "Section 6.01(b)(14)",
+   "proposedIrEvidence": "ir-rule:e0669a810b36ddf5bff018b3 (clauses a+b) is a standalone PERMISSION rule with capacityExpression UNLIMITED_CAPACITY gatedBy AND(OR(a-tests), OR(b-tests)) and sufficiency COMPLETE, with no dependsOn tying it to clause (c)/(d); ir-rule:c0feca0b818c734f33a23962 (clause c) is a separate standalone PERMISSION rule, sufficiency COMPLETE, gatedBy only the (c) leverage-ratio OR-tests, with no reference back to (a)/(b); ir-rule:0de044975c1ddc20616dbf84 (clause d) is likewise standalone and COMPLETE with no reference to (a)/(b).",
+   "verifierReasoning": "Clauses (a), (b), and (c-or-d) of Section 6.01(b)(14) are drafted as a single cumulative 'provided that' proviso governing one basket - standard acquisition-debt drafting requires the Interest Coverage Ratio test (a), the Total Leverage Ratio test (b), AND either the First Lien/Senior Secured Leverage Ratio test (c) or the Acquired-Indebtedness carve-out (d) to ALL be satisfied together for the debt to qualify under (a)-(d) (with (e) as a residual fallback only 'to the extent not permitted... in reliance on clauses (a) through (d)'). The proposed IR instead compiles (a)+(b) as one self-sufficient permission rule and (c) and (d) each as independent self-sufficient permission rules (each marked sufficiency COMPLETE), with only an ALTERNATIVE_TO link between (c) and (d) but no AND/REQUIRES link tying (a)+(b) to (c)/(d). Under this IR structure, debt that satisfies only the First Lien Leverage Ratio test in clause (c) - without separately satisfying the Interest Coverage Ratio test (a) or Total Leverage Ratio test (b) - would appear independently permitted, which is inconsistent with the source's cumulative proviso structure. This is exactly the kind of confidently-wrong (marked COMPLETE) logical-grouping error that could change a real compliance conclusion about whether a given acquisition financing qualifies under this basket.",
+   "deterministicSignals": [],
+   "verificationMethod": "SEMANTIC_ONLY",
+   "provider": "VERCEL_AI_GATEWAY",
+   "model": "anthropic/claude-sonnet-5",
+   "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+   "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+   "resolutionStatus": "OPEN",
+   "createdAt": "2026-09-19T13:36:56.925Z"
+  },
+  {
+   "findingId": "5b8024cdfa63dc5c5ff9e810f88c8c9d403f04c9f2c6d33c1e07f6971b313047",
+   "companyId": "phase-3-validation-chwy",
+   "instrumentKey": "chwy-2026-revolving-credit-instrument",
+   "sourceDocumentId": "doc-a",
+   "candidateRef": "phase-3-final-601:chwy:6.01",
+   "ruleOrDefinitionId": "ir-rule:d3ca9f2def3509883e8a359b",
+   "irPath": "rules[?].capacityExpression.operands[1] (SUBTRACT.left)",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "MATERIAL",
+   "sourceEvidence": "\"plus (ii) at the time of such incurrence, an amount equal to the maximum principal amount of such Indebtedness that could be incurred such that after giving effect to the incurrence of such Indebtedness, the First Lien Leverage Ratio of the Initial Borrower for the Test Period would be no greater than 2.50:1.00\"",
+   "sourceCitation": "Section 6.01(b)(4)(a)(ii)",
+   "proposedIrEvidence": "capacityExpression for 6.01(b)(4)(a) is a SUM whose second operand is SUBTRACT(left=UNSUPPORTED{reason: \"MULTIPLY operands do not type-check... (kind=MULTIPLY)\", attemptedStructure containing RATIO value 2.5 multiplied against Consolidated EBITDA}, right=Consolidated First Lien Debt)",
+   "verifierReasoning": "The deterministic pass correctly flags that the source's 2.50:1.00 ratio value never resolves to a usable RATIO/formula node anywhere in the compiled IR - it only appears embedded inside a diagnostic 'attemptedStructure' field of a node marked kind: UNSUPPORTED because its own MULTIPLY operands failed type-checking. Functionally, this means the entire second additive component of the 6.01(b)(4)(a) basket (the incremental first-lien-leverage-ratio-based capacity, which is likely a substantial dollar amount) is non-computable in the delivered IR, even though the parent SUM node structurally still purports to add it in. Although the rule's sufficiency is honestly marked PARTIAL, a downstream consumer that walks the SUM's operands could easily miscompute the aggregate cap (e.g., treating the broken operand as zero) rather than recognizing that a real, sizeable capacity component described in the source is simply unusable/missing from the working formula.",
+   "deterministicSignals": [],
+   "verificationMethod": "SEMANTIC_ONLY",
+   "provider": "VERCEL_AI_GATEWAY",
+   "model": "anthropic/claude-sonnet-5",
+   "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+   "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+   "resolutionStatus": "OPEN",
+   "createdAt": "2026-09-19T13:36:56.925Z"
+  },
+  {
+   "findingId": "7f1b0927f82141b824a67e5805218a16aafaaa70f194f561ddbd5396b473730c",
+   "companyId": "phase-3-validation-chwy",
+   "instrumentKey": "chwy-2026-revolving-credit-instrument",
+   "sourceDocumentId": "doc-a",
+   "candidateRef": "phase-3-final-601:chwy:6.01",
+   "ruleOrDefinitionId": "ir-rule:c6204d2aa73929fbafd3ae0f",
+   "irPath": "rules[?].conditions",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "NON_MATERIAL",
+   "sourceEvidence": "\"the Initial Borrower, in its sole discretion, shall allocate, classify and reclassify all or a portion of such item of Indebtedness, Disqualified Stock or Preferred Stock (or any portion thereof) in any manner that complies with this Section 6.01\"",
+   "sourceCitation": "Section 6.01, paragraph following clause (33) (\"For purposes of determining compliance with this Section 6.01: (1)...\")",
+   "proposedIrEvidence": "ir-rule:c6204d2aa73929fbafd3ae0f conditions[1]: \"the Initial Borrower, in its sole discretion, may allocate, classify and reclassify all or a portion of such item in any manner that complies with Section 6.01\"",
+   "verifierReasoning": "The deterministic pass flagged that no formal RECLASSIFIABLE_TO/REDESIGNATES_TO dependency relationship exists in the IR corresponding to this reclassification right. On inspection, the substance of the reclassification right is in fact captured, just as descriptive conditions on a dedicated OTHER/PERMISSION rule (ir-rule:c6204d2aa73929fbafd3ae0f) rather than as the specific relationship-type the deterministic checker expected. Since the underlying right is represented in substance (even if not in the exact structural relationship type), this discrepancy is unlikely by itself to change a compliance conclusion, though it could complicate automated basket-reclassification tooling that specifically looks for a RECLASSIFIABLE_TO edge.",
+   "deterministicSignals": [],
+   "verificationMethod": "SEMANTIC_ONLY",
+   "provider": "VERCEL_AI_GATEWAY",
+   "model": "anthropic/claude-sonnet-5",
+   "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+   "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+   "resolutionStatus": "OPEN",
+   "createdAt": "2026-09-19T13:36:56.925Z"
+  },
+  {
+   "findingId": "0737f17fd453024fedda146663cf161151bc752f17c1dea21760fbb287872dbc",
+   "companyId": "phase-3-validation-chwy",
+   "instrumentKey": "chwy-2026-revolving-credit-instrument",
+   "sourceDocumentId": "doc-a",
+   "candidateRef": "phase-3-final-601:chwy:6.01",
+   "ruleOrDefinitionId": null,
+   "irPath": null,
+   "findingType": "MISSING_RULE",
+   "severity": "MATERIAL",
+   "sourceEvidence": "2.50:1.00",
+   "sourceCitation": "6.01",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "verifierReasoning": "source RATIO 2.5 (from \"2.50:1.00\") does not appear as a RATIO value anywhere in the compiled IR",
+   "deterministicSignals": [
+    "source RATIO 2.5 (from \"2.50:1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+   ],
+   "verificationMethod": "DETERMINISTIC_ONLY",
+   "provider": null,
+   "model": null,
+   "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+   "verifierPromptVersion": null,
+   "resolutionStatus": "OPEN",
+   "createdAt": "2026-09-19T13:33:48.315Z"
+  },
+  {
+   "findingId": "ea4b35d164fedb4fae7a504a71a20edd7145e54256831891874831ffea3ff34d",
+   "companyId": "phase-3-validation-chwy",
+   "instrumentKey": "chwy-2026-revolving-credit-instrument",
+   "sourceDocumentId": "doc-a",
+   "candidateRef": "phase-3-final-601:chwy:6.01",
+   "ruleOrDefinitionId": null,
+   "irPath": null,
+   "findingType": "MISSING_RECLASSIFICATION",
+   "severity": "NON_MATERIAL",
+   "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+   "sourceCitation": "6.01",
+   "proposedIrEvidence": "(absent from compiled IR)",
+   "verifierReasoning": "source text contains 1 reclassification/redesignation signal(s) but the compiled IR records no RECLASSIFIABLE_TO/REDESIGNATES_TO dependency - possible missing reclassification right [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+   "deterministicSignals": [
+    "source text contains 1 reclassification/redesignation signal(s) but the compiled IR records no RECLASSIFIABLE_TO/REDESIGNATES_TO dependency - possible missing reclassification right"
+   ],
+   "verificationMethod": "DETERMINISTIC_ONLY",
+   "provider": null,
+   "model": null,
+   "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+   "verifierPromptVersion": null,
+   "resolutionStatus": "OPEN",
+   "createdAt": "2026-09-19T13:33:48.315Z"
+  }
+ ],
+ "accounting": {
+  "review": {
+   "logicalCalls": 1,
+   "liveCalls": 1,
+   "replayedCalls": 0,
+   "liveCostUsd": 0.499976,
+   "historicalReplayedCostUsd": 0,
+   "providerCallsAvoided": 0
+  },
+  "suspicion": {
+   "logicalCalls": 0,
+   "liveCalls": 0,
+   "replayedCalls": 0,
+   "liveCostUsd": 0,
+   "historicalReplayedCostUsd": 0,
+   "providerCallsAvoided": 0
+  }
+ },
+ "costUsd": 0.499976,
+ "findingCounts": {
+  "total": 6,
+  "MATERIAL": 4,
+  "UNCERTAIN": 0,
+  "NON_MATERIAL": 2,
+  "deterministic": 2,
+  "semantic": 4,
+  "byType": {
+   "WRONG_ENTITY_SCOPE": 1,
+   "OTHER_MATERIAL_SEMANTIC_DISCREPANCY": 3,
+   "MISSING_RULE": 1,
+   "MISSING_RECLASSIFICATION": 1
+  }
+ },
+ "previousVerdictReused": false,
+ "historicalReassessment": {
+  "method": "identical findingId => RECURRED; same findingType on the same source citation/evidence => NEW_RELATED_FINDING; otherwise the deterministic condition the finding described is re-measured on the fresh IR (carve-out exceptions, dependency resolution, entityScope) => RESOLVED when it no longer holds, NOT_APPLICABLE_TO_NEW_IR when it cannot be evaluated; one-run findings not raised again => RESOLVED",
+  "rows": [
+   {
+    "ordinal": 0,
+    "findingId": "5cdae40b83930f7ba8216f5094376ef6d7f22916f510049c506dac963b707215",
+    "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+    "severity": "MATERIAL",
+    "sourceCitation": "§6.01(b)",
+    "triageClass": "A_DETERMINISTIC_PHASE3_PRODUCTION_DEFECT",
+    "status": "RESOLVED",
+    "evidence": "135 cross-shard carve-out exceptions synthesized on 3 prohibition rules; verifier raised no finding of this type on §6.01(b)"
+   },
+   {
+    "ordinal": 1,
+    "findingId": "912e4ba0fce2e6ce4e51186060abe577242ed53362b92af1df6cb8a873146035",
+    "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+    "severity": "MATERIAL",
+    "sourceCitation": "§6.01(a)(1)-(3)",
+    "triageClass": "F_NEEDS_FRESH_PAID_EVIDENCE (delivery-caused; previous 0/11 attribution was a rule-id join and too narrow)",
+    "status": "RESOLVED",
+    "evidence": "one-run or delivery-caused finding; the fresh verifier did not raise it on the new IR"
+   },
+   {
+    "ordinal": 2,
+    "findingId": "74ce23bc8a8f70914c04cc994c4438fe02703af41c45f0839e7a53c682b300dc",
+    "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+    "severity": "MATERIAL",
+    "sourceCitation": "§6.01(b)(13)",
+    "triageClass": "A_DETERMINISTIC_PHASE3_PRODUCTION_DEFECT (partial) + F for the remainder",
+    "status": "RESOLVED",
+    "evidence": "unresolvedDependencies 36 (frozen 57), dependsOn 28; no fresh finding of this type on the same source"
+   },
+   {
+    "ordinal": 3,
+    "findingId": "fe2b53b7626ddb0ba36a2e0b1299a9203e338715c8ddd3f557976a03cc2628a6",
+    "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+    "severity": "UNCERTAIN",
+    "sourceCitation": "§6.01(a)",
+    "triageClass": "A_DETERMINISTIC_PHASE3_PRODUCTION_DEFECT (prompt never requested the field) + F to observe the effect",
+    "status": "RESOLVED",
+    "evidence": "17/63 rules carry entityScope (frozen 0); no fresh WRONG_ENTITY_SCOPE / scope finding"
+   },
+   {
+    "ordinal": 4,
+    "findingId": "408497d17f4d0467d62a5217064db4aa50a70397faed87daed397b5dc94e1923",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL",
+    "sourceCitation": "6.01",
+    "triageClass": "F_NEEDS_FRESH_PAID_EVIDENCE (same root as finding 1) / C candidate",
+    "status": "RESOLVED",
+    "evidence": "one-run or delivery-caused finding; the fresh verifier did not raise it on the new IR"
+   },
+   {
+    "ordinal": 5,
+    "findingId": "408497d17f4d0467d62a5217064db4aa50a70397faed87daed397b5dc94e1923",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL",
+    "sourceCitation": "6.01",
+    "triageClass": "F_NEEDS_FRESH_PAID_EVIDENCE (same root as finding 1) / C candidate",
+    "status": "RESOLVED",
+    "evidence": "one-run or delivery-caused finding; the fresh verifier did not raise it on the new IR"
+   },
+   {
+    "ordinal": 6,
+    "findingId": "408497d17f4d0467d62a5217064db4aa50a70397faed87daed397b5dc94e1923",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL",
+    "sourceCitation": "6.01",
+    "triageClass": "F_NEEDS_FRESH_PAID_EVIDENCE (same root as finding 1) / C candidate",
+    "status": "RESOLVED",
+    "evidence": "one-run or delivery-caused finding; the fresh verifier did not raise it on the new IR"
+   },
+   {
+    "ordinal": 7,
+    "findingId": "408497d17f4d0467d62a5217064db4aa50a70397faed87daed397b5dc94e1923",
+    "findingType": "MISSING_BASKET",
+    "severity": "MATERIAL",
+    "sourceCitation": "6.01",
+    "triageClass": "F_NEEDS_FRESH_PAID_EVIDENCE (same root as finding 1) / C candidate",
+    "status": "RESOLVED",
+    "evidence": "one-run or delivery-caused finding; the fresh verifier did not raise it on the new IR"
+   },
+   {
+    "ordinal": 8,
+    "findingId": "0737f17fd453024fedda146663cf161151bc752f17c1dea21760fbb287872dbc",
+    "findingType": "MISSING_RULE",
+    "severity": "MATERIAL",
+    "sourceCitation": "6.01",
+    "triageClass": "B_MODEL_VARIANCE (one-run omission in a completed shard) -> F to re-observe",
+    "status": "RECURRED",
+    "evidence": "identical findingId in the fresh verifier run"
+   },
+   {
+    "ordinal": 9,
+    "findingId": "1fe65efe2ee5c12b2a7085c10c1b07654401eb985c02b852cd80fd0d2f335527",
+    "findingType": "WRONG_ENTITY_SCOPE",
+    "severity": "NON_MATERIAL",
+    "sourceCitation": "6.01",
+    "triageClass": "D_EXPLICIT_SAFE_LIMITATION (downgraded NON_MATERIAL by Layer 2) with the same root as finding 3",
+    "status": "NEW_RELATED_FINDING",
+    "evidence": "fresh finding(s) of the same type on the same source: 96dd0fc7c578"
+   },
+   {
+    "ordinal": 10,
+    "findingId": "ea4b35d164fedb4fae7a504a71a20edd7145e54256831891874831ffea3ff34d",
+    "findingType": "MISSING_RECLASSIFICATION",
+    "severity": "NON_MATERIAL",
+    "sourceCitation": "6.01",
+    "triageClass": "D_EXPLICIT_SAFE_LIMITATION (downgraded NON_MATERIAL by Layer 2) / B",
+    "status": "RECURRED",
+    "evidence": "identical findingId in the fresh verifier run"
+   }
+  ],
+  "counts": {
+   "RESOLVED": 8,
+   "RECURRED": 2,
+   "NEW_RELATED_FINDING": 1
+  }
+ },
+ "genuinelyNewFindings": [
+  {
+   "findingId": "750429e8556687067d380fb40812057ac58950f3bebaaa60e05a674ed44840df",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "MATERIAL",
+   "sourceCitation": "Section 6.01(b)(14)",
+   "irPath": "rules[*].capacityExpression.gatedBy; rules[*].dependsOn",
+   "method": "SEMANTIC_ONLY",
+   "summary": "ir-rule:e0669a810b36ddf5bff018b3 (clauses a+b) is a standalone PERMISSION rule with capacityExpression UNLIMITED_CAPACITY gatedBy AND(OR(a-tests), OR(b-tests)) and sufficiency COMPLETE, with no dependsOn tying it to clause (c)/(d); ir-rule:c0feca0b818c734f33a23962 (clause c) is a separate standalone"
+  },
+  {
+   "findingId": "5b8024cdfa63dc5c5ff9e810f88c8c9d403f04c9f2c6d33c1e07f6971b313047",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "MATERIAL",
+   "sourceCitation": "Section 6.01(b)(4)(a)(ii)",
+   "irPath": "rules[?].capacityExpression.operands[1] (SUBTRACT.left)",
+   "method": "SEMANTIC_ONLY",
+   "summary": "capacityExpression for 6.01(b)(4)(a) is a SUM whose second operand is SUBTRACT(left=UNSUPPORTED{reason: \"MULTIPLY operands do not type-check... (kind=MULTIPLY)\", attemptedStructure containing RATIO value 2.5 multiplied against Consolidated EBITDA}, right=Consolidated First Lien Debt)"
+  },
+  {
+   "findingId": "7f1b0927f82141b824a67e5805218a16aafaaa70f194f561ddbd5396b473730c",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "severity": "NON_MATERIAL",
+   "sourceCitation": "Section 6.01, paragraph following clause (33) (\"For purposes of determining compliance with this Section 6.01: (1)...\")",
+   "irPath": "rules[?].conditions",
+   "method": "SEMANTIC_ONLY",
+   "summary": "ir-rule:c6204d2aa73929fbafd3ae0f conditions[1]: \"the Initial Borrower, in its sole discretion, may allocate, classify and reclassify all or a portion of such item in any manner that complies with Section 6.01\""
+  }
+ ],
+ "deterministicFixEffects": {
+  "crossShardCarveOutLinkage": {
+   "prohibitionRules": 3,
+   "exceptionsPerProhibitionRule": [
+    {
+     "ruleId": "ir-rule:170e314ceb35e54072b7ddba",
+     "section": "6.01(a)",
+     "exceptions": 49,
+     "stitched": 45
+    },
+    {
+     "ruleId": "ir-rule:49f22aee601dde5b8b8162d5",
+     "section": "6.01(a)",
+     "exceptions": 49,
+     "stitched": 45
+    },
+    {
+     "ruleId": "ir-rule:31ef4cb0be0026182f97f8ea",
+     "section": "6.01(a)",
+     "exceptions": 48,
+     "stitched": 45
+    }
+   ],
+   "stitchedCarveOutExceptions": 135,
+   "frozenRunHad": "7/3/3 exceptions on the three prohibition rules, none cross-shard",
+   "stitcherNote": "stitcher linked 135 carve-out exception(s) and resolved 21 section-reference dependenc(ies) across shards deterministically"
+  },
+  "uniqueSectionReferenceResolution": {
+   "unresolvedDependenciesTotal": 36,
+   "dependsOnTotal": 28,
+   "frozenRunHad": {
+    "unresolvedDependencies": 57,
+    "uniquelyResolvable": 18
+   }
+  },
+  "entityScope": {
+   "rulesWithEntityScope": 17,
+   "rulesTotal": 63,
+   "frozenRunHad": 0
+  }
+ }
+}

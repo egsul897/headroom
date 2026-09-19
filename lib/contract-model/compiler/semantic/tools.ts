@@ -22,6 +22,7 @@ import type { DefinitionEvidenceFound } from "../amendment/operative-state";
 import type { ContextItem } from "../context-retrieval/types";
 import { computeSourceContentHash } from "../hashing";
 import { resolveReferenceTarget } from "../semantic-accountability/reference-resolver";
+import { findDefinedTermVariant } from "../structural-index";
 import type { RetrievedSourceRecord, SemanticToolAccess, ToolBudget, ToolCallLogEntry } from "./types";
 
 export interface ToolExecutionOutcome {
@@ -101,6 +102,38 @@ function retrievedSourceForDefinition(access: SemanticToolAccess, term: string, 
   }
   const view = access.operativeState ? getOperativeDefinition(access.operativeState, term) : null;
   return { requestKind: "DEFINITION", requestKey: term, documentId: resolution.documentId, sourceNodeId: view?.currentSourceNodeId ?? null, sourceNodeKey: view?.currentSourceNodeKey ?? null, charStart: null, charEnd: null, rawText, contentHash, textOrigin: resolution.isCurrentTruth ? "AMENDED_CURRENT_TEXT" : "UNRESOLVED_AMENDED_TEXT", evidenceStatus: resolution.status, isCurrentTruth: resolution.isCurrentTruth };
+}
+
+/**
+ * PHASE 3 / 6.01 remediation - resolves a FORWARDING definition declaration's target one bounded hop: a SECTION target
+ * through the generic reference resolver (degenerate duplicates excluded with disclosure, ambiguity refused) and the
+ * supersession-aware node reader; a DEFINITION target through the index's own full text; a PREAMBLE target is
+ * disclosed but not read. Returns null when the declaration is not a forwarding one or the hop cannot be served.
+ */
+function followForwardingDefinition(access: SemanticToolAccess, supersessionIndex: NodeSupersessionIndex, documentId: string, term: string, charsUsedRef: { current: number }, remaining: number): { payload: Record<string, unknown>; summary: string; chars: number; evidenceUnresolved: boolean; truncated: boolean } | null {
+  const def = access.structuralIndex.getDefinition(term, documentId);
+  const target = def?.forwardingTarget;
+  if (!def || !target) return null;
+  if (remaining <= 0) return { payload: { kind: target.kind, ref: target.ref, served: false, reason: "additional-source character budget exhausted before the forwarding target could be read" }, summary: `forwarding target ${target.kind} ${target.ref} not read (budget)`, chars: 0, evidenceUnresolved: false, truncated: false };
+  if (target.kind === "SECTION") {
+    const resolution = resolveReferenceTarget(access.structuralIndex, documentId, target.ref);
+    if (!resolution.node) return { payload: { kind: "SECTION", ref: target.ref, served: false, resolution: resolution.status, reason: resolution.note, candidateNodeIds: resolution.candidateNodeIds }, summary: `forwarding target Section ${target.ref} ${resolution.status}`, chars: 0, evidenceUnresolved: false, truncated: false };
+    const resolved = resolveNodeWithSupersessionAwareness(access, supersessionIndex, resolution.node);
+    const display = legacySupersessionDisplay(resolved);
+    const { text, truncated } = truncate(resolved.text);
+    charsUsedRef.current += text.length;
+    return { payload: { kind: "SECTION", ref: target.ref, served: true, resolvedSectionRef: resolution.node.sectionRef, nodeId: resolution.node.nodeId, resolution: resolution.status, resolutionNote: resolution.note, text, truncated, supersessionStatus: display.supersessionStatus, supersessionReason: display.supersessionReason }, summary: `forwarding target Section ${target.ref} -> ${resolution.node.sectionRef} [${resolution.status}] (${display.supersessionStatus})`, chars: text.length, evidenceUnresolved: !resolved.evidenceCurrent, truncated };
+  }
+  if (target.kind === "DEFINITION") {
+    const full = access.structuralIndex.getDefinitionFullText(target.ref, documentId);
+    if (!full) return { payload: { kind: "DEFINITION", ref: target.ref, served: false, reason: `no detected definition of "${target.ref}"` }, summary: `forwarding target definition "${target.ref}" not found`, chars: 0, evidenceUnresolved: false, truncated: false };
+    const { text, truncated } = truncate(full);
+    charsUsedRef.current += text.length;
+    const targetDef = access.structuralIndex.getDefinition(target.ref, documentId);
+    const supersession = getNodeSupersessionStatus(supersessionIndex, documentId, targetDef?.sourceNodeId ?? null);
+    return { payload: { kind: "DEFINITION", ref: target.ref, served: true, text, truncated, supersessionStatus: supersession.status, supersessionReason: supersession.reason }, summary: `forwarding target definition "${target.ref}" (${supersession.status})`, chars: text.length, evidenceUnresolved: !isConfirmedCurrentOperativeEvidence(supersession.status), truncated };
+  }
+  return { payload: { kind: "PREAMBLE", ref: target.ref, served: false, reason: "the term is defined in the preamble/recitals - read it with getSourceSpan on the document's opening node" }, summary: `forwarding target ${target.ref}`, chars: 0, evidenceUnresolved: false, truncated: false };
 }
 
 /** F-4 - the RetrievedSourceRecord for a section-reading tool that served `resolved` for physical node `node` (see retrievedSourceForDefinition). Base/historical text spans [node.charStart, node.charStart + text.length) - exactly StructuralIndex.getNodeText(nodeId, "OWN")'s own slice. */
@@ -584,8 +617,21 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         // with the honest reason and candidate count, never guessed.
         const resolution = access.structuralIndex.resolveUniqueNodeByRef(homeDocumentId, sectionRef);
         if (resolution.status === "NOT_FOUND") return refuse(`no section "${sectionRef}" found in this instrument's documents, and it has no recorded amendment history`);
-        if (resolution.status === "AMBIGUOUS") return refuse(`section reference "${sectionRef}" matches ${resolution.candidates.length} distinct physical locations in this document (e.g. a cross-reference mention and the section's real header can share the same number) - cannot serve this as uniquely-resolved evidence; try getReferencedProvision with a fromNodeId for a context-scoped resolution, or narrow the reference`);
-        const node = resolution.node;
+        // PHASE 3 / 6.01 remediation (RETRIEVAL_ROUTE_PRESENT_BUT_NOT_USABLE root cause): a table-of-contents entry is
+        // indexed as a second occurrence of a body section's label. The strict resolver refused every such section
+        // ("2.18 matches 2 distinct physical locations") although the generic resolver already resolves it with
+        // disclosure (UNIQUE_AFTER_DEGENERATE_EXCLUSION: exactly one substantive occurrence, the rest heading-only).
+        // Two substantive occurrences remain AMBIGUOUS and are still refused - never guessed.
+        let degenerate: { status: string; note: string; excludedDegenerateNodeIds: string[] } | null = null;
+        let node: StructuralNode;
+        if (resolution.status === "AMBIGUOUS") {
+          const generic = resolveReferenceTarget(access.structuralIndex, homeDocumentId, sectionRef);
+          if (generic.status !== "UNIQUE_AFTER_DEGENERATE_EXCLUSION" || !generic.node) return refuse(`section reference "${sectionRef}" matches ${resolution.candidates.length} distinct physical locations in this document (e.g. a cross-reference mention and the section's real header can share the same number) - cannot serve this as uniquely-resolved evidence; try getReferencedProvision with a fromNodeId for a context-scoped resolution, or narrow the reference`);
+          node = generic.node;
+          degenerate = { status: generic.status, note: generic.note, excludedDegenerateNodeIds: generic.excludedDegenerateNodeIds };
+        } else {
+          node = resolution.node;
+        }
         const fullNodeText = access.structuralIndex.getNodeText(node.nodeId, "OWN");
         const { text, truncated } = truncate(fullNodeText);
         charsUsedRef.current += text.length;
@@ -593,9 +639,9 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         const status = supersession.status === "KNOWN_SUPERSEDED" ? "OPERATIVE_STATE_PARTIAL" : "OPERATIVE_STATE_RESOLVED";
         const unresolvedIssues = supersession.status === "KNOWN_SUPERSEDED" ? [supersession.reason] : [];
         const outcome = ok(
-          { sectionRef, status, currentText: text, truncated, unresolvedIssues, supersessionStatus: supersession.status, supersessionReason: supersession.reason },
+          { sectionRef, status, currentText: text, truncated, unresolvedIssues, supersessionStatus: supersession.status, supersessionReason: supersession.reason, ...(degenerate ? { resolution: degenerate.status, resolutionNote: degenerate.note, excludedDegenerateNodeIds: degenerate.excludedDegenerateNodeIds } : {}) },
           text,
-          `base-document provision ${sectionRef} (never individually amended, ${supersession.status})`
+          `base-document provision ${sectionRef} (never individually amended, ${supersession.status}${degenerate ? `, ${degenerate.status}` : ""})`
         );
         outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(supersession.status);
         outcome.evidenceTruncated = truncated;
@@ -705,7 +751,11 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
           return refuse(`${resolution.reason} - cannot serve this as uniquely-resolved evidence; try getSourceSpan on a specific candidate node, or narrow which occurrence you mean`);
         }
         if (resolution.outcome === "NOT_FOUND") {
-          return refuse(resolution.reason);
+          // PHASE 3 / 6.01 remediation: a plural/singular citation of a term defined in the other grammatical number is
+          // still refused (OPEN-2 certified invariant - never served the variant's text or amendment history under a
+          // different name), but the refusal NAMES the defined variant so the exact term can be queried next.
+          const variant = findDefinedTermVariant(access.structuralIndex, term, homeDocumentId);
+          return refuse(variant ? `${resolution.reason}; the instrument defines "${variant.exactTerm}" (a grammatical-number variant of the requested term) - query that exact term to read it` : resolution.reason);
         }
 
         const { text, truncated } = truncate(resolution.text ?? "(no current text recorded)");
@@ -728,6 +778,20 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         // served, so an independent verifier can later admit this exact
         // text as evidence only after re-resolving and re-hashing it itself.
         outcome.retrievedSource = retrievedSourceForDefinition(access, term, resolution);
+        // PHASE 3 / 6.01 remediation: a FORWARDING declaration ("has the meaning assigned to such term in Section
+        // 6.08(a)(3)") carries no body. Follow it ONE bounded hop, deterministically, with provenance and the same
+        // supersession discipline as every section-reading tool; `text`/retrievedSource stay the served declaration
+        // (what the verifier re-resolves), the target rides along as `forwardedTo`. Never more than one hop.
+        if (resolution.source === "base-document") {
+          const forwarded = followForwardingDefinition(access, supersessionIndex, resolution.documentId, term, charsUsedRef, remainingBudget());
+          if (forwarded) {
+            (outcome.result as Record<string, unknown>).forwardedTo = forwarded.payload;
+            outcome.outputSummary += ` -> ${forwarded.summary}`;
+            outcome.charsReturned += forwarded.chars;
+            if (forwarded.evidenceUnresolved) outcome.evidenceUnresolved = true;
+            if (forwarded.truncated) outcome.evidenceTruncated = true;
+          }
+        }
         return outcome;
       },
     },
@@ -863,10 +927,11 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
           const fromNode = access.structuralIndex.getNode(fromNodeId);
           if (fromNode && allowedDocs.has(fromNode.documentId)) {
             const found = access.structuralIndex.findReferencesFrom(fromNodeId).find((r) => r.referenceText === ref || r.normalizedTarget === ref.replace(/\s+/g, ""));
-            if (found?.targetAmbiguous) {
-              return refuse(`reference "${ref}" (from node "${fromNodeId}") matches more than one physical location in this document - ambiguous, not resolved. Try an absolute section reference or getSourceSpan on a candidate you can otherwise identify.`);
-            }
-            if (found?.resolved && found.targetNodeId) {
+            // PHASE 3 / 6.01 remediation: a context-scoped reference whose detected target is ambiguous is no longer
+            // refused here - it falls through to the generic per-document resolver below, which excludes heading-only
+            // (table-of-contents) duplicates with disclosure and still refuses genuinely ambiguous references, listing
+            // the candidates. The pre-fix early refusal made "Section 2.18" unretrievable from its own citing clause.
+            if (found?.resolved && found.targetNodeId && !found.targetAmbiguous) {
               const targetNode = access.structuralIndex.getNode(found.targetNodeId);
               if (targetNode) {
                 // Phase 3F.1.6.R BLOCKER-5 fix (SUPER-5): previously read
@@ -916,7 +981,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         // on real evidence, instead of this code ever guessing (mission §15).
         const ambiguousCandidates: { documentId: string; nodeId: string; sectionRef: string; charStart: number; heading: string }[] = [];
         for (const documentId of allowedDocs) {
-          const resolution = resolveReferenceTarget(access.structuralIndex, documentId, ref);
+          const resolution = resolveReferenceTarget(access.structuralIndex, documentId, ref, { fromNodeId });
           if (resolution.status === "AMBIGUOUS") {
             for (const nodeId of resolution.candidateNodeIds) {
               const n = access.structuralIndex.getNodeById(nodeId);
@@ -941,7 +1006,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
             return outcome;
           }
         }
-        if (ambiguousCandidates.length > 0) return refuse(`reference "${ref}" matches ${ambiguousCandidates.length} substantive physical locations within this instrument's documents - ambiguous, not resolved (never guessed). Candidates: ${JSON.stringify(ambiguousCandidates)}. Provide a fromNodeId for context-scoped resolution, or call getSourceSpan on the specific candidate nodeId your evidence supports.`);
+        if (ambiguousCandidates.length > 0) return refuse(`reference "${ref}"${fromNodeId ? ` (from node "${fromNodeId}")` : ""} matches ${ambiguousCandidates.length} substantive physical locations within this instrument's documents - ambiguous, not resolved (never guessed). Candidates: ${JSON.stringify(ambiguousCandidates)}. ${fromNodeId ? "Call" : "Provide a fromNodeId for context-scoped resolution, or call"} getSourceSpan on the specific candidate nodeId your evidence supports.`);
         return refuse(`reference "${ref}" did not resolve to any section (or any enclosing section) within this instrument's documents`);
       },
     },

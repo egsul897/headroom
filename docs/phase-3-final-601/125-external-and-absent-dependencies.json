@@ -1,0 +1,301 @@
+{
+ "artifact": "PHASE 3 / 6.01 DEPENDENCY-DELIVERY REMEDIATION §12 - dependencies that cannot be delivered are disclosed by name and never invented",
+ "at": "2026-09-19T03:02:34.713Z",
+ "paidCalls": 0,
+ "rule": "a required dependency with no resolvable text in the package is recorded with an EMPTY fullText, disposition UNDELIVERABLE_DISCLOSED (or EXTERNAL_REQUIRED_DEPENDENCY), a reason naming why, and an unresolvedContext entry on every shard that needs it. It does NOT block certification, because the planner cannot deliver what the package does not contain - and it is never replaced with a guess.",
+ "counts": {
+  "undeliverableDisclosed": 26,
+  "external": 0,
+  "everyUndeliverableHasEmptyText": true,
+  "everyUndeliverableIsDisclosedOnItsShard": true
+ },
+ "undeliverable": [
+  {
+   "shardOrdinal": 0,
+   "key": "term:guarantor",
+   "target": "Guarantor",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Guarantor\" in doc-a"
+  },
+  {
+   "shardOrdinal": 0,
+   "key": "term:incur",
+   "target": "incur",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"incur\" in doc-a"
+  },
+  {
+   "shardOrdinal": 0,
+   "key": "term:incurrence",
+   "target": "incurrence",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"incurrence\" in doc-a"
+  },
+  {
+   "shardOrdinal": 0,
+   "key": "term:junior lien priority",
+   "target": "Junior Lien Priority",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Junior Lien Priority\" in doc-a"
+  },
+  {
+   "shardOrdinal": 0,
+   "key": "term:restricted subsidiaries",
+   "target": "Restricted Subsidiaries",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Restricted Subsidiaries\" in doc-a"
+  },
+  {
+   "shardOrdinal": 1,
+   "key": "term:borrowing base",
+   "target": "Borrowing Base",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Borrowing Base\" in doc-a"
+  },
+  {
+   "shardOrdinal": 1,
+   "key": "section:6.01(b)(1)(z)",
+   "target": "6.01(b)(1)(Z)",
+   "kind": "REQUIRED_REFERENCED_SECTION",
+   "evidence": [
+    "CROSS_REFERENCE_IN_REQUIRED_DEFINITION"
+   ],
+   "requiredByCount": 6,
+   "reason": "section 6.01(b)(1)(Z) matches 3 substantive physical locations - never guessed (2 substantive occurrences share \"6.01(b)(1)\" - genuinely ambiguous, not resolved (never guessed); the referring node's own enumeration run does not single one out)"
+  },
+  {
+   "shardOrdinal": 2,
+   "key": "term:capitalized lease obligations",
+   "target": "Capitalized Lease Obligations",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Capitalized Lease Obligations\" in doc-a"
+  },
+  {
+   "shardOrdinal": 2,
+   "key": "term:guarantee",
+   "target": "Guarantee",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Guarantee\" in doc-a"
+  },
+  {
+   "shardOrdinal": 2,
+   "key": "term:guarantor",
+   "target": "Guarantor",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Guarantor\" in doc-a"
+  },
+  {
+   "shardOrdinal": 2,
+   "key": "term:investment",
+   "target": "Investment",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Investment\" in doc-a"
+  },
+  {
+   "shardOrdinal": 2,
+   "key": "term:permitted lien",
+   "target": "Permitted Lien",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Permitted Lien\" in doc-a"
+  },
+  {
+   "shardOrdinal": 2,
+   "key": "term:restricted party",
+   "target": "Restricted Party",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Restricted Party\" in doc-a"
+  },
+  {
+   "shardOrdinal": 2,
+   "key": "term:sale and lease-back transactions",
+   "target": "Sale and Lease-Back Transactions",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Sale and Lease-Back Transactions\" in doc-a"
+  },
+  {
+   "shardOrdinal": 3,
+   "key": "term:excluded contributions",
+   "target": "Excluded Contributions",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Excluded Contributions\" in doc-a"
+  },
+  {
+   "shardOrdinal": 3,
+   "key": "term:joint ventures",
+   "target": "Joint Ventures",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Joint Ventures\" in doc-a"
+  },
+  {
+   "shardOrdinal": 3,
+   "key": "term:net proceeds",
+   "target": "Net Proceeds",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Net Proceeds\" in doc-a"
+  },
+  {
+   "shardOrdinal": 3,
+   "key": "term:pro forma basis",
+   "target": "Pro Forma Basis",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Pro Forma Basis\" in doc-a"
+  },
+  {
+   "shardOrdinal": 3,
+   "key": "term:refinanced",
+   "target": "Refinanced",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Refinanced\" in doc-a"
+  },
+  {
+   "shardOrdinal": 3,
+   "key": "term:refinancing",
+   "target": "Refinancing",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Refinancing\" in doc-a"
+  },
+  {
+   "shardOrdinal": 4,
+   "key": "term:guarantee",
+   "target": "Guarantee",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Guarantee\" in doc-a"
+  },
+  {
+   "shardOrdinal": 4,
+   "key": "term:guarantor",
+   "target": "Guarantor",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Guarantor\" in doc-a"
+  },
+  {
+   "shardOrdinal": 5,
+   "key": "term:restricted party",
+   "target": "Restricted Party",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Restricted Party\" in doc-a"
+  },
+  {
+   "shardOrdinal": 6,
+   "key": "term:controlled investment affiliates",
+   "target": "Controlled Investment Affiliates",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Controlled Investment Affiliates\" in doc-a"
+  },
+  {
+   "shardOrdinal": 6,
+   "key": "term:permitted transferee",
+   "target": "Permitted Transferee",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Permitted Transferee\" in doc-a"
+  },
+  {
+   "shardOrdinal": 6,
+   "key": "term:restricted party",
+   "target": "Restricted Party",
+   "kind": "REQUIRED_DEFINITION",
+   "evidence": [
+    "INVENTORY_REFERENCED_TERM_EDGE"
+   ],
+   "requiredByCount": 1,
+   "reason": "no detected definition of \"Restricted Party\" in doc-a"
+  }
+ ],
+ "external": []
+}

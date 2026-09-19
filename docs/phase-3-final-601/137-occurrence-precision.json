@@ -1,0 +1,143 @@
+{
+ "artifact": "PRECISION AUDIT §9 - the defined-term occurrence scan: longest match, word boundaries, deterministic number spellings, no dictionary",
+ "at": "2026-09-19T04:06:10.410Z",
+ "paidCalls": 0,
+ "disciplines": {
+  "longestMatch": "terms are scanned longest spelling first and a span claimed by a longer term is never credited to a shorter one (definedTermsOccurringIn)",
+  "wordBoundary": "an occurrence needs a non-alphanumeric character (or the text edge) on both sides (findTermOccurrences)",
+  "numberSpellings": "the only alternative spellings are the deterministic suffix rules the index's own findDefinedTermVariant applies (ies<->y, -es, -s), on the last word, with no stem guessing; 'Refinanced' is NOT derived from 'Refinance' by spelling - only by the source's correlative declaration",
+  "noDuplicateInflation": "one entry per normalized term; a cited plural and its defined singular are one dependency with 'cited as' disclosed",
+  "aliasesSourceBacked": "GRAMMATICAL_NUMBER_VARIANT requires the variant definition to exist in the index; SOURCE_DECLARED_CORRELATIVE requires the declaration in the defined term's own text; there is no hand-built legal dictionary anywhere in the module"
+ },
+ "onTheFrozenUnit": {
+  "naiveSubstringHits": 139,
+  "boundaryDisciplinedHits": 130,
+  "spuriousHitsRemoved": 22,
+  "examplesRemoved": [
+   {
+    "shard": 0,
+    "term": "Obligations",
+    "context": "u basis with the Secured Obligations, secured by all or a mat"
+   },
+   {
+    "shard": 0,
+    "term": "Restricted",
+    "context": " not permit any of their Restricted Subsidiaries to create, "
+   },
+   {
+    "shard": 0,
+    "term": "Subsidiary",
+    "context": "ot permit any Restricted Subsidiary to issue any shares of D"
+   },
+   {
+    "shard": 1,
+    "term": "Agreement",
+    "context": " or 2.22) and any Credit Agreement Refinancing Indebtedness"
+   },
+   {
+    "shard": 1,
+    "term": "Refinancing Indebtedness",
+    "context": "and any Credit Agreement Refinancing Indebtedness in respect thereof, (Y) "
+   },
+   {
+    "shard": 2,
+    "term": "Capitalized Leases",
+    "context": "ance of doubt, Unsecured Capitalized Leases shall be permitted in an"
+   },
+   {
+    "shard": 2,
+    "term": "Lien",
+    "context": " Indebtedness, the First Lien Leverage Ratio of the In"
+   },
+   {
+    "shard": 2,
+    "term": "Obligations",
+    "context": "luding Capitalized Lease Obligations and Purchase Money Oblig"
+   },
+   {
+    "shard": 2,
+    "term": "Restricted",
+    "context": "ed Stock incurred by any Restricted Party, to finance the pu"
+   },
+   {
+    "shard": 3,
+    "term": "Payment",
+    "context": "auses to make Restricted Payments or to make other Invest"
+   },
+   {
+    "shard": 3,
+    "term": "Restricted",
+    "context": "d Preferred Stock of any Restricted Party in an aggregate pr"
+   },
+   {
+    "shard": 4,
+    "term": "Facility",
+    "context": " of a Maturity Exception Facility, has a Weighted Average "
+   }
+  ],
+  "occurrencesRecoveredViaNumberSpelling": 20,
+  "examplesRecovered": [
+   {
+    "shard": 0,
+    "term": "Guarantors",
+    "spelling": "Guarantor"
+   },
+   {
+    "shard": 2,
+    "term": "Sale and Lease-Back Transaction",
+    "spelling": "Sale and Lease-Back Transactions"
+   },
+   {
+    "shard": 2,
+    "term": "Capitalized Lease Obligation",
+    "spelling": "Capitalized Lease Obligations"
+   },
+   {
+    "shard": 2,
+    "term": "Restricted Parties",
+    "spelling": "Restricted Party"
+   },
+   {
+    "shard": 2,
+    "term": "Permitted Liens",
+    "spelling": "Permitted Lien"
+   },
+   {
+    "shard": 2,
+    "term": "Investments",
+    "spelling": "Investment"
+   },
+   {
+    "shard": 2,
+    "term": "Guarantors",
+    "spelling": "Guarantor"
+   },
+   {
+    "shard": 3,
+    "term": "Excluded Contribution",
+    "spelling": "Excluded Contributions"
+   },
+   {
+    "shard": 3,
+    "term": "Joint Venture",
+    "spelling": "Joint Ventures"
+   },
+   {
+    "shard": 3,
+    "term": "Subsidiary",
+    "spelling": "Subsidiaries"
+   },
+   {
+    "shard": 4,
+    "term": "Restricted Parties",
+    "spelling": "Restricted Party"
+   },
+   {
+    "shard": 4,
+    "term": "Investments",
+    "spelling": "Investment"
+   }
+  ]
+ },
+ "tests": "tests/contract-model/dd-anti-overfit.test.ts (§9 block)"
+}

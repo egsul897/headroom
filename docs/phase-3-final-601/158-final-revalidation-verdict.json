@@ -1,0 +1,165 @@
+{
+ "artifact": "FINAL FUNDED POST-PRECISION PAID REVALIDATION §27 - final verdict",
+ "at": "2026-09-19T13:41:17.972Z",
+ "startingSha": "6cc1c5de51a56d93bf9094714c3f1337169be71f",
+ "endingSha": "458f1cba1a4bd1d681b1be64ea00f7e8bfa0e9ae",
+ "certifiedProductionSha": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+ "certifiedTrees": {
+  "lib": "82832050f837e18599bfa127b4722ade879e7c24",
+  "lib/contract-model/compiler": "365c6fd79324816e1473d9857d642cf8fa146518",
+  "lib/contract-model/compiler/semantic": "84a709051ed7d959407b286d34e75ebae442891d"
+ },
+ "missionId": "phase-3-final-601-precision-revalidation",
+ "evidenceDir": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation",
+ "launches": 1,
+ "conditions": [
+  {
+   "id": 1,
+   "condition": "live starting balance >= $12.153745",
+   "status": "PASS",
+   "evidence": "$26.061242 vs $12.153745"
+  },
+  {
+   "id": 2,
+   "condition": "production tree identity matches the certified tree",
+   "status": "PASS",
+   "evidence": "certified 80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa; trees 82832050/365c6fd7/84a70905"
+  },
+  {
+   "id": 3,
+   "condition": "frozen inventory resumes",
+   "status": "PASS",
+   "evidence": "RECORDED_SOURCE_CONTEXT_HASH; 326 items"
+  },
+  {
+   "id": 4,
+   "condition": "new Pass-A calls = 0",
+   "status": "PASS",
+   "evidence": "RESUMED_FROM_ENSEMBLE_PERSISTENCE; newProviderCalls 0"
+  },
+  {
+   "id": 5,
+   "condition": "exact current plan hash matches",
+   "status": "PASS",
+   "evidence": "b2b9540a144348da"
+  },
+  {
+   "id": 6,
+   "condition": "old shard reuse = 0",
+   "status": "PASS",
+   "evidence": "historical accepted 0/0"
+  },
+  {
+   "id": 7,
+   "condition": "no planning failure",
+   "status": "PASS",
+   "evidence": "{\"shards\":7,\"oversized\":0,\"CERTIFIED_CONTEXT_COMPLETE\":5,\"CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION\":2,\"CERTIFIED_WITH_EXPLICIT_EXTERNAL_LIMITATION\":0,\"PLANNING_FAILED_REQUIRED_CONTEXT_UNDELIVERABLE\":0}"
+  },
+  {
+   "id": 8,
+   "condition": "PLANNER_DELIVERY_GAP = 0",
+   "status": "PASS",
+   "evidence": "0; audits recorded on 7/7 shards"
+  },
+  {
+   "id": 9,
+   "condition": "Pass B completes sufficiently for safe semantic composition",
+   "status": "PASS",
+   "evidence": "status REVIEW_REQUIRED; statuses {\"SHARD_COMPLETE\":7}; unresolved owned items 0"
+  },
+  {
+   "id": 10,
+   "condition": "Pass C executes",
+   "status": "PASS",
+   "evidence": "semanticallyComplete=false, inventoried 326"
+  },
+  {
+   "id": 11,
+   "condition": "all 14 hard trust counters MEASURED and zero",
+   "status": "PASS",
+   "evidence": "14/14 MEASURED = 0"
+  },
+  {
+   "id": 12,
+   "condition": "verifier executes",
+   "status": "PASS",
+   "evidence": "MATERIAL_DISCREPANCY, 6 findings"
+  },
+  {
+   "id": 13,
+   "condition": "no unresolved deterministic Phase-3 blocker remains",
+   "status": "PASS",
+   "evidence": "historical A-class findings recurred: 0; new deterministic MATERIAL findings: 0"
+  },
+  {
+   "id": 14,
+   "condition": "no silent CRITICAL miss",
+   "status": "PASS",
+   "evidence": "0"
+  },
+  {
+   "id": 15,
+   "condition": "no incorrect authoritative CRITICAL claim",
+   "status": "PASS",
+   "evidence": "0"
+  },
+  {
+   "id": 16,
+   "condition": "no silent quantitative corruption",
+   "status": "PASS",
+   "evidence": "0"
+  },
+  {
+   "id": 17,
+   "condition": "semantic quality credible",
+   "status": "PASS",
+   "evidence": "CRITICAL 2+2 of 4; MATERIAL 4+0 of 4"
+  },
+  {
+   "id": 18,
+   "condition": "spend <= $12.20",
+   "status": "PASS",
+   "evidence": "$4.606744 of $12.2"
+  },
+  {
+   "id": 19,
+   "condition": "no code fix-and-continue",
+   "status": "PASS",
+   "evidence": "production tree unchanged since the certified SHA; the run harness was committed and pushed before the first paid call and not touched afterwards; the finalizer only reads frozen outputs"
+  },
+  {
+   "id": 20,
+   "condition": "no new regression",
+   "status": "PASS",
+   "evidence": "full-suite new failing identities 0; targeted new 0; tsc new 0; lint true"
+  },
+  {
+   "id": 21,
+   "condition": "build passes",
+   "status": "PASS",
+   "evidence": "compiled successfully"
+  }
+ ],
+ "summary": {
+  "PASS": 21,
+  "FAIL": 0,
+  "total": 21
+ },
+ "verdict": "PHASE3_601_FINAL_REVALIDATION_PASSED",
+ "phase3Closed": false,
+ "phase4Started": false,
+ "cost": {
+  "thisMissionUsd": 4.606744,
+  "hardCapUsd": 12.2,
+  "conservativeEstimateUsd": 12.153745,
+  "gatewayBefore": 26.061242,
+  "gatewayAfter": 21.454498,
+  "gatewayReportedSpendUsd": 4.606744,
+  "historicalSection601Usd": 26.497962,
+  "cumulativeSection601Usd": 31.104706,
+  "liveCalls": 14,
+  "replayedCalls": 0,
+  "newPassACalls": 0
+ },
+ "nextMission": "ZERO-COST PHASE 3 CLOSURE SYNTHESIS. §28: Phase 3 stays OPEN even on a pass."
+}

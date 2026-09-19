@@ -1,0 +1,14 @@
+{
+ "artifact": "PHASE 3 FINAL-BRIDGE / 6.01 FINAL CLEAN RUN §10 - durable persistence and reload proof (NOT PERFORMED)",
+ "at": "2026-09-15T15:07:36.437Z",
+ "performed": false,
+ "persistenceOk": false,
+ "reason": "persistAndReload runs the instant runDualPassSemanticInventory returns; it never returned. The HD-3 closure (persist before any gate) was certified at zero cost in 48 and was not reached in the paid run.",
+ "frozenInventory": null,
+ "passes": null,
+ "persistenceGranularityObservation": {
+  "id": "HD-4 (candidate)",
+  "classification": "environment-caused loss, harness-amplified",
+  "statement": "The HD-3 closure persists at ENSEMBLE granularity (after both passes). It cannot protect against a process kill during Pass A itself. Pass 1 (7 calls, $2.8183) had completed and would have survived under per-pass or per-call persistence of raw provider responses, which a replaying StageCaller could then feed back into the production runDualPassSemanticInventory at zero cost. This is a design observation for the next mission, not a defect in any gate: no gate refused, no gate mis-fired, and production behaved correctly up to the kill."
+ }
+}

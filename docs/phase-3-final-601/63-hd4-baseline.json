@@ -1,0 +1,56 @@
+{
+ "artifact": "HD-4 §1 - frozen starting state",
+ "at": "2026-09-16T02:30:30.870Z",
+ "startingShaRequired": "5bd15c263b1e8fdadd16b908d5037f298af0d1e2",
+ "headSha": "5bd15c263b1e8fdadd16b908d5037f298af0d1e2",
+ "headIsPinOrDescendant": true,
+ "workingTree": {
+  "dirtyPaths": [
+   "docs/phase-3-final-601/63-hd4-baseline.json",
+   "docs/phase-3-final-601/64-hd4-design.json",
+   "docs/phase-3-final-601/65-hd4-request-identity.json",
+   "docs/phase-3-final-601/66-hd4-pass-a-crash-matrix.json",
+   "docs/phase-3-final-601/67-hd4-sigkill-proof.json",
+   "docs/phase-3-final-601/68-hd4-corruption-invalidation.json",
+   "docs/phase-3-final-601/69-hd4-pass-b-resilience.json",
+   "docs/phase-3-final-601/70-hd4-verifier-resilience.json",
+   "docs/phase-3-final-601/71-hd4-cost-accounting.json",
+   "docs/phase-3-final-601/72-hd4-regression.json",
+   "docs/phase-3-final-601/73-hd4-gate.json",
+   "docs/phase-3-final-601/README.md",
+   "scripts/phase-3-601-durable-replay.ts",
+   "scripts/phase-3-601-guard.ts",
+   "scripts/phase-3-601-hd4-certify.ts",
+   "scripts/phase-3-601-hd4-crash-child.ts",
+   "scripts/phase-3-601-hd4-resume.ts",
+   "scripts/phase-3-601-hd4-run.ts",
+   "scripts/phase-3-601-hd4-scripted.ts",
+   "scripts/phase-3-601-hd4-sigkill.ts",
+   "tests/contract-model/phase-3-601-hd4-durable-replay.test.ts",
+   "tests/contract-model/phase-3-601-hd4-sigkill.test.ts"
+  ],
+  "nonMissionDirtyPaths": [],
+  "cleanOutsideMissionScope": true
+ },
+ "productionTree": {
+  "libTreeAtPin": "cd6de064876b050e425941f864b646a78a4fe3b4",
+  "libTreeAtHead": "cd6de064876b050e425941f864b646a78a4fe3b4",
+  "identical": true,
+  "libAppPrismaWorkingTreeClean": true,
+  "productionFilesChangedSincePin": []
+ },
+ "frozenSemantics": {
+  "passAAlgorithm": "semantic-accountability.v5",
+  "passAPrompt": "semantic-inventory-prompt.v5",
+  "verifierAlgorithm": "phase-3c-semantic-verifier.v1",
+  "verifierPrompt": "phase-3c-semantic-verifier-prompt.v1"
+ },
+ "allowedScope": "harness/resilience infrastructure only (scripts/phase-3-601-*, tests, docs)",
+ "interruptedRunFacts": {
+  "pass1": "6 batches + 1 gap completed",
+  "pass2": "4 batches completed, 1 in flight",
+  "chargedUsd": 4.732104,
+  "inventorySurvived": false,
+  "reason": "successful Pass-A calls lived only in process memory until runDualPassSemanticInventory returned"
+ }
+}

@@ -90,10 +90,14 @@ describe("F-7A §19 B - definition A references definition B in another shard", 
   const plan = planFor(corpus, "cand:1.01");
   const shardOf = (i: number) => plan.itemOwnerShard[`inv-item:${String(i).padStart(3, "0")}`]!;
 
-  it("B appears as read-only REFERENCED_TERM context in A's shard, carrying provenance and B's owner; ownership stays with B's shard", () => {
+  // v3 (dependency-delivery remediation): a definition the owned source actually cites is a REQUIRED dependency, so it
+  // arrives in the REQUIRED tier rather than competing for the interpretive budget. Everything this test asserts about
+  // provenance, ownership and read-only status is unchanged; only the kind/tier it arrives under is stronger.
+  it("B appears as read-only REQUIRED_DEFINITION context in A's shard, carrying provenance and B's owner; ownership stays with B's shard", () => {
     expect(shardOf(3)).not.toBe(shardOf(40));
     const shardA = plan.shards.find((s) => s.shardId === shardOf(3))!;
-    const ctx = shardA.context.find((c) => c.kind === "REFERENCED_TERM" && c.contextKey === `term:${termName(40).toLowerCase()}`)!;
+    const ctx = shardA.context.find((c) => c.kind === "REQUIRED_DEFINITION" && c.contextKey === `term:${termName(40).toLowerCase()}`)!;
+    expect(ctx?.tier).toBe("REQUIRED");
     expect(ctx).toBeDefined();
     expect(ctx.ownerShardId).toBe(shardOf(40));
     expect(ctx.sourceUnitKey).toBe(plan.itemOwnerUnit["inv-item:040"]);
@@ -110,7 +114,7 @@ describe("F-7A §19 B - definition A references definition B in another shard", 
     expect(input.operativeSourceText).toBe(corpus.sourceContext.regions[0]!.text.slice(shardA.primaryCharStart, shardA.primaryCharEnd));
     expect(input.frozenInventory!.items.map((i) => i.inventoryItemId).sort()).toEqual([...shardA.ownedItemIds].sort());
     const rendered = renderAccountabilityContext(input);
-    expect(rendered).toContain("READ-ONLY DEPENDENCY CONTEXT (REFERENCED_TERM");
+    expect(rendered).toContain("READ-ONLY DEPENDENCY CONTEXT (REQUIRED_DEFINITION");
     expect(rendered).toContain(`“${termName(40)}” means`);
     expect(rendered).not.toContain("inv-item:040");
   });
@@ -162,11 +166,27 @@ describe("F-7A §19 C - shared-capacity construct whose members span a packing b
     expect(shards.size).toBeGreaterThan(1);
   });
 
-  it("a must-link block larger than the max is still one shard, flagged oversized - never split", () => {
+  it("v2 member closure: a group whose members sit far apart forces only its MEMBERS together (one shard, two slices), never the whole range - and is not oversized", () => {
     const wide = buildDefinitionsCorpus({ count: 30, sharedCapGroup: [2, 25] });
     const p = planFor(wide, "cand:1.01");
     const shard = p.shards.find((s) => s.shardId === p.itemOwnerShard["inv-item:002"])!;
     expect(shard.shardId).toBe(p.itemOwnerShard["inv-item:025"]);
+    // units 3..24 are NOT all dragged into the shard by the {2, 25} link (the v1 range closure fused 2..25 into one block)
+    const between = [...Array(22).keys()].map((k) => k + 3).filter((i) => p.itemOwnerShard[`inv-item:${String(i).padStart(3, "0")}`] === shard.shardId);
+    expect(between.length).toBeLessThan(22);
+    expect(shard.primarySlices.length).toBeGreaterThanOrEqual(2);
+    expect(shard.primaryChars).toBe(shard.primarySlices.reduce((a, sl) => a + (sl.charEnd - sl.charStart), 0));
+    expect(shard.oversized).toBe(false);
+    expect(p.totals.oversizedShards).toBe(0);
+    // every unit is still owned exactly once
+    expect(p.ownershipProof).toEqual({ materialItems: 30, ownedOnce: 30, unowned: 0, multiplyOwned: 0 });
+  });
+
+  it("a must-link block whose MEMBERS alone exceed the max is still one shard, flagged oversized - never split", () => {
+    const wide = buildDefinitionsCorpus({ count: 30, sharedCapGroup: [2, 5, 8, 11, 14, 17, 20, 23, 25] });
+    const p = planFor(wide, "cand:1.01", { ...SMALL, maxUnitsPerShard: 4 });
+    const shard = p.shards.find((s) => s.shardId === p.itemOwnerShard["inv-item:002"])!;
+    for (const i of [5, 8, 11, 14, 17, 20, 23, 25]) expect(p.itemOwnerShard[`inv-item:${String(i).padStart(3, "0")}`]).toBe(shard.shardId);
     expect(shard.oversized).toBe(true);
     expect(p.totals.oversizedShards).toBe(1);
   });
@@ -193,7 +213,7 @@ describe("F-7A §19 D - chapeau + 20 child clauses", () => {
       expect(ctx, `shard ${s.shardId} lacks the chapeau`).toBeDefined();
       expect(ctx!.ownerShardId).toBe(chapeauShard);
       expect(ctx!.text).toContain("so long as no Default");
-      expect(s.context.some((c) => c.kind === "PARENT_ITEM" && c.contextKey === "parent-item:inv-item:chapeau")).toBe(true);
+      expect(s.context.some((c) => (c.kind === "PARENT_ITEM" || c.kind === "REQUIRED_PARENT_CONTEXT") && c.contextKey === "parent-item:inv-item:chapeau")).toBe(true);
       expect(s.ownedItemIds).not.toContain("inv-item:chapeau");
     }
   });
@@ -415,6 +435,6 @@ describe("F-7A §20 - anti-enumeration: the planner works on structure only", ()
     expect(pb.mustLinkGroups).toEqual(pa.mustLinkGroups);
   });
   it("the default budget is the documented one", () => {
-    expect(DEFAULT_SHARD_BUDGET).toEqual({ targetPrimaryChars: 12_000, maxPrimaryChars: 24_000, maxContextChars: 10_000, maxContextEntryChars: 1_800, maxUnitsPerShard: 16 });
+    expect(DEFAULT_SHARD_BUDGET).toEqual({ targetPrimaryChars: 12_000, maxPrimaryChars: 24_000, maxContextChars: 10_000, maxRequiredContextChars: 64_000, maxContextEntryChars: 1_800, maxUnitsPerShard: 16 });
   });
 });

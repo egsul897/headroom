@@ -1,0 +1,352 @@
+{
+ "artifact": "FINAL PAID-REVALIDATION PRECHECK §14 - the 18-condition authorization gate",
+ "at": "2026-09-19T04:28:20.095Z",
+ "paidCalls": 0,
+ "shaCertified": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+ "productionTreeHash": {
+  "lib/": "82832050f837e18599bfa127b4722ade879e7c24",
+  "lib/contract-model/compiler/": "365c6fd79324816e1473d9857d642cf8fa146518",
+  "lib/contract-model/compiler/semantic/": "84a709051ed7d959407b286d34e75ebae442891d"
+ },
+ "conditions": [
+  {
+   "id": 1,
+   "condition": "exact committed SHA certified",
+   "pass": true,
+   "evidence": {
+    "head": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+    "tree": {
+     "lib/": "82832050f837e18599bfa127b4722ade879e7c24",
+     "lib/contract-model/compiler/": "365c6fd79324816e1473d9857d642cf8fa146518",
+     "lib/contract-model/compiler/semantic/": "84a709051ed7d959407b286d34e75ebae442891d"
+    }
+   },
+   "failureVerdict": "PHASE3_601_COMMITTED_TREE_RECERTIFICATION_FAILED"
+  },
+  {
+   "id": 2,
+   "condition": "gate results reproduce materially (146 and 133-145 regenerated at HEAD)",
+   "pass": true,
+   "evidence": {
+    "verdict": "PHASE3_REQUIRED_DEPENDENCY_MODEL_READY_FOR_PAID_REVALIDATION",
+    "summary": {
+     "total": 20,
+     "PASS": 20,
+     "FAIL": 0
+    },
+    "artifactsIdentical": true
+   },
+   "failureVerdict": "PHASE3_601_COMMITTED_TREE_RECERTIFICATION_FAILED"
+  },
+  {
+   "id": 3,
+   "condition": "source-bound inventory resume passes",
+   "pass": true,
+   "evidence": {
+    "method": "RECORDED_SOURCE_CONTEXT_HASH",
+    "frozenContentHash": "88e7419f61f96b827db31d91e9047e699fb54685d11d94d432b081e0d7eb1b0c"
+   },
+   "failureVerdict": "PHASE3_601_REQUIRES_FRESH_PASS_A"
+  },
+  {
+   "id": 4,
+   "condition": "Pass-A semantics unchanged",
+   "pass": true,
+   "evidence": {
+    "verdict": "NO_PASS_A_SEMANTIC_CHANGE",
+    "equivalenceProven": true,
+    "versionsMatch": true
+   },
+   "failureVerdict": "PHASE3_601_REQUIRES_FRESH_PASS_A"
+  },
+  {
+   "id": 5,
+   "condition": "current exact plan builds and matches the certified shape",
+   "pass": true,
+   "evidence": {
+    "expected": {
+     "mode": "SHARDED",
+     "shards": 7,
+     "oversized": 0,
+     "contextComplete": 5,
+     "limited": 2,
+     "planningFailed": 0,
+     "requiredDependencyModel": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+     "planner": "semantic-compilation-shards.v4-required-dependency-precision"
+    },
+    "observed": {
+     "mode": "SHARDED",
+     "shards": 7,
+     "oversized": 0,
+     "contextComplete": 5,
+     "limited": 2,
+     "planningFailed": 0,
+     "requiredDependencyModel": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+     "planner": "semantic-compilation-shards.v4-required-dependency-precision"
+    }
+   },
+   "failureVerdict": "PHASE3_601_PLAN_NOT_STABLE"
+  },
+  {
+   "id": 6,
+   "condition": "no planning failure",
+   "pass": true,
+   "evidence": {
+    "deliverableNotDelivered": 0
+   },
+   "failureVerdict": "PHASE3_601_PLAN_NOT_STABLE"
+  },
+  {
+   "id": 7,
+   "condition": "no required dependency unresolved except explicit certified limitations",
+   "pass": true,
+   "evidence": {
+    "limitations": [
+     "term:junior lien priority INTERNAL_REQUIRED_DEPENDENCY_UNRESOLVED",
+     "term:borrowing base EXTERNAL_REQUIRED_DEPENDENCY",
+     "section:6.01(b)(1)(z) AMBIGUOUS_REQUIRED_DEPENDENCY"
+    ]
+   },
+   "failureVerdict": "PHASE3_601_PLAN_NOT_STABLE"
+  },
+  {
+   "id": 8,
+   "condition": "64k edge classified SAFE_CAPACITY_BOUND rather than hidden fragility",
+   "pass": true,
+   "evidence": {
+    "minimumHeadroomChars": 2,
+    "firstPlanningFailureWhenCeilingReducedBy": null,
+    "classification": "SAFE_CAPACITY_BOUND"
+   },
+   "failureVerdict": "PHASE3_601_CONTEXT_CEILING_FRAGILE"
+  },
+  {
+   "id": 9,
+   "condition": "actual first-turn estimates within declared model capacity",
+   "pass": true,
+   "evidence": {
+    "maxTurn1Tokens": 61670,
+    "bound": 100000
+   },
+   "failureVerdict": "PHASE3_601_PLAN_NOT_STABLE"
+  },
+  {
+   "id": 10,
+   "condition": "old paid shards are not improperly reusable",
+   "pass": true,
+   "evidence": {
+    "oldAcceptedShards": 0,
+    "records": 9
+   },
+   "failureVerdict": "PHASE3_601_COMMITTED_TREE_RECERTIFICATION_FAILED"
+  },
+  {
+   "id": 11,
+   "condition": "exact conservative resumed cost computed from the actual plan",
+   "pass": true,
+   "evidence": {
+    "conservativeTotalUsd": 12.153745,
+    "plannerTokens": 290402
+   },
+   "failureVerdict": "PHASE3_601_COST_BOUND_BEFORE_REVALIDATION"
+  },
+  {
+   "id": 12,
+   "condition": "gateway balance >= conservative resumed cost",
+   "pass": false,
+   "evidence": {
+    "balanceUsd": 6.061242,
+    "conservativeTotalUsd": 12.153745,
+    "shortfallUsd": 6.092503
+   },
+   "failureVerdict": "PHASE3_601_COST_BOUND_BEFORE_REVALIDATION"
+  },
+  {
+   "id": 13,
+   "condition": "no new regressions (targeted suites green; full suite at HEAD vs the starting SHA of the precision audit)",
+   "pass": true,
+   "evidence": {
+    "targeted": {
+     "tests": 834,
+     "passed": 816,
+     "failed": 18,
+     "newFailuresNotPresentAtBase": [],
+     "preexistingBaselineFailures": {
+      "count": 18,
+      "files": [
+       "tests/contract-model/semantic-accountability/pass-a-inventory.test.ts",
+       "tests/contract-model/semantic-accountability/pass-a-stability.test.ts",
+       "tests/contract-model/semantic-accountability/pass-bc-reconciliation.test.ts"
+      ],
+      "verifiedIdenticalAt": [
+       "51fda653190d6859096be145245406b1c9329c58 (the inventory-producing run)",
+       "1b36eb6 (pre-remediation revalidation)",
+       "1fd23881fb9366b3730a06419a7b5dc33647384c (precision-audit start)",
+       "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa"
+      ],
+      "note": "18 failed / 146 passed in those three files at every one of those SHAs; not caused by and not fixed by this tree"
+     }
+    },
+    "covered": [
+     {
+      "suite": "dd-anti-overfit",
+      "files": 1,
+      "allPassed": true
+     },
+     {
+      "suite": "dd-certificate-honesty",
+      "files": 1,
+      "allPassed": true
+     },
+     {
+      "suite": "dd-cross-shard-links",
+      "files": 1,
+      "allPassed": true
+     },
+     {
+      "suite": "dd-entity-scope",
+      "files": 1,
+      "allPassed": true
+     },
+     {
+      "suite": "dd-required-dependency-generality",
+      "files": 1,
+      "allPassed": true
+     },
+     {
+      "suite": "f7a-shard-planner-stitcher",
+      "files": 1,
+      "allPassed": true
+     },
+     {
+      "suite": "f7c-production-activation",
+      "files": 1,
+      "allPassed": true
+     },
+     {
+      "suite": "f7c1-frozen-inventory-resume",
+      "files": 1,
+      "allPassed": true
+     },
+     {
+      "suite": "phase-3-601-hd4-durable-replay",
+      "files": 1,
+      "allPassed": true
+     },
+     {
+      "suite": "phase-3-601-hd4-sigkill",
+      "files": 1,
+      "allPassed": true
+     },
+     {
+      "suite": "semantic-compiler/",
+      "files": 14,
+      "allPassed": true
+     },
+     {
+      "suite": "semantic-accountability/",
+      "files": 10,
+      "allPassed": false
+     },
+     {
+      "suite": "semantic-verification-",
+      "files": 10,
+      "allPassed": true
+     }
+    ],
+    "regression": {
+     "fileLevelRegressions": 0,
+     "newFailingTestIdentities": 0
+    }
+   },
+   "failureVerdict": "PHASE3_601_REGRESSION_BLOCKED"
+  },
+  {
+   "id": 14,
+   "condition": "lint clean",
+   "pass": true,
+   "evidence": {
+    "tail": [
+     "✔ No ESLint warnings or errors",
+     "EXIT=0"
+    ]
+   },
+   "failureVerdict": "PHASE3_601_REGRESSION_BLOCKED"
+  },
+  {
+   "id": 15,
+   "condition": "build passes",
+   "pass": true,
+   "evidence": {
+    "build": "OK"
+   },
+   "failureVerdict": "PHASE3_601_REGRESSION_BLOCKED"
+  },
+  {
+   "id": 16,
+   "condition": "paid calls = 0 (and none since the precision audit)",
+   "pass": true,
+   "evidence": {
+    "paidCalls": 0,
+    "balanceUsd": 6.061242,
+    "historicalUsd": 6.061242,
+    "tscNewErrors": 0
+   },
+   "failureVerdict": "PHASE3_601_REGRESSION_BLOCKED"
+  },
+  {
+   "id": 17,
+   "condition": "Phase 3 remains open",
+   "pass": true,
+   "evidence": {
+    "phase3Closed": false
+   },
+   "failureVerdict": "PHASE3_601_REGRESSION_BLOCKED"
+  },
+  {
+   "id": 18,
+   "condition": "Phase 4 not started",
+   "pass": true,
+   "evidence": {
+    "phase4Started": false,
+    "productionChangedByThisMission": []
+   },
+   "failureVerdict": "PHASE3_601_REGRESSION_BLOCKED"
+  }
+ ],
+ "summary": {
+  "total": 18,
+  "PASS": 17,
+  "FAIL": 1
+ },
+ "verdict": "PHASE3_601_COST_BOUND_BEFORE_REVALIDATION",
+ "failing": [
+  "12 gateway balance >= conservative resumed cost"
+ ],
+ "tsc": {
+  "newErrors": 0,
+  "preexisting": 6
+ },
+ "regression": {
+  "fullSuiteJsonSha256": "b7cc5f63941670793971180d419003353d0d9cf3f4582b14754e819472e1876e",
+  "base": {
+   "sha": "1fd23881fb9366b3730a06419a7b5dc33647384c",
+   "tests": 3923,
+   "passed": 3236,
+   "failed": 163
+  },
+  "head": {
+   "sha": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+   "tests": 3957,
+   "passed": 3271,
+   "failed": 162
+  },
+  "fileLevelRegressions": [],
+  "newFailingTestIdentities": [],
+  "note": "the failures common to both runs are the database-backed suites without a database and the pre-existing foundation-audit typing"
+ },
+ "whatThisVerdictMeans": "readiness only. Even on PASS this mission starts nothing: the paid revalidation is a separate, later mission. Not a Phase 3 closure; Phase 4 not started.",
+ "phase3Closed": false,
+ "phase4Started": false,
+ "paidRunAuthorizedByThisMission": false
+}

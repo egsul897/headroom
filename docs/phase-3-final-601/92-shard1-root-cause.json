@@ -1,0 +1,353 @@
+{
+ "artifact": "PHASE 3 / 6.01 TRUST-FAILURE REMEDIATION §7/§8 - shard 1 exact root cause",
+ "at": "2026-09-17T16:33:55.219Z",
+ "shardId": "shard:9c94d27339b0f37fb71c",
+ "shardHash": "f422344546f42e86dd6951848772cf0f832347a84eb324e561bf6ca912d6881c",
+ "exactRootCause": "PLANNER_OMITTED_REQUIRED_DEFINITION + RETRIEVAL_ROUTE_PRESENT_BUT_NOT_USABLE: the single MISSING_CONTEXT rule (6.01(b)(32), ir-rule:aebc09fce0c0397c1d57ff37) required 'Available Amount'. The instrument defines it by a FORWARDING declaration (\"Available Amount\" has the meaning assigned to such term in Section 6.08(a)(3)) whose target carries the inline definition ('... are referred to herein as the \"Available Amount\"'). The definition detector accepted only means / shall mean / shall have the meaning, so the term was not indexed (93 such declarations in this instrument): the planner recorded NOT_FOUND and getDefinition refused 'no defined term matching'. The model concluded the term was 'not defined anywhere' and recorded MISSING_CONTEXT, escalating all 265 owned material items. Its second claim ('Not Otherwise Applied' not defined) was false: the term was indexed and retrievable but BUDGET-excluded from the 270-item shard's context.",
+ "oversizedAtomicUnit": {
+  "structural": true,
+  "whichUnitsMadeItAtomic": [
+   {
+    "members": [
+     12,
+     59
+    ],
+    "span": [
+     12,
+     59
+    ],
+    "rangeSize": 48,
+    "memberChars": 945,
+    "rangeChars": 18586,
+    "links": [
+     {
+      "kind": "SHARED_CAP",
+      "from": 12,
+      "to": 59,
+      "itemRole": "CONDITION",
+      "itemCite": "§6.01",
+      "toUnitRef": "6.01(b)(20)(i)"
+     }
+    ]
+   },
+   {
+    "members": [
+     13,
+     60
+    ],
+    "span": [
+     13,
+     60
+    ],
+    "rangeSize": 48,
+    "memberChars": 439,
+    "rangeChars": 17838,
+    "links": [
+     {
+      "kind": "SHARED_CAP",
+      "from": 13,
+      "to": 60,
+      "itemRole": "ALTERNATIVE",
+      "itemCite": "§6.01",
+      "toUnitRef": "6.01(b)(20)(ii)"
+     }
+    ]
+   },
+   {
+    "members": [
+     25,
+     57,
+     71,
+     79
+    ],
+    "span": [
+     25,
+     79
+    ],
+    "rangeSize": 55,
+    "memberChars": 6972,
+    "rangeChars": 19863,
+    "links": [
+     {
+      "kind": "SHARED_CAP",
+      "from": 25,
+      "to": 79,
+      "itemRole": "SHARED_CAP",
+      "itemCite": "§6.01",
+      "toUnitRef": "6.01(b)(2)"
+     },
+     {
+      "kind": "SHARED_CAP",
+      "from": 57,
+      "to": 79,
+      "itemRole": "SHARED_CAP",
+      "itemCite": "§6.01",
+      "toUnitRef": "6.01(b)(2)"
+     },
+     {
+      "kind": "SHARED_CAP",
+      "from": 71,
+      "to": 79,
+      "itemRole": "CONDITION",
+      "itemCite": "§6.01",
+      "toUnitRef": "6.01(b)(2)"
+     },
+     {
+      "kind": "SHARED_CAP",
+      "from": 71,
+      "to": 79,
+      "itemRole": "CONDITION",
+      "itemCite": "§6.01",
+      "toUnitRef": "6.01(b)(2)"
+     }
+    ]
+   },
+   {
+    "members": [
+     55,
+     78
+    ],
+    "span": [
+     55,
+     78
+    ],
+    "rangeSize": 24,
+    "memberChars": 1765,
+    "rangeChars": 7404,
+    "links": [
+     {
+      "kind": "SHARED_CAP",
+      "from": 55,
+      "to": 78,
+      "itemRole": "SHARED_CAP",
+      "itemCite": "§6.01",
+      "toUnitRef": "6.01(b)(1)"
+     }
+    ]
+   },
+   {
+    "members": [
+     75,
+     80
+    ],
+    "span": [
+     75,
+     80
+    ],
+    "rangeSize": 6,
+    "memberChars": 436,
+    "rangeChars": 7585,
+    "links": [
+     {
+      "kind": "SHARED_CAP",
+      "from": 75,
+      "to": 80,
+      "itemRole": "THRESHOLD",
+      "itemCite": "§6.01",
+      "toUnitRef": "6.01(b)(1)"
+     }
+    ]
+   }
+  ],
+  "whyThePlannerCouldNotSplitIt": "buildBlocks closed every must-link group over its whole ordinal RANGE: five two-to-four-member SHARED_CAP groups spanning ordinals {12,59} {13,60} {25,57,71,79} {55,78} {75,80} (links from baskets to the closing classification/characterization paragraphs) fused ordinals 12..80 into one block - 69 units, 29,414 chars, 270 items; 57 units (18,857 chars) were forced only by the range closure, not by any link",
+  "wouldSplittingViolateAnInvariant": "no - the invariant is that a shared-capacity construct and its members compile together; member closure keeps every linked pair in one shard (verified: every link's units share a shard in the v2 plan) without inventing adjacency constraints",
+  "do270ItemsRequireOneConversation": "no - only the 12 units in a group (one of 5 small groups) require co-compilation; the remaining 57 were adjacency victims",
+  "wasTheMissingContextCausedBySize": "not the trigger (the trigger was the undetected forwarding definition), but size was causal for context starvation: 58 unresolved context entries (33 BUDGET, incl. 6.01(a), 6.08(a)(3)(b)/(c), 6.08(b), 6.08(b)(4), the ratio terms and 'Not Otherwise Applied') behind 8 PARTIAL rules and the false 'Not Otherwise Applied' claim; the mid-sentence split between units 80|81 made the characterization rule PARTIAL",
+  "compositionalSubShardRepresentation": "implemented (v2): must-link groups close over members; a shard's owned units render as contiguous slices with explicit provenance-carrying gap markers; ownership stays per unit (no duplication); every shard within the UNCHANGED default budget; no limit raised",
+  "v2Plan": {
+   "shards": 6,
+   "oversized": 0,
+   "largestPrimaryChars": 11801,
+   "largestUnits": 16,
+   "budget": {
+    "targetPrimaryChars": 12000,
+    "maxPrimaryChars": 24000,
+    "maxContextChars": 10000,
+    "maxContextEntryChars": 1800,
+    "maxUnitsPerShard": 16
+   }
+  }
+ },
+ "evidence": {
+  "triggerRule": {
+   "id": "ir-rule:aebc09fce0c0397c1d57ff37",
+   "ref": "6.01(b)(32)",
+   "sufficiency": "MISSING_CONTEXT",
+   "sufficiencyReasons": [
+    "'Available Amount' is not defined anywhere in the instrument's documents; confirmed via a dedicated definition lookup that returned no match.",
+    "Neither 'Available Amount' nor 'Not Otherwise Applied' is a defined term found anywhere in this instrument's documents (confirmed via definition lookup); magnitude cannot be resolved."
+   ],
+   "unresolvedDependencies": []
+  },
+  "preFixRoutes": [
+   {
+    "key": "Available Amount",
+    "planner": {
+     "plannerSupplied": false,
+     "unresolvedReason": "NOT_FOUND",
+     "detail": "no detected definition of \"Available Amount\" in document doc-a"
+    },
+    "existsInSource": {
+     "forms": {
+      "means": false,
+      "forwarding": true,
+      "parentheticalInline": true,
+      "anyQuotedDeclaration": true
+     },
+     "forwardingTarget": "6.08(a)(3)",
+     "occurrences": 9,
+     "indexedByDetector": false,
+     "indexedExactTerm": null,
+     "indexedFullChars": null,
+     "indexedText": null
+    },
+    "routes": [
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "Available Amount"
+      },
+      "ok": false,
+      "evidenceUnresolved": null,
+      "evidenceTruncated": null,
+      "charsReturned": 80,
+      "summary": "refused: no defined term matching \"Available Amount\" found in this instrument's documents",
+      "status": null,
+      "error": "no defined term matching \"Available Amount\" found in this instrument's documents"
+     },
+     {
+      "tool": "getDefinitionDependencies",
+      "input": {
+       "term": "Available Amount"
+      },
+      "ok": false,
+      "evidenceUnresolved": null,
+      "evidenceTruncated": null,
+      "charsReturned": 83,
+      "summary": "refused: no defined term matching \"Available Amount\" found - cannot inspect its dependencies",
+      "status": null,
+      "error": "no defined term matching \"Available Amount\" found - cannot inspect its dependencies"
+     }
+    ]
+   },
+   {
+    "key": "Not Otherwise Applied",
+    "planner": {
+     "plannerSupplied": false,
+     "unresolvedReason": "BUDGET",
+     "detail": "context budget (10000 chars) exhausted before this referenced_term could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call"
+    },
+    "existsInSource": {
+     "forms": {
+      "means": true,
+      "forwarding": false,
+      "parentheticalInline": false,
+      "anyQuotedDeclaration": true
+     },
+     "forwardingTarget": null,
+     "occurrences": 2,
+     "indexedByDetector": true,
+     "indexedExactTerm": "Not Otherwise Applied",
+     "indexedFullChars": 217,
+     "indexedText": "“ Not Otherwise Applied ” means, with reference to the Available Amount, that was not\npreviously applied pursuant to Section 6.01(b)(32), clause (46)(ii) of the definition of “Permitted Liens” or Sect"
+    },
+    "routes": [
+     {
+      "tool": "getDefinition",
+      "input": {
+       "term": "Not Otherwise Applied"
+      },
+      "ok": true,
+      "evidenceUnresolved": false,
+      "evidenceTruncated": false,
+      "charsReturned": 217,
+      "summary": "definition \"Not Otherwise Applied\" (status OPERATIVE_STATE_RESOLVED, evidence CURRENT)",
+      "status": "OPERATIVE_STATE_RESOLVED",
+      "error": null
+     },
+     {
+      "tool": "getDefinitionDependencies",
+      "input": {
+       "term": "Not Otherwise Applied"
+      },
+      "ok": true,
+      "evidenceUnresolved": null,
+      "evidenceTruncated": null,
+      "charsReturned": 64,
+      "summary": "2 dependency term(s) found in \"Not Otherwise Applied\"'s own text",
+      "status": null,
+      "error": null
+     }
+    ]
+   },
+   {
+    "key": "6.08(a)(3)",
+    "planner": {
+     "plannerSupplied": false,
+     "unresolvedReason": "NOT_REQUESTED_BY_PASS_A_ITEMS",
+     "detail": null
+    },
+    "existsInSource": {
+     "physicalNodes": [
+      {
+       "nodeId": "structural-node:daf3cbd312583695aedf327f",
+       "charStart": 662051,
+       "chars": 544,
+       "heading": ""
+      }
+     ],
+     "genericResolver": "UNIQUE",
+     "note": "unique occurrence of \"6.08(a)(3)\""
+    },
+    "routes": [
+     {
+      "tool": "getOperativeProvision",
+      "input": {
+       "sectionRef": "6.08(a)(3)"
+      },
+      "ok": true,
+      "evidenceUnresolved": true,
+      "evidenceTruncated": false,
+      "charsReturned": 544,
+      "summary": "base-document provision 6.08(a)(3) (never individually amended, UNKNOWN_SUPERSESSION_STATUS)",
+      "status": "OPERATIVE_STATE_RESOLVED",
+      "error": null
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.08(a)(3)"
+      },
+      "ok": true,
+      "evidenceUnresolved": true,
+      "evidenceTruncated": false,
+      "charsReturned": 544,
+      "summary": "resolved reference \"Section 6.08(a)(3)\" -> 6.08(a)(3) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+      "status": "UNKNOWN_SUPERSESSION_STATUS",
+      "error": null
+     },
+     {
+      "tool": "getReferencedProvision",
+      "input": {
+       "ref": "Section 6.08(a)(3)",
+       "fromNodeId": "structural-node:eaf33425b7fabd21343c1813"
+      },
+      "ok": true,
+      "evidenceUnresolved": true,
+      "evidenceTruncated": false,
+      "charsReturned": 544,
+      "summary": "resolved reference \"Section 6.08(a)(3)\" -> 6.08(a)(3) [UNIQUE] (UNKNOWN_SUPERSESSION_STATUS)",
+      "status": "UNKNOWN_SUPERSESSION_STATUS",
+      "error": null
+     }
+    ]
+   }
+  ]
+ },
+ "fixLayer": [
+  "A planner/context (forwarding-aware term context + target section as typed dependency; fair-share admission)",
+  "B dependency graph (forwarding target = one bounded hop)",
+  "C bounded retrieval (getDefinition follows the forwarding declaration; singular-of-plural lookup)",
+  "E shard decomposition (member closure, sentence continuation, multi-slice rendering)"
+ ]
+}

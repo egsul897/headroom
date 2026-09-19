@@ -1,0 +1,42 @@
+{
+ "artifact": "HD-4 §16 - Pass-B terminal shard resilience",
+ "at": "2026-09-16T02:30:35.979Z",
+ "auditOfFinalRunHarnessBeforeHd4": {
+  "question": "would a process kill after a terminal shard completes but before whole compilation returns preserve a REPLAYABLE shard result?",
+  "answer": "NO",
+  "why": "scripts/phase-3-601-final-run.ts persisted each shard's SemanticCompilationResult from a patched semanticCaller.compile(); that object lacks the normalized inventoryDispositions that ShardExecutionResult.composition requires, so it could not be fed back through the F-7C priorShardResults/shardHash contract - it was audit evidence, not a resume input"
+ },
+ "remedy": {
+  "module": "scripts/phase-3-601-durable-replay.ts durableShardExecutor + DurableShardStore",
+  "shape": "wraps the PRODUCTION createBoundedShardExecutor (identical semantics); every terminal reusable outcome (SHARD_COMPLETE / SHARD_MISSING_CONTEXT / SHARD_PARTIAL / SHARD_SCHEMA_FAILURE) is written atomically as a ShardExecutionResult keyed by shardHash before it is returned; SHARD_PROVIDER_FAILURE is never persisted; on restart DurableShardStore.loadPriorResults(plan, missionId) validates version, record hash, result hash, mission, planHash and shardHash and feeds compileCovenantToIR({ priorShardResults })",
+  "shardSemanticsChanged": false,
+  "monolithicMode": "not applicable (one bounded conversation, persisted only on return); Section 6.01 is SHARDED per 49"
+ },
+ "rows": [
+  {
+   "test": "plan is sharded (>= 3 shards) and the control run completes",
+   "status": "passed",
+   "ms": 15.917353000000048,
+   "failure": null
+  },
+  {
+   "test": "G - kill after one terminal shard",
+   "status": "passed",
+   "ms": 22.32918399999994,
+   "failure": null
+  },
+  {
+   "test": "H - kill during a shard (two persisted, the third in flight)",
+   "status": "passed",
+   "ms": 21.09533599999986,
+   "failure": null
+  },
+  {
+   "test": "shard records are bound to mission + plan + shard hash and reject corruption",
+   "status": "passed",
+   "ms": 14.616604000000052,
+   "failure": null
+  }
+ ],
+ "allPassed": true
+}

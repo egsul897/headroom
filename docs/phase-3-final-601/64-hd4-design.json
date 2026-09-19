@@ -1,0 +1,60 @@
+{
+ "artifact": "HD-4 §2-§17 - design",
+ "at": "2026-09-16T02:30:30.871Z",
+ "definition": "HD-4: a successful paid StageCaller call made during Pass A is not durable until runDualPassSemanticInventory returns; a process kill during Pass A destroys already-paid inventory work.",
+ "closureInvariant": "AFTER EVERY SUCCESSFUL PASS-A MODEL CALL a validated replayable record is durably written before control proceeds to the next paid call; after restart the identical call is served from durable evidence with provider calls = 0 and new spend = $0.",
+ "implementation": {
+  "module": "scripts/phase-3-601-durable-replay.ts",
+  "caller": "DurableReplayStageCaller implements StageCaller (wrapper; production runDualPassSemanticInventory, prompts, batching, gap logic, ensemble and accountability untouched)",
+  "orchestration": "scripts/phase-3-601-hd4-resume.ts (resumablePassA / runDurablePassA / persistEnsemble / durableVerifierCallers) - the ONE implementation imported by the paid run (scripts/phase-3-601-hd4-run.ts) and by the certification",
+  "guard": "scripts/phase-3-601-guard.ts Guard.recordReplay(): $0 charge, historical cost reported separately, remaining-work counters decremented through the same hooks as live calls"
+ },
+ "callOrdering": [
+  "cost/admission guard (GuardedStageCaller.check)",
+  "provider call",
+  "schema validation (the production StageCaller's own parse)",
+  "durable atomic persistence (temp -> fsync -> rename -> fsync dir)",
+  "read-back hash barrier",
+  "return to runDualPassSemanticInventory"
+ ],
+ "persistenceFailureRule": "provider success + persistence failure => DurablePersistenceError; the result is never returned; the paid run STOPs (PHASE3_601_DURABLE_PERSISTENCE_FAILED)",
+ "atomicWrites": "one file per record (<requestHash>-<occurrence>.json); temp file written and fsynced, atomically renamed, parent directory fsynced, then re-read and hash-compared; a corrupt record cannot affect any other record",
+ "replayPolicy": {
+  "exactKey": "requestHash over 16 identity fields + occurrence index",
+  "missing": "MISS -> execute normally",
+  "presentButInvalid": "FAIL CLOSED (DurableReplayRecordInvalidError) - pre-registered; a corrupt record for the exact key is tampering or a harness bug, never a legitimate miss",
+  "validationOnLoad": [
+   "JSON parse",
+   "record version",
+   "record sha256",
+   "field-by-field identity equality",
+   "request hash recomputation",
+   "occurrence",
+   "payload sha256",
+   "current Zod schema safeParse over the stored payload"
+  ]
+ },
+ "replayAuthoritativeObject": "the exact validated parsed StageCaller result the production caller consumed (JSON projection); raw provider output is stored only when the abstraction exposes it (it does not today: null); no second parser exists",
+ "telemetryOnReplay": "lastTelemetry() returns the ORIGINAL call's telemetry object so production's own cost bookkeeping (inventory.telemetryCostUsd) equals the uninterrupted run; the harness guard separately records $0 new spend",
+ "inFlightRule": "a call admitted but not persisted at interruption has no record; on restart it executes again; worst-case loss = the single in-flight call; gateway billing is never used to infer possession of a response",
+ "passIdentity": "passId is an identity field: pass-2's byte-identical prompts never replay pass-1 records",
+ "gapCalls": "semantic_inventory_gap is mapped and replayed exactly like semantic_inventory",
+ "hierarchy": [
+  "per-call durable replay",
+  "per-pass computation (production)",
+  "ensemble (production)",
+  "IMMEDIATE frozen-inventory + pass-a-passes persistence (HD-3, unchanged: persistAndReload)",
+  "reload",
+  "F-7C.1 resume proof",
+  "Pass B: production shard executor wrapped by durableShardExecutor; priorShardResults from the durable shard store by exact shardHash",
+  "verifier: same durable-call primitive"
+ ],
+ "restartSemantics": {
+  "ensemblePresentAndUsable": "RESUMED_FROM_ENSEMBLE_PERSISTENCE - no Pass-A caller constructed",
+  "otherwise": "Pass A runs; every exact call with a valid record replays; an ensemble failing the §4 prerequisite is written as frozen-inventory.unusable.<ts>.json, never as the resumable artifact"
+ },
+ "costGuard": {
+  "logicalVsPaid": "conservativeRemaining() prices only remaining LOGICAL work not yet done; replays decrement the counters without spend; for Pass B the planner tokens of shards already in the durable store are excluded before admission",
+  "historical": "Guard.historicalReplayedUsd reported separately, never charged against the cap"
+ }
+}

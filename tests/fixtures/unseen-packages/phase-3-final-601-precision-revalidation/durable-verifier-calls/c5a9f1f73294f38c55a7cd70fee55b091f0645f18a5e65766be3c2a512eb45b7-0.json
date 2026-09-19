@@ -1,0 +1,102 @@
+{
+ "identity": {
+  "recordVersion": "hd4-durable-call-record.v1",
+  "replayAlgorithmVersion": "hd4-durable-replay.v1",
+  "missionId": "phase-3-final-601-precision-revalidation",
+  "passId": "verifier",
+  "sourceDocumentId": "doc-a",
+  "candidateRef": "phase-3-final-601:chwy:6.01",
+  "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+  "algorithmVersion": "phase-3c-semantic-verifier.v1",
+  "promptVersion": "phase-3c-semantic-verifier-prompt.v1",
+  "stage": "semantic_verification",
+  "provider": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-sonnet-5",
+  "schemaId": "semantic-verification/wire-schema#SubmitVerificationFindingsSchema",
+  "schemaFingerprint": "6074963b933fa202d4cdf28e415a6c1c76af3c0c236115ed322e7a4eebee7fb9",
+  "systemPromptSha256": "82ae5365baf374a6bd02350e2aa6e09fac0e1088bcc75c0a9f3b2ee9c4f4bd32",
+  "userContentSha256": "abb118fb37c68aa123a476cf5e7135822287aec671bf8df36d7046fb61e03670"
+ },
+ "requestHash": "c5a9f1f73294f38c55a7cd70fee55b091f0645f18a5e65766be3c2a512eb45b7",
+ "occurrence": 0,
+ "callOrdinal": 0,
+ "batchRef": null,
+ "payload": {
+  "findings": [
+   {
+    "findingType": "WRONG_ENTITY_SCOPE",
+    "severity": "MATERIAL",
+    "ruleOrDefinitionId": "ir-rule:170e314ceb35e54072b7ddba, ir-rule:49f22aee601dde5b8b8162d5, ir-rule:31ef4cb0be0026182f97f8ea, ir-rule:01c9a005fd9c7649ddc26012, ir-rule:6d2acc86b7f3dede7305f5df, ir-rule:b21ac832418c33bcf91d0625, ir-rule:8df2fec30e5afda652c94c04",
+    "irPath": "rules[*].entityScope",
+    "sourceEvidence": "\"the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to create, incur, issue, assume, guarantee or otherwise become liable... with respect to any Indebtedness... and the Borrowers shall not issue any shares of Disqualified Stock and shall not permit any Restricted Subsidiary to issue any shares of Disqualified Stock or any Restricted Subsidiary that is not a Guarantor to issue Preferred Stock; provided, however, that the Borrowers may incur Indebtedness ... and any of their Restricted Subsidiaries may incur Indebtedness ... and issue shares of Disqualified Stock and Preferred Stock\"",
+    "sourceCitation": "\f(unforward not used",
+    "proposedIrEvidence": "ir-rule:170e314ceb35e54072b7ddba: \"entityScope\": [\"BORROWER\"]; ir-rule:49f22aee601dde5b8b8162d5: \"entityScope\": [\"BORROWER\"]; ir-rule:31ef4cb0be0026182f97f8ea: \"entityScope\": []; ir-rule:01c9a005fd9c7649ddc26012 / 6d2acc86b7f3dede7305f5df / b21ac832418c33bcf91d0625: \"entityScope\": [\"BORROWER\"]",
+    "reasoning": "Section 6.01(a) is explicitly a joint prohibition/permission on the Borrowers AND their Restricted Subsidiaries: the debt prohibition ('shall not permit any of their Restricted Subsidiaries to... incur'), the Disqualified Stock prohibition ('shall not permit any Restricted Subsidiary to issue'), and the Permitted Ratio Debt carve-out ('any of their Restricted Subsidiaries may incur Indebtedness... and issue shares of Disqualified Stock and Preferred Stock') all expressly extend beyond the Borrowers. Yet the IR's top-level debt-incurrence prohibition rule, the Disqualified-Stock prohibition rule, and all three Permitted Ratio Debt permission rules are scoped only to entityScope: [\"BORROWER\"], omitting Restricted Subsidiaries entirely (while sibling sub-basket rules elsewhere in the same IR leave entityScope empty, suggesting \"BORROWER\" is meant as a narrower, distinct category rather than a synonym for \"all obligors\"). Separately, the Preferred-Stock prohibition rule (which, per the source, applies only to \"any Restricted Subsidiary that is not a Guarantor\" - not to Borrowers at all) is left with an undifferentiated empty entityScope rather than being scoped to that specific class of obligor. A reviewer relying on this IR could wrongly conclude that Restricted Subsidiary debt/Disqualified Stock incurrence falls outside this covenant's prohibition (or outside the ratio-debt permission), or could wrongly treat the Preferred Stock restriction as applicable to Borrowers. This directly changes the scope of what is prohibited/permitted and by whom."
+   },
+   {
+    "findingType": "WRONG_LOGICAL_GROUPING",
+    "severity": "MATERIAL",
+    "ruleOrDefinitionId": "ir-rule:e0669a810b36ddf5bff018b3, ir-rule:c0feca0b818c734f33a23962, ir-rule:0de044975c1ddc20616dbf84",
+    "irPath": "rules[*].capacityExpression.gatedBy; rules[*].dependsOn",
+    "sourceEvidence": "\"(x) a Restricted Party incurred or issued to finance an acquisition or Investment... provided that: (a) after giving pro forma effect... (i)... or (ii)...; (b) after giving pro forma effect... (i)... or (ii)...; (c) (X)... or (Y)...; or (d) such Indebtedness constitutes Acquired Indebtedness...; (e) solely to the extent not permitted to be incurred in reliance on clauses (a) through (d) above...\"",
+    "sourceCitation": "Section 6.01(b)(14)",
+    "proposedIrEvidence": "ir-rule:e0669a810b36ddf5bff018b3 (clauses a+b) is a standalone PERMISSION rule with capacityExpression UNLIMITED_CAPACITY gatedBy AND(OR(a-tests), OR(b-tests)) and sufficiency COMPLETE, with no dependsOn tying it to clause (c)/(d); ir-rule:c0feca0b818c734f33a23962 (clause c) is a separate standalone PERMISSION rule, sufficiency COMPLETE, gatedBy only the (c) leverage-ratio OR-tests, with no reference back to (a)/(b); ir-rule:0de044975c1ddc20616dbf84 (clause d) is likewise standalone and COMPLETE with no reference to (a)/(b).",
+    "reasoning": "Clauses (a), (b), and (c-or-d) of Section 6.01(b)(14) are drafted as a single cumulative 'provided that' proviso governing one basket - standard acquisition-debt drafting requires the Interest Coverage Ratio test (a), the Total Leverage Ratio test (b), AND either the First Lien/Senior Secured Leverage Ratio test (c) or the Acquired-Indebtedness carve-out (d) to ALL be satisfied together for the debt to qualify under (a)-(d) (with (e) as a residual fallback only 'to the extent not permitted... in reliance on clauses (a) through (d)'). The proposed IR instead compiles (a)+(b) as one self-sufficient permission rule and (c) and (d) each as independent self-sufficient permission rules (each marked sufficiency COMPLETE), with only an ALTERNATIVE_TO link between (c) and (d) but no AND/REQUIRES link tying (a)+(b) to (c)/(d). Under this IR structure, debt that satisfies only the First Lien Leverage Ratio test in clause (c) - without separately satisfying the Interest Coverage Ratio test (a) or Total Leverage Ratio test (b) - would appear independently permitted, which is inconsistent with the source's cumulative proviso structure. This is exactly the kind of confidently-wrong (marked COMPLETE) logical-grouping error that could change a real compliance conclusion about whether a given acquisition financing qualifies under this basket."
+   },
+   {
+    "findingType": "BROKEN_FORMULA_COMPONENT",
+    "severity": "MATERIAL",
+    "ruleOrDefinitionId": "ir-rule:d3ca9f2def3509883e8a359b",
+    "irPath": "rules[?].capacityExpression.operands[1] (SUBTRACT.left)",
+    "sourceEvidence": "\"plus (ii) at the time of such incurrence, an amount equal to the maximum principal amount of such Indebtedness that could be incurred such that after giving effect to the incurrence of such Indebtedness, the First Lien Leverage Ratio of the Initial Borrower for the Test Period would be no greater than 2.50:1.00\"",
+    "sourceCitation": "Section 6.01(b)(4)(a)(ii)",
+    "proposedIrEvidence": "capacityExpression for 6.01(b)(4)(a) is a SUM whose second operand is SUBTRACT(left=UNSUPPORTED{reason: \"MULTIPLY operands do not type-check... (kind=MULTIPLY)\", attemptedStructure containing RATIO value 2.5 multiplied against Consolidated EBITDA}, right=Consolidated First Lien Debt)",
+    "reasoning": "The deterministic pass correctly flags that the source's 2.50:1.00 ratio value never resolves to a usable RATIO/formula node anywhere in the compiled IR - it only appears embedded inside a diagnostic 'attemptedStructure' field of a node marked kind: UNSUPPORTED because its own MULTIPLY operands failed type-checking. Functionally, this means the entire second additive component of the 6.01(b)(4)(a) basket (the incremental first-lien-leverage-ratio-based capacity, which is likely a substantial dollar amount) is non-computable in the delivered IR, even though the parent SUM node structurally still purports to add it in. Although the rule's sufficiency is honestly marked PARTIAL, a downstream consumer that walks the SUM's operands could easily miscompute the aggregate cap (e.g., treating the broken operand as zero) rather than recognizing that a real, sizeable capacity component described in the source is simply unusable/missing from the working formula."
+   },
+   {
+    "findingType": "MISSING_DEPENDENCY_LABEL",
+    "severity": "NON_MATERIAL",
+    "ruleOrDefinitionId": "ir-rule:c6204d2aa73929fbafd3ae0f",
+    "irPath": "rules[?].conditions",
+    "sourceEvidence": "\"the Initial Borrower, in its sole discretion, shall allocate, classify and reclassify all or a portion of such item of Indebtedness, Disqualified Stock or Preferred Stock (or any portion thereof) in any manner that complies with this Section 6.01\"",
+    "sourceCitation": "Section 6.01, paragraph following clause (33) (\"For purposes of determining compliance with this Section 6.01: (1)...\")",
+    "proposedIrEvidence": "ir-rule:c6204d2aa73929fbafd3ae0f conditions[1]: \"the Initial Borrower, in its sole discretion, may allocate, classify and reclassify all or a portion of such item in any manner that complies with Section 6.01\"",
+    "reasoning": "The deterministic pass flagged that no formal RECLASSIFIABLE_TO/REDESIGNATES_TO dependency relationship exists in the IR corresponding to this reclassification right. On inspection, the substance of the reclassification right is in fact captured, just as descriptive conditions on a dedicated OTHER/PERMISSION rule (ir-rule:c6204d2aa73929fbafd3ae0f) rather than as the specific relationship-type the deterministic checker expected. Since the underlying right is represented in substance (even if not in the exact structural relationship type), this discrepancy is unlikely by itself to change a compliance conclusion, though it could complicate automated basket-reclassification tooling that specifically looks for a RECLASSIFIABLE_TO edge."
+   }
+  ],
+  "overallNotes": [
+   "The IR is a large, mostly careful stitching of Section 6.01(a) and the 33 sub-baskets of Section 6.01(b), with many honest PARTIAL/AMBIGUOUS/UNSUPPORTED disclosures (e.g., the undefined term 'Junior Lien Priority', the ambiguous cross-reference to '6.01(b)(1)' in clause (b)(3), the qualitative 'non-recourse' condition in (b)(18)(ii)) that are appropriately not treated as findings here.",
+   "The most consequential issues found are (1) systemic entity-scope narrowing of the core Section 6.01(a) prohibition/permission rules to Borrowers only when the source text explicitly and repeatedly extends both the prohibition and the ratio-debt permission to Restricted Subsidiaries, and (2) the decomposition of Section 6.01(b)(14)'s cumulative (a)+(b)+(c-or-d) proviso into three independently 'COMPLETE' parallel permission rules, which could permit debt that fails to satisfy all of the required ratio tests.",
+   "The deterministic signal about the unaccounted-for 2.50:1.00 ratio value is confirmed as a genuine (if self-disclosed) formula defect within the 6.01(b)(4)(a) basket's capacity expression."
+  ]
+ },
+ "payloadSha256": "e8a9b60391acdbd6702e780ea69c7af78b36a008ae93425fa76d1adb85b53d8a",
+ "telemetry": {
+  "inputTokens": 155108,
+  "outputTokens": 18976,
+  "cacheRead": null,
+  "cacheWrite": null,
+  "originalCostUsd": 0.499976,
+  "latencyMs": 188599
+ },
+ "stageTelemetry": {
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "promptVersion": "phase-c0.1",
+  "schemaVersion": "phase-c0.1",
+  "stage": "semantic_verification",
+  "timestamp": "2026-09-19T13:33:48.321Z",
+  "inputTokens": 155108,
+  "outputTokens": 18976,
+  "cachedInputTokens": null,
+  "cacheCreationInputTokens": null,
+  "attemptCount": 1,
+  "retryCount": 0,
+  "rateLimitFailures": 0,
+  "latencyMs": 188599,
+  "calculatedCostUsd": 0.499976
+ },
+ "rawProviderOutput": null,
+ "completedAt": "2026-09-19T13:36:56.921Z",
+ "recordSha256": "33fc2a37d191e20f702df52172e0f3b5eeb14a6923701e47e6a1100f07c543d1"
+}

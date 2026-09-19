@@ -1,0 +1,68 @@
+{
+ "artifact": "PHASE 3 / 6.01 TRUST-FAILURE REMEDIATION §20 - HD-6 finalizer read-shape fix",
+ "at": "2026-09-17T16:33:59.163Z",
+ "exactBug": "scripts/phase-3-601-final-paid-finalize.ts read execution.sharded.contextualEmissions as a list (.filter is not a function); production's SemanticExecutionMetadata exposes it as a COUNT; the in-flight read-shape patch substituted collisionsByKind.CONTEXTUAL_UNOWNED_DEFINITION, i.e. a detection count, for the violation counter",
+ "fix": {
+  "module": "scripts/phase-3-601-trust-read.ts readShardTrust()",
+  "properties": [
+   "validates the canonical shape field by field and names every mismatch",
+   "a missing counter field is NOT_MEASURABLE with its exact path - never a silent zero",
+   "no accidental field-path dependence: one reader, used by the finalizer",
+   "separates contextual emissions DETECTED from CREDITED"
+  ],
+  "finalizer": "scripts/phase-3-601-final-paid-finalize.ts now reads through readShardTrust; the contextual violation row is NOT_MEASURABLE when contextualEmissionsCredited is absent"
+ },
+ "frozenArtifactRead": {
+  "ok": false,
+  "problems": [
+   "execution.sharded.contextualEmissionsCredited absent - the artifact predates the §18 counter; contextual ownership-credit violations are NOT_MEASURABLE from this artifact (never defaulted to 0)"
+  ],
+  "counters": {
+   "contextualOwnershipCreditViolations": {
+    "value": null,
+    "state": "NOT_MEASURABLE",
+    "source": "execution.sharded.contextualEmissionsCredited (contextual emissions that survived into the stitched IR; detection alone is not a violation)"
+   },
+   "sourceUnverifiableAuthoritativeIr": {
+    "value": 0,
+    "state": "MEASURED",
+    "source": "execution.sharded.attributionProofCounts.NONE (retained definitions with no proof class)"
+   },
+   "distinctOwnedLineageLost": {
+    "value": 317,
+    "state": "MEASURED",
+    "source": "execution.sharded.unresolvedOwnedItems"
+   },
+   "silentIncompatibleMerges": {
+    "value": 0,
+    "state": "MEASURED",
+    "source": "execution.sharded.definitionConflicts with conflictVariants = 0"
+   }
+  },
+  "detected": 2
+ },
+ "tests": {
+  "file": "tests/contract-model/phase-3-601-hd6-finalizer.test.ts",
+  "numTotalTests": 4,
+  "numPassedTests": 4,
+  "numFailedTests": 0,
+  "tests": [
+   {
+    "title": "HD-6 - the frozen paid compile-result.json exposes execution.sharded.contextualEmissions as a COUNT (2), which the pinned finalizer read as a list",
+    "status": "passed"
+   },
+   {
+    "title": "HD-6 - the frozen paid compile-result.json the canonical reader reads the frozen shape as produced and reports the §18 counter NOT_MEASURABLE (the artifact predates it) instead of a silent zero or the detection count",
+    "status": "passed"
+   },
+   {
+    "title": "HD-6 - the frozen paid compile-result.json with the canonical §18 field present the same artifact reads MEASURED (credited = 0, detected = 2) - detection is not credit",
+    "status": "passed"
+   },
+   {
+    "title": "HD-6 - the frozen paid compile-result.json never guesses: a list-shaped field, a missing block or a non-sharded execution is named explicitly and reads NOT_MEASURABLE",
+    "status": "passed"
+   }
+  ]
+ }
+}

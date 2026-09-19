@@ -157,6 +157,12 @@ function attributionProofCounts(plan: ShardPlan, stitched: StitchedCompilation):
   return counts;
 }
 
+/** §18 (PHASE 3 / 6.01 remediation): a detected contextual emission is a violation ONLY if its object was credited into the stitched IR (by its emitted id or its remapped id). */
+export function contextualEmissionsCredited(stitched: Pick<StitchedCompilation, "contextualEmissions" | "rules" | "definitions" | "sharedCapacities" | "idMap">): number {
+  const retained = new Set<string>([...stitched.rules.map((r) => r.ruleId), ...stitched.definitions.map((d) => d.definitionId), ...stitched.sharedCapacities.map((c) => c.sharedCapId)]);
+  return stitched.contextualEmissions.filter((e) => retained.has(e.objectId) || retained.has(stitched.idMap[e.objectId] ?? "")).length;
+}
+
 /** §32 - deterministic, never optimistic: the stitcher's own status is the floor; whole-unit signals can only demote. */
 function mapStitchedStatus(stitchedStatus: StitchedCompilation["status"], extraReasons: SemanticCompilerFailureReason[], hasReviewSufficiency: boolean): SemanticCompilationStatus {
   if (stitchedStatus === "COMPLETED" && (extraReasons.length > 0 || hasReviewSufficiency)) return "REVIEW_REQUIRED";
@@ -333,12 +339,12 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       executed: run.stats.executed, reused: run.stats.reused, retries: run.stats.retries, providerCalls: run.stats.executed,
       statusCounts, collisions: stitched.collisions.length, collisionsByKind,
       definitionConflicts: stitched.definitionConflicts.length, conflictVariants: stitched.definitionConflicts.reduce((a, c) => a + c.variants.length, 0),
-      contextualEmissions: stitched.contextualEmissions.length, unresolvedOwnedItems: stitched.unresolvedOwnedItems.length,
+      contextualEmissions: stitched.contextualEmissions.length, contextualEmissionsCredited: contextualEmissionsCredited(stitched), unresolvedOwnedItems: stitched.unresolvedOwnedItems.length,
       stitchedStatus: stitched.status, stitchedFailureReasons: stitched.failureReasons,
       definitionConflictEvidence: stitched.definitionConflicts,
       unresolvedOwnedItemList: stitched.unresolvedOwnedItems,
       attributionProofCounts: attributionProofCounts(plan, stitched),
-      shards: run.results.map((r) => { const s = shardByHash.get(r.shardHash)!; return { shardId: r.shardId, shardHash: r.shardHash, ordinal: s.ordinal, status: r.status, attempts: r.attempts, reusedFromHash: r.reusedFromHash, failureReasons: r.failureReasons, ownedMaterialItems: s.ownedMaterialItemIds.length, oversized: s.oversized, telemetry: r.telemetry }; }),
+      shards: run.results.map((r) => { const s = shardByHash.get(r.shardHash)!; return { shardId: r.shardId, shardHash: r.shardHash, ordinal: s.ordinal, status: r.status, attempts: r.attempts, reusedFromHash: r.reusedFromHash, failureReasons: r.failureReasons, ownedMaterialItems: s.ownedMaterialItemIds.length, oversized: s.oversized, telemetry: r.telemetry, ...(r.toolUsage ? { toolUsage: r.toolUsage } : {}), ...(r.missingContextAudit ? { missingContextAudit: r.missingContextAudit } : {}), ...(s.dependencyCertificate ? { dependencyCertificate: s.dependencyCertificate } : {}) }; }),
       telemetryNote: `${plan.shards.length} bounded conversations (${run.stats.executed} executed, ${run.stats.reused} reused by shardHash, ${run.stats.retries} provider-failure retries); rawModelOutput and toolCallLog are null/empty at the top level because no single transcript exists - per-shard telemetry is listed under execution.sharded.shards`,
     },
   };

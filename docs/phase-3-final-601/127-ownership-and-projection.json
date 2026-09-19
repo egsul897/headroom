@@ -1,0 +1,102 @@
+{
+ "artifact": "PHASE 3 / 6.01 DEPENDENCY-DELIVERY REMEDIATION §20/§21 - ownership is untouched, and what a complete shard would look like",
+ "at": "2026-09-19T03:02:34.714Z",
+ "paidCalls": 0,
+ "section20_ownershipUnchanged": {
+  "materialItems": 319,
+  "ownedExactlyOnce": 319,
+  "multiplyOwned": 0,
+  "unplacedItemIds": [],
+  "ownershipProofPresent": true,
+  "contextIsNeverOwnership": {
+   "requiredEntriesAllReadOnly": true,
+   "note": "a required dependency is delivered as READ_ONLY_CONTEXT: the shard may read it to interpret its own material, and may not compile it or claim an inventory item from it"
+  },
+  "failedShardStillOwnsTheSameMaterial": {
+   "shardId": "shard:86cc5e439f113d6053a9",
+   "ownedMaterialItems": 98,
+   "sameAsFrozen": true
+  }
+ },
+ "section21_syntheticCompleteShardProjection": {
+  "isAProjectionNotAResult": true,
+  "method": "deterministic: take the frozen failed shard's own MISSING_CONTEXT record, resolve each dependency it named against the remediated plan's certificate for the same shard, and classify what the model would now be holding at turn 1",
+  "perDependency": [
+   {
+    "requestedFact": "Section 2.18(b)",
+    "requestingRule": "ir-rule:c2602aec0550b4687c5e80ca",
+    "normalizedKey": "section:2.18(b)",
+    "nowRequired": true,
+    "nowDelivered": true,
+    "deliveredChars": 572,
+    "truncated": false,
+    "projectedClassification": "FALSE_MISSING_CONTEXT (it would be in the initial context)"
+   },
+   {
+    "requestedFact": "term:Fixed Incremental Amount",
+    "requestingRule": "ir-rule:c2602aec0550b4687c5e80ca",
+    "normalizedKey": "term:fixed incremental amount",
+    "nowRequired": true,
+    "nowDelivered": true,
+    "deliveredChars": 948,
+    "truncated": false,
+    "projectedClassification": "FALSE_MISSING_CONTEXT (it would be in the initial context)"
+   },
+   {
+    "requestedFact": "term:Voluntary Prepayment Incremental Amount",
+    "requestingRule": "ir-rule:c2602aec0550b4687c5e80ca",
+    "normalizedKey": "term:voluntary prepayment incremental amount",
+    "nowRequired": true,
+    "nowDelivered": true,
+    "deliveredChars": 1009,
+    "truncated": false,
+    "projectedClassification": "FALSE_MISSING_CONTEXT (it would be in the initial context)"
+   },
+   {
+    "requestedFact": "term:Ratio Incremental Amount",
+    "requestingRule": "ir-rule:c2602aec0550b4687c5e80ca",
+    "normalizedKey": "term:ratio incremental amount",
+    "nowRequired": true,
+    "nowDelivered": true,
+    "deliveredChars": 2071,
+    "truncated": false,
+    "projectedClassification": "FALSE_MISSING_CONTEXT (it would be in the initial context)"
+   },
+   {
+    "requestedFact": "term:Extension Amount",
+    "requestingRule": "ir-rule:c2602aec0550b4687c5e80ca",
+    "normalizedKey": "term:extension amount",
+    "nowRequired": true,
+    "nowDelivered": true,
+    "deliveredChars": 601,
+    "truncated": false,
+    "projectedClassification": "FALSE_MISSING_CONTEXT (it would be in the initial context)"
+   }
+  ],
+  "projectedShardCertificate": {
+   "modelVersion": "required-dependency-delivery.v1",
+   "shardId": "shard:86cc5e439f113d6053a9",
+   "requiredDependenciesTotal": 69,
+   "requiredDependenciesResolved": 63,
+   "requiredDependenciesMaterialized": 53,
+   "requiredDependenciesBoundedExcerpt": 10,
+   "requiredDependenciesOwnedPrimarySource": 0,
+   "requiredDependenciesExternal": 0,
+   "requiredDependenciesUndeliverableDisclosed": 6,
+   "requiredDependenciesUnresolved": 0,
+   "requiredDependencyChars": 58774,
+   "optionalContextChars": 175,
+   "requiredTierAllocation": {
+    "ceilingChars": 64000,
+    "perEntryAllowanceChars": 3115,
+    "waterFilled": false
+   },
+   "undelivered": [],
+   "certificateStatus": "CERTIFIED_EXECUTABLE"
+  },
+  "whatThisDoesAndDoesNotProve": {
+   "proves": "the delivery gap that produced this shard's SHARD_MISSING_CONTEXT is closed at planning time: every dependency it named is now in its initial context before the first turn",
+   "doesNotProve": "that the shard will end SHARD_COMPLETE. A model can still report missing context for a reason unrelated to delivery, can still mis-compile, and can still hit the output ceiling. Only a paid re-run settles that, and this mission does not authorize one."
+  }
+ }
+}

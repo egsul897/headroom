@@ -1,0 +1,114 @@
+{
+ "artifact": "PRECISION AUDIT §10 - is compositionalCoverage >= 0.5 a principle or a fixture calibration?",
+ "at": "2026-09-19T04:06:18.550Z",
+ "paidCalls": 0,
+ "rule": "closure expands through a delivered definition only when that definition is COMPOSITIONAL (>= threshold of its operative body is other defined terms) or the child sits in a LIMIT-BEARING position; the threshold is a bound on how 'list-like' a body must be, applied to the body after the definitional verb",
+ "thresholdUnchanged": true,
+ "sweep": [
+  {
+   "threshold": 0.25,
+   "shards": 10,
+   "requiredDependencies": 642,
+   "maxClosureDepth": 4,
+   "requiredContextChars": 463156,
+   "maxShardRequiredChars": 63991,
+   "limitations": 3,
+   "planningFailures": 0,
+   "fiveTargetsReached": 5,
+   "fiveTargetsDeliveredInFull": 4,
+   "fiveTargetsBoundedExcerpt": [
+    "term:ratio incremental amount 1834/2071"
+   ],
+   "syntheticCasesPassing": 13,
+   "syntheticCasesTotal": 13,
+   "syntheticFailing": []
+  },
+  {
+   "threshold": 0.4,
+   "shards": 7,
+   "requiredDependencies": 404,
+   "maxClosureDepth": 4,
+   "requiredContextChars": 306195,
+   "maxShardRequiredChars": 63992,
+   "limitations": 3,
+   "planningFailures": 0,
+   "fiveTargetsReached": 5,
+   "fiveTargetsDeliveredInFull": 4,
+   "fiveTargetsBoundedExcerpt": [
+    "term:ratio incremental amount 1998/2071"
+   ],
+   "syntheticCasesPassing": 13,
+   "syntheticCasesTotal": 13,
+   "syntheticFailing": []
+  },
+  {
+   "threshold": 0.5,
+   "shards": 7,
+   "requiredDependencies": 378,
+   "maxClosureDepth": 4,
+   "requiredContextChars": 277825,
+   "maxShardRequiredChars": 63998,
+   "limitations": 3,
+   "planningFailures": 0,
+   "fiveTargetsReached": 5,
+   "fiveTargetsDeliveredInFull": 5,
+   "fiveTargetsBoundedExcerpt": [],
+   "syntheticCasesPassing": 13,
+   "syntheticCasesTotal": 13,
+   "syntheticFailing": []
+  },
+  {
+   "threshold": 0.6,
+   "shards": 6,
+   "requiredDependencies": 355,
+   "maxClosureDepth": 4,
+   "requiredContextChars": 268325,
+   "maxShardRequiredChars": 64000,
+   "limitations": 3,
+   "planningFailures": 0,
+   "fiveTargetsReached": 5,
+   "fiveTargetsDeliveredInFull": 5,
+   "fiveTargetsBoundedExcerpt": [],
+   "syntheticCasesPassing": 13,
+   "syntheticCasesTotal": 13,
+   "syntheticFailing": []
+  },
+  {
+   "threshold": 0.75,
+   "shards": 6,
+   "requiredDependencies": 349,
+   "maxClosureDepth": 4,
+   "requiredContextChars": 264326,
+   "maxShardRequiredChars": 64000,
+   "limitations": 3,
+   "planningFailures": 0,
+   "fiveTargetsReached": 5,
+   "fiveTargetsDeliveredInFull": 5,
+   "fiveTargetsBoundedExcerpt": [],
+   "syntheticCasesPassing": 13,
+   "syntheticCasesTotal": 13,
+   "syntheticFailing": []
+  }
+ ],
+ "whatTheFirstSweepExposed": {
+  "finding": "before the operand rule, the five known targets were REACHED only at 0.5: they hang off a definition that is a pure sum of four defined terms ('(a) the A; plus (b) the B; plus (c) the C; plus (d) the D'), whose compositional-coverage proxy scores 0.583 because articles, enumerators and 'plus' are characters too. At 0.6 the proxy said 'not compositional' and the closure stopped one hop short; the threshold was doing work a principle should do.",
+  "ruleAdded": "occursInLimitBearingPosition now also holds for an ARITHMETIC OPERAND: a defined term after an arithmetic combinator (plus/minus/less/sum of/product of/...), a continuation of an operand list such a combinator opened in the same sentence, or a term that is the whole of an enumerated item. Generic drafting, no threshold, no term names; synthetic case L (dd-anti-overfit) holds it at every threshold.",
+  "thresholdItself": "unchanged at 0.5 and not tuned to this unit; the sweep above is the evidence for what it still governs"
+ },
+ "reading": {
+  "stableRange": [
+   0.25,
+   0.4,
+   0.5,
+   0.6,
+   0.75
+  ],
+  "deliveredInFullRange": [
+   0.5,
+   0.6,
+   0.75
+  ],
+  "lowThresholdRegime": "a lower threshold admits more prose definitions as 'compositional' (more shards, more required chars); when a shard then meets the 64k ceiling, a target may be delivered as a bounded excerpt - that is the over-inclusive regime and a ceiling effect, disclosed on the entry, not a closure gap",
+  "principleOrHeuristic": "the value was not fitted to this document: the outcomes above are reported at every threshold and the value stays 0.5. Whether behaviour is stable across the range is what the 'stableRange' field says, not an assertion."
+ }
+}

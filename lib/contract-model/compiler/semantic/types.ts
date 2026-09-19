@@ -58,7 +58,7 @@ import type { SemanticInventoryMode } from "../semantic-accountability/dual-pass
 // A v3-era cached compilation carries no accountability at all and must
 // never be served as-is.
 export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v4";
-export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v4";
+export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v5";
 export const SEMANTIC_COMPILER_TOOL_POLICY_VERSION = "phase-3b1-tool-policy.v2";
 
 // ---------------------------------------------------------------------------
@@ -279,6 +279,12 @@ export interface SemanticShardExecutionSummary {
   ownedMaterialItems: number;
   oversized: boolean;
   telemetry: { inputTokens: number | null; outputTokens: number | null; costUsd: number | null } | null;
+  /** §23 - what this shard's tool budget was actually spent on, carried into the durable run record. Absent on results produced before this layer. */
+  toolUsage?: import("./shard-types").ShardToolUsage;
+  /** §22 - this shard's MISSING_CONTEXT claim classified against the evidence package it was handed. Absent when the shard reported no unresolved dependency. */
+  missingContextAudit?: import("./missing-context-contract").ShardMissingContextAudit;
+  /** §11 - the shard's required-dependency certificate, so "was every required dependency delivered before the call?" is answerable from the run record alone. */
+  dependencyCertificate?: import("./required-dependencies").ShardDependencyCertificate;
 }
 
 export interface SemanticExecutionMetadata {
@@ -305,7 +311,14 @@ export interface SemanticExecutionMetadata {
     collisionsByKind: Record<string, number>;
     definitionConflicts: number;
     conflictVariants: number;
+    /** Contextual emissions DETECTED by the stitcher (a shard emitted an object it does not own) - every one is demoted and kept out of the stitched IR. Detection is not a violation. */
     contextualEmissions: number;
+    /**
+     * PHASE 3 / 6.01 remediation §18 - contextual emissions actually CREDITED: detected contextual objects that
+     * nevertheless survived into the stitched IR. This is the only "contextual ownership-credit violation" count;
+     * it is 0 by construction of the stitcher and is measured (never assumed) so a trust audit can read it directly.
+     */
+    contextualEmissionsCredited: number;
     unresolvedOwnedItems: number;
     /** The stitcher's own status/reasons before whole-unit signals were layered on - the certified stitch outcome. */
     stitchedStatus: string;

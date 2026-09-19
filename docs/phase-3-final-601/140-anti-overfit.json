@@ -1,0 +1,68 @@
+{
+ "artifact": "PRECISION AUDIT §12 - generic anti-overfit cases on synthetic agreements",
+ "at": "2026-09-19T04:06:18.551Z",
+ "paidCalls": 0,
+ "corpus": "tests/contract-model/dd-synthetic-agreement.ts - names, numbers and amounts are inputs; no real agreement, term or instrument",
+ "cases": {
+  "A": "real defined dependency",
+  "B": "ordinary capitalised phrase that is NOT defined",
+  "C": "plural variant of a defined singular",
+  "D": "singular variant of a defined plural",
+  "E": "false AI referenced-term edge",
+  "E2": "lower-case ordinary word cited as a term",
+  "F": "forwarding definition",
+  "G": "cross-reference inside a required definition",
+  "H": "deep compositional chain",
+  "I": "unrelated term mentioned incidentally in substantive prose",
+  "J": "ambiguous section reference",
+  "K": "externality from the source's own pointer, never from a name",
+  "renamed": "same expectations under renamed terms, renumbered sections, different amounts"
+ },
+ "liveEvaluationOfTheBaseShape": {
+  "A_realDefinedDependencyDelivered": true,
+  "B_undefinedCapitalisedPhraseIsLimitationNotDelivery": true,
+  "C_pluralCitedAgainstSingularDefinition": true,
+  "D_singularCitedAgainstPluralDefinition": true,
+  "E_falseEdgeExcludedNotRequired": true,
+  "F_forwardingTargetDelivered": true,
+  "G_crossReferenceInsideRequiredDefinition": true,
+  "H_deepCompositionalChain": true,
+  "I_incidentalTermNotPulledIn": true,
+  "J_ambiguousSectionIsExplicit": true,
+  "L_arithmeticOperandsRequiredWhateverTheCoverage": true,
+  "K_externalProvenFromSource": true,
+  "Z_noPlanningFailure": true
+ },
+ "vitest": {
+  "dd-anti-overfit.test.ts": {
+   "status": "passed",
+   "tests": 11,
+   "failed": 0
+  },
+  "dd-certificate-honesty.test.ts": {
+   "status": "passed",
+   "tests": 8,
+   "failed": 0
+  },
+  "dd-cross-shard-links.test.ts": {
+   "status": "passed",
+   "tests": 4,
+   "failed": 0
+  },
+  "dd-entity-scope.test.ts": {
+   "status": "passed",
+   "tests": 3,
+   "failed": 0
+  },
+  "dd-required-dependency-generality.test.ts": {
+   "status": "passed",
+   "tests": 8,
+   "failed": 0
+  },
+  "f7a-shard-planner-stitcher.test.ts": {
+   "status": "passed",
+   "tests": 32,
+   "failed": 0
+  }
+ }
+}
