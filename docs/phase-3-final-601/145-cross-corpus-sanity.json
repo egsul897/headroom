@@ -1,0 +1,653 @@
+{
+ "artifact": "PRECISION AUDIT §21 - deterministic required-dependency planning over existing synthetic, non-paid fixtures",
+ "at": "2026-09-19T04:06:20.065Z",
+ "paidCalls": 0,
+ "explosionRule": "flagged when required context exceeds 4x the source AND dependencies per owned item exceed 10 - both must hold",
+ "corpora": [
+  {
+   "corpus": "f7a definitions corpus (60 chained definitions)",
+   "sourceChars": 18833,
+   "ownedItems": 60,
+   "shards": 4,
+   "requiredDependencies": 10,
+   "dependenciesPerOwnedItem": 0.17,
+   "maxClosureDepth": 3,
+   "requiredContextChars": 2808,
+   "undeliverableRate": 0.1,
+   "certificateStatuses": {
+    "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION": 1,
+    "CERTIFIED_CONTEXT_COMPLETE": 3
+   },
+   "explosion": false
+  },
+  {
+   "corpus": "f7a chapeau corpus (26 clauses)",
+   "sourceChars": 2385,
+   "ownedItems": 27,
+   "shards": 2,
+   "requiredDependencies": 1,
+   "dependenciesPerOwnedItem": 0.04,
+   "maxClosureDepth": 1,
+   "requiredContextChars": 142,
+   "undeliverableRate": 0,
+   "certificateStatuses": {
+    "CERTIFIED_CONTEXT_COMPLETE": 2
+   },
+   "explosion": false
+  },
+  {
+   "corpus": "synthetic agreement (base)",
+   "sourceChars": 1926,
+   "ownedItems": 1,
+   "shards": 1,
+   "requiredDependencies": 11,
+   "dependenciesPerOwnedItem": 11,
+   "maxClosureDepth": 3,
+   "requiredContextChars": 1102,
+   "undeliverableRate": 0.091,
+   "certificateStatuses": {
+    "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION": 1
+   },
+   "explosion": false
+  },
+  {
+   "corpus": "synthetic agreement (false edges + duplicate section)",
+   "sourceChars": 2126,
+   "ownedItems": 1,
+   "shards": 1,
+   "requiredDependencies": 11,
+   "dependenciesPerOwnedItem": 11,
+   "maxClosureDepth": 3,
+   "requiredContextChars": 906,
+   "undeliverableRate": 0.182,
+   "certificateStatuses": {
+    "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION": 1
+   },
+   "explosion": false
+  },
+  {
+   "corpus": "synthetic agreement (external pointer)",
+   "sourceChars": 2112,
+   "ownedItems": 1,
+   "shards": 1,
+   "requiredDependencies": 12,
+   "dependenciesPerOwnedItem": 12,
+   "maxClosureDepth": 3,
+   "requiredContextChars": 1102,
+   "undeliverableRate": 0.167,
+   "certificateStatuses": {
+    "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION": 1
+   },
+   "explosion": false
+  },
+  {
+   "corpus": "semantic-accountability synthetic corpus (45 scenarios planned, 0 could not be built deterministically)",
+   "scenarios": 45,
+   "requiredDependenciesTotal": 24,
+   "maxRequiredContextChars": 960,
+   "maxDepth": 1,
+   "maxDependenciesPerOwnedItem": 1,
+   "statuses": {
+    "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION": 13,
+    "CERTIFIED_CONTEXT_COMPLETE": 38
+   },
+   "explosion": false,
+   "perScenario": [
+    {
+     "scenario": "I1",
+     "sourceChars": 1012,
+     "ownedItems": 23,
+     "requiredDependencies": 2,
+     "maxDepth": 1,
+     "requiredContextChars": 960,
+     "limitations": 1,
+     "statuses": [
+      "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I2",
+     "sourceChars": 276,
+     "ownedItems": 3,
+     "requiredDependencies": 3,
+     "maxDepth": 1,
+     "requiredContextChars": 224,
+     "limitations": 2,
+     "statuses": [
+      "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION"
+     ]
+    },
+    {
+     "scenario": "I3",
+     "sourceChars": 384,
+     "ownedItems": 3,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I4",
+     "sourceChars": 367,
+     "ownedItems": 4,
+     "requiredDependencies": 1,
+     "maxDepth": 1,
+     "requiredContextChars": 315,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I5",
+     "sourceChars": 332,
+     "ownedItems": 3,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I6",
+     "sourceChars": 395,
+     "ownedItems": 3,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I7",
+     "sourceChars": 310,
+     "ownedItems": 2,
+     "requiredDependencies": 1,
+     "maxDepth": 1,
+     "requiredContextChars": 0,
+     "limitations": 1,
+     "statuses": [
+      "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION"
+     ]
+    },
+    {
+     "scenario": "I8",
+     "sourceChars": 323,
+     "ownedItems": 2,
+     "requiredDependencies": 1,
+     "maxDepth": 1,
+     "requiredContextChars": 0,
+     "limitations": 1,
+     "statuses": [
+      "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION"
+     ]
+    },
+    {
+     "scenario": "I9",
+     "sourceChars": 534,
+     "ownedItems": 5,
+     "requiredDependencies": 1,
+     "maxDepth": 1,
+     "requiredContextChars": 0,
+     "limitations": 1,
+     "statuses": [
+      "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION"
+     ]
+    },
+    {
+     "scenario": "I10",
+     "sourceChars": 570,
+     "ownedItems": 4,
+     "requiredDependencies": 1,
+     "maxDepth": 1,
+     "requiredContextChars": 102,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE",
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I11",
+     "sourceChars": 281,
+     "ownedItems": 2,
+     "requiredDependencies": 1,
+     "maxDepth": 1,
+     "requiredContextChars": 0,
+     "limitations": 1,
+     "statuses": [
+      "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION"
+     ]
+    },
+    {
+     "scenario": "I12",
+     "sourceChars": 570,
+     "ownedItems": 4,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I13",
+     "sourceChars": 216,
+     "ownedItems": 2,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I14",
+     "sourceChars": 266,
+     "ownedItems": 2,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I15",
+     "sourceChars": 280,
+     "ownedItems": 3,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I16",
+     "sourceChars": 548,
+     "ownedItems": 5,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I17",
+     "sourceChars": 316,
+     "ownedItems": 3,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I18",
+     "sourceChars": 371,
+     "ownedItems": 4,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I19",
+     "sourceChars": 481,
+     "ownedItems": 5,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I20",
+     "sourceChars": 516,
+     "ownedItems": 4,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I21",
+     "sourceChars": 320,
+     "ownedItems": 3,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I22",
+     "sourceChars": 184,
+     "ownedItems": 2,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I23",
+     "sourceChars": 290,
+     "ownedItems": 2,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I24",
+     "sourceChars": 418,
+     "ownedItems": 4,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I25",
+     "sourceChars": 389,
+     "ownedItems": 2,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I26",
+     "sourceChars": 355,
+     "ownedItems": 3,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I27",
+     "sourceChars": 830,
+     "ownedItems": 5,
+     "requiredDependencies": 1,
+     "maxDepth": 1,
+     "requiredContextChars": 152,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE",
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I28",
+     "sourceChars": 510,
+     "ownedItems": 4,
+     "requiredDependencies": 1,
+     "maxDepth": 1,
+     "requiredContextChars": 0,
+     "limitations": 1,
+     "statuses": [
+      "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION"
+     ]
+    },
+    {
+     "scenario": "I29",
+     "sourceChars": 620,
+     "ownedItems": 4,
+     "requiredDependencies": 1,
+     "maxDepth": 1,
+     "requiredContextChars": 251,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE",
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I30",
+     "sourceChars": 622,
+     "ownedItems": 4,
+     "requiredDependencies": 2,
+     "maxDepth": 1,
+     "requiredContextChars": 0,
+     "limitations": 2,
+     "statuses": [
+      "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION"
+     ]
+    },
+    {
+     "scenario": "I31",
+     "sourceChars": 381,
+     "ownedItems": 4,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I32",
+     "sourceChars": 474,
+     "ownedItems": 3,
+     "requiredDependencies": 1,
+     "maxDepth": 1,
+     "requiredContextChars": 166,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE",
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I33",
+     "sourceChars": 409,
+     "ownedItems": 6,
+     "requiredDependencies": 2,
+     "maxDepth": 1,
+     "requiredContextChars": 0,
+     "limitations": 2,
+     "statuses": [
+      "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION"
+     ]
+    },
+    {
+     "scenario": "I34",
+     "sourceChars": 266,
+     "ownedItems": 3,
+     "requiredDependencies": 1,
+     "maxDepth": 1,
+     "requiredContextChars": 0,
+     "limitations": 1,
+     "statuses": [
+      "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION"
+     ]
+    },
+    {
+     "scenario": "I35",
+     "sourceChars": 2974,
+     "ownedItems": 26,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE",
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I36",
+     "sourceChars": 310,
+     "ownedItems": 2,
+     "requiredDependencies": 1,
+     "maxDepth": 1,
+     "requiredContextChars": 0,
+     "limitations": 1,
+     "statuses": [
+      "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION"
+     ]
+    },
+    {
+     "scenario": "I37",
+     "sourceChars": 396,
+     "ownedItems": 3,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I38",
+     "sourceChars": 395,
+     "ownedItems": 3,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I39",
+     "sourceChars": 395,
+     "ownedItems": 2,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I40",
+     "sourceChars": 964,
+     "ownedItems": 3,
+     "requiredDependencies": 1,
+     "maxDepth": 1,
+     "requiredContextChars": 345,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I41",
+     "sourceChars": 395,
+     "ownedItems": 3,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I42",
+     "sourceChars": 310,
+     "ownedItems": 2,
+     "requiredDependencies": 1,
+     "maxDepth": 1,
+     "requiredContextChars": 0,
+     "limitations": 1,
+     "statuses": [
+      "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION"
+     ]
+    },
+    {
+     "scenario": "I43",
+     "sourceChars": 280,
+     "ownedItems": 3,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I44",
+     "sourceChars": 548,
+     "ownedItems": 5,
+     "requiredDependencies": 0,
+     "maxDepth": 0,
+     "requiredContextChars": 0,
+     "limitations": 0,
+     "statuses": [
+      "CERTIFIED_CONTEXT_COMPLETE"
+     ]
+    },
+    {
+     "scenario": "I45",
+     "sourceChars": 324,
+     "ownedItems": 2,
+     "requiredDependencies": 1,
+     "maxDepth": 1,
+     "requiredContextChars": 0,
+     "limitations": 1,
+     "statuses": [
+      "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION"
+     ]
+    }
+   ]
+  }
+ ],
+ "anyExplosion": false,
+ "frozenUnitForScale": {
+  "sourceChars": 33623,
+  "ownedItems": 326,
+  "requiredDependencies": 378,
+  "dependenciesPerOwnedItem": 1.16,
+  "requiredContextChars": 277825
+ }
+}

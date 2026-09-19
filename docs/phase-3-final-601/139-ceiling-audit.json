@@ -1,0 +1,85 @@
+{
+ "artifact": "PRECISION AUDIT §11 - does required-set precision change the required capacity? (ceiling kept, not reduced, not increased)",
+ "at": "2026-09-19T04:06:18.551Z",
+ "paidCalls": 0,
+ "ceiling": {
+  "maxRequiredContextChars": 64000,
+  "derivation": "capacity bound: at most 100000 turn-1 tokens, residue after fixed overhead + primary + inventory + interpretive tier, capped by the declared ceiling",
+  "unchanged": true
+ },
+ "v1": {
+  "shards": 7,
+  "maxRequiredChars": 58774,
+  "maxTurn1Tokens": 59603,
+  "reshardSplits": 1,
+  "boundedExcerpts": 35
+ },
+ "v2": {
+  "shards": 7,
+  "maxRequiredChars": 63998,
+  "p50RequiredChars": 35630,
+  "p95RequiredChars": 49756,
+  "maxTurn1Tokens": 61670,
+  "reshardSplits": 1,
+  "boundedExcerpts": 40,
+  "perShard": [
+   {
+    "ordinal": 0,
+    "shardId": "shard:7922314d9b00112aef21",
+    "ownedMaterialItems": 42,
+    "requiredChars": 35241,
+    "turn1Tokens": 38429,
+    "status": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION"
+   },
+   {
+    "ordinal": 1,
+    "shardId": "shard:7888717f06dfe736bf5b",
+    "ownedMaterialItems": 10,
+    "requiredChars": 35520,
+    "turn1Tokens": 32941,
+    "status": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION"
+   },
+   {
+    "ordinal": 2,
+    "shardId": "shard:fe26b4996ab543b0a066",
+    "ownedMaterialItems": 69,
+    "requiredChars": 35630,
+    "turn1Tokens": 45335,
+    "status": "CERTIFIED_CONTEXT_COMPLETE"
+   },
+   {
+    "ordinal": 3,
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "ownedMaterialItems": 98,
+    "requiredChars": 63998,
+    "turn1Tokens": 61670,
+    "status": "CERTIFIED_CONTEXT_COMPLETE"
+   },
+   {
+    "ordinal": 4,
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "ownedMaterialItems": 44,
+    "requiredChars": 49756,
+    "turn1Tokens": 45044,
+    "status": "CERTIFIED_CONTEXT_COMPLETE"
+   },
+   {
+    "ordinal": 5,
+    "shardId": "shard:e10ed610ecff8b399619",
+    "ownedMaterialItems": 42,
+    "requiredChars": 42714,
+    "turn1Tokens": 41034,
+    "status": "CERTIFIED_CONTEXT_COMPLETE"
+   },
+   {
+    "ordinal": 6,
+    "shardId": "shard:7c4d3d2ae3e0a522b99e",
+    "ownedMaterialItems": 14,
+    "requiredChars": 14966,
+    "turn1Tokens": 25949,
+    "status": "CERTIFIED_CONTEXT_COMPLETE"
+   }
+  ]
+ },
+ "conclusion": "precision reduced demand (fewer, better-qualified dependencies; one fewer shard; no re-shard needed) without changing the ceiling; the ceiling is not reduced for cost and not increased"
+}

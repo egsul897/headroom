@@ -1,0 +1,75 @@
+{
+ "artifact": "PRECISION AUDIT §3/§4/§13/§14/§15 - the distinct dependency states and certificate statuses, and the three rules",
+ "at": "2026-09-19T04:06:18.554Z",
+ "paidCalls": 0,
+ "dependencyStates": {
+  "A": "DELIVERED_FULL",
+  "B": "DELIVERED_BOUNDED_EXCERPT",
+  "C": "OWNED_PRIMARY_SOURCE",
+  "D": "EXTERNAL_REQUIRED_DEPENDENCY",
+  "E": "INTERNAL_REQUIRED_DEPENDENCY_UNRESOLVED",
+  "F": "AMBIGUOUS_REQUIRED_DEPENDENCY",
+  "G": "NON_REQUIRED_EDGE",
+  "planningFailure": "DELIVERABLE_NOT_DELIVERED"
+ },
+ "delivered": [
+  "DELIVERED_FULL",
+  "DELIVERED_BOUNDED_EXCERPT",
+  "OWNED_PRIMARY_SOURCE"
+ ],
+ "neverDelivered": [
+  "EXTERNAL_REQUIRED_DEPENDENCY",
+  "INTERNAL_REQUIRED_DEPENDENCY_UNRESOLVED",
+  "AMBIGUOUS_REQUIRED_DEPENDENCY",
+  "NON_REQUIRED_EDGE",
+  "DELIVERABLE_NOT_DELIVERED"
+ ],
+ "certificateStatuses": [
+  "CERTIFIED_CONTEXT_COMPLETE",
+  "CERTIFIED_WITH_EXPLICIT_EXTERNAL_LIMITATION",
+  "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+  "PLANNING_FAILED_REQUIRED_CONTEXT_UNDELIVERABLE"
+ ],
+ "statusRule": "planning failure if any deliverable dependency is undelivered; else INTERNAL limitation if any internal-unresolved or ambiguous; else EXTERNAL limitation if any external; else CONTEXT_COMPLETE. Internal dominates external. executable = not planning-failed; contextComplete = CONTEXT_COMPLETE only.",
+ "rule13_internalUnavailable": "required + internal + no deterministically resolvable source text => INTERNAL_REQUIRED_DEPENDENCY_UNRESOLVED => the shard is CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION (executable, limitation stated) - never 'fully delivered'; the only other outcomes are resolution or planning failure",
+ "rule14_external": "EXTERNAL_REQUIRED_DEPENDENCY only when the source itself writes '<term> (as defined in <X>)' AND the package's own document identity shows X is not a package document (single-document package => proven; multi-document without a matching label => AMBIGUOUS, not external). A name that merely sounds like an agreement is never external (test K)",
+ "rule15_ambiguous": "a reference resolving to more than one substantive node => AMBIGUOUS_REQUIRED_DEPENDENCY with every candidate's nodeId and span preserved; distinct from internal-unresolved and never guessed",
+ "missingContextContract": {
+  "version": "missing-context-contract.v1",
+  "classes": [
+   "PLANNER_DELIVERY_GAP",
+   "FALSE_MISSING_CONTEXT",
+   "PARTIAL_DELIVERY",
+   "INTERNAL_LIMITATION_DISCLOSED",
+   "AMBIGUOUS_LIMITATION_DISCLOSED",
+   "EXTERNAL_DEPENDENCY",
+   "OPTIONAL_CONTEXT_MISS"
+  ]
+ },
+ "instancesOnTheFrozenUnit": [
+  {
+   "shard": 0,
+   "key": "term:junior lien priority",
+   "disposition": "INTERNAL_REQUIRED_DEPENDENCY_UNRESOLVED",
+   "method": "UNKNOWN_CAPITALISED_TERM",
+   "candidates": null,
+   "reason": "\"Junior Lien Priority\" is used as a capitalised term in doc-a but no declaration of it can be resolved - required, internal, unresolved"
+  },
+  {
+   "shard": 1,
+   "key": "term:borrowing base",
+   "disposition": "EXTERNAL_REQUIRED_DEPENDENCY",
+   "method": "EXTERNAL_BY_SOURCE_DECLARATION",
+   "candidates": null,
+   "reason": "the source itself writes \"Borrowing Base (as defined in ABL Credit Agreement)\"; the package contains one document and \"ABL Credit Agreement\" is not it - externality proven from package identity; represented explicitly as"
+  },
+  {
+   "shard": 1,
+   "key": "section:6.01(b)(1)(z)",
+   "disposition": "AMBIGUOUS_REQUIRED_DEPENDENCY",
+   "method": null,
+   "candidates": 3,
+   "reason": "section 6.01(b)(1)(Z) matches 3 substantive physical locations - candidates preserved with provenance, none guessed (2 substantive occurrences share \"6.01(b)(1)\" - genuinely ambiguous, not resolved (never guessed); the r"
+  }
+ ]
+}

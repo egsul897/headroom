@@ -1,0 +1,72 @@
+{
+ "artifact": "PRECISION AUDIT §2 - v1 let a required, internal, text-less dependency satisfy the executable certificate",
+ "at": "2026-09-19T04:06:09.930Z",
+ "paidCalls": 0,
+ "startingSha": "1fd23881fb9366b3730a06419a7b5dc33647384c",
+ "v1CodeAsCommitted": {
+  "isDelivered": "export function isDelivered(d: RequiredDependency): boolean {\n  return d.disposition === \"MATERIALIZED_IN_INITIAL_CONTEXT\" || d.disposition === \"OWNED_PRIMARY_SOURCE\" || d.disposition === \"BOUNDED_EXCERPT_DISCLOSED\" || d.disposition === \"EXTERNAL_REQUIRED_DEPENDENCY\" || d.disposition === \"UNDELIVERABLE_DISCLOSED\";\n}",
+  "NEEDS_NO_ENTRY": "const NEEDS_NO_ENTRY = new Set<RequiredDependencyDisposition>([\"OWNED_PRIMARY_SOURCE\", \"EXTERNAL_REQUIRED_DEPENDENCY\", \"UNDELIVERABLE_DISCLOSED\"]);",
+  "certificateStatusRule": "certificateStatus: undelivered.length === 0 ? \"CERTIFIED_EXECUTABLE\" : \"PLANNING_FAILED_REQUIRED_CONTEXT_UNDELIVERABLE\",",
+  "undeliveredRule": "const undelivered = required.filter((d) => !NEEDS_NO_ENTRY.has(d.disposition) && !deliveredKeys.has(d.key)).map((d) => ({ key: d.key, disposition: d.disposition, reason: d.dispositionReason, requiredBy: d.requiredBy.length }));"
+ },
+ "proofFromTheCode": [
+  "isDelivered() returned true for disposition UNDELIVERABLE_DISCLOSED",
+  "NEEDS_NO_ENTRY contained UNDELIVERABLE_DISCLOSED, so buildShardDependencyCertificate never counted it as undelivered",
+  "certificateStatus was CERTIFIED_EXECUTABLE whenever `undelivered` was empty - which the two facts above guarantee for an UNDELIVERABLE_DISCLOSED dependency",
+  "there was no certificate status between CERTIFIED_EXECUTABLE and PLANNING_FAILED, so a shard carrying such a dependency was indistinguishable from a context-complete one"
+ ],
+ "proofFromTheFrozenRun": {
+  "undeliverableDisclosedDependencies": 26,
+  "everyOneHadEmptyText": true,
+  "everyShardCertifiedExecutable": true,
+  "example": [
+   {
+    "shardOrdinal": 0,
+    "key": "term:guarantor",
+    "target": "Guarantor",
+    "kind": "REQUIRED_DEFINITION",
+    "evidence": [
+     "INVENTORY_REFERENCED_TERM_EDGE"
+    ],
+    "requiredByCount": 1,
+    "reason": "no detected definition of \"Guarantor\" in doc-a"
+   },
+   {
+    "shardOrdinal": 0,
+    "key": "term:incur",
+    "target": "incur",
+    "kind": "REQUIRED_DEFINITION",
+    "evidence": [
+     "INVENTORY_REFERENCED_TERM_EDGE"
+    ],
+    "requiredByCount": 1,
+    "reason": "no detected definition of \"incur\" in doc-a"
+   },
+   {
+    "shardOrdinal": 0,
+    "key": "term:incurrence",
+    "target": "incurrence",
+    "kind": "REQUIRED_DEFINITION",
+    "evidence": [
+     "INVENTORY_REFERENCED_TERM_EDGE"
+    ],
+    "requiredByCount": 1,
+    "reason": "no detected definition of \"incurrence\" in doc-a"
+   }
+  ],
+  "conclusion": "REQUIRED + NO TEXT AVAILABLE + INTERNAL TO PACKAGE + CERTIFIED_EXECUTABLE was reachable and was reached on the frozen unit"
+ },
+ "classification": "CERTIFICATE_SEMANTIC_GAP",
+ "v2Correction": {
+  "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+  "isDelivered": "true only for DELIVERED_FULL, DELIVERED_BOUNDED_EXCERPT, OWNED_PRIMARY_SOURCE",
+  "limitations": "EXTERNAL_REQUIRED_DEPENDENCY, INTERNAL_REQUIRED_DEPENDENCY_UNRESOLVED, AMBIGUOUS_REQUIRED_DEPENDENCY are never delivery and force a LIMITED certificate",
+  "statuses": [
+   "CERTIFIED_CONTEXT_COMPLETE",
+   "CERTIFIED_WITH_EXPLICIT_EXTERNAL_LIMITATION",
+   "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+   "PLANNING_FAILED_REQUIRED_CONTEXT_UNDELIVERABLE"
+  ],
+  "invariant": "required + unavailable is never fully executable; it is LIMITED (executable with the limitation stated) or a planning failure"
+ }
+}

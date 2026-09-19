@@ -38,8 +38,12 @@ export type MissingContextClass =
   | "PLANNER_DELIVERY_GAP"
   | "FALSE_MISSING_CONTEXT"
   | "PARTIAL_DELIVERY"
-  | "DISCLOSED_UNDELIVERABLE"
+  /** required, internal, no resolvable text - disclosed on the shard as an explicit limitation before the call */
+  | "INTERNAL_LIMITATION_DISCLOSED"
+  /** required, structurally ambiguous - candidates preserved, disclosed before the call */
+  | "AMBIGUOUS_LIMITATION_DISCLOSED"
   | "EXTERNAL_DEPENDENCY"
+  /** the Pass-A edge was excluded as non-required; if the model still wanted it, it was interpretive context */
   | "OPTIONAL_CONTEXT_MISS";
 
 export interface MissingContextClassification {
@@ -68,7 +72,7 @@ export interface ShardMissingContextAudit {
   violations: string[];
 }
 
-const EMPTY_COUNTS = (): Record<MissingContextClass, number> => ({ PLANNER_DELIVERY_GAP: 0, FALSE_MISSING_CONTEXT: 0, PARTIAL_DELIVERY: 0, DISCLOSED_UNDELIVERABLE: 0, EXTERNAL_DEPENDENCY: 0, OPTIONAL_CONTEXT_MISS: 0 });
+const EMPTY_COUNTS = (): Record<MissingContextClass, number> => ({ PLANNER_DELIVERY_GAP: 0, FALSE_MISSING_CONTEXT: 0, PARTIAL_DELIVERY: 0, INTERNAL_LIMITATION_DISCLOSED: 0, AMBIGUOUS_LIMITATION_DISCLOSED: 0, EXTERNAL_DEPENDENCY: 0, OPTIONAL_CONTEXT_MISS: 0 });
 
 /** Normalizes a composition's free-text reference into the same key space the planner's required tier uses. */
 export function dependencyKeyOf(targetRef: string): string | null {
@@ -105,16 +109,19 @@ export function auditShardMissingContext(input: {
     const entry = key ? deliveredByKey.get(key) : undefined;
     let classification: MissingContextClass;
     let detail: string;
-    if (!req) {
+    if (!req || req.disposition === "NON_REQUIRED_EDGE") {
       classification = "OPTIONAL_CONTEXT_MISS";
-      detail = "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer";
-    } else if (req.disposition === "UNRESOLVED") {
+      detail = req ? `excluded from the required closure by deterministic qualification (${req.resolution?.method ?? "n/a"}) - if the model wanted it, it was interpretive context and the bounded tool route is the designed answer` : "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer";
+    } else if (req.disposition === "DELIVERABLE_NOT_DELIVERED") {
       classification = "PLANNER_DELIVERY_GAP";
       detail = `REQUIRED and deliverable, but the plan did not deliver it: ${req.dispositionReason}`;
       violations.push(`${key}: required dependency reported missing by ${ruleId ?? "(unattributed rule)"} was never delivered - ${req.dispositionReason}`);
-    } else if (req.disposition === "UNDELIVERABLE_DISCLOSED") {
-      classification = "DISCLOSED_UNDELIVERABLE";
-      detail = `genuinely not deliverable and disclosed by name before the call: ${req.dispositionReason}`;
+    } else if (req.disposition === "INTERNAL_REQUIRED_DEPENDENCY_UNRESOLVED") {
+      classification = "INTERNAL_LIMITATION_DISCLOSED";
+      detail = `required and internal, with no resolvable source text; disclosed on the shard as an explicit limitation before the call: ${req.dispositionReason}`;
+    } else if (req.disposition === "AMBIGUOUS_REQUIRED_DEPENDENCY") {
+      classification = "AMBIGUOUS_LIMITATION_DISCLOSED";
+      detail = `required and structurally ambiguous (${req.candidates?.length ?? 0} candidates preserved); disclosed before the call: ${req.dispositionReason}`;
     } else if (req.disposition === "EXTERNAL_REQUIRED_DEPENDENCY") {
       classification = "EXTERNAL_DEPENDENCY";
       detail = `external to this document and disclosed as such: ${req.dispositionReason}`;

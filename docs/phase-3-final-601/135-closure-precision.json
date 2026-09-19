@@ -1,0 +1,311 @@
+{
+ "artifact": "PRECISION AUDIT §7 - does each dependency class deserve REQUIRED status? v1 vs v2 census by evidence",
+ "at": "2026-09-19T04:06:10.334Z",
+ "paidCalls": 0,
+ "totals": {
+  "v1": 425,
+  "v2Total": 378,
+  "v2Required": 378,
+  "v2NonRequiredExcluded": 0
+ },
+ "byEvidence": {
+  "v1": {
+   "DEFINED_TERM_OCCURRENCE_IN_OWNED_SOURCE": {
+    "count": 139,
+    "sourceBacked": 139,
+    "avgDepth": 1,
+    "avgRequiredBy": 13.77,
+    "dubious": 0,
+    "limitations": 0
+   },
+   "INVENTORY_REFERENCED_TERM_EDGE": {
+    "count": 117,
+    "sourceBacked": 92,
+    "avgDepth": 1,
+    "avgRequiredBy": 11.35,
+    "dubious": 0,
+    "limitations": 25
+   },
+   "INVENTORY_PARENT_EDGE": {
+    "count": 84,
+    "sourceBacked": 84,
+    "avgDepth": 1,
+    "avgRequiredBy": 1.71,
+    "dubious": 0,
+    "limitations": 0
+   },
+   "CROSS_REFERENCE_IN_REQUIRED_DEFINITION": {
+    "count": 59,
+    "sourceBacked": 58,
+    "avgDepth": 2.03,
+    "avgRequiredBy": 13.73,
+    "dubious": 0,
+    "limitations": 1
+   },
+   "TRANSITIVE_DEFINITION_CLOSURE": {
+    "count": 86,
+    "sourceBacked": 86,
+    "avgDepth": 2.44,
+    "avgRequiredBy": 10.97,
+    "dubious": 0,
+    "limitations": 0
+   },
+   "FORWARDING_DEFINITION_TARGET": {
+    "count": 10,
+    "sourceBacked": 10,
+    "avgDepth": 2.8,
+    "avgRequiredBy": 12.8,
+    "dubious": 0,
+    "limitations": 0
+   },
+   "STRUCTURAL_CROSS_REFERENCE_IN_OWNED_SOURCE": {
+    "count": 15,
+    "sourceBacked": 15,
+    "avgDepth": 1,
+    "avgRequiredBy": 16.33,
+    "dubious": 0,
+    "limitations": 0
+   },
+   "INVENTORY_REFERENCED_SECTION_EDGE": {
+    "count": 30,
+    "sourceBacked": 30,
+    "avgDepth": 1,
+    "avgRequiredBy": 9.33,
+    "dubious": 0,
+    "limitations": 0
+   }
+  },
+  "v2": {
+   "DEFINED_TERM_OCCURRENCE_IN_OWNED_SOURCE": {
+    "count": 130,
+    "sourceBacked": 130,
+    "avgDepth": 1,
+    "avgRequiredBy": 14.43,
+    "dubious": 0,
+    "limitations": 0
+   },
+   "INVENTORY_REFERENCED_TERM_EDGE": {
+    "count": 114,
+    "sourceBacked": 110,
+    "avgDepth": 1,
+    "avgRequiredBy": 13.49,
+    "dubious": 1,
+    "limitations": 2
+   },
+   "INVENTORY_PARENT_EDGE": {
+    "count": 84,
+    "sourceBacked": 84,
+    "avgDepth": 1,
+    "avgRequiredBy": 1.71,
+    "dubious": 0,
+    "limitations": 0
+   },
+   "CROSS_REFERENCE_IN_REQUIRED_DEFINITION": {
+    "count": 57,
+    "sourceBacked": 56,
+    "avgDepth": 2.12,
+    "avgRequiredBy": 13.95,
+    "dubious": 0,
+    "limitations": 1
+   },
+   "TRANSITIVE_DEFINITION_CLOSURE": {
+    "count": 68,
+    "sourceBacked": 68,
+    "avgDepth": 2.38,
+    "avgRequiredBy": 11.03,
+    "dubious": 0,
+    "limitations": 0
+   },
+   "STRUCTURAL_CROSS_REFERENCE_IN_OWNED_SOURCE": {
+    "count": 15,
+    "sourceBacked": 15,
+    "avgDepth": 1,
+    "avgRequiredBy": 16.33,
+    "dubious": 0,
+    "limitations": 0
+   },
+   "INVENTORY_REFERENCED_SECTION_EDGE": {
+    "count": 30,
+    "sourceBacked": 30,
+    "avgDepth": 1,
+    "avgRequiredBy": 9.33,
+    "dubious": 0,
+    "limitations": 0
+   },
+   "FORWARDING_DEFINITION_TARGET": {
+    "count": 7,
+    "sourceBacked": 7,
+    "avgDepth": 2.57,
+    "avgRequiredBy": 13.57,
+    "dubious": 0,
+    "limitations": 0
+   }
+  }
+ },
+ "dubiousDefinition": "an INVENTORY_REFERENCED_TERM_EDGE entry whose cited term never occurs (word-boundary, any number variant) in the owned text, or an entry qualified out as NON_REQUIRED_EDGE - counted, never silently dropped",
+ "delta": {
+  "removedFromV1": 35,
+  "addedInV2": 4,
+  "removedExplained": [
+   {
+    "key": "term:obligations",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:restricted",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:guarantor",
+    "why": "merged into its grammatical-number counterpart (one entry, cited-as disclosed)"
+   },
+   {
+    "key": "term:restricted subsidiaries",
+    "why": "merged into its grammatical-number counterpart (one entry, cited-as disclosed)"
+   },
+   {
+    "key": "term:consolidated total debt",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:foreign subsidiary",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:revolving loan",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:swap",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:swap obligation",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "section:6.02",
+    "why": "section entry no longer derived (its parent definition or edge changed disposition)"
+   },
+   {
+    "key": "term:commodity exchange act",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:exchange act",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:facility",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:lenders",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:revolving lender",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:additional lender",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:agent",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:collateral agent",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:collateral and guarantee requirement",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:revolving facility",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:term facility",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:capitalized lease obligations",
+    "why": "merged into its grammatical-number counterpart (one entry, cited-as disclosed)"
+   },
+   {
+    "key": "term:investment",
+    "why": "merged into its grammatical-number counterpart (one entry, cited-as disclosed)"
+   },
+   {
+    "key": "term:permitted lien",
+    "why": "merged into its grammatical-number counterpart (one entry, cited-as disclosed)"
+   },
+   {
+    "key": "term:restricted party",
+    "why": "merged into its grammatical-number counterpart (one entry, cited-as disclosed)"
+   },
+   {
+    "key": "term:sale and lease-back transactions",
+    "why": "merged into its grammatical-number counterpart (one entry, cited-as disclosed)"
+   },
+   {
+    "key": "term:payment",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:excluded contributions",
+    "why": "merged into its grammatical-number counterpart (one entry, cited-as disclosed)"
+   },
+   {
+    "key": "term:joint ventures",
+    "why": "merged into its grammatical-number counterpart (one entry, cited-as disclosed)"
+   },
+   {
+    "key": "term:refinanced",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:refinancing",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:affiliate",
+    "why": "no longer reached: its closure parent is now excerpted/limited or the edge was qualified out"
+   },
+   {
+    "key": "term:control",
+    "why": "v1 matched it only INSIDE a longer word (no word-boundary occurrence) - a spurious occurrence hit"
+   },
+   {
+    "key": "term:controlled investment affiliates",
+    "why": "merged into its grammatical-number counterpart (one entry, cited-as disclosed)"
+   },
+   {
+    "key": "term:permitted transferee",
+    "why": "merged into its grammatical-number counterpart (one entry, cited-as disclosed)"
+   }
+  ],
+  "added": [
+   {
+    "key": "term:subsidiary loan party",
+    "disposition": "DELIVERED_FULL"
+   },
+   {
+    "key": "term:general lien basket reallocated amount",
+    "disposition": "DELIVERED_FULL"
+   },
+   {
+    "key": "term:permitted liens",
+    "disposition": "DELIVERED_BOUNDED_EXCERPT"
+   },
+   {
+    "key": "term:permitted transferees",
+    "disposition": "DELIVERED_FULL"
+   }
+  ]
+ },
+ "necessityStatement": "'actually necessary for interpretation' is not decidable from the reference set (forbidden here) and is not claimed; what IS decided is source-backing (text exists), textual support (the cited term really occurs in the owned text) and qualification (an AI edge corresponds to a defined term). Every class's count above is under those three deterministic tests."
+}

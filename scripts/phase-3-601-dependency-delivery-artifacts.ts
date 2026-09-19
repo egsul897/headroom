@@ -11,6 +11,12 @@
  *   DD_GENERALITY  path to a vitest --reporter=json output for the §27 generality test file
  *
  * Run: npx tsx scripts/phase-3-601-dependency-delivery-artifacts.ts
+ *
+ * FROZEN. Artifacts 121-132 record the v1 required-dependency model exactly as it was when the delivery remediation
+ * was measured. The precision/certificate-honesty audit (artifacts 133+) changed the disposition and certificate
+ * vocabulary, so this script REFUSES to run against any other model version: regenerating under v2 would overwrite the
+ * record of what v1 did with the record of what v2 does. The typed reads below are cast because the fields they name
+ * no longer exist on the live certificate; that is deliberate, not a bug.
  */
 import { existsSync } from "node:fs";
 import { writeJson } from "./f7b-lib";
@@ -32,6 +38,10 @@ const FAILED_SHARD_HASH = "691cf0598278741ac4cefa845910b4274c7234c7ee3283ec17a46
 /** The five dependencies the failed shard's own composition reported as missing (frozen in 119). Used ONLY to score delivery - never to construct context. */
 const TARGETS = ["term:fixed incremental amount", "term:voluntary prepayment incremental amount", "term:ratio incremental amount", "term:extension amount", "section:2.18(b)"];
 
+if ((REQUIRED_DEPENDENCY_MODEL_VERSION as string) !== "required-dependency-delivery.v1") {
+  console.error(`REFUSED: artifacts 121-132 are frozen to required-dependency model v1; the live model is ${REQUIRED_DEPENDENCY_MODEL_VERSION}. The precision audit's own measurements live in 133+.`);
+  process.exit(2);
+}
 const candidate = loadFrozenInventoryCandidate();
 const proof = resumeProof(candidate);
 if (!proof.decision.ok) throw new Error("resume proof failed - the frozen inventory is required for a zero-cost measurement");
@@ -143,7 +153,7 @@ writeJson(`${OUT}/122-red-to-green-on-the-same-unit.json`, {
 // ---------------------------------------------------------------------------
 const sweep = [4_000, 8_000, 12_000, 16_000, 24_000, 32_000, 48_000, DEFAULT_SHARD_BUDGET.maxRequiredContextChars, 96_000].map((ceiling) => {
   const p: ShardPlan = planCompilationShards({ candidateRef: proof.built.candidateRef, companyId: proof.built.input.companyId, instrumentKey: proof.built.input.instrumentKey, documentId: DOC, sourceContext: proof.ctx, frozenInventory: proof.decision.ok ? proof.decision.inventory : candidate.inventory, structuralIndex: proof.built.chewy.index, generation: { algorithmVersion: SEMANTIC_COMPILER_ALGORITHM_VERSION, promptVersion: SEMANTIC_COMPILER_PROMPT_VERSION }, budget: { ...DEFAULT_SHARD_BUDGET, maxRequiredContextChars: ceiling } });
-  const c = p.dependencyCertification;
+  const c = p.dependencyCertification as Any;
   return {
     maxRequiredContextChars: ceiling, shards: p.shards.length, reshardSplits: p.requiredContextResharding.splits, waterFilledShards: p.shards.filter((s) => s.dependencyCertificate.requiredTierAllocation.waterFilled).length,
     materialized: c.requiredDependenciesMaterialized, boundedExcerpt: c.requiredDependenciesBoundedExcerpt, undeliverableDisclosed: c.requiredDependenciesUndeliverableDisclosed, unresolved: c.requiredDependenciesUnresolved,
@@ -194,13 +204,13 @@ writeJson(`${OUT}/124-shard-dependency-certificates.json`, {
   planCertification: plan.dependencyCertification,
   resharding: plan.requiredContextResharding,
   shards: plan.shards.map((s) => ({ ordinal: s.ordinal, shardId: s.shardId, shardHash: s.shardHash, ownedUnits: s.ownedUnitKeys.length, ownedMaterialItems: s.ownedMaterialItemIds.length, primaryChars: s.primaryChars, requiredEntries: requiredEntries(s).length, requiredChars: requiredChars(s), interpretiveChars: s.contextChars - requiredChars(s), estimatedTurn1InputTokens: s.estimate.inputTokens, certificate: s.dependencyCertificate })),
-  everyShardCertified: plan.shards.every((s) => s.dependencyCertificate.certificateStatus === "CERTIFIED_EXECUTABLE"),
+  everyShardCertified: plan.shards.every((s) => (s.dependencyCertificate.certificateStatus as string) === "CERTIFIED_EXECUTABLE"),
 });
 
 // ---------------------------------------------------------------------------
 // 125 - external and absent dependencies, never fabricated (§12)
 // ---------------------------------------------------------------------------
-const undeliverable = allDeps.filter((d) => d.disposition === "UNDELIVERABLE_DISCLOSED");
+const undeliverable = allDeps.filter((d) => (d.disposition as string) === "UNDELIVERABLE_DISCLOSED");
 const external = allDeps.filter((d) => d.disposition === "EXTERNAL_REQUIRED_DEPENDENCY");
 writeJson(`${OUT}/125-external-and-absent-dependencies.json`, {
   artifact: "PHASE 3 / 6.01 DEPENDENCY-DELIVERY REMEDIATION §12 - dependencies that cannot be delivered are disclosed by name and never invented", at: at(), paidCalls: 0,
@@ -300,7 +310,7 @@ writeJson(`${OUT}/128-missing-context-contract-and-telemetry.json`, {
     frozenObservation: trust112.operativeState,
     classification: "NOT_A_DELIVERY_FAILURE",
     reasoning: "the frozen trace attributes the OPERATIVE_STATE_UNRESOLVED flag on shard:f266a61ab75f65592b9d to hasStaleReferencedDefinition() firing on IR definitions the model emitted for ordinary verb forms that are not defined terms in the instrument. That is an OUTPUT condition of a shard that ended SHARD_COMPLETE, not a missing input: no required dependency of that shard is undelivered.",
-    checkedAgainstTheRemediatedPlan: (() => { const s = plan.shards.find((x) => x.shardId === "shard:f266a61ab75f65592b9d"); return s ? { shardStillPresent: true, requiredDependenciesUnresolved: s.dependencyCertificate.requiredDependenciesUnresolved, certificateStatus: s.dependencyCertificate.certificateStatus } : { shardStillPresent: false, note: "the shard boundary moved under the remediated planner; the classification above is about the frozen run" }; })(),
+    checkedAgainstTheRemediatedPlan: (() => { const s = plan.shards.find((x) => x.shardId === "shard:f266a61ab75f65592b9d"); return s ? { shardStillPresent: true, requiredDependenciesUnresolved: (s.dependencyCertificate as Any).requiredDependenciesUnresolved, certificateStatus: s.dependencyCertificate.certificateStatus } : { shardStillPresent: false, note: "the shard boundary moved under the remediated planner; the classification above is about the frozen run" }; })(),
     inScopeForThisMission: false,
     reason: "this mission remediates DELIVERY of required context. An emitted-definition condition in a completed shard is a separate defect class and is recorded here rather than silently fixed.",
   },

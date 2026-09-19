@@ -625,3 +625,70 @@ rather than triggered by a hard-coded number (130). No Pass C, trust gate, verif
 Verdict **PHASE3_601_DEPENDENCY_DELIVERY_READY_FOR_REVALIDATION** (132). This says the delivery architecture is ready to
 be revalidated by a future, separately authorized paid mission. It is not an authorization to spend money, not a claim
 that the 6.01 compilation now succeeds, and not a Phase 3 closure. Zero paid calls were made.
+
+## Required-dependency precision + certificate honesty audit (133-146)
+
+The v1 certificate was semantically unsafe, and the proof is in the committed code, not in any model log:
+`isDelivered()` returned true for `UNDELIVERABLE_DISCLOSED`, `NEEDS_NO_ENTRY` excluded that disposition from
+`undelivered`, and with only two statuses a shard carrying a REQUIRED, INTERNAL, text-less dependency was
+CERTIFIED_EXECUTABLE and indistinguishable from a context-complete one. Twenty-six such dependencies sat on the frozen
+unit, every shard certified - classified `CERTIFICATE_SEMANTIC_GAP` (133). The v2 model
+(`required-dependency-delivery.v2-precision-and-certificate-honesty`) has seven distinct dependency states -
+`DELIVERED_FULL`, `DELIVERED_BOUNDED_EXCERPT`, `OWNED_PRIMARY_SOURCE`, `EXTERNAL_REQUIRED_DEPENDENCY`,
+`INTERNAL_REQUIRED_DEPENDENCY_UNRESOLVED`, `AMBIGUOUS_REQUIRED_DEPENDENCY`, `NON_REQUIRED_EDGE` (plus the planning
+failure `DELIVERABLE_NOT_DELIVERED`) - of which only the first three are delivery, and four certificate statuses:
+`CERTIFIED_CONTEXT_COMPLETE`, `CERTIFIED_WITH_EXPLICIT_EXTERNAL_LIMITATION`,
+`CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION`, `PLANNING_FAILED_REQUIRED_CONTEXT_UNDELIVERABLE`. Internal dominates
+external; a required internal dependency with no text is never "delivered" (141; permanent regression tests in
+`dd-certificate-honesty.test.ts`).
+
+All 26 v1 "undeliverables" are classified exactly once from the source (134): 15 are plural/singular aliases of a term
+the index defines in the other grammatical number; 2 are inflections the source itself declares correlative
+(`Refinanced`/`Refinancing`); 6 are structural-detector false negatives - four declaration grammars the detector does
+not model (a qualifier between the term and its verb, several co-declared terms, an enumerated body) and two inline
+parentheticals inside the owned operative text; 1 is external, proven from package identity (the source writes
+"(as defined in ABL Credit Agreement)" and the package's one document is not it); 1 is a section reference resolving to
+three physical nodes, now AMBIGUOUS with every candidate preserved; 1 is a genuinely undefined capitalised term
+(`Junior Lien Priority`), the only true internal-unresolved dependency; **0** were false Pass-A edges. The audit used
+the mission's example names only to audit - condition 8 greps the production diff for them and finds none.
+
+Every Pass-A referenced-term edge is now qualified before it may seed the closure (136): defined term, index
+number-variant, source-declared correlative, inline declaration in owned source, declaration found in source text,
+external-by-source-declaration, ordinary lower-case legal word, absent from source, unknown capitalised term, ambiguous
+- 225 edges on the frozen unit, none hallucinated into context (a false edge is `NON_REQUIRED_EDGE`, carried for audit,
+never admitted, never expanded). Occurrence scanning is longest-match, word-boundary, with the index's own
+deterministic number spellings and no dictionary: 22 spurious substring hits (`Control` inside `Controlled`) leave, 20
+occurrences are recovered through a number variant (137). The census by evidence class shows v1's 425 required
+dependencies become 378 - 35 removed (merged number variants, in-word substring hits, edges qualified out) and 4 added
+(135).
+
+The threshold sweep exposed a real defect and it was fixed by principle, not by tuning (138). Before the fix, the five
+targets were REACHED only at 0.5: they hang off a definition that is a pure sum of four defined terms, whose
+compositional-coverage proxy scores 0.583 because articles, enumerators and "plus" are characters too. The
+limit-bearing rule now also holds for an **arithmetic operand** - a defined term after `plus`/`minus`/`sum of`/..., a
+continuation of an operand list such a combinator opened, or a term that is the whole of an enumerated item. Generic
+drafting, no threshold, no names; synthetic case L holds it at every threshold. After the fix all five targets are
+reached at 0.25/0.40/0.50/0.60/0.75 with zero planning failures and every synthetic case passing; at 0.25 and 0.40 the
+larger closure meets the unchanged 64,000-char ceiling and one target arrives as an 89-96% bounded excerpt - the
+over-inclusive regime, a disclosed ceiling effect. The threshold stays 0.5 and the ceiling stays 64,000 (139).
+
+Recomputed at zero cost (144): 7 shards (one must-link split before any provider call), 378 required dependencies -
+333 in full, 40 bounded excerpts, 2 owned, 1 external, 1 internal-unresolved, 1 ambiguous, 0 planning failures. Five
+shards `CERTIFIED_CONTEXT_COMPLETE`, two `CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION` (the unresolved term; the
+ambiguous section together with the external term), none planning-failed. The failed shard keeps its identity and its
+98 items and is context-complete with all five targets in full; max required chars 63,998; max turn-1 tokens 61,670.
+Cross-corpus deterministic sanity on the f7a definitions and chapeau corpora, three synthetic-agreement shapes and all
+45 semantic-accountability scenarios shows no explosion (145).
+
+The 132 gate had recorded lint ERRORS while the return said clean: the gate tested the output with `/error/i`, and
+ESLint's own success line "No ESLint warnings or errors" contains the word. The code was clean; the artifact was
+wrong. The gate now reads ESLint's markers and the recorded exit code, and 132 was regenerated by the corrected script
+only (142). All 11 frozen verifier findings are triaged A-F before any spend (143); three deterministic Phase-3
+defects were found and fixed with zero model calls - cross-shard carve-out linkage (the 6.01(b) lead-in provides that
+6.01(a) shall not apply to its baskets; the stitcher now synthesizes those exceptions and resolves section-reference
+dependencies that exactly one stitched rule satisfies), and `entityScope` never being requested from the model (prompt
+v5, plus deterministic derivation from ENTITY_SCOPE_REFERENCE nodes). None was left knowingly unfixed.
+
+Verdict is recorded in 146 (20 conditions). It says the corrected model is ready to be revalidated by a future,
+separately authorized paid mission - not an authorization to spend, not a claim the 6.01 compilation succeeds, not a
+Phase 3 closure. Zero paid calls were made.

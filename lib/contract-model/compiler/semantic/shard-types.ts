@@ -25,7 +25,7 @@ import type { SemanticCompilerFailureReason, SemanticCompilerInput } from "./typ
  * and dependency context is prioritised by what the owned items require (terms/sections) ahead of parent propositions.
  * Every shardHash and planHash produced under v1 is therefore invalid for reuse (mission §22).
  */
-export const SHARD_PLANNER_ALGORITHM_VERSION = "semantic-compilation-shards.v3-required-dependency-delivery";
+export const SHARD_PLANNER_ALGORITHM_VERSION = "semantic-compilation-shards.v4-required-dependency-precision";
 
 /**
  * Deterministic token estimate for a rendered compiler conversation: tokens per rendered character, CALIBRATED on the
@@ -225,16 +225,24 @@ export interface ShardPlan {
   /** §11 plan-level roll-up of the per-shard dependency certificates. */
   dependencyCertification: {
     modelVersion: string;
-    shardsCertified: number;
-    shardsFailed: number;
+    shardsContextComplete: number;
+    shardsLimitedExternal: number;
+    shardsLimitedInternal: number;
+    shardsPlanningFailed: number;
     requiredDependenciesTotal: number;
-    requiredDependenciesMaterialized: number;
-    requiredDependenciesBoundedExcerpt: number;
-    requiredDependenciesExternal: number;
-    requiredDependenciesUndeliverableDisclosed: number;
-    requiredDependenciesUnresolved: number;
-    /** True only when every shard certified: no shard may reach a provider with a known internal dependency absent. */
+    deliveredFull: number;
+    deliveredBoundedExcerpt: number;
+    ownedPrimarySource: number;
+    external: number;
+    internalUnresolved: number;
+    ambiguous: number;
+    nonRequiredEdgesExcluded: number;
+    /** Planning failures. Must be 0 for the plan to be executable. */
+    deliverableNotDelivered: number;
+    /** True when no shard is PLANNING_FAILED. A LIMITED shard is executable with its limitation stated. */
     allShardsExecutable: boolean;
+    /** True only when every shard is CONTEXT_COMPLETE - stronger than executable, and the two are never conflated. */
+    allShardsContextComplete: boolean;
   };
   /** §10 record of shards the required-closure budget forced the planner to split before any provider call. */
   requiredContextResharding: { splits: number; maxDepthReached: number; note: string };
@@ -392,6 +400,8 @@ export interface StitchedCompilation {
   /** Lineage / disposition ids cited in bare-digest form and mapped to the known `inv-item:` id before ownership scoping (mirrors Pass C). */
   canonicalizedLineageReferences: number;
   unresolvedIssues: string[];
+  /** §17 - the cross-shard structural edges the stitcher added deterministically (carve-out exceptions from "shall not apply to" lead-ins; section-reference dependencies resolved to the one rule compiled from that section). Optional: absent on results produced before this pass. */
+  crossShardLinks?: import("./shard-stitcher").CrossShardLinkReport;
 }
 
 export interface ShardPlanInput {
@@ -404,6 +414,8 @@ export interface ShardPlanInput {
   /** The verifier-shared structural index (definitions + node hierarchy) - the source of unit boundaries. Null degrades to INDEPENDENT_SEGMENTS. */
   structuralIndex: import("../structural-index").StructuralIndex | null;
   budget?: Partial<ShardBudget>;
+  /** Audit/sensitivity knob for the required-dependency closure (threshold, depth, entry bound). Production callers omit it; maxRequiredContextChars always comes from `budget`. */
+  requiredBudget?: Partial<import("./required-dependencies").RequiredDependencyBudget>;
   /** Generation identity folded into every shard hash (defaults to the compiler algorithm/prompt versions of the base input). */
   generation?: { algorithmVersion: string; promptVersion: string };
 }

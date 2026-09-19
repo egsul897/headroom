@@ -15,7 +15,7 @@
  */
 import { normalizeDefinedTermRef } from "../amendment/operative-state";
 import { computeSourceContentHash, hashParts } from "../hashing";
-import { buildShardDependencyCertificate, deriveRequiredDependencies, DEFAULT_REQUIRED_DEPENDENCY_BUDGET, REQUIRED_DEPENDENCY_MODEL_VERSION, type RequiredDependency, type RequiredDependencyDisposition, type ShardDependencyCertificate } from "./required-dependencies";
+import { buildShardDependencyCertificate, deriveRequiredDependencies, DEFAULT_REQUIRED_DEPENDENCY_BUDGET, NEEDS_NO_REQUIRED_ENTRY, REQUIRED_DEPENDENCY_MODEL_VERSION, type RequiredDependency, type RequiredDependencyBudget, type ShardDependencyCertificate } from "./required-dependencies";
 import { resolveReferenceTarget } from "../semantic-accountability/reference-resolver";
 import { partitionSourceSlots } from "../semantic-accountability/slots";
 import { independentSegmentBounds } from "../semantic-accountability/source-coverage";
@@ -58,8 +58,6 @@ export const MAX_FIRST_TURN_INPUT_TOKENS = 100_000;
 const MAX_FIRST_TURN_INPUT_CHARS = Math.floor(MAX_FIRST_TURN_INPUT_TOKENS / CALIBRATED_TOKENS_PER_CHAR);
 /** A shard whose primary material and inventory are so large that capacity leaves less than this still gets a required tier this big; water-filling then bounds the entries. */
 const REQUIRED_CONTEXT_FLOOR_CHARS = 8_000;
-/** Dispositions that need no context entry of their own: the shard already owns the text, it is external, or it is not deliverable at all. */
-const NEEDS_NO_REQUIRED_ENTRY = new Set<RequiredDependencyDisposition>(["OWNED_PRIMARY_SOURCE", "EXTERNAL_REQUIRED_DEPENDENCY", "UNDELIVERABLE_DISCLOSED", "UNRESOLVED"]);
 
 const CONTENT_WORD = /[A-Za-z]{2,}/;
 /** A region counts as a definitions corpus when at least this fraction of its text lies inside detected definition spans. */
@@ -562,7 +560,7 @@ export function planCompilationShards(input: ShardPlanInput): ShardPlan {
   const byId = new Map(input.frozenInventory.items.map((i) => [i.inventoryItemId, i]));
   const regionById = new Map(input.sourceContext.regions.map((r) => [r.regionId, r]));
   const generation = input.generation ?? { algorithmVersion: SHARD_PLANNER_ALGORITHM_VERSION, promptVersion: "(unspecified)" };
-  const requiredBudget = { ...DEFAULT_REQUIRED_DEPENDENCY_BUDGET, maxRequiredContextChars: budget.maxRequiredContextChars };
+  const requiredBudget: RequiredDependencyBudget = { ...DEFAULT_REQUIRED_DEPENDENCY_BUDGET, ...(input.requiredBudget ?? {}), maxRequiredContextChars: budget.maxRequiredContextChars };
   const ownedTextOf = (shardUnits: SemanticSourceUnit[]) => shardUnits.map((u) => regionById.get(u.regionId)?.text.slice(u.charStart, u.charEnd) ?? "").join("\n");
 
   /** The deterministic REQUIRED set for a candidate unit-set (§7), computed before any provider call. */
@@ -672,19 +670,22 @@ export function planCompilationShards(input: ShardPlanInput): ShardPlan {
     // The DELIVERED disposition is decided here, by what the shard actually carries - never by the derivation's wish.
     const required: RequiredDependency[] = [];
     for (const d of derived) {
-      if (d.disposition === "UNDELIVERABLE_DISCLOSED") { required.push(d); unresolvedContext.push({ kind: d.kind, key: d.key, reason: d.dispositionReason.includes("matches") ? "AMBIGUOUS" : "NOT_FOUND", detail: `REQUIRED dependency is not deliverable and is disclosed by name, never fabricated: ${d.dispositionReason}`, requiredBy: d.requiredBy }); continue; }
-      if (d.disposition === "EXTERNAL_REQUIRED_DEPENDENCY") { required.push(d); unresolvedContext.push({ kind: d.kind, key: d.key, reason: "NOT_FOUND", detail: `EXTERNAL required dependency: ${d.dispositionReason}`, requiredBy: d.requiredBy }); continue; }
-      if (d.disposition === "OWNED_PRIMARY_SOURCE") { required.push(d); continue; }
+      // Limitations are disclosed on the shard by name - as limitations, never as delivery - and exclusions are carried for audit only.
+      if (d.disposition === "INTERNAL_REQUIRED_DEPENDENCY_UNRESOLVED") { required.push(d); unresolvedContext.push({ kind: d.kind, key: d.key, reason: "NOT_FOUND", detail: `REQUIRED INTERNAL dependency with no resolvable source text - an explicit limitation of this shard, never fabricated: ${d.dispositionReason}`, requiredBy: d.requiredBy }); continue; }
+      if (d.disposition === "AMBIGUOUS_REQUIRED_DEPENDENCY") { required.push(d); unresolvedContext.push({ kind: d.kind, key: d.key, reason: "AMBIGUOUS", detail: `REQUIRED dependency is structurally ambiguous (${d.candidates?.length ?? 0} candidates preserved) - an explicit limitation of this shard, nothing guessed: ${d.dispositionReason}`, requiredBy: d.requiredBy }); continue; }
+      if (d.disposition === "EXTERNAL_REQUIRED_DEPENDENCY") { required.push(d); unresolvedContext.push({ kind: d.kind, key: d.key, reason: "NOT_FOUND", detail: `EXTERNAL required dependency (proven from the source and the package's own document identity): ${d.dispositionReason}`, requiredBy: d.requiredBy }); continue; }
+      if (d.disposition === "OWNED_PRIMARY_SOURCE" || d.disposition === "NON_REQUIRED_EDGE") { required.push(d); continue; }
       const rendered = renderRequired(d, Math.min(desiredAllowance(d), allocation.allowance));
       if (contextChars + rendered.text.length > requiredCeiling) {
-        required.push({ ...d, disposition: "UNRESOLVED", dispositionReason: `PLANNING FAILURE: the required closure of this shard does not fit its required-context ceiling (${requiredCeiling} chars) even after re-sharding was exhausted and every entry was reduced to the ${REQUIRED_EXCERPT_FLOOR_CHARS}-char floor` });
+        required.push({ ...d, disposition: "DELIVERABLE_NOT_DELIVERED", dispositionReason: `PLANNING FAILURE: the required closure of this shard does not fit its required-context ceiling (${requiredCeiling} chars) even after re-sharding was exhausted and every entry was reduced to the ${REQUIRED_EXCERPT_FLOOR_CHARS}-char floor` });
         unresolvedContext.push({ kind: d.kind, key: d.key, reason: "BUDGET", detail: `REQUIRED dependency did not fit the required-context ceiling (${requiredCeiling}) after required-first admission, deterministic re-sharding and water-filling to the ${REQUIRED_EXCERPT_FLOOR_CHARS}-char floor - the shard is NOT certified executable and this is an explicit planning failure, not a tool-call fallback`, requiredBy: d.requiredBy });
         continue;
       }
-      const disposition = rendered.truncated ? "BOUNDED_EXCERPT_DISCLOSED" : "MATERIALIZED_IN_INITIAL_CONTEXT";
+      const disposition = rendered.truncated ? "DELIVERED_BOUNDED_EXCERPT" : "DELIVERED_FULL";
       const reductionNote = allocation.reduced ? ` [required tier water-filled to a ${allocation.allowance}-char per-entry allowance so the whole closure fits ${requiredCeiling} chars]` : "";
       required.push({ ...d, disposition, dispositionReason: rendered.truncated ? `delivered as a disclosed bounded excerpt: ${rendered.text.length} of ${d.fullTextChars} chars are in the initial context${reductionNote}` : `delivered in full in the initial context (${d.fullTextChars} chars)${reductionNote}`, deliveredChars: rendered.text.length });
-      context.push({ contextKey: d.key, kind: d.kind, sourceUnitKey: d.sourceUnitKey, ownerShardId: d.sourceUnitKey ? unitOwnerShard[d.sourceUnitKey] ?? null : null, documentId: d.documentId, absCharStart: d.absCharStart, absCharEnd: d.absCharEnd, text: rendered.text, truncated: rendered.truncated, fullTextHash: d.fullTextHash, chars: rendered.text.length, requiredBy: d.requiredBy, reason: `REQUIRED ${d.kind} "${d.target}" - ${d.evidence.join(", ")} (closure depth ${d.closureDepth}${d.viaKey ? `, via ${d.viaKey}` : ""}); ${rendered.truncated ? `bounded excerpt, ${rendered.text.length} of ${d.fullTextChars} chars` : "delivered in full"} [admitted: REQUIRED_TIER]`, tier: "REQUIRED", ownership: "READ_ONLY_CONTEXT", requiredEvidence: d.evidence, closureDepth: d.closureDepth });
+      const citedNote = d.citedAs.some((c) => c !== d.target) ? ` (cited as ${d.citedAs.filter((c) => c !== d.target).map((c) => `"${c}"`).join(", ")}${d.resolution?.aliasOf ? `; ${d.resolution.method}` : ""})` : "";
+      context.push({ contextKey: d.key, kind: d.kind, sourceUnitKey: d.sourceUnitKey, ownerShardId: d.sourceUnitKey ? unitOwnerShard[d.sourceUnitKey] ?? null : null, documentId: d.documentId, absCharStart: d.absCharStart, absCharEnd: d.absCharEnd, text: rendered.text, truncated: rendered.truncated, fullTextHash: d.fullTextHash, chars: rendered.text.length, requiredBy: d.requiredBy, reason: `REQUIRED ${d.kind} "${d.target}"${citedNote} - ${d.evidence.join(", ")} (closure depth ${d.closureDepth}${d.viaKey ? `, via ${d.viaKey}` : ""}); ${rendered.truncated ? `bounded excerpt, ${rendered.text.length} of ${d.fullTextChars} chars` : "delivered in full"} [admitted: REQUIRED_TIER]`, tier: "REQUIRED", ownership: "READ_ONLY_CONTEXT", requiredEvidence: d.evidence, closureDepth: d.closureDepth });
       contextChars += rendered.text.length;
       delivered.add(d.key);
     }
@@ -770,15 +771,21 @@ export function planCompilationShards(input: ShardPlanInput): ShardPlan {
     totals,
     dependencyCertification: {
       modelVersion: REQUIRED_DEPENDENCY_MODEL_VERSION,
-      shardsCertified: shards.filter((s) => s.dependencyCertificate.certificateStatus === "CERTIFIED_EXECUTABLE").length,
-      shardsFailed: shards.filter((s) => s.dependencyCertificate.certificateStatus !== "CERTIFIED_EXECUTABLE").length,
+      shardsContextComplete: shards.filter((s) => s.dependencyCertificate.certificateStatus === "CERTIFIED_CONTEXT_COMPLETE").length,
+      shardsLimitedExternal: shards.filter((s) => s.dependencyCertificate.certificateStatus === "CERTIFIED_WITH_EXPLICIT_EXTERNAL_LIMITATION").length,
+      shardsLimitedInternal: shards.filter((s) => s.dependencyCertificate.certificateStatus === "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION").length,
+      shardsPlanningFailed: shards.filter((s) => s.dependencyCertificate.certificateStatus === "PLANNING_FAILED_REQUIRED_CONTEXT_UNDELIVERABLE").length,
       requiredDependenciesTotal: shards.reduce((a, s) => a + s.dependencyCertificate.requiredDependenciesTotal, 0),
-      requiredDependenciesMaterialized: shards.reduce((a, s) => a + s.dependencyCertificate.requiredDependenciesMaterialized, 0),
-      requiredDependenciesBoundedExcerpt: shards.reduce((a, s) => a + s.dependencyCertificate.requiredDependenciesBoundedExcerpt, 0),
-      requiredDependenciesExternal: shards.reduce((a, s) => a + s.dependencyCertificate.requiredDependenciesExternal, 0),
-      requiredDependenciesUndeliverableDisclosed: shards.reduce((a, s) => a + s.dependencyCertificate.requiredDependenciesUndeliverableDisclosed, 0),
-      requiredDependenciesUnresolved: shards.reduce((a, s) => a + s.dependencyCertificate.requiredDependenciesUnresolved, 0),
-      allShardsExecutable: shards.every((s) => s.dependencyCertificate.certificateStatus === "CERTIFIED_EXECUTABLE"),
+      deliveredFull: shards.reduce((a, s) => a + s.dependencyCertificate.deliveredFull, 0),
+      deliveredBoundedExcerpt: shards.reduce((a, s) => a + s.dependencyCertificate.deliveredBoundedExcerpt, 0),
+      ownedPrimarySource: shards.reduce((a, s) => a + s.dependencyCertificate.ownedPrimarySource, 0),
+      external: shards.reduce((a, s) => a + s.dependencyCertificate.external, 0),
+      internalUnresolved: shards.reduce((a, s) => a + s.dependencyCertificate.internalUnresolved, 0),
+      ambiguous: shards.reduce((a, s) => a + s.dependencyCertificate.ambiguous, 0),
+      nonRequiredEdgesExcluded: shards.reduce((a, s) => a + s.dependencyCertificate.nonRequiredEdgesExcluded, 0),
+      deliverableNotDelivered: shards.reduce((a, s) => a + s.dependencyCertificate.deliverableNotDelivered, 0),
+      allShardsExecutable: shards.every((s) => s.dependencyCertificate.executable),
+      allShardsContextComplete: shards.every((s) => s.dependencyCertificate.contextComplete),
     },
     requiredContextResharding: { ...resharding, note: "shards split along must-link block boundaries BEFORE any provider call because their required-dependency closure did not fit the context budget (§10)" },
     planHash: hashParts(["shard-plan", ...shards.map((s) => s.shardHash)]),

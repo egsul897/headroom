@@ -58,7 +58,7 @@ import type { SemanticInventoryMode } from "../semantic-accountability/dual-pass
 // A v3-era cached compilation carries no accountability at all and must
 // never be served as-is.
 export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v4";
-export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v4";
+export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v5";
 export const SEMANTIC_COMPILER_TOOL_POLICY_VERSION = "phase-3b1-tool-policy.v2";
 
 // ---------------------------------------------------------------------------

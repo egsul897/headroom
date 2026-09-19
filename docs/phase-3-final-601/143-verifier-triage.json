@@ -1,0 +1,177 @@
+{
+ "artifact": "PRECISION AUDIT §17 - pre-spend triage of the 11 frozen verifier findings",
+ "at": "2026-09-19T04:06:19.950Z",
+ "paidCalls": 0,
+ "source": "docs/phase-3-final-601/113-verifier.json (frozen)",
+ "counts": {
+  "total": 11,
+  "MATERIAL": 8,
+  "UNCERTAIN": 1,
+  "NON_MATERIAL": 2,
+  "deterministic": 7,
+  "semantic": 4
+ },
+ "classes": {
+  "A": "DETERMINISTIC_PHASE3_PRODUCTION_DEFECT",
+  "B": "MODEL_VARIANCE / ONE-RUN SEMANTIC OUTPUT",
+  "C": "VERIFIER_FALSE_POSITIVE",
+  "D": "EXPLICIT_SAFE_LIMITATION",
+  "E": "PHASE4_COMPUTATION_ONLY",
+  "F": "NEEDS_FRESH_PAID_EVIDENCE"
+ },
+ "triage": [
+  {
+   "ordinal": 0,
+   "findingId": "5cdae40b83930f7ba8216f5094376ef6d7f22916f510049c506dac963b707215",
+   "severity": "MATERIAL",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "method": "SEMANTIC_ONLY",
+   "classification": "A_DETERMINISTIC_PHASE3_PRODUCTION_DEFECT",
+   "evidence": "frozen IR: 3 PROHIBITION rules from 6.01(a) carry 7/3/3 exceptions; 47 rules from 31 distinct 6.01(b)(n) clauses exist; the 6.01(b) lead-in provides that 6.01(a) shall not apply to them. No shard's model can link across shards; the stitcher did not.",
+   "fix": "stitcher pass synthesizeCrossShardLinks (exceptions from 'shall not apply to' lead-ins)",
+   "zeroCostProjection": {
+    "exceptionsSynthesizedOnFrozenIR": 137,
+    "distinctCarveOutRules": 47
+   },
+   "tests": "dd-cross-shard-links.test.ts"
+  },
+  {
+   "ordinal": 1,
+   "findingId": "912e4ba0fce2e6ce4e51186060abe577242ed53362b92af1df6cb8a873146035",
+   "severity": "MATERIAL",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "method": "SEMANTIC_ONLY",
+   "classification": "F_NEEDS_FRESH_PAID_EVIDENCE (delivery-caused; previous 0/11 attribution was a rule-id join and too narrow)",
+   "evidence": "the model's stated reason ('text was truncated in the retrievable evidence') was literally true under planner v2",
+   "v2Probe": {
+    "measuredBy": "the pre-remediation planner (planner v2, SHA 1b36eb6) run in a detached worktree on the frozen inventory",
+    "result": [
+     {
+      "shardId": "shard:2eb6ff75386e45a57593",
+      "context": "section:6.01(a) REFERENCED_SECTION chars=1800 truncated=true"
+     },
+     {
+      "shardId": "shard:e10ed610ecff8b399619",
+      "context": "section:6.01(a) REFERENCED_SECTION chars=1800 truncated=true"
+     },
+     {
+      "shardId": "shard:86cc5e439f113d6053a9",
+      "context": "section:6.01(a) unresolved reason=BUDGET"
+     }
+    ],
+    "underV4": "section:6.01(a) is REQUIRED and delivered in full (2 shards)"
+   },
+   "fix": "delivered in full by the required tier since v3; nothing further in code",
+   "note": "$1.00 is a ratio-test token in this construct, not a basket amount"
+  },
+  {
+   "ordinal": 2,
+   "findingId": "74ce23bc8a8f70914c04cc994c4438fe02703af41c45f0839e7a53c682b300dc",
+   "severity": "MATERIAL",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "method": "SEMANTIC_ONLY",
+   "classification": "A_DETERMINISTIC_PHASE3_PRODUCTION_DEFECT (partial) + F for the remainder",
+   "evidence": "frozen IR: 57 unresolvedDependencies; 18 name a section exactly one stitched rule was compiled from (deterministically resolvable), 5 name a section with more than one rule (ambiguous - stays unresolved), 34 name no compiled rule",
+   "fix": "stitcher pass synthesizeCrossShardLinks (unique section-reference resolution)",
+   "zeroCostProjection": {
+    "dependenciesResolvedOnFrozenIR": 18,
+    "leftUnresolved": 39,
+    "byReason": {
+     "NO_RULE_COMPILED_FROM_THAT_SECTION": 24,
+     "NOT_A_SECTION_REFERENCE": 10,
+     "MORE_THAN_ONE_RULE_COMPILED_FROM_THAT_SECTION": 5
+    }
+   },
+   "tests": "dd-cross-shard-links.test.ts"
+  },
+  {
+   "ordinal": 3,
+   "findingId": "fe2b53b7626ddb0ba36a2e0b1299a9203e338715c8ddd3f557976a03cc2628a6",
+   "severity": "UNCERTAIN",
+   "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+   "method": "SEMANTIC_ONLY",
+   "classification": "A_DETERMINISTIC_PHASE3_PRODUCTION_DEFECT (prompt never requested the field) + F to observe the effect",
+   "evidence": "entityScope is empty on all 63 frozen rules; the wire schema declares entityScope/entityScopeExcluded and the normalizer maps them, but the compiler prompt never instructed the model to fill them (one mention, inside the ENTITY_SCOPE_REFERENCE node description); the frozen IR contains 0 ENTITY_SCOPE_REFERENCE nodes, so nothing could be derived either",
+   "fix": "prompt instruction (ENTITY SCOPE) + deterministic derivation from ENTITY_SCOPE_REFERENCE nodes when the rule-level fields are empty; prompt version v4 -> v5",
+   "tests": "dd-entity-scope.test.ts"
+  },
+  {
+   "ordinal": 4,
+   "findingId": "408497d17f4d0467d62a5217064db4aa50a70397faed87daed397b5dc94e1923",
+   "severity": "MATERIAL",
+   "findingType": "MISSING_BASKET",
+   "method": "DETERMINISTIC_ONLY",
+   "classification": "F_NEEDS_FRESH_PAID_EVIDENCE (same root as finding 1) / C candidate",
+   "evidence": "'$1.00 of additional Indebtedness' is a ratio-test construct; its absence follows from the (14) alternative being modelled UNSUPPORTED under truncated §6.01(a) context (v2). Once represented, the deterministic amount check either matches or is a verifier over-read of a test token as a basket amount.",
+   "fix": "none in code beyond finding 1"
+  },
+  {
+   "ordinal": 5,
+   "findingId": "408497d17f4d0467d62a5217064db4aa50a70397faed87daed397b5dc94e1923",
+   "severity": "MATERIAL",
+   "findingType": "MISSING_BASKET",
+   "method": "DETERMINISTIC_ONLY",
+   "classification": "F_NEEDS_FRESH_PAID_EVIDENCE (same root as finding 1) / C candidate",
+   "evidence": "'$1.00 of additional Indebtedness' is a ratio-test construct; its absence follows from the (14) alternative being modelled UNSUPPORTED under truncated §6.01(a) context (v2). Once represented, the deterministic amount check either matches or is a verifier over-read of a test token as a basket amount.",
+   "fix": "none in code beyond finding 1"
+  },
+  {
+   "ordinal": 6,
+   "findingId": "408497d17f4d0467d62a5217064db4aa50a70397faed87daed397b5dc94e1923",
+   "severity": "MATERIAL",
+   "findingType": "MISSING_BASKET",
+   "method": "DETERMINISTIC_ONLY",
+   "classification": "F_NEEDS_FRESH_PAID_EVIDENCE (same root as finding 1) / C candidate",
+   "evidence": "'$1.00 of additional Indebtedness' is a ratio-test construct; its absence follows from the (14) alternative being modelled UNSUPPORTED under truncated §6.01(a) context (v2). Once represented, the deterministic amount check either matches or is a verifier over-read of a test token as a basket amount.",
+   "fix": "none in code beyond finding 1"
+  },
+  {
+   "ordinal": 7,
+   "findingId": "408497d17f4d0467d62a5217064db4aa50a70397faed87daed397b5dc94e1923",
+   "severity": "MATERIAL",
+   "findingType": "MISSING_BASKET",
+   "method": "DETERMINISTIC_ONLY",
+   "classification": "F_NEEDS_FRESH_PAID_EVIDENCE (same root as finding 1) / C candidate",
+   "evidence": "'$1.00 of additional Indebtedness' is a ratio-test construct; its absence follows from the (14) alternative being modelled UNSUPPORTED under truncated §6.01(a) context (v2). Once represented, the deterministic amount check either matches or is a verifier over-read of a test token as a basket amount.",
+   "fix": "none in code beyond finding 1"
+  },
+  {
+   "ordinal": 8,
+   "findingId": "0737f17fd453024fedda146663cf161151bc752f17c1dea21760fbb287872dbc",
+   "severity": "MATERIAL",
+   "findingType": "MISSING_RULE",
+   "method": "DETERMINISTIC_ONLY",
+   "classification": "B_MODEL_VARIANCE (one-run omission in a completed shard) -> F to re-observe",
+   "evidence": "2.50:1.00 sits at region offset 5442 inside a clause owned by a shard that ended SHARD_COMPLETE; the model omitted the ratio threshold; Pass C's two material missing values were 'unlimited amount' and 'one (1)', not this ratio, so it was caught only by the verifier's deterministic value check",
+   "fix": "none (not deterministic)"
+  },
+  {
+   "ordinal": 9,
+   "findingId": "1fe65efe2ee5c12b2a7085c10c1b07654401eb985c02b852cd80fd0d2f335527",
+   "severity": "NON_MATERIAL",
+   "findingType": "WRONG_ENTITY_SCOPE",
+   "method": "DETERMINISTIC_ONLY",
+   "classification": "D_EXPLICIT_SAFE_LIMITATION (downgraded NON_MATERIAL by Layer 2) with the same root as finding 3",
+   "evidence": "entity-scope terms present in source, IR records none",
+   "fix": "as finding 3"
+  },
+  {
+   "ordinal": 10,
+   "findingId": "ea4b35d164fedb4fae7a504a71a20edd7145e54256831891874831ffea3ff34d",
+   "severity": "NON_MATERIAL",
+   "findingType": "MISSING_RECLASSIFICATION",
+   "method": "DETERMINISTIC_ONLY",
+   "classification": "D_EXPLICIT_SAFE_LIMITATION (downgraded NON_MATERIAL by Layer 2) / B",
+   "evidence": "one reclassification signal in source, no RECLASSIFIABLE_TO edge; the IR does carry RECLASSIFICATION_RULE rules",
+   "fix": "none (not deterministic)"
+  }
+ ],
+ "deterministicDefectsFixedInThisMission": [
+  "cross-shard carve-out exception linkage (finding 0)",
+  "unique section-reference dependency resolution (finding 2, partial)",
+  "entityScope never requested from the model (findings 3/9)"
+ ],
+ "deterministicDefectsLeftUnfixed": [],
+ "phase4Boundary": "no computational evaluation was touched; every classification is about semantic representation",
+ "projectionCaveat": "the zero-cost projection applies the new stitcher pass to the FROZEN rules with the v4 plan's units and the frozen region text; it shows what the pass would link, not a new compilation"
+}

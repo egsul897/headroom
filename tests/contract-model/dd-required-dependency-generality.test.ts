@@ -129,7 +129,7 @@ describe("§27 required-dependency delivery is a property of the architecture, n
       const keys = deliveredRequiredKeys(plan);
       expect(keys.has(termKey(capTerm))).toBe(true);
       for (const c of shape.componentTerms) expect(keys.has(termKey(c))).toBe(true);
-      expect(plan.dependencyCertification.requiredDependenciesUnresolved).toBe(0);
+      expect(plan.dependencyCertification.deliverableNotDelivered).toBe(0);
       expect(plan.dependencyCertification.allShardsExecutable).toBe(true);
     }
   });
@@ -141,7 +141,7 @@ describe("§27 required-dependency delivery is a property of the architecture, n
       expect(keys.has(sectionKey(crossRefSection))).toBe(true);
       const dep = plan.shards.flatMap((s) => s.requiredDependencies).find((d) => d.key === sectionKey(crossRefSection));
       expect(dep?.evidence).toContain("CROSS_REFERENCE_IN_REQUIRED_DEFINITION");
-      expect(plan.dependencyCertification.requiredDependenciesUnresolved).toBe(0);
+      expect(plan.dependencyCertification.deliverableNotDelivered).toBe(0);
     }
   });
 
@@ -155,7 +155,7 @@ describe("§27 required-dependency delivery is a property of the architecture, n
       expect(target, `forwarding target ${forwardingSection} required`).toBeDefined();
       expect(target!.evidence).toContain("FORWARDING_DEFINITION_TARGET");
       expect(target!.disposition).not.toBe("UNRESOLVED");
-      expect(plan.dependencyCertification.requiredDependenciesUnresolved).toBe(0);
+      expect(plan.dependencyCertification.deliverableNotDelivered).toBe(0);
     }
   });
 
@@ -166,7 +166,7 @@ describe("§27 required-dependency delivery is a property of the architecture, n
     for (const k of expected) expect(keys.has(k), `${k} delivered`).toBe(true);
     // every delivered required entry is READ-ONLY context of the REQUIRED tier - never owned material
     for (const s of plan.shards) for (const e of s.context.filter((x) => x.tier === "REQUIRED")) expect(e.ownership).toBe("READ_ONLY_CONTEXT");
-    expect(plan.dependencyCertification.requiredDependenciesUnresolved).toBe(0);
+    expect(plan.dependencyCertification.deliverableNotDelivered).toBe(0);
   });
 
   it("E - an over-budget required closure reacts deterministically and never falls back to an optional tool call", () => {
@@ -191,12 +191,12 @@ describe("§27 required-dependency delivery is a property of the architecture, n
       if (dep.fullTextChars <= cert.requiredTierAllocation.perEntryAllowanceChars) expect(e.truncated).toBe(false);
     }
     // whatever still could not be delivered is disclosed as an explicit planning failure - never silent
-    if (cert.requiredDependenciesUnresolved > 0) {
+    if (cert.deliverableNotDelivered > 0) {
       expect(cert.certificateStatus).toBe("PLANNING_FAILED_REQUIRED_CONTEXT_UNDELIVERABLE");
       for (const u of cert.undelivered) expect(shard.unresolvedContext.some((x) => x.key === u.key && x.reason === "BUDGET")).toBe(true);
     }
     // and the same closure at the production ceiling is fully delivered - the closure is not the problem, capacity is
-    expect(full.dependencyCertification.requiredDependenciesUnresolved).toBe(0);
+    expect(full.dependencyCertification.deliverableNotDelivered).toBe(0);
   });
 
   it("E2 - the required tier is never rescued by, and never leaks into, the optional tier", () => {
@@ -223,18 +223,18 @@ describe("§27 required-dependency delivery is a property of the architecture, n
     const b = planFor({ ...BASE, amounts: [3_250_000, 999_000_000, 12_500] });
     const keysOf = (p: ShardPlan) => [...deliveredRequiredKeys(p)].sort();
     expect(keysOf(b)).toEqual(keysOf(a));
-    expect(b.dependencyCertification.requiredDependenciesUnresolved).toBe(0);
+    expect(b.dependencyCertification.deliverableNotDelivered).toBe(0);
   });
 
   it("G - a dependency that does not exist is disclosed by name and never fabricated", () => {
     const plan = planFor({ ...BASE, crossRefSection: "99.99(z)", crossRefSectionExists: false });
     const dep = plan.shards.flatMap((s) => s.requiredDependencies).find((d) => d.key === sectionKey("99.99(z)"));
     expect(dep, "the cited-but-absent section is still DERIVED as required").toBeDefined();
-    expect(dep!.disposition).toBe("UNDELIVERABLE_DISCLOSED");
+    expect(dep!.disposition).toBe("INTERNAL_REQUIRED_DEPENDENCY_UNRESOLVED");
     expect(dep!.fullText).toBe("");
     // it is disclosed to the model by name, never fabricated and never silently dropped
     expect(plan.shards.some((s) => s.unresolvedContext.some((u) => u.key === sectionKey("99.99(z)")))).toBe(true);
     // an absent dependency is disclosed, not a delivery failure: the plan is still certified executable
-    expect(plan.dependencyCertification.requiredDependenciesUnresolved).toBe(0);
+    expect(plan.dependencyCertification.deliverableNotDelivered).toBe(0);
   });
 });

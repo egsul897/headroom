@@ -228,6 +228,81 @@ function contentIdentityIgnoringIds(obj: IRRule | IRDefinition | IRSharedCapacit
 // Stitching
 // ---------------------------------------------------------------------------
 
+
+// ---------------------------------------------------------------------------
+// PHASE 3 / 6.01 precision audit §17 - deterministic cross-shard structural linkage.
+//
+// Sharded compilation splits a prohibition from the carve-outs enumerated under it and splits a basket from the
+// baskets it refers to by section number. Each shard's model can only link what it can see, so the stitched IR was
+// missing two kinds of edge that the SOURCE fixes deterministically:
+//   1. EXCEPTIONS: a clause whose lead-in provides that "Section S shall not apply to" its enumerated sub-clauses makes
+//      every rule compiled from one of those sub-clauses a carve-out from every PROHIBITION rule compiled from S.
+//   2. DEPENDENCIES: an unresolved dependency whose target is a section reference that exactly one stitched rule was
+//      compiled from is that rule. (More than one candidate, or none, stays unresolved - never guessed.)
+// Both are structural facts of the document, not judgments, so the stitcher applies them after every shard has
+// been merged. Generic: no section number, term or instrument is named here.
+// ---------------------------------------------------------------------------
+
+const NOT_APPLY_LEAD_IN = /(?:provisions\s+of\s+)?Section\s+(\d+(?:\.\d+)+(?:\([^()\s]{1,8}\))*)\s+(?:hereof\s+|of\s+this\s+Agreement\s+)?(?:shall|will|do(?:es)?)\s+not\s+apply\s+to\b/i;
+const normSec = (ref: string) => ref.replace(/^\s*(?:§+|Sections?|Secs?\.?)\s*/i, "").replace(/\s+/g, "").toLowerCase();
+const looksLikeSectionRef = (ref: string) => /^\s*(?:§|Sections?\b|Secs?\.)/i.test(ref) || /^\s*\d+(?:\.\d+)+(?:\([^()\s]{1,8}\))*\s*$/.test(ref);
+
+export interface CrossShardLinkReport {
+  exceptionsSynthesized: { prohibitionRuleId: string; carveOutRuleId: string; prohibitionSection: string; enumeratingClause: string }[];
+  dependenciesResolved: { ruleId: string; targetRef: string; targetRuleId: string }[];
+  dependenciesLeftUnresolved: { ruleId: string; targetRef: string; reason: "NO_RULE_COMPILED_FROM_THAT_SECTION" | "MORE_THAN_ONE_RULE_COMPILED_FROM_THAT_SECTION" | "NOT_A_SECTION_REFERENCE" }[];
+}
+
+/** Mutates `rules` in place; returns what it did. Pure with respect to everything else. */
+export function synthesizeCrossShardLinks(rules: IRRule[], plan: ShardPlan, regionTextById: Map<string, string>, documentId: string): CrossShardLinkReport {
+  const report: CrossShardLinkReport = { exceptionsSynthesized: [], dependenciesResolved: [], dependenciesLeftUnresolved: [] };
+  // 1. exceptions from "shall not apply to" lead-ins
+  for (const u of plan.units) {
+    if (!u.sectionRef) continue;
+    const text = (regionTextById.get(u.regionId) ?? "").slice(u.charStart, u.charEnd);
+    const m = NOT_APPLY_LEAD_IN.exec(text.slice(0, 600));
+    if (!m) continue;
+    const prohibitionSection = normSec(m[1]!);
+    const enumerating = normSec(u.sectionRef);
+    if (!enumerating || enumerating === prohibitionSection) continue;
+    const prohibitions = rules.filter((r) => r.ruleType === "PROHIBITION" && r.sourceSectionRef && normSec(r.sourceSectionRef) === prohibitionSection);
+    if (prohibitions.length === 0) continue;
+    const carveOuts = rules.filter((r) => r.ruleType !== "PROHIBITION" && r.sourceSectionRef && normSec(r.sourceSectionRef).startsWith(`${enumerating}(`));
+    for (const p of prohibitions) for (const c of carveOuts) {
+      if (p.exceptions.some((e) => e.permissionRuleId === c.ruleId)) continue;
+      p.exceptions.push({
+        exceptionId: `rule[${p.ruleId}].exception[stitched-carve-out:${c.ruleId}]`,
+        appliesToRuleId: p.ruleId,
+        description: `carve-out linked deterministically by the stitcher: the lead-in of ${u.sectionRef} provides that Section ${m[1]} shall not apply to its enumerated clauses, and this rule was compiled from ${c.sourceSectionRef}`,
+        permissionRuleId: c.ruleId,
+        conditions: [],
+        provenance: { documentId, sourceNodeKey: null, sourceCitation: `§${u.sectionRef}`, excerpt: text.slice(0, 240) },
+      });
+      report.exceptionsSynthesized.push({ prohibitionRuleId: p.ruleId, carveOutRuleId: c.ruleId, prohibitionSection, enumeratingClause: enumerating });
+    }
+  }
+  // 2. section-reference dependencies that exactly one stitched rule was compiled from
+  const bySection = new Map<string, string[]>();
+  for (const r of rules) if (r.sourceSectionRef) { const k = normSec(r.sourceSectionRef); bySection.set(k, [...(bySection.get(k) ?? []), r.ruleId]); }
+  for (const r of rules) {
+    if (!r.unresolvedDependencies?.length) continue;
+    const keep: NonNullable<IRRule["unresolvedDependencies"]> = [];
+    for (const u of r.unresolvedDependencies) {
+      if (!looksLikeSectionRef(u.targetRef)) { keep.push(u); report.dependenciesLeftUnresolved.push({ ruleId: r.ruleId, targetRef: u.targetRef, reason: "NOT_A_SECTION_REFERENCE" }); continue; }
+      const ids = (bySection.get(normSec(u.targetRef)) ?? []).filter((id) => id !== r.ruleId);
+      if (ids.length === 1) {
+        r.dependsOn.push({ relationshipType: u.relationshipType, targetRuleId: ids[0]!, description: `${u.description} [resolved deterministically by the stitcher: exactly one stitched rule was compiled from ${u.targetRef}]`, ...(u.inventoryItemIds ? { inventoryItemIds: u.inventoryItemIds } : {}) });
+        report.dependenciesResolved.push({ ruleId: r.ruleId, targetRef: u.targetRef, targetRuleId: ids[0]! });
+      } else {
+        keep.push(u);
+        report.dependenciesLeftUnresolved.push({ ruleId: r.ruleId, targetRef: u.targetRef, reason: ids.length === 0 ? "NO_RULE_COMPILED_FROM_THAT_SECTION" : "MORE_THAN_ONE_RULE_COMPILED_FROM_THAT_SECTION" });
+      }
+    }
+    r.unresolvedDependencies = keep.length > 0 ? keep : undefined;
+  }
+  return report;
+}
+
 export function stitchShardResults(input: StitchInput): StitchedCompilation {
   const { plan, frozenInventory, companyId, instrumentKey, candidateRef } = input;
   const byId = new Map(frozenInventory.items.map((i) => [i.inventoryItemId, i]));
@@ -436,6 +511,9 @@ export function stitchShardResults(input: StitchInput): StitchedCompilation {
   }
   for (const d of stitchedDefs) remapExpr(d.calculationExpression, `definitions.${d.definitionId}.calculationExpression`, "(stitched)");
   void knownCapIds;
+  // §17 - structural edges the source fixes deterministically but no single shard could see.
+  const crossShardLinks = synthesizeCrossShardLinks(stitchedRules, plan, regionTextById, stitchedRules[0]?.sourceDocumentId ?? plan.documentId);
+  if (crossShardLinks.exceptionsSynthesized.length + crossShardLinks.dependenciesResolved.length > 0) unresolvedIssues.push(`stitcher linked ${crossShardLinks.exceptionsSynthesized.length} carve-out exception(s) and resolved ${crossShardLinks.dependenciesResolved.length} section-reference dependenc(ies) across shards deterministically`);
 
   // --- Shard status roll-up and unresolved owned items.
   const shardSummaries = plan.shards.map((s) => {
@@ -510,5 +588,5 @@ export function stitchShardResults(input: StitchInput): StitchedCompilation {
     });
   }
 
-  return { candidateRef, planHash: plan.planHash, status, failureReasons, rules: stitchedRules, definitions: stitchedDefs, sharedCapacities: stitchedCaps, inventoryDispositions: dispositions, contextualEmissions, collisions, definitionSourceAnchors, definitionAttribution, definitionConflicts, idMap, shards: shardSummaries, unresolvedOwnedItems, accountability, canonicalizedLineageReferences, unresolvedIssues };
+  return { candidateRef, planHash: plan.planHash, status, failureReasons, rules: stitchedRules, definitions: stitchedDefs, sharedCapacities: stitchedCaps, inventoryDispositions: dispositions, contextualEmissions, collisions, definitionSourceAnchors, definitionAttribution, definitionConflicts, idMap, shards: shardSummaries, unresolvedOwnedItems, accountability, canonicalizedLineageReferences, unresolvedIssues, crossShardLinks };
 }

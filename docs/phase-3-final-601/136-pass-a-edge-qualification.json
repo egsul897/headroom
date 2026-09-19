@@ -1,0 +1,214 @@
+{
+ "artifact": "PRECISION AUDIT §8 - every Pass-A referenced-term edge qualified deterministically before it may seed the closure",
+ "at": "2026-09-19T04:06:10.386Z",
+ "paidCalls": 0,
+ "layer": {
+  "input": "AI says 'referenced term'",
+  "steps": [
+   "DEFINED_TERM (index)",
+   "GRAMMATICAL_NUMBER_VARIANT (index's own number rule; the variant definition must exist)",
+   "SOURCE_DECLARED_CORRELATIVE (the defined term's own text declares the cited form)",
+   "INLINE_DECLARATION_IN_OWNED_SOURCE (quoted declaration inside the shard's own text)",
+   "DECLARATION_FOUND_IN_SOURCE_TEXT (a declaration grammar the detector does not model)",
+   "EXTERNAL_BY_SOURCE_DECLARATION ('(as defined in X)' + package identity)",
+   "ORDINARY_LEGAL_WORD (lower-case)",
+   "TERM_ABSENT_FROM_SOURCE",
+   "UNKNOWN_CAPITALISED_TERM"
+  ],
+  "seedsClosure": [
+   "DEFINED_TERM",
+   "GRAMMATICAL_NUMBER_VARIANT",
+   "SOURCE_DECLARED_CORRELATIVE",
+   "DECLARATION_FOUND_IN_SOURCE_TEXT"
+  ],
+  "ownedNotContext": [
+   "INLINE_DECLARATION_IN_OWNED_SOURCE"
+  ],
+  "limitation": [
+   "EXTERNAL_BY_SOURCE_DECLARATION",
+   "UNKNOWN_CAPITALISED_TERM",
+   "AMBIGUOUS"
+  ],
+  "excluded": [
+   "ORDINARY_LEGAL_WORD",
+   "TERM_ABSENT_FROM_SOURCE"
+  ]
+ },
+ "missionClasses": {
+  "DEFINED_TERM": [
+   "DEFINED_TERM",
+   "DECLARATION_FOUND_IN_SOURCE_TEXT"
+  ],
+  "ORDINARY_LEGAL_WORD": [
+   "ORDINARY_LEGAL_WORD"
+  ],
+  "INFLECTION_OF_DEFINED_TERM": [
+   "GRAMMATICAL_NUMBER_VARIANT",
+   "SOURCE_DECLARED_CORRELATIVE"
+  ],
+  "UNKNOWN": [
+   "UNKNOWN_CAPITALISED_TERM",
+   "TERM_ABSENT_FROM_SOURCE"
+  ],
+  "AMBIGUOUS": [
+   "AMBIGUOUS"
+  ]
+ },
+ "edgesOnTheFrozenUnit": 225,
+ "byMethod": {
+  "GRAMMATICAL_NUMBER_VARIANT": 36,
+  "INLINE_DECLARATION_IN_OWNED_SOURCE": 3,
+  "DEFINED_TERM": 173,
+  "UNKNOWN_CAPITALISED_TERM": 1,
+  "EXTERNAL_BY_SOURCE_DECLARATION": 2,
+  "DECLARATION_FOUND_IN_SOURCE_TEXT": 8,
+  "SOURCE_DECLARED_CORRELATIVE": 2
+ },
+ "examplesByMethod": {
+  "GRAMMATICAL_NUMBER_VARIANT": [
+   {
+    "cited": "Restricted Subsidiaries",
+    "aliasOf": "Restricted Subsidiary",
+    "shard": 0
+   },
+   {
+    "cited": "Guarantor",
+    "aliasOf": "Guarantors",
+    "shard": 0
+   },
+   {
+    "cited": "Restricted Subsidiaries",
+    "aliasOf": "Restricted Subsidiary",
+    "shard": 0
+   },
+   {
+    "cited": "Capitalized Lease Obligations",
+    "aliasOf": "Capitalized Lease Obligation",
+    "shard": 2
+   },
+   {
+    "cited": "Restricted Party",
+    "aliasOf": "Restricted Parties",
+    "shard": 2
+   },
+   {
+    "cited": "Capitalized Lease Obligations",
+    "aliasOf": "Capitalized Lease Obligation",
+    "shard": 2
+   }
+  ],
+  "INLINE_DECLARATION_IN_OWNED_SOURCE": [
+   {
+    "cited": "incur",
+    "aliasOf": null,
+    "shard": 0
+   },
+   {
+    "cited": "incur",
+    "aliasOf": null,
+    "shard": 0
+   },
+   {
+    "cited": "incurrence",
+    "aliasOf": null,
+    "shard": 0
+   }
+  ],
+  "DEFINED_TERM": [
+   {
+    "cited": "Acquired Indebtedness",
+    "aliasOf": null,
+    "shard": 0
+   },
+   {
+    "cited": "Disqualified Stock",
+    "aliasOf": null,
+    "shard": 0
+   },
+   {
+    "cited": "Acquired Indebtedness",
+    "aliasOf": null,
+    "shard": 0
+   },
+   {
+    "cited": "Disqualified Stock",
+    "aliasOf": null,
+    "shard": 0
+   },
+   {
+    "cited": "Restricted Subsidiary",
+    "aliasOf": null,
+    "shard": 0
+   },
+   {
+    "cited": "Preferred Stock",
+    "aliasOf": null,
+    "shard": 0
+   }
+  ],
+  "UNKNOWN_CAPITALISED_TERM": [
+   {
+    "cited": "Junior Lien Priority",
+    "aliasOf": null,
+    "shard": 0
+   }
+  ],
+  "EXTERNAL_BY_SOURCE_DECLARATION": [
+   {
+    "cited": "Borrowing Base",
+    "aliasOf": null,
+    "shard": 1
+   },
+   {
+    "cited": "Borrowing Base",
+    "aliasOf": null,
+    "shard": 1
+   }
+  ],
+  "DECLARATION_FOUND_IN_SOURCE_TEXT": [
+   {
+    "cited": "Guarantee",
+    "aliasOf": null,
+    "shard": 2
+   },
+   {
+    "cited": "Net Proceeds",
+    "aliasOf": null,
+    "shard": 3
+   },
+   {
+    "cited": "Pro Forma Basis",
+    "aliasOf": null,
+    "shard": 3
+   },
+   {
+    "cited": "Pro Forma Basis",
+    "aliasOf": null,
+    "shard": 3
+   },
+   {
+    "cited": "Pro Forma Basis",
+    "aliasOf": null,
+    "shard": 3
+   },
+   {
+    "cited": "Pro Forma Basis",
+    "aliasOf": null,
+    "shard": 3
+   }
+  ],
+  "SOURCE_DECLARED_CORRELATIVE": [
+   {
+    "cited": "Refinanced",
+    "aliasOf": "Refinance",
+    "shard": 3
+   },
+   {
+    "cited": "Refinancing",
+    "aliasOf": "Refinance",
+    "shard": 3
+   }
+  ]
+ },
+ "guarantee": "a hallucinated edge can create no downstream context: it is NON_REQUIRED_EDGE, carried for audit, never admitted, never expanded (tests: dd-anti-overfit E, dd-certificate-honesty end-to-end)"
+}

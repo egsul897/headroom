@@ -25,6 +25,19 @@ const A127 = a("127-ownership-and-projection"), A128 = a("128-missing-context-co
 const A130 = a("130-generality"), A131 = a("131-regression");
 const file = (env: string) => { const p = process.env[env]; return p && existsSync(p) ? readFileSync(p, "utf8") : null; };
 const tsc = file("DD_TSC"), lint = file("DD_LINT"), build = file("DD_BUILD");
+/**
+ * Lint evidence. The previous check tested the output for the WORD "error", which the success line itself contains
+ * ("No ESLint warnings or errors"), so a clean run was recorded as ERRORS. ESLint's own success marker and its
+ * problem-summary line are the evidence; the exit code, when the caller recorded it as a trailing "EXIT=<n>" line,
+ * is decisive.
+ */
+function lintVerdict(output: string): "CLEAN" | "ERRORS" | "UNPARSEABLE" {
+  const exit = /^EXIT=(\d+)\s*$/m.exec(output);
+  if (exit) return exit[1] === "0" ? "CLEAN" : "ERRORS";
+  if (/No ESLint warnings or errors/.test(output)) return "CLEAN";
+  if (/✖\s+\d+\s+problems?|\b\d+\s+errors?\b/.test(output)) return "ERRORS";
+  return "UNPARSEABLE";
+}
 /** The pre-existing tsc errors this mission did not introduce and did not fix - disclosed, never filtered silently. */
 const PREEXISTING_TSC = /tests\/foundation-audit\//;
 const tscErrors = tsc === null ? null : tsc.split("\n").filter((l) => /error TS\d+/.test(l));
@@ -63,7 +76,7 @@ C("§24", "the operative-state signal is classified and explicitly held out of s
 C("§25", "all 11 verifier findings of the failed run are classified against the delivery hypothesis", A129.summary.total === 11 && A129.summary.plausiblyDeliveryCaused + A129.summary.notAttributableToDelivery === 11, A129.summary);
 C("§26", "no Pass C, trust gate, verifier or scorer module was changed to achieve green", sh("git diff --name-only HEAD -- lib/contract-model/compiler/semantic-verification lib/contract-model/compiler/semantic-accountability/reconciliation.ts | head -20").trim() === "", { changedVerificationFiles: sh("git diff --name-only HEAD -- lib/contract-model/compiler/semantic-verification lib/contract-model/compiler/semantic-accountability/reconciliation.ts").trim() || "(none)" });
 C("§27", "the generality suite passes on synthetic, parameterized corpora that name no real agreement", A130.result !== "NOT_SUPPLIED (re-run with DD_GENERALITY=<vitest json>)" && (A130.result as Any)?.failed === 0 && (A130.result as Any)?.passed >= 8, A130.result === "NOT_SUPPLIED (re-run with DD_GENERALITY=<vitest json>)" ? { supplied: false } : { tests: (A130.result as Any).tests, passed: (A130.result as Any).passed, failed: (A130.result as Any).failed });
-C("§28", "no test file that passed at the mission's starting SHA fails at HEAD, and tsc introduces no new error", Array.isArray(A131.fileLevelRegressions) && (A131.fileLevelRegressions as string[]).length === 0 && (tscNew === null || tscNew.length === 0), { fileLevelRegressions: A131.fileLevelRegressions, newTscErrors: tscNew === null ? "NOT_SUPPLIED" : tscNew.length, preexistingTscErrors: tscErrors === null ? "NOT_SUPPLIED" : tscErrors.length - (tscNew?.length ?? 0), lint: lint === null ? "NOT_SUPPLIED" : /error/i.test(lint) ? "ERRORS" : "CLEAN", build: build === null ? "NOT_SUPPLIED" : /Compiled successfully|✓ Compiled/i.test(build) ? "OK" : "CHECK" });
+C("§28", "no test file that passed at the mission's starting SHA fails at HEAD, and tsc introduces no new error", Array.isArray(A131.fileLevelRegressions) && (A131.fileLevelRegressions as string[]).length === 0 && (tscNew === null || tscNew.length === 0), { fileLevelRegressions: A131.fileLevelRegressions, newTscErrors: tscNew === null ? "NOT_SUPPLIED" : tscNew.length, preexistingTscErrors: tscErrors === null ? "NOT_SUPPLIED" : tscErrors.length - (tscNew?.length ?? 0), lint: lint === null ? "NOT_SUPPLIED" : lintVerdict(lint), build: build === null ? "NOT_SUPPLIED" : /Compiled successfully|✓ Compiled/i.test(build) ? "OK" : "CHECK" });
 C("§30", "no paid call was made by this mission, and no paid run is authorized by this gate", [A121, A122, A123, A124, A125, A126, A127, A128, A129, A130, A131].every((x) => x.paidCalls === 0), { paidCalls: 0, authorizesAPaidRun: false });
 
 const PASS = conditions.filter((c) => c.pass).length;
