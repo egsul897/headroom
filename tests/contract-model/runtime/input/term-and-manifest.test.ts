@@ -238,3 +238,61 @@ describe("repeatability", () => {
     expect(a.dependencies.map((d) => d.key)).toEqual(["m-a", "m-b"]);
   });
 });
+
+describe("the manifest refuses to pick between competing Phase-3 objects", () => {
+  it("two definitions with the same term name, company and instrument are not expanded, and both are named", () => {
+    const d1 = definition("ir-definition:one", "term-t", MUL(PCT(0.5), METRIC("metric-inner-a")));
+    const d2 = definition("ir-definition:two", "term-t", MUL(PCT(0.5), METRIC("metric-inner-b")));
+    const m = buildFinancialDependencyManifest({ expression: TERM("term-t"), definitions: [d1, d2], ...ctx });
+    expect(m.ambiguousExpansions.length).toBe(1);
+    expect(m.ambiguousExpansions[0]!.kind).toBe("DEFINITION");
+    expect(m.ambiguousExpansions[0]!.candidateIds).toEqual(["ir-definition:one", "ir-definition:two"]);
+    expect(m.expandedObjects).toEqual([]);
+    // Neither inner metric was adopted; the term itself is what must be supplied or disambiguated.
+    expect(m.dependencies.map((d) => d.key)).toEqual(["term-t"]);
+    expect(m.dependencies[0]!.inputKind).toBe("TERM_VALUE");
+  });
+
+  it("the refusal does not depend on which definition comes first in the array", () => {
+    const d1 = definition("ir-definition:one", "term-t", MUL(PCT(0.5), METRIC("metric-inner-a")));
+    const d2 = definition("ir-definition:two", "term-t", MUL(PCT(0.5), METRIC("metric-inner-b")));
+    const expr = TERM("term-t");
+    const a = buildFinancialDependencyManifest({ expression: expr, definitions: [d1, d2], ...ctx });
+    const b = buildFinancialDependencyManifest({ expression: expr, definitions: [d2, d1], ...ctx });
+    expect(a.manifestHash).toBe(b.manifestHash);
+  });
+
+  it("a stable definition id still expands when it identifies exactly one definition", () => {
+    const d1 = definition("ir-definition:one", "term-t", MUL(PCT(0.5), METRIC("metric-inner-a")));
+    const d2 = definition("ir-definition:two", "term-t", MUL(PCT(0.5), METRIC("metric-inner-b")));
+    const m = buildFinancialDependencyManifest({ expression: TERM("term-t", "ir-definition:two"), definitions: [d1, d2], ...ctx });
+    expect(m.ambiguousExpansions).toEqual([]);
+    expect(m.expandedObjects).toEqual([{ kind: "DEFINITION", id: "ir-definition:two" }]);
+    expect(m.dependencies.map((d) => d.key)).toEqual(["metric-inner-b"]);
+  });
+
+  it("same term name under a different company is not a competitor, so the lookup stays unambiguous", () => {
+    const mine = definition("ir-definition:mine", "term-t", MUL(PCT(0.5), METRIC("metric-inner-a")));
+    const theirs = definition("ir-definition:theirs", "term-t", MUL(PCT(0.5), METRIC("metric-inner-b")), { companyId: CO_B });
+    const m = buildFinancialDependencyManifest({ expression: TERM("term-t"), definitions: [mine, theirs], ...ctx });
+    expect(m.ambiguousExpansions).toEqual([]);
+    expect(m.dependencies.map((d) => d.key)).toEqual(["metric-inner-a"]);
+  });
+
+  it("two rules sharing a rule id are neither expanded nor resolved", () => {
+    const mk = (capacity: IRExpression): IRRule => ({
+      ruleId: "ir-rule:dup", irSchemaVersion: "t", companyId: CO_A, instrumentKey: INST_1, sourceDocumentId: "doc",
+      sourceSectionRef: "s", covenantFamily: "INDEBTEDNESS", ruleType: "QUANTITATIVE_PERMISSION", posture: "PERMISSION",
+      action: "INCUR_DEBT", entityScope: [], entityScopeExcluded: [], transactionScope: null, capacityExpression: capacity,
+      conditions: [], exceptions: [], dependsOn: [], operativeLineage: null, sufficiency: "COMPLETE", sufficiencyReasons: [],
+      provenance: null, compilerVersion: null, sourceContentVersion: null,
+    });
+    const rules = [mk(METRIC("metric-x")), mk(METRIC("metric-y"))];
+    const ref: IRExpression = { kind: "RULE_REFERENCE", type: "MONEY", ruleId: "ir-rule:dup", exprId: id() };
+    const m = buildFinancialDependencyManifest({ expression: ref, rules, ...ctx });
+    expect(m.ambiguousExpansions.length).toBe(1);
+    expect(m.ambiguousExpansions[0]!.kind).toBe("RULE");
+    expect(m.dependencies).toEqual([]);
+    expect(snapshotInputResolver({ snapshots: [], rules, ...ctx }).resolveRule!("ir-rule:dup")).toBe(null);
+  });
+});

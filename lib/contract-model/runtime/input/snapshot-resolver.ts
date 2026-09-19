@@ -132,7 +132,9 @@ export function snapshotInputResolver(args: SnapshotResolverArgs): SnapshotInput
       if (out.state === "RESOLVED_VALUE" && out.value) { const mi = resolutionToMetricInput(out.value); return mi ? { kind: "VALUE", input: mi } : null; }
       return null;
     },
-    resolveRule: (ruleId) => rules.find((r) => r.ruleId === ruleId) ?? null,
+    // Unique or nothing. Two rules sharing a rule id is a Phase-3 integrity failure, and picking
+    // the first one would hide it behind a plausible answer.
+    resolveRule: (ruleId) => { const hits = rules.filter((r) => r.ruleId === ruleId); return hits.length === 1 ? hits[0]! : null; },
     resolveLedgerUsage: (key) => resolutionToMetricInput(strict.resolveLedgerUsageStrict(key.sharedCapId ?? key.ruleId ?? "(unkeyed)", args.companyId ?? "", args.instrumentKey ?? null)),
     resolveTransactionInput: (inputName, expectedType) => resolutionToMetricInput(strict.resolveTransactionInputStrict(inputName, expectedType, args.companyId ?? "", args.instrumentKey ?? null)),
     resolveEventActive: (eventDescription, asOf) => {

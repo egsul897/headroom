@@ -229,6 +229,14 @@ export interface DependencyRecord {
   exprIds: string[];
 }
 
+/** A definition or rule reference that matched more than one Phase-3 object, so it was NOT expanded. */
+export interface AmbiguousExpansion {
+  exprId: string | null;
+  kind: "DEFINITION" | "RULE";
+  key: string;
+  candidateIds: string[];
+}
+
 export interface FinancialDependencyManifest {
   contractVersion: string;
   runtimeVersion: string;
@@ -243,6 +251,11 @@ export interface FinancialDependencyManifest {
   cycles: string[][];
   /** Nodes Phase 3 marked UNSUPPORTED - no input can satisfy them. */
   unsupportedNodes: { exprId: string | null; reason: string }[];
+  /**
+   * References that matched more than one Phase-3 definition or rule. The manifest refuses to pick
+   * one, reports the dependency as an unexpanded fact, and names every candidate.
+   */
+  ambiguousExpansions: AmbiguousExpansion[];
   counts: { total: number; required: number; conditional: number; optionalForBoundOnly: number };
   manifestHash: string;
 }

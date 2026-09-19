@@ -11,7 +11,7 @@ import type { IRCapacityExpression, IRDefinition, IRExpression, IRRule, IRValueT
 import { CONTRACT_RUNTIME_VERSION } from "../version";
 import { FINANCIAL_INPUT_CONTRACT_VERSION } from "./version";
 import { asOfSelectorFromContract, hashOf, periodSelectorFromContract } from "./identity";
-import type { DependencyRecord, DependencyStatus, FinancialDependencyManifest, InputKind } from "./types";
+import type { AmbiguousExpansion, DependencyRecord, DependencyStatus, FinancialDependencyManifest, InputKind } from "./types";
 
 export interface ManifestArgs {
   expression: IRCapacityExpression;
@@ -54,6 +54,7 @@ export function buildFinancialDependencyManifest(args: ManifestArgs): FinancialD
   const expanded: { kind: "DEFINITION" | "RULE"; id: string }[] = [];
   const cycles: string[][] = [];
   const unsupportedNodes: { exprId: string | null; reason: string }[] = [];
+  const ambiguousExpansions: AmbiguousExpansion[] = [];
   const stack: string[] = [];
   let companyId = args.companyId ?? null;
   let instrumentKey = args.instrumentKey ?? null;
@@ -98,7 +99,20 @@ export function buildFinancialDependencyManifest(args: ManifestArgs): FinancialD
         return;
       }
       case "DEFINED_TERM_REFERENCE": {
-        const def = definitions.find((d) => (expr.resolvedDefinitionId !== null && d.definitionId === expr.resolvedDefinitionId) || (expr.resolvedDefinitionId === null && d.termName === expr.termName && d.companyId === expr.companyId && d.instrumentKey === expr.instrumentKey)) ?? null;
+        // Never a first match. A stable definition id must identify exactly one definition, and a
+        // name lookup must be unique within the company and instrument; otherwise the manifest
+        // refuses to expand and says so, because guessing which definition was meant is the same
+        // class of error as guessing which snapshot was meant.
+        const defCandidates = definitions.filter((d) =>
+          expr.resolvedDefinitionId !== null
+            ? d.definitionId === expr.resolvedDefinitionId
+            : d.termName === expr.termName && d.companyId === expr.companyId && d.instrumentKey === expr.instrumentKey);
+        if (defCandidates.length > 1) {
+          ambiguousExpansions.push({ exprId: expr.exprId ?? null, kind: "DEFINITION", key: expr.resolvedDefinitionId ?? expr.termName, candidateIds: defCandidates.map((d) => d.definitionId).sort() });
+          add("TERM_VALUE", expr.termName, expr.termName, expr.type, env, expr.exprId ?? null, expr.companyId, expr.instrumentKey, "COMPANY_OR_INSTRUMENT");
+          return;
+        }
+        const def = defCandidates[0] ?? null;
         if (!def) { add("TERM_VALUE", expr.termName, expr.termName, expr.type, env, expr.exprId ?? null, expr.companyId, expr.instrumentKey, "COMPANY_OR_INSTRUMENT"); return; }
         const frame = `definition:${def.definitionId}`;
         if (stack.includes(frame)) { cycles.push([...stack.slice(stack.indexOf(frame)), frame]); return; }
@@ -110,7 +124,12 @@ export function buildFinancialDependencyManifest(args: ManifestArgs): FinancialD
         return;
       }
       case "RULE_REFERENCE": {
-        const rule = rules.find((r) => r.ruleId === expr.ruleId) ?? null;
+        const ruleCandidates = rules.filter((r) => r.ruleId === expr.ruleId);
+        if (ruleCandidates.length > 1) {
+          ambiguousExpansions.push({ exprId: expr.exprId ?? null, kind: "RULE", key: expr.ruleId, candidateIds: ruleCandidates.map((r) => r.ruleId) });
+          return;
+        }
+        const rule = ruleCandidates[0] ?? null;
         if (!rule?.capacityExpression) return;
         const frame = `rule:${rule.ruleId}`;
         if (stack.includes(frame)) { cycles.push([...stack.slice(stack.indexOf(frame)), frame]); return; }
@@ -169,7 +188,7 @@ export function buildFinancialDependencyManifest(args: ManifestArgs): FinancialD
     companyId, instrumentKey,
     rootExprId: args.expression.kind === "UNLIMITED_CAPACITY" ? null : args.expression.exprId ?? null,
     ruleId: args.ruleId ?? null,
-    dependencies, expandedObjects: expanded, cycles, unsupportedNodes, counts,
+    dependencies, expandedObjects: expanded, cycles, unsupportedNodes, ambiguousExpansions, counts,
   };
   return { ...body, manifestHash: hashOf(body) };
 }
@@ -189,6 +208,6 @@ export function buildRuleDependencyManifest(rule: IRRule, args: Omit<ManifestArg
   }
   const dependencies = merged.sort((a, b) => (`${a.inputKind}::${a.key}` < `${b.inputKind}::${b.key}` ? -1 : 1));
   const counts = { total: dependencies.length, required: dependencies.filter((d) => d.status === "REQUIRED").length, conditional: dependencies.filter((d) => d.status === "CONDITIONAL").length, optionalForBoundOnly: dependencies.filter((d) => d.status === "OPTIONAL_FOR_BOUND_ONLY").length };
-  const body = { ...first, dependencies, counts, expandedObjects: [...first.expandedObjects, ...conditionManifest.expandedObjects.filter((e) => !first.expandedObjects.some((f) => f.kind === e.kind && f.id === e.id))], cycles: [...first.cycles, ...conditionManifest.cycles], unsupportedNodes: [...first.unsupportedNodes, ...conditionManifest.unsupportedNodes], manifestHash: "" };
+  const body = { ...first, dependencies, counts, expandedObjects: [...first.expandedObjects, ...conditionManifest.expandedObjects.filter((e) => !first.expandedObjects.some((f) => f.kind === e.kind && f.id === e.id))], cycles: [...first.cycles, ...conditionManifest.cycles], unsupportedNodes: [...first.unsupportedNodes, ...conditionManifest.unsupportedNodes], ambiguousExpansions: [...first.ambiguousExpansions, ...conditionManifest.ambiguousExpansions], manifestHash: "" };
   return { ...body, manifestHash: hashOf({ ...body, manifestHash: undefined }) };
 }
