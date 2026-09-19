@@ -252,7 +252,7 @@ export function identityChecks() {
       return { expected: STARTING_SHA, actual: actualSha, exactMatch: actualSha === STARTING_SHA, isDescendantOfPin: isDescendant, filesChangedSincePin: changedSincePin, filesOutsideThisMissionsHarnessAndEvidence: foreign, match: actualSha === STARTING_SHA || (isDescendant && foreign.length === 0) };
     })(),
     workingTreeClean: { dirty, match: dirty.length === 0 },
-    remoteAtSameHead: { remote: remoteSha, match: remoteSha === STARTING_SHA },
+    remoteAtSameHead: { remote: remoteSha, localHead: actualSha, startingShaPin: STARTING_SHA, nothingUnpushed: remoteSha === actualSha, match: remoteSha === actualSha },
     remediationGate: { verdict: gate?.verdict ?? null, pass: gate?.summary.PASS ?? null, fail: gate?.summary.FAIL ?? null, paidCalls: gate?.paidCalls ?? null, match: gate?.verdict === "PHASE3_601_REMEDIATION_READY_FOR_PAID_REVALIDATION" && gate?.summary.PASS === 20 && gate?.summary.FAIL === 0 },
     productionTreeAsCommitted: { path: productionPath, treeObjectAtStartingSha: productionTreeAtStart, treeObjectAtHead: productionTreeNow, filesDifferingFromStartingSha: productionDrift, match: productionDrift.length === 0 && productionTreeAtStart === productionTreeNow },
     sourceSha256: { expected: EXPECT.sourceSha, actual: sourceSha, match: sourceSha === EXPECT.sourceSha },
