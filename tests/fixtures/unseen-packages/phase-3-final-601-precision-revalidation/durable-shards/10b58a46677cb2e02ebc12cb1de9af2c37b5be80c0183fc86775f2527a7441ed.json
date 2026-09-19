@@ -1,0 +1,468 @@
+{
+ "version": "hd4-durable-shard-record.v1",
+ "missionId": "phase-3-final-601-precision-revalidation",
+ "planHash": "b2b9540a144348dab91cc80eacd0d9b472e9e93a61a8fd359e1a507cf5cf17ce",
+ "shardId": "shard:7888717f06dfe736bf5b",
+ "shardHash": "10b58a46677cb2e02ebc12cb1de9af2c37b5be80c0183fc86775f2527a7441ed",
+ "result": {
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [
+    {
+     "ruleId": "ir-rule:ddcde906c9918c1536641de8",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(1)(X)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [
+      "BORROWER"
+     ],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(1)(X)",
+       "excerpt": "Indebtedness incurred pursuant to (X) the Loan Documents (including pursuant to Section 2.18, 2.19 or 2.22) and any Credit Agreement Refinancing Indebtedness in respect thereof"
+      }
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 2.18",
+       "description": "Loan Document incurrence expressly includes increases effected under Section 2.18 (Increased Loans and Commitments); full section text exceeded retrieval budget in the supplied dependency context.",
+       "reason": "dependsOn[0].targetRef \"Section 2.18\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+       "inventoryItemIds": [
+        "inv-item:1317b29a2957072ca6653789",
+        "inv-item:3fcc36910b60f56a6a795e99"
+       ]
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 2.19",
+       "description": "Loan Document incurrence expressly includes Credit Agreement Refinancing Indebtedness effected via Refinancing Amendments under Section 2.19.",
+       "reason": "dependsOn[1].targetRef \"Section 2.19\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+       "inventoryItemIds": [
+        "inv-item:1317b29a2957072ca6653789",
+        "inv-item:3fcc36910b60f56a6a795e99"
+       ]
+      },
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 2.22",
+       "description": "Loan Document incurrence expressly includes Permitted Amendments effected via Loan Modification Offers under Section 2.22.",
+       "reason": "dependsOn[2].targetRef \"Section 2.22\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+       "inventoryItemIds": [
+        "inv-item:1317b29a2957072ca6653789",
+        "inv-item:3fcc36910b60f56a6a795e99"
+       ]
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "No dollar cap or ratio gate is stated for this basket in the operative text; correctly represented as UNLIMITED_CAPACITY with no gating condition rather than a fabricated ceiling.",
+      "The illustrative cross-references to Sections 2.18/2.19/2.22 describe mechanics for effecting increases/refinancings under the Loan Documents but do not themselves impose or alter a dollar limit on this exception.",
+      "dependsOn[0].targetRef \"Section 2.18\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[1].targetRef \"Section 2.19\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+      "dependsOn[2].targetRef \"Section 2.22\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(1)(X)",
+      "excerpt": "(1) Indebtedness incurred pursuant to (X) the Loan Documents (including pursuant to Section 2.18, 2.19 or 2.22) and any Credit Agreement Refinancing Indebtedness in respect thereof,"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:1317b29a2957072ca6653789",
+      "inv-item:541f731308847c7320aa28bd"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:5b37dcc87c9b7fb826ac6070",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(1)(Y)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [
+      "BORROWER"
+     ],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "MAX",
+      "type": "MONEY",
+      "exprId": "ir-expr:db3aa52e53ecc31942f4bb8e",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "type": "MONEY",
+        "amount": 800000000,
+        "currency": "USD",
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§6.01(b)(1)(Y)(a)",
+         "excerpt": "$800.0 million"
+        },
+        "exprId": "ir-expr:5e064261620757db6ae67a55",
+        "inventoryItemIds": [
+         "inv-item:de8407fd1b19c24bdde0720b"
+        ]
+       },
+       {
+        "kind": "AS_OF",
+        "type": "MONEY",
+        "exprId": "ir-expr:8a41289aba7ff95bcc4c4328",
+        "value": {
+         "kind": "METRIC_REFERENCE",
+         "type": "MONEY",
+         "metricName": "Borrowing Base (as defined in the ABL Credit Agreement)",
+         "companyId": "phase-3-validation-chwy",
+         "instrumentKey": "chwy-2026-revolving-credit-instrument",
+         "resolvedDefinitionId": null,
+         "exprId": "ir-expr:299f2680cd1ea7fa6dda30f6",
+         "inventoryItemIds": [
+          "inv-item:04e0d68a10028d89e8335fe6"
+         ]
+        },
+        "asOfDate": "the date of such incurrence",
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§6.01(b)(1)(Y)(b)",
+         "excerpt": "the Borrowing Base (as defined in the ABL Credit Agreement) as of the date of such incurrence"
+        },
+        "inventoryItemIds": [
+         "inv-item:1f66b3668e0c2296f2403ab2"
+        ]
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(1)(Y)",
+       "excerpt": "up to an aggregate principal amount outstanding at any one time not to exceed the greater of (a) $800.0 million and (b) the Borrowing Base (as defined in the ABL Credit Agreement) as of the date of such incurrence"
+      }
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "ABL Credit Agreement",
+       "description": "The 'Borrowing Base' component is defined and calculated exclusively under the ABL Credit Agreement, a separate financing instrument not included in this package; its numeric value cannot be resolved from this document.",
+       "reason": "dependsOn[0].targetRef \"ABL Credit Agreement\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+       "inventoryItemIds": [
+        "inv-item:1f66b3668e0c2296f2403ab2"
+       ]
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The greater-of structure ($800.0mm fixed alternative vs. Borrowing Base metric, measured as of the incurrence date) is fully represented; the Borrowing Base metric's own numeric value is intentionally not resolved (it depends on an external agreement), consistent with normal METRIC_REFERENCE usage.",
+      "dependsOn[0].targetRef \"ABL Credit Agreement\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(1)(Y)",
+      "excerpt": "(Y) the ABL Loan Documents up to an aggregate principal amount outstanding at any one time not to exceed the greater of (a) $800.0 million and (b) the Borrowing Base (as defined in the ABL Credit Agreement) as of the date of such incurrence"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:2a70194d073f5a0ca3d3072d"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:cb1a561bdb3cb2aebd3db617",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(1)(Z)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [
+      "BORROWER"
+     ],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "AS_OF",
+      "type": "MONEY",
+      "exprId": "ir-expr:0c6de9a10c99aa4967616893",
+      "value": {
+       "kind": "DEFINED_TERM_REFERENCE",
+       "type": "MONEY",
+       "termName": "Fixed Incremental Amount",
+       "companyId": "phase-3-validation-chwy",
+       "instrumentKey": "chwy-2026-revolving-credit-instrument",
+       "resolvedDefinitionId": null,
+       "exprId": "ir-expr:0e4a48262704a0f55719a1d1",
+       "inventoryItemIds": [
+        "inv-item:bc404f777d4c90cae11f3206"
+       ]
+      },
+      "asOfDate": "the time of such incurrence",
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(1)(Z)",
+       "excerpt": "Indebtedness in an aggregate principal amount at the time of incurrence not exceeding the Fixed Incremental Amount at such time"
+      }
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "definition of Fixed Incremental Amount",
+       "description": "Capacity equals the defined term 'Fixed Incremental Amount', whose own formula (a greater-of $720.0mm/100% Consolidated EBITDA sum plus certain add-backs, net of amounts already used) is dependency context only for this compilation and is not separately expanded here.",
+       "reason": "dependsOn[0].targetRef \"definition of Fixed Incremental Amount\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+       "inventoryItemIds": [
+        "inv-item:bc404f777d4c90cae11f3206"
+       ]
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "The capacity is faithfully represented as a reference to the defined term 'Fixed Incremental Amount', measured at the time of incurrence, exactly as the operative text states; the term's own internal formula is out of scope for this section's compilation.",
+      "dependsOn[0].targetRef \"definition of Fixed Incremental Amount\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(1)(Z)",
+      "excerpt": "(Z) Indebtedness in an aggregate principal amount at the time of incurrence not exceeding the Fixed Incremental Amount at such time;"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:bc404f777d4c90cae11f3206"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:08cef781aaf9eaa933230a43",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(3)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "DEFINED_TERM_REFERENCE",
+      "type": "MONEY",
+      "termName": "Existing Indebtedness",
+      "companyId": "phase-3-validation-chwy",
+      "instrumentKey": "chwy-2026-revolving-credit-instrument",
+      "resolvedDefinitionId": null,
+      "exprId": "ir-expr:e91a81b1b0c773fc851e044a"
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r4].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Excludes from this basket any Indebtedness already described in 'Section 6.01(b)(1)'; the inventory flags this cross-reference target as structurally ambiguous (two substantive occurrences of '6.01(b)(1)' exist in the document), so the precise intended scope of the carve-out is not fully resolved from the supplied evidence.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(3)",
+        "excerpt": "(other than Indebtedness described in Section 6.01(b)(1)"
+       },
+       "inventoryItemIds": [
+        "inv-item:b86c43a5fa39249735e51b7a",
+        "inv-item:f28de5c981ae9d743b14f788"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Section 6.01(b)(1)",
+       "description": "Carve-out cross-reference; ambiguous as between the two candidate physical occurrences of '6.01(b)(1)' in the document - most naturally read as the sibling clause 6.01(b)(1)(X)/(Y)/(Z) compiled above, but not adjudicated here.",
+       "reason": "dependsOn[0].targetRef \"Section 6.01(b)(1)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+       "inventoryItemIds": [
+        "inv-item:f28de5c981ae9d743b14f788"
+       ]
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "AMBIGUOUS",
+     "sufficiencyReasons": [
+      "The defined term 'Existing Indebtedness' itself is clear (Indebtedness of the Restricted Parties in existence on the Effective Date, plus Guarantees and accretions thereof), but the exclusionary cross-reference to 'Section 6.01(b)(1)' is independently flagged as matching more than one substantive location in the source, so the exact scope of the carve-out cannot be confidently resolved without adjudicating that ambiguity.",
+      "dependsOn[0].targetRef \"Section 6.01(b)(1)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(3)",
+      "excerpt": "(3) Existing Indebtedness (other than Indebtedness described in Section 6.01(b)(1);"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:b86c43a5fa39249735e51b7a"
+     ]
+    }
+   ],
+   "definitions": [],
+   "sharedCapacities": [],
+   "inventoryDispositions": [
+    {
+     "inventoryItemId": "inv-item:bee214f2afa63532c4c0ac16",
+     "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+     "note": "Clause (2) is expressly '[Reserved]' and has no substantive operative content to compile."
+    }
+   ]
+  },
+  "failureReasons": [],
+  "unresolvedIssues": [
+   "[rule[r1]] dependsOn[0].targetRef \"Section 2.18\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r1]] dependsOn[1].targetRef \"Section 2.19\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r1]] dependsOn[2].targetRef \"Section 2.22\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r2]] dependsOn[0].targetRef \"ABL Credit Agreement\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r3]] dependsOn[0].targetRef \"definition of Fixed Incremental Amount\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r4]] dependsOn[0].targetRef \"Section 6.01(b)(1)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "Compiled from §6.01(b)(1)(X)/(Y)/(Z) and §6.01(b)(3); §6.01(b)(2) is reserved with no substantive content.",
+   "The 'Loan Documents' basket (X) and the Fixed Incremental Amount basket (Z) are each independently gated/capped and not stated to share a single aggregate ceiling with each other in the text compiled here; the Fixed Incremental Amount's own definition (read-only dependency context, not expanded per task instructions) separately nets out amounts previously incurred under 6.01(b)(1)(Z) and 6.01(b)(14)(e)(2), but that netting lives inside the defined term itself rather than as a shared cap between sibling rules in this submission.",
+   "The ABL basket's 'Borrowing Base' alternative is defined exclusively in the ABL Credit Agreement, a document not included in this package (REFERENCED_DOCUMENT_ABSENT) - represented via METRIC_REFERENCE plus an explicit dependsOn rather than any fabricated figure.",
+   "The Existing Indebtedness carve-out's cross-reference to 'Section 6.01(b)(1)' is inherently ambiguous per the frozen inventory (two substantive candidate targets); represented as AMBIGUOUS rather than silently picking one reading."
+  ],
+  "telemetry": {
+   "inputTokens": 50553,
+   "outputTokens": 18665,
+   "costUsd": 0.287756
+  },
+  "toolUsage": {
+   "calls": 0,
+   "sourceReadingCalls": 0,
+   "refusals": 0,
+   "charsReturned": 0,
+   "maxToolCalls": 8,
+   "maxAdditionalSourceChars": 20000,
+   "remainingCallSlots": 8,
+   "remainingSourceChars": 20000,
+   "byTool": {},
+   "requestedTargets": [],
+   "anyEvidenceUnresolved": false,
+   "anyEvidenceTruncated": false
+  },
+  "missingContextAudit": {
+   "contractVersion": "missing-context-contract.v1",
+   "shardId": "shard:7888717f06dfe736bf5b",
+   "shardHash": "10b58a46677cb2e02ebc12cb1de9af2c37b5be80c0183fc86775f2527a7441ed",
+   "certificateStatus": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+   "requested": [
+    {
+     "targetRef": "Section 2.18",
+     "key": "section:2.18",
+     "classification": "PARTIAL_DELIVERY",
+     "deliveredChars": 1129,
+     "fullTextChars": 13978,
+     "detail": "delivered as a disclosed bounded excerpt (1129 of 13978 chars); retrieving the remainder with a bounded tool call is the designed route",
+     "requestingRuleId": "ir-rule:ddcde906c9918c1536641de8"
+    },
+    {
+     "targetRef": "Section 2.19",
+     "key": "section:2.19",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 2283,
+     "fullTextChars": 2283,
+     "detail": "delivered IN FULL in the initial context (2283 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:ddcde906c9918c1536641de8"
+    },
+    {
+     "targetRef": "Section 2.22",
+     "key": "section:2.22",
+     "classification": "PARTIAL_DELIVERY",
+     "deliveredChars": 1128,
+     "fullTextChars": 4991,
+     "detail": "delivered as a disclosed bounded excerpt (1128 of 4991 chars); retrieving the remainder with a bounded tool call is the designed route",
+     "requestingRuleId": "ir-rule:ddcde906c9918c1536641de8"
+    },
+    {
+     "targetRef": "ABL Credit Agreement",
+     "key": "term:abl credit agreement",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 941,
+     "fullTextChars": 941,
+     "detail": "delivered IN FULL in the initial context (941 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:5b37dcc87c9b7fb826ac6070"
+    },
+    {
+     "targetRef": "definition of Fixed Incremental Amount",
+     "key": "term:definition of fixed incremental amount",
+     "classification": "OPTIONAL_CONTEXT_MISS",
+     "deliveredChars": null,
+     "fullTextChars": null,
+     "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+     "requestingRuleId": "ir-rule:cb1a561bdb3cb2aebd3db617"
+    },
+    {
+     "targetRef": "Section 6.01(b)(1)",
+     "key": "section:6.01(b)(1)",
+     "classification": "OPTIONAL_CONTEXT_MISS",
+     "deliveredChars": null,
+     "fullTextChars": null,
+     "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+     "requestingRuleId": "ir-rule:08cef781aaf9eaa933230a43"
+    }
+   ],
+   "counts": {
+    "PLANNER_DELIVERY_GAP": 0,
+    "FALSE_MISSING_CONTEXT": 2,
+    "PARTIAL_DELIVERY": 2,
+    "INTERNAL_LIMITATION_DISCLOSED": 0,
+    "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+    "EXTERNAL_DEPENDENCY": 0,
+    "OPTIONAL_CONTEXT_MISS": 2
+   },
+   "contractHeld": true,
+   "violations": []
+  },
+  "shardId": "shard:7888717f06dfe736bf5b",
+  "shardHash": "10b58a46677cb2e02ebc12cb1de9af2c37b5be80c0183fc86775f2527a7441ed",
+  "reusedFromHash": false,
+  "attempts": 1
+ },
+ "resultSha256": "1b4ed13265c59a45cb61813c98651abb9b7967469c87099cf429c61b9b0cd2d7",
+ "completedAt": "2026-09-19T13:02:39.795Z",
+ "recordSha256": "3b2bb6da49b3bb5e3774adf34e97c175df8c67b04a603a4a2082d91177381506"
+}
