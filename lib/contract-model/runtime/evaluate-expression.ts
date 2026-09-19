@@ -13,6 +13,8 @@ import { STATUS_PRECEDENCE } from "./types";
 import { addAll, compareWith, divideValues, extreme, multiplyAll, subtractValues } from "./units";
 import { boolean, capacity, date, entitySet, isIsoDate, lineage, money, number, percent, ratio, serializeValue, withLineage } from "./values";
 import { CONTRACT_RUNTIME_VERSION } from "./version";
+import { resolutionToMetricInput } from "./input/snapshot-resolver";
+import type { ResolutionResult } from "./input/types";
 
 export interface EvaluateExpressionArgs {
   expression: IRCapacityExpression;
@@ -51,6 +53,8 @@ class Evaluator {
   readonly expanded: { kind: "DEFINITION" | "RULE"; id: string }[] = [];
   nodesEvaluated = 0;
   cacheHits = 0;
+  /** PHASE 4B: set when a strict resolver supplied any input. */
+  inputContractVersion: string | null = null;
   maxDepth = 0;
   referenceNodes = 0;
 
@@ -94,6 +98,31 @@ class Evaluator {
     const record: ResolvedInputRecord = { kind, key, period: input.period ?? env.period, asOf: input.asOf ?? env.asOf, provenance: input.provenance, value: serializeValue(value) };
     this.inputsUsed.push(record);
     return this.done(expr, value, [], { input: record });
+  }
+
+  /**
+   * PHASE 4B: maps an explicit resolution state onto a runtime state. Nothing collapses into a bare
+   * "no value" - a missing fact, an ambiguous one, a type conflict and an unapproved one are distinct.
+   */
+  private strictOutcome(expr: IRExpression, kind: MissingInputKind, key: string, res: ResolutionResult, expected: IRValueType | "CAPACITY", env: Env): NodeResult {
+    this.inputContractVersion = res.contractVersion;
+    switch (res.state) {
+      case "RESOLVED": {
+        const mi = resolutionToMetricInput(res);
+        if (!mi) return this.fail(expr, "ERROR", "REFERENCE_UNRESOLVED", `resolution reported RESOLVED without an input for ${kind} "${key}"`);
+        return this.useInput(expr, kind, key, mi, expected, env);
+      }
+      case "MISSING":
+        return this.needsInput(expr, kind, key, env, expected, res.reason);
+      case "NOT_APPROVED": {
+        const missing: MissingInput = { kind, key, exprId: expr.exprId ?? null, asOf: env.asOf, period: env.period, expectedType: expected };
+        return this.fail(expr, "NEEDS_INPUT", "INPUT_NOT_APPROVED", res.reason, [], undefined, [missing]);
+      }
+      case "AMBIGUOUS":
+        return this.fail(expr, "AMBIGUOUS", res.candidates.length === 0 ? "SNAPSHOT_SET_UNSAFE" : "AMBIGUOUS_INPUT", res.reason);
+      case "INCOMPATIBLE":
+        return this.fail(expr, "ERROR", "INPUT_TYPE_CONFLICT", res.reason);
+    }
   }
 
   private unitOutcome(expr: IRExpression, outcome: ReturnType<typeof addAll>, children: NodeResult[], extra: Partial<TraceNode> = {}): NodeResult {
@@ -157,12 +186,25 @@ class Evaluator {
       // ---- references ----
       case "METRIC_REFERENCE": {
         this.referenceNodes++;
-        const input = this.inputs.resolveMetric({ metricName: expr.metricName, companyId: expr.companyId, instrumentKey: expr.instrumentKey, asOf: env.asOf, period: env.period, expectedType: expr.type });
+        const query = { metricName: expr.metricName, companyId: expr.companyId, instrumentKey: expr.instrumentKey, asOf: env.asOf, period: env.period, expectedType: expr.type };
+        if (this.inputs.strict) return this.strictOutcome(expr, "METRIC", expr.metricName, this.inputs.strict.resolveMetricStrict(query), expr.type, env);
+        const input = this.inputs.resolveMetric(query);
         if (!input) return this.needsInput(expr, "METRIC", expr.metricName, env, expr.type, `metric "${expr.metricName}" has no runtime input${env.period ? ` for period "${env.period}"` : ""}${env.asOf ? ` as of "${env.asOf}"` : ""}`);
         return this.useInput(expr, "METRIC", expr.metricName, input, expr.type, env);
       }
       case "DEFINED_TERM_REFERENCE": {
         this.referenceNodes++;
+        if (this.inputs.strict) {
+          const out = this.inputs.strict.resolveTermStrict(expr.termName, expr.resolvedDefinitionId, expr.companyId, expr.instrumentKey, expr.type, env.period, env.asOf);
+          this.inputContractVersion = out.contractVersion;
+          if (out.state === "RESOLVED_DEFINITION" && out.definition) return this.evalDefinition(expr, out.definition, child);
+          if (out.state === "RESOLVED_VALUE" && out.value) return this.strictOutcome(expr, "TERM", expr.termName, out.value, expr.type, env);
+          if (out.state === "CONFLICT") return this.fail(expr, "AMBIGUOUS", "TERM_RESOLUTION_CONFLICT", out.reason);
+          if (out.state === "AMBIGUOUS") return this.fail(expr, "AMBIGUOUS", "AMBIGUOUS_INPUT", out.reason);
+          if (out.state === "INCOMPATIBLE") return this.fail(expr, "ERROR", "INPUT_TYPE_CONFLICT", out.reason);
+          if (out.state === "NOT_APPROVED") return this.fail(expr, "NEEDS_INPUT", "INPUT_NOT_APPROVED", out.reason, [], undefined, [{ kind: "TERM", key: expr.termName, exprId: expr.exprId ?? null, asOf: env.asOf, period: env.period, expectedType: expr.type }]);
+          return this.needsInput(expr, "TERM", expr.termName, env, expr.type, out.reason);
+        }
         const res = this.inputs.resolveTerm(expr.termName, expr.resolvedDefinitionId, expr.companyId, expr.instrumentKey);
         if (!res) return this.needsInput(expr, "TERM", expr.termName, env, expr.type, `defined term "${expr.termName}" has neither a runtime value nor an evaluable definition`);
         if (res.kind === "VALUE") return this.useInput(expr, "TERM", expr.termName, res.input, expr.type, env);
@@ -177,12 +219,14 @@ class Evaluator {
       case "LEDGER_USAGE_REFERENCE": {
         this.referenceNodes++;
         const key = expr.sharedCapId ?? expr.ruleId ?? "(unkeyed)";
+        if (this.inputs.strict) return this.strictOutcome(expr, "LEDGER_USAGE", key, this.inputs.strict.resolveLedgerUsageStrict(key, this.context.companyId ?? "", this.context.instrumentKey ?? null), "MONEY", env);
         const input = this.inputs.resolveLedgerUsage({ sharedCapId: expr.sharedCapId, ruleId: expr.ruleId });
         if (!input) return this.needsInput(expr, "LEDGER_USAGE", key, env, "MONEY", `ledger usage for ${key} is not available (capacity ledger is a later Phase-4 subphase)`);
         return this.useInput(expr, "LEDGER_USAGE", key, input, "MONEY", env);
       }
       case "TRANSACTION_INPUT_REFERENCE": {
         this.referenceNodes++;
+        if (this.inputs.strict) return this.strictOutcome(expr, "TRANSACTION_INPUT", expr.inputName, this.inputs.strict.resolveTransactionInputStrict(expr.inputName, expr.type, this.context.companyId ?? "", this.context.instrumentKey ?? null), expr.type, env);
         const input = this.inputs.resolveTransactionInput(expr.inputName, expr.type);
         if (!input) return this.needsInput(expr, "TRANSACTION_INPUT", expr.inputName, env, expr.type, `transaction input "${expr.inputName}" was not supplied`);
         return this.useInput(expr, "TRANSACTION_INPUT", expr.inputName, input, expr.type, env);
@@ -311,6 +355,10 @@ class Evaluator {
       }
       case "EVENT_ACTIVE": {
         this.referenceNodes++;
+        if (this.inputs.strict) {
+          const r = this.inputs.strict.resolveEventActiveStrict(expr.eventDescription, env.asOf, this.context.companyId ?? "", this.context.instrumentKey ?? null);
+          if (r.state !== "MISSING") return this.strictOutcome(expr, "EVENT", expr.eventDescription, r, "BOOLEAN", env);
+        }
         const fact = this.inputs.resolveEventActive(expr.eventDescription, env.asOf);
         if (fact) {
           const value = boolean(fact.active, lineage(id, [expr.eventDescription]));
@@ -399,6 +447,7 @@ export function evaluateExpression(args: EvaluateExpressionArgs): EvaluationResu
     trace: root.trace,
     provenance: {
       runtimeVersion: CONTRACT_RUNTIME_VERSION,
+      ...(ev.inputContractVersion ? { inputContractVersion: ev.inputContractVersion } : {}),
       ruleId: context.ruleId ?? null,
       definitionId: context.definitionId ?? null,
       rootExprId: args.expression.kind === "UNLIMITED_CAPACITY" ? null : args.expression.exprId ?? null,

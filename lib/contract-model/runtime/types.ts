@@ -14,6 +14,7 @@
 import type { EntityClassTag } from "@prisma/client";
 import type { IRDefinition, IRRule, IRValueType, SourceProvenance } from "../ir/types";
 import type { Rational } from "./decimal";
+import type { ResolutionResult, TermResolutionOutcome } from "./input/types";
 
 // ---------------------------------------------------------------------------
 // Runtime values
@@ -87,7 +88,18 @@ export type RuntimeDiagnosticCode =
   | "SCHEDULE_OVERLAPPING_CASES"
   | "IF_WITHOUT_ELSE_NOT_TAKEN"
   | "INPUT_TYPE_MISMATCH"
-  | "REFERENCE_UNRESOLVED";
+  | "REFERENCE_UNRESOLVED"
+  // ---- PHASE 4B ----
+  /** More than one supplied fact matches the requested identity exactly and nothing distinguishes them. */
+  | "AMBIGUOUS_INPUT"
+  /** The fact exists but only in a snapshot whose review status this evaluation does not accept. */
+  | "INPUT_NOT_APPROVED"
+  /** Candidates sharing one identity disagree on value type, or the only candidates have the wrong type. */
+  | "INPUT_TYPE_CONFLICT"
+  /** A supplied term value competes with an evaluable Phase-3 definition without declaring itself an override. */
+  | "TERM_RESOLUTION_CONFLICT"
+  /** The snapshot set itself is not safe to resolve against (duplicate ids, supersession cycle, competing successors). */
+  | "SNAPSHOT_SET_UNSAFE";
 
 export interface RuntimeDiagnostic {
   code: RuntimeDiagnosticCode;
@@ -145,6 +157,22 @@ export interface InputProvenance {
   source: string;
   sourceVersion: string | null;
   note?: string;
+  // ---- PHASE 4B (additive, present when the value came through the financial-input contract) ----
+  /** The immutable snapshot and version that supplied the fact. */
+  snapshotId?: string;
+  snapshotVersion?: string;
+  snapshotStatus?: "DRAFT" | "REVIEW_REQUIRED" | "APPROVED" | "SUPERSEDED";
+  reviewedBy?: string | null;
+  reviewedAt?: string | null;
+  approvalRef?: string | null;
+  /** How the input was selected - never "first match". */
+  selectionMethod?: string;
+  inputContractVersion?: string;
+  /** True when the caller explicitly widened policy beyond APPROVED and relied on the result anyway. */
+  reliedOnNonApprovedSnapshot?: boolean;
+  /** Whether the contract reference was matched by a stable key or only by the name the contract used. */
+  identityStrength?: "STABLE_KEY" | "CONTRACT_NAME_ONLY";
+  currency?: string | null;
 }
 
 export interface MetricInput {
@@ -170,7 +198,23 @@ export interface MetricQuery { metricName: string; companyId: string; instrument
 /** A term may resolve to a Phase-3 definition (evaluated recursively) or to a directly supplied value. */
 export type TermResolution = { kind: "DEFINITION"; definition: IRDefinition } | { kind: "VALUE"; input: MetricInput } | null;
 
+/**
+ * PHASE 4B - the strict resolution surface. A resolver that implements it loses no information:
+ * the evaluator maps each state to an explicit runtime state instead of collapsing everything into
+ * "no value". A resolver without it keeps the Phase-4A behaviour unchanged.
+ */
+export interface StrictInputResolver {
+  contractVersion: string;
+  resolveMetricStrict(query: MetricQuery): ResolutionResult;
+  resolveTermStrict(termName: string, resolvedDefinitionId: string | null, companyId: string, instrumentKey: string | null, expectedType: IRValueType | "CAPACITY", period: string | null, asOf: string | null): TermResolutionOutcome;
+  resolveLedgerUsageStrict(key: string, companyId: string, instrumentKey: string | null): ResolutionResult;
+  resolveTransactionInputStrict(inputName: string, expectedType: IRValueType, companyId: string, instrumentKey: string | null): ResolutionResult;
+  resolveEventActiveStrict(eventDescription: string, asOf: string | null, companyId: string, instrumentKey: string | null): ResolutionResult;
+}
+
 export interface InputResolver {
+  /** PHASE 4B (optional): when present, the evaluator uses it and reports explicit resolution states. */
+  strict?: StrictInputResolver;
   resolveMetric(query: MetricQuery): MetricInput | null;
   resolveTerm(termName: string, resolvedDefinitionId: string | null, companyId: string, instrumentKey: string): TermResolution;
   resolveRule(ruleId: string): IRRule | null;
@@ -206,6 +250,8 @@ export interface EvaluationStats {
 
 export interface EvaluationProvenance {
   runtimeVersion: string;
+  /** PHASE 4B: the financial-input contract version in force, when a strict resolver supplied the inputs. */
+  inputContractVersion?: string;
   ruleId: string | null;
   definitionId: string | null;
   rootExprId: string | null;
