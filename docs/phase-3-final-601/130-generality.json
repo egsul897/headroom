@@ -1,0 +1,60 @@
+{
+ "artifact": "PHASE 3 / 6.01 DEPENDENCY-DELIVERY REMEDIATION §27 - required-dependency delivery is a property of the architecture, not of this document",
+ "at": "2026-09-19T03:00:35.489Z",
+ "paidCalls": 0,
+ "testFile": "tests/contract-model/dd-required-dependency-generality.test.ts",
+ "corpusIsSynthetic": "every corpus is generated from a parameterized shape: the defined-term names, the section numbers, the chain depth and the amounts are inputs. No real agreement, term, section, company or instrument appears in the file.",
+ "cases": [
+  {
+   "id": "A",
+   "question": "does the same structure work under a DIFFERENT definition name?",
+   "method": "the bounding definition is renamed across three unrelated names; the whole composition must still be delivered"
+  },
+  {
+   "id": "B",
+   "question": "does a cross-reference inside a required definition work for ANY section number?",
+   "method": "three unrelated section refs; each must be derived with CROSS_REFERENCE_IN_REQUIRED_DEFINITION and delivered"
+  },
+  {
+   "id": "C",
+   "question": "is a FORWARDING definition's target delivered?",
+   "method": "two unrelated forwarding targets; the declaration and its target must both be required, the target evidenced as FORWARDING_DEFINITION_TARGET"
+  },
+  {
+   "id": "D",
+   "question": "are several required definitions and a required section delivered together?",
+   "method": "the full closure must be delivered with no entry starved, every entry READ_ONLY_CONTEXT"
+  },
+  {
+   "id": "E",
+   "question": "what happens when the closure does not fit?",
+   "method": "the ceiling is derived from the corpus's own measured closure (half, then a quarter), so the reaction is measured rather than a hard-coded trigger; re-sharding first, then water-filling, then an explicit certified planning failure"
+  },
+  {
+   "id": "E2",
+   "question": "can the required tier be rescued by, or leak into, the optional tier?",
+   "method": "no required key may appear in the interpretive tier at any ceiling"
+  },
+  {
+   "id": "F",
+   "question": "does behaviour depend on VALUES?",
+   "method": "the same structure with different amounts must produce the identical required key set"
+  },
+  {
+   "id": "G",
+   "question": "is an absent dependency fabricated?",
+   "method": "a cited section with no structural occurrence must be derived, disposed UNDELIVERABLE_DISCLOSED with empty text, and disclosed on the shard"
+  }
+ ],
+ "result": {
+  "path": "/tmp/claude-0/-home-user-headroom/fe43ab40-ccca-5e2c-9b2f-8f264a45dc31/scratchpad/dd-generality.json",
+  "files": 1,
+  "filesPassed": 1,
+  "tests": 8,
+  "passed": 8,
+  "failed": 0,
+  "byFile": {
+   "contract-model/dd-required-dependency-generality.test.ts": "passed"
+  }
+ }
+}

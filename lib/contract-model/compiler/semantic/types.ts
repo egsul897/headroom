@@ -279,6 +279,12 @@ export interface SemanticShardExecutionSummary {
   ownedMaterialItems: number;
   oversized: boolean;
   telemetry: { inputTokens: number | null; outputTokens: number | null; costUsd: number | null } | null;
+  /** §23 - what this shard's tool budget was actually spent on, carried into the durable run record. Absent on results produced before this layer. */
+  toolUsage?: import("./shard-types").ShardToolUsage;
+  /** §22 - this shard's MISSING_CONTEXT claim classified against the evidence package it was handed. Absent when the shard reported no unresolved dependency. */
+  missingContextAudit?: import("./missing-context-contract").ShardMissingContextAudit;
+  /** §11 - the shard's required-dependency certificate, so "was every required dependency delivered before the call?" is answerable from the run record alone. */
+  dependencyCertificate?: import("./required-dependencies").ShardDependencyCertificate;
 }
 
 export interface SemanticExecutionMetadata {

@@ -565,3 +565,63 @@ B6 remains REFERENCE_SET_ERROR with its span preserved. The one operative-state 
 IR definitions for `incur`/`incurrence`, which are not defined terms - not the previous run's harness wiring (112).
 
 Verdict **PHASE3_601_REMEDIATION_FAILED** (18/24). Phase 3 not closed; Phase 4 not started.
+
+## Dependency-delivery remediation (118-132)
+
+The failed shard's own plan proves the defect without any model log. The old planner derived 25 statically-known,
+resolvable, owned-item-required dependencies and then dropped them at 9,946 of 10,000 context chars, writing each to
+`unresolvedContext` for the model to rediscover with an optional tool call; and four of the five dependencies the model
+actually named were never derived at all, because they are reachable only through a three-hop definition closure the
+one-hop planner never walked (118, 119). The tool-call log is not persisted on the durable shard record, so the
+budget-exhaustion counters had to be recorded as NOT_AUDITABLE - an evidence limitation, disclosed, and the reason §23
+exists (120).
+
+The remediation is **required dependency prematerialization**. A dependency is REQUIRED when the owned material's own
+semantics cannot be evaluated without it, decided by seven generic rules over the document's structural index and the
+frozen inventory's own edges - defined-term occurrence in owned source, structural cross-reference in owned source, the
+inventory's referenced-term/referenced-section/parent edges, a forwarding declaration's target, a cross-reference
+written inside a required definition, and transitive definition closure through compositional or limit-bearing
+positions. Nothing in `required-dependencies.ts` names a term, a section, a company or an instrument; compositional
+coverage is measured over a definition's operative body (after `means`), so the rule cannot depend on how long the
+drafter made the defined term's own name (121).
+
+Required dependencies are admitted into their own tier, before any optional context and with their own ceiling, so they
+never compete with interpretive context. The interpretive budget is unchanged at 10,000 chars and the tool budget is
+unchanged at 8 calls / 20,000 chars. When a closure does not fit, the planner reacts deterministically and before any
+provider call: re-shard along must-link block boundaries; then water-fill - search for the largest single per-entry
+allowance under which the whole closure fits, so small definitions are delivered in full and only the largest become
+disclosed bounded excerpts; then, if the floor still does not fit, declare an explicit certified planning failure. The
+forbidden shape - leaving a known required dependency in `unresolvedContext` and hoping for a tool call - is not
+implemented, and a required key is never re-admitted as interpretive context (123).
+
+Every shard now carries a `ShardDependencyCertificate` computed before it is called, and
+`requiredDependenciesUnresolved` must be 0 for it to be certified executable (124). On the frozen 6.01 unit the
+remediated planner produces 7 shards, all certified, 425 required dependencies - 364 materialized in full, 35 delivered
+as disclosed bounded excerpts, 26 genuinely absent and disclosed by name with empty text, **0 unresolved**. The shard
+that failed keeps its identity (`shard:86cc5e439f113d6053a9`), its 13 units and all 98 owned material items: it was not
+split to obtain this result (122, 127). All five dependencies it reported as missing - the four Incremental Amount
+terms and Section 2.18(b) - are now materialized in full before the first turn, the section arriving through the
+generic cross-reference-inside-a-required-definition rule at closure depth 2 (126).
+
+Green does not hinge on the new ceiling. The sensitivity sweep runs the same unit at required-context ceilings from
+4,000 to 96,000 chars: delivery is complete at every ceiling at or above 32,000, a wide band below the declared 64,000,
+and below that the shortfall is an explicit, certified planning failure naming every undelivered dependency - never a
+silent hand-off (123). The ceiling itself is a capacity bound derived from the model's context window (at most half of
+200,000 tokens on the first turn), not a number tuned to this document.
+
+Two audit layers close the evidence gaps the failure exposed. A shard's MISSING_CONTEXT claim is now classified against
+what it was actually handed - `PLANNER_DELIVERY_GAP`, `FALSE_MISSING_CONTEXT`, `PARTIAL_DELIVERY`,
+`DISCLOSED_UNDELIVERABLE`, `EXTERNAL_DEPENDENCY`, `OPTIONAL_CONTEXT_MISS` - and replaying the frozen failure against the
+remediated plan yields 0 `PLANNER_DELIVERY_GAP` and 5 `FALSE_MISSING_CONTEXT`. Tool-usage counters (calls, source reads,
+refusals, chars returned, remaining slots, per-tool breakdown, requested targets) now travel with the durable shard
+record (128). The operative-state flag is classified NOT_A_DELIVERY_FAILURE and explicitly held out of scope rather than
+quietly fixed, and all 11 verifier findings of the failed run are classified against the delivery hypothesis (128, 129).
+
+Generality is tested on synthetic, parameterized corpora that name no real agreement: the bounding definition is
+renamed, the cross-referenced section is renumbered, a forwarding target is varied, values are changed, and the
+required-context ceiling is derived from each corpus's own measured closure so the over-budget reaction is exercised
+rather than triggered by a hard-coded number (130). No Pass C, trust gate, verifier or scorer module was touched.
+
+Verdict **PHASE3_601_DEPENDENCY_DELIVERY_READY_FOR_REVALIDATION** (132). This says the delivery architecture is ready to
+be revalidated by a future, separately authorized paid mission. It is not an authorization to spend money, not a claim
+that the 6.01 compilation now succeeds, and not a Phase 3 closure. Zero paid calls were made.

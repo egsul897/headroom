@@ -1,0 +1,139 @@
+{
+ "artifact": "PHASE 3 / 6.01 DEPENDENCY-DELIVERY REMEDIATION §22/§23/§24 - the MISSING_CONTEXT claim is now checkable, the tool budget is now auditable, and the operative-state flag is classified",
+ "at": "2026-09-19T03:00:35.488Z",
+ "paidCalls": 0,
+ "section22_contract": {
+  "version": "missing-context-contract.v1",
+  "before": "SHARD_MISSING_CONTEXT was an unclassified self-report: nothing checked the model's claim against the evidence package it was handed",
+  "after": "every dependency a shard reports as missing is classified against its own certificate and delivered context",
+  "classes": [
+   "PLANNER_DELIVERY_GAP (required, deliverable, NOT delivered - impossible on a certified shard; an alarm, not a diagnosis)",
+   "FALSE_MISSING_CONTEXT (it was delivered in full)",
+   "PARTIAL_DELIVERY (delivered as a disclosed bounded excerpt; the tool route is the right answer)",
+   "DISCLOSED_UNDELIVERABLE (genuinely absent, disclosed by name)",
+   "EXTERNAL_DEPENDENCY",
+   "OPTIONAL_CONTEXT_MISS (interpretive; the tool budget is the designed route - the ONLY class for which 'the model should have called a tool' is an acceptable answer)"
+  ],
+  "wiredInto": "shard-executor.ts sets missingContextAudit on every shard result; compile.ts carries it, and each shard's dependencyCertificate, into the durable run record",
+  "replayOfTheFrozenFailureAgainstTheRemediatedPlan": {
+   "contractVersion": "missing-context-contract.v1",
+   "shardId": "shard:86cc5e439f113d6053a9",
+   "shardHash": "feeba7a35275164c02a9796d032d06ae1e15627035d56a0c111cddd9d50ef88e",
+   "certificateStatus": "CERTIFIED_EXECUTABLE",
+   "requested": [
+    {
+     "targetRef": "Section 2.18(b)",
+     "key": "section:2.18(b)",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 572,
+     "fullTextChars": 572,
+     "detail": "delivered IN FULL in the initial context (572 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:c2602aec0550b4687c5e80ca"
+    },
+    {
+     "targetRef": "term:Fixed Incremental Amount",
+     "key": "term:fixed incremental amount",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 948,
+     "fullTextChars": 948,
+     "detail": "delivered IN FULL in the initial context (948 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:c2602aec0550b4687c5e80ca"
+    },
+    {
+     "targetRef": "term:Voluntary Prepayment Incremental Amount",
+     "key": "term:voluntary prepayment incremental amount",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 1009,
+     "fullTextChars": 1009,
+     "detail": "delivered IN FULL in the initial context (1009 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:c2602aec0550b4687c5e80ca"
+    },
+    {
+     "targetRef": "term:Ratio Incremental Amount",
+     "key": "term:ratio incremental amount",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 2071,
+     "fullTextChars": 2071,
+     "detail": "delivered IN FULL in the initial context (2071 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:c2602aec0550b4687c5e80ca"
+    },
+    {
+     "targetRef": "term:Extension Amount",
+     "key": "term:extension amount",
+     "classification": "FALSE_MISSING_CONTEXT",
+     "deliveredChars": 601,
+     "fullTextChars": 601,
+     "detail": "delivered IN FULL in the initial context (601 chars) before the first turn - the missing-context claim is not about delivery",
+     "requestingRuleId": "ir-rule:c2602aec0550b4687c5e80ca"
+    }
+   ],
+   "counts": {
+    "PLANNER_DELIVERY_GAP": 0,
+    "FALSE_MISSING_CONTEXT": 5,
+    "PARTIAL_DELIVERY": 0,
+    "DISCLOSED_UNDELIVERABLE": 0,
+    "EXTERNAL_DEPENDENCY": 0,
+    "OPTIONAL_CONTEXT_MISS": 0
+   },
+   "contractHeld": true,
+   "violations": []
+  }
+ },
+ "section23_toolTelemetry": {
+  "evidenceLimitationThisCloses": "the durable shard record persists the terminal composition and telemetry but NOT the tool-call log, so the exact number of live tool calls, refusals and remaining call slots cannot be read from the frozen evidence. Turn counts and their input-token growth are recoverable from the run log and are reported as the strongest available proxy. §23 adds the telemetry that removes this limitation.",
+  "countersNowPersisted": [
+   "calls",
+   "sourceReadingCalls",
+   "refusals",
+   "charsReturned",
+   "maxToolCalls",
+   "maxAdditionalSourceChars",
+   "remainingCallSlots",
+   "remainingSourceChars",
+   "byTool",
+   "requestedTargets",
+   "anyEvidenceUnresolved",
+   "anyEvidenceTruncated"
+  ],
+  "wiredInto": "shard-executor.ts summariseToolUsage(compile.toolCallLog) -> ShardExecutionResult.toolUsage -> SemanticShardExecutionSummary.toolUsage in the durable run record",
+  "whatItAnswersNextTime": [
+   "did the model ever request this dependency?",
+   "was the request refused, and why?",
+   "how many call slots and source chars were left when the shard stopped?"
+  ],
+  "toolBudgetUnchanged": {
+   "maxToolCalls": 8,
+   "maxRecursionDepth": 3,
+   "maxAdditionalSourceChars": 20000
+  },
+  "note": "telemetry is diagnosis, not remediation: it makes the next A/B/C/D/E classification auditable instead of NOT_AUDITABLE. It does not itself deliver anything."
+ },
+ "section24_operativeStateFalseSignal": {
+  "frozenObservation": {
+   "harnessSupplied": "computeOperativeContractState over the package's real (empty) effect set - OPERATIVE_STATE_RESOLVED, 0 provisions",
+   "unitLevelInputHasUnresolvedOperativeEvidence": false,
+   "unresolvedEvidenceItemIds": [],
+   "shardsFlagged": [
+    {
+     "shardId": "shard:f266a61ab75f65592b9d",
+     "status": "SHARD_COMPLETE",
+     "failureReasons": [
+      "OPERATIVE_STATE_UNRESOLVED"
+     ]
+    }
+   ],
+   "trace": "the single flagged shard (shard:f266a61ab75f65592b9d) ended SHARD_COMPLETE and contains no CONFLICTED rule; its flag comes from bounded-composition.ts hasStaleReferencedDefinition(), which returns true because that shard emitted IR definitions for 'incur' and 'incurrence' - ordinary verb forms that are NOT defined terms in the instrument - so resolveOperativeDefinitionEvidence cannot confirm them as current operative truth.",
+   "classification": "TRACED_TO_AN_ACTUAL_OUTPUT_CONDITION",
+   "isTheFalseHarnessWiringFlagOfThePreviousRun": false,
+   "previousRunCause": "OPERATIVE_STATE_WIRING_WRONG - the harness passed operativeState: null, so every section-reading tool returned evidenceUnresolved=true. That cause is gone: the harness now supplies the deterministic package fact and five of six shards carry no operative-state flag."
+  },
+  "classification": "NOT_A_DELIVERY_FAILURE",
+  "reasoning": "the frozen trace attributes the OPERATIVE_STATE_UNRESOLVED flag on shard:f266a61ab75f65592b9d to hasStaleReferencedDefinition() firing on IR definitions the model emitted for ordinary verb forms that are not defined terms in the instrument. That is an OUTPUT condition of a shard that ended SHARD_COMPLETE, not a missing input: no required dependency of that shard is undelivered.",
+  "checkedAgainstTheRemediatedPlan": {
+   "shardStillPresent": false,
+   "note": "the shard boundary moved under the remediated planner; the classification above is about the frozen run"
+  },
+  "inScopeForThisMission": false,
+  "reason": "this mission remediates DELIVERY of required context. An emitted-definition condition in a completed shard is a separate defect class and is recorded here rather than silently fixed."
+ }
+}

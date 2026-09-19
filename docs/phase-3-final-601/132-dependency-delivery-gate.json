@@ -1,0 +1,390 @@
+{
+ "artifact": "PHASE 3 / 6.01 DEPENDENCY-DELIVERY REMEDIATION §29 - the gate",
+ "at": "2026-09-19T03:00:37.224Z",
+ "paidCalls": 0,
+ "startingSha": "1b36eb64f527740c8cf19f650152c7459b61441d",
+ "headSha": "1b36eb64f527740c8cf19f650152c7459b61441d",
+ "conditions": [
+  {
+   "id": 1,
+   "section": "§1",
+   "condition": "the paid-revalidation evidence (104-117 and the raw revalidation fixtures) is unmodified by this mission",
+   "pass": true,
+   "evidence": {
+    "gitStatus": "(clean)"
+   }
+  },
+  {
+   "id": 2,
+   "section": "§2",
+   "condition": "the failed shard is frozen by id AND content hash, and the red baseline (118/119/120) cannot be regenerated under the remediated planner",
+   "pass": true,
+   "evidence": {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "forensicsExitCode": 2,
+    "meaning": "the red-baseline script refuses to run under planner v3"
+   }
+  },
+  {
+   "id": 3,
+   "section": "§3",
+   "condition": "every dependency the failed shard reported as missing is enumerated and normalized to a dependency key",
+   "pass": true,
+   "evidence": {
+    "rows": 5
+   }
+  },
+  {
+   "id": 4,
+   "section": "§4",
+   "condition": "RESOLVABLE != DELIVERED is stated and the old architecture is classified OPTIONAL_DELIVERY_OF_REQUIRED_CONTEXT",
+   "pass": true,
+   "evidence": {
+    "verdict": "OPTIONAL_DELIVERY_OF_REQUIRED_CONTEXT"
+   }
+  },
+  {
+   "id": 5,
+   "section": "§5",
+   "condition": "the tool-budget causal classification exists and names a primary cause",
+   "pass": true,
+   "evidence": {
+    "primary": "PLANNER_DELIVERY_GAP (E) - the provable, architectural cause; A/D are contributing and self-reported but not auditable from the frozen evidence"
+   }
+  },
+  {
+   "id": 6,
+   "section": "§6",
+   "condition": "required dependencies are PREMATERIALIZED: every certified shard carries its whole deliverable required closure in its initial context",
+   "pass": true,
+   "evidence": {
+    "modelVersion": "required-dependency-delivery.v1",
+    "shardsCertified": 7,
+    "shardsFailed": 0,
+    "requiredDependenciesTotal": 425,
+    "requiredDependenciesMaterialized": 364,
+    "requiredDependenciesBoundedExcerpt": 35,
+    "requiredDependenciesExternal": 0,
+    "requiredDependenciesUndeliverableDisclosed": 26,
+    "requiredDependenciesUnresolved": 0,
+    "allShardsExecutable": true
+   }
+  },
+  {
+   "id": 7,
+   "section": "§7",
+   "condition": "'required' is defined generically - no term, section, company or instrument identifier appears in the required-dependency module",
+   "pass": true,
+   "evidence": {
+    "module": "lib/contract-model/compiler/semantic/required-dependencies.ts",
+    "grepClean": true
+   }
+  },
+  {
+   "id": 8,
+   "section": "§8",
+   "condition": "context is typed and carries full provenance: zero required entries lack a hash, document, span, requiring items, evidence or read-only ownership",
+   "pass": true,
+   "evidence": {
+    "requiredEntries": 399,
+    "sourceBackedEntries": 315,
+    "missingFullTextHash": 0,
+    "missingDocumentId": 0,
+    "missingAbsSpan": 0,
+    "missingRequiredBy": 0,
+    "missingEvidence": 0,
+    "notReadOnly": 0,
+    "parentContextEntriesHaveNoSourceSpanByDesign": 84,
+    "allHardZeros": true,
+    "note": "REQUIRED_PARENT_CONTEXT entries carry an inventory proposition rather than a verbatim source span, so they are excluded from the span check and counted separately - disclosed, not hidden"
+   }
+  },
+  {
+   "id": 9,
+   "section": "§9",
+   "condition": "the required tier has its own ceiling and is admitted before optional context; the interpretive budget is unchanged at 10,000",
+   "pass": true,
+   "evidence": {
+    "maxContextChars": 10000,
+    "maxRequiredContextChars": 64000
+   }
+  },
+  {
+   "id": 10,
+   "section": "§10",
+   "condition": "the over-budget reaction is deterministic (re-shard, then bounded provable excerpt, then explicit planning failure) and the forbidden 'hope for a tool call' pattern is not implemented",
+   "pass": true,
+   "evidence": {
+    "reactions": [
+     "RE-SHARD",
+     "BOUNDED PROVABLE EXCERPT (water-filling)",
+     "EXPLICIT PLANNING FAILURE"
+    ]
+   }
+  },
+  {
+   "id": 11,
+   "section": "§11",
+   "condition": "every shard carries a ShardDependencyCertificate and requiredDependenciesUnresolved is 0 across the plan",
+   "pass": true,
+   "evidence": {
+    "unresolved": 0,
+    "certified": 7,
+    "failed": 0
+   }
+  },
+  {
+   "id": 12,
+   "section": "§12",
+   "condition": "dependencies that cannot be delivered are disclosed by name with empty text, never fabricated",
+   "pass": true,
+   "evidence": {
+    "undeliverableDisclosed": 26,
+    "external": 0,
+    "everyUndeliverableHasEmptyText": true,
+    "everyUndeliverableIsDisclosedOnItsShard": true
+   }
+  },
+  {
+   "id": 13,
+   "section": "§13",
+   "condition": "the cross-reference-inside-a-required-definition rule is generic, with no special case for any section",
+   "pass": true,
+   "evidence": {
+    "instances": 59
+   }
+  },
+  {
+   "id": 14,
+   "section": "§14",
+   "condition": "all four bounding-amount terms the failed shard named are materialized in full before the model",
+   "pass": true,
+   "evidence": [
+    {
+     "dependency": "term:fixed incremental amount",
+     "result": "MATERIALIZED_IN_FULL_BEFORE_THE_MODEL"
+    },
+    {
+     "dependency": "term:voluntary prepayment incremental amount",
+     "result": "MATERIALIZED_IN_FULL_BEFORE_THE_MODEL"
+    },
+    {
+     "dependency": "term:ratio incremental amount",
+     "result": "MATERIALIZED_IN_FULL_BEFORE_THE_MODEL"
+    },
+    {
+     "dependency": "term:extension amount",
+     "result": "MATERIALIZED_IN_FULL_BEFORE_THE_MODEL"
+    }
+   ]
+  },
+  {
+   "id": 15,
+   "section": "§15",
+   "condition": "the 98-item shard was NOT split to obtain green, and the sensitivity sweep shows delivery is complete across a wide band of ceilings",
+   "pass": true,
+   "evidence": {
+    "ownedMaterialItems": 98,
+    "passingCeilings": [
+     32000,
+     48000,
+     64000,
+     96000
+    ]
+   }
+  },
+  {
+   "id": 16,
+   "section": "§16",
+   "condition": "the tool budget is unchanged, and the artifact states why raising it would not have been sufficient remediation",
+   "pass": true,
+   "evidence": {
+    "maxToolCalls": 8,
+    "maxRecursionDepth": 3,
+    "maxAdditionalSourceChars": 20000
+   }
+  },
+  {
+   "id": 17,
+   "section": "§17",
+   "condition": "the red baseline is recorded from the frozen run: the failed shard's context was budget-capped and dependencies were dropped",
+   "pass": true,
+   "evidence": {
+    "entries": 16,
+    "chars": 9946,
+    "budget": 10000,
+    "unresolvedEntries": 31,
+    "droppedForBudget": 25
+   }
+  },
+  {
+   "id": 18,
+   "section": "§18",
+   "condition": "the green proof holds: all five known missing dependencies are accounted for before execution, in full",
+   "pass": true,
+   "evidence": [
+    {
+     "dependency": "term:fixed incremental amount",
+     "before": "NOT_DERIVED_AT_ALL",
+     "after": "MATERIALIZED_IN_FULL_BEFORE_THE_MODEL"
+    },
+    {
+     "dependency": "term:voluntary prepayment incremental amount",
+     "before": "NOT_DERIVED_AT_ALL",
+     "after": "MATERIALIZED_IN_FULL_BEFORE_THE_MODEL"
+    },
+    {
+     "dependency": "term:ratio incremental amount",
+     "before": "NOT_DERIVED_AT_ALL",
+     "after": "MATERIALIZED_IN_FULL_BEFORE_THE_MODEL"
+    },
+    {
+     "dependency": "term:extension amount",
+     "before": "NOT_DERIVED_AT_ALL",
+     "after": "MATERIALIZED_IN_FULL_BEFORE_THE_MODEL"
+    },
+    {
+     "dependency": "section:2.18(b)",
+     "before": "NOT_DERIVED_AT_ALL",
+     "after": "MATERIALIZED_IN_FULL_BEFORE_THE_MODEL"
+    }
+   ]
+  },
+  {
+   "id": 19,
+   "section": "§19",
+   "condition": "provenance hard zeros",
+   "pass": true,
+   "evidence": {
+    "requiredEntries": 399,
+    "sourceBackedEntries": 315,
+    "missingFullTextHash": 0,
+    "missingDocumentId": 0,
+    "missingAbsSpan": 0,
+    "missingRequiredBy": 0,
+    "missingEvidence": 0,
+    "notReadOnly": 0,
+    "parentContextEntriesHaveNoSourceSpanByDesign": 84,
+    "allHardZeros": true,
+    "note": "REQUIRED_PARENT_CONTEXT entries carry an inventory proposition rather than a verbatim source span, so they are excluded from the span check and counted separately - disclosed, not hidden"
+   }
+  },
+  {
+   "id": 20,
+   "section": "§20",
+   "condition": "ownership is unchanged: every material item is owned exactly once, nothing is unplaced, and context is never ownership",
+   "pass": true,
+   "evidence": {
+    "materialItems": 319,
+    "ownedExactlyOnce": 319,
+    "multiplyOwned": 0,
+    "unplaced": 0
+   }
+  },
+  {
+   "id": 21,
+   "section": "§21",
+   "condition": "the complete-shard projection is labelled a projection and states what it does not prove",
+   "pass": true,
+   "evidence": {
+    "doesNotProve": "that the shard will end SHARD_COMPLETE. A model can still report missing context for a reason unrelated to delivery, can still mis-compile, and can still hit the output ceiling. Only a paid re-run settles that, and this mission does not authorize one."
+   }
+  },
+  {
+   "id": 22,
+   "section": "§22",
+   "condition": "the MISSING_CONTEXT contract is implemented and the frozen failure replays with zero PLANNER_DELIVERY_GAP",
+   "pass": true,
+   "evidence": {
+    "PLANNER_DELIVERY_GAP": 0,
+    "FALSE_MISSING_CONTEXT": 5,
+    "PARTIAL_DELIVERY": 0,
+    "DISCLOSED_UNDELIVERABLE": 0,
+    "EXTERNAL_DEPENDENCY": 0,
+    "OPTIONAL_CONTEXT_MISS": 0
+   }
+  },
+  {
+   "id": 23,
+   "section": "§23",
+   "condition": "tool-usage telemetry is persisted on the durable shard record, closing the NOT_AUDITABLE gap",
+   "pass": true,
+   "evidence": {
+    "counters": 12
+   }
+  },
+  {
+   "id": 24,
+   "section": "§24",
+   "condition": "the operative-state signal is classified and explicitly held out of scope rather than silently fixed",
+   "pass": true,
+   "evidence": {
+    "classification": "NOT_A_DELIVERY_FAILURE"
+   }
+  },
+  {
+   "id": 25,
+   "section": "§25",
+   "condition": "all 11 verifier findings of the failed run are classified against the delivery hypothesis",
+   "pass": true,
+   "evidence": {
+    "total": 11,
+    "plausiblyDeliveryCaused": 0,
+    "notAttributableToDelivery": 11
+   }
+  },
+  {
+   "id": 26,
+   "section": "§26",
+   "condition": "no Pass C, trust gate, verifier or scorer module was changed to achieve green",
+   "pass": true,
+   "evidence": {
+    "changedVerificationFiles": "(none)"
+   }
+  },
+  {
+   "id": 27,
+   "section": "§27",
+   "condition": "the generality suite passes on synthetic, parameterized corpora that name no real agreement",
+   "pass": true,
+   "evidence": {
+    "tests": 8,
+    "passed": 8,
+    "failed": 0
+   }
+  },
+  {
+   "id": 28,
+   "section": "§28",
+   "condition": "no test file that passed at the mission's starting SHA fails at HEAD, and tsc introduces no new error",
+   "pass": true,
+   "evidence": {
+    "fileLevelRegressions": [],
+    "newTscErrors": 0,
+    "preexistingTscErrors": 6,
+    "lint": "ERRORS",
+    "build": "OK"
+   }
+  },
+  {
+   "id": 29,
+   "section": "§30",
+   "condition": "no paid call was made by this mission, and no paid run is authorized by this gate",
+   "pass": true,
+   "evidence": {
+    "paidCalls": 0,
+    "authorizesAPaidRun": false
+   }
+  }
+ ],
+ "summary": {
+  "total": 29,
+  "PASS": 29,
+  "FAIL": 0
+ },
+ "verdict": "PHASE3_601_DEPENDENCY_DELIVERY_READY_FOR_REVALIDATION",
+ "whatThisVerdictMeans": "the delivery architecture is ready to be revalidated by a future, separately authorized paid mission. It is NOT an authorization to spend money, NOT a claim that the 6.01 compilation now succeeds, and NOT a Phase 3 closure.",
+ "phase3Closed": false,
+ "phase4Started": false,
+ "paidRunAuthorized": false
+}

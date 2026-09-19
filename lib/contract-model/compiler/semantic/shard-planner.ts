@@ -15,6 +15,7 @@
  */
 import { normalizeDefinedTermRef } from "../amendment/operative-state";
 import { computeSourceContentHash, hashParts } from "../hashing";
+import { buildShardDependencyCertificate, deriveRequiredDependencies, DEFAULT_REQUIRED_DEPENDENCY_BUDGET, REQUIRED_DEPENDENCY_MODEL_VERSION, type RequiredDependency, type RequiredDependencyDisposition, type ShardDependencyCertificate } from "./required-dependencies";
 import { resolveReferenceTarget } from "../semantic-accountability/reference-resolver";
 import { partitionSourceSlots } from "../semantic-accountability/slots";
 import { independentSegmentBounds } from "../semantic-accountability/source-coverage";
@@ -30,7 +31,35 @@ import type { SemanticCompilerInput } from "./types";
  * several complete units per shard, a first turn comfortably under ~30k estimated input tokens, no pathologically
  * large call, and an operationally reasonable shard count for the largest recorded unit.
  */
-export const DEFAULT_SHARD_BUDGET: ShardBudget = { targetPrimaryChars: 12_000, maxPrimaryChars: 24_000, maxContextChars: 10_000, maxContextEntryChars: 1_800, maxUnitsPerShard: 16 };
+/**
+ * v3: the interpretive budget (`maxContextChars`) is UNCHANGED at 10,000. What is new is `maxRequiredContextChars`, a
+ * separate ceiling for dependencies deterministic planning proved necessary, so required delivery never competes with
+ * optional enrichment (§9). Its size was measured, not guessed: the failed 6.01 shard needed ~44k chars to carry its
+ * whole required closure, and doing so takes a first turn from ~40k to ~52k input tokens - far inside the window the
+ * same run already used (a 69k-token turn). This is a DELIVERY budget; the per-attempt TOOL ceiling is deliberately
+ * unchanged (§16), because more tool calls cannot make a statically known dependency present at turn 1.
+ */
+export const DEFAULT_SHARD_BUDGET: ShardBudget = { targetPrimaryChars: 12_000, maxPrimaryChars: 24_000, maxContextChars: 10_000, maxRequiredContextChars: 64_000, maxContextEntryChars: 1_800, maxUnitsPerShard: 16 };
+/** A required dependency larger than the required-entry bound is delivered as a head excerpt of this size, with its partiality disclosed. */
+const REQUIRED_BOUNDED_EXCERPT_CHARS = 900;
+/**
+ * No required dependency is ever delivered below this many verbatim chars. Water-filling (§10) stops here: if the
+ * closure still does not fit when every entry is held to the floor, the planner declares an explicit planning failure
+ * instead of silently shrinking a dependency into uselessness or leaving it to an optional tool call.
+ */
+const REQUIRED_EXCERPT_FLOOR_CHARS = 300;
+/**
+ * Turn-1 input capacity. Half of the 200,000-token window is spent, at most, on the first turn of a shard's
+ * conversation; the other half is left for the tool budget's retrieved source (maxAdditionalSourceChars = 20,000 chars
+ * across up to 8 calls), the intervening turns and the output ceiling. This is the ONLY reason the required tier is
+ * bounded at all - it is a property of the model, not of any document.
+ */
+export const MAX_FIRST_TURN_INPUT_TOKENS = 100_000;
+const MAX_FIRST_TURN_INPUT_CHARS = Math.floor(MAX_FIRST_TURN_INPUT_TOKENS / CALIBRATED_TOKENS_PER_CHAR);
+/** A shard whose primary material and inventory are so large that capacity leaves less than this still gets a required tier this big; water-filling then bounds the entries. */
+const REQUIRED_CONTEXT_FLOOR_CHARS = 8_000;
+/** Dispositions that need no context entry of their own: the shard already owns the text, it is external, or it is not deliverable at all. */
+const NEEDS_NO_REQUIRED_ENTRY = new Set<RequiredDependencyDisposition>(["OWNED_PRIMARY_SOURCE", "EXTERNAL_REQUIRED_DEPENDENCY", "UNDELIVERABLE_DISCLOSED", "UNRESOLVED"]);
 
 const CONTENT_WORD = /[A-Za-z]{2,}/;
 /** A region counts as a definitions corpus when at least this fraction of its text lies inside detected definition spans. */
@@ -350,20 +379,23 @@ function buildBlocks(units: SemanticSourceUnit[], groups: MustLinkGroup[]): Bloc
   return blocks.sort((a, b) => a.unitOrdinals[0]! - b.unitOrdinals[0]!);
 }
 
-function packBlocks(blocks: Block[], budget: ShardBudget): { unitOrdinals: number[]; oversized: boolean; regionId: string }[] {
-  const shards: { unitOrdinals: number[]; oversized: boolean; regionId: string }[] = [];
+function packBlocks(blocks: Block[], budget: ShardBudget): { unitOrdinals: number[]; oversized: boolean; regionId: string; blocks: Block[] }[] {
+  const shards: { unitOrdinals: number[]; oversized: boolean; regionId: string; blocks: Block[] }[] = [];
+  let currentBlocks: Block[] = [];
   let current: number[] = [];
   let chars = 0;
   let regionId: string | null = null;
   const flush = () => {
-    if (current.length > 0) shards.push({ unitOrdinals: current, oversized: chars > budget.maxPrimaryChars || current.length > budget.maxUnitsPerShard, regionId: regionId! });
+    if (current.length > 0) shards.push({ unitOrdinals: current, oversized: chars > budget.maxPrimaryChars || current.length > budget.maxUnitsPerShard, regionId: regionId!, blocks: currentBlocks });
     current = [];
+    currentBlocks = [];
     chars = 0;
     regionId = null;
   };
   for (const b of blocks) {
     if (current.length > 0 && (regionId !== b.regionId || chars + b.chars > budget.targetPrimaryChars || current.length + b.unitOrdinals.length > budget.maxUnitsPerShard)) flush();
     current.push(...b.unitOrdinals);
+    currentBlocks.push(b);
     chars += b.chars;
     regionId = b.regionId;
     if (b.chars > budget.maxPrimaryChars || b.unitOrdinals.length > budget.maxUnitsPerShard) flush();
@@ -527,67 +559,186 @@ export function planCompilationShards(input: ShardPlanInput): ShardPlan {
   const regionTextById = new Map(input.sourceContext.regions.map((r) => [r.regionId, r.text]));
   const mustLinkGroups = buildMustLinkGroups(units, input.frozenInventory, itemOwnerUnit, crossingLinks, (u) => regionTextById.get(u.regionId)?.slice(u.charStart, u.charEnd) ?? "");
   const blocks = buildBlocks(units, mustLinkGroups);
-  const packed = packBlocks(blocks, budget);
   const byId = new Map(input.frozenInventory.items.map((i) => [i.inventoryItemId, i]));
   const regionById = new Map(input.sourceContext.regions.map((r) => [r.regionId, r]));
   const generation = input.generation ?? { algorithmVersion: SHARD_PLANNER_ALGORITHM_VERSION, promptVersion: "(unspecified)" };
+  const requiredBudget = { ...DEFAULT_REQUIRED_DEPENDENCY_BUDGET, maxRequiredContextChars: budget.maxRequiredContextChars };
+  const ownedTextOf = (shardUnits: SemanticSourceUnit[]) => shardUnits.map((u) => regionById.get(u.regionId)?.text.slice(u.charStart, u.charEnd) ?? "").join("\n");
+
+  /** The deterministic REQUIRED set for a candidate unit-set (§7), computed before any provider call. */
+  const requiredFor = (shardUnits: SemanticSourceUnit[]): RequiredDependency[] =>
+    deriveRequiredDependencies({
+      shardUnits, ownedText: ownedTextOf(shardUnits), ownedItemIds: shardUnits.flatMap((u) => u.ownedItemIds),
+      inventory: input.frozenInventory, index: input.structuralIndex, documentId: input.documentId,
+      sourceContext: input.sourceContext, itemOwnerUnit, ownedUnitKeys: new Set(shardUnits.map((u) => u.unitKey)), budget: requiredBudget, allUnits: units,
+    });
+  /** The dependencies that need a context entry of their own (the rest are owned, external or undeliverable). */
+  const needsEntry = (d: RequiredDependency) => !NEEDS_NO_REQUIRED_ENTRY.has(d.disposition);
+  /** Delivery a dependency asks for when nothing is scarce: in full up to the entry bound, otherwise a head excerpt. */
+  const desiredAllowance = (d: RequiredDependency) => (d.fullTextChars <= requiredBudget.maxRequiredEntryChars ? d.fullTextChars : REQUIRED_BOUNDED_EXCERPT_CHARS);
+  /** Byte-exact rendering of one required entry at a given allowance - the same text the shard will carry, so every size below is the real size, not an estimate. */
+  const renderRequired = (d: RequiredDependency, allowance: number): { text: string; truncated: boolean } => {
+    const take = Math.max(0, Math.min(d.fullTextChars, allowance));
+    if (take >= d.fullTextChars) return { text: d.fullText, truncated: false };
+    return { text: `${d.fullText.slice(0, take)}\n[…BOUNDED EXCERPT: this required dependency is ${d.fullTextChars} chars; the first ${take} are supplied verbatim from the owned source. Treat it as PARTIAL and retrieve the remainder with a bounded tool call only if the owned semantics need it.]`, truncated: true };
+  };
+  /** Total required-tier chars when no entry may exceed `cap`. Monotonically non-decreasing in `cap`. */
+  const requiredCharsAtCap = (req: RequiredDependency[], cap: number) =>
+    req.filter(needsEntry).reduce((a2, d) => a2 + renderRequired(d, Math.min(desiredAllowance(d), cap)).text.length, 0);
+  /** Chars the required tier occupies at full desired delivery - what the re-sharding decision (§10, first reaction) is made on. */
+  const requiredDeliveryChars = (req: RequiredDependency[]) => requiredCharsAtCap(req, Number.MAX_SAFE_INTEGER);
+
+  /**
+   * §10, third reaction - WATER-FILLING. When a shard's required closure does not fit its ceiling and the shard cannot
+   * be split any further (a single must-link block is indivisible without breaking ownership), delivery is reduced by
+   * ONE per-entry allowance: the largest allowance for which the whole closure fits. Every dependency at or below that
+   * allowance is still delivered in full, so the reduction falls on the largest dependencies first and never starves a
+   * small one; only the entries above it become disclosed bounded excerpts. The allowance is searched rather than
+   * chosen, so the result is a function of the shard alone. Below REQUIRED_EXCERPT_FLOOR_CHARS the planner stops and
+   * declares an explicit planning failure - it never hands a known required dependency to an optional tool call.
+   */
+  const allocateRequired = (req: RequiredDependency[], ceiling: number): { allowance: number; reduced: boolean; fits: boolean } => {
+    const maxDesired = req.filter(needsEntry).reduce((a2, d) => Math.max(a2, desiredAllowance(d)), 0);
+    if (requiredCharsAtCap(req, maxDesired) <= ceiling) return { allowance: maxDesired, reduced: false, fits: true };
+    let lo = REQUIRED_EXCERPT_FLOOR_CHARS;
+    let hi = maxDesired;
+    let best = -1;
+    while (lo <= hi) {
+      const mid = Math.floor((lo + hi) / 2);
+      if (requiredCharsAtCap(req, mid) <= ceiling) { best = mid; lo = mid + 1; } else hi = mid - 1;
+    }
+    return best >= 0 ? { allowance: best, reduced: true, fits: true } : { allowance: REQUIRED_EXCERPT_FLOOR_CHARS, reduced: true, fits: false };
+  };
+
+  /**
+   * The required tier's ceiling for one shard. It is a CAPACITY bound, not a tuning knob: the first turn of a shard's
+   * conversation is held to MAX_FIRST_TURN_INPUT_TOKENS, and whatever that leaves after the fixed call overhead, the
+   * shard's own primary material, its rendered inventory and the unchanged interpretive tier is what the required tier
+   * may use - capped by the plan's declared `maxRequiredContextChars` and floored so a shard with an unusually large
+   * inventory still gets a workable required tier (below the floor, water-filling and then planning failure apply).
+   */
+  const inventoryCharsOf = (shardUnits: SemanticSourceUnit[]) =>
+    shardUnits.flatMap((u) => u.ownedItemIds).reduce((a2, id) => a2 + (byId.get(id) ? approximateInventoryLineChars(byId.get(id)!) : 0), 0);
+  const requiredCeilingFor = (shardUnits: SemanticSourceUnit[]): number => {
+    const primaryChars = shardUnits.reduce((a2, u) => a2 + (u.charEnd - u.charStart), 0);
+    const capacity = MAX_FIRST_TURN_INPUT_CHARS - FIXED_CALL_OVERHEAD_CHARS - primaryChars - inventoryCharsOf(shardUnits) - budget.maxContextChars;
+    // The declared ceiling is never exceeded, and the floor never raises the tier above what was declared - a plan run
+    // under a deliberately small required budget must actually feel it (that is what makes §10's reaction testable).
+    const floor = Math.min(REQUIRED_CONTEXT_FLOOR_CHARS, budget.maxRequiredContextChars);
+    return Math.max(floor, Math.min(budget.maxRequiredContextChars, capacity));
+  };
+
+  // §10: when a shard's REQUIRED closure cannot fit its context budget, the planner reacts BEFORE the model call by
+  // splitting the shard along its own must-link block boundaries (never inside a block, so must-link semantics and
+  // ownership are preserved). It never leaves a known required dependency to an optional tool call.
+  type Packed = { unitOrdinals: number[]; oversized: boolean; regionId: string; blocks: Block[] };
+  const mkPacked = (bs: Block[]): Packed => {
+    const ords = bs.flatMap((x) => x.unitOrdinals).sort((x, y) => x - y);
+    const chars = bs.reduce((x, y) => x + y.chars, 0);
+    return { unitOrdinals: ords, oversized: chars > budget.maxPrimaryChars || ords.length > budget.maxUnitsPerShard, regionId: bs[0]!.regionId, blocks: bs };
+  };
+  const resharding = { splits: 0, maxDepthReached: 0 };
+  const MAX_RESHARD_DEPTH = 8;
+  const refine = (g: Packed, depth: number): Packed[] => {
+    const shardUnits = g.unitOrdinals.map((o) => units[o]!);
+    const need = requiredDeliveryChars(requiredFor(shardUnits));
+    if (need <= requiredCeilingFor(shardUnits) || g.blocks.length < 2 || depth >= MAX_RESHARD_DEPTH) return [g];
+    const mid = Math.ceil(g.blocks.length / 2);
+    resharding.splits++;
+    resharding.maxDepthReached = Math.max(resharding.maxDepthReached, depth + 1);
+    return [...refine(mkPacked(g.blocks.slice(0, mid)), depth + 1), ...refine(mkPacked(g.blocks.slice(mid)), depth + 1)];
+  };
+  const packed = packBlocks(blocks, budget).flatMap((g) => refine(g, 0));
 
   const unitOwnerShard: Record<string, string> = {};
   const shards: CompilationShard[] = packed.map((p, ordinal) => {
-    const shardUnits = [...p.unitOrdinals].sort((a, b) => a - b).map((o) => units[o]!);
+    const shardUnits = [...p.unitOrdinals].sort((a2, b2) => a2 - b2).map((o) => units[o]!);
     const shardId = `shard:${hashParts([input.candidateRef, ...shardUnits.map((u) => u.unitKey)]).slice(0, 20)}`;
     for (const u of shardUnits) unitOwnerShard[u.unitKey] = shardId;
     return { shardId, ordinal, units: shardUnits, oversized: p.oversized, regionId: p.regionId };
   }).map(({ shardId, ordinal, units: shardUnits, oversized, regionId }) => {
     const ownedSet = new Set(shardUnits.map((u) => u.unitKey));
-    const { candidates, notFound } = collectContextCandidates(shardUnits, units, ownedSet, input.frozenInventory, itemOwnerUnit, input.structuralIndex, input.sourceContext, input.documentId);
     const context: ShardContextEntry[] = [];
-    const unresolvedContext: UnresolvedShardContext[] = [...notFound];
+    const unresolvedContext: UnresolvedShardContext[] = [];
     let contextChars = 0;
-    // v2 fair-share admission (mission §13, bounded and deduplicated): every dependency KIND present gets a reserved
-    // floor of the context budget (budget / kinds present) in priority order first, then whatever remains is admitted
-    // in global priority order. One kind (25 parent propositions in the paid shard 0) can no longer consume the whole
-    // budget and starve the referenced definitions/sections the owned items' economics depend on. Deterministic.
-    const kindsPresent = [...new Set(candidates.map((c) => c.kind))];
-    const floor = kindsPresent.length > 0 ? Math.floor(budget.maxContextChars / kindsPresent.length) : 0;
+    const delivered = new Set<string>();
+
+    // ---- TIER 1 (§6/§9): every statically known REQUIRED dependency, admitted BEFORE any optional context and never
+    // competing with it. Delivered in full where the required-entry bound allows, otherwise as a disclosed head
+    // excerpt. Its presence is a planning guarantee, not a model tool choice.
+    const derived = requiredFor(shardUnits);
+    const requiredCeiling = requiredCeilingFor(shardUnits);
+    const allocation = allocateRequired(derived, requiredCeiling);
+    // The DELIVERED disposition is decided here, by what the shard actually carries - never by the derivation's wish.
+    const required: RequiredDependency[] = [];
+    for (const d of derived) {
+      if (d.disposition === "UNDELIVERABLE_DISCLOSED") { required.push(d); unresolvedContext.push({ kind: d.kind, key: d.key, reason: d.dispositionReason.includes("matches") ? "AMBIGUOUS" : "NOT_FOUND", detail: `REQUIRED dependency is not deliverable and is disclosed by name, never fabricated: ${d.dispositionReason}`, requiredBy: d.requiredBy }); continue; }
+      if (d.disposition === "EXTERNAL_REQUIRED_DEPENDENCY") { required.push(d); unresolvedContext.push({ kind: d.kind, key: d.key, reason: "NOT_FOUND", detail: `EXTERNAL required dependency: ${d.dispositionReason}`, requiredBy: d.requiredBy }); continue; }
+      if (d.disposition === "OWNED_PRIMARY_SOURCE") { required.push(d); continue; }
+      const rendered = renderRequired(d, Math.min(desiredAllowance(d), allocation.allowance));
+      if (contextChars + rendered.text.length > requiredCeiling) {
+        required.push({ ...d, disposition: "UNRESOLVED", dispositionReason: `PLANNING FAILURE: the required closure of this shard does not fit its required-context ceiling (${requiredCeiling} chars) even after re-sharding was exhausted and every entry was reduced to the ${REQUIRED_EXCERPT_FLOOR_CHARS}-char floor` });
+        unresolvedContext.push({ kind: d.kind, key: d.key, reason: "BUDGET", detail: `REQUIRED dependency did not fit the required-context ceiling (${requiredCeiling}) after required-first admission, deterministic re-sharding and water-filling to the ${REQUIRED_EXCERPT_FLOOR_CHARS}-char floor - the shard is NOT certified executable and this is an explicit planning failure, not a tool-call fallback`, requiredBy: d.requiredBy });
+        continue;
+      }
+      const disposition = rendered.truncated ? "BOUNDED_EXCERPT_DISCLOSED" : "MATERIALIZED_IN_INITIAL_CONTEXT";
+      const reductionNote = allocation.reduced ? ` [required tier water-filled to a ${allocation.allowance}-char per-entry allowance so the whole closure fits ${requiredCeiling} chars]` : "";
+      required.push({ ...d, disposition, dispositionReason: rendered.truncated ? `delivered as a disclosed bounded excerpt: ${rendered.text.length} of ${d.fullTextChars} chars are in the initial context${reductionNote}` : `delivered in full in the initial context (${d.fullTextChars} chars)${reductionNote}`, deliveredChars: rendered.text.length });
+      context.push({ contextKey: d.key, kind: d.kind, sourceUnitKey: d.sourceUnitKey, ownerShardId: d.sourceUnitKey ? unitOwnerShard[d.sourceUnitKey] ?? null : null, documentId: d.documentId, absCharStart: d.absCharStart, absCharEnd: d.absCharEnd, text: rendered.text, truncated: rendered.truncated, fullTextHash: d.fullTextHash, chars: rendered.text.length, requiredBy: d.requiredBy, reason: `REQUIRED ${d.kind} "${d.target}" - ${d.evidence.join(", ")} (closure depth ${d.closureDepth}${d.viaKey ? `, via ${d.viaKey}` : ""}); ${rendered.truncated ? `bounded excerpt, ${rendered.text.length} of ${d.fullTextChars} chars` : "delivered in full"} [admitted: REQUIRED_TIER]`, tier: "REQUIRED", ownership: "READ_ONLY_CONTEXT", requiredEvidence: d.evidence, closureDepth: d.closureDepth });
+      contextChars += rendered.text.length;
+      delivered.add(d.key);
+    }
+    const requiredChars = contextChars;
+
+    // ---- TIER 2/3: interpretive context, in whatever the required tier left. Unchanged fair-share admission among
+    // the kinds present, so no one optional kind starves the others.
+    const { candidates, notFound } = collectContextCandidates(shardUnits, units, ownedSet, input.frozenInventory, itemOwnerUnit, input.structuralIndex, input.sourceContext, input.documentId);
+    for (const nf of notFound) if (!delivered.has(nf.key) && !unresolvedContext.some((u) => u.key === nf.key)) unresolvedContext.push(nf);
+    // §9: a REQUIRED dependency never appears in the interpretive tier. Not even as a consolation when the required
+    // tier could not fit it - re-admitting it here would disguise a planning failure as ordinary optional context.
+    const requiredKeys = new Set(required.map((d) => d.key));
+    const optional = candidates.filter((c) => !delivered.has(c.key) && !requiredKeys.has(c.key));
+    const kindsPresent = [...new Set(optional.map((c) => c.kind))];
+    const optionalCeiling = contextChars + budget.maxContextChars;
+    const remaining = budget.maxContextChars;
+    const floor = kindsPresent.length > 0 ? Math.floor(remaining / kindsPresent.length) : 0;
     const usedByKind = new Map<ShardContextKind, number>();
     const admitted = new Set<string>();
     const admit = (c: ContextCandidate, capped: { text: string; truncated: boolean }, allocation: "KIND_FLOOR" | "REMAINING_BUDGET") => {
-      context.push({ contextKey: c.key, kind: c.kind, sourceUnitKey: c.sourceUnitKey, ownerShardId: c.sourceUnitKey ? unitOwnerShard[c.sourceUnitKey] ?? null : null, documentId: c.documentId, absCharStart: c.absCharStart, absCharEnd: c.absCharEnd, text: capped.text, truncated: capped.truncated, fullTextHash: computeSourceContentHash(c.fullText), chars: capped.text.length, requiredBy: c.requiredBy, reason: `${c.reason} [admitted: ${allocation}]` });
+      context.push({ contextKey: c.key, kind: c.kind, sourceUnitKey: c.sourceUnitKey, ownerShardId: c.sourceUnitKey ? unitOwnerShard[c.sourceUnitKey] ?? null : null, documentId: c.documentId, absCharStart: c.absCharStart, absCharEnd: c.absCharEnd, text: capped.text, truncated: capped.truncated, fullTextHash: computeSourceContentHash(c.fullText), chars: capped.text.length, requiredBy: c.requiredBy, reason: `${c.reason} [admitted: ${allocation}]`, tier: "INTERPRETIVE", ownership: "READ_ONLY_CONTEXT" });
       contextChars += capped.text.length;
       usedByKind.set(c.kind, (usedByKind.get(c.kind) ?? 0) + capped.text.length);
       admitted.add(c.key);
     };
-    for (const c of candidates) {
+    for (const c of optional) {
       const capped = capText(c.fullText, budget.maxContextEntryChars);
-      if ((usedByKind.get(c.kind) ?? 0) + capped.text.length <= floor && contextChars + capped.text.length <= budget.maxContextChars) admit(c, capped, "KIND_FLOOR");
+      if ((usedByKind.get(c.kind) ?? 0) + capped.text.length <= floor && contextChars + capped.text.length <= optionalCeiling) admit(c, capped, "KIND_FLOOR");
     }
-    for (const c of candidates) {
+    for (const c of optional) {
       if (admitted.has(c.key)) continue;
       const capped = capText(c.fullText, budget.maxContextEntryChars);
-      if (contextChars + capped.text.length > budget.maxContextChars) {
-        unresolvedContext.push({ kind: c.kind, key: c.key, reason: "BUDGET", detail: `context budget (${budget.maxContextChars} chars) exhausted before this ${c.kind.toLowerCase()} could be included - the shard must treat it as MISSING_CONTEXT or retrieve it with a bounded tool call`, requiredBy: c.requiredBy });
-        continue;
-      }
+      if (contextChars + capped.text.length > optionalCeiling) { unresolvedContext.push({ kind: c.kind, key: c.key, reason: "BUDGET", detail: `interpretive context budget exhausted before this ${c.kind.toLowerCase()} could be included - it is NOT a required dependency; the shard may retrieve it with a bounded tool call`, requiredBy: c.requiredBy }); continue; }
       admit(c, capped, "REMAINING_BUDGET");
     }
-    context.sort((a, b) => candidates.findIndex((c) => c.key === a.contextKey) - candidates.findIndex((c) => c.key === b.contextKey));
+
+    const dependencyCertificate: ShardDependencyCertificate = buildShardDependencyCertificate(shardId, required, delivered, contextChars - requiredChars, requiredChars, { ceilingChars: requiredCeiling, perEntryAllowanceChars: allocation.allowance, waterFilled: allocation.reduced });
     const ownedItemIds = shardUnits.flatMap((u) => u.ownedItemIds);
     const ownedMaterialItemIds = shardUnits.flatMap((u) => u.ownedMaterialItemIds);
     const primaryCharStart = Math.min(...shardUnits.map((u) => u.charStart));
     const primaryCharEnd = Math.max(...shardUnits.map((u) => u.charEnd));
     const primarySlices = contiguousSlices(shardUnits);
-    const primaryChars = primarySlices.reduce((a, sl) => a + (sl.charEnd - sl.charStart), 0);
-    const inventoryRenderedChars = ownedItemIds.reduce((a, id) => a + (byId.get(id) ? approximateInventoryLineChars(byId.get(id)!) : 0), 0);
+    const primaryChars = primarySlices.reduce((a2, sl) => a2 + (sl.charEnd - sl.charStart), 0);
+    const inventoryRenderedChars = ownedItemIds.reduce((a2, id) => a2 + (byId.get(id) ? approximateInventoryLineChars(byId.get(id)!) : 0), 0);
     const totalChars = primaryChars + contextChars + inventoryRenderedChars + FIXED_CALL_OVERHEAD_CHARS;
     const shardHash = hashParts([
       "shard-freeze", input.candidateRef, input.documentId, input.frozenInventory.frozenContentHash,
       ...shardUnits.map((u) => `${u.unitKey}|${u.absCharStart ?? u.charStart}|${u.absCharEnd ?? u.charEnd}|${u.textHash}`),
       `items:${[...ownedItemIds].sort().join(",")}`,
       ...context.map((c) => `ctx:${c.contextKey}|${c.fullTextHash}`).sort(),
-      `gen:${generation.algorithmVersion}|${generation.promptVersion}|${SHARD_PLANNER_ALGORITHM_VERSION}`,
+      `req:${required.map((d) => `${d.key}|${d.disposition}`).sort().join(",")}`,
+      `gen:${generation.algorithmVersion}|${generation.promptVersion}|${SHARD_PLANNER_ALGORITHM_VERSION}|${REQUIRED_DEPENDENCY_MODEL_VERSION}`,
     ]);
-    return { shardId, shardHash, ordinal, regionId, ownedUnitKeys: shardUnits.map((u) => u.unitKey), primaryCharStart, primaryCharEnd, primaryChars, primarySlices, ownedItemIds, ownedMaterialItemIds, context, contextChars, unresolvedContext, oversized, estimate: { primaryChars, contextChars, inventoryRenderedChars, fixedOverheadChars: FIXED_CALL_OVERHEAD_CHARS, totalChars, inputTokens: estimateTokensFromChars(totalChars), outputTokens: estimateOutputTokens(shardUnits.filter((u) => u.kind !== "LEAD_IN").length) } };
+    return { shardId, shardHash, ordinal, regionId, ownedUnitKeys: shardUnits.map((u) => u.unitKey), primaryCharStart, primaryCharEnd, primaryChars, primarySlices, ownedItemIds, ownedMaterialItemIds, context, contextChars, unresolvedContext, oversized, requiredDependencies: required, dependencyCertificate, estimate: { primaryChars, contextChars, inventoryRenderedChars, fixedOverheadChars: FIXED_CALL_OVERHEAD_CHARS, totalChars, inputTokens: estimateTokensFromChars(totalChars), outputTokens: estimateOutputTokens(shardUnits.filter((u) => u.kind !== "LEAD_IN").length) } };
   });
 
   const itemOwnerShard: Record<string, string> = {};
@@ -617,6 +768,19 @@ export function planCompilationShards(input: ShardPlanInput): ShardPlan {
     unplacedItemIds: unplaced,
     ownershipProof,
     totals,
+    dependencyCertification: {
+      modelVersion: REQUIRED_DEPENDENCY_MODEL_VERSION,
+      shardsCertified: shards.filter((s) => s.dependencyCertificate.certificateStatus === "CERTIFIED_EXECUTABLE").length,
+      shardsFailed: shards.filter((s) => s.dependencyCertificate.certificateStatus !== "CERTIFIED_EXECUTABLE").length,
+      requiredDependenciesTotal: shards.reduce((a, s) => a + s.dependencyCertificate.requiredDependenciesTotal, 0),
+      requiredDependenciesMaterialized: shards.reduce((a, s) => a + s.dependencyCertificate.requiredDependenciesMaterialized, 0),
+      requiredDependenciesBoundedExcerpt: shards.reduce((a, s) => a + s.dependencyCertificate.requiredDependenciesBoundedExcerpt, 0),
+      requiredDependenciesExternal: shards.reduce((a, s) => a + s.dependencyCertificate.requiredDependenciesExternal, 0),
+      requiredDependenciesUndeliverableDisclosed: shards.reduce((a, s) => a + s.dependencyCertificate.requiredDependenciesUndeliverableDisclosed, 0),
+      requiredDependenciesUnresolved: shards.reduce((a, s) => a + s.dependencyCertificate.requiredDependenciesUnresolved, 0),
+      allShardsExecutable: shards.every((s) => s.dependencyCertificate.certificateStatus === "CERTIFIED_EXECUTABLE"),
+    },
+    requiredContextResharding: { ...resharding, note: "shards split along must-link block boundaries BEFORE any provider call because their required-dependency closure did not fit the context budget (§10)" },
     planHash: hashParts(["shard-plan", ...shards.map((s) => s.shardHash)]),
   };
 }

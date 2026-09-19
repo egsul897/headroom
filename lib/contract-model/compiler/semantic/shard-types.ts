@@ -25,7 +25,7 @@ import type { SemanticCompilerFailureReason, SemanticCompilerInput } from "./typ
  * and dependency context is prioritised by what the owned items require (terms/sections) ahead of parent propositions.
  * Every shardHash and planHash produced under v1 is therefore invalid for reuse (mission §22).
  */
-export const SHARD_PLANNER_ALGORITHM_VERSION = "semantic-compilation-shards.v2";
+export const SHARD_PLANNER_ALGORITHM_VERSION = "semantic-compilation-shards.v3-required-dependency-delivery";
 
 /**
  * Deterministic token estimate for a rendered compiler conversation: tokens per rendered character, CALIBRATED on the
@@ -97,7 +97,14 @@ export interface SemanticSourceUnit {
   ordinal: number;
 }
 
-export type ShardContextKind = "CHAPEAU" | "PARENT_ITEM" | "REFERENCED_TERM" | "REFERENCED_SECTION" | "EXPANSION_REGION";
+/**
+ * REQUIRED_* kinds are dependencies deterministic planning proved necessary BEFORE the provider call; they are
+ * prematerialized and never left to an optional model tool choice. The remaining kinds are interpretive context.
+ */
+export type ShardContextKind = "REQUIRED_DEFINITION" | "REQUIRED_REFERENCED_SECTION" | "REQUIRED_PARENT_CONTEXT" | "REQUIRED_OPERATIVE_STATE" | "CHAPEAU" | "PARENT_ITEM" | "REFERENCED_TERM" | "REFERENCED_SECTION" | "EXPANSION_REGION";
+
+/** Admission tier (§9): required dependencies are admitted before anything else and never compete with optional context. */
+export type ShardContextTier = "REQUIRED" | "INTERPRETIVE" | "OPTIONAL";
 
 /** Bounded, READ-ONLY dependency context handed to a shard. Carries provenance; never transfers semantic ownership. */
 export interface ShardContextEntry {
@@ -117,6 +124,13 @@ export interface ShardContextEntry {
   /** Which owned items/units required it. */
   requiredBy: string[];
   reason: string;
+  /** §9 admission tier. REQUIRED entries are admitted first, in full where the required-entry bound allows. */
+  tier: ShardContextTier;
+  /** Read-only always: context explains owned semantics and never acquires ownership of any inventory item (§20). */
+  ownership: "READ_ONLY_CONTEXT";
+  /** For a REQUIRED entry: why it is deterministically required, and how deep in the definition closure it sits. */
+  requiredEvidence?: string[];
+  closureDepth?: number;
 }
 
 export interface UnresolvedShardContext {
@@ -132,8 +146,13 @@ export interface ShardBudget {
   targetPrimaryChars: number;
   /** A single block (one unit, or a must-link group) larger than this still forms its own shard, flagged `oversized`. */
   maxPrimaryChars: number;
-  /** Total read-only context chars per shard. */
+  /** Total read-only context chars per shard for the OPTIONAL/interpretive tier (unchanged from v2). */
   maxContextChars: number;
+  /**
+   * Separate, larger ceiling for the REQUIRED tier (§9). Required dependencies are not optional, so they do not
+   * compete for the interpretive budget: giving them their own ceiling is what makes delivery a planning guarantee.
+   */
+  maxRequiredContextChars: number;
   /** Per context entry cap (head + tail). */
   maxContextEntryChars: number;
   /** Most complete units one shard may own (bounds OUTPUT concentration: each unit is at least one emitted object). A must-link block larger than this still stays together, flagged `oversized`. */
@@ -176,6 +195,10 @@ export interface CompilationShard {
   oversized: boolean;
   /** Estimates for the FIRST turn of this shard's conversation (see estimateTokensFromChars). */
   estimate: { primaryChars: number; contextChars: number; inventoryRenderedChars: number; fixedOverheadChars: number; totalChars: number; inputTokens: number; outputTokens: number };
+  /** Every dependency deterministic planning proved this shard needs, with provenance and disposition (§7/§8). */
+  requiredDependencies: import("./required-dependencies").RequiredDependency[];
+  /** §11 - a shard is executable only when this certifies that every internal required dependency is delivered. */
+  dependencyCertificate: import("./required-dependencies").ShardDependencyCertificate;
 }
 
 export interface ShardPlan {
@@ -199,6 +222,22 @@ export interface ShardPlan {
   unplacedItemIds: string[];
   ownershipProof: { materialItems: number; ownedOnce: number; unowned: number; multiplyOwned: number };
   totals: { shardCount: number; primaryChars: number; contextChars: number; contextDuplicationChars: number; estimatedInputTokens: number; maxShardInputTokens: number; medianShardInputTokens: number; p95ShardInputTokens: number; maxShardOutputTokens: number; largestShardPrimaryChars: number; largestShardOwnedItems: number; largestShardUnits: number; oversizedShards: number };
+  /** §11 plan-level roll-up of the per-shard dependency certificates. */
+  dependencyCertification: {
+    modelVersion: string;
+    shardsCertified: number;
+    shardsFailed: number;
+    requiredDependenciesTotal: number;
+    requiredDependenciesMaterialized: number;
+    requiredDependenciesBoundedExcerpt: number;
+    requiredDependenciesExternal: number;
+    requiredDependenciesUndeliverableDisclosed: number;
+    requiredDependenciesUnresolved: number;
+    /** True only when every shard certified: no shard may reach a provider with a known internal dependency absent. */
+    allShardsExecutable: boolean;
+  };
+  /** §10 record of shards the required-closure budget forced the planner to split before any provider call. */
+  requiredContextResharding: { splits: number; maxDepthReached: number; note: string };
   /** Identity of the whole plan (hash of every shard hash, in order). */
   planHash: string;
 }
@@ -224,6 +263,39 @@ export interface ShardExecutionResult {
   reusedFromHash: boolean;
   attempts: number;
   telemetry: { inputTokens: number | null; outputTokens: number | null; costUsd: number | null } | null;
+  /**
+   * §23 - TOOL-USAGE TELEMETRY. The durable shard record used to persist the terminal composition and token telemetry
+   * but NOT what the tool budget was spent on, so after the fact nobody could say whether a shard stopped because the
+   * budget ran out, because a call was refused, or because the model never asked (artifact 120 had to record every one
+   * of those counters as NOT_AUDITABLE). This carries the bounded counters with the result. Optional: a result built by
+   * a fixture or a pre-existing test predates it, and an absent record is never read as "no tool calls".
+   */
+  toolUsage?: ShardToolUsage;
+  /** §22 - this shard's MISSING_CONTEXT claim audited against the evidence package it was actually handed. Optional for the same reason. */
+  missingContextAudit?: import("./missing-context-contract").ShardMissingContextAudit;
+}
+
+/** §23 - what one shard's conversation actually spent its tool budget on. Bounded counters and targets only, never retrieved text. */
+export interface ShardToolUsage {
+  /** Total logged tool invocations across the shard's whole conversation. */
+  calls: number;
+  /** Calls that returned real source text (the ones that consume the source-char budget). */
+  sourceReadingCalls: number;
+  /** Calls the tool layer declined (budget exhausted, target not found, out-of-scope request). */
+  refusals: number;
+  charsReturned: number;
+  /** Budget the shard was given, so remaining headroom is derivable without re-reading configuration. */
+  maxToolCalls: number;
+  maxAdditionalSourceChars: number;
+  remainingCallSlots: number;
+  remainingSourceChars: number;
+  /** Per-tool call counts, so "which route did it use" is answerable. */
+  byTool: Record<string, number>;
+  /** The targets it asked for, in order, bounded to the first 64 - the direct answer to "did the model ever request X?". */
+  requestedTargets: string[];
+  /** Whether any call reported evidence it could not confirm as current operative truth. */
+  anyEvidenceUnresolved: boolean;
+  anyEvidenceTruncated: boolean;
 }
 
 export type ShardCollisionKind = "DEFINITION_EMITTED_BY_NON_OWNER" | "DEFINITION_DUPLICATE_CONSISTENT" | "DEFINITION_CONFLICT" | "RULE_EMITTED_OUT_OF_SCOPE" | "RULE_DUPLICATE_CONSISTENT" | "RULE_POSSIBLE_DUPLICATE" | "SHARED_CAP_EMITTED_OUT_OF_SCOPE" | "LINEAGE_CLAIM_ON_UNOWNED_ITEM" | "DISPOSITION_ON_UNOWNED_ITEM" | "DANGLING_RULE_REFERENCE"

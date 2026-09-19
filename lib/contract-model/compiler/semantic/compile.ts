@@ -344,7 +344,7 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       definitionConflictEvidence: stitched.definitionConflicts,
       unresolvedOwnedItemList: stitched.unresolvedOwnedItems,
       attributionProofCounts: attributionProofCounts(plan, stitched),
-      shards: run.results.map((r) => { const s = shardByHash.get(r.shardHash)!; return { shardId: r.shardId, shardHash: r.shardHash, ordinal: s.ordinal, status: r.status, attempts: r.attempts, reusedFromHash: r.reusedFromHash, failureReasons: r.failureReasons, ownedMaterialItems: s.ownedMaterialItemIds.length, oversized: s.oversized, telemetry: r.telemetry }; }),
+      shards: run.results.map((r) => { const s = shardByHash.get(r.shardHash)!; return { shardId: r.shardId, shardHash: r.shardHash, ordinal: s.ordinal, status: r.status, attempts: r.attempts, reusedFromHash: r.reusedFromHash, failureReasons: r.failureReasons, ownedMaterialItems: s.ownedMaterialItemIds.length, oversized: s.oversized, telemetry: r.telemetry, ...(r.toolUsage ? { toolUsage: r.toolUsage } : {}), ...(r.missingContextAudit ? { missingContextAudit: r.missingContextAudit } : {}), ...(s.dependencyCertificate ? { dependencyCertificate: s.dependencyCertificate } : {}) }; }),
       telemetryNote: `${plan.shards.length} bounded conversations (${run.stats.executed} executed, ${run.stats.reused} reused by shardHash, ${run.stats.retries} provider-failure retries); rawModelOutput and toolCallLog are null/empty at the top level because no single transcript exists - per-shard telemetry is listed under execution.sharded.shards`,
     },
   };

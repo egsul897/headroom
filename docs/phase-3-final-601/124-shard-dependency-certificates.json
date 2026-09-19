@@ -1,0 +1,271 @@
+{
+ "artifact": "PHASE 3 / 6.01 DEPENDENCY-DELIVERY REMEDIATION §11 - every shard's ShardDependencyCertificate, computed before any provider call",
+ "at": "2026-09-19T03:00:35.485Z",
+ "paidCalls": 0,
+ "contract": {
+  "requiredDependenciesUnresolved": "MUST be 0 for a shard to be certified executable",
+  "certificateStatuses": [
+   "CERTIFIED_EXECUTABLE",
+   "PLANNING_FAILED_REQUIRED_CONTEXT_UNDELIVERABLE"
+  ],
+  "blockingDisposition": "UNRESOLVED (deliverable but not delivered)",
+  "nonBlockingDispositions": [
+   "MATERIALIZED_IN_INITIAL_CONTEXT",
+   "BOUNDED_EXCERPT_DISCLOSED",
+   "OWNED_PRIMARY_SOURCE",
+   "EXTERNAL_REQUIRED_DEPENDENCY",
+   "UNDELIVERABLE_DISCLOSED"
+  ]
+ },
+ "planCertification": {
+  "modelVersion": "required-dependency-delivery.v1",
+  "shardsCertified": 7,
+  "shardsFailed": 0,
+  "requiredDependenciesTotal": 425,
+  "requiredDependenciesMaterialized": 364,
+  "requiredDependenciesBoundedExcerpt": 35,
+  "requiredDependenciesExternal": 0,
+  "requiredDependenciesUndeliverableDisclosed": 26,
+  "requiredDependenciesUnresolved": 0,
+  "allShardsExecutable": true
+ },
+ "resharding": {
+  "splits": 1,
+  "maxDepthReached": 1,
+  "note": "shards split along must-link block boundaries BEFORE any provider call because their required-dependency closure did not fit the context budget (§10)"
+ },
+ "shards": [
+  {
+   "ordinal": 0,
+   "shardId": "shard:7922314d9b00112aef21",
+   "shardHash": "8e23df7dc7aee4baaabb801408ac1886d9b2137d0b069fd460f368eb57f16f72",
+   "ownedUnits": 7,
+   "ownedMaterialItems": 42,
+   "primaryChars": 3294,
+   "requiredEntries": 71,
+   "requiredChars": 51231,
+   "interpretiveChars": 186,
+   "estimatedTurn1InputTokens": 44829,
+   "certificate": {
+    "modelVersion": "required-dependency-delivery.v1",
+    "shardId": "shard:7922314d9b00112aef21",
+    "requiredDependenciesTotal": 76,
+    "requiredDependenciesResolved": 71,
+    "requiredDependenciesMaterialized": 67,
+    "requiredDependenciesBoundedExcerpt": 4,
+    "requiredDependenciesOwnedPrimarySource": 0,
+    "requiredDependenciesExternal": 0,
+    "requiredDependenciesUndeliverableDisclosed": 5,
+    "requiredDependenciesUnresolved": 0,
+    "requiredDependencyChars": 51231,
+    "optionalContextChars": 186,
+    "requiredTierAllocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 2639,
+     "waterFilled": false
+    },
+    "undelivered": [],
+    "certificateStatus": "CERTIFIED_EXECUTABLE"
+   }
+  },
+  {
+   "ordinal": 1,
+   "shardId": "shard:7888717f06dfe736bf5b",
+   "shardHash": "7530cb9d8e48a51f665a2b0fe6d0705c59d75f142a41388267121fec5d8e0b76",
+   "ownedUnits": 5,
+   "ownedMaterialItems": 10,
+   "primaryChars": 663,
+   "requiredEntries": 54,
+   "requiredChars": 35492,
+   "interpretiveChars": 175,
+   "estimatedTurn1InputTokens": 32929,
+   "certificate": {
+    "modelVersion": "required-dependency-delivery.v1",
+    "shardId": "shard:7888717f06dfe736bf5b",
+    "requiredDependenciesTotal": 56,
+    "requiredDependenciesResolved": 54,
+    "requiredDependenciesMaterialized": 48,
+    "requiredDependenciesBoundedExcerpt": 6,
+    "requiredDependenciesOwnedPrimarySource": 0,
+    "requiredDependenciesExternal": 0,
+    "requiredDependenciesUndeliverableDisclosed": 2,
+    "requiredDependenciesUnresolved": 0,
+    "requiredDependencyChars": 35492,
+    "optionalContextChars": 175,
+    "requiredTierAllocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 3004,
+     "waterFilled": false
+    },
+    "undelivered": [],
+    "certificateStatus": "CERTIFIED_EXECUTABLE"
+   }
+  },
+  {
+   "ordinal": 2,
+   "shardId": "shard:fe26b4996ab543b0a066",
+   "shardHash": "e277c984857b5a5f49c1e8a8ecdae409471f1953521e2c718b5381a02b26b75a",
+   "ownedUnits": 15,
+   "ownedMaterialItems": 69,
+   "primaryChars": 8590,
+   "requiredEntries": 50,
+   "requiredChars": 39632,
+   "interpretiveChars": 4036,
+   "estimatedTurn1InputTokens": 48446,
+   "certificate": {
+    "modelVersion": "required-dependency-delivery.v1",
+    "shardId": "shard:fe26b4996ab543b0a066",
+    "requiredDependenciesTotal": 57,
+    "requiredDependenciesResolved": 50,
+    "requiredDependenciesMaterialized": 46,
+    "requiredDependenciesBoundedExcerpt": 4,
+    "requiredDependenciesOwnedPrimarySource": 0,
+    "requiredDependenciesExternal": 0,
+    "requiredDependenciesUndeliverableDisclosed": 7,
+    "requiredDependenciesUnresolved": 0,
+    "requiredDependencyChars": 39632,
+    "optionalContextChars": 4036,
+    "requiredTierAllocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 2665,
+     "waterFilled": false
+    },
+    "undelivered": [],
+    "certificateStatus": "CERTIFIED_EXECUTABLE"
+   }
+  },
+  {
+   "ordinal": 3,
+   "shardId": "shard:86cc5e439f113d6053a9",
+   "shardHash": "feeba7a35275164c02a9796d032d06ae1e15627035d56a0c111cddd9d50ef88e",
+   "ownedUnits": 13,
+   "ownedMaterialItems": 98,
+   "primaryChars": 11801,
+   "requiredEntries": 63,
+   "requiredChars": 58774,
+   "interpretiveChars": 175,
+   "estimatedTurn1InputTokens": 59603,
+   "certificate": {
+    "modelVersion": "required-dependency-delivery.v1",
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "requiredDependenciesTotal": 69,
+    "requiredDependenciesResolved": 63,
+    "requiredDependenciesMaterialized": 53,
+    "requiredDependenciesBoundedExcerpt": 10,
+    "requiredDependenciesOwnedPrimarySource": 0,
+    "requiredDependenciesExternal": 0,
+    "requiredDependenciesUndeliverableDisclosed": 6,
+    "requiredDependenciesUnresolved": 0,
+    "requiredDependencyChars": 58774,
+    "optionalContextChars": 175,
+    "requiredTierAllocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 3115,
+     "waterFilled": false
+    },
+    "undelivered": [],
+    "certificateStatus": "CERTIFIED_EXECUTABLE"
+   }
+  },
+  {
+   "ordinal": 4,
+   "shardId": "shard:2eb6ff75386e45a57593",
+   "shardHash": "e8383413ca3a791ae92d7a4ab7a38fc41d91bdb489099d39de7403f0d36b3b8f",
+   "ownedUnits": 16,
+   "ownedMaterialItems": 44,
+   "primaryChars": 4010,
+   "requiredEntries": 74,
+   "requiredChars": 56962,
+   "interpretiveChars": 361,
+   "estimatedTurn1InputTokens": 47969,
+   "certificate": {
+    "modelVersion": "required-dependency-delivery.v1",
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "requiredDependenciesTotal": 76,
+    "requiredDependenciesResolved": 74,
+    "requiredDependenciesMaterialized": 70,
+    "requiredDependenciesBoundedExcerpt": 4,
+    "requiredDependenciesOwnedPrimarySource": 0,
+    "requiredDependenciesExternal": 0,
+    "requiredDependenciesUndeliverableDisclosed": 2,
+    "requiredDependenciesUnresolved": 0,
+    "requiredDependencyChars": 56962,
+    "optionalContextChars": 361,
+    "requiredTierAllocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 3115,
+     "waterFilled": false
+    },
+    "undelivered": [],
+    "certificateStatus": "CERTIFIED_EXECUTABLE"
+   }
+  },
+  {
+   "ordinal": 5,
+   "shardId": "shard:e10ed610ecff8b399619",
+   "shardHash": "e8752ab378d98866e62cf9adf459b567a507ffeee9d1444d9fda98d7f9ae7d32",
+   "ownedUnits": 16,
+   "ownedMaterialItems": 42,
+   "primaryChars": 3712,
+   "requiredEntries": 60,
+   "requiredChars": 44504,
+   "interpretiveChars": 661,
+   "estimatedTurn1InputTokens": 41772,
+   "certificate": {
+    "modelVersion": "required-dependency-delivery.v1",
+    "shardId": "shard:e10ed610ecff8b399619",
+    "requiredDependenciesTotal": 61,
+    "requiredDependenciesResolved": 60,
+    "requiredDependenciesMaterialized": 56,
+    "requiredDependenciesBoundedExcerpt": 4,
+    "requiredDependenciesOwnedPrimarySource": 0,
+    "requiredDependenciesExternal": 0,
+    "requiredDependenciesUndeliverableDisclosed": 1,
+    "requiredDependenciesUnresolved": 0,
+    "requiredDependencyChars": 44504,
+    "optionalContextChars": 661,
+    "requiredTierAllocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 3115,
+     "waterFilled": false
+    },
+    "undelivered": [],
+    "certificateStatus": "CERTIFIED_EXECUTABLE"
+   }
+  },
+  {
+   "ordinal": 6,
+   "shardId": "shard:7c4d3d2ae3e0a522b99e",
+   "shardHash": "8df85990820f087edf78c7bcfca5c821a4efa8769e8e80e6a73eee456bd6211c",
+   "ownedUnits": 10,
+   "ownedMaterialItems": 14,
+   "primaryChars": 1553,
+   "requiredEntries": 27,
+   "requiredChars": 19577,
+   "interpretiveChars": 854,
+   "estimatedTurn1InputTokens": 28043,
+   "certificate": {
+    "modelVersion": "required-dependency-delivery.v1",
+    "shardId": "shard:7c4d3d2ae3e0a522b99e",
+    "requiredDependenciesTotal": 30,
+    "requiredDependenciesResolved": 27,
+    "requiredDependenciesMaterialized": 24,
+    "requiredDependenciesBoundedExcerpt": 3,
+    "requiredDependenciesOwnedPrimarySource": 0,
+    "requiredDependenciesExternal": 0,
+    "requiredDependenciesUndeliverableDisclosed": 3,
+    "requiredDependenciesUnresolved": 0,
+    "requiredDependencyChars": 19577,
+    "optionalContextChars": 854,
+    "requiredTierAllocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 2283,
+     "waterFilled": false
+    },
+    "undelivered": [],
+    "certificateStatus": "CERTIFIED_EXECUTABLE"
+   }
+  }
+ ],
+ "everyShardCertified": true
+}

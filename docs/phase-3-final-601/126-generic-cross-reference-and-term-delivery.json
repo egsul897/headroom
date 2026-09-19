@@ -1,0 +1,587 @@
+{
+ "artifact": "PHASE 3 / 6.01 DEPENDENCY-DELIVERY REMEDIATION §13/§14/§19 - the cross-reference rule stated generically, the four bounding terms, and provenance hard zeros",
+ "at": "2026-09-19T03:00:35.487Z",
+ "paidCalls": 0,
+ "section13_crossReferenceRuleIsGeneric": {
+  "rule": "a section reference written INSIDE a delivered required definition is itself required, one hop, because the definition's own meaning is incomplete without it",
+  "implementedWhere": "lib/contract-model/compiler/semantic/required-dependencies.ts, evidence CROSS_REFERENCE_IN_REQUIRED_DEFINITION",
+  "noSpecialCase": "the rule is applied to every delivered required definition of every document; nothing in the code mentions a particular section number",
+  "instancesOnThisUnit": [
+   {
+    "shardOrdinal": 0,
+    "key": "section:5.01(a)",
+    "target": "5.01(a)",
+    "via": "term:test period",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 0,
+    "key": "section:5.01(b)",
+    "target": "5.01(b)",
+    "via": "term:test period",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 0,
+    "key": "section:1.08(f)",
+    "target": "1.08(f)",
+    "via": "term:first lien leverage ratio",
+    "disposition": "BOUNDED_EXCERPT_DISCLOSED",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 0,
+    "key": "section:2.26",
+    "target": "2.26",
+    "via": "term:initial borrower",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 0,
+    "key": "section:2.28",
+    "target": "2.28",
+    "via": "term:initial borrower",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 0,
+    "key": "section:2.29",
+    "target": "2.29",
+    "via": "term:initial borrower",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 0,
+    "key": "section:6.02",
+    "target": "6.02",
+    "via": "term:restricted",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 0,
+    "key": "section:6.08",
+    "target": "6.08",
+    "via": "term:unrestricted subsidiary",
+    "disposition": "BOUNDED_EXCERPT_DISCLOSED",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 1,
+    "key": "section:2.19",
+    "target": "Section 2.19",
+    "via": null,
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 1,
+    "key": "section:2.22",
+    "target": "Section 2.22",
+    "via": null,
+    "disposition": "BOUNDED_EXCERPT_DISCLOSED",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 1,
+    "key": "section:2.07(f)",
+    "target": "2.07(f)",
+    "via": "term:loan documents",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 1,
+    "key": "section:6.01(b)(1)(z)",
+    "target": "6.01(b)(1)(Z)",
+    "via": "term:fixed incremental amount",
+    "disposition": "UNDELIVERABLE_DISCLOSED",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 1,
+    "key": "section:6.01(b)(12)(b)",
+    "target": "6.01(b)(12)(b)",
+    "via": "term:fixed incremental amount",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 1,
+    "key": "section:9.02",
+    "target": "9.02",
+    "via": "term:loan documents",
+    "disposition": "BOUNDED_EXCERPT_DISCLOSED",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 1,
+    "key": "section:6.01(b)(13)",
+    "target": "6.01(b)(13)",
+    "via": "term:refinancing indebtedness",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 1,
+    "key": "section:2.18(e)(i)",
+    "target": "2.18(e)(i)",
+    "via": "term:incremental facility amendment",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 1,
+    "key": "section:4.01(a)(ii)",
+    "target": "4.01(a)(ii)",
+    "via": "term:security documents",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 2,
+    "key": "section:5.01(a)",
+    "target": "5.01(a)",
+    "via": "term:test period",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 2,
+    "key": "section:5.01(b)",
+    "target": "5.01(b)",
+    "via": "term:test period",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 2,
+    "key": "section:1.08(f)",
+    "target": "1.08(f)",
+    "via": "term:first lien leverage ratio",
+    "disposition": "BOUNDED_EXCERPT_DISCLOSED",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 2,
+    "key": "section:2.26",
+    "target": "2.26",
+    "via": "term:initial borrower",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 2,
+    "key": "section:2.28",
+    "target": "2.28",
+    "via": "term:initial borrower",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 2,
+    "key": "section:2.29",
+    "target": "2.29",
+    "via": "term:initial borrower",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 2,
+    "key": "section:6.01(b)(13)",
+    "target": "6.01(b)(13)",
+    "via": "term:refinancing indebtedness",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 2,
+    "key": "section:6.02",
+    "target": "6.02",
+    "via": "term:restricted",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 2,
+    "key": "section:6.08",
+    "target": "6.08",
+    "via": "term:unrestricted subsidiary",
+    "disposition": "BOUNDED_EXCERPT_DISCLOSED",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 3,
+    "key": "section:6.01(b)(13)",
+    "target": "6.01(b)(13)",
+    "via": "term:refinancing indebtedness",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 3,
+    "key": "section:5.01(a)",
+    "target": "5.01(a)",
+    "via": "term:test period",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 3,
+    "key": "section:5.01(b)",
+    "target": "5.01(b)",
+    "via": "term:test period",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 3,
+    "key": "section:2.18(b)",
+    "target": "2.18(b)",
+    "via": "term:incremental equivalent debt",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 3,
+    "key": "section:2.26",
+    "target": "2.26",
+    "via": "term:initial borrower",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 3,
+    "key": "section:2.28",
+    "target": "2.28",
+    "via": "term:initial borrower",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 3,
+    "key": "section:2.29",
+    "target": "2.29",
+    "via": "term:initial borrower",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 3,
+    "key": "section:6.08",
+    "target": "6.08",
+    "via": "term:available rp capacity amount",
+    "disposition": "BOUNDED_EXCERPT_DISCLOSED",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 3,
+    "key": "section:6.08(a)",
+    "target": "6.08(a)",
+    "via": "term:restricted payments",
+    "disposition": "BOUNDED_EXCERPT_DISCLOSED",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 3,
+    "key": "section:6.08(a)(3)",
+    "target": "6.08(a)(3)",
+    "via": "term:available amount",
+    "disposition": "BOUNDED_EXCERPT_DISCLOSED",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 3,
+    "key": "section:6.02",
+    "target": "6.02",
+    "via": "term:restricted",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 4,
+    "key": "section:2.26",
+    "target": "2.26",
+    "via": "term:initial borrower",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 4,
+    "key": "section:2.28",
+    "target": "2.28",
+    "via": "term:initial borrower",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 4,
+    "key": "section:2.29",
+    "target": "2.29",
+    "via": "term:initial borrower",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 4,
+    "key": "section:5.01(a)",
+    "target": "5.01(a)",
+    "via": "term:test period",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 4,
+    "key": "section:5.01(b)",
+    "target": "5.01(b)",
+    "via": "term:test period",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 4,
+    "key": "section:6.08",
+    "target": "6.08",
+    "via": "term:unrestricted subsidiary",
+    "disposition": "BOUNDED_EXCERPT_DISCLOSED",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 4,
+    "key": "section:9.17",
+    "target": "9.17",
+    "via": "term:maturity exception facility",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 4,
+    "key": "section:6.02",
+    "target": "6.02",
+    "via": "term:restricted",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 4,
+    "key": "section:1.08(f)",
+    "target": "1.08(f)",
+    "via": "term:first lien leverage ratio",
+    "disposition": "BOUNDED_EXCERPT_DISCLOSED",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 5,
+    "key": "section:5.01(a)",
+    "target": "5.01(a)",
+    "via": "term:test period",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 5,
+    "key": "section:5.01(b)",
+    "target": "5.01(b)",
+    "via": "term:test period",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 5,
+    "key": "section:1.08(f)",
+    "target": "1.08(f)",
+    "via": "term:first lien leverage ratio",
+    "disposition": "BOUNDED_EXCERPT_DISCLOSED",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 5,
+    "key": "section:2.26",
+    "target": "2.26",
+    "via": "term:initial borrower",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 5,
+    "key": "section:2.28",
+    "target": "2.28",
+    "via": "term:initial borrower",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 5,
+    "key": "section:2.29",
+    "target": "2.29",
+    "via": "term:initial borrower",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 5,
+    "key": "section:6.01(b)(1)(z)",
+    "target": "6.01(b)(1)(Z)",
+    "via": "term:fixed incremental amount",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 5,
+    "key": "section:6.01(b)(12)(b)",
+    "target": "6.01(b)(12)(b)",
+    "via": "term:fixed incremental amount",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 5,
+    "key": "section:6.02",
+    "target": "6.02",
+    "via": "term:restricted",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 5,
+    "key": "section:6.08",
+    "target": "6.08",
+    "via": "term:unrestricted subsidiary",
+    "disposition": "BOUNDED_EXCERPT_DISCLOSED",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 6,
+    "key": "section:5.01(a)",
+    "target": "5.01(a)",
+    "via": "term:test period",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 6,
+    "key": "section:5.01(b)",
+    "target": "5.01(b)",
+    "via": "term:test period",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   },
+   {
+    "shardOrdinal": 6,
+    "key": "section:6.02",
+    "target": "6.02",
+    "via": "term:restricted",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "delivered": true
+   }
+  ]
+ },
+ "section14_boundingTermsPrematerialized": [
+  {
+   "dependency": "term:fixed incremental amount",
+   "before": {
+    "inInitialContext": false,
+    "unresolvedReason": null,
+    "result": "NOT_DERIVED_AT_ALL"
+   },
+   "after": {
+    "derived": true,
+    "evidence": [
+     "TRANSITIVE_DEFINITION_CLOSURE"
+    ],
+    "closureDepth": 3,
+    "via": "term:incremental cap",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "deliveredChars": 948,
+    "fullTextChars": 948,
+    "truncated": false,
+    "tier": "REQUIRED",
+    "result": "MATERIALIZED_IN_FULL_BEFORE_THE_MODEL"
+   }
+  },
+  {
+   "dependency": "term:voluntary prepayment incremental amount",
+   "before": {
+    "inInitialContext": false,
+    "unresolvedReason": null,
+    "result": "NOT_DERIVED_AT_ALL"
+   },
+   "after": {
+    "derived": true,
+    "evidence": [
+     "TRANSITIVE_DEFINITION_CLOSURE"
+    ],
+    "closureDepth": 3,
+    "via": "term:incremental cap",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "deliveredChars": 1009,
+    "fullTextChars": 1009,
+    "truncated": false,
+    "tier": "REQUIRED",
+    "result": "MATERIALIZED_IN_FULL_BEFORE_THE_MODEL"
+   }
+  },
+  {
+   "dependency": "term:ratio incremental amount",
+   "before": {
+    "inInitialContext": false,
+    "unresolvedReason": null,
+    "result": "NOT_DERIVED_AT_ALL"
+   },
+   "after": {
+    "derived": true,
+    "evidence": [
+     "TRANSITIVE_DEFINITION_CLOSURE"
+    ],
+    "closureDepth": 3,
+    "via": "term:incremental cap",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "deliveredChars": 2071,
+    "fullTextChars": 2071,
+    "truncated": false,
+    "tier": "REQUIRED",
+    "result": "MATERIALIZED_IN_FULL_BEFORE_THE_MODEL"
+   }
+  },
+  {
+   "dependency": "term:extension amount",
+   "before": {
+    "inInitialContext": false,
+    "unresolvedReason": null,
+    "result": "NOT_DERIVED_AT_ALL"
+   },
+   "after": {
+    "derived": true,
+    "evidence": [
+     "TRANSITIVE_DEFINITION_CLOSURE"
+    ],
+    "closureDepth": 3,
+    "via": "term:incremental cap",
+    "disposition": "MATERIALIZED_IN_INITIAL_CONTEXT",
+    "deliveredChars": 601,
+    "fullTextChars": 601,
+    "truncated": false,
+    "tier": "REQUIRED",
+    "result": "MATERIALIZED_IN_FULL_BEFORE_THE_MODEL"
+   }
+  }
+ ],
+ "section19_provenanceHardZeros": {
+  "requiredEntries": 399,
+  "sourceBackedEntries": 315,
+  "missingFullTextHash": 0,
+  "missingDocumentId": 0,
+  "missingAbsSpan": 0,
+  "missingRequiredBy": 0,
+  "missingEvidence": 0,
+  "notReadOnly": 0,
+  "parentContextEntriesHaveNoSourceSpanByDesign": 84,
+  "allHardZeros": true,
+  "note": "REQUIRED_PARENT_CONTEXT entries carry an inventory proposition rather than a verbatim source span, so they are excluded from the span check and counted separately - disclosed, not hidden"
+ }
+}

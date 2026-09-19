@@ -1,0 +1,151 @@
+{
+ "artifact": "PHASE 3 / 6.01 DEPENDENCY-DELIVERY REMEDIATION §5 - tool-budget causality for the failed shard",
+ "at": "2026-09-19T02:18:10.796Z",
+ "paidCalls": 0,
+ "toolBudget": {
+  "maxToolCalls": 8,
+  "maxRecursionDepth": 3,
+  "maxAdditionalSourceChars": 20000
+ },
+ "turnDerivation": "committed evidence only: 109-paid-ledger.json compile:turn calls (timestamped) bucketed by each durable shard record completedAt",
+ "evidenceLimitation": "the durable shard record persists the terminal composition and telemetry but NOT the tool-call log, so the exact number of live tool calls, refusals and remaining call slots cannot be read from the frozen evidence. Turn counts and their input-token growth are recoverable from the run log and are reported as the strongest available proxy. §23 adds the telemetry that removes this limitation.",
+ "perShardTurns": [
+  {
+   "shardId": "shard:f266a61ab75f65592b9d",
+   "status": "SHARD_COMPLETE",
+   "turns": 2,
+   "inputTokens": [
+    44678,
+    63718
+   ],
+   "outputTokens": [
+    16495,
+    39851
+   ]
+  },
+  {
+   "shardId": "shard:fe26b4996ab543b0a066",
+   "status": "SHARD_COMPLETE",
+   "turns": 2,
+   "inputTokens": [
+    48382,
+    60701
+   ],
+   "outputTokens": [
+    11618,
+    25473
+   ]
+  },
+  {
+   "shardId": "shard:86cc5e439f113d6053a9",
+   "status": "SHARD_MISSING_CONTEXT",
+   "turns": 3,
+   "inputTokens": [
+    55691,
+    63918,
+    69265
+   ],
+   "outputTokens": [
+    5480,
+    5126,
+    46540
+   ]
+  },
+  {
+   "shardId": "shard:2eb6ff75386e45a57593",
+   "status": "SHARD_COMPLETE",
+   "turns": 2,
+   "inputTokens": [
+    43398,
+    48162
+   ],
+   "outputTokens": [
+    3202,
+    41678
+   ]
+  },
+  {
+   "shardId": "shard:e10ed610ecff8b399619",
+   "status": "SHARD_COMPLETE",
+   "turns": 3,
+   "inputTokens": [
+    40458,
+    66247,
+    68109
+   ],
+   "outputTokens": [
+    25320,
+    1763,
+    19125
+   ]
+  },
+  {
+   "shardId": "shard:7c4d3d2ae3e0a522b99e",
+   "status": "SHARD_COMPLETE",
+   "turns": 2,
+   "inputTokens": [
+    33091,
+    41432
+   ],
+   "outputTokens": [
+    8030,
+    7070
+   ]
+  }
+ ],
+ "failedShard": {
+  "shardId": "shard:86cc5e439f113d6053a9",
+  "providerTurns": 3,
+  "turnInputTokens": [
+   55691,
+   63918,
+   69265
+  ],
+  "inputTokenGrowthBetweenTurns": [
+   8227,
+   5347
+  ],
+  "interpretation": "each turn after the first carries the previous turn's tool results; growth is evidence that tool calls were made and answered, not refused"
+ },
+ "counters": {
+  "maxToolCalls": 8,
+  "liveToolCalls": "NOT_AUDITABLE",
+  "successfulSourceReadingCalls": "NOT_AUDITABLE",
+  "refusals": "NOT_AUDITABLE",
+  "remainingCallSlotsAtStop": "NOT_AUDITABLE",
+  "maxAdditionalSourceChars": 20000,
+  "remainingSourceCharBudgetAtStop": "NOT_AUDITABLE"
+ },
+ "causalClassification": {
+  "A_TOOL_CALL_LIMIT_EXHAUSTED": {
+   "applies": "UNPROVABLE_FROM_FROZEN_EVIDENCE",
+   "note": "the model's own reason text says the sub-component terms \"were not resolvable within reasonable tool budget for this shard\", which is a self-report of budget pressure, not a persisted counter; with 8 calls for 99 owned items the pressure is structurally plausible"
+  },
+  "B_SOURCE_CHAR_LIMIT_EXHAUSTED": {
+   "applies": "UNPROVABLE_FROM_FROZEN_EVIDENCE"
+  },
+  "C_MODEL_DID_NOT_REQUEST_AVAILABLE_DEPENDENCY": {
+   "applies": "PARTIAL",
+   "note": "the model did request the chain (it retrieved the bounding term) - it did not reach the last hop"
+  },
+  "D_MODEL_REQUESTED_TOO_LATE": {
+   "applies": "PARTIAL",
+   "note": "the chain was discovered during execution rather than supplied at turn 1, so every hop consumed a call the planner could have avoided"
+  },
+  "E_OTHER": {
+   "applies": "YES",
+   "name": "PLANNER_DELIVERY_GAP",
+   "note": "25 statically known, resolvable, owned-item-required dependencies were absent from the initial package by budget, and the four previously closed terms were never derived at all - both provable from the plan alone, with no tool-call log needed"
+  },
+  "primary": "PLANNER_DELIVERY_GAP (E) - the provable, architectural cause; A/D are contributing and self-reported but not auditable from the frozen evidence"
+ },
+ "remediationDirection": {
+  "doNotRaiseGlobalToolBudget": true,
+  "toolBudgetUnchanged": {
+   "maxToolCalls": 8,
+   "maxRecursionDepth": 3,
+   "maxAdditionalSourceChars": 20000
+  },
+  "rationale": "§16 - raising maxToolCalls or maxAdditionalSourceChars would not make a statically known dependency present at turn 1; it would only buy more chances to rediscover it"
+ }
+}

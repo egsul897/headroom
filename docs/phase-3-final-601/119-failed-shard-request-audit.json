@@ -1,0 +1,603 @@
+{
+ "artifact": "PHASE 3 / 6.01 DEPENDENCY-DELIVERY REMEDIATION §3/§4 - every missing request of the failed shard, and the route-exists-vs-delivered table",
+ "at": "2026-09-19T02:18:10.793Z",
+ "paidCalls": 0,
+ "shardId": "shard:86cc5e439f113d6053a9",
+ "shardHash": "691cf0598278741ac4cefa845910b4274c7234c7ee3283ec17a46ce29b6ae5ed",
+ "missingContextRules": [
+  {
+   "ruleId": "ir-rule:c2602aec0550b4687c5e80ca",
+   "section": "6.01(b)(33)",
+   "sufficiencyReasons": [
+    "The permission itself and its bounding term ('Incremental Cap') were retrieved, but the Incremental Cap's own four sub-component defined terms (which belong to the Incremental Facility mechanics of Section 2.18, outside Section 6.01) were not resolvable within reasonable tool budget for this shard.",
+    "dependsOn[0].targetRef \"Section 2.18(b)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+    "dependsOn[1].targetRef \"term:Fixed Incremental Amount\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+    "dependsOn[2].targetRef \"term:Voluntary Prepayment Incremental Amount\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+    "dependsOn[3].targetRef \"term:Ratio Incremental Amount\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+    "dependsOn[4].targetRef \"term:Extension Amount\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+   ],
+   "unresolvedDependencies": 5
+  }
+ ],
+ "requestedMissingDependencies": [
+  {
+   "requestedFact": "Section 2.18(b)",
+   "dependencyType": "SECTION_REFERENCE",
+   "requestingRule": "ir-rule:c2602aec0550b4687c5e80ca",
+   "requestingRuleSection": "6.01(b)(33)",
+   "relationshipType": "REQUIRES",
+   "whyNeeded": "Incurrence conditions of Incremental Loans apply by cross-reference.",
+   "requestingOwnedItems": [],
+   "classification": "NEW_DEPENDENCY",
+   "deterministicResolution": {
+    "resolved": true,
+    "chars": 572,
+    "nodeId": "structural-node:51027aabe1097d4d0fe14dc4"
+   },
+   "plannerKnewBeforeModelCall": {
+    "underTheOldPlanner": false,
+    "underTheRequiredDependencyModel": true,
+    "how": "section reference resolvable in the structural index",
+    "closureDepth": 1
+   },
+   "inInitialShardContext": false,
+   "inUnresolvedContext": null,
+   "toolRouteExisted": true,
+   "modelInvokedTheRoute": "NOT_AUDITABLE - the durable shard record does not persist the tool-call log (§23 adds this telemetry)",
+   "toolCallOrdinal": null,
+   "finalEffectOnShardStatus": "contributed to SHARD_MISSING_CONTEXT (the rule that recorded it carries sufficiency MISSING_CONTEXT, which escalates the shard)"
+  },
+  {
+   "requestedFact": "term:Fixed Incremental Amount",
+   "dependencyType": "DEFINED_TERM",
+   "requestingRule": "ir-rule:c2602aec0550b4687c5e80ca",
+   "requestingRuleSection": "6.01(b)(33)",
+   "relationshipType": "REQUIRES",
+   "whyNeeded": "Sub-component of the Incremental Cap ceiling; not resolvable within supplied evidence/tool budget.",
+   "requestingOwnedItems": [],
+   "classification": "OLD_CLOSED_DEPENDENCY",
+   "deterministicResolution": {
+    "resolved": true,
+    "chars": 948,
+    "indexed": true
+   },
+   "plannerKnewBeforeModelCall": {
+    "underTheOldPlanner": false,
+    "underTheRequiredDependencyModel": false,
+    "how": "not derivable from owned source + index by occurrence or bounded closure",
+    "closureDepth": 0
+   },
+   "inInitialShardContext": false,
+   "inUnresolvedContext": null,
+   "toolRouteExisted": true,
+   "modelInvokedTheRoute": "NOT_AUDITABLE - the durable shard record does not persist the tool-call log (§23 adds this telemetry)",
+   "toolCallOrdinal": null,
+   "finalEffectOnShardStatus": "contributed to SHARD_MISSING_CONTEXT (the rule that recorded it carries sufficiency MISSING_CONTEXT, which escalates the shard)"
+  },
+  {
+   "requestedFact": "term:Voluntary Prepayment Incremental Amount",
+   "dependencyType": "DEFINED_TERM",
+   "requestingRule": "ir-rule:c2602aec0550b4687c5e80ca",
+   "requestingRuleSection": "6.01(b)(33)",
+   "relationshipType": "REQUIRES",
+   "whyNeeded": "Sub-component of the Incremental Cap ceiling; not resolvable within supplied evidence/tool budget.",
+   "requestingOwnedItems": [],
+   "classification": "OLD_CLOSED_DEPENDENCY",
+   "deterministicResolution": {
+    "resolved": true,
+    "chars": 1009,
+    "indexed": true
+   },
+   "plannerKnewBeforeModelCall": {
+    "underTheOldPlanner": false,
+    "underTheRequiredDependencyModel": true,
+    "how": "defined term reachable by transitive definition closure from an owned-source term (depth 3)",
+    "closureDepth": 3
+   },
+   "inInitialShardContext": false,
+   "inUnresolvedContext": null,
+   "toolRouteExisted": true,
+   "modelInvokedTheRoute": "NOT_AUDITABLE - the durable shard record does not persist the tool-call log (§23 adds this telemetry)",
+   "toolCallOrdinal": null,
+   "finalEffectOnShardStatus": "contributed to SHARD_MISSING_CONTEXT (the rule that recorded it carries sufficiency MISSING_CONTEXT, which escalates the shard)"
+  },
+  {
+   "requestedFact": "term:Ratio Incremental Amount",
+   "dependencyType": "DEFINED_TERM",
+   "requestingRule": "ir-rule:c2602aec0550b4687c5e80ca",
+   "requestingRuleSection": "6.01(b)(33)",
+   "relationshipType": "REQUIRES",
+   "whyNeeded": "Sub-component of the Incremental Cap ceiling; not resolvable within supplied evidence/tool budget.",
+   "requestingOwnedItems": [],
+   "classification": "OLD_CLOSED_DEPENDENCY",
+   "deterministicResolution": {
+    "resolved": true,
+    "chars": 2071,
+    "indexed": true
+   },
+   "plannerKnewBeforeModelCall": {
+    "underTheOldPlanner": false,
+    "underTheRequiredDependencyModel": true,
+    "how": "defined term reachable by transitive definition closure from an owned-source term (depth 3)",
+    "closureDepth": 3
+   },
+   "inInitialShardContext": false,
+   "inUnresolvedContext": null,
+   "toolRouteExisted": true,
+   "modelInvokedTheRoute": "NOT_AUDITABLE - the durable shard record does not persist the tool-call log (§23 adds this telemetry)",
+   "toolCallOrdinal": null,
+   "finalEffectOnShardStatus": "contributed to SHARD_MISSING_CONTEXT (the rule that recorded it carries sufficiency MISSING_CONTEXT, which escalates the shard)"
+  },
+  {
+   "requestedFact": "term:Extension Amount",
+   "dependencyType": "DEFINED_TERM",
+   "requestingRule": "ir-rule:c2602aec0550b4687c5e80ca",
+   "requestingRuleSection": "6.01(b)(33)",
+   "relationshipType": "REQUIRES",
+   "whyNeeded": "Sub-component of the Incremental Cap ceiling; not resolvable within supplied evidence/tool budget.",
+   "requestingOwnedItems": [],
+   "classification": "OLD_CLOSED_DEPENDENCY",
+   "deterministicResolution": {
+    "resolved": true,
+    "chars": 601,
+    "indexed": true
+   },
+   "plannerKnewBeforeModelCall": {
+    "underTheOldPlanner": false,
+    "underTheRequiredDependencyModel": true,
+    "how": "defined term reachable by transitive definition closure from an owned-source term (depth 3)",
+    "closureDepth": 3
+   },
+   "inInitialShardContext": false,
+   "inUnresolvedContext": null,
+   "toolRouteExisted": true,
+   "modelInvokedTheRoute": "NOT_AUDITABLE - the durable shard record does not persist the tool-call log (§23 adds this telemetry)",
+   "toolCallOrdinal": null,
+   "finalEffectOnShardStatus": "contributed to SHARD_MISSING_CONTEXT (the rule that recorded it carries sufficiency MISSING_CONTEXT, which escalates the shard)"
+  }
+ ],
+ "oldClosedDependencies": [
+  "term:Fixed Incremental Amount",
+  "term:Voluntary Prepayment Incremental Amount",
+  "term:Ratio Incremental Amount",
+  "term:Extension Amount"
+ ],
+ "newDependencies": [
+  "Section 2.18(b)"
+ ],
+ "deliveryTable": {
+  "legend": "KNOWN BEFORE MODEL? / INITIAL CONTEXT? / RETRIEVABLE? / ACTUALLY RETRIEVED? / REQUIRED FOR OWNED SEMANTICS? / RESULT",
+  "modelRequestedDependencies": [
+   {
+    "dependency": "Section 2.18(b)",
+    "knownBeforeModel_oldPlanner": false,
+    "knownBeforeModel_requiredDependencyModel": true,
+    "initialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE - the durable shard record does not persist the tool-call log (§23 adds this telemetry)",
+    "requiredForOwnedSemantics": true,
+    "result": "contributed to SHARD_MISSING_CONTEXT (the rule that recorded it carries sufficiency MISSING_CONTEXT, which escalates the shard)"
+   },
+   {
+    "dependency": "term:Fixed Incremental Amount",
+    "knownBeforeModel_oldPlanner": false,
+    "knownBeforeModel_requiredDependencyModel": false,
+    "initialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE - the durable shard record does not persist the tool-call log (§23 adds this telemetry)",
+    "requiredForOwnedSemantics": true,
+    "result": "contributed to SHARD_MISSING_CONTEXT (the rule that recorded it carries sufficiency MISSING_CONTEXT, which escalates the shard)"
+   },
+   {
+    "dependency": "term:Voluntary Prepayment Incremental Amount",
+    "knownBeforeModel_oldPlanner": false,
+    "knownBeforeModel_requiredDependencyModel": true,
+    "initialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE - the durable shard record does not persist the tool-call log (§23 adds this telemetry)",
+    "requiredForOwnedSemantics": true,
+    "result": "contributed to SHARD_MISSING_CONTEXT (the rule that recorded it carries sufficiency MISSING_CONTEXT, which escalates the shard)"
+   },
+   {
+    "dependency": "term:Ratio Incremental Amount",
+    "knownBeforeModel_oldPlanner": false,
+    "knownBeforeModel_requiredDependencyModel": true,
+    "initialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE - the durable shard record does not persist the tool-call log (§23 adds this telemetry)",
+    "requiredForOwnedSemantics": true,
+    "result": "contributed to SHARD_MISSING_CONTEXT (the rule that recorded it carries sufficiency MISSING_CONTEXT, which escalates the shard)"
+   },
+   {
+    "dependency": "term:Extension Amount",
+    "knownBeforeModel_oldPlanner": false,
+    "knownBeforeModel_requiredDependencyModel": true,
+    "initialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE - the durable shard record does not persist the tool-call log (§23 adds this telemetry)",
+    "requiredForOwnedSemantics": true,
+    "result": "contributed to SHARD_MISSING_CONTEXT (the rule that recorded it carries sufficiency MISSING_CONTEXT, which escalates the shard)"
+   }
+  ],
+  "plannerDroppedDependencies": [
+   {
+    "key": "term:permitted investments",
+    "kind": "REFERENCED_TERM",
+    "requiredByOwnedItems": 2,
+    "requiredBy": [
+     "inv-item:4a638ab9cdad3d676457a030",
+     "inv-item:d0f3cc1c3379d2005ffa73ba"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "term:transactions",
+    "kind": "REFERENCED_TERM",
+    "requiredByOwnedItems": 2,
+    "requiredBy": [
+     "inv-item:94b316f6f39dfb19d8b84218",
+     "inv-item:11424b6a6fc4c19ed6f130a1"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "term:available rp capacity amount",
+    "kind": "REFERENCED_TERM",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:c14aa35f6d87ae929a3534c2"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "term:cash equivalents",
+    "kind": "REFERENCED_TERM",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:597667c532328e67b64edf1e"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "term:excluded contribution",
+    "kind": "REFERENCED_TERM",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:e5d3460295d5383c2300f586"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "term:incremental equivalent debt",
+    "kind": "REFERENCED_TERM",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:c478c68a86624119630cabe3"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "term:indebtedness",
+    "kind": "REFERENCED_TERM",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:5530c73c8e7ccadbc9c9fd03"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "term:initial borrower",
+    "kind": "REFERENCED_TERM",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:805052a570cf10b0912412d8"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "term:joint venture",
+    "kind": "REFERENCED_TERM",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:91a85151df5270a318efbb66"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "term:loan parties",
+    "kind": "REFERENCED_TERM",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:818d99e0aa82b1e5d76f0c18"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "term:not otherwise applied",
+    "kind": "REFERENCED_TERM",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:69e3fde4c0647df023747773"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "term:parent entity",
+    "kind": "REFERENCED_TERM",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:805052a570cf10b0912412d8"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "term:preferred stock",
+    "kind": "REFERENCED_TERM",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:5530c73c8e7ccadbc9c9fd03"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "term:refinance",
+    "kind": "REFERENCED_TERM",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:ccea1a5cdc779a5774c91188"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "term:restricted payments",
+    "kind": "REFERENCED_TERM",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:4a638ab9cdad3d676457a030"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "term:senior indebtedness",
+    "kind": "REFERENCED_TERM",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:34da551faaf6742c01c21cbe"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "section:6.01(b)(13)",
+    "kind": "REFERENCED_SECTION",
+    "requiredByOwnedItems": 7,
+    "requiredBy": [
+     "inv-item:d31f00c365b249274a3d8d2d",
+     "inv-item:94710633b7e3c96e1c69f3fc",
+     "inv-item:4c1d218ebdc56d31c9be3aeb",
+     "inv-item:679f8f38f028b097a97b423a",
+     "inv-item:3894f106903c1a257c788a6f",
+     "inv-item:af6e80a21436936e2c88fa52",
+     "inv-item:ccea1a5cdc779a5774c91188"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "section:6.01(a)",
+    "kind": "REFERENCED_SECTION",
+    "requiredByOwnedItems": 4,
+    "requiredBy": [
+     "inv-item:d0af3d694e9768f159e2f636",
+     "inv-item:fde5520c10fba19050ed80d6",
+     "inv-item:5530c73c8e7ccadbc9c9fd03",
+     "inv-item:02187f64ee1d27b4dd05f98b"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "section:6.01(b)(18)",
+    "kind": "REFERENCED_SECTION",
+    "requiredByOwnedItems": 4,
+    "requiredBy": [
+     "inv-item:94710633b7e3c96e1c69f3fc",
+     "inv-item:4c1d218ebdc56d31c9be3aeb",
+     "inv-item:5e990ea51d639e0099a112d2",
+     "inv-item:03177bf7aadcbfbd58eb007e"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "section:6.01(b)(12)",
+    "kind": "REFERENCED_SECTION",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:b1915b8224a4458ec5078996"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "section:6.01(b)(4)",
+    "kind": "REFERENCED_SECTION",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:b1915b8224a4458ec5078996"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "section:6.08(a)",
+    "kind": "REFERENCED_SECTION",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:4a638ab9cdad3d676457a030"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "section:6.08(a)(3)",
+    "kind": "REFERENCED_SECTION",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:69e3fde4c0647df023747773"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "section:6.08(a)(3)(b)",
+    "kind": "REFERENCED_SECTION",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:659e9216825c7831d706458e"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   },
+   {
+    "key": "section:6.08(b)",
+    "kind": "REFERENCED_SECTION",
+    "requiredByOwnedItems": 1,
+    "requiredBy": [
+     "inv-item:fed9e0690db9217a5bf9ce45"
+    ],
+    "knownBeforeModelCall": true,
+    "inInitialContext": false,
+    "retrievable": true,
+    "actuallyRetrieved": "NOT_AUDITABLE (no persisted tool-call log)",
+    "requiredForOwnedSemantics": true,
+    "result": "DROPPED_FOR_CONTEXT_BUDGET - the shard was allowed to enter provider execution with a statically known, resolvable dependency absent from its evidence package"
+   }
+  ],
+  "counts": {
+   "modelRequested": 5,
+   "plannerDroppedForBudget": 25,
+   "plannerDroppedForBudgetRequiredByMultipleItems": 5
+  }
+ },
+ "architectureClassification": {
+  "verdict": "OPTIONAL_DELIVERY_OF_REQUIRED_CONTEXT",
+  "proof": [
+   "25 dependencies were derived by the planner itself, were resolvable, were required by owned material items, and were nevertheless left out of the initial evidence package because the 10000-char context budget was exhausted - their delivery was handed to an optional model tool choice.",
+   "The four previously closed Incremental Amount terms were not even candidates: they are reachable only by transitive definition closure from a term that DOES occur in the owned source, and the old planner modelled one hop from Pass-A edges only. They were statically knowable and were not known.",
+   "Route existence was never the missing property: every one of these resolves deterministically today."
+  ],
+  "resolvableButNotDelivered": true
+ }
+}
