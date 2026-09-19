@@ -258,6 +258,8 @@ writeJson(`${OUT}/11-phase3-closure-verdict.json`, {
 for (const f of ["08-product-claim-boundary.json", "09-phase4-handoff-contract.json"]) {
   const doc = readJson<Any>(`${OUT}/${f}`);
   doc.inEffect = verdict === "PHASE_3_CLOSED";
+  // Handoff hygiene: the draft names the blocker of the earlier series; once closed the field must be null, never stale text.
+  if ("blockedBy" in doc) doc.blockedBy = verdict === "PHASE_3_CLOSED" ? null : doc.blockedBy;
   doc.phase3ProductionSha = verdict === "PHASE_3_CLOSED" ? head : null;
   doc.phase3ProductionTreeHashes = verdict === "PHASE_3_CLOSED" ? trees : null;
   doc.decidedBy = `${OUT}/11-phase3-closure-verdict.json`;
