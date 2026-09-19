@@ -1,0 +1,47 @@
+{
+ "artifact": "PHASE 4A §4-§6 - runtime value model, result states, numeric representation",
+ "at": "2026-09-19T15:55:36.481Z",
+ "runtimeVersion": "contract-runtime.v1",
+ "valueTypes": {
+  "MONEY": "{ amount: Rational, currency }",
+  "NUMBER": "{ value: Rational }",
+  "PERCENT": "{ fraction: Rational } (0.125 = 12.5%)",
+  "RATIO": "{ value: Rational } dimensionless, distinct from NUMBER",
+  "BOOLEAN": "{ value }",
+  "DATE": "{ isoDate } YYYY-MM-DD, calendar-validated",
+  "ENTITY_SET": "{ include, exclude } symbolic",
+  "CAPACITY": "{ AMOUNT | UNLIMITED(gate NONE|SATISFIED) | GATE_NOT_SATISFIED }"
+ },
+ "notModeled": {
+  "DURATION": "no runtime representation; a reference declaring DURATION/PERIOD fails its type contract explicitly",
+  "STRING_ENUM": "not required by the IR beyond ENTITY_SET"
+ },
+ "everyValueCarries": [
+  "type",
+  "value/amount/fraction",
+  "currency where MONEY",
+  "lineage { exprId, inputKeys, rawSource? }"
+ ],
+ "serializedForm": "exact decimal string when the value terminates, else exact fraction 'a/b'; never a JS float; BigInt never crosses the boundary",
+ "numericRepresentation": {
+  "decision": "exact rational arithmetic (BigInt numerator / positive BigInt denominator, always reduced)",
+  "literalConversion": "IR numbers are converted through their shortest decimal string (0.125 -> 1/8), never through binary float arithmetic",
+  "rounding": "only at rendering (toFixed, round-half-even); never during evaluation",
+  "module": "lib/contract-model/runtime/decimal.ts"
+ },
+ "resultStates": {
+  "EXECUTABLE": "all required values known; operation deterministically evaluated",
+  "NEEDS_INPUT": "legal semantics known; a runtime fact is absent (missingInputs enumerated)",
+  "UNSUPPORTED": "the IR contains a construct the runtime cannot evaluate (Phase-3 UNSUPPORTED node, unmodeled temporal window, schedule gap)",
+  "AMBIGUOUS": "the trusted semantic layer itself is unresolved (AMBIGUOUS/MISSING_CONTEXT/CONFLICTED definition or rule)",
+  "ERROR": "deterministic internal failure: unit mismatch, currency mismatch, division by zero, cycle, malformed node, type-contract violation"
+ },
+ "precedence": {
+  "EXECUTABLE": 0,
+  "NEEDS_INPUT": 1,
+  "AMBIGUOUS": 2,
+  "UNSUPPORTED": 3,
+  "ERROR": 4
+ },
+ "precedenceNote": "ERROR > UNSUPPORTED > AMBIGUOUS > NEEDS_INPUT > EXECUTABLE when operands disagree; exceptions: AND/OR short-circuit over NEEDS_INPUT only; MAX/MIN record bounds as metadata under NEEDS_INPUT"
+}

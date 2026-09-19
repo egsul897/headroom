@@ -1,0 +1,85 @@
+{
+ "artifact": "PHASE 4A §24-§26, §39 - one code path for every expression shape; no covenant-form or agreement-specific branching",
+ "at": "2026-09-19T15:55:36.510Z",
+ "forbiddenProductionConcepts": [
+  "GREATER_OF_FLAT_OR_PCT_EBITDA",
+  "RATIO_DEBT_BASKET",
+  "FREE_AND_CLEAR_BASKET",
+  "GENERAL_DEBT_BASKET",
+  "AVAILABLE_AMOUNT_BASKET",
+  "PERMITTED_LIEN_FORMULA",
+  "Chewy",
+  "6.01",
+  "Incremental Amount",
+  "specific rule ids",
+  "specific section ids",
+  "metric names"
+ ],
+ "scannedFiles": [
+  "lib/contract-model/runtime/decimal.ts",
+  "lib/contract-model/runtime/dependency-graph.ts",
+  "lib/contract-model/runtime/evaluate-expression.ts",
+  "lib/contract-model/runtime/index.ts",
+  "lib/contract-model/runtime/input-resolver.ts",
+  "lib/contract-model/runtime/rule-evaluator.ts",
+  "lib/contract-model/runtime/types.ts",
+  "lib/contract-model/runtime/units.ts",
+  "lib/contract-model/runtime/values.ts",
+  "lib/contract-model/runtime/version.ts"
+ ],
+ "scanPattern": "Chewy|chwy|6\\.01|Incremental Amount|EBITDA|Total Assets|Restricted Payment|GREATER_OF|RATIO_DEBT|FREE_AND_CLEAR|GENERAL_DEBT|AVAILABLE_AMOUNT|PERMITTED_LIEN|ir-rule:[0-9a-f]{8}|Section 6|§6\\.",
+ "nonCommentHits": [],
+ "matrix": [
+  {
+   "case": "A",
+   "status": "EXECUTABLE",
+   "amount": "100000000",
+   "expected": "100000000",
+   "pass": true
+  },
+  {
+   "case": "B",
+   "status": "EXECUTABLE",
+   "amount": "50000000",
+   "expected": "50000000",
+   "pass": true
+  },
+  {
+   "case": "C",
+   "status": "EXECUTABLE",
+   "amount": "100000000",
+   "expected": "100000000",
+   "pass": true
+  },
+  {
+   "case": "D",
+   "status": "EXECUTABLE",
+   "amount": "45000000",
+   "expected": "45000000",
+   "pass": true
+  },
+  {
+   "case": "E",
+   "status": "EXECUTABLE",
+   "amount": "75000000",
+   "expected": "75000000",
+   "pass": true
+  },
+  {
+   "case": "G",
+   "status": "EXECUTABLE",
+   "amount": "64000000",
+   "expected": "64000000",
+   "pass": true
+  },
+  {
+   "case": "F",
+   "status": "EXECUTABLE",
+   "amount": "true",
+   "expected": "true",
+   "pass": true
+  }
+ ],
+ "matrixAllPass": true,
+ "metamorphicTests": "tests/contract-model/runtime/anti-enumeration.test.ts (commutativity of ADD/MAX, literal change keeps topology, metric rename invariance, label-independent unit failures)"
+}

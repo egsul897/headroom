@@ -1,0 +1,315 @@
+{
+ "artifact": "PHASE 4A §27 - actual Phase-3 IR shapes consumed by the runtime (read-only frozen fixtures; no provider calls)",
+ "at": "2026-09-19T15:55:36.495Z",
+ "frozenSource": "tests/fixtures/unseen-packages/phase-3-final-601-precision-revalidation/compile-result.json",
+ "frozenSha256": "03d15c99b8a45651291e9429f85da255e9dab1228942fc722682b53e149648b7",
+ "selectionRule": "by expression SHAPE at run time; rule ids are recorded as evidence, never read by production code",
+ "fixtures": [
+  {
+   "label": "simple literal basket (hand-authored fixture 1)",
+   "found": true,
+   "ruleId": "ir-rule:477d5986e0b8550bc9eeea9f",
+   "sourceSectionRef": "6.08(a)(iv)",
+   "phase3Sufficiency": "COMPLETE",
+   "capacityKind": "MONEY",
+   "metricsReferenced": [],
+   "withoutInputs": {
+    "status": "EXECUTABLE",
+    "value": {
+     "type": "MONEY",
+     "amount": "500000",
+     "currency": "USD"
+    },
+    "missingInputKeys": [],
+    "diagnostics": []
+   },
+   "withInputs": {
+    "status": "EXECUTABLE",
+    "value": {
+     "type": "MONEY",
+     "amount": "500000",
+     "currency": "USD"
+    },
+    "missingInputKeys": [],
+    "diagnostics": []
+   },
+   "provenanceCitations": [
+    "§6.08(a)(iv): $500,000 per fiscal year"
+   ],
+   "deterministic": true
+  },
+  {
+   "label": "percentage-of-metric inside MAX (frozen, selected by shape)",
+   "found": true,
+   "ruleId": "ir-rule:80234579d419bc2975a84c45",
+   "sourceSectionRef": "6.01(b)(12)(b)",
+   "phase3Sufficiency": "COMPLETE",
+   "capacityKind": "MAX",
+   "metricsReferenced": [
+    "Consolidated EBITDA"
+   ],
+   "withoutInputs": {
+    "status": "NEEDS_INPUT",
+    "value": null,
+    "missingInputKeys": [
+     "Consolidated EBITDA"
+    ],
+    "diagnostics": [
+     "MISSING_INPUT"
+    ],
+    "bounds": {
+     "knownLowerBound": {
+      "type": "MONEY",
+      "amount": "720000000",
+      "currency": "USD",
+      "lineage": {
+       "exprId": "ir-expr:0ead76c75e1f475ab30f38a6",
+       "inputKeys": [],
+       "rawSource": 720000000
+      }
+     }
+    }
+   },
+   "withInputs": {
+    "status": "EXECUTABLE",
+    "value": {
+     "type": "MONEY",
+     "amount": "2000000000",
+     "currency": "USD"
+    },
+    "missingInputKeys": [],
+    "diagnostics": []
+   },
+   "provenanceCitations": [
+    "6.01(b)(12)(b)"
+   ],
+   "deterministic": true
+  },
+  {
+   "label": "MAX/MIN composition (hand-authored fixture 3)",
+   "found": true,
+   "ruleId": "ir-rule:7fbfd68d972f3e127460b46d",
+   "sourceSectionRef": "6.01(g)(i)",
+   "phase3Sufficiency": "COMPLETE",
+   "capacityKind": "MAX",
+   "metricsReferenced": [
+    "Consolidated Adjusted EBITDA"
+   ],
+   "withoutInputs": {
+    "status": "NEEDS_INPUT",
+    "value": null,
+    "missingInputKeys": [
+     "Consolidated Adjusted EBITDA"
+    ],
+    "diagnostics": [
+     "MISSING_INPUT"
+    ],
+    "bounds": {
+     "knownLowerBound": {
+      "type": "MONEY",
+      "amount": "2500000",
+      "currency": "USD",
+      "lineage": {
+       "exprId": "ir-expr:c68bce36f367711c46250f8c",
+       "inputKeys": [],
+       "rawSource": 2500000
+      }
+     }
+    }
+   },
+   "withInputs": {
+    "status": "EXECUTABLE",
+    "value": {
+     "type": "MONEY",
+     "amount": "100000000",
+     "currency": "USD"
+    },
+    "missingInputKeys": [],
+    "diagnostics": []
+   },
+   "provenanceCitations": [
+    "§6.01(g)(i): greater of $2,500,000 and 5% of Consolidated Adjusted EBITDA"
+   ],
+   "deterministic": true
+  },
+  {
+   "label": "ratio-gated unlimited capacity (frozen, selected by shape)",
+   "found": true,
+   "ruleId": "ir-rule:01c9a005fd9c7649ddc26012",
+   "sourceSectionRef": "6.01(a)",
+   "phase3Sufficiency": "COMPLETE",
+   "capacityKind": "UNLIMITED_CAPACITY",
+   "metricsReferenced": [
+    "First Lien Leverage Ratio",
+    "First Lien Leverage Ratio (immediately prior to the incurrence)"
+   ],
+   "withoutInputs": {
+    "status": "NEEDS_INPUT",
+    "value": null,
+    "missingInputKeys": [
+     "First Lien Leverage Ratio",
+     "First Lien Leverage Ratio (immediately prior to the incurrence)"
+    ],
+    "diagnostics": [
+     "MISSING_INPUT",
+     "MISSING_INPUT"
+    ]
+   },
+   "withInputs": {
+    "status": "EXECUTABLE",
+    "value": {
+     "type": "CAPACITY",
+     "capacity": {
+      "kind": "UNLIMITED",
+      "gate": "SATISFIED"
+     }
+    },
+    "missingInputKeys": [],
+    "diagnostics": []
+   },
+   "provenanceCitations": [
+    "§6.01(a)",
+    "§6.01"
+   ],
+   "deterministic": true
+  },
+  {
+   "label": "composition carrying an UNSUPPORTED operand (frozen, selected by shape)",
+   "found": true,
+   "ruleId": "ir-rule:d3ca9f2def3509883e8a359b",
+   "sourceSectionRef": "6.01(b)(4)(a)",
+   "phase3Sufficiency": "PARTIAL",
+   "capacityKind": "SUM",
+   "metricsReferenced": [
+    "Consolidated EBITDA",
+    "Consolidated First Lien Debt",
+    "Capitalized Lease Obligations outstanding"
+   ],
+   "withoutInputs": {
+    "status": "UNSUPPORTED",
+    "value": null,
+    "missingInputKeys": [
+     "Consolidated EBITDA",
+     "Consolidated First Lien Debt",
+     "Capitalized Lease Obligations outstanding"
+    ],
+    "diagnostics": [
+     "MISSING_INPUT",
+     "UNSUPPORTED_NODE",
+     "MISSING_INPUT",
+     "MISSING_INPUT"
+    ]
+   },
+   "withInputs": {
+    "status": "UNSUPPORTED",
+    "value": null,
+    "missingInputKeys": [],
+    "diagnostics": [
+     "UNSUPPORTED_NODE"
+    ]
+   },
+   "provenanceCitations": [
+    "§6.01(b)(4)(a)(i)(x)",
+    "§6.01(b)(4)(a)(i)(y)",
+    "§6.01(b)(4)(a)(i)",
+    "§6.01(b)(4)(a)(ii)",
+    "§6.01(b)(4)(a)(iii)",
+    "§6.01(b)(4)(a)"
+   ],
+   "deterministic": true
+  },
+  {
+   "label": "maintenance ratio (hand-authored fixture 5)",
+   "found": true,
+   "ruleId": "ir-rule:582be3713aca38caa3856318",
+   "sourceSectionRef": "6.10(a)",
+   "phase3Sufficiency": "COMPLETE",
+   "capacityKind": "UNLIMITED_CAPACITY",
+   "metricsReferenced": [
+    "Total Rent Adjusted Net Leverage Ratio"
+   ],
+   "withoutInputs": {
+    "status": "NEEDS_INPUT",
+    "value": null,
+    "missingInputKeys": [
+     "Total Rent Adjusted Net Leverage Ratio"
+    ],
+    "diagnostics": [
+     "MISSING_INPUT"
+    ]
+   },
+   "withInputs": {
+    "status": "EXECUTABLE",
+    "value": {
+     "type": "CAPACITY",
+     "capacity": {
+      "kind": "UNLIMITED",
+      "gate": "SATISFIED"
+     }
+    },
+    "missingInputKeys": [],
+    "diagnostics": []
+   },
+   "provenanceCitations": [
+    "§6.10(a): 5.00:1.00 (thereafter)",
+    "§6.10(a)"
+   ],
+   "deterministic": true
+  },
+  {
+   "label": "stepped schedule threshold (hand-authored fixture 7)",
+   "found": true,
+   "ruleId": "ir-rule:003d7a6c32763852b2645e70",
+   "sourceSectionRef": "6.10(a)",
+   "phase3Sufficiency": "COMPLETE",
+   "capacityKind": "UNLIMITED_CAPACITY",
+   "metricsReferenced": [
+    "Total Rent Adjusted Net Leverage Ratio"
+   ],
+   "withoutInputs": {
+    "status": "NEEDS_INPUT",
+    "value": null,
+    "missingInputKeys": [
+     "Total Rent Adjusted Net Leverage Ratio",
+     "asOf"
+    ],
+    "diagnostics": [
+     "MISSING_INPUT",
+     "MISSING_INPUT"
+    ]
+   },
+   "withInputs": {
+    "status": "NEEDS_INPUT",
+    "value": null,
+    "missingInputKeys": [
+     "asOf"
+    ],
+    "diagnostics": [
+     "MISSING_INPUT"
+    ]
+   },
+   "provenanceCitations": [
+    "§6.10(a)"
+   ],
+   "deterministic": true
+  }
+ ],
+ "ruleShell": {
+  "ruleId": "ir-rule:d045e32e52e411a6e3cfff1a",
+  "status": "AMBIGUOUS",
+  "capacityEvaluated": false,
+  "entityScope": {
+   "entityScope": [],
+   "entityScopeExcluded": [],
+   "auditStatus": null,
+   "safeToRely": null,
+   "applicability": "SCOPE_UNAUDITED",
+   "note": "rule carries no entity-scope audit; the runtime does not assert who a computed capacity applies to"
+  },
+  "permissionDecision": "NOT_COMPUTED_IN_PHASE_4A",
+  "reclassification": "NOT_IMPLEMENTED_IN_PHASE_4A",
+  "solveForX": "NOT_IMPLEMENTED_IN_PHASE_4A"
+ },
+ "allFound": true,
+ "allDeterministic": true
+}

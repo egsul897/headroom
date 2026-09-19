@@ -1,0 +1,326 @@
+{
+ "artifact": "PHASE 4A §9-§10, §13 - operators implemented, each exercised through the public entry point",
+ "at": "2026-09-19T15:55:36.490Z",
+ "arithmetic": [
+  "ADD",
+  "SUM",
+  "SUBTRACT",
+  "MULTIPLY",
+  "DIVIDE",
+  "MAX",
+  "MIN"
+ ],
+ "booleanComparison": [
+  "COMPARE(GT,GTE,LT,LTE,EQ; NE supported by the unit layer)",
+  "AND",
+  "OR",
+  "NOT",
+  "IF"
+ ],
+ "temporal": {
+  "AS_OF": "implemented (ISO date or verbatim as-of key)",
+  "DURING_PERIOD": "implemented (verbatim period key)",
+  "SCHEDULE": "implemented (context as-of date)",
+  "EVENT_ACTIVE": "partial: supplied fact or trigger; bounded duration -> UNSUPPORTED"
+ },
+ "safePartialEvaluation": {
+  "MAX(known, unknown)": "NEEDS_INPUT + bounds.knownLowerBound (metadata, never the answer)",
+  "MIN(known, unknown)": "NEEDS_INPUT + bounds.knownUpperBound",
+  "AND(false, NEEDS_INPUT)": "false (both operands are legal predicates; the missing one cannot change the result)",
+  "AND(false, UNSUPPORTED)": "UNSUPPORTED (an unsupported operand is not a known legal predicate)",
+  "OR(true, NEEDS_INPUT)": "true",
+  "IF(NEEDS_INPUT, ...)": "NEEDS_INPUT; branches not evaluated"
+ },
+ "results": {
+  "ADD": {
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "MONEY",
+    "amount": "30000000",
+    "currency": "USD"
+   },
+   "missingInputKeys": [],
+   "diagnostics": []
+  },
+  "SUM": {
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "MONEY",
+    "amount": "6",
+    "currency": "USD"
+   },
+   "missingInputKeys": [],
+   "diagnostics": []
+  },
+  "SUBTRACT": {
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "MONEY",
+    "amount": "6",
+    "currency": "USD"
+   },
+   "missingInputKeys": [],
+   "diagnostics": []
+  },
+  "MULTIPLY": {
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "MONEY",
+    "amount": "100000000",
+    "currency": "USD"
+   },
+   "missingInputKeys": [],
+   "diagnostics": []
+  },
+  "DIVIDE": {
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "RATIO",
+    "value": "2.5"
+   },
+   "missingInputKeys": [],
+   "diagnostics": []
+  },
+  "DIVIDE_BY_ZERO": {
+   "status": "ERROR",
+   "value": null,
+   "missingInputKeys": [],
+   "diagnostics": [
+    "DIVISION_BY_ZERO"
+   ]
+  },
+  "MAX": {
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "MONEY",
+    "amount": "100000000",
+    "currency": "USD"
+   },
+   "missingInputKeys": [],
+   "diagnostics": []
+  },
+  "MAX_MISSING": {
+   "status": "NEEDS_INPUT",
+   "value": null,
+   "missingInputKeys": [
+    "m1"
+   ],
+   "diagnostics": [
+    "MISSING_INPUT"
+   ],
+   "bounds": {
+    "knownLowerBound": {
+     "type": "MONEY",
+     "amount": "75000000",
+     "currency": "USD",
+     "lineage": {
+      "exprId": "ir-expr:art-25",
+      "inputKeys": [],
+      "rawSource": 75000000
+     }
+    }
+   }
+  },
+  "MIN": {
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "MONEY",
+    "amount": "50",
+    "currency": "USD"
+   },
+   "missingInputKeys": [],
+   "diagnostics": []
+  },
+  "COMPARE": {
+   "GT": {
+    "status": "EXECUTABLE",
+    "value": {
+     "type": "BOOLEAN",
+     "value": true
+    },
+    "missingInputKeys": [],
+    "diagnostics": []
+   },
+   "GTE": {
+    "status": "EXECUTABLE",
+    "value": {
+     "type": "BOOLEAN",
+     "value": true
+    },
+    "missingInputKeys": [],
+    "diagnostics": []
+   },
+   "LT": {
+    "status": "EXECUTABLE",
+    "value": {
+     "type": "BOOLEAN",
+     "value": false
+    },
+    "missingInputKeys": [],
+    "diagnostics": []
+   },
+   "LTE": {
+    "status": "EXECUTABLE",
+    "value": {
+     "type": "BOOLEAN",
+     "value": false
+    },
+    "missingInputKeys": [],
+    "diagnostics": []
+   },
+   "EQ": {
+    "status": "EXECUTABLE",
+    "value": {
+     "type": "BOOLEAN",
+     "value": false
+    },
+    "missingInputKeys": [],
+    "diagnostics": []
+   }
+  },
+  "AND": {
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "BOOLEAN",
+    "value": false
+   },
+   "missingInputKeys": [],
+   "diagnostics": []
+  },
+  "AND_SHORT_CIRCUIT_OVER_MISSING": {
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "BOOLEAN",
+    "value": false
+   },
+   "missingInputKeys": [],
+   "diagnostics": [
+    "MISSING_INPUT"
+   ]
+  },
+  "AND_TRUE_WITH_MISSING": {
+   "status": "NEEDS_INPUT",
+   "value": null,
+   "missingInputKeys": [
+    "m2"
+   ],
+   "diagnostics": [
+    "MISSING_INPUT"
+   ]
+  },
+  "OR": {
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "BOOLEAN",
+    "value": true
+   },
+   "missingInputKeys": [],
+   "diagnostics": []
+  },
+  "NOT": {
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "BOOLEAN",
+    "value": false
+   },
+   "missingInputKeys": [],
+   "diagnostics": []
+  },
+  "IF": {
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "MONEY",
+    "amount": "2",
+    "currency": "USD"
+   },
+   "missingInputKeys": [],
+   "diagnostics": []
+  },
+  "AS_OF_ISO": {
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "MONEY",
+    "amount": "7",
+    "currency": "USD"
+   },
+   "missingInputKeys": [],
+   "diagnostics": []
+  },
+  "AS_OF_FREE_TEXT_PASSED_VERBATIM": {
+   "status": "NEEDS_INPUT",
+   "value": null,
+   "missingInputKeys": [
+    "m3"
+   ],
+   "diagnostics": [
+    "MISSING_INPUT"
+   ]
+  },
+  "DURING_PERIOD": {
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "MONEY",
+    "amount": "9",
+    "currency": "USD"
+   },
+   "missingInputKeys": [],
+   "diagnostics": []
+  },
+  "SCHEDULE": {
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "RATIO",
+    "value": "4.5"
+   },
+   "missingInputKeys": [],
+   "diagnostics": []
+  },
+  "SCHEDULE_NO_AS_OF": {
+   "status": "NEEDS_INPUT",
+   "value": null,
+   "missingInputKeys": [
+    "asOf"
+   ],
+   "diagnostics": [
+    "MISSING_INPUT"
+   ]
+  },
+  "EVENT_ACTIVE_FACT": {
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "BOOLEAN",
+    "value": true
+   },
+   "missingInputKeys": [],
+   "diagnostics": []
+  },
+  "EVENT_ACTIVE_BOUNDED_DURATION": {
+   "status": "UNSUPPORTED",
+   "value": null,
+   "missingInputKeys": [],
+   "diagnostics": [
+    "TEMPORAL_SEMANTICS_NOT_MODELED"
+   ]
+  },
+  "UNSUPPORTED": {
+   "status": "UNSUPPORTED",
+   "value": null,
+   "missingInputKeys": [],
+   "diagnostics": [
+    "UNSUPPORTED_NODE"
+   ]
+  },
+  "UNLIMITED_CAPACITY_GATED": {
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "CAPACITY",
+    "capacity": {
+     "kind": "UNLIMITED",
+     "gate": "SATISFIED"
+    }
+   },
+   "missingInputKeys": [],
+   "diagnostics": []
+  }
+ }
+}

@@ -1,0 +1,244 @@
+{
+ "artifact": "PHASE 4A §16-§17 - a complete evaluation result showing the trace and the carried provenance",
+ "at": "2026-09-19T15:55:36.492Z",
+ "executed": {
+  "runtimeVersion": "contract-runtime.v1",
+  "status": "EXECUTABLE",
+  "value": {
+   "type": "MONEY",
+   "amount": "100000000",
+   "currency": "USD",
+   "lineage": {
+    "exprId": "ir-expr:art-104",
+    "inputKeys": [
+     "demo-metric"
+    ]
+   }
+  },
+  "missingInputs": [],
+  "missingInputKeys": [],
+  "diagnostics": [],
+  "bounds": null,
+  "trace": {
+   "exprId": "ir-expr:art-104",
+   "kind": "MAX",
+   "status": "EXECUTABLE",
+   "value": {
+    "type": "MONEY",
+    "amount": "100000000",
+    "currency": "USD",
+    "lineage": {
+     "exprId": "ir-expr:art-104",
+     "inputKeys": [
+      "demo-metric"
+     ]
+    }
+   },
+   "provenance": {
+    "documentId": "doc",
+    "sourceNodeKey": null,
+    "sourceCitation": "§7.02(b)(1)",
+    "excerpt": "the greater of $75,000,000 and 12.5% of [metric]"
+   },
+   "children": [
+    {
+     "exprId": "ir-expr:art-105",
+     "kind": "MONEY",
+     "status": "EXECUTABLE",
+     "value": {
+      "type": "MONEY",
+      "amount": "75000000",
+      "currency": "USD",
+      "lineage": {
+       "exprId": "ir-expr:art-105",
+       "inputKeys": [],
+       "rawSource": 75000000
+      }
+     },
+     "provenance": null,
+     "children": []
+    },
+    {
+     "exprId": "ir-expr:art-108",
+     "kind": "MULTIPLY",
+     "status": "EXECUTABLE",
+     "value": {
+      "type": "MONEY",
+      "amount": "100000000",
+      "currency": "USD",
+      "lineage": {
+       "exprId": "ir-expr:art-108",
+       "inputKeys": [
+        "demo-metric"
+       ]
+      }
+     },
+     "provenance": null,
+     "children": [
+      {
+       "exprId": "ir-expr:art-106",
+       "kind": "PERCENT",
+       "status": "EXECUTABLE",
+       "value": {
+        "type": "PERCENT",
+        "fraction": "0.125",
+        "lineage": {
+         "exprId": "ir-expr:art-106",
+         "inputKeys": [],
+         "rawSource": 0.125
+        }
+       },
+       "provenance": null,
+       "children": []
+      },
+      {
+       "exprId": "ir-expr:art-107",
+       "kind": "METRIC_REFERENCE",
+       "status": "EXECUTABLE",
+       "value": {
+        "type": "MONEY",
+        "amount": "800000000",
+        "currency": "USD",
+        "lineage": {
+         "exprId": "ir-expr:art-107",
+         "inputKeys": [
+          "demo-metric"
+         ]
+        }
+       },
+       "provenance": {
+        "documentId": "doc",
+        "sourceNodeKey": null,
+        "sourceCitation": "§1.01 demo-metric",
+        "excerpt": null
+       },
+       "children": [],
+       "input": {
+        "kind": "METRIC",
+        "key": "demo-metric",
+        "period": "LTM 2026-Q2",
+        "asOf": null,
+        "provenance": {
+         "source": "FinancialSnapshot V3",
+         "sourceVersion": "v3"
+        },
+        "value": {
+         "type": "MONEY",
+         "amount": "800000000",
+         "currency": "USD",
+         "lineage": {
+          "exprId": "ir-expr:art-107",
+          "inputKeys": [
+           "demo-metric"
+          ]
+         }
+        }
+       }
+      }
+     ]
+    }
+   ],
+   "selected": {
+    "index": 1,
+    "exprId": "ir-expr:art-108",
+    "reason": "MAX selected operand 1"
+   }
+  },
+  "provenance": {
+   "runtimeVersion": "contract-runtime.v1",
+   "ruleId": "ir-rule:demo",
+   "definitionId": null,
+   "rootExprId": "ir-expr:art-104",
+   "sourceCitations": [
+    "§1.01 demo-metric",
+    "§7.02(b)(1)"
+   ],
+   "inputsUsed": [
+    {
+     "kind": "METRIC",
+     "key": "demo-metric",
+     "period": "LTM 2026-Q2",
+     "asOf": null,
+     "provenance": {
+      "source": "FinancialSnapshot V3",
+      "sourceVersion": "v3"
+     },
+     "value": {
+      "type": "MONEY",
+      "amount": "800000000",
+      "currency": "USD",
+      "lineage": {
+       "exprId": "ir-expr:art-107",
+       "inputKeys": [
+        "demo-metric"
+       ]
+      }
+     }
+    }
+   ],
+   "expandedObjects": []
+  },
+  "stats": {
+   "nodesEvaluated": 5,
+   "cacheHits": 0,
+   "dependencyCount": 1,
+   "maxDepth": 2,
+   "missingInputCount": 0,
+   "unsupportedCount": 0,
+   "evaluationStatus": "EXECUTABLE"
+  }
+ },
+ "missingInput": {
+  "status": "NEEDS_INPUT",
+  "missingInputs": [
+   {
+    "kind": "METRIC",
+    "key": "demo-metric",
+    "exprId": "ir-expr:art-107",
+    "asOf": null,
+    "period": null,
+    "expectedType": "MONEY"
+   }
+  ],
+  "bounds": {
+   "knownLowerBound": {
+    "type": "MONEY",
+    "amount": "75000000",
+    "currency": "USD",
+    "lineage": {
+     "exprId": "ir-expr:art-105",
+     "inputKeys": [],
+     "rawSource": 75000000
+    }
+   }
+  },
+  "stoppedAt": {
+   "exprId": "ir-expr:art-107",
+   "kind": "METRIC_REFERENCE",
+   "status": "NEEDS_INPUT",
+   "value": null,
+   "provenance": {
+    "documentId": "doc",
+    "sourceNodeKey": null,
+    "sourceCitation": "§1.01 demo-metric",
+    "excerpt": null
+   },
+   "children": [],
+   "note": "metric \"demo-metric\" has no runtime input"
+  }
+ },
+ "traceExplains": [
+  "which inputs were used (trace.input, provenance.inputsUsed)",
+  "which operation produced the number (trace.kind per node)",
+  "which branch won (trace.selected)",
+  "why evaluation stopped (trace.note + diagnostics)",
+  "which input is missing (missingInputs / missingInputKeys)"
+ ],
+ "provenanceChain": [
+  "contract rule (provenance.ruleId)",
+  "contract expression (rootExprId, per-node exprId)",
+  "source citation/span (per-node provenance, provenance.sourceCitations)",
+  "runtime input(s) and version (inputsUsed[].provenance.sourceVersion)",
+  "calculation operations (trace)"
+ ]
+}

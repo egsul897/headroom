@@ -1,0 +1,221 @@
+{
+ "artifact": "PHASE 4A §41 - gate",
+ "at": "2026-09-19T15:55:36.532Z",
+ "startingSha": "34130bd20a1df0f87fcae87f52fab09742fb1ec8",
+ "headAtRun": "34130bd20a1df0f87fcae87f52fab09742fb1ec8",
+ "phase3ProductionSha": "5c914558a30e2e1709f16b6d0aaca1bc9bf8e789",
+ "phase3Trees": {
+  "frozen": {
+   "lib/": "806b2e3b6f9c006aae184453c6122a0fbd7d554e",
+   "lib/contract-model/compiler/": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
+   "lib/contract-model/compiler/semantic/": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12"
+  },
+  "atHead": {
+   "lib/contract-model/compiler/": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
+   "lib/contract-model/compiler/semantic/": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12",
+   "lib/": "806b2e3b6f9c006aae184453c6122a0fbd7d554e"
+  },
+  "semanticFrozen": true
+ },
+ "productionFilesChanged": [
+  "lib/contract-model/runtime/decimal.ts",
+  "lib/contract-model/runtime/dependency-graph.ts",
+  "lib/contract-model/runtime/evaluate-expression.ts",
+  "lib/contract-model/runtime/index.ts",
+  "lib/contract-model/runtime/input-resolver.ts",
+  "lib/contract-model/runtime/rule-evaluator.ts",
+  "lib/contract-model/runtime/types.ts",
+  "lib/contract-model/runtime/units.ts",
+  "lib/contract-model/runtime/values.ts",
+  "lib/contract-model/runtime/version.ts"
+ ],
+ "onlyRuntimeFilesChanged": true,
+ "runtimeVersion": "contract-runtime.v1",
+ "conditions": [
+  {
+   "n": 1,
+   "condition": "Phase-3 final closure verified",
+   "status": "PASS",
+   "evidence": "11 verdict PHASE_3_CLOSED; handoff inEffect true; production SHA 5c914558a30e2e1709f16b6d0aaca1bc9bf8e789"
+  },
+  {
+   "n": 2,
+   "condition": "handoff artifact stale blockedBy field corrected",
+   "status": "PASS",
+   "evidence": "blockedBy = null; hygiene record present"
+  },
+  {
+   "n": 3,
+   "condition": "Phase-3 semantic production tree remains frozen",
+   "status": "PASS",
+   "evidence": "semantic tree f79bc12dd479e9b803bf9e37092d76b6aedb8c12; compiler tree b4e6a9da496a23b9f98607355520a456e6c48e1f; dirty compiler/ir files: 0"
+  },
+  {
+   "n": 4,
+   "condition": "runtime value model implemented",
+   "status": "PASS",
+   "evidence": "02"
+  },
+  {
+   "n": 5,
+   "condition": "result states implemented",
+   "status": "FAIL",
+   "evidence": "04 exercises every state"
+  },
+  {
+   "n": 6,
+   "condition": "literal evaluation implemented",
+   "status": "PASS",
+   "evidence": "01/04"
+  },
+  {
+   "n": 7,
+   "condition": "arithmetic operators implemented",
+   "status": "PASS",
+   "evidence": "04"
+  },
+  {
+   "n": 8,
+   "condition": "boolean/comparison operators implemented where the IR supports them",
+   "status": "PASS",
+   "evidence": "04"
+  },
+  {
+   "n": 9,
+   "condition": "deterministic unit algebra implemented",
+   "status": "PASS",
+   "evidence": "03"
+  },
+  {
+   "n": 10,
+   "condition": "reference/input interface implemented",
+   "status": "PASS",
+   "evidence": "05"
+  },
+  {
+   "n": 11,
+   "condition": "missing inputs never silently become zero",
+   "status": "PASS",
+   "evidence": "04 MAX_MISSING NEEDS_INPUT"
+  },
+  {
+   "n": 12,
+   "condition": "unsupported operands remain unsupported",
+   "status": "PASS",
+   "evidence": "04/08"
+  },
+  {
+   "n": 13,
+   "condition": "ambiguous Phase-3 semantics remain blocked",
+   "status": "PASS",
+   "evidence": "08 ruleShell"
+  },
+  {
+   "n": 14,
+   "condition": "dependency graph implemented",
+   "status": "PASS",
+   "evidence": "06"
+  },
+  {
+   "n": 15,
+   "condition": "cycle detection implemented",
+   "status": "PASS",
+   "evidence": "06"
+  },
+  {
+   "n": 16,
+   "condition": "evaluation trace implemented",
+   "status": "PASS",
+   "evidence": "07"
+  },
+  {
+   "n": 17,
+   "condition": "legal provenance preserved",
+   "status": "PASS",
+   "evidence": "07"
+  },
+  {
+   "n": 18,
+   "condition": "financial input interface defined without Phase-5 ingestion",
+   "status": "PASS",
+   "evidence": "05"
+  },
+  {
+   "n": 19,
+   "condition": "anti-enumeration tests pass",
+   "status": "PASS",
+   "evidence": "09"
+  },
+  {
+   "n": 20,
+   "condition": "actual Phase-3 IR fixtures evaluate through the runtime",
+   "status": "PASS",
+   "evidence": "08"
+  },
+  {
+   "n": 21,
+   "condition": "deterministic repeatability proven",
+   "status": "PASS",
+   "evidence": "10"
+  },
+  {
+   "n": 22,
+   "condition": "no covenant-form production branching",
+   "status": "PASS",
+   "evidence": "09 hits 0"
+  },
+  {
+   "n": 23,
+   "condition": "no Chewy-specific production branching",
+   "status": "PASS",
+   "evidence": "09"
+  },
+  {
+   "n": 24,
+   "condition": "no Phase-3 semantic regression",
+   "status": "FAIL",
+   "evidence": "11 phase3Suites"
+  },
+  {
+   "n": 25,
+   "condition": "no new failing identities attributable to Phase 4A",
+   "status": "FAIL",
+   "evidence": "targeted new n/a; full new n/a (known flake only: true)"
+  },
+  {
+   "n": 26,
+   "condition": "tsc no new errors",
+   "status": "FAIL",
+   "evidence": "tsc new n/a"
+  },
+  {
+   "n": 27,
+   "condition": "lint clean",
+   "status": "FAIL",
+   "evidence": ""
+  },
+  {
+   "n": 28,
+   "condition": "build passes",
+   "status": "FAIL",
+   "evidence": ""
+  },
+  {
+   "n": 29,
+   "condition": "paid/model calls = 0",
+   "status": "PASS",
+   "evidence": "no provider code in the runtime; nothing invoked"
+  }
+ ],
+ "summary": {
+  "PASS": 23,
+  "FAIL": 6,
+  "total": 29
+ },
+ "verdict": "PHASE4A_GATE_NOT_PASSED",
+ "phase3Closed": true,
+ "phase4aComplete": false,
+ "phase4bStarted": false,
+ "paidCalls": 0,
+ "spendUsd": 0
+}

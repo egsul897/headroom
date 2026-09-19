@@ -1,0 +1,412 @@
+{
+ "artifact": "PHASE 4A §3 - the existing Phase-3 IR expression surface and its runtime interpretation",
+ "at": "2026-09-19T15:55:36.481Z",
+ "startingSha": "34130bd20a1df0f87fcae87f52fab09742fb1ec8",
+ "irTypesModule": "lib/contract-model/ir/types.ts (IRExpression union + UnlimitedCapacity)",
+ "evaluatedDirectly": true,
+ "parallelAstCreated": false,
+ "runtimeNormalizerCreated": false,
+ "whyNoNormalizer": "the IR already carries typed, identity-stable nodes; ADD/SUM aliasing, string-or-expression asOfDate and the UNLIMITED_CAPACITY wrapper are handled inside the evaluator without rewriting the tree",
+ "nodeKinds": [
+  {
+   "existingType": "MONEY",
+   "runtimeInterpretation": "exact rational amount + currency",
+   "implementedIn4A": true,
+   "reason": "literal",
+   "expectedResultType": "MONEY",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [],
+   "occurrencesInFrozenIr": 12
+  },
+  {
+   "existingType": "NUMBER",
+   "runtimeInterpretation": "exact rational",
+   "implementedIn4A": true,
+   "reason": "literal",
+   "expectedResultType": "NUMBER",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [],
+   "occurrencesInFrozenIr": 0
+  },
+  {
+   "existingType": "PERCENT",
+   "runtimeInterpretation": "exact rational fraction (0.125 = 12.5%)",
+   "implementedIn4A": true,
+   "reason": "literal",
+   "expectedResultType": "PERCENT",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [],
+   "occurrencesInFrozenIr": 8
+  },
+  {
+   "existingType": "RATIO",
+   "runtimeInterpretation": "exact rational, dimensionless, distinct from NUMBER",
+   "implementedIn4A": true,
+   "reason": "literal",
+   "expectedResultType": "RATIO",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [],
+   "occurrencesInFrozenIr": 6
+  },
+  {
+   "existingType": "BOOLEAN_LITERAL",
+   "runtimeInterpretation": "boolean",
+   "implementedIn4A": true,
+   "reason": "literal",
+   "expectedResultType": "BOOLEAN",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [],
+   "occurrencesInFrozenIr": 0
+  },
+  {
+   "existingType": "DATE_LITERAL",
+   "runtimeInterpretation": "ISO calendar date",
+   "implementedIn4A": true,
+   "reason": "literal; calendar-validated",
+   "expectedResultType": "DATE",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [
+    "non-ISO or invalid calendar date -> ERROR MALFORMED_NODE"
+   ],
+   "occurrencesInFrozenIr": 0
+  },
+  {
+   "existingType": "METRIC_REFERENCE",
+   "runtimeInterpretation": "resolver.resolveMetric(name, company, instrument, asOf, period) -> typed input",
+   "implementedIn4A": true,
+   "reason": "reference; the declared type is enforced against the supplied input",
+   "expectedResultType": "declared type (MONEY | RATIO | NUMBER)",
+   "possibleInputDependencies": [
+    "METRIC"
+   ],
+   "unsupportedCases": [
+    "no input -> NEEDS_INPUT",
+    "wrong input type -> ERROR INPUT_TYPE_MISMATCH"
+   ],
+   "occurrencesInFrozenIr": 36
+  },
+  {
+   "existingType": "DEFINED_TERM_REFERENCE",
+   "runtimeInterpretation": "resolver.resolveTerm -> Phase-3 definition (expanded, cycle-checked) or direct value",
+   "implementedIn4A": true,
+   "reason": "reference",
+   "expectedResultType": "declared IRValueType",
+   "possibleInputDependencies": [
+    "TERM",
+    "DEFINITION expansion"
+   ],
+   "unsupportedCases": [
+    "AMBIGUOUS/MISSING_CONTEXT/CONFLICTED definition -> AMBIGUOUS",
+    "definition without calculation expression -> NEEDS_INPUT",
+    "DURATION/PERIOD declared types -> no runtime representation (ERROR on type contract)"
+   ],
+   "occurrencesInFrozenIr": 9
+  },
+  {
+   "existingType": "RULE_REFERENCE",
+   "runtimeInterpretation": "resolver.resolveRule -> that rule's capacity expression evaluated (cycle-checked) as a CAPACITY value",
+   "implementedIn4A": true,
+   "reason": "reference",
+   "expectedResultType": "CAPACITY",
+   "possibleInputDependencies": [
+    "RULE expansion"
+   ],
+   "unsupportedCases": [
+    "blocked sufficiency -> AMBIGUOUS",
+    "rule without capacity expression -> UNSUPPORTED"
+   ],
+   "occurrencesInFrozenIr": 1
+  },
+  {
+   "existingType": "LEDGER_USAGE_REFERENCE",
+   "runtimeInterpretation": "resolver.resolveLedgerUsage -> MONEY input",
+   "implementedIn4A": true,
+   "reason": "reference through the interface only; no consumption ledger exists yet (later subphase)",
+   "expectedResultType": "MONEY",
+   "possibleInputDependencies": [
+    "LEDGER_USAGE"
+   ],
+   "unsupportedCases": [
+    "no ledger -> NEEDS_INPUT"
+   ],
+   "occurrencesInFrozenIr": 0
+  },
+  {
+   "existingType": "TRANSACTION_INPUT_REFERENCE",
+   "runtimeInterpretation": "resolver.resolveTransactionInput -> typed input",
+   "implementedIn4A": true,
+   "reason": "reference",
+   "expectedResultType": "declared IRValueType (CAPACITY accepts MONEY)",
+   "possibleInputDependencies": [
+    "TRANSACTION_INPUT"
+   ],
+   "unsupportedCases": [
+    "no input -> NEEDS_INPUT"
+   ],
+   "occurrencesInFrozenIr": 9
+  },
+  {
+   "existingType": "ENTITY_SCOPE_REFERENCE",
+   "runtimeInterpretation": "symbolic ENTITY_SET value (include/exclude tags carried, never resolved to entities)",
+   "implementedIn4A": true,
+   "reason": "symbolic",
+   "expectedResultType": "ENTITY_SET",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [
+    "not usable in arithmetic (UNIT_MISMATCH)"
+   ],
+   "occurrencesInFrozenIr": 0
+  },
+  {
+   "existingType": "ADD",
+   "runtimeInterpretation": "unit-checked sum",
+   "implementedIn4A": true,
+   "reason": "operator",
+   "expectedResultType": "operand dimension",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [
+    "mixed dimensions / currencies -> ERROR"
+   ],
+   "occurrencesInFrozenIr": 4
+  },
+  {
+   "existingType": "SUM",
+   "runtimeInterpretation": "identical to ADD",
+   "implementedIn4A": true,
+   "reason": "operator",
+   "expectedResultType": "operand dimension",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [
+    "as ADD"
+   ],
+   "occurrencesInFrozenIr": 2
+  },
+  {
+   "existingType": "SUBTRACT",
+   "runtimeInterpretation": "unit-checked difference",
+   "implementedIn4A": true,
+   "reason": "operator",
+   "expectedResultType": "operand dimension",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [
+    "mixed dimensions / currencies -> ERROR"
+   ],
+   "occurrencesInFrozenIr": 1
+  },
+  {
+   "existingType": "MULTIPLY",
+   "runtimeInterpretation": "scaling factors (PERCENT/NUMBER) x at most one dimensioned operand",
+   "implementedIn4A": true,
+   "reason": "operator",
+   "expectedResultType": "dimensioned operand type, else PERCENT/NUMBER",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [
+    "two dimensioned operands -> ERROR"
+   ],
+   "occurrencesInFrozenIr": 9
+  },
+  {
+   "existingType": "DIVIDE",
+   "runtimeInterpretation": "exact rational quotient; MONEY/MONEY dimensionless per declared type; MONEY/NUMBER -> MONEY",
+   "implementedIn4A": true,
+   "reason": "operator",
+   "expectedResultType": "declared NUMBER|RATIO, or MONEY",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [
+    "division by zero -> ERROR",
+    "cross-currency -> ERROR"
+   ],
+   "occurrencesInFrozenIr": 0
+  },
+  {
+   "existingType": "MAX",
+   "runtimeInterpretation": "extreme over one dimension; partial: known lower bound as metadata",
+   "implementedIn4A": true,
+   "reason": "operator",
+   "expectedResultType": "operand dimension",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [
+    "mixed dimensions -> ERROR"
+   ],
+   "occurrencesInFrozenIr": 11
+  },
+  {
+   "existingType": "MIN",
+   "runtimeInterpretation": "extreme over one dimension; partial: known upper bound as metadata",
+   "implementedIn4A": true,
+   "reason": "operator",
+   "expectedResultType": "operand dimension",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [
+    "mixed dimensions -> ERROR"
+   ],
+   "occurrencesInFrozenIr": 2
+  },
+  {
+   "existingType": "COMPARE",
+   "runtimeInterpretation": "GT/GTE/LT/LTE/EQ (+NE) with strict type compatibility",
+   "implementedIn4A": true,
+   "reason": "operator",
+   "expectedResultType": "BOOLEAN",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [
+    "different types -> ERROR",
+    "ordering on BOOLEAN -> ERROR"
+   ],
+   "occurrencesInFrozenIr": 14
+  },
+  {
+   "existingType": "AND",
+   "runtimeInterpretation": "boolean conjunction; short-circuit false only over NEEDS_INPUT operands",
+   "implementedIn4A": true,
+   "reason": "operator",
+   "expectedResultType": "BOOLEAN",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [
+    "non-boolean operand -> ERROR"
+   ],
+   "occurrencesInFrozenIr": 1
+  },
+  {
+   "existingType": "OR",
+   "runtimeInterpretation": "boolean disjunction; short-circuit true only over NEEDS_INPUT operands",
+   "implementedIn4A": true,
+   "reason": "operator",
+   "expectedResultType": "BOOLEAN",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [
+    "non-boolean operand -> ERROR"
+   ],
+   "occurrencesInFrozenIr": 8
+  },
+  {
+   "existingType": "NOT",
+   "runtimeInterpretation": "boolean negation",
+   "implementedIn4A": true,
+   "reason": "operator",
+   "expectedResultType": "BOOLEAN",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [
+    "non-boolean operand -> ERROR"
+   ],
+   "occurrencesInFrozenIr": 0
+  },
+  {
+   "existingType": "IF",
+   "runtimeInterpretation": "branch on an executable boolean condition; only the taken branch is evaluated",
+   "implementedIn4A": true,
+   "reason": "operator",
+   "expectedResultType": "branch type",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [
+    "false condition with no else -> ERROR IF_WITHOUT_ELSE_NOT_TAKEN"
+   ],
+   "occurrencesInFrozenIr": 0
+  },
+  {
+   "existingType": "AS_OF",
+   "runtimeInterpretation": "ISO date -> as-of context; free text -> passed verbatim as the as-of key; expression -> must evaluate to DATE",
+   "implementedIn4A": true,
+   "reason": "temporal, non-interpretive",
+   "expectedResultType": "inner type",
+   "possibleInputDependencies": [
+    "metric inputs keyed by asOf"
+   ],
+   "unsupportedCases": [
+    "as-of expression not DATE -> ERROR"
+   ],
+   "occurrencesInFrozenIr": 3
+  },
+  {
+   "existingType": "DURING_PERIOD",
+   "runtimeInterpretation": "period description passed verbatim as the period key for input resolution",
+   "implementedIn4A": true,
+   "reason": "temporal, non-interpretive",
+   "expectedResultType": "inner type",
+   "possibleInputDependencies": [
+    "metric inputs keyed by period"
+   ],
+   "unsupportedCases": [],
+   "occurrencesInFrozenIr": 8
+  },
+  {
+   "existingType": "SCHEDULE",
+   "runtimeInterpretation": "case selection by the context ISO as-of date (from inclusive, to exclusive)",
+   "implementedIn4A": true,
+   "reason": "temporal",
+   "expectedResultType": "case type",
+   "possibleInputDependencies": [
+    "AS_OF_DATE (context)"
+   ],
+   "unsupportedCases": [
+    "no as-of -> NEEDS_INPUT",
+    "overlapping cases -> ERROR",
+    "no case and no default -> UNSUPPORTED"
+   ],
+   "occurrencesInFrozenIr": 0
+  },
+  {
+   "existingType": "EVENT_ACTIVE",
+   "runtimeInterpretation": "supplied event-active fact; else trigger condition when no bounded duration; else UNSUPPORTED",
+   "implementedIn4A": "PARTIAL",
+   "reason": "duration-window semantics are not modeled",
+   "expectedResultType": "BOOLEAN",
+   "possibleInputDependencies": [
+    "EVENT"
+   ],
+   "unsupportedCases": [
+    "bounded activeDuration without a supplied fact -> UNSUPPORTED TEMPORAL_SEMANTICS_NOT_MODELED"
+   ],
+   "occurrencesInFrozenIr": 0
+  },
+  {
+   "existingType": "UNSUPPORTED",
+   "runtimeInterpretation": "UNSUPPORTED result carrying the Phase-3 reason",
+   "implementedIn4A": true,
+   "reason": "escape hatch honoured, never executed",
+   "expectedResultType": "none",
+   "possibleInputDependencies": [],
+   "unsupportedCases": [
+    "always UNSUPPORTED"
+   ],
+   "occurrencesInFrozenIr": 6
+  },
+  {
+   "existingType": "UNLIMITED_CAPACITY",
+   "runtimeInterpretation": "CAPACITY value: UNLIMITED (gate NONE|SATISFIED) or GATE_NOT_SATISFIED",
+   "implementedIn4A": true,
+   "reason": "capacity wrapper",
+   "expectedResultType": "CAPACITY",
+   "possibleInputDependencies": [
+    "gate inputs"
+   ],
+   "unsupportedCases": [
+    "gate non-boolean -> ERROR"
+   ],
+   "occurrencesInFrozenIr": 31
+  }
+ ],
+ "frozenIrNodeKindCensus": {
+  "UNLIMITED_CAPACITY": 31,
+  "COMPARE": 14,
+  "DURING_PERIOD": 8,
+  "METRIC_REFERENCE": 36,
+  "MAX": 11,
+  "RATIO": 6,
+  "OR": 8,
+  "MIN": 2,
+  "MONEY": 12,
+  "AS_OF": 3,
+  "DEFINED_TERM_REFERENCE": 9,
+  "SUM": 2,
+  "MULTIPLY": 9,
+  "PERCENT": 8,
+  "SUBTRACT": 1,
+  "UNSUPPORTED": 6,
+  "ADD": 4,
+  "TRANSACTION_INPUT_REFERENCE": 9,
+  "AND": 1,
+  "RULE_REFERENCE": 1
+ },
+ "everyFrozenKindHandled": true
+}
