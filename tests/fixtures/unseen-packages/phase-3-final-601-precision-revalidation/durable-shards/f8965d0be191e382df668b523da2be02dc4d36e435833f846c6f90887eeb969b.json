@@ -1,0 +1,671 @@
+{
+ "version": "hd4-durable-shard-record.v1",
+ "missionId": "phase-3-final-601-precision-revalidation",
+ "planHash": "b2b9540a144348dab91cc80eacd0d9b472e9e93a61a8fd359e1a507cf5cf17ce",
+ "shardId": "shard:7c4d3d2ae3e0a522b99e",
+ "shardHash": "f8965d0be191e382df668b523da2be02dc4d36e435833f846c6f90887eeb969b",
+ "result": {
+  "status": "SHARD_COMPLETE",
+  "composition": {
+   "rules": [
+    {
+     "ruleId": "ir-rule:c0fd7f9011257a2b98c1654b",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(22)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNSUPPORTED",
+      "type": null,
+      "sourceEvidence": "§6.01(b)(22): '...to the extent described in Section 6.08(b)(4) hereof'; §6.08(b)(4): '...the aggregate Restricted Payments made under this Section 6.08(b)(4) do not exceed in any calendar year the greater of (x) $252.0 million and (y) 35% of Consolidated EBITDA for the most recently ended Test Period...'",
+      "semanticDescription": "Dollar/formula extent to which Indebtedness issued to officers/directors/managers/employees (or related persons) to finance the purchase or redemption of Equity Interests of a Restricted Party or Parent Entity is permitted, cross-referenced to the Restricted Payments basket in Section 6.08(b)(4) (currently: greater of $252.0 million and 35% of Consolidated EBITDA for the most recently ended Test Period on a Pro Forma Basis, per calendar year with carryover, increasing to the greater of $504.0 million and 70% of Consolidated EBITDA following consummation of a qualifying IPO)",
+      "reason": "The permitted extent is defined entirely by cross-reference to Section 6.08(b)(4), a Restricted Payments basket in a different covenant family outside this compiled unit (6.01), with its own stepped/event-conditional (IPO-triggered) formula and per-calendar-year carryover mechanics; duplicating that full formula here risks mis-attributing an independently governed cross-unit resource as if it were this rule's own independent cap rather than preserving it as an explicit dependency.",
+      "requiredReview": true,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01",
+       "excerpt": null
+      },
+      "exprId": "ir-expr:99b81bbe17dbb8c94e2d6bff",
+      "inventoryItemIds": [
+       "inv-item:39536088a5117cf036b8817d"
+      ]
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "LIMITED_BY",
+       "targetRef": "Section 6.08(b)(4)",
+       "description": "The financed purchase/redemption of Equity Interests of a Restricted Party or Parent Entity must be within the extent (dollar amount and conditions) permitted under the Restricted Payments basket in Section 6.08(b)(4).",
+       "reason": "dependsOn[0].targetRef \"Section 6.08(b)(4)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+       "inventoryItemIds": [
+        "inv-item:39536088a5117cf036b8817d"
+       ]
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "PARTIAL",
+     "sufficiencyReasons": [
+      "The permission grant (who may issue such Indebtedness, to whom, and for what purpose) is fully represented from the operative text.",
+      "The actual dollar extent is not modeled because it is governed entirely by a cross-referenced provision (Section 6.08(b)(4)) in a different covenant family with its own conditional/event-triggered formula, preserved instead as an explicit dependency.",
+      "The permitted extent is defined entirely by cross-reference to Section 6.08(b)(4), a Restricted Payments basket in a different covenant family outside this compiled unit (6.01), with its own stepped/event-conditional (IPO-triggered) formula and per-calendar-year carryover mechanics; duplicating that full formula here risks mis-attributing an independently governed cross-unit resource as if it were this rule's own independent cap rather than preserving it as an explicit dependency.",
+      "dependsOn[0].targetRef \"Section 6.08(b)(4)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(22)",
+      "excerpt": "(22) Indebtedness consisting of Indebtedness issued by any Restricted Party to future, current or former officers, directors, managers, and employees thereof (or their respective Controlled Investment Affiliates or Immediate Family Members, or any Permitted Transferee thereof), in each case to finance the purchase or redemption of Equity Interests of a Restricted Party or any Parent Entity to the extent described in Section 6.08(b)(4) hereof;"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:d969b824d7e36bcc256e482c",
+      "inv-item:d16bc95ae430cf19f401e504"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:238576bf4671b6e4f3cb86c9",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(23)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r23].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Amounts must be customer deposits and advance payments received in the ordinary course of business from customers for goods purchased in the ordinary course of business.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(23)",
+        "excerpt": "received in the ordinary course of business from customers for goods purchased in the ordinary course of business;"
+       },
+       "inventoryItemIds": [
+        "inv-item:a165df55cf2a93971b3eb25d"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained exception with no dollar cap and a clearly stated ordinary-course qualifier; fully represented."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(23)",
+      "excerpt": "(23) customer deposits and advance payments received in the ordinary course of business from customers for goods purchased in the ordinary course of business;"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:9451c4d8021ab9eedd89f70c"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:1ed6273742c418135d196320",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(25)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r25].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Unfunded pension fund and other employee benefit plan obligations/liabilities must be incurred in the ordinary course of business or consistent with past practice.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(25)",
+        "excerpt": "ordinary course of business or consistent with past practice;"
+       },
+       "inventoryItemIds": [
+        "inv-item:cd941e032dee0a5c58f4e5e0"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained exception with no dollar cap and a clearly stated qualifier; fully represented."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(25)",
+      "excerpt": "(25) unfunded pension fund and other employee benefits plan obligations and liabilities incurred in the ordinary course of business or consistent with past practice;"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:7d97a14c987cb730a76854a2"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:4fe7d49c1de3f8fd5c40d8d4",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(26)(a)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01",
+       "excerpt": null
+      }
+     },
+     "conditions": [
+      {
+       "conditionId": "rule[r26a].condition[0]",
+       "conditionType": "OTHER_RULE_SATISFIED",
+       "expression": null,
+       "referencesDefinitionId": null,
+       "description": "Indebtedness in connection with bankers' acceptances, discounted bills of exchange, or discounting/factoring of receivables or payables for credit management purposes must be incurred or undertaken consistent with past practice or in the ordinary course of business.",
+       "provenance": {
+        "documentId": "doc-a",
+        "sourceNodeKey": null,
+        "sourceCitation": "§6.01(b)(26)(a)",
+        "excerpt": "bankers' acceptances, discounted bills of exchange or the discounting or factoring of receivables or payables for credit management purposes, in each case incurred or undertaken consistent with past practice or in the ordinary course of business"
+       },
+       "inventoryItemIds": [
+        "inv-item:af2633ca9fa7884fea1f78d9"
+       ]
+      }
+     ],
+     "exceptions": [],
+     "dependsOn": [],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Self-contained exception with no dollar cap and a clearly stated qualifier; fully represented."
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(26)(a)",
+      "excerpt": "(26) (a) Indebtedness incurred by any Restricted Party in connection with bankers' acceptances, discounted bills of exchange or the discounting or factoring of receivables or payables for credit management purposes, in each case incurred or undertaken consistent with past practice or in the ordinary course of business"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:5e40ff214671e2f207a8094f"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:676f68faa01a4807450d826c",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(26)(b)(i)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01",
+       "excerpt": null
+      }
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Definition of Receivables Non-Recourse Facility",
+       "description": "Indebtedness must be incurred under a facility meeting the defined-term criteria for a Receivables Non-Recourse Facility (non-recourse to Restricted Parties except for Standard Securitization Undertakings/Limited Originator Recourse).",
+       "reason": "dependsOn[0].targetRef \"Definition of Receivables Non-Recourse Facility\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "No dollar cap stated for this facility type; the permission is fully represented as uncapped, gated only by meeting the defined-term criteria.",
+      "dependsOn[0].targetRef \"Definition of Receivables Non-Recourse Facility\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(26)(b)(i)",
+      "excerpt": "(b) (i) Indebtedness under any Receivables Non-Recourse Facility"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:c719f9c76827c20325834862"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:e4db778493ac83df907f6656",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(26)(b)(ii)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "MAX",
+      "type": "MONEY",
+      "exprId": "ir-expr:e5e499454c191e55e59d7413",
+      "operands": [
+       {
+        "kind": "MONEY",
+        "type": "MONEY",
+        "amount": 360000000,
+        "currency": "USD",
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§6.01(b)(26)(b)(ii)",
+         "excerpt": null
+        },
+        "exprId": "ir-expr:c9d4b5ef085f219c2ebe8b65",
+        "inventoryItemIds": [
+         "inv-item:61abbf63515a2c309a3a6823"
+        ]
+       },
+       {
+        "kind": "MULTIPLY",
+        "type": "MONEY",
+        "exprId": "ir-expr:866faa2eec91783b4a34a0d3",
+        "operands": [
+         {
+          "kind": "PERCENT",
+          "type": "PERCENT",
+          "value": 0.5,
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§6.01(b)(26)(b)(ii)",
+           "excerpt": null
+          },
+          "exprId": "ir-expr:72d5a71164b4b9db82fd9805",
+          "inventoryItemIds": [
+           "inv-item:3506b09b672297d14e4f0800"
+          ]
+         },
+         {
+          "kind": "DURING_PERIOD",
+          "type": "MONEY",
+          "exprId": "ir-expr:cf943a577a6426f1e85fad05",
+          "value": {
+           "kind": "METRIC_REFERENCE",
+           "type": "MONEY",
+           "metricName": "Consolidated EBITDA",
+           "companyId": "phase-3-validation-chwy",
+           "instrumentKey": "chwy-2026-revolving-credit-instrument",
+           "resolvedDefinitionId": null,
+           "exprId": "ir-expr:654a52bb2a51292b1b304fa7"
+          },
+          "periodDescription": "the most recently ended Test Period",
+          "provenance": {
+           "documentId": "doc-a",
+           "sourceNodeKey": null,
+           "sourceCitation": "§6.01(b)(26)(b)(ii)",
+           "excerpt": null
+          }
+         }
+        ],
+        "provenance": {
+         "documentId": "doc-a",
+         "sourceNodeKey": null,
+         "sourceCitation": "§6.01(b)(26)(b)(ii)",
+         "excerpt": null
+        },
+        "inventoryItemIds": [
+         "inv-item:3506b09b672297d14e4f0800"
+        ]
+       }
+      ],
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01(b)(26)(b)(ii)",
+       "excerpt": null
+      }
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Definition of Receivables Recourse Facility",
+       "description": "Indebtedness must be incurred under a facility meeting the defined-term criteria for a Receivables Recourse Facility.",
+       "reason": "dependsOn[0].targetRef \"Definition of Receivables Recourse Facility\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "Both alternative cap components (fixed dollar amount and EBITDA percentage) are stated explicitly in the source text and fully represented.",
+      "dependsOn[0].targetRef \"Definition of Receivables Recourse Facility\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(26)(b)(ii)",
+      "excerpt": "(ii) Indebtedness under any Receivables Recourse Facility that does not exceed the greater of (x) $360.0 million and (y) 50% of Consolidated EBITDA for the most recently ended Test Period;"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null
+    },
+    {
+     "ruleId": "ir-rule:2619ff9bc5f96334ba4635ac",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(28)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01",
+       "excerpt": null
+      }
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Definition of Unsecured Capitalized Leases",
+       "description": "Leases must qualify as Unsecured Capitalized Leases (i.e., underlying Unsecured Capital Lease Obligations, including operating leases by definition).",
+       "reason": "dependsOn[0].targetRef \"Definition of Unsecured Capitalized Leases\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "No dollar cap stated; the exception is fully represented as uncapped, gated only by meeting the defined-term criteria.",
+      "dependsOn[0].targetRef \"Definition of Unsecured Capitalized Leases\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(28)",
+      "excerpt": "(28) Unsecured Capitalized Leases;"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:94bd7d52de9d5ac5a187912e"
+     ]
+    },
+    {
+     "ruleId": "ir-rule:fb1e101e6fbc60f19087554d",
+     "irSchemaVersion": "headroom-covenant-ir.v1",
+     "companyId": "phase-3-validation-chwy",
+     "instrumentKey": "chwy-2026-revolving-credit-instrument",
+     "sourceDocumentId": "doc-a",
+     "sourceSectionRef": "6.01(b)(30)",
+     "covenantFamily": "INDEBTEDNESS",
+     "ruleType": "QUANTITATIVE_PERMISSION",
+     "posture": "PERMISSION",
+     "action": "INCUR_DEBT",
+     "entityScope": [],
+     "entityScopeExcluded": [],
+     "transactionScope": null,
+     "capacityExpression": {
+      "kind": "UNLIMITED_CAPACITY",
+      "type": "CAPACITY",
+      "gatedBy": null,
+      "provenance": {
+       "documentId": "doc-a",
+       "sourceNodeKey": null,
+       "sourceCitation": "§6.01",
+       "excerpt": null
+      }
+     },
+     "conditions": [],
+     "exceptions": [],
+     "dependsOn": [],
+     "unresolvedDependencies": [
+      {
+       "relationshipType": "REQUIRES",
+       "targetRef": "Definition of Permitted Tax Restructuring",
+       "description": "Indebtedness must arise pursuant to a Permitted Tax Restructuring (a Tax reorganization not materially impairing Collateral value as a whole) or related transactions.",
+       "reason": "dependsOn[0].targetRef \"Definition of Permitted Tax Restructuring\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+      }
+     ],
+     "operativeLineage": null,
+     "sufficiency": "COMPLETE",
+     "sufficiencyReasons": [
+      "No dollar cap stated; the exception is fully represented as uncapped, gated only by meeting the defined-term criteria.",
+      "dependsOn[0].targetRef \"Definition of Permitted Tax Restructuring\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped"
+     ],
+     "provenance": {
+      "documentId": "doc-a",
+      "sourceNodeKey": null,
+      "sourceCitation": "§6.01(b)(30)",
+      "excerpt": "(30) Indebtedness of any Restricted Party arising pursuant to any Permitted Tax Restructuring or related transactions;"
+     },
+     "compilerVersion": "semantic-accountability-compiler.v4",
+     "sourceContentVersion": null,
+     "inventoryItemIds": [
+      "inv-item:ee74cc2bb2e6a5ae28b05a6f"
+     ]
+    }
+   ],
+   "definitions": [],
+   "sharedCapacities": [],
+   "inventoryDispositions": [
+    {
+     "inventoryItemId": "inv-item:4c2b0ce07f9f0e66029e6d8e",
+     "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+     "note": "Clause (24) is reserved with no substantive current content; nothing to compile."
+    },
+    {
+     "inventoryItemId": "inv-item:086c324db11b3dd22d42f114",
+     "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
+     "note": "Clause (29) is reserved with no substantive current content; nothing to compile."
+    }
+   ]
+  },
+  "failureReasons": [],
+  "unresolvedIssues": [
+   "[rule[r22]] The permitted extent is defined entirely by cross-reference to Section 6.08(b)(4), a Restricted Payments basket in a different covenant family outside this compiled unit (6.01), with its own stepped/event-conditional (IPO-triggered) formula and per-calendar-year carryover mechanics; duplicating that full formula here risks mis-attributing an independently governed cross-unit resource as if it were this rule's own independent cap rather than preserving it as an explicit dependency.",
+   "[rule[r22]] dependsOn[0].targetRef \"Section 6.08(b)(4)\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r26bi]] dependsOn[0].targetRef \"Definition of Receivables Non-Recourse Facility\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r26bii]] dependsOn[0].targetRef \"Definition of Receivables Recourse Facility\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r28]] dependsOn[0].targetRef \"Definition of Unsecured Capitalized Leases\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "[rule[r30]] dependsOn[0].targetRef \"Definition of Permitted Tax Restructuring\" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped",
+   "Clause (27) (6.01(b)(27)) was expressly excluded from this shard's operative text (owned by a different shard) and was neither compiled nor had any inventory item claimed from it, per the source instructions.",
+   "Clause (22)'s extent is defined by cross-reference to Section 6.08(b)(4) (a Restricted Payments basket in a different covenant family). getReferencedProvision was used to retrieve 6.08(b)(4)'s current, confirmed-operative text; rather than duplicating its full stepped/IPO-conditional formula inside this Indebtedness rule (risking a cross-family capacity being silently treated as this rule's own independent cap), the dollar extent was left UNSUPPORTED with the dependency preserved via dependsOn (LIMITED_BY Section 6.08(b)(4)).",
+   "All entity-scope tags were set to 'Restricted Party' (defined as the Borrowers and Restricted Subsidiaries) based on the chapeau of Section 6.01(a)/(b) and each clause's own wording where it explicitly names 'Restricted Party'.",
+   "Definitions of Controlled Investment Affiliate, Equity Interests, Immediate Family Members, Parent Entity, Permitted Transferees, Receivables Non-Recourse Facility, Receivables Recourse Facility, Restricted Parties, Restricted Subsidiary, Permitted Tax Restructuring, Unsecured Capitalized Leases/Unsecured Capital Lease Obligations and Test Period were all supplied in full in the context bundle and used only to interpret scope/eligibility criteria referenced by name (via dependsOn/dependsOnTerms), not independently compiled as this submission's own WireDefinitions since the task at hand is the operative rules of 6.01(b)(22)-(30)."
+  ],
+  "telemetry": {
+   "inputTokens": 79567,
+   "outputTokens": 25641,
+   "costUsd": 0.415544
+  },
+  "toolUsage": {
+   "calls": 1,
+   "sourceReadingCalls": 1,
+   "refusals": 0,
+   "charsReturned": 2177,
+   "maxToolCalls": 8,
+   "maxAdditionalSourceChars": 20000,
+   "remainingCallSlots": 7,
+   "remainingSourceChars": 17823,
+   "byTool": {
+    "getReferencedProvision": 1
+   },
+   "requestedTargets": [
+    "{\"ref\":\"Section 6.08(b)(4)\"}"
+   ],
+   "anyEvidenceUnresolved": false,
+   "anyEvidenceTruncated": false
+  },
+  "missingContextAudit": {
+   "contractVersion": "missing-context-contract.v1",
+   "shardId": "shard:7c4d3d2ae3e0a522b99e",
+   "shardHash": "f8965d0be191e382df668b523da2be02dc4d36e435833f846c6f90887eeb969b",
+   "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+   "requested": [
+    {
+     "targetRef": "Section 6.08(b)(4)",
+     "key": "section:6.08(b)(4)",
+     "classification": "PARTIAL_DELIVERY",
+     "deliveredChars": 1128,
+     "fullTextChars": 4411,
+     "detail": "delivered as a disclosed bounded excerpt (1128 of 4411 chars); retrieving the remainder with a bounded tool call is the designed route",
+     "requestingRuleId": "ir-rule:c0fd7f9011257a2b98c1654b"
+    },
+    {
+     "targetRef": "Definition of Receivables Non-Recourse Facility",
+     "key": "term:definition of receivables non-recourse facility",
+     "classification": "OPTIONAL_CONTEXT_MISS",
+     "deliveredChars": null,
+     "fullTextChars": null,
+     "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+     "requestingRuleId": "ir-rule:676f68faa01a4807450d826c"
+    },
+    {
+     "targetRef": "Definition of Receivables Recourse Facility",
+     "key": "term:definition of receivables recourse facility",
+     "classification": "OPTIONAL_CONTEXT_MISS",
+     "deliveredChars": null,
+     "fullTextChars": null,
+     "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+     "requestingRuleId": "ir-rule:e4db778493ac83df907f6656"
+    },
+    {
+     "targetRef": "Definition of Unsecured Capitalized Leases",
+     "key": "term:definition of unsecured capitalized leases",
+     "classification": "OPTIONAL_CONTEXT_MISS",
+     "deliveredChars": null,
+     "fullTextChars": null,
+     "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+     "requestingRuleId": "ir-rule:2619ff9bc5f96334ba4635ac"
+    },
+    {
+     "targetRef": "Definition of Permitted Tax Restructuring",
+     "key": "term:definition of permitted tax restructuring",
+     "classification": "OPTIONAL_CONTEXT_MISS",
+     "deliveredChars": null,
+     "fullTextChars": null,
+     "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+     "requestingRuleId": "ir-rule:fb1e101e6fbc60f19087554d"
+    }
+   ],
+   "counts": {
+    "PLANNER_DELIVERY_GAP": 0,
+    "FALSE_MISSING_CONTEXT": 0,
+    "PARTIAL_DELIVERY": 1,
+    "INTERNAL_LIMITATION_DISCLOSED": 0,
+    "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+    "EXTERNAL_DEPENDENCY": 0,
+    "OPTIONAL_CONTEXT_MISS": 4
+   },
+   "contractHeld": true,
+   "violations": []
+  },
+  "shardId": "shard:7c4d3d2ae3e0a522b99e",
+  "shardHash": "f8965d0be191e382df668b523da2be02dc4d36e435833f846c6f90887eeb969b",
+  "reusedFromHash": false,
+  "attempts": 1
+ },
+ "resultSha256": "f36633f88b8289c56b83074f6528f3ca91ccae55ab42728add8b02cf96375bcc",
+ "completedAt": "2026-09-19T13:33:48.217Z",
+ "recordSha256": "8aedc7d07aed8a1f52a82f519c0fa82484bd0e80a75e8e0bb7948595ddc34d0f"
+}
