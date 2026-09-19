@@ -1,6 +1,6 @@
 {
  "artifact": "PHASE 4A §16-§17 - a complete evaluation result showing the trace and the carried provenance",
- "at": "2026-09-19T15:55:36.492Z",
+ "at": "2026-09-19T18:16:41.049Z",
  "executed": {
   "runtimeVersion": "contract-runtime.v1",
   "status": "EXECUTABLE",
@@ -9,7 +9,7 @@
    "amount": "100000000",
    "currency": "USD",
    "lineage": {
-    "exprId": "ir-expr:art-104",
+    "exprId": "ir-expr:art-106",
     "inputKeys": [
      "demo-metric"
     ]
@@ -20,7 +20,7 @@
   "diagnostics": [],
   "bounds": null,
   "trace": {
-   "exprId": "ir-expr:art-104",
+   "exprId": "ir-expr:art-106",
    "kind": "MAX",
    "status": "EXECUTABLE",
    "value": {
@@ -28,7 +28,7 @@
     "amount": "100000000",
     "currency": "USD",
     "lineage": {
-     "exprId": "ir-expr:art-104",
+     "exprId": "ir-expr:art-106",
      "inputKeys": [
       "demo-metric"
      ]
@@ -42,7 +42,7 @@
    },
    "children": [
     {
-     "exprId": "ir-expr:art-105",
+     "exprId": "ir-expr:art-107",
      "kind": "MONEY",
      "status": "EXECUTABLE",
      "value": {
@@ -50,7 +50,7 @@
       "amount": "75000000",
       "currency": "USD",
       "lineage": {
-       "exprId": "ir-expr:art-105",
+       "exprId": "ir-expr:art-107",
        "inputKeys": [],
        "rawSource": 75000000
       }
@@ -59,7 +59,7 @@
      "children": []
     },
     {
-     "exprId": "ir-expr:art-108",
+     "exprId": "ir-expr:art-110",
      "kind": "MULTIPLY",
      "status": "EXECUTABLE",
      "value": {
@@ -67,7 +67,7 @@
       "amount": "100000000",
       "currency": "USD",
       "lineage": {
-       "exprId": "ir-expr:art-108",
+       "exprId": "ir-expr:art-110",
        "inputKeys": [
         "demo-metric"
        ]
@@ -76,14 +76,14 @@
      "provenance": null,
      "children": [
       {
-       "exprId": "ir-expr:art-106",
+       "exprId": "ir-expr:art-108",
        "kind": "PERCENT",
        "status": "EXECUTABLE",
        "value": {
         "type": "PERCENT",
         "fraction": "0.125",
         "lineage": {
-         "exprId": "ir-expr:art-106",
+         "exprId": "ir-expr:art-108",
          "inputKeys": [],
          "rawSource": 0.125
         }
@@ -92,7 +92,7 @@
        "children": []
       },
       {
-       "exprId": "ir-expr:art-107",
+       "exprId": "ir-expr:art-109",
        "kind": "METRIC_REFERENCE",
        "status": "EXECUTABLE",
        "value": {
@@ -100,7 +100,7 @@
         "amount": "800000000",
         "currency": "USD",
         "lineage": {
-         "exprId": "ir-expr:art-107",
+         "exprId": "ir-expr:art-109",
          "inputKeys": [
           "demo-metric"
          ]
@@ -127,7 +127,7 @@
          "amount": "800000000",
          "currency": "USD",
          "lineage": {
-          "exprId": "ir-expr:art-107",
+          "exprId": "ir-expr:art-109",
           "inputKeys": [
            "demo-metric"
           ]
@@ -140,7 +140,7 @@
    ],
    "selected": {
     "index": 1,
-    "exprId": "ir-expr:art-108",
+    "exprId": "ir-expr:art-110",
     "reason": "MAX selected operand 1"
    }
   },
@@ -148,7 +148,7 @@
    "runtimeVersion": "contract-runtime.v1",
    "ruleId": "ir-rule:demo",
    "definitionId": null,
-   "rootExprId": "ir-expr:art-104",
+   "rootExprId": "ir-expr:art-106",
    "sourceCitations": [
     "§1.01 demo-metric",
     "§7.02(b)(1)"
@@ -168,7 +168,7 @@
       "amount": "800000000",
       "currency": "USD",
       "lineage": {
-       "exprId": "ir-expr:art-107",
+       "exprId": "ir-expr:art-109",
        "inputKeys": [
         "demo-metric"
        ]
@@ -194,7 +194,7 @@
    {
     "kind": "METRIC",
     "key": "demo-metric",
-    "exprId": "ir-expr:art-107",
+    "exprId": "ir-expr:art-109",
     "asOf": null,
     "period": null,
     "expectedType": "MONEY"
@@ -206,14 +206,14 @@
     "amount": "75000000",
     "currency": "USD",
     "lineage": {
-     "exprId": "ir-expr:art-105",
+     "exprId": "ir-expr:art-107",
      "inputKeys": [],
      "rawSource": 75000000
     }
    }
   },
   "stoppedAt": {
-   "exprId": "ir-expr:art-107",
+   "exprId": "ir-expr:art-109",
    "kind": "METRIC_REFERENCE",
    "status": "NEEDS_INPUT",
    "value": null,

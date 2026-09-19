@@ -1,8 +1,8 @@
 {
  "artifact": "PHASE 4A §41 - gate",
- "at": "2026-09-19T15:55:36.532Z",
+ "at": "2026-09-19T18:16:41.232Z",
  "startingSha": "34130bd20a1df0f87fcae87f52fab09742fb1ec8",
- "headAtRun": "34130bd20a1df0f87fcae87f52fab09742fb1ec8",
+ "headAtRun": "b5938b4282a5afdfafa3931cecfb3ad2fbdaf785",
  "phase3ProductionSha": "5c914558a30e2e1709f16b6d0aaca1bc9bf8e789",
  "phase3Trees": {
   "frozen": {
@@ -13,7 +13,7 @@
   "atHead": {
    "lib/contract-model/compiler/": "b4e6a9da496a23b9f98607355520a456e6c48e1f",
    "lib/contract-model/compiler/semantic/": "f79bc12dd479e9b803bf9e37092d76b6aedb8c12",
-   "lib/": "806b2e3b6f9c006aae184453c6122a0fbd7d554e"
+   "lib/": "7c7614c12c057d90a3040fc5252d7fff655a8690"
   },
   "semanticFrozen": true
  },
@@ -46,9 +46,9 @@
   },
   {
    "n": 3,
-   "condition": "Phase-3 semantic production tree remains frozen",
+   "condition": "Phase-3 semantic production tree remains frozen and the layer boundary is one-directional",
    "status": "PASS",
-   "evidence": "semantic tree f79bc12dd479e9b803bf9e37092d76b6aedb8c12; compiler tree b4e6a9da496a23b9f98607355520a456e6c48e1f; dirty compiler/ir files: 0"
+   "evidence": "semantic tree f79bc12dd479e9b803bf9e37092d76b6aedb8c12; compiler tree b4e6a9da496a23b9f98607355520a456e6c48e1f; dirty compiler/ir files: 0; runtime imports [\"../ir/types\"]; phase-3 modules importing the runtime: 0"
   },
   {
    "n": 4,
@@ -59,7 +59,7 @@
   {
    "n": 5,
    "condition": "result states implemented",
-   "status": "FAIL",
+   "status": "PASS",
    "evidence": "04 exercises every state"
   },
   {
@@ -173,31 +173,31 @@
   {
    "n": 24,
    "condition": "no Phase-3 semantic regression",
-   "status": "FAIL",
-   "evidence": "11 phase3Suites"
+   "status": "PASS",
+   "evidence": "11 phase3Suites: entity-scope guard 24 tests, 0 new; required-dependency (dd-*) 34 tests, 0 new; F-7C 26 tests, 0 new; F-7C.1 15 tests, 0 new; HD-4 durable replay 42 tests, 0 new; semantic compiler 164 tests, 0 new; semantic verification 150 tests, 0 new; semantic accountability 366 tests, 0 new; Phase-3 closure-critical (601 revalidation) 69 tests, 0 new; IR core (types/type-check/validate) 54 tests, 0 new"
   },
   {
    "n": 25,
    "condition": "no new failing identities attributable to Phase 4A",
-   "status": "FAIL",
-   "evidence": "targeted new n/a; full new n/a (known flake only: true)"
+   "status": "PASS",
+   "evidence": "targeted new 1; full new 2, all wall-clock scaling assertions over frozen-tree code that pass in isolation and measure sub-quadratic: true"
   },
   {
    "n": 26,
    "condition": "tsc no new errors",
-   "status": "FAIL",
-   "evidence": "tsc new n/a"
+   "status": "PASS",
+   "evidence": "tsc new 0"
   },
   {
    "n": 27,
    "condition": "lint clean",
-   "status": "FAIL",
+   "status": "PASS",
    "evidence": ""
   },
   {
    "n": 28,
    "condition": "build passes",
-   "status": "FAIL",
+   "status": "PASS",
    "evidence": ""
   },
   {
@@ -208,13 +208,13 @@
   }
  ],
  "summary": {
-  "PASS": 23,
-  "FAIL": 6,
+  "PASS": 29,
+  "FAIL": 0,
   "total": 29
  },
- "verdict": "PHASE4A_GATE_NOT_PASSED",
+ "verdict": "PHASE4A_EXPRESSION_RUNTIME_READY",
  "phase3Closed": true,
- "phase4aComplete": false,
+ "phase4aComplete": true,
  "phase4bStarted": false,
  "paidCalls": 0,
  "spendUsd": 0

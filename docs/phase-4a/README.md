@@ -60,3 +60,20 @@ rule shell records each as an explicit placeholder so they can be added without 
 `blockedBy: "the entity-scope blocker in 11"` after the verdict flipped to PHASE_3_CLOSED. The field is now `null`,
 with a `handoffHygiene` record explaining the correction, and the generator sets it correctly from now on. This is
 documentation hygiene, not a Phase-3 defect: no Phase-3 semantics, model call or historical evidence was touched.
+
+## Regression note: two wall-clock scaling identities
+
+The full suite shows two new failing identities versus base, both in pre-existing timing files
+(`part-b-recert-finding4-independent`, `part-b-terminal-recert-open3-independent`). Both assert wall-clock ratios
+over `segmentCoordinateClauses`, which lives in the frozen Phase-3 compiler tree (`b4e6a9da...`, bit-identical to
+the Phase-3 baseline, last changed at commit `223aa64`). Phase 4A changed no file either test exercises.
+
+Evidence they are load-sensitive measurements rather than a regression, recorded in artifact 11:
+
+- both files pass in isolation on all six recorded runs;
+- direct measurement of the same function across a doubling series gives per-doubling time ratios of 1.95, 2.14
+  and 1.94 on the comma-chain shape (linear predicts 2.0, quadratic predicts 4.0), and every step is sub-quadratic
+  on both shapes;
+- Phase 4A added 106 tests to the shared parallel runner, which is what moved these ratios.
+
+The honest framing is that Phase 4A contributed to the conditions, not to the measured code.

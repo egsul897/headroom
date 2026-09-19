@@ -1,6 +1,6 @@
 {
  "artifact": "PHASE 4A §14-§15 - dependency graph, topological order, memoization, cycle detection",
- "at": "2026-09-19T15:55:36.492Z",
+ "at": "2026-09-19T18:16:41.048Z",
  "module": "lib/contract-model/runtime/dependency-graph.ts (+ evaluation-time cycle detection in evaluate-expression.ts)",
  "nodeKinds": [
   "EXPRESSION",
@@ -23,12 +23,12 @@
   ],
   "edges": 5,
   "topologicalOrder": [
-   "ir-expr:art-88",
-   "ir-expr:art-89",
-   "metric:m1",
    "ir-expr:art-90",
    "ir-expr:art-91",
-   "ir-expr:art-92"
+   "metric:m1",
+   "ir-expr:art-92",
+   "ir-expr:art-93",
+   "ir-expr:art-94"
   ],
   "dependencyTrace": [
    {
@@ -44,21 +44,21 @@
    {
     "nodes": [
      "definition:ir-definition:self",
-     "ir-expr:art-95",
-     "ir-expr:art-94",
+     "ir-expr:art-97",
+     "ir-expr:art-96",
      "definition:ir-definition:self"
     ],
     "edgePath": [
      {
       "from": "definition:ir-definition:self",
-      "to": "ir-expr:art-95"
+      "to": "ir-expr:art-97"
      },
      {
-      "from": "ir-expr:art-95",
-      "to": "ir-expr:art-94"
+      "from": "ir-expr:art-97",
+      "to": "ir-expr:art-96"
      },
      {
-      "from": "ir-expr:art-94",
+      "from": "ir-expr:art-96",
       "to": "definition:ir-definition:self"
      }
     ],
@@ -87,7 +87,7 @@
     "code": "CYCLE",
     "status": "ERROR",
     "message": "dependency cycle: definition:ir-definition:self -> definition:ir-definition:self",
-    "exprId": "ir-expr:art-94",
+    "exprId": "ir-expr:art-96",
     "provenance": null
    }
   }
@@ -97,31 +97,31 @@
    {
     "nodes": [
      "definition:ir-definition:a",
-     "ir-expr:art-98",
-     "rule:ir-rule:b",
-     "ir-expr:art-101",
      "ir-expr:art-100",
+     "rule:ir-rule:b",
+     "ir-expr:art-103",
+     "ir-expr:art-102",
      "definition:ir-definition:a"
     ],
     "edgePath": [
      {
       "from": "definition:ir-definition:a",
-      "to": "ir-expr:art-98"
-     },
-     {
-      "from": "ir-expr:art-98",
-      "to": "rule:ir-rule:b"
-     },
-     {
-      "from": "rule:ir-rule:b",
-      "to": "ir-expr:art-101"
-     },
-     {
-      "from": "ir-expr:art-101",
       "to": "ir-expr:art-100"
      },
      {
       "from": "ir-expr:art-100",
+      "to": "rule:ir-rule:b"
+     },
+     {
+      "from": "rule:ir-rule:b",
+      "to": "ir-expr:art-103"
+     },
+     {
+      "from": "ir-expr:art-103",
+      "to": "ir-expr:art-102"
+     },
+     {
+      "from": "ir-expr:art-102",
       "to": "definition:ir-definition:a"
      }
     ],
@@ -156,7 +156,7 @@
     "code": "CYCLE",
     "status": "ERROR",
     "message": "dependency cycle: rule:ir-rule:b -> definition:ir-definition:a -> rule:ir-rule:b",
-    "exprId": "ir-expr:art-98",
+    "exprId": "ir-expr:art-100",
     "provenance": null
    }
   }

@@ -1,6 +1,13 @@
 {
  "artifact": "PHASE 4A §3 - the existing Phase-3 IR expression surface and its runtime interpretation",
- "at": "2026-09-19T15:55:36.481Z",
+ "at": "2026-09-19T18:16:41.037Z",
+ "layerBoundary": {
+  "runtimeImportsOutsideItsOwnDirectory": [
+   "../ir/types"
+  ],
+  "phase3ModulesImportingTheRuntime": [],
+  "oneDirectional": true
+ },
  "startingSha": "34130bd20a1df0f87fcae87f52fab09742fb1ec8",
  "irTypesModule": "lib/contract-model/ir/types.ts (IRExpression union + UnlimitedCapacity)",
  "evaluatedDirectly": true,

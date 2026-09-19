@@ -1,6 +1,6 @@
 {
  "artifact": "PHASE 4A §7-§8 - reference resolution and the financial input interface (interface only)",
- "at": "2026-09-19T15:55:36.490Z",
+ "at": "2026-09-19T18:16:41.047Z",
  "inputResolverInterface": "export interface InputResolver {\n  resolveMetric(query: MetricQuery): MetricInput | null;\n  resolveTerm(termName: string, resolvedDefinitionId: string | null, companyId: string, instrumentKey: string): TermResolution;\n  resolveRule(ruleId: string): IRRule | null;\n  resolveLedgerUsage(key: { sharedCapId: string | null; ruleId: string | null }",
  "metricInput": "export interface MetricInput {\n  metricKey: string;\n  /** The period the value is stated for (verbatim period description from the IR, e.g. \"the most recently ended Test Period\", or an explicit label). Null when the value is not period-specific. */\n  period: string | null;\n  asOf: string | null;\n  value: RuntimeValue;\n  provenance: InputProvenance;\n}",
  "references": [

@@ -1,58 +1,242 @@
 {
  "artifact": "PHASE 4A §40 - regression at the Phase-4A head",
- "at": "2026-09-19T15:55:36.512Z",
- "headAtRun": "34130bd20a1df0f87fcae87f52fab09742fb1ec8",
+ "at": "2026-09-19T18:16:41.207Z",
+ "headAtRun": "b5938b4282a5afdfafa3931cecfb3ad2fbdaf785",
  "runtimeTests": {
-  "total": 0,
-  "passed": 0,
+  "total": 82,
+  "passed": 82,
   "failed": 0,
-  "files": []
+  "files": [
+   "tests/contract-model/runtime/anti-enumeration.test.ts",
+   "tests/contract-model/runtime/decimal.test.ts",
+   "tests/contract-model/runtime/dependency-graph.test.ts",
+   "tests/contract-model/runtime/expression-runtime.test.ts",
+   "tests/contract-model/runtime/phase3-ir-fixtures.test.ts"
+  ]
  },
  "phase3Suites": {
   "entity-scope guard": {
-   "tests": 0,
+   "tests": 24,
    "failed": 0,
    "newFailingVsBase": 0
   },
   "required-dependency (dd-*)": {
-   "tests": 0,
+   "tests": 34,
    "failed": 0,
    "newFailingVsBase": 0
   },
   "F-7C": {
-   "tests": 0,
+   "tests": 26,
    "failed": 0,
    "newFailingVsBase": 0
   },
-  "HD-4": {
-   "tests": 0,
+  "F-7C.1": {
+   "tests": 15,
+   "failed": 0,
+   "newFailingVsBase": 0
+  },
+  "HD-4 durable replay": {
+   "tests": 42,
    "failed": 0,
    "newFailingVsBase": 0
   },
   "semantic compiler": {
-   "tests": 0,
+   "tests": 164,
    "failed": 0,
    "newFailingVsBase": 0
   },
   "semantic verification": {
-   "tests": 0,
+   "tests": 150,
    "failed": 0,
    "newFailingVsBase": 0
   },
   "semantic accountability": {
-   "tests": 0,
+   "tests": 366,
+   "failed": 18,
+   "newFailingVsBase": 0
+  },
+  "Phase-3 closure-critical (601 revalidation)": {
+   "tests": 69,
    "failed": 0,
    "newFailingVsBase": 0
   },
-  "Phase-3 closure-critical (revalidation/precision)": {
-   "tests": 0,
+  "IR core (types/type-check/validate)": {
+   "tests": 54,
    "failed": 0,
    "newFailingVsBase": 0
   }
  },
- "targeted": "NOT_SUPPLIED",
- "fullSuite": "NOT_SUPPLIED",
- "tsc": "NOT_SUPPLIED",
- "lint": "NOT_SUPPLIED",
- "build": "NOT_SUPPLIED"
+ "targeted": {
+  "tests": 2581,
+  "passed": 2374,
+  "failed": 35,
+  "newFailingIdentitiesVsBase": [
+   "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows"
+  ]
+ },
+ "fullSuite": {
+  "base": {
+   "sha256": "321cf94da1652ae322b41f04d9a8385184e2f6ce2a0120ef5a4b06a32bd9e72e",
+   "tests": 3957,
+   "passed": 3272,
+   "failed": 161
+  },
+  "now": {
+   "sha256": "a38c85db386a866f614ec36c8f4be36293550398dc794748c60f96409d4be8b3",
+   "tests": 4063,
+   "passed": 3376,
+   "failed": 163
+  },
+  "newFailingIdentities": [
+   "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows",
+   "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts :: OPEN-3 independent probe 4: re-measured scaling behavior (fresh construction, not merely Part A's own numbers) measured multi-point scaling is consistent with O(n), not O(n^2)"
+  ],
+  "newFailingOnlyLoadSensitiveTimingAssertions": true,
+  "timingFlakeCharacterisation": {
+   "newFailingIdentities": [
+    "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows",
+    "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts :: OPEN-3 independent probe 4: re-measured scaling behavior (fresh construction, not merely Part A's own numbers) measured multi-point scaling is consistent with O(n), not O(n^2)"
+   ],
+   "newFailingIdentitiesInTargetedRun": [
+    "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows"
+   ],
+   "allAreWallClockScalingAssertions": true,
+   "measuredFunction": "segmentCoordinateClauses (lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts)",
+   "measuredFunctionLastChangedAt": "223aa64 Fix OPEN-3: genuinely N-ary claim decomposition (Oxford commas, restated-modal chains, linear time)",
+   "measuredFunctionInsideFrozenPhase3Tree": true,
+   "isolationRuns": [
+    {
+     "file": "iso-part-b-recert-finding4-independent-1.json",
+     "tests": 12,
+     "failed": 0
+    },
+    {
+     "file": "iso-part-b-recert-finding4-independent-2.json",
+     "tests": 12,
+     "failed": 0
+    },
+    {
+     "file": "iso-part-b-recert-finding4-independent-3.json",
+     "tests": 12,
+     "failed": 0
+    },
+    {
+     "file": "iso-part-b-terminal-recert-open3-independent-1.json",
+     "tests": 10,
+     "failed": 0
+    },
+    {
+     "file": "iso-part-b-terminal-recert-open3-independent-2.json",
+     "tests": 10,
+     "failed": 0
+    },
+    {
+     "file": "iso-part-b-terminal-recert-open3-independent-3.json",
+     "tests": 10,
+     "failed": 0
+    }
+   ],
+   "isolationAllPass": true,
+   "directMeasurement": [
+    {
+     "shape": "bare-or chain",
+     "points": [
+      {
+       "n": 4000,
+       "ms": 2.64
+      },
+      {
+       "n": 8000,
+       "ms": 2.33
+      },
+      {
+       "n": 16000,
+       "ms": 7.371
+      },
+      {
+       "n": 32000,
+       "ms": 8.255
+      }
+     ],
+     "perDoublingTimeRatios": [
+      {
+       "from": 4000,
+       "to": 8000,
+       "timeRatio": 0.88
+      },
+      {
+       "from": 8000,
+       "to": 16000,
+       "timeRatio": 3.16
+      },
+      {
+       "from": 16000,
+       "to": 32000,
+       "timeRatio": 1.12
+      }
+     ],
+     "medianPerDoublingRatio": 1.12,
+     "linearPrediction": 2,
+     "quadraticPrediction": 4,
+     "subQuadratic": true
+    },
+    {
+     "shape": "comma chain",
+     "points": [
+      {
+       "n": 4000,
+       "ms": 7.609
+      },
+      {
+       "n": 8000,
+       "ms": 14.843
+      },
+      {
+       "n": 16000,
+       "ms": 31.747
+      },
+      {
+       "n": 32000,
+       "ms": 61.554
+      }
+     ],
+     "perDoublingTimeRatios": [
+      {
+       "from": 4000,
+       "to": 8000,
+       "timeRatio": 1.95
+      },
+      {
+       "from": 8000,
+       "to": 16000,
+       "timeRatio": 2.14
+      },
+      {
+       "from": 16000,
+       "to": 32000,
+       "timeRatio": 1.94
+      }
+     ],
+     "medianPerDoublingRatio": 1.95,
+     "linearPrediction": 2,
+     "quadraticPrediction": 4,
+     "subQuadratic": true
+    }
+   ],
+   "directMeasurementSubQuadratic": true,
+   "fullSuiteGrewBy": 106,
+   "attribution": "NOT_ATTRIBUTABLE_TO_PHASE_4A: the measured production code is bit-identical to the Phase-3 baseline and passes in isolation; Phase 4A added tests to the shared parallel runner, which is what moved these wall-clock ratios"
+  }
+ },
+ "tsc": {
+  "errors": 6,
+  "newErrors": 0,
+  "preexisting": "tests/foundation-audit/"
+ },
+ "lint": {
+  "ok": true
+ },
+ "build": {
+  "ok": true
+ }
 }
