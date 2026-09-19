@@ -1,8 +1,8 @@
 {
  "artifact": "PHASE 4B §43 - gate",
- "at": "2026-09-19T19:50:28.952Z",
+ "at": "2026-09-19T19:53:29.091Z",
  "startingSha": "4da8bc04da3d42bcfb917b3efff7d227811c4df4",
- "headAtRun": "10fb2c8bd1d5fcf9ec0011697dd45a39df563a24",
+ "headAtRun": "0feb1b5d85ec2613f7df6cfa0ac447ac7fba25a2",
  "contractVersion": "financial-input-contract.v1",
  "runtimeVersion": "contract-runtime.v1",
  "phase3Trees": {
@@ -30,9 +30,9 @@
  ],
  "onlyRuntimeFilesChanged": true,
  "testCounts": {
-  "phase4bInputTests": 88,
+  "phase4bInputTests": 98,
   "phase4bInputFailed": 0,
-  "allRuntimeTests": 170,
+  "allRuntimeTests": 180,
   "allRuntimeFailed": 0
  },
  "conditions": [
@@ -111,7 +111,7 @@
   {
    "n": 13,
    "condition": "supersession is explicit, never a latest-looking guess",
-   "status": "FAIL",
+   "status": "PASS",
    "evidence": "04/10 H"
   },
   {
@@ -248,12 +248,12 @@
   }
  ],
  "summary": {
-  "PASS": 34,
-  "FAIL": 1,
+  "PASS": 35,
+  "FAIL": 0,
   "total": 35
  },
- "verdict": "SNAPSHOT_SUPERSESSION_UNSAFE",
- "phase4bComplete": false,
+ "verdict": "PHASE4B_INPUT_CONTRACT_READY",
+ "phase4bComplete": true,
  "paidCalls": 0,
  "spendUsd": 0,
  "modelCalls": 0,

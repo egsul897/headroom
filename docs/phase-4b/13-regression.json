@@ -1,15 +1,15 @@
 {
  "artifact": "PHASE 4B §41 - regression at the Phase-4B head",
- "at": "2026-09-19T19:50:28.872Z",
- "headAtRun": "10fb2c8bd1d5fcf9ec0011697dd45a39df563a24",
+ "at": "2026-09-19T19:53:29.034Z",
+ "headAtRun": "0feb1b5d85ec2613f7df6cfa0ac447ac7fba25a2",
  "suites": {
   "Phase-4B input contract": {
-   "tests": 88,
+   "tests": 98,
    "failed": 0,
    "newFailingVsBase": 0
   },
   "Phase-4A runtime": {
-   "tests": 170,
+   "tests": 180,
    "failed": 0,
    "newFailingVsBase": 0
   },
@@ -45,11 +45,11 @@
   }
  },
  "targeted": {
-  "tests": 2669,
-  "passed": 2462,
+  "tests": 2679,
+  "passed": 2472,
   "failed": 35,
   "newFailingIdentitiesVsBase": [
-   "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts :: OPEN-3 independent probe 4: re-measured scaling behavior (fresh construction, not merely Part A's own numbers) measured multi-point scaling is consistent with O(n), not O(n^2)"
+   "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows"
   ]
  },
  "fullSuite": {
@@ -60,16 +60,16 @@
    "failed": 161
   },
   "now": {
-   "sha256": "e9b3bfd2065f93c834b6418f1c1edd7a9dce45358bb3598e4f1c3f6d691315dd",
-   "tests": 4151,
-   "passed": 3466,
+   "sha256": "4ae9d6175915d87bb625c45a02afb38597489293b1483cbc37aec5dfa1355791",
+   "tests": 4161,
+   "passed": 3476,
    "failed": 161
   },
   "newFailingIdentities": []
  },
  "timingCharacterisation": {
   "newFailingIdentities": [
-   "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts :: OPEN-3 independent probe 4: re-measured scaling behavior (fresh construction, not merely Part A's own numbers) measured multi-point scaling is consistent with O(n), not O(n^2)"
+   "tests/contract-model/part-b-recert-finding4-independent.test.ts :: FINDING-4 independent recertification - GAP-3 (O(text.length) termination proof) - FIXED by Phase 3F.1-terminal OPEN-3 FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows"
   ],
   "fullSuiteNewFailingIdentities": [],
   "fullSuiteClean": true,
