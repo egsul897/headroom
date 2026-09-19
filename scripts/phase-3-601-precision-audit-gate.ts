@@ -114,7 +114,12 @@ const verdict = FAIL === 0 ? "PHASE3_REQUIRED_DEPENDENCY_MODEL_READY_FOR_PAID_RE
 writeJson(`${OUT}/146-precision-audit-gate.json`, {
   artifact: "PRECISION AUDIT §22 - the 20-condition readiness gate", at: new Date().toISOString(), paidCalls: 0,
   startingSha: STARTING_SHA, shaGateWasComputedAgainst: sh("git rev-parse HEAD"),
-  shaNote: "the working tree of this commit's parent was evaluated; the commit that carries this artifact is its child",
+  // The committed production tree the conditions were evaluated against. `git diff --name-only HEAD -- lib/` compares
+  // the WORKING TREE with HEAD, so an empty list proves the production code on disk IS the committed one; the tree
+  // object ids identify it exactly. When the list is non-empty the gate certifies a working tree, not a commit.
+  shaCertified: sh("git diff --name-only HEAD -- lib/").trim() === "" ? sh("git rev-parse HEAD") : null,
+  productionTreeHash: { "lib/": sh("git rev-parse HEAD:lib"), "lib/contract-model/compiler/": sh("git rev-parse HEAD:lib/contract-model/compiler"), workingTreeProductionFilesDifferingFromHead: sh("git diff --name-only HEAD -- lib/").trim().split("\n").filter(Boolean) },
+  shaNote: "shaCertified is HEAD only when the working-tree production code is byte-identical to HEAD's; the commit that carries this artifact is that commit's child",
   conditions, summary: { total: conditions.length, PASS, FAIL },
   verdict,
   verdictNote: FAIL === 0 ? "every condition passed" : `failing conditions: ${failing.map((c) => c.id).join(", ")}; the verdict is the highest-priority alternative among their failure verdicts (PHASE3_REQUIRED_DEPENDENCY_MODEL_NOT_READY is this gate's own fallback for the quality-gate conditions the mission lists no alternative verdict for)`,

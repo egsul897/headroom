@@ -692,3 +692,47 @@ v5, plus deterministic derivation from ENTITY_SCOPE_REFERENCE nodes). None was l
 Verdict is recorded in 146 (20 conditions). It says the corrected model is ready to be revalidated by a future,
 separately authorized paid mission - not an authorization to spend, not a claim the 6.01 compilation succeeds, not a
 Phase 3 closure. Zero paid calls were made.
+
+## Final paid-revalidation precheck: committed-tree recertification + exact cost preflight (147-149)
+
+Gate 146 had been generated while HEAD still named its parent, so it did not identify the committed tree carrying the
+remediation. This mission recertifies the exact commit `80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa`: working tree
+clean, origin at the same SHA, production tree byte-identical to HEAD (tree objects `82832050…` for `lib/` and
+`365c6fd7…` for `lib/contract-model/compiler/`). Artifacts 133-146 were regenerated at HEAD and compared field by field
+with the committed versions ignoring only timestamps and the SHA fields: all 14 materially identical, 146 now records
+`shaCertified` and the production tree hash (147).
+
+The frozen Pass-A inventory (`frozenContentHash 88e7419f…`, 326 items) resumes under the production validator by
+`RECORDED_SOURCE_CONTEXT_HASH`; the source-context and partition hashes the current tree derives equal the recorded
+ones, and the behavioural Pass-A equivalence proof (worktree at 51fda65 vs HEAD deriving byte-identical Pass-A input,
+6 of 6 batches) holds with unchanged prompt/algorithm versions: no Pass-A semantic change (148 §4-§5). The exact
+current plan builds from the resumed inventory: SHARDED, 7 shards, 0 oversized, planner v4, required-dependency model
+v2, 5 `CERTIFIED_CONTEXT_COMPLETE` + 2 `CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION`, 0 planning failures, plan hash
+`b2b9540a…`, max turn-1 estimate 61,670 tokens under the 100,000 bound (148 §6).
+
+The 2-char margin on the 98-item shard is a **SAFE_CAPACITY_BOUND**, not planning fragility: the required tier is
+water-filled, so any shard whose full closure (64,964 chars here) exceeds the ceiling lands within a few chars of it by
+construction. Lowering the ceiling - equivalent to the closure growing - by 1 to 32,000 chars never produces a planning
+failure: the planner re-shards and excerpts further, every excerpt disclosed on its entry (14 bounded excerpts at the
+ceiling versus 11 with no ceiling; from 500 chars tighter one of the five targets becomes an excerpt). The ceiling was
+not changed (148 §7).
+
+The exact conservative resumed cost, under the frozen methodology (pinned worst-observed rates x 1.25, Pass A $0,
+Pass B from the actual 7-shard plan's 290,402 planner-estimated turn-1 tokens, verifier semantic review + 5
+condition-suspicion calls) is **$12.153745** (Pass B $11.670875, verifier $0.48287). The gateway balance, read once,
+is **$6.061242** - exactly the historical value, so no paid call has happened since the precision audit. Shortfall
+$6.092503; the smallest sensible hard cap for the next mission would be $12.20. The old 6-shard estimate ($7.96) and
+the previous actual spend ($2.80) were not reused (148 §8-§10). Every historical durable shard record (3 from the
+final-paid run, 6 from the revalidation run) fails current identity - none carries a shard hash of the current plan -
+so 0 old shards are reusable (148 §11). All 11 frozen verifier findings can only be reassessed by a fresh production
+compile and verifier run; none is claimed closed (148 §12).
+
+Regression: the targeted suites (dd-*, f7a, F-7C, F-7C.1, HD-4, semantic compiler, semantic verification, semantic
+accountability) pass except 18 Pass-A synthetic-corpus failures in three semantic-accountability files that fail
+identically at 51fda65, 1b36eb6 and 1fd2388 - a baseline condition, not this tree's; full suite at HEAD versus the
+precision audit's starting SHA shows 0 file-level regressions and 0 new failing identities; tsc 0 new errors; lint
+clean; build passes.
+
+Verdict **PHASE3_601_COST_BOUND_BEFORE_REVALIDATION** (149, 17/18): the committed tree is certified, the plan is
+stable, the ceiling is safe, but the gateway balance does not cover the conservative resumed estimate. Zero paid
+calls; no paid run authorized; Phase 3 open; Phase 4 not started.

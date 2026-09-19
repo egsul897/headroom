@@ -1,10 +1,16 @@
 {
  "artifact": "PRECISION AUDIT §22 - the 20-condition readiness gate",
- "at": "2026-09-19T04:06:22.499Z",
+ "at": "2026-09-19T04:24:48.953Z",
  "paidCalls": 0,
  "startingSha": "1fd23881fb9366b3730a06419a7b5dc33647384c",
- "shaGateWasComputedAgainst": "1fd23881fb9366b3730a06419a7b5dc33647384c",
- "shaNote": "the working tree of this commit's parent was evaluated; the commit that carries this artifact is its child",
+ "shaGateWasComputedAgainst": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+ "shaCertified": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+ "productionTreeHash": {
+  "lib/": "82832050f837e18599bfa127b4722ade879e7c24",
+  "lib/contract-model/compiler/": "365c6fd79324816e1473d9857d642cf8fa146518",
+  "workingTreeProductionFilesDifferingFromHead": []
+ },
+ "shaNote": "shaCertified is HEAD only when the working-tree production code is byte-identical to HEAD's; the commit that carries this artifact is that commit's child",
  "conditions": [
   {
    "id": 1,

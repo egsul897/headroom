@@ -1,0 +1,1238 @@
+{
+ "artifact": "FINAL PAID-REVALIDATION PRECHECK §3-§12 - frozen inventory, resume proof, Pass-A audit, exact plan, thin-ceiling audit, exact resumed cost, balance, durable-store identity, verifier reassessment",
+ "at": "2026-09-19T04:28:20.025Z",
+ "paidCalls": 0,
+ "gatewayBalanceReads": 1,
+ "versions": {
+  "compilerAlgorithm": "semantic-accountability-compiler.v4",
+  "compilerPrompt": "semantic-accountability-compiler-prompt.v5",
+  "planner": "semantic-compilation-shards.v4-required-dependency-precision",
+  "requiredDependencyModel": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+  "verifierAlgorithm": "phase-3c-semantic-verifier.v1",
+  "verifierPrompt": "phase-3c-semantic-verifier-prompt.v1"
+ },
+ "s3_frozenInventory": {
+  "path": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/frozen-inventory.json",
+  "fileSha256": "9ab4ca8422b77c3f39bad4f0715ab21af3d80fb4225c32c8f29095e94b69bdc7",
+  "bytes": 609397,
+  "frozenContentHash": "88e7419f61f96b827db31d91e9047e699fb54685d11d94d432b081e0d7eb1b0c",
+  "requiredFrozenContentHash": "88e7419f61f96b827db31d91e9047e699fb54685d11d94d432b081e0d7eb1b0c",
+  "match": true,
+  "facts": {
+   "frozenContentHash": {
+    "expected": "88e7419f61f96b827db31d91e9047e699fb54685d11d94d432b081e0d7eb1b0c",
+    "actual": "88e7419f61f96b827db31d91e9047e699fb54685d11d94d432b081e0d7eb1b0c",
+    "match": true
+   },
+   "inventoryStatus": {
+    "expected": "INVENTORY_COVERAGE_GAP",
+    "actual": "INVENTORY_COVERAGE_GAP",
+    "match": true
+   },
+   "canonicalItems": {
+    "expected": 326,
+    "actual": 326,
+    "match": true
+   },
+   "pass1Items": {
+    "expected": 289,
+    "actual": 289,
+    "match": true
+   },
+   "pass2Items": {
+    "expected": 289,
+    "actual": 289,
+    "match": true
+   },
+   "corroborated": {
+    "expected": 252,
+    "actual": 252,
+    "match": true
+   },
+   "singleRun": {
+    "expected": 74,
+    "actual": 74,
+    "match": true
+   },
+   "conflicted": {
+    "expected": 0,
+    "actual": 0,
+    "match": true
+   },
+   "unaccountedSource": {
+    "expected": 17,
+    "actual": 17,
+    "match": true
+   },
+   "uninventoriedValues": {
+    "expected": 2,
+    "actual": 2,
+    "match": true
+   },
+   "candidateRef": {
+    "expected": "phase-3-final-601:chwy:6.01",
+    "actual": "phase-3-final-601:chwy:6.01",
+    "match": true
+   },
+   "documentId": {
+    "expected": "doc-a",
+    "actual": "doc-a",
+    "match": true
+   },
+   "ensembleCanonicalCount": {
+    "expected": 326,
+    "actual": 326,
+    "match": true
+   }
+  },
+  "allFactsMatch": true,
+  "reconstructed": false
+ },
+ "s4_resumeProof": {
+  "ok": true,
+  "method": "RECORDED_SOURCE_CONTEXT_HASH",
+  "record": {
+   "method": "RECORDED_SOURCE_CONTEXT_HASH",
+   "candidateRef": "phase-3-final-601:chwy:6.01",
+   "documentId": "doc-a",
+   "frozenContentHash": "88e7419f61f96b827db31d91e9047e699fb54685d11d94d432b081e0d7eb1b0c",
+   "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+   "partitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+   "reAnchoredChecks": null,
+   "verifiedAt": "2026-09-19T04:27:41.396Z"
+  },
+  "failures": [],
+  "currentSourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+  "currentPartitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+  "recordedSourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+  "recordedPartitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+  "sourceIdentityUnchanged": true,
+  "candidateRef": "phase-3-final-601:chwy:6.01",
+  "documentId": "doc-a",
+  "validator": "lib/contract-model/compiler/semantic/frozen-inventory-resume.ts validateFrozenInventoryResume (production, unweakened)"
+ },
+ "s5_passASemanticAudit": {
+  "comparedRange": "51fda653190d6859096be145245406b1c9329c58..HEAD",
+  "files": [
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/dual-pass.ts",
+    "changed": false,
+    "sha256AtPaidRun": "530e0809b2e3c00da8150cf84d1b9449a2bfaa8d8bbd90c4db433d8dbb4e3c3e",
+    "sha256Now": "587f7730971321eb2380e516c8ca250dd41f3f273e27d5ca80555a70bfbbd4ce"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/ensemble.ts",
+    "changed": false,
+    "sha256AtPaidRun": "d545c6c4c04f9fa8734822b77266aeed75e55af4ad9ad387a51ffaade9a9fc52",
+    "sha256Now": "fa7eb938494e34714f51f691efc0b08005da5a38abf5e158be222e737a283fb4"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/inventory.ts",
+    "changed": false,
+    "sha256AtPaidRun": "a79cab8a1aaaf2353400cba94c6d57968d26089e58fee9e7492c1fa9919469a8",
+    "sha256Now": "79811746c90103643bfe5865fa7eda66bf25ea1ebb953c65ed28da48f2459e10"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/prompt.ts",
+    "changed": false,
+    "sha256AtPaidRun": "98736d0ff4a5df0643a4ec0932017d5bd0e8dcd1acb9cf8f753f370af70e250b",
+    "sha256Now": "92a8834ac5458aac6984cf77a717671a48e638e05193822ba26d11bd3f0aa3ec"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/quantitative.ts",
+    "changed": false,
+    "sha256AtPaidRun": "7b4fe5424fed1c9c753c33bab1d556dcaa4e5e5a39de3367c37eb3be3468cfe3",
+    "sha256Now": "b648f5688c5eb0f221405e35bff88731946fb00660599d90025cf1bba31900e9"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/reconciliation.ts",
+    "changed": false,
+    "sha256AtPaidRun": "6718fad7070cc3f899f5d35df522282d838f931676e1f5fa45f2ac0ea940a145",
+    "sha256Now": "c65bb855500d4361a6071294f043d8a2281d81aceba1e5c07e6ecc344773be7a"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/rollup.ts",
+    "changed": false,
+    "sha256AtPaidRun": "fb13405e42f955f95ab51a01d54a95bc34d9d40277fec1997164981534253860",
+    "sha256Now": "1c56754e8189afcc436af7bcbff738b44bc44912655dce01453964720153db73"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/semantic-functions.ts",
+    "changed": false,
+    "sha256AtPaidRun": "8c0e5dc6e6269d5f4e656e56b37b84033fff3716dbe29e4cdc433b39d1eb39f5",
+    "sha256Now": "ebd54796670bb0ae6e6499464cfd1c347a0bc5073c504ec0ca7d0bf398ea92a3"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/slots.ts",
+    "changed": false,
+    "sha256AtPaidRun": "41935a4d122b1370e3a75b4b861c2c115132ae9577964d8110793480de4dde98",
+    "sha256Now": "3b6d8a5e78cff528ccfb8b71f0ab21c023ec1bd46d3b9265a0a9cd8ad04ca67c"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/source-context.ts",
+    "changed": false,
+    "sha256AtPaidRun": "9769a9590a00b36a3565a02aa09bc4dfdef1ad9b10d6c3db41158d3ce28c8d4d",
+    "sha256Now": "3e7ff751f769b644ea8eaa350ac53b039ee15fd4c0d151ddcee62f64300d20af"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/source-coverage.ts",
+    "changed": false,
+    "sha256AtPaidRun": "0db01f23997eb436ee18b3231a4975b0dd96618238339f46382c357a8dc47f67",
+    "sha256Now": "7c0c3e0e7272d50596ade36716f5fcac4856ecf04d6158495baf71a96ad7f5f2"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/source-identity.ts",
+    "changed": false,
+    "sha256AtPaidRun": "5d8df1313651dbf61af839f9b3f6e3474b6de983baede95431e26420b5d47528",
+    "sha256Now": "1f2f51ce1c50f6b8ed9ec6a07330526e3877af61d67d41d2bc1d54d985ff96a7"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/types.ts",
+    "changed": true,
+    "sha256AtPaidRun": "89c855a0bc41d5226f9484355551c1d233494508d50304360c2febd489a2f62b",
+    "sha256Now": "6d0b5e281ce0e42a6575a7e3434a0c79aabf010db08a5322535bc4df3009a1d9"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/wire-schema.ts",
+    "changed": false,
+    "sha256AtPaidRun": "205beaadfdfc2b1379df2a34315fe597bc829d85796a057008f856110f00fe69",
+    "sha256Now": "fbacd5309f20e622a1011e45284aa3ac76758b97e4313bbb50a6cdc6f4bfbdbc"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/reference-resolver.ts",
+    "changed": true,
+    "sha256AtPaidRun": "1768428205111a5567b012519938bfaa7d0e3c21878eeb0818787d1ea13719f9",
+    "sha256Now": "7571b816c4f7e88e7859d0b8a89379cfd621380d27739c83dda14ee6444afef5"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic-accountability/index.ts",
+    "changed": false,
+    "sha256AtPaidRun": "21c4b1bebed795e60c53fe32a763ca0b236072dce4357c5395bbfd856450071e",
+    "sha256Now": "d58f63893a401fae19e0c84760918177f1b5732d04976d95b737ccd4dd4f4ce3"
+   },
+   {
+    "file": "lib/contract-model/compiler/llm-caller.ts",
+    "changed": false,
+    "sha256AtPaidRun": "35219c15de81acbea83ccfbc1e63cefd7347329fefe88c4caec8673657729109",
+    "sha256Now": "338a4adf40cb4a80b7772c9a8a724ab06c75ca4ce1753f21a39754536e3a4d16"
+   },
+   {
+    "file": "lib/contract-model/compiler/semantic/frozen-inventory-resume.ts",
+    "changed": false,
+    "sha256AtPaidRun": "22f5b36132710a6a50ab472c800daaa1cf08177641974c65165223696a50fcf9",
+    "sha256Now": "66dcdef093ac5313d650f8084868151fde5097ac3c0e7a708d1736cf7a1c8d13"
+   }
+  ],
+  "changedFiles": [
+   "lib/contract-model/compiler/semantic-accountability/reference-resolver.ts",
+   "lib/contract-model/compiler/semantic-accountability/types.ts"
+  ],
+  "nonResolverChanges": [],
+  "resolver": {
+   "changed": true,
+   "textuallyAdditiveOnly": false,
+   "removedLines": 5,
+   "textualRemovalsNotRestatedVerbatim": [
+    "  return { status: \"AMBIGUOUS\", node: null, normalizedRef: lookedUp, requestedRef, candidateNodeIds, excludedDegenerateNodeIds: degenerate.map((n) => n.nodeId), note: `${substantive.length} substantive occurrences share \"${lookedUp}\" - genuinely ambiguous, not resolved (never guessed)` };"
+   ],
+   "passACallSites": [
+    "lib/contract-model/compiler/semantic-accountability/source-context.ts:210:        const r = resolveReferenceTarget(index, documentId, ref.normalizedTarget);",
+    "lib/contract-model/compiler/semantic-accountability/source-context.ts:219:    const r = resolveReferenceTarget(index, documentId, m[1]!);"
+   ],
+   "passACallSitesPassingFromNodeId": [],
+   "note": "the remediation added an optional { fromNodeId } parameter and a fourth rule (RESOLVED_WITHIN_ENUMERATION_RUN) that fires only when a referrer node is supplied. One AMBIGUOUS return is not restated verbatim: its note string gained a `${fromNodeId ? \"...\" : \"\"}` clause that renders as the empty string without a referrer. Pass A's source-context and source-coverage call sites supply no referrer, so the rendered text is unchanged for Pass A - which the behavioural equivalence proof below establishes directly rather than by reading the diff.",
+   "textualCheckIsDisclosureOnly": true
+  },
+  "behaviouralEquivalence": {
+   "proven": true,
+   "worktree": "/tmp/claude-0/-home-user-headroom/fe43ab40-ccca-5e2c-9b2f-8f264a45dc31/scratchpad/pre-remediation",
+   "reason": "the current tree derives byte-identical Pass-A input from its own modules: same source context (including the unresolvedReferences that reach the prompt), same slot partition, same batching, same system prompt and same per-batch user content as the tree the inventory was produced on",
+   "compared": [
+    {
+     "name": "sourceContext (whole object: state, reasons, regions with text, unresolvedReferences)",
+     "oldSha256": "a11e9f571dc4482b442c4b285f9fba8b728d84c94bca1d9f5feae6597e365f4a",
+     "newSha256": "a11e9f571dc4482b442c4b285f9fba8b728d84c94bca1d9f5feae6597e365f4a",
+     "identical": true,
+     "oldSize": 36308,
+     "newSize": 36308,
+     "firstDifference": null
+    },
+    {
+     "name": "sourceContext.regions",
+     "oldSha256": "e72144f8e867ea9fba0a316c0ec66cc77ab4a646019df89f094f6e086aaf3d75",
+     "newSha256": "e72144f8e867ea9fba0a316c0ec66cc77ab4a646019df89f094f6e086aaf3d75",
+     "identical": true,
+     "oldSize": 34134,
+     "newSize": 34134,
+     "firstDifference": null
+    },
+    {
+     "name": "sourceContext.unresolvedReferences (reaches the Pass-A prompt; NOT covered by the source-context hash)",
+     "oldSha256": "5d8670d6fa3a0d503f33b332cfe61eccf1a44104e47b08d1568a4ccd027ace2a",
+     "newSha256": "5d8670d6fa3a0d503f33b332cfe61eccf1a44104e47b08d1568a4ccd027ace2a",
+     "identical": true,
+     "oldSize": 2054,
+     "newSize": 2054,
+     "firstDifference": null
+    },
+    {
+     "name": "sourceContext.state+reasons",
+     "oldSha256": "18be933846d13643329dc1af3442debc9b0dbb68f62d823d26895f754f07c1ae",
+     "newSha256": "18be933846d13643329dc1af3442debc9b0dbb68f62d823d26895f754f07c1ae",
+     "identical": true,
+     "oldSize": 46,
+     "newSize": 46,
+     "firstDifference": null
+    },
+    {
+     "name": "slot partition (slots, offsets, methods)",
+     "oldSha256": "5bad0c0e7a69f9b41c67b92109349cec677af24aaafd481bc3feb8b07a6cc42c",
+     "newSha256": "5bad0c0e7a69f9b41c67b92109349cec677af24aaafd481bc3feb8b07a6cc42c",
+     "identical": true,
+     "oldSize": 194028,
+     "newSize": 194028,
+     "firstDifference": null
+    },
+    {
+     "name": "slot batches",
+     "oldSha256": "da53e0084932e5973ed6eb8f37b0099a6c607b5775fe41e73dee5fd8aa0f273f",
+     "newSha256": "da53e0084932e5973ed6eb8f37b0099a6c607b5775fe41e73dee5fd8aa0f273f",
+     "identical": true,
+     "oldSize": 198358,
+     "newSize": 198358,
+     "firstDifference": null
+    },
+    {
+     "name": "Pass-A system prompt (verbatim)",
+     "oldSha256": "e393cf49ce2ebf2a159e4f5fbf5d230c0172b97240c2119bbffeb3adccbfd0af",
+     "newSha256": "e393cf49ce2ebf2a159e4f5fbf5d230c0172b97240c2119bbffeb3adccbfd0af",
+     "identical": true,
+     "oldSize": 10539,
+     "newSize": 10539,
+     "firstDifference": null
+    },
+    {
+     "name": "Pass-A user content, all batches concatenated (verbatim)",
+     "oldSha256": "d3ca75f13f51d47f710738461e1074262030148a01ded0f7c2a4e2c5f3f85838",
+     "newSha256": "d3ca75f13f51d47f710738461e1074262030148a01ded0f7c2a4e2c5f3f85838",
+     "identical": true,
+     "oldSize": 72705,
+     "newSize": 72705,
+     "firstDifference": null
+    }
+   ],
+   "batches": {
+    "count": {
+     "old": 6,
+     "new": 6
+    },
+    "identicalUserContents": 6,
+    "differingBatchIndexes": []
+   },
+   "promptVersions": {
+    "old": "semantic-inventory-prompt.v5",
+    "new": "semantic-inventory-prompt.v5",
+    "match": true
+   },
+   "accountabilityVersions": {
+    "old": "semantic-accountability.v5",
+    "new": "semantic-accountability.v5",
+    "match": true
+   },
+   "hashes": {
+    "sourceContext": {
+     "old": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+     "new": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+     "match": true
+    },
+    "partition": {
+     "old": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+     "new": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+     "match": true
+    }
+   }
+  },
+  "types": {
+   "changed": true,
+   "unionMemberOnly": {
+    "changedLines": 2,
+    "allOnReferenceResolutionStatusUnion": true,
+    "lines": [
+     "-export type ReferenceResolutionStatus = \"UNIQUE\" | \"UNIQUE_AFTER_DEGENERATE_EXCLUSION\" | \"RESOLVED_VIA_ENCLOSING_NODE\" | \"AMBIGUOUS\" | \"NOT_FOUND\" | \"OUT_OF_SCOPE\";",
+     "+export type ReferenceResolutionStatus = \"UNIQUE\" | \"UNIQUE_AFTER_DEGENERATE_EXCLUSION\" | \"RESOLVED_VIA_ENCLOSING_NODE\" | \"RESOLVED_WITHIN_ENUMERATION_RUN\" | \"AMBIGUOUS\" | \"NOT_FOUND\" | \"OUT_OF_SCOPE\";"
+    ]
+   }
+  },
+  "versions": {
+   "recordedAlgorithm": "semantic-accountability.v5+semantic-ensemble.v1",
+   "currentAlgorithm": "semantic-accountability.v5+semantic-ensemble.v1",
+   "recordedPrompt": "semantic-inventory-prompt.v5",
+   "currentPrompt": "semantic-inventory-prompt.v5",
+   "match": true
+  },
+  "sourceIdentity": {
+   "recordedSourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+   "currentSourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+   "recordedPartitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+   "currentPartitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+   "unchanged": true,
+   "note": "the stored inventory's source-context hash AND slot-partition hash equal the ones the current structural index + resolver produce: the exact Pass-A input (regions, text, batching) is reproduced by the current tree"
+  },
+  "semanticChangeFound": false,
+  "decidedBy": "byte-identical Pass-A input derived independently by each tree (worktree at 51fda65 vs HEAD), plus unchanged prompt/algorithm versions and unchanged source+partition identity; the textual diff is recorded as disclosure and is not the criterion",
+  "verdict": "NO_PASS_A_SEMANTIC_CHANGE"
+ },
+ "s6_currentPlan": {
+  "planHash": "b2b9540a144348dab91cc80eacd0d9b472e9e93a61a8fd359e1a507cf5cf17ce",
+  "mode": "SHARDED",
+  "modeReason": "MULTIPLE_SHARDS_REQUIRED",
+  "algorithmVersion": "semantic-compilation-shards.v4-required-dependency-precision",
+  "budgetIsDefault": true,
+  "shards": 7,
+  "oversized": 0,
+  "reshardSplits": 1,
+  "ownershipProof": {
+   "materialItems": 319,
+   "ownedOnce": 319,
+   "unowned": 0,
+   "multiplyOwned": 0
+  },
+  "certification": {
+   "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+   "shardsContextComplete": 5,
+   "shardsLimitedExternal": 0,
+   "shardsLimitedInternal": 2,
+   "shardsPlanningFailed": 0,
+   "requiredDependenciesTotal": 378,
+   "deliveredFull": 333,
+   "deliveredBoundedExcerpt": 40,
+   "ownedPrimarySource": 2,
+   "external": 1,
+   "internalUnresolved": 1,
+   "ambiguous": 1,
+   "nonRequiredEdgesExcluded": 0,
+   "deliverableNotDelivered": 0,
+   "allShardsExecutable": true,
+   "allShardsContextComplete": false
+  },
+  "totals": {
+   "shardCount": 7,
+   "primaryChars": 33623,
+   "contextChars": 279286,
+   "contextDuplicationChars": 59904,
+   "estimatedInputTokens": 290402,
+   "maxShardInputTokens": 61670,
+   "medianShardInputTokens": 41034,
+   "p95ShardInputTokens": 61670,
+   "maxShardOutputTokens": 41500,
+   "largestShardPrimaryChars": 11801,
+   "largestShardOwnedItems": 99,
+   "largestShardUnits": 16,
+   "oversizedShards": 0
+  },
+  "perShard": [
+   {
+    "ordinal": 0,
+    "shardId": "shard:7922314d9b00112aef21",
+    "shardHash": "6993abd1ef681cce2d579e389b53c91dd727f9e206b39e7c1dd61d2289a02a2a",
+    "ownedUnits": 7,
+    "ownedItems": 43,
+    "ownedMaterialItems": 42,
+    "primaryChars": 3294,
+    "requiredContextChars": 35241,
+    "optionalContextChars": 0,
+    "requiredEntries": 54,
+    "boundedExcerpts": 3,
+    "turn1EstimatedTokens": 38429,
+    "requiredHeadroomChars": 28759,
+    "allocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 2639,
+     "waterFilled": false
+    },
+    "certificateStatus": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+    "limitations": [
+     "term:junior lien priority INTERNAL_REQUIRED_DEPENDENCY_UNRESOLVED"
+    ]
+   },
+   {
+    "ordinal": 1,
+    "shardId": "shard:7888717f06dfe736bf5b",
+    "shardHash": "10b58a46677cb2e02ebc12cb1de9af2c37b5be80c0183fc86775f2527a7441ed",
+    "ownedUnits": 5,
+    "ownedItems": 11,
+    "ownedMaterialItems": 10,
+    "primaryChars": 663,
+    "requiredContextChars": 35520,
+    "optionalContextChars": 175,
+    "requiredEntries": 49,
+    "boundedExcerpts": 6,
+    "turn1EstimatedTokens": 32941,
+    "requiredHeadroomChars": 28480,
+    "allocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 3004,
+     "waterFilled": false
+    },
+    "certificateStatus": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+    "limitations": [
+     "term:borrowing base EXTERNAL_REQUIRED_DEPENDENCY",
+     "section:6.01(b)(1)(z) AMBIGUOUS_REQUIRED_DEPENDENCY"
+    ]
+   },
+   {
+    "ordinal": 2,
+    "shardId": "shard:fe26b4996ab543b0a066",
+    "shardHash": "b451369ac21cad6988376c40d9c76c11c4bec93e25cab195b1c000261cd00965",
+    "ownedUnits": 15,
+    "ownedItems": 70,
+    "ownedMaterialItems": 69,
+    "primaryChars": 8590,
+    "requiredContextChars": 35630,
+    "optionalContextChars": 175,
+    "requiredEntries": 47,
+    "boundedExcerpts": 5,
+    "turn1EstimatedTokens": 45335,
+    "requiredHeadroomChars": 28370,
+    "allocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 2665,
+     "waterFilled": false
+    },
+    "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+    "limitations": []
+   },
+   {
+    "ordinal": 3,
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "shardHash": "82c135b56cd3d1ac1fde6e7ca73328f2ace2edefc80049c9335082ef030a84ac",
+    "ownedUnits": 13,
+    "ownedItems": 99,
+    "ownedMaterialItems": 98,
+    "primaryChars": 11801,
+    "requiredContextChars": 63998,
+    "optionalContextChars": 175,
+    "requiredEntries": 72,
+    "boundedExcerpts": 14,
+    "turn1EstimatedTokens": 61670,
+    "requiredHeadroomChars": 2,
+    "allocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 2377,
+     "waterFilled": true
+    },
+    "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+    "limitations": []
+   },
+   {
+    "ordinal": 4,
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "shardHash": "ae76043919980357ec9dc70ecd7d77d1ce55b9814f2e249c4293efa92d919ff0",
+    "ownedUnits": 16,
+    "ownedItems": 45,
+    "ownedMaterialItems": 44,
+    "primaryChars": 4010,
+    "requiredContextChars": 49756,
+    "optionalContextChars": 175,
+    "requiredEntries": 67,
+    "boundedExcerpts": 4,
+    "turn1EstimatedTokens": 45044,
+    "requiredHeadroomChars": 14244,
+    "allocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 3115,
+     "waterFilled": false
+    },
+    "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+    "limitations": []
+   },
+   {
+    "ordinal": 5,
+    "shardId": "shard:e10ed610ecff8b399619",
+    "shardHash": "0da85a627f9eb0fd6813b66e3dcb2f171fa22680bfa91c790397cd206a3b5e08",
+    "ownedUnits": 16,
+    "ownedItems": 42,
+    "ownedMaterialItems": 42,
+    "primaryChars": 3712,
+    "requiredContextChars": 42714,
+    "optionalContextChars": 586,
+    "requiredEntries": 60,
+    "boundedExcerpts": 5,
+    "turn1EstimatedTokens": 41034,
+    "requiredHeadroomChars": 21286,
+    "allocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 3115,
+     "waterFilled": false
+    },
+    "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+    "limitations": []
+   },
+   {
+    "ordinal": 6,
+    "shardId": "shard:7c4d3d2ae3e0a522b99e",
+    "shardHash": "f8965d0be191e382df668b523da2be02dc4d36e435833f846c6f90887eeb969b",
+    "ownedUnits": 10,
+    "ownedItems": 16,
+    "ownedMaterialItems": 14,
+    "primaryChars": 1553,
+    "requiredContextChars": 14966,
+    "optionalContextChars": 175,
+    "requiredEntries": 24,
+    "boundedExcerpts": 3,
+    "turn1EstimatedTokens": 25949,
+    "requiredHeadroomChars": 49034,
+    "allocation": {
+     "ceilingChars": 64000,
+     "perEntryAllowanceChars": 2283,
+     "waterFilled": false
+    },
+    "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+    "limitations": []
+   }
+  ],
+  "expected": {
+   "mode": "SHARDED",
+   "shards": 7,
+   "oversized": 0,
+   "contextComplete": 5,
+   "limited": 2,
+   "planningFailed": 0,
+   "requiredDependencyModel": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+   "planner": "semantic-compilation-shards.v4-required-dependency-precision"
+  },
+  "observed": {
+   "mode": "SHARDED",
+   "shards": 7,
+   "oversized": 0,
+   "contextComplete": 5,
+   "limited": 2,
+   "planningFailed": 0,
+   "requiredDependencyModel": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+   "planner": "semantic-compilation-shards.v4-required-dependency-precision"
+  },
+  "matchesExpected": true,
+  "oldPathologicalPlanReappeared": false
+ },
+ "s7_thinCeilingAudit": {
+  "ceiling": 64000,
+  "minimumRequiredHeadroomChars": 2,
+  "tightestShard": {
+   "shardId": "shard:86cc5e439f113d6053a9",
+   "requiredContextChars": 63998,
+   "allocation": {
+    "ceilingChars": 64000,
+    "perEntryAllowanceChars": 2377,
+    "waterFilled": true
+   },
+   "turn1EstimatedTokens": 61670
+  },
+  "firstTurnCapacityBoundTokens": 100000,
+  "maxTurn1Tokens": 61670,
+  "withinCapacityBound": true,
+  "requiredDependenciesOmitted": 0,
+  "certificateFailures": 0,
+  "whyTheMarginIsTwoChars": "the required tier is water-filled: the planner binary-searches the largest per-entry allowance under which the whole closure fits the ceiling, so any shard whose full closure exceeds the ceiling lands within a few chars of it by construction; the margin to a planning failure is the distance to the point where even the floor allowance no longer fits",
+  "ceilingSweep": [
+   {
+    "ceilingReducedBy": 1,
+    "ceiling": 63999,
+    "shards": 7,
+    "reshardSplits": 1,
+    "failedShardIdentityPreserved": true,
+    "requiredDependencies": 72,
+    "delivered": 72,
+    "boundedExcerpts": 14,
+    "perEntryAllowance": 2377,
+    "requiredChars": 63998,
+    "planningFailures": 0,
+    "certificate": "CERTIFIED_CONTEXT_COMPLETE",
+    "fiveTargets": 5,
+    "fiveTargetsInFull": 5
+   },
+   {
+    "ceilingReducedBy": 2,
+    "ceiling": 63998,
+    "shards": 7,
+    "reshardSplits": 1,
+    "failedShardIdentityPreserved": true,
+    "requiredDependencies": 72,
+    "delivered": 72,
+    "boundedExcerpts": 14,
+    "perEntryAllowance": 2377,
+    "requiredChars": 63998,
+    "planningFailures": 0,
+    "certificate": "CERTIFIED_CONTEXT_COMPLETE",
+    "fiveTargets": 5,
+    "fiveTargetsInFull": 5
+   },
+   {
+    "ceilingReducedBy": 3,
+    "ceiling": 63997,
+    "shards": 7,
+    "reshardSplits": 1,
+    "failedShardIdentityPreserved": true,
+    "requiredDependencies": 72,
+    "delivered": 72,
+    "boundedExcerpts": 14,
+    "perEntryAllowance": 2376,
+    "requiredChars": 63995,
+    "planningFailures": 0,
+    "certificate": "CERTIFIED_CONTEXT_COMPLETE",
+    "fiveTargets": 5,
+    "fiveTargetsInFull": 5
+   },
+   {
+    "ceilingReducedBy": 10,
+    "ceiling": 63990,
+    "shards": 7,
+    "reshardSplits": 1,
+    "failedShardIdentityPreserved": true,
+    "requiredDependencies": 72,
+    "delivered": 72,
+    "boundedExcerpts": 14,
+    "perEntryAllowance": 2374,
+    "requiredChars": 63989,
+    "planningFailures": 0,
+    "certificate": "CERTIFIED_CONTEXT_COMPLETE",
+    "fiveTargets": 5,
+    "fiveTargetsInFull": 5
+   },
+   {
+    "ceilingReducedBy": 100,
+    "ceiling": 63900,
+    "shards": 7,
+    "reshardSplits": 1,
+    "failedShardIdentityPreserved": true,
+    "requiredDependencies": 72,
+    "delivered": 72,
+    "boundedExcerpts": 14,
+    "perEntryAllowance": 2344,
+    "requiredChars": 63899,
+    "planningFailures": 0,
+    "certificate": "CERTIFIED_CONTEXT_COMPLETE",
+    "fiveTargets": 5,
+    "fiveTargetsInFull": 5
+   },
+   {
+    "ceilingReducedBy": 500,
+    "ceiling": 63500,
+    "shards": 7,
+    "reshardSplits": 1,
+    "failedShardIdentityPreserved": true,
+    "requiredDependencies": 72,
+    "delivered": 72,
+    "boundedExcerpts": 19,
+    "perEntryAllowance": 2038,
+    "requiredChars": 63498,
+    "planningFailures": 0,
+    "certificate": "CERTIFIED_CONTEXT_COMPLETE",
+    "fiveTargets": 5,
+    "fiveTargetsInFull": 4
+   },
+   {
+    "ceilingReducedBy": 1000,
+    "ceiling": 63000,
+    "shards": 7,
+    "reshardSplits": 1,
+    "failedShardIdentityPreserved": true,
+    "requiredDependencies": 72,
+    "delivered": 72,
+    "boundedExcerpts": 19,
+    "perEntryAllowance": 1975,
+    "requiredChars": 62994,
+    "planningFailures": 0,
+    "certificate": "CERTIFIED_CONTEXT_COMPLETE",
+    "fiveTargets": 5,
+    "fiveTargetsInFull": 4
+   },
+   {
+    "ceilingReducedBy": 2000,
+    "ceiling": 62000,
+    "shards": 7,
+    "reshardSplits": 1,
+    "failedShardIdentityPreserved": true,
+    "requiredDependencies": 72,
+    "delivered": 72,
+    "boundedExcerpts": 23,
+    "perEntryAllowance": 1784,
+    "requiredChars": 61991,
+    "planningFailures": 0,
+    "certificate": "CERTIFIED_CONTEXT_COMPLETE",
+    "fiveTargets": 5,
+    "fiveTargetsInFull": 4
+   },
+   {
+    "ceilingReducedBy": 4000,
+    "ceiling": 60000,
+    "shards": 7,
+    "reshardSplits": 1,
+    "failedShardIdentityPreserved": true,
+    "requiredDependencies": 72,
+    "delivered": 72,
+    "boundedExcerpts": 24,
+    "perEntryAllowance": 1607,
+    "requiredChars": 59992,
+    "planningFailures": 0,
+    "certificate": "CERTIFIED_CONTEXT_COMPLETE",
+    "fiveTargets": 5,
+    "fiveTargetsInFull": 4
+   },
+   {
+    "ceilingReducedBy": 8000,
+    "ceiling": 56000,
+    "shards": 7,
+    "reshardSplits": 1,
+    "failedShardIdentityPreserved": true,
+    "requiredDependencies": 72,
+    "delivered": 72,
+    "boundedExcerpts": 27,
+    "perEntryAllowance": 1285,
+    "requiredChars": 55992,
+    "planningFailures": 0,
+    "certificate": "CERTIFIED_CONTEXT_COMPLETE",
+    "fiveTargets": 5,
+    "fiveTargetsInFull": 4
+   },
+   {
+    "ceilingReducedBy": 12000,
+    "ceiling": 52000,
+    "shards": 7,
+    "reshardSplits": 1,
+    "failedShardIdentityPreserved": true,
+    "requiredDependencies": 72,
+    "delivered": 72,
+    "boundedExcerpts": 30,
+    "perEntryAllowance": 1025,
+    "requiredChars": 51999,
+    "planningFailures": 0,
+    "certificate": "CERTIFIED_CONTEXT_COMPLETE",
+    "fiveTargets": 5,
+    "fiveTargetsInFull": 4
+   },
+   {
+    "ceilingReducedBy": 16000,
+    "ceiling": 48000,
+    "shards": 8,
+    "reshardSplits": 2,
+    "failedShardIdentityPreserved": true,
+    "requiredDependencies": 72,
+    "delivered": 72,
+    "boundedExcerpts": 33,
+    "perEntryAllowance": 836,
+    "requiredChars": 47977,
+    "planningFailures": 0,
+    "certificate": "CERTIFIED_CONTEXT_COMPLETE",
+    "fiveTargets": 5,
+    "fiveTargetsInFull": 2
+   },
+   {
+    "ceilingReducedBy": 24000,
+    "ceiling": 40000,
+    "shards": 10,
+    "reshardSplits": 4,
+    "failedShardIdentityPreserved": true,
+    "requiredDependencies": 72,
+    "delivered": 72,
+    "boundedExcerpts": 45,
+    "perEntryAllowance": 534,
+    "requiredChars": 39961,
+    "planningFailures": 0,
+    "certificate": "CERTIFIED_CONTEXT_COMPLETE",
+    "fiveTargets": 5,
+    "fiveTargetsInFull": 0
+   },
+   {
+    "ceilingReducedBy": 32000,
+    "ceiling": 32000,
+    "shards": 18,
+    "reshardSplits": 12,
+    "failedShardIdentityPreserved": true,
+    "requiredDependencies": 72,
+    "delivered": 72,
+    "boundedExcerpts": 49,
+    "perEntryAllowance": 347,
+    "requiredChars": 31983,
+    "planningFailures": 0,
+    "certificate": "CERTIFIED_CONTEXT_COMPLETE",
+    "fiveTargets": 5,
+    "fiveTargetsInFull": 0
+   }
+  ],
+  "firstPlanningFailureWhenCeilingReducedBy": null,
+  "ceilingTruncation": {
+   "excerptsAtCeiling": 14,
+   "excerptsWithoutCeiling": 11,
+   "requiredCharsWithoutCeiling": 64964,
+   "requiredDependenciesSame": true,
+   "everyExcerptDisclosedOnItsEntry": true,
+   "truncatedEntriesCarryFlag": 14
+  },
+  "classification": "SAFE_CAPACITY_BOUND",
+  "classificationRule": "SAFE_CAPACITY_BOUND when no required dependency is omitted, no certificate fails, the max turn-1 estimate is within the 100k bound, and lowering the ceiling (= growing the closure) by up to 4,000 chars produces bounded excerpts, not a planning failure; otherwise PLANNING_FRAGILITY"
+ },
+ "s8_resumedCost": {
+  "methodology": {
+   "source": "01/49/75 pinned frozen worst-observed rates x safety factor 1.25 (scripts/phase-3-601-revalidation-lib.ts resumedCost); Pass A $0 (resumed); Pass B = planner-estimated turn-1 input tokens of the ACTUAL 7-shard plan x frozen worst Pass-B $/token; verifier = frozen semantic-review allowance + 5 condition-suspicion calls",
+   "rateSource": {
+    "method": "PINNED_FROZEN_RATES",
+    "pinnedArtifacts": [
+     "docs/phase-3-final-601/01-cost-preflight.json",
+     "docs/phase-3-final-601/49-final-clean-cost-preflight.json",
+     "docs/phase-3-final-601/75-final-paid-cost-preflight.json"
+    ],
+    "allPinnedArtifactsAgree": true,
+    "recomputationAttempted": true,
+    "recomputationSucceeded": false,
+    "recomputationMatchesPinned": null,
+    "recomputeError": "Cannot read properties of undefined (reading 'record')",
+    "whyPinned": "observedRates() joins the frozen F-7B canary shard ledgers on shardId; planner v2 changed shard identities, so the historical join no longer resolves. The rate VALUES are unchanged - they are read from the artifacts the previous missions committed."
+   },
+   "safetyFactor": 1.25,
+   "conditionSuspicion": {
+    "calls": 5,
+    "perCallUsd": 0.0114
+   }
+  },
+  "perShardTokens": [
+   {
+    "shardId": "shard:7922314d9b00112aef21",
+    "turn1EstimatedTokens": 38429
+   },
+   {
+    "shardId": "shard:7888717f06dfe736bf5b",
+    "turn1EstimatedTokens": 32941
+   },
+   {
+    "shardId": "shard:fe26b4996ab543b0a066",
+    "turn1EstimatedTokens": 45335
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "turn1EstimatedTokens": 61670
+   },
+   {
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "turn1EstimatedTokens": 45044
+   },
+   {
+    "shardId": "shard:e10ed610ecff8b399619",
+    "turn1EstimatedTokens": 41034
+   },
+   {
+    "shardId": "shard:7c4d3d2ae3e0a522b99e",
+    "turn1EstimatedTokens": 25949
+   }
+  ],
+  "plannerEstimatedInputTokens": 290402,
+  "estimate": {
+   "rates": {
+    "passABatchMean": 0.431337,
+    "passABatchWorst": 0.627356,
+    "passABatchCalls": 38,
+    "passAGapMean": 0.3529920000000001,
+    "passAGapWorst": 0.47530800000000006,
+    "passAGapCalls": 5,
+    "passBMean": 0.000017264537354079804,
+    "passBWorst": 0.00003215094994361066,
+    "passBShards": 36,
+    "verifierSemanticReview": 0.32929600000000003,
+    "verifierCalls": 1
+   },
+   "safetyFactor": 1.25,
+   "plannerEstimatedInputTokens": 290402,
+   "passA": {
+    "usd": 0,
+    "calls": 0,
+    "reason": "resumed from the persisted ensemble - no Pass-A caller is constructed"
+   },
+   "passB": {
+    "worstUsd": 9.3367,
+    "meanUsd": 5.013656,
+    "conservativeUsd": 11.670875
+   },
+   "verifier": {
+    "worstUsd": 0.386296,
+    "conservativeUsd": 0.48287,
+    "calls": {
+     "semanticReview": 1,
+     "conditionSuspicion": 5
+    }
+   },
+   "conservativeTotalUsd": 12.153745,
+   "worstTotalUsd": 9.722996,
+   "meanTotalUsd": 5.399952,
+   "capUsd": 12.16,
+   "capCeilingUsd": 6,
+   "capWithinRecommendedCeiling": false,
+   "previousPassBPlusVerifierActualUsd": 2.799234
+  },
+  "notReused": {
+   "oldSixShardEstimateUsd": 7.962346,
+   "previousActualPassBPlusVerifierUsd": 2.799234,
+   "usedHere": false
+  }
+ },
+ "s9_gatewayBalance": {
+  "readLive": false,
+  "reusedFromFirstRead": {
+   "path": "/tmp/claude-0/-home-user-headroom/fe43ab40-ccca-5e2c-9b2f-8f264a45dc31/scratchpad/fp-credits.json",
+   "readAt": "2026-09-19T04:25:42.379Z"
+  },
+  "balanceUsd": 6.061242,
+  "totalUsed": "228.938758",
+  "historicalLastKnownUsd": 6.061242,
+  "noPaidCallsSincePrecisionAudit": true
+ },
+ "s10_affordability": {
+  "conservativeResumedEstimateUsd": 12.153745,
+  "gatewayBalanceUsd": 6.061242,
+  "balanceSufficient": false,
+  "shortfallUsd": 6.092503,
+  "proposedHardMissionCapUsd": 12.2,
+  "capDerivation": "conservative resumed estimate rounded up to the next $0.10 (no Pass A in the next mission; $15.84 not reused)",
+  "meanRateEstimateForInformationOnlyUsd": 5.399952,
+  "worstRateNoSafetyFactorUsd": 9.722996
+ },
+ "s11_durableStoreIdentity": {
+  "currentPlanHash": "b2b9540a144348dab91cc80eacd0d9b472e9e93a61a8fd359e1a507cf5cf17ce",
+  "stores": [
+   {
+    "store": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-shards",
+    "records": [
+     {
+      "file": "22cc2abe2bc60728a737b17828c0fbabca2ac3a67d51146e78dffab801dccfd2.json",
+      "missionId": "phase-3-final-601-final-paid",
+      "planHash": "eab77c1aad1d941440f0d412e20578902c6744a5e100a0306153ea02e1720552",
+      "shardId": "shard:6b6e808a01e1dcd22a81",
+      "shardHash": "22cc2abe2bc60728a737b17828c0fbabca2ac3a67d51146e78dffab801dccfd2",
+      "status": "SHARD_COMPLETE",
+      "shardHashInCurrentPlan": false,
+      "planHashIsCurrent": false
+     },
+     {
+      "file": "4b97a4f01be352664f66d7165e37f3b0a42600a829e306f819c7b3489123fc2f.json",
+      "missionId": "phase-3-final-601-final-paid",
+      "planHash": "eab77c1aad1d941440f0d412e20578902c6744a5e100a0306153ea02e1720552",
+      "shardId": "shard:f266a61ab75f65592b9d",
+      "shardHash": "4b97a4f01be352664f66d7165e37f3b0a42600a829e306f819c7b3489123fc2f",
+      "status": "SHARD_MISSING_CONTEXT",
+      "shardHashInCurrentPlan": false,
+      "planHashIsCurrent": false
+     },
+     {
+      "file": "f422344546f42e86dd6951848772cf0f832347a84eb324e561bf6ca912d6881c.json",
+      "missionId": "phase-3-final-601-final-paid",
+      "planHash": "eab77c1aad1d941440f0d412e20578902c6744a5e100a0306153ea02e1720552",
+      "shardId": "shard:9c94d27339b0f37fb71c",
+      "shardHash": "f422344546f42e86dd6951848772cf0f832347a84eb324e561bf6ca912d6881c",
+      "status": "SHARD_MISSING_CONTEXT",
+      "shardHashInCurrentPlan": false,
+      "planHashIsCurrent": false
+     }
+    ],
+    "loadedForCurrentPlan": {
+     "underItsOwnMissionId": {
+      "accepted": 0,
+      "rejected": 0
+     },
+     "underTheNextMissionId": {
+      "accepted": 0,
+      "rejected": 0
+     }
+    },
+    "note": "loadPriorResults only looks up records by the CURRENT plan's shard hashes and then requires mission id, plan hash and shard hash to match; no current shard hash exists in these stores"
+   },
+   {
+    "store": "tests/fixtures/unseen-packages/phase-3-final-601-revalidation/durable-shards",
+    "records": [
+     {
+      "file": "1062323032becaf237dfc81159e419b24e31a6f5bc28b1d06b529670df163910.json",
+      "missionId": "phase-3-final-601-revalidation",
+      "planHash": "e3f9e8e83c2f0c71991070e27eaa2f5bfea185ad367a82948e41e1d41e9783a3",
+      "shardId": "shard:7c4d3d2ae3e0a522b99e",
+      "shardHash": "1062323032becaf237dfc81159e419b24e31a6f5bc28b1d06b529670df163910",
+      "status": "SHARD_COMPLETE",
+      "shardHashInCurrentPlan": false,
+      "planHashIsCurrent": false
+     },
+     {
+      "file": "3c35a8e94b73b98a306bf16b6a43c9651c8c642f9d89ddf45497fca8aad03cf2.json",
+      "missionId": "phase-3-final-601-revalidation",
+      "planHash": "e3f9e8e83c2f0c71991070e27eaa2f5bfea185ad367a82948e41e1d41e9783a3",
+      "shardId": "shard:e10ed610ecff8b399619",
+      "shardHash": "3c35a8e94b73b98a306bf16b6a43c9651c8c642f9d89ddf45497fca8aad03cf2",
+      "status": "SHARD_COMPLETE",
+      "shardHashInCurrentPlan": false,
+      "planHashIsCurrent": false
+     },
+     {
+      "file": "691cf0598278741ac4cefa845910b4274c7234c7ee3283ec17a46ce29b6ae5ed.json",
+      "missionId": "phase-3-final-601-revalidation",
+      "planHash": "e3f9e8e83c2f0c71991070e27eaa2f5bfea185ad367a82948e41e1d41e9783a3",
+      "shardId": "shard:86cc5e439f113d6053a9",
+      "shardHash": "691cf0598278741ac4cefa845910b4274c7234c7ee3283ec17a46ce29b6ae5ed",
+      "status": "SHARD_MISSING_CONTEXT",
+      "shardHashInCurrentPlan": false,
+      "planHashIsCurrent": false
+     },
+     {
+      "file": "69ff16ab9a4e5a246bf0a45d8654529349bc5434ac7106f6a487944a2ff67b02.json",
+      "missionId": "phase-3-final-601-revalidation",
+      "planHash": "e3f9e8e83c2f0c71991070e27eaa2f5bfea185ad367a82948e41e1d41e9783a3",
+      "shardId": "shard:fe26b4996ab543b0a066",
+      "shardHash": "69ff16ab9a4e5a246bf0a45d8654529349bc5434ac7106f6a487944a2ff67b02",
+      "status": "SHARD_COMPLETE",
+      "shardHashInCurrentPlan": false,
+      "planHashIsCurrent": false
+     },
+     {
+      "file": "9552aa3906cf4ab9c815b05dcbb16f05e92c55520c63edd2e053067378369b51.json",
+      "missionId": "phase-3-final-601-revalidation",
+      "planHash": "e3f9e8e83c2f0c71991070e27eaa2f5bfea185ad367a82948e41e1d41e9783a3",
+      "shardId": "shard:2eb6ff75386e45a57593",
+      "shardHash": "9552aa3906cf4ab9c815b05dcbb16f05e92c55520c63edd2e053067378369b51",
+      "status": "SHARD_COMPLETE",
+      "shardHashInCurrentPlan": false,
+      "planHashIsCurrent": false
+     },
+     {
+      "file": "b25611ece65e46a58ae2b24fb02347f329fbefc6e788d09274f0f47f8aa4ea85.json",
+      "missionId": "phase-3-final-601-revalidation",
+      "planHash": "e3f9e8e83c2f0c71991070e27eaa2f5bfea185ad367a82948e41e1d41e9783a3",
+      "shardId": "shard:f266a61ab75f65592b9d",
+      "shardHash": "b25611ece65e46a58ae2b24fb02347f329fbefc6e788d09274f0f47f8aa4ea85",
+      "status": "SHARD_COMPLETE",
+      "shardHashInCurrentPlan": false,
+      "planHashIsCurrent": false
+     }
+    ],
+    "loadedForCurrentPlan": {
+     "underItsOwnMissionId": {
+      "accepted": 0,
+      "rejected": 0
+     },
+     "underTheNextMissionId": {
+      "accepted": 0,
+      "rejected": 0
+     }
+    },
+    "note": "loadPriorResults only looks up records by the CURRENT plan's shard hashes and then requires mission id, plan hash and shard hash to match; no current shard hash exists in these stores"
+   }
+  ],
+  "oldAcceptedShards": 0,
+  "rule": "a record is reused only when mission id, plan hash and shard hash all equal the current plan's and its status is a reusable terminal status; the shard hash covers primary source, owned items, every context entry's full-text hash, the frozen inventory hash and the compiler generation (prompt v5 / planner v4), so no shard executed under planner v2/v3 or prompt v4 can match",
+  "failedHistoricalOutputsCountedReusable": false
+ },
+ "s12_verifierReassessment": {
+  "verifierCodeChanged": false,
+  "deterministicFixesSinceTheFrozenRun": [
+   "cross-shard carve-out exception linkage (stitcher)",
+   "unique section-reference dependency resolution (stitcher)",
+   "entityScope prompt instruction + deterministic ENTITY_SCOPE_REFERENCE fallback"
+  ],
+  "findings": [
+   {
+    "ordinal": 0,
+    "findingId": "5cdae40b83930f7ba8216f5094376ef6d7f22916f510049c506dac963b707215",
+    "severity": "MATERIAL",
+    "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+    "triageClass": "A_DETERMINISTIC_PHASE3_PRODUCTION_DEFECT",
+    "requiresFreshCompileAndVerifierRun": true,
+    "why": "a deterministic Phase-3 fix was made (stitcher cross-shard linkage / unique section-reference resolution / entityScope prompt + fallback); whether it removes the finding is only observable on a fresh production compile and verifier run"
+   },
+   {
+    "ordinal": 1,
+    "findingId": "912e4ba0fce2e6ce4e51186060abe577242ed53362b92af1df6cb8a873146035",
+    "severity": "MATERIAL",
+    "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+    "triageClass": "F_NEEDS_FRESH_PAID_EVIDENCE (delivery-caused; previous 0/11 attribution was a rule-id join and too narrow)",
+    "requiresFreshCompileAndVerifierRun": true,
+    "why": "needs fresh paid evidence under full required-context delivery"
+   },
+   {
+    "ordinal": 2,
+    "findingId": "74ce23bc8a8f70914c04cc994c4438fe02703af41c45f0839e7a53c682b300dc",
+    "severity": "MATERIAL",
+    "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+    "triageClass": "A_DETERMINISTIC_PHASE3_PRODUCTION_DEFECT (partial) + F for the remainder",
+    "requiresFreshCompileAndVerifierRun": true,
+    "why": "a deterministic Phase-3 fix was made (stitcher cross-shard linkage / unique section-reference resolution / entityScope prompt + fallback); whether it removes the finding is only observable on a fresh production compile and verifier run"
+   },
+   {
+    "ordinal": 3,
+    "findingId": "fe2b53b7626ddb0ba36a2e0b1299a9203e338715c8ddd3f557976a03cc2628a6",
+    "severity": "UNCERTAIN",
+    "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+    "triageClass": "A_DETERMINISTIC_PHASE3_PRODUCTION_DEFECT (prompt never requested the field) + F to observe the effect",
+    "requiresFreshCompileAndVerifierRun": true,
+    "why": "a deterministic Phase-3 fix was made (stitcher cross-shard linkage / unique section-reference resolution / entityScope prompt + fallback); whether it removes the finding is only observable on a fresh production compile and verifier run"
+   },
+   {
+    "ordinal": 4,
+    "findingId": "408497d17f4d0467d62a5217064db4aa50a70397faed87daed397b5dc94e1923",
+    "severity": "MATERIAL",
+    "findingType": "MISSING_BASKET",
+    "triageClass": "F_NEEDS_FRESH_PAID_EVIDENCE (same root as finding 1) / C candidate",
+    "requiresFreshCompileAndVerifierRun": true,
+    "why": "needs fresh paid evidence under full required-context delivery"
+   },
+   {
+    "ordinal": 5,
+    "findingId": "408497d17f4d0467d62a5217064db4aa50a70397faed87daed397b5dc94e1923",
+    "severity": "MATERIAL",
+    "findingType": "MISSING_BASKET",
+    "triageClass": "F_NEEDS_FRESH_PAID_EVIDENCE (same root as finding 1) / C candidate",
+    "requiresFreshCompileAndVerifierRun": true,
+    "why": "needs fresh paid evidence under full required-context delivery"
+   },
+   {
+    "ordinal": 6,
+    "findingId": "408497d17f4d0467d62a5217064db4aa50a70397faed87daed397b5dc94e1923",
+    "severity": "MATERIAL",
+    "findingType": "MISSING_BASKET",
+    "triageClass": "F_NEEDS_FRESH_PAID_EVIDENCE (same root as finding 1) / C candidate",
+    "requiresFreshCompileAndVerifierRun": true,
+    "why": "needs fresh paid evidence under full required-context delivery"
+   },
+   {
+    "ordinal": 7,
+    "findingId": "408497d17f4d0467d62a5217064db4aa50a70397faed87daed397b5dc94e1923",
+    "severity": "MATERIAL",
+    "findingType": "MISSING_BASKET",
+    "triageClass": "F_NEEDS_FRESH_PAID_EVIDENCE (same root as finding 1) / C candidate",
+    "requiresFreshCompileAndVerifierRun": true,
+    "why": "needs fresh paid evidence under full required-context delivery"
+   },
+   {
+    "ordinal": 8,
+    "findingId": "0737f17fd453024fedda146663cf161151bc752f17c1dea21760fbb287872dbc",
+    "severity": "MATERIAL",
+    "findingType": "MISSING_RULE",
+    "triageClass": "B_MODEL_VARIANCE (one-run omission in a completed shard) -> F to re-observe",
+    "requiresFreshCompileAndVerifierRun": true,
+    "why": "one-run model variance; only a fresh run re-observes it"
+   },
+   {
+    "ordinal": 9,
+    "findingId": "1fe65efe2ee5c12b2a7085c10c1b07654401eb985c02b852cd80fd0d2f335527",
+    "severity": "NON_MATERIAL",
+    "findingType": "WRONG_ENTITY_SCOPE",
+    "triageClass": "D_EXPLICIT_SAFE_LIMITATION (downgraded NON_MATERIAL by Layer 2) with the same root as finding 3",
+    "requiresFreshCompileAndVerifierRun": true,
+    "why": "explicit safe limitation with the same roots as the fixed defects; reassessed by the verifier on the fresh IR"
+   },
+   {
+    "ordinal": 10,
+    "findingId": "ea4b35d164fedb4fae7a504a71a20edd7145e54256831891874831ffea3ff34d",
+    "severity": "NON_MATERIAL",
+    "findingType": "MISSING_RECLASSIFICATION",
+    "triageClass": "D_EXPLICIT_SAFE_LIMITATION (downgraded NON_MATERIAL by Layer 2) / B",
+    "requiresFreshCompileAndVerifierRun": true,
+    "why": "explicit safe limitation with the same roots as the fixed defects; reassessed by the verifier on the fresh IR"
+   }
+  ],
+  "closedHere": 0
+ },
+ "decision": "PHASE3_601_COST_BOUND_BEFORE_REVALIDATION"
+}

@@ -1,0 +1,150 @@
+{
+ "artifact": "FINAL PAID-REVALIDATION PRECHECK §1-§2 - the exact committed tree, recertified",
+ "at": "2026-09-19T04:27:41.249Z",
+ "paidCalls": 0,
+ "identity": {
+  "requiredSha": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+  "head": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+  "headIsRequired": true,
+  "workingTreeClean": {
+   "dirtyOutsideThisMissionsOwnEvidence": [],
+   "match": true
+  },
+  "originAtSameSha": {
+   "origin": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+   "match": true
+  },
+  "productionTreeExactlyCommitted": {
+   "filesDifferingFromHead": [],
+   "match": true,
+   "treeObjects": {
+    "lib/": "82832050f837e18599bfa127b4722ade879e7c24",
+    "lib/contract-model/compiler/": "365c6fd79324816e1473d9857d642cf8fa146518",
+    "lib/contract-model/compiler/semantic/": "84a709051ed7d959407b286d34e75ebae442891d"
+   }
+  },
+  "noPaidCallsSincePrecisionAudit": "established by the live balance read in 148 (must not be below the historical balance)"
+ },
+ "shaCertified": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+ "productionTreeHash": {
+  "lib/": "82832050f837e18599bfa127b4722ade879e7c24",
+  "lib/contract-model/compiler/": "365c6fd79324816e1473d9857d642cf8fa146518",
+  "lib/contract-model/compiler/semantic/": "84a709051ed7d959407b286d34e75ebae442891d"
+ },
+ "gate146Reproduction": {
+  "regeneratedAtHead": {
+   "shaGateWasComputedAgainst": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+   "shaCertified": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+   "productionTreeHash": {
+    "lib/": "82832050f837e18599bfa127b4722ade879e7c24",
+    "lib/contract-model/compiler/": "365c6fd79324816e1473d9857d642cf8fa146518",
+    "workingTreeProductionFilesDifferingFromHead": []
+   },
+   "verdict": "PHASE3_REQUIRED_DEPENDENCY_MODEL_READY_FOR_PAID_REVALIDATION",
+   "summary": {
+    "total": 20,
+    "PASS": 20,
+    "FAIL": 0
+   }
+  },
+  "committedAt80671aa": {
+   "shaGateWasComputedAgainst": "1fd23881fb9366b3730a06419a7b5dc33647384c",
+   "verdict": "PHASE3_REQUIRED_DEPENDENCY_MODEL_READY_FOR_PAID_REVALIDATION",
+   "summary": {
+    "total": 20,
+    "PASS": 20,
+    "FAIL": 0
+   },
+   "note": "recorded the parent's SHA because HEAD still named the parent when it was generated; its conditions were evaluated on the working tree that became 80671aa"
+  },
+  "sameConditionsSameOutcomes": true,
+  "artifacts133to145": {
+   "comparedAgainst": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+   "volatileFieldsIgnored": [
+    "at",
+    "shaGateWasComputedAgainst",
+    "shaCertified",
+    "productionTreeHash",
+    "shaNote",
+    "stdoutTail",
+    "tail",
+    "gate132"
+   ],
+   "artifacts": [
+    {
+     "artifact": "133-certificate-semantic-gap.json",
+     "materialDifferences": 0,
+     "examples": []
+    },
+    {
+     "artifact": "134-undeliverable-classification.json",
+     "materialDifferences": 0,
+     "examples": []
+    },
+    {
+     "artifact": "135-closure-precision.json",
+     "materialDifferences": 0,
+     "examples": []
+    },
+    {
+     "artifact": "136-pass-a-edge-qualification.json",
+     "materialDifferences": 0,
+     "examples": []
+    },
+    {
+     "artifact": "137-occurrence-precision.json",
+     "materialDifferences": 0,
+     "examples": []
+    },
+    {
+     "artifact": "138-threshold-sensitivity.json",
+     "materialDifferences": 0,
+     "examples": []
+    },
+    {
+     "artifact": "139-ceiling-audit.json",
+     "materialDifferences": 0,
+     "examples": []
+    },
+    {
+     "artifact": "140-anti-overfit.json",
+     "materialDifferences": 0,
+     "examples": []
+    },
+    {
+     "artifact": "141-dependency-state-rules.json",
+     "materialDifferences": 0,
+     "examples": []
+    },
+    {
+     "artifact": "142-lint-consistency.json",
+     "materialDifferences": 0,
+     "examples": []
+    },
+    {
+     "artifact": "143-verifier-triage.json",
+     "materialDifferences": 0,
+     "examples": []
+    },
+    {
+     "artifact": "144-recomputed-plan.json",
+     "materialDifferences": 0,
+     "examples": []
+    },
+    {
+     "artifact": "145-cross-corpus-sanity.json",
+     "materialDifferences": 0,
+     "examples": []
+    },
+    {
+     "artifact": "146-precision-audit-gate.json",
+     "materialDifferences": 0,
+     "examples": []
+    }
+   ],
+   "allMaterialFieldsIdentical": true
+  },
+  "reproduced": true
+ },
+ "decision": "COMMITTED_TREE_RECERTIFIED"
+}
