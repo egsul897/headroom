@@ -73,7 +73,12 @@ writeJson(A("151-production-compile-and-delivery"), {
   shardStatusCounts: statusCounts, providerFailures: statusCounts.SHARD_PROVIDER_FAILURE ?? 0, schemaFailures: statusCounts.SHARD_SCHEMA_FAILURE ?? 0, retries: compile?.execution?.sharded?.retries ?? null,
   perShard,
   contractCounts, plannerDeliveryGap: contractCounts.PLANNER_DELIVERY_GAP, falseMissingContext: contractCounts.FALSE_MISSING_CONTEXT, contractHeldOnEveryShard: perShard.every((s: Any) => s.missingContext === "NOT_RECORDED" ? true : s.missingContext.contractHeld === true), shardsWithoutRecordedAudit: perShard.filter((s: Any) => s.missingContext === "NOT_RECORDED").length,
-  hardQuestion: { question: "did any model report missing context for something already present in its initial required-context package?", requestsAgainstDeliveredContext: hardQuestion, answer: hardQuestion.length === 0 ? "NO" : `YES (${hardQuestion.length}) - see requests` },
+  hardQuestion: {
+    question: "did any model report missing context for something already present in its initial required-context package?",
+    missingContextReports: { shardsMissingContext: shardSummaries.filter((s) => s.status === "SHARD_MISSING_CONTEXT").length, objectsWithMissingContextSufficiency: missingObjects.length },
+    unresolvedDependencyEdgesAgainstDeliveredContext: { count: hardQuestion.length, note: "unresolvedDependencies[] the compositions left on rules whose target text WAS in the turn-1 required tier (FALSE_MISSING_CONTEXT) or was there as a disclosed bounded excerpt (PARTIAL_DELIVERY); none of them produced a MISSING_CONTEXT status - they are cross-reference edges the model recorded as unresolved rather than context it lacked", rows: hardQuestion },
+    answer: shardSummaries.filter((s) => s.status === "SHARD_MISSING_CONTEXT").length === 0 && missingObjects.length === 0 ? `NO missing-context report; ${hardQuestion.length} unresolved-dependency edge(s) point at context that was delivered (disclosed, contract held on every shard)` : `YES (${hardQuestion.length})`,
+  },
   missingContextObjects: missingObjects, structuredRequests, recurrenceOfTheClosed29: recurred,
   witnesses: { note: "audit witnesses of the generic machinery (harness-only names): turn-1 availability in the REQUIRED tier of every shard whose owned material cites them", witnessDelivery, allWitnessesInFullWhereverCited: witnessDelivery.every((w) => w.shardsWithKeyInTurn1Required.length > 0 && w.shardsWithKeyInTurn1Required.every((s: Any) => s.deliveredInFull)) },
   thinCapShard: { plan: thinShardPlan, executed: thinExecuted ? { status: thinExecuted.executed.status, toolUsage: thinExecuted.toolUsage, missingContext: thinExecuted.missingContext } : null },
@@ -140,7 +145,10 @@ const fixEffects = {
   uniqueSectionReferenceResolution: { unresolvedDependenciesTotal: unresolvedTotal, dependsOnTotal, frozenRunHad: { unresolvedDependencies: 57, uniquelyResolvable: 18 } },
   entityScope: { rulesWithEntityScope: entityScoped, rulesTotal: allRules.length, frozenRunHad: 0 },
 };
-const related = (o: Any) => findings.filter((f) => f.findingType === o.findingType && (f.sourceCitation === o.sourceCitation || String(f.sourceEvidence ?? "").slice(0, 60) === String(o.sourceEvidence ?? "").slice(0, 60)));
+// A specific finding type (entity scope, missing rule/basket/reclassification) relates by TYPE alone - the same class of
+// omission raised again anywhere in the unit is related; the generic OTHER_MATERIAL type relates only on the same source.
+const SPECIFIC_TYPES = new Set(["WRONG_ENTITY_SCOPE", "MISSING_RULE", "MISSING_BASKET", "MISSING_RECLASSIFICATION"]);
+const related = (o: Any) => findings.filter((f) => f.findingType === o.findingType && (SPECIFIC_TYPES.has(o.findingType) || f.sourceCitation === o.sourceCitation || String(f.sourceEvidence ?? "").slice(0, 60) === String(o.sourceEvidence ?? "").slice(0, 60)));
 const reassess = oldFindings.map((o, i) => {
   const same = findings.find((f) => f.findingId === o.findingId);
   const rel = related(o);

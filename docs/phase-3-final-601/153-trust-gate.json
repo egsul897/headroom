@@ -1,0 +1,156 @@
+{
+ "artifact": "FINAL FUNDED POST-PRECISION PAID REVALIDATION §20 - hard trust counters through the canonical HD-6 reader",
+ "at": "2026-09-19T13:37:38.813Z",
+ "reader": {
+  "module": "scripts/phase-3-601-trust-read.ts readShardTrust()",
+  "ok": true,
+  "problems": [],
+  "executionMode": "SHARDED",
+  "noGuessedZero": true
+ },
+ "contextualEmissions": {
+  "detected": 0,
+  "credited": 0,
+  "collisionsByKind": {
+   "RULE_POSSIBLE_DUPLICATE": 3
+  }
+ },
+ "shardCensus": {
+  "executed": 7,
+  "reused": 0,
+  "retries": 0,
+  "statusCounts": {
+   "SHARD_COMPLETE": 7
+  },
+  "attributionProofCounts": {
+   "PLANNER_DEFINITION_UNIT": 0,
+   "OWNED_INVENTORY_LINEAGE": 4,
+   "UNIQUE_PRIMARY_SOURCE_DECLARATION": 0,
+   "NONE": 0
+  },
+  "unresolvedOwnedItems": 0,
+  "unresolvedOwnedItemList": []
+ },
+ "explicitLimitationsAreNotSilentFailures": {
+  "certifiedLimitations": [
+   {
+    "shardId": "shard:7922314d9b00112aef21",
+    "key": "term:junior lien priority",
+    "disposition": "INTERNAL_REQUIRED_DEPENDENCY_UNRESOLVED",
+    "reason": "\"Junior Lien Priority\" is used as a capitalised term in doc-a but no declaration of it can be resolved - required, internal, unresolved",
+    "requiredBy": 1
+   },
+   {
+    "shardId": "shard:7888717f06dfe736bf5b",
+    "key": "term:borrowing base",
+    "disposition": "EXTERNAL_REQUIRED_DEPENDENCY",
+    "reason": "the source itself writes \"Borrowing Base (as defined in ABL Credit Agreement)\"; the package contains one document and \"ABL Credit Agreement\" is not it - externality proven from package identity; represented explicitly as an external limitation and never fabricated (source: \"not to exceed the greater of (a) $800.0 million and (b) the Borrowing Base (as defined in the ABL Credit Agreement) as of the date of s\")",
+    "requiredBy": 2
+   },
+   {
+    "shardId": "shard:7888717f06dfe736bf5b",
+    "key": "section:6.01(b)(1)(z)",
+    "disposition": "AMBIGUOUS_REQUIRED_DEPENDENCY",
+    "reason": "section 6.01(b)(1)(Z) matches 3 substantive physical locations - candidates preserved with provenance, none guessed (2 substantive occurrences share \"6.01(b)(1)\" - genuinely ambiguous, not resolved (never guessed); the referring node's own enumeration run does not single one out)",
+    "requiredBy": 6
+   }
+  ],
+  "missingContextShards": []
+ },
+ "operativeState": {
+  "unitLevelInputHasUnresolvedOperativeEvidence": false,
+  "unresolvedEvidenceItemIds": [],
+  "shardsFlagged": [
+   "shard:7922314d9b00112aef21"
+  ]
+ },
+ "hardTrustCounters": [
+  {
+   "counter": "owned values lost",
+   "value": 0,
+   "state": "MEASURED",
+   "rule": "Pass C materialQuantitativeValuesMissing over 50 material quantitative values"
+  },
+  {
+   "counter": "distinct owned lineage lost",
+   "value": 0,
+   "state": "MEASURED",
+   "rule": "execution.sharded.unresolvedOwnedItems"
+  },
+  {
+   "counter": "contextual ownership-credit violations",
+   "value": 0,
+   "state": "MEASURED",
+   "rule": "execution.sharded.contextualEmissionsCredited (contextual emissions that survived into the stitched IR; detection alone is not a violation); 0 detected (demotion, not a violation), 3 collisions"
+  },
+  {
+   "counter": "source-unverifiable authoritative IR",
+   "value": 0,
+   "state": "MEASURED",
+   "rule": "execution.sharded.attributionProofCounts.NONE (retained definitions with no proof class)"
+  },
+  {
+   "counter": "silent incompatible merges",
+   "value": 0,
+   "state": "MEASURED",
+   "rule": "execution.sharded.definitionConflicts with conflictVariants = 0 (conflicts=0, variants=0)"
+  },
+  {
+   "counter": "new dangling refs",
+   "value": 0,
+   "state": "MEASURED",
+   "rule": "Pass C danglingLineageReferences"
+  },
+  {
+   "counter": "hidden provider/schema failures",
+   "value": 0,
+   "state": "MEASURED",
+   "rule": "shard provider/schema failures (0/0) not surfaced in unit status (REVIEW_REQUIRED)"
+  },
+  {
+   "counter": "hidden material omissions",
+   "value": 0,
+   "state": "MEASURED",
+   "rule": "material MISSING items not reflected in the completeness verdict"
+  },
+  {
+   "counter": "authoritative hallucinations",
+   "value": 0,
+   "state": "MEASURED",
+   "rule": "every inventory item is excerpt-anchored; Pass A discarded 0 unverifiable proposals at freeze"
+  },
+  {
+   "counter": "silent CRITICAL misses",
+   "value": 0,
+   "state": "MEASURED",
+   "rule": "CRITICAL reference items neither discovered nor disclosed (155)"
+  },
+  {
+   "counter": "incorrect authoritative CRITICAL claims",
+   "value": 0,
+   "state": "MEASURED",
+   "rule": "CRITICAL reference items whose IR values contradict the source numbers of the same unit (155, corrected HD-5 scorer)"
+  },
+  {
+   "counter": "silent quantitative corruption",
+   "value": 0,
+   "state": "MEASURED",
+   "rule": "reference items FOUND_BUT_INCORRECT while the unit carried no review signal (155)"
+  },
+  {
+   "counter": "false completeness",
+   "value": 0,
+   "state": "MEASURED",
+   "rule": "Pass C claiming semanticallyComplete while material items are MISSING (complete=false, materialMissing=9)"
+  },
+  {
+   "counter": "dangerous silent omissions",
+   "value": 0,
+   "state": "MEASURED",
+   "rule": "reference items with no covering inventory item AND no explicit review signal on the unit (155)"
+  }
+ ],
+ "allCountersZero": true,
+ "allCountersMeasured": true,
+ "trustGatePassed": true
+}

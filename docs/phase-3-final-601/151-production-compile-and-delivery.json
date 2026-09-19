@@ -1,0 +1,2984 @@
+{
+ "artifact": "FINAL FUNDED POST-PRECISION PAID REVALIDATION §15-§18 - production compileCovenantToIR, per-shard dependency-delivery validation, MISSING_CONTEXT contract",
+ "at": "2026-09-19T13:37:38.612Z",
+ "compile": {
+  "artifact": "6.01 final post-precision revalidation §15 - production compileCovenantToIR",
+  "at": "2026-09-19T13:33:48.272Z",
+  "entryPoint": "compileCovenantToIR",
+  "frozenInventorySource": "RESUMED_PERSISTED_ENSEMBLE",
+  "priorShardResultsSupplied": 0,
+  "status": "REVIEW_REQUIRED",
+  "failureReasons": [
+   "OPERATIVE_STATE_UNRESOLVED",
+   "SHARD_CONFLICT",
+   "INVENTORY_ITEM_MISSING_FROM_COMPOSITION",
+   "SEMANTIC_INVENTORY_COVERAGE_GAP",
+   "SEMANTIC_SUPPORT_REVIEW_REQUIRED"
+  ],
+  "compileError": null,
+  "costUsd": 4.106768,
+  "execution": {
+   "mode": "SHARDED",
+   "reason": "MULTIPLE_SHARDS_REQUIRED",
+   "policyVersion": "semantic-execution-mode.v1",
+   "plannerAlgorithmVersion": "semantic-compilation-shards.v4-required-dependency-precision",
+   "planHash": "b2b9540a144348dab91cc80eacd0d9b472e9e93a61a8fd359e1a507cf5cf17ce",
+   "plannedShards": 7,
+   "oversizedShards": 0,
+   "frozenInventoryResume": {
+    "method": "RECORDED_SOURCE_CONTEXT_HASH",
+    "candidateRef": "phase-3-final-601:chwy:6.01",
+    "documentId": "doc-a",
+    "frozenContentHash": "88e7419f61f96b827db31d91e9047e699fb54685d11d94d432b081e0d7eb1b0c",
+    "sourceContextHash": "08752002dcea9074ab0531f3a04507a9364be1088029cdbf335cc59a620c0eec",
+    "partitionHash": "271ed1589981c852826c8f9bc8863e38f318b823f1bc56393b59ff28bde0018e",
+    "reAnchoredChecks": null,
+    "verifiedAt": "2026-09-19T12:53:51.968Z"
+   },
+   "sharded": {
+    "budget": {
+     "targetPrimaryChars": 12000,
+     "maxPrimaryChars": 24000,
+     "maxContextChars": 10000,
+     "maxRequiredContextChars": 64000,
+     "maxContextEntryChars": 1800,
+     "maxUnitsPerShard": 16
+    },
+    "executed": 7,
+    "reused": 0,
+    "retries": 0,
+    "providerCalls": 7,
+    "statusCounts": {
+     "SHARD_COMPLETE": 7
+    },
+    "collisions": 3,
+    "collisionsByKind": {
+     "RULE_POSSIBLE_DUPLICATE": 3
+    },
+    "definitionConflicts": 0,
+    "conflictVariants": 0,
+    "contextualEmissions": 0,
+    "contextualEmissionsCredited": 0,
+    "unresolvedOwnedItems": 0,
+    "stitchedStatus": "REVIEW_REQUIRED",
+    "stitchedFailureReasons": [
+     "OPERATIVE_STATE_UNRESOLVED",
+     "SHARD_CONFLICT",
+     "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+    ],
+    "definitionConflictEvidence": [],
+    "unresolvedOwnedItemList": [],
+    "attributionProofCounts": {
+     "PLANNER_DEFINITION_UNIT": 0,
+     "OWNED_INVENTORY_LINEAGE": 4,
+     "UNIQUE_PRIMARY_SOURCE_DECLARATION": 0,
+     "NONE": 0
+    },
+    "shards": [
+     {
+      "shardId": "shard:7922314d9b00112aef21",
+      "shardHash": "6993abd1ef681cce2d579e389b53c91dd727f9e206b39e7c1dd61d2289a02a2a",
+      "ordinal": 0,
+      "status": "SHARD_COMPLETE",
+      "attempts": 1,
+      "reusedFromHash": false,
+      "failureReasons": [
+       "OPERATIVE_STATE_UNRESOLVED"
+      ],
+      "ownedMaterialItems": 42,
+      "oversized": false,
+      "telemetry": {
+       "inputTokens": 179784,
+       "outputTokens": 37389,
+       "costUsd": 0.733458
+      },
+      "toolUsage": {
+       "calls": 2,
+       "sourceReadingCalls": 2,
+       "refusals": 0,
+       "charsReturned": 132,
+       "maxToolCalls": 8,
+       "maxAdditionalSourceChars": 20000,
+       "remainingCallSlots": 6,
+       "remainingSourceChars": 19868,
+       "byTool": {
+        "getOperativeProvision": 1,
+        "getContextBundleComponent": 1
+       },
+       "requestedTargets": [
+        "6.01(b)",
+        "{\"itemId\":\"context-item:4a0943162affc3228db4b04e05b4f037e87782dcbed2b1504faf876aafc565c1\"}"
+       ],
+       "anyEvidenceUnresolved": false,
+       "anyEvidenceTruncated": false
+      },
+      "missingContextAudit": {
+       "contractVersion": "missing-context-contract.v1",
+       "shardId": "shard:7922314d9b00112aef21",
+       "shardHash": "6993abd1ef681cce2d579e389b53c91dd727f9e206b39e7c1dd61d2289a02a2a",
+       "certificateStatus": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+       "requested": [
+        {
+         "targetRef": "Section 6.01(b)",
+         "key": "section:6.01(b)",
+         "classification": "OPTIONAL_CONTEXT_MISS",
+         "deliveredChars": null,
+         "fullTextChars": null,
+         "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+         "requestingRuleId": "ir-rule:c40e5624b62ab9a8c8874ab1"
+        },
+        {
+         "targetRef": "Section 6.01(b)",
+         "key": "section:6.01(b)",
+         "classification": "OPTIONAL_CONTEXT_MISS",
+         "deliveredChars": null,
+         "fullTextChars": null,
+         "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+         "requestingRuleId": "ir-rule:358a2682d2ff2106972e3187"
+        },
+        {
+         "targetRef": "Section 6.01(b)",
+         "key": "section:6.01(b)",
+         "classification": "OPTIONAL_CONTEXT_MISS",
+         "deliveredChars": null,
+         "fullTextChars": null,
+         "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+         "requestingRuleId": "ir-rule:cfec7ddfad96e5a3cd5bf1c4"
+        },
+        {
+         "targetRef": "Junior Lien Priority (undefined term)",
+         "key": "term:junior lien priority (undefined term)",
+         "classification": "OPTIONAL_CONTEXT_MISS",
+         "deliveredChars": null,
+         "fullTextChars": null,
+         "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+         "requestingRuleId": "ir-rule:d31bb32b2d5673b0f1ff4462"
+        }
+       ],
+       "counts": {
+        "PLANNER_DELIVERY_GAP": 0,
+        "FALSE_MISSING_CONTEXT": 0,
+        "PARTIAL_DELIVERY": 0,
+        "INTERNAL_LIMITATION_DISCLOSED": 0,
+        "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+        "EXTERNAL_DEPENDENCY": 0,
+        "OPTIONAL_CONTEXT_MISS": 4
+       },
+       "contractHeld": true,
+       "violations": []
+      },
+      "dependencyCertificate": {
+       "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+       "shardId": "shard:7922314d9b00112aef21",
+       "requiredDependenciesTotal": 57,
+       "deliveredFull": 51,
+       "deliveredBoundedExcerpt": 3,
+       "ownedPrimarySource": 2,
+       "external": 0,
+       "internalUnresolved": 1,
+       "ambiguous": 0,
+       "nonRequiredEdgesExcluded": 0,
+       "deliverableNotDelivered": 0,
+       "requiredDependencyChars": 35241,
+       "optionalContextChars": 0,
+       "requiredTierAllocation": {
+        "ceilingChars": 64000,
+        "perEntryAllowanceChars": 2639,
+        "waterFilled": false
+       },
+       "limitations": [
+        {
+         "key": "term:junior lien priority",
+         "disposition": "INTERNAL_REQUIRED_DEPENDENCY_UNRESOLVED",
+         "reason": "\"Junior Lien Priority\" is used as a capitalised term in doc-a but no declaration of it can be resolved - required, internal, unresolved",
+         "requiredBy": 1
+        }
+       ],
+       "undelivered": [],
+       "certificateStatus": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+       "executable": true,
+       "contextComplete": false
+      }
+     },
+     {
+      "shardId": "shard:7888717f06dfe736bf5b",
+      "shardHash": "10b58a46677cb2e02ebc12cb1de9af2c37b5be80c0183fc86775f2527a7441ed",
+      "ordinal": 1,
+      "status": "SHARD_COMPLETE",
+      "attempts": 1,
+      "reusedFromHash": false,
+      "failureReasons": [],
+      "ownedMaterialItems": 10,
+      "oversized": false,
+      "telemetry": {
+       "inputTokens": 50553,
+       "outputTokens": 18665,
+       "costUsd": 0.287756
+      },
+      "toolUsage": {
+       "calls": 0,
+       "sourceReadingCalls": 0,
+       "refusals": 0,
+       "charsReturned": 0,
+       "maxToolCalls": 8,
+       "maxAdditionalSourceChars": 20000,
+       "remainingCallSlots": 8,
+       "remainingSourceChars": 20000,
+       "byTool": {},
+       "requestedTargets": [],
+       "anyEvidenceUnresolved": false,
+       "anyEvidenceTruncated": false
+      },
+      "missingContextAudit": {
+       "contractVersion": "missing-context-contract.v1",
+       "shardId": "shard:7888717f06dfe736bf5b",
+       "shardHash": "10b58a46677cb2e02ebc12cb1de9af2c37b5be80c0183fc86775f2527a7441ed",
+       "certificateStatus": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+       "requested": [
+        {
+         "targetRef": "Section 2.18",
+         "key": "section:2.18",
+         "classification": "PARTIAL_DELIVERY",
+         "deliveredChars": 1129,
+         "fullTextChars": 13978,
+         "detail": "delivered as a disclosed bounded excerpt (1129 of 13978 chars); retrieving the remainder with a bounded tool call is the designed route",
+         "requestingRuleId": "ir-rule:ddcde906c9918c1536641de8"
+        },
+        {
+         "targetRef": "Section 2.19",
+         "key": "section:2.19",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 2283,
+         "fullTextChars": 2283,
+         "detail": "delivered IN FULL in the initial context (2283 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:ddcde906c9918c1536641de8"
+        },
+        {
+         "targetRef": "Section 2.22",
+         "key": "section:2.22",
+         "classification": "PARTIAL_DELIVERY",
+         "deliveredChars": 1128,
+         "fullTextChars": 4991,
+         "detail": "delivered as a disclosed bounded excerpt (1128 of 4991 chars); retrieving the remainder with a bounded tool call is the designed route",
+         "requestingRuleId": "ir-rule:ddcde906c9918c1536641de8"
+        },
+        {
+         "targetRef": "ABL Credit Agreement",
+         "key": "term:abl credit agreement",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 941,
+         "fullTextChars": 941,
+         "detail": "delivered IN FULL in the initial context (941 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:5b37dcc87c9b7fb826ac6070"
+        },
+        {
+         "targetRef": "definition of Fixed Incremental Amount",
+         "key": "term:definition of fixed incremental amount",
+         "classification": "OPTIONAL_CONTEXT_MISS",
+         "deliveredChars": null,
+         "fullTextChars": null,
+         "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+         "requestingRuleId": "ir-rule:cb1a561bdb3cb2aebd3db617"
+        },
+        {
+         "targetRef": "Section 6.01(b)(1)",
+         "key": "section:6.01(b)(1)",
+         "classification": "OPTIONAL_CONTEXT_MISS",
+         "deliveredChars": null,
+         "fullTextChars": null,
+         "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+         "requestingRuleId": "ir-rule:08cef781aaf9eaa933230a43"
+        }
+       ],
+       "counts": {
+        "PLANNER_DELIVERY_GAP": 0,
+        "FALSE_MISSING_CONTEXT": 2,
+        "PARTIAL_DELIVERY": 2,
+        "INTERNAL_LIMITATION_DISCLOSED": 0,
+        "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+        "EXTERNAL_DEPENDENCY": 0,
+        "OPTIONAL_CONTEXT_MISS": 2
+       },
+       "contractHeld": true,
+       "violations": []
+      },
+      "dependencyCertificate": {
+       "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+       "shardId": "shard:7888717f06dfe736bf5b",
+       "requiredDependenciesTotal": 51,
+       "deliveredFull": 43,
+       "deliveredBoundedExcerpt": 6,
+       "ownedPrimarySource": 0,
+       "external": 1,
+       "internalUnresolved": 0,
+       "ambiguous": 1,
+       "nonRequiredEdgesExcluded": 0,
+       "deliverableNotDelivered": 0,
+       "requiredDependencyChars": 35520,
+       "optionalContextChars": 175,
+       "requiredTierAllocation": {
+        "ceilingChars": 64000,
+        "perEntryAllowanceChars": 3004,
+        "waterFilled": false
+       },
+       "limitations": [
+        {
+         "key": "term:borrowing base",
+         "disposition": "EXTERNAL_REQUIRED_DEPENDENCY",
+         "reason": "the source itself writes \"Borrowing Base (as defined in ABL Credit Agreement)\"; the package contains one document and \"ABL Credit Agreement\" is not it - externality proven from package identity; represented explicitly as an external limitation and never fabricated (source: \"not to exceed the greater of (a) $800.0 million and (b) the Borrowing Base (as defined in the ABL Credit Agreement) as of the date of s\")",
+         "requiredBy": 2
+        },
+        {
+         "key": "section:6.01(b)(1)(z)",
+         "disposition": "AMBIGUOUS_REQUIRED_DEPENDENCY",
+         "reason": "section 6.01(b)(1)(Z) matches 3 substantive physical locations - candidates preserved with provenance, none guessed (2 substantive occurrences share \"6.01(b)(1)\" - genuinely ambiguous, not resolved (never guessed); the referring node's own enumeration run does not single one out)",
+         "requiredBy": 6
+        }
+       ],
+       "undelivered": [],
+       "certificateStatus": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+       "executable": true,
+       "contextComplete": false
+      }
+     },
+     {
+      "shardId": "shard:fe26b4996ab543b0a066",
+      "shardHash": "b451369ac21cad6988376c40d9c76c11c4bec93e25cab195b1c000261cd00965",
+      "ordinal": 2,
+      "status": "SHARD_COMPLETE",
+      "attempts": 1,
+      "reusedFromHash": false,
+      "failureReasons": [],
+      "ownedMaterialItems": 69,
+      "oversized": false,
+      "telemetry": {
+       "inputTokens": 139289,
+       "outputTokens": 34715,
+       "costUsd": 0.6257280000000001
+      },
+      "toolUsage": {
+       "calls": 1,
+       "sourceReadingCalls": 1,
+       "refusals": 0,
+       "charsReturned": 28,
+       "maxToolCalls": 8,
+       "maxAdditionalSourceChars": 20000,
+       "remainingCallSlots": 7,
+       "remainingSourceChars": 19972,
+       "byTool": {
+        "getSharedCapContext": 1
+       },
+       "requestedTargets": [
+        "{}"
+       ],
+       "anyEvidenceUnresolved": false,
+       "anyEvidenceTruncated": false
+      },
+      "missingContextAudit": {
+       "contractVersion": "missing-context-contract.v1",
+       "shardId": "shard:fe26b4996ab543b0a066",
+       "shardHash": "b451369ac21cad6988376c40d9c76c11c4bec93e25cab195b1c000261cd00965",
+       "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+       "requested": [
+        {
+         "targetRef": "Section 6.01(b)(28)",
+         "key": "section:6.01(b)(28)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 36,
+         "fullTextChars": 36,
+         "detail": "delivered IN FULL in the initial context (36 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:3ba68953de46482879c625e8"
+        },
+        {
+         "targetRef": "Section 6.01(b)(13)",
+         "key": "section:6.01(b)(13)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 2665,
+         "fullTextChars": 2665,
+         "detail": "delivered IN FULL in the initial context (2665 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:3ba68953de46482879c625e8"
+        }
+       ],
+       "counts": {
+        "PLANNER_DELIVERY_GAP": 0,
+        "FALSE_MISSING_CONTEXT": 2,
+        "PARTIAL_DELIVERY": 0,
+        "INTERNAL_LIMITATION_DISCLOSED": 0,
+        "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+        "EXTERNAL_DEPENDENCY": 0,
+        "OPTIONAL_CONTEXT_MISS": 0
+       },
+       "contractHeld": true,
+       "violations": []
+      },
+      "dependencyCertificate": {
+       "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+       "shardId": "shard:fe26b4996ab543b0a066",
+       "requiredDependenciesTotal": 47,
+       "deliveredFull": 42,
+       "deliveredBoundedExcerpt": 5,
+       "ownedPrimarySource": 0,
+       "external": 0,
+       "internalUnresolved": 0,
+       "ambiguous": 0,
+       "nonRequiredEdgesExcluded": 0,
+       "deliverableNotDelivered": 0,
+       "requiredDependencyChars": 35630,
+       "optionalContextChars": 175,
+       "requiredTierAllocation": {
+        "ceilingChars": 64000,
+        "perEntryAllowanceChars": 2665,
+        "waterFilled": false
+       },
+       "limitations": [],
+       "undelivered": [],
+       "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+       "executable": true,
+       "contextComplete": true
+      }
+     },
+     {
+      "shardId": "shard:86cc5e439f113d6053a9",
+      "shardHash": "82c135b56cd3d1ac1fde6e7ca73328f2ace2edefc80049c9335082ef030a84ac",
+      "ordinal": 3,
+      "status": "SHARD_COMPLETE",
+      "attempts": 1,
+      "reusedFromHash": false,
+      "failureReasons": [],
+      "ownedMaterialItems": 98,
+      "oversized": false,
+      "telemetry": {
+       "inputTokens": 88046,
+       "outputTokens": 49266,
+       "costUsd": 0.668752
+      },
+      "toolUsage": {
+       "calls": 0,
+       "sourceReadingCalls": 0,
+       "refusals": 0,
+       "charsReturned": 0,
+       "maxToolCalls": 8,
+       "maxAdditionalSourceChars": 20000,
+       "remainingCallSlots": 8,
+       "remainingSourceChars": 20000,
+       "byTool": {},
+       "requestedTargets": [],
+       "anyEvidenceUnresolved": false,
+       "anyEvidenceTruncated": false
+      },
+      "missingContextAudit": {
+       "contractVersion": "missing-context-contract.v1",
+       "shardId": "shard:86cc5e439f113d6053a9",
+       "shardHash": "82c135b56cd3d1ac1fde6e7ca73328f2ace2edefc80049c9335082ef030a84ac",
+       "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+       "requested": [
+        {
+         "targetRef": "Section 6.08(a)(3)(b)",
+         "key": "section:6.08(a)(3)(b)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 2082,
+         "fullTextChars": 2082,
+         "detail": "delivered IN FULL in the initial context (2082 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:4833ed7a5927e739dbe8c9ba"
+        },
+        {
+         "targetRef": "Section 6.08(a)(3)(c)",
+         "key": "section:6.08(a)(3)(c)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 500,
+         "fullTextChars": 500,
+         "detail": "delivered IN FULL in the initial context (500 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:4833ed7a5927e739dbe8c9ba"
+        },
+        {
+         "targetRef": "Section 6.08(b)",
+         "key": "section:6.08(b)",
+         "classification": "PARTIAL_DELIVERY",
+         "deliveredChars": 1129,
+         "fullTextChars": 27532,
+         "detail": "delivered as a disclosed bounded excerpt (1129 of 27532 chars); retrieving the remainder with a bounded tool call is the designed route",
+         "requestingRuleId": "ir-rule:4833ed7a5927e739dbe8c9ba"
+        },
+        {
+         "targetRef": "Section 6.01(b)(13)",
+         "key": "section:6.01(b)(13)",
+         "classification": "PARTIAL_DELIVERY",
+         "deliveredChars": 2606,
+         "fullTextChars": 2665,
+         "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+         "requestingRuleId": "ir-rule:04db3c18afad9d5a03d3b27a"
+        },
+        {
+         "targetRef": "Section 6.01(b)(13)",
+         "key": "section:6.01(b)(13)",
+         "classification": "PARTIAL_DELIVERY",
+         "deliveredChars": 2606,
+         "fullTextChars": 2665,
+         "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+         "requestingRuleId": "ir-rule:0a9f949ec890522698ca4bae"
+        },
+        {
+         "targetRef": "Section 6.01(b)(13)",
+         "key": "section:6.01(b)(13)",
+         "classification": "PARTIAL_DELIVERY",
+         "deliveredChars": 2606,
+         "fullTextChars": 2665,
+         "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+         "requestingRuleId": "ir-rule:da45cc9662d707abc0a15042"
+        },
+        {
+         "targetRef": "Section 6.01(b)(13)",
+         "key": "section:6.01(b)(13)",
+         "classification": "PARTIAL_DELIVERY",
+         "deliveredChars": 2606,
+         "fullTextChars": 2665,
+         "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+         "requestingRuleId": "ir-rule:402bdf35c149c057cf0e0652"
+        },
+        {
+         "targetRef": "Section 6.08",
+         "key": "section:6.08",
+         "classification": "PARTIAL_DELIVERY",
+         "deliveredChars": 1129,
+         "fullTextChars": 38529,
+         "detail": "delivered as a disclosed bounded excerpt (1129 of 38529 chars); retrieving the remainder with a bounded tool call is the designed route",
+         "requestingRuleId": "ir-rule:6af166aec23df2f60e6ded50"
+        },
+        {
+         "targetRef": "Section 6.08(a)(3)",
+         "key": "section:6.08(a)(3)",
+         "classification": "PARTIAL_DELIVERY",
+         "deliveredChars": 1128,
+         "fullTextChars": 7988,
+         "detail": "delivered as a disclosed bounded excerpt (1128 of 7988 chars); retrieving the remainder with a bounded tool call is the designed route",
+         "requestingRuleId": "ir-rule:ff2681666f514e20fc7ddeff"
+        },
+        {
+         "targetRef": "definition of 'Permitted Liens' clause (46)(ii)",
+         "key": "term:definition of 'permitted liens' clause (46)(ii)",
+         "classification": "OPTIONAL_CONTEXT_MISS",
+         "deliveredChars": null,
+         "fullTextChars": null,
+         "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+         "requestingRuleId": "ir-rule:ff2681666f514e20fc7ddeff"
+        },
+        {
+         "targetRef": "Section 6.01",
+         "key": "section:6.01",
+         "classification": "PARTIAL_DELIVERY",
+         "deliveredChars": 1129,
+         "fullTextChars": 33623,
+         "detail": "delivered as a disclosed bounded excerpt (1129 of 33623 chars); retrieving the remainder with a bounded tool call is the designed route",
+         "requestingRuleId": "ir-rule:3f1138da46659f440dc043ee"
+        },
+        {
+         "targetRef": "Section 6.01(b)(1)(X)",
+         "key": "section:6.01(b)(1)(x)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 561,
+         "fullTextChars": 561,
+         "detail": "delivered IN FULL in the initial context (561 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:850c26e2d91c5e92b7a18c97"
+        },
+        {
+         "targetRef": "Section 6.01(b)(1)(Y)",
+         "key": "section:6.01(b)(1)(y)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 561,
+         "fullTextChars": 561,
+         "detail": "delivered IN FULL in the initial context (561 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:850c26e2d91c5e92b7a18c97"
+        },
+        {
+         "targetRef": "Section 6.01(a)",
+         "key": "section:6.01(a)",
+         "classification": "PARTIAL_DELIVERY",
+         "deliveredChars": 2606,
+         "fullTextChars": 3115,
+         "detail": "delivered as a disclosed bounded excerpt (2606 of 3115 chars); retrieving the remainder with a bounded tool call is the designed route",
+         "requestingRuleId": "ir-rule:850c26e2d91c5e92b7a18c97"
+        },
+        {
+         "targetRef": "Section 6.01(a)",
+         "key": "section:6.01(a)",
+         "classification": "PARTIAL_DELIVERY",
+         "deliveredChars": 2606,
+         "fullTextChars": 3115,
+         "detail": "delivered as a disclosed bounded excerpt (2606 of 3115 chars); retrieving the remainder with a bounded tool call is the designed route",
+         "requestingRuleId": "ir-rule:9d0f52846f79387413d6b6bd"
+        },
+        {
+         "targetRef": "Section 6.01(b)(1)",
+         "key": "section:6.01(b)(1)",
+         "classification": "OPTIONAL_CONTEXT_MISS",
+         "deliveredChars": null,
+         "fullTextChars": null,
+         "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+         "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+        },
+        {
+         "targetRef": "Section 6.01(b)(4)",
+         "key": "section:6.01(b)(4)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 2196,
+         "fullTextChars": 2196,
+         "detail": "delivered IN FULL in the initial context (2196 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+        },
+        {
+         "targetRef": "Section 6.01(b)(12)",
+         "key": "section:6.01(b)(12)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 1890,
+         "fullTextChars": 1890,
+         "detail": "delivered IN FULL in the initial context (1890 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+        },
+        {
+         "targetRef": "Section 6.01(b)(31)",
+         "key": "section:6.01(b)(31)",
+         "classification": "OPTIONAL_CONTEXT_MISS",
+         "deliveredChars": null,
+         "fullTextChars": null,
+         "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+         "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+        },
+        {
+         "targetRef": "Section 6.01(b)(32)",
+         "key": "section:6.01(b)(32)",
+         "classification": "OPTIONAL_CONTEXT_MISS",
+         "deliveredChars": null,
+         "fullTextChars": null,
+         "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+         "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+        },
+        {
+         "targetRef": "Section 6.01(b)(33)",
+         "key": "section:6.01(b)(33)",
+         "classification": "OPTIONAL_CONTEXT_MISS",
+         "deliveredChars": null,
+         "fullTextChars": null,
+         "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+         "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+        }
+       ],
+       "counts": {
+        "PLANNER_DELIVERY_GAP": 0,
+        "FALSE_MISSING_CONTEXT": 6,
+        "PARTIAL_DELIVERY": 10,
+        "INTERNAL_LIMITATION_DISCLOSED": 0,
+        "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+        "EXTERNAL_DEPENDENCY": 0,
+        "OPTIONAL_CONTEXT_MISS": 5
+       },
+       "contractHeld": true,
+       "violations": []
+      },
+      "dependencyCertificate": {
+       "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+       "shardId": "shard:86cc5e439f113d6053a9",
+       "requiredDependenciesTotal": 72,
+       "deliveredFull": 58,
+       "deliveredBoundedExcerpt": 14,
+       "ownedPrimarySource": 0,
+       "external": 0,
+       "internalUnresolved": 0,
+       "ambiguous": 0,
+       "nonRequiredEdgesExcluded": 0,
+       "deliverableNotDelivered": 0,
+       "requiredDependencyChars": 63998,
+       "optionalContextChars": 175,
+       "requiredTierAllocation": {
+        "ceilingChars": 64000,
+        "perEntryAllowanceChars": 2377,
+        "waterFilled": true
+       },
+       "limitations": [],
+       "undelivered": [],
+       "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+       "executable": true,
+       "contextComplete": true
+      }
+     },
+     {
+      "shardId": "shard:2eb6ff75386e45a57593",
+      "shardHash": "ae76043919980357ec9dc70ecd7d77d1ce55b9814f2e249c4293efa92d919ff0",
+      "ordinal": 4,
+      "status": "SHARD_COMPLETE",
+      "attempts": 1,
+      "reusedFromHash": false,
+      "failureReasons": [],
+      "ownedMaterialItems": 44,
+      "oversized": false,
+      "telemetry": {
+       "inputTokens": 153192,
+       "outputTokens": 44605,
+       "costUsd": 0.752434
+      },
+      "toolUsage": {
+       "calls": 1,
+       "sourceReadingCalls": 1,
+       "refusals": 0,
+       "charsReturned": 28,
+       "maxToolCalls": 8,
+       "maxAdditionalSourceChars": 20000,
+       "remainingCallSlots": 7,
+       "remainingSourceChars": 19972,
+       "byTool": {
+        "getSharedCapContext": 1
+       },
+       "requestedTargets": [
+        "{}"
+       ],
+       "anyEvidenceUnresolved": false,
+       "anyEvidenceTruncated": false
+      },
+      "missingContextAudit": {
+       "contractVersion": "missing-context-contract.v1",
+       "shardId": "shard:2eb6ff75386e45a57593",
+       "shardHash": "ae76043919980357ec9dc70ecd7d77d1ce55b9814f2e249c4293efa92d919ff0",
+       "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+       "requested": [
+        {
+         "targetRef": "Section 6.01(a)",
+         "key": "section:6.01(a)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 3115,
+         "fullTextChars": 3115,
+         "detail": "delivered IN FULL in the initial context (3115 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+        },
+        {
+         "targetRef": "Section 6.01(b)(1)(Y)",
+         "key": "section:6.01(b)(1)(y)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 561,
+         "fullTextChars": 561,
+         "detail": "delivered IN FULL in the initial context (561 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+        },
+        {
+         "targetRef": "Section 6.01(b)(3)",
+         "key": "section:6.01(b)(3)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 85,
+         "fullTextChars": 85,
+         "detail": "delivered IN FULL in the initial context (85 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+        },
+        {
+         "targetRef": "Section 6.01(b)(4)",
+         "key": "section:6.01(b)(4)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 2196,
+         "fullTextChars": 2196,
+         "detail": "delivered IN FULL in the initial context (2196 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+        },
+        {
+         "targetRef": "Section 6.01(b)(5)(b)",
+         "key": "section:6.01(b)(5)(b)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 370,
+         "fullTextChars": 370,
+         "detail": "delivered IN FULL in the initial context (370 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+        },
+        {
+         "targetRef": "Section 6.01(b)(12)",
+         "key": "section:6.01(b)(12)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 1890,
+         "fullTextChars": 1890,
+         "detail": "delivered IN FULL in the initial context (1890 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+        },
+        {
+         "targetRef": "Section 6.01(b)(13)",
+         "key": "section:6.01(b)(13)",
+         "classification": "OPTIONAL_CONTEXT_MISS",
+         "deliveredChars": null,
+         "fullTextChars": null,
+         "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+         "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+        },
+        {
+         "targetRef": "Section 6.01(b)(14)",
+         "key": "section:6.01(b)(14)",
+         "classification": "OPTIONAL_CONTEXT_MISS",
+         "deliveredChars": null,
+         "fullTextChars": null,
+         "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+         "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+        },
+        {
+         "targetRef": "Section 6.01(b)(18)",
+         "key": "section:6.01(b)(18)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 719,
+         "fullTextChars": 719,
+         "detail": "delivered IN FULL in the initial context (719 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+        },
+        {
+         "targetRef": "Section 6.01(b)(19)",
+         "key": "section:6.01(b)(19)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 699,
+         "fullTextChars": 699,
+         "detail": "delivered IN FULL in the initial context (699 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+        },
+        {
+         "targetRef": "Section 6.01(b)(27)",
+         "key": "section:6.01(b)(27)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 649,
+         "fullTextChars": 649,
+         "detail": "delivered IN FULL in the initial context (649 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+        },
+        {
+         "targetRef": "Section 6.01(b)(31)",
+         "key": "section:6.01(b)(31)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 325,
+         "fullTextChars": 325,
+         "detail": "delivered IN FULL in the initial context (325 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+        },
+        {
+         "targetRef": "Section 6.01(a)",
+         "key": "section:6.01(a)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 3115,
+         "fullTextChars": 3115,
+         "detail": "delivered IN FULL in the initial context (3115 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:061aeee04268620c22333133"
+        }
+       ],
+       "counts": {
+        "PLANNER_DELIVERY_GAP": 0,
+        "FALSE_MISSING_CONTEXT": 11,
+        "PARTIAL_DELIVERY": 0,
+        "INTERNAL_LIMITATION_DISCLOSED": 0,
+        "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+        "EXTERNAL_DEPENDENCY": 0,
+        "OPTIONAL_CONTEXT_MISS": 2
+       },
+       "contractHeld": true,
+       "violations": []
+      },
+      "dependencyCertificate": {
+       "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+       "shardId": "shard:2eb6ff75386e45a57593",
+       "requiredDependenciesTotal": 67,
+       "deliveredFull": 63,
+       "deliveredBoundedExcerpt": 4,
+       "ownedPrimarySource": 0,
+       "external": 0,
+       "internalUnresolved": 0,
+       "ambiguous": 0,
+       "nonRequiredEdgesExcluded": 0,
+       "deliverableNotDelivered": 0,
+       "requiredDependencyChars": 49756,
+       "optionalContextChars": 175,
+       "requiredTierAllocation": {
+        "ceilingChars": 64000,
+        "perEntryAllowanceChars": 3115,
+        "waterFilled": false
+       },
+       "limitations": [],
+       "undelivered": [],
+       "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+       "executable": true,
+       "contextComplete": true
+      }
+     },
+     {
+      "shardId": "shard:e10ed610ecff8b399619",
+      "shardHash": "0da85a627f9eb0fd6813b66e3dcb2f171fa22680bfa91c790397cd206a3b5e08",
+      "ordinal": 5,
+      "status": "SHARD_COMPLETE",
+      "attempts": 1,
+      "reusedFromHash": false,
+      "failureReasons": [],
+      "ownedMaterialItems": 42,
+      "oversized": false,
+      "telemetry": {
+       "inputTokens": 138798,
+       "outputTokens": 34550,
+       "costUsd": 0.6230960000000001
+      },
+      "toolUsage": {
+       "calls": 1,
+       "sourceReadingCalls": 1,
+       "refusals": 0,
+       "charsReturned": 28,
+       "maxToolCalls": 8,
+       "maxAdditionalSourceChars": 20000,
+       "remainingCallSlots": 7,
+       "remainingSourceChars": 19972,
+       "byTool": {
+        "getSharedCapContext": 1
+       },
+       "requestedTargets": [
+        "{}"
+       ],
+       "anyEvidenceUnresolved": false,
+       "anyEvidenceTruncated": false
+      },
+      "missingContextAudit": {
+       "contractVersion": "missing-context-contract.v1",
+       "shardId": "shard:e10ed610ecff8b399619",
+       "shardHash": "0da85a627f9eb0fd6813b66e3dcb2f171fa22680bfa91c790397cd206a3b5e08",
+       "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+       "requested": [
+        {
+         "targetRef": "Section 6.01(a)",
+         "key": "section:6.01(a)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 3115,
+         "fullTextChars": 3115,
+         "detail": "delivered IN FULL in the initial context (3115 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:5f3ed97f062fd5ce6530991f"
+        },
+        {
+         "targetRef": "Section 6.01(b)(14)(a)",
+         "key": "section:6.01(b)(14)(a)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 105,
+         "fullTextChars": 105,
+         "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:5f3ed97f062fd5ce6530991f"
+        },
+        {
+         "targetRef": "Section 6.01(b)(14)(b)",
+         "key": "section:6.01(b)(14)(b)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 105,
+         "fullTextChars": 105,
+         "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:5f3ed97f062fd5ce6530991f"
+        },
+        {
+         "targetRef": "Section 6.01(b)(14)(a)",
+         "key": "section:6.01(b)(14)(a)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 105,
+         "fullTextChars": 105,
+         "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:9544f1b8bb599ded885deb38"
+        },
+        {
+         "targetRef": "Section 6.01(b)(14)(b)",
+         "key": "section:6.01(b)(14)(b)",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 105,
+         "fullTextChars": 105,
+         "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:9544f1b8bb599ded885deb38"
+        },
+        {
+         "targetRef": "Fixed Incremental Amount",
+         "key": "term:fixed incremental amount",
+         "classification": "FALSE_MISSING_CONTEXT",
+         "deliveredChars": 948,
+         "fullTextChars": 948,
+         "detail": "delivered IN FULL in the initial context (948 chars) before the first turn - the missing-context claim is not about delivery",
+         "requestingRuleId": "ir-rule:9544f1b8bb599ded885deb38"
+        }
+       ],
+       "counts": {
+        "PLANNER_DELIVERY_GAP": 0,
+        "FALSE_MISSING_CONTEXT": 6,
+        "PARTIAL_DELIVERY": 0,
+        "INTERNAL_LIMITATION_DISCLOSED": 0,
+        "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+        "EXTERNAL_DEPENDENCY": 0,
+        "OPTIONAL_CONTEXT_MISS": 0
+       },
+       "contractHeld": true,
+       "violations": []
+      },
+      "dependencyCertificate": {
+       "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+       "shardId": "shard:e10ed610ecff8b399619",
+       "requiredDependenciesTotal": 60,
+       "deliveredFull": 55,
+       "deliveredBoundedExcerpt": 5,
+       "ownedPrimarySource": 0,
+       "external": 0,
+       "internalUnresolved": 0,
+       "ambiguous": 0,
+       "nonRequiredEdgesExcluded": 0,
+       "deliverableNotDelivered": 0,
+       "requiredDependencyChars": 42714,
+       "optionalContextChars": 586,
+       "requiredTierAllocation": {
+        "ceilingChars": 64000,
+        "perEntryAllowanceChars": 3115,
+        "waterFilled": false
+       },
+       "limitations": [],
+       "undelivered": [],
+       "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+       "executable": true,
+       "contextComplete": true
+      }
+     },
+     {
+      "shardId": "shard:7c4d3d2ae3e0a522b99e",
+      "shardHash": "f8965d0be191e382df668b523da2be02dc4d36e435833f846c6f90887eeb969b",
+      "ordinal": 6,
+      "status": "SHARD_COMPLETE",
+      "attempts": 1,
+      "reusedFromHash": false,
+      "failureReasons": [],
+      "ownedMaterialItems": 14,
+      "oversized": false,
+      "telemetry": {
+       "inputTokens": 79567,
+       "outputTokens": 25641,
+       "costUsd": 0.415544
+      },
+      "toolUsage": {
+       "calls": 1,
+       "sourceReadingCalls": 1,
+       "refusals": 0,
+       "charsReturned": 2177,
+       "maxToolCalls": 8,
+       "maxAdditionalSourceChars": 20000,
+       "remainingCallSlots": 7,
+       "remainingSourceChars": 17823,
+       "byTool": {
+        "getReferencedProvision": 1
+       },
+       "requestedTargets": [
+        "{\"ref\":\"Section 6.08(b)(4)\"}"
+       ],
+       "anyEvidenceUnresolved": false,
+       "anyEvidenceTruncated": false
+      },
+      "missingContextAudit": {
+       "contractVersion": "missing-context-contract.v1",
+       "shardId": "shard:7c4d3d2ae3e0a522b99e",
+       "shardHash": "f8965d0be191e382df668b523da2be02dc4d36e435833f846c6f90887eeb969b",
+       "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+       "requested": [
+        {
+         "targetRef": "Section 6.08(b)(4)",
+         "key": "section:6.08(b)(4)",
+         "classification": "PARTIAL_DELIVERY",
+         "deliveredChars": 1128,
+         "fullTextChars": 4411,
+         "detail": "delivered as a disclosed bounded excerpt (1128 of 4411 chars); retrieving the remainder with a bounded tool call is the designed route",
+         "requestingRuleId": "ir-rule:c0fd7f9011257a2b98c1654b"
+        },
+        {
+         "targetRef": "Definition of Receivables Non-Recourse Facility",
+         "key": "term:definition of receivables non-recourse facility",
+         "classification": "OPTIONAL_CONTEXT_MISS",
+         "deliveredChars": null,
+         "fullTextChars": null,
+         "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+         "requestingRuleId": "ir-rule:676f68faa01a4807450d826c"
+        },
+        {
+         "targetRef": "Definition of Receivables Recourse Facility",
+         "key": "term:definition of receivables recourse facility",
+         "classification": "OPTIONAL_CONTEXT_MISS",
+         "deliveredChars": null,
+         "fullTextChars": null,
+         "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+         "requestingRuleId": "ir-rule:e4db778493ac83df907f6656"
+        },
+        {
+         "targetRef": "Definition of Unsecured Capitalized Leases",
+         "key": "term:definition of unsecured capitalized leases",
+         "classification": "OPTIONAL_CONTEXT_MISS",
+         "deliveredChars": null,
+         "fullTextChars": null,
+         "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+         "requestingRuleId": "ir-rule:2619ff9bc5f96334ba4635ac"
+        },
+        {
+         "targetRef": "Definition of Permitted Tax Restructuring",
+         "key": "term:definition of permitted tax restructuring",
+         "classification": "OPTIONAL_CONTEXT_MISS",
+         "deliveredChars": null,
+         "fullTextChars": null,
+         "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+         "requestingRuleId": "ir-rule:fb1e101e6fbc60f19087554d"
+        }
+       ],
+       "counts": {
+        "PLANNER_DELIVERY_GAP": 0,
+        "FALSE_MISSING_CONTEXT": 0,
+        "PARTIAL_DELIVERY": 1,
+        "INTERNAL_LIMITATION_DISCLOSED": 0,
+        "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+        "EXTERNAL_DEPENDENCY": 0,
+        "OPTIONAL_CONTEXT_MISS": 4
+       },
+       "contractHeld": true,
+       "violations": []
+      },
+      "dependencyCertificate": {
+       "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+       "shardId": "shard:7c4d3d2ae3e0a522b99e",
+       "requiredDependenciesTotal": 24,
+       "deliveredFull": 21,
+       "deliveredBoundedExcerpt": 3,
+       "ownedPrimarySource": 0,
+       "external": 0,
+       "internalUnresolved": 0,
+       "ambiguous": 0,
+       "nonRequiredEdgesExcluded": 0,
+       "deliverableNotDelivered": 0,
+       "requiredDependencyChars": 14966,
+       "optionalContextChars": 175,
+       "requiredTierAllocation": {
+        "ceilingChars": 64000,
+        "perEntryAllowanceChars": 2283,
+        "waterFilled": false
+       },
+       "limitations": [],
+       "undelivered": [],
+       "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+       "executable": true,
+       "contextComplete": true
+      }
+     }
+    ],
+    "telemetryNote": "7 bounded conversations (7 executed, 0 reused by shardHash, 0 provider-failure retries); rawModelOutput and toolCallLog are null/empty at the top level because no single transcript exists - per-shard telemetry is listed under execution.sharded.shards"
+   }
+  },
+  "planComparison": {
+   "harnessPlanHash": "b2b9540a144348dab91cc80eacd0d9b472e9e93a61a8fd359e1a507cf5cf17ce",
+   "productionPlanHash": "b2b9540a144348dab91cc80eacd0d9b472e9e93a61a8fd359e1a507cf5cf17ce",
+   "identical": true
+  },
+  "persistedShards": [
+   {
+    "shardId": "shard:7922314d9b00112aef21",
+    "shardHash": "6993abd1ef681cce2d579e389b53c91dd727f9e206b39e7c1dd61d2289a02a2a",
+    "status": "SHARD_COMPLETE",
+    "at": "2026-09-19T12:59:44.845Z"
+   },
+   {
+    "shardId": "shard:7888717f06dfe736bf5b",
+    "shardHash": "10b58a46677cb2e02ebc12cb1de9af2c37b5be80c0183fc86775f2527a7441ed",
+    "status": "SHARD_COMPLETE",
+    "at": "2026-09-19T13:02:39.795Z"
+   },
+   {
+    "shardId": "shard:fe26b4996ab543b0a066",
+    "shardHash": "b451369ac21cad6988376c40d9c76c11c4bec93e25cab195b1c000261cd00965",
+    "status": "SHARD_COMPLETE",
+    "at": "2026-09-19T13:08:47.455Z"
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "shardHash": "82c135b56cd3d1ac1fde6e7ca73328f2ace2edefc80049c9335082ef030a84ac",
+    "status": "SHARD_COMPLETE",
+    "at": "2026-09-19T13:17:28.055Z"
+   },
+   {
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "shardHash": "ae76043919980357ec9dc70ecd7d77d1ce55b9814f2e249c4293efa92d919ff0",
+    "status": "SHARD_COMPLETE",
+    "at": "2026-09-19T13:24:33.684Z"
+   },
+   {
+    "shardId": "shard:e10ed610ecff8b399619",
+    "shardHash": "0da85a627f9eb0fd6813b66e3dcb2f171fa22680bfa91c790397cd206a3b5e08",
+    "status": "SHARD_COMPLETE",
+    "at": "2026-09-19T13:29:50.089Z"
+   },
+   {
+    "shardId": "shard:7c4d3d2ae3e0a522b99e",
+    "shardHash": "f8965d0be191e382df668b523da2be02dc4d36e435833f846c6f90887eeb969b",
+    "status": "SHARD_COMPLETE",
+    "at": "2026-09-19T13:33:48.217Z"
+   }
+  ],
+  "output": {
+   "rules": 63,
+   "definitions": 4,
+   "sharedCapacities": 0,
+   "unresolvedIssues": 28
+  }
+ },
+ "planIdentity": {
+  "harnessPlanHash": "b2b9540a144348dab91cc80eacd0d9b472e9e93a61a8fd359e1a507cf5cf17ce",
+  "productionPlanHash": "b2b9540a144348dab91cc80eacd0d9b472e9e93a61a8fd359e1a507cf5cf17ce",
+  "identical": true
+ },
+ "shardStatusCounts": {
+  "SHARD_COMPLETE": 7
+ },
+ "providerFailures": 0,
+ "schemaFailures": 0,
+ "retries": 0,
+ "perShard": [
+  {
+   "ordinal": 0,
+   "shardId": "shard:7922314d9b00112aef21",
+   "shardHash": "6993abd1ef681cce2d579e389b53c91dd727f9e206b39e7c1dd61d2289a02a2a",
+   "ownedItems": 43,
+   "ownedMaterialItems": 42,
+   "primaryChars": 3294,
+   "requiredContextChars": 35241,
+   "optionalContextChars": 0,
+   "turn1EstimatedTokens": 38429,
+   "certificateStatus": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+   "requiredDependencies": 57,
+   "deliveredFull": 51,
+   "boundedExcerpts": 3,
+   "ownedPrimarySource": 2,
+   "external": 0,
+   "internalUnresolved": 1,
+   "ambiguous": 0,
+   "limitations": [
+    {
+     "key": "term:junior lien priority",
+     "disposition": "INTERNAL_REQUIRED_DEPENDENCY_UNRESOLVED",
+     "reason": "\"Junior Lien Priority\" is used as a capitalised term in doc-a but no declaration of it can be resolved - required, internal, unresolved",
+     "requiredBy": 1
+    }
+   ],
+   "witnessesInTurn1": [],
+   "executed": {
+    "status": "SHARD_COMPLETE",
+    "attempts": 1,
+    "reusedFromHash": false,
+    "failureReasons": [
+     "OPERATIVE_STATE_UNRESOLVED"
+    ],
+    "telemetry": {
+     "inputTokens": 179784,
+     "outputTokens": 37389,
+     "costUsd": 0.733458
+    },
+    "persistedAt": "2026-09-19T12:59:44.845Z"
+   },
+   "toolUsage": {
+    "calls": 2,
+    "sourceReadingCalls": 2,
+    "refusals": 0,
+    "charsReturned": 132,
+    "maxToolCalls": 8,
+    "maxAdditionalSourceChars": 20000,
+    "byTool": {
+     "getOperativeProvision": 1,
+     "getContextBundleComponent": 1
+    },
+    "requestedTargets": [
+     "6.01(b)",
+     "{\"itemId\":\"context-item:4a0943162affc3228db4b04e05b4f037e87782dcbed2b1504faf876aafc565c1\"}"
+    ],
+    "anyEvidenceUnresolved": false,
+    "anyEvidenceTruncated": false
+   },
+   "missingContext": {
+    "certificateStatus": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+    "requested": [
+     {
+      "targetRef": "Section 6.01(b)",
+      "key": "section:6.01(b)",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:c40e5624b62ab9a8c8874ab1"
+     },
+     {
+      "targetRef": "Section 6.01(b)",
+      "key": "section:6.01(b)",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:358a2682d2ff2106972e3187"
+     },
+     {
+      "targetRef": "Section 6.01(b)",
+      "key": "section:6.01(b)",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:cfec7ddfad96e5a3cd5bf1c4"
+     },
+     {
+      "targetRef": "Junior Lien Priority (undefined term)",
+      "key": "term:junior lien priority (undefined term)",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:d31bb32b2d5673b0f1ff4462"
+     }
+    ],
+    "counts": {
+     "PLANNER_DELIVERY_GAP": 0,
+     "FALSE_MISSING_CONTEXT": 0,
+     "PARTIAL_DELIVERY": 0,
+     "INTERNAL_LIMITATION_DISCLOSED": 0,
+     "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+     "EXTERNAL_DEPENDENCY": 0,
+     "OPTIONAL_CONTEXT_MISS": 4
+    },
+    "contractHeld": true,
+    "violations": []
+   }
+  },
+  {
+   "ordinal": 1,
+   "shardId": "shard:7888717f06dfe736bf5b",
+   "shardHash": "10b58a46677cb2e02ebc12cb1de9af2c37b5be80c0183fc86775f2527a7441ed",
+   "ownedItems": 11,
+   "ownedMaterialItems": 10,
+   "primaryChars": 663,
+   "requiredContextChars": 35520,
+   "optionalContextChars": 175,
+   "turn1EstimatedTokens": 32941,
+   "certificateStatus": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+   "requiredDependencies": 51,
+   "deliveredFull": 43,
+   "boundedExcerpts": 6,
+   "ownedPrimarySource": 0,
+   "external": 1,
+   "internalUnresolved": 0,
+   "ambiguous": 1,
+   "limitations": [
+    {
+     "key": "term:borrowing base",
+     "disposition": "EXTERNAL_REQUIRED_DEPENDENCY",
+     "reason": "the source itself writes \"Borrowing Base (as defined in ABL Credit Agreement)\"; the package contains one document and \"ABL Credit Agreement\" is not it - externality proven from package identity; represented explicitly as an external limitation and never fabricated (source: \"not to exceed the greater of (a) $800.0 million and (b) the Borrowing Base (as defined in the ABL Credit Agreement) as of the date of s\")",
+     "requiredBy": 2
+    },
+    {
+     "key": "section:6.01(b)(1)(z)",
+     "disposition": "AMBIGUOUS_REQUIRED_DEPENDENCY",
+     "reason": "section 6.01(b)(1)(Z) matches 3 substantive physical locations - candidates preserved with provenance, none guessed (2 substantive occurrences share \"6.01(b)(1)\" - genuinely ambiguous, not resolved (never guessed); the referring node's own enumeration run does not single one out)",
+     "requiredBy": 6
+    }
+   ],
+   "witnessesInTurn1": [
+    {
+     "key": "term:fixed incremental amount",
+     "deliveredInFull": true
+    },
+    {
+     "key": "section:2.18(b)",
+     "deliveredInFull": true
+    }
+   ],
+   "executed": {
+    "status": "SHARD_COMPLETE",
+    "attempts": 1,
+    "reusedFromHash": false,
+    "failureReasons": [],
+    "telemetry": {
+     "inputTokens": 50553,
+     "outputTokens": 18665,
+     "costUsd": 0.287756
+    },
+    "persistedAt": "2026-09-19T13:02:39.795Z"
+   },
+   "toolUsage": {
+    "calls": 0,
+    "sourceReadingCalls": 0,
+    "refusals": 0,
+    "charsReturned": 0,
+    "maxToolCalls": 8,
+    "maxAdditionalSourceChars": 20000,
+    "byTool": {},
+    "requestedTargets": [],
+    "anyEvidenceUnresolved": false,
+    "anyEvidenceTruncated": false
+   },
+   "missingContext": {
+    "certificateStatus": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+    "requested": [
+     {
+      "targetRef": "Section 2.18",
+      "key": "section:2.18",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 1129,
+      "fullTextChars": 13978,
+      "detail": "delivered as a disclosed bounded excerpt (1129 of 13978 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:ddcde906c9918c1536641de8"
+     },
+     {
+      "targetRef": "Section 2.19",
+      "key": "section:2.19",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 2283,
+      "fullTextChars": 2283,
+      "detail": "delivered IN FULL in the initial context (2283 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:ddcde906c9918c1536641de8"
+     },
+     {
+      "targetRef": "Section 2.22",
+      "key": "section:2.22",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 1128,
+      "fullTextChars": 4991,
+      "detail": "delivered as a disclosed bounded excerpt (1128 of 4991 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:ddcde906c9918c1536641de8"
+     },
+     {
+      "targetRef": "ABL Credit Agreement",
+      "key": "term:abl credit agreement",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 941,
+      "fullTextChars": 941,
+      "detail": "delivered IN FULL in the initial context (941 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:5b37dcc87c9b7fb826ac6070"
+     },
+     {
+      "targetRef": "definition of Fixed Incremental Amount",
+      "key": "term:definition of fixed incremental amount",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:cb1a561bdb3cb2aebd3db617"
+     },
+     {
+      "targetRef": "Section 6.01(b)(1)",
+      "key": "section:6.01(b)(1)",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:08cef781aaf9eaa933230a43"
+     }
+    ],
+    "counts": {
+     "PLANNER_DELIVERY_GAP": 0,
+     "FALSE_MISSING_CONTEXT": 2,
+     "PARTIAL_DELIVERY": 2,
+     "INTERNAL_LIMITATION_DISCLOSED": 0,
+     "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+     "EXTERNAL_DEPENDENCY": 0,
+     "OPTIONAL_CONTEXT_MISS": 2
+    },
+    "contractHeld": true,
+    "violations": []
+   }
+  },
+  {
+   "ordinal": 2,
+   "shardId": "shard:fe26b4996ab543b0a066",
+   "shardHash": "b451369ac21cad6988376c40d9c76c11c4bec93e25cab195b1c000261cd00965",
+   "ownedItems": 70,
+   "ownedMaterialItems": 69,
+   "primaryChars": 8590,
+   "requiredContextChars": 35630,
+   "optionalContextChars": 175,
+   "turn1EstimatedTokens": 45335,
+   "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+   "requiredDependencies": 47,
+   "deliveredFull": 42,
+   "boundedExcerpts": 5,
+   "ownedPrimarySource": 0,
+   "external": 0,
+   "internalUnresolved": 0,
+   "ambiguous": 0,
+   "limitations": [],
+   "witnessesInTurn1": [],
+   "executed": {
+    "status": "SHARD_COMPLETE",
+    "attempts": 1,
+    "reusedFromHash": false,
+    "failureReasons": [],
+    "telemetry": {
+     "inputTokens": 139289,
+     "outputTokens": 34715,
+     "costUsd": 0.6257280000000001
+    },
+    "persistedAt": "2026-09-19T13:08:47.455Z"
+   },
+   "toolUsage": {
+    "calls": 1,
+    "sourceReadingCalls": 1,
+    "refusals": 0,
+    "charsReturned": 28,
+    "maxToolCalls": 8,
+    "maxAdditionalSourceChars": 20000,
+    "byTool": {
+     "getSharedCapContext": 1
+    },
+    "requestedTargets": [
+     "{}"
+    ],
+    "anyEvidenceUnresolved": false,
+    "anyEvidenceTruncated": false
+   },
+   "missingContext": {
+    "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+    "requested": [
+     {
+      "targetRef": "Section 6.01(b)(28)",
+      "key": "section:6.01(b)(28)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 36,
+      "fullTextChars": 36,
+      "detail": "delivered IN FULL in the initial context (36 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:3ba68953de46482879c625e8"
+     },
+     {
+      "targetRef": "Section 6.01(b)(13)",
+      "key": "section:6.01(b)(13)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 2665,
+      "fullTextChars": 2665,
+      "detail": "delivered IN FULL in the initial context (2665 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:3ba68953de46482879c625e8"
+     }
+    ],
+    "counts": {
+     "PLANNER_DELIVERY_GAP": 0,
+     "FALSE_MISSING_CONTEXT": 2,
+     "PARTIAL_DELIVERY": 0,
+     "INTERNAL_LIMITATION_DISCLOSED": 0,
+     "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+     "EXTERNAL_DEPENDENCY": 0,
+     "OPTIONAL_CONTEXT_MISS": 0
+    },
+    "contractHeld": true,
+    "violations": []
+   }
+  },
+  {
+   "ordinal": 3,
+   "shardId": "shard:86cc5e439f113d6053a9",
+   "shardHash": "82c135b56cd3d1ac1fde6e7ca73328f2ace2edefc80049c9335082ef030a84ac",
+   "ownedItems": 99,
+   "ownedMaterialItems": 98,
+   "primaryChars": 11801,
+   "requiredContextChars": 63998,
+   "optionalContextChars": 175,
+   "turn1EstimatedTokens": 61670,
+   "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+   "requiredDependencies": 72,
+   "deliveredFull": 58,
+   "boundedExcerpts": 14,
+   "ownedPrimarySource": 0,
+   "external": 0,
+   "internalUnresolved": 0,
+   "ambiguous": 0,
+   "limitations": [],
+   "witnessesInTurn1": [
+    {
+     "key": "term:fixed incremental amount",
+     "deliveredInFull": true
+    },
+    {
+     "key": "term:voluntary prepayment incremental amount",
+     "deliveredInFull": true
+    },
+    {
+     "key": "term:ratio incremental amount",
+     "deliveredInFull": true
+    },
+    {
+     "key": "term:extension amount",
+     "deliveredInFull": true
+    },
+    {
+     "key": "section:2.18(b)",
+     "deliveredInFull": true
+    }
+   ],
+   "executed": {
+    "status": "SHARD_COMPLETE",
+    "attempts": 1,
+    "reusedFromHash": false,
+    "failureReasons": [],
+    "telemetry": {
+     "inputTokens": 88046,
+     "outputTokens": 49266,
+     "costUsd": 0.668752
+    },
+    "persistedAt": "2026-09-19T13:17:28.055Z"
+   },
+   "toolUsage": {
+    "calls": 0,
+    "sourceReadingCalls": 0,
+    "refusals": 0,
+    "charsReturned": 0,
+    "maxToolCalls": 8,
+    "maxAdditionalSourceChars": 20000,
+    "byTool": {},
+    "requestedTargets": [],
+    "anyEvidenceUnresolved": false,
+    "anyEvidenceTruncated": false
+   },
+   "missingContext": {
+    "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+    "requested": [
+     {
+      "targetRef": "Section 6.08(a)(3)(b)",
+      "key": "section:6.08(a)(3)(b)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 2082,
+      "fullTextChars": 2082,
+      "detail": "delivered IN FULL in the initial context (2082 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:4833ed7a5927e739dbe8c9ba"
+     },
+     {
+      "targetRef": "Section 6.08(a)(3)(c)",
+      "key": "section:6.08(a)(3)(c)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 500,
+      "fullTextChars": 500,
+      "detail": "delivered IN FULL in the initial context (500 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:4833ed7a5927e739dbe8c9ba"
+     },
+     {
+      "targetRef": "Section 6.08(b)",
+      "key": "section:6.08(b)",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 1129,
+      "fullTextChars": 27532,
+      "detail": "delivered as a disclosed bounded excerpt (1129 of 27532 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:4833ed7a5927e739dbe8c9ba"
+     },
+     {
+      "targetRef": "Section 6.01(b)(13)",
+      "key": "section:6.01(b)(13)",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 2606,
+      "fullTextChars": 2665,
+      "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:04db3c18afad9d5a03d3b27a"
+     },
+     {
+      "targetRef": "Section 6.01(b)(13)",
+      "key": "section:6.01(b)(13)",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 2606,
+      "fullTextChars": 2665,
+      "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:0a9f949ec890522698ca4bae"
+     },
+     {
+      "targetRef": "Section 6.01(b)(13)",
+      "key": "section:6.01(b)(13)",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 2606,
+      "fullTextChars": 2665,
+      "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:da45cc9662d707abc0a15042"
+     },
+     {
+      "targetRef": "Section 6.01(b)(13)",
+      "key": "section:6.01(b)(13)",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 2606,
+      "fullTextChars": 2665,
+      "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:402bdf35c149c057cf0e0652"
+     },
+     {
+      "targetRef": "Section 6.08",
+      "key": "section:6.08",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 1129,
+      "fullTextChars": 38529,
+      "detail": "delivered as a disclosed bounded excerpt (1129 of 38529 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:6af166aec23df2f60e6ded50"
+     },
+     {
+      "targetRef": "Section 6.08(a)(3)",
+      "key": "section:6.08(a)(3)",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 1128,
+      "fullTextChars": 7988,
+      "detail": "delivered as a disclosed bounded excerpt (1128 of 7988 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:ff2681666f514e20fc7ddeff"
+     },
+     {
+      "targetRef": "definition of 'Permitted Liens' clause (46)(ii)",
+      "key": "term:definition of 'permitted liens' clause (46)(ii)",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:ff2681666f514e20fc7ddeff"
+     },
+     {
+      "targetRef": "Section 6.01",
+      "key": "section:6.01",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 1129,
+      "fullTextChars": 33623,
+      "detail": "delivered as a disclosed bounded excerpt (1129 of 33623 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:3f1138da46659f440dc043ee"
+     },
+     {
+      "targetRef": "Section 6.01(b)(1)(X)",
+      "key": "section:6.01(b)(1)(x)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 561,
+      "fullTextChars": 561,
+      "detail": "delivered IN FULL in the initial context (561 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:850c26e2d91c5e92b7a18c97"
+     },
+     {
+      "targetRef": "Section 6.01(b)(1)(Y)",
+      "key": "section:6.01(b)(1)(y)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 561,
+      "fullTextChars": 561,
+      "detail": "delivered IN FULL in the initial context (561 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:850c26e2d91c5e92b7a18c97"
+     },
+     {
+      "targetRef": "Section 6.01(a)",
+      "key": "section:6.01(a)",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 2606,
+      "fullTextChars": 3115,
+      "detail": "delivered as a disclosed bounded excerpt (2606 of 3115 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:850c26e2d91c5e92b7a18c97"
+     },
+     {
+      "targetRef": "Section 6.01(a)",
+      "key": "section:6.01(a)",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 2606,
+      "fullTextChars": 3115,
+      "detail": "delivered as a disclosed bounded excerpt (2606 of 3115 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:9d0f52846f79387413d6b6bd"
+     },
+     {
+      "targetRef": "Section 6.01(b)(1)",
+      "key": "section:6.01(b)(1)",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+     },
+     {
+      "targetRef": "Section 6.01(b)(4)",
+      "key": "section:6.01(b)(4)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 2196,
+      "fullTextChars": 2196,
+      "detail": "delivered IN FULL in the initial context (2196 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+     },
+     {
+      "targetRef": "Section 6.01(b)(12)",
+      "key": "section:6.01(b)(12)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 1890,
+      "fullTextChars": 1890,
+      "detail": "delivered IN FULL in the initial context (1890 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+     },
+     {
+      "targetRef": "Section 6.01(b)(31)",
+      "key": "section:6.01(b)(31)",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+     },
+     {
+      "targetRef": "Section 6.01(b)(32)",
+      "key": "section:6.01(b)(32)",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+     },
+     {
+      "targetRef": "Section 6.01(b)(33)",
+      "key": "section:6.01(b)(33)",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+     }
+    ],
+    "counts": {
+     "PLANNER_DELIVERY_GAP": 0,
+     "FALSE_MISSING_CONTEXT": 6,
+     "PARTIAL_DELIVERY": 10,
+     "INTERNAL_LIMITATION_DISCLOSED": 0,
+     "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+     "EXTERNAL_DEPENDENCY": 0,
+     "OPTIONAL_CONTEXT_MISS": 5
+    },
+    "contractHeld": true,
+    "violations": []
+   }
+  },
+  {
+   "ordinal": 4,
+   "shardId": "shard:2eb6ff75386e45a57593",
+   "shardHash": "ae76043919980357ec9dc70ecd7d77d1ce55b9814f2e249c4293efa92d919ff0",
+   "ownedItems": 45,
+   "ownedMaterialItems": 44,
+   "primaryChars": 4010,
+   "requiredContextChars": 49756,
+   "optionalContextChars": 175,
+   "turn1EstimatedTokens": 45044,
+   "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+   "requiredDependencies": 67,
+   "deliveredFull": 63,
+   "boundedExcerpts": 4,
+   "ownedPrimarySource": 0,
+   "external": 0,
+   "internalUnresolved": 0,
+   "ambiguous": 0,
+   "limitations": [],
+   "witnessesInTurn1": [],
+   "executed": {
+    "status": "SHARD_COMPLETE",
+    "attempts": 1,
+    "reusedFromHash": false,
+    "failureReasons": [],
+    "telemetry": {
+     "inputTokens": 153192,
+     "outputTokens": 44605,
+     "costUsd": 0.752434
+    },
+    "persistedAt": "2026-09-19T13:24:33.684Z"
+   },
+   "toolUsage": {
+    "calls": 1,
+    "sourceReadingCalls": 1,
+    "refusals": 0,
+    "charsReturned": 28,
+    "maxToolCalls": 8,
+    "maxAdditionalSourceChars": 20000,
+    "byTool": {
+     "getSharedCapContext": 1
+    },
+    "requestedTargets": [
+     "{}"
+    ],
+    "anyEvidenceUnresolved": false,
+    "anyEvidenceTruncated": false
+   },
+   "missingContext": {
+    "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+    "requested": [
+     {
+      "targetRef": "Section 6.01(a)",
+      "key": "section:6.01(a)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 3115,
+      "fullTextChars": 3115,
+      "detail": "delivered IN FULL in the initial context (3115 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+     },
+     {
+      "targetRef": "Section 6.01(b)(1)(Y)",
+      "key": "section:6.01(b)(1)(y)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 561,
+      "fullTextChars": 561,
+      "detail": "delivered IN FULL in the initial context (561 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+     },
+     {
+      "targetRef": "Section 6.01(b)(3)",
+      "key": "section:6.01(b)(3)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 85,
+      "fullTextChars": 85,
+      "detail": "delivered IN FULL in the initial context (85 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+     },
+     {
+      "targetRef": "Section 6.01(b)(4)",
+      "key": "section:6.01(b)(4)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 2196,
+      "fullTextChars": 2196,
+      "detail": "delivered IN FULL in the initial context (2196 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+     },
+     {
+      "targetRef": "Section 6.01(b)(5)(b)",
+      "key": "section:6.01(b)(5)(b)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 370,
+      "fullTextChars": 370,
+      "detail": "delivered IN FULL in the initial context (370 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+     },
+     {
+      "targetRef": "Section 6.01(b)(12)",
+      "key": "section:6.01(b)(12)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 1890,
+      "fullTextChars": 1890,
+      "detail": "delivered IN FULL in the initial context (1890 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+     },
+     {
+      "targetRef": "Section 6.01(b)(13)",
+      "key": "section:6.01(b)(13)",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+     },
+     {
+      "targetRef": "Section 6.01(b)(14)",
+      "key": "section:6.01(b)(14)",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+     },
+     {
+      "targetRef": "Section 6.01(b)(18)",
+      "key": "section:6.01(b)(18)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 719,
+      "fullTextChars": 719,
+      "detail": "delivered IN FULL in the initial context (719 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+     },
+     {
+      "targetRef": "Section 6.01(b)(19)",
+      "key": "section:6.01(b)(19)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 699,
+      "fullTextChars": 699,
+      "detail": "delivered IN FULL in the initial context (699 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+     },
+     {
+      "targetRef": "Section 6.01(b)(27)",
+      "key": "section:6.01(b)(27)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 649,
+      "fullTextChars": 649,
+      "detail": "delivered IN FULL in the initial context (649 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+     },
+     {
+      "targetRef": "Section 6.01(b)(31)",
+      "key": "section:6.01(b)(31)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 325,
+      "fullTextChars": 325,
+      "detail": "delivered IN FULL in the initial context (325 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+     },
+     {
+      "targetRef": "Section 6.01(a)",
+      "key": "section:6.01(a)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 3115,
+      "fullTextChars": 3115,
+      "detail": "delivered IN FULL in the initial context (3115 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:061aeee04268620c22333133"
+     }
+    ],
+    "counts": {
+     "PLANNER_DELIVERY_GAP": 0,
+     "FALSE_MISSING_CONTEXT": 11,
+     "PARTIAL_DELIVERY": 0,
+     "INTERNAL_LIMITATION_DISCLOSED": 0,
+     "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+     "EXTERNAL_DEPENDENCY": 0,
+     "OPTIONAL_CONTEXT_MISS": 2
+    },
+    "contractHeld": true,
+    "violations": []
+   }
+  },
+  {
+   "ordinal": 5,
+   "shardId": "shard:e10ed610ecff8b399619",
+   "shardHash": "0da85a627f9eb0fd6813b66e3dcb2f171fa22680bfa91c790397cd206a3b5e08",
+   "ownedItems": 42,
+   "ownedMaterialItems": 42,
+   "primaryChars": 3712,
+   "requiredContextChars": 42714,
+   "optionalContextChars": 586,
+   "turn1EstimatedTokens": 41034,
+   "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+   "requiredDependencies": 60,
+   "deliveredFull": 55,
+   "boundedExcerpts": 5,
+   "ownedPrimarySource": 0,
+   "external": 0,
+   "internalUnresolved": 0,
+   "ambiguous": 0,
+   "limitations": [],
+   "witnessesInTurn1": [
+    {
+     "key": "term:fixed incremental amount",
+     "deliveredInFull": true
+    },
+    {
+     "key": "section:2.18(b)",
+     "deliveredInFull": true
+    }
+   ],
+   "executed": {
+    "status": "SHARD_COMPLETE",
+    "attempts": 1,
+    "reusedFromHash": false,
+    "failureReasons": [],
+    "telemetry": {
+     "inputTokens": 138798,
+     "outputTokens": 34550,
+     "costUsd": 0.6230960000000001
+    },
+    "persistedAt": "2026-09-19T13:29:50.089Z"
+   },
+   "toolUsage": {
+    "calls": 1,
+    "sourceReadingCalls": 1,
+    "refusals": 0,
+    "charsReturned": 28,
+    "maxToolCalls": 8,
+    "maxAdditionalSourceChars": 20000,
+    "byTool": {
+     "getSharedCapContext": 1
+    },
+    "requestedTargets": [
+     "{}"
+    ],
+    "anyEvidenceUnresolved": false,
+    "anyEvidenceTruncated": false
+   },
+   "missingContext": {
+    "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+    "requested": [
+     {
+      "targetRef": "Section 6.01(a)",
+      "key": "section:6.01(a)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 3115,
+      "fullTextChars": 3115,
+      "detail": "delivered IN FULL in the initial context (3115 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:5f3ed97f062fd5ce6530991f"
+     },
+     {
+      "targetRef": "Section 6.01(b)(14)(a)",
+      "key": "section:6.01(b)(14)(a)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 105,
+      "fullTextChars": 105,
+      "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:5f3ed97f062fd5ce6530991f"
+     },
+     {
+      "targetRef": "Section 6.01(b)(14)(b)",
+      "key": "section:6.01(b)(14)(b)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 105,
+      "fullTextChars": 105,
+      "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:5f3ed97f062fd5ce6530991f"
+     },
+     {
+      "targetRef": "Section 6.01(b)(14)(a)",
+      "key": "section:6.01(b)(14)(a)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 105,
+      "fullTextChars": 105,
+      "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:9544f1b8bb599ded885deb38"
+     },
+     {
+      "targetRef": "Section 6.01(b)(14)(b)",
+      "key": "section:6.01(b)(14)(b)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 105,
+      "fullTextChars": 105,
+      "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:9544f1b8bb599ded885deb38"
+     },
+     {
+      "targetRef": "Fixed Incremental Amount",
+      "key": "term:fixed incremental amount",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 948,
+      "fullTextChars": 948,
+      "detail": "delivered IN FULL in the initial context (948 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:9544f1b8bb599ded885deb38"
+     }
+    ],
+    "counts": {
+     "PLANNER_DELIVERY_GAP": 0,
+     "FALSE_MISSING_CONTEXT": 6,
+     "PARTIAL_DELIVERY": 0,
+     "INTERNAL_LIMITATION_DISCLOSED": 0,
+     "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+     "EXTERNAL_DEPENDENCY": 0,
+     "OPTIONAL_CONTEXT_MISS": 0
+    },
+    "contractHeld": true,
+    "violations": []
+   }
+  },
+  {
+   "ordinal": 6,
+   "shardId": "shard:7c4d3d2ae3e0a522b99e",
+   "shardHash": "f8965d0be191e382df668b523da2be02dc4d36e435833f846c6f90887eeb969b",
+   "ownedItems": 16,
+   "ownedMaterialItems": 14,
+   "primaryChars": 1553,
+   "requiredContextChars": 14966,
+   "optionalContextChars": 175,
+   "turn1EstimatedTokens": 25949,
+   "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+   "requiredDependencies": 24,
+   "deliveredFull": 21,
+   "boundedExcerpts": 3,
+   "ownedPrimarySource": 0,
+   "external": 0,
+   "internalUnresolved": 0,
+   "ambiguous": 0,
+   "limitations": [],
+   "witnessesInTurn1": [],
+   "executed": {
+    "status": "SHARD_COMPLETE",
+    "attempts": 1,
+    "reusedFromHash": false,
+    "failureReasons": [],
+    "telemetry": {
+     "inputTokens": 79567,
+     "outputTokens": 25641,
+     "costUsd": 0.415544
+    },
+    "persistedAt": "2026-09-19T13:33:48.217Z"
+   },
+   "toolUsage": {
+    "calls": 1,
+    "sourceReadingCalls": 1,
+    "refusals": 0,
+    "charsReturned": 2177,
+    "maxToolCalls": 8,
+    "maxAdditionalSourceChars": 20000,
+    "byTool": {
+     "getReferencedProvision": 1
+    },
+    "requestedTargets": [
+     "{\"ref\":\"Section 6.08(b)(4)\"}"
+    ],
+    "anyEvidenceUnresolved": false,
+    "anyEvidenceTruncated": false
+   },
+   "missingContext": {
+    "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+    "requested": [
+     {
+      "targetRef": "Section 6.08(b)(4)",
+      "key": "section:6.08(b)(4)",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 1128,
+      "fullTextChars": 4411,
+      "detail": "delivered as a disclosed bounded excerpt (1128 of 4411 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:c0fd7f9011257a2b98c1654b"
+     },
+     {
+      "targetRef": "Definition of Receivables Non-Recourse Facility",
+      "key": "term:definition of receivables non-recourse facility",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:676f68faa01a4807450d826c"
+     },
+     {
+      "targetRef": "Definition of Receivables Recourse Facility",
+      "key": "term:definition of receivables recourse facility",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:e4db778493ac83df907f6656"
+     },
+     {
+      "targetRef": "Definition of Unsecured Capitalized Leases",
+      "key": "term:definition of unsecured capitalized leases",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:2619ff9bc5f96334ba4635ac"
+     },
+     {
+      "targetRef": "Definition of Permitted Tax Restructuring",
+      "key": "term:definition of permitted tax restructuring",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:fb1e101e6fbc60f19087554d"
+     }
+    ],
+    "counts": {
+     "PLANNER_DELIVERY_GAP": 0,
+     "FALSE_MISSING_CONTEXT": 0,
+     "PARTIAL_DELIVERY": 1,
+     "INTERNAL_LIMITATION_DISCLOSED": 0,
+     "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+     "EXTERNAL_DEPENDENCY": 0,
+     "OPTIONAL_CONTEXT_MISS": 4
+    },
+    "contractHeld": true,
+    "violations": []
+   }
+  }
+ ],
+ "contractCounts": {
+  "PLANNER_DELIVERY_GAP": 0,
+  "FALSE_MISSING_CONTEXT": 27,
+  "PARTIAL_DELIVERY": 13,
+  "INTERNAL_LIMITATION_DISCLOSED": 0,
+  "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+  "EXTERNAL_DEPENDENCY": 0,
+  "OPTIONAL_CONTEXT_MISS": 17
+ },
+ "plannerDeliveryGap": 0,
+ "falseMissingContext": 27,
+ "contractHeldOnEveryShard": true,
+ "shardsWithoutRecordedAudit": 0,
+ "hardQuestion": {
+  "question": "did any model report missing context for something already present in its initial required-context package?",
+  "requestsAgainstDeliveredContext": [
+   {
+    "shardId": "shard:7888717f06dfe736bf5b",
+    "targetRef": "Section 2.18",
+    "key": "section:2.18",
+    "classification": "PARTIAL_DELIVERY",
+    "deliveredChars": 1129,
+    "fullTextChars": 13978,
+    "detail": "delivered as a disclosed bounded excerpt (1129 of 13978 chars); retrieving the remainder with a bounded tool call is the designed route",
+    "requestingRuleId": "ir-rule:ddcde906c9918c1536641de8"
+   },
+   {
+    "shardId": "shard:7888717f06dfe736bf5b",
+    "targetRef": "Section 2.19",
+    "key": "section:2.19",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 2283,
+    "fullTextChars": 2283,
+    "detail": "delivered IN FULL in the initial context (2283 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:ddcde906c9918c1536641de8"
+   },
+   {
+    "shardId": "shard:7888717f06dfe736bf5b",
+    "targetRef": "Section 2.22",
+    "key": "section:2.22",
+    "classification": "PARTIAL_DELIVERY",
+    "deliveredChars": 1128,
+    "fullTextChars": 4991,
+    "detail": "delivered as a disclosed bounded excerpt (1128 of 4991 chars); retrieving the remainder with a bounded tool call is the designed route",
+    "requestingRuleId": "ir-rule:ddcde906c9918c1536641de8"
+   },
+   {
+    "shardId": "shard:7888717f06dfe736bf5b",
+    "targetRef": "ABL Credit Agreement",
+    "key": "term:abl credit agreement",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 941,
+    "fullTextChars": 941,
+    "detail": "delivered IN FULL in the initial context (941 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:5b37dcc87c9b7fb826ac6070"
+   },
+   {
+    "shardId": "shard:fe26b4996ab543b0a066",
+    "targetRef": "Section 6.01(b)(28)",
+    "key": "section:6.01(b)(28)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 36,
+    "fullTextChars": 36,
+    "detail": "delivered IN FULL in the initial context (36 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:3ba68953de46482879c625e8"
+   },
+   {
+    "shardId": "shard:fe26b4996ab543b0a066",
+    "targetRef": "Section 6.01(b)(13)",
+    "key": "section:6.01(b)(13)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 2665,
+    "fullTextChars": 2665,
+    "detail": "delivered IN FULL in the initial context (2665 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:3ba68953de46482879c625e8"
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "targetRef": "Section 6.08(a)(3)(b)",
+    "key": "section:6.08(a)(3)(b)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 2082,
+    "fullTextChars": 2082,
+    "detail": "delivered IN FULL in the initial context (2082 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:4833ed7a5927e739dbe8c9ba"
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "targetRef": "Section 6.08(a)(3)(c)",
+    "key": "section:6.08(a)(3)(c)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 500,
+    "fullTextChars": 500,
+    "detail": "delivered IN FULL in the initial context (500 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:4833ed7a5927e739dbe8c9ba"
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "targetRef": "Section 6.08(b)",
+    "key": "section:6.08(b)",
+    "classification": "PARTIAL_DELIVERY",
+    "deliveredChars": 1129,
+    "fullTextChars": 27532,
+    "detail": "delivered as a disclosed bounded excerpt (1129 of 27532 chars); retrieving the remainder with a bounded tool call is the designed route",
+    "requestingRuleId": "ir-rule:4833ed7a5927e739dbe8c9ba"
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "targetRef": "Section 6.01(b)(13)",
+    "key": "section:6.01(b)(13)",
+    "classification": "PARTIAL_DELIVERY",
+    "deliveredChars": 2606,
+    "fullTextChars": 2665,
+    "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+    "requestingRuleId": "ir-rule:04db3c18afad9d5a03d3b27a"
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "targetRef": "Section 6.01(b)(13)",
+    "key": "section:6.01(b)(13)",
+    "classification": "PARTIAL_DELIVERY",
+    "deliveredChars": 2606,
+    "fullTextChars": 2665,
+    "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+    "requestingRuleId": "ir-rule:0a9f949ec890522698ca4bae"
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "targetRef": "Section 6.01(b)(13)",
+    "key": "section:6.01(b)(13)",
+    "classification": "PARTIAL_DELIVERY",
+    "deliveredChars": 2606,
+    "fullTextChars": 2665,
+    "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+    "requestingRuleId": "ir-rule:da45cc9662d707abc0a15042"
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "targetRef": "Section 6.01(b)(13)",
+    "key": "section:6.01(b)(13)",
+    "classification": "PARTIAL_DELIVERY",
+    "deliveredChars": 2606,
+    "fullTextChars": 2665,
+    "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+    "requestingRuleId": "ir-rule:402bdf35c149c057cf0e0652"
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "targetRef": "Section 6.08",
+    "key": "section:6.08",
+    "classification": "PARTIAL_DELIVERY",
+    "deliveredChars": 1129,
+    "fullTextChars": 38529,
+    "detail": "delivered as a disclosed bounded excerpt (1129 of 38529 chars); retrieving the remainder with a bounded tool call is the designed route",
+    "requestingRuleId": "ir-rule:6af166aec23df2f60e6ded50"
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "targetRef": "Section 6.08(a)(3)",
+    "key": "section:6.08(a)(3)",
+    "classification": "PARTIAL_DELIVERY",
+    "deliveredChars": 1128,
+    "fullTextChars": 7988,
+    "detail": "delivered as a disclosed bounded excerpt (1128 of 7988 chars); retrieving the remainder with a bounded tool call is the designed route",
+    "requestingRuleId": "ir-rule:ff2681666f514e20fc7ddeff"
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "targetRef": "Section 6.01",
+    "key": "section:6.01",
+    "classification": "PARTIAL_DELIVERY",
+    "deliveredChars": 1129,
+    "fullTextChars": 33623,
+    "detail": "delivered as a disclosed bounded excerpt (1129 of 33623 chars); retrieving the remainder with a bounded tool call is the designed route",
+    "requestingRuleId": "ir-rule:3f1138da46659f440dc043ee"
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "targetRef": "Section 6.01(b)(1)(X)",
+    "key": "section:6.01(b)(1)(x)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 561,
+    "fullTextChars": 561,
+    "detail": "delivered IN FULL in the initial context (561 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:850c26e2d91c5e92b7a18c97"
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "targetRef": "Section 6.01(b)(1)(Y)",
+    "key": "section:6.01(b)(1)(y)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 561,
+    "fullTextChars": 561,
+    "detail": "delivered IN FULL in the initial context (561 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:850c26e2d91c5e92b7a18c97"
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "targetRef": "Section 6.01(a)",
+    "key": "section:6.01(a)",
+    "classification": "PARTIAL_DELIVERY",
+    "deliveredChars": 2606,
+    "fullTextChars": 3115,
+    "detail": "delivered as a disclosed bounded excerpt (2606 of 3115 chars); retrieving the remainder with a bounded tool call is the designed route",
+    "requestingRuleId": "ir-rule:850c26e2d91c5e92b7a18c97"
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "targetRef": "Section 6.01(a)",
+    "key": "section:6.01(a)",
+    "classification": "PARTIAL_DELIVERY",
+    "deliveredChars": 2606,
+    "fullTextChars": 3115,
+    "detail": "delivered as a disclosed bounded excerpt (2606 of 3115 chars); retrieving the remainder with a bounded tool call is the designed route",
+    "requestingRuleId": "ir-rule:9d0f52846f79387413d6b6bd"
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "targetRef": "Section 6.01(b)(4)",
+    "key": "section:6.01(b)(4)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 2196,
+    "fullTextChars": 2196,
+    "detail": "delivered IN FULL in the initial context (2196 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+   },
+   {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "targetRef": "Section 6.01(b)(12)",
+    "key": "section:6.01(b)(12)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 1890,
+    "fullTextChars": 1890,
+    "detail": "delivered IN FULL in the initial context (1890 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+   },
+   {
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "targetRef": "Section 6.01(a)",
+    "key": "section:6.01(a)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 3115,
+    "fullTextChars": 3115,
+    "detail": "delivered IN FULL in the initial context (3115 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+   },
+   {
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "targetRef": "Section 6.01(b)(1)(Y)",
+    "key": "section:6.01(b)(1)(y)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 561,
+    "fullTextChars": 561,
+    "detail": "delivered IN FULL in the initial context (561 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+   },
+   {
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "targetRef": "Section 6.01(b)(3)",
+    "key": "section:6.01(b)(3)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 85,
+    "fullTextChars": 85,
+    "detail": "delivered IN FULL in the initial context (85 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+   },
+   {
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "targetRef": "Section 6.01(b)(4)",
+    "key": "section:6.01(b)(4)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 2196,
+    "fullTextChars": 2196,
+    "detail": "delivered IN FULL in the initial context (2196 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+   },
+   {
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "targetRef": "Section 6.01(b)(5)(b)",
+    "key": "section:6.01(b)(5)(b)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 370,
+    "fullTextChars": 370,
+    "detail": "delivered IN FULL in the initial context (370 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+   },
+   {
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "targetRef": "Section 6.01(b)(12)",
+    "key": "section:6.01(b)(12)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 1890,
+    "fullTextChars": 1890,
+    "detail": "delivered IN FULL in the initial context (1890 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+   },
+   {
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "targetRef": "Section 6.01(b)(18)",
+    "key": "section:6.01(b)(18)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 719,
+    "fullTextChars": 719,
+    "detail": "delivered IN FULL in the initial context (719 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+   },
+   {
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "targetRef": "Section 6.01(b)(19)",
+    "key": "section:6.01(b)(19)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 699,
+    "fullTextChars": 699,
+    "detail": "delivered IN FULL in the initial context (699 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+   },
+   {
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "targetRef": "Section 6.01(b)(27)",
+    "key": "section:6.01(b)(27)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 649,
+    "fullTextChars": 649,
+    "detail": "delivered IN FULL in the initial context (649 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+   },
+   {
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "targetRef": "Section 6.01(b)(31)",
+    "key": "section:6.01(b)(31)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 325,
+    "fullTextChars": 325,
+    "detail": "delivered IN FULL in the initial context (325 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:43f57f0537d1dd9423dceea1"
+   },
+   {
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "targetRef": "Section 6.01(a)",
+    "key": "section:6.01(a)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 3115,
+    "fullTextChars": 3115,
+    "detail": "delivered IN FULL in the initial context (3115 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:061aeee04268620c22333133"
+   },
+   {
+    "shardId": "shard:e10ed610ecff8b399619",
+    "targetRef": "Section 6.01(a)",
+    "key": "section:6.01(a)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 3115,
+    "fullTextChars": 3115,
+    "detail": "delivered IN FULL in the initial context (3115 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:5f3ed97f062fd5ce6530991f"
+   },
+   {
+    "shardId": "shard:e10ed610ecff8b399619",
+    "targetRef": "Section 6.01(b)(14)(a)",
+    "key": "section:6.01(b)(14)(a)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 105,
+    "fullTextChars": 105,
+    "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:5f3ed97f062fd5ce6530991f"
+   },
+   {
+    "shardId": "shard:e10ed610ecff8b399619",
+    "targetRef": "Section 6.01(b)(14)(b)",
+    "key": "section:6.01(b)(14)(b)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 105,
+    "fullTextChars": 105,
+    "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:5f3ed97f062fd5ce6530991f"
+   },
+   {
+    "shardId": "shard:e10ed610ecff8b399619",
+    "targetRef": "Section 6.01(b)(14)(a)",
+    "key": "section:6.01(b)(14)(a)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 105,
+    "fullTextChars": 105,
+    "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:9544f1b8bb599ded885deb38"
+   },
+   {
+    "shardId": "shard:e10ed610ecff8b399619",
+    "targetRef": "Section 6.01(b)(14)(b)",
+    "key": "section:6.01(b)(14)(b)",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 105,
+    "fullTextChars": 105,
+    "detail": "delivered IN FULL in the initial context (105 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:9544f1b8bb599ded885deb38"
+   },
+   {
+    "shardId": "shard:e10ed610ecff8b399619",
+    "targetRef": "Fixed Incremental Amount",
+    "key": "term:fixed incremental amount",
+    "classification": "FALSE_MISSING_CONTEXT",
+    "deliveredChars": 948,
+    "fullTextChars": 948,
+    "detail": "delivered IN FULL in the initial context (948 chars) before the first turn - the missing-context claim is not about delivery",
+    "requestingRuleId": "ir-rule:9544f1b8bb599ded885deb38"
+   },
+   {
+    "shardId": "shard:7c4d3d2ae3e0a522b99e",
+    "targetRef": "Section 6.08(b)(4)",
+    "key": "section:6.08(b)(4)",
+    "classification": "PARTIAL_DELIVERY",
+    "deliveredChars": 1128,
+    "fullTextChars": 4411,
+    "detail": "delivered as a disclosed bounded excerpt (1128 of 4411 chars); retrieving the remainder with a bounded tool call is the designed route",
+    "requestingRuleId": "ir-rule:c0fd7f9011257a2b98c1654b"
+   }
+  ],
+  "answer": "YES (40) - see requests"
+ },
+ "missingContextObjects": [],
+ "structuredRequests": [],
+ "recurrenceOfTheClosed29": [],
+ "witnesses": {
+  "note": "audit witnesses of the generic machinery (harness-only names): turn-1 availability in the REQUIRED tier of every shard whose owned material cites them",
+  "witnessDelivery": [
+   {
+    "key": "term:fixed incremental amount",
+    "shardsWithKeyInTurn1Required": [
+     {
+      "shardId": "shard:7888717f06dfe736bf5b",
+      "deliveredInFull": true
+     },
+     {
+      "shardId": "shard:86cc5e439f113d6053a9",
+      "deliveredInFull": true
+     },
+     {
+      "shardId": "shard:e10ed610ecff8b399619",
+      "deliveredInFull": true
+     }
+    ]
+   },
+   {
+    "key": "term:voluntary prepayment incremental amount",
+    "shardsWithKeyInTurn1Required": [
+     {
+      "shardId": "shard:86cc5e439f113d6053a9",
+      "deliveredInFull": true
+     }
+    ]
+   },
+   {
+    "key": "term:ratio incremental amount",
+    "shardsWithKeyInTurn1Required": [
+     {
+      "shardId": "shard:86cc5e439f113d6053a9",
+      "deliveredInFull": true
+     }
+    ]
+   },
+   {
+    "key": "term:extension amount",
+    "shardsWithKeyInTurn1Required": [
+     {
+      "shardId": "shard:86cc5e439f113d6053a9",
+      "deliveredInFull": true
+     }
+    ]
+   },
+   {
+    "key": "section:2.18(b)",
+    "shardsWithKeyInTurn1Required": [
+     {
+      "shardId": "shard:7888717f06dfe736bf5b",
+      "deliveredInFull": true
+     },
+     {
+      "shardId": "shard:86cc5e439f113d6053a9",
+      "deliveredInFull": true
+     },
+     {
+      "shardId": "shard:e10ed610ecff8b399619",
+      "deliveredInFull": true
+     }
+    ]
+   }
+  ],
+  "allWitnessesInFullWhereverCited": true
+ },
+ "thinCapShard": {
+  "plan": {
+   "shardId": "shard:86cc5e439f113d6053a9",
+   "requiredContextChars": 63998,
+   "ceiling": 64000,
+   "turn1Tokens": 61670,
+   "certificate": "CERTIFIED_CONTEXT_COMPLETE",
+   "allocation": {
+    "ceilingChars": 64000,
+    "perEntryAllowanceChars": 2377,
+    "waterFilled": true
+   },
+   "expected": {
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "requiredContextChars": 63998,
+    "ceiling": 64000,
+    "turn1Tokens": 61670
+   }
+  },
+  "executed": {
+   "status": "SHARD_COMPLETE",
+   "toolUsage": {
+    "calls": 0,
+    "sourceReadingCalls": 0,
+    "refusals": 0,
+    "charsReturned": 0,
+    "maxToolCalls": 8,
+    "maxAdditionalSourceChars": 20000,
+    "byTool": {},
+    "requestedTargets": [],
+    "anyEvidenceUnresolved": false,
+    "anyEvidenceTruncated": false
+   },
+   "missingContext": {
+    "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+    "requested": [
+     {
+      "targetRef": "Section 6.08(a)(3)(b)",
+      "key": "section:6.08(a)(3)(b)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 2082,
+      "fullTextChars": 2082,
+      "detail": "delivered IN FULL in the initial context (2082 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:4833ed7a5927e739dbe8c9ba"
+     },
+     {
+      "targetRef": "Section 6.08(a)(3)(c)",
+      "key": "section:6.08(a)(3)(c)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 500,
+      "fullTextChars": 500,
+      "detail": "delivered IN FULL in the initial context (500 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:4833ed7a5927e739dbe8c9ba"
+     },
+     {
+      "targetRef": "Section 6.08(b)",
+      "key": "section:6.08(b)",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 1129,
+      "fullTextChars": 27532,
+      "detail": "delivered as a disclosed bounded excerpt (1129 of 27532 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:4833ed7a5927e739dbe8c9ba"
+     },
+     {
+      "targetRef": "Section 6.01(b)(13)",
+      "key": "section:6.01(b)(13)",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 2606,
+      "fullTextChars": 2665,
+      "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:04db3c18afad9d5a03d3b27a"
+     },
+     {
+      "targetRef": "Section 6.01(b)(13)",
+      "key": "section:6.01(b)(13)",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 2606,
+      "fullTextChars": 2665,
+      "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:0a9f949ec890522698ca4bae"
+     },
+     {
+      "targetRef": "Section 6.01(b)(13)",
+      "key": "section:6.01(b)(13)",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 2606,
+      "fullTextChars": 2665,
+      "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:da45cc9662d707abc0a15042"
+     },
+     {
+      "targetRef": "Section 6.01(b)(13)",
+      "key": "section:6.01(b)(13)",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 2606,
+      "fullTextChars": 2665,
+      "detail": "delivered as a disclosed bounded excerpt (2606 of 2665 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:402bdf35c149c057cf0e0652"
+     },
+     {
+      "targetRef": "Section 6.08",
+      "key": "section:6.08",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 1129,
+      "fullTextChars": 38529,
+      "detail": "delivered as a disclosed bounded excerpt (1129 of 38529 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:6af166aec23df2f60e6ded50"
+     },
+     {
+      "targetRef": "Section 6.08(a)(3)",
+      "key": "section:6.08(a)(3)",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 1128,
+      "fullTextChars": 7988,
+      "detail": "delivered as a disclosed bounded excerpt (1128 of 7988 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:ff2681666f514e20fc7ddeff"
+     },
+     {
+      "targetRef": "definition of 'Permitted Liens' clause (46)(ii)",
+      "key": "term:definition of 'permitted liens' clause (46)(ii)",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:ff2681666f514e20fc7ddeff"
+     },
+     {
+      "targetRef": "Section 6.01",
+      "key": "section:6.01",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 1129,
+      "fullTextChars": 33623,
+      "detail": "delivered as a disclosed bounded excerpt (1129 of 33623 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:3f1138da46659f440dc043ee"
+     },
+     {
+      "targetRef": "Section 6.01(b)(1)(X)",
+      "key": "section:6.01(b)(1)(x)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 561,
+      "fullTextChars": 561,
+      "detail": "delivered IN FULL in the initial context (561 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:850c26e2d91c5e92b7a18c97"
+     },
+     {
+      "targetRef": "Section 6.01(b)(1)(Y)",
+      "key": "section:6.01(b)(1)(y)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 561,
+      "fullTextChars": 561,
+      "detail": "delivered IN FULL in the initial context (561 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:850c26e2d91c5e92b7a18c97"
+     },
+     {
+      "targetRef": "Section 6.01(a)",
+      "key": "section:6.01(a)",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 2606,
+      "fullTextChars": 3115,
+      "detail": "delivered as a disclosed bounded excerpt (2606 of 3115 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:850c26e2d91c5e92b7a18c97"
+     },
+     {
+      "targetRef": "Section 6.01(a)",
+      "key": "section:6.01(a)",
+      "classification": "PARTIAL_DELIVERY",
+      "deliveredChars": 2606,
+      "fullTextChars": 3115,
+      "detail": "delivered as a disclosed bounded excerpt (2606 of 3115 chars); retrieving the remainder with a bounded tool call is the designed route",
+      "requestingRuleId": "ir-rule:9d0f52846f79387413d6b6bd"
+     },
+     {
+      "targetRef": "Section 6.01(b)(1)",
+      "key": "section:6.01(b)(1)",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+     },
+     {
+      "targetRef": "Section 6.01(b)(4)",
+      "key": "section:6.01(b)(4)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 2196,
+      "fullTextChars": 2196,
+      "detail": "delivered IN FULL in the initial context (2196 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+     },
+     {
+      "targetRef": "Section 6.01(b)(12)",
+      "key": "section:6.01(b)(12)",
+      "classification": "FALSE_MISSING_CONTEXT",
+      "deliveredChars": 1890,
+      "fullTextChars": 1890,
+      "detail": "delivered IN FULL in the initial context (1890 chars) before the first turn - the missing-context claim is not about delivery",
+      "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+     },
+     {
+      "targetRef": "Section 6.01(b)(31)",
+      "key": "section:6.01(b)(31)",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+     },
+     {
+      "targetRef": "Section 6.01(b)(32)",
+      "key": "section:6.01(b)(32)",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+     },
+     {
+      "targetRef": "Section 6.01(b)(33)",
+      "key": "section:6.01(b)(33)",
+      "classification": "OPTIONAL_CONTEXT_MISS",
+      "deliveredChars": null,
+      "fullTextChars": null,
+      "detail": "not in this shard's required-dependency closure - interpretive context; the bounded tool route is the designed answer",
+      "requestingRuleId": "ir-rule:247f7ad99f862255aed41beb"
+     }
+    ],
+    "counts": {
+     "PLANNER_DELIVERY_GAP": 0,
+     "FALSE_MISSING_CONTEXT": 6,
+     "PARTIAL_DELIVERY": 10,
+     "INTERNAL_LIMITATION_DISCLOSED": 0,
+     "AMBIGUOUS_LIMITATION_DISCLOSED": 0,
+     "EXTERNAL_DEPENDENCY": 0,
+     "OPTIONAL_CONTEXT_MISS": 5
+    },
+    "contractHeld": true,
+    "violations": []
+   }
+  }
+ },
+ "toolTelemetryTotals": {
+  "calls": 6,
+  "sourceReadingCalls": 6,
+  "refusals": 0,
+  "charsReturned": 2393
+ }
+}
