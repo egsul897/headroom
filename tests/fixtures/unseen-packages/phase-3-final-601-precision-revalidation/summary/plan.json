@@ -1,0 +1,580 @@
+{
+ "artifact": "6.01 final post-precision revalidation §8-§11 - exact current plan (frozen per shard), historical stores, affordability",
+ "at": "2026-09-19T12:52:57.425Z",
+ "identity": {
+  "head": {
+   "expected": "6cc1c5de51a56d93bf9094714c3f1337169be71f",
+   "actual": "6cc1c5de51a56d93bf9094714c3f1337169be71f",
+   "isDescendant": true,
+   "filesOutsideMission": [],
+   "match": true
+  },
+  "workingTreeClean": {
+   "dirtyOutsideMission": [],
+   "match": true
+  },
+  "productionTreeIsCertified": {
+   "certifiedSha": "80671aa8562d3aa0ac2c6bd3120f56cda6aa91aa",
+   "trees": {
+    "lib": {
+     "expected": "82832050f837e18599bfa127b4722ade879e7c24",
+     "actual": "82832050f837e18599bfa127b4722ade879e7c24",
+     "workingTreeDiffersFromHead": []
+    },
+    "lib/contract-model/compiler": {
+     "expected": "365c6fd79324816e1473d9857d642cf8fa146518",
+     "actual": "365c6fd79324816e1473d9857d642cf8fa146518",
+     "workingTreeDiffersFromHead": []
+    },
+    "lib/contract-model/compiler/semantic": {
+     "expected": "84a709051ed7d959407b286d34e75ebae442891d",
+     "actual": "84a709051ed7d959407b286d34e75ebae442891d",
+     "workingTreeDiffersFromHead": []
+    }
+   },
+   "driftFromCertified": [],
+   "match": true
+  },
+  "remoteAtSameHead": {
+   "remote": "6cc1c5de51a56d93bf9094714c3f1337169be71f",
+   "match": true
+  },
+  "precheckArtifacts": {
+   "present": [
+    {
+     "artifact": "147-committed-tree-recertification",
+     "present": true
+    },
+    {
+     "artifact": "148-final-preflight",
+     "present": true
+    },
+    {
+     "artifact": "149-final-preflight-gate",
+     "present": true
+    }
+   ],
+   "gate149": {
+    "PASS": 17,
+    "FAIL": 1,
+    "failing": [
+     "12 gateway balance >= conservative resumed cost"
+    ]
+   },
+   "match": true
+  },
+  "allMatch": true
+ },
+ "planHash": "b2b9540a144348dab91cc80eacd0d9b472e9e93a61a8fd359e1a507cf5cf17ce",
+ "expectedPlanHash": "b2b9540a144348dab91cc80eacd0d9b472e9e93a61a8fd359e1a507cf5cf17ce",
+ "mode": "SHARDED",
+ "plannerEstimatedInputTokens": 290402,
+ "maxShardInputTokens": 61670,
+ "firstTurnBoundTokens": 100000,
+ "census": {
+  "shards": 7,
+  "oversized": 0,
+  "CERTIFIED_CONTEXT_COMPLETE": 5,
+  "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION": 2,
+  "CERTIFIED_WITH_EXPLICIT_EXTERNAL_LIMITATION": 0,
+  "PLANNING_FAILED_REQUIRED_CONTEXT_UNDELIVERABLE": 0
+ },
+ "expectedCensus": {
+  "shards": 7,
+  "oversized": 0,
+  "CERTIFIED_CONTEXT_COMPLETE": 5,
+  "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION": 2,
+  "CERTIFIED_WITH_EXPLICIT_EXTERNAL_LIMITATION": 0,
+  "PLANNING_FAILED_REQUIRED_CONTEXT_UNDELIVERABLE": 0
+ },
+ "certification": {
+  "modelVersion": "required-dependency-delivery.v2-precision-and-certificate-honesty",
+  "shardsContextComplete": 5,
+  "shardsLimitedExternal": 0,
+  "shardsLimitedInternal": 2,
+  "shardsPlanningFailed": 0,
+  "requiredDependenciesTotal": 378,
+  "deliveredFull": 333,
+  "deliveredBoundedExcerpt": 40,
+  "ownedPrimarySource": 2,
+  "external": 1,
+  "internalUnresolved": 1,
+  "ambiguous": 1,
+  "nonRequiredEdgesExcluded": 0,
+  "deliverableNotDelivered": 0,
+  "allShardsExecutable": true,
+  "allShardsContextComplete": false
+ },
+ "resharding": {
+  "splits": 1,
+  "maxDepthReached": 1,
+  "note": "shards split along must-link block boundaries BEFORE any provider call because their required-dependency closure did not fit the context budget (§10)"
+ },
+ "thinShard": {
+  "shardId": "shard:86cc5e439f113d6053a9",
+  "requiredContextChars": 63998,
+  "ceiling": 64000,
+  "turn1Tokens": 61670,
+  "certificate": "CERTIFIED_CONTEXT_COMPLETE",
+  "allocation": {
+   "ceilingChars": 64000,
+   "perEntryAllowanceChars": 2377,
+   "waterFilled": true
+  },
+  "expected": {
+   "shardId": "shard:86cc5e439f113d6053a9",
+   "requiredContextChars": 63998,
+   "ceiling": 64000,
+   "turn1Tokens": 61670
+  }
+ },
+ "perShard": [
+  {
+   "ordinal": 0,
+   "shardId": "shard:7922314d9b00112aef21",
+   "shardHash": "6993abd1ef681cce2d579e389b53c91dd727f9e206b39e7c1dd61d2289a02a2a",
+   "ownedItems": 43,
+   "ownedMaterialItems": 42,
+   "primaryChars": 3294,
+   "requiredContextChars": 35241,
+   "optionalContextChars": 0,
+   "turn1EstimatedTokens": 38429,
+   "certificateStatus": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+   "requiredDependencies": 57,
+   "deliveredFull": 51,
+   "boundedExcerpts": 3,
+   "ownedPrimarySource": 2,
+   "external": 0,
+   "internalUnresolved": 1,
+   "ambiguous": 0,
+   "limitations": [
+    {
+     "key": "term:junior lien priority",
+     "disposition": "INTERNAL_REQUIRED_DEPENDENCY_UNRESOLVED",
+     "reason": "\"Junior Lien Priority\" is used as a capitalised term in doc-a but no declaration of it can be resolved - required, internal, unresolved",
+     "requiredBy": 1
+    }
+   ],
+   "witnessesInTurn1": []
+  },
+  {
+   "ordinal": 1,
+   "shardId": "shard:7888717f06dfe736bf5b",
+   "shardHash": "10b58a46677cb2e02ebc12cb1de9af2c37b5be80c0183fc86775f2527a7441ed",
+   "ownedItems": 11,
+   "ownedMaterialItems": 10,
+   "primaryChars": 663,
+   "requiredContextChars": 35520,
+   "optionalContextChars": 175,
+   "turn1EstimatedTokens": 32941,
+   "certificateStatus": "CERTIFIED_WITH_EXPLICIT_INTERNAL_LIMITATION",
+   "requiredDependencies": 51,
+   "deliveredFull": 43,
+   "boundedExcerpts": 6,
+   "ownedPrimarySource": 0,
+   "external": 1,
+   "internalUnresolved": 0,
+   "ambiguous": 1,
+   "limitations": [
+    {
+     "key": "term:borrowing base",
+     "disposition": "EXTERNAL_REQUIRED_DEPENDENCY",
+     "reason": "the source itself writes \"Borrowing Base (as defined in ABL Credit Agreement)\"; the package contains one document and \"ABL Credit Agreement\" is not it - externality proven from package identity; represented explicitly as an external limitation and never fabricated (source: \"not to exceed the greater of (a) $800.0 million and (b) the Borrowing Base (as defined in the ABL Credit Agreement) as of the date of s\")",
+     "requiredBy": 2
+    },
+    {
+     "key": "section:6.01(b)(1)(z)",
+     "disposition": "AMBIGUOUS_REQUIRED_DEPENDENCY",
+     "reason": "section 6.01(b)(1)(Z) matches 3 substantive physical locations - candidates preserved with provenance, none guessed (2 substantive occurrences share \"6.01(b)(1)\" - genuinely ambiguous, not resolved (never guessed); the referring node's own enumeration run does not single one out)",
+     "requiredBy": 6
+    }
+   ],
+   "witnessesInTurn1": [
+    {
+     "key": "term:fixed incremental amount",
+     "deliveredInFull": true
+    },
+    {
+     "key": "section:2.18(b)",
+     "deliveredInFull": true
+    }
+   ]
+  },
+  {
+   "ordinal": 2,
+   "shardId": "shard:fe26b4996ab543b0a066",
+   "shardHash": "b451369ac21cad6988376c40d9c76c11c4bec93e25cab195b1c000261cd00965",
+   "ownedItems": 70,
+   "ownedMaterialItems": 69,
+   "primaryChars": 8590,
+   "requiredContextChars": 35630,
+   "optionalContextChars": 175,
+   "turn1EstimatedTokens": 45335,
+   "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+   "requiredDependencies": 47,
+   "deliveredFull": 42,
+   "boundedExcerpts": 5,
+   "ownedPrimarySource": 0,
+   "external": 0,
+   "internalUnresolved": 0,
+   "ambiguous": 0,
+   "limitations": [],
+   "witnessesInTurn1": []
+  },
+  {
+   "ordinal": 3,
+   "shardId": "shard:86cc5e439f113d6053a9",
+   "shardHash": "82c135b56cd3d1ac1fde6e7ca73328f2ace2edefc80049c9335082ef030a84ac",
+   "ownedItems": 99,
+   "ownedMaterialItems": 98,
+   "primaryChars": 11801,
+   "requiredContextChars": 63998,
+   "optionalContextChars": 175,
+   "turn1EstimatedTokens": 61670,
+   "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+   "requiredDependencies": 72,
+   "deliveredFull": 58,
+   "boundedExcerpts": 14,
+   "ownedPrimarySource": 0,
+   "external": 0,
+   "internalUnresolved": 0,
+   "ambiguous": 0,
+   "limitations": [],
+   "witnessesInTurn1": [
+    {
+     "key": "term:fixed incremental amount",
+     "deliveredInFull": true
+    },
+    {
+     "key": "term:voluntary prepayment incremental amount",
+     "deliveredInFull": true
+    },
+    {
+     "key": "term:ratio incremental amount",
+     "deliveredInFull": true
+    },
+    {
+     "key": "term:extension amount",
+     "deliveredInFull": true
+    },
+    {
+     "key": "section:2.18(b)",
+     "deliveredInFull": true
+    }
+   ]
+  },
+  {
+   "ordinal": 4,
+   "shardId": "shard:2eb6ff75386e45a57593",
+   "shardHash": "ae76043919980357ec9dc70ecd7d77d1ce55b9814f2e249c4293efa92d919ff0",
+   "ownedItems": 45,
+   "ownedMaterialItems": 44,
+   "primaryChars": 4010,
+   "requiredContextChars": 49756,
+   "optionalContextChars": 175,
+   "turn1EstimatedTokens": 45044,
+   "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+   "requiredDependencies": 67,
+   "deliveredFull": 63,
+   "boundedExcerpts": 4,
+   "ownedPrimarySource": 0,
+   "external": 0,
+   "internalUnresolved": 0,
+   "ambiguous": 0,
+   "limitations": [],
+   "witnessesInTurn1": []
+  },
+  {
+   "ordinal": 5,
+   "shardId": "shard:e10ed610ecff8b399619",
+   "shardHash": "0da85a627f9eb0fd6813b66e3dcb2f171fa22680bfa91c790397cd206a3b5e08",
+   "ownedItems": 42,
+   "ownedMaterialItems": 42,
+   "primaryChars": 3712,
+   "requiredContextChars": 42714,
+   "optionalContextChars": 586,
+   "turn1EstimatedTokens": 41034,
+   "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+   "requiredDependencies": 60,
+   "deliveredFull": 55,
+   "boundedExcerpts": 5,
+   "ownedPrimarySource": 0,
+   "external": 0,
+   "internalUnresolved": 0,
+   "ambiguous": 0,
+   "limitations": [],
+   "witnessesInTurn1": [
+    {
+     "key": "term:fixed incremental amount",
+     "deliveredInFull": true
+    },
+    {
+     "key": "section:2.18(b)",
+     "deliveredInFull": true
+    }
+   ]
+  },
+  {
+   "ordinal": 6,
+   "shardId": "shard:7c4d3d2ae3e0a522b99e",
+   "shardHash": "f8965d0be191e382df668b523da2be02dc4d36e435833f846c6f90887eeb969b",
+   "ownedItems": 16,
+   "ownedMaterialItems": 14,
+   "primaryChars": 1553,
+   "requiredContextChars": 14966,
+   "optionalContextChars": 175,
+   "turn1EstimatedTokens": 25949,
+   "certificateStatus": "CERTIFIED_CONTEXT_COMPLETE",
+   "requiredDependencies": 24,
+   "deliveredFull": 21,
+   "boundedExcerpts": 3,
+   "ownedPrimarySource": 0,
+   "external": 0,
+   "internalUnresolved": 0,
+   "ambiguous": 0,
+   "limitations": [],
+   "witnessesInTurn1": []
+  }
+ ],
+ "shape": {
+  "algorithmVersion": "semantic-compilation-shards.v4-required-dependency-precision",
+  "plannerAlgorithmVersionConstant": "semantic-compilation-shards.v4-required-dependency-precision",
+  "budget": {
+   "targetPrimaryChars": 12000,
+   "maxPrimaryChars": 24000,
+   "maxContextChars": 10000,
+   "maxRequiredContextChars": 64000,
+   "maxContextEntryChars": 1800,
+   "maxUnitsPerShard": 16
+  },
+  "defaultBudget": {
+   "targetPrimaryChars": 12000,
+   "maxPrimaryChars": 24000,
+   "maxContextChars": 10000,
+   "maxRequiredContextChars": 64000,
+   "maxContextEntryChars": 1800,
+   "maxUnitsPerShard": 16
+  },
+  "budgetIsDefault": true,
+  "mode": "SHARDED",
+  "reason": "MULTIPLE_SHARDS_REQUIRED",
+  "planHash": "b2b9540a144348dab91cc80eacd0d9b472e9e93a61a8fd359e1a507cf5cf17ce",
+  "shards": 7,
+  "oversizedShards": 0,
+  "plannerEstimatedInputTokens": 290402,
+  "maxShardInputTokens": 61670,
+  "maxPrimaryChars": 11801,
+  "maxUnitsPerShard": 16,
+  "midSentenceShards": 0,
+  "ownershipProof": {
+   "materialItems": 319,
+   "ownedOnce": 319,
+   "unowned": 0,
+   "multiplyOwned": 0
+  },
+  "mustLinkGroups": 14,
+  "shardTable": [
+   {
+    "ordinal": 0,
+    "shardId": "shard:7922314d9b00112aef21",
+    "shardHash": "6993abd1ef681cce2d579e389b53c91dd727f9e206b39e7c1dd61d2289a02a2a",
+    "ownedUnits": 7,
+    "ownedItems": 43,
+    "primaryChars": 3294,
+    "slices": 1,
+    "contextEntries": 54,
+    "contextChars": 35241,
+    "unresolvedContext": 4,
+    "estimatedInputTokens": 38429,
+    "oversized": false
+   },
+   {
+    "ordinal": 1,
+    "shardId": "shard:7888717f06dfe736bf5b",
+    "shardHash": "10b58a46677cb2e02ebc12cb1de9af2c37b5be80c0183fc86775f2527a7441ed",
+    "ownedUnits": 5,
+    "ownedItems": 11,
+    "primaryChars": 663,
+    "slices": 1,
+    "contextEntries": 51,
+    "contextChars": 35695,
+    "unresolvedContext": 3,
+    "estimatedInputTokens": 32941,
+    "oversized": false
+   },
+   {
+    "ordinal": 2,
+    "shardId": "shard:fe26b4996ab543b0a066",
+    "shardHash": "b451369ac21cad6988376c40d9c76c11c4bec93e25cab195b1c000261cd00965",
+    "ownedUnits": 15,
+    "ownedItems": 70,
+    "primaryChars": 8590,
+    "slices": 2,
+    "contextEntries": 49,
+    "contextChars": 35805,
+    "unresolvedContext": 1,
+    "estimatedInputTokens": 45335,
+    "oversized": false
+   },
+   {
+    "ordinal": 3,
+    "shardId": "shard:86cc5e439f113d6053a9",
+    "shardHash": "82c135b56cd3d1ac1fde6e7ca73328f2ace2edefc80049c9335082ef030a84ac",
+    "ownedUnits": 13,
+    "ownedItems": 99,
+    "primaryChars": 11801,
+    "slices": 4,
+    "contextEntries": 74,
+    "contextChars": 64173,
+    "unresolvedContext": 6,
+    "estimatedInputTokens": 61670,
+    "oversized": false
+   },
+   {
+    "ordinal": 4,
+    "shardId": "shard:2eb6ff75386e45a57593",
+    "shardHash": "ae76043919980357ec9dc70ecd7d77d1ce55b9814f2e249c4293efa92d919ff0",
+    "ownedUnits": 16,
+    "ownedItems": 45,
+    "primaryChars": 4010,
+    "slices": 1,
+    "contextEntries": 69,
+    "contextChars": 49931,
+    "unresolvedContext": 1,
+    "estimatedInputTokens": 45044,
+    "oversized": false
+   },
+   {
+    "ordinal": 5,
+    "shardId": "shard:e10ed610ecff8b399619",
+    "shardHash": "0da85a627f9eb0fd6813b66e3dcb2f171fa22680bfa91c790397cd206a3b5e08",
+    "ownedUnits": 16,
+    "ownedItems": 42,
+    "primaryChars": 3712,
+    "slices": 2,
+    "contextEntries": 63,
+    "contextChars": 43300,
+    "unresolvedContext": 0,
+    "estimatedInputTokens": 41034,
+    "oversized": false
+   },
+   {
+    "ordinal": 6,
+    "shardId": "shard:7c4d3d2ae3e0a522b99e",
+    "shardHash": "f8965d0be191e382df668b523da2be02dc4d36e435833f846c6f90887eeb969b",
+    "ownedUnits": 10,
+    "ownedItems": 16,
+    "primaryChars": 1553,
+    "slices": 2,
+    "contextEntries": 26,
+    "contextChars": 15141,
+    "unresolvedContext": 0,
+    "estimatedInputTokens": 25949,
+    "oversized": false
+   }
+  ],
+  "expected": {
+   "shards": 6,
+   "oversized": 0,
+   "maxPrimaryChars": 11801,
+   "maxUnitsPerShard": 16,
+   "midSentenceShards": 0,
+   "unowned": 0,
+   "multiplyOwned": 0
+  },
+  "matchesExpectedShape": false,
+  "oldPathologicalPlanReappeared": false
+ },
+ "historicalStores": [
+  {
+   "dir": "tests/fixtures/unseen-packages/phase-3-final-601-final-paid/durable-shards",
+   "label": "final-paid 3-shard plan",
+   "accepted": 0,
+   "rejected": 0
+  },
+  {
+   "dir": "tests/fixtures/unseen-packages/phase-3-final-601-revalidation/durable-shards",
+   "label": "prior 6-shard revalidation plan",
+   "accepted": 0,
+   "rejected": 0
+  }
+ ],
+ "thisMissionStore": {
+  "priorShardsFromStore": 0,
+  "priorShardTokensExcludedFromPaidWork": 0,
+  "rejectedStoreRecords": []
+ },
+ "guardState": {
+  "spent": 0,
+  "passABatchesRemaining": 0,
+  "passAGapRemaining": 0,
+  "passBTokensRemaining": 290402,
+  "verifierReviewRemaining": 1,
+  "conditionSuspicionRemaining": 5,
+  "conservativeRemaining": 12.153745206905528,
+  "capRemaining": 12.2,
+  "balanceRemaining": 12.2
+ },
+ "admission": {
+  "admitted": true,
+  "conservativeRemaining": 12.153745206905528,
+  "capRemaining": 12.2,
+  "balanceRemaining": 12.2
+ },
+ "estimate": {
+  "rates": {
+   "passABatchMean": 0.431337,
+   "passABatchWorst": 0.627356,
+   "passABatchCalls": 38,
+   "passAGapMean": 0.3529920000000001,
+   "passAGapWorst": 0.47530800000000006,
+   "passAGapCalls": 5,
+   "passBMean": 0.000017264537354079804,
+   "passBWorst": 0.00003215094994361066,
+   "passBShards": 36,
+   "verifierSemanticReview": 0.32929600000000003,
+   "verifierCalls": 1
+  },
+  "safetyFactor": 1.25,
+  "plannerEstimatedInputTokens": 290402,
+  "passA": {
+   "usd": 0,
+   "calls": 0,
+   "reason": "resumed from the persisted ensemble - no Pass-A caller is constructed"
+  },
+  "passB": {
+   "worstUsd": 9.3367,
+   "meanUsd": 5.013656,
+   "conservativeUsd": 11.670875
+  },
+  "verifier": {
+   "worstUsd": 0.386296,
+   "conservativeUsd": 0.48287,
+   "calls": {
+    "semanticReview": 1,
+    "conditionSuspicion": 5
+   }
+  },
+  "conservativeTotalUsd": 12.153745,
+  "worstTotalUsd": 9.722996,
+  "meanTotalUsd": 5.399952,
+  "capUsd": 12.16,
+  "capCeilingUsd": 6,
+  "capWithinRecommendedCeiling": false,
+  "previousPassBPlusVerifierActualUsd": 2.799234
+ },
+ "rateSource": {
+  "method": "PINNED_FROZEN_RATES",
+  "pinnedArtifacts": [
+   "docs/phase-3-final-601/01-cost-preflight.json",
+   "docs/phase-3-final-601/49-final-clean-cost-preflight.json",
+   "docs/phase-3-final-601/75-final-paid-cost-preflight.json"
+  ],
+  "allPinnedArtifactsAgree": true,
+  "recomputationAttempted": true,
+  "recomputationSucceeded": false,
+  "recomputationMatchesPinned": null,
+  "recomputeError": "Cannot read properties of undefined (reading 'record')",
+  "whyPinned": "observedRates() joins the frozen F-7B canary shard ledgers on shardId; planner v2 changed shard identities, so the historical join no longer resolves. The rate VALUES are unchanged - they are read from the artifacts the previous missions committed."
+ }
+}
